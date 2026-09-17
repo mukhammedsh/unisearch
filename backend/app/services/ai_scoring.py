@@ -253,7 +253,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
     user_scores: Dict[str, float] = {}
     user_languages: Dict[str, Dict[str, Any]] = {}
 
-    scale = profile.get("gpa_scale") or profile.get("gpaScale")
+    scale = profile.get("gpa_scale")
     normalized_gpa = _normalize_gpa_score(profile.get("gpa"), scale=scale)
     if normalized_gpa is not None:
         _set_best_score(user_scores, "GPA", normalized_gpa)
@@ -261,9 +261,9 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
     for row in profile.get("exams", []) or []:
         if not isinstance(row, dict):
             continue
-        exam_id = row.get("id", row.get("exam"))
+        exam_id = row.get("id") or row.get("exam")
         raw_score = row.get("score")
-        raw_value = row.get("raw_value", row.get("rawValue"))
+        raw_value = row.get("raw_value")
         details = row.get("details")
         try:
             parsed = exams_service.coerce_exam_submission(
@@ -282,7 +282,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                     for item in bucket:
                         if not isinstance(item, dict):
                             continue
-                        nested_exam = item.get("exam") or item.get("id") or item.get("exam_id")
+                        nested_exam = item.get("exam") or item.get("id")
                         _set_best_score(user_scores, nested_exam, item.get("score"))
         except Exception:
             _set_best_score(user_scores, exam_id, raw_score)
@@ -290,7 +290,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
     for row in profile.get("languages", []) or []:
         if not isinstance(row, dict):
             continue
-        code = _normalize_lang_code(row.get("code", row.get("lang")), lang_cfg)
+        code = _normalize_lang_code(row.get("code"), lang_cfg)
         kind = str(row.get("kind", "")).strip().lower()
         if not code or not kind:
             continue
@@ -309,9 +309,9 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
             continue
 
         if kind == "exam":
-            exam_id = str(row.get("exam", row.get("examId", row.get("id", "")))).strip()
+            exam_id = str(row.get("exam") or "").strip()
             raw_score = row.get("score")
-            raw_value = row.get("raw_value", row.get("rawValue"))
+            raw_value = row.get("raw_value")
             details = row.get("details")
             if not exam_id:
                 continue
@@ -338,7 +338,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                         for item in bucket:
                             if not isinstance(item, dict):
                                 continue
-                            nested_exam = item.get("exam") or item.get("id") or item.get("exam_id")
+                            nested_exam = item.get("exam") or item.get("id")
                             nested_score = item.get("score")
                             _set_best_score(user_languages[code]["exams"], nested_exam, nested_score)
                             _set_best_score(user_scores, nested_exam, nested_score)
@@ -723,15 +723,13 @@ def _normalize_selected_admission_choices(profile: Dict[str, Any]) -> Dict[str, 
         return {}
     raw = profile.get("selectedAdmissionChoices")
     if not isinstance(raw, dict):
-        raw = profile.get("selected_admission_choices")
-    if not isinstance(raw, dict):
         return {}
     out: Dict[str, str] = {}
     for uni_id, selection in raw.items():
         uni = str(uni_id or "").strip()
         if not isinstance(selection, dict):
             continue
-        choice = str(selection.get("choiceKey") or selection.get("choice_key") or "").strip()
+        choice = str(selection.get("choiceKey") or "").strip()
         if uni and choice:
             out[uni] = choice
     return out
@@ -768,7 +766,7 @@ def _chance_level(chance_pct: float) -> Dict[str, str]:
 
 
 def _chance_locale(profile: Dict[str, Any]) -> str:
-    raw = str((profile or {}).get("locale") or (profile or {}).get("lang") or "").strip().lower()
+    raw = str((profile or {}).get("locale") or "").strip().lower()
     return "rus" if raw.startswith("ru") else "eng"
 
 
@@ -1257,14 +1255,11 @@ def _extract_university_factors(university: Dict[str, Any]) -> Dict[str, float]:
 
     raw = university.get("factors")
     raw = raw if isinstance(raw, dict) else {}
-    location_factor_raw = raw.get("city_vs_outside_city")
-    if location_factor_raw is None:
-        location_factor_raw = raw.get("city_vs_campus")
     res = {
         "practice_vs_science": _factor01(raw.get("practice_vs_science"), _fallback_practice_vs_science(university)),
         "social_vs_hardcore": _factor01(raw.get("social_vs_hardcore"), _fallback_social_vs_hardcore(university)),
         "budget_vs_prestige": _factor01(raw.get("budget_vs_prestige"), _fallback_budget_vs_prestige(university)),
-        "city_vs_campus": _factor01(location_factor_raw, _fallback_city_vs_outside_city(university)),
+        "city_vs_campus": _factor01(raw.get("city_vs_campus"), _fallback_city_vs_outside_city(university)),
     }
     if uid:
         _FACTORS_CACHE[uid] = res

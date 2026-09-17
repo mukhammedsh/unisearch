@@ -506,9 +506,6 @@ def main() -> None:
             "practice_vs_science": round(focus, 4),
             "social_vs_hardcore": round(atmosphere, 4),
             "budget_vs_prestige": round(finance, 4),
-            # Canonical axis: city life <-> outside-major-city life.
-            "city_vs_outside_city": location_factor,
-            # Backward-compatible alias for existing API/UI contracts.
             "city_vs_campus": location_factor,
         }
         university["factors_meta"] = {

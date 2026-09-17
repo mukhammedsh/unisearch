@@ -39,20 +39,18 @@ def mode_value_from_map(mode_map: Any, mode: str) -> Any:
 def mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[Dict[str, Any]]:
     if not isinstance(finance, dict):
         return None
-    for key in ("costs_breakdown_year_usd_by_mode", "costs_breakdown_by_mode_year_usd", "mode_costs_breakdown_year_usd"):
-        value = mode_value_from_map(finance.get(key), mode)
-        if isinstance(value, dict):
-            return value
+    value = mode_value_from_map(finance.get("costs_breakdown_year_usd_by_mode"), mode)
+    if isinstance(value, dict):
+        return value
     return None
 
 
 def mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[float]:
     if not isinstance(finance, dict):
         return None
-    for key in ("total_cost_year_usd_by_mode", "total_cost_by_mode_year_usd", "mode_total_cost_year_usd"):
-        amount = to_float(mode_value_from_map(finance.get(key), mode))
-        if amount is not None and amount >= 0:
-            return float(amount)
+    amount = to_float(mode_value_from_map(finance.get("total_cost_year_usd_by_mode"), mode))
+    if amount is not None and amount >= 0:
+        return float(amount)
     return None
 
 

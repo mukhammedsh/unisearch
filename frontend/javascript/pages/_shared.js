@@ -932,30 +932,17 @@ export function modeValueFromMap(modeMap, modeRaw) {
 
 export function modeBreakdownFromFinance(financeData, modeRaw) {
   const f = financeData && typeof financeData === "object" ? financeData : {};
-  const maps = [
-    f.costs_breakdown_year_usd_by_mode,
-    f.costs_breakdown_by_mode_year_usd,
-    f.mode_costs_breakdown_year_usd,
-  ];
-  for (const map of maps) {
-    const v = modeValueFromMap(map, modeRaw);
-    if (v && typeof v === "object") return v;
-  }
+  const v = modeValueFromMap(f.costs_breakdown_year_usd_by_mode, modeRaw);
+  if (v && typeof v === "object") return v;
   return null;
 }
 
 export function modeTotalFromFinance(financeData, modeRaw) {
   const f = financeData && typeof financeData === "object" ? financeData : {};
-  const maps = [
-    f.total_cost_year_usd_by_mode,
-    f.total_cost_by_mode_year_usd,
-    f.mode_total_cost_year_usd,
-  ];
-  for (const map of maps) {
-    const v = modeValueFromMap(map, modeRaw);
-    const n = Number(v);
-    if (Number.isFinite(n) && n >= 0) return n;
-  }
+  const v = modeValueFromMap(f.total_cost_year_usd_by_mode, modeRaw);
+  if (v == null || v === "") return null;
+  const n = Number(v);
+  if (Number.isFinite(n) && n >= 0) return n;
   return null;
 }
 
@@ -1093,28 +1080,6 @@ export function resolveUniversityCardPrice(u) {
         amount: hasFinalPrice ? Number(match.finalPrice) : amountUSD,
         currency: matchCurrency || "USD",
         amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
-      };
-    }
-
-    // Explicit costWithAmountUSD (legacy USD field)
-    if (!hasFinalPrice && match.costWithAmountUSD !== null && match.costWithAmountUSD !== undefined && match.costWithAmountUSD !== "") {
-      const amountUSD = Number(match.costWithAmountUSD);
-      return {
-        amount: amountUSD,
-        currency: "USD",
-        amountUSD: Number.isFinite(amountUSD) ? amountUSD : null,
-      };
-    }
-
-    // Legacy contract: finalPrice is present WITHOUT match.currency.
-    // In legacy UniSearch AI scoring, finalPrice was always calculated in USD.
-    // We MUST treat its currency as "USD", NOT uniNativeCurrency (e.g. KZT/CAD/EUR).
-    if (hasFinalPrice) {
-      const amount = Number(match.finalPrice);
-      return {
-        amount: Number.isFinite(amount) ? amount : null,
-        currency: "USD",
-        amountUSD: Number.isFinite(amount) ? amount : null,
       };
     }
 

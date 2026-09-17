@@ -194,6 +194,9 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(apiPayload.budget, 50000);
       assert.strictEqual(apiPayload.gpa, 3.8);
       assert.strictEqual(apiPayload.gpa_scale, 4);
+      assert.strictEqual(apiPayload.gpaScale, undefined);
+      assert.strictEqual(apiPayload.gpa_raw, undefined);
+      assert.strictEqual(apiPayload.user_gpa_scale, undefined);
       assert.strictEqual(apiPayload.major, 'Physics');
       assert.strictEqual(apiPayload.interests, 'Quantum computing');
       assert.strictEqual(apiPayload.fundingType, 'grant');

@@ -81,7 +81,7 @@ def _normalize_breakdown_defs(items: Any) -> List[Dict[str, Any]]:
             continue
         if not isinstance(row, dict):
             continue
-        exam_id = _strip_text(row.get("exam") or row.get("id") or row.get("exam_id"))
+        exam_id = _strip_text(row.get("exam") or row.get("id"))
         if not exam_id:
             continue
         out.append(
@@ -137,7 +137,7 @@ def _coerce_language_exam_submission(
     for row in raw_components:
         if not isinstance(row, dict):
             raise ValueError(f"{exam_key} components must be objects")
-        child_exam = _strip_text(row.get("exam") or row.get("id") or row.get("exam_id"))
+        child_exam = _strip_text(row.get("exam") or row.get("id"))
         if not child_exam:
             raise ValueError(f"{exam_key} component exam is required")
         if child_exam not in allowed_ids:
@@ -149,7 +149,7 @@ def _coerce_language_exam_submission(
             code=code,
             exam_id=child_exam,
             score_raw=row.get("score"),
-            raw_value=row.get("raw_value", row.get("rawValue")),
+            raw_value=row.get("raw_value"),
             details=row.get("details"),
             idx=index,
         )
@@ -335,7 +335,7 @@ def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:
 
     exam_id = str(payload.get("exam", "")).strip()
     score_raw = payload.get("score", None)
-    raw_value = payload.get("raw_value", payload.get("rawValue"))
+    raw_value = payload.get("raw_value")
     details = payload.get("details")
 
     if not exam_id:

@@ -13,6 +13,7 @@ import {
   getExamInputMode,
   initCustomSelect,
   loadProfile,
+  isFutureProfile,
   markMotionEnter,
   motionPress,
   normalizeProfileData,
@@ -242,7 +243,7 @@ export function initProfileUI() {
 
     let profile = ensureProfileShape(loadProfile());
     let savedSignature = "";
-    let profileStoragePersistent = true;
+    let profileStoragePersistent = !isFutureProfile(profile);
     let lowBudgetGrantHintDismissed = false;
     let isDiscarding = false;
     const profileProgressText = document.getElementById("profileProgressText");
@@ -931,7 +932,7 @@ export function initProfileUI() {
             const converted = Math.round(convert(Number(profile.budget), profile.budgetCurrency, activeCurrency));
             profile.budget = converted;
             profile.budgetCurrency = activeCurrency;
-            saveProfile(profile);
+            profileStoragePersistent = saveProfile(profile);
             savedSignature = stableProfileSignature(profile);
         } else if (!profile.budgetCurrency) {
             profile.budgetCurrency = activeCurrency;
@@ -1384,7 +1385,7 @@ export function initProfileUI() {
             }
             profile.budgetCurrency = activeCurrency;
             if (savedSignature) {
-                saveProfile(profile);
+                profileStoragePersistent = saveProfile(profile);
                 savedSignature = stableProfileSignature(profile);
             }
         }

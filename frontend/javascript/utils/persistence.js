@@ -13,9 +13,13 @@ const PROFILE_STORAGE_KEY = "unisearch_profile";
 const FILTERS_KEY = "unisearch_filters";
 
 let profileMemoryFallback = null;
+let profileMemoryUnpersisted = false;
 let filtersMemoryFallback = {};
 
+export const PROFILE_VERSION = 2;
+
 const PROFILE_DEFAULTS = {
+  _v: PROFILE_VERSION,
   name: "User",
   budget: "",
   budgetCurrency: "USD",
@@ -62,7 +66,24 @@ function normalizeAdmissionChoiceSelection(selection) {
   if (!selection || typeof selection !== "object" || Array.isArray(selection)) return null;
   const choiceKey = String(selection.choiceKey || selection.choice_key || "").trim();
   if (!choiceKey) return null;
+
+  const knownChoiceKeys = new Set([
+    "programId", "program_id",
+    "programName", "program_name",
+    "categoryId", "category_id",
+    "requirementProfileId", "requirement_profile_id",
+    "fundingOptionId", "funding_option_id",
+    "choiceKey", "choice_key",
+  ]);
+  const extraChoiceKeys = {};
+  for (const [k, v] of Object.entries(selection)) {
+    if (!knownChoiceKeys.has(k)) {
+      extraChoiceKeys[k] = v;
+    }
+  }
+
   return {
+    ...extraChoiceKeys,
     programId: String(selection.programId || selection.program_id || "").trim(),
     programName: String(selection.programName || selection.program_name || "").trim(),
     categoryId: String(selection.categoryId || selection.category_id || "").trim(),
@@ -72,27 +93,125 @@ function normalizeAdmissionChoiceSelection(selection) {
   };
 }
 
-export function normalizeProfileData(profile) {
-  const out = { ...PROFILE_DEFAULTS, ...(profile || {}) };
-  out.name = String(out.name || PROFILE_DEFAULTS.name).trim() || PROFILE_DEFAULTS.name;
-  out.budget = out.budget === null || out.budget === undefined ? PROFILE_DEFAULTS.budget : out.budget;
-  const budgetCurrencyRaw = String(out.budgetCurrency || out.budget_currency || "").trim().toUpperCase();
-  out.budgetCurrency = budgetCurrencyRaw || PROFILE_DEFAULTS.budgetCurrency;
-  out.major = String(out.major ?? "").trim();
-  out.studyMode = String(out.studyMode || PROFILE_DEFAULTS.studyMode).trim() || PROFILE_DEFAULTS.studyMode;
-  const fundingRaw = String(out.fundingType || out.funding_type || "").trim().toLowerCase();
-  out.fundingType = fundingRaw === "grant" || fundingRaw === "paid" ? fundingRaw : PROFILE_DEFAULTS.fundingType;
-  out.interests = String(out.interests ?? "").trim().slice(0, 1200);
-  out.selectedAdmissionChoices = out.selectedAdmissionChoices && typeof out.selectedAdmissionChoices === "object" && !Array.isArray(out.selectedAdmissionChoices)
-    ? Object.fromEntries(
-      Object.entries(out.selectedAdmissionChoices)
-        .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
-        .filter(([universityId, selection]) => universityId && selection),
-    )
-    : {};
+export function isFutureProfile(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return false;
+  const v = Number(raw._v);
+  return Number.isFinite(v) && v > PROFILE_VERSION;
+}
 
-  const gpaScale = Number(out.gpaScale) === 5 ? 5 : 4;
-  out.gpaScale = gpaScale;
+export function isLegacyProfile(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return false;
+  const v = Number(raw._v);
+  // Future version must NEVER be treated as legacy!
+  if (Number.isFinite(v) && v > PROFILE_VERSION) return false;
+  // Missing version or version < PROFILE_VERSION is legacy
+  if (!Number.isFinite(v) || v < PROFILE_VERSION) return true;
+  // Version is exactly PROFILE_VERSION: check if any legacy aliases remain
+  if (
+    "budget_currency" in raw
+    || "funding_type" in raw
+    || "gpa_scale" in raw
+    || "gpa_raw" in raw
+    || "user_gpa_scale" in raw
+    || "selected_admission_choices" in raw
+  ) {
+    return true;
+  }
+  if (Array.isArray(raw.exams)) {
+    for (const e of raw.exams) {
+      if (e && typeof e === "object" && !Array.isArray(e)) {
+        if ("rawValue" in e || "displayValue" in e || !e.id || !e.exam || e.id !== e.exam) {
+          return true;
+        }
+      }
+    }
+  }
+  if (Array.isArray(raw.languages)) {
+    for (const l of raw.languages) {
+      if (l && typeof l === "object" && !Array.isArray(l)) {
+        if ("lang" in l || "examId" in l || "rawValue" in l || "displayValue" in l) {
+          return true;
+        }
+      }
+    }
+  }
+  if (raw.selectedAdmissionChoices && typeof raw.selectedAdmissionChoices === "object" && !Array.isArray(raw.selectedAdmissionChoices)) {
+    for (const choice of Object.values(raw.selectedAdmissionChoices)) {
+      if (choice && typeof choice === "object" && !Array.isArray(choice)) {
+        if (
+          "choice_key" in choice
+          || "program_id" in choice
+          || "program_name" in choice
+          || "category_id" in choice
+          || "requirement_profile_id" in choice
+          || "funding_option_id" in choice
+        ) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+export function normalizeProfileData(profile) {
+  const raw = profile && typeof profile === "object" && !Array.isArray(profile) ? profile : {};
+
+  // Preserve unknown/future fields from raw
+  const knownRootKeys = new Set([
+    "_v", "name", "budget", "budgetCurrency", "budget_currency",
+    "gpa", "gpaScale", "gpa_scale", "gpa_raw", "user_gpa_scale",
+    "exams", "languages", "major", "interests",
+    "studyMode", "fundingType", "funding_type",
+    "selectedAdmissionChoices", "selected_admission_choices",
+  ]);
+  const extraFields = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (!knownRootKeys.has(k)) {
+      extraFields[k] = v;
+    }
+  }
+
+  // Version: preserve future version numbers (> PROFILE_VERSION); otherwise canonical PROFILE_VERSION
+  const rawVersion = Number(raw._v);
+  const version = Number.isFinite(rawVersion) && rawVersion > PROFILE_VERSION ? rawVersion : PROFILE_VERSION;
+
+  const name = String(raw.name || PROFILE_DEFAULTS.name).trim() || PROFILE_DEFAULTS.name;
+  const budget = raw.budget === null || raw.budget === undefined || raw.budget === "" ? "" : raw.budget;
+  const budgetCurrencyRaw = String(raw.budgetCurrency || raw.budget_currency || "").trim().toUpperCase();
+  const budgetCurrency = budgetCurrencyRaw || PROFILE_DEFAULTS.budgetCurrency;
+  const major = String(raw.major ?? "").trim();
+  const studyMode = String(raw.studyMode || PROFILE_DEFAULTS.studyMode).trim() || PROFILE_DEFAULTS.studyMode;
+  const parseFundingType = (val) => {
+    const s = String(val || "").trim().toLowerCase();
+    return s === "grant" || s === "paid" ? s : (s === "any" ? "any" : null);
+  };
+  const fundingType = parseFundingType(raw.fundingType) || parseFundingType(raw.funding_type) || PROFILE_DEFAULTS.fundingType;
+  const interests = String(raw.interests ?? "").trim().slice(0, 1200);
+
+  // Selected admission choices:
+  // Canonical selectedAdmissionChoices (if an object, including an intentionally empty {}) takes
+  // strict precedence over legacy selected_admission_choices to prevent resurrecting choices
+  // that the user intentionally removed.
+  // Legacy selected_admission_choices is used only when canonical selectedAdmissionChoices is absent.
+  const rawChoices = (raw.selectedAdmissionChoices && typeof raw.selectedAdmissionChoices === "object" && !Array.isArray(raw.selectedAdmissionChoices))
+    ? raw.selectedAdmissionChoices
+    : (raw.selected_admission_choices && typeof raw.selected_admission_choices === "object" && !Array.isArray(raw.selected_admission_choices))
+      ? raw.selected_admission_choices
+      : {};
+  const selectedAdmissionChoices = Object.fromEntries(
+    Object.entries(rawChoices)
+      .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
+      .filter(([universityId, selection]) => universityId && selection),
+  );
+
+  // Priority rule: valid canonical gpaScale (4 or 5) takes precedence over legacy gpa_scale / user_gpa_scale.
+  // Fallback to gpa_scale / user_gpa_scale only when gpaScale is not 4 or 5.
+  let rawGpaScale = raw.gpaScale;
+  if (Number(rawGpaScale) !== 4 && Number(rawGpaScale) !== 5) {
+    rawGpaScale = raw.gpa_scale ?? raw.user_gpa_scale;
+  }
+  const gpaScale = Number(rawGpaScale) === 5 ? 5 : 4;
   const gpaMax = gpaScale === 5 ? 5 : 4;
   const clampGpa = (value) => {
     if (value === "" || value === null || value === undefined) return null;
@@ -100,11 +219,15 @@ export function normalizeProfileData(profile) {
     if (!Number.isFinite(num)) return null;
     return Math.max(0, Math.min(gpaMax, Math.round(num * 100) / 100));
   };
-  let normalizedGpa = clampGpa(out.gpa);
+  let normalizedGpa = clampGpa(raw.gpa);
+  if (normalizedGpa === null) {
+    normalizedGpa = clampGpa(raw.gpa_raw);
+  }
 
-  if (!Array.isArray(out.exams)) out.exams = [];
+  const rawExams = Array.isArray(raw.exams) ? raw.exams : [];
   const dedupedExams = new Map();
-  out.exams.forEach((row) => {
+  rawExams.forEach((row) => {
+    if (!row || typeof row !== "object" || Array.isArray(row)) return;
     const rawId = String(row?.id || row?.exam || "").trim();
     if (!rawId) return;
     const normalizedId = canonicalizeExamId(rawId);
@@ -119,24 +242,35 @@ export function normalizeProfileData(profile) {
     const config = getExamConfig(normalizedId);
     const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
     const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-    const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details)
-      ? JSON.parse(JSON.stringify(row.details))
-      : null;
+    let details = null;
+    if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
+      try {
+        details = JSON.parse(JSON.stringify(row.details));
+      } catch {
+        details = null;
+      }
+    }
     const clamped = config ? clampWithConfig(row?.score, config) : Number(row?.score);
     const score = Number.isFinite(clamped) ? clamped : null;
     if (score === null && !rawValue && !details) return;
 
-    const normalizedExam = { ...row, id: normalizedId, exam: normalizedId };
+    const knownExamKeys = new Set(["id", "exam", "score", "raw_value", "rawValue", "display_value", "displayValue", "details"]);
+    const extraExamKeys = {};
+    for (const [k, v] of Object.entries(row)) {
+      if (!knownExamKeys.has(k)) {
+        extraExamKeys[k] = v;
+      }
+    }
+
+    const normalizedExam = {
+      ...extraExamKeys,
+      id: normalizedId,
+      exam: normalizedId,
+    };
     if (score !== null) normalizedExam.score = score;
-    else delete normalizedExam.score;
     if (rawValue) normalizedExam.raw_value = rawValue;
-    else delete normalizedExam.raw_value;
-    delete normalizedExam.rawValue;
     if (displayValue) normalizedExam.display_value = displayValue;
-    else delete normalizedExam.display_value;
-    delete normalizedExam.displayValue;
     if (details) normalizedExam.details = details;
-    else delete normalizedExam.details;
 
     if (!dedupedExams.has(key)) {
       dedupedExams.set(key, normalizedExam);
@@ -153,21 +287,29 @@ export function normalizeProfileData(profile) {
       dedupedExams.set(key, { ...existing, ...normalizedExam, id: normalizedId, exam: normalizedId });
     }
   });
-  out.exams = Array.from(dedupedExams.values());
+  const exams = Array.from(dedupedExams.values());
 
-  if (!Array.isArray(out.languages)) out.languages = [];
-  out.languages = out.languages
+  const rawLanguages = Array.isArray(raw.languages) ? raw.languages : [];
+  const languages = rawLanguages
     .map((row) => {
-      if (!row || typeof row !== "object") return null;
+      if (!row || typeof row !== "object" || Array.isArray(row)) return null;
 
       const code = String(row?.code || row?.lang || "").trim().toLowerCase();
       const kind = String(row?.kind || "").trim().toLowerCase();
       if (!code || !kind) return null;
 
-      if (kind === "native") return { code, kind };
+      const knownLangKeys = new Set(["code", "lang", "kind", "level", "exam", "examId", "score", "raw_value", "rawValue", "display_value", "displayValue", "details"]);
+      const extraLangKeys = {};
+      for (const [k, v] of Object.entries(row)) {
+        if (!knownLangKeys.has(k)) {
+          extraLangKeys[k] = v;
+        }
+      }
+
+      if (kind === "native") return { ...extraLangKeys, code, kind: "native" };
       if (kind === "cefr") {
         const level = Number(row?.level);
-        return Number.isInteger(level) && level >= 1 && level <= 6 ? { code, kind, level } : null;
+        return Number.isInteger(level) && level >= 1 && level <= 6 ? { ...extraLangKeys, code, kind: "cefr", level } : null;
       }
       if (kind !== "exam") return null;
 
@@ -175,15 +317,20 @@ export function normalizeProfileData(profile) {
       if (!examId) return null;
       const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
       const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-      const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details)
-        ? JSON.parse(JSON.stringify(row.details))
-        : null;
+      let details = null;
+      if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
+        try {
+          details = JSON.parse(JSON.stringify(row.details));
+        } catch {
+          details = null;
+        }
+      }
       const limits = getLangExamLimits(examId) || FALLBACK_LANG_LIMITS[examId] || null;
       const clamped = limits ? clampNumberToLimits(row?.score, limits) : Number(row?.score);
       const normalizedScore = Number.isFinite(clamped) ? clamped : null;
       if (normalizedScore === null && !rawValue && !displayValue && !details) return null;
 
-      const next = { code, kind, exam: examId };
+      const next = { ...extraLangKeys, code, kind: "exam", exam: examId };
       if (normalizedScore !== null) next.score = normalizedScore;
       if (rawValue) next.raw_value = rawValue;
       if (displayValue) next.display_value = displayValue;
@@ -192,8 +339,22 @@ export function normalizeProfileData(profile) {
     })
     .filter(Boolean);
 
-  out.gpa = normalizedGpa === null ? "" : normalizedGpa;
-  return out;
+  return {
+    ...extraFields,
+    _v: version,
+    name,
+    budget,
+    budgetCurrency,
+    gpa: normalizedGpa === null ? "" : normalizedGpa,
+    gpaScale,
+    exams,
+    languages,
+    major,
+    interests,
+    studyMode,
+    fundingType,
+    selectedAdmissionChoices,
+  };
 }
 
 export function loadProfile() {
@@ -202,24 +363,54 @@ export function loadProfile() {
     return normalizeProfileData(profileMemoryFallback);
   };
 
+  // If in-memory fallback has unpersisted changes (due to future profile or storage write error),
+  // return in-memory state directly to prevent clobbering edits with stale data from localStorage!
+  if (profileMemoryUnpersisted && profileMemoryFallback) {
+    return readMemoryFallback();
+  }
+
   const raw = safeLocalStorage.getJson(PROFILE_STORAGE_KEY, null);
-  if (!raw) return readMemoryFallback() || normalizeProfileData({});
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    return readMemoryFallback() || normalizeProfileData({});
+  }
+
+  // Future-version safety: do NOT downgrade and do NOT overwrite localStorage!
+  if (isFutureProfile(raw)) {
+    const normalized = normalizeProfileData(raw);
+    profileMemoryFallback = normalized;
+    return normalized;
+  }
 
   const normalized = normalizeProfileData(raw);
   profileMemoryFallback = normalized;
+
+  if (isLegacyProfile(raw)) {
+    try {
+      const persisted = safeLocalStorage.setJson(PROFILE_STORAGE_KEY, normalized);
+      if (!persisted) {
+        console.warn("Failed to persist migrated profile in localStorage; using in-memory fallback (persists only until page reload).");
+      }
+    } catch (err) {
+      console.warn("Failed to migrate profile in localStorage:", err);
+    }
+  }
+
   return normalized;
 }
 
 export function loadProfileForApi() {
   const profile = loadProfile();
-  const payload = { ...profile, locale: getUiLanguageForApi() };
+  const payload = {
+    studyMode: String(profile?.studyMode || "Any").trim() || "Any",
+    fundingType: String(profile?.fundingType || "any").trim() || "any",
+    locale: getUiLanguageForApi(),
+  };
+
   const budget = Number(profile?.budget);
-  const budgetCurrency = String(profile?.budgetCurrency || profile?.budget_currency || "USD").trim().toUpperCase();
+  const budgetCurrency = String(profile?.budgetCurrency || "USD").trim().toUpperCase();
   if (Number.isFinite(budget) && budget >= 0) {
     const usdBudget = convert(budget, budgetCurrency, "USD");
     payload.budget = Math.min(1000000, Math.max(0, Math.round(usdBudget)));
-  } else {
-    delete payload.budget;
   }
 
   const gpa = Number(profile?.gpa);
@@ -228,11 +419,14 @@ export function loadProfileForApi() {
     const gpaNormalized = gpaScale === 5 ? Math.round((gpa / 5.0) * 4.0 * 100) / 100 : gpa;
     payload.gpa = gpaNormalized;
     payload.gpa_scale = 4;
-    payload.gpaScale = 4;
-    payload.gpa_raw = gpa;
-    payload.user_gpa_scale = gpaScale;
-  } else {
-    delete payload.gpa;
+  }
+
+  if (String(profile?.major || "").trim()) {
+    payload.major = String(profile.major).trim();
+  }
+
+  if (String(profile?.interests || "").trim()) {
+    payload.interests = String(profile.interests).trim();
   }
 
   payload.exams = (Array.isArray(profile?.exams) ? profile.exams : [])
@@ -241,9 +435,16 @@ export function loadProfileForApi() {
       const score = Number(row?.score);
       const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
       const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-      const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details) ? row.details : null;
+      let details = null;
+      if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
+        try {
+          details = JSON.parse(JSON.stringify(row.details));
+        } catch {
+          details = null;
+        }
+      }
       if (!id || (!Number.isFinite(score) && !rawValue && !details)) return null;
-      const next = { id };
+      const next = { id, exam: id };
       if (Number.isFinite(score)) next.score = score;
       if (rawValue) next.raw_value = rawValue;
       if (displayValue) next.display_value = displayValue;
@@ -254,7 +455,7 @@ export function loadProfileForApi() {
 
   payload.languages = (Array.isArray(profile?.languages) ? profile.languages : [])
     .map((row) => {
-      const code = String(row?.code || row?.lang || "").trim();
+      const code = String(row?.code || row?.lang || "").trim().toLowerCase();
       const kind = String(row?.kind || "").trim().toLowerCase();
       if (!code || !kind) return null;
       if (kind === "native") return { code, kind: "native" };
@@ -267,7 +468,14 @@ export function loadProfileForApi() {
       const score = Number(row?.score);
       const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
       const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-      const details = row?.details && typeof row.details === "object" && !Array.isArray(row.details) ? row.details : null;
+      let details = null;
+      if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
+        try {
+          details = JSON.parse(JSON.stringify(row.details));
+        } catch {
+          details = null;
+        }
+      }
       if (!exam || (!Number.isFinite(score) && !rawValue && !details)) return null;
       const next = { code, kind: "exam", exam };
       if (Number.isFinite(score)) next.score = score;
@@ -279,18 +487,15 @@ export function loadProfileForApi() {
     .filter(Boolean);
 
   if (profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object" && !Array.isArray(profile.selectedAdmissionChoices)) {
-    payload.selectedAdmissionChoices = Object.fromEntries(
+    const choices = Object.fromEntries(
       Object.entries(profile.selectedAdmissionChoices)
         .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
         .filter(([universityId, selection]) => universityId && selection),
     );
+    if (Object.keys(choices).length) {
+      payload.selectedAdmissionChoices = choices;
+    }
   }
-  if (!payload.selectedAdmissionChoices || !Object.keys(payload.selectedAdmissionChoices).length) delete payload.selectedAdmissionChoices;
-  if (!String(payload.interests || "").trim()) delete payload.interests;
-  if (!String(payload.major || "").trim()) delete payload.major;
-  delete payload.name;
-  if (!String(payload.studyMode || "").trim()) payload.studyMode = "Any";
-  if (!String(payload.fundingType || "").trim()) payload.fundingType = "any";
 
   return payload;
 }
@@ -298,9 +503,32 @@ export function loadProfileForApi() {
 export function saveProfile(profile) {
   const normalized = normalizeProfileData(profile);
   profileMemoryFallback = normalized;
+
+  // Future-version write protection:
+  // An existing version of the application must NOT silently overwrite an unknown future schema in localStorage!
+  // Check parsed JSON first, and if unparseable/corrupt, check raw string for future version tags (_v >= 3).
+  const existingRaw = safeLocalStorage.getJson(PROFILE_STORAGE_KEY, null);
+  let isExistingFuture = isFutureProfile(existingRaw);
+  if (!isExistingFuture && existingRaw === null) {
+    const rawString = safeLocalStorage.get(PROFILE_STORAGE_KEY, "");
+    if (rawString && /"_v"\s*:\s*([3-9]|\d{2,})/.test(rawString)) {
+      isExistingFuture = true;
+    }
+  }
+
+  if (isExistingFuture || isFutureProfile(profile)) {
+    console.warn("Refusing to overwrite future-version profile in localStorage; keeping in-memory fallback (persists only until page reload).");
+    profileMemoryUnpersisted = true;
+    window.dispatchEvent(new Event("profileUpdated"));
+    return false;
+  }
+
   const persisted = safeLocalStorage.setJson(PROFILE_STORAGE_KEY, normalized);
   if (!persisted) {
-    console.warn("Failed to persist profile in localStorage; using in-memory fallback.");
+    profileMemoryUnpersisted = true;
+    console.warn("Failed to persist profile in localStorage; using in-memory fallback (persists only until page reload).");
+  } else {
+    profileMemoryUnpersisted = false;
   }
   window.dispatchEvent(new Event("profileUpdated"));
   return persisted;
@@ -308,6 +536,7 @@ export function saveProfile(profile) {
 
 export function clearProfile() {
   profileMemoryFallback = null;
+  profileMemoryUnpersisted = false;
   const cleared = safeLocalStorage.remove(PROFILE_STORAGE_KEY);
   window.dispatchEvent(new Event("profileUpdated"));
   return cleared;

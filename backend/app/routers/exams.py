@@ -12,10 +12,6 @@ router = APIRouter()
     summary="Exam configuration",
     description="Returns the map of supported exams with their score ranges, input modes, and level bands.",
 )
-@router.get(
-    "/exams/config/full",
-    include_in_schema=False,
-)
 def get_exam_config(response: Response = None):
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300"
@@ -27,7 +23,7 @@ def get_exam_config(response: Response = None):
 def validate_exam(payload: ExamValidateRequest):
     exam_raw = payload.exam
     score_raw = payload.score
-    raw_value = payload.raw_value or payload.rawValue
+    raw_value = payload.raw_value
     details = payload.details
 
     key = exams_service.resolve_exam_key(exam_raw.strip().upper())

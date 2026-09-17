@@ -243,7 +243,7 @@ def breakdown_item_definitions(items: Any, *, default_required: bool) -> List[Di
             continue
         if not isinstance(item, dict):
             continue
-        resolved = resolve_exam_key(item.get("exam") or item.get("id") or item.get("exam_id"))
+        resolved = resolve_exam_key(item.get("exam") or item.get("id"))
         if not resolved:
             continue
         label = strip_text(item.get("label")) or strip_text(config_entry(resolved).get("label")) or resolved

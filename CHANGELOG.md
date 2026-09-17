@@ -4,6 +4,26 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.0.0 (2026-09-17) - Backward Compatibility Cleanup & Profile Persistence Architecture
+- **Breaking changes**:
+  - Decommissioned deprecated `/exams/config/full` API endpoint in favor of canonical `/exams/config` (`backend/app/routers/exams.py`, `backend/tests/test_exams_api.py`).
+  - Removed deprecated field aliases from Pydantic schemas in `backend/app/schemas/payloads.py`:
+    - `rawValue` and `displayValue` in `ProfileExamInput`;
+    - `lang`, `examId`, `rawValue`, and `displayValue` in `ProfileLanguageInput`;
+    - `gpaScale` and snake_case admission selection keys (`choice_key`, `program_id`, etc.) in `ProfilePayload`;
+    - `rawValue` in `ExamValidateRequest` and `LanguageValidateRequest`.
+  - Purged obsolete fallback dictionary lookups for legacy keys across backend services (`backend/app/services/exams.py`, `backend/app/services/languages.py`, `backend/app/services/exam_support.py`).
+- Standardized university financial models and living cost projections on canonical fields `costs_breakdown_year_usd_by_mode` and `total_cost_year_usd_by_mode`, removing legacy non-mode keys and redundant fallback dictionaries (`backend/app/services/finance_modes.py`, `frontend/javascript/pages/_shared.js`).
+- Deduplicated location factors by removing duplicate `city_vs_outside_city` across 50 university entries in the dataset and factor refresh scripts, standardizing exclusively on canonical `city_vs_campus` (`backend/data/universities.json`, `backend/scripts/refresh_university_factors.py`).
+- Streamlined `resolveUniversityCardPrice` in `frontend/javascript/pages/_shared.js` by removing legacy `costWithAmountUSD` and raw `finalPrice` fallback branches, strictly resolving prices via verified canonical currency-aware structures (without touching `ai_scoring.py`).
+- Upgraded applicant profile persistence to `PROFILE_VERSION = 2` and hardened storage resilience (`frontend/javascript/utils/persistence.js`, `frontend/javascript/utils.js`, `frontend/javascript/components/profile-ui.js`):
+  - Supported legacy profile fields (`gpa_raw`, `user_gpa_scale`, and snake_case `selected_admission_choices`) automatically migrate to their canonical representations (`gpa`, `gpaScale`, `selectedAdmissionChoices`).
+  - Unrecognized profile properties are preserved across normalization, and profiles with future schema versions ($v \ge 3$) are guarded against overwrite in localStorage and maintained in-memory.
+  - Cleaned up API payload generation in `loadProfileForApi` by removing redundant legacy GPA aliases (`gpaScale`, `gpa_raw`, `user_gpa_scale`) and dispatching only canonical `gpa` and `gpa_scale = 4`.
+  - Handled localStorage quota and permission failures via an isolated in-memory session fallback, updating UI indicators to clearly notify the user that unsaved changes persist only in memory until the tab is reloaded.
+  - Re-exported profile version constants and inspection helpers (`PROFILE_VERSION`, `isLegacyProfile`, `isFutureProfile`) from `frontend/javascript/utils.js`.
+- Added comprehensive regression test suites for finance mode calculations (`backend/tests/test_finance_modes.py`), location factors (`backend/tests/test_location_factors.py`), Pydantic schema standardization (`backend/tests/test_schema_standardization.py`), and profile migration resilience (`tests/unit/persistence-profile-migration.test.mjs`).
+
 ## 5.10.0 (2026-09-17) - Applicant Profile Completion Tracking, Workspace Layout Polish, and Onboarding Controls
 - Implemented deterministic applicant profile completion tracking (`calculateProfileCompletion`), evaluating 7 core dimensions: budget, study mode, funding preference, GPA, standardized exams, languages, and target major (`frontend/javascript/utils/persistence.js`, `frontend/javascript/utils.js`).
 - Integrated dynamic profile completion meter into applicant workspace UI with progress bar animation, live percentage/count indicators, and accessible ARIA attributes (`role="progressbar"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax`) (`frontend/javascript/components/profile-ui.js`, `frontend/profile.html`).
@@ -13,6 +33,7 @@ All notable project changes should be recorded here.
 - Added comprehensive unit test coverage for profile completion calculations across partial, default, full, and boundary profile configurations (`tests/unit/persistence.test.mjs`).
 - Added end-to-end Playwright test verifying real-time progress bar incrementing from fresh profile (29%) to complete (100%) as fields are populated (`tests/e2e/profile-completion.spec.js`, `tests/e2e/helpers/mocks.js`).
 - Improved local developer environment batch launcher with PowerShell execution policy bypass support (`start-dev.bat`).
+
 
 ## 5.9.0 (2026-09-17) - Reliability & Data Integrity
 - Restored GPA descending catalog sort (`sort=gpa_desc`) by evaluating representative minimum GPA thresholds across direct requirements and admission category profiles (`backend/app/services/universities.py`).

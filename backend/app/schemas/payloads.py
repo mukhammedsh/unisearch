@@ -62,12 +62,10 @@ class ProfileExamInput(BaseModel):
     exam: Optional[str] = Field(default=None, max_length=64)
     score: Optional[float] = Field(default=None, ge=0, le=10000)
     raw_value: Optional[str] = Field(default=None, max_length=128)
-    rawValue: Optional[str] = Field(default=None, max_length=128)
     display_value: Optional[str] = Field(default=None, max_length=128)
-    displayValue: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
 
-    @field_validator("id", "exam", "raw_value", "rawValue", "display_value", "displayValue", mode="before")
+    @field_validator("id", "exam", "raw_value", "display_value", mode="before")
     @classmethod
     def _validate_exam_keys(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
@@ -81,7 +79,7 @@ class ProfileExamInput(BaseModel):
     def _ensure_exam_id(self) -> "ProfileExamInput":
         if not self.id and not self.exam:
             raise ValueError("Each exam entry must include 'id' or 'exam'")
-        if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+        if self.score is None and not self.raw_value and not self.details:
             raise ValueError("Each exam entry must include 'score', 'raw_value', or 'details'")
         return self
 
@@ -90,19 +88,15 @@ class ProfileLanguageInput(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     code: Optional[str] = Field(default=None, max_length=16)
-    lang: Optional[str] = Field(default=None, max_length=16)
     kind: Literal["native", "cefr", "exam"]
     level: Optional[int] = Field(default=None, ge=1, le=6)
     exam: Optional[str] = Field(default=None, max_length=64)
-    examId: Optional[str] = Field(default=None, max_length=64)
     score: Optional[float] = Field(default=None, ge=0, le=10000)
     raw_value: Optional[str] = Field(default=None, max_length=128)
-    rawValue: Optional[str] = Field(default=None, max_length=128)
     display_value: Optional[str] = Field(default=None, max_length=128)
-    displayValue: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
 
-    @field_validator("code", "lang", "exam", "examId", "raw_value", "rawValue", "display_value", "displayValue", mode="before")
+    @field_validator("code", "exam", "raw_value", "display_value", mode="before")
     @classmethod
     def _validate_lang_fields(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
@@ -114,14 +108,14 @@ class ProfileLanguageInput(BaseModel):
 
     @model_validator(mode="after")
     def _ensure_language_shape(self) -> "ProfileLanguageInput":
-        if not self.code and not self.lang:
-            raise ValueError("Each language entry must include 'code' or 'lang'")
+        if not self.code:
+            raise ValueError("Each language entry must include 'code'")
         if self.kind == "cefr" and self.level is None:
             raise ValueError("Language kind='cefr' requires 'level'")
         if self.kind == "exam":
-            if not self.exam and not self.examId:
-                raise ValueError("Language kind='exam' requires 'exam' or 'examId'")
-            if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+            if not self.exam:
+                raise ValueError("Language kind='exam' requires 'exam'")
+            if self.score is None and not self.raw_value and not self.details:
                 raise ValueError("Language kind='exam' requires 'score', 'raw_value', or 'details'")
         return self
 
@@ -132,7 +126,6 @@ class ProfilePayload(BaseModel):
     budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
     gpa: Optional[float] = Field(default=None, ge=0, le=5.0)
     gpa_scale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
-    gpaScale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
     major: str = Field(default="", max_length=120)
     interests: Optional[str] = Field(default=None, max_length=1200)
     locale: Optional[str] = Field(default=None, max_length=16)
@@ -141,18 +134,6 @@ class ProfilePayload(BaseModel):
     selectedAdmissionChoices: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: List[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
-
-    @model_validator(mode="before")
-    @classmethod
-    def _normalize_profile_aliases(cls, value: Any) -> Any:
-        if not isinstance(value, dict):
-            return value
-        data = dict(value)
-        if "selectedAdmissionChoices" not in data and isinstance(data.get("selected_admission_choices"), dict):
-            data["selectedAdmissionChoices"] = data.get("selected_admission_choices")
-        if "gpa_scale" not in data and "gpaScale" in data:
-            data["gpa_scale"] = data.get("gpaScale")
-        return data
 
     @field_validator("major", "studyMode", "fundingType", mode="before")
     @classmethod
@@ -180,16 +161,16 @@ class ProfilePayload(BaseModel):
                 raise ValueError(f"Invalid university ID in selectedAdmissionChoices: {uni[:32]}")
             if len(selection) > MAX_SELECTED_CHOICE_KEYS:
                 raise ValueError("selectedAdmissionChoices entry has too many keys")
-            choice = _strip_or_none(selection.get("choiceKey") or selection.get("choice_key"))
+            choice = _strip_or_none(selection.get("choiceKey"))
             if choice:
                 if len(choice) > 128:
                     raise ValueError("choiceKey exceeds maximum allowed length (128 chars)")
                 out[uni] = {
-                    "programId": _strip_or_empty(selection.get("programId") or selection.get("program_id"))[:128],
-                    "programName": _strip_or_empty(selection.get("programName") or selection.get("program_name"))[:200],
-                    "categoryId": _strip_or_empty(selection.get("categoryId") or selection.get("category_id"))[:128],
-                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId") or selection.get("requirement_profile_id"))[:128],
-                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId") or selection.get("funding_option_id"))[:128],
+                    "programId": _strip_or_empty(selection.get("programId"))[:128],
+                    "programName": _strip_or_empty(selection.get("programName"))[:200],
+                    "categoryId": _strip_or_empty(selection.get("categoryId"))[:128],
+                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId"))[:128],
+                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId"))[:128],
                     "choiceKey": choice,
                 }
         return out
@@ -278,7 +259,6 @@ class ExamValidateRequest(BaseModel):
     exam: str = Field(min_length=1, max_length=64)
     score: Optional[Union[float, int, str]] = None
     raw_value: Optional[str] = Field(default=None, max_length=128)
-    rawValue: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
 
     @field_validator("score", mode="before")
@@ -297,7 +277,7 @@ class ExamValidateRequest(BaseModel):
             return value
         raise ValueError("score must be a number or string")
 
-    @field_validator("exam", "raw_value", "rawValue", mode="before")
+    @field_validator("exam", "raw_value", mode="before")
     @classmethod
     def _normalize_exam(cls, value: Any) -> Optional[str]:
         if value is None:
@@ -316,7 +296,7 @@ class ExamValidateRequest(BaseModel):
     def _ensure_exam_validate_shape(self) -> "ExamValidateRequest":
         if not self.exam:
             raise ValueError("exam is required")
-        if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+        if self.score is None and not self.raw_value and not self.details:
             raise ValueError("score, raw_value, or details is required")
         return self
 
@@ -331,7 +311,6 @@ class LanguageValidateRequest(BaseModel):
     exam: Optional[str] = Field(default=None, max_length=64)
     score: Optional[Union[float, int, str]] = None
     raw_value: Optional[str] = Field(default=None, max_length=128)
-    rawValue: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
 
     @field_validator("score", mode="before")
@@ -350,7 +329,7 @@ class LanguageValidateRequest(BaseModel):
             return value
         raise ValueError("score must be a number or string")
 
-    @field_validator("code", "exam", "label", "raw_value", "rawValue", mode="before")
+    @field_validator("code", "exam", "label", "raw_value", mode="before")
     @classmethod
     def _normalize_language_fields(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
@@ -367,7 +346,7 @@ class LanguageValidateRequest(BaseModel):
         if self.kind == "exam":
             if not self.exam:
                 raise ValueError("kind='exam' requires exam")
-            if self.score is None and not self.raw_value and not self.rawValue and not self.details:
+            if self.score is None and not self.raw_value and not self.details:
                 raise ValueError("kind='exam' requires score, raw_value, or details")
         return self
 

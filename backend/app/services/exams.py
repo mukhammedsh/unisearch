@@ -122,7 +122,7 @@ def _coerce_subject_breakdown_submission(
     for row in raw_components:
         if not isinstance(row, dict):
             raise ValueError(f"{exam_key} components must be objects")
-        raw_exam = row.get("exam") or row.get("id") or row.get("exam_id")
+        raw_exam = row.get("exam") or row.get("id")
         resolved = resolve_exam_key(raw_exam)
         if not resolved:
             raise ValueError(f"{exam_key} component exam is required")
@@ -136,7 +136,7 @@ def _coerce_subject_breakdown_submission(
         parsed = coerce_exam_submission(
             resolved,
             score_raw=row.get("score"),
-            raw_value=row.get("raw_value", row.get("rawValue")),
+            raw_value=row.get("raw_value"),
             details=row.get("details"),
         )
         child_mode = _input_mode(_config_entry(resolved))
@@ -171,7 +171,7 @@ def _coerce_subject_breakdown_submission(
     for row in raw_extra_scores:
         if not isinstance(row, dict):
             raise ValueError(f"{exam_key} extra scores must be objects")
-        raw_exam = row.get("exam") or row.get("id") or row.get("exam_id")
+        raw_exam = row.get("exam") or row.get("id")
         resolved = resolve_exam_key(raw_exam)
         if not resolved:
             raise ValueError(f"{exam_key} extra score exam is required")
@@ -183,7 +183,7 @@ def _coerce_subject_breakdown_submission(
         parsed = coerce_exam_submission(
             resolved,
             score_raw=row.get("score"),
-            raw_value=row.get("raw_value", row.get("rawValue")),
+            raw_value=row.get("raw_value"),
             details=row.get("details"),
         )
         child_mode = _input_mode(_config_entry(resolved))

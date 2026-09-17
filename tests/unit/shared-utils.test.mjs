@@ -30,6 +30,10 @@ const {
   cleanDecoratedText,
   formatFundingOptionsCount,
   localizeRoiLabel,
+  modeAwareAnnualCost,
+  modeAwareBreakdown,
+  modeBreakdownFromFinance,
+  modeTotalFromFinance,
   normalizeFundingPreference,
   normalizeUrl,
   renderAdmissionsOverview,
@@ -220,7 +224,7 @@ test('uniThumbnailSrc', async (t) => {
 });
 
 test('resolveUniversityCardPrice', async (t) => {
-  await t.test('resolves non-AI card in native currency (KZT)', () => {
+  await t.test('resolves non-AI card in native currency via finance.total_cost_year_usd (KZT)', () => {
     const uni = {
       finance: {
         total_cost_year_usd: 1995000,
@@ -233,7 +237,7 @@ test('resolveUniversityCardPrice', async (t) => {
     assert.ok(res.amountUSD > 4000 && res.amountUSD < 5000, `amountUSD should be ~$4,433, got ${res.amountUSD}`);
   });
 
-  await t.test('resolves non-AI card in native currency (CAD)', () => {
+  await t.test('resolves non-AI card in native currency via finance.total_cost_year_usd (CAD)', () => {
     const uni = {
       finance: {
         total_cost_year_usd: 60000,
@@ -246,26 +250,7 @@ test('resolveUniversityCardPrice', async (t) => {
     assert.ok(res.amountUSD > 40000 && res.amountUSD < 50000, `amountUSD should be ~$44,400, got ${res.amountUSD}`);
   });
 
-  await t.test('resolves legacy backend response where finalPrice is in USD without match.currency', () => {
-    // When legacy backend returned finalPrice in USD, it never sent match.currency.
-    // In this case, it must NOT fall back to finance.currency ("KZT"), which would divide 4424 / 450 into $9.83!
-    const uni = {
-      finance: {
-        total_cost_year_usd: 1995000,
-        currency: 'KZT',
-      },
-      matchData: {
-        finalPrice: 4424,
-        costYearUSD: 4424,
-      },
-    };
-    const res = resolveUniversityCardPrice(uni);
-    assert.strictEqual(res.amount, 4424);
-    assert.strictEqual(res.currency, 'USD');
-    assert.strictEqual(res.amountUSD, 4424);
-  });
-
-  await t.test('resolves new backend response with explicit native finalPrice and currency', () => {
+  await t.test('resolves card with canonical matchData contract (finalPrice + currency)', () => {
     const uni = {
       finance: {
         total_cost_year_usd: 1995000,
@@ -283,6 +268,128 @@ test('resolveUniversityCardPrice', async (t) => {
     assert.strictEqual(res.amount, 1335000);
     assert.strictEqual(res.currency, 'KZT');
     assert.strictEqual(res.amountUSD, 2967);
+  });
+
+  await t.test('resolves canonical contract and converts to USD when finalPriceUSD is absent', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 10000,
+        currency: 'USD',
+      },
+      matchData: {
+        finalPrice: 10000,
+        currency: 'USD',
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 10000);
+    assert.strictEqual(res.currency, 'USD');
+    assert.strictEqual(res.amountUSD, 10000);
+  });
+
+  await t.test('resolves card with explicit finalPriceUSD', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        finalPriceUSD: 5000,
+        currency: 'USD',
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 5000);
+    assert.strictEqual(res.currency, 'USD');
+    assert.strictEqual(res.amountUSD, 5000);
+  });
+
+  await t.test('resolves card using matchData costYearNative with currency fallback', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        costYearNative: 1500000,
+        costYearUSD: 3333,
+        currency: 'KZT',
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 1500000);
+    assert.strictEqual(res.currency, 'KZT');
+    assert.strictEqual(res.amountUSD, 3333);
+  });
+
+  await t.test('resolves card using matchData costYearUSD fallback', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        costYearUSD: 4424,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 4424);
+    assert.strictEqual(res.currency, 'USD');
+    assert.strictEqual(res.amountUSD, 4424);
+  });
+
+  await t.test('does not use removed legacy costWithAmountUSD field and falls back to finance or null', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        costWithAmountUSD: 3500,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 1995000);
+    assert.strictEqual(res.currency, 'KZT');
+    assert.ok(res.amountUSD > 4000 && res.amountUSD < 5000);
+
+    const uniNoFinance = {
+      matchData: {
+        costWithAmountUSD: 3500,
+      },
+    };
+    assert.deepStrictEqual(resolveUniversityCardPrice(uniNoFinance), {
+      amount: null,
+      currency: 'USD',
+      amountUSD: null,
+    });
+  });
+
+  await t.test('does not use removed legacy contract of finalPrice without currency, falling back to finance or null', () => {
+    const uni = {
+      finance: {
+        total_cost_year_usd: 1995000,
+        currency: 'KZT',
+      },
+      matchData: {
+        finalPrice: 4424,
+      },
+    };
+    const res = resolveUniversityCardPrice(uni);
+    assert.strictEqual(res.amount, 1995000);
+    assert.strictEqual(res.currency, 'KZT');
+    assert.ok(res.amountUSD > 4000 && res.amountUSD < 5000);
+
+    const uniNoFinance = {
+      matchData: {
+        finalPrice: 4424,
+      },
+    };
+    assert.deepStrictEqual(resolveUniversityCardPrice(uniNoFinance), {
+      amount: null,
+      currency: 'USD',
+      amountUSD: null,
+    });
   });
 
   await t.test('handles full grant / zero tuition correctly without falling back to base cost', () => {
@@ -303,26 +410,25 @@ test('resolveUniversityCardPrice', async (t) => {
     assert.strictEqual(res.amountUSD, 0);
   });
 
-  await t.test('handles legacy costWithAmountUSD field', () => {
+  await t.test('handles zero base cost in finance correctly', () => {
     const uni = {
       finance: {
-        total_cost_year_usd: 1995000,
-        currency: 'KZT',
-      },
-      matchData: {
-        costWithAmountUSD: 3500,
+        total_cost_year_usd: 0,
+        currency: 'EUR',
       },
     };
     const res = resolveUniversityCardPrice(uni);
-    assert.strictEqual(res.amount, 3500);
-    assert.strictEqual(res.currency, 'USD');
-    assert.strictEqual(res.amountUSD, 3500);
+    assert.strictEqual(res.amount, 0);
+    assert.strictEqual(res.currency, 'EUR');
+    assert.strictEqual(res.amountUSD, 0);
   });
 
   await t.test('handles missing or invalid university data gracefully', () => {
     assert.deepStrictEqual(resolveUniversityCardPrice(null), { amount: null, currency: 'USD', amountUSD: null });
     assert.deepStrictEqual(resolveUniversityCardPrice({}), { amount: null, currency: 'USD', amountUSD: null });
     assert.deepStrictEqual(resolveUniversityCardPrice({ finance: {} }), { amount: null, currency: 'USD', amountUSD: null });
+    assert.deepStrictEqual(resolveUniversityCardPrice({ finance: { total_cost_year_usd: null, currency: 'EUR' } }), { amount: null, currency: 'EUR', amountUSD: null });
+    assert.deepStrictEqual(resolveUniversityCardPrice({ finance: { total_cost_year_usd: '', currency: 'KZT' } }), { amount: null, currency: 'KZT', amountUSD: null });
   });
 });
 
@@ -433,6 +539,159 @@ test('renderRoiBox', async (t) => {
     assert.ok(markup.includes('$40,000'), 'Should contain annual cost');
     assert.ok(markup.includes('roi-tone-positive'), 'Should contain positive tone class');
     assert.ok(markup.includes('Excellent Return'), 'Should contain localized label');
+  });
+});
+
+test('modeBreakdownFromFinance', async (t) => {
+  await t.test('returns breakdown for canonical key', () => {
+    const finance = {
+      costs_breakdown_year_usd_by_mode: {
+        online: { Tuition: 12000 },
+        'on-campus': { Tuition: 12000, Housing_Dorm: 10000 },
+      },
+    };
+    assert.deepStrictEqual(modeBreakdownFromFinance(finance, 'online'), { Tuition: 12000 });
+  });
+
+  await t.test('returns null when canonical key missing', () => {
+    assert.strictEqual(modeBreakdownFromFinance({ total_cost_year_usd: 30000 }, 'online'), null);
+  });
+
+  await t.test('returns null for null/undefined input', () => {
+    assert.strictEqual(modeBreakdownFromFinance(null, 'online'), null);
+    assert.strictEqual(modeBreakdownFromFinance(undefined, 'online'), null);
+  });
+
+  await t.test('returns null when mode not in map', () => {
+    const finance = {
+      costs_breakdown_year_usd_by_mode: { 'on-campus': { Tuition: 12000 } },
+    };
+    assert.strictEqual(modeBreakdownFromFinance(finance, 'online'), null);
+  });
+
+  await t.test('does not resolve removed key costs_breakdown_by_mode_year_usd', () => {
+    const finance = {
+      costs_breakdown_by_mode_year_usd: { online: { Tuition: 9000 } },
+    };
+    assert.strictEqual(modeBreakdownFromFinance(finance, 'online'), null);
+  });
+
+  await t.test('does not resolve removed key mode_costs_breakdown_year_usd', () => {
+    const finance = {
+      mode_costs_breakdown_year_usd: { online: { Tuition: 9000 } },
+    };
+    assert.strictEqual(modeBreakdownFromFinance(finance, 'online'), null);
+  });
+});
+
+test('modeTotalFromFinance', async (t) => {
+  await t.test('returns total for canonical key', () => {
+    const finance = { total_cost_year_usd_by_mode: { online: 17000 } };
+    assert.strictEqual(modeTotalFromFinance(finance, 'online'), 17000);
+  });
+
+  await t.test('returns null when canonical key missing', () => {
+    assert.strictEqual(modeTotalFromFinance({ total_cost_year_usd: 30000 }, 'online'), null);
+  });
+
+  await t.test('returns null for null/undefined input', () => {
+    assert.strictEqual(modeTotalFromFinance(null, 'online'), null);
+    assert.strictEqual(modeTotalFromFinance(undefined, 'online'), null);
+  });
+
+  await t.test('returns null for negative amount', () => {
+    const finance = { total_cost_year_usd_by_mode: { online: -5000 } };
+    assert.strictEqual(modeTotalFromFinance(finance, 'online'), null);
+  });
+
+  await t.test('returns 0 for zero amount', () => {
+    const finance = { total_cost_year_usd_by_mode: { online: 0 } };
+    assert.strictEqual(modeTotalFromFinance(finance, 'online'), 0);
+  });
+
+  await t.test('does not resolve removed key total_cost_by_mode_year_usd', () => {
+    const finance = { total_cost_by_mode_year_usd: { online: 17000 } };
+    assert.strictEqual(modeTotalFromFinance(finance, 'online'), null);
+  });
+
+  await t.test('does not resolve removed key mode_total_cost_year_usd', () => {
+    const finance = { mode_total_cost_year_usd: { online: 17000 } };
+    assert.strictEqual(modeTotalFromFinance(finance, 'online'), null);
+  });
+
+  await t.test('normalizes study mode synonyms', () => {
+    const finance = { total_cost_year_usd_by_mode: { Online: 17000 } };
+    assert.strictEqual(modeTotalFromFinance(finance, 'distance'), 17000);
+  });
+});
+
+test('modeAwareAnnualCost', async (t) => {
+  await t.test('uses canonical exact mode breakdown tuition for online mode', () => {
+    const finance = {
+      total_cost_year_usd: 35000,
+      costs_breakdown_year_usd: { Tuition: 15000, Housing_Dorm: 12000 },
+      costs_breakdown_year_usd_by_mode: { online: { Tuition: 8000 } },
+    };
+    assert.strictEqual(modeAwareAnnualCost(finance, 'online'), 8000);
+  });
+
+  await t.test('uses canonical exact mode total when tuition missing in breakdown for online mode', () => {
+    const finance = {
+      total_cost_year_usd: 35000,
+      costs_breakdown_year_usd: { Housing_Dorm: 12000 },
+      total_cost_year_usd_by_mode: { online: 9500 },
+    };
+    assert.strictEqual(modeAwareAnnualCost(finance, 'online'), 9500);
+  });
+
+  await t.test('does not use removed alternative mode keys, falling back to general tuition', () => {
+    const finance = {
+      total_cost_year_usd: 35000,
+      costs_breakdown_year_usd: { Tuition: 15000, Housing_Dorm: 12000 },
+      costs_breakdown_by_mode_year_usd: { online: { Tuition: 8000 } },
+      total_cost_by_mode_year_usd: { online: 9500 },
+      mode_costs_breakdown_year_usd: { online: { Tuition: 7000 } },
+      mode_total_cost_year_usd: { online: 7500 },
+    };
+    assert.strictEqual(modeAwareAnnualCost(finance, 'online'), 15000);
+  });
+
+  await t.test('returns total cost for on-campus mode', () => {
+    const finance = {
+      total_cost_year_usd: 35000,
+      total_cost_year_usd_by_mode: { online: 9500 },
+    };
+    assert.strictEqual(modeAwareAnnualCost(finance, 'on-campus'), 35000);
+  });
+
+  await t.test('returns 0 when online data completely missing', () => {
+    assert.strictEqual(modeAwareAnnualCost({}, 'online'), 0);
+  });
+});
+
+test('modeAwareBreakdown', async (t) => {
+  await t.test('uses canonical exact mode breakdown for online mode', () => {
+    const finance = {
+      costs_breakdown_year_usd: { Tuition: 15000, Housing_Dorm: 12000 },
+      costs_breakdown_year_usd_by_mode: { online: { Tuition: 8000 } },
+    };
+    assert.deepStrictEqual(modeAwareBreakdown(finance, 'online'), { Tuition: 8000 });
+  });
+
+  await t.test('does not use removed alternative mode breakdown keys', () => {
+    const finance = {
+      costs_breakdown_year_usd: { Tuition: 15000, Housing_Dorm: 12000 },
+      costs_breakdown_by_mode_year_usd: { online: { Tuition: 8000 } },
+    };
+    assert.deepStrictEqual(modeAwareBreakdown(finance, 'online'), { Tuition: 15000 });
+  });
+
+  await t.test('returns full fallback breakdown for on-campus mode', () => {
+    const finance = {
+      costs_breakdown_year_usd: { Tuition: 15000, Housing_Dorm: 12000 },
+      costs_breakdown_year_usd_by_mode: { online: { Tuition: 8000 } },
+    };
+    assert.deepStrictEqual(modeAwareBreakdown(finance, 'on-campus'), { Tuition: 15000, Housing_Dorm: 12000 });
   });
 });
 
