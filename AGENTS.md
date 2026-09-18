@@ -61,6 +61,37 @@
 - **Language:** Write every commit message, Git tag message, `CHANGELOG.md` entry, README update, and GitHub release note in English, even when the user communicates in Russian.
 - **Documentation updates:** Update `CHANGELOG.md` and `AGENTS.md` only for meaningful behavior, API, workflow, or architectural changes. Keep entries factual and concise.
 - **Changelog integrity:** Every version release requires inserting a new, distinct version block directly above the previous version in `CHANGELOG.md`. Never overwrite, rename, or combine existing version blocks. The entry must strictly and exclusively document the diff introduced in the current task/version; never absorb, summarize, or duplicate changes from prior releases.
+- **Versioning decision — choosing patch / minor / major:** UniSearch is an end-user web application, not a library consumed by external developers. Apply the rules below based on the *highest-impact change* in the diff. When in doubt, prefer the lower bump and state the rationale in the changelog entry. Never skip version numbers.
+
+  **PATCH `+0.0.1`** — the diff does not add any new user-visible capability. Use for:
+  - Bug fixes, regressions, and hotfixes.
+  - Security patches and dependency updates.
+  - Performance optimizations that do not change observable behavior.
+  - Internal refactoring, code cleanup, and dead-code removal.
+  - Test additions, CI/CD changes, and build tooling updates.
+  - Documentation, comment, and localization copy corrections.
+  - CSS polish, typography tweaks, and spacing adjustments that do not introduce a new component or interaction pattern.
+  - Data corrections (fixing existing university facts, fixing audit failures).
+
+  *Past over-bumps that should have been patch:* `4.0.0→4.1.0` (dependency refresh), `4.1.0→4.2.0` (thumbnail scripts), `4.2.0→4.3.0` (audit scripts), `4.3.0→4.4.0` (E2E test expansion), `4.5.2→4.6.0` (Starlette upgrade), `3.0.0→3.1.0` (missing i18n keys), `3.5.6→3.6.0` (internal refactor), `3.6.1→3.7.0` (test mocking), `5.8.1→5.9.0` (GPA sort fix + data corrections).
+
+  **MINOR `+0.1.0`** — the diff adds at least one new user-visible capability, API endpoint, or meaningful data expansion while remaining backward-compatible. Use for:
+  - New user-facing features (e.g., comparison workspace, multi-currency support, connectivity probing, global navbar search, saved universities).
+  - New API endpoints or new response fields that do not remove or rename existing ones.
+  - New scoring models, calibration overhauls, or algorithm rewrites that change results.
+  - Significant catalog expansion (adding a batch of new universities).
+  - New UI components, pages, or interaction patterns (e.g., skeleton loaders, onboarding tour, tooltip system).
+  - New infrastructure that changes the user experience (e.g., offline resilience, network status monitoring).
+
+  *Past under-bumps that should have been minor:* `5.0.2→5.0.3` (global navbar search + SPA unification), `5.0.3→5.0.4` (rankings merged into catalog), `5.0.4→5.0.5` (multi-currency support), `4.9.8→4.9.9` (comparison view rework), `3.4.4→3.4.5` (saved universities + comparison tray), `3.4.3→3.4.4` (skeleton loaders + error states), `3.4.1→3.4.2` (composite exam scores).
+
+  **MAJOR `+1.0.0`** — the diff introduces a breaking change that would cause existing saved state, bookmarked URLs, or API contracts to stop working, or represents a ground-up product redesign. Use for:
+  - Removing or renaming API endpoints, response fields, or query parameters that the frontend (or any consumer) depends on.
+  - Changing the schema of persisted data (localStorage profiles, JSON data files) in a way that is not backward-compatible with the previous reader.
+  - Overhauling the product UX so fundamentally that user workflows change (e.g., v5.0.0 Calm Academic Workspace, v6.0.0 Profile Persistence Architecture).
+  - Dropping support for a previously supported browser, platform, or data format.
+
+  **Decision shortcut:** Read the diff and ask: *"Does a returning user see something they could not do before?"* → Minor. *"Does a returning user's existing data or workflow break?"* → Major. Neither → Patch.
 - **Release steps:**
   1. Inspect `git diff` and `git status`; check for unrelated changes, hardcoded values, generated leftovers, and secrets.
   2. Bump the version with `npm run bump:version -- [patch|minor|major|X.Y.Z]`. `package.json` is the canonical version source. Standard SemVer increments reset lower components: `3.5.6 -> 3.6.0` for minor and `3.5.6 -> 4.0.0` for major.
