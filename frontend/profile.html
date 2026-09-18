@@ -61,37 +61,6 @@
         </div>
       </section>
 
-      <!-- Identity Header: nickname sits on its own row, top-left -->
-      <div class="profile-identity">
-        <div class="profile-username" id="profileUsernameDiv">
-          <span id="profileNameDisplay" class="profile-username-label">User</span>
-          <input
-            id="profileNameInput"
-            class="profile-name-input"
-            type="text"
-            value="User"
-            minlength="3"
-            maxlength="16"
-            size="16"
-            aria-label="Edit username"
-            data-i18n-aria-label="profile.action.edit_name"
-          />
-          <button
-            class="icon-btn profile-edit-name-btn"
-            id="editNameBtn"
-            type="button"
-            title="Edit Name"
-            aria-label="Edit Name"
-            aria-expanded="false"
-            aria-controls="profileNameInput"
-            data-i18n-title="profile.action.edit_name"
-            data-i18n-aria-label="profile.action.edit_name"
-          >
-            <span data-heroicon="pencil-square" data-icon-size="18"></span>
-          </button>
-        </div>
-      </div>
-
       <!-- 2-Column Workspace Layout -->
       <div class="profile-workspace-layout">
         <!-- Left Sidebar: Navigation + Reset -->
@@ -211,8 +180,35 @@
           <!-- GPA Card -->
           <article class="profile-card-block">
             <div class="profile-card-head">
-              <div class="profile-label-row">
-                <h3 class="profile-card-title" data-i18n="profile.label.gpa">Grade Point Average (GPA)</h3>
+              <h3 class="profile-card-title" data-i18n="profile.label.gpa">Grade Point Average (GPA)</h3>
+              <p class="profile-card-desc" data-i18n="profile.field.gpa.desc">
+                Select your grading scale and enter your certificate GPA.
+              </p>
+            </div>
+
+            <div class="profile-field profile-field--compact profile-field--gpa">
+              <div class="profile-budget profile-budget--with-unit">
+                <input
+                  id="gpaInput"
+                  class="profile-input"
+                  type="number"
+                  min="0"
+                  max="4"
+                  step="0.01"
+                  placeholder="e.g. 3.80"
+                  data-i18n-placeholder="profile.placeholder.gpa"
+                />
+                <button
+                  type="button"
+                  id="gpaUnit"
+                  class="profile-unit profile-unit--toggle"
+                  data-i18n="profile.unit.gpa"
+                >/ 4.0</button>
+              </div>
+              <div class="profile-hint-row">
+                <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
+                  Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
+                </div>
                 <span class="profile-info-wrap">
                   <button
                     type="button"
@@ -229,44 +225,6 @@
                     </span>
                   </span>
                 </span>
-              </div>
-              <p class="profile-card-desc" data-i18n="profile.field.gpa.desc">
-                Select your grading scale and enter your certificate GPA.
-              </p>
-            </div>
-
-            <div class="profile-field profile-field--compact">
-              <div class="profile-scale-selector" role="radiogroup" aria-label="GPA Scale">
-                <button
-                  type="button"
-                  id="gpaScale4Btn"
-                  class="profile-scale-btn is-active"
-                  data-gpa-scale="4"
-                  data-i18n="profile.scale.gpa_4"
-                >4.0 (US / International)</button>
-                <button
-                  type="button"
-                  id="gpaScale5Btn"
-                  class="profile-scale-btn"
-                  data-gpa-scale="5"
-                  data-i18n="profile.scale.gpa_5"
-                >5.0 (KZ / CIS)</button>
-              </div>
-              <div class="profile-budget profile-budget--with-unit">
-                <input
-                  id="gpaInput"
-                  class="profile-input"
-                  type="number"
-                  min="0"
-                  max="4"
-                  step="0.01"
-                  placeholder="e.g. 3.80"
-                  data-i18n-placeholder="profile.placeholder.gpa"
-                />
-                <span id="gpaUnit" class="profile-unit" data-i18n="profile.unit.gpa">/ 4.0</span>
-              </div>
-              <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
-                Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
               </div>
             </div>
           </article>
@@ -438,7 +396,6 @@
                 title="Return to previous page"
                 data-i18n-title="profile.action.back_desc"
               >
-                <span data-heroicon="arrow-left" data-icon-size="16"></span>
                 <span data-i18n="profile.action.back">Back</span>
               </button>
               <button
@@ -446,8 +403,7 @@
                 id="saveProfileBtn"
                 type="button"
               >
-                <span data-heroicon="check" data-icon-size="16"></span>
-                <span data-i18n="profile.action.save_all">Save Profile</span>
+                <span data-i18n="profile.action.save_all">Save</span>
               </button>
             </div>
           </footer>

@@ -74,21 +74,25 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await expect(page).toHaveURL(/\/(?:index\.html)?(?:\?.*)?$/);
   });
 
-  test("discarding a committed name edit restores the saved name", async ({ page }) => {
+  test("discarding a budget edit restores the saved budget", async ({ page }) => {
     await markTourAsSeen(page);
     await page.goto("/index.html");
 
     await page.click(selectors.profileBtn);
-    await page.click(selectors.editNameBtn);
-    await page.fill(selectors.nameInput, "Aruzhan");
-    await page.click(selectors.editNameBtn);
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+
+    await page.fill(selectors.budgetInput, "45000");
     await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
 
     await page.click(selectors.profileCloseBtn);
+    await expect(page.locator("#profileUnsavedModal")).toHaveClass(/is-open/);
+    await expect(page.locator("#profileCancelCloseBtn")).toBeFocused();
+
     await page.click("#profileDiscardBtn");
     await expect(page).toHaveURL(/\/(?:index\.html)?(?:\?.*)?$/);
 
     await page.click(selectors.profileBtn);
-    await expect(page.locator(selectors.nameInput)).toHaveValue("User");
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+    await expect(page.locator(selectors.budgetInput)).toHaveValue("");
   });
 });

@@ -132,129 +132,10 @@ body[data-page="profile"] {
   min-width: 0;
 }
 
-/* --------------------------------------------------------------------------
-   Identity Header: nickname lives on its own full-width row, top-left.
-   The narrow 140px sidebar could not fit the editor, so the name moved
-   out of the sidebar entirely — no overlay or popover is needed.
-   -------------------------------------------------------------------------- */
-.profile-identity {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  min-width: 0;
-}
-
-.profile-identity > .profile-field-error {
-  flex: 1 1 100%;
-  min-width: 0;
-}
-
-.profile-username {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: nowrap;
-  width: 100%;
-  min-width: 0;
-  padding-left: 0;
-}
-
-.profile-username-label {
-  margin: 0;
-  font-size: var(--text-2xl);
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.profile-name-input {
-  display: none;
-  height: 32px;
-  box-sizing: border-box;
-  font-size: var(--text-base);
-  line-height: 1;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--surface-soft);
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-md);
-  padding: 0 var(--space-3);
-  outline: none;
-  font-family: inherit;
-}
-
-.profile-name-input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.profile-name-input.is-invalid,
-.profile-name-input[aria-invalid="true"] {
-  border-color: var(--color-danger);
-  box-shadow: 0 0 0 3px var(--line-danger);
-}
-
-.profile-username.is-editing .profile-username-label {
-  display: none;
-}
-
-.profile-username.is-editing .profile-name-input {
-  display: block;
-  /* Width follows the 16-char limit via size="16": compact field that fits
-     the longest allowed nickname, with room to shrink on narrow screens. */
-  flex: 0 1 auto;
-  width: auto;
-  max-width: 100%;
-  min-width: 0;
-}
-
-.profile-edit-name-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: var(--surface-soft);
-  color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .profile-edit-name-btn:hover {
-    background: var(--surface);
-    color: var(--text);
-  }
-}
-
-.profile-edit-name-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .profile-error {
   font-size: var(--text-xs);
   color: var(--color-danger);
   line-height: var(--leading-tight);
-}
-
-.profile-error--username,
-.profile-username + .profile-field-error {
-  margin-top: var(--space-1);
-  font-size: var(--text-xs);
-  color: var(--color-danger);
-  line-height: var(--leading-tight);
-  word-break: break-word;
 }
 
 /* Sidebar Navigation Tabs */
@@ -283,8 +164,10 @@ body[data-page="profile"] {
   margin: 0;
 }
 
-.profile-section-tabs .sliding-indicator {
-  display: none !important;
+@media (min-width: 769px) {
+  .profile-section-tabs .sliding-indicator {
+    display: none !important;
+  }
 }
 
 .profile-section-tab {
@@ -633,57 +516,62 @@ body[data-page="profile"] {
 }
 
 /* --------------------------------------------------------------------------
-   GPA Scale & Information Tooltip
+   GPA Scale Toggle (suffix button inside the GPA input)
    -------------------------------------------------------------------------- */
-.profile-label-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.profile-scale-selector {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  background: var(--surface-soft);
-  border: none;
-  border-radius: var(--radius-md);
-  padding: var(--space-1);
-  width: fit-content;
-}
-
-.profile-scale-btn {
-  border: none;
+.profile-unit--toggle {
+  pointer-events: auto;
   background: transparent;
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
+  border: none;
+  padding: var(--space-1);
   font-family: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition:
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .profile-scale-btn:hover:not(.is-active) {
-    color: var(--text);
-    background: var(--surface);
+  .profile-unit--toggle:hover {
+    color: var(--accent);
   }
 }
 
-.profile-scale-btn.is-active {
-  background: var(--surface-solid);
-  color: var(--text);
-  border: none;
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--text) 6%, transparent);
-}
-
-.profile-scale-btn:focus-visible {
+.profile-unit--toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   GPA Compact Layout (input with toggle suffix, left-aligned)
+   -------------------------------------------------------------------------- */
+.profile-field--gpa {
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.profile-field--gpa .profile-budget--with-unit {
+  width: 112px;
+  max-width: 100%;
+}
+
+.profile-field--gpa .profile-budget--with-unit .profile-input {
+  height: 40px;
+  padding-right: var(--space-12);
+  text-align: center;
+}
+
+.profile-field--gpa .profile-budget--with-unit .profile-unit {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.profile-field--gpa .profile-hint-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
 }
 
 .profile-info-wrap {
@@ -1204,7 +1092,6 @@ textarea.profile-input,
   .profile-action-btn,
   .profile-save-state,
   .profile-card-block,
-  .profile-edit-name-btn,
   .profile-interest-chips button,
   .profile-add,
   .profile-add--secondary,
@@ -1214,7 +1101,7 @@ textarea.profile-input,
   .profile-exam-item,
   .lang-item,
   .profile-input,
-  .profile-scale-btn {
+  .profile-unit--toggle {
     transition: none !important;
   }
 }
@@ -1251,13 +1138,13 @@ textarea.profile-input,
   .profile-shell {
     padding: var(--space-5) var(--space-4);
     border-radius: var(--radius-lg);
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   .profile-workspace-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    gap: var(--space-5);
+    gap: var(--space-4);
     height: auto;
     min-height: auto;
   }
@@ -1271,14 +1158,18 @@ textarea.profile-input,
 
   .profile-sidebar {
     border-right: none;
-    border-bottom: 1px solid var(--line-faint);
+    border-bottom: none;
     padding-right: 0;
-    padding-bottom: var(--space-4);
-    gap: var(--space-4);
+    padding-bottom: 0;
+    gap: 0;
   }
 
   .profile-sidebar-top {
-    gap: var(--space-4);
+    gap: 0;
+  }
+
+  .profile-section-tabs-bar {
+    padding: 0;
   }
 
   .profile-section-tabs-bar::after {
@@ -1286,10 +1177,39 @@ textarea.profile-input,
   }
 
   .profile-section-tabs {
+    --sliding-indicator-extra-width: 0px;
     flex-direction: row;
+    align-items: flex-end;
+    flex-wrap: nowrap;
     overflow-x: auto;
-    gap: var(--space-3);
-    padding-bottom: var(--space-2);
+    overflow-y: hidden;
+    gap: var(--space-5);
+    padding: 0 var(--space-1);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: var(--space-1);
+  }
+
+  .profile-section-tabs::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .profile-section-tabs .sliding-indicator {
+    display: block !important;
+    height: 3px;
+    border-radius: 999px;
+    bottom: 0;
+  }
+
+  .profile-section-tab {
+    flex: 0 0 auto;
+    position: relative;
+    padding: var(--space-3) var(--space-1) var(--space-4);
+    min-height: auto;
+    line-height: 1.25;
   }
 
   .profile-sidebar-bottom {
@@ -1330,8 +1250,8 @@ textarea.profile-input,
 }
 
 @media (max-width: 480px) {
-  .profile-username-label {
-    font-size: var(--text-xl);
+  .profile-section-tabs {
+    gap: var(--space-3);
   }
 
   .lang-control-item {
@@ -1406,7 +1326,8 @@ textarea.profile-input,
 
 .custom-select-wrapper.open .custom-options {
   z-index: var(--z-dropdown) !important;
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--text) 18%, transparent) !important;
+  /* Visual style (background/border/shadow/radius) is inherited from the
+     single canonical .custom-options panel in style.css. */
 }
 
 .profile-card-block:has(.custom-select-wrapper.open),

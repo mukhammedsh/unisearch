@@ -36,7 +36,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
   describe('normalizeProfileData', () => {
     test('returns standard defaults for empty/null profile', () => {
       const p = normalizeProfileData(null);
-      assert.strictEqual(p.name, 'User');
+      assert.ok(!('name' in p), 'nickname field must not exist');
       assert.strictEqual(p.budget, '');
       assert.strictEqual(p.gpa, '');
       assert.deepStrictEqual(p.exams, []);
@@ -48,9 +48,10 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.deepStrictEqual(p.selectedAdmissionChoices, {});
     });
 
-    test('trims name and falls back to User if name is only whitespace', () => {
-      assert.strictEqual(normalizeProfileData({ name: '   ' }).name, 'User');
-      assert.strictEqual(normalizeProfileData({ name: '  Alice  ' }).name, 'Alice');
+    test('strips legacy nickname field instead of preserving it', () => {
+      assert.ok(!('name' in normalizeProfileData({ name: '   ' })), 'whitespace nickname must be stripped');
+      assert.ok(!('name' in normalizeProfileData({ name: '  Alice  ' })), 'legacy nickname must be stripped');
+      assert.strictEqual(normalizeProfileData({ name: 'Alice', budget: 100 }).budget, 100);
     });
 
     test('normalizes fundingType strictly to grant, paid, or any', () => {
@@ -101,6 +102,17 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(pDefault.gpaScale, 4);
     });
 
+    test('accepts comma decimal separator in GPA and keeps two decimals', () => {
+      const comma4 = normalizeProfileData({ gpa: '3,80', gpaScale: 4 });
+      assert.strictEqual(comma4.gpa, 3.8);
+
+      const comma5 = normalizeProfileData({ gpa: '4,58', gpaScale: 5 });
+      assert.strictEqual(comma5.gpa, 4.58);
+
+      const dot5 = normalizeProfileData({ gpa: '4.58', gpaScale: 5 });
+      assert.strictEqual(dot5.gpa, 4.58);
+    });
+
     test('normalizes languages: handles native, cefr, and exam correctly', () => {
       const profile = normalizeProfileData({
         languages: [
@@ -142,7 +154,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
   describe('loadProfile and saveProfile', () => {
     test('saves profile to localStorage and loads it back accurately', () => {
       const persisted = saveProfile({
-        name: 'John Doe',
         budget: 45000,
         fundingType: 'grant',
         major: 'Economics',
@@ -150,7 +161,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
 
       assert.strictEqual(persisted, true);
       const loaded = loadProfile();
-      assert.strictEqual(loaded.name, 'John Doe');
+      assert.ok(!('name' in loaded), 'nickname field must not exist');
       assert.strictEqual(loaded.budget, 45000);
       assert.strictEqual(loaded.fundingType, 'grant');
       assert.strictEqual(loaded.major, 'Economics');
@@ -161,24 +172,25 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
         throw new Error('storage unavailable');
       };
 
-      const persisted = saveProfile({ name: 'Temporary User', budget: 12000 });
+      const persisted = saveProfile({ budget: 12000, major: 'Physics' });
 
       assert.strictEqual(persisted, false);
-      assert.strictEqual(loadProfile().name, 'Temporary User');
+      assert.strictEqual(loadProfile().budget, 12000);
+      assert.strictEqual(loadProfile().major, 'Physics');
     });
 
     test('clearProfile removes profile from storage', () => {
-      saveProfile({ name: 'Bob' });
+      saveProfile({ budget: 5000, major: 'Economics' });
       clearProfile();
       const loaded = loadProfile();
-      assert.strictEqual(loaded.name, 'User');
+      assert.ok(!('name' in loaded), 'nickname field must not exist');
+      assert.strictEqual(loaded.budget, '');
     });
   });
 
   describe('loadProfileForApi', () => {
     test('formats profile payload ready for backend API', () => {
       saveProfile({
-        name: 'Alice',
         budget: 50000,
         gpa: 3.8,
         gpaScale: 4,
@@ -209,7 +221,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
 
     test('normalizes 5.0 scale GPA to 4.0 for API payload', () => {
       saveProfile({
-        name: 'Bob',
         gpa: 4.8,
         gpaScale: 5,
       });
@@ -221,7 +232,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
 
     test('strips empty optional fields in loadProfileForApi', () => {
       saveProfile({
-        name: '',
         budget: 'invalid_budget',
         major: '',
         interests: '',
@@ -236,7 +246,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
 
     test('converts profile budget from budgetCurrency to USD for API payload', () => {
       saveProfile({
-        name: 'Alice',
         budget: 10000000,
         budgetCurrency: 'KZT',
       });
@@ -248,7 +257,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
 
     test('clamps converted budget to [0, 1000000] in loadProfileForApi', () => {
       saveProfile({
-        name: 'Alice',
         budget: 999999999999,
         budgetCurrency: 'EUR',
       });

@@ -12,8 +12,6 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-  await page.click(selectors.editNameBtn);
-  await page.fill(selectors.nameInput, "Aruzhan Dev");
   await page.fill(selectors.budgetInput, "23000");
 
   await openProfileTab(page, "scores");
@@ -53,7 +51,6 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await page.reload();
   await page.click(selectors.profileBtn);
 
-  await expect(page.locator(selectors.nameInput)).toHaveValue("Aruzhan Dev");
   await expect(page.locator(selectors.budgetInput)).toHaveValue("23000");
   await openProfileTab(page, "scores");
   await expect(page.locator(selectors.gpaInput)).toHaveValue("3.8");

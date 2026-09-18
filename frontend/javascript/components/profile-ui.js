@@ -85,16 +85,12 @@ export function initProfileUI() {
     const closeBtn = document.getElementById("profileCloseBtn");
     const backdrop = modal.querySelector(".profile-backdrop");
 
-    const nameInput = document.getElementById("profileNameInput");
     const budgetInput = document.getElementById("budgetInput");
     const profileBudgetUnit = document.getElementById("profileBudgetUnit");
     const budgetHint = budgetInput?.closest(".profile-field")?.querySelector(".profile-hint");
     const gpaInput = document.getElementById("gpaInput");
-    const gpaScale4Btn = document.getElementById("gpaScale4Btn");
-    const gpaScale5Btn = document.getElementById("gpaScale5Btn");
     const gpaUnit = document.getElementById("gpaUnit");
     const gpaHint = document.getElementById("gpaHint");
-    const nameDisplay = document.getElementById("profileNameDisplay");
 
     const getBudgetCurrency = () => (typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD") || "USD";
     const getMaxBudgetForCurrency = (currencyCode) => {
@@ -131,27 +127,25 @@ export function initProfileUI() {
     const resetProfileBtn = document.getElementById("resetProfileBtn");
     const profileSaveState = document.getElementById("profileSaveState");
 
-    const editNameBtn = document.getElementById("editNameBtn");
-    const profileUsernameDiv = document.querySelector(".profile-username");
-
-    const setUsernameEditing = (isEditing) => {
-        profileUsernameDiv?.classList.toggle("is-editing", isEditing);
-        editNameBtn?.setAttribute("aria-expanded", isEditing ? "true" : "false");
-    };
-
-    const cancelUsernameEditing = () => {
-        setFieldInvalid(nameInput, false);
-        if (nameInput) nameInput.value = String(profile.name || "").trim();
-        setUsernameEditing(false);
-        refreshSaveState();
-    };
-
     const normalizeFundingType = (value) => {
         const raw = String(value || "").trim().toLowerCase();
         return (raw === "grant" || raw === "paid") ? raw : "any";
     };
 
     const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
+
+    const GPA_MAX_CHARS = 4;
+    const normalizeGpaRaw = (value) => String(value ?? "").trim().replace(/,/g, ".");
+    const enforceGpaMaxLength = () => {
+        if (!gpaInput) return;
+        const raw = String(gpaInput.value ?? "");
+        const normalized = normalizeGpaRaw(raw);
+        if (normalized.length > GPA_MAX_CHARS) {
+            gpaInput.value = normalized.slice(0, GPA_MAX_CHARS);
+        } else if (raw.includes(",")) {
+            gpaInput.value = normalized;
+        }
+    };
 
     const setFieldInvalid = (el, isInvalid = true, message = "") => {
         if (!el) return;
@@ -171,7 +165,7 @@ export function initProfileUI() {
                 error.setAttribute("role", "alert");
                 error.textContent = message;
                 if (!existingError) {
-                    const targetWrapper = el.closest(".profile-username, .profile-budget, .profile-exam-score-wrap, .lang-control-item") || el;
+                    const targetWrapper = el.closest(".profile-budget, .profile-exam-score-wrap, .lang-control-item") || el;
                     targetWrapper.insertAdjacentElement("afterend", error);
                 }
                 if (!describedBy.includes(errorId)) {
@@ -239,7 +233,6 @@ export function initProfileUI() {
             .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
 
         return JSON.stringify({
-            name: String(p.name || "").trim(),
             budget: String(p.budget ?? "").trim(),
             budgetCurrency: String(p.budgetCurrency || "USD").toUpperCase(),
             gpa: String(p.gpa ?? "").trim(),
@@ -275,7 +268,23 @@ export function initProfileUI() {
             node.classList.toggle("is-section-hidden", !isActive);
             if (isActive) replayMotion(node, "is-motion-active", { timeoutMs: 420 });
         });
-        requestAnimationFrame(() => updateProfileTabsIndicator?.());
+        requestAnimationFrame(() => {
+            updateProfileTabsIndicator?.();
+            if (window.matchMedia("(max-width: 768px)").matches) {
+                const activeTab = modal.querySelector(".profile-section-tab.is-active");
+                if (activeTab && typeof activeTab.scrollIntoView === "function") {
+                    try {
+                        activeTab.scrollIntoView({
+                            block: "nearest",
+                            inline: "nearest",
+                            behavior: prefersReducedMotion() ? "auto" : "smooth",
+                        });
+                    } catch (error) {
+                        activeTab.scrollIntoView({ block: "nearest", inline: "nearest" });
+                    }
+                }
+            }
+        });
     };
 
     const updateProfileProgress = () => {
@@ -304,11 +313,6 @@ export function initProfileUI() {
     setProfileSection("basics");
 
     const getInterestsDraft = () => String(profileInterestsInput?.value || "").trim().slice(0, 1200);
-    const getNameDraft = () => String(nameInput?.value || "").trim();
-    const isUsernameDraftDirty = () => Boolean(
-        profileUsernameDiv?.classList.contains("is-editing")
-        && getNameDraft() !== String(profile.name || "").trim(),
-    );
     const isProfileDirty = () => stableProfileSignature(profile) !== savedSignature;
 
     const parseBudgetDraftValue = () => {
@@ -387,9 +391,7 @@ export function initProfileUI() {
     };
 
     const refreshSaveState = () => {
-        const profileDirty = isProfileDirty();
-        const usernameDirty = isUsernameDraftDirty();
-        const isDirty = profileDirty || usernameDirty;
+        const isDirty = isProfileDirty();
         if (profileSaveState) {
             if (isDirty) {
                 profileSaveState.textContent = t("profile.state.unsaved", "Unsaved changes");
@@ -787,47 +789,13 @@ export function initProfileUI() {
     const syncInputsToDraft = () => {
         if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
         profile.budgetCurrency = getBudgetCurrency();
-        if (gpaInput) profile.gpa = String(gpaInput.value || "").trim();
+        if (gpaInput) profile.gpa = normalizeGpaRaw(gpaInput.value || "");
         profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         if (studyModeSelect) profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
         if (profileFundingTypeSelect) profile.fundingType = normalizeFundingType(profileFundingTypeSelect.value);
         if (profileMajorSelect) profile.major = String(profileMajorSelect.value || "").trim();
         if (profileInterestsInput) profile.interests = getInterestsDraft();
         profile = ensureProfileShape(profile);
-    };
-
-    const commitProfileName = () => {
-        const nextName = getNameDraft();
-        const currentName = String(profile.name || "").trim();
-        if (nextName === currentName) {
-            setFieldInvalid(nameInput, false);
-            if (nameInput) nameInput.value = currentName;
-            setUsernameEditing(false);
-            refreshSaveState();
-            return true;
-        }
-        const validName = /^[A-Za-z0-9 ]+$/;
-        if (nextName.length < 3 || nextName.length > 16) {
-            const message = t("profile.name_invalid_length", "Name length must be 3–16 chars");
-            setFieldInvalid(nameInput, true, message);
-            nameInput?.focus();
-            return false;
-        }
-        if (!validName.test(nextName)) {
-            const message = t("profile.name_invalid_symbols", "Invalid symbols in name");
-            setFieldInvalid(nameInput, true, message);
-            nameInput?.focus();
-            return false;
-        }
-
-        setFieldInvalid(nameInput, false);
-        profile.name = nextName;
-        if (nameDisplay) nameDisplay.textContent = nextName;
-        if (nameInput) nameInput.value = nextName;
-        setUsernameEditing(false);
-
-        refreshSaveState();
-        return true;
     };
 
     const validateBudgetInput = () => {
@@ -865,12 +833,6 @@ export function initProfileUI() {
     const updateGpaScaleUI = (scale) => {
         const s = scale === 5 ? 5 : 4;
         profile.gpaScale = s;
-        if (gpaScale4Btn && gpaScale5Btn) {
-            gpaScale4Btn.classList.toggle("is-active", s === 4);
-            gpaScale5Btn.classList.toggle("is-active", s === 5);
-            gpaScale4Btn.setAttribute("aria-checked", s === 4 ? "true" : "false");
-            gpaScale5Btn.setAttribute("aria-checked", s === 5 ? "true" : "false");
-        }
         if (gpaInput) {
             gpaInput.max = String(s);
             gpaInput.placeholder = s === 5 ? "4.80" : "3.80";
@@ -879,6 +841,13 @@ export function initProfileUI() {
             const unitKey = s === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4";
             gpaUnit.setAttribute("data-i18n", unitKey);
             gpaUnit.textContent = s === 5 ? "/ 5.0" : "/ 4.0";
+            const toggleLabel = tFormat(
+                "profile.scale.toggle",
+                { scale: s === 5 ? "4.0" : "5.0" },
+                `Switch GPA scale to ${s === 5 ? "4.0" : "5.0"}`
+            );
+            gpaUnit.setAttribute("aria-label", toggleLabel);
+            gpaUnit.title = toggleLabel;
         }
         if (gpaHint) {
             gpaHint.textContent = s === 5
@@ -888,7 +857,7 @@ export function initProfileUI() {
     };
 
     const validateGpaInput = () => {
-        const rawVal = String(gpaInput?.value || "").trim();
+        const rawVal = normalizeGpaRaw(gpaInput?.value || "");
         if (!rawVal) {
             setFieldInvalid(gpaInput, false);
             return { ok: true, value: "" };
@@ -934,7 +903,6 @@ export function initProfileUI() {
     };
 
     const applyDraftToInputs = () => {
-        setFieldInvalid(nameInput, false);
         setFieldInvalid(budgetInput, false);
         setFieldInvalid(gpaInput, false);
         setFieldInvalid(examScoreInput, false);
@@ -950,12 +918,9 @@ export function initProfileUI() {
             profile.budgetCurrency = activeCurrency;
         }
 
-        if (nameInput) nameInput.value = profile.name;
-        if (nameDisplay) nameDisplay.textContent = profile.name;
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
         updateGpaScaleUI(Number(profile.gpaScale) === 5 ? 5 : 4);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
-        setUsernameEditing(false);
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
         if (profileFundingTypeSelect) profileFundingTypeSelect.value = normalizeFundingType(profile.fundingType);
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
@@ -1207,9 +1172,6 @@ export function initProfileUI() {
         budgetInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
-            if (isUsernameDraftDirty() && !commitProfileName()) {
-                return;
-            }
             saveAllProfileChanges();
         });
     }
@@ -1233,16 +1195,14 @@ export function initProfileUI() {
 
     if (gpaInput) {
         gpaInput.addEventListener("input", () => {
+            enforceGpaMaxLength();
             setFieldInvalid(gpaInput, false);
-            profile.gpa = String(gpaInput.value || "").trim();
+            profile.gpa = normalizeGpaRaw(gpaInput.value || "");
             refreshSaveState();
         });
         gpaInput.addEventListener("keydown", (e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
-            if (isUsernameDraftDirty() && !commitProfileName()) {
-                return;
-            }
             saveAllProfileChanges();
         });
     }
@@ -1254,22 +1214,14 @@ export function initProfileUI() {
         refreshSaveState();
     };
 
-    gpaScale4Btn?.addEventListener("click", () => {
-        motionPress(gpaScale4Btn);
-        setGpaScale(4);
-    });
-
-    gpaScale5Btn?.addEventListener("click", () => {
-        motionPress(gpaScale5Btn);
-        setGpaScale(5);
+    gpaUnit?.addEventListener("click", () => {
+        motionPress(gpaUnit);
+        setGpaScale(Number(profile.gpaScale) === 5 ? 4 : 5);
     });
 
     if (saveProfileBtn) {
         saveProfileBtn.addEventListener("click", () => {
             motionPress(saveProfileBtn);
-            if (isUsernameDraftDirty() && !commitProfileName()) {
-                return;
-            }
             if (saveAllProfileChanges() && hasUniversitiesTourResumeStep()) closeImmediately();
         });
     }
@@ -1340,10 +1292,6 @@ export function initProfileUI() {
     saveAndCloseBtn?.addEventListener("click", () => {
         motionPress(saveAndCloseBtn);
         syncInputsToDraft();
-        if (isUsernameDraftDirty() && !commitProfileName()) {
-            closeUnsavedDialog(true);
-            return;
-        }
         if (isProfileDirty() && !saveAllProfileChanges()) {
             closeUnsavedDialog(true);
             return;
@@ -1404,45 +1352,6 @@ export function initProfileUI() {
         updateBudgetUI();
         refreshSaveState();
     });
-
-    if (editNameBtn && profileUsernameDiv && nameInput) {
-        editNameBtn.onclick = () => {
-            const isEditing = profileUsernameDiv.classList.contains("is-editing");
-            if (!isEditing) {
-                setUsernameEditing(true);
-                nameInput.focus();
-                nameInput.select?.();
-                return;
-            }
-            if (commitProfileName()) editNameBtn.focus();
-        };
-
-        nameInput.addEventListener("keydown", (e) => {
-            if (!profileUsernameDiv.classList.contains("is-editing")) return;
-            if (e.key === "Enter") {
-                e.preventDefault();
-                if (commitProfileName()) editNameBtn.focus();
-                return;
-            }
-            if (e.key === "Escape") {
-                e.preventDefault();
-                e.stopPropagation();
-                cancelUsernameEditing();
-                editNameBtn.focus();
-            }
-        });
-        nameInput.addEventListener("input", () => {
-            setFieldInvalid(nameInput, false);
-            if (!profileUsernameDiv.classList.contains("is-editing")) return;
-            refreshSaveState();
-        });
-        document.addEventListener("pointerdown", (e) => {
-            if (!profileUsernameDiv.classList.contains("is-editing")) return;
-            const target = e.target instanceof Element ? e.target : null;
-            if (target?.closest?.(".profile-username")) return;
-            if (!commitProfileName()) e.preventDefault();
-        });
-    }
 
     if (examScoreInput) {
         examScoreInput.addEventListener("input", () => {
@@ -1662,9 +1571,7 @@ export function initProfileUI() {
             return false;
         }
         syncInputsToDraft();
-        const profileDirty = isProfileDirty();
-        const usernameDirty = isUsernameDraftDirty();
-        return profileDirty || usernameDirty;
+        return isProfileDirty();
     };
 
     const handleBeforeUnload = (event) => {

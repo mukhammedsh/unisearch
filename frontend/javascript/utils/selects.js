@@ -486,6 +486,9 @@ export function setupSlidingIndicator(containerSelector, itemSelector, activeCla
       indicator.style.opacity = "0";
       return;
     }
+    // The indicator is laid out inside the scrollable content, so it rides
+    // along with the tabs when the bar scrolls: plain offsetLeft keeps it
+    // glued to the target without any scroll compensation.
     const left = target.offsetLeft;
     const width = Math.max(1, target.offsetWidth + readExtraWidth());
     const isReady = indicator.dataset.ready === "1";

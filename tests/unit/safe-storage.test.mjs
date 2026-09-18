@@ -134,7 +134,6 @@ describe('safe-storage.js', () => {
       };
 
       saveProfile({
-        name: 'Alex',
         budget: 18000,
         gpa: 3.8,
         studyMode: 'Online',
@@ -143,7 +142,7 @@ describe('safe-storage.js', () => {
 
       assert.ok(mockLocalStorage['unisearch_profile'], 'profile should be in localStorage');
       const stored = JSON.parse(mockLocalStorage['unisearch_profile']);
-      assert.strictEqual(stored.name, 'Alex');
+      assert.ok(!('name' in stored), 'nickname field must not exist');
       assert.strictEqual(stored.budget, 18000);
       assert.strictEqual(stored.gpa, 3.8);
       assert.ok(dispatched.includes('profileUpdated'));
@@ -155,7 +154,7 @@ describe('safe-storage.js', () => {
       assert.ok(dispatched.includes('profileUpdated'), 'clearProfile must dispatch profileUpdated');
 
       const loaded = loadProfile();
-      assert.strictEqual(loaded.name, 'User');
+      assert.ok(!('name' in loaded), 'nickname field must not exist');
       assert.strictEqual(loaded.budget, '');
       assert.strictEqual(loaded.gpa, '');
       assert.strictEqual(loaded.interests, '');

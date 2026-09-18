@@ -20,7 +20,6 @@ export const PROFILE_VERSION = 2;
 
 const PROFILE_DEFAULTS = {
   _v: PROFILE_VERSION,
-  name: "User",
   budget: "",
   budgetCurrency: "USD",
   gpa: "",
@@ -107,8 +106,10 @@ export function isLegacyProfile(raw) {
   // Missing version or version < PROFILE_VERSION is legacy
   if (!Number.isFinite(v) || v < PROFILE_VERSION) return true;
   // Version is exactly PROFILE_VERSION: check if any legacy aliases remain
+  // "name" is a removed nickname field: old profiles containing it need one-time migration.
   if (
-    "budget_currency" in raw
+    "name" in raw
+    || "budget_currency" in raw
     || "funding_type" in raw
     || "gpa_scale" in raw
     || "gpa_raw" in raw
@@ -158,6 +159,7 @@ export function normalizeProfileData(profile) {
   const raw = profile && typeof profile === "object" && !Array.isArray(profile) ? profile : {};
 
   // Preserve unknown/future fields from raw
+  // "name" is a removed nickname field kept here so legacy values are stripped, not preserved.
   const knownRootKeys = new Set([
     "_v", "name", "budget", "budgetCurrency", "budget_currency",
     "gpa", "gpaScale", "gpa_scale", "gpa_raw", "user_gpa_scale",
@@ -176,7 +178,6 @@ export function normalizeProfileData(profile) {
   const rawVersion = Number(raw._v);
   const version = Number.isFinite(rawVersion) && rawVersion > PROFILE_VERSION ? rawVersion : PROFILE_VERSION;
 
-  const name = String(raw.name || PROFILE_DEFAULTS.name).trim() || PROFILE_DEFAULTS.name;
   const budget = raw.budget === null || raw.budget === undefined || raw.budget === "" ? "" : raw.budget;
   const budgetCurrencyRaw = String(raw.budgetCurrency || raw.budget_currency || "").trim().toUpperCase();
   const budgetCurrency = budgetCurrencyRaw || PROFILE_DEFAULTS.budgetCurrency;
@@ -215,7 +216,9 @@ export function normalizeProfileData(profile) {
   const gpaMax = gpaScale === 5 ? 5 : 4;
   const clampGpa = (value) => {
     if (value === "" || value === null || value === undefined) return null;
-    const num = Number(value);
+    const normalized = String(value).trim().replace(/,/g, ".");
+    if (normalized === "") return null;
+    const num = Number(normalized);
     if (!Number.isFinite(num)) return null;
     return Math.max(0, Math.min(gpaMax, Math.round(num * 100) / 100));
   };
@@ -342,7 +345,6 @@ export function normalizeProfileData(profile) {
   return {
     ...extraFields,
     _v: version,
-    name,
     budget,
     budgetCurrency,
     gpa: normalizedGpa === null ? "" : normalizedGpa,

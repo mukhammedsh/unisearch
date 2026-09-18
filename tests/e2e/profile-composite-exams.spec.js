@@ -10,20 +10,6 @@ async function openScores(page) {
   await page.waitForFunction(() => document.getElementById("examNameSelect")?.options.length > 1);
 }
 
-test("profile keeps the edit-name control beside its input", async ({ page }) => {
-  await openScores(page);
-  await page.setViewportSize({ width: 320, height: 700 });
-  await page.click(selectors.editNameBtn);
-
-  const positions = await page.evaluate(() => {
-    const input = document.getElementById("profileNameInput")?.getBoundingClientRect();
-    const button = document.getElementById("editNameBtn")?.getBoundingClientRect();
-    return { input: { top: input.top, right: input.right }, button: { top: button.top, left: button.left } };
-  });
-  expect(Math.abs(positions.button.top - positions.input.top)).toBeLessThanOrEqual(1);
-  expect(positions.button.left).toBeGreaterThanOrEqual(positions.input.right);
-});
-
 test("profile adds SAT and UNT from their component scores", async ({ page }) => {
   await openScores(page);
 

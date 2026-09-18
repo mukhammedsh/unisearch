@@ -41,14 +41,15 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
     test('detects unversioned and legacy profiles correctly', () => {
       // Unversioned profile
-      assert.strictEqual(isLegacyProfile({ name: 'Alice' }), true);
-      assert.strictEqual(isFutureProfile({ name: 'Alice' }), false);
+      assert.strictEqual(isLegacyProfile({ budget: 100 }), true);
+      assert.strictEqual(isFutureProfile({ budget: 100 }), false);
 
       // Outdated version tag
-      assert.strictEqual(isLegacyProfile({ _v: 1, name: 'Alice' }), true);
-      assert.strictEqual(isFutureProfile({ _v: 1, name: 'Alice' }), false);
+      assert.strictEqual(isLegacyProfile({ _v: 1, budget: 100 }), true);
+      assert.strictEqual(isFutureProfile({ _v: 1, budget: 100 }), false);
 
       // Modern version tag but contains legacy root keys
+      assert.strictEqual(isLegacyProfile({ _v: 2, name: 'Alice' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, budget_currency: 'USD' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, funding_type: 'grant' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, gpa_scale: 5 }), true);
@@ -95,7 +96,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       // Fully canonical profile with _v: 2
       const canonical = {
         _v: 2,
-        name: 'Alice',
         budget: 50000,
         budgetCurrency: 'USD',
         gpa: 3.8,
@@ -130,7 +130,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     test('future-version safety: profiles with _v > PROFILE_VERSION are NEVER treated as legacy', () => {
       const futureProfile = {
         _v: 3,
-        name: 'Future Student',
         futureFeatureFlag: true,
         futureArray: [1, 2, 3],
         budget: 40000,
@@ -140,7 +139,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(isFutureProfile(futureProfile), true);
       assert.strictEqual(isLegacyProfile(futureProfile), false);
 
-      const futureProfileHigher = { _v: 99, name: 'Far Future' };
+      const futureProfileHigher = { _v: 99, budget: 100 };
       assert.strictEqual(isFutureProfile(futureProfileHigher), true);
       assert.strictEqual(isLegacyProfile(futureProfileHigher), false);
     });
@@ -150,7 +149,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     test('loadProfile() does NOT overwrite localStorage when reading future-version profile', () => {
       const futureStored = {
         _v: 3,
-        name: 'Future Explorer',
         budget: 60000,
         budgetCurrency: 'EUR',
         gpa: 3.9,
@@ -170,7 +168,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(loaded._v, 3, 'Version must NOT be downgraded to 2');
       assert.strictEqual(loaded.futureQuantumMetric, 99.8, 'Future fields must not be stripped');
       assert.strictEqual(loaded.experimentalTrack, 'Bio-AI', 'Future fields must not be stripped');
-      assert.strictEqual(loaded.name, 'Future Explorer');
       assert.strictEqual(loaded.budget, 60000);
 
       // Raw storage in localStorage must remain identical to original
@@ -182,7 +179,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     test('normalizeProfileData preserves future version tag and unknown fields', () => {
       const futureData = {
         _v: 4,
-        name: 'Alex',
         nextGenToken: 'xyz-999',
         gpa: 3.9,
         gpaScale: 4,
@@ -196,7 +192,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     test('saveProfile() refuses to overwrite future-version profile in localStorage across full UI change cycle', () => {
       const futureStored = {
         _v: 3,
-        name: 'Future User Original',
         budget: 75000,
         budgetCurrency: 'USD',
         gpa: 3.95,
@@ -212,12 +207,11 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       // 1. loadProfile()
       const loaded = loadProfile();
       assert.strictEqual(loaded._v, 3);
-      assert.strictEqual(loaded.name, 'Future User Original');
+      assert.strictEqual(loaded.budget, 75000);
 
       // 2. Simulate UI modification
       const modifiedInUi = {
         ...loaded,
-        name: 'Attempted UI Overwrite',
         budget: 10000,
       };
 
@@ -232,17 +226,16 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(currentRawJson, initialRawJson, 'localStorage content MUST be strictly identical before and after save attempt');
 
       const parsedStorage = JSON.parse(mockStore['unisearch_profile']);
-      assert.strictEqual(parsedStorage.name, 'Future User Original', 'Storage must NOT have been modified by UI attempt');
+      assert.strictEqual(parsedStorage.budget, 75000, 'Storage must NOT have been modified by UI attempt');
       assert.strictEqual(parsedStorage._v, 3);
       assert.deepStrictEqual(parsedStorage.aiPersonalizationV3, { algorithm: 'neural_v3', weights: [0.1, 0.9] });
       assert.strictEqual(parsedStorage.exams[0].customV3Field, 'verified_score');
     });
 
     test('in-memory consistency: loadProfile() preserves UI edits in-memory when saveProfile() refuses localStorage overwrite for _v: 3', () => {
-      // 1. Put in localStorage profile _v: 3, name: "Original"
+      // 1. Put in localStorage profile _v: 3, budget: 50000
       const futureStored = {
         _v: 3,
-        name: 'Original',
         budget: 50000,
         budgetCurrency: 'USD',
         futureFlag: true,
@@ -253,10 +246,10 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       // 2. Call loadProfile()
       const initial = loadProfile();
       assert.strictEqual(initial._v, 3);
-      assert.strictEqual(initial.name, 'Original');
+      assert.strictEqual(initial.budget, 50000);
 
-      // 3. Edit name to "Edited"
-      const editedDraft = { ...initial, name: 'Edited' };
+      // 3. Edit budget to 60000
+      const editedDraft = { ...initial, budget: 60000 };
 
       // 4. Call saveProfile()
       let eventDispatched = false;
@@ -272,28 +265,28 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       // 5. Immediately call loadProfile() again
       const reloadedImmediate = loadProfile();
-      assert.strictEqual(reloadedImmediate.name, 'Edited', 'loadProfile() must return in-memory "Edited" and NOT clobber with "Original"');
+      assert.strictEqual(reloadedImmediate.budget, 60000, 'loadProfile() must return in-memory 60000 and NOT clobber with 50000');
       assert.strictEqual(reloadedImmediate._v, 3);
       assert.strictEqual(reloadedImmediate.futureFlag, true);
 
       // 6. Simulate subsequent reads (e.g. from UI components listening to profileUpdated)
       const reloadedSubsequent = loadProfile();
-      assert.strictEqual(reloadedSubsequent.name, 'Edited', 'Subsequent UI reads must also preserve "Edited" in memory');
+      assert.strictEqual(reloadedSubsequent.budget, 60000, 'Subsequent UI reads must also preserve 60000 in memory');
 
       // 7. Verify localStorage is strictly byte-for-byte untouched!
-      assert.strictEqual(mockStore['unisearch_profile'], initialJson, 'localStorage MUST remain 100% byte-for-byte identical to Original');
+      assert.strictEqual(mockStore['unisearch_profile'], initialJson, 'localStorage MUST remain 100% byte-for-byte identical to original');
       const parsedStorage = JSON.parse(mockStore['unisearch_profile']);
-      assert.strictEqual(parsedStorage.name, 'Original', 'Underlying storage must remain "Original"');
+      assert.strictEqual(parsedStorage.budget, 50000, 'Underlying storage must remain 50000');
     });
 
     test('saveProfile() refuses to overwrite corrupted future-version JSON string in localStorage', () => {
-      const corruptFutureString = 'invalid-prefix-{"_v": 3, "name": "Broken Future Data", broken-tail';
+      const corruptFutureString = 'invalid-prefix-{"_v": 3, "budget": 50000, broken-tail';
       mockStore['unisearch_profile'] = corruptFutureString;
 
       const loaded = loadProfile();
       assert.strictEqual(loaded._v, 2, 'loadProfile gracefully defaults when JSON parse fails');
 
-      const saveResult = saveProfile({ name: 'Attempted Overwrite', _v: 2 });
+      const saveResult = saveProfile({ budget: 10000, _v: 2 });
       assert.strictEqual(saveResult, false, 'saveProfile must refuse to overwrite corrupted string containing future version tag');
       assert.strictEqual(mockStore['unisearch_profile'], corruptFutureString, 'corrupt future storage string must be preserved');
     });
@@ -303,16 +296,18 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       mockStore['unisearch_profile'] = corruptLegacyString;
 
       const loaded = loadProfile();
-      assert.strictEqual(loaded.name, 'User');
+      assert.ok(!('name' in loaded), 'nickname field must not exist');
+      assert.strictEqual(loaded.budget, '');
 
-      const validProfile = { _v: 2, name: 'Repaired User', budget: 15000 };
+      const validProfile = { _v: 2, budget: 15000, major: 'Physics' };
       const saveResult = saveProfile(validProfile);
       assert.strictEqual(saveResult, true, 'saveProfile should successfully recover non-future corrupted storage');
 
       const parsed = JSON.parse(mockStore['unisearch_profile']);
       assert.strictEqual(parsed._v, 2);
-      assert.strictEqual(parsed.name, 'Repaired User');
+      assert.ok(!('name' in parsed), 'nickname field must not exist');
       assert.strictEqual(parsed.budget, 15000);
+      assert.strictEqual(parsed.major, 'Physics');
     });
 
     test('saveProfile() normally persists version 2 profile without blocking', () => {
@@ -322,7 +317,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       const v2Profile = {
         _v: 2,
-        name: 'Canonical User',
         budget: 25000,
         budgetCurrency: 'USD',
         gpa: 3.8,
@@ -334,7 +328,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       const stored = JSON.parse(mockStore['unisearch_profile']);
       assert.strictEqual(stored._v, 2);
-      assert.strictEqual(stored.name, 'Canonical User');
+      assert.ok(!('name' in stored), 'nickname field must not exist');
       assert.strictEqual(stored.budget, 25000);
     });
   });
@@ -344,6 +338,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       const legacyStoredProfile = {
         name: 'Legacy Student',
         budget: 20000,
+        // NOTE: legacy nickname in `name` must be stripped by migration.
         budget_currency: 'EUR',
         funding_type: 'grant',
         gpa: 4.85,
@@ -393,7 +388,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       // Verify canonical root fields
       assert.strictEqual(loaded._v, 2);
-      assert.strictEqual(loaded.name, 'Legacy Student');
+      assert.ok(!('name' in loaded), 'legacy nickname must be stripped');
       assert.strictEqual(loaded.budget, 20000);
       assert.strictEqual(loaded.budgetCurrency, 'EUR');
       assert.strictEqual(loaded.budget_currency, undefined);
@@ -457,6 +452,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       // Verify migrated state was persisted back to localStorage
       const updatedStorageRaw = JSON.parse(mockStore['unisearch_profile']);
       assert.strictEqual(updatedStorageRaw._v, 2);
+      assert.ok(!('name' in updatedStorageRaw), 'legacy nickname must be stripped from storage');
       assert.strictEqual(updatedStorageRaw.budgetCurrency, 'EUR');
       assert.strictEqual(updatedStorageRaw.budget_currency, undefined);
       assert.strictEqual(updatedStorageRaw.gpaScale, 5);
@@ -467,7 +463,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
     test('preserves unknown custom and future fields across root, exams, languages, and choices', () => {
       const profileWithCustomData = {
-        name: 'Custom User',
         userNotes: 'Keep this note safe',
         applicantGuid: 'guid-1234-abcd',
         budget: 35000,
@@ -506,7 +501,8 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       const normalized = normalizeProfileData(profileWithCustomData);
 
-      // Root custom fields preserved
+      // Root custom fields preserved, legacy nickname stripped
+      assert.ok(!('name' in normalized), 'legacy nickname must be stripped');
       assert.strictEqual(normalized.userNotes, 'Keep this note safe');
       assert.strictEqual(normalized.applicantGuid, 'guid-1234-abcd');
 
@@ -529,12 +525,14 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
         budget_currency: 'KZT',
         funding_type: 'paid',
         gpa: 3.5,
+        // NOTE: legacy nickname in `name` must be stripped by migration.
       };
       mockStore['unisearch_profile'] = JSON.stringify(legacyProfile);
 
       const callsBefore = setItemCalls;
       const loaded1 = loadProfile();
       assert.strictEqual(loaded1._v, 2);
+      assert.ok(!('name' in loaded1), 'legacy nickname must be stripped');
       assert.strictEqual(setItemCalls, callsBefore + 1, 'Should have written migrated profile once');
 
       // Second load
@@ -562,6 +560,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       const pass2 = normalizeProfileData(pass1);
       const pass3 = normalizeProfileData(pass2);
 
+      assert.ok(!('name' in pass1), 'legacy nickname must be stripped');
       assert.deepStrictEqual(pass1, pass2);
       assert.deepStrictEqual(pass2, pass3);
     });
@@ -701,7 +700,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     test('handles null, undefined, arrays, and primitive inputs gracefully', () => {
       const def1 = normalizeProfileData(null);
       assert.strictEqual(def1._v, 2);
-      assert.strictEqual(def1.name, 'User');
+      assert.ok(!('name' in def1), 'nickname field must not exist');
       assert.strictEqual(def1.gpaScale, 4);
 
       const def2 = normalizeProfileData(undefined);
@@ -727,7 +726,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
         loaded = loadProfile();
       });
       assert.strictEqual(loaded._v, 2);
-      assert.strictEqual(loaded.name, 'User');
+      assert.ok(!('name' in loaded), 'nickname field must not exist');
 
       // Crucial: loadProfile() must NOT call setItem to erase or overwrite the corrupted string!
       assert.strictEqual(setItemCalls, callsBefore, 'loadProfile() must not overwrite corrupted storage automatically');
@@ -735,7 +734,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     });
 
     test('safely falls back to in-memory profile when localStorage throws on write without destroying storage', () => {
-      const originalLegacy = { name: 'Quota User', budget_currency: 'USD' };
+      const originalLegacy = { budget: 12000, budget_currency: 'USD' };
       mockStore['unisearch_profile'] = JSON.stringify(originalLegacy);
 
       // Simulate browser throwing QuotaExceededError on setItem
@@ -747,21 +746,20 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.doesNotThrow(() => {
         loaded = loadProfile();
       });
-      assert.strictEqual(loaded.name, 'Quota User');
+      assert.strictEqual(loaded.budget, 12000);
       assert.strictEqual(loaded._v, 2);
 
       // In-memory fallback holds the normalized profile for this session
-      assert.strictEqual(loadProfile().name, 'Quota User');
+      assert.strictEqual(loadProfile().budget, 12000);
 
       // Original data in mockStore was not deleted
-      assert.ok(mockStore['unisearch_profile'].includes('Quota User'));
+      assert.ok(mockStore['unisearch_profile'].includes('12000'));
     });
   });
 
   describe('GPA mathematical integrity across localStorage -> loadProfileForApi -> API', () => {
     test('exact formula verification for GPA 4.85 on 5.0 scale', () => {
       saveProfile({
-        name: 'GPA 5.0 Student',
         gpa: 4.85,
         gpaScale: 5,
       });
@@ -781,7 +779,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
     test('exact formula verification for maximum 5.0 GPA on 5.0 scale', () => {
       saveProfile({
-        name: 'Top Student',
         gpa: 5.0,
         gpaScale: 5,
       });
@@ -794,7 +791,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
     test('exact formula verification for GPA 3.75 on 4.0 scale', () => {
       saveProfile({
-        name: 'GPA 4.0 Student',
         gpa: 3.75,
         gpaScale: 4,
       });
@@ -807,7 +803,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
     test('exact formula verification for GPA 4.0 on 4.0 scale', () => {
       saveProfile({
-        name: 'Max 4.0 Student',
         gpa: 4.0,
         gpaScale: 4,
       });
@@ -821,7 +816,6 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
   describe('loadProfileForApi contract verification', () => {
     test('outgoing payload contains NO legacy aliases, NO gpaScale, and NO redundant fields', () => {
       saveProfile({
-        name: 'API Test User',
         budget: 30000,
         budgetCurrency: 'USD',
         gpa: 4.8,

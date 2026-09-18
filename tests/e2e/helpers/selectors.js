@@ -2,8 +2,6 @@ const selectors = {
   profileBtn: "#profileBtn",
   profileModal: "#profileModal",
   profileCloseBtn: "#profileCloseBtn",
-  nameInput: "#profileNameInput",
-  editNameBtn: "#editNameBtn",
   budgetInput: "#budgetInput",
   saveProfileBtn: "#saveProfileBtn",
   saveBudgetBtn: "#saveProfileBtn, #saveBudgetBtn",
