@@ -1,13 +1,25 @@
 const __boundTooltipKeys = new Set();
 
+export const DEFAULT_TOOLTIP_WRAP_SELECTOR = ".ui-tooltip-wrap, .u-info-wrap, .uni-status-tooltip, .d-info-wrap, .profile-info-wrap, .uni-metric-tooltip";
+export const DEFAULT_TOOLTIP_BUTTON_SELECTOR = ".ui-tooltip-trigger, .u-info, .uni-status-trigger, .d-info, .profile-info, .uni-metric-trigger";
+
+function buildStateSelector(selectorList, stateClass) {
+  return selectorList
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => `${s}.${stateClass}`)
+    .join(", ");
+}
+
 export function bindInfoTooltips(options = {}) {
   if (typeof document === "undefined") return;
 
   const root = options.root && typeof options.root.querySelectorAll === "function"
     ? options.root
     : document;
-  const wrapSelector = String(options.wrapSelector || ".u-info-wrap").trim() || ".u-info-wrap";
-  const buttonSelector = String(options.buttonSelector || ".u-info").trim() || ".u-info";
+  const wrapSelector = String(options.wrapSelector || DEFAULT_TOOLTIP_WRAP_SELECTOR).trim() || DEFAULT_TOOLTIP_WRAP_SELECTOR;
+  const buttonSelector = String(options.buttonSelector || DEFAULT_TOOLTIP_BUTTON_SELECTOR).trim() || DEFAULT_TOOLTIP_BUTTON_SELECTOR;
   const openClass = String(options.openClass || "is-open").trim() || "is-open";
   const closedClass = String(options.closedClass || "is-closed").trim() || "is-closed";
   const holdDelayMs = Number.isFinite(Number(options.holdDelayMs)) ? Number(options.holdDelayMs) : 420;
@@ -16,8 +28,12 @@ export function bindInfoTooltips(options = {}) {
   __boundTooltipKeys.add(key);
 
   const holdTimers = new WeakMap();
+  const openWrapsSelector = buildStateSelector(wrapSelector, openClass);
+  const closedWrapsSelector = buildStateSelector(wrapSelector, closedClass);
+  const allStateWrapsSelector = `${openWrapsSelector}, ${closedWrapsSelector}`;
+
   const closeAll = () => {
-    root.querySelectorAll(`${wrapSelector}.${openClass}, ${wrapSelector}.${closedClass}`).forEach((wrap) => {
+    root.querySelectorAll(allStateWrapsSelector).forEach((wrap) => {
       wrap.classList.remove(openClass);
       wrap.classList.remove(closedClass);
       const btn = wrap.querySelector(buttonSelector);
@@ -35,6 +51,9 @@ export function bindInfoTooltips(options = {}) {
       if (!wrap) return;
       evt.preventDefault();
       evt.stopPropagation();
+      if (typeof evt.stopImmediatePropagation === "function") {
+        evt.stopImmediatePropagation();
+      }
       const willOpen = !wrap.classList.contains(openClass);
       closeAll();
       if (willOpen) {
@@ -50,7 +69,7 @@ export function bindInfoTooltips(options = {}) {
       return;
     }
 
-    if (!target.closest(wrapSelector)) {
+    if (!target.closest(wrapSelector) && !target.closest(DEFAULT_TOOLTIP_WRAP_SELECTOR) && !target.closest(DEFAULT_TOOLTIP_BUTTON_SELECTOR)) {
       closeAll();
     }
   });
@@ -70,7 +89,7 @@ export function bindInfoTooltips(options = {}) {
 
   root.addEventListener("keydown", (evt) => {
     if (evt.key === "Escape") {
-      const openWraps = root.querySelectorAll(`${wrapSelector}.${openClass}`);
+      const openWraps = root.querySelectorAll(openWrapsSelector);
       if (!openWraps.length) return;
       const lastOpen = openWraps[openWraps.length - 1];
       const btn = lastOpen.querySelector(buttonSelector);
@@ -112,3 +131,21 @@ export function bindInfoTooltips(options = {}) {
   root.addEventListener("touchend", clearHold, { passive: true });
   root.addEventListener("touchcancel", clearHold, { passive: true });
 }
+
+export function initGlobalTooltips(root = document) {
+  bindInfoTooltips({
+    root,
+    wrapSelector: DEFAULT_TOOLTIP_WRAP_SELECTOR,
+    buttonSelector: DEFAULT_TOOLTIP_BUTTON_SELECTOR,
+  });
+}
+
+if (typeof document !== "undefined") {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => initGlobalTooltips(document), { once: true });
+  } else {
+    initGlobalTooltips(document);
+  }
+}
+
+

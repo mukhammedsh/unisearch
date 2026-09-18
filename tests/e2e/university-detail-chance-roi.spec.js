@@ -58,3 +58,38 @@ test("detail page renders neutral ROI block when official salary data is missing
   await expect(page.locator(".roi-context--neutral")).toBeVisible();
   await expect(page.locator(".roi-context--neutral")).toContainText("Insufficient graduate salary data");
 });
+
+test("detail page tooltips are tap-friendly and interactive on admission and overview sections", async ({ page }) => {
+  await seedProfile(page, {
+    ...personas.enResearch.profile,
+    major: "Computer Science",
+    gpa: 99,
+    exams: [{ exam: "SAT", score: 1550 }],
+  });
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailCard")).toBeVisible();
+
+  // 1. Overview Global Rank tooltip click to toggle
+  const rankInfoBtn = page.locator("#detailRecommendations .d-info-wrap .d-info").first();
+  await expect(rankInfoBtn).toBeVisible();
+  const rankTooltip = page.locator("#detailRecommendations .d-info-wrap .d-tooltip").first();
+  await expect(rankTooltip).not.toBeVisible();
+  await rankInfoBtn.click();
+  await expect(rankTooltip).toBeVisible();
+  await rankInfoBtn.click();
+  await expect(rankTooltip).not.toBeVisible();
+
+  // 2. Admission tab tooltips (chance badge / factor chips)
+  await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await expect(page.locator(".chance-panel")).toBeVisible();
+
+  const factorTrigger = page.locator(".track-factor-chip-wrap .ui-tooltip-trigger").first();
+  if (await factorTrigger.count() > 0) {
+    const factorBubble = page.locator(".track-factor-chip-wrap .ui-tooltip-bubble").first();
+    await expect(factorBubble).not.toBeVisible();
+    await factorTrigger.click();
+    await expect(factorBubble).toBeVisible();
+    await factorTrigger.click();
+    await expect(factorBubble).not.toBeVisible();
+  }
+});

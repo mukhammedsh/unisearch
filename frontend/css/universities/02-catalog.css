@@ -513,6 +513,13 @@
   min-width: 0;
 }
 
+.uni-metric-tooltip {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  z-index: 2;
+}
+
 .uni-metric--rank {
   display: inline-flex;
   align-items: center;
@@ -530,7 +537,19 @@
   text-decoration: none;
   color: inherit;
   line-height: 1;
+  font: inherit;
+  font-size: inherit;
+  appearance: none;
+  -webkit-appearance: none;
   transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.uni-metric-tooltip__content {
+  top: calc(100% + 4px);
+  left: 0;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 48px));
+  z-index: var(--z-dropdown);
 }
 
 .uni-metric-icon {

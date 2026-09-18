@@ -683,6 +683,7 @@ universities.help.tradeoff.atmosphere: Approximate preference between a more soc
 universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals.
 universities.help.tradeoff.location: Left side favors universities in cities. Right side favors universities outside the city.
 universities.sort_ai: {fit}: AI Smart Sort
+universities.sort_relevance: Relevance
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z

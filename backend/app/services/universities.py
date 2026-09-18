@@ -726,8 +726,12 @@ def _search_query_candidates(
     candidates = _uniq_non_empty([raw])
 
     lang = _normalize_search_lang(search_lang)
+    flipped = search_service.flip_keyboard_layout(raw)
+    if flipped and flipped.lower() != raw.lower():
+        candidates.append(flipped)
+
     if lang == SEARCH_LANG_ENG:
-        return candidates
+        return _uniq_non_empty(candidates)
 
     norm_query = _norm_space(raw)
     alias_map: Dict[str, str] = {}
@@ -1333,7 +1337,7 @@ def _apply_sort(
     def get_val(u, path):
         return _to_float(_get_nested(u, path)) or 0.0
 
-    if sort == "name_asc":
+    if sort in ("name_asc", "relevance"):
         return sorted(items, key=lambda u: _safe_lower(u.get("name")))
 
     if sort == "tuition_asc":
@@ -1712,7 +1716,7 @@ def list_universities(
         pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
 
     items = [u for (u, _) in pairs]
-    if q and sort == "name_asc":
+    if q and sort in ("name_asc", "relevance"):
         items = sorted(
             items,
             key=lambda u: (
@@ -1720,6 +1724,25 @@ def list_universities(
                 _safe_lower(u.get("name")),
             ),
         )
+    elif q and search_scores:
+        top_exact = [
+            u
+            for u in items
+            if search_scores.get(str(u.get("id", "")).strip() or f"@{id(u)}", 0.0) >= 200.0
+        ]
+        rest = [
+            u
+            for u in items
+            if search_scores.get(str(u.get("id", "")).strip() or f"@{id(u)}", 0.0) < 200.0
+        ]
+        top_exact = sorted(
+            top_exact,
+            key=lambda u: (
+                -(search_scores.get(str(u.get("id", "")).strip() or f"@{id(u)}", 0.0)),
+                _safe_lower(u.get("name")),
+            ),
+        )
+        items = top_exact + _apply_sort(rest, sort, format_preference=mode_pref)
     else:
         items = _apply_sort(items, sort, format_preference=mode_pref)
 

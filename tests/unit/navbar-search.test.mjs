@@ -5,6 +5,7 @@ import {
   fetchUniversitySearchResults,
   generateOfflineNoticeHtml,
   generateSuggestionsHtml,
+  highlightMatchText,
   isGlobalSearchDisabledWorkspace,
 } from '../../frontend/javascript/components/navbar-search.js';
 
@@ -102,5 +103,26 @@ describe('Global Navbar Search Component', () => {
     } finally {
       document.body.dataset = originalDataset;
     }
+  });
+
+  it('highlightMatchText wraps matching case-insensitive text in mark tag', () => {
+    assert.equal(highlightMatchText('Harvard University', 'harv'), '<mark class="navbar-search-highlight">Harv</mark>ard University');
+    assert.equal(highlightMatchText('Cambridge, USA', 'USA'), 'Cambridge, <mark class="navbar-search-highlight">USA</mark>');
+    assert.equal(highlightMatchText('Stanford', ''), 'Stanford');
+  });
+
+  it('generateSuggestionsHtml with query highlights match and shows alias badge', () => {
+    const items = [
+      {
+        id: 'mit-usa-cambridge',
+        name: 'Massachusetts Institute of Technology',
+        search_aliases: ['mit', 'мит'],
+        location: { city: 'Cambridge', country: 'USA' },
+      },
+    ];
+
+    const html = generateSuggestionsHtml(items, 0, 'MIT');
+    assert.ok(html.includes('navbar-search-suggestion__badge'));
+    assert.ok(html.includes('MIT</span>'));
   });
 });

@@ -622,7 +622,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .d-info-wrap:hover .d-tooltip {
+  .d-info-wrap:not(.is-closed):hover .d-tooltip {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -630,12 +630,18 @@
   }
 }
 
-.d-info-wrap:focus-within .d-tooltip,
+.d-info-wrap:not(.is-closed):focus-within .d-tooltip,
 .d-info-wrap.is-open .d-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+.d-info-wrap.is-closed .d-tooltip {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 @media (max-width: 680px) {

@@ -173,7 +173,7 @@ def list_universities(
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
-    sort: str = Query("name_asc", pattern="^(name_asc|tuition_asc|tuition_desc|acceptance_asc|acceptance_desc|rank_asc|rank_desc|gpa_desc)$"),
+    sort: str = Query("name_asc", pattern="^(name_asc|tuition_asc|tuition_desc|acceptance_asc|acceptance_desc|rank_asc|rank_desc|gpa_desc|relevance)$"),
     page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(200, ge=1, le=2000),
     fields: str = Query("card", pattern="^(card|full)$"),

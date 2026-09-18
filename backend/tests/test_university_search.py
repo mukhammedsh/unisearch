@@ -368,6 +368,58 @@ class UniversitySearchTests(unittest.TestCase):
         for i in range(len(present_gpas) - 1):
             self.assertGreaterEqual(present_gpas[i], present_gpas[i + 1])
 
+    def test_query_mit_exact_alias_ranks_top_without_substring_pollution(self):
+        result = uni_service.list_universities(q="MIT", paginate=False)
+        items = result.get("items", [])
+        self.assertGreater(len(items), 0)
+        self.assertEqual("mit-usa-cambridge", items[0].get("id"))
+        ids = [x.get("id") for x in items]
+        self.assertNotIn("kyoto-university-jp-kyoto", ids)
+        self.assertNotIn("stanford-university-usa-ca", ids)
+
+    def test_query_nu_exact_alias_ranks_nazarbayev_first(self):
+        result = uni_service.list_universities(q="НУ", search_lang="rus", paginate=False)
+        items = result.get("items", [])
+        self.assertGreater(len(items), 0)
+        self.assertEqual("nazarbayev-university-kaz-astana", items[0].get("id"))
+
+    def test_query_russian_morphology_inflected_location_and_major(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            res_city = uni_service.list_universities(q="в Бостоне", search_lang="rus", paginate=False)
+            self.assertEqual(["u-biz"], [x.get("id") for x in res_city.get("items", [])])
+
+            res_major = uni_service.list_universities(q="инженерные", search_lang="rus", paginate=False)
+            self.assertEqual(["u-cs"], [x.get("id") for x in res_major.get("items", [])])
+
+    def test_query_keyboard_layout_flipping(self):
+        result_stanford = uni_service.list_universities(q="cnfyajhl", paginate=False)
+        self.assertEqual("stanford-university-usa-ca", result_stanford.get("items", [])[0].get("id"))
+
+        result_mit = uni_service.list_universities(q="vbn", search_lang="rus", paginate=False)
+        self.assertEqual("mit-usa-cambridge", result_mit.get("items", [])[0].get("id"))
+
+    def test_query_multi_token_with_domain_synonyms_and_stop_words(self):
+        result = uni_service.list_universities(q="вузы в лондоне", search_lang="rus", paginate=False)
+        items = result.get("items", [])
+        self.assertGreater(len(items), 0)
+        self.assertEqual("imperial-college-london-uk", items[0].get("id"))
+
+    def test_query_typo_tolerance_damerau_levenshtein(self):
+        res_standford = uni_service.list_universities(q="standford", paginate=False)
+        self.assertEqual("stanford-university-usa-ca", res_standford.get("items", [])[0].get("id"))
+
+        res_havard = uni_service.list_universities(q="havard", paginate=False)
+        self.assertEqual("harvard-usa-cambridge", res_havard.get("items", [])[0].get("id"))
+
+        res_massachussets = uni_service.list_universities(q="massachussets", paginate=False)
+        self.assertEqual("mit-usa-cambridge", res_massachussets.get("items", [])[0].get("id"))
+
+    def test_explicit_sort_relevance_endpoint_validation(self):
+        result = uni_service.list_universities(q="Oxford", sort="relevance", paginate=False)
+        items = result.get("items", [])
+        self.assertEqual(["university-of-oxford-uk-oxford"], [x.get("id") for x in items])
+
 
 if __name__ == "__main__":
     unittest.main()

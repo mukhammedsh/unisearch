@@ -635,10 +635,28 @@ function renderTrackChanceBadges(badges) {
   const rendered = badges.map((badge) => {
     const config = trackBadgeConfig(badge);
     if (!config) return "";
+    const note = String(config.note || "").trim();
+    const label = String(config.label || "").trim();
+    const innerBadgeHtml = `
+      ${heroIcon(config.icon, "ui-icon ui-icon--14 admission-chance-badge__icon")}
+      <span>${escapeHtml(label)}</span>
+    `;
+    if (!note) {
+      return `
+        <span class="admission-chance-badge ${config.cls}" aria-label="${escapeHtmlAttr(label)}">
+          ${innerBadgeHtml}
+        </span>
+      `;
+    }
     return `
-      <span class="admission-chance-badge ${config.cls}" title="${escapeHtmlAttr(config.note)}" aria-label="${escapeHtmlAttr(`${config.label}. ${config.note}`)}">
-        ${heroIcon(config.icon, "ui-icon ui-icon--14 admission-chance-badge__icon")}
-        <span>${escapeHtml(config.label)}</span>
+      <span class="ui-tooltip-wrap admission-chance-badge-wrap">
+        <button type="button" class="ui-tooltip-trigger admission-chance-badge ${config.cls}" aria-label="${escapeHtmlAttr(`${label}: ${note}`)}" aria-expanded="false">
+          ${innerBadgeHtml}
+        </button>
+        <span class="ui-tooltip-bubble admission-chance-tooltip__content" role="tooltip">
+          <strong class="ui-tooltip-title">${escapeHtml(label)}</strong>
+          <span class="ui-tooltip-text">${escapeHtml(note)}</span>
+        </span>
       </span>
     `;
   }).filter(Boolean);
@@ -693,11 +711,19 @@ function renderTrackFactorChip(factor) {
 
   const tone = factorTone(factor.status);
   const text = label && message ? `${label}: ${message}` : (label || message);
-  const title = `${text}. ${t("admission.chance.factor_hint", "Planning signal only; not an exact causal contribution.")}`;
+  const hint = t("admission.chance.factor_hint", "Planning signal only; not an exact causal contribution.");
+  const ariaLabel = `${text}. ${hint}`;
   return `
-    <span class="track-factor-chip ${tone.cls}" title="${escapeHtmlAttr(title)}">
-      ${heroIcon(tone.icon, "ui-icon ui-icon--14 track-factor-chip__icon")}
-      <span>${escapeHtml(text)}</span>
+    <span class="ui-tooltip-wrap track-factor-chip-wrap">
+      <button type="button" class="ui-tooltip-trigger track-factor-chip ${tone.cls}" aria-label="${escapeHtmlAttr(ariaLabel)}" aria-expanded="false">
+        ${heroIcon(tone.icon, "ui-icon ui-icon--14 track-factor-chip__icon")}
+        <span>${escapeHtml(text)}</span>
+      </button>
+      <span class="ui-tooltip-bubble track-factor-tooltip__content" role="tooltip">
+        <strong class="ui-tooltip-title">${escapeHtml(label || text)}</strong>
+        ${label && message ? `<span class="ui-tooltip-text">${escapeHtml(message)}</span>` : ""}
+        <span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(hint)}</span>
+      </span>
     </span>
   `;
 }

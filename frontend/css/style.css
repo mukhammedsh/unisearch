@@ -986,6 +986,132 @@ html, body {
   gap: 8px;
 }
 
+/* ====================================================================
+   Unified Calm Academic Workspace Tooltip System
+   Standard components: .ui-tooltip-wrap, .ui-tooltip-trigger, .ui-tooltip-bubble
+   ==================================================================== */
+.ui-tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  z-index: 1;
+}
+
+.ui-tooltip-wrap:not(.is-closed):hover,
+.ui-tooltip-wrap:not(.is-closed):focus-within,
+.ui-tooltip-wrap.is-open {
+  z-index: calc(var(--z-dropdown) + 1);
+}
+
+.ui-tooltip-trigger {
+  cursor: help;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ui-tooltip-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ui-tooltip-bubble {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 32px));
+  box-sizing: border-box;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  z-index: var(--z-dropdown);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    visibility var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-enter);
+  overflow-wrap: anywhere;
+}
+
+.ui-tooltip-wrap:not(.is-closed):focus-within .ui-tooltip-bubble,
+.ui-tooltip-wrap.is-open .ui-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-tooltip-wrap:not(.is-closed):hover .ui-tooltip-bubble {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.ui-tooltip-wrap.is-closed .ui-tooltip-bubble {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ui-tooltip-title {
+  display: block;
+  font-weight: 600;
+  color: inherit;
+  margin-bottom: 2px;
+}
+
+.ui-tooltip-text {
+  display: block;
+  font-weight: 400;
+  color: inherit;
+  opacity: 0.92;
+  line-height: 1.35;
+}
+
+.ui-tooltip-text--subtle {
+  opacity: 0.75;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* Elevation of parent containers when an open tooltip is inside */
+.uni-card:has(.ui-tooltip-wrap.is-open),
+.uni-card:has(.ui-tooltip-wrap:not(.is-closed):hover) {
+  z-index: var(--z-dropdown);
+}
+
+.uni-card .ui-tooltip-wrap {
+  z-index: 2;
+}
+
+.d-kv:has(.ui-tooltip-wrap.is-open) {
+  position: relative;
+  z-index: var(--z-dropdown);
+}
+
+.track-factors-badges:has(.ui-tooltip-wrap.is-open),
+.track-factors-badges:has(.ui-tooltip-wrap:not(.is-closed):hover) {
+  position: relative;
+  z-index: var(--z-dropdown);
+}
+
 .profile-info-wrap{
   position: relative;
   display: inline-flex;
@@ -5370,10 +5496,37 @@ body {
   border-color: color-mix(in srgb, var(--text-muted) 30%, var(--line));
 }
 
+button.admission-chance-badge,
+button.track-factor-chip {
+  font-family: inherit;
+  cursor: help;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.admission-chance-badge-wrap,
+.track-factor-chip-wrap {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.admission-chance-tooltip__content,
+.track-factor-tooltip__content {
+  top: calc(100% + var(--space-2));
+  left: 0;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 32px));
+  z-index: var(--z-dropdown);
+}
+
 @media (max-width: 680px) {
   .admission-chance-badge,
-  .track-factor-chip {
+  .track-factor-chip,
+  .admission-chance-badge-wrap,
+  .track-factor-chip-wrap {
     flex: 1 1 100%;
+    width: 100%;
   }
 }
 
@@ -5870,6 +6023,29 @@ body {
   color: var(--text-muted);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.navbar-search-highlight {
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+.navbar-search-suggestion__badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--space-2);
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--surface-soft);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
 }
 
 .navbar-search-empty {

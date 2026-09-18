@@ -4,6 +4,40 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.1.0 (2026-09-18) - Search Engine Overhaul & Unified Tooltip System
+
+### Search (backend)
+- Rewrote `search.py` scoring engine with Damerau-Levenshtein typo tolerance (distance 1 for 4–6 char tokens, 2 for 7+ chars), stem-prefix matching for inflected Russian/English forms, and substring matching for tokens ≥5 chars (`_best_token_score` replaces `_best_token_weight`).
+- Added `DOMAIN_SYNONYMS` map and `STOP_WORDS` filter in `prepare_query` so terms like "вузы", "в", "унив." are normalized before scoring; core token disqualification prevents noise-only queries from matching anything.
+- Extended `prepare_search_meta` with `token_stems_exact` (stem→weight map) and `exact_aliases` set; alias exact-match now gives a +220 score boost, full-name exact-match +200.
+- Added field-name tagging in `_append_text_bucket` / `_append_list_bucket` so prefix matching is restricted for search aliases vs. ordinary text fields.
+- Added transliteration helpers and keyboard-layout swapping (Cyrillic↔Latin) so "cnfyajhl" → Stanford and "vbn" → МИТ.
+
+### Search routing & services (backend)
+- Added `relevance` as an accepted sort mode in `universities.py`; results with score ≥ 200 (exact alias or name match) are surfaced first, remaining results use the selected sort.
+- Added router validation for `sort=relevance` in `backend/app/routers/universities.py`.
+
+### Tooltip system (frontend)
+- Introduced unified `.ui-tooltip-wrap / .ui-tooltip-trigger / .ui-tooltip-bubble` CSS component in `frontend/css/style.css` supporting hover, focus-within, click-toggle, keyboard-Escape, and mobile touch; replaces scattered `title=""` attributes.
+- Extended `tooltip.js` with `DEFAULT_TOOLTIP_WRAP_SELECTOR` / `DEFAULT_TOOLTIP_BUTTON_SELECTOR` covering all existing tooltip variants and added `initGlobalTooltips` auto-bound on `DOMContentLoaded`.
+- Converted catalog card ranking metric from `<a title="">` to `<button class="ui-tooltip-trigger uni-metric-trigger">` with a `.ui-tooltip-bubble` popup when ranking source metadata is present.
+- Converted `admission-chance-badge` and `track-factor-chip` from `<span title="">` to accessible `<button class="ui-tooltip-trigger">` with `.ui-tooltip-bubble` panels in `university-detail-helpers.js`.
+- Added ranking source info-icon tooltip (`d-info-wrap`) in university detail overview Global Rank row (`render-content.js`).
+- Tooltip trigger clicks no longer propagate to the card-overlay navigation link (`universities.js`).
+
+### Search UX (frontend)
+- Auto-switches sort to `relevance` when the user types in the catalog search box; restores `name_asc` on query clear (`universities.js`).
+- Added query-term highlight (`<mark class="navbar-search-highlight">`) and alias badge (`.navbar-search-suggestion__badge`) in navbar autocomplete suggestions (`navbar-search.js`).
+- Added `highlightMatchText` utility export and `normalizeSortMode` URL-param normalization.
+
+### Localization
+- Added `universities.sort_relevance` key in both `eng` and `ru` localization files.
+
+### Tests
+- Backend: 6 new search tests covering transliteration, typo tolerance, multi-token stop-word filtering, domain synonym expansion, and `sort=relevance` endpoint validation (`backend/tests/test_university_search.py`).
+- Unit: new tests for `highlightMatchText`, alias badge rendering in `generateSuggestionsHtml`, and accessible tooltip HTML structure in `renderTrackChanceChip` / `renderTrackFactors`.
+- E2E: updated rank-tooltip test to use click-toggle instead of `title` attribute check; new detail-page tooltip interactivity test for overview and admission sections.
+
 ## 6.0.3 (2026-09-18) - Catalog Card Layout Capping & Responsive Breakpoint Harmonization
 - Capped catalog university card widths with `max-width: 550px` on `.uni-card` and switched `.u-grid` / `.u-skeleton-grid` to `repeat(auto-fill, minmax(280px, 1fr))`, preventing excessive card stretching across large viewports when single or few universities match filters (`frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`).
 - Harmonized mobile and tablet responsive breakpoints to `1024px` across frontend stylesheets and route handlers, eliminating layout jitter and establishing consistent stacked navigation below desktop scale (`frontend/css/style.css`, `frontend/css/about.css`, `frontend/css/guide.css`, `frontend/css/university.css`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/guide.js`, `frontend/javascript/pages/legal.js`).

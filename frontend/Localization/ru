@@ -686,6 +686,7 @@ universities.help.tradeoff.atmosphere: Примерно показывает в�
 universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные варианты.
 universities.help.tradeoff.location: Слева приоритет у университетов в городе, справа — у университетов за городом.
 universities.sort_ai: {fit}: умная ИИ-сортировка
+universities.sort_relevance: По релевантности
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я

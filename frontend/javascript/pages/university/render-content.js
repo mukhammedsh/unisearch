@@ -67,6 +67,22 @@ export function renderOverviewSection({
     </div>
   `;
 
+  const rankMeta = university && typeof university.rank_meta === "object" ? university.rank_meta : {};
+  const rankSource = String(rankMeta.source || "").trim();
+  const rankVerifiedAt = String(rankMeta.verified_at || "").trim();
+  const rankInfoTitle = escapeHtml(translateWord("global_rank", "Global Rank"));
+  const rankTooltip = rankSource ? `
+    <span class="d-info-wrap">
+      <button type="button" class="d-info" aria-label="${rankInfoTitle}" title="${rankInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
+      <span class="d-tooltip" role="tooltip">
+        <strong>${rankInfoTitle}</strong>
+        <span>${escapeHtml(rankSource)}</span>
+        ${rankStatus ? `<span>${escapeHtml(rankingStatusLabel(rankStatus))}</span>` : ""}
+        ${rankVerifiedAt ? `<span>${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(rankVerifiedAt)}</span>` : ""}
+      </span>
+    </span>
+  ` : "";
+
   let rankHtml = `<span>${escapeHtml(unknownFieldText("placeholder.field.global_rank", "Global Rank"))}</span>`;
   if (officialRank) {
     rankHtml = `<span class="d-rank-emphasis">#${university.rank}</span>`;
@@ -86,7 +102,13 @@ export function renderOverviewSection({
   const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
 
   container.innerHTML = `
-    <div class="d-kv"><span>${escapeHtml(translateWord("global_rank", "Global Rank"))}</span>${rankHtml}</div>
+    <div class="d-kv">
+      <span class="d-kv-label">
+        ${escapeHtml(translateWord("global_rank", "Global Rank"))}
+        ${rankTooltip}
+      </span>
+      ${rankHtml}
+    </div>
     ${acceptanceRow}
     <div class="d-kv d-kv--last">
       <span class="d-kv-label">

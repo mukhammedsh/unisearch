@@ -412,13 +412,21 @@ test("global rank sort reorders catalog by rank and displays rank tooltip with v
   const rankMetric = firstCard.locator(".uni-metric--rank");
   await expect(rankMetric).toBeVisible();
   await expect(rankMetric).toContainText("#1");
-  const tooltipText = await rankMetric.getAttribute("title");
-  expect(tooltipText).toBeTruthy();
+  const rankTooltip = firstCard.locator(".uni-metric-tooltip__content");
+  await expect(rankTooltip).not.toBeVisible();
+
+  // 4. Click on the rank metric to toggle verification tooltip open and closed
+  await rankMetric.click();
+  await expect(rankTooltip).toBeVisible();
+  const tooltipText = await rankTooltip.innerText();
   expect(tooltipText).toContain("QS World University Rankings 2026");
   expect(tooltipText).toContain("Official ranking");
 
-  // 4. Click on the rank metric; should navigate to university detail page
   await rankMetric.click();
+  await expect(rankTooltip).not.toBeVisible();
+
+  // 5. Clicking card navigates to university detail page
+  await firstCard.locator(".uni-card-link-overlay").click();
   await expect(page).toHaveURL(/university\.html\?.*id=mit-usa-cambridge/);
 });
 

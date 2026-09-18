@@ -313,6 +313,7 @@ export function initUniversitiesPage() {
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
+    bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
     setupScopeNotice();
 
     let unifitWarningBannerDismissed = false;
@@ -393,7 +394,9 @@ export function initUniversitiesPage() {
     const initialTab = normalizeUniversitiesTab(tabFromUrl || tabFromSaved || "catalog");
 
     const pageParamsSort = pageParams.get("sort");
-    const defaultSortMode = hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc";
+    const pageParamsQ = pageParams.get("q");
+    const initialQ = (pageParamsQ !== null ? pageParamsQ : (savedState.q || "")).trim();
+    const defaultSortMode = initialQ ? "relevance" : (hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc");
     let initialMin = currentLimits.min;
     let initialMax = currentLimits.max;
 
@@ -428,14 +431,19 @@ export function initUniversitiesPage() {
     if (initialMin > currentLimits.max - minRangeGap) initialMin = currentLimits.max - minRangeGap;
     if (initialMax < initialMin + minRangeGap) initialMax = Math.min(currentLimits.max, initialMin + minRangeGap);
 
+    let resolvedSort = pageParamsSort || savedState.sort;
+    if (initialQ && !pageParamsSort && (!resolvedSort || resolvedSort === "name_asc")) {
+        resolvedSort = "relevance";
+    }
+
     const state = {
-        q: savedState.q || "", country: savedState.country || "", region: savedState.region || "", 
+        q: initialQ, country: savedState.country || "", region: savedState.region || "", 
         city: savedState.city || "", study_level: savedState.study_level || "",
         funding_type: getProfileFundingQueryValue(),
         currency: currentCurrency,
         min_tuition: initialMin,
         max_tuition: initialMax, 
-        sort: normalizeSortMode(pageParamsSort || savedState.sort || defaultSortMode),
+        sort: normalizeSortMode(resolvedSort || defaultSortMode),
         practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
         social_vs_hardcore: clampPercent(
             savedState.social_vs_hardcore !== undefined ? savedState.social_vs_hardcore : savedState.admission_bias,
@@ -511,7 +519,7 @@ export function initUniversitiesPage() {
         if (state.region) count += 1;
         if (state.city) count += 1;
         if (Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max) count += 1;
-        if (state.sort && state.sort !== "name_asc") count += 1;
+        if (state.sort && state.sort !== "name_asc" && !(state.q && state.sort === "relevance")) count += 1;
         if (state.study_level) count += 1;
         if (state.funding_type && state.funding_type !== "any") count += 1;
         if (state.only_saved) count += 1;
@@ -1572,9 +1580,23 @@ export function initUniversitiesPage() {
     }
 
     el.qInput?.addEventListener("input", () => {
+        const prevQ = state.q;
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
         hideSearchSuggestions();
+        if (!prevQ && state.q && state.sort === "name_asc") {
+            state.sort = "relevance";
+            if (el.sortSelect) {
+                el.sortSelect.value = "relevance";
+                initCustomSelect("sortSelect");
+            }
+        } else if (prevQ && !state.q && state.sort === "relevance") {
+            state.sort = "name_asc";
+            if (el.sortSelect) {
+                el.sortSelect.value = "name_asc";
+                initCustomSelect("sortSelect");
+            }
+        }
         if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         refetch();
     });
@@ -1582,10 +1604,18 @@ export function initUniversitiesPage() {
     el.searchClearBtn?.addEventListener("click", () => {
         if (!el.qInput) return;
         el.qInput.value = "";
+        const prevQ = state.q;
         state.q = "";
         syncSearchClearButton();
         hideSearchSuggestions();
         el.qInput.focus();
+        if (state.sort === "relevance") {
+            state.sort = "name_asc";
+            if (el.sortSelect) {
+                el.sortSelect.value = "name_asc";
+                initCustomSelect("sortSelect");
+            }
+        }
         if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         refetch();
     });
@@ -1715,7 +1745,7 @@ export function initUniversitiesPage() {
     el.list.addEventListener("click", (e) => {
         const target = e.target instanceof Element ? e.target : null;
         if (!target) return;
-        if (target.closest(".uni-status-trigger")) return;
+        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger")) return;
         const detailLink = target.closest(".uni-card-link-overlay");
         if (detailLink) {
             const card = detailLink.closest("[data-uni-id]");
@@ -2541,7 +2571,7 @@ export function initUniversitiesPage() {
 
     function buildFallbackListParams(apiParams) {
         const fallback = new URLSearchParams(apiParams.toString());
-        fallback.set("sort", "name_asc");
+        fallback.set("sort", state.q ? "relevance" : "name_asc");
         fallback.set("page", state.only_saved ? "1" : String(state.page));
         fallback.set("limit", state.only_saved ? "2000" : String(state.limit));
         return fallback;
@@ -2637,6 +2667,8 @@ export function initUniversitiesPage() {
     function readFromUrl() {
         const sp = new URL(window.location.href).searchParams;
         if(sp.has("q")) state.q = sp.get("q");
+        if(sp.has("sort")) state.sort = normalizeSortMode(sp.get("sort"));
+        else if(sp.has("q") && state.sort === "name_asc") state.sort = "relevance";
         if(sp.has("country")) state.country = sp.get("country");
         if(sp.has("region")) state.region = sp.get("region");
         if(sp.has("city")) state.city = sp.get("city");
@@ -3100,15 +3132,32 @@ export function initUniversitiesPage() {
         const sourceTooltip = rankSource
             ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Checked: ${rankVerifiedAt}`)
             : "";
-        const rankTooltipAttr = sourceTooltip ? ` title="${escapeHtmlAttr(sourceTooltip)}"` : "";
         const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
-        const metricsHtml = `
-            <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
-                <a href="${detailHref}" class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}"${rankTooltipAttr}>
+        const rankAriaLabel = sourceTooltip
+            ? `${rankLabel} ${rankValueText}: ${sourceTooltip}`
+            : `${rankLabel} ${rankValueText}`;
+        const rankInnerHtml = `
                     <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
                     <span class="uni-metric-label">${rankLabel}</span>
                     <span class="uni-metric-value">${rankValueText}</span>
-                </a>
+        `;
+        const metricsHtml = `
+            <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
+                ${sourceTooltip ? `
+                <span class="ui-tooltip-wrap uni-metric-tooltip">
+                    <button type="button" class="ui-tooltip-trigger uni-metric uni-metric--rank uni-metric-trigger${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}" aria-label="${escapeHtmlAttr(rankAriaLabel)}" aria-expanded="false">
+${rankInnerHtml}
+                    </button>
+                    <span class="ui-tooltip-bubble uni-metric-tooltip__content" role="tooltip">
+                        <strong class="ui-tooltip-title">${rankLabel}</strong>
+                        <span class="ui-tooltip-text">${escapeHtml(sourceTooltip)}</span>
+                    </span>
+                </span>
+                ` : `
+                <span class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}">
+${rankInnerHtml}
+                </span>
+                `}
             </div>
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";

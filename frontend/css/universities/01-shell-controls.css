@@ -631,19 +631,27 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   overflow-wrap: anywhere;
 }
 
-.u-info-wrap:focus-within .u-tooltip,
+.u-info-wrap:not(.is-closed):focus-within .u-tooltip,
 .u-info-wrap.is-open .u-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .u-info-wrap:hover .u-tooltip {
+  .u-info-wrap:not(.is-closed):hover .u-tooltip {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto;
   }
+}
+
+.u-info-wrap.is-closed .u-tooltip {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .u-input,

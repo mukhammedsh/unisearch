@@ -179,3 +179,27 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
   assert.equal(grant.finance_override.total_cost_year_usd, 10000);
   assert.equal(grant.published_admission.rate_percent, 7);
 });
+
+test("renderTrackChanceChip and renderTrackFactors render accessible ui-tooltip structure", () => {
+  const badgeHtml = renderTrackChanceChip({
+    chancePercent: 85,
+    badges: ["need_blind"],
+  });
+  assert.match(badgeHtml, /class="ui-tooltip-wrap admission-chance-badge-wrap"/);
+  assert.match(badgeHtml, /<button type="button" class="ui-tooltip-trigger admission-chance-badge/);
+  assert.match(badgeHtml, /class="ui-tooltip-bubble admission-chance-tooltip__content" role="tooltip"/);
+
+  const factorHtml = renderTrackFactors({
+    factors: [
+      {
+        key: "academic_strength",
+        status: "positive",
+        label: "Academic strength",
+        message: "Strong profile.",
+      },
+    ],
+  });
+  assert.match(factorHtml, /class="ui-tooltip-wrap track-factor-chip-wrap"/);
+  assert.match(factorHtml, /<button type="button" class="ui-tooltip-trigger track-factor-chip factor-positive"/);
+  assert.match(factorHtml, /class="ui-tooltip-bubble track-factor-tooltip__content" role="tooltip"/);
+});

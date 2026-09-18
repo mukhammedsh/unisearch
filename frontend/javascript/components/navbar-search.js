@@ -97,7 +97,25 @@ export async function fetchUniversitySearchResults(query, signal) {
   return items;
 }
 
-export function generateSuggestionsHtml(items, highlightedIdx = -1) {
+export function highlightMatchText(text, query) {
+  const str = String(text || "");
+  const q = String(query || "").trim();
+  if (!q || !str) return escapeHtml(str);
+
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+  const parts = str.split(regex);
+  if (parts.length <= 1) return escapeHtml(str);
+
+  return parts.map((part) => {
+    if (part.toLowerCase() === q.toLowerCase()) {
+      return `<mark class="navbar-search-highlight">${escapeHtml(part)}</mark>`;
+    }
+    return escapeHtml(part);
+  }).join("");
+}
+
+export function generateSuggestionsHtml(items, highlightedIdx = -1, query = "") {
   if (!items || !items.length) {
     return `
       <div class="navbar-search-empty" role="status">
@@ -108,6 +126,7 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1) {
 
   const openNewTab = typeof shouldOpenUniversitiesInNewTab === "function" && shouldOpenUniversitiesInNewTab();
   const targetAttrs = openNewTab ? ' target="_blank" rel="noopener noreferrer"' : "";
+  const trimmedQ = String(query || "").trim();
 
   return items.map((item, idx) => {
     const id = String(item?.id || "").trim();
@@ -121,14 +140,27 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1) {
     const href = routeUniversityDetail(id);
     const isHigh = idx === highlightedIdx;
 
+    const nameHtml = trimmedQ ? highlightMatchText(name, trimmedQ) : escapeHtml(name);
+    const locationHtml = trimmedQ ? highlightMatchText(locationText, trimmedQ) : escapeHtml(locationText);
+
+    const aliases = Array.isArray(item?.search_aliases) ? item.search_aliases : [];
+    let matchedAliasBadge = "";
+    if (trimmedQ && aliases.length > 0) {
+      const lowerQ = trimmedQ.toLowerCase();
+      const foundAlias = aliases.find((a) => String(a || "").toLowerCase() === lowerQ);
+      if (foundAlias) {
+        matchedAliasBadge = ` <span class="navbar-search-suggestion__badge">${escapeHtml(foundAlias.toUpperCase())}</span>`;
+      }
+    }
+
     return `
       <a href="${escapeHtmlAttr(href)}" class="navbar-search-suggestion${isHigh ? " is-highlighted" : ""}" role="option" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isHigh ? "true" : "false"}"${targetAttrs}>
         <span class="navbar-search-suggestion__logo">
           <img src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initialsText)}" />
         </span>
         <span class="navbar-search-suggestion__body">
-          <span class="navbar-search-suggestion__name">${escapeHtml(name)}</span>
-          ${locationText ? `<span class="navbar-search-suggestion__location">${escapeHtml(locationText)}</span>` : ""}
+          <span class="navbar-search-suggestion__name">${nameHtml}${matchedAliasBadge}</span>
+          ${locationText ? `<span class="navbar-search-suggestion__location">${locationHtml}</span>` : ""}
         </span>
       </a>
     `;
@@ -153,7 +185,7 @@ export function renderGlobalSearchOfflineNotice(host) {
 export function renderGlobalSearchSuggestions(host, items, query) {
   const container = ensureSuggestionsContainer(host);
   if (!container) return;
-  container.innerHTML = generateSuggestionsHtml(items, highlightedIndex);
+  container.innerHTML = generateSuggestionsHtml(items, highlightedIndex, query);
   container.classList.add("is-open");
   bindImageFallbacks(container);
 }
@@ -283,9 +315,9 @@ export function initGlobalNavbarSearch() {
     }
 
     if (event.key === "Enter") {
-      if (isOpen && suggestions.length > 0) {
+      if (isOpen && suggestions.length > 0 && highlightedIndex >= 0) {
         event.preventDefault();
-        const target = (highlightedIndex >= 0 && suggestions[highlightedIndex]) || suggestions[0];
+        const target = suggestions[highlightedIndex];
         if (target) {
           const href = target.getAttribute("href");
           hideGlobalSearchSuggestions();
@@ -301,7 +333,17 @@ export function initGlobalNavbarSearch() {
         return;
       }
 
-      // If no suggestion dropdown is open, pressing enter with a query opens catalog
+      // If no suggestion dropdown item is actively highlighted with arrow keys:
+      // On the universities catalog page, close suggestions and let the catalog keep the query!
+      const isCatalogPage = typeof document !== "undefined" && document.body?.dataset?.page === "universities";
+      hideGlobalSearchSuggestions();
+
+      if (isCatalogPage) {
+        event.preventDefault();
+        return;
+      }
+
+      // On other pages, pressing enter with a query opens catalog
       const q = qInput.value.trim();
       if (q) {
         event.preventDefault();
