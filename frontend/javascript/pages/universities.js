@@ -672,42 +672,31 @@ export function initUniversitiesPage() {
         el.compareTray.hidden = false;
         el.compareTray.classList.toggle("is-ready", isComparePairReady());
         const canCompare = isComparePairReady();
-        const helperText = canCompare
-            ? t("universities.compare.pair_ready", "Comparison pair is ready")
-            : t("universities.compare.need_more", "Choose the second university");
-        const selectedHtml = ids.map((id) => {
+        const chipsHtml = ids.map((id) => {
             const name = getUniversityDisplayNameById(id);
             const logoSrc = uniLogoSrc(id);
             const removeLabel = t("universities.compare.remove", "Remove from comparison");
             return `
-                <div class="compare-tray__slot" role="listitem">
-                    <div class="compare-tray__slot-row">
-                        ${logoSrc ? `<img class="compare-tray__slot-logo" src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy">` : ""}
-                        <span class="compare-tray__slot-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
-                        <button class="compare-tray__slot-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
-                            ${renderInlineIcon("x-mark", 14)}
-                        </button>
-                    </div>
+                <div class="compare-tray__chip" role="listitem">
+                    ${logoSrc ? `<img class="compare-tray__chip-logo" src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy">` : ""}
+                    <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
+                    <button class="compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
+                        ${renderInlineIcon("x-mark", 12)}
+                    </button>
                 </div>
             `;
         }).join("");
         el.compareTray.innerHTML = `
-            <div class="compare-tray__header">
-                <span class="compare-tray__count-badge">${ids.length}/${MAX_COMPARE_UNIVERSITIES}</span>
-                <span class="compare-tray__text">${escapeHtml(helperText)}</span>
+            <span class="compare-tray__badge">${ids.length}/${MAX_COMPARE_UNIVERSITIES}</span>
+            <div class="compare-tray__chips" role="list" aria-label="${escapeHtmlAttr(t("universities.compare.selection", "Selected universities"))}">
+                ${chipsHtml}
             </div>
-            <div class="compare-tray__body">
-                <div class="compare-tray__pair${ids.length === 1 ? " compare-tray__pair--single" : ""}" role="list" aria-label="${escapeHtmlAttr(t("universities.compare.selection", "Selected universities"))}">
-                    ${selectedHtml}
-                </div>
-                <div class="compare-tray__actions">
-                    <button class="compare-tray__btn" type="button" data-action="clear-compare">${escapeHtml(t("universities.compare.clear", "Clear"))}</button>
-                    <button class="compare-tray__btn compare-tray__btn--primary" type="button" data-action="open-compare"${canCompare ? "" : " disabled"}>${escapeHtml(t(canCompare ? "universities.compare.continue" : "universities.compare.open", canCompare ? "Continue" : "Compare"))}</button>
-                </div>
+            <div class="compare-tray__actions">
+                <button class="compare-tray__btn compare-tray__btn--ghost" type="button" data-action="clear-compare">${escapeHtml(t("universities.compare.clear", "Clear"))}</button>
+                <button class="compare-tray__btn compare-tray__btn--primary" type="button" data-action="open-compare"${canCompare ? "" : " disabled"}>${escapeHtml(t(canCompare ? "universities.compare.continue" : "universities.compare.open", canCompare ? "Continue" : "Compare"))}</button>
             </div>
         `;
         replayMotion(el.compareTray, "motion-panel-enter", { timeoutMs: 420 });
-        replayMotion(el.compareTray.querySelector(".compare-tray__text"), "motion-state-pulse", { timeoutMs: 520 });
     };
 
     const compensateCardAnchorShift = (card, beforeTop) => {

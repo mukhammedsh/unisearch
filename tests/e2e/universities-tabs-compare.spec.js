@@ -50,9 +50,7 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
   await imperialCard.click();
 
   await expect(page.locator(".compare-tray")).toBeVisible();
-  await expect(page.locator(".compare-tray__slot")).toHaveCount(2);
-  await expect(page.locator(".compare-tray")).toContainText("Ready to compare");
-  await expect(page.locator(".compare-tray")).not.toContainText("Comparison pair");
+  await expect(page.locator(".compare-tray__chip")).toHaveCount(2);
   await expect(page.locator("[data-action='open-compare']")).toBeEnabled();
   await page.locator("[data-action='open-compare']").click();
 
@@ -114,7 +112,7 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   await page.locator("#compareModeBtn").click();
 
   await expect(page.locator(".compare-tray")).toBeVisible();
-  await expect(page.locator(".compare-tray__slot")).toHaveCount(2);
+  await expect(page.locator(".compare-tray__chip")).toHaveCount(2);
   await expect(page.locator("[data-action='open-compare']")).toBeEnabled();
 
   const cards = page.locator("#universitiesList .uni-card:not(.is-skeleton)");
@@ -312,7 +310,7 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await page.goto("/index.html?tab=compare");
   const tray = page.locator(".compare-tray");
   await expect(tray).toBeVisible();
-  const removeBtn = page.locator(".compare-tray__slot-remove").first();
+  const removeBtn = page.locator(".compare-tray__chip-remove").first();
   await expect(removeBtn).toBeVisible();
   await removeBtn.click();
   await expect.poll(async () => page.evaluate(() =>

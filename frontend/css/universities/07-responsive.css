@@ -591,6 +591,15 @@
     bottom: calc(86px + env(safe-area-inset-bottom));
     width: auto;
     transform: none;
+    flex-wrap: wrap;
+  }
+
+  .compare-tray__chips {
+    flex-wrap: wrap;
+  }
+
+  .compare-tray.motion-panel-enter {
+    animation: motion-tray-enter-mobile var(--motion-medium) var(--motion-ease-enter) both;
   }
 
 }

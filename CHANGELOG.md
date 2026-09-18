@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.1.1 (2026-09-18) - Compact University Comparison Tray Rework
+- Redesigned comparison floating tray into a streamlined single-row floating bar with chip items (`.compare-tray`, `.compare-tray__chips`, `.compare-tray__chip`, `.compare-tray__badge`) and compact actions (`frontend/css/universities/03-comparison.css`, `frontend/javascript/pages/universities.js`).
+- Refined responsive comparison tray layout with adaptive flex-wrapping and dedicated mobile entry animation `motion-tray-enter-mobile` (`frontend/css/style.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/07-responsive.css`).
+- Restored `.compare-uni-card__slot` label styling in comparison overview cards (`frontend/css/universities/03-comparison.css`).
+- Updated E2E comparison tray selectors and assertions in `tests/e2e/universities-tabs-compare.spec.js`.
+
 ## 6.1.0 (2026-09-18) - Search Engine Overhaul & Unified Tooltip System
 
 ### Search (backend)

@@ -1,29 +1,30 @@
+/* ── Compare tray: compact single-row floating bar ── */
+
 .compare-tray {
   position: fixed;
   left: 50%;
   bottom: 24px;
   z-index: var(--z-tray);
   transform: translateX(-50%);
-  width: min(860px, calc(100vw - 32px));
-  padding: 12px 16px;
+  width: min(680px, calc(100vw - 32px));
+  padding: 8px 12px;
   border: none;
   border-radius: 16px;
   background: var(--surface-solid);
   box-shadow: var(--shadow-md);
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
   transform-origin: bottom center;
 }
 
-.compare-tray__header {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.compare-tray.motion-panel-enter {
+  animation: motion-anchored-tray-enter var(--motion-medium) var(--motion-ease-enter) both;
 }
 
-.compare-tray__count-badge {
+/* Badge */
+
+.compare-tray__badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -34,93 +35,50 @@
   font-size: 11px;
   font-weight: 700;
   line-height: 1.2;
-}
-
-.compare-tray__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: stretch;
-  gap: 12px;
-}
-
-.compare-tray.motion-panel-enter {
-  animation: motion-anchored-tray-enter var(--motion-medium) var(--motion-ease-enter) both;
-}
-
-.compare-tray__text {
-  display: block;
-  min-width: 0;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.3;
-  font-weight: 500;
-}
-
-.compare-tray.is-ready .compare-tray__text {
-  color: var(--text);
-  font-weight: 600;
-}
-
-.compare-tray__pair {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 8px;
-}
-
-.compare-tray__pair--single {
-  grid-template-columns: minmax(180px, 320px);
-}
-
-.compare-tray__slot {
-  box-sizing: border-box;
-  min-width: 0;
-  min-height: 48px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 12px;
-  background: var(--surface-soft);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.compare-tray__slot-label,
-.compare-uni-card__slot,
-.compare-reason-slot {
-  color: var(--text-muted);
-  font-size: 10px;
-  line-height: 1.15;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.compare-tray__slot-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.compare-tray__slot-logo {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-xs);
-  object-fit: contain;
-  background: var(--surface-badge);
-  border: none;
-  color: var(--surface-badge-text);
-  padding: 2px;
   flex-shrink: 0;
 }
 
-.compare-tray__slot-name {
+/* Chips container */
+
+.compare-tray__chips {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  flex-wrap: nowrap;
+}
+
+/* Individual chip */
+
+.compare-tray__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 240px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.compare-tray__chip-logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: contain;
+  background: var(--surface-badge);
+  border: none;
+  padding: 1px;
+  flex-shrink: 0;
+}
+
+.compare-tray__chip-name {
   min-width: 0;
   flex: 1;
   color: var(--text);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.25;
   font-weight: 600;
   overflow: hidden;
@@ -128,10 +86,10 @@
   white-space: nowrap;
 }
 
-.compare-tray__slot-remove {
-  width: 22px;
-  height: 22px;
-  border-radius: var(--radius-xs);
+.compare-tray__chip-remove {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
   border: 0;
   background: transparent;
   color: var(--text-muted);
@@ -140,63 +98,64 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  padding: 0;
   transition: color var(--motion-fast), background-color var(--motion-fast);
 }
 @media (hover: hover) and (pointer: fine) {
 
-.compare-tray__slot-remove:hover {
+.compare-tray__chip-remove:hover {
   color: var(--color-danger-muted);
   background: var(--color-danger-bg);
 }
 }
 
+/* Actions */
+
 .compare-tray__actions {
   display: flex;
   gap: 8px;
-  flex: 0 0 auto;
-  align-self: stretch;
-  align-items: stretch;
+  flex-shrink: 0;
+  align-items: center;
 }
 
 .compare-tray__btn {
   box-sizing: border-box;
-  min-height: 48px;
-  padding: 8px 16px;
+  height: 32px;
+  padding: 0 12px;
   border: none;
-  border-radius: 12px;
-  background: var(--surface-soft);
-  color: var(--text);
+  border-radius: var(--radius-sm);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.compare-tray__btn--ghost {
+  background: transparent;
+  color: var(--text-muted);
 }
 @media (hover: hover) and (pointer: fine) {
 
-.compare-tray__btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
+.compare-tray__btn--ghost:hover {
+  color: var(--text);
+  background: var(--surface-soft);
 }
 }
 
 .compare-tray__btn--primary {
   background: var(--accent);
-  border-color: var(--accent);
   color: var(--text-inverse);
 }
 @media (hover: hover) and (pointer: fine) {
 
 .compare-tray__btn--primary:hover:not(:disabled) {
   background: var(--accent-strong);
-  border-color: var(--accent-strong);
-  color: var(--text-inverse);
 }
 }
 
@@ -231,6 +190,15 @@
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
+}
+
+.compare-uni-card__slot {
+  color: var(--text-muted);
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .compare-uni-card__identity {
