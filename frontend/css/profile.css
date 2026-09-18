@@ -132,6 +132,24 @@ body[data-page="profile"] {
   min-width: 0;
 }
 
+/* --------------------------------------------------------------------------
+   Identity Header: nickname lives on its own full-width row, top-left.
+   The narrow 140px sidebar could not fit the editor, so the name moved
+   out of the sidebar entirely — no overlay or popover is needed.
+   -------------------------------------------------------------------------- */
+.profile-identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.profile-identity > .profile-field-error {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
 .profile-username {
   display: flex;
   align-items: center;
@@ -167,8 +185,12 @@ body[data-page="profile"] {
   border-radius: var(--radius-md);
   padding: 0 var(--space-3);
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
   font-family: inherit;
+}
+
+.profile-name-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .profile-name-input.is-invalid,
@@ -183,9 +205,12 @@ body[data-page="profile"] {
 
 .profile-username.is-editing .profile-name-input {
   display: block;
-  flex: 1 1 auto;
-  min-width: 120px;
-  width: 100%;
+  /* Width follows the 16-char limit via size="16": compact field that fits
+     the longest allowed nickname, with room to shrink on narrow screens. */
+  flex: 0 1 auto;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .profile-edit-name-btn {

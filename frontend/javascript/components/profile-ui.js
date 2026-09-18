@@ -134,6 +134,18 @@ export function initProfileUI() {
     const editNameBtn = document.getElementById("editNameBtn");
     const profileUsernameDiv = document.querySelector(".profile-username");
 
+    const setUsernameEditing = (isEditing) => {
+        profileUsernameDiv?.classList.toggle("is-editing", isEditing);
+        editNameBtn?.setAttribute("aria-expanded", isEditing ? "true" : "false");
+    };
+
+    const cancelUsernameEditing = () => {
+        setFieldInvalid(nameInput, false);
+        if (nameInput) nameInput.value = String(profile.name || "").trim();
+        setUsernameEditing(false);
+        refreshSaveState();
+    };
+
     const normalizeFundingType = (value) => {
         const raw = String(value || "").trim().toLowerCase();
         return (raw === "grant" || raw === "paid") ? raw : "any";
@@ -790,7 +802,7 @@ export function initProfileUI() {
         if (nextName === currentName) {
             setFieldInvalid(nameInput, false);
             if (nameInput) nameInput.value = currentName;
-            if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+            setUsernameEditing(false);
             refreshSaveState();
             return true;
         }
@@ -812,7 +824,7 @@ export function initProfileUI() {
         profile.name = nextName;
         if (nameDisplay) nameDisplay.textContent = nextName;
         if (nameInput) nameInput.value = nextName;
-        if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+        setUsernameEditing(false);
 
         refreshSaveState();
         return true;
@@ -943,7 +955,7 @@ export function initProfileUI() {
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
         updateGpaScaleUI(Number(profile.gpaScale) === 5 ? 5 : 4);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
-        if (profileUsernameDiv) profileUsernameDiv.classList.remove("is-editing");
+        setUsernameEditing(false);
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
         if (profileFundingTypeSelect) profileFundingTypeSelect.value = normalizeFundingType(profile.fundingType);
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
@@ -1397,23 +1409,38 @@ export function initProfileUI() {
         editNameBtn.onclick = () => {
             const isEditing = profileUsernameDiv.classList.contains("is-editing");
             if (!isEditing) {
-                profileUsernameDiv.classList.add("is-editing");
+                setUsernameEditing(true);
                 nameInput.focus();
+                nameInput.select?.();
                 return;
             }
-            commitProfileName();
+            if (commitProfileName()) editNameBtn.focus();
         };
 
         nameInput.addEventListener("keydown", (e) => {
-            if (e.key !== "Enter") return;
             if (!profileUsernameDiv.classList.contains("is-editing")) return;
-            e.preventDefault();
-            commitProfileName();
+            if (e.key === "Enter") {
+                e.preventDefault();
+                if (commitProfileName()) editNameBtn.focus();
+                return;
+            }
+            if (e.key === "Escape") {
+                e.preventDefault();
+                e.stopPropagation();
+                cancelUsernameEditing();
+                editNameBtn.focus();
+            }
         });
         nameInput.addEventListener("input", () => {
             setFieldInvalid(nameInput, false);
             if (!profileUsernameDiv.classList.contains("is-editing")) return;
             refreshSaveState();
+        });
+        document.addEventListener("pointerdown", (e) => {
+            if (!profileUsernameDiv.classList.contains("is-editing")) return;
+            const target = e.target instanceof Element ? e.target : null;
+            if (target?.closest?.(".profile-username")) return;
+            if (!commitProfileName()) e.preventDefault();
         });
     }
 

@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.1.2 (2026-09-18) - Profile Nickname Editor Relocation & Focus Polish
+- Moved the nickname editor out of the narrow 140px profile sidebar into a dedicated full-width identity header row at the top-left of the profile workspace, eliminating input truncation and overlap without any overlay (`frontend/profile.html`, `frontend/css/profile.css`).
+- Sized the nickname input to its 16-character limit via `size="16"` with content-based flex sizing, keeping it compact with room to shrink on narrow viewports (`frontend/profile.html`, `frontend/css/profile.css`).
+- Replaced the always-on accent glow around the nickname input with the standard `outline: 2px solid var(--accent)` focus ring shown only on `:focus-visible`, matching its border radius (`frontend/css/profile.css`).
+- Hardened nickname editing behavior: Enter commits, Escape cancels and restores the saved name, outside click commits, and focus returns to the edit button with `aria-expanded` kept in sync (`frontend/javascript/components/profile-ui.js`).
+
 ## 6.1.1 (2026-09-18) - Compact University Comparison Tray Rework
 - Redesigned comparison floating tray into a streamlined single-row floating bar with chip items (`.compare-tray`, `.compare-tray__chips`, `.compare-tray__chip`, `.compare-tray__badge`) and compact actions (`frontend/css/universities/03-comparison.css`, `frontend/javascript/pages/universities.js`).
 - Refined responsive comparison tray layout with adaptive flex-wrapping and dedicated mobile entry animation `motion-tray-enter-mobile` (`frontend/css/style.css`, `frontend/css/universities/05-catalog-polish.css`, `frontend/css/universities/07-responsive.css`).

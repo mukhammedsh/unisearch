@@ -61,36 +61,42 @@
         </div>
       </section>
 
+      <!-- Identity Header: nickname sits on its own row, top-left -->
+      <div class="profile-identity">
+        <div class="profile-username" id="profileUsernameDiv">
+          <span id="profileNameDisplay" class="profile-username-label">User</span>
+          <input
+            id="profileNameInput"
+            class="profile-name-input"
+            type="text"
+            value="User"
+            minlength="3"
+            maxlength="16"
+            size="16"
+            aria-label="Edit username"
+            data-i18n-aria-label="profile.action.edit_name"
+          />
+          <button
+            class="icon-btn profile-edit-name-btn"
+            id="editNameBtn"
+            type="button"
+            title="Edit Name"
+            aria-label="Edit Name"
+            aria-expanded="false"
+            aria-controls="profileNameInput"
+            data-i18n-title="profile.action.edit_name"
+            data-i18n-aria-label="profile.action.edit_name"
+          >
+            <span data-heroicon="pencil-square" data-icon-size="18"></span>
+          </button>
+        </div>
+      </div>
+
       <!-- 2-Column Workspace Layout -->
       <div class="profile-workspace-layout">
-        <!-- Left Sidebar: Identity + Navigation + Reset -->
+        <!-- Left Sidebar: Navigation + Reset -->
         <aside class="profile-sidebar">
           <div class="profile-sidebar-top">
-            <div class="profile-username" id="profileUsernameDiv">
-              <span id="profileNameDisplay" class="profile-username-label">User</span>
-              <input
-                id="profileNameInput"
-                class="profile-name-input"
-                type="text"
-                value="User"
-                minlength="3"
-                maxlength="16"
-                aria-label="Edit username"
-                data-i18n-aria-label="profile.action.edit_name"
-              />
-              <button
-                class="icon-btn profile-edit-name-btn"
-                id="editNameBtn"
-                type="button"
-                title="Edit Name"
-                aria-label="Edit Name"
-                data-i18n-title="profile.action.edit_name"
-                data-i18n-aria-label="profile.action.edit_name"
-              >
-                <span data-heroicon="pencil-square" data-icon-size="18"></span>
-              </button>
-            </div>
-
             <!-- Section Navigation Tabs -->
             <nav class="profile-section-tabs-bar" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
               <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
