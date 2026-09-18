@@ -4,6 +4,9 @@ import assert from 'node:assert';
 import {
   applyTheme,
   getCurrentTheme,
+  getThemePreference,
+  initTheme,
+  normalizeThemePreference,
   toggleTheme,
 } from '../../frontend/javascript/utils/theme.js';
 
@@ -106,5 +109,46 @@ describe('theme.js', () => {
     assert.strictEqual(docAttributes['data-theme'], 'light');
     assert.strictEqual(mockLocalStorage['unisearch_theme'], 'light');
     assert.strictEqual(docClasses.has('theme-animating'), false);
+  });
+
+  test('normalizeThemePreference maps known values and falls back to system', () => {
+    assert.strictEqual(normalizeThemePreference('dark'), 'dark');
+    assert.strictEqual(normalizeThemePreference('light'), 'light');
+    assert.strictEqual(normalizeThemePreference('system'), 'system');
+    assert.strictEqual(normalizeThemePreference(''), 'system');
+    assert.strictEqual(normalizeThemePreference(null), 'system');
+    assert.strictEqual(normalizeThemePreference('unknown-value'), 'system');
+    assert.strictEqual(normalizeThemePreference('DARK'), 'dark');
+  });
+
+  test('getThemePreference defaults to system and preserves stored choices', () => {
+    assert.strictEqual(getThemePreference(), 'system');
+
+    mockLocalStorage['unisearch_theme'] = 'dark';
+    assert.strictEqual(getThemePreference(), 'dark');
+
+    mockLocalStorage['unisearch_theme'] = 'light';
+    assert.strictEqual(getThemePreference(), 'light');
+
+    mockLocalStorage['unisearch_theme'] = 'system';
+    assert.strictEqual(getThemePreference(), 'system');
+
+    mockLocalStorage['unisearch_theme'] = 'legacy-unknown';
+    assert.strictEqual(getThemePreference(), 'system');
+  });
+
+  test('applyTheme with system preference resolves OS theme and persists preference', () => {
+    const resolved = applyTheme('system', { persist: true });
+    assert.strictEqual(resolved, 'light');
+    assert.strictEqual(docAttributes['data-theme'], 'light');
+    assert.strictEqual(mockLocalStorage['unisearch_theme'], 'system');
+  });
+
+  test('initTheme preserves an existing stored dark choice', () => {
+    mockLocalStorage['unisearch_theme'] = 'dark';
+    const resolved = initTheme();
+    assert.strictEqual(resolved, 'dark');
+    assert.strictEqual(docAttributes['data-theme'], 'dark');
+    assert.strictEqual(mockLocalStorage['unisearch_theme'], 'dark');
   });
 });

@@ -422,13 +422,15 @@ body:not([data-page="universities"]) .u-sidebar {
   .u-reset,
   .profile-action-btn,
   .theme-btn,
+  .navbar-search-toggle,
+  .navbar-search-back,
   .settings-trigger-btn,
   .profile-trigger-btn,
   .u-section-tab,
   .u-saved-filter__btn,
   .u-state-card__btn,
   .rank-empty__btn,
-  .profile-scale-btn,
+  .profile-unit--toggle,
   .profile-delete,
   .menu-btn,
   .lang-switch,
@@ -515,7 +517,8 @@ html, body {
 }
 
 .profile-trigger-btn,
-.settings-trigger-btn{
+.settings-trigger-btn,
+.navbar-search-toggle{
   border: none;
   box-shadow: var(--shadow-xs);
   background: var(--surface-soft);
@@ -529,36 +532,16 @@ html, body {
   padding: 0;
   line-height: 1;
   cursor: pointer;
+}
+
+.navbar-search-toggle {
+  display: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-trigger-btn:hover,
-  .settings-trigger-btn:hover{
-    border-color: transparent;
-    box-shadow: var(--shadow-sm);
-    color: var(--accent);
-  }
-}
-
-.theme-btn {
-  border: none;
-  box-shadow: var(--shadow-xs);
-  background: var(--surface-soft);
-  color: var(--text);
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  margin-right: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-  cursor: pointer;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .theme-btn:hover {
+  .settings-trigger-btn:hover,
+  .navbar-search-toggle:hover{
     border-color: transparent;
     box-shadow: var(--shadow-sm);
     color: var(--accent);
@@ -833,48 +816,12 @@ html, body {
   gap: 8px;
 }
 
-.profile-username{
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text);
-  max-width: 100%;
-  overflow: hidden;
-}
-
 .profile-subtitle{
   font-size: 12px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-}
-
-.profile-name-input{
-  display: none;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-size: 16px;
-  min-width: 180px;
-  outline: none;
-  background: var(--surface);
-  color: var(--text);
-}
-
-.profile-name-input:focus{
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-
-.profile-username.is-editing #profileNameDisplay{
-  display: none;
-}
-
-.profile-username.is-editing .profile-name-input{
-  display: inline-flex;
 }
 
 .icon-btn{
@@ -1261,8 +1208,6 @@ html, body {
 
 .profile-input.is-invalid,
 .profile-input[aria-invalid="true"],
-.profile-name-input.is-invalid,
-.profile-name-input[aria-invalid="true"],
 :where(input, select, textarea).is-invalid,
 :where(input, select, textarea)[aria-invalid="true"] {
   border-color: var(--color-danger);
@@ -1279,8 +1224,6 @@ html, body {
 
 .profile-input.is-invalid:focus,
 .profile-input[aria-invalid="true"]:focus,
-.profile-name-input.is-invalid:focus,
-.profile-name-input[aria-invalid="true"]:focus,
 :where(input, select, textarea).is-invalid:focus,
 :where(input, select, textarea)[aria-invalid="true"]:focus {
   border-color: var(--color-danger);
@@ -1898,6 +1841,7 @@ html, body {
     gap: var(--space-3);
   }
 
+  .settings-row[data-setting-key="theme_preference"],
   .settings-row[data-setting-key="preferred_currency"],
   .settings-row[data-setting-key="currency_display_mode"] {
     flex-direction: column;
@@ -2236,10 +2180,6 @@ html, body {
   display: none;
 }
 
-.profile-error--username{
-  margin: 0 0 var(--space-2);
-}
-
 .profile-exam-list{
   display: grid;
   gap: 12px;
@@ -2470,17 +2410,6 @@ html, body {
   .toast-close:hover { opacity: 1; }
 }
 
-.profile-username .icon-btn{
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-}
-
-.profile-username .icon-btn .ui-icon{
-  width: 16px;
-  height: 16px;
-}
-
 @keyframes motion-toast-in {
   from {
     transform: translate3d(calc(100% + 40px), 0, 0);
@@ -2503,7 +2432,10 @@ html, body {
   }
 }
 
-/* --- Custom Select (Global dropdown styles) --- */
+/* --- Custom Select (Single canonical dropdown panel) ---
+   All custom selects reuse .custom-options below. Do not fork
+   background/border/shadow/radius in page CSS; only positioning
+   or sizing variants may override layout properties. */
 .custom-select-wrapper {
   position: relative;
   width: 100%;
@@ -2540,7 +2472,8 @@ html, body {
     border-color var(--motion-fast) var(--motion-ease-standard),
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-radius var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2572,6 +2505,18 @@ html, body {
 
 .custom-select-wrapper.open .custom-select-trigger::after {
   transform: rotate(180deg);
+}
+
+/* Attached morph: the trigger sheds rounding on the side facing the menu,
+   so trigger + panel read as one sheet growing from the trigger edge. */
+.custom-select-wrapper.open:not(.open-up) .custom-select-trigger {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.custom-select-wrapper.open.open-up .custom-select-trigger {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .custom-options {
@@ -2652,6 +2597,40 @@ html, body {
   visibility: visible;
   pointer-events: all;
   transform: translateY(0);
+}
+
+/* Directional attachment: remove rounding on the side facing the trigger,
+   close the gap so the panel grows directly from the trigger edge. */
+.custom-select-wrapper.open:not(.open-up) .custom-options {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform-origin: top center;
+}
+
+.custom-select-wrapper.open.open-up .custom-options {
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transform-origin: bottom center;
+}
+
+/* Navbar language menu is centered and wider than its trigger,
+   so it stays a detached floating panel with full rounding and gap. */
+.navbar-right .lang-control .custom-select-wrapper.open:not(.open-up) .custom-options {
+  margin-top: var(--space-1);
+  border-top-left-radius: var(--radius-base);
+  border-top-right-radius: var(--radius-base);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open.open-up .custom-options {
+  margin-bottom: var(--space-1);
+  border-bottom-left-radius: var(--radius-base);
+  border-bottom-right-radius: var(--radius-base);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
+  border-radius: var(--radius-md);
 }
 
 .custom-optgroup-label {
@@ -2751,10 +2730,10 @@ html, body {
   box-shadow: var(--shadow-xs);
 }
 
-/* Footer block */
+/* Footer block: slim single-line footer, vertical rhythm owned by .site-footer only */
 .site-footer {
     background: var(--surface);
-    padding: 24px 0;
+    padding: 12px 0;
     margin-top: auto;
     border: none;
     border-top: none;
@@ -2851,8 +2830,8 @@ html, body {
 @media (hover: hover) and (pointer: fine) {
   .social-links a:hover {
       color: var(--text);
-      background: var(--surface-soft);
-      border-color: var(--line);
+      background: var(--bg-soft);
+      border-color: transparent;
   }
 }
 
@@ -2998,16 +2977,6 @@ html, body {
     width: 100%;
   }
 
-  .profile-name-input {
-    min-width: 0;
-    width: 120px;
-    max-width: 100%;
-  }
-  
-  .profile-username {
-    gap: 4px;
-  }
-
   .lang-add-grid{
     grid-template-columns: 1fr;
   }
@@ -3107,9 +3076,14 @@ html, body {
 }
 
 @media (max-width: 700px) {
+  .site-footer {
+    padding: 12px 0;
+  }
+
   .footer-content {
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    padding: 0 16px;
     text-align: center;
   }
 
@@ -3643,7 +3617,7 @@ h6,
 
 .footer-content {
   max-width: 1240px;
-  padding: 20px 24px;
+  padding: 0 24px;
 }
 
 .footer-content p {
@@ -3655,8 +3629,9 @@ h6,
 .social-links a {
   min-width: 36px;
   height: 36px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
+  box-shadow: var(--shadow-xs);
 }
 
 @media (max-width: 768px) {
@@ -4012,6 +3987,7 @@ body.route-loading main {
 
   .menu-btn,
   .theme-btn,
+  .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn {
     width: 34px;
@@ -4069,10 +4045,6 @@ body.route-loading main {
 
   .profile-title {
     min-width: 0;
-  }
-
-  .profile-username {
-    font-size: 18px;
   }
 
   .profile-progress,
@@ -4240,6 +4212,7 @@ canvas {
 
   .menu-btn,
   .theme-btn,
+  .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn,
   .navbar-right .lang-control .custom-select-trigger {
@@ -4403,6 +4376,7 @@ canvas {
 
   .menu-btn,
   .theme-btn,
+  .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn,
   .navbar-right .lang-control .custom-select-trigger {
@@ -4533,6 +4507,7 @@ canvas {
 
   .menu-btn,
   .theme-btn,
+  .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn {
     flex-basis: 36px;
@@ -4695,6 +4670,7 @@ canvas {
 
   .menu-btn,
   .theme-btn,
+  .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn {
     flex: 0 0 36px;
@@ -4758,6 +4734,7 @@ canvas {
 
   .menu-btn,
   .theme-btn,
+  .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn {
     flex-basis: 34px;
@@ -4979,8 +4956,7 @@ body {
 
 .profile-block,
 .profile-exam-item,
-.profile-input,
-.profile-name-input {
+.profile-input {
   background: var(--surface-soft);
   border: none;
 }
@@ -5817,6 +5793,67 @@ button.track-factor-chip {
   display: none !important;
 }
 
+/* Mobile search overlay trigger (YouTube-style): sizing and visuals come from
+   the shared navbar button group above, so the loupe always matches them. */
+.navbar-search-toggle[hidden] {
+  display: none !important;
+}
+
+/* Back control shown only while the mobile search overlay is open. */
+.navbar-search-back {
+  display: none;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-back:hover {
+    background: var(--surface-soft);
+    color: var(--text);
+  }
+}
+
+.navbar-search-back[hidden] {
+  display: none !important;
+}
+
+/* Scrim dims page content below the navbar while mobile search is focused. */
+.navbar-search-scrim {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: calc(var(--z-nav) - 1);
+  background: var(--backdrop);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    visibility var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search-scrim.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.navbar-search-scrim[hidden] {
+  display: none !important;
+}
+
 .navbar-search-icon {
   position: absolute;
   left: 14px;
@@ -6097,58 +6134,88 @@ button.track-factor-chip {
 }
 
 @media (max-width: 1024px) {
-  :root,
-  body:has(.navbar.has-university-search),
-  body[data-page="universities"] {
-    --nav-height: 120px;
-  }
-
+  /* Single-row navbar on mobile: the search field is hidden behind a
+     YouTube-style loupe button and expands into a full-width overlay. */
   .navbar.has-university-search {
     display: flex;
     height: var(--nav-height);
     min-height: var(--nav-height);
-    flex-wrap: wrap;
-    align-content: center;
-    row-gap: 8px;
-    column-gap: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 12px;
   }
 
   .navbar.has-university-search .navbar-left {
     order: 1;
-    flex: 1 1 auto;
-    width: auto;
-  }
-
-  .navbar.has-university-search .navbar-right {
-    order: 2;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    min-width: 0;
     width: auto;
   }
 
   .navbar.has-university-search .navbar-search {
+    order: 2;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    display: none;
+  }
+
+  .navbar.has-university-search .navbar-right {
     order: 3;
-    flex: 0 0 100%;
+    flex: 0 0 auto;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .navbar.has-university-search .navbar-search-toggle {
+    display: inline-flex;
+    order: 1;
+  }
+
+  .navbar.has-university-search.is-search-open {
+    gap: 8px;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-left,
+  .navbar.has-university-search.is-search-open .navbar-right {
+    display: none;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 auto;
     width: 100%;
   }
 
-  .navbar-search input {
+  .navbar.has-university-search.is-search-open .navbar-search-back {
+    display: inline-flex;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search-icon {
+    display: none;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search input {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
     height: 44px;
+    padding-left: 16px;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search-suggestions {
+    max-height: calc(100dvh - var(--nav-height) - 24px);
+    overflow-y: auto;
   }
 }
 
 @media (max-width: 340px) {
-  body:has(.navbar.has-university-search),
-  body[data-page="universities"] {
-    --nav-height: 160px;
-  }
-
   .navbar.has-university-search .navbar-left,
   .navbar.has-university-search .navbar-right {
-    flex: 0 0 100%;
-    width: 100%;
-    justify-content: center;
+    flex: 0 0 auto;
+    width: auto;
   }
 }
 

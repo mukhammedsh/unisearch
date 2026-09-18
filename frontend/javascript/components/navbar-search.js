@@ -202,8 +202,164 @@ function bindGlobalClick() {
   });
 }
 
+const MOBILE_SEARCH_MEDIA = "(max-width: 1024px)";
+let mobileSearchBound = false;
+
+export function isMobileSearchViewport() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  try {
+    return window.matchMedia(MOBILE_SEARCH_MEDIA).matches;
+  } catch (err) {
+    return false;
+  }
+}
+
+export function isMobileSearchOpen() {
+  if (typeof document === "undefined") return false;
+  return Boolean(document.querySelector(".navbar.is-search-open"));
+}
+
+function setScrimVisible(scrim, visible) {
+  if (!scrim) return;
+  if (visible) {
+    scrim.hidden = false;
+    if (typeof window !== "undefined" && typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          scrim.classList.add("is-visible");
+        });
+      });
+    } else {
+      scrim.classList.add("is-visible");
+    }
+    return;
+  }
+  scrim.classList.remove("is-visible");
+  if (typeof window !== "undefined") {
+    window.setTimeout(() => {
+      if (!isMobileSearchOpen() && scrim && !scrim.classList.contains("is-visible")) {
+        scrim.hidden = true;
+      }
+    }, 180);
+  } else {
+    scrim.hidden = true;
+  }
+}
+
+export function openMobileSearch() {
+  if (typeof document === "undefined") return false;
+  const navbar = document.querySelector(".navbar");
+  const host = document.getElementById("universitySearch");
+  const qInput = document.getElementById("qInput");
+  const backBtn = document.getElementById("navbarSearchBack");
+  const toggle = document.getElementById("navbarSearchToggle");
+  const scrim = document.getElementById("navbarSearchScrim");
+  if (!navbar || !host || !qInput) return false;
+  if (isGlobalSearchDisabledWorkspace()) return false;
+  if (!isMobileSearchViewport()) return false;
+  if (navbar.classList.contains("is-search-open")) {
+    if (document.activeElement !== qInput) qInput.focus({ preventScroll: true });
+    return true;
+  }
+  navbar.classList.add("is-search-open");
+  if (backBtn) backBtn.hidden = false;
+  setScrimVisible(scrim, true);
+  if (toggle) toggle.setAttribute("aria-expanded", "true");
+  qInput.focus({ preventScroll: true });
+  return true;
+}
+
+export function closeMobileSearch(options = {}) {
+  if (typeof document === "undefined") return false;
+  const { returnFocus = false } = options || {};
+  const navbar = document.querySelector(".navbar");
+  const backBtn = document.getElementById("navbarSearchBack");
+  const toggle = document.getElementById("navbarSearchToggle");
+  const scrim = document.getElementById("navbarSearchScrim");
+  const qInput = document.getElementById("qInput");
+  if (!navbar || !navbar.classList.contains("is-search-open")) return false;
+  navbar.classList.remove("is-search-open");
+  hideGlobalSearchSuggestions();
+  if (backBtn) backBtn.hidden = true;
+  setScrimVisible(scrim, false);
+  if (toggle) {
+    toggle.setAttribute("aria-expanded", "false");
+    if (returnFocus && isMobileSearchViewport() && toggle.hidden !== true) {
+      toggle.focus({ preventScroll: true });
+    }
+  }
+  if (qInput && document.activeElement === qInput && !returnFocus) {
+    qInput.blur();
+  }
+  return true;
+}
+
+export function syncMobileSearchOverlay() {
+  if (typeof document === "undefined") return;
+  const navbar = document.querySelector(".navbar");
+  const host = document.getElementById("universitySearch");
+  const qInput = document.getElementById("qInput");
+  const toggle = document.getElementById("navbarSearchToggle");
+  const backBtn = document.getElementById("navbarSearchBack");
+  const available = Boolean(
+    navbar && host && qInput &&
+    navbar.classList.contains("has-university-search") &&
+    !isGlobalSearchDisabledWorkspace()
+  );
+  if (toggle) toggle.hidden = !available;
+  if (!available || !isMobileSearchViewport()) {
+    if (navbar && navbar.classList.contains("is-search-open")) {
+      closeMobileSearch();
+    } else if (backBtn) {
+      backBtn.hidden = true;
+    }
+  }
+}
+
+function bindMobileSearchOverlay() {
+  if (mobileSearchBound || typeof document === "undefined") return;
+  mobileSearchBound = true;
+
+  const toggle = document.getElementById("navbarSearchToggle");
+  if (toggle && toggle.dataset.mobileSearchBound !== "1") {
+    toggle.dataset.mobileSearchBound = "1";
+    toggle.addEventListener("click", () => {
+      openMobileSearch();
+    });
+  }
+
+  const backBtn = document.getElementById("navbarSearchBack");
+  if (backBtn && backBtn.dataset.mobileSearchBound !== "1") {
+    backBtn.dataset.mobileSearchBound = "1";
+    backBtn.addEventListener("click", () => {
+      closeMobileSearch({ returnFocus: true });
+    });
+  }
+
+  const scrim = document.getElementById("navbarSearchScrim");
+  if (scrim && scrim.dataset.mobileSearchBound !== "1") {
+    scrim.dataset.mobileSearchBound = "1";
+    scrim.addEventListener("click", () => {
+      closeMobileSearch({ returnFocus: true });
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event && event.key === "Escape" && isMobileSearchOpen()) {
+      closeMobileSearch({ returnFocus: true });
+    }
+  });
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("resize", () => syncMobileSearchOverlay());
+    window.addEventListener("orientationchange", () => syncMobileSearchOverlay());
+  }
+}
+
 export function initGlobalNavbarSearch() {
   if (typeof document === "undefined") return;
+  bindMobileSearchOverlay();
+  syncMobileSearchOverlay();
   if (isGlobalSearchDisabledWorkspace()) {
     hideGlobalSearchSuggestions();
     return;
@@ -321,6 +477,7 @@ export function initGlobalNavbarSearch() {
         if (target) {
           const href = target.getAttribute("href");
           hideGlobalSearchSuggestions();
+          closeMobileSearch();
           if (href) {
             const openNewTab = target.getAttribute("target") === "_blank";
             if (openNewTab) {
@@ -340,6 +497,7 @@ export function initGlobalNavbarSearch() {
 
       if (isCatalogPage) {
         event.preventDefault();
+        closeMobileSearch({ returnFocus: true });
         return;
       }
 
@@ -347,6 +505,7 @@ export function initGlobalNavbarSearch() {
       const q = qInput.value.trim();
       if (q) {
         event.preventDefault();
+        closeMobileSearch();
         window.location.href = routeUniversities({ q });
       }
       return;
@@ -354,7 +513,11 @@ export function initGlobalNavbarSearch() {
 
     if (event.key === "Escape") {
       hideGlobalSearchSuggestions();
-      qInput.blur();
+      if (isMobileSearchOpen()) {
+        closeMobileSearch({ returnFocus: true });
+      } else {
+        qInput.blur();
+      }
     }
   });
 
@@ -372,6 +535,7 @@ export function initGlobalNavbarSearch() {
     const link = event.target instanceof Element ? event.target.closest(".navbar-search-suggestion") : null;
     if (link) {
       hideGlobalSearchSuggestions();
+      closeMobileSearch();
     }
   });
 }

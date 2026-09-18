@@ -31,6 +31,9 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     await expect(currencySelect).toBeAttached();
     await expect(currencySelect).toHaveValue("USD");
 
+    // Theme toggle lives in Settings → Appearance now; the navbar has no separate button.
+    await expect(page.locator("#themeToggleBtn")).toHaveCount(0);
+
     const currencyTrigger = modal.locator('[data-setting-key="preferred_currency"] .custom-select-trigger');
     await expect(currencyTrigger).toBeVisible();
 
@@ -72,15 +75,32 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     const uzsOptionEn = currencySelect.locator('option[value="UZS"]');
     await expect(uzsOptionEn).toHaveText("Uzbekistani Som (UZS, soʻm)");
 
-    // --- THEME VERIFICATION (LIGHT / DARK) ---
+    // --- THEME VERIFICATION (SYSTEM / LIGHT / DARK via Settings → Appearance) ---
+    const themeSelect = modal.locator('[data-theme-input="theme_preference"]');
+    await expect(themeSelect).toBeAttached();
+
+    const themeTrigger = modal.locator('[data-setting-key="theme_preference"] .custom-select-trigger');
+    await expect(themeTrigger).toBeVisible();
+
+    // Default preference follows the system theme without an explicit choice.
+    await expect(themeSelect).toHaveValue("system");
+
+    // Select light explicitly for a deterministic baseline.
+    await themeTrigger.click();
+    await modal.locator('[data-setting-key="theme_preference"] .custom-option[data-value="light"]').click();
+    await expect(themeSelect).toHaveValue("light");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+
     // In light theme:
     const lightBg = await currencyTrigger.evaluate((el) => window.getComputedStyle(el).backgroundColor);
     const lightColor = await currencyTrigger.evaluate((el) => window.getComputedStyle(el).color);
     expect(lightBg).not.toBe("");
     expect(lightColor).not.toBe("");
 
-    // Toggle theme to dark
-    await page.evaluate(() => document.getElementById("themeToggleBtn")?.click());
+    // Switch to dark via Settings → Appearance.
+    await themeTrigger.click();
+    await modal.locator('[data-setting-key="theme_preference"] .custom-option[data-value="dark"]').click();
+    await expect(themeSelect).toHaveValue("dark");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
     // In dark theme: verify trigger adapts to dark theme
@@ -89,8 +109,10 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     expect(darkBg).not.toBe(lightBg);
     expect(darkColor).not.toBe(lightColor);
 
-    // Toggle back to light
-    await page.evaluate(() => document.getElementById("themeToggleBtn")?.click());
+    // Switch back to following the system theme.
+    await themeTrigger.click();
+    await modal.locator('[data-setting-key="theme_preference"] .custom-option[data-value="system"]').click();
+    await expect(themeSelect).toHaveValue("system");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
     // --- LOCALIZATION VERIFICATION (ENG / RU) ---
@@ -102,6 +124,12 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
 
     const displayTitleRu = modal.locator('[data-setting-key="currency_display_mode"] .settings-copy h3');
     await expect(displayTitleRu).toHaveText("Отображение цен");
+
+    const appearanceSectionRu = modal.locator(".settings-section-title");
+    await expect(appearanceSectionRu).toHaveText("Оформление");
+
+    const themeTitleRu = modal.locator('[data-setting-key="theme_preference"] .settings-copy h3');
+    await expect(themeTitleRu).toHaveText("Тема");
 
     // Verify optgroup labels in Russian
     const optgroupLabelsRu = await Promise.all(
@@ -143,6 +171,13 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     await expect(bothOption).toBeVisible();
     await bothOption.click();
 
+    // Select dark theme so persistence is verified across reload as well.
+    await themeTrigger.click();
+    const themeDarkOption = modal.locator('[data-setting-key="theme_preference"] .custom-option[data-value="dark"]');
+    await expect(themeDarkOption).toBeVisible();
+    await themeDarkOption.click();
+    await expect(themeSelect).toHaveValue("dark");
+
     // No toast should show
     await expect(page.locator("#toast-container .toast")).toHaveCount(0);
 
@@ -164,6 +199,10 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
 
     const displaySelectAfter = modal.locator('[data-setting-input="currency_display_mode"]');
     await expect(displaySelectAfter).toHaveValue("both");
+
+    const themeSelectAfter = modal.locator('[data-theme-input="theme_preference"]');
+    await expect(themeSelectAfter).toHaveValue("dark");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   });
 
   test("Settings modal responsive layout on mobile viewport", async ({ page }) => {

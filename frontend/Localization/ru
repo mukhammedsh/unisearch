@@ -59,7 +59,7 @@ guide.loading_language_config: Загрузка конфигурации язы�
 guide.ml.p1: Поле «Интересы» работает как умные теги. Перечислите ключевые темы через запятую: специальности, технологии или карьерные цели.
 guide.ml.p2: Система сравнивает ваш текст с описаниями университетов и программ.
 guide.ml.p3: Чем конкретнее вы пишете интересы, тем точнее рекомендации.
-guide.ml.p4: Пишите терминами через запятую, а не целыми предложениями, и избегайте отрицаний. Пример: computer science, искусственный интеллект, робототехника, геймдев.
+guide.ml.p4: Пишите терминами через запятую, а не целыми предложениями, и избегайте отрицаний. Пример: информатика, искусственный интеллект, робототехника, разработка игр.
 guide.ml.p5: Интересы помогают отсортировать варианты, но не заменяют официальные требования университета.
 guide.ml.title: Как учитываются ваши интересы
 guide.nav.interests: Интересы
@@ -129,7 +129,11 @@ nav.open_menu: Открыть меню
 nav.profile: Профиль
 nav.rankings: Рейтинг
 nav.settings: Настройки
-nav.switch_theme: Сменить тему
+settings.section.appearance: Оформление
+settings.option.theme.title: Тема
+theme.opt.system: Системная
+theme.opt.light: Светлая
+theme.opt.dark: Тёмная
 settings.title: Настройки
 settings.subtitle: Управляйте тем, как UniSearch хранит локальные данные интерфейса на этом устройстве.
 settings.saved: Настройки сохранены
@@ -261,7 +265,7 @@ profile.hint.dismiss: Скрыть подсказку
 profile.hint.gpa: Выберите шкалу 4.0 (США / Международная) или 5.0 (Казахстан / СНГ).
 profile.gpa_info_title: Как GPA работает здесь
 profile.gpa_info_tooltip: Выберите шкалу оценивания: 4.0 (международный стандарт, США, НИШ) или 5.0 (школьный аттестат Казахстана и стран СНГ). Система автоматически сопоставит ваш балл с требованиями любого университета.
-profile.hint.interests: Пишите темы и ключевые слова через запятую. Избегайте длинных предложений и отрицаний («не люблю X»). Нейросеть сама свяжет синонимы с программами вузов.
+profile.hint.interests: Избегайте длинных предложений и отрицаний («не люблю X»). Нейросеть сама свяжет синонимы с программами вузов.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет / год
@@ -270,6 +274,9 @@ profile.label.funding_type: Предпочтительный тип финанс
 profile.label.gpa: Средний балл (GPA)
 profile.scale.gpa_4: 4.0 (США / Международный)
 profile.scale.gpa_5: 5.0 (KZ / СНГ)
+profile.scale.gpa_4_short: 4.0
+profile.scale.gpa_5_short: 5.0
+profile.scale.toggle: Сменить шкалу GPA на {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
 profile.label.interests: Что вы хотите от университета
@@ -277,9 +284,6 @@ profile.label.major: Планируемая специальность
 profile.label.study_mode: Предпочтительный формат обучения
 profile.language: Язык
 profile.languages: Языки
-profile.name_invalid_length: Имя должно содержать от 3 до 16 символов
-profile.name_invalid_symbols: Недопустимые символы в имени
-profile.nickname_updated: Имя обновлено!
 profile.option.funding_any: Любой (грант + платно)
 profile.option.funding_grant: Только грант
 profile.option.funding_paid: Только платно
@@ -290,7 +294,7 @@ profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, {example}
 profile.placeholder.gpa: например, 3.80
-profile.placeholder.interests: Например: computer science, искусственный интеллект, робототехника, геймдев, стажировки
+profile.placeholder.interests: Например: информатика, искусственный интеллект, робототехника, разработка игр, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено
@@ -928,10 +932,9 @@ languages.error.score_range: Балл должен быть в диапазон�
 languages.error.step_hint: Шаг {step} (например, {first}, {second}, ...)
 languages.error.integer_required: Для {exam} требуется целый балл
 profile.action.close: Закрыть
-profile.action.edit_name: Изменить имя
 profile.action.save_budget: Сохранить бюджет
 profile.action.save_gpa: Сохранить GPA
-profile.action.save_all: Сохранить профиль
+profile.action.save_all: Сохранить
 roi.avg_hint_all_graduates: Показано среднее по всем выпускникам.
 roi.avg_hint_all_majors: Показано вычисленное среднее по всем специальностям.
 roi.context.default: ROI рассчитан на основе доступных данных о выпускниках университета.
@@ -1093,6 +1096,8 @@ languages.updated_value: Обновлён {language} {exam}: {value}
 network.offline.banner: Нет подключения к интернету. Работаем в офлайн-режиме.
 network.online.banner: Подключение восстановлено.
 navbar.search.offline_notice: Поиск недоступен в офлайн-режиме.
+navbar.search.open: Открыть поиск
+navbar.search.back: Назад к навигации
 universities.offline_action_warning: Не удалось обновить каталог без подключения к интернету. Показаны сохраненные результаты.
 error.no_connection.title: Нет подключения к интернету
 error.no_connection.desc: Мы не смогли связаться с сервером. Пожалуйста, проверьте подключение и повторите попытку.

@@ -126,7 +126,11 @@ nav.open_menu: Open menu
 nav.profile: Profile
 nav.rankings: Ranking
 nav.settings: Settings
-nav.switch_theme: Switch theme
+settings.section.appearance: Appearance
+settings.option.theme.title: Theme
+theme.opt.system: System
+theme.opt.light: Light
+theme.opt.dark: Dark
 settings.title: Settings
 settings.subtitle: Control how UniSearch stores local interface data on this device.
 settings.saved: Settings saved
@@ -258,7 +262,7 @@ profile.hint.dismiss: Dismiss hint
 profile.hint.gpa: Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
 profile.gpa_info_title: How GPA works here
 profile.gpa_info_tooltip: Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
-profile.hint.interests: Write key topics separated by commas. Avoid long sentences and negations ("no X"). The AI automatically connects synonyms to university programs.
+profile.hint.interests: Avoid long sentences and negations ("no X"). The AI automatically connects synonyms to university programs.
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget / year
@@ -267,6 +271,9 @@ profile.label.funding_type: Preferred Funding Type
 profile.label.gpa: Grade Point Average (GPA)
 profile.scale.gpa_4: 4.0 (US / International)
 profile.scale.gpa_5: 5.0 (KZ / CIS)
+profile.scale.gpa_4_short: 4.0
+profile.scale.gpa_5_short: 5.0
+profile.scale.toggle: Switch GPA scale to {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
 profile.label.interests: What You Want in a University
@@ -274,9 +281,6 @@ profile.label.major: Intended Major
 profile.label.study_mode: Preferred Study Mode
 profile.language: Language
 profile.languages: Languages
-profile.name_invalid_length: Name length must be 3‑16 chars
-profile.name_invalid_symbols: Invalid symbols in name
-profile.nickname_updated: Nickname updated!
 profile.option.funding_any: Any (Grant + Paid)
 profile.option.funding_grant: Grant only
 profile.option.funding_paid: Paid only
@@ -926,10 +930,9 @@ languages.error.score_range: Score must be {min} - {max}
 languages.error.step_hint: Step is {step} (e.g. {first}, {second}, ...)
 languages.error.integer_required: {exam} requires an integer score
 profile.action.close: Close
-profile.action.edit_name: Edit Name
 profile.action.save_budget: Save Budget
 profile.action.save_gpa: Save GPA
-profile.action.save_all: Save Profile
+profile.action.save_all: Save
 roi.avg_hint_all_graduates: Showing average for all graduates.
 roi.avg_hint_all_majors: Showing computed average across all majors.
 roi.context.default: ROI is based on available university outcomes data.
@@ -1094,6 +1097,8 @@ languages.updated_value: Updated {language} {exam}: {value}
 network.offline.banner: You are offline. Showing cached workspace data.
 network.online.banner: Connection restored.
 navbar.search.offline_notice: Search is unavailable while offline.
+navbar.search.open: Open search
+navbar.search.back: Back to navigation
 universities.offline_action_warning: Cannot refresh catalog while offline. Showing cached results.
 error.no_connection.title: No Internet Connection
 error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.

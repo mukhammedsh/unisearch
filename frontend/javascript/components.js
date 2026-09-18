@@ -1,13 +1,11 @@
 /* frontend/javascript/components.js - Interface shell and layout components */
 import {
-  getCurrentTheme,
   initCustomSelect,
   replayMotion,
   setupSlidingIndicator,
-  toggleTheme,
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
-import { heroIcon, setHeroIcon } from "./icons.js";
+import { heroIcon } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
 import { routeProfile, routeUniversities } from "./routes.js";
 import {
@@ -47,6 +45,7 @@ const LAYOUT_HTML = `
   </div>
 
   <div class="navbar-search" id="universitySearch" role="search" hidden>
+    <button id="navbarSearchBack" class="navbar-search-back" type="button" aria-label="Back to navigation" data-i18n-aria-label="navbar.search.back" title="Back to navigation" data-i18n-title="navbar.search.back" hidden>${heroIcon("arrow-left", "ui-icon ui-icon--18")}</button>
     <span class="navbar-search-icon" aria-hidden="true">${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</span>
     <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" spellcheck="false" />
     <button id="searchClearBtn" class="navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
@@ -55,13 +54,13 @@ const LAYOUT_HTML = `
   </div>
 
   <div class="navbar-right">
+    <button class="navbar-search-toggle" id="navbarSearchToggle" type="button" title="Open search" aria-label="Open search" data-i18n-title="navbar.search.open" data-i18n-aria-label="navbar.search.open" aria-expanded="false" aria-controls="universitySearch" hidden>${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</button>
     <div class="lang-control">
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng">English (US)</option>
         <option value="rus">Русский</option>
       </select>
     </div>
-    <button class="theme-btn" id="themeToggleBtn" type="button" title="Switch theme" aria-label="Switch theme" data-i18n-title="nav.switch_theme" data-i18n-aria-label="nav.switch_theme">${heroIcon("moon", "ui-icon ui-icon--18")}</button>
     <button
       class="settings-trigger-btn"
       id="settingsBtn"
@@ -85,6 +84,8 @@ const LAYOUT_HTML = `
   </div>
 </header>
 
+<div id="navbarSearchScrim" class="navbar-search-scrim" hidden aria-hidden="true"></div>
+
 <div class="settings-modal" id="settingsModal" aria-hidden="true">
   <div class="settings-backdrop" data-close="settings"></div>
   <section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
@@ -95,6 +96,17 @@ const LAYOUT_HTML = `
       </button>
     </div>
     <div class="settings-list" id="settingsList">
+      <h3 class="settings-section-title" data-i18n="settings.section.appearance">Appearance</h3>
+      <article class="settings-row" data-setting-key="theme_preference">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.theme.title">Theme</h3>
+        </div>
+        <select id="settingTheme" class="settings-select" data-theme-input="theme_preference" aria-label="Theme" data-i18n-aria-label="settings.option.theme.title">
+          <option value="system" data-i18n="theme.opt.system">System</option>
+          <option value="light" data-i18n="theme.opt.light">Light</option>
+          <option value="dark" data-i18n="theme.opt.dark">Dark</option>
+        </select>
+      </article>
       <article class="settings-row" data-setting-key="${SETTING_STORE_RECENT_UNIVERSITIES}">
         <div class="settings-copy">
           <h3 data-i18n="settings.option.store_recent.title">Save recently opened</h3>
@@ -321,39 +333,6 @@ const LAYOUT_HTML = `
 <div id="toast-container" class="toast-container"></div>
 `;
 
-function initThemeToggleUi() {
-    const themeToggleBtn = document.getElementById("themeToggleBtn");
-    if (!themeToggleBtn) return;
-
-    const syncThemeButton = (themeOverride = "") => {
-        const theme = String(themeOverride || getCurrentTheme() || "").trim().toLowerCase();
-        setHeroIcon(themeToggleBtn, theme === "dark" ? "sun" : "moon", "ui-icon ui-icon--18");
-        themeToggleBtn.title = t("nav.switch_theme", "Switch theme");
-        themeToggleBtn.setAttribute("aria-label", t("nav.switch_theme", "Switch theme"));
-        syncNavbarLogo(theme);
-    };
-
-    syncThemeButton();
-
-    if (themeToggleBtn.dataset.themeBound !== "1") {
-        themeToggleBtn.dataset.themeBound = "1";
-        themeToggleBtn.addEventListener("click", () => {
-            syncThemeButton(toggleTheme());
-        });
-    }
-
-    if (window.__unisearchThemeShellBound !== true) {
-        window.__unisearchThemeShellBound = true;
-        window.addEventListener("themeChanged", (e) => {
-            const theme = String(e?.detail?.theme || "").trim().toLowerCase();
-            syncThemeButton(theme);
-        });
-        window.addEventListener("pageshow", () => {
-            syncThemeButton();
-        });
-    }
-}
-
 function bindProfileNavAction() {
     const profileBtn = document.getElementById("profileBtn");
     if (!profileBtn || profileBtn.dataset.profileBound === "1") return;
@@ -490,7 +469,6 @@ export async function loadGlobalLayout() {
         if (search) search.hidden = false;
         syncNavbarLogo();
         bindThemeUiSync();
-        initThemeToggleUi();
         initLanguageSwitcher();
         addFooterProductLinks();
         applyTranslations(document);

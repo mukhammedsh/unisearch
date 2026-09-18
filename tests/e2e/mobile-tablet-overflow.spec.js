@@ -35,7 +35,6 @@ async function expectNavbarControlsInsideViewport(page, label) {
     const selectors = [
       "#universitySearch",
       ".navbar-right .custom-select-trigger",
-      "#themeToggleBtn",
       "#settingsBtn",
       "#profileBtn",
     ];

@@ -6,7 +6,7 @@ import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
 import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
-import { initGlobalNavbarSearch, hideGlobalSearchSuggestions } from "./components/navbar-search.js";
+import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
@@ -225,6 +225,7 @@ function syncNavbarSearchVisibility(ctx) {
     initGlobalNavbarSearch();
   } else {
     hideGlobalSearchSuggestions();
+    syncMobileSearchOverlay();
   }
 }
 

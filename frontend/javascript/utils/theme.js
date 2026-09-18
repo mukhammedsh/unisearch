@@ -3,6 +3,7 @@ import { safeLocalStorage } from "./safe-storage.js";
 const THEME_STORAGE_KEY = "unisearch_theme";
 const THEME_LIGHT = "light";
 const THEME_DARK = "dark";
+const THEME_SYSTEM = "system";
 
 let themeWatchBound = false;
 let disableTransitionsTimer = 0;
@@ -39,9 +40,21 @@ function disableTransitionsTemporarily() {
   }
 }
 
-function readStoredTheme() {
-  const value = safeLocalStorage.get(THEME_STORAGE_KEY);
-  return value === THEME_DARK || value === THEME_LIGHT ? value : "";
+export function normalizeThemePreference(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (raw === THEME_DARK) return THEME_DARK;
+  if (raw === THEME_LIGHT) return THEME_LIGHT;
+  return THEME_SYSTEM;
+}
+
+export function getThemePreference() {
+  const stored = String(safeLocalStorage.get(THEME_STORAGE_KEY) || "").trim().toLowerCase();
+  if (stored === THEME_DARK || stored === THEME_LIGHT || stored === THEME_SYSTEM) {
+    return stored;
+  }
+  // No explicit choice (or legacy unknown value): follow the OS theme.
+  // Existing light/dark choices are preserved untouched.
+  return THEME_SYSTEM;
 }
 
 function systemTheme() {
@@ -60,8 +73,16 @@ export function getCurrentTheme() {
   return systemTheme();
 }
 
+export function resolveTheme(preference) {
+  const normalized = normalizeThemePreference(preference);
+  if (normalized === THEME_DARK) return THEME_DARK;
+  if (normalized === THEME_LIGHT) return THEME_LIGHT;
+  return systemTheme();
+}
+
 export function applyTheme(theme, options = {}) {
-  const nextTheme = theme === THEME_DARK ? THEME_DARK : THEME_LIGHT;
+  const preference = normalizeThemePreference(theme);
+  const nextTheme = resolveTheme(preference);
   const persist = Boolean(options.persist);
   const root = document.documentElement;
 
@@ -71,22 +92,22 @@ export function applyTheme(theme, options = {}) {
   root.style.colorScheme = nextTheme;
 
   if (persist) {
-    safeLocalStorage.set(THEME_STORAGE_KEY, nextTheme);
+    safeLocalStorage.set(THEME_STORAGE_KEY, preference);
   }
 
-  window.dispatchEvent(new CustomEvent("themeChanged", { detail: { theme: nextTheme } }));
+  window.dispatchEvent(new CustomEvent("themeChanged", { detail: { theme: nextTheme, preference } }));
   return nextTheme;
 }
 
 export function initTheme() {
-  const resolved = readStoredTheme() || systemTheme();
-  applyTheme(resolved, { persist: false, animate: false });
+  const preference = getThemePreference();
+  applyTheme(preference, { persist: false, animate: false });
 
   if (!themeWatchBound && window.matchMedia) {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = () => {
-      if (readStoredTheme()) return;
-      applyTheme(systemTheme(), { persist: false, animate: true });
+      if (getThemePreference() !== THEME_SYSTEM) return;
+      applyTheme(THEME_SYSTEM, { persist: false, animate: true });
     };
     try {
       mediaQuery.addEventListener("change", onChange);
@@ -99,7 +120,7 @@ export function initTheme() {
     }
   }
 
-  return resolved;
+  return getCurrentTheme();
 }
 
 export function toggleTheme() {

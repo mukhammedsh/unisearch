@@ -1,4 +1,5 @@
 import { closeMotionLayer, initCustomSelect, replayMotion, trapFocus } from "../utils.js";
+import { applyTheme, getThemePreference } from "../utils.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_PREFERRED_CURRENCY,
@@ -21,7 +22,8 @@ export function initSettingsUI() {
   const closeBtn = document.getElementById("settingsCloseBtn");
   const backdrop = modal?.querySelector(".settings-backdrop");
   const settingInputs = Array.from(modal?.querySelectorAll("[data-setting-input]") || []);
-  if (!modal || !openBtn || !settingInputs.length) return;
+  const themeInputs = Array.from(modal?.querySelectorAll("[data-theme-input]") || []);
+  if (!modal || !openBtn || (!settingInputs.length && !themeInputs.length)) return;
 
   let cleanupFocusTrap = null;
 
@@ -46,6 +48,7 @@ export function initSettingsUI() {
 
   const openSettings = () => {
     syncSettingsInputs();
+    syncThemeInputs();
     modal.classList.remove("is-closing");
     modal.setAttribute("aria-hidden", "false");
     modal.classList.add("is-open");
@@ -69,8 +72,20 @@ export function initSettingsUI() {
     closeMotionLayer(modal, finish);
   };
 
+  const syncThemeInputs = () => {
+    themeInputs.forEach((input) => {
+      if (input.tagName === "SELECT") {
+        input.value = getThemePreference();
+        if (input.id) {
+          initCustomSelect(input.id);
+        }
+      }
+    });
+  };
+
   writeSettingsArray(readSettingsArray());
   syncSettingsInputs();
+  syncThemeInputs();
 
   openBtn.addEventListener("click", openSettings);
   closeBtn?.addEventListener("click", closeSettings);
@@ -106,7 +121,15 @@ export function initSettingsUI() {
     });
   });
 
+  themeInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      applyTheme(input.value, { persist: true });
+      syncThemeInputs();
+    });
+  });
+
   window.addEventListener("settingsChanged", syncSettingsInputs);
+  window.addEventListener("themeChanged", syncThemeInputs);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && modal.classList.contains("is-open")) {
       closeSettings();
