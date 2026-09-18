@@ -18,7 +18,7 @@ UniSearch helps applicants discover and compare universities for **bachelor's st
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 
-The interface supports English and Russian, multi-currency conversion (60+ currencies), and light and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
+The interface supports English and Russian, multi-currency conversion (60+ currencies), and system, light, and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
 
 ### Understanding the estimates
 

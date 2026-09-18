@@ -4,6 +4,28 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.2.0 (2026-09-18) - Mobile Search Overlay, System Theme Settings & Profile Polish
+
+### Shell & Navigation
+- Introduced a responsive full-screen mobile search overlay on viewports ≤ 1024px with dedicated navbar toggle button (`#navbarSearchToggle`), back button (`#navbarSearchBack`), and backdrop scrim (`#navbarSearchScrim`), providing an unclipped search experience on compact screens (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/components.js`, `frontend/css/style.css`).
+- Added keyboard navigation and responsive handling for mobile search: Escape key and back button close overlay with focus return, auto-focuses search query input on open, and auto-syncs on viewport resize (`frontend/javascript/components/navbar-search.js`).
+- Migrated theme selection from the navbar toggle into a dedicated "Appearance" section within the Settings modal, adding support for the OS `system` color-scheme preference alongside explicit `light` and `dark` options (`frontend/javascript/utils/theme.js`, `frontend/javascript/components/settings-ui.js`, `frontend/javascript/components.js`).
+- Removed standalone `#themeToggleBtn` from the navbar shell, decluttering the header for utility controls and mobile search toggle (`frontend/javascript/components.js`, `frontend/css/style.css`).
+
+### Applicant Profile Workspace
+- Replaced the standalone GPA scale button group with an interactive toggle suffix button (`/ 4.0` ↔ `/ 5.0`) directly inside the GPA input field, centering value text and preventing 4-character numbers from sliding under the suffix (`frontend/profile.html`, `frontend/css/profile.css`, `frontend/javascript/components/profile-ui.js`).
+- Relocated the GPA scale explanation tooltip from the card header into the hint row next to the input, keeping section headers clean (`frontend/profile.html`, `frontend/css/profile.css`).
+- Removed the redundant nickname input and display from the profile workspace, refocusing the applicant profile strictly on admission and criteria tracking (`frontend/profile.html`, `frontend/css/profile.css`, `frontend/javascript/components/profile-ui.js`).
+- Simplified footer action buttons into text-only "Back" and "Save" controls without redundant icons, adhering to Calm Academic Workspace guidelines (`frontend/profile.html`, `frontend/css/profile.css`).
+- Enhanced mobile profile section tabs with horizontal sliding indicator (`.sliding-indicator`) and scrollable navigation (`frontend/css/profile.css`).
+- Stripped legacy `name` field during storage normalization in `persistence.js`, preserving forward compatibility with future schema versions (`frontend/javascript/utils/persistence.js`).
+- Replaced English loanwords in Russian interest hints and examples with natural Russian terminology (`frontend/Localization/ru`).
+
+### Tests
+- Added unit tests for `normalizeThemePreference`, `getThemePreference`, `applyTheme` with system preferences, and dark theme persistence (`tests/unit/theme.test.mjs`).
+- Updated persistence and migration unit tests to verify legacy nickname stripping and comma decimal handling in GPA inputs (`tests/unit/persistence.test.mjs`, `tests/unit/persistence-profile-migration.test.mjs`, `tests/unit/safe-storage.test.mjs`).
+- Updated E2E tests for Settings appearance section, dark/light/system theme toggling, compact GPA toggle interaction, and clean profile action buttons (`tests/e2e/currency-settings.spec.js`, `tests/e2e/profile-navigation-and-icons.spec.js`, `tests/e2e/profile-unsaved-warning.spec.js`, `tests/e2e/mobile-tablet-overflow.spec.js`).
+
 ## 6.1.2 (2026-09-18) - Profile Nickname Editor Relocation & Focus Polish
 - Moved the nickname editor out of the narrow 140px profile sidebar into a dedicated full-width identity header row at the top-left of the profile workspace, eliminating input truncation and overlap without any overlay (`frontend/profile.html`, `frontend/css/profile.css`).
 - Sized the nickname input to its 16-character limit via `size="16"` with content-based flex sizing, keeping it compact with room to shrink on narrow viewports (`frontend/profile.html`, `frontend/css/profile.css`).
