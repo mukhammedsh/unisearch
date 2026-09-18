@@ -338,6 +338,20 @@ async function initializeCurrentRoute() {
     compareTray.innerHTML = "";
   }
 
+  const mobileFilterToggle = document.getElementById("mobileFilterToggle");
+  if (mobileFilterToggle && !ctx.isUniversitiesPage) {
+    mobileFilterToggle.hidden = true;
+    mobileFilterToggle.remove();
+  }
+
+  if (!ctx.isUniversitiesPage) {
+    document.documentElement.classList.remove("sidebar-filters-open");
+    document.body.classList.remove("sidebar-filters-open");
+    if (document.body.style.overflow === "hidden") {
+      document.body.style.overflow = "";
+    }
+  }
+
   await initRoutePage(ctx);
 }
 
@@ -520,6 +534,12 @@ async function loadAppRoute(rawHref, options = {}) {
 
     const updateDomAndState = () => {
       replaceRouteDom(nextDoc);
+
+      document.documentElement.classList.remove("sidebar-filters-open");
+      document.body.classList.remove("sidebar-filters-open");
+      if (document.body.style.overflow === "hidden") {
+        document.body.style.overflow = "";
+      }
 
       if (options.history !== false) {
         const method = options.replace ? "replaceState" : "pushState";

@@ -252,7 +252,7 @@ export function initGuidePage() {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sectionById = new Map(sections.map((section) => [section.id, section]));
   function scrollGuideNavIntoView(link) {
-    if (!link || window.innerWidth > 980) return;
+    if (!link || window.innerWidth > 1024) return;
     const nav = link.closest(".guide-nav");
     if (!nav) return;
 
@@ -367,7 +367,7 @@ export function initGuidePage() {
   });
 
   function getAnchorTop() {
-    const isMobile = window.innerWidth <= 980;
+    const isMobile = window.innerWidth <= 1024;
     if (isMobile) {
       const navbar = document.querySelector(".navbar");
       const navHeight = navbar instanceof HTMLElement ? navbar.getBoundingClientRect().height : 70;

@@ -381,7 +381,7 @@ function syncAdaptiveNavbarLayout() {
     if (!navbar || !left || !right) return;
 
     // Mobile/tablet layout is handled via CSS media rules.
-    if (window.matchMedia("(max-width: 980px)").matches) {
+    if (window.matchMedia("(max-width: 1024px)").matches || navbar.classList.contains("has-university-search")) {
         navbar.classList.remove("is-compact");
         return;
     }

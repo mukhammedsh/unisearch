@@ -1,6 +1,6 @@
 .u-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   align-items: stretch;
   overflow-anchor: none;
@@ -21,7 +21,7 @@
 
 .u-skeleton-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   align-items: stretch;
   min-height: 350px;
@@ -87,6 +87,8 @@
   pointer-events: none;
   min-height: 0;
   overflow: hidden;
+  width: 100%;
+  max-width: 550px;
 }
 
 .u-skeleton-card .uni-price {
@@ -256,6 +258,8 @@
   flex-direction: column;
   height: auto;
   min-height: 350px;
+  width: 100%;
+  max-width: 550px;
 }
 @media (hover: hover) and (pointer: fine) {
 

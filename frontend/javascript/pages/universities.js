@@ -293,6 +293,11 @@ export function initUniversitiesPage() {
         document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
         __universitiesMobileFilterKeydownHandler = null;
     }
+    document.documentElement.classList.remove("sidebar-filters-open");
+    document.body.classList.remove("sidebar-filters-open");
+    if (document.body.style.overflow === "hidden") {
+        document.body.style.overflow = "";
+    }
     if (__universitiesRecentRelocationHandler) {
         window.removeEventListener("resize", __universitiesRecentRelocationHandler);
         __universitiesRecentRelocationHandler = null;
@@ -947,7 +952,7 @@ export function initUniversitiesPage() {
         if (!el.workspaceLayout || typeof window === "undefined") return;
 
         // Mobile / tablet screen layouts stack vertically, do not force desktop depth
-        if (window.innerWidth <= 980) {
+        if (window.innerWidth <= 1024) {
             if (lastAppliedLayoutDepth !== "") {
                 lastAppliedLayoutDepth = "";
                 el.workspaceLayout.style.removeProperty("min-height");
@@ -1420,7 +1425,7 @@ export function initUniversitiesPage() {
 
         let draftSnapshot = null;
         let isEditing = false;
-        const isMobileViewport = () => window.innerWidth <= 980;
+        const isMobileViewport = () => window.innerWidth <= 1024;
 
         const resetDraft = () => {
             clearSavedScrollPosition();
@@ -1485,7 +1490,7 @@ export function initUniversitiesPage() {
 
         // Close sidebar when clicking outside on mobile backdrop
         sidebar.addEventListener("click", (e) => {
-            if (window.innerWidth <= 980 && e.target === sidebar) {
+            if (window.innerWidth <= 1024 && e.target === sidebar) {
                 setOpen(false);
             }
         });
@@ -1503,7 +1508,7 @@ export function initUniversitiesPage() {
     el.recentlyViewedBar?.parentNode?.insertBefore(recentDesktopAnchor, el.recentlyViewedBar);
     const relocateRecentlyViewedBar = () => {
         if (!el.recentlyViewedBar || !recentDesktopAnchor.parentNode) return;
-        if (window.innerWidth <= 980 && el.mobileRecentSlot) {
+        if (window.innerWidth <= 1024 && el.mobileRecentSlot) {
             el.mobileRecentSlot.append(el.recentlyViewedBar);
             return;
         }

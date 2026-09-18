@@ -359,7 +359,7 @@ body[data-page="guide"] {
   }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .guide-page {
     margin-top: 18px;
     padding: 0 var(--mobile-safe-gutter, 16px);

@@ -330,7 +330,7 @@
 
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   html.sidebar-filters-open,
   body.sidebar-filters-open {
     overflow: hidden !important;

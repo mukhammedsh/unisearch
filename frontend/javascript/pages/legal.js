@@ -50,7 +50,7 @@ export function initLegalPage() {
   }
 
     function scrollNavIntoView(link) {
-      if (!link || window.innerWidth > 980) return;
+      if (!link || window.innerWidth > 1024) return;
       const nav = link.closest(".legal-nav");
       if (!nav) return;
 
@@ -173,7 +173,7 @@ export function initLegalPage() {
     });
 
     function getAnchorTop() {
-      const isMobile = window.innerWidth <= 980;
+      const isMobile = window.innerWidth <= 1024;
       if (isMobile) {
         const navbar = document.querySelector(".navbar");
         const navHeight = navbar instanceof HTMLElement ? navbar.getBoundingClientRect().height : 70;

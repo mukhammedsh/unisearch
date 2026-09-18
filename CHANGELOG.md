@@ -4,6 +4,14 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.0.3 (2026-09-18) - Catalog Card Layout Capping & Responsive Breakpoint Harmonization
+- Capped catalog university card widths with `max-width: 550px` on `.uni-card` and switched `.u-grid` / `.u-skeleton-grid` to `repeat(auto-fill, minmax(280px, 1fr))`, preventing excessive card stretching across large viewports when single or few universities match filters (`frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`).
+- Harmonized mobile and tablet responsive breakpoints to `1024px` across frontend stylesheets and route handlers, eliminating layout jitter and establishing consistent stacked navigation below desktop scale (`frontend/css/style.css`, `frontend/css/about.css`, `frontend/css/guide.css`, `frontend/css/university.css`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/guide.js`, `frontend/javascript/pages/legal.js`).
+- Scoped `#mobileFilterToggle` inside `<main>` and enforced strict route-based hiding and cleanup to prevent mobile filters from leaking into other pages (`frontend/index.html`, `frontend/css/universities/05-catalog-polish.css`, `frontend/javascript/main.js`).
+- Added automatic cleanup of `sidebar-filters-open` and body scroll lock on page unmount and route changes in `frontend/javascript/pages/universities.js` and `frontend/javascript/main.js`.
+- Preserved left-aligned navbar logo on compact mobile screens below `560px` (`frontend/css/style.css`).
+- Added end-to-end responsive layout tests in `tests/e2e/responsive-layout-overflow.spec.js` covering card width capping, multi-column tablet placement, route isolation of mobile filter controls, and mobile logo alignment.
+
 ## 6.0.2 (2026-09-17) - Applicant Profile Initial Render & Section Visibility Polish
 - Prevented flash of unhidden profile sections during initial page load by adding `is-section-hidden` directly to non-active tab panels (`scores`, `languages`, and `preferences`) in static HTML markup (`frontend/profile.html`).
 - Set initial `display: none` inline style on conditional language exam containers (`#cefrContainer`, `#examContainer`, `#scoreContainer`) in `frontend/profile.html` to eliminate layout flicker before language config initialization.
