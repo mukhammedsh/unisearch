@@ -1138,7 +1138,12 @@
   border-bottom: none;
   padding: 0 20px 16px;
   flex-wrap: wrap;
-  scrollbar-width: thin;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .d-tabs {
+    scrollbar-width: thin;
+  }
 }
 
 .d-tab-btn {
@@ -1628,7 +1633,12 @@
   margin: 20px 0 0;
   border-bottom: none;
   overflow-x: auto;
-  scrollbar-width: thin;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .admission-program-selector {
+    scrollbar-width: thin;
+  }
 }
 
 .admission-program-option,
@@ -5739,6 +5749,63 @@ body[data-page="university"],
   line-height: var(--leading-normal);
 }
 
+.finance-one-time-costs {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+
+.finance-one-time-costs h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-md);
+  line-height: var(--leading-tight);
+}
+
+.finance-one-time-costs dl {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.finance-one-time-costs__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.finance-one-time-costs dt,
+.finance-one-time-costs dd {
+  margin: 0;
+}
+
+.finance-one-time-costs dt {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: var(--leading-normal);
+}
+
+.finance-one-time-costs dd {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  text-align: right;
+}
+
+.finance-one-time-costs dd strong {
+  color: var(--text);
+  font-size: var(--text-base);
+  font-variant-numeric: tabular-nums;
+}
+
 .finance-option-meta {
   display: grid;
   gap: 0;
@@ -5892,6 +5959,15 @@ body[data-page="university"],
 @media (max-width: 860px) {
   .finance-track-options-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finance-one-time-costs__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .finance-one-time-costs dd {
+    text-align: left;
   }
 }
 

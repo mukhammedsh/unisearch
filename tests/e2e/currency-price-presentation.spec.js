@@ -2,6 +2,7 @@ const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 
 const KAZNMU_ID = "asfendiyarov-kazakh-national-medical-university-kaz-almaty";
+const SDU_ID = "suleyman-demirel-university-kaz-kaskelen";
 const SETTINGS_CACHE_KEY = "unisearch_settings_cache_v1";
 
 async function setPriceDisplay(page, displayMode) {
@@ -60,5 +61,21 @@ test.describe("Currency price presentation", () => {
     await expect(page.locator("#detailPrice")).toContainText("≈ $4,222 (1,900,000 ₸)");
     await expect(page.locator(".finance-option-total__value").first()).toContainText("≈ $4,222 (1,900,000 ₸)");
     await expect(page.locator(".cost-legend-single").first()).toContainText("≈ $4,222 (1,900,000 ₸)");
+  });
+
+  test("keeps SDU's enrollment fee outside the annual tuition price", async ({ page }) => {
+    await markTourAsSeen(page);
+    await setPriceDisplay(page, "original");
+
+    await page.goto(`/university.html?id=${SDU_ID}`);
+    await expect(page.locator("#detailCard")).toBeVisible();
+    await expect(page.locator("#detailPrice")).toContainText("1,980,000 ₸");
+
+    await page.click(".d-tab-btn[data-tab='tab-finance']");
+    const oneTimeCosts = page.locator(".finance-one-time-costs");
+    await expect(oneTimeCosts).toBeVisible();
+    await expect(oneTimeCosts).toContainText("60,000 ₸");
+    await expect(oneTimeCosts).toContainText("Paid once upon enrollment");
+    await expect(oneTimeCosts).toContainText("Also required for grant holders");
   });
 });

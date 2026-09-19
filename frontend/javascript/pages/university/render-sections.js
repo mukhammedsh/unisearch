@@ -76,6 +76,45 @@ function renderFinanceMetaList(fundingMeta) {
   `;
 }
 
+function oneTimeCostTimingLabel(timing) {
+  const normalized = String(timing || "").trim().toLowerCase();
+  if (normalized === "enrollment") {
+    return t("university.finance.one_time.timing.enrollment", "Paid once upon enrollment");
+  }
+  return "";
+}
+
+function renderOneTimeCosts(finance) {
+  const costs = Array.isArray(finance?.one_time_costs) ? finance.one_time_costs : [];
+  const currency = String(finance?.currency || "USD").trim().toUpperCase();
+  const rows = costs
+    .filter((cost) => cost && typeof cost === "object" && Number.isFinite(Number(cost.amount)) && Number(cost.amount) > 0)
+    .map((cost) => {
+      const timing = oneTimeCostTimingLabel(cost.timing);
+      const grantNote = cost.applies_to_grant_holders === true
+        ? t("university.finance.one_time.applies_to_grant_holders", "Also required for grant holders")
+        : "";
+      const notes = [timing, grantNote].filter(Boolean).join(" · ");
+      return `
+        <div class="finance-one-time-costs__row">
+          <dt>${escapeHtml(translateCostBreakdownLabel(cost.type))}</dt>
+          <dd>
+            <strong>${escapeHtml(formatPrice(cost.amount, currency))}</strong>
+            ${notes ? `<span>${escapeHtml(notes)}</span>` : ""}
+          </dd>
+        </div>
+      `;
+    });
+
+  if (!rows.length) return "";
+  return `
+    <section class="finance-one-time-costs" aria-labelledby="finance-one-time-costs-title">
+      <h3 id="finance-one-time-costs-title">${escapeHtml(t("university.finance.one_time.title", "One-time payments"))}</h3>
+      <dl>${rows.join("")}</dl>
+    </section>
+  `;
+}
+
 function admissionChoiceSelectionAttrs({ category, choiceKey, funding = null, profile }) {
   return [
     `data-admission-choice="${escapeHtmlAttr(choiceKey)}"`,
@@ -833,12 +872,13 @@ export function renderFinanceSection({
         `;
       });
 
+      const oneTimeCostsHtml = renderOneTimeCosts(university.finance);
       const roiHtml = renderRoiBox(uniRoi);
       const financeGridHtml = financeHtml
         ? `<div class="finance-grid-new">${financeHtml}</div>`
         : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
-      container.innerHTML = `${financeGridHtml}${roiHtml}`;
-      markMotionEnter(container, ".finance-track-group, .finance-option-card, .roi-box, .admission-empty-state", { limit: 18, staggerMs: 18 });
+      container.innerHTML = `${oneTimeCostsHtml}${financeGridHtml}${roiHtml}`;
+      markMotionEnter(container, ".finance-one-time-costs, .finance-track-group, .finance-option-card, .roi-box, .admission-empty-state", { limit: 18, staggerMs: 18 });
     }
     return;
   }

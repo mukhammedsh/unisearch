@@ -253,6 +253,20 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
     if isinstance(finance, dict):
         if _is_non_empty_text(finance.get("source_url")):
             yield "finance.source_url", str(finance.get("source_url")).strip()
+        one_time_costs = finance.get("one_time_costs")
+        if isinstance(one_time_costs, list):
+            for cost_idx, cost in enumerate(one_time_costs):
+                if not isinstance(cost, dict):
+                    continue
+                source_urls = cost.get("source_urls")
+                if not isinstance(source_urls, list):
+                    continue
+                for source_idx, source_url in enumerate(source_urls):
+                    if _is_non_empty_text(source_url):
+                        yield (
+                            f"finance.one_time_costs[{cost_idx}].source_urls[{source_idx}]",
+                            str(source_url).strip(),
+                        )
         financial_aid = finance.get("financial_aid")
         if isinstance(financial_aid, dict) and _is_non_empty_text(financial_aid.get("source_url")):
             yield "finance.financial_aid.source_url", str(financial_aid.get("source_url")).strip()
@@ -379,6 +393,31 @@ def _audit_comparable_finance(
     for key in ("currency", "academic_year", "fee_status", "scope", "source_url", "verified_at"):
         if not _is_non_empty_text(finance.get(key)):
             errors.append(f"{uid}: {label}.{key} is required for comparable cost data")
+
+
+def _audit_one_time_costs(errors: List[str], uid: str, finance: Dict[str, Any]) -> None:
+    costs = finance.get("one_time_costs")
+    if costs is None:
+        return
+    if not isinstance(costs, list):
+        errors.append(f"{uid}: finance.one_time_costs must be a list when present")
+        return
+
+    for cost_idx, cost in enumerate(costs):
+        label = f"finance.one_time_costs[{cost_idx}]"
+        if not isinstance(cost, dict):
+            errors.append(f"{uid}: {label} must be an object")
+            continue
+        if not _is_non_empty_text(cost.get("type")):
+            errors.append(f"{uid}: {label}.type is required")
+        amount = cost.get("amount")
+        if not isinstance(amount, (int, float)) or float(amount) <= 0:
+            errors.append(f"{uid}: {label}.amount must be a positive number")
+        if not _is_non_empty_text(cost.get("timing")):
+            errors.append(f"{uid}: {label}.timing is required")
+        source_urls = cost.get("source_urls")
+        if not isinstance(source_urls, list) or not source_urls or not all(_is_non_empty_text(url) for url in source_urls):
+            errors.append(f"{uid}: {label}.source_urls must contain official source URLs")
 
 
 def _audit_published_admission(
@@ -805,6 +844,7 @@ def audit_dataset(
             if not isinstance(total_cost, (int, float)) or float(total_cost) < 0:
                 errors.append(f"{uid}: finance.total_cost_year_usd must be non-negative number")
             _audit_comparable_finance(errors, uid, "finance", finance)
+            _audit_one_time_costs(errors, uid, finance)
 
         categories = row.get("admission_categories")
         if not isinstance(categories, list) or not categories:

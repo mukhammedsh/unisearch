@@ -808,6 +808,9 @@ university.finance.available_support: Available grants & scholarships
 university.finance.cost_breakdown: Cost breakdown
 university.finance.cost_before_aid: Estimated cost before aid
 university.finance.aid_not_deducted: The grant amount is not subtracted because an official value is not published.
+university.finance.one_time.title: One-time payments
+university.finance.one_time.timing.enrollment: Paid once upon enrollment
+university.finance.one_time.applies_to_grant_holders: Also required for grant holders
 university.finance.breakdown_note.mandatory_only: Showing only verified mandatory items.
 university.finance.breakdown_note.tuition_fees_only: Showing only directly official tuition and institutional fee items. The yearly total may still be higher because the source gives an overall living-cost estimate without publishing authoritative subcategory line items.
 university.finance.breakdown_note.partial: This breakdown is intentionally partial. The total may also include other source-side allowances or non-itemized costs.
@@ -959,6 +962,9 @@ cost_item_books_transport_misc: Books, Transport and Misc
 cost_item_insurance_transport_misc: Insurance, Transport and Misc
 cost_item_student_life_fee: Student Life Fee
 cost_item_student_fees: Student Fees
+cost_item_student_fee: Student fee
+cost_item_admission_fee: Admission fee
+cost_item_matriculation_fee: Matriculation fee
 cost_item_mandatory_fees: Mandatory Fees
 cost_item_compulsory_fees: Compulsory Fees
 cost_item_student_services_and_health_fees: Student Services and Health Fees

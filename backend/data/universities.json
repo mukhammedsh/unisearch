@@ -14483,11 +14483,20 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 817800,
+      "total_cost_year_usd": 535800,
       "costs_breakdown_year_usd": {
-        "Tuition": 535800,
-        "Student_Fees": 282000
+        "Tuition": 535800
       },
+      "one_time_costs": [
+        {
+          "type": "admission_fee",
+          "amount": 282000,
+          "timing": "enrollment",
+          "source_urls": [
+            "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees"
+          ]
+        }
+      ],
       "financial_aid": {
         "merit_based": true,
         "need_based": false
@@ -14496,7 +14505,7 @@
         "https://www.kyoto-u.ac.jp/en/current/how-to/tuition/tuition-and-fees",
         "https://www.iup.kyoto-u.ac.jp/apply/"
       ],
-      "costs_breakdown_note": "Official Kyoto University undergraduate tuition fee (¥535,800 per year) and first-year admission fee (¥282,000) in JPY published by Kyoto University, totaling ¥817,800. Shows only directly official tuition and institutional fee line items.",
+      "costs_breakdown_note": "Official Kyoto University undergraduate tuition fee (¥535,800 per year). The separate ¥282,000 admission fee is paid once at registration and is shown outside the annual cost.",
       "costs_breakdown_status": "official_tuition_and_fees_only",
       "currency": "JPY"
     },
@@ -19494,14 +19503,23 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 94858,
+      "total_cost_year_usd": 94358,
       "costs_breakdown_year_usd": {
         "Tuition": 68670,
-        "Student_Fees": 500,
         "Housing_Dorm": 13073,
         "Food": 8894,
         "Books_and_Supplies": 1377
       },
+      "one_time_costs": [
+        {
+          "type": "matriculation_fee",
+          "amount": 500,
+          "timing": "enrollment",
+          "source_urls": [
+            "https://sfs.jhu.edu/cost-tuition/"
+          ]
+        }
+      ],
       "financial_aid": {
         "merit_based": false,
         "need_based": true
@@ -19510,7 +19528,7 @@
         "https://sfs.jhu.edu/cost-tuition/",
         "https://apply.jhu.edu/tuition-aid/"
       ],
-      "costs_breakdown_note": "Official Johns Hopkins University undergraduate 2026-27 Cost of Attendance from JHU Student Financial Support in USD, including tuition ($68,670), first-year matriculation fee ($500), on-campus residence hall housing ($13,073), meal plan ($8,894), and books/supplies ($1,377).",
+      "costs_breakdown_note": "Official Johns Hopkins University undergraduate 2026-27 recurring Cost of Attendance from JHU Student Financial Support in USD, including tuition ($68,670), on-campus residence hall housing ($13,073), meal plan ($8,894), personal expenses ($1,606), books/supplies ($1,377), and transportation ($738). The $500 matriculation fee is paid once and is shown outside the annual cost.",
       "costs_breakdown_status": "official_mandatory_breakdown",
       "currency": "USD"
     },
@@ -26123,11 +26141,21 @@
       }
     },
     "finance": {
-      "total_cost_year_usd": 1995000,
+      "total_cost_year_usd": 1980000,
       "costs_breakdown_year_usd": {
-        "Tuition": 1980000,
-        "Student_Fees": 15000
+        "Tuition": 1980000
       },
+      "one_time_costs": [
+        {
+          "type": "student_fee",
+          "amount": 60000,
+          "timing": "enrollment",
+          "applies_to_grant_holders": true,
+          "source_urls": [
+            "https://sdu.edu.kz/en/admission-3-2/"
+          ]
+        }
+      ],
       "financial_aid": {
         "merit_based": true,
         "need_based": false
@@ -26137,7 +26165,7 @@
         "https://sdu.edu.kz/en/admission-3-2/",
         "https://sdu.edu.kz/en/pay-for-accomodation/"
       ],
-      "costs_breakdown_note": "Official SDU University undergraduate tuition and fees schedule approved by Order No. 01.1-05/51 (April 17, 2026) for the 2026/2027 academic year in KZT, based on 60 ECTS credits per year. Tuition is 33,000 KZT per credit for Computer Science, Software Engineering, and Mathematical Modeling (1,980,000 KZT/year); 40,000 KZT per credit for Information Systems (2,400,000 KZT/year); 37,500 to 41,500 KZT per credit for Economics, Management, and Finance (2,250,000 to 2,490,000 KZT/year). Mandatory Student Fee is 60,000 KZT (15,000 KZT annualized across the 4-year degree). Optional on-campus student housing is 864,000 KZT per academic year.",
+      "costs_breakdown_note": "Official SDU University undergraduate tuition schedule approved by Order No. 01.1-05/51 (April 17, 2026) for the 2026/2027 academic year in KZT, based on 60 ECTS credits per year. Tuition is 33,000 KZT per credit for Computer Science, Software Engineering, and Mathematical Modeling (1,980,000 KZT/year); 40,000 KZT per credit for Information Systems (2,400,000 KZT/year); 37,500 to 41,500 KZT per credit for Economics, Management, and Finance (2,250,000 to 2,490,000 KZT/year). The mandatory 60,000 KZT Student Fee is paid once for the full degree and is shown outside the annual cost; grant holders are not exempt. Optional on-campus student housing is 864,000 KZT per academic year.",
       "costs_breakdown_status": "official_tuition_and_fees_only",
       "currency": "KZT"
     },

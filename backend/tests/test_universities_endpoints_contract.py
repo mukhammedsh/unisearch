@@ -282,6 +282,28 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             status = str(finance.get("costs_breakdown_status") or "")
             self.assertIn(status, allowed, f"{university_id} missing valid costs_breakdown_status")
 
+    def test_one_time_costs_are_separate_from_annual_costs(self):
+        expected = {
+            "suleyman-demirel-university-kaz-kaskelen": (1980000, "student_fee", 60000),
+            "kyoto-university-jp-kyoto": (535800, "admission_fee", 282000),
+            "johns-hopkins-university-usa-baltimore": (94358, "matriculation_fee", 500),
+        }
+
+        for university_id, (annual_total, cost_type, one_time_amount) in expected.items():
+            response = self.client.get(f"/universities/{university_id}")
+            self.assertEqual(response.status_code, 200, university_id)
+            finance = response.json().get("finance") or {}
+            self.assertEqual(annual_total, finance.get("total_cost_year_usd"), university_id)
+            costs = finance.get("one_time_costs") or []
+            self.assertTrue(
+                any(
+                    cost.get("type") == cost_type and cost.get("amount") == one_time_amount
+                    for cost in costs
+                    if isinstance(cost, dict)
+                ),
+                university_id,
+            )
+
     def test_university_assets_are_served_from_backend(self):
         university_id = self._first_university_id()
         self.assertTrue(university_id)

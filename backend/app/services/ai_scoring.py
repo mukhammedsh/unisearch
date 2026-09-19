@@ -1546,16 +1546,10 @@ def sort_universities_ai(
         aid_any = _get_track_funding_type(active_raw_choice) == "grant"
         aid_eligible = aid_any
 
-        if aid_eligible:
-            finance = _finance_for_cost(row, active_raw_choice)
-            breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
-            tuition = _extract_tuition_cost(breakdown)
-            if tuition is not None and tuition > 0:
-                final_price_native = max(0.0, cost_native - float(tuition))
-            else:
-                final_price_native = 0.0
-        else:
-            final_price_native = cost_native
+        # A grant route only signals possible funding. Do not turn it into a
+        # net price unless the track itself supplies a verified finance override.
+        # _effective_track_cost_details() already uses that override when present.
+        final_price_native = cost_native
 
         final_price_usd = _cost_to_usd(final_price_native, cost_currency)
 

@@ -1166,7 +1166,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertAlmostEqual(0.0, float(match.get("costYearUSD", 0.0)), places=6)
         self.assertEqual("online_missing_tuition", str(match.get("costMode")))
 
-    def test_ai_sort_preserves_native_currency_and_calculates_grant_in_native_currency(self):
+    def test_ai_sort_preserves_sticker_price_for_grant_track_without_verified_net_price(self):
         items = [
             {
                 "id": "u-kzt-test",
@@ -1198,11 +1198,10 @@ class AiScoringTests(unittest.TestCase):
         match = result[0].get("matchData", {})
 
         self.assertEqual("KZT", match.get("currency"))
-        self.assertAlmostEqual(50000.0, float(match.get("finalPrice", 0.0)), places=2)
+        self.assertAlmostEqual(2000000.0, float(match.get("finalPrice", 0.0)), places=2)
         self.assertAlmostEqual(2000000.0, float(match.get("costYearNative", 0.0)), places=2)
         self.assertGreater(float(match.get("costYearUSD", 0.0)), 4000.0)
-        self.assertGreater(float(match.get("finalPriceUSD", 0.0)), 100.0)
-        self.assertLess(float(match.get("finalPriceUSD", 0.0)), 150.0)
+        self.assertAlmostEqual(float(match.get("costYearUSD", 0.0)), float(match.get("finalPriceUSD", 0.0)), places=6)
 
     def test_ai_sort_empty_choices_preserves_native_cost_and_currency(self):
         items = [

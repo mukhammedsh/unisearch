@@ -811,6 +811,9 @@ university.finance.available_support: Доступные гранты и сти�
 university.finance.cost_breakdown: Состав расходов
 university.finance.cost_before_aid: Оценка до учета гранта
 university.finance.aid_not_deducted: Сумма гранта не вычтена, потому что официальный размер финансирования не опубликован.
+university.finance.one_time.title: Разовые платежи
+university.finance.one_time.timing.enrollment: Уплачивается один раз при зачислении
+university.finance.one_time.applies_to_grant_holders: Обязателен и для получателей гранта
 university.finance.breakdown_note.mandatory_only: Показаны только подтвержденные обязательные траты.
 university.finance.breakdown_note.tuition_fees_only: Показаны только напрямую официальные позиции по обучению и университетским сборам. Итоговая сумма за год может быть выше, потому что источник дает общую оценку расходов на проживание, но не публикует авторитетную разбивку по отдельным категориям.
 university.finance.breakdown_note.partial: Эта разбивка специально неполная. В итоговую сумму также могут входить другие учтенные источником надбавки или недетализированные расходы.
@@ -961,6 +964,9 @@ cost_item_books_transport_misc: Учебные материалы, трансп�
 cost_item_insurance_transport_misc: Страховка, транспорт и прочее
 cost_item_student_life_fee: Студенческий сбор
 cost_item_student_fees: Студенческие сборы
+cost_item_student_fee: Студенческий сбор
+cost_item_admission_fee: Вступительный взнос
+cost_item_matriculation_fee: Взнос за зачисление
 cost_item_mandatory_fees: Обязательные сборы
 cost_item_compulsory_fees: Обязательные университетские сборы
 cost_item_student_services_and_health_fees: Студенческие и медицинские сборы

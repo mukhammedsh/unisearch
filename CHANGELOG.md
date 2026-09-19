@@ -4,6 +4,16 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.5.0 (2026-09-20) - Recurring Tuition and One-Time Costs
+
+### Finance and UniChance
+- Kept annual tuition and verified one-time enrollment payments distinct throughout the university data and finance screen. Kyoto University, Johns Hopkins University, and SDU University now show recurring yearly costs separately from their admission, matriculation, or student fees, with official source URLs validated by the data audit (`backend/data/universities.json`, `backend/scripts/audit_universities_data.py`, `frontend/javascript/pages/university/render-sections.js`).
+- Added a localized one-time payments section to university finance details, including enrollment timing and whether a fee also applies to grant holders (`frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/university.css`).
+- Corrected UniChance price presentation so a grant route without a verified net-price override retains the published sticker price instead of implying zero tuition (`backend/app/services/ai_scoring.py`).
+
+### Tests
+- Added backend contracts for one-time costs and Playwright coverage confirming that SDU's enrollment fee remains outside the annual tuition total (`backend/tests/test_universities_endpoints_contract.py`, `backend/tests/test_ai_scoring.py`, `tests/e2e/currency-price-presentation.spec.js`).
+
 ## 6.4.1 (2026-09-19) - Guide Diamond Bullets Alignment Fix
 
 - Fixed vertical alignment of the diamond list markers in the guide sidebar and table of contents by translating before rotating (`translateY(-1px) rotate(45deg)` instead of `rotate(45deg) translateY(-1px)`), and added 2px left padding so the rotated markers are not clipped at the container edge (`frontend/css/guide.css`).
