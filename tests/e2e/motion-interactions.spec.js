@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { selectors, setNativeSelect } = require("./helpers/selectors");
 
 async function installMotionRecorder(page) {
   await page.evaluate(() => {
@@ -185,10 +185,88 @@ test("view mode toggle uses one stable active state", async ({ page }) => {
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
+  // Both real destinations are prepared before the first interaction, so a
+  // hard refresh cannot leave the shared-card transition without a target.
+  await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
+  await expect(page.locator("#viewMapBtn")).toBeEnabled();
+
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
   await page.click("#viewMapBtn");
   await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewListBtn")).not.toHaveClass(/active/);
+  await expect(page.locator("#mapStage")).toBeVisible();
+
+  const mapCard = page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first();
+  const captureCardGeometry = () => mapCard.evaluate((card) => {
+    const selectors = [".uni-logo--inline", ".uni-title", ".uni-metrics", ".uni-price", ".uni-details"];
+    return Object.fromEntries(selectors.map((selector) => {
+      const element = card.querySelector(selector);
+      if (!element) return [selector, null];
+      const rect = element.getBoundingClientRect();
+      return [selector, {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height,
+      }];
+    }));
+  });
+
+  await page.waitForTimeout(720);
+  const lateAnimationGeometry = await captureCardGeometry();
+  await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
+  const finalGeometry = await captureCardGeometry();
+  Object.keys(finalGeometry).forEach((selector) => {
+    expect(lateAnimationGeometry[selector], `${selector} should exist before motion cleanup`).toBeTruthy();
+    expect(finalGeometry[selector], `${selector} should exist after motion cleanup`).toBeTruthy();
+    ["x", "y", "width", "height"].forEach((key) => {
+      expect(
+        Math.abs(lateAnimationGeometry[selector][key] - finalGeometry[selector][key]),
+        `${selector} ${key} should not jump when motion cleanup runs`
+      ).toBeLessThanOrEqual(1);
+    });
+  });
+
+  const mapBox = await page.locator("#mapContainer").boundingBox();
+  const resultsBox = await page.locator("#mapResultsPanel").boundingBox();
+  expect(mapBox && resultsBox).toBeTruthy();
+  expect(mapBox.x).toBeLessThan(resultsBox.x);
+  expect(mapBox.width).toBeGreaterThan(resultsBox.width);
+
+  await expect(mapCard).toBeVisible();
+  const gaps = await page.evaluate(() => {
+    const panel = document.getElementById("mapResultsPanel");
+    const cardEl = panel.querySelector(".uni-card:not(.is-skeleton)");
+    if (!panel || !cardEl) return null;
+    const pRect = panel.getBoundingClientRect();
+    const cRect = cardEl.getBoundingClientRect();
+    return {
+      leftGap: Math.round(cRect.left - pRect.left),
+      rightGap: Math.round(pRect.right - cRect.right),
+      cardWidth: Math.round(cRect.width),
+      panelWidth: Math.round(pRect.width),
+    };
+  });
+  expect(gaps).toBeTruthy();
+  expect(Math.abs(gaps.leftGap - gaps.rightGap)).toBeLessThanOrEqual(1);
+
+  const cardWithStatuses = page.locator("#mapResultsPanel .uni-card:has(.uni-card-statuses)").first();
+  if (await cardWithStatuses.count() > 0) {
+    const triggers = cardWithStatuses.locator(".uni-status-trigger");
+    const triggerCount = await triggers.count();
+    if (triggerCount >= 2) {
+      const box0 = await triggers.nth(0).boundingBox();
+      const box1 = await triggers.nth(1).boundingBox();
+      expect(box0 && box1).toBeTruthy();
+      expect(box1.y).toBeGreaterThan(box0.y);
+    }
+    const titleBox = await cardWithStatuses.locator(".uni-title").boundingBox();
+    const firstTriggerBox = await triggers.first().boundingBox();
+    if (titleBox && firstTriggerBox) {
+      expect(titleBox.x + titleBox.width).toBeLessThanOrEqual(firstTriggerBox.x + 1);
+    }
+  }
+
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
   await expect.poll(async () =>
     page.locator("#viewListBtn.motion-press-pop, #viewListBtn.motion-state-pulse, #viewMapBtn.motion-press-pop, #viewMapBtn.motion-state-pulse").count()
@@ -197,7 +275,68 @@ test("view mode toggle uses one stable active state", async ({ page }) => {
   await page.click("#viewListBtn");
   await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewMapBtn")).not.toHaveClass(/active/);
+  await page.waitForTimeout(460);
+  const exitingMapSnapshot = page.locator(".u-view-motion-map-snapshot");
+  if (await exitingMapSnapshot.count() > 0) {
+    const opacity = await exitingMapSnapshot.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity));
+    expect(opacity).toBeLessThanOrEqual(0.01);
+  }
+  await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
+
+  await page.reload();
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
+  await page.click("#viewMapBtn");
+  await expect(page.locator("#mapStage")).toBeVisible();
+  await page.waitForTimeout(720);
+  await page.click("#viewListBtn");
+  await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
+  await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
+});
+
+test("map results rail renders status badges in vertical column without overlapping title", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "unisearch_profile",
+      JSON.stringify({
+        budget: 50000,
+        budget_vs_prestige: 20,
+        vibe: { focus: 80, atmosphere: 70, finance: 20, location: 60 },
+      })
+    );
+  });
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await setNativeSelect(page, "sortSelect", "uni_ai");
+
+  const confirmBtn = page.locator("#unifitWarningModal [data-action='confirm']");
+  if (await confirmBtn.isVisible({ timeout: 1500 }).catch(() => false)) {
+    await confirmBtn.click();
+    await expect(page.locator("#unifitWarningModal")).toBeHidden();
+  }
+
+  await page.click("#viewMapBtn");
+  await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
+  await expect(page.locator("#mapStage")).toBeVisible();
+
+  const cardWithStatuses = page.locator("#mapResultsPanel .uni-card:has(.uni-card-statuses > .uni-status-tooltip:nth-child(2))").first();
+  await expect(cardWithStatuses).toBeVisible();
+
+  const triggers = cardWithStatuses.locator(".uni-status-trigger");
+  const count = await triggers.count();
+  expect(count).toBeGreaterThanOrEqual(2);
+
+  const box0 = await triggers.nth(0).boundingBox();
+  const box1 = await triggers.nth(1).boundingBox();
+  expect(box0 && box1).toBeTruthy();
+  expect(Math.abs(box0.x - box1.x)).toBeLessThanOrEqual(2);
+  expect(box1.y).toBeGreaterThan(box0.y);
+
+  const titleBox = await cardWithStatuses.locator(".uni-title").boundingBox();
+  expect(titleBox).toBeTruthy();
+  expect(titleBox.x + titleBox.width).toBeLessThanOrEqual(box0.x + 1);
 });
 
 test("university detail category switching leaves one active pane", async ({ page }) => {

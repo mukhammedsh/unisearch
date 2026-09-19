@@ -4,6 +4,17 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.6.0 (2026-09-20) - Seamless Catalog and Map Switching
+
+### Catalog Map
+- Prepared map results and Leaflet initialization immediately after the first catalog paint, keeping the list and map controls disabled until both destinations are ready (`frontend/javascript/pages/universities.js`, `frontend/index.html`).
+- Added a reduced-motion-aware shared-card transition between list and map modes, preserving visible results during refreshes and preventing layout jumps as cards change rail position (`frontend/javascript/pages/universities.js`, `frontend/css/universities/06-map.css`).
+- Refined the map results rail: cards now use balanced panel padding, status badges stack vertically without obscuring titles, and the map occupies the primary column (`frontend/css/universities/06-map.css`, `frontend/index.html`).
+- Unified thin themed scrollbars across supported browsers and removed redundant rail-specific scrollbar treatment (`frontend/css/style.css`, `frontend/css/universities/06-map.css`).
+
+### Tests
+- Extended motion E2E coverage for prepared map controls, transition cleanup, stable card geometry, rail alignment, and multiple vertical status badges (`tests/e2e/motion-interactions.spec.js`).
+
 ## 6.5.0 (2026-09-20) - Recurring Tuition and One-Time Costs
 
 ### Finance and UniChance

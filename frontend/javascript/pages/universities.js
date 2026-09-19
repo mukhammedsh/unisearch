@@ -20,6 +20,7 @@ import {
   animateElementOut,
   markMotionEnter,
   motionPress,
+  prefersReducedMotion,
   replayMotion,
   setupSlidingIndicator,
   safeSessionStorage,
@@ -492,6 +493,8 @@ export function initUniversitiesPage() {
     const SKELETON_FADE_MS = 160;
     let skeletonShowTimer = 0;
     let skeletonFadeTimer = 0;
+    let viewTransitionSeq = 0;
+    let activeViewTransition = null;
     let isSkeletonCurrentlyVisible = false;
     const universitiesFetchCache = new Map();
     let lastAiFetchKey = "";
@@ -505,6 +508,7 @@ export function initUniversitiesPage() {
     let hasRestoredInitialScroll = false;
     let uniFitWarningShownInSession = false;
     let lastRenderedItems = [];
+    let viewModesReady = false;
     let savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
     let compareUniversityIds = new Set(
         initialCompareIds.length === COMPARE_PAIR_SIZE
@@ -516,6 +520,16 @@ export function initUniversitiesPage() {
     }
     compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
     let compareAdmissionChoices = new Map();
+
+    const syncViewModeControls = () => {
+        [el.btnList, el.btnMap].forEach((button) => {
+            if (!button) return;
+            button.disabled = !viewModesReady;
+            button.setAttribute("aria-disabled", viewModesReady ? "false" : "true");
+        });
+    };
+
+    syncViewModeControls();
 
     function activeFilterCount() {
         let count = 0;
@@ -1105,8 +1119,9 @@ export function initUniversitiesPage() {
         `;
     }
 
-    function setUniversitiesLoading(isLoading) {
+    function setUniversitiesLoading(isLoading, options = {}) {
         const mapMode = state.viewMode === "map";
+        const preserveResults = options.preserveResults === true;
 
         if (skeletonFadeTimer) {
             clearTimeout(skeletonFadeTimer);
@@ -1117,11 +1132,11 @@ export function initUniversitiesPage() {
             el.content.setAttribute("aria-busy", isLoading ? "true" : "false");
         }
         if (el.mapStage) {
-            el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode);
+            el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode && !preserveResults);
         }
         if (el.mapResults) {
             el.mapResults.setAttribute("aria-busy", isLoading && mapMode ? "true" : "false");
-            if (isLoading && mapMode) renderMapLoadingSkeleton();
+            if (isLoading && mapMode && !preserveResults) renderMapLoadingSkeleton();
         }
 
         if (mapMode) {
@@ -1140,6 +1155,10 @@ export function initUniversitiesPage() {
         }
 
         if (isLoading) {
+            if (preserveResults) {
+                el.list?.classList.remove("is-fetching");
+                return;
+            }
             if (el.list) {
                 el.list.classList.add("is-fetching");
             }
@@ -1326,6 +1345,7 @@ export function initUniversitiesPage() {
     let activeMapUniId = String(focusUniId || "").trim();
     let mapLibrariesPromise = null;
     let mapInitPromise = null;
+    let mapWarmupScheduled = false;
 
     const MAP_ASSETS = {
         leafletCss: {
@@ -2090,29 +2110,245 @@ export function initUniversitiesPage() {
         if (filterCardNode) __universitiesResizeObserver.observe(filterCardNode);
     }
 
+    function applyViewVisibility(mode) {
+        if (el.list) el.list.style.display = mode === "list" ? "grid" : "none";
+        if (el.pagination) el.pagination.style.display = mode === "list" ? "flex" : "none";
+        if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
+    }
+
+    function readMotionDuration(tokenName, fallbackMs) {
+        const raw = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+        const value = Number.parseFloat(raw);
+        if (!Number.isFinite(value)) return fallbackMs;
+        return raw.endsWith("s") && !raw.endsWith("ms") ? value * 1000 : value;
+    }
+
+    function getViewMotionOptions() {
+        const styles = getComputedStyle(document.documentElement);
+        const duration = readMotionDuration("--motion-slow", 360) + readMotionDuration("--motion-medium", 240);
+        return {
+            duration,
+            easing: styles.getPropertyValue("--motion-ease-emphasized").trim() || "cubic-bezier(0.2, 0.8, 0.2, 1)",
+            fill: "both",
+        };
+    }
+
+    function motionCardSnapshot(card, rect, className) {
+        const clone = card.cloneNode(true);
+        clone.classList.add("u-view-motion-card", className);
+        clone.setAttribute("aria-hidden", "true");
+        clone.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
+        Object.assign(clone.style, {
+            left: `${rect.left}px`,
+            top: `${rect.top}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`,
+        });
+        return clone;
+    }
+
+    function appendMotionCardSnapshot(layer, card, rect, className) {
+        const snapshot = motionCardSnapshot(card, rect, className);
+        if (card.closest(".u-map-results-list")) {
+            const host = document.createElement("div");
+            host.className = "u-map-results-list u-view-motion-map-card-host";
+            host.appendChild(snapshot);
+            layer.appendChild(host);
+        } else {
+            layer.appendChild(snapshot);
+        }
+        return snapshot;
+    }
+
+    function cardMotionTransform(fromRect, toRect) {
+        const scaleX = toRect.width / Math.max(1, fromRect.width);
+        const scaleY = toRect.height / Math.max(1, fromRect.height);
+        return `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top}px) scale(${scaleX}, ${scaleY})`;
+    }
+
+    function cancelActiveViewTransition() {
+        if (!activeViewTransition) return;
+        activeViewTransition.cancel();
+        activeViewTransition = null;
+    }
+
+    async function transitionBetweenViews(previousMode, nextMode, shouldAnimate) {
+        cancelActiveViewTransition();
+        const transitionSeq = ++viewTransitionSeq;
+        const canAnimate = shouldAnimate && typeof Element.prototype.animate === "function";
+        if (!canAnimate) {
+            applyViewVisibility(nextMode);
+            return;
+        }
+
+        const sourceRoot = previousMode === "map" ? el.mapResults : el.list;
+        const targetRoot = nextMode === "map" ? el.mapResults : el.list;
+        if (!sourceRoot || !targetRoot) {
+            applyViewVisibility(nextMode);
+            return;
+        }
+
+        const viewportPadding = 160;
+        const sourceCards = Array.from(sourceRoot.querySelectorAll(".uni-card[data-uni-id]"))
+            .map((card) => ({
+                card,
+                id: String(card.getAttribute("data-uni-id") || "").trim(),
+                rect: card.getBoundingClientRect(),
+            }))
+            .filter(({ id, rect }) => id && rect.bottom > -viewportPadding && rect.top < window.innerHeight + viewportPadding);
+
+        const layer = document.createElement("div");
+        layer.className = "u-view-motion-layer";
+        layer.setAttribute("aria-hidden", "true");
+        const sourceSnapshots = sourceCards.map((item) => {
+            const snapshot = appendMotionCardSnapshot(layer, item.card, item.rect, "u-view-motion-card--source");
+            return { ...item, snapshot };
+        });
+
+        let mapSnapshot = null;
+        let mapSourceRect = null;
+        if (previousMode === "map" && el.mapContainer) {
+            mapSourceRect = el.mapContainer.getBoundingClientRect();
+            mapSnapshot = el.mapContainer.cloneNode(true);
+            mapSnapshot.classList.add("u-view-motion-map-snapshot");
+            mapSnapshot.setAttribute("aria-hidden", "true");
+            Object.assign(mapSnapshot.style, {
+                left: `${mapSourceRect.left}px`,
+                top: `${mapSourceRect.top}px`,
+                width: `${mapSourceRect.width}px`,
+                height: `${mapSourceRect.height}px`,
+            });
+            layer.appendChild(mapSnapshot);
+        }
+
+        document.body.appendChild(layer);
+        targetRoot.classList.add("is-view-motion-target");
+        if (nextMode === "map") {
+            el.mapContainer?.classList.add("is-view-motion-map-pending");
+            el.mapResults?.classList.add("is-view-motion-panel-pending");
+        }
+        applyViewVisibility(nextMode);
+
+        let animations = [];
+        let cleaned = false;
+        const cleanup = () => {
+            if (cleaned) return;
+            cleaned = true;
+            animations.forEach((animation) => animation.cancel());
+            layer.remove();
+            targetRoot.classList.remove("is-view-motion-target");
+            el.mapContainer?.classList.remove("is-view-motion-map-pending", "is-view-motion-map-active");
+            el.mapResults?.classList.remove("is-view-motion-panel-pending");
+        };
+        activeViewTransition = { cancel: cleanup };
+
+        await new Promise((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
+        if (transitionSeq !== viewTransitionSeq) {
+            cleanup();
+            return;
+        }
+
+        const targetCards = new Map(Array.from(targetRoot.querySelectorAll(".uni-card[data-uni-id]")).map((card) => [
+            String(card.getAttribute("data-uni-id") || "").trim(),
+            { card, rect: card.getBoundingClientRect() },
+        ]));
+        const options = getViewMotionOptions();
+        const fallbackTop = window.innerHeight + viewportPadding;
+
+        sourceSnapshots.forEach(({ id, rect: sourceRect, snapshot }, index) => {
+            const target = targetCards.get(id);
+            const targetRect = target?.rect || {
+                left: nextMode === "map" ? Math.max(sourceRect.left, window.innerWidth - sourceRect.width - 24) : sourceRect.left,
+                top: fallbackTop + index * 24,
+                width: Math.max(220, sourceRect.width * 0.72),
+                height: Math.max(120, sourceRect.height * 0.48),
+            };
+            const destinationTransform = cardMotionTransform(sourceRect, targetRect);
+            animations.push(snapshot.animate([
+                { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 0 },
+                { transform: destinationTransform, opacity: 0.35, offset: 0.62 },
+                { transform: destinationTransform, opacity: 0, offset: 0.78 },
+                { transform: destinationTransform, opacity: 0, offset: 1 },
+            ], options));
+
+            if (target?.card) {
+                const sourceTransform = cardMotionTransform(targetRect, sourceRect);
+                animations.push(target.card.animate([
+                    { transform: sourceTransform, opacity: 0, offset: 0 },
+                    { transform: sourceTransform, opacity: 0.12, offset: 0.18 },
+                    { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 0.82 },
+                    { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 1 },
+                ], options));
+            }
+        });
+
+        const seedRect = nextMode === "map"
+            ? (sourceCards[0]?.rect || el.catalogPane?.getBoundingClientRect())
+            : (targetCards.values().next().value?.rect || el.catalogPane?.getBoundingClientRect());
+
+        if (nextMode === "map" && el.mapContainer && seedRect) {
+            const mapTargetRect = el.mapContainer.getBoundingClientRect();
+            const startTransform = cardMotionTransform(mapTargetRect, seedRect);
+            el.mapContainer.classList.add("is-view-motion-map-active");
+            const mapAnimation = el.mapContainer.animate([
+                { transform: startTransform, opacity: 0.36 },
+                { transform: "translate(0, 0) scale(1, 1)", opacity: 1 },
+            ], options);
+            animations.push(mapAnimation);
+            el.mapContainer.classList.remove("is-view-motion-map-pending");
+
+            if (el.mapResults) {
+                animations.push(el.mapResults.animate([
+                    { opacity: 0 },
+                    { opacity: 0, offset: 0.18 },
+                    { opacity: 1 },
+                ], options));
+                el.mapResults.classList.remove("is-view-motion-panel-pending");
+            }
+        } else if (previousMode === "map" && mapSnapshot && mapSourceRect && seedRect) {
+            const endTransform = cardMotionTransform(mapSourceRect, seedRect);
+            animations.push(mapSnapshot.animate([
+                { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 0 },
+                { transform: endTransform, opacity: 0.18, offset: 0.58 },
+                { transform: endTransform, opacity: 0, offset: 0.72 },
+                { transform: endTransform, opacity: 0, offset: 1 },
+            ], options));
+        }
+
+        await Promise.allSettled(animations.map((animation) => animation.finished));
+        cleanup();
+        if (transitionSeq === viewTransitionSeq) activeViewTransition = null;
+    }
+
     async function switchView(mode, shouldFetch = false) {
+        const previousMode = state.viewMode;
+        const shouldAnimate = shouldFetch && previousMode !== mode && !prefersReducedMotion();
         state.viewMode = mode;
         saveFilters(state);
+        el.btnList?.classList.toggle("active", mode === "list");
+        el.btnMap?.classList.toggle("active", mode === "map");
+
+        if (mode === "map" && Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) {
+            renderMapResultsPanel(lastRenderedItems);
+        }
+
+        const transitionPromise = transitionBetweenViews(previousMode, mode, shouldAnimate);
+        scheduleSyncWorkspaceDepth();
+
         if (mode === "map") {
-            el.list.style.display = "none";
-            el.pagination.style.display = "none";
-            if (el.mapStage) el.mapStage.style.display = "grid";
-            el.btnList.classList.remove("active");
-            el.btnMap.classList.add("active");
-            replayMotion(el.mapStage, "motion-panel-enter", { timeoutMs: 420 });
-            scheduleSyncWorkspaceDepth();
-            await initMap();
-            setTimeout(() => { if(mapInstance) mapInstance.invalidateSize(); }, 100);
-            if (shouldFetch) fetchAndRender(); 
+            const mapReadyPromise = initMap();
+            await Promise.all([transitionPromise, mapReadyPromise]);
+            if (state.viewMode !== "map") return;
+            if (lastRenderedItems.length > 0) {
+                updateMapMarkers(lastRenderedItems, { renderResults: false });
+            }
+            window.setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 100);
         } else {
-            el.list.style.display = "grid";
-            el.pagination.style.display = "flex";
-            if (el.mapStage) el.mapStage.style.display = "none";
-            el.btnList.classList.add("active");
-            el.btnMap.classList.remove("active");
-            replayMotion(el.list, "motion-panel-enter", { timeoutMs: 420 });
-            scheduleSyncWorkspaceDepth();
-            if (shouldFetch) fetchAndRender();
+            await transitionPromise;
+        }
+
+        if (shouldFetch) {
+            fetchAndRender({ preserveVisibleResults: true, animateResults: false });
         }
     }
 
@@ -2176,6 +2412,30 @@ export function initUniversitiesPage() {
             throw error;
         });
         return mapInitPromise;
+    }
+
+    function warmMapMode(items) {
+        renderMapResultsPanel(items);
+        if (mapInstance || mapWarmupScheduled) return;
+        mapWarmupScheduled = true;
+
+        // Loading the map libraries after the first catalog paint keeps the
+        // first view switch from racing a cold Leaflet setup. The visible map
+        // still invalidates its size when it is opened for the first time.
+        const startWarmup = () => {
+            initMap()
+                .then(() => {
+                    updateMapMarkers(lastRenderedItems, { renderResults: false });
+                    viewModesReady = true;
+                    syncViewModeControls();
+                })
+                .catch((error) => console.warn("Map warmup failed", error));
+        };
+        if (typeof window.requestIdleCallback === "function") {
+            window.requestIdleCallback(startWarmup, { timeout: 1000 });
+        } else {
+            window.setTimeout(startWarmup, 0);
+        }
     }
 
     function updateMapResultsSelection(uniId) {
@@ -2276,14 +2536,14 @@ export function initUniversitiesPage() {
         });
     }
 
-    function updateMapMarkers(items) {
+    function updateMapMarkers(items, options = {}) {
         if (!mapInstance || !markersLayer) return;
         const L = window.L;
         if (!L) return;
         markersLayer.clearLayers();
         markersByUniId = new Map();
         const profile = loadProfileForApi(); const userBudget = parseFloat(profile.budget);
-        renderMapResultsPanel(items);
+        if (options.renderResults !== false) renderMapResultsPanel(items);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
         const popupOptions = {
             minWidth: isCompactViewport ? 220 : 320,
@@ -2778,7 +3038,8 @@ export function initUniversitiesPage() {
         return parsed;
     }
 
-    function renderFetchedData(data) {
+    function renderFetchedData(data, options = {}) {
+        const animateResults = options.animateResults !== false;
         const rawItems = Array.isArray(data.items) ? data.items : [];
         let items = rawItems;
         let total = data.total || 0;
@@ -2807,6 +3068,7 @@ export function initUniversitiesPage() {
             if (!items.length) {
                 if (el.list) el.list.innerHTML = "";
                 if (el.pagination) el.pagination.innerHTML = "";
+                warmMapMode(items);
                 renderUniversitiesState({
                     warningText,
                     emptyText: state.only_saved
@@ -2823,9 +3085,10 @@ export function initUniversitiesPage() {
             const profile = loadProfileForApi();
             const userBudget = parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
-            markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
+            warmMapMode(items);
+            if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
             renderPagination(total);
-            markMotionEnter(el.pagination, ".page-btn", { limit: 10, staggerMs: 12 });
+            if (animateResults) markMotionEnter(el.pagination, ".page-btn", { limit: 10, staggerMs: 12 });
             renderCompareTray();
             renderRecentlyViewedBar();
             updateMobileFilterUi();
@@ -2837,7 +3100,13 @@ export function initUniversitiesPage() {
             state.lastCatalogTotal = items.length;
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
-            markMotionEnter(el.mapResults, ".u-map-results-list .uni-card", { limit: 12, staggerMs: 18 });
+            const profile = loadProfileForApi();
+            const userBudget = parseFloat(profile.budget);
+            if (el.list) el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
+            renderPagination(total);
+            viewModesReady = true;
+            syncViewModeControls();
+            if (animateResults) markMotionEnter(el.mapResults, ".u-map-results-list .uni-card", { limit: 12, staggerMs: 18 });
             renderUniversitiesState({
                 warningText,
                 emptyText: items.length
@@ -2852,14 +3121,16 @@ export function initUniversitiesPage() {
         }
     }
 
-    async function fetchAndRender() {
+    async function fetchAndRender(options = {}) {
+        const preserveVisibleResults = options.preserveVisibleResults === true;
+        const animateResults = options.animateResults !== false;
         const runSeq = ++fetchRunSeq;
         logTranslationDebug("fetch cycle start", {
             runSeq,
             viewMode: state.viewMode,
             sort: state.sort,
         });
-        setUniversitiesLoading(true);
+        setUniversitiesLoading(true, { preserveResults: preserveVisibleResults });
         if (!hasInitialListPaint) {
             state.lastCatalogTotal = 0;
             if (el.total) el.total.textContent = "0";
@@ -2875,7 +3146,7 @@ export function initUniversitiesPage() {
 
         try {
         if (state.only_saved && savedUniversityIds.size === 0) {
-            renderFetchedData({ items: [], total: 0 });
+            renderFetchedData({ items: [], total: 0 }, { animateResults });
             return;
         }
         const isAiSort = (state.sort === "uni_ai");
@@ -2886,7 +3157,7 @@ export function initUniversitiesPage() {
                 fetchAi: () => fetchUniversitiesAiSort(buildAiSortPayload()),
                 fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams)),
                 isCurrentRun: () => runSeq === fetchRunSeq && state.sort === "uni_ai",
-                renderData: renderFetchedData,
+                renderData: (data) => renderFetchedData(data, { animateResults }),
                 onAiError: (err, mode) => {
                     const message = mode === "direct"
                         ? "AI sort failed, fallback list is used."
@@ -2900,7 +3171,7 @@ export function initUniversitiesPage() {
         const data = await fetchUniversities(apiParams);
         if (data?.__aborted) return;
         if (runSeq !== fetchRunSeq) return;
-        renderFetchedData(data);
+        renderFetchedData(data, { animateResults });
 
         } catch (err) {
         if (runSeq !== fetchRunSeq) return;
@@ -2924,7 +3195,7 @@ export function initUniversitiesPage() {
         }
         } finally {
         if (runSeq === fetchRunSeq) {
-            setUniversitiesLoading(false);
+            setUniversitiesLoading(false, { preserveResults: preserveVisibleResults });
             if (!hasRestoredInitialScroll) {
                 hasRestoredInitialScroll = true;
                 restoreScrollPosition();

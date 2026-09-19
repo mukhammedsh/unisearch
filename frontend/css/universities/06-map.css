@@ -27,7 +27,7 @@
 .u-map-results-list,
 .u-map-results-loading {
   position: absolute;
-  inset: 12px;
+  inset: 0;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -41,8 +41,14 @@
   flex: 1 1 auto;
 }
 
-.u-map-results-list--loading {
-  scrollbar-color: transparent transparent;
+.u-map-results-list--loading::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .u-map-results-list--loading {
+    scrollbar-color: transparent transparent;
+  }
 }
 
 .u-map-results-list .u-skeleton-card {
@@ -85,29 +91,41 @@
   gap: 12px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 4px;
-  border-radius: var(--radius-lg);
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--text-muted) 58%, transparent) transparent;
+  padding: var(--space-3);
+  border-radius: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .u-map-results-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
 }
 
 .u-map-results-list::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 .u-map-results-list::-webkit-scrollbar-track {
-  background: var(--surface-soft);
-  border-radius: 10px;
+  background: var(--scrollbar-track);
+  margin: var(--space-2) 0;
 }
 
 .u-map-results-list::-webkit-scrollbar-thumb {
-  min-width: 48px;
-  border: 3px solid var(--surface-soft);
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--text-muted) 58%, transparent);
+  min-height: 48px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--scrollbar-thumb);
+}
+
+.u-map-results-list::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }
 
 .u-map-results-list::-webkit-scrollbar-button,
+.u-map-results-list::-webkit-scrollbar-button:single-button,
+.u-map-results-list::-webkit-scrollbar-button:vertical:decrement,
+.u-map-results-list::-webkit-scrollbar-button:vertical:increment,
 .u-map-results-list::-webkit-scrollbar-corner {
   display: none;
   width: 0;
@@ -120,7 +138,7 @@
   flex: none;
   width: 100%;
   max-width: none;
-  min-height: 0;
+  min-height: 148px;
   cursor: pointer;
 }
 
@@ -153,9 +171,34 @@
   gap: 4px;
 }
 
-/* Status icons overlay the card corner (same as list mode); keep them off the title. */
+/* Status badges stack vertically downwards into available vertical space instead of encroaching horizontally on the title */
+.u-map-results-list .uni-card-statuses {
+  flex-direction: column;
+  align-items: flex-end;
+  top: var(--space-3);
+  right: var(--space-3);
+  gap: var(--space-1);
+  width: auto;
+  max-width: none;
+}
+
+.u-map-results-list .uni-status-trigger {
+  width: 28px;
+  height: 28px;
+}
+
+.u-map-results-list .uni-status-trigger > span,
+.u-map-results-list .uni-status-icon {
+  width: 14px;
+  height: 14px;
+}
+
 .u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head {
-  padding-right: 76px;
+  padding-right: 36px;
+}
+
+.u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-metrics {
+  padding-right: 36px;
 }
 
 .u-map-results-list .uni-logo--inline {
@@ -195,6 +238,59 @@
   isolation: isolate;
 }
 
+/* The view switch uses short-lived fixed snapshots so full cards can travel to
+   their compact map-rail positions without forcing layout on every frame. */
+.u-view-motion-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.u-view-motion-card,
+.u-view-motion-map-snapshot {
+  position: absolute;
+  margin: 0;
+  transform-origin: top left;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.u-view-motion-card {
+  max-width: none;
+  transition: none;
+}
+
+/* Preserve the map rail's descendant-based compact card styles while a
+   snapshot temporarily lives in the fixed motion layer. */
+.u-map-results-list.u-view-motion-map-card-host {
+  display: contents;
+}
+
+.u-view-motion-map-snapshot {
+  z-index: 1;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.is-view-motion-target .uni-card {
+  opacity: 0;
+  transform-origin: top left;
+  will-change: transform, opacity;
+}
+
+.u-map-container.is-view-motion-map-pending,
+.u-map-results.is-view-motion-panel-pending {
+  opacity: 0;
+}
+
+.u-map-container.is-view-motion-map-active {
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
 @media (max-width: 1180px) {
   .u-map-stage {
     grid-template-columns: minmax(0, 1fr);
@@ -212,7 +308,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 12px;
+    padding: 8px 0;
     max-height: 420px;
   }
 
@@ -261,4 +357,10 @@
     min-height: 280px;
   }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-view-motion-layer {
+    display: none;
+  }
 }

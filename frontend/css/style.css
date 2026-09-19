@@ -111,6 +111,9 @@
   --z-toast: 9000;
   --z-loading-bar: 9400;
   --z-initial-loader: 10000;
+  --scrollbar-thumb: color-mix(in srgb, var(--text-muted) 38%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 56%, transparent);
+  --scrollbar-track: transparent;
   color-scheme: light;
 }
 
@@ -174,6 +177,9 @@
   --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.60);
   --line-fade: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 75%, transparent 100%);
   --footer-icon-filter: invert(1);
+  --scrollbar-thumb: color-mix(in srgb, var(--text-muted) 45%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 65%, transparent);
+  --scrollbar-track: transparent;
   color-scheme: dark;
 }
 
@@ -184,6 +190,59 @@
 
 * {
   box-sizing: border-box;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+}
+
+/* ===== Global Scrollbar System (Calm Academic Workspace) ===== */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-track:vertical {
+  margin: var(--space-2) 0;
+}
+
+*::-webkit-scrollbar-track:horizontal {
+  margin: 0 var(--space-2);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button:single-button,
+*::-webkit-scrollbar-button:vertical:decrement,
+*::-webkit-scrollbar-button:vertical:increment,
+*::-webkit-scrollbar-button:horizontal:decrement,
+*::-webkit-scrollbar-button:horizontal:increment,
+*::-webkit-scrollbar-corner {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+html::-webkit-scrollbar-track:vertical,
+body::-webkit-scrollbar-track:vertical,
+html::-webkit-scrollbar-track:horizontal,
+body::-webkit-scrollbar-track:horizontal {
+  margin: 0;
 }
 
 html {
@@ -2550,17 +2609,17 @@ html, body {
 }
 
 .custom-options::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
   margin: var(--space-2) 0;
 }
 
 .custom-options::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--text-muted) 38%, transparent);
+  background: var(--scrollbar-thumb);
   border-radius: var(--radius-full);
 }
 
 .custom-options::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--text-muted) 56%, transparent);
+  background: var(--scrollbar-thumb-hover);
 }
 
 .custom-options::-webkit-scrollbar-button,
@@ -5095,7 +5154,12 @@ body {
   margin: 20px 0 0;
   border-bottom: none;
   overflow-x: auto;
-  scrollbar-width: thin;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .admission-program-selector {
+    scrollbar-width: thin;
+  }
 }
 
 .admission-program-option,
