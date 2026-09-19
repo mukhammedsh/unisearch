@@ -52,6 +52,9 @@ guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Glossary
 guide.language_exams.title: Language Exams
 guide.loading_language_config: Loading language exam config
+guide.next_section: Continue to {section}
+guide.contents: Contents
+guide.contents_current: Contents: {section}
 guide.ml.p1: Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors with the multilingual-e5 model and compares their cosine similarity, rescaled into a 0–1 score:
 guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim + offset - 0.55) / 0.35, 0, 1)\noffset = 0.038 for non-English queries, else 0
 guide.ml.p2: That similarity becomes the semantic third of the {fit} score, which is why universities described the way you think float upward. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching — gamedev counts as game development, ML as machine learning — so you can write the way you speak.
@@ -70,12 +73,10 @@ guide.nav.language_exams: Language Exams
 guide.nav.tags: Tags
 guide.nav_aria: Guide navigation
 guide.group.admission: Admission
+guide.group.discovery: Discovery & comparison
 guide.group.exams: Exams
 guide.group.glossary: Glossary
 guide.back_home: Back to homepage
-guide.toc.title: Table of Contents
-guide.toc.toggle: Toggle table of contents
-guide.toc.in_group: In this chapter
 guide.tags.title: Tags
 guide.tags.intro: Tags compress the verdict onto the card so that a dozen universities can be scanned without opening each one. Standard tags state published facts, while AI tags interpret your profile — and when a tag is absent, its condition simply did not trigger.
 guide.tags.standard_title: Standard Tags

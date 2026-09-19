@@ -48,9 +48,14 @@
     <div class="guide-layout">
       <aside class="guide-sidebar">
         <a class="guide-back" href="index.html" data-route="home" data-i18n="guide.back_home">Back to homepage</a>
-        <nav class="guide-nav" aria-label="Guide navigation" data-i18n-aria-label="guide.nav_aria">
+        <div class="guide-mobile-nav-shell">
+          <button class="guide-mobile-nav-toggle" id="guideMobileNavToggle" type="button" aria-expanded="false" aria-controls="guideNav">
+            <span class="guide-mobile-nav-toggle__label" data-i18n="guide.contents">Contents</span>
+            <span class="guide-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+          </button>
+          <nav class="guide-nav" id="guideNav" aria-label="Guide navigation" data-i18n-aria-label="guide.nav_aria">
           <div class="guide-nav-group" data-guide-group="unifit">
-            <h3 class="guide-nav-title" data-ai-template="{fit}">UniFit</h3>
+            <h3 class="guide-nav-title" data-i18n="guide.group.discovery">Discovery &amp; comparison</h3>
             <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
             <a href="#guide-ml" data-i18n="guide.nav.interests">Interests</a>
             <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
@@ -72,24 +77,11 @@
             <h3 class="guide-nav-title" data-i18n="guide.group.glossary">Glossary</h3>
             <a href="#guide-glossary" data-i18n="guide.nav.glossary">Glossary</a>
           </div>
-        </nav>
+          </nav>
+        </div>
       </aside>
 
       <div class="guide-content">
-        <aside class="guide-toc" id="guideToc" aria-label="Table of contents" data-i18n-aria-label="guide.toc.title">
-          <div class="guide-toc-card">
-            <button class="guide-toc-head" id="guideTocToggle" type="button" aria-expanded="true" aria-controls="guideTocBody" data-i18n-aria-label="guide.toc.toggle">
-              <span data-i18n="guide.toc.title">Table of Contents</span>
-              <span class="guide-toc-chevron" aria-hidden="true"></span>
-            </button>
-            <div class="guide-toc-body" id="guideTocBody">
-              <div id="guideTocChapterWrap">
-                <p class="guide-toc-label" data-i18n="guide.toc.in_group">In this chapter</p>
-                <ul class="guide-toc-list" id="guideTocChapter"></ul>
-              </div>
-            </div>
-          </div>
-        </aside>
         <section id="guide-unifit" class="guide-section">
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">

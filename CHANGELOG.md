@@ -4,6 +4,17 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.7.0 (2026-09-20) - Focused Guide Navigation
+
+### Guide
+- Replaced the in-article table of contents with a focused sidebar navigation and renamed its primary group to “Discovery & comparison” (`frontend/guide.html`, `frontend/css/guide.css`).
+- Added a compact mobile Contents disclosure that opens and closes accessibly, tracks the active article, and closes after a selection or Escape (`frontend/guide.html`, `frontend/javascript/pages/guide.js`, `frontend/css/guide.css`).
+- Added an intentional, reduced-motion-aware pull gesture at the end of each guide article to continue into the next section, including cancellation when the user reverses direction (`frontend/javascript/pages/guide.js`, `frontend/css/guide.css`).
+- Localized all new guide controls in English and Russian and simplified guide list markers and code/tag surfaces (`frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/css/guide.css`).
+
+### Tests
+- Updated guide E2E coverage for sidebar navigation, mobile Contents behavior, deep links, and pull-to-next interactions (`tests/e2e/guide-tabs.spec.js`).
+
 ## 6.6.0 (2026-09-20) - Seamless Catalog and Map Switching
 
 ### Catalog Map

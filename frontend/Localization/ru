@@ -55,6 +55,9 @@ guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Глоссарий
 guide.language_exams.title: Языковые экзамены
 guide.loading_language_config: Загрузка конфигурации языковых экзаменов
+guide.next_section: Перейти к разделу «{section}»
+guide.contents: Содержание
+guide.contents_current: Содержание: {section}
 guide.ml.p1: Интересы — это свободный поисковый запрос, а не набор тегов. Система превращает ваш текст и текст каждого университета в векторы моделью multilingual-e5 и сравнивает их косинусную близость, пересчитанную в оценку от 0 до 1:
 guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim + offset - 0.55) / 0.35, 0, 1)\noffset = 0.038 для неанглийских запросов, иначе 0
 guide.ml.p2: Эта близость становится семантической третью оценки {fit} — поэтому университеты, описанные так же, как вы думаете, всплывают наверх. Каждый вуз представлен названием, программами, тегами, описанием и названиями вариантов поступления, а ходовые сокращения раскрываются до сравнения: gamedev засчитывается как game development, ML как machine learning, — так что писать можно как говорите.
@@ -73,12 +76,10 @@ guide.nav.language_exams: Языковые экзамены
 guide.nav.tags: Теги
 guide.nav_aria: Навигация по гайду
 guide.group.admission: Поступление
+guide.group.discovery: Подбор и сравнение
 guide.group.exams: Экзамены
 guide.group.glossary: Глоссарий
 guide.back_home: На главную
-guide.toc.title: Содержание
-guide.toc.toggle: Показать или скрыть содержание
-guide.toc.in_group: В этом разделе
 guide.tags.title: Теги
 guide.tags.intro: Теги сжимают вердикт до карточки, чтобы десяток университетов просматривался без открытия каждого. Обычные теги излагают опубликованные факты, а ИИ-теги толкуют ваш профиль, — и если тега нет, его условие просто не сработало.
 guide.tags.standard_title: Обычные теги
