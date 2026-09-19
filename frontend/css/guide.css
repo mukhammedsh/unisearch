@@ -6,7 +6,7 @@
 .guide-page {
   --guide-sidebar-offset: 84px;
   max-width: 1520px;
-  margin: 24px auto 80px;
+  margin: 12px auto 80px;
   padding: 0 32px;
 }
 
@@ -14,8 +14,8 @@
    Hero Section
    -------------------------------------------------------------------------- */
 .guide-hero {
-  padding: 0 0 16px;
-  margin-bottom: 20px;
+  padding: 0 0 8px;
+  margin-bottom: 12px;
   border-bottom: none;
 }
 
@@ -23,126 +23,163 @@
   margin: 0;
   font-size: clamp(30px, 3.5vw, 42px);
   line-height: 1.12;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.025em;
   color: var(--text);
 }
 
 /* --------------------------------------------------------------------------
-   Layout Grid (Sidebar + Content)
+   Layout Grid (Sidebar + Article Card)
    -------------------------------------------------------------------------- */
 .guide-layout {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-columns: 250px minmax(0, 1fr);
   gap: 28px;
   align-items: start;
 }
 
 /* --------------------------------------------------------------------------
-   Sidebar & Navigation (Apple-like Snug Table of Contents)
+   Sidebar & Navigation (Wiki-style Topic Tree, UniSearch Tokens)
    -------------------------------------------------------------------------- */
 .guide-sidebar {
   position: sticky;
   top: var(--guide-sidebar-offset);
   z-index: 1;
+  min-width: 0;
+}
+
+.guide-back {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: var(--space-3);
+}
+
+.guide-back::before {
+  content: "←";
+  padding-right: var(--space-1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .guide-back:hover {
+    color: var(--accent-strong);
+    text-decoration: underline;
+  }
 }
 
 .guide-nav {
   display: grid;
-  gap: 2px;
+  gap: var(--space-5);
   width: 100%;
-  padding: var(--space-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
+  min-width: 0;
   max-height: calc(100vh - var(--guide-sidebar-offset) - 24px);
   overflow-y: auto;
-  box-shadow: var(--shadow-xs);
+  padding-bottom: var(--space-2);
+}
+
+.guide-nav-group {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.guide-nav-title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .guide-nav a {
   display: flex;
-  align-items: center;
-  padding: 8px 12px;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 2px 0;
   text-decoration: none;
-  color: var(--text-muted);
-  border-radius: 8px;
+  color: var(--accent-strong);
   font-size: var(--text-sm);
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  border-left: 3px solid transparent;
+  line-height: 1.45;
+  font-weight: 500;
   transition:
-    background-color var(--motion-fast, 0.15s) ease,
-    color var(--motion-fast, 0.15s) ease,
-    border-color var(--motion-fast, 0.15s) ease;
+    color var(--motion-fast, 0.15s) ease;
+}
+
+.guide-nav a::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--text-muted);
+  opacity: 0.7;
+  transform: rotate(45deg) translateY(-1px);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .guide-nav a:hover {
-    color: var(--text);
-    background: var(--surface-soft);
+    text-decoration: underline;
   }
 }
 
 .guide-nav a.is-active {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, var(--surface-solid));
+  color: var(--text);
   font-weight: 700;
-  border-left-color: var(--accent);
+}
+
+.guide-nav a.is-active::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
-   Main Content Column & Information Sections (Apple-style Snug Panels)
+   Main Content Card & Article (Wiki-style Reading Surface)
    -------------------------------------------------------------------------- */
 .guide-content {
+  display: flow-root;
+  align-self: stretch;
   min-width: 0;
+  padding: var(--space-6);
+  border: none;
+  border-radius: 16px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
+  scroll-margin-top: 96px;
 }
 
 .guide-section {
-  position: relative;
-  display: block;
-  margin: 0 0 var(--space-4);
-  padding: var(--space-6);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--surface-solid);
-  scroll-margin-top: 96px;
-  transition:
-    border-color var(--motion-fast, 0.15s) ease,
-    background-color var(--motion-fast, 0.15s) ease;
-}
-
-.guide-section::before {
-  content: "";
-  position: absolute;
-  top: 18px;
-  bottom: 18px;
-  left: 0;
-  width: 3.5px;
-  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: none;
   background: transparent;
-  transition: background-color var(--motion-fast, 0.15s) ease;
+  scroll-margin-top: 96px;
+  min-width: 0;
 }
 
 .guide-section.is-active {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  display: block;
 }
 
-.guide-section.is-active::before {
-  background: var(--accent);
-}
-
-/* Section Header (Clean separator line, tight bottom spacing) */
+/* Section Header */
 .guide-section h2 {
-  margin: 0 0 12px;
-  padding-bottom: 8px;
+  margin: 0 0 var(--space-3);
+  padding-bottom: 0;
   border-bottom: none;
-  font-size: clamp(22px, 2.2vw, 27px);
-  font-weight: 700;
-  line-height: 1.22;
-  letter-spacing: -0.022em;
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
   color: var(--text);
+}
+
+.guide-section h4[id],
+.guide-subsection {
+  scroll-margin-top: 96px;
 }
 
 /* --------------------------------------------------------------------------
@@ -171,24 +208,25 @@
   color: var(--text);
 }
 
-/* Informational notices / callouts (Apple-like compact callout card) */
-.guide-muted {
-  margin: var(--space-3) 0;
-  padding: var(--space-3) var(--space-4);
+/* Formula block (code-like mini window inside the article) */
+.guide-formula {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  margin-left: 0;
+  margin-right: 0;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
   background: var(--surface-soft);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--radius-md);
-  color: var(--text-muted);
-  font-size: var(--text-base);
-  line-height: 1.48;
-  letter-spacing: -0.01em;
-}
-
-.guide-muted--tiny {
-  font-size: var(--text-sm);
-  margin: 0;
-  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--line);
   border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
 }
 
 /* Lists (tight rhythm without giant gaps between bullets) */
@@ -203,10 +241,6 @@
 
 .guide-list li + li {
   margin-top: 6px;
-}
-
-.guide-list--after-note {
-  margin-top: 10px;
 }
 
 /* --------------------------------------------------------------------------
@@ -239,20 +273,12 @@
   margin-top: 16px;
 }
 
-.guide-tags-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  margin-bottom: 8px;
-}
-
-.guide-tags-head h4 {
-  margin: 0;
-}
-
-.guide-tags-divider {
-  display: none;
+.guide-tags-note {
+  margin-top: var(--space-1);
+  margin-bottom: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
 }
 
 .guide-tag,
@@ -269,44 +295,120 @@
 }
 
 /* --------------------------------------------------------------------------
-   Comparison Step Flow (Apple Card Steps)
+   Table of Contents (Mini Window Inside the Article Card)
    -------------------------------------------------------------------------- */
-.guide-compare-flow {
-  margin-top: var(--space-4);
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
+.guide-toc {
+  float: right;
+  width: 240px;
+  margin: 0 0 var(--space-4) var(--space-4);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--line);
+  min-width: 0;
 }
 
-.guide-flow-step {
-  min-width: 0;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-base);
-  background: var(--surface-soft);
+.guide-toc[hidden] {
+  display: none;
+}
+
+.guide-toc-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.guide-toc-head {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  transition: border-color var(--motion-fast, 0.15s) ease;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.guide-toc-chevron {
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--text-muted);
+  transition: transform var(--motion-fast, 0.15s) ease;
+}
+
+.guide-toc-card.is-collapsed .guide-toc-chevron {
+  transform: rotate(-90deg);
+}
+
+.guide-toc-card.is-collapsed .guide-toc-body {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+.guide-toc-body {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  max-height: 640px;
+  opacity: 1;
+  overflow: hidden;
+  transition:
+    max-height var(--motion-medium, 0.25s) ease,
+    opacity var(--motion-fast, 0.15s) ease,
+    margin-top var(--motion-medium, 0.25s) ease;
+}
+
+.guide-toc-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.guide-toc-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-toc-list a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--accent-strong);
+  text-decoration: none;
+}
+
+.guide-toc-list a::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 4px;
+  height: 4px;
+  border: 1px solid var(--text-muted);
+  opacity: 0.7;
+  transform: rotate(45deg) translateY(-1px);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .guide-flow-step:hover {
-    border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  .guide-toc-list a:hover {
+    text-decoration: underline;
   }
-}
-
-.guide-flow-step strong {
-  color: var(--text);
-  font-size: var(--text-base);
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.guide-flow-step span {
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.45;
 }
 
 /* --------------------------------------------------------------------------
@@ -314,16 +416,6 @@
    -------------------------------------------------------------------------- */
 body[data-page="guide"] {
   background: var(--bg);
-}
-
-:root[data-theme="dark"] .guide-nav a.is-active {
-  background: color-mix(in srgb, var(--accent) 15%, var(--surface-solid));
-  color: var(--accent);
-  border-left-color: var(--accent);
-}
-
-:root[data-theme="dark"] .guide-section.is-active {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
 }
 
 :root[data-theme="dark"] .guide-tag,
@@ -342,12 +434,8 @@ body[data-page="guide"] {
   }
 
   .guide-layout {
-    grid-template-columns: 230px minmax(0, 1fr);
+    grid-template-columns: 220px minmax(0, 1fr);
     gap: 20px;
-  }
-
-  .guide-section {
-    padding: var(--space-5) var(--space-6);
   }
 
   .guide-doc {
@@ -361,7 +449,7 @@ body[data-page="guide"] {
 
 @media (max-width: 1024px) {
   .guide-page {
-    margin-top: 18px;
+    margin-top: 12px;
     padding: 0 var(--mobile-safe-gutter, 16px);
   }
 
@@ -370,66 +458,36 @@ body[data-page="guide"] {
   }
 
   .guide-sidebar {
-    top: var(--nav-height, 70px);
-    margin: 0 0 var(--space-4);
-    padding: var(--space-2) 0;
-    background: var(--bg);
-    border-bottom: none;
-    position: sticky;
-    z-index: 2;
-    box-sizing: border-box;
+    position: static;
+    margin: 0 0 var(--space-5);
     max-width: 100%;
   }
 
   .guide-nav {
-    display: flex;
-    gap: var(--space-2);
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: var(--space-1);
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    background: var(--surface-soft);
-    scrollbar-width: none;
     max-height: none;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .guide-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .guide-nav a {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--text-sm);
-    min-height: 36px;
-    border-left: none;
-    border-bottom: 2px solid transparent;
-    scroll-snap-align: start;
-  }
-
-  .guide-nav a.is-active {
-    border-left-color: transparent;
-    border-bottom-color: var(--accent);
+    overflow: visible;
   }
 
   .guide-section {
     scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
+  }
+
+  .guide-section h4[id],
+  .guide-subsection {
+    scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
+  }
+
+  .guide-content {
     padding: var(--space-4);
     border-radius: var(--radius-lg);
-    margin-bottom: var(--space-3);
+  }
+
+  .guide-toc {
+    width: 210px;
   }
 
   .guide-hero h1 {
     font-size: clamp(26px, 6vw, 34px);
-  }
-
-  .guide-compare-flow {
-    grid-template-columns: 1fr;
-    gap: 8px;
   }
 }
 
@@ -444,15 +502,21 @@ body[data-page="guide"] {
     margin-bottom: var(--space-4);
   }
 
-  .guide-section {
+  .guide-content {
     padding: var(--space-4) var(--space-3);
     border-radius: 12px;
   }
 
+  .guide-toc {
+    float: none;
+    width: auto;
+    margin: 0 0 var(--space-4);
+  }
+
   .guide-section h2 {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
     margin-bottom: var(--space-3);
-    padding-bottom: var(--space-2);
+    padding-bottom: 0;
   }
 
   .guide-doc {
@@ -469,7 +533,8 @@ body[data-page="guide"] {
 @media (prefers-reduced-motion: reduce) {
   .guide-nav a,
   .guide-section,
-  .guide-flow-step {
+  .guide-toc-body,
+  .guide-toc-chevron {
     transition: none;
   }
 }

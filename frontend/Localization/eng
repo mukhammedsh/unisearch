@@ -39,82 +39,83 @@ about.team_kicker: Our Team
 about.title: We are the abiturient team behind UniSearch.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
-guide.admission.p1: An admission category is a real applicant route, and requirement profiles are the score variants inside it.
-guide.admission.p2: Requirements are minimum thresholds. For safer planning, also compare yourself with average admitted scores.
-guide.admission.p3: Mode any means one language proof is enough. Mode all means every listed proof is required.
-guide.admission.p4: Scholarships and aid can noticeably reduce total cost, so always check the selected funding option.
-guide.admission.title: How to read admission categories
-guide.exam_basics.p1: Admissions usually need two parts: academic scores and proof of language proficiency.
-guide.exam_basics.p2: Requirements differ by country, university, program, and requirement profile, so check the selected choice directly.
-guide.exam_basics.p3: Language requirements are especially important for international programs.
-guide.exam_basics.p4: Simple strategy: first cover minimums, then improve scores for stronger options.
-guide.exam_basics.title: Exam Basics (Admissions)
+guide.admission.p1: Universities do not admit "in general" — they admit onto routes. A category is one such route, say a grant competition or a paid track; inside it sit requirement profiles, the score variants of that route; and a funding option completes the picture. Category plus profile plus funding is called a choice, and everything on this site — chances, costs, tags — is computed per choice, which is why one university can look excellent on one route and closed on another.
+guide.admission.p2: Requirements are minimums: clear them all and the choice considers you, miss one and it stays shut no matter how strong the rest of the profile is. But minimums only open the door — the average scores of admitted students show where the competition actually stands, so plan against the average and treat the minimum as the floor rather than the goal.
+guide.admission.p3: Language proof follows the same logic with one extra switch. Mode any means a single proof from the list is enough; mode all means every listed proof is required. A native language counts wherever the route accepts it, and a single language rule can freely mix CEFR levels with exam scores.
+guide.admission.p4: Scores from different countries are first brought to common scales — GPA, for instance, is normalized to 4.0 before anything is computed. Higher is better for every exam with a single exception, JLPT, where the level number runs the other way and a lower number means stronger Japanese.
+guide.admission.title: How admission choices work
+guide.exam_basics.p1: Every admission choice runs two independent checks: your academic scores and your language proof. The two never compensate for each other — a brilliant math score will not cover a missing IELTS — so both columns have to turn green for the choice to open.
+guide.exam_basics.p2: Thresholds are set per university, per category, and per profile, which is why two tracks at the same university can demand completely different scores. Read the selected choice itself; the overview figures on a university page are orientation, not requirements.
+guide.exam_basics.p3: The practical order never changes: close every minimum first, since a single failed minimum shuts the choice regardless of the rest, and only then push past the admitted average to turn a borderline application into a comfortable one.
+guide.exam_basics.title: What admissions check
 guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Glossary
 guide.language_exams.title: Language Exams
 guide.loading_language_config: Loading language exam config
-guide.ml.p1: The Interests field works like smart tags. List key topics separated by commas: majors, technologies, or career goals.
-guide.ml.p2: The system compares this text with university and program descriptions.
-guide.ml.p3: More specific interests usually give better recommendations.
-guide.ml.p4: Use short terms instead of full sentences, and avoid negations. Example: computer science, artificial intelligence, robotics, game development.
-guide.ml.p5: Interests help sort options, but they do not replace official university requirements.
+guide.ml.p1: Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors with the multilingual-e5 model and compares their cosine similarity, rescaled into a 0–1 score:
+guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim + offset - 0.55) / 0.35, 0, 1)\noffset = 0.038 for non-English queries, else 0
+guide.ml.p2: That similarity becomes the semantic third of the {fit} score, which is why universities described the way you think float upward. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching — gamedev counts as game development, ML as machine learning — so you can write the way you speak.
+guide.ml.p3: The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off — "game development" outranks a vague "IT" — while every extra filler word dilutes the signal.
+guide.ml.p4: Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion. Write what you want, never what you want to avoid.
+guide.ml.p5: Interests only reorder the list; they never override requirements or chances. And if the model itself is unavailable, interests change nothing at all: there is no quiet keyword fallback, the score is zero, and the page says so openly.
 guide.ml.title: How your interests are used
 guide.nav.interests: Interests
 guide.nav.roi: ROI
 guide.nav.comparison: Comparison
-guide.muted.academic: Short explanations of academic exams used in requirements.
-guide.muted.language: Short explanations of language exams and certificates.
 guide.nav.academic_exams: Academic Exams
 guide.nav.admission: Admission
 guide.nav.exam_basics: Exam Basics
 guide.nav.glossary: Glossary
 guide.nav.language_exams: Language Exams
 guide.nav.tags: Tags
+guide.nav_aria: Guide navigation
+guide.group.admission: Admission
+guide.group.exams: Exams
+guide.group.glossary: Glossary
+guide.back_home: Back to homepage
+guide.toc.title: Table of Contents
+guide.toc.toggle: Toggle table of contents
+guide.toc.in_group: In this chapter
 guide.tags.title: Tags
-guide.tags.intro: Card tags help you quickly read why a university looks good or risky for your profile.
+guide.tags.intro: Tags compress the verdict onto the card so that a dozen universities can be scanned without opening each one. Standard tags state published facts, while AI tags interpret your profile — and when a tag is absent, its condition simply did not trigger.
 guide.tags.standard_title: Standard Tags
-guide.tags.standard.acceptance: Acceptance Rate: shown when acceptance data is available.
-guide.tags.standard.aid_available: Aid Available: shown when merit-based or need-based aid is present.
-guide.tags.standard.over_budget: Over Budget: shown when estimated annual cost is above your profile budget.
-guide.tags.standard.over_budget_aid: Over Budget • Aid Available: shown when cost is above budget but aid exists.
-guide.tags.ai_note: Tags that work only when UniFit selected as sort strategy.
+guide.tags.standard.acceptance: Acceptance Rate carries the official selectivity figure wherever the university publishes one, so you can feel the competition before doing any math.
+guide.tags.standard.aid_available: Aid Available means the university runs at least one grant track that is worth opening.
+guide.tags.standard.over_budget: Over Budget warns that the estimated year cost runs above the budget in your profile — the option stays visible, but the gap is explicit.
+guide.tags.standard.over_budget_aid: Over Budget • Aid Available is the same warning with a lifeline: the cost exceeds your budget, yet a grant track exists that could rewrite the math.
+guide.tags.ai_note: AI tags appear only under {fit} sorting, because only that mode computes the numbers behind them.
 guide.tags.ai_title: AI Tags
-guide.tags.ai.conditional: Conditional / Exam Needed: shown when required exam evidence is incomplete for a requirement profile.
-guide.tags.ai.your_vibe: Your Vibe: shown for very strong preference match (focus, atmosphere, location).
-guide.tags.ai.top_match: Good Match: shown for a good preference match that does not reach Your Vibe level.
-guide.tags.ai.likely_grant: Likely Grant: shown when grant-oriented chance is strong.
-guide.tags.ai.paid_admission: Paid Admission: shown when general admission chance is strong in paid route.
-guide.tags.ai.requirements_met: Requirements Met: shown when minimum requirements are satisfied.
-guide.tags.ai.below_requirements: Below Requirements: shown when minimum requirements are not satisfied.
-guide.title: UniSearch Guide
+guide.tags.ai.conditional: Conditional / Exam Needed flags a choice where a required exam still has no evidence in your profile: the door is open, but a document is missing.
+guide.tags.ai.your_vibe: Your Vibe marks near-perfect preference alignment — a mismatch of 0.14 or less across the four sliders.
+guide.tags.ai.top_match: Good Match is its looser sibling: a mismatch of 0.22 or less, a solid fit that stops short of Your Vibe.
+guide.tags.ai.likely_grant: Likely Grant highlights a grant route where your estimated chance reaches 65 or more.
+guide.tags.ai.paid_admission: Paid Admission does the same job for the paid route at a general chance of 45 or more.
+guide.tags.ai.requirements_met: Requirements Met confirms that every minimum of the active choice passes on your current data.
+guide.tags.ai.below_requirements: Below Requirements is its opposite: at least one minimum of the active choice fails, and the chance section names the culprit.
+guide.title: Guide
 guide.roi.title: ROI (return on investment)
-guide.roi.p1: ROI compares the estimated early-career graduate salary with the estimated cost of one study year.
-guide.roi.p2: In simple terms, it helps you see whether the financial outcome looks strong relative to what you pay for education.
-guide.roi.p3: ROI is a planning signal, not a salary promise. Real outcomes depend on your major, country, skills, work rights, and the job market.
-guide.roi.p4: UniSearch shows ROI only when verified graduate salary data is available. If a university does not publish reliable salary data, the ROI block is hidden.
-guide.roi.p5: Use ROI together with tuition, aid, admission chance, and program fit. A cheaper university is not always better, and a high salary estimate does not remove admission or visa risk.
+guide.roi.p1: ROI answers one narrow question: how does the money coming back compare to the money going in. It divides the estimated early-career salary of graduates by the cost of one study year, so a value of 2 means a single year of salary roughly repays two years of study:
+guide.roi.formula: roi = salary / yearCost\nyearCost = cheapest track total, USD-normalized\nsalary = your major if matched, else average across majors\n> 2.0 Excellent Return, > 1.0 Positive Return, else High Investment
+guide.roi.p2: The cost is the cheapest admission choice total for your study mode, converted into one currency so that universities from different countries stay comparable. The salary comes only from verified graduate data: your selected major when the university publishes figures for it, otherwise the average across its published majors.
+guide.roi.p3: When a university publishes no usable salary data, the ROI block simply disappears instead of guessing. Missing data is never plotted as zero, because a zero would pretend the return is known to be terrible.
+guide.roi.p4: Treat the number as a planning ratio rather than a promise: your program, country, skills, and right to work shape the real outcome far more than any average, and the labels follow fixed cutoffs — above 2.0 Excellent Return, above 1.0 Positive Return, anything below High Investment.
+guide.roi.p5: Since ROI says nothing about whether you will get in at all, always read it next to {chance} and the full yearly cost: a brilliant ratio at an unreachable university is trivia, while a modest ratio at an affordable safety can be the smarter move.
 guide.comparison.title: University comparison
-guide.comparison.p1: Comparison is inside Universities, in the Comparing tab. The catalog keeps normal navigation, so selecting universities for comparison happens only in that dedicated tab.
-guide.comparison.p2: Open Comparing, choose universities from cards or the map, then press Compare. Clicking a selected card again removes it from the shortlist.
-guide.comparison.p3: The results page groups evidence into four decision themes: admission and requirements, cost and financial aid, program and learning model, and graduate outcomes. Each published value includes its scope, period, and source when available.
-guide.comparison.p4: Published selectivity is not your personal chance: UniChance is shown separately. The comparison can identify a comparable advantage, a trade-off, parity, incomparable data, or missing data; it never declares one university universally better.
-guide.comparison.note: Costs are compared only when the academic year, fee status, and scope match. Missing official data stays unavailable instead of becoming a zero or a winner. Use comparison with official university sources.
-guide.comparison.flow_aria: How comparison works
-guide.comparison.step1.title: 1. Select
-guide.comparison.step1.body: Use cards or map pins in Comparing.
-guide.comparison.step2.title: 2. Compare
-guide.comparison.step2.body: Build a results page from the shortlist.
-guide.comparison.step3.title: 3. Read
-guide.comparison.step3.body: Read both sides, the context, sources, and any trade-offs or limits.
-guide.unichance.p1: {chance} shows an approximate admission chance. It is guidance, not a guarantee.
-guide.unichance.p2: The estimate is based on your data: scores, language, budget, and the selected requirement profile.
-guide.unichance.p3: Easy reading: 80‑100 high, 60‑79 good, 40‑59 medium, below 40 low.
-guide.unichance.p4: Check the recommended choice to see where your chance is strongest inside that university.
+guide.comparison.p1: Comparing lives on the Universities page in its own Comparing tab, while the rest of the catalog keeps working as usual — only this tab collects a shortlist. Pick universities from cards or map pins and press Compare, and click a picked card again to remove it, so putting two or three candidates side by side takes seconds.
+guide.comparison.p2: The results table only ever compares like with like: the same academic year, the same fee status, the same scope. Each row then ends with an honest verdict — an advantage for one side, a trade-off, parity, incomparable data, or simply missing data — and the page never crowns an overall winner, because the best university depends on what you personally value.
+guide.comparison.p3: Published selectivity is baked into the table, but it is not your admission probability: {chance} is computed separately and shown alongside. Anything the universities never published officially stays marked unavailable instead of quietly turning into a zero or a victory, so before any final decision, follow the table back to the official pages it cites.
+guide.unichance.p1: {chance} estimates your admission probability from 0 to 100 for a single admission choice — a category plus a profile plus funding — never for a university as a whole. The number on the card belongs to your strongest choice inside that university, while the details page lays out every choice separately, so you can see exactly which route gives you the best odds. It is computed in layers:
+guide.unichance.formula: z = (you - median) / std\nbase = Phi(z) * acceptFactor\nchance = base * context * gate + grantBoost\ncontext = clamp(0.55 + 0.25 * language + 0.20 * money, 0.35, 1.0)\ngate = clamp(1 - 0.78 * failShare, 0.18, 1.0)\nrange: high ±8, medium ±10, low ±14
+guide.unichance.p2: At the core sits your score placed on the distribution of admitted students: the p25, median, and p75 percentiles fix a bell curve, your normalized score lands somewhere on it, and the area under the curve becomes the base probability. That base is then pulled back to earth — by the route's acceptance rate, thin language proof, a yearly cost above your budget, failed minimums — and lifted slightly for strong grant tracks.
+guide.unichance.p3: Read the result in bands: 80–100 is high, 60–79 good, 40–59 medium, below 40 low. Every estimate also carries an uncertainty range that widens as the data thins out: ±8 points on verified score profiles, ±10 on medium confidence, ±14 on rough estimates.
+guide.unichance.p4: Where there is nothing solid to compute from — no admitted-score data, missing exam evidence, a failed mandatory minimum — there is no number at all, only the reason: missing evidence, requirement not met, or no data. A missing estimate is never drawn as zero, because zero would pretend a certainty that nobody has.
 guide.unichance.title: {chance} (estimated admission chance 0‑100)
-guide.unifit.p1: {fit} builds a university list for you. It uses your filters, budget, preferred locations, and profile data.
-guide.unifit.p2: If exam or language data is missing, you still see options, but we mark that extra proof may be needed.
-guide.unifit.p3: One university can have several admission categories and requirement profiles. We check each choice separately, so your best option may be inside a lower-ranked university.
-guide.unifit.p4: When you update profile data, the order updates too. This is expected: results always reflect your current information.
+guide.unifit.p1: {fit} is a sorting mode, not a filter. It ranks the whole catalog for your profile with a single number, and the smaller the number, the higher the university lands. That number blends three ingredients — preference mismatch, admission risk, and interest relevance — as a weighted sum:
+guide.unifit.formula: mismatch = (|practice - uni| + |social - uni| + |city - uni| + |budget - uni|) / 4\nrisk = 1 - chance / 100\nsemantic = 1 - mlScore\nwith interests: score = 0.35 * mismatch + 0.30 * risk + 0.35 * semantic\nwithout interests: score = 0.60 * mismatch + 0.40 * risk
+guide.unifit.p2: Change anything in the profile — an exam score, the budget, a slider — and the list is recomputed from scratch, so what you see always reflects your current data. Each ingredient is scaled from 0 to 1: mismatch is the mean distance between your four sliders and the university's four numbers, risk is one minus the {chance} probability, and semantic closeness is one minus the interests score. Without interests only the first two count, with heavier weights.
+guide.unifit.p3: Your side of the comparison is four sliders — Focus, Atmosphere, Finance, Location — running from practice to science, social to hardcore, budget to prestige, city to outside. The Finance slider does double duty: besides measuring taste, it decides which {chance} feeds the risk — grant, paid, or their average in the middle. And because each admission choice is scored on its own, your strongest route can hide inside a university that sits lower in the overall list.
+guide.unifit.p4: The badges on the cards are fixed cutoffs on these same numbers rather than a separate opinion. Your Vibe means a mismatch of 0.14 or less, Good Match 0.22 or less, Likely Grant a grant chance of 65 or more, and Paid Admission a general chance of 45 or more.
+guide.unifit.p5: Missing exams never delete a university from the list. They show up on the chance side instead — as a conditional mark or as missing data — so you always see what is absent and what to add to sharpen the ranking.
 guide.unifit.title: {fit} (smart sorting)
 nav.about: About Us
 nav.close_menu: Close menu
@@ -417,8 +418,6 @@ universities.found_suffix: universities
 universities.global: Global
 universities.loading: Loading universities
 universities.map_panel.empty: No universities with map coordinates match these filters.
-universities.map_panel.compare_subtitle: Comparison shortlist on the map.
-universities.map_panel.subtitle: Pick a university to center the map and open its details.
 universities.map_panel.title: Results on the map
 universities.pagination.next: Next
 universities.pagination.prev: Prev
@@ -699,6 +698,7 @@ universities.scope_note.body: The catalog shows bachelor's programs and related 
 universities.scope_note.aria: Current study scope
 universities.scope_note.dismiss: Dismiss notice
 accessibility.skip_to_main: Skip to main content
+accessibility.back_to_top: Back to top
 universities.scope_note.warning_title: Interests unavailable
 universities.scope_note.empty_title: No results for current filters
 universities.state.empty: No universities found.
@@ -848,33 +848,32 @@ placeholder.field.best_track: Best track
 placeholder.field.verification_date: Verification date
 placeholder.field.universities_count: Universities count
 placeholder.field.countries_count: Countries count
-guide.academic.act: ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning.
-guide.academic.aptotal: AP Total reflects combined performance across multiple Advanced Placement subjects.
-guide.academic.default: This is an academic metric used by one or more requirement profiles in the UniSearch dataset.
-guide.academic.gpa: GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency.
-guide.academic.ibdiploma: IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems.
-guide.academic.alevelcert: A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score.
-guide.academic.hkdselevel: HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching.
-guide.academic.swissmaturitycert: Swiss Maturity Certificate (Matura/Maturité) is the standard Swiss university-entrance qualification.
-guide.academic.germanabiturcert: German Abitur certificate is the standard qualification granting access to German universities.
-guide.academic.ossdcert: OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions.
-guide.academic.intro: The following academic exams are currently used by UniSearch for requirement profile matching and recommendation quality.
-guide.academic.nuettotal: This is a combined entrance test score used in specific institutional admission routes.
-guide.academic.sat: SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics.
-guide.academic.unt: UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways.
-guide.glossary.admission_track: A selected combination of admission category, requirement profile, and funding option.
-guide.glossary.chance: {chance} is an estimated admission chance based on your data.
-guide.glossary.fit: {fit} is the smart sorting mode based on your profile.
-guide.glossary.intro: Short definitions of the terms you see on the site.
-guide.glossary.language_requirements: Accepted proof of language ability: native, CEFR, or language exam.
-guide.glossary.match_score: A service score that shows how well a university fits your profile.
-guide.glossary.roi: Return on Investment compares estimated graduate salary with the cost of one study year.
-guide.glossary.comparison: A university-side-by-side view that scans comparable published metrics and explains key differences.
-guide.glossary.mode_all: You must satisfy every listed language requirement.
-guide.glossary.mode_any: You need to satisfy at least one listed language option.
-guide.glossary.requirements: Minimum scores to be considered for a requirement profile.
-guide.glossary.stats_avg: Average scores of admitted students for that requirement profile.
-guide.glossary.swr: Cache behavior: we first show saved data, then refresh it in the background.
+guide.academic.act: Its counterpart, covering English, math, reading, and science reasoning.
+guide.academic.aptotal: Combined performance across AP subjects, for systems that recognize them.
+guide.academic.default: An academic score that at least one requirement profile asks for.
+guide.academic.gpa: Your average school grade, normalized to a 4.0 scale inside UniSearch so that countries stay comparable.
+guide.academic.ibdiploma: The IB Diploma total, accepted by universities worldwide.
+guide.academic.alevelcert: British A-Level subject grades — enter them as A*AA, and the best three are converted into a comparable score.
+guide.academic.hkdselevel: Hong Kong secondary-school levels, converted internally with 5* counting as 6 and 5** as 7.
+guide.academic.swissmaturitycert: The Swiss Matura, the general certificate that opens the country's universities.
+guide.academic.germanabiturcert: The German Abitur, the general certificate that opens the country's universities.
+guide.academic.ossdcert: Completion of the Ontario Secondary School Diploma for Canadian admissions.
+guide.academic.intro: These are the academic exams UniSearch actually matches against requirement profiles. Enter yours in the profile and every relevant choice is re-scored:
+guide.academic.nuettotal: The combined score of a single university's own entrance exam, valid only on its routes.
+guide.academic.sat: The American admission test of reading, writing, and math, recognized far beyond the US.
+guide.academic.unt: Kazakhstan's national test and the main road to a bachelor's seat at home.
+guide.glossary.admission_track: Category, profile, and funding selected together as one choice — the unit everything is computed for.
+guide.glossary.chance: {chance} is the 0–100 admission estimate for one choice; the card shows your best choice.
+guide.glossary.fit: {fit} is the sorting mode that ranks the catalog by your profile, where a lower score ranks higher.
+guide.glossary.intro: The working vocabulary of the site — the same meanings the calculations rely on, one line per term.
+guide.glossary.language_requirements: The language proofs a route accepts: native language, CEFR level, or exam score.
+guide.glossary.match_score: The internal {fit} ranking number that orders the list.
+guide.glossary.roi: Early salary divided by one year of cost: a planning ratio, not a promise.
+guide.glossary.comparison: The side-by-side table that compares only same-scope published numbers and never names an overall winner.
+guide.glossary.mode_all: Every proof from the language list is required.
+guide.glossary.mode_any: A single proof from the language list is enough.
+guide.glossary.requirements: The minimum scores a profile demands before an application is even considered.
+guide.glossary.stats_avg: The average scores of previously admitted students — the number worth planning against.
 guide.glossary.term.admission_track: Admission Choice
 guide.glossary.term.language_requirements: Language Requirements
 guide.glossary.term.match_score: Match Score
@@ -884,20 +883,19 @@ guide.glossary.term.mode_all: Mode = all
 guide.glossary.term.mode_any: Mode = any
 guide.glossary.term.requirements: Requirements
 guide.glossary.term.stats_avg: Average (Admitted)
-guide.glossary.term.swr: Data Cache
-guide.language.by_code: This exam is used as language proof for {code}-language admission choices.
-guide.language.cambridge: Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.
-guide.language.default: This language proficiency exam is used to verify readiness for study in the program language.
-guide.language.det: Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.
-guide.language.dutch: NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.
-guide.language.french: These exams assess French proficiency and are used for French-language academic eligibility.
-guide.language.german: TestDaF and DSH are German-language proficiency exams commonly required for German-taught study options.
-guide.language.hsk: HSK measures Chinese language proficiency for academic and formal language use.
-guide.language.ielts: IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.
-guide.language.jlpt: JLPT measures Japanese language proficiency across standard difficulty levels.
-guide.language.pte: PTE Academic is a computer-based English proficiency test used in international admissions.
-guide.language.toefl: TOEFL measures academic English proficiency and is commonly accepted for university admissions.
-guide.language.topik: TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.
+guide.language.by_code: A language proof accepted on {code}-taught routes.
+guide.language.cambridge: Cambridge English qualifications, pegged to CEFR levels and valid for years.
+guide.language.default: A language proof that at least one admission choice accepts.
+guide.language.det: The online adaptive English test: taken at home and accepted by a growing list of universities.
+guide.language.dutch: NT2 Dutch, the proof that Dutch-taught programs ask for.
+guide.language.french: DELF, DALF, TCF, and TEF open French-taught tracks, depending on the route.
+guide.language.german: TestDaF and DSH open German-taught tracks — most routes ask for one of the two.
+guide.language.hsk: The official ladder of Chinese proficiency, climbed level by level.
+guide.language.ielts: The English test of listening, reading, writing, and speaking, accepted almost everywhere.
+guide.language.jlpt: The five levels of Japanese, running backwards: a lower number means stronger language, so N1 beats N5.
+guide.language.pte: The fully computer-based English test with fast results.
+guide.language.toefl: Academic English testing, strongest in American admissions.
+guide.language.topik: The Korean proficiency scale used for Korean-taught admission.
 guide.loading_exam_config: Loading exam config
 guide.scale_text: In UniSearch, this score is entered on a {min}‑{max} scale.
 languages.error.choose_cefr: Choose CEFR level

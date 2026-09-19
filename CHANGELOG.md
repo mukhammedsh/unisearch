@@ -4,6 +4,18 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.4.0 (2026-09-19) - Guide Rewrite: Plain-Language Articles With Scoring Formulas
+
+### Guide
+- Rewrote every guide article in connected plain-language prose (English and Russian): UniFit sorting, Interests matching, UniChance estimates, ROI, comparison, admission choices, exam basics, tags, glossary, and the academic/language exam reference (`frontend/guide.html`, `frontend/Localization/eng`, `frontend/Localization/ru`, `frontend/javascript/pages/guide.js`).
+- Added code-style formula blocks (`.guide-formula`) inside the articles showing the real scoring math: UniFit weights with and without interests, ML cosine rescaling with the cross-lingual offset, the layered UniChance computation with uncertainty ranges, and the ROI division with its fixed labels (`frontend/guide.html`, `frontend/css/guide.css`).
+- Documented the actual thresholds used by the product: Your Vibe at mismatch 0.14 or less, Good Match at 0.22 or less, Likely Grant at grant chance 65+, Paid Admission at general chance 45+, and the 80/60/40 UniChance bands.
+- Removed redundant blurbs: sidebar group descriptions, the muted callout intros in the exam sections, the comparison flow cards, and the "On this page" table-of-contents block — the table of contents now lists chapter siblings ("In this chapter") only (`frontend/guide.html`, `frontend/javascript/pages/guide.js`, `frontend/css/guide.css`).
+- Tightened the guide layout: lighter semibold headings, no divider under article titles, and reduced top spacing so the article card and sidebar start higher on the page (`frontend/css/guide.css`).
+
+### Tests
+- Added `tests/e2e/guide-tabs.spec.js` covering tab switching, table-of-contents rebuilds, deep links, and the contents toggle; updated its assertions for the chapter-only table of contents.
+
 ## 6.3.0 (2026-09-19) - Map Mode Cards Unification & Full-Height Map
 
 ### Map Mode

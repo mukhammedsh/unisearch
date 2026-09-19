@@ -76,21 +76,21 @@ export function initGuidePage() {
   function describeAcademicExam(id, cfg, labelText = "") {
     const normalized = normalizeExamId(id);
     const descriptions = {
-      SAT: t("guide.academic.sat", "SAT is a standardized college admissions exam widely used for undergraduate applications, focused on evidence-based reading, writing, and mathematics."),
-      ACT: t("guide.academic.act", "ACT is a standardized admissions exam used by many universities, covering English, mathematics, reading, and science reasoning."),
-      GPA: t("guide.academic.gpa", "GPA represents cumulative school academic performance across courses and is often used as a baseline indicator of consistency."),
-      UNT: t("guide.academic.unt", "UNT (Unified National Testing) is the national exam used in Kazakhstan for many undergraduate admission pathways."),
-      NUETTOTAL: t("guide.academic.nuettotal", "This is a combined entrance test score used in specific institutional admission routes."),
-      APTOTAL: t("guide.academic.aptotal", "AP Total reflects combined performance across multiple Advanced Placement subjects."),
-      IBDIPLOMA: t("guide.academic.ibdiploma", "IB Diploma score is the overall International Baccalaureate Diploma result used in many global admissions systems."),
-      ALEVELCERT: t("guide.academic.alevelcert", "A-Level results are entered as subject grades such as A*AA or ABB. UniSearch converts your best 3 grades into an internal comparable score."),
-      HKDSELEVEL: t("guide.academic.hkdselevel", "HKDSE level uses the Hong Kong secondary-school scale where 5*=6 and 5**=7 for UniSearch matching."),
-      SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "Swiss Maturity Certificate (Matura/Maturite) is the standard Swiss university-entrance qualification."),
-      GERMANABITURCERT: t("guide.academic.germanabiturcert", "German Abitur certificate is the standard qualification granting access to German universities."),
-      OSSDCERT: t("guide.academic.ossdcert", "OSSD confirms completion of the Ontario Secondary School Diploma used for Canadian (Ontario) admissions."),
+      SAT: t("guide.academic.sat", "The American admission test of reading, writing, and math, recognized far beyond the US."),
+      ACT: t("guide.academic.act", "Its counterpart, covering English, math, reading, and science reasoning."),
+      GPA: t("guide.academic.gpa", "Your average school grade, normalized to a 4.0 scale inside UniSearch so that countries stay comparable."),
+      UNT: t("guide.academic.unt", "Kazakhstan's national test and the main road to a bachelor's seat at home."),
+      NUETTOTAL: t("guide.academic.nuettotal", "The combined score of a single university's own entrance exam, valid only on its routes."),
+      APTOTAL: t("guide.academic.aptotal", "Combined performance across AP subjects, for systems that recognize them."),
+      IBDIPLOMA: t("guide.academic.ibdiploma", "The IB Diploma total, accepted by universities worldwide."),
+      ALEVELCERT: t("guide.academic.alevelcert", "British A-Level subject grades — enter them as A*AA, and the best three are converted into a comparable score."),
+      HKDSELEVEL: t("guide.academic.hkdselevel", "Hong Kong secondary-school levels, converted internally with 5* counting as 6 and 5** as 7."),
+      SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "The Swiss Matura, the general certificate that opens the country's universities."),
+      GERMANABITURCERT: t("guide.academic.germanabiturcert", "The German Abitur, the general certificate that opens the country's universities."),
+      OSSDCERT: t("guide.academic.ossdcert", "Completion of the Ontario Secondary School Diploma for Canadian admissions."),
     };
     const base = descriptions[normalized]
-      || t("guide.academic.default", "This is an academic metric used by one or more requirement profiles in the UniSearch dataset.");
+      || t("guide.academic.default", "An academic score that at least one requirement profile asks for.");
     const scale = scoreScaleText(cfg);
     return withExamLabel(`${base}${scale ? ` ${scale}` : ""}`.trim(), labelText);
   }
@@ -100,19 +100,19 @@ export function initGuidePage() {
     const label = String(labelText || "").toUpperCase();
     const key = `${exam} ${label}`;
 
-    let base = t("guide.language.default", "This language proficiency exam is used to verify readiness for study in the program language.");
-    if (key.includes("IELTS")) base = t("guide.language.ielts", "IELTS evaluates English proficiency across listening, reading, writing, and speaking for academic contexts.");
-    else if (key.includes("TOEFL")) base = t("guide.language.toefl", "TOEFL measures academic English proficiency and is commonly accepted for university admissions.");
-    else if (key.includes("DUOLINGO") || key.includes("DET")) base = t("guide.language.det", "Duolingo English Test is an online adaptive English proficiency exam accepted by many institutions.");
-    else if (key.includes("PTE")) base = t("guide.language.pte", "PTE Academic is a computer-based English proficiency test used in international admissions.");
-    else if (key.includes("CAMBRIDGE")) base = t("guide.language.cambridge", "Cambridge English qualifications assess practical English proficiency at standardized CEFR-aligned levels.");
-    else if (key.includes("TESTDAF") || key.includes("DSH")) base = t("guide.language.german", "TestDaF and DSH are German-language proficiency exams commonly required for German-taught study options.");
-    else if (key.includes("DELF") || key.includes("DALF") || key.includes("TCF") || key.includes("TEF")) base = t("guide.language.french", "These exams assess French proficiency and are used for French-language academic eligibility.");
-    else if (key.includes("NT2")) base = t("guide.language.dutch", "NT2 is a Dutch-as-a-second-language exam used to confirm readiness for Dutch-language study.");
-    else if (key.includes("HSK")) base = t("guide.language.hsk", "HSK measures Chinese language proficiency for academic and formal language use.");
-    else if (key.includes("JLPT")) base = t("guide.language.jlpt", "JLPT measures Japanese language proficiency across standard difficulty levels.");
-    else if (key.includes("TOPIK")) base = t("guide.language.topik", "TOPIK measures Korean language proficiency and is used for Korean-language academic readiness.");
-    else if (langCode) base = tFormat("guide.language.by_code", { code: String(langCode).toUpperCase() }, `This exam is used as language proof for ${String(langCode).toUpperCase()}-language admission choices.`);
+    let base = t("guide.language.default", "A language proof that at least one admission choice accepts.");
+    if (key.includes("IELTS")) base = t("guide.language.ielts", "The English test of listening, reading, writing, and speaking, accepted almost everywhere.");
+    else if (key.includes("TOEFL")) base = t("guide.language.toefl", "Academic English testing, strongest in American admissions.");
+    else if (key.includes("DUOLINGO") || key.includes("DET")) base = t("guide.language.det", "The online adaptive English test: taken at home and accepted by a growing list of universities.");
+    else if (key.includes("PTE")) base = t("guide.language.pte", "The fully computer-based English test with fast results.");
+    else if (key.includes("CAMBRIDGE")) base = t("guide.language.cambridge", "Cambridge English qualifications, pegged to CEFR levels and valid for years.");
+    else if (key.includes("TESTDAF") || key.includes("DSH")) base = t("guide.language.german", "TestDaF and DSH open German-taught tracks — most routes ask for one of the two.");
+    else if (key.includes("DELF") || key.includes("DALF") || key.includes("TCF") || key.includes("TEF")) base = t("guide.language.french", "DELF, DALF, TCF, and TEF open French-taught tracks, depending on the route.");
+    else if (key.includes("NT2")) base = t("guide.language.dutch", "NT2 Dutch, the proof that Dutch-taught programs ask for.");
+    else if (key.includes("HSK")) base = t("guide.language.hsk", "The official ladder of Chinese proficiency, climbed level by level.");
+    else if (key.includes("JLPT")) base = t("guide.language.jlpt", "The five levels of Japanese, running backwards: a lower number means stronger language, so N1 beats N5.");
+    else if (key.includes("TOPIK")) base = t("guide.language.topik", "The Korean proficiency scale used for Korean-taught admission.");
+    else if (langCode) base = tFormat("guide.language.by_code", { code: String(langCode).toUpperCase() }, `A language proof accepted on ${String(langCode).toUpperCase()}-taught routes.`);
 
     const scale = scoreScaleText(cfg);
     return withExamLabel(`${base}${scale ? ` ${scale}` : ""}`.trim(), labelText);
@@ -122,18 +122,17 @@ export function initGuidePage() {
     const fitName = aiName("fit");
     const chanceName = aiName("chance");
     return [
-      { term: fitName, desc: tFormat("guide.glossary.fit", { fit: fitName }, `${fitName} is the smart sorting mode based on your profile.`) },
-      { term: chanceName, desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is an estimated admission chance based on your data.`) },
-      { term: t("guide.glossary.term.swr", "Data Cache"), desc: t("guide.glossary.swr", "Cache behavior: we first show saved data, then refresh it in the background.") },
-      { term: t("guide.glossary.term.admission_track", "Admission Choice"), desc: t("guide.glossary.admission_track", "A selected combination of admission category, requirement profile, and funding option.") },
-      { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Minimum scores to be considered for a requirement profile.") },
-      { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "Average scores of admitted students for that requirement profile.") },
-      { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "Accepted proof of language ability: native, CEFR, or language exam.") },
-      { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Return on Investment compares estimated graduate salary with the cost of one study year.") },
-      { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "A university-side-by-side view that scans comparable published metrics and explains key differences.") },
-      { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "You need to satisfy at least one listed language option.") },
-      { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "You must satisfy every listed language requirement.") },
-      { term: t("guide.glossary.term.match_score", "Match Score"), desc: tFormat("guide.glossary.match_score", { fit: fitName }, `Internal ${fitName} ranking score; higher means a better fit for your profile.`) },
+      { term: fitName, desc: tFormat("guide.glossary.fit", { fit: fitName }, `${fitName} is the sorting mode that ranks the catalog by your profile, where a lower score ranks higher.`) },
+      { term: chanceName, desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is the 0–100 admission estimate for one choice; the card shows your best choice.`) },
+      { term: t("guide.glossary.term.admission_track", "Admission Choice"), desc: t("guide.glossary.admission_track", "Category, profile, and funding selected together as one choice — the unit everything is computed for.") },
+      { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "The minimum scores a profile demands before an application is even considered.") },
+      { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "The average scores of previously admitted students — the number worth planning against.") },
+      { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "The language proofs a route accepts: native language, CEFR level, or exam score.") },
+      { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Early salary divided by one year of cost: a planning ratio, not a promise.") },
+      { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "The side-by-side table that compares only same-scope published numbers and never names an overall winner.") },
+      { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "A single proof from the language list is enough.") },
+      { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "Every proof from the language list is required.") },
+      { term: t("guide.glossary.term.match_score", "Match Score"), desc: tFormat("guide.glossary.match_score", { fit: fitName }, `The internal ${fitName} ranking number that orders the list.`) },
     ];
   }
 
@@ -147,7 +146,7 @@ export function initGuidePage() {
   function renderGlossary() {
     if (!glossaryWrap) return;
     const items = glossaryEntries().map((entry) => `<li><strong>${escapeHtml(entry.term)}:</strong> ${escapeHtml(entry.desc)}</li>`).join("");
-    glossaryWrap.innerHTML = `<p>${escapeHtml(t("guide.glossary.intro", "Short definitions of the terms you see on the site."))}</p><ul class="guide-list">${items}</ul>`;
+    glossaryWrap.innerHTML = `<p>${escapeHtml(t("guide.glossary.intro", "The working vocabulary of the site — the same meanings the calculations rely on, one line per term."))}</p><ul class="guide-list">${items}</ul>`;
   }
 
   function renderAcademicExams() {
@@ -187,7 +186,7 @@ export function initGuidePage() {
       const examLabel = getExamDisplayName(id, { locale: getCurrentLanguage() });
       return `<li>${escapeHtml(describeAcademicExam(id, cfg, examLabel))}</li>`;
     }).join("");
-    academicWrap.innerHTML = `<p>${escapeHtml(t("guide.academic.intro", "The following academic exams are currently used by UniSearch for requirement profile matching and recommendation quality."))}</p><ul class="guide-list">${items}</ul>`;
+    academicWrap.innerHTML = `<p>${escapeHtml(t("guide.academic.intro", "These are the academic exams UniSearch actually matches against requirement profiles. Enter yours in the profile and every relevant choice is re-scored:"))}</p><ul class="guide-list">${items}</ul>`;
   }
 
   function renderLanguageExams() {
@@ -214,7 +213,7 @@ export function initGuidePage() {
       });
 
       return `
-        <section class="guide-subsection">
+        <section class="guide-subsection" id="guide-lang-${escapeHtml(String(code).toLowerCase())}">
           <h4>${escapeHtml(title)} (${escapeHtml(code.toUpperCase())})</h4>
           <ul class="guide-list">
             ${sortedArr.map((exam) => {
@@ -251,50 +250,64 @@ export function initGuidePage() {
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sectionById = new Map(sections.map((section) => [section.id, section]));
-  function scrollGuideNavIntoView(link) {
-    if (!link || window.innerWidth > 1024) return;
-    const nav = link.closest(".guide-nav");
-    if (!nav) return;
+  const guideLayout = page.querySelector(".guide-layout");
+  const tocAside = document.getElementById("guideToc");
+  const tocChapterList = document.getElementById("guideTocChapter");
+  const tocChapterWrap = document.getElementById("guideTocChapterWrap");
+  const tocCard = tocAside?.querySelector(".guide-toc-card") || null;
+  const tocToggle = document.getElementById("guideTocToggle");
+  let activeGuideId = sections[0]?.id || "";
 
-    const navRect = nav.getBoundingClientRect();
-    const linkRect = link.getBoundingClientRect();
-    const isOffLeft = linkRect.left < navRect.left + 16;
-    const isOffRight = linkRect.right > navRect.right - 16;
+  const GUIDE_GROUPS = [
+    { id: "unifit", sections: ["guide-unifit", "guide-ml", "guide-unichance", "guide-roi", "guide-comparison", "guide-tags"] },
+    { id: "admission", sections: ["guide-admission", "guide-exam-basics"] },
+    { id: "exams", sections: ["guide-academic-exams", "guide-language-exams"] },
+    { id: "glossary", sections: ["guide-glossary"] },
+  ];
 
-    if (isOffLeft || isOffRight) {
-      const scrollTarget = link.offsetLeft - (nav.clientWidth - link.clientWidth) / 2;
-      nav.scrollTo({
-        left: Math.max(0, scrollTarget),
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-      });
-    }
+  function buildToc(activeId) {
+    if (!tocAside || !tocChapterList) return;
+    const group = GUIDE_GROUPS.find((entry) => entry.sections.includes(activeId));
+    const siblings = (group?.sections || []).filter((id) => id !== activeId);
+    tocChapterList.innerHTML = "";
+    siblings.forEach((id) => {
+      const navLink = navLinks.find((link) => String(link.dataset.guideHash || "") === `#${id}`);
+      const label = String(navLink?.textContent || "").trim() || id;
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = `#${id}`;
+      link.textContent = label;
+      link.dataset.tocChapter = id;
+      item.appendChild(link);
+      tocChapterList.appendChild(item);
+    });
+    if (tocChapterWrap) tocChapterWrap.hidden = siblings.length === 0;
+
+    const hideRail = siblings.length === 0;
+    tocAside.hidden = hideRail;
+    if (!hideRail) replayMotion(tocAside, "motion-panel-enter", { timeoutMs: 420 });
   }
 
-  let isProgrammaticScrolling = false;
-  let scrollEndTimeout = null;
+  if (tocToggle && tocCard) {
+    tocToggle.addEventListener("click", () => {
+      const collapsed = tocCard.classList.toggle("is-collapsed");
+      tocToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    });
+  }
 
-  const stopProgrammaticScroll = () => {
-    if (isProgrammaticScrolling) {
-      isProgrammaticScrolling = false;
-      if (scrollEndTimeout) {
-        clearTimeout(scrollEndTimeout);
-        scrollEndTimeout = null;
-      }
-    }
-  };
+  if (tocChapterList) {
+    tocChapterList.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[data-toc-chapter]") : null;
+      if (!link) return;
+      event.preventDefault();
+      activateSection(String(link.dataset.tocChapter || "").trim(), {
+        updateHash: true,
+        scroll: true,
+      });
+    });
+  }
 
-  const startProgrammaticScroll = () => {
-    isProgrammaticScrolling = true;
-    if (scrollEndTimeout) clearTimeout(scrollEndTimeout);
-    scrollEndTimeout = setTimeout(() => {
-      isProgrammaticScrolling = false;
-      scrollEndTimeout = null;
-    }, 700);
-  };
-
-  window.addEventListener("scrollend", stopProgrammaticScroll, { passive: true });
-  window.addEventListener("wheel", stopProgrammaticScroll, { passive: true });
-  window.addEventListener("touchstart", stopProgrammaticScroll, { passive: true });
+  const isGuideSectionHash = (hash) => sectionById.has(String(hash || "").replace("#", ""));
 
   const activateSection = (id, { updateHash = false, scroll = false, scrollBehavior = null } = {}) => {
     const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
@@ -309,38 +322,33 @@ export function initGuidePage() {
         sectionChanged = true;
       }
       section.classList.toggle("is-active", active);
-      section.setAttribute("aria-hidden", "false");
+      section.setAttribute("aria-hidden", active ? "false" : "true");
+      section.hidden = !active;
       if (active && !wasActive) replayMotion(section, "motion-state-pulse", { timeoutMs: 520 });
     });
     navLinks.forEach((link) => {
       const active = String(link.dataset.guideHash || link.getAttribute("href") || "").trim() === `#${nextId}`;
       link.classList.toggle("is-active", active);
-      link.setAttribute("aria-current", active ? "page" : "false");
       if (active) {
-        scrollGuideNavIntoView(link);
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
       }
     });
 
     if (updateHash && sectionChanged) {
       history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
     }
+    activeGuideId = nextId;
+    buildToc(nextId);
     if (scroll && targetSection) {
       const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
-      // Exception for #guide-unifit:
-      // The first section is directly below the hero header.
-      // Standard scrollIntoView for #guide-unifit scrolls down, clipping the hero title.
-      // Always scroll to the top of the page (0, 0) instead.
-      if (nextId === "guide-unifit") {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior,
-        });
-      } else {
-        targetSection.scrollIntoView({
-          behavior,
-          block: "start",
-        });
+      const isMobileLayout = window.innerWidth <= 1024;
+      if (isMobileLayout && guideLayout) {
+        const navbar = document.querySelector(".navbar");
+        const navHeight = navbar instanceof HTMLElement ? Math.ceil(navbar.getBoundingClientRect().height) : 70;
+        const top = Math.max(0, guideLayout.getBoundingClientRect().top + window.scrollY - navHeight - 12);
+        window.scrollTo({ top, left: 0, behavior });
       }
     }
   };
@@ -349,7 +357,6 @@ export function initGuidePage() {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const targetId = String(link.dataset.guideHash || link.getAttribute("href") || "").replace("#", "");
-      startProgrammaticScroll();
       activateSection(targetId, {
         updateHash: true,
         scroll: true,
@@ -358,105 +365,34 @@ export function initGuidePage() {
   });
 
   bindGuideHashChange(() => {
-    const hash = String(window.location.hash || "").replace("#", "");
-    startProgrammaticScroll();
-    activateSection(hash, {
+    const hash = String(window.location.hash || "");
+    if (!isGuideSectionHash(hash)) return;
+    activateSection(hash.replace("#", ""), {
       updateHash: false,
       scroll: true,
     });
   });
-
-  function getAnchorTop() {
-    const isMobile = window.innerWidth <= 1024;
-    if (isMobile) {
-      const navbar = document.querySelector(".navbar");
-      const navHeight = navbar instanceof HTMLElement ? navbar.getBoundingClientRect().height : 70;
-      return navHeight + 75;
-    }
-    return 115;
-  }
-
-  let scrollTicking = false;
-  const syncActiveSectionFromScroll = () => {
-    if (isProgrammaticScrolling) return;
-    if (scrollTicking) return;
-    scrollTicking = true;
-    window.requestAnimationFrame(() => {
-      scrollTicking = false;
-      if (isProgrammaticScrolling) return;
-
-      const scrollY = window.scrollY || window.pageYOffset || 0;
-      const windowHeight = window.innerHeight;
-      const docHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-
-      // 1. Bottom of page: force activate the last section
-      if (Math.ceil(windowHeight + scrollY) >= docHeight - 30) {
-        activateSection(sections[sections.length - 1].id, { updateHash: true, scroll: false });
-        return;
-      }
-
-      const anchorTop = getAnchorTop();
-
-      // 2. Top of page: activate first section if before reading zone
-      const firstRect = sections[0].getBoundingClientRect();
-      if (scrollY < 40 || firstRect.top > anchorTop) {
-        const shouldUpdateHash = Boolean(window.location.hash);
-        activateSection(sections[0].id, { updateHash: shouldUpdateHash, scroll: false });
-        return;
-      }
-
-      // 3. Sequential probe: find the last section that scrolled past the reading line
-      let currentId = sections[0].id;
-      for (let i = 0; i < sections.length; i++) {
-        const rect = sections[i].getBoundingClientRect();
-        if (rect.top <= anchorTop) {
-          currentId = sections[i].id;
-        } else {
-          break;
-        }
-      }
-
-      if (currentId) activateSection(currentId, { updateHash: true, scroll: false });
-    });
-  };
 
   syncGuideSidebarOffset();
   updateGuideNavHrefs();
   renderAll();
 
   const initialHash = String(window.location.hash || "").replace("#", "");
-  // Exception for #guide-unifit on initial page load:
-  // If opened without a hash or with #guide-unifit, disable auto-scroll
-  // to keep the hero header fully visible at top: 0.
-  if (initialHash && initialHash !== "guide-unifit") {
-    startProgrammaticScroll();
-    activateSection(initialHash, { updateHash: false, scroll: true, scrollBehavior: "auto" });
-  } else {
-    activateSection(sections[0]?.id || "guide-unifit", { updateHash: false, scroll: false });
-    if (window.history && "scrollRestoration" in window.history) {
-      try {
-        window.history.scrollRestoration = "manual";
-      } catch {}
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    });
+  activateSection(sectionById.has(initialHash) ? initialHash : (sections[0]?.id || "guide-unifit"), { updateHash: false, scroll: false });
+  if (window.history && "scrollRestoration" in window.history) {
+    try {
+      window.history.scrollRestoration = "manual";
+    } catch {}
   }
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
-  window.addEventListener("scroll", syncActiveSectionFromScroll, { passive: true });
   window.addEventListener("resize", () => {
     syncGuideSidebarOffset();
-    syncActiveSectionFromScroll();
   });
   bindGuideExternalUpdates(() => {
     syncGuideSidebarOffset();
     updateGuideNavHrefs();
     renderAll();
-    syncActiveSectionFromScroll();
+    buildToc(activeGuideId);
   });
-  syncActiveSectionFromScroll();
 }
