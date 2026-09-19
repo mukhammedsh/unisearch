@@ -4,6 +4,10 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.4.1 (2026-09-19) - Guide Diamond Bullets Alignment Fix
+
+- Fixed vertical alignment of the diamond list markers in the guide sidebar and table of contents by translating before rotating (`translateY(-1px) rotate(45deg)` instead of `rotate(45deg) translateY(-1px)`), and added 2px left padding so the rotated markers are not clipped at the container edge (`frontend/css/guide.css`).
+
 ## 6.4.0 (2026-09-19) - Guide Rewrite: Plain-Language Articles With Scoring Formulas
 
 ### Guide
