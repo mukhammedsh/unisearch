@@ -1,8 +1,11 @@
 .u-map-stage {
   display: none;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 336px);
+  gap: 12px;
+  align-items: stretch;
+  height: calc(100vh - 300px);
+  height: calc(100dvh - 300px);
+  min-height: 560px;
 }
 
 .u-map-results,
@@ -13,32 +16,41 @@
 }
 
 .u-map-results {
-  padding: 16px;
+  position: relative;
+  align-self: stretch;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
   overflow: hidden;
 }
 
+.u-map-results-list,
 .u-map-results-loading {
+  position: absolute;
+  inset: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   min-width: 0;
+  overflow: hidden;
 }
 
-.u-map-results-head--loading {
-  display: grid;
-  gap: 12px;
+.u-map-results-loading > .u-map-results-list {
+  position: static;
+  inset: auto;
+  flex: 1 1 auto;
 }
 
 .u-map-results-list--loading {
   scrollbar-color: transparent transparent;
 }
 
-.u-map-result-card--loading {
+.u-map-results-list .u-skeleton-card {
   pointer-events: none;
 }
 
-.u-map-result-card--loading .u-map-result-focus {
-  cursor: default;
-}
-
-.u-map-result-card--loading .u-map-result-logo {
+.u-map-results-list .is-skeleton .uni-logo--inline {
+  position: static;
   background-color: var(--skeleton-base);
   background-image: linear-gradient(
   100deg,
@@ -53,22 +65,15 @@
   border-color: transparent;
 }
 
-.u-map-results-head h3 {
-  margin: 0;
-  font-size: var(--text-xl);
-  line-height: 1.05;
-  letter-spacing: 0;
-}
-
-.u-map-results-head p {
-  margin: 8px 0 0;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--text-muted);
+.u-map-results-list .is-skeleton .uni-head-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
 }
 
 .u-map-results-empty {
-  margin-top: 14px;
+  margin: 12px;
   padding: 16px;
   border: 1px dashed var(--line);
   border-radius: 16px;
@@ -77,20 +82,17 @@
 }
 
 .u-map-results-list {
-  margin-top: 14px;
-  display: flex;
   gap: 12px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0 2px 8px var(--space-3);
-  scroll-padding-inline-start: var(--space-3);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 4px;
   border-radius: var(--radius-lg);
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--text-muted) 58%, transparent) transparent;
 }
 
 .u-map-results-list::-webkit-scrollbar {
-  height: 12px;
+  width: 12px;
 }
 
 .u-map-results-list::-webkit-scrollbar-track {
@@ -113,188 +115,112 @@
   background: transparent;
 }
 
-.u-map-result-card {
-  flex: 0 0 min(330px, calc(100vw - 64px));
-  border: none;
-  border-radius: var(--radius-xl);
-  background: var(--surface-solid);
-  padding: 12px;
-  scroll-snap-align: start;
-  transition:
-  border-color var(--motion-fast) var(--motion-ease-standard),
-  background-color var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard);
-}
-
-.u-map-result-card.is-active {
-  border-color: var(--line-accent);
-  background: var(--accent-panel);
-}
-
-.u-map-result-card.is-selected {
-  border-color: color-mix(in srgb, var(--accent) 46%, var(--line));
-  background: color-mix(in srgb, var(--accent) 8%, var(--surface-soft, var(--card)));
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :root .u-map-result-card:not(.is-selected):not(.is-active):hover {
-    background: var(--surface-solid);
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
-  }
-
-  :root .u-map-result-card.is-active:hover {
-    background: var(--accent-panel);
-    border-color: var(--line-accent);
-  }
-
-  :root .u-map-result-card.is-selected:hover {
-    background: color-mix(in srgb, var(--accent) 14%, var(--surface-soft, var(--card)));
-    border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
-  }
-}
-
-.u-map-result-focus {
+/* Map rail reuses the list-mode .uni-card without the cover photo. */
+.u-map-results-list .uni-card {
+  flex: none;
   width: 100%;
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  text-align: left;
+  max-width: none;
+  min-height: 0;
   cursor: pointer;
 }
 
-.u-map-result-logo {
-  width: 42px;
-  height: 42px;
-  display: inline-flex;
+.u-map-results-list .uni-card.is-active {
+  background: var(--accent-panel);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.u-map-results-list .uni-card .uni-body {
+  padding: 12px;
+  gap: 8px;
+}
+
+.uni-card--no-media .uni-media {
+  display: none;
+}
+
+.u-map-results-list .uni-head {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  border: none;
-  background: var(--surface-badge);
-  color: var(--surface-badge-text);
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 800;
+  gap: 12px;
+  min-width: 0;
 }
 
-.u-map-result-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-}
-
-.u-map-result-copy {
+.u-map-results-list .uni-head-copy {
+  flex: 1 1 auto;
   min-width: 0;
   display: grid;
   gap: 4px;
 }
 
-.u-map-result-name {
-  display: block;
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.35;
-  font-weight: 800;
+/* Status icons overlay the card corner (same as list mode); keep them off the title. */
+.u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head {
+  padding-right: 76px;
 }
 
-.u-map-result-meta {
-  display: block;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.u-map-result-rank {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.u-map-result-bottom {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.u-map-result-price {
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.u-map-result-link {
-  color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.u-map-result-link::after {
-  content: "\2192";
-  flex: 0 0 auto;
-}
-
-.u-map-result-compare,
-.u-map-result-compare-link {
-  min-height: 34px;
-  padding: 8px 12px;
-  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+.u-map-results-list .uni-logo--inline {
+  position: static;
+  left: auto;
+  bottom: auto;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--accent) 8%, var(--card));
-  color: var(--accent);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font: inherit;
-  font-size: 12px;
-  line-height: 1;
-  font-weight: 900;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-  background-color var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard);
 }
-@media (hover: hover) and (pointer: fine) {
 
-.u-map-result-compare:hover,
-.u-map-result-compare-link:hover {
-  border-color: var(--accent);
-  text-decoration: none;
-  transform: translateY(-1px);
+.u-map-results-list .uni-logo--inline img {
+  padding: 4px;
 }
-}
-@media (hover: hover) and (pointer: fine) {
 
-.u-map-result-link:hover {
-  color: var(--accent);
-  text-decoration: underline;
+.uni-card--map .uni-title {
+  font-size: 14px;
 }
+
+.uni-card--map a.uni-details {
+  text-decoration: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-map-results-list .uni-card.is-active:hover {
+    background: var(--accent-panel);
+  }
 }
 
 .u-map-container {
-  min-height: 560px;
-  height: clamp(560px, 58vw, 720px);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  aspect-ratio: auto;
+  isolation: isolate;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1180px) {
+  .u-map-stage {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 0;
+  }
+
+  .u-map-container {
+    height: 52vh;
+    height: 52dvh;
+    min-height: 320px;
+  }
+
   .u-map-results {
-    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    max-height: 420px;
+  }
+
+  .u-map-results-list,
+  .u-map-results-loading {
+    position: static;
+    inset: auto;
+    flex: 1 1 auto;
   }
 
 }
@@ -307,31 +233,13 @@
 
   .u-map-results {
     overflow: hidden;
-    padding: 12px 0 16px;
-  }
-
-  .u-map-results-head {
-    padding: 0 16px;
-  }
-
-  .u-map-results-head h3 {
-    font-size: var(--text-lg);
-    line-height: 1.15;
-  }
-
-  .u-map-results-head p {
-    margin-top: 6px;
-    font-size: 12px;
-    line-height: 1.45;
+    max-height: 360px;
+    padding: 12px;
   }
 
   .u-map-results-list {
-    gap: 8px;
-    margin-top: 12px;
-    padding: 0 16px 8px;
-    scroll-padding-inline: 14px;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
+    gap: 12px;
+    padding: var(--space-2);
     -webkit-overflow-scrolling: touch;
   }
 
@@ -339,43 +247,18 @@
     display: none;
   }
 
-  .u-map-result-card {
-    flex-basis: min(276px, calc(100vw - 64px));
-    border-radius: 16px;
-    padding: 12px;
-  }
-
-  .u-map-result-focus {
-    grid-template-columns: 36px minmax(0, 1fr) auto;
-    gap: 12px;
-  }
-
-  .u-map-result-logo {
+  .u-map-results-list .uni-logo--inline {
+    flex-basis: 36px;
     width: 36px;
     height: 36px;
-    border-radius: 10px;
   }
 
-  .u-map-result-name {
+  .uni-card--map .uni-title {
     font-size: 13px;
-    line-height: 1.3;
-  }
-
-  .u-map-result-meta,
-  .u-map-result-price,
-  .u-map-result-link {
-    font-size: 11px;
-  }
-
-  .u-map-result-bottom {
-    gap: 8px;
-    margin-top: 9px;
-    padding-top: 9px;
   }
 
   .u-map-container {
-    min-height: 420px;
-    height: 62vh;
+    min-height: 280px;
   }
 
 }

@@ -4,6 +4,14 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.3.0 (2026-09-19) - Map Mode Cards Unification & Full-Height Map
+
+### Map Mode
+- Replaced the compact map results rail rows with the full catalog university cards (`uni-card`), including status badges, the Global Rank metric with source tooltip, yearly price, and details link; the cover photo is omitted in the rail and the university logo renders inline next to the title (`frontend/javascript/pages/universities.js`, `frontend/css/universities/06-map.css`).
+- Clicking a rail card now flies the map to its marker and opens the popup, while the details link opens the university page (or toggles comparison in compare mode); the active marker card is highlighted (`frontend/javascript/pages/universities.js`).
+- Stretched the map stage to fill the viewport height (`calc(100dvh - 300px)`, minimum 560px) instead of the fixed 4:3 ratio, with the map and the results rail both filling the stage height; Leaflet re-fits tiles on window resize (`frontend/css/universities/06-map.css`, `frontend/css/universities/07-responsive.css`, `frontend/javascript/pages/universities.js`).
+- On stacked viewports (≤1180px) the map uses a viewport-relative height (`52dvh`, minimum 320px) instead of the aspect-ratio box (`frontend/css/universities/06-map.css`, `frontend/css/universities/07-responsive.css`).
+
 ## 6.2.0 (2026-09-18) - Mobile Search Overlay, System Theme Settings & Profile Polish
 
 ### Shell & Navigation

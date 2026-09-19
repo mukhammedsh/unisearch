@@ -191,19 +191,6 @@
     gap: 12px;
   }
 
-  .u-map-result-focus {
-    grid-template-columns: 36px minmax(0, 1fr);
-  }
-
-  .u-map-result-rank {
-    display: none;
-  }
-
-  .u-map-result-bottom {
-    align-items: center;
-    flex-direction: row;
-  }
-
 }
 
 @media (max-width: 430px) {
@@ -281,13 +268,8 @@
     padding: 12px;
   }
 
-  .u-map-result-card {
-    flex-basis: min(256px, calc(100vw - 84px));
-  }
-
   .u-map-container {
-    min-height: 380px;
-    height: 380px;
+    min-height: 280px;
   }
 
   .custom-map-popup .leaflet-popup-content {
@@ -319,7 +301,7 @@
   .unifit-warning-modal.is-closing .unifit-warning-backdrop,
   .unifit-warning-modal.is-closing .unifit-warning-card,
   .u-mobile-filter-btn,
-  .u-map-result-card,
+  .u-map-results-list .uni-card,
   .is-skeleton .uni-media,
   .is-skeleton .uni-logo,
   .is-skeleton .uni-price,
@@ -338,7 +320,7 @@
 
   .u-page {
     padding-top: 18px;
-    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
   }
 
   .u-page-scope,
@@ -407,6 +389,9 @@
   }
 
   .u-mobile-filter-btn {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
     bottom: calc(18px + env(safe-area-inset-bottom));
     width: min(320px, calc(100vw - 32px));
     min-height: 50px;

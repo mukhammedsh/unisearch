@@ -106,6 +106,7 @@ let __universitiesRecentRelocationHandler = null;
 let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
+let __universitiesMapResizeTimer = 0;
 
 export function initUniversitiesPage() {
     const prefCurrency = getPreferredCurrency();
@@ -305,6 +306,10 @@ export function initUniversitiesPage() {
     if (__universitiesResizeHandler) {
         window.removeEventListener("resize", __universitiesResizeHandler);
         __universitiesResizeHandler = null;
+    }
+    if (__universitiesMapResizeTimer) {
+        window.clearTimeout(__universitiesMapResizeTimer);
+        __universitiesMapResizeTimer = 0;
     }
     if (__universitiesResizeObserver) {
         __universitiesResizeObserver.disconnect();
@@ -744,29 +749,6 @@ export function initUniversitiesPage() {
                 compareBtn.innerHTML = renderInlineIcon(compared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon");
             }
         });
-        document.querySelectorAll(".u-map-result-card[data-uni-id]").forEach((card) => {
-            const rowId = String(card.getAttribute("data-uni-id") || "").trim();
-            const compared = showCompareSelection && compareUniversityIds.has(rowId);
-            card.classList.toggle("is-selected", compared);
-            card.setAttribute("aria-selected", compared ? "true" : "false");
-            const compareBtn = card.querySelector("[data-card-action='compare']");
-            if (compareBtn) {
-                const label = compared
-                    ? t("universities.card.compare_selected", "Selected for comparison")
-                    : t("universities.card.compare", "Add to compare");
-                compareBtn.classList.toggle("is-active", compared);
-                compareBtn.setAttribute("aria-pressed", compared ? "true" : "false");
-                compareBtn.setAttribute("title", label);
-                compareBtn.setAttribute("aria-label", label);
-                compareBtn.innerHTML = `${renderInlineIcon(compared ? "check-circle" : "adjustments-horizontal", 16, "u-map-result-action-icon")}<span>${escapeHtml(label)}</span>`;
-            }
-            const compareLink = card.querySelector(".u-map-result-link.u-map-result-compare-link");
-            if (compareLink) {
-                compareLink.textContent = compared
-                    ? t("universities.card.compare_selected", "Selected for comparison")
-                    : t("universities.card.compare", "Add to compare");
-            }
-        });
     };
 
     const toggleCompareUniversity = (uniId) => {
@@ -948,12 +930,26 @@ export function initUniversitiesPage() {
         }
         if (!el.workspaceLayout || typeof window === "undefined") return;
 
+        if (state.viewMode !== "map") clearMapSidebarDepth();
+
         // Mobile / tablet screen layouts stack vertically, do not force desktop depth
         if (window.innerWidth <= 1024) {
             if (lastAppliedLayoutDepth !== "") {
                 lastAppliedLayoutDepth = "";
                 el.workspaceLayout.style.removeProperty("min-height");
             }
+            clearMapSidebarDepth();
+            return;
+        }
+
+        // Map mode content is short and stable; forcing list-mode depth would
+        // leave a large empty area below the map.
+        if (state.viewMode === "map") {
+            if (lastAppliedLayoutDepth !== "") {
+                lastAppliedLayoutDepth = "";
+                el.workspaceLayout.style.removeProperty("min-height");
+            }
+            syncMapSidebarDepth();
             return;
         }
 
@@ -996,6 +992,29 @@ export function initUniversitiesPage() {
             depthSyncRafId = 0;
             syncWorkspaceDepth();
         });
+    };
+
+    // In map mode the sidebar keeps its own internal scroll, but its outer
+    // height is clamped to the content column so the filter column, the map,
+    // and the results rail all end at the same depth.
+    const clearMapSidebarDepth = () => {
+        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
+        if (sidebar) sidebar.style.removeProperty("height");
+    };
+
+    const syncMapSidebarDepth = () => {
+        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
+        const content = el.catalogPane || el.content || document.querySelector(".u-content");
+        if (!sidebar || !content) return;
+        // Below the split breakpoint the columns stack; the stylesheet
+        // rules apply untouched there.
+        if (state.viewMode !== "map" || window.innerWidth <= 1180) {
+            clearMapSidebarDepth();
+            return;
+        }
+        clearMapSidebarDepth();
+        const targetH = content.offsetHeight || 0;
+        if (targetH > 0) sidebar.style.height = `${targetH}px`;
     };
 
     const persistSavedAndCompare = () => {
@@ -1055,24 +1074,29 @@ export function initUniversitiesPage() {
         const cardCount = Math.max(3, Math.min(5, Math.floor((Number(window.innerWidth || 0) || 1024) / 280)));
         el.mapResults.innerHTML = `
             <div class="u-map-results-loading is-skeleton" role="status" aria-live="polite" aria-label="${escapeHtmlAttr(t("universities.loading", "Loading universities"))}">
-                <div class="u-map-results-head u-map-results-head--loading">
-                    <div class="skeleton-line" style="width: 42%; height: 22px;"></div>
-                    <div class="skeleton-line" style="width: min(520px, 78%); height: 13px;"></div>
-                </div>
                 <div class="u-map-results-list u-map-results-list--loading">
                     ${Array.from({ length: cardCount }, () => `
-                        <article class="u-map-result-card u-map-result-card--loading is-skeleton" aria-hidden="true">
-                            <div class="u-map-result-focus">
-                                <span class="u-map-result-logo"></span>
-                                <span class="u-map-result-copy">
-                                    <span class="skeleton-line" style="width: 84%; height: 15px;"></span>
-                                    <span class="skeleton-line" style="width: 58%; height: 12px;"></span>
-                                </span>
-                                <span class="skeleton-line u-map-result-rank" style="width: 38px; height: 18px;"></span>
-                            </div>
-                            <div class="u-map-result-bottom">
-                                <span class="skeleton-line" style="width: 72px; height: 14px;"></span>
-                                <span class="skeleton-line" style="width: 96px; height: 14px;"></span>
+                        <article class="uni-card uni-card--no-media u-skeleton-card is-skeleton" aria-hidden="true">
+                            <div class="uni-body">
+                                <div class="uni-head">
+                                    <span class="uni-logo uni-logo--inline"></span>
+                                    <span class="uni-head-copy">
+                                        <span class="skeleton-line" style="width: 84%; height: 15px;"></span>
+                                        <span class="skeleton-line" style="width: 58%; height: 12px;"></span>
+                                    </span>
+                                </div>
+                                <div class="u-skeleton-metric">
+                                    <span class="skeleton-line u-skeleton-metric-icon"></span>
+                                    <span class="skeleton-line u-skeleton-metric-label"></span>
+                                    <span class="skeleton-line u-skeleton-metric-value"></span>
+                                </div>
+                                <div class="uni-footer u-skeleton-footer">
+                                    <div class="u-skeleton-price">
+                                        <div class="skeleton-line u-skeleton-price-value"></div>
+                                        <div class="skeleton-line u-skeleton-price-period"></div>
+                                    </div>
+                                    <div class="skeleton-line u-skeleton-details"></div>
+                                </div>
                             </div>
                         </article>
                     `).join("")}
@@ -2042,6 +2066,14 @@ export function initUniversitiesPage() {
 
     __universitiesResizeHandler = () => {
         scheduleSyncWorkspaceDepth();
+        // Map stage height follows the viewport, so tell Leaflet to re-fit tiles.
+        if (state.viewMode === "map" && mapInstance) {
+            if (__universitiesMapResizeTimer) window.clearTimeout(__universitiesMapResizeTimer);
+            __universitiesMapResizeTimer = window.setTimeout(() => {
+                __universitiesMapResizeTimer = 0;
+                if (mapInstance) mapInstance.invalidateSize();
+            }, 150);
+        }
     };
     window.addEventListener("resize", __universitiesResizeHandler, { passive: true });
 
@@ -2149,7 +2181,7 @@ export function initUniversitiesPage() {
     function updateMapResultsSelection(uniId) {
         activeMapUniId = String(uniId || "").trim();
         if (!el.mapResults) return;
-        el.mapResults.querySelectorAll(".u-map-result-card[data-uni-id]").forEach((card) => {
+        el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]").forEach((card) => {
             const isActive = card.getAttribute("data-uni-id") === activeMapUniId;
             card.classList.toggle("is-active", isActive);
         });
@@ -2185,133 +2217,61 @@ export function initUniversitiesPage() {
     function renderMapResultsPanel(items) {
         if (!el.mapResults) return;
         const mappedItems = (Array.isArray(items) ? items : []).filter((u) => u?.coordinates?.lat && u?.coordinates?.lon);
-        const heading = escapeHtml(t("universities.map_panel.title", "Results on the map"));
-        const subheading = escapeHtml(isCompareSelectionMode()
-            ? t("universities.map_panel.compare_subtitle", "Comparison shortlist on the map.")
-            : t("universities.map_panel.subtitle", "Pick a university to center the map and open its details."));
 
         if (!mappedItems.length) {
             el.mapResults.innerHTML = `
-                <div class="u-map-results-head">
-                    <h3>${heading}</h3>
-                    <p>${subheading}</p>
-                </div>
                 <div class="u-map-results-empty">${escapeHtml(t("universities.map_panel.empty", "No universities with map coordinates match these filters."))}</div>
             `;
             return;
         }
 
-        const visibleItems = mappedItems.slice(0, 10);
+        const visibleItems = mappedItems.slice(0, 30);
         const preferredId = visibleItems.some((u) => String(u.id || "") === activeMapUniId)
             ? activeMapUniId
             : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
         activeMapUniId = preferredId;
 
+        const profile = loadProfileForApi();
+        const userBudget = parseFloat(profile.budget);
         el.mapResults.innerHTML = `
-            <div class="u-map-results-head">
-                <h3>${heading}</h3>
-                <p>${subheading}</p>
-            </div>
             <div class="u-map-results-list">
-                ${visibleItems.map((u) => {
-                    const uniId = String(u.id || "");
-                    const priceInfo = resolveUniversityCardPrice(u);
-                    const finalCost = priceInfo.amount;
-                    const uniCurrency = priceInfo.currency;
-                    const city = String(trCity(u?.location?.city || "") || "").trim();
-                    const country = String(trCountry(u?.location?.country || "") || "").trim();
-                    const locationText = [city, country].filter(Boolean).join(", ");
-                    const rank = toFiniteNumber(u?.rank);
-                    const detailHref = routeUniversityDetail(uniId);
-                    const isActive = uniId === preferredId;
-                    const isCompared = isCompareSelectionMode() && compareUniversityIds.has(uniId);
-                    return `
-                        <article class="u-map-result-card${isActive ? " is-active" : ""}${isCompared ? " is-selected" : ""}" data-uni-id="${escapeHtmlAttr(uniId)}" aria-selected="${isCompared ? "true" : "false"}">
-                            <button type="button" class="u-map-result-focus" data-uni-focus="${escapeHtmlAttr(uniId)}">
-                                <span class="u-map-result-logo">
-                                    <img src="${uniLogoSrc(uniId)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(uniId, { forceFull: true }))}" data-fallback-text="${escapeHtmlAttr(initials(trUniversityName(u) || "U"))}">
-                                </span>
-                                <span class="u-map-result-copy">
-                                    <span class="u-map-result-name">${escapeHtml(textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name"))}</span>
-                                    <span class="u-map-result-meta">${escapeHtml(locationText || unknownFieldText("placeholder.field.location", "Location"))}</span>
-                                </span>
-                                <span class="u-map-result-rank">${rank !== null && rank > 0 ? `#${escapeHtml(String(rank))}` : ""}</span>
-                            </button>
-                            <div class="u-map-result-bottom">
-                                <span class="u-map-result-price">${escapeHtml(moneyOrUnknown(finalCost, "placeholder.field.cost", "Cost", uniCurrency, { presentation: "summary" }))}</span>
-                                <a class="u-map-result-link" href="${detailHref}">${escapeHtml(t("universities.card.view_details", "View details →"))}</a>
-                            </div>
-                        </article>
-                    `;
+                ${visibleItems.map((u, idx) => {
+                    const uniId = String(u?.id || "");
+                    return renderCard(u, userBudget, idx, {
+                        hideMedia: true,
+                        mapVariant: true,
+                        isActive: uniId !== "" && uniId === preferredId,
+                    });
                 }).join("")}
             </div>
         `;
 
-        const resultsList = el.mapResults.querySelector(".u-map-results-list");
-        resultsList?.addEventListener("wheel", (event) => {
-            if (event.ctrlKey) return;
-
-            const deltaScale = event.deltaMode === WheelEvent.DOM_DELTA_LINE
-                ? 16
-                : (event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? resultsList.clientWidth : 1);
-            const deltaX = event.deltaX * deltaScale;
-            const deltaY = event.deltaY * deltaScale;
-            const scrollDelta = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
-            if (scrollDelta === 0) return;
-
-            const maxScrollLeft = resultsList.scrollWidth - resultsList.clientWidth;
-            if (maxScrollLeft <= 0) return;
-
-            const nextScrollLeft = resultsList.scrollLeft + scrollDelta;
-            const canScrollRight = scrollDelta > 0 && resultsList.scrollLeft < maxScrollLeft;
-            const canScrollLeft = scrollDelta < 0 && resultsList.scrollLeft > 0;
-            if (!canScrollRight && !canScrollLeft) return;
-
-            event.preventDefault();
-            resultsList.scrollLeft = Math.max(0, Math.min(maxScrollLeft, nextScrollLeft));
-        }, { passive: false });
-
-        el.mapResults.querySelectorAll("[data-uni-focus]").forEach((button) => {
-            button.addEventListener("click", () => {
-                if (isCompareSelectionMode()) {
-                    const card = button.closest("[data-uni-id]");
-                    toggleCompareUniversity(card?.getAttribute("data-uni-id"));
+        el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]").forEach((card) => {
+            card.addEventListener("click", (event) => {
+                const target = event.target instanceof Element ? event.target : null;
+                if (!target) return;
+                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble")) return;
+                const uniId = String(card.getAttribute("data-uni-id") || "").trim();
+                if (!uniId) return;
+                const detailsLink = target.closest("a.uni-details");
+                if (detailsLink) {
+                    event.preventDefault();
+                    if (isCompareSelectionMode()) {
+                        toggleCompareUniversity(uniId);
+                        return;
+                    }
+                    rememberRecentUniversity(uniId);
+                    openUniversityDetail(uniId);
+                    return;
                 }
-                focusMapUniversity(button.getAttribute("data-uni-focus"), {
+                if (isCompareSelectionMode()) {
+                    toggleCompareUniversity(uniId);
+                }
+                focusMapUniversity(uniId, {
                     openPopup: true,
                     fly: true,
                     zoom: 14,
                 });
-            });
-        });
-        el.mapResults.querySelectorAll(".u-map-result-card[data-uni-id]").forEach((card) => {
-            card.addEventListener("click", (event) => {
-                if (!isCompareSelectionMode()) return;
-                const target = event.target instanceof Element ? event.target : null;
-                if (target?.closest("button, a")) return;
-                toggleCompareUniversity(card.getAttribute("data-uni-id"));
-            });
-        });
-        el.mapResults.querySelectorAll(".u-map-result-link").forEach((link) => {
-            if (isCompareSelectionMode()) {
-                link.classList.add("u-map-result-compare-link");
-                link.textContent = compareUniversityIds.has(link.closest("[data-uni-id]")?.getAttribute("data-uni-id") || "")
-                    ? t("universities.card.compare_selected", "Selected for comparison")
-                    : t("universities.card.compare", "Add to compare");
-            }
-            link.addEventListener("click", (event) => {
-                if (isCompareSelectionMode()) {
-                    const card = link.closest("[data-uni-id]");
-                    event.preventDefault();
-                    toggleCompareUniversity(card?.getAttribute("data-uni-id"));
-                    return;
-                }
-                if (!shouldOpenUniversitiesInNewTab()) return;
-                const card = link.closest("[data-uni-id]");
-                const uniId = card?.getAttribute("data-uni-id");
-                rememberRecentUniversity(uniId);
-                event.preventDefault();
-                openUniversityDetail(uniId);
             });
         });
     }
@@ -2877,7 +2837,7 @@ export function initUniversitiesPage() {
             state.lastCatalogTotal = items.length;
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
-            markMotionEnter(el.mapResults, ".u-map-result-card", { limit: 12, staggerMs: 18 });
+            markMotionEnter(el.mapResults, ".u-map-results-list .uni-card", { limit: 12, staggerMs: 18 });
             renderUniversitiesState({
                 warningText,
                 emptyText: items.length
@@ -2985,7 +2945,10 @@ export function initUniversitiesPage() {
     }
 
     // --- Render University Catalog Card ---
-    function renderCard(u, myBudget, idx = 99) {
+    function renderCard(u, myBudget, idx = 99, options = {}) {
+        const hideMedia = Boolean(options && options.hideMedia);
+        const mapVariant = Boolean(options && options.mapVariant);
+        const cardIsActive = Boolean(options && options.isActive);
         const id = u.id;
         const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
         const countryRaw = nested(u, ["location", "country"], "");
@@ -3158,23 +3121,34 @@ ${rankInnerHtml}
                 ${priceParts.secondary ? `<span class="uni-price-line"><span class="uni-price-val">${escapeHtml(priceParts.secondary)}</span> <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span></span>` : ""}
               </div>`
             : `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(costText)}</span></div>`;
-        return `
-        <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
+        const logoImgHtml = `<img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
+        const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
-            <div class="uni-logo"><img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}"></div>
-            </div>
+            <div class="uni-logo">${logoImgHtml}</div>
+            </div>`;
+        const headHtml = hideMedia
+            ? `<div class="uni-head"><span class="uni-logo uni-logo--inline">${logoImgHtml}</span><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
+            : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
+        const detailsHtml = mapVariant
+            ? `<a class="uni-details" href="${detailHref}"${universityLinkAttrs()}>${detailLabel}<span aria-hidden="true">→</span></a>`
+            : `<span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>`;
+        const overlayHtml = mapVariant
+            ? ""
+            : `<a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
+        return `
+        <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
+            ${mediaHtml}
             ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
             <div class="uni-body">
-                        <h3 class="uni-title" title="${safeName}">${safeName}</h3>
-            ${locHtml}
+            ${headHtml}
             ${metricsHtml}
             <div class="uni-footer">
                 ${priceHtml}
-                <span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>
+                ${detailsHtml}
             </div>
             </div>
-            <a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>
+            ${overlayHtml}
         </article>
         `;
     }
