@@ -19,11 +19,11 @@ We take the security of UniSearch seriously. If you believe you have found a sec
 ### Response Timeline SLAs
 * **Initial Acknowledgment:** Within **48 hours** of report receipt.
 * **Triage & Impact Assessment:** Within **7 calendar days**.
-* **Remediation & Patch Release:** Within **14 to 30 calendar days**, depending on CVSS severity. A coordinated disclosure advisory will be published alongside the patch release.
+* **Remediation & Patch Release:** Hotfix release within **14 calendar days** for high and critical vulnerabilities (and within 30 calendar days for medium/low issues). A coordinated disclosure advisory will be published alongside the patch release.
 
-## Researcher Credit
+## Researcher Credit & Security Hall of Fame
 
-We believe in recognizing security researchers who help protect the UniSearch community. If you report a valid, previously unknown vulnerability, we will publicly credit you in our [CHANGELOG.md](CHANGELOG.md), GitHub Security Advisories, and release notes (unless you explicitly request to remain anonymous).
+We believe in recognizing security researchers who help protect the UniSearch community. If you report a valid, previously unknown vulnerability, we will publicly credit you in our Security Hall of Fame, featured in [CHANGELOG.md](CHANGELOG.md), GitHub Security Advisories, and release notes (unless you explicitly request to remain anonymous).
 
 ## Security Practices
 
@@ -33,4 +33,6 @@ UniSearch follows defense-in-depth best practices for academic tools:
 - **Defensive Headers:** Content-Security-Policy (CSP), `X-Content-Type-Options: nosniff`, and `X-Frame-Options: DENY`.
 - **Automated Security Scanning:** Continuous SAST scanning with GitHub CodeQL, container vulnerability scanning with Trivy, and fuzz testing with Google ClusterFuzzLite / Atheris.
 - **Data Privacy:** Sensitive applicant profile data, secrets, and authorization tokens are never logged or stored on the server.
+
+For the formal threat model, trust boundaries, and OpenSSF Silver claim justifications, see our [Security Assurance Case](docs/security-assurance.md).
 
