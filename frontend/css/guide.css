@@ -145,107 +145,90 @@
 }
 
 /* --------------------------------------------------------------------------
-   Pull-to-next-section control
+   Section navigation
    -------------------------------------------------------------------------- */
-body[data-page="guide"] .site-footer {
-  position: relative;
-  isolation: isolate;
-  overflow: visible;
-  background: var(--surface);
+.guide-section-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line-faint);
 }
 
-body[data-page="guide"] .site-footer::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  background: var(--surface);
+.guide-section-navigation__button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: var(--space-12);
+  max-width: calc(50% - var(--space-2));
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--motion-ease-standard), color var(--motion-fast) var(--motion-ease-standard);
 }
 
-body[data-page="guide"] .site-footer .footer-content {
-  position: relative;
-  z-index: 2;
-}
-
-.guide-next-section {
-  --guide-pull-translate-y: 0px;
-  --guide-pull-scale-x: 1.18;
-  --guide-pull-scale-y: 0.36;
-  --guide-arrow-opacity: 0;
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 50%;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
-  clip-path: inset(-80px -64px 0);
-  visibility: hidden;
-  transition: opacity var(--motion-fast) var(--motion-ease-standard), visibility 0s linear var(--motion-fast);
-}
-
-.guide-next-section[hidden] {
+.guide-section-navigation__button[hidden] {
   display: none;
 }
 
-.guide-next-section.is-ready,
-.guide-next-section.is-revealed {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
+.guide-section-navigation__button--next {
+  margin-left: auto;
+  text-align: right;
 }
 
-.guide-next-section__button {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: var(--space-12);
-  height: var(--space-12);
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-circle);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-xs);
-  color: var(--text);
-  cursor: default;
-  pointer-events: none;
-  transform: translate(-50%, var(--guide-pull-translate-y)) scaleX(var(--guide-pull-scale-x)) scaleY(var(--guide-pull-scale-y));
-  transform-origin: center;
-  transition: background var(--motion-fast) var(--motion-ease-standard), border-color var(--motion-fast) var(--motion-ease-standard), color var(--motion-fast) var(--motion-ease-standard), transform var(--motion-medium) var(--motion-ease-exit);
-}
-
-.guide-next-section__button:focus-visible {
+.guide-section-navigation__button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.guide-next-section__arrow {
+@media (hover: hover) and (pointer: fine) {
+  .guide-section-navigation__button:hover {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+}
+
+.guide-section-navigation__icon {
+  flex: 0 0 auto;
   width: var(--space-6);
   height: var(--space-6);
-  opacity: var(--guide-arrow-opacity);
-  transform: rotate(-90deg);
-  transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
-.guide-next-section.is-pulling .guide-next-section__button,
-.guide-next-section.is-pulling .guide-next-section__arrow {
-  transition: none;
+.guide-section-navigation__button--next .guide-section-navigation__icon {
+  transform: rotate(180deg);
 }
 
-.guide-next-section.is-armed .guide-next-section__button {
-  background: var(--text);
-  color: var(--surface-solid);
+.guide-section-navigation__copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.guide-section-navigation__direction {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+}
+
+.guide-section-navigation__title {
+  overflow-wrap: anywhere;
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: var(--leading-tight);
 }
 
 /* --------------------------------------------------------------------------
    Main Content Card & Article (Wiki-style Reading Surface)
    -------------------------------------------------------------------------- */
 .guide-content {
-  display: flow-root;
-  align-self: stretch;
+  display: grid;
+  gap: var(--space-6);
   min-width: 0;
   padding: var(--space-6);
   border: none;
@@ -583,8 +566,7 @@ body[data-page="guide"] {
   .guide-section,
   .guide-mobile-nav-toggle,
   .guide-mobile-nav-toggle__chevron,
-  .guide-next-section__button,
-  .guide-next-section__arrow {
+  .guide-section-navigation__button {
     transition: none;
   }
 }

@@ -47,36 +47,29 @@ test.describe("guide navigation", () => {
     await expect(contents).not.toContainText("Tags");
   });
 
-  test("overscrolling at the end of an article pulls into the following article", async ({ page }) => {
-    const control = page.locator("#guideNextSection");
-    await expect(control).toBeHidden();
+  test("moves between neighbouring articles with previous and next buttons", async ({ page }) => {
+    const navigation = page.locator("#guideSectionNavigation");
+    const previous = navigation.locator(".guide-section-navigation__button--previous");
+    const next = navigation.locator(".guide-section-navigation__button--next");
 
-    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-    await expect(control).toHaveClass(/is-ready/);
-    await page.mouse.wheel(0, 24);
-    await page.mouse.wheel(0, 24);
-    await page.mouse.wheel(0, 24);
-    await expect(control).toHaveClass(/is-armed/);
+    await expect(navigation).toBeVisible();
+    await expect(previous).toBeHidden();
+    await expect(next).toBeVisible();
+    await expect(next).toContainText("Next section");
+    await expect(next).toContainText("Interests");
 
-    await page.waitForTimeout(120);
-    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+    await next.click();
     await expect(page.locator("#guide-ml.is-active")).toBeVisible();
-    await expect(control).toBeHidden();
-  });
+    await expect(previous).toBeVisible();
+    await expect(previous).toContainText("Previous section");
+    await expect(previous).toContainText("UniFit");
 
-  test("lets a near-complete pull continue briefly and cancels an armed pull in reverse", async ({ page }) => {
-    const control = page.locator("#guideNextSection");
-    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-
-    await page.mouse.wheel(0, 28);
-    await page.mouse.wheel(0, 28);
-    await page.waitForTimeout(170);
-    await page.mouse.wheel(0, 28);
-    await expect(control).toHaveClass(/is-armed/);
-
-    await page.mouse.wheel(0, -12);
-    await page.waitForTimeout(320);
+    await previous.click();
     await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+
+    await page.locator('.guide-nav a[href$="#guide-glossary"]').click();
+    await expect(previous).toBeVisible();
+    await expect(next).toBeHidden();
   });
 
   test("supports deep links to guide sections", async ({ page }) => {

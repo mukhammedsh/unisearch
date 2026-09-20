@@ -254,30 +254,28 @@ export function initGuidePage() {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sectionById = new Map(sections.map((section) => [section.id, section]));
   const guideLayout = page.querySelector(".guide-layout");
-  const guideFooter = document.querySelector(".site-footer");
-  const nextSectionControl = document.createElement("div");
+  const guideContent = page.querySelector(".guide-content");
+  const sectionNavigation = document.createElement("nav");
+  const previousSectionButton = document.createElement("button");
   const nextSectionButton = document.createElement("button");
   let activeGuideId = sections[0]?.id || "";
-  let pullDistance = 0;
-  let renderedPullDistance = 0;
-  let pullAnimationFrame = null;
-  let wheelReleaseTimer = null;
-  let coyoteTimer = null;
-  let commitTimer = null;
-  let touchLastY = null;
-  const pullThreshold = 72;
-  const coyoteThreshold = Math.round(pullThreshold * 0.78);
-  const coyoteDelayMs = 180;
-  const intentConfirmDelayMs = 240;
 
-  nextSectionControl.className = "guide-next-section";
-  nextSectionControl.id = "guideNextSection";
-  nextSectionButton.className = "guide-next-section__button";
+  sectionNavigation.className = "guide-section-navigation";
+  sectionNavigation.id = "guideSectionNavigation";
+  sectionNavigation.setAttribute("aria-label", t("guide.section_navigation", "Section navigation"));
+  previousSectionButton.className = "guide-section-navigation__button guide-section-navigation__button--previous";
+  previousSectionButton.type = "button";
+  previousSectionButton.innerHTML = `${heroIcon("arrow-left", "guide-section-navigation__icon", { "stroke-width": 2.5 })}<span class="guide-section-navigation__copy"><span class="guide-section-navigation__direction">${escapeHtml(t("guide.previous_section_label", "Previous section"))}</span><span class="guide-section-navigation__title"></span></span>`;
+  nextSectionButton.className = "guide-section-navigation__button guide-section-navigation__button--next";
   nextSectionButton.type = "button";
-  nextSectionButton.innerHTML = heroIcon("arrow-left", "guide-next-section__arrow", { "stroke-width": 2.5 });
-  nextSectionControl.appendChild(nextSectionButton);
-  guideFooter?.prepend(nextSectionControl);
+  nextSectionButton.innerHTML = `<span class="guide-section-navigation__copy"><span class="guide-section-navigation__direction">${escapeHtml(t("guide.next_section_label", "Next section"))}</span><span class="guide-section-navigation__title"></span></span>${heroIcon("arrow-left", "guide-section-navigation__icon", { "stroke-width": 2.5 })}`;
+  sectionNavigation.append(previousSectionButton, nextSectionButton);
+  guideContent?.appendChild(sectionNavigation);
 
+  const previousGuideId = (id) => {
+    const currentIndex = sections.findIndex((section) => section.id === id);
+    return currentIndex > 0 ? sections[currentIndex - 1].id : "";
+  };
   const nextGuideId = (id) => {
     const currentIndex = sections.findIndex((section) => section.id === id);
     return currentIndex >= 0 ? (sections[currentIndex + 1]?.id || "") : "";
@@ -302,68 +300,42 @@ export function initGuidePage() {
     }
   };
 
-  const updateNextSectionControl = (id) => {
+  const updateSectionNavigation = (id) => {
+    const previousId = previousGuideId(id);
     const nextId = nextGuideId(id);
-    nextSectionControl.hidden = !nextId;
-    nextSectionControl.dataset.nextId = nextId;
-    resetPull();
+    sectionNavigation.setAttribute("aria-label", t("guide.section_navigation", "Section navigation"));
+    previousSectionButton.querySelector(".guide-section-navigation__direction").textContent = t("guide.previous_section_label", "Previous section");
+    nextSectionButton.querySelector(".guide-section-navigation__direction").textContent = t("guide.next_section_label", "Next section");
+    previousSectionButton.hidden = !previousId;
+    previousSectionButton.dataset.sectionId = previousId;
+    nextSectionButton.hidden = !nextId;
+    nextSectionButton.dataset.sectionId = nextId;
+    if (previousId) {
+      previousSectionButton.querySelector(".guide-section-navigation__title").textContent = sectionLabel(previousId);
+      previousSectionButton.setAttribute("aria-label", tFormat("guide.previous_section", { section: sectionLabel(previousId) }, `Back to ${sectionLabel(previousId)}`));
+      previousSectionButton.title = tFormat("guide.previous_section", { section: sectionLabel(previousId) }, `Back to ${sectionLabel(previousId)}`);
+    } else {
+      previousSectionButton.querySelector(".guide-section-navigation__title").textContent = "";
+      previousSectionButton.removeAttribute("aria-label");
+      previousSectionButton.removeAttribute("title");
+    }
     if (nextId) {
+      nextSectionButton.querySelector(".guide-section-navigation__title").textContent = sectionLabel(nextId);
       nextSectionButton.setAttribute("aria-label", tFormat("guide.next_section", { section: sectionLabel(nextId) }, `Continue to ${sectionLabel(nextId)}`));
       nextSectionButton.title = tFormat("guide.next_section", { section: sectionLabel(nextId) }, `Continue to ${sectionLabel(nextId)}`);
     } else {
+      nextSectionButton.querySelector(".guide-section-navigation__title").textContent = "";
       nextSectionButton.removeAttribute("aria-label");
       nextSectionButton.removeAttribute("title");
     }
   };
 
-  function isAtGuideEnd() {
-    if (!guideFooter || nextSectionControl.hidden) return false;
-    const pageBottom = window.scrollY + window.innerHeight;
-    return document.documentElement.scrollHeight - pageBottom <= 2;
-  }
-
-  function clearPullTimers() {
-    window.clearTimeout(wheelReleaseTimer);
-    window.clearTimeout(coyoteTimer);
-    window.clearTimeout(commitTimer);
-    wheelReleaseTimer = null;
-    coyoteTimer = null;
-    commitTimer = null;
-  }
-
-  function resetPull() {
-    clearPullTimers();
-    if (pullAnimationFrame !== null) {
-      window.cancelAnimationFrame(pullAnimationFrame);
-      pullAnimationFrame = null;
-    }
-    pullDistance = 0;
-    renderedPullDistance = 0;
-    nextSectionControl.style.removeProperty("--guide-pull-translate-y");
-    nextSectionControl.style.removeProperty("--guide-pull-scale-x");
-    nextSectionControl.style.removeProperty("--guide-pull-scale-y");
-    nextSectionControl.style.removeProperty("--guide-arrow-opacity");
-    nextSectionControl.classList.remove("is-revealed", "is-pulling", "is-armed");
-    nextSectionControl.classList.toggle("is-ready", isAtGuideEnd());
-  }
-
-  function syncPullAffordance() {
-    if (pullDistance > 0) return;
-    nextSectionControl.classList.toggle("is-ready", isAtGuideEnd());
-  }
-
-  const moveToNextSection = () => {
-    const nextId = String(nextSectionControl.dataset.nextId || "").trim();
-    if (!nextId) return;
-    activateSection(nextId, { updateHash: true, scroll: true });
+  const moveToSection = (id) => {
+    const targetId = String(id || "").trim();
+    if (!sectionById.has(targetId)) return;
+    activateSection(targetId, { updateHash: true, scroll: true });
     window.requestAnimationFrame(() => {
-      if (guideLayout) {
-        const navbar = document.querySelector(".navbar");
-        const navHeight = navbar instanceof HTMLElement ? Math.ceil(navbar.getBoundingClientRect().height) : 70;
-        const top = Math.max(0, guideLayout.getBoundingClientRect().top + window.scrollY - navHeight - 12);
-        window.scrollTo({ top, left: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
-      }
-      const heading = sectionById.get(nextId)?.querySelector("h2");
+      const heading = sectionById.get(targetId)?.querySelector("h2");
       if (heading instanceof HTMLElement) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
@@ -405,7 +377,7 @@ export function initGuidePage() {
     }
     activeGuideId = nextId;
     syncMobileNavigation(nextId);
-    updateNextSectionControl(nextId);
+    updateSectionNavigation(nextId);
     if (scroll && targetSection) {
       const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
       const isMobileLayout = window.innerWidth <= 1024;
@@ -447,107 +419,8 @@ export function initGuidePage() {
     if (window.innerWidth > 1024) closeMobileNavigation();
   });
 
-  const renderPull = (distance) => {
-    const progress = Math.min(1, distance / pullThreshold);
-    const arrowProgress = Math.max(0, (progress - 0.18) / 0.82);
-    nextSectionControl.classList.remove("is-ready");
-    nextSectionControl.classList.add("is-revealed", "is-pulling");
-    nextSectionControl.style.setProperty("--guide-pull-translate-y", `${-56 * progress}px`);
-    nextSectionControl.style.setProperty("--guide-pull-scale-x", String(1.18 - progress * 0.18));
-    nextSectionControl.style.setProperty("--guide-pull-scale-y", String(0.36 + progress * 0.64));
-    nextSectionControl.style.setProperty("--guide-arrow-opacity", String(arrowProgress));
-    nextSectionControl.classList.toggle("is-armed", progress >= 1);
-  };
-
-  const scheduleCommit = () => {
-    if (commitTimer !== null || pullDistance < pullThreshold) return;
-    commitTimer = window.setTimeout(() => {
-      commitTimer = null;
-      if (pullDistance < pullThreshold) return;
-      resetPull();
-      moveToNextSection();
-    }, intentConfirmDelayMs);
-  };
-
-  const requestPullRender = () => {
-    if (pullAnimationFrame !== null) return;
-    pullAnimationFrame = window.requestAnimationFrame(() => {
-      pullAnimationFrame = null;
-      const remainingDistance = pullDistance - renderedPullDistance;
-      if (prefersReducedMotion || Math.abs(remainingDistance) < 0.5) {
-        renderedPullDistance = pullDistance;
-      } else {
-        renderedPullDistance += remainingDistance * 0.28;
-      }
-      renderPull(renderedPullDistance);
-      if (renderedPullDistance !== pullDistance) {
-        requestPullRender();
-      } else {
-        scheduleCommit();
-      }
-    });
-  };
-
-  const extendPull = (distance) => {
-    window.clearTimeout(coyoteTimer);
-    coyoteTimer = null;
-    pullDistance = Math.max(0, Math.min(pullThreshold, pullDistance + distance));
-    requestPullRender();
-  };
-
-  const finishPull = () => {
-    wheelReleaseTimer = null;
-    if (pullDistance >= pullThreshold) {
-      requestPullRender();
-      return;
-    }
-    if (pullDistance < coyoteThreshold) {
-      resetPull();
-      return;
-    }
-    coyoteTimer = window.setTimeout(() => {
-      coyoteTimer = null;
-      if (pullDistance < pullThreshold) resetPull();
-    }, coyoteDelayMs);
-  };
-
-  window.addEventListener("wheel", (event) => {
-    if (event.deltaY < 0 && pullDistance > 0) {
-      resetPull();
-      return;
-    }
-    if (event.deltaY <= 0 || !isAtGuideEnd()) return;
-    event.preventDefault();
-    const wheelUnit = event.deltaMode === 1 ? 16 : (event.deltaMode === 2 ? window.innerHeight : 1);
-    extendPull(Math.min(28, event.deltaY * wheelUnit));
-    window.clearTimeout(wheelReleaseTimer);
-    wheelReleaseTimer = window.setTimeout(finishPull, 160);
-  }, { passive: false });
-
-  window.addEventListener("touchstart", (event) => {
-    touchLastY = event.touches[0]?.clientY ?? null;
-  }, { passive: true });
-
-  window.addEventListener("touchmove", (event) => {
-    const currentY = event.touches[0]?.clientY;
-    if (!Number.isFinite(currentY) || !Number.isFinite(touchLastY)) return;
-    const distance = touchLastY - currentY;
-    touchLastY = currentY;
-    if (distance < 0 && pullDistance > 0) {
-      resetPull();
-      return;
-    }
-    if (distance <= 0 || !isAtGuideEnd()) return;
-    event.preventDefault();
-    extendPull(distance);
-  }, { passive: false });
-
-  window.addEventListener("touchend", () => {
-    touchLastY = null;
-    if (pullDistance > 0) finishPull();
-  }, { passive: true });
-
-  window.addEventListener("scroll", syncPullAffordance, { passive: true });
+  previousSectionButton.addEventListener("click", () => moveToSection(previousSectionButton.dataset.sectionId));
+  nextSectionButton.addEventListener("click", () => moveToSection(nextSectionButton.dataset.sectionId));
 
   bindGuideHashChange(() => {
     const hash = String(window.location.hash || "");
@@ -570,7 +443,6 @@ export function initGuidePage() {
     } catch {}
   }
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  syncPullAffordance();
 
   window.addEventListener("resize", () => {
     syncGuideSidebarOffset();
@@ -579,6 +451,6 @@ export function initGuidePage() {
     syncGuideSidebarOffset();
     updateGuideNavHrefs();
     renderAll();
-    updateNextSectionControl(activeGuideId);
+    updateSectionNavigation(activeGuideId);
   });
 }

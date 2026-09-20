@@ -17,6 +17,7 @@ UniSearch helps applicants discover and compare universities for **bachelor's st
 - **University details:** programs, admission options, requirements, costs, funding, and student life information where data is available.
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
+- **Guide:** a structured reference explaining admission requirements, exams, UniFit, UniChance, and comparison workflows, with section-to-section navigation.
 
 The interface supports English and Russian, multi-currency conversion (60+ currencies), and system, light, and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
 

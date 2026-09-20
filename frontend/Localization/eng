@@ -53,6 +53,10 @@ guide.glossary.title: Glossary
 guide.language_exams.title: Language Exams
 guide.loading_language_config: Loading language exam config
 guide.next_section: Continue to {section}
+guide.next_section_label: Next section
+guide.previous_section: Back to {section}
+guide.previous_section_label: Previous section
+guide.section_navigation: Section navigation
 guide.contents: Contents
 guide.contents_current: Contents: {section}
 guide.ml.p1: Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors with the multilingual-e5 model and compares their cosine similarity, rescaled into a 0–1 score:

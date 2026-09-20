@@ -56,6 +56,10 @@ guide.glossary.title: Глоссарий
 guide.language_exams.title: Языковые экзамены
 guide.loading_language_config: Загрузка конфигурации языковых экзаменов
 guide.next_section: Перейти к разделу «{section}»
+guide.next_section_label: Следующий раздел
+guide.previous_section: Вернуться к разделу «{section}»
+guide.previous_section_label: Предыдущий раздел
+guide.section_navigation: Навигация по разделам
 guide.contents: Содержание
 guide.contents_current: Содержание: {section}
 guide.ml.p1: Интересы — это свободный поисковый запрос, а не набор тегов. Система превращает ваш текст и текст каждого университета в векторы моделью multilingual-e5 и сравнивает их косинусную близость, пересчитанную в оценку от 0 до 1:

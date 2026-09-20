@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.0 (2026-09-20) - Wiki-Style Guide Section Navigation
+
+### Guide
+- Replaced the end-of-article pull gesture with persistent previous and next section controls that show the destination title, hide unavailable directions at the first and last sections, and preserve direct section links (`frontend/javascript/pages/guide.js`, `frontend/css/guide.css`).
+- Refined the guide reading surface so section navigation follows article content naturally instead of stretching to the height of the sidebar; directional controls remain clearly separated with subtle token-based backgrounds in light and dark themes (`frontend/css/guide.css`).
+- Localized navigation labels in English and Russian and updated guide E2E coverage for the new transition controls (`frontend/Localization/eng`, `frontend/Localization/ru`, `tests/e2e/guide-tabs.spec.js`).
+
 ## 6.7.0 (2026-09-20) - Focused Guide Navigation
 
 ### Guide
