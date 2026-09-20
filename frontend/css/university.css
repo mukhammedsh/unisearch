@@ -1480,13 +1480,13 @@
   font-weight: 500;
   padding: 4px 8px;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border: none;
+  box-shadow: var(--shadow-xs);
 }
 
 .track-funding-badge--grant {
-  color: var(--color-success-muted);
+  color: var(--text-grant);
   background: var(--grant-soft-strong);
-  border-color: var(--color-success);
 }
 
 @media (max-width: 480px) {
@@ -1502,8 +1502,7 @@
 
 .track-funding-badge--paid {
   color: var(--text);
-  background: var(--surface-soft);
-  border-color: transparent;
+  background: var(--surface-solid);
 }
 
 .finance-track-group {
@@ -5663,7 +5662,7 @@ body[data-page="university"],
 }
 
 .finance-option-card--grant {
-  background: var(--grant-soft-strong);
+  background: var(--surface-soft);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -5812,6 +5811,7 @@ body[data-page="university"],
 .finance-option-meta__row {
   display: grid;
   grid-template-columns: minmax(88px, 0.32fr) minmax(0, 1fr);
+  align-items: baseline;
   gap: var(--space-3);
   padding: var(--space-2) 0;
   border-bottom: none;

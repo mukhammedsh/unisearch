@@ -422,27 +422,7 @@ export function renderRoiBox(roi) {
   const contextType = String(roi.context_type || "").trim().toLowerCase();
 
   if (contextType === "no_salary_data" || salary === null || salary <= 0 || roiValue === null) {
-    const noSalaryText = t("roi.no_salary_data", "Недостаточно данных о зарплатах выпускников для расчёта.");
-    const costBlock = (annualCost !== null && annualCost > 0)
-      ? `
-        <div class="roi-metrics-row">
-          <div class="roi-metric">
-            <div class="roi-metric-label">${escapeHtml(translateWord("total_per_year", "Total / year"))}</div>
-            <div class="roi-metric-value">${escapeHtml(formatPrice(annualCost, "USD"))}</div>
-            <div class="roi-metric-note">${escapeHtml(t("roi.formula", "Simple idea: compare average graduate salary with the cost of one study year."))}</div>
-          </div>
-        </div>
-      `
-      : "";
-
-    return `
-    <section class="roi-box roi-box--neutral">
-      <h3 class="roi-title">${escapeHtml(t("roi.title", "Estimated ROI (Return on Investment)"))}</h3>
-      <p class="roi-description">${escapeHtml(t("roi.explain", "It calculates how many times your first annual salary covers the cost of one year of education."))}</p>
-      <div class="roi-context roi-context--neutral">${escapeHtml(noSalaryText)}</div>
-      ${costBlock}
-    </section>
-    `;
+    return "";
   }
 
   const tone = String(roi.roi_tone || "").trim().toLowerCase();

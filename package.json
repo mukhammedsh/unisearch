@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "6.8.8",
+  "version": "6.8.9",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",

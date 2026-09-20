@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.9 (2026-09-20) - Finance Cost Presentation Refinements
+
+### University Detail
+- Hide the ROI panel when verified graduate salary data is unavailable instead of rendering an incomplete calculation.
+- Unified paid and grant funding-card surfaces, using compact elevated funding badges rather than a grant-card fill or badge outline.
+- Aligned finance metadata labels and values on their text baselines for clearer scanning.
+
 ## 6.8.8 (2026-09-20) - Scorecard Action Registry Migration
 
 ### Security
