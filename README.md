@@ -1,6 +1,7 @@
 # UniSearch
 
 [![Tests](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml/badge.svg)](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14732/badge)](https://www.bestpractices.dev/projects/14732)
 [![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
