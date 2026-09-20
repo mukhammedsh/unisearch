@@ -248,7 +248,7 @@ function formatLanguageValidationToast(code, examId, detailRaw) {
     return tFormat("languages.error.generic", { exam: examLabel }, `Could not save ${examLabel}`);
   }
 
-  const rangeMatch = detail.match(/Score must be between\s+(.+?)\s+and\s+(.+)$/i);
+  const rangeMatch = detail.match(/Score must be between\s+([0-9.]+)\s+and\s+([0-9.]+)$/i);
   if (rangeMatch) {
     return tFormat(
       "languages.error.range",

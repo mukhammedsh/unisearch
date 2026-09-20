@@ -63,16 +63,9 @@ jobs:
           cache: pip
 
       - name: Audit Python dependencies
-        id: python_audit
-        continue-on-error: true
         uses: pypa/gh-action-pip-audit@1220774d901786e6f652ae159f7b6bc8fea6d266 # v1.1.0
         with:
           inputs: backend/requirements-dev.txt
-
-      - name: Warn about Python audit findings
-        if: steps.python_audit.outcome == 'failure'
-        run: |
-          echo "::warning::pip-audit reported vulnerable Python dependencies. Review the audit output before publishing a release. The step is currently non-blocking because ML transitive dependencies may require a coordinated upgrade."
 
   trivy:
     name: Trivy (secrets and configuration)

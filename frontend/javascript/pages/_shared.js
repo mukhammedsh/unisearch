@@ -113,7 +113,10 @@ export function safePathSegment(raw) {
 }
 
 export function buildApiUrl(path) {
-  const base = String(API_BASE || "").trim().replace(/\/+$/, "");
+  let base = String(API_BASE || "").trim();
+  while (base.endsWith("/")) {
+    base = base.slice(0, -1);
+  }
   const suffix = String(path || "").replace(/^\/+/, "");
   return `${base}/${suffix}`;
 }
@@ -262,10 +265,21 @@ export function moneyOrUnknown(value, fieldKey, fallbackField, currency = "USD",
 
 export function splitPriceDisplay(value) {
   const text = String(value ?? "").trim();
-  const match = text.match(/^(.+?)\s+(\([^()]+\))$/);
-  return match
-    ? { primary: match[1], secondary: match[2] }
-    : { primary: text, secondary: "" };
+  const parenIdx = text.lastIndexOf("(");
+  if (parenIdx > 0 && text.endsWith(")")) {
+    const primaryRaw = text.slice(0, parenIdx);
+    const primary = primaryRaw.trim();
+    const secondary = text.slice(parenIdx).trim();
+    const secondaryContent = text.slice(parenIdx + 1, -1);
+    const hasSeparator = primaryRaw.endsWith(" ") || primaryRaw.endsWith("\t");
+    const hasSimpleSecondary = secondaryContent
+      && !secondaryContent.includes("(")
+      && !secondaryContent.includes(")");
+    if (primary && hasSeparator && hasSimpleSecondary) {
+      return { primary, secondary };
+    }
+  }
+  return { primary: text, secondary: "" };
 }
 
 export function normalizeTranslationKey(value) {
@@ -273,7 +287,8 @@ export function normalizeTranslationKey(value) {
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "");
+    .replace(/^_+/, "")
+    .replace(/_+$/, "");
 }
 
 export function translateCostBreakdownLabel(rawKey) {

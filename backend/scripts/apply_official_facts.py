@@ -485,8 +485,13 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    repo_root = Path(__file__).resolve().parents[2]
     data_path = Path(args.data).resolve()
     facts_path = Path(args.facts).resolve()
+    if not (data_path == repo_root or repo_root in data_path.parents):
+        raise ValueError(f"Path outside repository is forbidden: {data_path}")
+    if not (facts_path == repo_root or repo_root in facts_path.parents):
+        raise ValueError(f"Path outside repository is forbidden: {facts_path}")
     universities = json.loads(data_path.read_text(encoding="utf-8"))
     catalog = json.loads(facts_path.read_text(encoding="utf-8"))
     if not isinstance(universities, list):

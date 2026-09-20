@@ -17,7 +17,8 @@ function keyify(value) {
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "");
+    .replace(/^_+/, "")
+    .replace(/_+$/, "");
 }
 
 function getPack(lang = getCurrentLanguage()) {
@@ -138,8 +139,15 @@ export function translateUniversityName(id, fallback = "") {
 
 export function translateUniversityDescription(university, fallback = "") {
   const lang = normalizeLang(getCurrentLanguage());
-  const source = String(fallback || "").trim();
+  const source = String(fallback || university?.description || "").trim();
   if (lang === "eng") return source;
+
+  const uniId = String(university?.id || "").trim();
+  if (uniId) {
+    const key = `university.description.${uniId}`;
+    const localized = String(t(key, "") || "").trim();
+    if (localized) return localized;
+  }
 
   return source;
 }

@@ -44,7 +44,7 @@ if (positional.length > 0) {
   console.log(`[test:backend] running target(s): ${normalizedTargets.join(", ")}`);
 } else {
   const hasVerbosity = flags.some((f) => f === "-v" || f === "-q");
-  testArgs = ["-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", ...(hasVerbosity ? flags : flags)];
+  testArgs = ["-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", ...(hasVerbosity ? flags : ["-v", ...flags])];
   console.log("[test:backend] running discovery across all backend tests");
 }
 

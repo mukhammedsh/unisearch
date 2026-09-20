@@ -21,8 +21,8 @@ function disableTransitionsTemporarily() {
     window.cancelAnimationFrame(disableTransitionsTimer);
     disableTransitionsTimer = 0;
   }
-  if (typeof window !== "undefined" && typeof window.getComputedStyle === "function" && document.body) {
-    window.getComputedStyle(document.body).opacity;
+  if (typeof window !== "undefined" && typeof document !== "undefined" && document.body) {
+    document.body.getBoundingClientRect();
   }
   if (typeof window !== "undefined" && typeof window.requestAnimationFrame === "function") {
     disableTransitionsTimer = window.requestAnimationFrame(() => {

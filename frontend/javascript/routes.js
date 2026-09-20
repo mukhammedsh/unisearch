@@ -5,7 +5,11 @@ function normalizePath(pathname = "/") {
   if (!raw) return "/";
   const withSlash = raw.startsWith("/") ? raw : `/${raw}`;
   if (withSlash.length <= 1) return "/";
-  return withSlash.replace(/\/+$/, "");
+  let end = withSlash.length;
+  while (end > 1 && withSlash.charCodeAt(end - 1) === 47 /* '/' */) {
+    end--;
+  }
+  return withSlash.slice(0, end);
 }
 
 function toQueryString(value) {

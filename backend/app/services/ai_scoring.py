@@ -242,7 +242,7 @@ def _normalize_gpa_score(val: Any, scale: Any = None) -> Optional[float]:
     if num is None or num < 0.0 or num > 5.0:
         return None
     scale_num = _to_num(scale)
-    if scale_num is not None and scale_num == 5.0:
+    if scale_num is not None and math.isclose(scale_num, 5.0):
         return round((num / 5.0) * 4.0, 2)
     if num <= 4.0:
         return round(float(num), 2)

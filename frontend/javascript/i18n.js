@@ -63,7 +63,7 @@ function setHtmlLang(lang) {
 }
 
 function stabilizeNumericRanges(text) {
-  return String(text || "").replace(/(\d[\d\s.,]*)\s*-\s*(\d[\d\s.,]*)/g, (_, left, right) => {
+  return String(text || "").replace(/(\d[\d.,]*)\s*-\s*(\d[\d.,]*)/g, (_, left, right) => {
     return `${String(left || "").trimEnd()}\u2011${String(right || "").trimStart()}`;
   });
 }

@@ -407,6 +407,8 @@ universities.card.compare_selected: Selected for comparison
 universities.card.compare_selected_short: Selected
 universities.city: City
 universities.cost_per_year: Cost / year
+universities.cost_min: Min cost
+universities.cost_max: Max cost
 universities.country: Country
 universities.filter: Filter
 universities.filter.all: All

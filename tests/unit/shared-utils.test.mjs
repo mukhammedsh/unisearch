@@ -440,6 +440,13 @@ test('splitPriceDisplay', async (t) => {
     );
   });
 
+  await t.test('preserves parentheses in the primary price label', () => {
+    assert.deepStrictEqual(
+      splitPriceDisplay('Cost (estimated) ($500)'),
+      { primary: 'Cost (estimated)', secondary: '($500)' },
+    );
+  });
+
   await t.test('keeps one-currency values on a single line', () => {
     assert.deepStrictEqual(
       splitPriceDisplay('$95,134'),

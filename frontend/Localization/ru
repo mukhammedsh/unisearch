@@ -410,6 +410,8 @@ universities.card.compare_selected: Выбрано для сравнения
 universities.card.compare_selected_short: Выбрано
 universities.city: Город
 universities.cost_per_year: Стоимость / год
+universities.cost_min: Мин. стоимость
+universities.cost_max: Макс. стоимость
 universities.country: Страна
 universities.filter: Фильтр
 universities.filter.all: Все

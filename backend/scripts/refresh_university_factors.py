@@ -26,7 +26,9 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
 ROOT = Path(__file__).resolve().parents[2]
-UNIVERSITIES_PATH = ROOT / "backend" / "data" / "universities.json"
+UNIVERSITIES_PATH = (ROOT / "backend" / "data" / "universities.json").resolve()
+if not (UNIVERSITIES_PATH == ROOT or ROOT in UNIVERSITIES_PATH.parents):
+    raise RuntimeError("Path traversal detected")
 
 OPENALEX_BASE = "https://api.openalex.org/institutions"
 OPEN_METEO_BASE = "https://geocoding-api.open-meteo.com/v1/search"

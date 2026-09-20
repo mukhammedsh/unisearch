@@ -197,7 +197,7 @@ export function initGuidePage() {
     const groups = LANG_CONFIG?.language_exams || {};
     const languages = LANG_CONFIG?.languages || [];
     const nameByCode = Object.fromEntries(languages.map((item) => [item.code, item.name || item.label || item.code]));
-    const codes = Object.keys(groups).sort();
+    const codes = Object.keys(groups).sort((a, b) => a.localeCompare(b));
     if (!codes.length) {
       languageWrap.innerHTML = guideLoadingMarkup(t("guide.loading_language_config", "Loading language exam config"));
       return;

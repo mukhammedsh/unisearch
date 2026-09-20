@@ -153,7 +153,7 @@ def _compare_profiles_cache_set(key: str, results: Dict[str, Any]) -> None:
 
 def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
     raw = json.dumps(payload, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
-    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
     return f"{namespace}:{digest}"
 
 

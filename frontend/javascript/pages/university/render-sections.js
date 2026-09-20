@@ -138,7 +138,8 @@ function normalizeProgramToken(value) {
     .toLowerCase()
     .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "");
+    .replace(/^_+/, "")
+    .replace(/_+$/, "");
 }
 
 function uniqueNonEmpty(values) {
@@ -188,7 +189,7 @@ function mergePlainDict(...values) {
 function stableSerialize(value) {
   if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
   if (isPlainObject(value)) {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableSerialize(value[key])}`).join(",")}}`;
+    return `{${Object.keys(value).sort((a, b) => a.localeCompare(b)).map((key) => `${JSON.stringify(key)}:${stableSerialize(value[key])}`).join(",")}}`;
   }
   return JSON.stringify(value);
 }

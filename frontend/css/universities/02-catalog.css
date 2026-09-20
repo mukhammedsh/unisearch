@@ -539,9 +539,9 @@
   cursor: help;
   text-decoration: none;
   color: inherit;
-  line-height: 1;
   font: inherit;
   font-size: inherit;
+  line-height: 1;
   appearance: none;
   -webkit-appearance: none;
   transition: color var(--motion-fast) var(--motion-ease-standard);

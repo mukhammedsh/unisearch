@@ -21,6 +21,18 @@ from app.core.settings import (
 from app.core.redis_store import get_redis_client, is_redis_configured
 
 
+_PRIVATE_PROXY_NETWORKS = (
+    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("172.16.0.0/12"),
+    ipaddress.ip_network("192.168.0.0/16"),
+    ipaddress.ip_network("127.0.0.0/8"),
+    ipaddress.ip_network("169.254.0.0/16"),
+    ipaddress.ip_network("::1/128"),
+    ipaddress.ip_network("fc00::/7"),
+    ipaddress.ip_network("fe80::/10"),
+)
+
+
 class SlidingWindowRateLimiter:
     def __init__(self, limit: int, window_seconds: int, max_keys: int = 2048):
         self.limit = max(1, int(limit))
@@ -145,18 +157,6 @@ def build_rate_limiter(
     )
 
 
-_PRIVATE_NETWORKS = (
-    ipaddress.ip_network("10.0.0.0/8"),
-    ipaddress.ip_network("172.16.0.0/12"),
-    ipaddress.ip_network("192.168.0.0/16"),
-    ipaddress.ip_network("127.0.0.0/8"),
-    ipaddress.ip_network("169.254.0.0/16"),
-    ipaddress.ip_network("::1/128"),
-    ipaddress.ip_network("fc00::/7"),
-    ipaddress.ip_network("fe80::/10"),
-)
-
-
 def _validate_and_normalize_ip(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
@@ -192,7 +192,7 @@ def _get_trusted_proxy_entries() -> list[Any]:
 
 def _is_trusted_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
     if TRUST_PRIVATE_NETWORK_PROXIES:
-        if ip_obj.is_loopback or any(ip_obj in net for net in _PRIVATE_NETWORKS):
+        if any(ip_obj.version == network.version and ip_obj in network for network in _PRIVATE_PROXY_NETWORKS):
             return True
 
     for entry in _get_trusted_proxy_entries():

@@ -257,9 +257,9 @@ function cloneDefaultExamConfig() {
   return JSON.parse(JSON.stringify(DEFAULT_EXAM_CONFIG));
 }
 
-export let EXAM_CONFIG = cloneDefaultExamConfig();
-export let LANG_CONFIG = null;
-export let CITY_OPTIONS_BY_COUNTRY = {};
+export const EXAM_CONFIG = cloneDefaultExamConfig();
+export const LANG_CONFIG = {};
+export const CITY_OPTIONS_BY_COUNTRY = {};
 
 let examConfigPromise = null;
 let langConfigPromise = null;
@@ -369,11 +369,14 @@ export async function ensureExamConfig() {
     examConfigPromise = (async () => {
       try {
         const raw = await fetchJsonWithConfigCache("exams", `${API_BASE}/exams/config`);
-        EXAM_CONFIG = raw?.exams ? raw.exams : raw;
+        const loaded = raw?.exams ? raw.exams : raw;
+        Object.keys(EXAM_CONFIG).forEach((k) => delete EXAM_CONFIG[k]);
+        if (loaded && typeof loaded === "object") Object.assign(EXAM_CONFIG, loaded);
         window.dispatchEvent(new Event("examConfigLoaded"));
       } catch (error) {
         console.error("Error loading exam config:", error);
-        EXAM_CONFIG = cloneDefaultExamConfig();
+        Object.keys(EXAM_CONFIG).forEach((k) => delete EXAM_CONFIG[k]);
+        Object.assign(EXAM_CONFIG, cloneDefaultExamConfig());
       }
       return EXAM_CONFIG;
     })();
@@ -385,11 +388,13 @@ export async function ensureLanguageConfig() {
   if (!langConfigPromise) {
     langConfigPromise = (async () => {
       try {
-        LANG_CONFIG = await fetchJsonWithConfigCache("languages", `${API_BASE}/languages/config`);
+        const loadedLang = await fetchJsonWithConfigCache("languages", `${API_BASE}/languages/config`);
+        Object.keys(LANG_CONFIG).forEach((k) => delete LANG_CONFIG[k]);
+        if (loadedLang && typeof loadedLang === "object") Object.assign(LANG_CONFIG, loadedLang);
         window.dispatchEvent(new Event("languageConfigLoaded"));
       } catch (error) {
         console.error("Error loading language config:", error);
-        LANG_CONFIG = null;
+        Object.keys(LANG_CONFIG).forEach((k) => delete LANG_CONFIG[k]);
       }
       return LANG_CONFIG;
     })();
@@ -401,7 +406,9 @@ export async function ensureCityDatabase() {
   if (!cityDbPromise) {
     cityDbPromise = (async () => {
       try {
-        CITY_OPTIONS_BY_COUNTRY = await fetchJsonWithConfigCache("locations", `${API_BASE}/locations`);
+        const loadedCities = await fetchJsonWithConfigCache("locations", `${API_BASE}/locations`);
+        Object.keys(CITY_OPTIONS_BY_COUNTRY).forEach((k) => delete CITY_OPTIONS_BY_COUNTRY[k]);
+        if (loadedCities && typeof loadedCities === "object") Object.assign(CITY_OPTIONS_BY_COUNTRY, loadedCities);
         window.dispatchEvent(new Event("citiesLoaded"));
       } catch (error) {
         console.error("Error loading cities:", error);
@@ -477,8 +484,7 @@ export function formatExamValue(examId, valueOrEntry, options = {}) {
 
   if (normalizedId === "GPA" && Number.isFinite(Number(score))) {
     const s = Number(score);
-    const str = s.toFixed(2).replace(/\.?0+$/, "");
-    const valStr = str === "" ? "0" : str;
+    const valStr = String(Number(s.toFixed(2)));
     if (options?.includeScale === false) return valStr;
     const isScale5 = Number(options?.scale) === 5 || Number(options?.gpaScale) === 5 || Number(entry?.scale) === 5 || Number(entry?.gpaScale) === 5 || s > 4.0;
     const scale = isScale5 ? "5.0" : "4.0";

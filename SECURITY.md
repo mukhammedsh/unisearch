@@ -31,7 +31,7 @@ UniSearch follows defense-in-depth best practices for academic tools:
 - **Input Validation & Schemas:** Strict Pydantic V2 model validation on all incoming request payloads.
 - **Request Guards:** Sliding-window rate limiting, 128 KiB request payload caps, and trusted reverse proxy client IP resolution.
 - **Defensive Headers:** Content-Security-Policy (CSP), `X-Content-Type-Options: nosniff`, and `X-Frame-Options: DENY`.
-- **Automated Security Scanning:** Continuous SAST scanning with GitHub CodeQL, container vulnerability scanning with Trivy, and fuzz testing with Google ClusterFuzzLite / Atheris.
+- **Automated Security Scanning:** Continuous SAST scanning with GitHub CodeQL, filesystem secret and misconfiguration scanning with Trivy, dependency auditing with npm audit and pip-audit, and fuzz testing with Google ClusterFuzzLite / Atheris.
 - **Data Privacy:** Sensitive applicant profile data, secrets, and authorization tokens are never logged or stored on the server.
 
 For the formal threat model, trust boundaries, and OpenSSF Silver claim justifications, see our [Security Assurance Case](docs/security-assurance.md).

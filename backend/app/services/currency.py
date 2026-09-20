@@ -304,7 +304,7 @@ def fetch_rates(base: str = "USD") -> Dict[str, Any]:
         if not rates:
             raise RuntimeError("Currency API returned no valid rates")
 
-        if base_code not in rates or rates[base_code] != 1.0:
+        if base_code not in rates or not math.isclose(rates[base_code], 1.0):
             rates[base_code] = 1.0
 
         date_str = str(data.get("time_last_update_utc") or "")

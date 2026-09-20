@@ -302,32 +302,6 @@ def _finalize_request_response(
     )
     return response
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=FRONTEND_ORIGINS,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=[
-        "Accept",
-        "Accept-Language",
-        "Authorization",
-        "Content-Type",
-        "If-None-Match",
-        OPS_ADMIN_HEADER,
-    ],
-    expose_headers=[
-        "ETag",
-        "Cache-Control",
-        "X-Request-Id",
-        "X-RateLimit-Limit",
-        "X-RateLimit-Remaining",
-        "X-RateLimit-Window",
-        "Retry-After",
-        "X-Redis-Cache",
-        "X-AI-Sort-Cache",
-        "X-Compare-Cache",
-    ],
-)
-
 app.mount(
     "/universities/assets",
     StaticFiles(directory=str(UNIVERSITY_ASSETS_DIR)),
@@ -367,6 +341,32 @@ async def request_metrics(request: Request, call_next):
 app.add_middleware(
     RequestBodyLimitMiddleware,
     max_body_bytes=REQUEST_BODY_MAX_BYTES,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=FRONTEND_ORIGINS,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=[
+        "Accept",
+        "Accept-Language",
+        "Authorization",
+        "Content-Type",
+        "If-None-Match",
+        OPS_ADMIN_HEADER,
+    ],
+    expose_headers=[
+        "ETag",
+        "Cache-Control",
+        "X-Request-Id",
+        "X-RateLimit-Limit",
+        "X-RateLimit-Remaining",
+        "X-RateLimit-Window",
+        "Retry-After",
+        "X-Redis-Cache",
+        "X-AI-Sort-Cache",
+        "X-Compare-Cache",
+    ],
 )
 
 

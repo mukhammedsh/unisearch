@@ -135,7 +135,7 @@ export function initUniversitiesPage() {
     const restoreScrollPosition = () => {
         if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
         const rawY = safeSessionStorage.get(UNIVERSITIES_SCROLL_KEY);
-        const targetY = rawY !== null ? Math.max(0, parseInt(rawY, 10) || 0) : 0;
+        const targetY = rawY !== null ? Math.max(0, Number.parseInt(rawY, 10) || 0) : 0;
         window.requestAnimationFrame(() => {
             window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
         });
@@ -979,7 +979,7 @@ export function initUniversitiesPage() {
         }
         if (recentBar && !recentBar.hidden && recentBar.offsetHeight > 0) {
             const cs = window.getComputedStyle(sidebar);
-            const gap = parseFloat(cs.rowGap || cs.gap) || 24;
+            const gap = Number.parseFloat(cs.rowGap || cs.gap) || 24;
             leftColHeight += gap + recentBar.offsetHeight;
         }
         leftColHeight = Math.max(leftColHeight, sidebar.scrollHeight || 0);
@@ -1348,8 +1348,8 @@ export function initUniversitiesPage() {
     }
     function slideMin() {
         const gap = currentLimits.step;
-        let minVal = parseInt(el.minSlider.value, 10) || 0;
-        const maxVal = parseInt(el.maxSlider.value, 10) || currentLimits.max;
+        let minVal = Number.parseInt(el.minSlider.value, 10) || 0;
+        const maxVal = Number.parseInt(el.maxSlider.value, 10) || currentLimits.max;
         if (maxVal - minVal < gap) {
             minVal = Math.max(currentLimits.min, maxVal - gap);
             el.minSlider.value = String(minVal);
@@ -1361,8 +1361,8 @@ export function initUniversitiesPage() {
     }
     function slideMax() {
         const gap = currentLimits.step;
-        const minVal = parseInt(el.minSlider.value, 10) || 0;
-        let maxVal = parseInt(el.maxSlider.value, 10) || currentLimits.max;
+        const minVal = Number.parseInt(el.minSlider.value, 10) || 0;
+        let maxVal = Number.parseInt(el.maxSlider.value, 10) || currentLimits.max;
         if (maxVal - minVal < gap) {
             maxVal = Math.min(currentLimits.max, minVal + gap);
             el.maxSlider.value = String(maxVal);
@@ -1938,7 +1938,7 @@ export function initUniversitiesPage() {
     el.minInput?.addEventListener("change", () => {
         const gap = currentLimits.step;
         let val = clampTuition(el.minInput.value, currentLimits.min);
-        const maxVal = parseInt(el.maxSlider?.value, 10) || currentLimits.max;
+        const maxVal = Number.parseInt(el.maxSlider?.value, 10) || currentLimits.max;
         if (val > maxVal - gap) {
             val = Math.max(currentLimits.min, maxVal - gap);
         }
@@ -1953,7 +1953,7 @@ export function initUniversitiesPage() {
     el.maxInput?.addEventListener("change", () => {
         const gap = currentLimits.step;
         let val = clampTuition(el.maxInput.value, currentLimits.max);
-        const minVal = parseInt(el.minSlider?.value, 10) || 0;
+        const minVal = Number.parseInt(el.minSlider?.value, 10) || 0;
         if (val < minVal + gap) {
             val = Math.min(currentLimits.max, minVal + gap);
         }
@@ -2338,7 +2338,7 @@ export function initUniversitiesPage() {
         activeMapUniId = preferredId;
 
         const profile = loadProfileForApi();
-        const userBudget = parseFloat(profile.budget);
+        const userBudget = Number.Number.parseFloat(profile.budget);
         el.mapResults.innerHTML = `
             <div class="u-map-results-list">
                 ${visibleItems.map((u, idx) => {
@@ -2388,7 +2388,7 @@ export function initUniversitiesPage() {
         if (!L) return;
         markersLayer.clearLayers();
         markersByUniId = new Map();
-        const profile = loadProfileForApi(); const userBudget = parseFloat(profile.budget);
+        const profile = loadProfileForApi(); const userBudget = Number.parseFloat(profile.budget);
         if (options.renderResults !== false) renderMapResultsPanel(items);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
         const popupOptions = {
@@ -2673,7 +2673,7 @@ export function initUniversitiesPage() {
         if (Array.isArray(countryData)) { el.stateDiv.style.display = "none"; updateCityDropdown(countryData); } 
         else {
             el.stateDiv.style.display = "block"; 
-            const states = Object.keys(countryData).sort();
+            const states = Object.keys(countryData).sort((a, b) => a.localeCompare(b));
             el.stateSelect.innerHTML = `<option value="">${escapeHtml(t("universities.any_state", "Any State"))}</option>`;
             states.forEach((s) => {
                 const value = String(s || "");
@@ -2695,7 +2695,7 @@ export function initUniversitiesPage() {
         else {
             el.citySelect.disabled = false;
             el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
-            cities.sort().forEach((c) => {
+            [...cities].sort((a, b) => a.localeCompare(b)).forEach((c) => {
                 const value = String(c || "");
                 const opt = document.createElement("option");
                 opt.value = value;
@@ -2707,7 +2707,7 @@ export function initUniversitiesPage() {
     }
     function updateCountryOptions() {
         if (!el.countrySelect) return;
-        const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort();
+        const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort((a, b) => a.localeCompare(b));
         const currentVal = el.countrySelect.value || state.country;
         let html = `<option value="">${escapeHtml(t("universities.global", "Global"))}</option>`;
         countries.forEach(c => { 
@@ -2929,7 +2929,7 @@ export function initUniversitiesPage() {
             }
             renderUniversitiesState({ warningText });
             const profile = loadProfileForApi();
-            const userBudget = parseFloat(profile.budget);
+            const userBudget = Number.parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
             warmMapMode(items);
             if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
@@ -2947,7 +2947,7 @@ export function initUniversitiesPage() {
             if (el.total) el.total.textContent = String(items.length);
             updateMapMarkers(items);
             const profile = loadProfileForApi();
-            const userBudget = parseFloat(profile.budget);
+            const userBudget = Number.parseFloat(profile.budget);
             if (el.list) el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
             renderPagination(total);
             viewModesReady = true;

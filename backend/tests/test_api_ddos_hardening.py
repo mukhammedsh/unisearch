@@ -63,6 +63,15 @@ class ApiDdosHardeningTests(unittest.TestCase):
             resolved = request_client_ip(req)
             self.assertEqual(resolved, "198.51.100.42")
 
+    def test_client_ip_rejects_documentation_range_proxy_when_private_trust_enabled(self):
+        req = MagicMock()
+        req.client.host = "203.0.113.19"
+        req.headers = {"x-forwarded-for": "198.51.100.42"}
+        with patch("app.core.security.TRUST_PRIVATE_NETWORK_PROXIES", True), \
+             patch("app.core.security.TRUST_X_FORWARDED_FOR", True), \
+             patch("app.core.security.TRUSTED_PROXY_IPS", []):
+            self.assertEqual(request_client_ip(req), "203.0.113.19")
+
     def test_client_ip_resolution_private_proxy_when_disabled_by_default(self):
         req = MagicMock()
         req.client.host = "10.0.12.34"  # Untrusted private network connection

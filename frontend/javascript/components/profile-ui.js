@@ -627,7 +627,7 @@ export function initProfileUI() {
         }
 
         const rawScore = String(examScoreInput?.value || "").trim();
-        const score = parseFloat(rawScore);
+        const score = Number.parseFloat(rawScore);
         return { score, raw_input_score: rawScore };
     };
 
@@ -647,7 +647,7 @@ export function initProfileUI() {
             return tFormat("profile.exam_error_generic", { exam: examLabel }, `Could not save ${examLabel}`);
         }
 
-        const rangeMatch = detail.match(/Score must be between\s+(.+?)\s+and\s+(.+)$/i);
+        const rangeMatch = detail.match(/Score must be between\s+([0-9.]+)\s+and\s+([0-9.]+)$/i);
         if (rangeMatch) {
             return tFormat(
                 "profile.exam_error_range",
@@ -671,7 +671,7 @@ export function initProfileUI() {
             return String(rawValue || "").trim();
         };
 
-        const missingComponent = detail.match(/requires component\s+(.+)$/i);
+        const missingComponent = detail.match(/requires component\s+([^\r\n]+)$/i);
         if (missingComponent) {
             const subject = subjectNameFrom(missingComponent[1]);
             return tFormat(
@@ -699,7 +699,7 @@ export function initProfileUI() {
             );
         }
 
-        const notAllowed = detail.match(/does not support (?:component|extra score)\s+(.+)$/i);
+        const notAllowed = detail.match(/does not support (?:component|extra score)\s+([^\r\n]+)$/i);
         if (notAllowed) {
             const subject = subjectNameFrom(notAllowed[1]);
             return tFormat(

@@ -4,6 +4,18 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.16 (2026-09-21) - SonarCloud Remediation and Security Hardening
+
+### Security
+- Restored explicit trusted private-proxy network ranges so documentation and benchmarking address ranges cannot be treated as trusted reverse proxies.
+- Made the Python dependency audit blocking in the security workflow and documented the complete dependency and repository scanning coverage.
+- Added repository-boundary validation to data maintenance scripts and upgraded cache-key hashing to SHA-256.
+
+### Quality
+- Added SonarCloud project configuration that scans application code, maintenance scripts, workflows, Dockerfiles, and fuzzing configuration while excluding only generated assets and static catalog data.
+- Corrected price-display parsing with nested primary-label parentheses and added regression coverage.
+- Improved form accessibility labels, deterministic sorting, numeric comparisons, and static-analysis compliance.
+
 ## 6.8.15 (2026-09-21) - OpenSSF Silver Governance and Architecture Documentation
 
 ### Documentation

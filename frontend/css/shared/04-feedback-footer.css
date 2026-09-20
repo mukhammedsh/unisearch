@@ -388,7 +388,6 @@
   height: 18px;
   flex: 0 0 auto;
   display: inline-block;
-  flex: 0 0 auto;
   object-fit: contain;
   border-radius: 4px;
   box-shadow: var(--shadow-xs);

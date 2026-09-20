@@ -100,7 +100,7 @@ function findHardcodedToastIssues() {
 }
 
 function sortedDiff(baseSet, compareSet) {
-  return [...baseSet].filter((key) => !compareSet.has(key)).sort();
+  return [...baseSet].filter((key) => !compareSet.has(key)).sort((a, b) => a.localeCompare(b));
 }
 
 function isAllowedExtraKey(key) {

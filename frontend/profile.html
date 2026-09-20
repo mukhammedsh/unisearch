@@ -112,6 +112,8 @@
                 <div class="profile-budget profile-budget--with-unit">
                   <input
                     id="budgetInput"
+                    aria-label="Total Budget / year"
+                    data-i18n-aria-label="profile.label.budget"
                     class="profile-input"
                     type="text"
                     inputmode="numeric"
@@ -148,7 +150,7 @@
               </div>
 
               <div class="profile-field">
-                <select id="studyModeSelect" class="profile-input profile-input--select">
+                <select id="studyModeSelect" class="profile-input profile-input--select" aria-label="Preferred Study Mode" data-i18n-aria-label="profile.label.study_mode">
                   <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
                   <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
                   <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
@@ -163,7 +165,7 @@
               </div>
 
               <div class="profile-field">
-                <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
+                <select id="profileFundingTypeSelect" class="profile-input profile-input--select" aria-label="Preferred Funding Type" data-i18n-aria-label="profile.label.funding_type">
                   <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
                   <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
                   <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
@@ -190,6 +192,8 @@
               <div class="profile-budget profile-budget--with-unit">
                 <input
                   id="gpaInput"
+                  aria-label="GPA"
+                  data-i18n-aria-label="profile.label.gpa"
                   class="profile-input"
                   type="number"
                   min="0"
@@ -241,7 +245,7 @@
             <div class="profile-exam-form">
               <div class="profile-exam-form-controls">
                 <div class="profile-exam-select-wrap">
-                  <select id="examNameSelect" class="profile-input profile-input--select">
+                  <select id="examNameSelect" class="profile-input profile-input--select" aria-label="Exam" data-i18n-aria-label="profile.exam">
                     <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
                     <option value="IELTS">IELTS</option>
                     <option value="TOEFL">TOEFL</option>
@@ -253,6 +257,8 @@
                 <div class="profile-exam-score-wrap">
                   <input
                     id="examScoreInput"
+                    aria-label="Score"
+                    data-i18n-aria-label="profile.placeholder.score"
                     class="profile-input"
                     type="number"
                     step="0.1"
@@ -288,18 +294,18 @@
 
             <div class="lang-add-grid lang-add-grid--compact">
               <div class="lang-control-item">
-                <span class="mini-label" data-i18n="profile.language">Language</span>
-                <select id="langCode" class="profile-input" data-flags="off"></select>
+                <label class="mini-label" for="langCode" data-i18n="profile.language">Language</label>
+                <select id="langCode" class="profile-input" data-flags="off" aria-label="Language" data-i18n-aria-label="profile.language"></select>
               </div>
 
               <div class="lang-control-item">
-                <span class="mini-label" data-i18n="profile.type">Type</span>
-                <select id="langKind" class="profile-input"></select>
+                <label class="mini-label" for="langKind" data-i18n="profile.type">Type</label>
+                <select id="langKind" class="profile-input" aria-label="Type" data-i18n-aria-label="profile.type"></select>
               </div>
 
               <div id="cefrContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
-                <span class="mini-label" data-i18n="profile.cefr">CEFR</span>
-                <select id="langCefr" class="profile-input">
+                <label class="mini-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
+                <select id="langCefr" class="profile-input" aria-label="CEFR" data-i18n-aria-label="profile.cefr">
                   <option value="1">A1</option>
                   <option value="2">A2</option>
                   <option value="3">B1</option>
@@ -310,14 +316,16 @@
               </div>
 
               <div id="examContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
-                <span class="mini-label" data-i18n="profile.exam">Exam</span>
-                <select id="langExam" class="profile-input" data-flags="off"></select>
+                <label class="mini-label" for="langExam" data-i18n="profile.exam">Exam</label>
+                <select id="langExam" class="profile-input" data-flags="off" aria-label="Exam" data-i18n-aria-label="profile.exam"></select>
               </div>
 
               <div id="scoreContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
-                <span class="mini-label" data-i18n="profile.score">Score</span>
+                <label class="mini-label" for="langExamScore" data-i18n="profile.score">Score</label>
                 <input
                   id="langExamScore"
+                  aria-label="Score"
+                  data-i18n-aria-label="profile.score"
                   type="text"
                   inputmode="decimal"
                   class="profile-input"
@@ -349,7 +357,7 @@
             </div>
 
             <div class="profile-field profile-field--compact">
-              <select id="profileMajorSelect" class="profile-input profile-input--select">
+              <select id="profileMajorSelect" class="profile-input profile-input--select" aria-label="Intended Major" data-i18n-aria-label="profile.label.major">
                 <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
               </select>
             </div>
@@ -366,6 +374,8 @@
             <div class="profile-field">
               <textarea
                 id="profileInterestsInput"
+                aria-label="What You Want in a University"
+                data-i18n-aria-label="profile.label.interests"
                 class="profile-input profile-input--textarea"
                 rows="4"
                 maxlength="1200"

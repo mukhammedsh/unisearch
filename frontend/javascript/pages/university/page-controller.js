@@ -278,7 +278,7 @@ export async function initUniversityPage() {
       .filter((value) => value !== null);
     const acceptanceComputed = acceptanceValues.length
       ? (acceptanceValues.reduce((sum, value) => sum + value, 0) / acceptanceValues.length)
-      : NaN;
+      : Number.NaN;
     const acceptanceRate = acceptanceDirect !== null
       ? acceptanceDirect
       : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);

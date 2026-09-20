@@ -73,7 +73,7 @@ UniSearch applies fundamental secure design principles across every layer:
    * Multiple concentric verification layers: Edge TLS termination → Body size middleware → Sliding-window rate limiting → Pydantic V2 strict type validation → Domain engine boundary bounds checking.
 3. **Fail-Safe Defaults & Graceful Degradation:**
    * If Redis is unreachable, the system automatically falls back to in-memory computation without crashing or failing requests (`app/core/redis_store.py`).
-   * If neural embeddings or PyTorch are disabled (`ML_SEMANTIC_EMBEDDINGS_ENABLED=0`) or unavailable, the system transparently reports `unavailable` mode and continues deterministic lexical sorting without silent failure.
+   * If neural embeddings or PyTorch are disabled (`ML_SEMANTIC_EMBEDDINGS_ENABLED=0`) or unavailable, the system reports `unavailable` mode without silently substituting lexical results.
 4. **Stateless Privacy-First Architecture:**
    * UniSearch maintains zero server-side user sessions, zero passwords, and zero personal applicant profiles in databases.
    * User applicant profiles and favorites live exclusively in client-side browser `localStorage` and are never harvested into a central database.
@@ -91,7 +91,7 @@ UniSearch applies fundamental secure design principles across every layer:
 | **A03: Injection (SQLi, Command Injection)** | Query tampering | **Zero SQL usage:** UniSearch does not use a relational SQL engine; catalog data is stored in immutable JSON. Incoming parameters are parsed and strongly typed via Pydantic V2 schemas. No dynamic `eval()` or shell subprocess execution on user input. |
 | **A04: Insecure Design** | Architectural flaws | Documented system architecture (`docs/architecture.md`), RFC process for major changes (`GOVERNANCE.md`), and strict bachelor-only product boundary. |
 | **A05: Security Misconfiguration** | Information leakage, bad headers | Defensive HTTP headers attached on every response: `Content-Security-Policy: default-src 'self'`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`. Debug flags disabled in production environments. |
-| **A06: Vulnerable & Outdated Components** | Known CVEs in dependencies | Continuous dependency monitoring with Dependabot, automated container vulnerability scans with **Aqua Security Trivy**, Python vulnerability auditing with **pip-audit**, and static code analysis with **GitHub CodeQL**. |
+| **A06: Vulnerable & Outdated Components** | Known CVEs in dependencies | Continuous dependency monitoring with Dependabot, blocking npm and Python dependency audits, and static code analysis with **GitHub CodeQL**. **Aqua Security Trivy** separately scans the repository filesystem for secrets and configuration issues. |
 | **A07: Identification & Auth Failures** | Credential stuffing, brute force | **Not Applicable to End Users:** UniSearch does not store user passwords, emails, or personal accounts. Local preferences remain in the user's browser. |
 | **A08: Software & Data Integrity Failures** | Malicious packages, untrusted releases | Pinned dependency locks (`package-lock.json`, exact version requirements in `requirements.txt`). Cryptographic attestation of releases via GitHub Sigstore (`actions/attest-build-provenance`). |
 | **A09: Security Logging & Monitoring** | Undetected attacks or downtime | Structured logging with correlation IDs, latency tracking, Prometheus metrics endpoint (`/metrics`), and health/readiness probes (`/health`, `/ready`). Sensitive variables and auth tokens are masked from all logs. |
@@ -108,13 +108,13 @@ To prove that the security claims remain valid through continuous evolution, the
 1. **Automated Static Analysis (SAST):**
    * GitHub CodeQL scans both Python and JavaScript codebases on every pull request and on a weekly scheduled cadence.
    * `pip-audit` scans Python dependencies for known CVEs.
-   * `Trivy` scans container images and Dockerfiles for misconfigurations and OS-level package CVEs.
-2. **Automated Fuzzing (DAST):**
+   * `Trivy` scans the repository filesystem for exposed secrets and configuration misconfigurations; findings are uploaded to GitHub code scanning.
+2. **Automated Coverage-Guided Fuzzing:**
    * Continuous fuzz testing integrated with **Google ClusterFuzzLite** and Atheris, fuzzing input parsing, JSON deserialization, and ranking computation engines against malformed or malicious inputs.
 3. **High Statement & Branch Coverage:**
    * Automated unit, integration, and E2E test suites (Python `unittest`, Node.js test runner, Playwright) verifying scoring boundary conditions and error handling.
 4. **Vulnerability Response & SLAs:**
-   * Published policy in [SECURITY.md](file:///c:/my%20projects/unisearch/SECURITY.md) committing to **48-hour initial acknowledgment** and **14-day hotfix releases** for critical vulnerabilities, with public attribution in our Security Hall of Fame.
+   * Published policy in [SECURITY.md](../SECURITY.md) committing to **48-hour initial acknowledgment** and **14-day hotfix releases** for critical vulnerabilities, with public attribution in our Security Hall of Fame.
 
 ---
 
