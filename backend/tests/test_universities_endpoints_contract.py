@@ -101,7 +101,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIsNotNone(hkdse_profile)
         score_profile = hkdse_profile.get("score_profile") or {}
         requirements = hkdse_profile.get("requirements") or {}
-        stats_avg = hkdse_profile.get("stats_avg") or {}
         self.assertIn("p25_normalized", score_profile)
         self.assertIn("median_normalized", score_profile)
         self.assertIn("p75_normalized", score_profile)

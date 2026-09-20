@@ -4,6 +4,15 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.4 (2026-09-20) - Secure Audit Diagnostics and Code Quality Cleanup
+
+### Security
+- Prevented the university-data audit from writing raw input values, such as salary figures, major names, provenance labels, and unrecognized keys, into CI or operator diagnostics; errors now identify the affected field without exposing the value (`backend/scripts/audit_universities_data.py`).
+- Added a regression test ensuring sentinel private values never appear in salary and outcome audit diagnostics (`backend/tests/test_security_regressions.py`).
+
+### Quality
+- Removed unused imports, locals, and an unreachable sorting helper reported by CodeQL, without changing catalog, profile, or API behavior (`frontend/javascript/utils/persistence.js`, `frontend/javascript/pages/universities.js`, `backend/app/services/universities.py`, `backend/tests/test_universities_endpoints_contract.py`).
+
 ## 6.8.3 (2026-09-20) - Desktop Filter Viewport Sizing and Calm Surface Polish
 
 ### Catalog

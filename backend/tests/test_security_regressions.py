@@ -64,6 +64,34 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertIsNone(status)
         self.assertEqual(final_url, "http://127.0.0.1:8000/admin")
 
+    def test_data_audit_does_not_include_salary_or_major_values_in_diagnostics(self):
+        errors = []
+        private_values = ("private-outcome-key", "private-status", "private-major")
+
+        audit_universities_data._audit_outcomes_and_salary_provenance(
+            errors=errors,
+            warnings=[],
+            uid="test-university",
+            outcomes={
+                "private-outcome-key": 1,
+                "early_career_salary_usd": 100,
+                "median_earnings_10yr_usd": 100,
+                "salary_by_major": {"private-major": -1},
+            },
+            facts={
+                "early_career_salary": {"value": 101, "provenance_type": "private-status"},
+                "median_earnings_10yr": {"value": 101, "provenance_type": "private-status"},
+                "salary_by_major": {
+                    "value": {"private-major": -1},
+                    "provenance_type": "private-status",
+                },
+            },
+        )
+
+        diagnostic_text = "\n".join(errors)
+        for value in private_values:
+            self.assertNotIn(value, diagnostic_text)
+
 
 class RequestBodyLimitRegressionTests(unittest.IsolatedAsyncioTestCase):
     async def test_chunked_body_without_content_length_is_rejected_by_actual_size(self):

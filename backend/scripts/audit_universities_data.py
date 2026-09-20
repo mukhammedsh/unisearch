@@ -502,9 +502,8 @@ def _audit_outcomes_and_salary_provenance(
         "median_earnings_10yr_usd",
         "salary_by_major",
     }
-    for k in outcomes_dict.keys():
-        if k not in allowed_outcome_keys:
-            errors.append(f"{uid}: outcomes contains unrecognized or deprecated key '{k}'")
+    if any(key not in allowed_outcome_keys for key in outcomes_dict):
+        errors.append(f"{uid}: outcomes contains an unrecognized or deprecated key")
 
     if "average_early_career_salary" in facts or "average_early_career_salary_usd" in facts:
         errors.append(f"{uid}: fact_provenance.facts contains deprecated 'average_early_career_salary'")
@@ -524,14 +523,14 @@ def _audit_outcomes_and_salary_provenance(
                 errors.append(f"{uid}: fact_provenance.facts.early_career_salary.verified_at is empty")
             prov_type = str(fact_early.get("provenance_type") or fact_early.get("status") or "").strip().lower()
             if prov_type and prov_type not in VALID_FACT_STATUSES:
-                errors.append(f"{uid}: fact_provenance.facts.early_career_salary has invalid provenance_type '{prov_type}'")
+                errors.append(f"{uid}: fact_provenance.facts.early_career_salary has invalid provenance_type")
             _audit_derived_salary_basis("early_career_salary", fact_early, uid, errors)
             f_val = fact_early.get("value")
             if f_val is not None:
                 if not _is_valid_positive_number(f_val):
                     errors.append(f"{uid}: fact_provenance.facts.early_career_salary.value must be positive number")
                 elif _is_valid_positive_number(early_val) and abs(float(f_val) - float(early_val)) > 0.01:
-                    errors.append(f"{uid}: fact_provenance.facts.early_career_salary value {f_val} != outcomes {early_val}")
+                    errors.append(f"{uid}: fact_provenance.facts.early_career_salary value does not match outcomes")
 
     median_10yr = outcomes_dict.get("median_earnings_10yr_usd")
     if median_10yr is not None:
@@ -548,23 +547,23 @@ def _audit_outcomes_and_salary_provenance(
                 errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr.verified_at is empty")
             prov_type = str(fact_10yr.get("provenance_type") or fact_10yr.get("status") or "").strip().lower()
             if prov_type and prov_type not in VALID_FACT_STATUSES:
-                errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr has invalid provenance_type '{prov_type}'")
+                errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr has invalid provenance_type")
             _audit_derived_salary_basis("median_earnings_10yr", fact_10yr, uid, errors)
             f_val = fact_10yr.get("value")
             if f_val is not None:
                 if not _is_valid_positive_number(f_val):
                     errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr.value must be positive number")
                 elif _is_valid_positive_number(median_10yr) and abs(float(f_val) - float(median_10yr)) > 0.01:
-                    errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr value {f_val} != outcomes {median_10yr}")
+                    errors.append(f"{uid}: fact_provenance.facts.median_earnings_10yr value does not match outcomes")
 
     salary_major = outcomes_dict.get("salary_by_major")
     if salary_major is not None:
         if not isinstance(salary_major, dict) or not salary_major:
             errors.append(f"{uid}: outcomes.salary_by_major must be non-empty object")
         else:
-            for major_name, salary_num in salary_major.items():
+            for major_idx, (_, salary_num) in enumerate(salary_major.items()):
                 if not _is_valid_positive_number(salary_num):
-                    errors.append(f"{uid}: outcomes.salary_by_major[{major_name}] must be positive number")
+                    errors.append(f"{uid}: outcomes.salary_by_major entry {major_idx} must be positive number")
         fact_major = facts.get("salary_by_major")
         if not isinstance(fact_major, dict):
             errors.append(f"{uid}: outcomes has salary_by_major but missing fact_provenance.facts.salary_by_major")
@@ -575,15 +574,15 @@ def _audit_outcomes_and_salary_provenance(
                 errors.append(f"{uid}: fact_provenance.facts.salary_by_major.verified_at is empty")
             prov_type = str(fact_major.get("provenance_type") or fact_major.get("status") or "").strip().lower()
             if prov_type and prov_type not in VALID_FACT_STATUSES:
-                errors.append(f"{uid}: fact_provenance.facts.salary_by_major has invalid provenance_type '{prov_type}'")
+                errors.append(f"{uid}: fact_provenance.facts.salary_by_major has invalid provenance_type")
             _audit_derived_salary_basis("salary_by_major", fact_major, uid, errors)
             f_val = fact_major.get("value")
             if not isinstance(f_val, dict):
                 errors.append(f"{uid}: fact_provenance.facts.salary_by_major.value must be object")
             else:
-                for major_name, salary_num in f_val.items():
+                for major_idx, (_, salary_num) in enumerate(f_val.items()):
                     if not _is_valid_positive_number(salary_num):
-                        errors.append(f"{uid}: fact_provenance.facts.salary_by_major.value[{major_name}] must be positive number")
+                        errors.append(f"{uid}: fact_provenance.facts.salary_by_major.value entry {major_idx} must be positive number")
                 if f_val != salary_major:
                     errors.append(f"{uid}: fact_provenance.facts.salary_by_major value != outcomes.salary_by_major")
 

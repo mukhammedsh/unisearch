@@ -7,7 +7,7 @@ import {
 } from "./config.js";
 import { API_LANG_DEFAULT, API_LANG_SUPPORTED, getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { safeLocalStorage } from "./safe-storage.js";
-import { convert, getPreferredCurrency } from "../currency.js";
+import { convert } from "../currency.js";
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const FILTERS_KEY = "unisearch_filters";

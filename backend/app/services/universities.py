@@ -1334,9 +1334,6 @@ def _apply_sort(
 ) -> List[Dict[str, Any]]:
     sort = (sort or "").strip()
 
-    def get_val(u, path):
-        return _to_float(_get_nested(u, path)) or 0.0
-
     if sort in ("name_asc", "relevance"):
         return sorted(items, key=lambda u: _safe_lower(u.get("name")))
 

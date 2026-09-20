@@ -1676,7 +1676,6 @@ export function initUniversitiesPage() {
     el.searchClearBtn?.addEventListener("click", () => {
         if (!el.qInput) return;
         el.qInput.value = "";
-        const prevQ = state.q;
         state.q = "";
         syncSearchClearButton();
         hideSearchSuggestions();
