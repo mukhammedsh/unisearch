@@ -362,11 +362,12 @@ body[data-page="profile"] {
   font-family: inherit;
   box-sizing: border-box;
   transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 .profile-input:hover {
-  background: var(--surface-soft);
+  background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
 }
 
 .profile-input:focus {
@@ -383,7 +384,7 @@ body[data-page="profile"] {
 
 @media (hover: hover) and (pointer: fine) {
   .profile-shell .custom-select-trigger:hover {
-    background: var(--surface-soft);
+    background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
   }
 }
 
@@ -842,15 +843,17 @@ textarea.profile-input,
   justify-content: space-between;
   gap: var(--space-3);
   background: var(--surface-soft);
-  box-shadow: none;
+  box-shadow: var(--shadow-xs);
   transition:
-    background-color var(--motion-fast) var(--motion-ease-standard);
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-exam-item:hover,
   .lang-item:hover {
-    background: var(--surface-solid);
+    background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
+    box-shadow: var(--shadow-micro);
   }
 }
 
@@ -956,7 +959,6 @@ textarea.profile-input,
   font-family: inherit;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
 }
@@ -969,7 +971,7 @@ textarea.profile-input,
 .profile-action-btn--primary {
   background: var(--accent);
   color: var(--text-inverse);
-  border: 1px solid transparent;
+  border: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1026,7 +1028,7 @@ textarea.profile-input,
 
 .profile-confirm-card {
   background: var(--surface-solid);
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   display: flex;
@@ -1066,8 +1068,8 @@ textarea.profile-input,
   border-radius: var(--radius-base);
   font-size: var(--text-sm);
   font-weight: 500;
-  border: 1px solid var(--line-danger);
-  background: var(--surface-solid);
+  border: none;
+  background: var(--color-danger-bg);
   color: var(--color-danger);
   cursor: pointer;
   white-space: nowrap;
@@ -1075,14 +1077,14 @@ textarea.profile-input,
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard);
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-delete--danger:hover {
     background: var(--color-danger);
     color: var(--text-inverse);
-    border-color: var(--color-danger);
+    box-shadow: var(--shadow-xs);
   }
 }
 

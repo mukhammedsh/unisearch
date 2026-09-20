@@ -4414,21 +4414,20 @@ body[data-page="university"],
 .admissions-program-card {
   border: none;
   border-radius: var(--radius-lg);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   padding: 20px;
   box-shadow: none;
 }
 
 :root[data-theme="dark"] .admissions-summary-card,
 :root[data-theme="dark"] .admissions-program-card {
-  background: var(--surface-solid);
-  border-color: transparent;
+  background: var(--surface-soft);
 }
 
 .admission-category-card {
   border: none;
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -4437,8 +4436,7 @@ body[data-page="university"],
 }
 
 :root[data-theme="dark"] .admission-category-card {
-  background: var(--surface-solid);
-  border-color: transparent;
+  background: var(--surface-soft);
 }
 
 .track-stats-box {
@@ -4778,26 +4776,24 @@ body[data-page="university"],
   position: relative;
   border: none;
   border-radius: var(--radius-lg, 16px);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   padding: 20px 20px;
-  box-shadow: none;
+  box-shadow: var(--shadow-xs);
   display: flex;
   flex-direction: column;
   gap: 12px;
   box-sizing: border-box;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: box-shadow var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 :root[data-theme="dark"] .program-card {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .program-card:hover {
-    border-color: var(--line-accent);
     transform: none;
-    box-shadow: none;
+    box-shadow: var(--shadow-micro);
   }
 }
 
@@ -4891,7 +4887,8 @@ body[data-page="university"],
   align-items: center;
   border-radius: var(--radius-sm, 8px);
   border: none;
-  background: var(--surface-soft);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 500;
@@ -4901,7 +4898,6 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .program-tag {
   background: var(--surface-solid);
-  border-color: transparent;
   color: var(--text-muted);
 }
 
@@ -5317,7 +5313,7 @@ body[data-page="university"],
 }
 
 .admission-funding-option {
-  border: 1px solid transparent;
+  border: none;
   border-radius: var(--radius-base, 12px);
   background: var(--surface-soft);
   padding: 16px 16px;
@@ -5326,27 +5322,27 @@ body[data-page="university"],
   align-items: stretch;
   gap: 8px;
   transition:
-    border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease),
-    background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+    background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease),
+    box-shadow var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .admission-funding-option:hover {
-    border-color: var(--line-accent);
+    background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
+    box-shadow: var(--shadow-xs);
   }
 }
 
 .admission-funding-option.is-active {
-  border-color: var(--accent);
   background: var(--accent-panel);
 }
 
 .admission-funding-option--grant {
-  border-color: var(--line-grant);
+  background: var(--grant-soft);
 }
 
 .admission-funding-option--grant.is-active {
-  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--grant-soft));
 }
 
 .admission-funding-option-header {
@@ -5652,7 +5648,7 @@ body[data-page="university"],
 .finance-option-card {
   border: none;
   border-radius: var(--radius-lg);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   padding: var(--space-5);
   box-shadow: none;
   display: grid;
@@ -5663,22 +5659,20 @@ body[data-page="university"],
 }
 
 .finance-option-card--paid {
-  border-color: transparent;
   background: var(--surface-soft);
 }
 
 .finance-option-card--grant {
-  border-color: var(--color-success-muted);
   background: var(--grant-soft-strong);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .finance-option-card--paid:hover {
-    border-color: var(--text-muted);
+    box-shadow: var(--shadow-xs);
   }
 
   .finance-option-card--grant:hover {
-    border-color: var(--color-success);
+    box-shadow: var(--shadow-xs);
   }
 }
 
@@ -6049,24 +6043,22 @@ body[data-page="university"],
   line-height: 1.45;
   border: none;
   background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
   color: var(--text);
   margin-bottom: 14px;
 }
 
 .roi-context--matched {
-  border-color: var(--line-grant);
   background: var(--surface-solid);
   color: var(--text);
 }
 
 .roi-context--missing {
-  border-color: transparent;
   background: var(--surface-solid);
   color: var(--text);
 }
 
 .roi-context--neutral {
-  border-color: transparent;
   background: var(--surface-solid);
   color: var(--text-muted);
 }

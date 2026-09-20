@@ -230,6 +230,7 @@ firebase-key
 
 # Node / Playwright artifacts
 node_modules/
+output/
 playwright-report/
 .playwright-cli/
 test-results/

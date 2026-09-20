@@ -8,8 +8,8 @@ Use this document as the source of truth for new UI work. The global stylesheet 
 
 - Build working screens first. Catalog, ranking, guide, profile, and university detail pages should solve the task immediately, not behave like decorative landing pages.
 - Favor restrained academic/product UI over generic SaaS styling. Avoid plastic gradients, loud AI-style visuals, and one-off decorative effects.
-- Surface minimization and borderless purity: Actively eliminate redundant borders, auxiliary wrapper frames, and unnecessary container plates ("плашек"). Let subtle semantic surface contrast (`var(--surface-soft)`, `var(--surface-solid)`), micro-elevation (`var(--shadow-xs)`, `var(--shadow-micro)`), and disciplined whitespace separate controls cleanly. The main catalog search and filter bar serves as the visual reference for this modern, minimal clarity.
-- Keep visual hierarchy clear: page background -> solid surfaces -> repeated cards -> floating overlays.
+- Borderless surface hierarchy: UniSearch intentionally avoids visible box borders. Cards, panels, inputs, chips, badges, and buttons are borderless in resting, hover, active, and selected states. Use semantic surface contrast (`var(--surface-soft)`, `var(--surface-solid)`), restrained micro-elevation (`var(--shadow-xs)`, `var(--shadow-micro)`), and disciplined whitespace instead. The main catalog search and filter bar is the visual reference for this modern, minimal clarity.
+- Keep visual hierarchy clear and never let two adjacent visible components share an indistinguishable surface: page background -> solid working surfaces -> soft nested controls -> selectively raised controls or overlays.
 - Use real university media where it helps identify a university. Do not use atmospheric imagery when the user needs to inspect a concrete university.
 - Keep bachelor-only product scope visible where relevant. Do not imply other study levels unless the product scope changes.
 
@@ -25,7 +25,7 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 - Accent: `--accent` (`#5D17EB` both light and dark), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`).
 - Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`.
 - Text: `--text`, `--text-muted`.
-- Borders & Lines: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`, `--line-info`.
+- Lines & state rings: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`, `--line-info`. These tokens are reserved for focus outlines, separators, and non-box state rings; they must not reintroduce default card or control borders.
 - Statuses:
   - Success: `--color-success`, `--color-success-muted`, `--color-success-bg`.
   - Warning: `--color-warning`, `--color-warning-bright`, `--color-warning-bg`.
@@ -47,9 +47,9 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 | `--surface-soft` | `#f1f3f7` | `#222427` | Form inputs, chip/tag pills, table row hover |
 | `--text` | `#111827` | `#f3f4f6` | Primary high-contrast typography |
 | `--text-muted` | `#64748b` | `#94a3b8` | Secondary labels, descriptions, captions |
-| `--line` | `rgba(15, 23, 42, 0.20)` | `rgba(255, 255, 255, 0.20)` | Standard component border |
-| `--line-strong` | `rgba(15, 23, 42, 0.30)` | `rgba(255, 255, 255, 0.30)` | Active, hover, or prominent divider border |
-| `--line-faint` | `rgba(15, 23, 42, 0.10)` | `rgba(255, 255, 255, 0.10)` | Subtle separator line |
+| `--line` | `rgba(15, 23, 42, 0.20)` | `rgba(255, 255, 255, 0.20)` | Focus ring or structural separator, never a default component box |
+| `--line-strong` | `rgba(15, 23, 42, 0.30)` | `rgba(255, 255, 255, 0.30)` | Prominent structural separator or non-box state ring |
+| `--line-faint` | `rgba(15, 23, 42, 0.10)` | `rgba(255, 255, 255, 0.10)` | Subtle separator where whitespace alone cannot express structure |
 | `--accent` | `#5D17EB` | `#5D17EB` | Primary action button, active indicator, focus ring (exact logo brand purple) |
 | `--accent-soft` | `color-mix(var(--accent) 12%)` | `color-mix(var(--accent) 18%)` | Active row highlight, soft badge background |
 | `--color-success` | `#15803d` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA 5.02:1) |
@@ -137,31 +137,32 @@ Arbitrary pixel spacing (`3px`, `6px`, `10px`, `14px`, `18px`, `22px`, `26px`, `
 ### Buttons
 
 - Primary: filled accent, white text, 48-50px minimum height, `10-14px` radius, bold label.
-- Secondary: transparent or `var(--surface-soft)`, `1px solid var(--line)`, text color `var(--text)`.
-- Subtle / utility: borderless, `background: var(--surface-soft)`, `box-shadow: var(--shadow-xs)` or `var(--shadow-micro)`, text color `var(--text)`. Avoid heavy outlines where soft surface contrast and micro-shadow already define the element cleanly.
+- Secondary: `var(--surface-soft)`, no border, text color `var(--text)`. Add `var(--shadow-xs)` or `var(--shadow-micro)` only when its parent surface would otherwise make the control disappear.
+- Subtle / utility: no border, `background: var(--surface-soft)`, and restrained micro-elevation where necessary. Avoid heavy outlines where soft surface contrast and micro-shadow already define the element cleanly.
 - Icon-only: square `34-40px`, Heroicons only, always with `aria-label`.
-- Hover should be subtle: border/accent change, surface change, or `translateY(-1px/-2px)`.
+- Hover should be subtle: surface, text/icon-color, or restrained shadow change. Never use `border-color` as a state cue on a borderless component.
 - Active press: subtle background/shadow shift (e.g. `var(--surface-solid)` and `var(--shadow-micro)`). Never use bouncy cartoonish depression (`scale(0.95)`) or spring recoil.
 
 ### Inputs and Selects
 
-- Use `var(--surface-solid)` background and `var(--line)` border.
+- Use `var(--surface-soft)` background and no border. If the input sits inside `var(--surface-soft)`, return it to `var(--surface-solid)` and add `var(--shadow-xs)` or `var(--shadow-micro)`.
 - Radius: `12-14px`.
-- Focus: accent border plus soft focus ring.
+- Focus: accent outline or soft focus ring; do not add a border only for focus.
 - Never show raw API/network errors in visible form messages.
 
 ### Cards and Sections
 
-- Default data card: `background: var(--surface-solid)`, `border: 1px solid var(--line)`, radius `16-20px`, no default shadow.
-- Hover card: slight accent border and optional `var(--shadow)` only when the card is clickable.
+- Default data card: `background: var(--surface-solid)`, no border, `16-20px` radius, and no default shadow unless the card is raised above a similarly colored context.
+- Hover card: a subtle surface, text/icon-color, or optional shadow change only when it is clickable. Do not use a border or a `border-color` transition.
 - Repeated item cards are allowed. Avoid wrapping a page section in a card and then placing another unrelated card shell inside it.
 
-### Border and Surface Hierarchy
+### Borderless Surface Hierarchy
 
-- Use borders only when they carry information: keyboard focus, an active underline, a table separator, a range/thumb edge, or a semantic status that cannot be communicated by surface and text color alone.
-- Do not outline cards, chips, badges, or nested panels by default. Separate them with whitespace, radius, and semantic surface contrast.
-- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a raised working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact chips and controls to `var(--surface-solid)` so they do not disappear into their parent.
-- Status components should use the matching semantic background token (`--color-*-bg` or `--accent-panel`) before adding a status border.
+- Visible box borders are prohibited for cards, panels, inputs, selects, chips, badges, buttons, and their hover, active, or selected states. `border-color` cannot be used as an interaction cue when `border: none` is the base state.
+- The only permitted visible lines are focus outlines, active-tab underlines, table/list separators, range/thumb edges, and a non-box status ring when semantic background, icon, and text cannot make the state clear. Prefer `outline`, `box-shadow`, or a pseudo-element over a component box border.
+- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact controls to `var(--surface-solid)` and give them `var(--shadow-xs)` or `var(--shadow-micro)`.
+- Do not place a child with the same background token beside or inside its visible parent. Change its surface, give the raised item restrained elevation, or remove the unnecessary wrapper. This rule is mandatory in light and dark themes.
+- Status components use the matching semantic background token (`--color-*-bg` or `--accent-panel`) plus text/icon color. Add a ring only when that information remains ambiguous.
 
 ### Tabs
 

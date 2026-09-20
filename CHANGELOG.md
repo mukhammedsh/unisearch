@@ -4,6 +4,22 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.7 (2026-09-20) - Borderless Surface Hierarchy Refinement
+
+### Design System
+- Established borderless surfaces as the default component treatment, reserving visible lines for focus outlines, active tab indicators, structural separators, and compact non-box state rings (`AGENTS.md`, `docs/design-system.md`).
+- Defined surface contrast and restrained micro-elevation as the hierarchy cues for adjacent interactive elements, including explicit light and dark theme guidance (`AGENTS.md`, `docs/design-system.md`).
+
+### Profile and University Detail
+- Reworked profile form, exam, language, confirmation, and destructive-action states to communicate grouping and interaction with semantic surfaces and shadows instead of default borders (`frontend/css/profile/02-page.css`).
+- Restored distinct surface levels for university program, admission, funding, and return-on-investment content while removing border-driven hover and selection feedback (`frontend/css/university.css`).
+
+### Catalog
+- Removed remaining border-based hover, comparison, and success-state styling from the university catalog, using surface, elevation, and semantic background changes instead (`frontend/css/universities/02-catalog.css`, `frontend/css/universities/05-catalog-polish.css`).
+
+### Maintenance
+- Excluded locally generated visual-audit output from version control (`.gitignore`).
+
 ## 6.8.6 (2026-09-20) - Direct View Switching and Security Checks
 
 ### Catalog

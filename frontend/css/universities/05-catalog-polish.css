@@ -165,7 +165,6 @@
 
 .uni-card:hover {
   transform: translateY(-2px);
-  border-color: transparent;
   box-shadow: var(--shadow-card-hover);
 }
 }
@@ -497,18 +496,11 @@
 
 .uni-card.uni-card--compare-selected {
   background-color: var(--accent-panel);
-  border-color: var(--line-accent);
   box-shadow: var(--shadow-sm);
 }
 
 .uni-card.uni-card--compare-selected::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border: 2px solid var(--accent);
-  border-radius: inherit;
-  pointer-events: none;
+  display: none;
 }
 
 .uni-details {
@@ -532,19 +524,17 @@
 
 .uni-card .uni-pill--success {
   background: var(--grant-soft);
-  border: 1px solid var(--line-grant);
+  border: none;
   color: var(--color-success-muted);
 }
 
 @media (hover: hover) and (pointer: fine) {
   :root .uni-card:not(.uni-card--compare-selected):hover {
     background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
-    border-color: color-mix(in srgb, var(--accent) 36%, var(--line-strong));
   }
 
   .uni-card.uni-card--compare-selected:hover {
     background-color: var(--accent-soft);
-    border-color: var(--accent);
   }
 
   .universities-compare-mode .uni-card:hover,
@@ -563,8 +553,7 @@
 }
 
 :root .uni-card:active {
-  border-color: var(--line-strong);
-  transition: border-color 0.05s ease;
+  box-shadow: var(--shadow-xs);
 }
 
 .map-card-wrapper .uni-card {
