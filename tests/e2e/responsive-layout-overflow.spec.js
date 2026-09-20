@@ -16,6 +16,59 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     await expect(mobileFilterToggle).not.toBeVisible();
   });
 
+  test("allows scrolling filters completely into view when at the top of the page on desktop", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    });
+    await page.goto("/index.html");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    const sidebar = page.locator("#uSidebar");
+    await expect(sidebar).toBeVisible();
+
+    const initialScrollY = await page.evaluate(() => window.scrollY);
+    expect(initialScrollY).toBe(0);
+
+    // Select a country with state options (e.g. USA) to reveal State/Region select and expand filter height
+    await page.evaluate(() => {
+      const countrySelect = document.getElementById("countrySelect");
+      const usOpt = Array.from(countrySelect.options).find(o => o.value.includes("US") || o.text.includes("United States"));
+      if (usOpt) {
+        countrySelect.value = usOpt.value;
+        countrySelect.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+    await page.waitForTimeout(200);
+
+    // Verify sidebar bottom does not overflow below the viewport
+    const sidebarBox = await sidebar.boundingBox();
+    expect(sidebarBox).not.toBeNull();
+    expect(sidebarBox.y + sidebarBox.height).toBeLessThanOrEqual(800);
+
+    // Scroll sidebar to its bottom
+    await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      el.scrollTop = el.scrollHeight;
+    });
+
+    // The sort strategy field (the last field in standard mode) must be fully visible within the 800px viewport
+    const lastField = page.locator("#uSidebar .u-field--sort");
+    await expect(lastField).toBeVisible();
+    const lastFieldBox = await lastField.boundingBox();
+    expect(lastFieldBox).not.toBeNull();
+    expect(lastFieldBox.y + lastFieldBox.height).toBeLessThanOrEqual(800);
+
+    // Scroll page down and verify sticky behavior remains clamped within viewport
+    await page.evaluate(() => window.scrollTo(0, 350));
+    await page.waitForTimeout(100);
+
+    const scrolledSidebarBox = await sidebar.boundingBox();
+    expect(scrolledSidebarBox).not.toBeNull();
+    expect(scrolledSidebarBox.y).toBeCloseTo(90, 0);
+    expect(scrolledSidebarBox.y + scrolledSidebarBox.height).toBeLessThanOrEqual(800);
+  });
+
   test("adjusts sidebar and mobile filter button based on mobile viewport", async ({ page }) => {
     // Set mobile viewport BEFORE loading the page
     await page.setViewportSize({ width: 375, height: 812 });

@@ -96,7 +96,7 @@
 
 .unifit-warning-btn {
   border: none;
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   color: var(--text);
   padding: 8px 12px;
   border-radius: 10px;
@@ -107,7 +107,7 @@
 
 .unifit-warning-confirm {
   background: var(--accent);
-  border-color: var(--accent);
+  border: none;
   color: var(--text-inverse);
 }
 @media (hover: hover) and (pointer: fine) {

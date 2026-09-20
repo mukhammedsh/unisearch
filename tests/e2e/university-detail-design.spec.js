@@ -57,10 +57,10 @@ for (const scenario of cases) {
     expect(metrics.coverRadius).toBeGreaterThanOrEqual(scenario.width <= 380 ? 18 : 20);
     expect(metrics.activeTabBackground).toBe("rgba(0, 0, 0, 0)");
     expect(metrics.activeTabRadius).toBe(0);
-    expect(metrics.backBackground).toBe("rgba(0, 0, 0, 0)");
+    expect(metrics.backBackground).not.toBe("rgba(0, 0, 0, 0)");
     expect(metrics.backRadius).toBeGreaterThanOrEqual(14);
     for (const background of metrics.linkBackgrounds) {
-      expect(background).toBe("rgba(0, 0, 0, 0)");
+      expect(background).not.toBe("rgba(0, 0, 0, 0)");
     }
 
     await page.click(".d-tab-btn[data-tab='tab-admission']");

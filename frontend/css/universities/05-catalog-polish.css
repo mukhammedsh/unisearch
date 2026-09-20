@@ -853,11 +853,11 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    max-height: calc(100vh - 105px);
-    max-height: calc(100dvh - 105px);
+    max-height: var(--sidebar-max-height, calc(100vh - 105px));
+    max-height: var(--sidebar-max-height, calc(100dvh - 105px));
     overflow-y: auto;
     overflow-x: hidden;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 0 0 var(--space-4) 0;
@@ -958,7 +958,7 @@
   padding: 0;
   border: none;
   border-radius: var(--radius-md);
-  background: transparent;
+  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
   color: var(--color-warning);
   line-height: 0;
   cursor: pointer;

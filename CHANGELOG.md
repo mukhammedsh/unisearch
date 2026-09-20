@@ -4,6 +4,21 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.3 (2026-09-20) - Desktop Filter Viewport Sizing and Calm Surface Polish
+
+### Catalog
+- Calculated desktop filter sidebar maximum height dynamically from the remaining viewport space, keeping controls reachable and preventing the sidebar from overflowing below the screen on scroll and resize (`frontend/javascript/pages/universities.js`, `frontend/css/universities/05-catalog-polish.css`).
+- Allowed natural vertical overscroll inside the filter container, ensuring fields like sort strategy can be fully scrolled into view at the top of the page (`frontend/css/universities/05-catalog-polish.css`).
+- Replaced saved-filter pill buttons with clean underlined section tabs and accent indicators, conforming to the Calm Academic Workspace layout guidelines (`frontend/css/universities/01-shell-controls.css`).
+
+### Design Polish
+- Styled utility controls across the application (profile toggles, detail action and back links, guide mobile navigation toggle, settings close button, and comparison remove chips) using subtle token surfaces (`--surface-soft`/`--surface-solid`), micro-elevation, and `--accent-panel` hover states without harsh borders (`frontend/css/guide.css`, `frontend/css/profile/02-page.css`, `frontend/css/shared/03-settings.css`, `frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/03-comparison.css`, `frontend/css/university.css`).
+- Stripped unnecessary borders from onboarding tour action buttons and UniFit warning actions, relying on primary accent fills and secondary soft surfaces (`frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/04-catalog-responsive.css`).
+
+### Tests
+- Added Playwright coverage for desktop filter scrolling and viewport clamping when selecting tall filter combinations at the top of the page (`tests/e2e/responsive-layout-overflow.spec.js`).
+- Updated university detail design assertions for subtle soft backgrounds on navigation and action controls (`tests/e2e/university-detail-design.spec.js`).
+
 ## 6.8.2 (2026-09-20) - Restrained Font-Weight Hierarchy and Border Cleanup
 
 ### Design System

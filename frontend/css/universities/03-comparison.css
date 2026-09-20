@@ -89,9 +89,10 @@
 .compare-tray__chip-remove {
   width: 18px;
   height: 18px;
-  border-radius: 4px;
+  border-radius: var(--radius-full);
   border: 0;
-  background: transparent;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
   color: var(--text-muted);
   cursor: pointer;
   display: inline-flex;
@@ -137,14 +138,15 @@
 }
 
 .compare-tray__btn--ghost {
-  background: transparent;
+  background: var(--surface-soft);
+  border: none;
   color: var(--text-muted);
 }
 @media (hover: hover) and (pointer: fine) {
 
 .compare-tray__btn--ghost:hover {
   color: var(--text);
-  background: var(--surface-soft);
+  background: color-mix(in srgb, var(--text) 8%, var(--surface-soft));
 }
 }
 
@@ -746,15 +748,20 @@
 }
 
 .compare-results-action--ghost {
-  background: var(--surface-soft, var(--surface-solid));
+  background: var(--surface-solid);
   color: var(--text);
   border: none;
+  box-shadow: var(--shadow-xs);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .compare-results-action:hover {
     border-color: var(--accent);
     transform: translateY(-1px);
+  }
+
+  .compare-results-action--ghost:hover {
+    background: var(--surface-soft);
   }
 }
 

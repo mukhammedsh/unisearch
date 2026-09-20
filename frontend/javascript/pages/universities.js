@@ -259,6 +259,8 @@ export function initUniversitiesPage() {
             } catch (e) {
                 // Ignore storage errors; the notice still closes for this page view.
             }
+            scheduleSyncSidebarMaxHeight();
+            scheduleSyncWorkspaceDepth();
         });
     };
 
@@ -997,10 +999,46 @@ export function initUniversitiesPage() {
                 el.workspaceLayout.style.removeProperty("min-height");
             }
         }
+        syncSidebarMaxHeight();
+    };
+
+    let sidebarMaxHeightRafId = 0;
+    let lastAppliedSidebarMaxHeight = null;
+
+    const syncSidebarMaxHeight = () => {
+        if (typeof window === "undefined") return;
+        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
+        if (!sidebar) return;
+
+        if (window.innerWidth <= 1024 || (state.viewMode === "map" && window.innerWidth > 1180)) {
+            if (lastAppliedSidebarMaxHeight !== null) {
+                lastAppliedSidebarMaxHeight = null;
+                sidebar.style.removeProperty("--sidebar-max-height");
+            }
+            return;
+        }
+
+        const rect = sidebar.getBoundingClientRect();
+        const bottomGap = 16;
+        const availableHeight = Math.max(200, Math.floor(window.innerHeight - rect.top - bottomGap));
+        if (lastAppliedSidebarMaxHeight !== availableHeight) {
+            lastAppliedSidebarMaxHeight = availableHeight;
+            sidebar.style.setProperty("--sidebar-max-height", `${availableHeight}px`);
+        }
+    };
+
+    const scheduleSyncSidebarMaxHeight = () => {
+        if (typeof window === "undefined") return;
+        if (sidebarMaxHeightRafId) return;
+        sidebarMaxHeightRafId = window.requestAnimationFrame(() => {
+            sidebarMaxHeightRafId = 0;
+            syncSidebarMaxHeight();
+        });
     };
 
     const scheduleSyncWorkspaceDepth = () => {
         if (typeof window === "undefined") return;
+        scheduleSyncSidebarMaxHeight();
         if (depthSyncRafId) return;
         depthSyncRafId = window.requestAnimationFrame(() => {
             depthSyncRafId = 0;
@@ -1444,7 +1482,8 @@ export function initUniversitiesPage() {
 
     applySliderBounds(currentLimits, currentCurrency);
     applyToForm();
-    updateSliderVisibility(); 
+    updateSliderVisibility();
+    syncSidebarMaxHeight();
     
     loadRates().then(() => {
         const pref = getPreferredCurrency();
@@ -2069,6 +2108,7 @@ export function initUniversitiesPage() {
 
     let scrollSaveTimer = null;
     const onCatalogScroll = () => {
+        scheduleSyncSidebarMaxHeight();
         if (scrollSaveTimer) return;
         scrollSaveTimer = window.setTimeout(() => {
             scrollSaveTimer = null;
@@ -2086,6 +2126,7 @@ export function initUniversitiesPage() {
 
     __universitiesResizeHandler = () => {
         scheduleSyncWorkspaceDepth();
+        scheduleSyncSidebarMaxHeight();
         // Map stage height follows the viewport, so tell Leaflet to re-fit tiles.
         if (state.viewMode === "map" && mapInstance) {
             if (__universitiesMapResizeTimer) window.clearTimeout(__universitiesMapResizeTimer);
@@ -2100,6 +2141,7 @@ export function initUniversitiesPage() {
     if (typeof ResizeObserver !== "undefined") {
         __universitiesResizeObserver = new ResizeObserver(() => {
             scheduleSyncWorkspaceDepth();
+            scheduleSyncSidebarMaxHeight();
         });
         const sidebarNode = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
         const contentNode = el.catalogPane || el.content || document.querySelector(".u-content");

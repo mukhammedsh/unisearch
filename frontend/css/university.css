@@ -55,7 +55,7 @@
   justify-content: center;
   border: none;
   border-radius: 12px;
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   box-shadow: var(--shadow-xs);
   color: var(--muted);
   cursor: pointer;
@@ -68,14 +68,14 @@
 
 @media (hover: hover) and (pointer: fine) {
   .d-page-scope__dismiss:hover {
-    background: var(--surface-soft);
-    color: var(--text);
+    background: var(--accent-panel);
+    color: var(--accent);
   }
 }
 
 .d-page-scope__dismiss:focus-visible {
-  background: var(--surface-soft);
-  color: var(--text);
+  background: var(--accent-panel);
+  color: var(--accent);
 }
 
 .d-page-scope__eyebrow {
@@ -2841,14 +2841,16 @@
 .d-back {
   align-self: flex-start;
   border-radius: var(--radius-lg);
-  background: transparent;
+  background: var(--surface-soft);
   color: var(--text);
   border: none;
+  box-shadow: var(--shadow-xs);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .d-back:hover {
-    background: var(--surface-soft);
+    background: var(--accent-panel);
+    color: var(--accent);
   }
 }
 
@@ -2910,16 +2912,16 @@
 
 .d-site-link {
   border-radius: var(--radius-lg);
-  background: transparent;
+  background: var(--surface-soft);
   color: var(--text);
-  border-color: transparent;
+  border: none;
+  box-shadow: var(--shadow-xs);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .d-site-link:hover {
-    background: var(--surface-soft);
+    background: var(--accent-panel);
     color: var(--accent);
-    border-color: var(--line-accent);
   }
 }
 
@@ -3422,9 +3424,10 @@
   min-height: 44px;
   height: 44px;
   border-radius: var(--radius-lg);
-  background: transparent;
+  background: var(--surface-soft);
   color: var(--text);
   border: none;
+  box-shadow: var(--shadow-xs);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -5314,15 +5317,17 @@ body[data-page="university"],
 }
 
 .admission-funding-option {
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--radius-base, 12px);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   padding: 16px 16px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition:
+    border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease),
+    background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 @media (hover: hover) and (pointer: fine) {

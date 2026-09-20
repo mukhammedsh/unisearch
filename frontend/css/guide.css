@@ -440,20 +440,24 @@ body[data-page="guide"] {
     padding: var(--space-3) var(--space-4);
     border: none;
     border-radius: var(--radius-lg);
-    background: transparent;
+    background: var(--surface-solid);
+    box-shadow: var(--shadow-xs);
     color: var(--text);
     cursor: pointer;
     text-align: left;
-    transition: background var(--motion-fast) var(--motion-ease-standard);
+    transition:
+      background-color var(--motion-fast) var(--motion-ease-standard),
+      color var(--motion-fast) var(--motion-ease-standard);
   }
 
   .guide-mobile-nav-toggle[aria-expanded="true"] {
     color: var(--accent-strong);
+    background: var(--accent-panel);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .guide-mobile-nav-toggle:hover {
-    background: var(--surface-solid);
+      background: var(--surface-soft);
     }
   }
 
