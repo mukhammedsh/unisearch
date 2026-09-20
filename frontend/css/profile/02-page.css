@@ -1119,7 +1119,7 @@ textarea.profile-input,
 /* --------------------------------------------------------------------------
    Responsive Rules
    -------------------------------------------------------------------------- */
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .profile-workspace-layout {
     grid-template-columns: 140px 1fr;
     gap: var(--space-6);

@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.12 (2026-09-20) - Responsive Breakpoint Consolidation
+
+### Responsive Design
+- Standardized product-wide responsive boundaries around 480px, 640px, 768px, 1024px, and 1280px, with paired tablet and compact-layout edges.
+- Removed conflicting legacy navbar rules and kept narrow-screen behavior in the shared device-responsive module.
+- Aligned catalog, profile, admissions, and university-detail layouts to the shared breakpoint contract while retaining documented map and smallest-screen exceptions.
+
 ## 6.8.11 (2026-09-20) - Mobile Footer Layout Fixes
 
 ### Catalog

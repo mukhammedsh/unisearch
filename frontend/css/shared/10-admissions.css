@@ -347,7 +347,7 @@
   line-height: 1.45;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .admission-category-card {
     padding: 16px;
   }
@@ -457,7 +457,7 @@ button.track-factor-chip {
   z-index: var(--z-dropdown);
 }
 
-@media (max-width: 680px) {
+@media (max-width: 640px) {
   .admission-chance-badge,
   .track-factor-chip,
   .admission-chance-badge-wrap,

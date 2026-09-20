@@ -167,7 +167,7 @@
 }
 
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .uni-badge {
     --uni-pill-font-size: 10px;
     --uni-pill-pad-y: 4px;
@@ -177,7 +177,7 @@
 
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .u-skeleton-grid {
     grid-template-columns: 1fr;
     min-height: 0;
@@ -193,7 +193,7 @@
 
 }
 
-@media (max-width: 430px) {
+@media (max-width: 480px) {
   .u-results-bar,
   .u-controls {
     display: flex;
@@ -589,7 +589,7 @@
 
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .u-page-scope,
   .u-section-bar,
   .u-layout,
@@ -710,7 +710,7 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 480px) {
   .u-toolbar,
   .u-top {
     padding: 0;
@@ -746,7 +746,7 @@
 
 }
 
-@media (max-width: 360px) {
+@media (max-width: 380px) {
   .u-section-meta .u-found {
     font-size: var(--text-xs);
   }

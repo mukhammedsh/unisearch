@@ -132,6 +132,20 @@ Arbitrary pixel spacing (`3px`, `6px`, `10px`, `14px`, `18px`, `22px`, `26px`, `
 - On desktop, page container padding is `24px` to `32px` (`var(--space-6)` to `var(--space-8)`).
 - On tablet/mobile (`<= 768px` and `<= 480px`), compress outer padding to `12px - 16px` (`var(--space-3)` - `var(--space-4)`) and card padding to `12px - 16px`. Ensure layout paddings do not exceed 20% of total viewport width.
 
+### 5. Responsive Breakpoint Contract
+
+Use these shared viewport boundaries for product-wide layout changes:
+
+| Boundary | Role |
+| --- | --- |
+| `<= 480px` | Compact phone: hide nonessential labels and reduce control density. |
+| `<= 640px` | Phone: stack content that needs a single-column reading flow. |
+| `<= 768px` | Tablet portrait: stack toolbars, page sections, and form layouts. |
+| `<= 1024px` | Compact/tablet: replace persistent sidebars and inline navigation search with compact controls. |
+| `<= 1280px` | Wide desktop: reduce grid density only when the minimum card width requires it. |
+
+Breakpoints must describe available content space, not a device name. Keep a nonstandard boundary only when a specific component has a documented intrinsic-width constraint (for example, the map's `1180px` split layout or a smallest-phone hardening rule). Pair inclusive boundaries exactly: `max-width: 768px` with `min-width: 769px`, and `max-width: 1024px` with `min-width: 1025px`. Do not add a one-off width merely to compensate for an avoidable layout constraint; prefer wrapping, flexible grids, and progressive disclosure.
+
 ## Components
 
 ### Buttons
