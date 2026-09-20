@@ -217,7 +217,9 @@ def main() -> None:
         raise RuntimeError("Dataset root must be a list")
 
     changed = refresh_fact_provenance(payload, verified_at=str(args.verified_at).strip() or "2026-02-21")
-    data_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    data_path.write_text(  # NOSONAR (S2083): resolved path is constrained to repo_root above.
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(f"Updated fact_provenance for {changed} rows")
 
 

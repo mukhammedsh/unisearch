@@ -1,4 +1,4 @@
-FROM gcr.io/oss-fuzz-base/base-builder-python@sha256:372a2ade09ba2716512857a5f7b797bf3190cd228a8a81f55a72028571032b02
+FROM gcr.io/oss-fuzz-base/base-builder-python@sha256:372a2ade09ba2716512857a5f7b797bf3190cd228a8a81f55a72028571032b02 # NOSONAR (S6471): OSS-Fuzz base-builder requires root while compiling fuzzers.
 
 COPY backend/app $SRC/unisearch/backend/app
 COPY backend/data $SRC/unisearch/backend/data

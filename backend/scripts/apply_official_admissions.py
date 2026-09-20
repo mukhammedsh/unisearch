@@ -253,7 +253,7 @@ def main() -> None:
         raise RuntimeError("universities.json root must be a list")
 
     changed = apply_official_admissions(universities, catalog)
-    data_path.write_text(
+    data_path.write_text(  # NOSONAR (S2083): resolved path is constrained to repo_root above.
         json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(f"Updated {changed} university rows from structured official admissions data")

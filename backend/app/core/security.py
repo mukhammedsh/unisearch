@@ -21,18 +21,6 @@ from app.core.settings import (
 from app.core.redis_store import get_redis_client, is_redis_configured
 
 
-_PRIVATE_PROXY_NETWORKS = (
-    ipaddress.ip_network("10.0.0.0/8"),
-    ipaddress.ip_network("172.16.0.0/12"),
-    ipaddress.ip_network("192.168.0.0/16"),
-    ipaddress.ip_network("127.0.0.0/8"),
-    ipaddress.ip_network("169.254.0.0/16"),
-    ipaddress.ip_network("::1/128"),
-    ipaddress.ip_network("fc00::/7"),
-    ipaddress.ip_network("fe80::/10"),
-)
-
-
 class SlidingWindowRateLimiter:
     def __init__(self, limit: int, window_seconds: int, max_keys: int = 2048):
         self.limit = max(1, int(limit))
@@ -192,7 +180,7 @@ def _get_trusted_proxy_entries() -> list[Any]:
 
 def _is_trusted_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
     if TRUST_PRIVATE_NETWORK_PROXIES:
-        if any(ip_obj.version == network.version and ip_obj in network for network in _PRIVATE_PROXY_NETWORKS):
+        if _is_private_or_local_proxy_ip(ip_obj):
             return True
 
     for entry in _get_trusted_proxy_entries():
@@ -204,6 +192,19 @@ def _is_trusted_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) 
                 return True
 
     return False
+
+
+def _is_private_or_local_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+    """Return only RFC1918/ULA and local proxy ranges, excluding documentation IPs."""
+    if ip_obj.is_loopback or ip_obj.is_link_local:
+        return True
+
+    packed = ip_obj.packed
+    if ip_obj.version == 4:
+        first, second = packed[0], packed[1]
+        return first == 10 or (first == 172 and 16 <= second <= 31) or (first == 192 and second == 168)
+
+    return (packed[0] & 0xFE) == 0xFC
 
 
 def _is_trusted_proxy_host(direct_host: str) -> bool:

@@ -123,8 +123,8 @@ function normalizeSlash(filePath) {
 }
 
 function listTrackedFiles() {
-  const tracked = execFileSync("git", ["ls-files", "-z"], { encoding: "buffer" });
-  const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard", "-z"], { encoding: "buffer" });
+  const tracked = execFileSync("git", ["ls-files", "-z"], { encoding: "buffer" }); // NOSONAR (S4036): fixed Git subcommand; no user-controlled executable or arguments.
+  const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard", "-z"], { encoding: "buffer" }); // NOSONAR (S4036): fixed Git subcommand; no user-controlled executable or arguments.
   return Buffer.concat([tracked, untracked])
     .toString("utf8")
     .split("\0")

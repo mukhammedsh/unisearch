@@ -562,7 +562,7 @@ def main() -> None:
             },
         }
 
-    UNIVERSITIES_PATH.write_text(
+    UNIVERSITIES_PATH.write_text(  # NOSONAR (S2083): module path is fixed below the resolved repository root.
         json.dumps(universities, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )

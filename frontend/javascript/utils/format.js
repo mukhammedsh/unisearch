@@ -2,9 +2,34 @@ import { heroIcon } from "../icons.js";
 import { frontendStaticAsset } from "./runtime.js";
 
 export function stabilizeNumericRanges(text) {
-  return String(text || "").replace(/(\d[\d.,]*)\s*-\s*(\d[\d.,]*)/g, (_, left, right) => {
-    return `${String(left || "").trimEnd()}\u2011${String(right || "").trimStart()}`;
-  });
+  const source = String(text || "");
+  let output = "";
+  let index = 0;
+  while (index < source.length) {
+    const startsNumber = source.charCodeAt(index) >= 48 && source.charCodeAt(index) <= 57;
+    if (!startsNumber) {
+      output += source[index++];
+      continue;
+    }
+    const leftStart = index;
+    while (index < source.length && "0123456789.,".includes(source[index])) index += 1;
+    const leftEnd = index;
+    while (index < source.length && /\s/.test(source[index])) index += 1;
+    if (source[index] !== "-") {
+      output += source.slice(leftStart, index);
+      continue;
+    }
+    index += 1;
+    while (index < source.length && /\s/.test(source[index])) index += 1;
+    const rightStart = index;
+    while (index < source.length && "0123456789.,".includes(source[index])) index += 1;
+    if (rightStart === index) {
+      output += source.slice(leftStart, index);
+      continue;
+    }
+    output += `${source.slice(leftStart, leftEnd)}\u2011${source.slice(rightStart, index)}`;
+  }
+  return output;
 }
 
 function escapeHtmlCore(value) {

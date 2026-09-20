@@ -66,6 +66,48 @@ function suggestZIndexToken(num) {
   return "Local layer 0, 1, 2 or isolate stacking context";
 }
 
+function cssDeclarations(line) {
+  return String(line || "")
+    .split(";")
+    .map((part) => {
+      const separator = part.indexOf(":");
+      if (separator < 0) return null;
+      return {
+        property: part.slice(0, separator).trim().toLowerCase(),
+        value: part.slice(separator + 1).trim(),
+      };
+    })
+    .filter(Boolean);
+}
+
+function declarationValue(line, predicate) {
+  return cssDeclarations(line).find(({ property }) => predicate(property))?.value || null;
+}
+
+function pixelValues(value) {
+  const source = String(value || "");
+  const values = [];
+  for (let index = 0; index < source.length; index += 1) {
+    const startsNegative = source[index] === "-" && source.charCodeAt(index + 1) >= 48 && source.charCodeAt(index + 1) <= 57;
+    const startsDigit = source.charCodeAt(index) >= 48 && source.charCodeAt(index) <= 57;
+    if (!startsNegative && !startsDigit) continue;
+    const start = index;
+    if (startsNegative) index += 1;
+    while (source.charCodeAt(index) >= 48 && source.charCodeAt(index) <= 57) index += 1;
+    if (source[index] === ".") {
+      index += 1;
+      while (source.charCodeAt(index) >= 48 && source.charCodeAt(index) <= 57) index += 1;
+    }
+    if (source.slice(index, index + 2).toLowerCase() !== "px") {
+      index = start;
+      continue;
+    }
+    values.push({ text: source.slice(start, index + 2), value: Number.parseFloat(source.slice(start, index)) });
+    index += 1;
+  }
+  return values;
+}
+
 function listCssFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const entryPath = path.join(dir, entry.name);
@@ -105,9 +147,9 @@ function scanCssFile(filePath) {
     if (!trimmed || trimmed.startsWith("//")) continue;
 
     // 1. Check font-size
-    const fontSizeMatch = line.match(/\bfont-size\s*:\s*([^;]+);/i);
-    if (fontSizeMatch) {
-      const valStr = fontSizeMatch[1].trim();
+    const fontSizeValue = declarationValue(line, (property) => property === "font-size");
+    if (fontSizeValue) {
+      const valStr = fontSizeValue;
       // Check for fractional px (e.g. 11.5px, 12.5px, 13.5px)
       const fracMatch = valStr.match(/\b(\d+\.\d+)px\b/i);
       if (fracMatch) {
@@ -138,9 +180,9 @@ function scanCssFile(filePath) {
     }
 
     // 2. Check font weight (avoid heavy, visually noisy typography)
-    const fontWeightMatch = line.match(/\bfont-weight\s*:\s*([^;]+);/i);
-    if (fontWeightMatch) {
-      const valStr = fontWeightMatch[1].trim().toLowerCase();
+    const fontWeightValue = declarationValue(line, (property) => property === "font-weight");
+    if (fontWeightValue) {
+      const valStr = fontWeightValue.toLowerCase();
       const keywordWeight = valStr === "normal" ? 400 : valStr === "bold" ? 700 : null;
       const numericWeight = keywordWeight ?? (/^\d+$/.test(valStr) ? Number.parseInt(valStr, 10) : null);
 
@@ -156,9 +198,8 @@ function scanCssFile(filePath) {
     }
 
     // 3. Check negative margins (anti-pattern: layout compensation hack)
-    const negMarginMatch = line.match(/\bmargin(-top|-bottom|-left|-right)?\s*:\s*([^;]+);/i);
-    if (negMarginMatch) {
-      const marginVal = negMarginMatch[2];
+    const marginVal = declarationValue(line, (property) => property === "margin" || property.startsWith("margin-"));
+    if (marginVal) {
       // Allow browser engine workaround for webkit range slider thumb centering
       const isSliderThumb = rawLines.slice(Math.max(0, i - 20), i + 1).some((l) => l.includes("::-webkit-slider-thumb"));
       // Allow standard W3C visually-hidden / sr-only utility (clip: rect, 1px)
@@ -166,7 +207,7 @@ function scanCssFile(filePath) {
         .slice(Math.max(0, i - 5), Math.min(rawLines.length, i + 6))
         .some((l) => l.includes("clip: rect") || l.includes("clip-path: inset"));
 
-      if (/-[1-9]\d*(\.\d+)?px\b/.test(marginVal) && !isSliderThumb && !isVisuallyHidden) {
+      if (pixelValues(marginVal).some(({ value }) => value < 0) && !isSliderThumb && !isVisuallyHidden) {
         violations.push({
           line: i + 1,
           type: "spacing-negative-margin",
@@ -189,22 +230,20 @@ function scanCssFile(filePath) {
     }
 
     // 5. Check odd/arbitrary spacing in margin, padding, gap (non 4/8px)
-    const spacingMatch = line.match(/\b(margin|padding|gap|row-gap|column-gap)\s*:\s*([^;]+);/i);
-    if (spacingMatch) {
-      const prop = spacingMatch[1];
-      const valStr = spacingMatch[2];
+    const spacingDeclaration = cssDeclarations(line).find(({ property }) => ["margin", "padding", "gap", "row-gap", "column-gap"].includes(property));
+    if (spacingDeclaration) {
+      const prop = spacingDeclaration.property;
+      const valStr = spacingDeclaration.value;
       if (!valStr.includes("calc(") && !valStr.includes("clamp(") && !valStr.includes("var(")) {
         // Find all px values in the declaration
-        const pxMatches = valStr.matchAll(/(-?\d+(\.\d+)?)px\b/gi);
-        for (const m of pxMatches) {
-          const num = Number.parseFloat(m[1]);
+        for (const { text, value: num } of pixelValues(valStr)) {
           const absNum = Math.abs(num);
           // Allow 0, 1px, 2px (for fine borders/dividers) and numbers divisible by 4
           if (absNum > 2 && absNum % 4 !== 0) {
             violations.push({
               line: i + 1,
               type: "spacing-non-4px-grid",
-              message: `Arbitrary ${prop} value "${m[0]}" violates 4/8px grid scale`,
+              message: `Arbitrary ${prop} value "${text}" violates 4/8px grid scale`,
               code: rawLine.trim(),
               suggestion: suggestSpacingToken(absNum),
             });
@@ -214,9 +253,9 @@ function scanCssFile(filePath) {
     }
 
     // 6. Check z-index (prevent arbitrary layer escalation)
-    const zMatch = line.match(/\bz-index\s*:\s*([^;]+);/i);
-    if (zMatch) {
-      const valStr = zMatch[1].trim();
+    const zIndexValue = declarationValue(line, (property) => property === "z-index");
+    if (zIndexValue) {
+      const valStr = zIndexValue;
       if (!valStr.includes("var(") && !valStr.includes("calc(") && !["auto", "inherit", "initial", "unset"].includes(valStr)) {
         const num = Number.parseInt(valStr, 10);
         if (Number.isNaN(num) || !ALLOWED_Z_INDICES.has(num)) {
@@ -242,19 +281,17 @@ function scanCssFile(filePath) {
       });
     }
 
-    const radiusMatch = line.match(/\bborder(-[a-z]+)*-radius\s*:\s*([^;]+);/i);
-    if (radiusMatch) {
-      const valStr = radiusMatch[2].trim();
+    const radiusValue = declarationValue(line, (property) => property.startsWith("border-") && property.endsWith("-radius"));
+    if (radiusValue) {
+      const valStr = radiusValue;
       if (!valStr.includes("calc(") && !valStr.includes("clamp(") && !valStr.includes("var(") && !valStr.includes("%") && !valStr.includes("999px") && !valStr.includes("9999px")) {
-        const pxMatches = valStr.matchAll(/(-?\d+(\.\d+)?)px\b/gi);
-        for (const m of pxMatches) {
-          const num = Number.parseFloat(m[1]);
+        for (const { text, value: num } of pixelValues(valStr)) {
           const absNum = Math.abs(num);
           if (!ALLOWED_RADII.has(absNum)) {
             violations.push({
               line: i + 1,
               type: "radius-non-scale",
-              message: `Non-scale border-radius "${m[0]}" violates radius scale`,
+              message: `Non-scale border-radius "${text}" violates radius scale`,
               code: rawLine.trim(),
               suggestion: suggestRadiusToken(absNum),
             });

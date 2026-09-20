@@ -13,12 +13,21 @@ function normalizeLang(value) {
 }
 
 function keyify(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+/, "")
-    .replace(/_+$/, "");
+  const source = String(value || "").trim().toLowerCase();
+  let key = "";
+  let pendingSeparator = false;
+  for (const character of source) {
+    const code = character.charCodeAt(0);
+    const isAlphaNumeric = (code >= 48 && code <= 57) || (code >= 97 && code <= 122);
+    if (isAlphaNumeric) {
+      if (pendingSeparator && key) key += "_";
+      key += character;
+      pendingSeparator = false;
+    } else if (key) {
+      pendingSeparator = true;
+    }
+  }
+  return key;
 }
 
 function getPack(lang = getCurrentLanguage()) {
@@ -235,4 +244,3 @@ export function translateFactStatus(value, fallback = "") {
   const fallbackLabel = humanizeMachineLabel(raw, raw);
   return typeof t === "function" ? t(`facts.status.${raw}`, fallbackLabel) : fallbackLabel;
 }
-

@@ -133,13 +133,21 @@ function isPlainObject(value) {
 }
 
 function normalizeProgramToken(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+/, "")
-    .replace(/_+$/, "");
+  const source = String(value || "").trim().toLowerCase().replaceAll("&", " and ");
+  let token = "";
+  let pendingSeparator = false;
+  for (const character of source) {
+    const code = character.charCodeAt(0);
+    const isAlphaNumeric = (code >= 48 && code <= 57) || (code >= 97 && code <= 122);
+    if (isAlphaNumeric) {
+      if (pendingSeparator && token) token += "_";
+      token += character;
+      pendingSeparator = false;
+    } else if (token) {
+      pendingSeparator = true;
+    }
+  }
+  return token;
 }
 
 function uniqueNonEmpty(values) {

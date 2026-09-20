@@ -1,10 +1,11 @@
 import { promises as fs } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
-import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
 const rootDir = path.resolve(__dirname, "..");
 const frontendDir = path.join(rootDir, "frontend");
 const iconsFile = path.join(frontendDir, "javascript", "icons.js");
@@ -70,63 +71,35 @@ function serializeNode(node) {
   const attrs = attrString(
     Object.fromEntries(
       Object.entries(node.props || {})
-        .filter(([key, value]) => key !== "ref" && value !== null && value !== undefined && value !== false)
+        .filter(([key, value]) => key !== "ref" && key !== "children" && value !== null && value !== undefined && value !== false)
         .map(([key, value]) => [attrNameFromProp(key), value]),
     ),
   );
-  const children = Array.isArray(node.children) ? node.children.map(serializeNode).join("") : "";
+  const children = (node.props?.children ? [node.props.children] : []).flat(Infinity).map(serializeNode).join("");
   if (!children) {
     return `<${node.type}${attrs ? ` ${attrs}` : ""} />`;
   }
   return `<${node.type}${attrs ? ` ${attrs}` : ""}>${children}</${node.type}>`;
 }
 
-function createReactStub() {
-  return {
-    createElement(type, props, ...children) {
-      return {
-        type,
-        props: props || {},
-        children: children.flat(Infinity).filter((child) => child !== null && child !== undefined && child !== false),
-      };
-    },
-    forwardRef(fn) {
-      return fn;
-    },
-  };
-}
-
 async function evaluateHeroicon(filePath) {
-  const source = await fs.readFile(filePath, "utf8");
-  const React = createReactStub();
-  const module = { exports: {} };
-  const context = vm.createContext({
-    module,
-    exports: module.exports,
-    Object,
-    require(specifier) {
-      if (specifier === "react") return React;
-      throw new Error(`Unsupported require in ${filePath}: ${specifier}`);
-    },
-  });
-
-  new vm.Script(source, { filename: filePath }).runInContext(context);
-  const component = module.exports;
-  if (typeof component !== "function") {
+  const component = require(filePath);
+  const render = typeof component === "function" ? component : component?.render;
+  if (typeof render !== "function") {
     throw new Error(`Expected a component function from ${filePath}`);
   }
 
-  const tree = component({}, null);
+  const tree = render({}, null);
   if (!tree || tree.type !== "svg") {
     throw new Error(`Expected ${filePath} to render an SVG root`);
   }
 
   const attrs = Object.fromEntries(
     Object.entries(tree.props || {})
-      .filter(([key, value]) => key !== "ref" && value !== null && value !== undefined && value !== false)
+      .filter(([key, value]) => key !== "ref" && key !== "children" && value !== null && value !== undefined && value !== false)
       .map(([key, value]) => [attrNameFromProp(key), value]),
   );
-  const body = (tree.children || []).map(serializeNode).join("");
+  const body = (tree.props?.children ? [tree.props.children] : []).flat(Infinity).map(serializeNode).join("");
 
   return { attrs, body };
 }

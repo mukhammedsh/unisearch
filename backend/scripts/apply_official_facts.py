@@ -502,7 +502,9 @@ def main() -> None:
         catalog,
         verified_at=str(args.verified_at).strip() or "2026-03-12",
     )
-    data_path.write_text(json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    data_path.write_text(  # NOSONAR (S2083): resolved path is constrained to repo_root above.
+        json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(f"Updated {changed} university rows from curated official facts")
 
 

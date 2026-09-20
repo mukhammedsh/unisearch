@@ -671,9 +671,12 @@ export function initProfileUI() {
             return String(rawValue || "").trim();
         };
 
-        const missingComponent = detail.match(/requires component\s+([^\r\n]+)$/i);
+        const missingComponentPrefix = "requires component";
+        const missingComponent = detail.toLowerCase().startsWith(missingComponentPrefix)
+            ? detail.slice(missingComponentPrefix.length).trim()
+            : "";
         if (missingComponent) {
-            const subject = subjectNameFrom(missingComponent[1]);
+            const subject = subjectNameFrom(missingComponent);
             return tFormat(
                 "profile.exam_error_missing_subject",
                 { exam: examLabel, subject },
@@ -699,9 +702,11 @@ export function initProfileUI() {
             );
         }
 
-        const notAllowed = detail.match(/does not support (?:component|extra score)\s+([^\r\n]+)$/i);
+        const notAllowedPrefixes = ["does not support component", "does not support extra score"];
+        const notAllowedPrefix = notAllowedPrefixes.find((prefix) => detail.toLowerCase().startsWith(prefix));
+        const notAllowed = notAllowedPrefix ? detail.slice(notAllowedPrefix.length).trim() : "";
         if (notAllowed) {
-            const subject = subjectNameFrom(notAllowed[1]);
+            const subject = subjectNameFrom(notAllowed);
             return tFormat(
                 "profile.exam_error_subject_not_allowed",
                 { exam: examLabel, subject },
