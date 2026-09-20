@@ -12,6 +12,8 @@ All notable project changes should be recorded here.
 - Established project governance model and contributor framework in `GOVERNANCE.md` formally defining BDFL/maintainer-led decision-making, RFC processes, contributor role ladder, and documented continuity and succession protocols satisfying OpenSSF Bus Factor (>= 2) with @mukhammedsh and @raiselx.
 - Completed Contributor Covenant 2.1 compliance in `CODE_OF_CONDUCT.md` with explicit 4-level stepped enforcement guidelines (Correction, Warning, Temporary Ban, Permanent Ban).
 - Updated `SECURITY.md` with version 6.x support, explicit response timeline SLAs (48h acknowledgment, 7d triage, 14–30d fix), and public researcher credit attribution.
+- Authored formal Security Assurance Case in `docs/security-assurance.md` detailing the threat model, trust boundaries, secure design principles, and OWASP Top 10 countermeasures for OpenSSF Silver.
+- Integrated GitHub Sigstore build provenance attestations in `.github/workflows/release.yml` with cryptographic verification instructions for release archives and Docker images.
 - Cross-referenced new architecture, roadmap, governance, and code of conduct documentation across `README.md` and `CONTRIBUTING.md`.
 
 ## 6.8.14 (2026-09-20) - Test Coverage Expansion for OpenSSF Silver
