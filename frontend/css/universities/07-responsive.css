@@ -392,7 +392,7 @@
     display: flex;
     margin-left: auto;
     margin-right: auto;
-    bottom: calc(18px + env(safe-area-inset-bottom));
+    bottom: calc(18px + env(safe-area-inset-bottom) + var(--u-mobile-filter-footer-clearance, 0px));
     width: min(320px, calc(100vw - 32px));
     min-height: 50px;
     justify-content: center;

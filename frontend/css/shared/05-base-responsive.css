@@ -84,7 +84,7 @@
 .settings-trigger-btn { width: 34px; height: 34px; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   .site-footer {
     padding: 12px 0;
   }
@@ -97,7 +97,39 @@
   }
 
   .footer-meta {
+    flex-direction: column;
     justify-content: center;
+  }
+
+  /* Footer navigation becomes separate rows on phones, so a separator can
+     never be left at the end of a wrapped row. */
+  .footer-meta > .footer-divider {
+    display: none;
+  }
+
+  /* Keep every in-row separator on the footer's visual centerline even when
+     the links on either side have different lengths. */
+  .footer-legal-links {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    width: 100%;
+    column-gap: 12px;
+  }
+
+  .footer-legal-links a:first-child {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .footer-legal-links a:last-child {
+    justify-self: start;
+    text-align: left;
+  }
+
+  /* Russian legal labels deliberately share two lines for a balanced footer
+     grid; shorter locales keep their natural single-line labels. */
+  html[lang="ru"] .footer-legal-links:not(.footer-product-links) a {
+    max-width: 136px;
   }
 
   .social-links {

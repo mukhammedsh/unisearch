@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.11 (2026-09-20) - Mobile Footer Layout Fixes
+
+### Catalog
+- Kept the mobile Filters control above the footer while scrolling through the catalog.
+- Centered mobile footer separators and grouped footer navigation into stable rows through the catalog mobile breakpoint.
+- Balanced Russian legal footer links into two lines and added browser coverage for phone and tablet widths in light and dark themes.
+
 ## 6.8.10 (2026-09-20) - ROI Visibility Test Coverage
 
 ### Tests

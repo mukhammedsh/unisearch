@@ -2104,8 +2104,23 @@ export function initUniversitiesPage() {
     window.addEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
 
     let scrollSaveTimer = null;
+    const syncMobileFilterFooterClearance = () => {
+        const toggleBtn = el.mobileFilterToggle || $("mobileFilterToggle");
+        if (!toggleBtn) return;
+        if (window.innerWidth > 1024) {
+            toggleBtn.style.removeProperty("--u-mobile-filter-footer-clearance");
+            return;
+        }
+
+        const footer = document.querySelector(".site-footer");
+        if (!footer) return;
+        const footerClearance = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top + 16);
+        toggleBtn.style.setProperty("--u-mobile-filter-footer-clearance", `${Math.ceil(footerClearance)}px`);
+    };
+
     const onCatalogScroll = () => {
         scheduleSyncSidebarMaxHeight();
+        syncMobileFilterFooterClearance();
         if (scrollSaveTimer) return;
         scrollSaveTimer = window.setTimeout(() => {
             scrollSaveTimer = null;
@@ -2124,6 +2139,7 @@ export function initUniversitiesPage() {
     __universitiesResizeHandler = () => {
         scheduleSyncWorkspaceDepth();
         scheduleSyncSidebarMaxHeight();
+        syncMobileFilterFooterClearance();
         // Map stage height follows the viewport, so tell Leaflet to re-fit tiles.
         if (state.viewMode === "map" && mapInstance) {
             if (__universitiesMapResizeTimer) window.clearTimeout(__universitiesMapResizeTimer);
@@ -2134,6 +2150,7 @@ export function initUniversitiesPage() {
         }
     };
     window.addEventListener("resize", __universitiesResizeHandler, { passive: true });
+    syncMobileFilterFooterClearance();
 
     if (typeof ResizeObserver !== "undefined") {
         __universitiesResizeObserver = new ResizeObserver(() => {
