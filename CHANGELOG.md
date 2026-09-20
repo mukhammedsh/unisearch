@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.5 (2026-09-20) - Catalog Error Layout Fix
+
+### Catalog
+- Made catalog error screens span the full results grid, so loading failures are centered across the available catalog area rather than confined to the first card column (`frontend/css/universities/02-catalog.css`).
+
 ## 6.8.4 (2026-09-20) - Secure Audit Diagnostics and Code Quality Cleanup
 
 ### Security

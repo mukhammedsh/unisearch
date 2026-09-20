@@ -6,6 +6,10 @@
   overflow-anchor: none;
 }
 
+.u-grid > .error-screen {
+  grid-column: 1 / -1;
+}
+
 .u-catalog-stage {
   display: grid;
   grid-template-columns: 1fr;
