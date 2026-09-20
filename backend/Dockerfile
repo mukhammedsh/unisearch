@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9
 
 ENV PYTHONUNBUFFERED=1
 ENV HF_HOME=/home/appuser/.cache/huggingface
@@ -6,7 +6,8 @@ ENV HF_HOME=/home/appuser/.cache/huggingface
 WORKDIR /app
 
 COPY backend/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir pip==25.0.1 \
+    && pip install --no-cache-dir -r /app/requirements.txt
 
 RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
     && mkdir -p /home/appuser/.cache/huggingface \

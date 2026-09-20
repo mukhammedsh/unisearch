@@ -4,6 +4,15 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.13 (2026-09-20) - Security Hardening And Supply Chain Pinning
+
+### Security
+- Pinned all GitHub Actions across all workflow pipelines (`tests.yml`, `security.yml`, `repository-hygiene.yml`, `release.yml`, `fuzz.yml`) to full immutable commit SHAs with version comments.
+- Restricted `GITHUB_TOKEN` permissions following least privilege: added top-level `contents: read` to `tests.yml` and scoped write access strictly to the `publish` job in `release.yml`.
+- Pinned the backend Dockerfile base image to multi-arch digest `python:3.12-slim@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9` and locked the pip installer version.
+- Integrated ClusterFuzzLite continuous fuzz testing with Atheris and standalone execution covering core AI scoring, UniChance, ROI algorithms, and Pydantic request models.
+- Removed an unused motion import in catalog page code identified by CodeQL analysis.
+
 ## 6.8.12 (2026-09-20) - Responsive Breakpoint Consolidation
 
 ### Responsive Design

@@ -20,7 +20,6 @@ import {
   animateElementOut,
   markMotionEnter,
   motionPress,
-  prefersReducedMotion,
   replayMotion,
   setupSlidingIndicator,
   safeSessionStorage,
