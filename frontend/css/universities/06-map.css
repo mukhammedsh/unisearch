@@ -242,59 +242,6 @@
   isolation: isolate;
 }
 
-/* The view switch uses short-lived fixed snapshots so full cards can travel to
-   their compact map-rail positions without forcing layout on every frame. */
-.u-view-motion-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  overflow: hidden;
-  pointer-events: none;
-  contain: strict;
-}
-
-.u-view-motion-card,
-.u-view-motion-map-snapshot {
-  position: absolute;
-  margin: 0;
-  transform-origin: top left;
-  will-change: transform, opacity;
-  pointer-events: none;
-}
-
-.u-view-motion-card {
-  max-width: none;
-  transition: none;
-}
-
-/* Preserve the map rail's descendant-based compact card styles while a
-   snapshot temporarily lives in the fixed motion layer. */
-.u-map-results-list.u-view-motion-map-card-host {
-  display: contents;
-}
-
-.u-view-motion-map-snapshot {
-  z-index: 1;
-  overflow: hidden;
-  border-radius: var(--radius-xl);
-}
-
-.is-view-motion-target .uni-card {
-  opacity: 0;
-  transform-origin: top left;
-  will-change: transform, opacity;
-}
-
-.u-map-container.is-view-motion-map-pending,
-.u-map-results.is-view-motion-panel-pending {
-  opacity: 0;
-}
-
-.u-map-container.is-view-motion-map-active {
-  z-index: 2;
-  will-change: transform, opacity;
-}
-
 @media (max-width: 1180px) {
   .u-map-stage {
     grid-template-columns: minmax(0, 1fr);
@@ -361,10 +308,4 @@
     min-height: 280px;
   }
 
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .u-view-motion-layer {
-    display: none;
-  }
 }

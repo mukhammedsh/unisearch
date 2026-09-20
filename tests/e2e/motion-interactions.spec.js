@@ -180,13 +180,12 @@ test("mobile settings layer uses sheet motion without breaking reduced motion", 
   ).toBe(0);
 });
 
-test("view mode toggle uses one stable active state", async ({ page }) => {
+test("view mode toggle changes views without a content transition", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
-  // Both real destinations are prepared before the first interaction, so a
-  // hard refresh cannot leave the shared-card transition without a target.
+  // Both real destinations are prepared before the first interaction.
   await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
   await expect(page.locator("#viewMapBtn")).toBeEnabled();
 
@@ -197,35 +196,7 @@ test("view mode toggle uses one stable active state", async ({ page }) => {
   await expect(page.locator("#mapStage")).toBeVisible();
 
   const mapCard = page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first();
-  const captureCardGeometry = () => mapCard.evaluate((card) => {
-    const selectors = [".uni-logo--inline", ".uni-title", ".uni-metrics", ".uni-price", ".uni-details"];
-    return Object.fromEntries(selectors.map((selector) => {
-      const element = card.querySelector(selector);
-      if (!element) return [selector, null];
-      const rect = element.getBoundingClientRect();
-      return [selector, {
-        x: rect.x,
-        y: rect.y,
-        width: rect.width,
-        height: rect.height,
-      }];
-    }));
-  });
-
-  await page.waitForTimeout(720);
-  const lateAnimationGeometry = await captureCardGeometry();
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
-  const finalGeometry = await captureCardGeometry();
-  Object.keys(finalGeometry).forEach((selector) => {
-    expect(lateAnimationGeometry[selector], `${selector} should exist before motion cleanup`).toBeTruthy();
-    expect(finalGeometry[selector], `${selector} should exist after motion cleanup`).toBeTruthy();
-    ["x", "y", "width", "height"].forEach((key) => {
-      expect(
-        Math.abs(lateAnimationGeometry[selector][key] - finalGeometry[selector][key]),
-        `${selector} ${key} should not jump when motion cleanup runs`
-      ).toBeLessThanOrEqual(1);
-    });
-  });
 
   const mapBox = await page.locator("#mapContainer").boundingBox();
   const resultsBox = await page.locator("#mapResultsPanel").boundingBox();
@@ -275,21 +246,15 @@ test("view mode toggle uses one stable active state", async ({ page }) => {
   await page.click("#viewListBtn");
   await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewMapBtn")).not.toHaveClass(/active/);
-  await page.waitForTimeout(460);
-  const exitingMapSnapshot = page.locator(".u-view-motion-map-snapshot");
-  if (await exitingMapSnapshot.count() > 0) {
-    const opacity = await exitingMapSnapshot.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity));
-    expect(opacity).toBeLessThanOrEqual(0.01);
-  }
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
   await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
   await page.click("#viewMapBtn");
   await expect(page.locator("#mapStage")).toBeVisible();
-  await page.waitForTimeout(720);
   await page.click("#viewListBtn");
   await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);

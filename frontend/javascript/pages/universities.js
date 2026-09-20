@@ -495,8 +495,6 @@ export function initUniversitiesPage() {
     const SKELETON_FADE_MS = 160;
     let skeletonShowTimer = 0;
     let skeletonFadeTimer = 0;
-    let viewTransitionSeq = 0;
-    let activeViewTransition = null;
     let isSkeletonCurrentlyVisible = false;
     const universitiesFetchCache = new Map();
     let lastAiFetchKey = "";
@@ -2157,213 +2155,7 @@ export function initUniversitiesPage() {
         if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
     }
 
-    function readMotionDuration(tokenName, fallbackMs) {
-        const raw = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
-        const value = Number.parseFloat(raw);
-        if (!Number.isFinite(value)) return fallbackMs;
-        return raw.endsWith("s") && !raw.endsWith("ms") ? value * 1000 : value;
-    }
-
-    function getViewMotionOptions() {
-        const styles = getComputedStyle(document.documentElement);
-        const duration = readMotionDuration("--motion-slow", 360) + readMotionDuration("--motion-medium", 240);
-        return {
-            duration,
-            easing: styles.getPropertyValue("--motion-ease-emphasized").trim() || "cubic-bezier(0.2, 0.8, 0.2, 1)",
-            fill: "both",
-        };
-    }
-
-    function motionCardSnapshot(card, rect, className) {
-        const clone = card.cloneNode(true);
-        clone.classList.add("u-view-motion-card", className);
-        clone.setAttribute("aria-hidden", "true");
-        clone.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
-        Object.assign(clone.style, {
-            left: `${rect.left}px`,
-            top: `${rect.top}px`,
-            width: `${rect.width}px`,
-            height: `${rect.height}px`,
-        });
-        return clone;
-    }
-
-    function appendMotionCardSnapshot(layer, card, rect, className) {
-        const snapshot = motionCardSnapshot(card, rect, className);
-        if (card.closest(".u-map-results-list")) {
-            const host = document.createElement("div");
-            host.className = "u-map-results-list u-view-motion-map-card-host";
-            host.appendChild(snapshot);
-            layer.appendChild(host);
-        } else {
-            layer.appendChild(snapshot);
-        }
-        return snapshot;
-    }
-
-    function cardMotionTransform(fromRect, toRect) {
-        const scaleX = toRect.width / Math.max(1, fromRect.width);
-        const scaleY = toRect.height / Math.max(1, fromRect.height);
-        return `translate(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top}px) scale(${scaleX}, ${scaleY})`;
-    }
-
-    function cancelActiveViewTransition() {
-        if (!activeViewTransition) return;
-        activeViewTransition.cancel();
-        activeViewTransition = null;
-    }
-
-    async function transitionBetweenViews(previousMode, nextMode, shouldAnimate) {
-        cancelActiveViewTransition();
-        const transitionSeq = ++viewTransitionSeq;
-        const canAnimate = shouldAnimate && typeof Element.prototype.animate === "function";
-        if (!canAnimate) {
-            applyViewVisibility(nextMode);
-            return;
-        }
-
-        const sourceRoot = previousMode === "map" ? el.mapResults : el.list;
-        const targetRoot = nextMode === "map" ? el.mapResults : el.list;
-        if (!sourceRoot || !targetRoot) {
-            applyViewVisibility(nextMode);
-            return;
-        }
-
-        const viewportPadding = 160;
-        const sourceCards = Array.from(sourceRoot.querySelectorAll(".uni-card[data-uni-id]"))
-            .map((card) => ({
-                card,
-                id: String(card.getAttribute("data-uni-id") || "").trim(),
-                rect: card.getBoundingClientRect(),
-            }))
-            .filter(({ id, rect }) => id && rect.bottom > -viewportPadding && rect.top < window.innerHeight + viewportPadding);
-
-        const layer = document.createElement("div");
-        layer.className = "u-view-motion-layer";
-        layer.setAttribute("aria-hidden", "true");
-        const sourceSnapshots = sourceCards.map((item) => {
-            const snapshot = appendMotionCardSnapshot(layer, item.card, item.rect, "u-view-motion-card--source");
-            return { ...item, snapshot };
-        });
-
-        let mapSnapshot = null;
-        let mapSourceRect = null;
-        if (previousMode === "map" && el.mapContainer) {
-            mapSourceRect = el.mapContainer.getBoundingClientRect();
-            mapSnapshot = el.mapContainer.cloneNode(true);
-            mapSnapshot.classList.add("u-view-motion-map-snapshot");
-            mapSnapshot.setAttribute("aria-hidden", "true");
-            Object.assign(mapSnapshot.style, {
-                left: `${mapSourceRect.left}px`,
-                top: `${mapSourceRect.top}px`,
-                width: `${mapSourceRect.width}px`,
-                height: `${mapSourceRect.height}px`,
-            });
-            layer.appendChild(mapSnapshot);
-        }
-
-        document.body.appendChild(layer);
-        targetRoot.classList.add("is-view-motion-target");
-        if (nextMode === "map") {
-            el.mapContainer?.classList.add("is-view-motion-map-pending");
-            el.mapResults?.classList.add("is-view-motion-panel-pending");
-        }
-        applyViewVisibility(nextMode);
-
-        let animations = [];
-        let cleaned = false;
-        const cleanup = () => {
-            if (cleaned) return;
-            cleaned = true;
-            animations.forEach((animation) => animation.cancel());
-            layer.remove();
-            targetRoot.classList.remove("is-view-motion-target");
-            el.mapContainer?.classList.remove("is-view-motion-map-pending", "is-view-motion-map-active");
-            el.mapResults?.classList.remove("is-view-motion-panel-pending");
-        };
-        activeViewTransition = { cancel: cleanup };
-
-        await new Promise((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
-        if (transitionSeq !== viewTransitionSeq) {
-            cleanup();
-            return;
-        }
-
-        const targetCards = new Map(Array.from(targetRoot.querySelectorAll(".uni-card[data-uni-id]")).map((card) => [
-            String(card.getAttribute("data-uni-id") || "").trim(),
-            { card, rect: card.getBoundingClientRect() },
-        ]));
-        const options = getViewMotionOptions();
-        const fallbackTop = window.innerHeight + viewportPadding;
-
-        sourceSnapshots.forEach(({ id, rect: sourceRect, snapshot }, index) => {
-            const target = targetCards.get(id);
-            const targetRect = target?.rect || {
-                left: nextMode === "map" ? Math.max(sourceRect.left, window.innerWidth - sourceRect.width - 24) : sourceRect.left,
-                top: fallbackTop + index * 24,
-                width: Math.max(220, sourceRect.width * 0.72),
-                height: Math.max(120, sourceRect.height * 0.48),
-            };
-            const destinationTransform = cardMotionTransform(sourceRect, targetRect);
-            animations.push(snapshot.animate([
-                { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 0 },
-                { transform: destinationTransform, opacity: 0.35, offset: 0.62 },
-                { transform: destinationTransform, opacity: 0, offset: 0.78 },
-                { transform: destinationTransform, opacity: 0, offset: 1 },
-            ], options));
-
-            if (target?.card) {
-                const sourceTransform = cardMotionTransform(targetRect, sourceRect);
-                animations.push(target.card.animate([
-                    { transform: sourceTransform, opacity: 0, offset: 0 },
-                    { transform: sourceTransform, opacity: 0.12, offset: 0.18 },
-                    { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 0.82 },
-                    { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 1 },
-                ], options));
-            }
-        });
-
-        const seedRect = nextMode === "map"
-            ? (sourceCards[0]?.rect || el.catalogPane?.getBoundingClientRect())
-            : (targetCards.values().next().value?.rect || el.catalogPane?.getBoundingClientRect());
-
-        if (nextMode === "map" && el.mapContainer && seedRect) {
-            const mapTargetRect = el.mapContainer.getBoundingClientRect();
-            const startTransform = cardMotionTransform(mapTargetRect, seedRect);
-            el.mapContainer.classList.add("is-view-motion-map-active");
-            const mapAnimation = el.mapContainer.animate([
-                { transform: startTransform, opacity: 0.36 },
-                { transform: "translate(0, 0) scale(1, 1)", opacity: 1 },
-            ], options);
-            animations.push(mapAnimation);
-            el.mapContainer.classList.remove("is-view-motion-map-pending");
-
-            if (el.mapResults) {
-                animations.push(el.mapResults.animate([
-                    { opacity: 0 },
-                    { opacity: 0, offset: 0.18 },
-                    { opacity: 1 },
-                ], options));
-                el.mapResults.classList.remove("is-view-motion-panel-pending");
-            }
-        } else if (previousMode === "map" && mapSnapshot && mapSourceRect && seedRect) {
-            const endTransform = cardMotionTransform(mapSourceRect, seedRect);
-            animations.push(mapSnapshot.animate([
-                { transform: "translate(0, 0) scale(1, 1)", opacity: 1, offset: 0 },
-                { transform: endTransform, opacity: 0.18, offset: 0.58 },
-                { transform: endTransform, opacity: 0, offset: 0.72 },
-                { transform: endTransform, opacity: 0, offset: 1 },
-            ], options));
-        }
-
-        await Promise.allSettled(animations.map((animation) => animation.finished));
-        cleanup();
-        if (transitionSeq === viewTransitionSeq) activeViewTransition = null;
-    }
-
     async function switchView(mode, shouldFetch = false) {
-        const previousMode = state.viewMode;
-        const shouldAnimate = shouldFetch && previousMode !== mode && !prefersReducedMotion();
         state.viewMode = mode;
         saveFilters(state);
         el.btnList?.classList.toggle("active", mode === "list");
@@ -2373,19 +2165,16 @@ export function initUniversitiesPage() {
             renderMapResultsPanel(lastRenderedItems);
         }
 
-        const transitionPromise = transitionBetweenViews(previousMode, mode, shouldAnimate);
+        applyViewVisibility(mode);
         scheduleSyncWorkspaceDepth();
 
         if (mode === "map") {
-            const mapReadyPromise = initMap();
-            await Promise.all([transitionPromise, mapReadyPromise]);
+            await initMap();
             if (state.viewMode !== "map") return;
             if (lastRenderedItems.length > 0) {
                 updateMapMarkers(lastRenderedItems, { renderResults: false });
             }
             window.setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 100);
-        } else {
-            await transitionPromise;
         }
 
         if (shouldFetch) {

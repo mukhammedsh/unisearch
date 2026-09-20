@@ -4,6 +4,16 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.6 (2026-09-20) - Direct View Switching and Security Checks
+
+### Catalog
+- Replaced the shared-card list/map transition with an immediate view change, retaining the existing active-state feedback on the view controls and eliminating layout-shifting motion (`frontend/javascript/pages/universities.js`, `frontend/css/universities/06-map.css`).
+- Updated browser coverage to confirm that map and list modes switch without a content transition while preserving their layout and active controls (`tests/e2e/motion-interactions.spec.js`).
+
+### Security
+- Added Trivy filesystem checks for exposed secrets and insecure configuration, with high- and critical-severity findings uploaded to GitHub code scanning (`.github/workflows/security.yml`).
+- Added the OpenSSF Scorecard workflow and SARIF upload for scheduled repository security assessment (`.github/workflows/security.yml`).
+
 ## 6.8.5 (2026-09-20) - Catalog Error Layout Fix
 
 ### Catalog
