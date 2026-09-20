@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.10 (2026-09-20) - ROI Visibility Test Coverage
+
+### Tests
+- Updated unit coverage so missing verified salary data is expected to hide the ROI panel in every supported interface language.
+
 ## 6.8.9 (2026-09-20) - Finance Cost Presentation Refinements
 
 ### University Detail

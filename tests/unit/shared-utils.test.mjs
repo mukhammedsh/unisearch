@@ -479,7 +479,7 @@ test('renderRoiBox', async (t) => {
     assert.strictEqual(renderRoiBox({}), '');
   });
 
-  await t.test('renders neutral ROI markup in English when salary data is missing', () => {
+  await t.test('hides ROI markup in English when salary data is missing', () => {
     setLanguage('eng', { persist: false, emit: false });
     const markup = renderRoiBox({
       context_type: 'no_salary_data',
@@ -490,18 +490,10 @@ test('renderRoiBox', async (t) => {
       roi_tone: 'neutral',
     });
 
-    assert.ok(markup.includes('roi-box'), 'Should contain roi-box');
-    assert.ok(markup.includes('roi-context--neutral'), 'Should contain neutral context class');
-    assert.ok(markup.includes('Insufficient graduate salary data for calculation.'), 'Should contain English neutral message');
-    assert.ok(markup.includes('$35,000'), 'Should contain annual cost');
-    assert.strictEqual(markup.includes('NaN'), false, 'Should not contain NaN');
-    assert.strictEqual(markup.includes('undefined'), false, 'Should not contain undefined');
-    assert.strictEqual(markup.includes('roi-tone-warn'), false, 'Should not contain warning tone');
-    assert.strictEqual(markup.includes('0x'), false, 'Should not show 0x score');
-    assert.strictEqual(markup.includes('$0'), false, 'Should not show $0 salary');
+    assert.strictEqual(markup, '');
   });
 
-  await t.test('renders neutral ROI markup in Russian when salary data is missing', () => {
+  await t.test('hides ROI markup in Russian when salary data is missing', () => {
     setLanguage('rus', { persist: false, emit: false });
     const markup = renderRoiBox({
       context_type: 'no_salary_data',
@@ -512,13 +504,7 @@ test('renderRoiBox', async (t) => {
       roi_tone: 'neutral',
     });
 
-    assert.ok(markup.includes('roi-box'), 'Should contain roi-box');
-    assert.ok(markup.includes('roi-context--neutral'), 'Should contain neutral context class');
-    assert.ok(markup.includes('Недостаточно данных о зарплатах выпускников для расчёта.'), 'Should contain Russian neutral message');
-    assert.ok(markup.includes('$25,000'), 'Should contain annual cost');
-    assert.strictEqual(markup.includes('NaN'), false, 'Should not contain NaN');
-    assert.strictEqual(markup.includes('undefined'), false, 'Should not contain undefined');
-    assert.strictEqual(markup.includes('roi-tone-warn'), false, 'Should not contain warning tone');
+    assert.strictEqual(markup, '');
     setLanguage('eng', { persist: false, emit: false });
   });
 
