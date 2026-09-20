@@ -74,7 +74,7 @@ jobs:
           node-version: "20"
 
       - name: Install backend dependencies
-        run: pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+        run: "pip install --require-hashes --only-binary=:all: -r backend/requirements.lock"
 
       - name: Install node dependencies
         run: npm ci --ignore-scripts
@@ -119,7 +119,7 @@ jobs:
           node-version: "20"
 
       - name: Install backend dependencies
-        run: pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+        run: "pip install --require-hashes --only-binary=:all: -r backend/requirements.lock"
 
       - name: Install node dependencies
         run: npm ci --ignore-scripts
