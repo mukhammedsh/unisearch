@@ -22,6 +22,7 @@ const SOURCE_ICON_PATTERNS = [
 const EXISTING_ICON_PATTERN = /^\s{2}"([^"]+)":/gm;
 
 const MANUAL_ICON_NAMES = ["sun", "server-stack", "signal-slash", "exclamation-circle"];
+const ICON_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function kebabToPascalCase(value) {
   return String(value || "")
@@ -29,6 +30,21 @@ function kebabToPascalCase(value) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join("");
+}
+
+function heroiconComponentPath(iconName) {
+  if (!ICON_NAME_PATTERN.test(iconName)) {
+    throw new Error(`Invalid Heroicon name: ${iconName}`);
+  }
+
+  const componentName = `${kebabToPascalCase(iconName)}Icon.js`;
+  const componentPath = path.resolve(heroiconsDir, componentName);
+  const relativePath = path.relative(heroiconsDir, componentPath);
+  if (!relativePath || relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
+    throw new Error(`Heroicon path escapes the package directory: ${iconName}`);
+  }
+
+  return { componentName, componentPath };
 }
 
 function attrNameFromProp(prop) {
@@ -218,8 +234,7 @@ async function main() {
   const icons = {};
 
   for (const iconName of iconNames) {
-    const componentName = `${kebabToPascalCase(iconName)}Icon.js`;
-    const componentPath = path.join(heroiconsDir, componentName);
+    const { componentName, componentPath } = heroiconComponentPath(iconName);
     try {
       await fs.access(componentPath);
     } catch {

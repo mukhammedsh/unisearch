@@ -31,8 +31,8 @@ jobs:
 
       - name: Install backend dependencies
         run: |
-          pip install -r backend/requirements.txt
-          pip install -r backend/requirements-dev.txt
+          pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+          pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 
       - name: Run backend tests
         working-directory: backend
@@ -74,10 +74,10 @@ jobs:
           node-version: "20"
 
       - name: Install backend dependencies
-        run: pip install -r backend/requirements.txt
+        run: pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
 
       - name: Install node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run i18n consistency checks
         run: npm run check:i18n
@@ -86,7 +86,7 @@ jobs:
         run: npm run test:unit
 
       - name: Install Playwright browser (Chromium)
-        run: npx playwright install --with-deps chromium
+        run: ./node_modules/.bin/playwright install --with-deps chromium
 
       - name: Run E2E PR suite
         run: npm run test:e2e:pr
@@ -119,16 +119,16 @@ jobs:
           node-version: "20"
 
       - name: Install backend dependencies
-        run: pip install -r backend/requirements.txt
+        run: pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
 
       - name: Install node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run i18n consistency checks
         run: npm run check:i18n
 
       - name: Install Playwright browsers (all nightly targets)
-        run: npx playwright install --with-deps chromium firefox webkit
+        run: ./node_modules/.bin/playwright install --with-deps chromium firefox webkit
 
       - name: Run full nightly E2E matrix
         run: npm run test:e2e:nightly

@@ -51,7 +51,7 @@ jobs:
           cache: npm
 
       - name: Install node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Audit node dependencies
         run: npm audit --audit-level=moderate
@@ -65,7 +65,7 @@ jobs:
       - name: Audit Python dependencies
         uses: pypa/gh-action-pip-audit@1220774d901786e6f652ae159f7b6bc8fea6d266 # v1.1.0
         with:
-          inputs: backend/requirements-dev.txt
+          inputs: backend/requirements-dev.lock
 
   trivy:
     name: Trivy (secrets and configuration)

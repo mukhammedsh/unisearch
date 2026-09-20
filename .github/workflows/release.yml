@@ -110,6 +110,8 @@ jobs:
             backend/data \
             backend/requirements.txt \
             backend/requirements-dev.txt \
+            backend/requirements.lock \
+            backend/requirements-dev.lock \
             backend/.env.example \
             package.json
 

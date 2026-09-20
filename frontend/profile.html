@@ -110,6 +110,7 @@
 
               <div class="profile-field">
                 <div class="profile-budget profile-budget--with-unit">
+                  <label class="sr-only" for="budgetInput" data-i18n="profile.label.budget">Total Budget / year</label>
                   <input
                     id="budgetInput"
                     aria-label="Total Budget / year"
@@ -150,6 +151,7 @@
               </div>
 
               <div class="profile-field">
+                <label class="sr-only" for="studyModeSelect" data-i18n="profile.label.study_mode">Preferred Study Mode</label>
                 <select id="studyModeSelect" class="profile-input profile-input--select" aria-label="Preferred Study Mode" data-i18n-aria-label="profile.label.study_mode">
                   <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
                   <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
@@ -165,6 +167,7 @@
               </div>
 
               <div class="profile-field">
+                <label class="sr-only" for="profileFundingTypeSelect" data-i18n="profile.label.funding_type">Preferred Funding Type</label>
                 <select id="profileFundingTypeSelect" class="profile-input profile-input--select" aria-label="Preferred Funding Type" data-i18n-aria-label="profile.label.funding_type">
                   <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
                   <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
@@ -190,6 +193,7 @@
 
             <div class="profile-field profile-field--compact profile-field--gpa">
               <div class="profile-budget profile-budget--with-unit">
+                <label class="sr-only" for="gpaInput" data-i18n="profile.label.gpa">Grade Point Average (GPA)</label>
                 <input
                   id="gpaInput"
                   aria-label="GPA"
@@ -245,6 +249,7 @@
             <div class="profile-exam-form">
               <div class="profile-exam-form-controls">
                 <div class="profile-exam-select-wrap">
+                  <label class="sr-only" for="examNameSelect" data-i18n="profile.exam">Exam</label>
                   <select id="examNameSelect" class="profile-input profile-input--select" aria-label="Exam" data-i18n-aria-label="profile.exam">
                     <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
                     <option value="IELTS">IELTS</option>
@@ -255,6 +260,7 @@
                 </div>
 
                 <div class="profile-exam-score-wrap">
+                  <label class="sr-only" for="examScoreInput" data-i18n="profile.placeholder.score">Score</label>
                   <input
                     id="examScoreInput"
                     aria-label="Score"
@@ -357,6 +363,7 @@
             </div>
 
             <div class="profile-field profile-field--compact">
+              <label class="sr-only" for="profileMajorSelect" data-i18n="profile.label.major">Intended Major</label>
               <select id="profileMajorSelect" class="profile-input profile-input--select" aria-label="Intended Major" data-i18n-aria-label="profile.label.major">
                 <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
               </select>
@@ -372,6 +379,7 @@
             </div>
 
             <div class="profile-field">
+              <label class="sr-only" for="profileInterestsInput" data-i18n="profile.label.interests">What You Want in a University</label>
               <textarea
                 id="profileInterestsInput"
                 aria-label="What You Want in a University"

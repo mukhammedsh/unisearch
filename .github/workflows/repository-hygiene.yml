@@ -23,7 +23,7 @@ jobs:
           cache: npm
 
       - name: Install node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Check version sync
         run: npm run check:version

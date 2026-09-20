@@ -111,7 +111,7 @@ function scanCssFile(filePath) {
       // Check for fractional px (e.g. 11.5px, 12.5px, 13.5px)
       const fracMatch = valStr.match(/\b(\d+\.\d+)px\b/i);
       if (fracMatch) {
-        const num = parseFloat(fracMatch[1]);
+        const num = Number.parseFloat(fracMatch[1]);
         violations.push({
           line: i + 1,
           type: "typography-fractional",
@@ -123,7 +123,7 @@ function scanCssFile(filePath) {
         // Check for non-scale integer px
         const intMatch = valStr.match(/\b(\d+)px\b/i);
         if (intMatch && !valStr.includes("clamp(") && !valStr.includes("calc(")) {
-          const num = parseInt(intMatch[1], 10);
+          const num = Number.parseInt(intMatch[1], 10);
           if (!ALLOWED_FONT_SIZES.has(num)) {
             violations.push({
               line: i + 1,
@@ -197,7 +197,7 @@ function scanCssFile(filePath) {
         // Find all px values in the declaration
         const pxMatches = valStr.matchAll(/(-?\d+(\.\d+)?)px\b/gi);
         for (const m of pxMatches) {
-          const num = parseFloat(m[1]);
+          const num = Number.parseFloat(m[1]);
           const absNum = Math.abs(num);
           // Allow 0, 1px, 2px (for fine borders/dividers) and numbers divisible by 4
           if (absNum > 2 && absNum % 4 !== 0) {
@@ -218,8 +218,8 @@ function scanCssFile(filePath) {
     if (zMatch) {
       const valStr = zMatch[1].trim();
       if (!valStr.includes("var(") && !valStr.includes("calc(") && !["auto", "inherit", "initial", "unset"].includes(valStr)) {
-        const num = parseInt(valStr, 10);
-        if (isNaN(num) || !ALLOWED_Z_INDICES.has(num)) {
+        const num = Number.parseInt(valStr, 10);
+        if (Number.isNaN(num) || !ALLOWED_Z_INDICES.has(num)) {
           violations.push({
             line: i + 1,
             type: "layer-z-index-arbitrary",
@@ -248,7 +248,7 @@ function scanCssFile(filePath) {
       if (!valStr.includes("calc(") && !valStr.includes("clamp(") && !valStr.includes("var(") && !valStr.includes("%") && !valStr.includes("999px") && !valStr.includes("9999px")) {
         const pxMatches = valStr.matchAll(/(-?\d+(\.\d+)?)px\b/gi);
         for (const m of pxMatches) {
-          const num = parseFloat(m[1]);
+          const num = Number.parseFloat(m[1]);
           const absNum = Math.abs(num);
           if (!ALLOWED_RADII.has(absNum)) {
             violations.push({

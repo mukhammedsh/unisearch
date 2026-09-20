@@ -213,7 +213,20 @@ function fixLine(line) {
 }
 
 function splitLinesPreservingEndings(text) {
-  return text.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g)?.filter((part) => part.length > 0) ?? [];
+  const lines = [];
+  let start = 0;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const code = text.charCodeAt(index);
+    if (code !== 10 && code !== 13) continue;
+
+    if (code === 13 && text.charCodeAt(index + 1) === 10) index += 1;
+    lines.push(text.slice(start, index + 1));
+    start = index + 1;
+  }
+
+  if (start < text.length) lines.push(text.slice(start));
+  return lines;
 }
 
 function fixText(text) {

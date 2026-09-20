@@ -9,6 +9,10 @@ let themeWatchBound = false;
 let disableTransitionsTimer = 0;
 let disableTransitionsStyle = null;
 
+function flushLayout(element) {
+  return element.getBoundingClientRect();
+}
+
 function disableTransitionsTemporarily() {
   if (typeof document === "undefined" || !document.head) return;
   if (!disableTransitionsStyle) {
@@ -22,7 +26,7 @@ function disableTransitionsTemporarily() {
     disableTransitionsTimer = 0;
   }
   if (typeof window !== "undefined" && typeof document !== "undefined" && document.body) {
-    document.body.getBoundingClientRect();
+    flushLayout(document.body);
   }
   if (typeof window !== "undefined" && typeof window.requestAnimationFrame === "function") {
     disableTransitionsTimer = window.requestAnimationFrame(() => {

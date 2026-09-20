@@ -150,14 +150,18 @@
 
             <div class="budget-control-wrapper">
                 <div class="budget-inputs">
+                    <label class="sr-only" for="minCostInput" data-i18n="universities.cost_min">Min cost</label>
                     <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
                     <span class="budget-range-separator" aria-hidden="true">&ndash;</span>
+                    <label class="sr-only" for="maxCostInput" data-i18n="universities.cost_max">Max cost</label>
                     <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="100000" aria-label="Max cost" data-i18n-aria-label="universities.cost_max" />
                 </div>
 
                 <div class="dual-slider-container">
                     <div class="slider-track" id="sliderTrack"></div>
+                    <label class="sr-only" for="minCostSlider" data-i18n="universities.cost_min">Min cost</label>
                     <input id="minCostSlider" type="range" min="0" value="0" step="100" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
+                    <label class="sr-only" for="maxCostSlider" data-i18n="universities.cost_max">Max cost</label>
                     <input id="maxCostSlider" type="range" min="0" value="100000" step="100" aria-label="Max cost" data-i18n-aria-label="universities.cost_max" />
                 </div>
                 <div class="budget-range-labels" id="budgetRangeLabels">
@@ -201,6 +205,7 @@
                 <span data-i18n="universities.tradeoff.focus.left">Career & Practice</span>
                 <span data-i18n="universities.tradeoff.focus.right">Science & Research</span>
               </div>
+              <label class="sr-only" for="focusSlider" data-i18n="universities.tradeoff.focus">Focus</label>
               <input class="tradeoff-slider" type="range" id="focusSlider" min="0" max="100" value="50" aria-label="focus" data-i18n-aria-label="universities.tradeoff.focus">
               <div class="tradeoff-caption">
                 <span id="focusLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
@@ -219,6 +224,7 @@
                 <span data-i18n="universities.tradeoff.atmosphere.left">Social & Events</span>
                 <span data-i18n="universities.tradeoff.atmosphere.right">Hardcore Study</span>
               </div>
+              <label class="sr-only" for="atmosphereSlider" data-i18n="universities.tradeoff.atmosphere">Study Style</label>
               <input class="tradeoff-slider" type="range" id="atmosphereSlider" min="0" max="100" value="50" aria-label="atmosphere" data-i18n-aria-label="universities.tradeoff.atmosphere">
               <div class="tradeoff-caption">
                 <span id="atmosphereLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
@@ -237,6 +243,7 @@
                 <span data-i18n="universities.tradeoff.finance.left">Budget & Grants</span>
                 <span data-i18n="universities.tradeoff.finance.right">Prestige & Comfort</span>
               </div>
+              <label class="sr-only" for="financeSlider" data-i18n="universities.tradeoff.finance">Cost vs Prestige</label>
               <input class="tradeoff-slider" type="range" id="financeSlider" min="0" max="100" value="50" aria-label="finance" data-i18n-aria-label="universities.tradeoff.finance">
               <div class="tradeoff-caption">
                 <span id="financeLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>
@@ -255,6 +262,7 @@
                 <span data-i18n="universities.tradeoff.location.left">Study in City</span>
                 <span data-i18n="universities.tradeoff.location.right">Study Outside City</span>
               </div>
+              <label class="sr-only" for="locationSlider" data-i18n="universities.tradeoff.location">Location</label>
               <input class="tradeoff-slider" type="range" id="locationSlider" min="0" max="100" value="50" aria-label="location" data-i18n-aria-label="universities.tradeoff.location">
               <div class="tradeoff-caption">
                 <span id="locationLabel" data-i18n="universities.tradeoff.balanced">Balanced (50/50)</span>

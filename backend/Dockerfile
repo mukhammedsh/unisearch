@@ -5,8 +5,8 @@ ENV HF_HOME=/home/appuser/.cache/huggingface
 
 WORKDIR /app
 
-COPY backend/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+COPY backend/requirements.lock /app/requirements.lock
+RUN pip install --no-cache-dir --require-hashes --only-binary=:all: -r /app/requirements.lock
 
 RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
     && mkdir -p /home/appuser/.cache/huggingface \
