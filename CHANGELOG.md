@@ -4,6 +4,16 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.15 (2026-09-21) - OpenSSF Silver Governance and Architecture Documentation
+
+### Documentation
+- Created comprehensive system architecture documentation in `docs/architecture.md` covering client/gateway/backend/persistence layers, Calm Academic Workspace frontend, defense-in-depth security pipeline, composite UniFit/UniChance scoring, `multilingual-e5` neural embeddings with graceful fallback, and Redis caching.
+- Published project engineering roadmap in `docs/roadmap.md` organized across 4 strategic execution phases (Stabilization, Authentication & Persistence, Mobile Experience, Academic Expansion) without exposing internal calendar dates.
+- Established project governance model and contributor framework in `GOVERNANCE.md` formally defining BDFL/maintainer-led decision-making, RFC processes, contributor role ladder, and documented continuity and succession protocols satisfying OpenSSF Bus Factor (>= 2) with @mukhammedsh and @raiselx.
+- Completed Contributor Covenant 2.1 compliance in `CODE_OF_CONDUCT.md` with explicit 4-level stepped enforcement guidelines (Correction, Warning, Temporary Ban, Permanent Ban).
+- Updated `SECURITY.md` with version 6.x support, explicit response timeline SLAs (48h acknowledgment, 7d triage, 14–30d fix), and public researcher credit attribution.
+- Cross-referenced new architecture, roadmap, governance, and code of conduct documentation across `README.md` and `CONTRIBUTING.md`.
+
 ## 6.8.14 (2026-09-20) - Test Coverage Expansion for OpenSSF Silver
 
 ### Tests

@@ -6,21 +6,31 @@ We provide security updates for the following versions of UniSearch:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 3.7.x   | :white_check_mark: |
-| < 3.7.0 | :x:                |
+| 6.x     | :white_check_mark: |
+| < 6.0.0 | :x:                |
 
 ## Reporting a Vulnerability
 
 We take the security of UniSearch seriously. If you believe you have found a security vulnerability, please do NOT create a public issue. Instead, please report it through one of the following channels:
 
-1.  **GitHub Private Vulnerability Reporting:** Please use the [Private Vulnerability Reporting](https://github.com/mukhammedsh/unisearch/security/advisories/new) feature on GitHub. This is the preferred method as it allows us to discuss and fix the issue privately.
-2.  **Email:** You can also contact us at [info@unisearch.study](mailto:info@unisearch.study). We aim to provide an initial response within 48 hours and a more detailed update within one week.
+1. **GitHub Private Vulnerability Reporting:** Please use the [Private Vulnerability Reporting](https://github.com/mukhammedsh/unisearch/security/advisories/new) feature on GitHub. This is the preferred method as it allows us to discuss and fix the issue privately.
+2. **Email:** You can also contact us at [info@unisearch.study](mailto:info@unisearch.study).
 
-Please include as much detail as possible in your report, including steps to reproduce the vulnerability and potential impact.
+### Response Timeline SLAs
+* **Initial Acknowledgment:** Within **48 hours** of report receipt.
+* **Triage & Impact Assessment:** Within **7 calendar days**.
+* **Remediation & Patch Release:** Within **14 to 30 calendar days**, depending on CVSS severity. A coordinated disclosure advisory will be published alongside the patch release.
+
+## Researcher Credit
+
+We believe in recognizing security researchers who help protect the UniSearch community. If you report a valid, previously unknown vulnerability, we will publicly credit you in our [CHANGELOG.md](CHANGELOG.md), GitHub Security Advisories, and release notes (unless you explicitly request to remain anonymous).
 
 ## Security Practices
 
-UniSearch follows best practices for academic tools:
-- We use SHA-256 for integrity checks and caching.
-- All HTML output is sanitized using standard browser DOM APIs to prevent XSS.
-- Sensitive data is never logged to the console or server logs in production environments.
+UniSearch follows defense-in-depth best practices for academic tools:
+- **Input Validation & Schemas:** Strict Pydantic V2 model validation on all incoming request payloads.
+- **Request Guards:** Sliding-window rate limiting, 128 KiB request payload caps, and trusted reverse proxy client IP resolution.
+- **Defensive Headers:** Content-Security-Policy (CSP), `X-Content-Type-Options: nosniff`, and `X-Frame-Options: DENY`.
+- **Automated Security Scanning:** Continuous SAST scanning with GitHub CodeQL, container vulnerability scanning with Trivy, and fuzz testing with Google ClusterFuzzLite / Atheris.
+- **Data Privacy:** Sensitive applicant profile data, secrets, and authorization tokens are never logged or stored on the server.
+

@@ -1,6 +1,6 @@
 # Contributing to UniSearch
 
-UniSearch is primarily a solo-maintained project. External contributions are welcome when they are small, focused, and easy to review, but the project does not assume a large community-maintainer workflow.
+UniSearch is primarily a maintainer-led project with community contributions. External contributions are welcome when they are small, focused, and easy to review. For decision-making procedures, contributor roles, and project sustainability, see [GOVERNANCE.md](GOVERNANCE.md). All participants are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Before You Start
 - Check the nearest existing implementation before adding a new pattern.
