@@ -9,7 +9,6 @@ Fuzzes the core ranking and evaluation logic:
 """
 import os
 import sys
-import io
 
 # Ensure backend modules can be imported
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -113,6 +112,7 @@ def TestOneInput(data: bytes) -> None:
             chance_res = ai_scoring.estimate_uni_chance(uni, profile=profile)
             assert isinstance(chance_res, dict)
         except (TypeError, ValueError, KeyError):
+            # Expected: malformed fuzz profile data is safely rejected by UniChance scoring
             pass
 
     # 3. Exercise ROI calculation
@@ -121,6 +121,7 @@ def TestOneInput(data: bytes) -> None:
             roi_res = ai_scoring.estimate_university_roi(uni, profile=profile)
             assert isinstance(roi_res, dict)
         except (TypeError, ValueError, KeyError):
+            # Expected: malformed fuzz profile data is safely rejected by ROI estimation
             pass
 
     # 4. Exercise finance mode parsing and breakdown extraction

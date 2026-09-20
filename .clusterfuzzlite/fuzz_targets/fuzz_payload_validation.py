@@ -101,6 +101,7 @@ def TestOneInput(data: bytes) -> None:
     try:
         UniversitiesAiSortRequest.model_validate(synth_dict)
     except ValidationError:
+        # Expected: synthetic malformed payload triggers schema validation error
         pass
 
 

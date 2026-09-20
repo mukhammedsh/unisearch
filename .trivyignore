@@ -1,0 +1,6 @@
+# Trivy ignore rules
+# AVD-DS-0002: ClusterFuzzLite builder image (.clusterfuzzlite/Dockerfile) runs as root
+# during CI compilation according to Google OSS-Fuzz builder architecture.
+# Production runtime backend (backend/Dockerfile) explicitly uses non-root appuser.
+AVD-DS-0002
+DS-0002
