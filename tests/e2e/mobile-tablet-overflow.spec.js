@@ -100,8 +100,8 @@ test("comparison setup keeps admission controls aligned without page overflow", 
   expect(desktopLayout.selectorScrollWidth).toBeLessThanOrEqual(desktopLayout.selectorClientWidth + 1);
   expect(desktopLayout.statsBoxBorderWidth).toBe("0px");
   expect(desktopLayout.fundingOptionBorderLeftWidth).toBe("0px");
-  expect(desktopLayout.fundingOptionBorderTopWidth).toBe("1px");
-  expect(desktopLayout.fundingOptionRadius).toBe("0px");
+  expect(desktopLayout.fundingOptionBorderTopWidth).toBe("0px");
+  expect(desktopLayout.fundingOptionRadius).toBe("12px");
   expect(desktopLayout.fundingOptionFlexWrap).toBe("nowrap");
   expect(desktopLayout.fundingOptionMainFlex).toBe("0 0 auto");
 

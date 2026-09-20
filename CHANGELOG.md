@@ -15,6 +15,9 @@ All notable project changes should be recorded here.
 ### Tooling
 - Extended the design lint checker with a font-weight rule that flags any weight outside the `400`/`500`/`600` set (`scripts/check-design-lint.mjs`).
 
+### Tests
+- Updated comparison options layout assertions in `tests/e2e/mobile-tablet-overflow.spec.js` to match borderless funding cards and `--radius-base` geometry.
+
 ## 6.8.1 (2026-09-20) - Stylesheet Ownership Refactor
 
 ### Frontend Architecture
