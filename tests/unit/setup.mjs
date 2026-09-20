@@ -21,6 +21,8 @@ global.document = {
     classList: { add: () => {}, remove: () => {} }
   },
   getElementById: () => null,
+  querySelector: () => null,
+  querySelectorAll: () => [],
   addEventListener: () => {},
   removeEventListener: () => {},
   body: { appendChild: () => {} },

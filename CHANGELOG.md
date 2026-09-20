@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.14 (2026-09-20) - Test Coverage Expansion for OpenSSF Silver
+
+### Tests
+- Expanded backend test suite with comprehensive Redis store and background tasks tests, bringing both modules to 100% line coverage and overall backend coverage to 85%.
+- Expanded frontend unit test suite covering image fallback cascades, invalid currency formatting fallbacks, mobile navbar search drawer controls, and offline notice rendering, elevating total frontend coverage past the 80% OpenSSF Silver milestone (80.15%).
+- Added standard `querySelector` and `querySelectorAll` stubs to test runner mock DOM setup.
+
 ## 6.8.13 (2026-09-20) - Security Hardening And Supply Chain Pinning
 
 ### Security
