@@ -7,6 +7,7 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(scriptDir, "..");
 const cssDir = path.resolve(rootDir, "frontend", "css");
 const baselinePath = path.resolve(scriptDir, "tokens-baseline.json");
+const tokenSourcePath = "frontend/css/shared/01-foundation.css";
 
 const args = new Set(process.argv.slice(2));
 const strictMode = args.has("--strict");
@@ -42,7 +43,7 @@ function listCssFiles(dir) {
 function scanCssFile(filePath) {
   const content = fs.readFileSync(filePath, "utf8");
   const relPath = path.relative(rootDir, filePath).replace(/\\/g, "/");
-  const isStyleCss = path.basename(filePath) === "style.css";
+  const isTokenSource = relPath === tokenSourcePath;
 
   // Mask multiline comments while preserving exact line positions
   const maskedContent = content.replace(/\/\*[\s\S]*?\*\//g, (match) =>
@@ -60,14 +61,14 @@ function scanCssFile(filePath) {
     const rawLine = rawLines[i];
     const trimmed = line.trim();
 
-    if (isStyleCss) {
+    if (isTokenSource) {
       if (trimmed.startsWith(":root")) {
         inRootBlock = true;
       }
       if (inRootBlock && trimmed.endsWith("}") && !trimmed.includes("{")) {
         inRootBlock = false;
       }
-      // Inside :root of style.css, CSS variable declarations (--*) are permitted
+      // The shared foundation owns literal palette values in custom properties.
       if (inRootBlock && trimmed.startsWith("--")) {
         continue;
       }
@@ -185,7 +186,7 @@ function run() {
     console.error("New hardcoded colors were introduced against project rules:");
     console.error(regressionDetails.join("\n"));
     console.error(
-      "\nRule: All colors must be CSS variables from frontend/css/style.css (e.g. var(--surface-solid))."
+      `\nRule: All colors outside ${tokenSourcePath} must use CSS variables (e.g. var(--surface-solid)).`
     );
     console.error("See docs/design-system.md for the token palette.");
     process.exit(1);

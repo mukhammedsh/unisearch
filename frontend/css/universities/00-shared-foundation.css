@@ -1,0 +1,49 @@
+/* Catalog-only rules extracted from the global stylesheet. */
+
+/* Extracted from 02-shell-tooltips.css. */
+.uni-card:has(.ui-tooltip-wrap.is-open),
+
+.uni-card:has(.ui-tooltip-wrap:not(.is-closed):hover) {
+  z-index: var(--z-dropdown);
+}
+
+.uni-card .ui-tooltip-wrap {
+  z-index: 2;
+}
+
+/* Extracted from 06-motion-accessibility.css. */
+@media (prefers-reduced-motion: reduce) {
+
+.is-skeleton .uni-media,
+
+.is-skeleton .uni-logo,
+
+.is-skeleton .uni-price,
+
+.is-skeleton .uni-media::after,
+
+.is-skeleton .uni-logo::after,
+
+.is-skeleton .uni-price::after {
+    animation: none !important;
+  }
+
+.is-skeleton .uni-media::after,
+
+.is-skeleton .uni-logo::after,
+
+.is-skeleton .uni-price::after {
+    display: none !important;
+  }
+}
+
+
+.page-btn,
+
+.u-filter-title,
+
+.u-recent__label,
+
+.u-found {
+  font-family: var(--font-display);
+}

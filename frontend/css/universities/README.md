@@ -1,15 +1,20 @@
-# CSS-модули страницы университетов
+# University catalog CSS modules
 
-`../universities.css` — точка входа. Она импортирует модули ниже в порядке каскада.
+`../universities.css` is the catalog stylesheet entry point. It imports the
+modules below in cascade order.
 
-| Модуль | Зона ответственности |
-| --- | --- |
-| `01-shell-controls.css` | Каркас страницы, фильтры, поиск, переключатели вида, онбординг |
-| `02-catalog.css` | Скелетоны, карточки результатов, сохранённое и панель сравнения |
-| `03-comparison.css` | Настройка сравнения, анализ, таблицы, карточки и их состояния |
-| `04-catalog-responsive.css` | Элементы каталога, диалог предупреждения, пагинация, маркеры карты, средняя ширина |
-| `05-catalog-polish.css` | Актуальная геометрия каталога, состояния карточек и уточнения боковой панели |
-| `06-map.css` | Панель результатов карты, состояния карточек и её адаптивность |
-| `07-responsive.css` | Компактные правила нескольких компонентов и узких экранов |
+| Order | Module | Responsibility |
+| --- | --- | --- |
+| 0 | `00-shared-foundation.css` | Catalog-only motion, typography, and tooltip rules extracted from the global stylesheet |
+| 1 | `01-shell-controls.css` | Page shell, filters, search, view controls, and section navigation |
+| 2 | `02-catalog.css` | Skeletons, result cards, saved state, and the comparison tray |
+| 3 | `03-comparison.css` | Comparison setup, analysis, tables, cards, and their states |
+| 4 | `04-catalog-responsive.css` | Catalog controls, warning dialog, pagination, map markers, and medium-width behavior |
+| 5 | `05-catalog-polish.css` | Current catalog geometry, card states, and sidebar refinements |
+| 6 | `06-map.css` | Map results panel, map card states, and responsive behavior |
+| 7 | `07-responsive.css` | Compact behavior for shared catalog components and narrow screens |
+| 8 | `08-onboarding.css` | First-visit catalog tour and onboarding states |
 
-Не меняйте порядок импорта: поздние модули намеренно переопределяют ранние. Новое базовое правило добавляйте в ближайший модуль-владельца; переопределение — только когда исправление раннего правила изменит уже устоявшееся состояние.
+Do not reorder imports to fix specificity. Add a base rule to the narrowest
+owning module, and add an override only when changing the earlier rule would
+alter an established state.

@@ -1,0 +1,472 @@
+/* ===== Navbar ===== */
+/* ===== Navbar (same on all pages) ===== */
+.navbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 70px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 40px;
+  box-sizing: border-box;
+
+  background: var(--surface);
+  border-bottom: none;
+  box-shadow: var(--shadow-sm);
+  z-index: var(--z-nav);
+}
+
+.navbar-left,
+
+.navbar-right{
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.lang-control {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.logo{
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+
+.profile-trigger-btn,
+
+.settings-trigger-btn,
+
+.navbar-search-toggle{
+  border: none;
+  box-shadow: var(--shadow-xs);
+  background: var(--surface-soft);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.navbar-search-toggle {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .profile-trigger-btn:hover,
+
+.settings-trigger-btn:hover,
+
+.navbar-search-toggle:hover{
+    border-color: transparent;
+    box-shadow: var(--shadow-sm);
+    color: var(--accent);
+  }
+}
+
+.lang-switch {
+  height: 38px;
+  width: 72px;
+  min-width: 72px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: var(--shadow-xs);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0 12px;
+  margin-right: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lang-switch:hover {
+    border-color: transparent;
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.navbar-right .lang-control .custom-select-wrapper {
+  width: 80px;
+  margin-right: 0;
+}
+
+.navbar-right .lang-control .custom-select-trigger {
+  width: 80px;
+  min-height: 38px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-soft);
+  line-height: 1;
+}
+
+.settings-trigger-btn {
+  margin-right: 8px;
+}
+
+.navbar-right .lang-control .custom-select-trigger::after {
+  width: 8px;
+  height: 5px;
+  position: static;
+  display: inline-block;
+  flex: 0 0 auto;
+  transform: none;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+  background-image: none;
+  opacity: 0.65;
+  transition: transform var(--motion-fast) var(--motion-ease-emphasized), opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-right .lang-control .custom-select-trigger:hover::after {
+    opacity: 1;
+    background-color: var(--accent);
+  }
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
+  opacity: 1;
+  background-color: var(--accent);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
+  transform: rotate(180deg);
+}
+
+.navbar-right .lang-control .custom-select-trigger--language span {
+  display: inline;
+}
+
+.navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 4px;
+  max-width: none;
+}
+
+.navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content span {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: max-content;
+  line-height: 1;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.navbar-right .lang-control .custom-options {
+  left: 50%;
+  right: auto;
+  min-width: 170px;
+  width: max-content;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-options {
+  transform: translateX(-50%) translateY(0);
+}
+
+.navbar-right .lang-control .custom-option {
+  white-space: nowrap;
+}
+
+/* Auto-compact navbar layout when one-row navigation does not fit */
+.navbar.is-compact {
+  height: auto;
+  padding: 12px 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.navbar.is-compact .navbar-left {
+  order: 1;
+  width: 100%;
+  flex: 0 0 100%;
+  justify-content: center;
+}
+
+.navbar.is-compact .navbar-left > a {
+  justify-content: center;
+}
+
+.navbar.is-compact .navbar-right {
+  order: 2;
+  width: 100%;
+  flex: 0 0 100%;
+  justify-content: center;
+  margin-left: 0;
+  gap: 8px;
+}
+
+.settings-modal.is-open .settings-backdrop {
+  animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
+}
+
+.settings-modal.is-open .settings-card {
+  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
+}
+
+.settings-modal.is-closing .settings-backdrop {
+  animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
+}
+
+.settings-modal.is-closing .settings-card {
+  animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
+}
+
+.icon-btn{
+  border: none;
+  background: var(--surface-soft);
+  color: var(--accent);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-btn svg{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.ui-icon {
+  width: 1em;
+  height: 1em;
+  display: block;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+[data-heroicon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  flex: 0 0 auto;
+  vertical-align: middle;
+}
+
+.ui-icon--14 {
+  width: 14px;
+  height: 14px;
+}
+
+.ui-icon--16 {
+  width: 16px;
+  height: 16px;
+}
+
+.ui-icon--18 {
+  width: 18px;
+  height: 18px;
+}
+
+.ui-icon--20 {
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon--22 {
+  width: 22px;
+  height: 22px;
+}
+
+.ui-icon--24 {
+  width: 24px;
+  height: 24px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .icon-btn:hover{
+    background: var(--line);
+  }
+}
+
+/* Shared profile content */
+
+/* ====================================================================
+   Unified Calm Academic Workspace Tooltip System
+   Standard components: .ui-tooltip-wrap, .ui-tooltip-trigger, .ui-tooltip-bubble
+   ==================================================================== */
+.ui-tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  z-index: 1;
+}
+
+.ui-tooltip-wrap:not(.is-closed):hover,
+
+.ui-tooltip-wrap:not(.is-closed):focus-within,
+
+.ui-tooltip-wrap.is-open {
+  z-index: calc(var(--z-dropdown) + 1);
+}
+
+.ui-tooltip-trigger {
+  cursor: help;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ui-tooltip-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ui-tooltip-bubble {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 32px));
+  box-sizing: border-box;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  z-index: var(--z-dropdown);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    visibility var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-enter);
+  overflow-wrap: anywhere;
+}
+
+.ui-tooltip-wrap:not(.is-closed):focus-within .ui-tooltip-bubble,
+
+.ui-tooltip-wrap.is-open .ui-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-tooltip-wrap:not(.is-closed):hover .ui-tooltip-bubble {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.ui-tooltip-wrap.is-closed .ui-tooltip-bubble {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ui-tooltip-title {
+  display: block;
+  font-weight: 600;
+  color: inherit;
+  margin-bottom: 2px;
+}
+
+.ui-tooltip-text {
+  display: block;
+  font-weight: 400;
+  color: inherit;
+  opacity: 0.92;
+  line-height: 1.35;
+}
+
+.ui-tooltip-text--subtle {
+  opacity: 0.75;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* Elevation of parent containers when an open tooltip is inside */
+
+.d-kv:has(.ui-tooltip-wrap.is-open) {
+  position: relative;
+  z-index: var(--z-dropdown);
+}
+
+.track-factors-badges:has(.ui-tooltip-wrap.is-open),
+
+.track-factors-badges:has(.ui-tooltip-wrap:not(.is-closed):hover) {
+  position: relative;
+  z-index: var(--z-dropdown);
+}
+
+:where(input, select, textarea).is-invalid,
+
+:where(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--line-danger);
+}
+
+:where(input, select, textarea).is-invalid:focus,
+
+:where(input, select, textarea)[aria-invalid="true"]:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--line-danger);
+}
+
+.track-exam-entry-group{
+  display: grid;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.track-exam-entry-group + .track-exam-entry-group{
+  border-top: none;
+  margin-top: 6px;
+}
+
+.track-exam-entry-group-title{
+  color: var(--text);
+}
+
+.track-exam-entry-group-list{
+  display: grid;
+  gap: 4px;
+}

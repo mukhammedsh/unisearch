@@ -1,0 +1,124 @@
+/* --- Mobile responsiveness (improved) --- */
+@media (max-width: 768px) {
+
+  .navbar {
+    position: sticky;
+    top: 0;
+    height: auto;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Noto Sans", "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-top: 0;
+  }
+
+  .navbar-left {
+    order: 1;
+    width: 100%;
+    flex: 0 0 100%;
+    justify-content: center;
+  }
+  .navbar-left > a { justify-content: flex-start; }
+  .navbar-right {
+    order: 2;
+    width: 100%;
+    flex: 0 0 100%;
+    justify-content: center;
+    margin-left: 0;
+    gap: 8px;
+  }
+  .lang-control { margin-right: 6px; }
+  .lang-switch { width: 68px; min-width: 68px; height: 34px; margin-right: 0; }
+  .navbar-right .lang-control .custom-select-wrapper { margin-right: 0; }
+  .navbar-right .lang-control .custom-select-wrapper,
+.navbar-right .lang-control .custom-select-trigger {
+    width: 82px;
+    min-height: 38px;
+  }
+  .navbar-right .lang-control .custom-select-trigger {
+    padding: 0 16px 0 12px; /* Better left padding for flag */
+    font-size: 11px;
+    width: 82px;
+  }
+  .navbar-right .lang-control .custom-select-trigger::after {
+    right: 6px;
+  }
+  .profile-trigger-btn,
+.settings-trigger-btn { width: 34px; height: 34px; }
+
+  /* Profile modal tweaks */
+}
+
+@media (max-width: 599px) {
+  .navbar-right {
+    margin-left: 0;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .lang-switch {
+    width: 68px;
+    min-width: 68px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .logo {
+    height: 36px;
+  }
+
+  .profile-trigger-btn,
+.settings-trigger-btn { width: 34px; height: 34px; }
+}
+
+@media (max-width: 700px) {
+  .site-footer {
+    padding: 12px 0;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  .footer-meta {
+    justify-content: center;
+  }
+
+  .social-links {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    left: 10px;
+    right: 10px;
+    bottom: 12px;
+  }
+
+  .toast {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 12px 12px;
+    font-size: 13px;
+  }
+}

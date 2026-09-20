@@ -1,0 +1,438 @@
+/* ===== University workspace search ===== */
+.navbar-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.navbar-search[hidden] {
+  display: none !important;
+}
+
+/* Mobile search overlay trigger (YouTube-style): sizing and visuals come from
+   the shared navbar button group above, so the loupe always matches them. */
+.navbar-search-toggle[hidden] {
+  display: none !important;
+}
+
+/* Back control shown only while the mobile search overlay is open. */
+.navbar-search-back {
+  display: none;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-back:hover {
+    background: var(--surface-soft);
+    color: var(--text);
+  }
+}
+
+.navbar-search-back[hidden] {
+  display: none !important;
+}
+
+/* Scrim dims page content below the navbar while mobile search is focused. */
+.navbar-search-scrim {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: calc(var(--z-nav) - 1);
+  background: var(--backdrop);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    visibility var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search-scrim.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.navbar-search-scrim[hidden] {
+  display: none !important;
+}
+
+.navbar-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.navbar-search input {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 44px 0 44px;
+  border: none;
+  border-radius: var(--radius-base);
+  outline: 0;
+  background: var(--surface-soft);
+  box-shadow: var(--shadow-xs);
+  color: var(--text);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search input::placeholder {
+  color: var(--text-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search input:hover {
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.navbar-search input:focus {
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-xs);
+}
+
+.navbar-search input::-webkit-search-cancel-button,
+.navbar-search input::-webkit-search-decoration,
+.navbar-search input::-webkit-search-results-button,
+.navbar-search input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.navbar-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search-clear[hidden] {
+  display: none;
+}
+
+.navbar-search-clear:active:not(:disabled) {
+  filter: brightness(0.88);
+  transition: filter 0.04s ease;
+}
+
+.navbar-search-clear:focus-visible {
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-clear:hover {
+    background: var(--surface-solid);
+    color: var(--text);
+  }
+}
+
+.navbar-search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  z-index: var(--z-dropdown);
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    visibility var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-enter);
+}
+
+.navbar-search-suggestions.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.navbar-search-suggestion {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 48px;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.navbar-search-suggestion:focus-visible,
+.navbar-search-suggestion.is-highlighted {
+  background: var(--surface-soft);
+  outline: 0;
+  transform: translateX(2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-suggestion:hover {
+    background: var(--surface-soft);
+    transform: translateX(2px);
+  }
+}
+
+.navbar-search-suggestion__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: var(--radius-xs);
+  background: var(--surface-soft);
+  overflow: hidden;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.navbar-search-suggestion__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.navbar-search-suggestion__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.navbar-search-suggestion__name {
+  overflow: hidden;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar-search-suggestion__location {
+  overflow: hidden;
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar-search-highlight {
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+.navbar-search-suggestion__badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--space-2);
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--surface-soft);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.navbar-search-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.navbar-search-empty--offline {
+  color: var(--text-secondary);
+  background: var(--surface-soft);
+  border-radius: var(--radius-sm);
+  margin: var(--space-1);
+}
+
+@media (min-width: 1025px) {
+  .navbar {
+    display: flex;
+  }
+
+  .navbar.has-university-search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, min(44vw, 680px)) minmax(0, 1fr);
+    column-gap: var(--space-6);
+  }
+
+  .navbar.has-university-search .navbar-left {
+    justify-self: start;
+  }
+
+  .navbar.has-university-search .navbar-search {
+    grid-column: 2;
+  }
+
+  .navbar.has-university-search .navbar-right {
+    grid-column: 3;
+    justify-self: end;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* Single-row navbar on mobile: the search field is hidden behind a
+     YouTube-style loupe button and expands into a full-width overlay. */
+  .navbar.has-university-search {
+    display: flex;
+    height: var(--nav-height);
+    min-height: var(--nav-height);
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .navbar.has-university-search .navbar-left {
+    order: 1;
+    flex: 0 1 auto;
+    min-width: 0;
+    width: auto;
+  }
+
+  .navbar.has-university-search .navbar-search {
+    order: 2;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    display: none;
+  }
+
+  .navbar.has-university-search .navbar-right {
+    order: 3;
+    flex: 0 0 auto;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .navbar.has-university-search .navbar-search-toggle {
+    display: inline-flex;
+    order: 1;
+  }
+
+  .navbar.has-university-search.is-search-open {
+    gap: 8px;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-left,
+  .navbar.has-university-search.is-search-open .navbar-right {
+    display: none;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search-back {
+    display: inline-flex;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search-icon {
+    display: none;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search input {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    height: 44px;
+    padding-left: 16px;
+  }
+
+  .navbar.has-university-search.is-search-open .navbar-search-suggestions {
+    max-height: calc(100dvh - var(--nav-height) - 24px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 340px) {
+  .navbar.has-university-search .navbar-left,
+  .navbar.has-university-search .navbar-right {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}

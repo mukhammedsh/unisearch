@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.1 (2026-09-20) - Stylesheet Ownership Refactor
+
+### Frontend Architecture
+- Replaced the monolithic global stylesheet with an ordered import entry point and focused shared modules, preserving the existing cascade while removing duplicate responsive rules (`frontend/css/style.css`, `frontend/css/shared/`).
+- Moved profile-only styles into profile-owned modules and catalog-only shared rules into the university catalog stylesheet, making each page responsible for its own visual behavior (`frontend/css/profile.css`, `frontend/css/profile/`, `frontend/css/universities.css`, `frontend/css/universities/`).
+- Documented stylesheet module ownership and updated the token checker so palette literals remain limited to the shared foundation module (`docs/design-system.md`, `frontend/css/shared/README.md`, `scripts/check-tokens.mjs`).
+
 ## 6.8.0 (2026-09-20) - Wiki-Style Guide Section Navigation
 
 ### Guide

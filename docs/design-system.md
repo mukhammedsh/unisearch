@@ -2,7 +2,7 @@
 
 UniSearch uses a calm academic product workspace style. The interface should feel like a practical admissions and university-selection tool: data-dense, quiet, trustworthy, and fast to scan.
 
-Use this document as the source of truth for new UI work. The current baseline is the `2026 Product Refresh` layer in `frontend/css/style.css`.
+Use this document as the source of truth for new UI work. The global stylesheet entry point is `frontend/css/style.css`; its ordered modules are documented in `frontend/css/shared/README.md`.
 
 ## Design Direction
 
@@ -233,7 +233,7 @@ To eliminate the "Z-Index escalation race" (`z-index: 15`, `60`, `80`, `100`, `4
 
 1. **Stacking Context Isolation:** Complex widgets with internal layers (maps, sticky data tables) must create their own stacking context via `isolation: isolate`.
 2. **Local Layers:** Within an isolated context, only micro-layers (`-1`, `0`, `1`, `2`) are permitted for pseudo-elements and sticky columns/headers.
-3. **Global Semantic Layers:** Cross-component layering must use the standard tokens declared in `frontend/css/style.css`:
+3. **Global Semantic Layers:** Cross-component layering must use the standard tokens declared in `frontend/css/shared/01-foundation.css` and exposed through `frontend/css/style.css`:
    - `--z-nav` (`1000`): Sticky page header and primary navigation bar.
    - `--z-dropdown` (`1200`): Search suggestions, autocomplete popups, custom select menus, and tooltips (`calc(var(--z-dropdown) + 1)` for active tooltip wrappers).
    - `--z-docked-control` (`1300`): Floating action buttons, docked bottom comparison bar.
@@ -257,7 +257,7 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 
 ## Motion
 
-- Use the shared tokens in `frontend/css/style.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
+- Use the shared tokens in `frontend/css/shared/06-motion-accessibility.css`, exposed through `frontend/css/style.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
 - Use global motion classes before adding component-specific keyframes: `.motion-panel-enter`, `.motion-list-item-enter`, `.motion-row-exit`, `.motion-chip-remove`, `.motion-card-remove`, `.motion-icon-*`, and `.motion-state-pulse`.
 - Page and panel motion should be short fade/lift transitions. Lists may use limited stagger for the first visible items only. Save, compare, remove, and switch feedback should target the icon, thumb, or removed node.
 - Calm academic motion over "video game" playfulness: Strictly avoid gratuitous, exaggerated, or gamified animations (no bouncy springs, cartoon squashes like `scale(0.95)`, wobbly button presses, or playful bobbing). Transitions must remain smooth, understated, and functional—focusing on opacity, subtle background color changes, and precise translate enters/exits.

@@ -1,0 +1,95 @@
+/* ===== 2026 Profile Layout Density Pass ===== */
+
+/* ===== 2026 Surface & Component Alignment ===== */
+body {
+  background: var(--bg);
+}
+
+.navbar {
+  background: var(--surface);
+  border-bottom: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.site-footer {
+  background: var(--surface);
+  border: none;
+}
+
+.custom-options {
+  background: var(--surface-solid);
+  border: 1px solid var(--line-faint);
+}
+
+.navbar-right .lang-control .custom-options {
+  border: 1px solid var(--line-faint);
+  box-shadow: var(--shadow-card);
+}
+
+.settings-trigger-btn,
+.profile-trigger-btn,
+.lang-switch,
+.navbar-right .lang-control .custom-select-trigger {
+  border: none;
+  box-shadow: var(--shadow-xs);
+  background: var(--surface-soft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .settings-trigger-btn:hover,
+.profile-trigger-btn:hover,
+.lang-switch:hover,
+.navbar-right .lang-control .custom-select-trigger:hover {
+    background: var(--accent-panel);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    color: var(--accent);
+  }
+
+  .custom-select-trigger:hover {
+    background: var(--accent-panel);
+    color: var(--accent);
+  }
+}
+
+.custom-select-wrapper.open .custom-select-trigger {
+  background: var(--accent-panel);
+  color: var(--accent);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.custom-option.selected {
+  color: var(--accent);
+  background: var(--accent-panel);
+}
+
+.center-loading-spinner {
+  border-color: var(--line);
+  border-top-color: var(--accent);
+}
+
+/* Keep the primary destinations visually independent from the brand and utilities. */
+@media (min-width: 1025px) {
+  .navbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: var(--space-6);
+  }
+
+  .navbar-left {
+    justify-self: start;
+  }
+
+  .navbar-right {
+    justify-self: end;
+    margin-left: 0;
+  }
+
+  .navbar.is-compact {
+    display: flex;
+  }
+}
