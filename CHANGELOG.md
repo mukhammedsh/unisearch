@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.8 (2026-09-20) - Scorecard Action Registry Migration
+
+### Security
+- Updated OpenSSF Scorecard Action to v2.4.4 so scheduled security scans use its GitHub Container Registry image instead of the unavailable Google Container Registry image (`.github/workflows/security.yml`).
+
 ## 6.8.7 (2026-09-20) - Borderless Surface Hierarchy Refinement
 
 ### Design System

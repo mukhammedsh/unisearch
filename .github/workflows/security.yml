@@ -112,7 +112,7 @@ jobs:
       security-events: write
     steps:
       - name: Run OpenSSF Scorecard
-        uses: ossf/scorecard-action@v2.4.0
+        uses: ossf/scorecard-action@v2.4.4
         with:
           results_file: scorecard-results.sarif
           results_format: sarif
