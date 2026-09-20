@@ -3422,7 +3422,7 @@
   min-height: 44px;
   height: 44px;
   border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  background: transparent;
   color: var(--text);
   border: none;
   display: inline-flex;
