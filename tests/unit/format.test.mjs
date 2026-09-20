@@ -2,7 +2,18 @@ import './setup.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert';
 
-import { escapeHtml, escapeHtmlAttr, showToast, removeToast } from '../../frontend/javascript/utils/format.js';
+import {
+  escapeHtml,
+  escapeHtmlAttr,
+  showToast,
+  removeToast,
+  nested,
+  initials,
+  moneyUSD,
+  formatCurrency,
+  formatPlural,
+  bindImageFallbacks,
+} from '../../frontend/javascript/utils/format.js';
 
 test('escapeHtml', async (t) => {
   await t.test('escapes standard HTML characters', () => {
@@ -221,4 +232,130 @@ test('showToast and removeToast', async (t) => {
     }
   });
 });
+
+test('nested', async (t) => {
+  const data = {
+    user: {
+      profile: {
+        name: 'Alice',
+        scores: [100, 95],
+      },
+    },
+  };
+
+  await t.test('retrieves nested properties safely', () => {
+    assert.strictEqual(nested(data, ['user', 'profile', 'name']), 'Alice');
+    assert.deepStrictEqual(nested(data, ['user', 'profile', 'scores']), [100, 95]);
+  });
+
+  await t.test('returns fallback for missing keys or non-objects', () => {
+    assert.strictEqual(nested(data, ['user', 'missing', 'key'], 'default'), 'default');
+    assert.strictEqual(nested(data, ['user', 'profile', 'name', 'too_deep'], null), null);
+    assert.strictEqual(nested(null, ['user'], 'fallback'), 'fallback');
+    assert.strictEqual(nested(undefined, ['user'], 42), 42);
+  });
+});
+
+test('initials', async (t) => {
+  await t.test('generates 2-letter uppercase initials', () => {
+    assert.strictEqual(initials('Nazarbayev University'), 'NU');
+    assert.strictEqual(initials('Massachusetts Institute of Technology'), 'MI');
+    assert.strictEqual(initials('Harvard'), 'H');
+  });
+
+  await t.test('handles empty or whitespace strings', () => {
+    assert.strictEqual(initials(''), 'U');
+    assert.strictEqual(initials('   '), 'U');
+    assert.strictEqual(initials(null), 'U');
+  });
+});
+
+test('moneyUSD and formatCurrency', async (t) => {
+  await t.test('moneyUSD formats numbers with dollar sign', () => {
+    assert.strictEqual(moneyUSD(50000), '$50,000');
+    assert.strictEqual(moneyUSD('12000'), '$12,000');
+    assert.strictEqual(moneyUSD(0), '$0');
+    assert.strictEqual(moneyUSD('not-a-number'), '—');
+    assert.strictEqual(moneyUSD(undefined), '—');
+  });
+
+  await t.test('formatCurrency formats with specified currency code', () => {
+    const formatted = formatCurrency(25000, 'USD', { locale: 'en-US' });
+    assert.ok(formatted.includes('25,000'));
+    assert.strictEqual(formatCurrency(NaN), '—');
+  });
+
+  await t.test('formatCurrency falls back to simple formatting when currency is invalid', () => {
+    const formatted = formatCurrency(25000, 'INVALID_CURRENCY');
+    assert.ok(formatted.includes('INVALID_CURRENCY'));
+    assert.ok(formatted.includes('25,000'));
+  });
+});
+
+test('formatPlural', async (t) => {
+  await t.test('formats English plurals', () => {
+    const forms = ['university', 'universities'];
+    assert.strictEqual(formatPlural(1, forms, 'eng'), 'university');
+    assert.strictEqual(formatPlural(2, forms, 'eng'), 'universities');
+    assert.strictEqual(formatPlural(0, forms, 'eng'), 'universities');
+  });
+
+  await t.test('formats Russian plurals according to grammatical rules', () => {
+    const forms = ['университет', 'университета', 'университетов'];
+    assert.strictEqual(formatPlural(1, forms, 'rus'), 'университет');
+    assert.strictEqual(formatPlural(21, forms, 'rus'), 'университет');
+    assert.strictEqual(formatPlural(2, forms, 'rus'), 'университета');
+    assert.strictEqual(formatPlural(4, forms, 'rus'), 'университета');
+    assert.strictEqual(formatPlural(5, forms, 'rus'), 'университетов');
+    assert.strictEqual(formatPlural(11, forms, 'rus'), 'университетов');
+    assert.strictEqual(formatPlural(19, forms, 'rus'), 'университетов');
+  });
+});
+
+test('bindImageFallbacks', async (t) => {
+  await t.test('handles image load error and triggers fallback cascade', () => {
+    let errorHandler = null;
+    const targetRoot = {
+      addEventListener: (type, handler) => {
+        if (type === 'error') errorHandler = handler;
+      },
+    };
+
+    bindImageFallbacks(targetRoot);
+    assert.ok(errorHandler, 'error handler registered');
+
+    // Test stage 0 -> 1 fallbackSrc
+    const img1 = new HTMLImageElement();
+    img1.dataset = { fallbackSrc: 'https://example.com/fallback.png', fallbackStage: '0' };
+    img1.removeAttribute = () => {};
+    errorHandler({ target: img1 });
+    assert.strictEqual(img1.dataset.fallbackStage, '1');
+    assert.strictEqual(img1.src, 'https://example.com/fallback.png');
+
+    // Test stage 1 -> 2 finalSrc
+    img1.dataset.finalSrc = 'https://example.com/final.png';
+    errorHandler({ target: img1 });
+    assert.strictEqual(img1.dataset.fallbackStage, '2');
+    assert.strictEqual(img1.src, 'https://example.com/final.png');
+
+    // Test fallbackText
+    const parentNode = { textContent: '' };
+    const img2 = new HTMLImageElement();
+    img2.dataset = { fallbackText: 'MIT', fallbackStage: '2' };
+    img2.style = {};
+    img2.parentNode = parentNode;
+    errorHandler({ target: img2 });
+    assert.strictEqual(parentNode.textContent, 'MIT');
+    assert.strictEqual(img2.style.display, 'none');
+
+    // Test removeOnError
+    let removed = false;
+    const img3 = new HTMLImageElement();
+    img3.dataset = { removeOnError: '1', fallbackStage: '2' };
+    img3.remove = () => { removed = true; };
+    errorHandler({ target: img3 });
+    assert.strictEqual(removed, true);
+  });
+});
+
 

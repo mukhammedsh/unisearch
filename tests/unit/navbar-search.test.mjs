@@ -7,6 +7,13 @@ import {
   generateSuggestionsHtml,
   highlightMatchText,
   isGlobalSearchDisabledWorkspace,
+  isMobileSearchViewport,
+  isMobileSearchOpen,
+  renderGlobalSearchOfflineNotice,
+  renderGlobalSearchSuggestions,
+  hideGlobalSearchSuggestions,
+  openMobileSearch,
+  closeMobileSearch,
 } from '../../frontend/javascript/components/navbar-search.js';
 
 describe('Global Navbar Search Component', () => {
@@ -125,4 +132,167 @@ describe('Global Navbar Search Component', () => {
     assert.ok(html.includes('navbar-search-suggestion__badge'));
     assert.ok(html.includes('MIT</span>'));
   });
+
+  it('isMobileSearchViewport checks window.matchMedia', () => {
+    const origMatchMedia = global.window.matchMedia;
+    try {
+      global.window.matchMedia = (query) => ({
+        matches: query.includes('1024px'),
+      });
+      assert.equal(isMobileSearchViewport(), true);
+
+      global.window.matchMedia = () => ({ matches: false });
+      assert.equal(isMobileSearchViewport(), false);
+    } finally {
+      global.window.matchMedia = origMatchMedia;
+    }
+  });
+
+  it('isMobileSearchOpen detects search open class on navbar', () => {
+    const origQuerySelector = global.document.querySelector;
+    try {
+      global.document.querySelector = (sel) => {
+        if (sel === '.navbar.is-search-open') return null;
+        return null;
+      };
+      assert.equal(isMobileSearchOpen(), false);
+
+      global.document.querySelector = (sel) => {
+        if (sel === '.navbar.is-search-open') return {};
+        return null;
+      };
+      assert.equal(isMobileSearchOpen(), true);
+    } finally {
+      global.document.querySelector = origQuerySelector;
+    }
+  });
+
+  it('renderGlobalSearchOfflineNotice and renderGlobalSearchSuggestions manipulate DOM container', () => {
+    const origQuerySelector = global.document.querySelector;
+    const classes = new Set();
+    const container = {
+      className: 'navbar-search-suggestions',
+      innerHTML: '',
+      classList: {
+        add: (cls) => classes.add(cls),
+        remove: (cls) => classes.delete(cls),
+        contains: (cls) => classes.has(cls),
+      },
+      querySelectorAll: () => [],
+      setAttribute: () => {},
+    };
+
+    const host = {
+      querySelector: (sel) => (sel === '.navbar-search-suggestions' ? container : null),
+      appendChild: () => {},
+    };
+
+    global.document.querySelector = (sel) => {
+      if (sel === '.navbar-search-suggestions') return container;
+      return null;
+    };
+
+    try {
+      renderGlobalSearchOfflineNotice(host);
+      assert.ok(container.classList.contains('is-open'));
+      assert.ok(container.innerHTML.includes('offline_notice'));
+
+      const mockItems = [
+        { id: 'mit-usa-cambridge', name: 'MIT', location: { city: 'Cambridge', country: 'USA' } },
+      ];
+      renderGlobalSearchSuggestions(host, mockItems, 'mit');
+      assert.ok(container.classList.contains('is-open'));
+      assert.ok(container.innerHTML.includes('mit-usa-cambridge'));
+
+      hideGlobalSearchSuggestions();
+      assert.equal(container.classList.contains('is-open'), false);
+      assert.equal(container.innerHTML, '');
+    } finally {
+      global.document.querySelector = origQuerySelector;
+    }
+  });
+
+  it('openMobileSearch and closeMobileSearch toggle mobile state', () => {
+    const origMatchMedia = global.window.matchMedia;
+    const origGetElementById = global.document.getElementById;
+    const origQuerySelector = global.document.querySelector;
+    const origSetTimeout = global.window.setTimeout;
+
+    global.window.matchMedia = () => ({ matches: true });
+    global.window.setTimeout = (cb) => { cb(); return 1; };
+
+    const navClasses = new Set();
+    const navbar = {
+      classList: {
+        add: (cls) => navClasses.add(cls),
+        remove: (cls) => navClasses.delete(cls),
+        contains: (cls) => navClasses.has(cls),
+      },
+    };
+    const host = {};
+    let focused = false;
+    let blurred = false;
+    const qInput = {
+      focus: () => { focused = true; },
+      blur: () => { blurred = true; },
+    };
+    const backBtn = { hidden: true };
+    const toggle = {
+      setAttribute: (k, v) => {},
+      focus: () => {},
+      hidden: false,
+    };
+    const scrim = {
+      classList: {
+        add: () => {},
+        remove: () => {},
+        contains: () => false,
+      },
+      hidden: true,
+    };
+
+    const elements = {
+      universitySearch: host,
+      qInput: qInput,
+      navbarSearchBack: backBtn,
+      navbarSearchToggle: toggle,
+      navbarSearchScrim: scrim,
+    };
+
+    global.document.getElementById = (id) => elements[id] || null;
+    global.document.querySelector = (sel) => {
+      if (sel === '.navbar') return navbar;
+      return null;
+    };
+
+    try {
+      const opened = openMobileSearch();
+      assert.equal(opened, true);
+      assert.equal(navClasses.has('is-search-open'), true);
+      assert.equal(backBtn.hidden, false);
+      assert.equal(focused, true);
+
+      // Re-opening when already open just focuses input
+      focused = false;
+      const reOpened = openMobileSearch();
+      assert.equal(reOpened, true);
+      assert.equal(focused, true);
+
+      // Closing mobile search
+      const closed = closeMobileSearch();
+      assert.equal(closed, true);
+      assert.equal(navClasses.has('is-search-open'), false);
+      assert.equal(backBtn.hidden, true);
+
+      // Closing when not open returns false
+      assert.equal(closeMobileSearch(), false);
+    } finally {
+      global.window.matchMedia = origMatchMedia;
+      global.document.getElementById = origGetElementById;
+      global.document.querySelector = origQuerySelector;
+      global.window.setTimeout = origSetTimeout;
+    }
+  });
 });
+
+
