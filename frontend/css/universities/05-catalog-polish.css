@@ -271,7 +271,7 @@
 
 .uni-status-tooltip__title {
   display: block;
-  font-weight: 600;
+  font-weight: 500;
   color: inherit;
 }
 
@@ -357,7 +357,7 @@
 
 .uni-price-val {
   font-size: var(--text-md);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
 }
 
@@ -426,7 +426,7 @@
   background: var(--surface-soft);
   color: var(--text);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.25;
 }
 
@@ -637,7 +637,7 @@
     color: var(--text-inverse);
     border: none;
     border-radius: var(--radius-lg);
-    font-weight: 800;
+    font-weight: 500;
     font-size: 14px;
     cursor: pointer;
     box-shadow: var(--shadow-sm);

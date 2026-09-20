@@ -20,6 +20,8 @@ const ALLOWED_FONT_SIZES = new Set([0, 10, 11, 12, 13, 14, 16, 18, 20, 24, 28, 3
 const ALLOWED_RADII = new Set([0, 1, 2, 4, 8, 10, 12, 16, 20]);
 // Allowed raw z-indices (local pseudo/stacking context only): -1, 0, 1, 2
 const ALLOWED_Z_INDICES = new Set([-1, 0, 1, 2]);
+// Calm Academic Workspace uses a restrained three-step weight hierarchy.
+const ALLOWED_FONT_WEIGHTS = new Set([400, 500, 600]);
 
 function suggestFontToken(pxVal) {
   if (pxVal <= 11.5) return "var(--text-xs) (11px)";
@@ -135,7 +137,25 @@ function scanCssFile(filePath) {
       }
     }
 
-    // 2. Check negative margins (anti-pattern: layout compensation hack)
+    // 2. Check font weight (avoid heavy, visually noisy typography)
+    const fontWeightMatch = line.match(/\bfont-weight\s*:\s*([^;]+);/i);
+    if (fontWeightMatch) {
+      const valStr = fontWeightMatch[1].trim().toLowerCase();
+      const keywordWeight = valStr === "normal" ? 400 : valStr === "bold" ? 700 : null;
+      const numericWeight = keywordWeight ?? (/^\d+$/.test(valStr) ? Number.parseInt(valStr, 10) : null);
+
+      if (numericWeight !== null && !ALLOWED_FONT_WEIGHTS.has(numericWeight)) {
+        violations.push({
+          line: i + 1,
+          type: "typography-font-weight",
+          message: `Font weight "${valStr}" is outside the 400/500/600 hierarchy`,
+          code: rawLine.trim(),
+          suggestion: numericWeight < 500 ? "400 for body copy" : "500 for controls or 600 for primary emphasis",
+        });
+      }
+    }
+
+    // 3. Check negative margins (anti-pattern: layout compensation hack)
     const negMarginMatch = line.match(/\bmargin(-top|-bottom|-left|-right)?\s*:\s*([^;]+);/i);
     if (negMarginMatch) {
       const marginVal = negMarginMatch[2];
@@ -157,7 +177,7 @@ function scanCssFile(filePath) {
       }
     }
 
-    // 3. Check !important in margin / padding
+    // 4. Check !important in margin / padding
     if (/\b(margin|padding)(-[a-z]+)?\s*:[^;]+!important/i.test(line)) {
       violations.push({
         line: i + 1,
@@ -168,7 +188,7 @@ function scanCssFile(filePath) {
       });
     }
 
-    // 4. Check odd/arbitrary spacing in margin, padding, gap (non 4/8px)
+    // 5. Check odd/arbitrary spacing in margin, padding, gap (non 4/8px)
     const spacingMatch = line.match(/\b(margin|padding|gap|row-gap|column-gap)\s*:\s*([^;]+);/i);
     if (spacingMatch) {
       const prop = spacingMatch[1];
@@ -193,7 +213,7 @@ function scanCssFile(filePath) {
       }
     }
 
-    // 5. Check z-index (prevent arbitrary layer escalation)
+    // 6. Check z-index (prevent arbitrary layer escalation)
     const zMatch = line.match(/\bz-index\s*:\s*([^;]+);/i);
     if (zMatch) {
       const valStr = zMatch[1].trim();
@@ -211,7 +231,7 @@ function scanCssFile(filePath) {
       }
     }
 
-    // 6. Check border-radius (!important and non-scale radius)
+    // 7. Check border-radius (!important and non-scale radius)
     if (/\bborder(-[a-z]+)*-radius\s*:[^;]+!important/i.test(line)) {
       violations.push({
         line: i + 1,
@@ -336,9 +356,9 @@ function run() {
 
   if (regressionDetected) {
     console.error("\n[check:design-lint] REGRESSION DETECTED!");
-    console.error("New design lint violations (arbitrary font-sizes, negative margins, or non-4/8px spacing) were introduced:");
+    console.error("New design lint violations (font size/weight, negative margins, or non-4/8px spacing) were introduced:");
     console.error(regressionDetails.join("\n"));
-    console.error("\nRule: Use standardized typography tokens (--text-*) and 4/8px spacing tokens (--space-*).");
+    console.error("\nRule: Use the 400/500/600 weight hierarchy, standardized typography tokens (--text-*), and 4/8px spacing tokens (--space-*).");
     console.error("See docs/design-system.md for full specifications.");
     process.exit(1);
   }

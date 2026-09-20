@@ -91,7 +91,7 @@
   box-shadow: var(--shadow-xs);
   background: var(--surface-soft);
   color: var(--text);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
   cursor: pointer;
   padding: 0 12px;
@@ -116,7 +116,7 @@
   padding: 0 8px;
   border-radius: 10px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   justify-content: center;
   align-items: center;
   gap: 8px;
@@ -404,7 +404,7 @@
 
 .ui-tooltip-title {
   display: block;
-  font-weight: 600;
+  font-weight: 500;
   color: inherit;
   margin-bottom: 2px;
 }

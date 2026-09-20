@@ -94,7 +94,7 @@ body[data-page="error-404"] main.error-page {
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   font-size: var(--text-base);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;

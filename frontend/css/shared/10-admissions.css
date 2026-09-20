@@ -6,7 +6,7 @@
   border-radius: 10px;
   padding: 8px 16px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
   cursor: pointer;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
@@ -38,7 +38,7 @@
   background: var(--surface-soft);
   color: var(--text-muted);
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .admission-program-selector {
@@ -65,7 +65,7 @@
   cursor: pointer;
   font: inherit;
   font-size: 14px;
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.25;
   padding: 12px 2px 12px;
   white-space: nowrap;
@@ -109,10 +109,11 @@
 }
 
 .admission-category-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 16px;
   background: var(--surface-solid);
   padding: 20px;
+  box-shadow: var(--shadow-card);
 }
 
 .admission-category-head,
@@ -129,7 +130,7 @@
 .admission-funding-title {
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -139,7 +140,7 @@
   margin: 4px 0 0;
   color: var(--text);
   font-size: 18px;
-  font-weight: 850;
+  font-weight: 500;
   line-height: 1.3;
 }
 
@@ -157,12 +158,12 @@
 .admission-category-count,
 .track-selection-badge {
   flex: 0 0 auto;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-soft);
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 750;
+  font-weight: 500;
   padding: 8px 8px;
 }
 
@@ -178,12 +179,12 @@
 
 .admission-applicable-programs .tag,
 .admission-option-meta .tag {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-soft);
   color: var(--text);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   padding: 4px 8px;
 }
 
@@ -227,7 +228,7 @@
 }
 
 .admission-funding-option {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
   padding: 16px;
@@ -235,12 +236,10 @@
 }
 
 .admission-funding-option.is-active {
-  border-color: var(--accent);
-  background: var(--surface-soft);
+  background: var(--accent-panel);
 }
 
 .admission-funding-option--grant {
-  border-color: var(--grant-soft-strong);
   background: var(--grant-soft);
 }
 
@@ -277,7 +276,7 @@
 .admission-funding-diff-kicker {
   color: var(--text-muted);
   font-size: 11px;
-  font-weight: 850;
+  font-weight: 500;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -285,7 +284,7 @@
 .admission-funding-diff-title {
   color: var(--text);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0;
   text-transform: none;
   margin-bottom: 2px;
@@ -383,7 +382,7 @@
 .track-factors-label {
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -396,12 +395,12 @@
   gap: 8px;
   max-width: 100%;
   font-size: var(--text-xs);
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.35;
   padding: 8px 12px;
   border-radius: 10px;
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
+  background: var(--surface-solid);
+  border: none;
   color: var(--text-muted);
   white-space: normal;
   overflow-wrap: anywhere;
@@ -426,12 +425,12 @@
 }
 
 .track-factor-chip.factor-positive {
-  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+  background: var(--accent-panel);
 }
 
 .admission-chance-badge--warn,
 .track-factor-chip.factor-negative {
-  border-color: color-mix(in srgb, var(--text-muted) 30%, var(--line));
+  background: var(--surface-solid);
 }
 
 button.admission-chance-badge,
@@ -472,14 +471,14 @@ button.track-factor-chip {
 .track-extra-req {
   margin-top: 12px;
   border-radius: 12px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-soft);
   padding: 12px 16px;
 }
 
 .track-extra-req-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -527,7 +526,7 @@ button.track-factor-chip {
 
 /* ===== Track Stats Boxes & Minimums (Global) ===== */
 .track-stats-box {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 12px;
   padding: 12px;
   background: var(--surface-soft);
@@ -545,7 +544,7 @@ button.track-factor-chip {
 
 .track-stats-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -570,7 +569,7 @@ button.track-factor-chip {
 /* ===== Track Exam Groups (Global) ===== */
 .track-exam-group {
   border-radius: 10px;
-  border: 1px solid var(--line);
+  border: none;
   background: var(--surface-solid);
   padding: 12px;
 }
@@ -581,7 +580,7 @@ button.track-factor-chip {
 
 .track-exam-group-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -623,14 +622,14 @@ button.track-factor-chip {
 .track-lang-rules {
   margin-top: 12px;
   border-radius: 12px;
-  border: 1px solid var(--line-info);
+  border: none;
   background: var(--color-info-bg);
   padding: 12px;
 }
 
 .track-lang-rules-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-info);
@@ -639,7 +638,7 @@ button.track-factor-chip {
 .track-lang-rules-mode {
   margin-top: 4px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-info);
 }
 
@@ -650,7 +649,7 @@ button.track-factor-chip {
 }
 
 .track-lang-rule-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-solid);
   padding: 12px;
@@ -667,24 +666,24 @@ button.track-factor-chip {
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line-info);
+  border: none;
   background: var(--color-info-bg);
   color: var(--color-info);
   padding: 2px 8px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .track-lang-rule-native {
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line-grant);
+  border: none;
   background: var(--color-success-bg);
   color: var(--color-success);
   padding: 2px 8px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .track-lang-rule-cefr {
@@ -712,12 +711,12 @@ button.track-factor-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   background: var(--surface-soft);
   padding: 8px 12px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
 }
 
@@ -728,7 +727,7 @@ button.track-factor-chip {
 
 .track-cost-preview strong {
   color: var(--text);
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .track-select-row {

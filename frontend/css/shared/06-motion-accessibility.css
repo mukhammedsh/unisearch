@@ -351,7 +351,7 @@ body[data-page="guide"] {
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   color: var(--text);
-  font-weight: 700;
+  font-weight: 500;
   opacity: 0;
   transform: translateY(calc(-100% - 16px));
   transition:

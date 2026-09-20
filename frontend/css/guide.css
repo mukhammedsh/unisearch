@@ -23,7 +23,7 @@
   margin: 0;
   font-size: clamp(30px, 3.5vw, 42px);
   line-height: 1.12;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.025em;
   color: var(--text);
 }
@@ -52,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-decoration: none;
   margin-bottom: var(--space-3);
@@ -90,7 +90,7 @@
 .guide-nav-title {
   margin: 0;
   font-size: var(--text-base);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -128,7 +128,7 @@
 
 .guide-nav a.is-active {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .guide-nav a.is-active::before {
@@ -219,7 +219,7 @@
 .guide-section-navigation__title {
   overflow-wrap: anywhere;
   font-size: var(--text-md);
-  font-weight: 600;
+  font-weight: 500;
   line-height: var(--leading-tight);
 }
 
@@ -258,7 +258,7 @@
   padding-bottom: 0;
   border-bottom: none;
   font-size: var(--text-2xl);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -291,7 +291,7 @@
 
 /* Strong terms & definitions */
 .guide-doc strong {
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
 }
 
@@ -348,7 +348,7 @@
 .guide-tags-group h4 {
   margin: 0 0 8px;
   font-size: var(--text-lg);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.015em;
   color: var(--text);
@@ -376,7 +376,7 @@
   color: var(--text);
   font-family: inherit;
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 
@@ -464,7 +464,7 @@ body[data-page="guide"] {
 
   .guide-mobile-nav-toggle__label {
     font-size: var(--text-sm);
-    font-weight: 700;
+    font-weight: 500;
     line-height: var(--leading-tight);
   }
 

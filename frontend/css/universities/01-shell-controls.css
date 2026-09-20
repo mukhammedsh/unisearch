@@ -76,7 +76,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text);
   font-size: var(--text-base);
   line-height: 1.35;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0;
 }
 
@@ -86,7 +86,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text-muted);
   font-size: var(--text-base);
   line-height: 1.6;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .u-section-bar {
@@ -144,7 +144,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   border-radius: var(--radius-md);
   font: inherit;
   font-size: var(--text-base);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   cursor: pointer;
   transition:
@@ -215,7 +215,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 }
 
 .u-section-meta .u-found-count {
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text);
   font-size: 16px;
 }
@@ -286,7 +286,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font: inherit;
   font-size: 14px;
   line-height: 1.2;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   display: inline-flex;
@@ -365,7 +365,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 12px;
 }
 
@@ -394,7 +394,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
 }
 
@@ -495,7 +495,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font-size: 13px;
   color: var(--text-muted);
   margin-bottom: 8px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .u-label-with-help {
@@ -744,7 +744,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
 
 .u-found-count {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   font-size: 16px;
 }
@@ -948,7 +948,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text-muted);
   text-align: center;
   margin-top: 8px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .tradeoff-slider {
@@ -1129,7 +1129,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   background: var(--surface-soft);
   color: var(--text);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
@@ -1228,7 +1228,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   padding-right: 40px;
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .u-tour-dots {
@@ -1274,7 +1274,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   padding: 4px 12px;
   border-radius: 10px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.2px;
   color: var(--accent);
   background: var(--accent-panel);
@@ -1285,7 +1285,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font-size: var(--text-2xl);
   line-height: 1.2;
   color: var(--text);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .u-tour-desc {
@@ -1315,7 +1315,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--accent);
   border-radius: 10px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   padding: 8px 12px;
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
@@ -1347,7 +1347,7 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   color: var(--text);
   border-radius: var(--radius-md);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   padding: 8px 12px;
   cursor: pointer;
 }

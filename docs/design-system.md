@@ -18,6 +18,7 @@ Use this document as the source of truth for new UI work. The global stylesheet 
 Use existing CSS variables instead of new hard-coded palettes. All colors in components and pages must reference these tokens:
 
 - Fonts: `--font-sans` for body/UI and `--font-display` for headings and important labels.
+- Font weights: `--font-weight-regular` (`400`) for body copy, `--font-weight-medium` (`500`) for controls and compact labels, and `--font-weight-semibold` (`600`) for page headings and deliberately emphasized values. Product UI must not use weights above `600`.
 - Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
 - Spacing (8pt / 4pt grid): `--space-1` (4px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-5` (20px), `--space-6` (24px), `--space-8` (32px), `--space-12` (48px), `--space-16` (64px).
@@ -155,6 +156,13 @@ Arbitrary pixel spacing (`3px`, `6px`, `10px`, `14px`, `18px`, `22px`, `26px`, `
 - Hover card: slight accent border and optional `var(--shadow)` only when the card is clickable.
 - Repeated item cards are allowed. Avoid wrapping a page section in a card and then placing another unrelated card shell inside it.
 
+### Border and Surface Hierarchy
+
+- Use borders only when they carry information: keyboard focus, an active underline, a table separator, a range/thumb edge, or a semantic status that cannot be communicated by surface and text color alone.
+- Do not outline cards, chips, badges, or nested panels by default. Separate them with whitespace, radius, and semantic surface contrast.
+- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a raised working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact chips and controls to `var(--surface-solid)` so they do not disappear into their parent.
+- Status components should use the matching semantic background token (`--color-*-bg` or `--accent-panel`) before adding a status border.
+
 ### Tabs
 
 - Prefer underlined tabs for primary page sections.
@@ -210,6 +218,13 @@ When cleaning up legacy or vibe-coded CSS, map values according to this standard
 | `z-index: 60` / `80` / `100` | `var(--z-dropdown)` or local stacking context | Eliminate layer escalation race |
 
 Use tight letter spacing only for large headings. Body text should keep normal readability.
+
+### Weight hierarchy
+
+- Use `400` for paragraphs, descriptions, table content, metadata, and supporting copy.
+- Use `500` for buttons, navigation, form labels, card titles, and active controls.
+- Reserve `600` for page and section headings, important totals, and rare status emphasis.
+- Do not use `700–1000` in product styles. Create hierarchy with size, spacing, color, and placement before adding weight.
 
 ## Border-Radius System
 

@@ -430,7 +430,7 @@
     min-height: 48px;
     border-radius: var(--radius-base);
     font: inherit;
-    font-weight: 700;
+    font-weight: 500;
     cursor: pointer;
   }
 
@@ -521,7 +521,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: 500;
     line-height: var(--leading-normal);
     color: var(--text);
     text-decoration: none;

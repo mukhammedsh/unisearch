@@ -4,6 +4,17 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.2 (2026-09-20) - Restrained Font-Weight Hierarchy and Border Cleanup
+
+### Design System
+- Introduced a three-step font-weight hierarchy (`400`/`500`/`600`) with CSS custom properties `--font-weight-regular`, `--font-weight-medium`, and `--font-weight-semibold` and a global `:where(h1–h6, strong, b)` reset to `500` (`frontend/css/shared/01-foundation.css`).
+- Replaced all heavy font-weight values (`650`–`900`, `bold`) across 24 CSS files with the appropriate `400`/`500`/`600` step, creating a calmer, more uniform typographic texture.
+- Removed decorative `border: 1px solid var(--line)` from cards, chips, badges, tags, funding options, exam groups, lang-rule cards, and stat boxes, relying instead on surface contrast (`--surface-solid`/`--surface-soft`), semantic status backgrounds (`--accent-panel`, `--color-*-bg`), and `box-shadow: var(--shadow-card)` where needed.
+- Documented the weight hierarchy rules and "Border and Surface Hierarchy" guidelines in `docs/design-system.md`.
+
+### Tooling
+- Extended the design lint checker with a font-weight rule that flags any weight outside the `400`/`500`/`600` set (`scripts/check-design-lint.mjs`).
+
 ## 6.8.1 (2026-09-20) - Stylesheet Ownership Refactor
 
 ### Frontend Architecture

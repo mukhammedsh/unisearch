@@ -80,7 +80,7 @@ body[data-page="terms"] {
 }
 
 .legal-doc strong {
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
 }
 

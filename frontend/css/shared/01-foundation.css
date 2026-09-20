@@ -2,6 +2,9 @@
 :root {
   --font-sans: "Segoe UI", Arial, sans-serif;
   --font-display: "Segoe UI", Arial, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
   --text-xs: 11px;
   --text-sm: 13px;
   --text-base: 14px;
@@ -261,6 +264,10 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+}
+
+:where(h1, h2, h3, h4, h5, h6, strong, b) {
+  font-weight: var(--font-weight-medium);
 }
 
 /* Shared centered loading spinner */

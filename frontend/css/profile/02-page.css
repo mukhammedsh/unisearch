@@ -66,7 +66,7 @@ body[data-page="profile"] {
   align-items: center;
   gap: var(--space-2);
   font-size: var(--text-xs);
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent);
@@ -193,7 +193,7 @@ body[data-page="profile"] {
 
 .profile-section-tab.is-active {
   color: var(--accent);
-  font-weight: 700;
+  font-weight: 500;
   background: transparent;
 }
 
@@ -218,7 +218,7 @@ body[data-page="profile"] {
   background: var(--color-danger-bg);
   color: var(--color-danger);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   height: 42px;
   padding: 0 var(--space-3);
   border-radius: var(--radius-md);
@@ -320,7 +320,7 @@ body[data-page="profile"] {
 .profile-card-title {
   margin: 0;
   font-size: var(--text-md);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
   letter-spacing: -0.01em;
   line-height: var(--leading-tight);
@@ -416,7 +416,7 @@ body[data-page="profile"] {
   position: absolute;
   right: var(--space-4);
   font-size: var(--text-xs);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   pointer-events: none;
   text-transform: uppercase;
@@ -483,7 +483,7 @@ body[data-page="profile"] {
   background: var(--accent);
   color: var(--text-inverse);
   font-size: var(--text-xs);
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
@@ -641,7 +641,7 @@ body[data-page="profile"] {
 
 .profile-tooltip strong {
   color: var(--tooltip-text);
-  font-weight: 700;
+  font-weight: 500;
   font-size: var(--text-xs);
 }
 
@@ -727,7 +727,7 @@ textarea.profile-input,
   background: var(--accent);
   color: var(--text-inverse);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   display: inline-flex;
@@ -788,7 +788,7 @@ textarea.profile-input,
 
 .lang-control-item .mini-label {
   font-size: var(--text-xs);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -858,7 +858,7 @@ textarea.profile-input,
 .profile-exam-name,
 .lang-item strong {
   font-size: var(--text-sm);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
   line-height: var(--leading-tight);
 }
@@ -875,7 +875,7 @@ textarea.profile-input,
   height: 30px;
   border-radius: var(--radius-sm);
   font-size: var(--text-xs);
-  font-weight: 600;
+  font-weight: 500;
   border: none;
   background: var(--surface-solid);
   color: var(--text-muted);
@@ -939,7 +939,7 @@ textarea.profile-input,
   padding: 0 var(--space-3);
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -1032,7 +1032,7 @@ textarea.profile-input,
 .profile-confirm-card h3 {
   margin: 0;
   font-size: var(--text-lg);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
   line-height: var(--leading-tight);
 }
@@ -1057,7 +1057,7 @@ textarea.profile-input,
   height: 38px;
   border-radius: var(--radius-base);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   border: 1px solid var(--line-danger);
   background: var(--surface-solid);
   color: var(--color-danger);
