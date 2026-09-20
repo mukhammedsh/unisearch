@@ -2338,7 +2338,7 @@ export function initUniversitiesPage() {
         activeMapUniId = preferredId;
 
         const profile = loadProfileForApi();
-        const userBudget = Number.Number.parseFloat(profile.budget);
+        const userBudget = Number.parseFloat(profile.budget);
         el.mapResults.innerHTML = `
             <div class="u-map-results-list">
                 ${visibleItems.map((u, idx) => {
