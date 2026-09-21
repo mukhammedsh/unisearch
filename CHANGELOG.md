@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.10.1 (2026-09-21) - Map Catalog Isolation Fix
+
+### Fixed
+- Prevented hidden map-result cards from duplicating catalog cards in the list DOM before the map is opened.
+
 ## 6.10.0 (2026-09-21) - Scalable Interactive University Map
 
 ### Added

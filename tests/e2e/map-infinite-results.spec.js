@@ -51,6 +51,7 @@ test("map results rail loads the next 100 universities at the end of the list", 
 
   await page.goto("/index.html");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("#mapResultsPanel .uni-card")).toHaveCount(0);
   await page.click("#viewMapBtn");
 
   const mapList = page.locator("#mapResultsPanel .u-map-results-list");

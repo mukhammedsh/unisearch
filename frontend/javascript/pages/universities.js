@@ -2408,7 +2408,6 @@ export function initUniversitiesPage() {
     }
 
     function warmMapMode(items) {
-        renderMapResultsPanel(items);
         if (mapInstance || mapWarmupScheduled) return;
         mapWarmupScheduled = true;
 
