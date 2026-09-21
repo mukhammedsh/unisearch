@@ -185,8 +185,7 @@ test("view mode toggle changes views without a content transition", async ({ pag
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
-  // Both real destinations are prepared before the first interaction.
-  await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
+  // The map results rail is populated only when map mode is selected.
   await expect(page.locator("#viewMapBtn")).toBeEnabled();
 
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);

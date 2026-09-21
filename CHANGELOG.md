@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.10.2 (2026-09-21) - Map Results Lifecycle Fix
+
+### Fixed
+- Updated map-view interaction coverage for on-demand result-rail rendering, preventing a stale preloading assertion from failing the release test suite.
+
 ## 6.10.1 (2026-09-21) - Map Catalog Isolation Fix
 
 ### Fixed
