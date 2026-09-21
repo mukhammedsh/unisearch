@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.19 (2026-09-21) - Co-founder Role Attribution
+
+### Documentation
+- Corrected public project attribution: Mukhammed Shabdaluly (@mukhammedsh) is Co-founder & Lead Developer, and Yerbolat Rashidov (@raiselx) is Co-founder & UI/UX Lead.
+- Updated governance, the About page, and legal operator disclosures in English and Russian to reflect the two co-founders' roles consistently.
+
 ## 6.8.18 (2026-09-21) - OSPS Baseline Security Hygiene
 
 ### Security
