@@ -38,5 +38,6 @@ Use this checklist for release PRs or direct release commits.
     gh release view vX.Y.Z --json assets,body,zipballUrl,tarballUrl
     ```
     - custom assets include `unisearch-full-vX.Y.Z.zip`, `unisearch-frontend-vX.Y.Z.zip`, and `unisearch-backend-vX.Y.Z.zip`
+    - every custom ZIP asset includes `LICENSE`
     - the release body contains the Download guide block
     - GitHub's automatic `Source code (zip)` and `Source code (tar.gz)` links are present and expected

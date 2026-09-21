@@ -1,0 +1,73 @@
+header:
+  schema-version: 2.2.0
+  last-updated: '2026-09-21'
+  last-reviewed: '2026-09-21'
+  url: https://raw.githubusercontent.com/mukhammedsh/unisearch/main/security-insights.yml
+  comment: >-
+    This is a single-repository Security Insights declaration. It reports the
+    project's current security practices and does not claim OSPS Baseline
+    compliance until the tracked controls are verified.
+
+project:
+  name: UniSearch
+  homepage: https://unisearch-frontend.onrender.com/
+  roadmap: https://github.com/mukhammedsh/unisearch/blob/main/docs/roadmap.md
+  administrators:
+    - name: mukhammedsh
+      social: https://github.com/mukhammedsh
+      primary: true
+  repositories:
+    - name: UniSearch
+      url: https://github.com/mukhammedsh/unisearch
+      comment: The authoritative source repository for the UniSearch project.
+  vulnerability-reporting:
+    reports-accepted: true
+    bug-bounty-available: false
+    contact:
+      name: UniSearch security team
+      email: info@unisearch.study
+      primary: true
+    policy: https://github.com/mukhammedsh/unisearch/security/policy
+    comment: Private GitHub vulnerability reporting is preferred; email is an alternative.
+  documentation:
+    quickstart-guide: https://github.com/mukhammedsh/unisearch#quick-start
+    detailed-guide: https://github.com/mukhammedsh/unisearch#documentation
+    code-of-conduct: https://github.com/mukhammedsh/unisearch/blob/main/CODE_OF_CONDUCT.md
+    release-process: https://github.com/mukhammedsh/unisearch/blob/main/docs/release-checklist.md
+    support-policy: https://github.com/mukhammedsh/unisearch/security/policy
+
+repository:
+  url: https://github.com/mukhammedsh/unisearch
+  status: active
+  accepts-change-request: true
+  accepts-automated-change-request: true
+  core-team:
+    - name: mukhammedsh
+      social: https://github.com/mukhammedsh
+      primary: true
+    - name: raiselx
+      social: https://github.com/raiselx
+      primary: false
+  documentation:
+    contributing-guide: https://github.com/mukhammedsh/unisearch/blob/main/CONTRIBUTING.md
+    review-policy: https://github.com/mukhammedsh/unisearch/blob/main/GOVERNANCE.md
+    security-policy: https://github.com/mukhammedsh/unisearch/security/policy
+    governance: https://github.com/mukhammedsh/unisearch/blob/main/GOVERNANCE.md
+  license:
+    url: https://github.com/mukhammedsh/unisearch/blob/main/LICENSE
+    expression: MIT
+  release:
+    automated-pipeline: true
+    distribution-points:
+      - uri: https://github.com/mukhammedsh/unisearch/releases
+        comment: Official GitHub Releases distribution channel.
+    changelog: https://github.com/mukhammedsh/unisearch/blob/main/CHANGELOG.md
+  security:
+    assessments:
+      self:
+        name: OSPS Baseline Level 1 gap assessment
+        date: '2026-09-21'
+        evidence: https://github.com/mukhammedsh/unisearch/blob/main/docs/security-baseline.md
+        comment: >-
+          Initial assessment recorded. Level 1 compliance is not yet claimed;
+          GitHub access-control settings require maintainer verification.

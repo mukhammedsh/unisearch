@@ -4,6 +4,13 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.18 (2026-09-21) - OSPS Baseline Security Hygiene
+
+### Security
+- Added a machine-readable Security Insights declaration and a documented OSPS Baseline Level 1 assessment to track security practices and outstanding repository settings.
+- Validated release tags before checkout and publication steps, preventing unexpected release metadata from reaching privileged release automation.
+- Included the MIT `LICENSE` in every custom release ZIP asset and added a release checklist verification for that requirement.
+
 ## 6.8.17 (2026-09-21) - SonarCloud Quality Gate and Fuzzing Isolation
 
 ### Security

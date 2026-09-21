@@ -8,7 +8,25 @@ permissions:
   contents: read
 
 jobs:
+  validate-release:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+    steps:
+      - name: Validate release tag
+        id: release
+        shell: bash
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Release tag must use vX.Y.Z format, got '$TAG'."
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
   publish:
+    needs: validate-release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -20,13 +38,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ needs.validate-release.outputs.tag }}
 
       - name: Prepare variables
         id: vars
         shell: bash
+        env:
+          TAG: ${{ needs.validate-release.outputs.tag }}
         run: |
-          TAG="${{ github.event.release.tag_name }}"
           VERSION="${TAG#v}"
           OWNER_LC="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
@@ -39,11 +58,6 @@ jobs:
           TAG: ${{ steps.vars.outputs.tag }}
           VERSION: ${{ steps.vars.outputs.version }}
         run: |
-          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::Release tag must use vX.Y.Z format, got '$TAG'."
-            exit 1
-          fi
-
           python - <<'PY'
           import os
           import re
@@ -101,7 +115,8 @@ jobs:
             --format=zip \
             --output="release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip" \
             HEAD \
-            frontend
+            frontend \
+            LICENSE
           git archive \
             --format=zip \
             --output="release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip" \
@@ -113,7 +128,8 @@ jobs:
             backend/requirements.lock \
             backend/requirements-dev.lock \
             backend/.env.example \
-            package.json
+            package.json \
+            LICENSE
 
       - name: Attest build provenance for release zip artifacts
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
@@ -154,8 +170,8 @@ jobs:
           guide = f"""## Download guide
 
           - **Local development / full project:** download `unisearch-full-{tag}.zip` (recommended) or GitHub's auto-generated `Source code (zip)`.
-          - **Static frontend deploy:** download `unisearch-frontend-{tag}.zip`; configure `frontend/env.js` for your backend URL.
-          - **Backend deploy:** download `unisearch-backend-{tag}.zip`; it includes the FastAPI app, data, requirements, `.env.example`, and `package.json` for runtime version metadata.
+          - **Static frontend deploy:** download `unisearch-frontend-{tag}.zip`; it includes `LICENSE`. Configure `frontend/env.js` for your backend URL.
+          - **Backend deploy:** download `unisearch-backend-{tag}.zip`; it includes the FastAPI app, data, requirements, `.env.example`, `package.json` for runtime version metadata, and `LICENSE`.
           - GitHub also shows auto-generated `Source code (zip)` and `Source code (tar.gz)` for every release. They are expected and cannot be removed.
 
           ### Cryptographic Verification (Sigstore Provenance)
