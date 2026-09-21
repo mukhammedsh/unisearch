@@ -245,6 +245,58 @@
   min-width: 0;
 }
 
+.d-card.is-language-refreshing .d-head-main,
+.d-card.is-language-refreshing .d-tab-pane.active > .d-box {
+  position: relative;
+}
+
+.d-card.is-language-refreshing #detailName,
+.d-card.is-language-refreshing #detailLocation,
+.d-card.is-language-refreshing .d-tab-pane.active > .d-box > :not(.d-language-text-skeleton) {
+  opacity: 0;
+}
+
+.d-language-text-skeleton {
+  pointer-events: none;
+  z-index: 1;
+}
+
+.d-language-head-skeleton {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: min(62%, 540px);
+  display: grid;
+  align-content: center;
+  gap: var(--space-3);
+}
+
+.d-language-box-skeleton {
+  position: absolute;
+  inset: 24px;
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+}
+
+.d-language-skeleton-title {
+  width: 88%;
+  height: 32px;
+}
+
+.d-language-skeleton-heading {
+  width: 38%;
+  height: var(--text-lg);
+}
+
+.d-language-skeleton-line {
+  width: 100%;
+  height: var(--text-sm);
+}
+
+.d-language-skeleton-line--short {
+  width: 62%;
+}
+
 .d-title-row {
   display: flex;
   align-items: center;

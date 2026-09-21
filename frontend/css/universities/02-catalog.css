@@ -181,6 +181,40 @@
   opacity: 0.72;
 }
 
+.uni-card.is-language-refreshing {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.uni-card.is-language-refreshing .uni-body {
+  position: relative;
+}
+
+.uni-card.is-language-refreshing .uni-body > :not(.u-language-text-skeleton) {
+  opacity: 0;
+}
+
+.u-language-text-skeleton {
+  position: absolute;
+  inset: 12px;
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  pointer-events: none;
+}
+
+.u-language-text-skeleton__metric {
+  width: 68%;
+  height: var(--text-sm);
+  margin-top: var(--space-2);
+}
+
+.u-language-text-skeleton__footer {
+  width: 48%;
+  height: var(--text-md);
+  margin-top: auto;
+}
+
 .u-map-stage.is-loading .u-map-container {
   opacity: 1;
   transition: opacity var(--motion-fast) var(--motion-ease-standard);

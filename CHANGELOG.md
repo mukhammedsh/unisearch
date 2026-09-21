@@ -4,6 +4,15 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.9.0 (2026-09-21) - Seamless Language Switching and Coverage Expansion
+
+### Added
+- Kept university catalog cards and detail-page media visible while localized content is refreshed, with accessible text-only loading placeholders and a pending language-control state.
+- Added frontend coverage reporting through the unit-test command and comprehensive regression coverage for cache revalidation, runtime helpers, settings, translations, university details, and comparison decisions.
+
+### Fixed
+- Prevented missing admission rates and costs from being interpreted as zero during university comparisons.
+
 ## 6.8.20 (2026-09-21) - University Detail Language Switch Fix
 
 ### Fixed

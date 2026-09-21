@@ -712,7 +712,10 @@ export const compareRowsHtml = (universities, metrics) => {
 export const compareCostContextsComparable = (contexts) => {
     if (!Array.isArray(contexts) || contexts.length < 2) return false;
     const valid = contexts.every((context) => (
-        Number.isFinite(Number(context?.min))
+        context?.min !== null
+        && context?.min !== undefined
+        && context?.min !== ""
+        && Number.isFinite(Number(context.min))
         && String(context?.academicYear || "").trim()
         && String(context?.feeStatus || "").trim()
     ));
@@ -727,7 +730,10 @@ export const compareCostContextsComparable = (contexts) => {
 export const comparePublishedAdmissionsComparable = (rows) => {
     if (!Array.isArray(rows) || rows.length < 2) return false;
     const valid = rows.every((row) => (
-        Number.isFinite(Number(row?.value))
+        row?.value !== null
+        && row?.value !== undefined
+        && row?.value !== ""
+        && Number.isFinite(Number(row.value))
         && String(row?.scope || "").trim()
         && String(row?.audience || "").trim()
         && String(row?.cycle || "").trim()
@@ -794,7 +800,12 @@ const compareChanceFactText = (chance) => {
 
 const compareAdmissionTheme = (universities, context) => {
     const published = universities.map((university) => comparePublishedAdmission(university, context?.choices));
-    const publishedAvailable = published.every((row) => Number.isFinite(Number(row?.value)));
+    const publishedAvailable = published.every((row) => (
+        row?.value !== null
+        && row?.value !== undefined
+        && row?.value !== ""
+        && Number.isFinite(Number(row.value))
+    ));
     const comparable = comparePublishedAdmissionsComparable(published);
     const status = !publishedAvailable ? "missing" : (comparable ? "parity" : "incomparable");
     const summary = !publishedAvailable
@@ -838,7 +849,12 @@ const compareAdmissionTheme = (universities, context) => {
 
 const compareFinanceTheme = (universities, context) => {
     const costs = universities.map((university) => compareSelectedCostContext(university, context?.choices));
-    const available = costs.every((cost) => Number.isFinite(Number(cost?.min)));
+    const available = costs.every((cost) => (
+        cost?.min !== null
+        && cost?.min !== undefined
+        && cost?.min !== ""
+        && Number.isFinite(Number(cost.min))
+    ));
     const comparable = available && compareCostContextsComparable(costs);
     let status = "missing";
     let summary = t("universities.compare.finance.missing", "Comparable cost data is missing; unknown values are not treated as zero.");

@@ -44,8 +44,8 @@ export function humanizeMachineLabel(value, fallback = "") {
   return spaced.replace(/\b[a-z]/g, (match) => match.toUpperCase());
 }
 
-export async function initUniversityTranslations(force = false) {
-  const lang = normalizeLang(getCurrentLanguage());
+export async function loadUniversityTranslationsForLanguage(language, force = false) {
+  const lang = normalizeLang(language);
   if (!force && CACHE.byLang.has(lang)) return CACHE.byLang.get(lang);
 
   if (!force && CACHE.inFlightByLang.has(lang)) {
@@ -71,6 +71,10 @@ export async function initUniversityTranslations(force = false) {
 
   CACHE.inFlightByLang.set(lang, inFlight);
   return inFlight;
+}
+
+export async function initUniversityTranslations(force = false) {
+  return loadUniversityTranslationsForLanguage(getCurrentLanguage(), force);
 }
 
 export function translateDataValue(group, value, fallback = "") {

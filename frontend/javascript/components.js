@@ -6,7 +6,10 @@ import {
 } from "./utils.js";
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
 import { heroIcon } from "./icons.js";
-import { initUniversityTranslations } from "./university-translations.js";
+import {
+  initUniversityTranslations,
+  loadUniversityTranslationsForLanguage,
+} from "./university-translations.js";
 import { routeProfile, routeUniversities } from "./routes.js";
 import {
   bindThemeUiSync,
@@ -26,6 +29,33 @@ import {
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
+const LANGUAGE_TRANSITION_DELAY_MS = 160;
+const UNIVERSITY_TRANSLATION_PAGES = new Set([
+    "universities",
+    "university",
+    "compare",
+    "profile",
+]);
+
+let languageTransitionSequence = 0;
+
+function dispatchLanguageTransitionEvent(type, detail) {
+    window.dispatchEvent(new CustomEvent(type, { detail }));
+}
+
+function pageNeedsUniversityTranslations() {
+    const page = String(document.body?.dataset?.page || "").trim().toLowerCase();
+    return UNIVERSITY_TRANSLATION_PAGES.has(page);
+}
+
+function setLanguageControlPending(languageSelect, isPending) {
+    const wrapper = languageSelect.closest(".custom-select-wrapper");
+    languageSelect.disabled = isPending;
+    languageSelect.dataset.loading = isPending ? "1" : "0";
+    wrapper?.classList.toggle("is-language-loading", isPending);
+    wrapper?.setAttribute("aria-busy", isPending ? "true" : "false");
+    initCustomSelect("languageSelect");
+}
 
 // Base HTML layout for navbar and settings dialog
 const LAYOUT_HTML = `
@@ -417,23 +447,65 @@ function initLanguageSwitcher() {
 
     languageSelect.addEventListener("change", async () => {
         if (languageSelect.dataset.loading === "1") return;
-        languageSelect.dataset.loading = "1";
-        languageSelect.disabled = true;
+        const previousLanguage = getCurrentLanguage();
+        const next = String(languageSelect.value || "").trim().toLowerCase();
+        const nextLang = next || "eng";
+        if (nextLang === previousLanguage) return;
+
+        const transitionSequence = ++languageTransitionSequence;
+        let visualPending = false;
+        const visualTimer = window.setTimeout(() => {
+            if (transitionSequence !== languageTransitionSequence) return;
+            visualPending = true;
+            document.documentElement.classList.add("is-language-switching");
+            dispatchLanguageTransitionEvent("languageChangeVisualPending", {
+                language: nextLang,
+                previousLanguage,
+            });
+        }, LANGUAGE_TRANSITION_DELAY_MS);
+
+        setLanguageControlPending(languageSelect, true);
+        dispatchLanguageTransitionEvent("languageChangeStarted", {
+            language: nextLang,
+            previousLanguage,
+        });
 
         try {
-            const next = String(languageSelect.value || "").trim().toLowerCase();
-            const nextLang = next || "eng";
-            setLanguage(nextLang, { persist: true, emit: false });
-            try {
-                await initUniversityTranslations();
-            } catch (e) {
-                // keep fallback localization when translation endpoint is unavailable
+            if (pageNeedsUniversityTranslations()) {
+                try {
+                    await loadUniversityTranslationsForLanguage(nextLang);
+                } catch (e) {
+                    // keep fallback localization when translation endpoint is unavailable
+                }
             }
+
+            if (transitionSequence !== languageTransitionSequence) return;
+
+            setLanguage(nextLang, { persist: true, emit: false });
             applyTranslations(document);
-            window.dispatchEvent(new CustomEvent("languageChanged", { detail: { language: nextLang } }));
+            const waiters = [];
+            const detail = {
+                language: nextLang,
+                previousLanguage,
+                waitUntil(promise) {
+                    if (promise && typeof promise.then === "function") {
+                        waiters.push(Promise.resolve(promise));
+                    }
+                },
+            };
+            dispatchLanguageTransitionEvent("languageChanged", detail);
+            if (waiters.length) await Promise.allSettled(waiters);
         } finally {
-            languageSelect.disabled = false;
-            languageSelect.dataset.loading = "0";
+            window.clearTimeout(visualTimer);
+            if (transitionSequence === languageTransitionSequence) {
+                document.documentElement.classList.remove("is-language-switching");
+                dispatchLanguageTransitionEvent("languageChangeFinished", {
+                    language: getCurrentLanguage(),
+                    previousLanguage,
+                    visualPending,
+                });
+                setLanguageControlPending(languageSelect, false);
+            }
         }
     });
 

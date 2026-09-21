@@ -143,6 +143,11 @@
   transition: transform var(--motion-fast) var(--motion-ease-emphasized), opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
+.navbar-right .lang-control .custom-select-wrapper.is-language-loading .custom-select-trigger {
+  cursor: wait;
+  opacity: 0.78;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .navbar-right .lang-control .custom-select-trigger:hover::after {
     opacity: 1;
@@ -157,6 +162,26 @@
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
   transform: rotate(180deg);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.is-language-loading .custom-select-trigger::after {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-circle);
+  background: transparent;
+  -webkit-mask: none;
+  mask: none;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  box-shadow: none;
+  transform: none;
+  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-right .lang-control .custom-select-wrapper.is-language-loading .custom-select-trigger::after {
+    animation: none;
+  }
 }
 
 .navbar-right .lang-control .custom-select-trigger--language span {

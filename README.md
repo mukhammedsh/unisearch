@@ -154,6 +154,7 @@ npx playwright install chromium
 npm run test:fast               # fast combined unit + backend tests
 npm run test:backend            # all backend tests (or: npm run test:backend -- <test_name>)
 npm run test:unit               # all unit tests (or: npm run test:unit -- <filter>)
+npm run test:unit:coverage      # unit tests plus an LCOV report for Codecov
 npm run test:smoke              # unit tests + home smoke E2E
 npm run test:e2e:pr             # Playwright E2E suite
 ```

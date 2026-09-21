@@ -95,6 +95,8 @@ import {
 
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
+let __universitiesLanguageVisualPendingHandler = null;
+let __universitiesLanguageFinishedHandler = null;
 let __universitiesMapCardActionHandler = null;
 let __universitiesSettingsChangedHandler = null;
 let __universitiesScrollHandler = null;
@@ -116,6 +118,14 @@ export function disposeUniversitiesPage() {
     if (__universitiesLanguageChangedHandler) {
         window.removeEventListener("languageChanged", __universitiesLanguageChangedHandler);
         __universitiesLanguageChangedHandler = null;
+    }
+    if (__universitiesLanguageVisualPendingHandler) {
+        window.removeEventListener("languageChangeVisualPending", __universitiesLanguageVisualPendingHandler);
+        __universitiesLanguageVisualPendingHandler = null;
+    }
+    if (__universitiesLanguageFinishedHandler) {
+        window.removeEventListener("languageChangeFinished", __universitiesLanguageFinishedHandler);
+        __universitiesLanguageFinishedHandler = null;
     }
     if (__universitiesMapCardActionHandler) {
         document.removeEventListener("click", __universitiesMapCardActionHandler, true);
@@ -532,6 +542,34 @@ export function initUniversitiesPage() {
     compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
     let compareAdmissionChoices = new Map();
 
+    const clearLanguageCardSkeletons = () => {
+        if (!el.list) return;
+        el.list.querySelectorAll(".uni-card.is-language-refreshing").forEach((card) => {
+            card.classList.remove("is-language-refreshing");
+            card.removeAttribute("aria-busy");
+            card.querySelector(".u-language-text-skeleton")?.remove();
+        });
+    };
+
+    const showLanguageCardSkeletons = () => {
+        if (!el.list || state.viewMode !== "list") return;
+        el.list.querySelectorAll(".uni-card:not(.is-skeleton)").forEach((card) => {
+            const body = card.querySelector(".uni-body");
+            if (!body || body.querySelector(".u-language-text-skeleton")) return;
+            card.classList.add("is-language-refreshing");
+            card.setAttribute("aria-busy", "true");
+            body.insertAdjacentHTML("beforeend", `
+                <div class="u-language-text-skeleton" aria-hidden="true">
+                    <span class="skeleton-line u-skeleton-title"></span>
+                    <span class="skeleton-line u-skeleton-title u-skeleton-title--short"></span>
+                    <span class="skeleton-line u-skeleton-location"></span>
+                    <span class="skeleton-line u-language-text-skeleton__metric"></span>
+                    <span class="skeleton-line u-language-text-skeleton__footer"></span>
+                </div>
+            `);
+        });
+    };
+
     const syncViewModeControls = () => {
         [el.btnList, el.btnMap].forEach((button) => {
             if (!button) return;
@@ -620,7 +658,12 @@ export function initUniversitiesPage() {
         el.qInput.setAttribute("data-i18n-aria-label", placeholderKey);
     };
 
-    const syncSectionVisibility = async ({ shouldFetch = false, updateUrl = true, replaceUrl = true } = {}) => {
+    const syncSectionVisibility = async ({
+        shouldFetch = false,
+        updateUrl = true,
+        replaceUrl = true,
+        fetchOptions = {},
+    } = {}) => {
         if (el.workspaceLayout) el.workspaceLayout.hidden = false;
         if (el.catalogPane) el.catalogPane.hidden = false;
         document.body.classList.toggle("universities-compare-mode", isCompareSelectionMode());
@@ -637,7 +680,7 @@ export function initUniversitiesPage() {
         if (updateUrl) setSectionUrl(replaceUrl);
 
         await switchView(state.viewMode || "list", false);
-        if (shouldFetch) fetchAndRender();
+        if (shouldFetch) await fetchAndRender(fetchOptions);
     };
 
     const getRenderedUniversityById = (id) => {
@@ -2017,16 +2060,28 @@ export function initUniversitiesPage() {
         }
     };
     window.addEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
-    __universitiesLanguageChangedHandler = () => {
-        applyAISortOptionLabel();
-        refreshLocationFilterLabels();
-        applyToForm();
-        updateTradeoffLabels();
-        syncSectionVisibility({
-            shouldFetch: !isCompareResultsMode(),
-            updateUrl: true,
-            replaceUrl: true,
-        }).catch((err) => console.error(err));
+    __universitiesLanguageVisualPendingHandler = showLanguageCardSkeletons;
+    window.addEventListener("languageChangeVisualPending", __universitiesLanguageVisualPendingHandler);
+    __universitiesLanguageFinishedHandler = clearLanguageCardSkeletons;
+    window.addEventListener("languageChangeFinished", __universitiesLanguageFinishedHandler);
+    __universitiesLanguageChangedHandler = (event) => {
+        const refreshPromise = (async () => {
+            applyAISortOptionLabel();
+            refreshLocationFilterLabels();
+            applyToForm();
+            updateTradeoffLabels();
+            await syncSectionVisibility({
+                shouldFetch: !isCompareResultsMode(),
+                updateUrl: true,
+                replaceUrl: true,
+                fetchOptions: {
+                    preserveVisibleResults: true,
+                    animateResults: false,
+                },
+            });
+        })();
+        event?.detail?.waitUntil?.(refreshPromise);
+        refreshPromise.catch((err) => console.error(err));
     };
     window.addEventListener("languageChanged", __universitiesLanguageChangedHandler);
     __universitiesSettingsChangedHandler = () => {

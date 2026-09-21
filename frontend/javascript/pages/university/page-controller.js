@@ -40,8 +40,54 @@ import { getAdmissionChoicesFromCategories } from "../../university-detail-helpe
 
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
+let detailLanguageVisualPendingHandler = null;
+let detailLanguageFinishedHandler = null;
 let detailCurrencyChangedHandler = null;
 let detailOnlineReconnectHandler = null;
+
+function clearDetailLanguageSkeletons() {
+  const card = document.getElementById("detailCard");
+  if (!card) return;
+  card.classList.remove("is-language-refreshing");
+  card.removeAttribute("aria-busy");
+  card.querySelectorAll(".d-language-text-skeleton").forEach((node) => node.remove());
+}
+
+function showDetailLanguageSkeletons() {
+  const card = document.getElementById("detailCard");
+  if (!card || card.style.display === "none") return;
+  card.classList.add("is-language-refreshing");
+  card.setAttribute("aria-busy", "true");
+
+  const head = card.querySelector(".d-head-main");
+  if (head && !head.querySelector(".d-language-head-skeleton")) {
+    head.insertAdjacentHTML("beforeend", `
+      <div class="d-language-text-skeleton d-language-head-skeleton" aria-hidden="true">
+        <span class="skeleton-line d-language-skeleton-title"></span>
+        <span class="skeleton-line d-language-skeleton-line d-language-skeleton-line--short"></span>
+      </div>
+    `);
+  }
+
+  card.querySelectorAll(".d-tab-pane.active > .d-box").forEach((box) => {
+    if (box.querySelector(".d-language-box-skeleton")) return;
+    box.insertAdjacentHTML("beforeend", `
+      <div class="d-language-text-skeleton d-language-box-skeleton" aria-hidden="true">
+        <span class="skeleton-line d-language-skeleton-heading"></span>
+        <span class="skeleton-line d-language-skeleton-line"></span>
+        <span class="skeleton-line d-language-skeleton-line"></span>
+        <span class="skeleton-line d-language-skeleton-line d-language-skeleton-line--short"></span>
+      </div>
+    `);
+  });
+}
+
+function bindDetailLanguageLifecycle() {
+  detailLanguageVisualPendingHandler = showDetailLanguageSkeletons;
+  window.addEventListener("languageChangeVisualPending", detailLanguageVisualPendingHandler);
+  detailLanguageFinishedHandler = clearDetailLanguageSkeletons;
+  window.addEventListener("languageChangeFinished", detailLanguageFinishedHandler);
+}
 
 function cssString(value) {
   return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -61,6 +107,14 @@ function cleanupDetailListeners() {
   if (detailLanguageChangedHandler) {
     window.removeEventListener("languageChanged", detailLanguageChangedHandler);
     detailLanguageChangedHandler = null;
+  }
+  if (detailLanguageVisualPendingHandler) {
+    window.removeEventListener("languageChangeVisualPending", detailLanguageVisualPendingHandler);
+    detailLanguageVisualPendingHandler = null;
+  }
+  if (detailLanguageFinishedHandler) {
+    window.removeEventListener("languageChangeFinished", detailLanguageFinishedHandler);
+    detailLanguageFinishedHandler = null;
   }
   if (detailCurrencyChangedHandler) {
     window.removeEventListener("currencyChanged", detailCurrencyChangedHandler);
@@ -217,7 +271,8 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   };
 }
 
-export async function initUniversityPage() {
+export async function initUniversityPage(options = {}) {
+  const preserveVisibleContent = options.preserveVisibleContent === true;
   const id = extractUniversityIdFromLocation(window.location);
   rememberRecentUniversity(id);
 
@@ -231,8 +286,9 @@ export async function initUniversityPage() {
 
   const setDetailLoading = (isLoading) => {
     if (!loadingEl) return;
-    loadingEl.classList.toggle("is-visible", !!isLoading);
-    loadingEl.setAttribute("aria-hidden", isLoading ? "false" : "true");
+    const showFullSkeleton = !!isLoading && !preserveVisibleContent;
+    loadingEl.classList.toggle("is-visible", showFullSkeleton);
+    loadingEl.setAttribute("aria-hidden", showFullSkeleton ? "false" : "true");
   };
 
   if (!id) {
@@ -382,17 +438,22 @@ export async function initUniversityPage() {
     }
     setupTabs();
 
-    const onDetailLanguageChanged = async () => {
+    const onDetailLanguageChanged = (event) => {
       detailLanguageChangedHandler = null;
-      try {
-        await initUniversityTranslations();
-      } catch (error) {
-        // keep local fallback copy when translation pack refresh fails
-      }
-      await initUniversityPage();
+      const refreshPromise = (async () => {
+        try {
+          await initUniversityTranslations();
+        } catch (error) {
+          // keep local fallback copy when translation pack refresh fails
+        }
+        await initUniversityPage({ preserveVisibleContent: true });
+      })();
+      event?.detail?.waitUntil?.(refreshPromise);
+      refreshPromise.catch((error) => console.error(error));
     };
     detailLanguageChangedHandler = onDetailLanguageChanged;
     window.addEventListener("languageChanged", onDetailLanguageChanged, { once: true });
+    bindDetailLanguageLifecycle();
 
     const onDetailCurrencyChanged = async () => {
       detailCurrencyChangedHandler = null;
@@ -419,5 +480,6 @@ export async function initUniversityPage() {
     }
   } finally {
     setDetailLoading(false);
+    if (preserveVisibleContent) clearDetailLanguageSkeletons();
   }
 }
