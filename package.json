@@ -20,6 +20,7 @@
     "sync:heroicons": "node scripts/sync-heroicons.mjs",
     "test:backend": "node scripts/test-backend.mjs",
     "test:unit": "node scripts/test-unit.mjs",
+    "test:unit:coverage": "c8 --reporter=lcov --reporter=text --reports-dir=coverage/frontend node scripts/test-unit.mjs",
     "test:fast": "npm run test:unit && npm run test:backend",
     "test:smoke": "npm run test:unit && npx playwright test tests/e2e/smoke-home.spec.js --config=playwright.local.config.js",
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@heroicons/react": "^2.2.0",
-    "@playwright/test": "^1.63.0"
+    "@playwright/test": "^1.63.0",
+    "c8": "12.0.0"
   }
 }

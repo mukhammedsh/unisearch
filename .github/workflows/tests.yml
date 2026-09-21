@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -39,7 +41,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python -m unittest discover tests -v 2>&1 | tee ../backend-test.log
+          python -m coverage run --branch -m unittest discover tests -v 2>&1 | tee ../backend-test.log
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
             failure_output="$(python -c 'from pathlib import Path; text = Path("../backend-test.log").read_text(encoding="utf-8", errors="replace"); markers = ["\n======================================================================\nFAIL:", "\n======================================================================\nERROR:", "\nFAILED ("]; positions = [text.find(marker) for marker in markers if text.find(marker) >= 0]; snippet = text[min(positions):] if positions else text[-2500:]; print(snippet[-2500:])')"
@@ -55,6 +57,15 @@ jobs:
             echo "::error title=Backend unittest failure::$failure_output"
             exit "$status"
           fi
+          python -m coverage xml -o coverage.xml
+
+      - name: Upload backend coverage to Codecov
+        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5
+        with:
+          files: backend/coverage.xml
+          flags: backend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   e2e-pr:
     if: github.event_name != 'schedule'
@@ -62,6 +73,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -83,13 +96,21 @@ jobs:
         run: npm run check:i18n
 
       - name: Run frontend unit tests
-        run: npm run test:unit
+        run: npm run test:unit:coverage
 
       - name: Install Playwright browser (Chromium)
         run: ./node_modules/.bin/playwright install --with-deps chromium
 
       - name: Run E2E PR suite
         run: npm run test:e2e:pr
+
+      - name: Upload frontend coverage to Codecov
+        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5
+        with:
+          files: coverage/frontend/lcov.info
+          flags: frontend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
       - name: Upload Playwright report
         if: always()
@@ -107,6 +128,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7

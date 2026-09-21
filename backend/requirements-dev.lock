@@ -25,6 +25,9 @@ certifi==2026.7.22 \
     #   httpcore
     #   httpx
     #   sentry-sdk
+coverage==7.16.1 \
+    --hash=sha256:e82e10b9d290f60b63459cfb245a841aec347603997206296b93881463a93dcf
+    # via -r backend/requirements-dev.txt
 click==8.5.0 \
     --hash=sha256:255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360 \
     --hash=sha256:ba0d2089de75ea0310e2dde03160e6ca10009947fb95a182f9b54021bb272e34
