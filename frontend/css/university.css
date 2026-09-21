@@ -6503,3 +6503,18 @@ body[data-page="university"],
 }
 
 
+/* ===== Unified interaction states ===== */
+@media (hover: hover) and (pointer: fine) {
+  .d-tooltip a:hover,
+  .d-tab-btn:hover,
+  .admission-program-option:hover,
+  .requirement-profile-tab:hover {
+    color: var(--interaction-hover-text);
+  }
+}
+
+.d-tab-btn.active,
+.admission-program-option.is-active,
+.requirement-profile-tab.is-active {
+  color: var(--interaction-active-text);
+}

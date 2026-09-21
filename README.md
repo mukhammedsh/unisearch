@@ -16,7 +16,7 @@ UniSearch helps applicants discover and compare universities for **bachelor's st
 
 - **Catalog on the homepage:** search, location and cost filters, sorting, favorites, and list or clustered map views with progressively loaded map results.
 - **Applicant profile:** GPA and grading scale, exams, languages, budget, intended major, interests, study mode, and funding preferences.
-- **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags. It is a sorting mode within the catalog.
+- **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags, including a clear program-not-offered warning when a catalog alternative does not match the intended major. It is a sorting mode within the catalog.
 - **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
 - **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available.
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.

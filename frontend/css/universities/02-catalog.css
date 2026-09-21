@@ -614,7 +614,7 @@
   }
   .uni-metric--rank:hover .uni-metric-icon,
   .uni-metric--rank:hover .uni-metric-label {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
   .uni-metric--rank:hover .uni-metric-value {
     color: var(--accent);
@@ -725,7 +725,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 @media (hover: hover) and (pointer: fine) {
 
 .uni-action-btn:hover {
-  color: var(--accent);
+  color: var(--interaction-hover-text);
 }
 }
 
@@ -877,7 +877,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 @media (hover: hover) and (pointer: fine) {
   .u-recent__link:hover {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 }
 

@@ -110,6 +110,8 @@ let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
 let __universitiesMapResizeTimer = 0;
+let __universitiesOverflowClickHandler = null;
+let __universitiesOverflowKeydownHandler = null;
 let __universitiesMapResultsObserver = null;
 
 export function disposeUniversitiesPage() {
@@ -176,6 +178,14 @@ export function disposeUniversitiesPage() {
     if (__universitiesResizeObserver) {
         __universitiesResizeObserver.disconnect();
         __universitiesResizeObserver = null;
+    }
+    if (__universitiesOverflowClickHandler) {
+        document.removeEventListener("click", __universitiesOverflowClickHandler);
+        __universitiesOverflowClickHandler = null;
+    }
+    if (__universitiesOverflowKeydownHandler) {
+        document.removeEventListener("keydown", __universitiesOverflowKeydownHandler);
+        __universitiesOverflowKeydownHandler = null;
     }
     if (__universitiesMapResultsObserver) {
         __universitiesMapResultsObserver.disconnect();
@@ -350,6 +360,60 @@ export function initUniversitiesPage() {
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
     bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
     setupScopeNotice();
+
+    const closeAllStatusOverflows = () => {
+        document.querySelectorAll(".uni-status-overflow.is-open").forEach((wrap) => {
+            wrap.classList.remove("is-open");
+            const trigger = wrap.querySelector(".uni-status-overflow-trigger");
+            if (trigger) trigger.setAttribute("aria-expanded", "false");
+            const popover = wrap.querySelector(".uni-status-overflow-popover");
+            if (popover) popover.hidden = true;
+        });
+    };
+
+    __universitiesOverflowClickHandler = (evt) => {
+        const target = evt.target instanceof Element ? evt.target : null;
+        if (!target) return;
+
+        const trigger = target.closest(".uni-status-overflow-trigger");
+        if (trigger) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            const wrap = trigger.closest(".uni-status-overflow");
+            if (!wrap) return;
+            const popover = wrap.querySelector(".uni-status-overflow-popover");
+            const isCurrentlyOpen = wrap.classList.contains("is-open");
+
+            closeAllStatusOverflows();
+
+            if (!isCurrentlyOpen) {
+                wrap.classList.add("is-open");
+                trigger.setAttribute("aria-expanded", "true");
+                if (popover) popover.hidden = false;
+            }
+            return;
+        }
+
+        if (!target.closest(".uni-status-overflow")) {
+            closeAllStatusOverflows();
+        }
+    };
+    document.addEventListener("click", __universitiesOverflowClickHandler);
+
+    __universitiesOverflowKeydownHandler = (evt) => {
+        if (evt.key === "Escape") {
+            const openWrap = document.querySelector(".uni-status-overflow.is-open");
+            if (openWrap) {
+                evt.preventDefault();
+                const trigger = openWrap.querySelector(".uni-status-overflow-trigger");
+                closeAllStatusOverflows();
+                if (trigger && typeof trigger.focus === "function") {
+                    trigger.focus();
+                }
+            }
+        }
+    };
+    document.addEventListener("keydown", __universitiesOverflowKeydownHandler);
 
     let unifitWarningBannerDismissed = false;
 
@@ -1903,7 +1967,7 @@ export function initUniversitiesPage() {
     el.list.addEventListener("click", (e) => {
         const target = e.target instanceof Element ? e.target : null;
         if (!target) return;
-        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger")) return;
+        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .uni-status-overflow")) return;
         const detailLink = target.closest(".uni-card-link-overlay");
         if (detailLink) {
             const card = detailLink.closest("[data-uni-id]");
@@ -2508,7 +2572,7 @@ export function initUniversitiesPage() {
             card.addEventListener("click", (event) => {
                 const target = event.target instanceof Element ? event.target : null;
                 if (!target) return;
-                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble")) return;
+                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble, .uni-status-overflow")) return;
                 const uniId = String(card.getAttribute("data-uni-id") || "").trim();
                 if (!uniId) return;
                 const detailsLink = target.closest("a.uni-details");
@@ -3603,6 +3667,18 @@ export function initUniversitiesPage() {
         const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
         const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
         const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
+        const hasMissingProgram = Boolean(badgeHints.missingProgram || match.missingProgram);
+
+        // Priority 0: warning on missing profile major program
+        if (hasMissingProgram) {
+            addStatusIndicator(
+                "academic-cap",
+                "warning",
+                t("universities.badge.no_matching_program", "Program Not Offered"),
+                t("universities.why.no_matching_program", "This university does not offer the study program selected in your profile.")
+            );
+        }
+
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
             addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Conditional / Exam Needed"), t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional."));
@@ -3637,7 +3713,28 @@ export function initUniversitiesPage() {
             addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"));
         }
 
-        const statusHtml = statusIndicators.slice(0, 4).join("");
+        const MAX_VISIBLE_BADGES = 4;
+        let statusHtml = "";
+        if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
+            statusHtml = statusIndicators.join("");
+        } else {
+            const visible = statusIndicators.slice(0, MAX_VISIBLE_BADGES - 1);
+            const hidden = statusIndicators.slice(MAX_VISIBLE_BADGES - 1);
+            const hiddenCount = hidden.length;
+            const overflowLabel = tFormat("universities.badge.overflow_more", { count: String(hiddenCount) }, `+${hiddenCount} more badges`);
+            const overflowAria = t("universities.badge.overflow_label", "Additional status indicators");
+            const overflowHtml = `
+                <span class="uni-status-overflow">
+                    <button type="button" class="uni-status-overflow-trigger" aria-label="${escapeHtmlAttr(overflowLabel)}" aria-expanded="false" title="${escapeHtmlAttr(overflowLabel)}">
+                        <span aria-hidden="true">+${hiddenCount}</span>
+                    </button>
+                    <span class="uni-status-overflow-popover" role="region" aria-label="${escapeHtmlAttr(overflowAria)}" hidden>
+                        ${hidden.join("")}
+                    </span>
+                </span>
+            `;
+            statusHtml = `${visible.join("")}${overflowHtml}`;
+        }
 
         // ROI intentionally removed from university cards.
 

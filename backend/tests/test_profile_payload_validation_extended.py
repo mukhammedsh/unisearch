@@ -72,6 +72,14 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test_rejects_fractional_budget(self):
+        response = self._post_ai_sort(
+            {
+                "budget": 35_000.5,
+            }
+        )
+        self.assertEqual(response.status_code, 422)
+
     def test_accepts_valid_rich_profile_payload(self):
         response = self._post_ai_sort(
             {

@@ -127,6 +127,7 @@ test("map marker opens the complete university card and overview returns to the 
 
   await page.goto("/index.html");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("#mapResultsPanel .uni-card")).toHaveCount(0);
   await page.click("#viewMapBtn");
 
   const marker = page.locator("#mapContainer .custom-div-icon");

@@ -378,6 +378,10 @@ universities.any_state: Любой штат
 universities.badge.acceptance: Процент зачисления: {value}%
 universities.badge.acceptance_na: Процент зачисления: неизвестно
 universities.badge.conditional_exam_needed: Условно / Нужен экзамен
+universities.badge.no_matching_program: Нет выбранной программы
+universities.why.no_matching_program: В этом университете нет программы обучения, выбранной в вашем профиле.
+universities.badge.overflow_more: +{count} дополнительных ярлыков
+universities.badge.overflow_label: Дополнительные ярлыки статуса
 universities.badge.top_match: Хорошее совпадение
 universities.badge.your_vibe: Ваш формат
 universities.badge.likely_grant: Высокий шанс на грант

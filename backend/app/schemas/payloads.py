@@ -1,7 +1,7 @@
 import re
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator, model_validator
 
 
 MAX_LIST_ITEMS = 50
@@ -123,7 +123,7 @@ class ProfileLanguageInput(BaseModel):
 class ProfilePayload(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
+    budget: Optional[StrictInt] = Field(default=None, ge=0, le=1_000_000)
     gpa: Optional[float] = Field(default=None, ge=0, le=5.0)
     gpa_scale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
     major: str = Field(default="", max_length=120)

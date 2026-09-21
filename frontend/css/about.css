@@ -151,7 +151,7 @@ body[data-page="about"] {
 
 @media (hover: hover) and (pointer: fine) {
   .about-contact-card a:hover {
-    color: var(--accent-strong);
+    color: var(--interaction-hover-text);
   }
 }
 

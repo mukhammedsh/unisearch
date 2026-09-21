@@ -386,6 +386,7 @@ export function initProfileUI() {
         if (budgetInput) {
             const exampleVal = getBudgetPlaceholderValue(currency);
             budgetInput.placeholder = tFormat("profile.placeholder.budget", { example: String(exampleVal) }, `e.g. ${exampleVal}`);
+            budgetInput.maxLength = String(maxBudget).length;
         }
         renderLowBudgetGrantHint();
     };

@@ -387,12 +387,16 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     cache_hit = sorted_items is not None
 
     if sorted_items is None:
+        effective_profile = dict(profile)
+        if major and not effective_profile.get("major"):
+            effective_profile["major"] = major
+
         base = uni_service.list_universities(
             q=q,
             country=country,
             city=city,
             region=region,
-            major=major,
+            major=None,
             study_level=study_level,
             funding_type=None,
             format=fmt,
@@ -412,7 +416,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
 
         sorted_items = ai_scoring_service.sort_universities_ai(
             base.get("items", []),
-            profile=profile,
+            profile=effective_profile,
             practice_vs_science=practice_vs_science,
             social_vs_hardcore=social_vs_hardcore,
             budget_vs_prestige=budget_vs_prestige,

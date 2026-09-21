@@ -375,6 +375,10 @@ universities.any_state: Any State
 universities.badge.acceptance: Acceptance Rate: {value}%
 universities.badge.acceptance_na: Acceptance Rate: N/A
 universities.badge.conditional_exam_needed: Conditional / Exam Needed
+universities.badge.no_matching_program: Program Not Offered
+universities.why.no_matching_program: This university does not offer the study program selected in your profile.
+universities.badge.overflow_more: +{count} more badges
+universities.badge.overflow_label: Additional status indicators
 universities.badge.top_match: Good Match
 universities.badge.your_vibe: Your Vibe
 universities.badge.likely_grant: Likely Grant

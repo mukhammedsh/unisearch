@@ -272,6 +272,7 @@ test("map results rail renders status badges in vertical column without overlapp
   });
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+  const aiResponsePromise = page.waitForResponse((r) => r.url().includes("/universities/ai-sort") && r.status() === 200);
   await setNativeSelect(page, "sortSelect", "uni_ai");
 
   const confirmBtn = page.locator("#unifitWarningModal [data-action='confirm']");
@@ -279,6 +280,9 @@ test("map results rail renders status badges in vertical column without overlapp
     await confirmBtn.click();
     await expect(page.locator("#unifitWarningModal")).toBeHidden();
   }
+
+  await aiResponsePromise;
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   await page.click("#viewMapBtn");
   await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
@@ -288,6 +292,8 @@ test("map results rail renders status badges in vertical column without overlapp
   await expect(cardWithStatuses).toBeVisible();
 
   const triggers = cardWithStatuses.locator(".uni-status-trigger");
+  await expect(triggers.nth(0)).toBeVisible();
+  await expect(triggers.nth(1)).toBeVisible();
   const count = await triggers.count();
   expect(count).toBeGreaterThanOrEqual(2);
 

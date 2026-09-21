@@ -145,8 +145,8 @@
 @media (hover: hover) and (pointer: fine) {
 
 .compare-tray__btn--ghost:hover {
-  color: var(--text);
-  background: color-mix(in srgb, var(--text) 8%, var(--surface-soft));
+  color: var(--interaction-hover-text);
+  background: var(--interaction-hover-surface);
 }
 }
 
@@ -815,7 +815,7 @@
 @media (hover: hover) and (pointer: fine) {
 
 .compare-diff-toggle:hover {
-  color: var(--text);
+  color: var(--interaction-hover-text);
 }
 }
 

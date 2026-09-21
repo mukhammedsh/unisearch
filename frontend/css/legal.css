@@ -105,7 +105,7 @@ body[data-page="terms"] {
 
 @media (hover: hover) and (pointer: fine) {
   .legal-doc a:hover {
-    color: var(--accent-strong, var(--accent));
+    color: var(--interaction-hover-text);
   }
 }
 

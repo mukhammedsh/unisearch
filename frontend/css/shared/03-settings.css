@@ -81,8 +81,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .settings-close:hover {
-    background: color-mix(in srgb, var(--text) 10%, var(--surface-soft));
-    color: var(--text);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 

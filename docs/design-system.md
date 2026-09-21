@@ -23,6 +23,7 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
 - Spacing (8pt / 4pt grid): `--space-1` (4px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-5` (20px), `--space-6` (24px), `--space-8` (32px), `--space-12` (48px), `--space-16` (64px).
 - Accent: `--accent` (`#5D17EB` both light and dark), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`).
+- Interaction states: `--interaction-hover-text`, `--interaction-hover-surface`, `--interaction-active-text`, `--interaction-active-surface`, and `--interaction-disabled-opacity`. Reusable links, tabs, buttons, and icon controls must use these tokens instead of choosing local hover or selected colors. Semantic danger, warning, and success controls keep their matching status tokens.
 - Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`.
 - Text: `--text`, `--text-muted`.
 - Lines & state rings: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`, `--line-info`. These tokens are reserved for focus outlines, separators, and non-box state rings; they must not reintroduce default card or control borders.
@@ -155,7 +156,9 @@ Breakpoints must describe available content space, not a device name. Keep a non
 - Subtle / utility: no border, `background: var(--surface-soft)`, and restrained micro-elevation where necessary. Avoid heavy outlines where soft surface contrast and micro-shadow already define the element cleanly.
 - Icon-only: square `34-40px`, Heroicons only, always with `aria-label`.
 - Hover should be subtle: surface, text/icon-color, or restrained shadow change. Never use `border-color` as a state cue on a borderless component.
-- Active press: subtle background/shadow shift (e.g. `var(--surface-solid)` and `var(--shadow-micro)`). Never use bouncy cartoonish depression (`scale(0.95)`) or spring recoil.
+- Hover text and surfaces use `--interaction-hover-text` and `--interaction-hover-surface`; selected controls use `--interaction-active-text` and `--interaction-active-surface`.
+- Active press: use the shared 1px downward translation. Never darken arbitrary controls with `filter`, use bouncy cartoonish depression (`scale(0.95)`), or add spring recoil.
+- Disabled controls use `--interaction-disabled-opacity`, a `not-allowed` cursor, and no pointer interaction. Native `disabled`, `aria-disabled="true"`, and `.is-disabled` states must render consistently.
 
 ### Inputs and Selects
 
@@ -163,6 +166,7 @@ Breakpoints must describe available content space, not a device name. Keep a non
 - Radius: `12-14px`.
 - Focus: accent outline or soft focus ring; do not add a border only for focus.
 - Never show raw API/network errors in visible form messages.
+- Composite fields with an embedded icon, unit, clear button, reveal button, or similar action use one `.ui-input-composite` surface. The container owns hover, focus-within, invalid, and disabled states; its input remains transparent. Hovering or focusing an embedded action must preserve the state of the full field, while the action may use `--interaction-active-surface` as a local cue.
 
 ### Cards and Sections
 

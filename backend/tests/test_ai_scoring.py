@@ -1607,8 +1607,32 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("requirements_met", hints.get("requirements"))
         self.assertEqual("over_budget_aid", hints.get("budgetAid"))
         self.assertFalse(hints.get("showConditionalExamNeeded"))
-        self.assertIn("priorityOrder", hints)
-        self.assertEqual(10, len(hints["priorityOrder"]))
+        self.assertEqual(11, len(hints["priorityOrder"]))
+        self.assertIn("missing_program", hints["priorityOrder"])
+
+    def test_missing_program_hint_and_penalty(self):
+        from app.services.ai_scoring import _build_ui_badge_hints, _university_matches_major
+        uni_cs = {
+            "academics": {
+                "programs": [
+                    {"name": "Computer Science", "major_tags": ["computer science"]}
+                ]
+            }
+        }
+        self.assertTrue(_university_matches_major(uni_cs, "Computer Science"))
+        self.assertFalse(_university_matches_major(uni_cs, "Medicine"))
+
+        hints = _build_ui_badge_hints(
+            preference_mismatch=0.10,
+            conditional=False,
+            conditional_requirements=0,
+            selected_chance_type="general",
+            grant_chance=50,
+            general_chance=60,
+            missing_program=True,
+        )
+        self.assertTrue(hints.get("showMissingProgram"))
+        self.assertTrue(hints.get("missingProgram"))
 
     def test_multi_exam_selects_highest_normalized_score(self):
         from app.services.ai_scoring import _resolve_user_normalized_track_score

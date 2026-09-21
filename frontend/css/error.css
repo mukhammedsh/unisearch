@@ -111,7 +111,7 @@ body[data-page="error-404"] main.error-page {
 }
 
 .error-btn:active {
-  transform: scale(0.98);
+  translate: 0 1px;
 }
 
 @media (hover: hover) and (pointer: fine) {

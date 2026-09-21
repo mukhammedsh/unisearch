@@ -343,8 +343,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .custom-option:hover {
-    background-color: var(--surface-soft);
-    color: var(--accent);
+    background-color: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -503,8 +503,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .social-links a:hover {
-      color: var(--text);
-      background: var(--bg-soft);
+      color: var(--interaction-hover-text);
+      background: var(--interaction-hover-surface);
       border-color: transparent;
   }
 }

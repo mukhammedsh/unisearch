@@ -4,7 +4,7 @@
 .uni-card:has(.ui-tooltip-wrap.is-open),
 
 .uni-card:has(.ui-tooltip-wrap:not(.is-closed):hover) {
-  z-index: var(--z-dropdown);
+  z-index: var(--z-card-elevated);
 }
 
 .uni-card .ui-tooltip-wrap {

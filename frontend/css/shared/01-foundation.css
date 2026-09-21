@@ -21,6 +21,11 @@
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
   --accent-faint: color-mix(in srgb, var(--accent) 6%, transparent);
   --accent-panel: color-mix(in srgb, var(--accent) 8%, transparent);
+  --interaction-hover-text: var(--accent-strong);
+  --interaction-hover-surface: var(--accent-panel);
+  --interaction-active-text: var(--accent);
+  --interaction-active-surface: var(--accent-soft);
+  --interaction-disabled-opacity: 0.52;
   --bg: #f4f5f7;
   --bg-soft: #edf0f4;
   --surface-solid: #ffffff;
@@ -85,6 +90,8 @@
   --uni-status-info-bg: #eff6ff;
   --uni-status-info-border: rgba(29, 78, 216, 0.28);
   --uni-status-info-text: #1d4ed8;
+  --uni-status-overflow-bg: #111827;
+  --uni-status-overflow-text: var(--text-inverse);
   --uni-status-hover-border: #111827;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
@@ -104,6 +111,10 @@
   --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.035), 0 16px 32px rgba(0, 0, 0, 0.06);
   --line-fade: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.08) 25%, rgba(15, 23, 42, 0.08) 75%, transparent 100%);
   --footer-icon-filter: none;
+  --z-card-badge: 4;
+  --z-card-popover: 5;
+  --z-card-tooltip: 10;
+  --z-card-elevated: 20;
   --z-nav: 1000;
   --z-dropdown: 1200;
   --z-docked-control: 1300;
@@ -162,6 +173,7 @@
   --color-info-bg: rgba(59, 130, 246, 0.14);
   --line-info: rgba(147, 197, 253, 0.32);
   --uni-status-hover-border: #111827;
+  --uni-status-overflow-bg: #090a0b;
   --skeleton-base: #222427;
   --skeleton-highlight: rgba(255, 255, 255, 0.08);
   --selection-bg: color-mix(in srgb, var(--accent) 35%, transparent);
@@ -458,6 +470,28 @@ a {
   color: inherit;
 }
 
+/* Composite fields keep inputs, icons, and embedded actions in one state surface. */
+.ui-input-composite {
+  position: relative;
+  min-width: 0;
+  background: var(--surface-soft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-input-composite:hover {
+    background: var(--interaction-hover-surface);
+  }
+}
+
+.ui-input-composite:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ui-input-composite:has(> :disabled) {
+  opacity: var(--interaction-disabled-opacity);
+}
+
 :where(a[href], button, input, select, textarea, [role="button"], .custom-select-trigger):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -465,21 +499,27 @@ a {
 
 /* ===== Global Component State Baseline ===== */
 :where(button, input, select, textarea):disabled,
+[aria-disabled="true"],
 .is-disabled {
-  opacity: 0.52;
+  opacity: var(--interaction-disabled-opacity);
   cursor: not-allowed !important;
   pointer-events: none;
   box-shadow: none;
 }
 
-:is(
+:where(
   button,
   .btn,
   .btn-primary,
   [role="button"]
 ):active:not(:disabled) {
-  filter: brightness(0.88);
-  transition: filter 0.04s ease;
+  translate: 0 1px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(a[href]:not([class]), .text-link):hover {
+    color: var(--interaction-hover-text);
+  }
 }
 
 html, body {

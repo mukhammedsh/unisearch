@@ -273,6 +273,20 @@
   height: 14px;
 }
 
+.u-map-results-list .uni-status-overflow-trigger {
+  width: 28px;
+  height: 28px;
+  font-size: 10px;
+}
+
+.u-map-results-list .uni-status-overflow-popover {
+  top: 0;
+  right: calc(100% + var(--space-1));
+  flex-direction: row;
+  gap: var(--space-1);
+  padding: var(--space-1);
+}
+
 .u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head {
   padding-right: 36px;
 }

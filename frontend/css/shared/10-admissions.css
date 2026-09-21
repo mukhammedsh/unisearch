@@ -78,7 +78,7 @@
 @media (hover: hover) and (pointer: fine) {
   .admission-program-option:hover,
   .requirement-profile-tab:hover {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -91,7 +91,7 @@
 
 .admission-program-option.is-active,
 .requirement-profile-tab.is-active {
-  color: var(--accent);
+  color: var(--interaction-active-text);
   border-bottom-color: var(--accent);
 }
 

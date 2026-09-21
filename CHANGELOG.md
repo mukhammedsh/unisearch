@@ -4,6 +4,16 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.12.0 (2026-09-21) - Major-Aware UniFit Catalog
+
+### Added
+- Kept universities without the selected study program in UniFit results, lowered their fit ranking, and marked them with a localized "Program Not Offered" status so applicants can compare alternatives transparently.
+- Added an accessible overflow control for extra catalog-card status indicators, including outside-click and Escape-key dismissal.
+- Standardized hover, active, focus, and disabled control states through shared interaction tokens and composite input surfaces.
+
+### Fixed
+- Rejected fractional annual budgets in profile API payloads to keep the integer budget contract consistent across clients.
+
 ## 6.11.0 (2026-09-21) - Interactive University Programs
 
 ### Added

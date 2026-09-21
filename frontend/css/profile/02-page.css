@@ -187,12 +187,12 @@ body[data-page="profile"] {
 
 @media (hover: hover) and (pointer: fine) {
   .profile-section-tab:hover {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
 }
 
 .profile-section-tab.is-active {
-  color: var(--accent);
+  color: var(--interaction-active-text);
   font-weight: 500;
   background: transparent;
 }
@@ -242,7 +242,7 @@ body[data-page="profile"] {
 }
 
 .profile-delete.profile-delete--danger-soft:focus-visible {
-  outline: 2px solid var(--line-danger);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -366,14 +366,17 @@ body[data-page="profile"] {
     box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
-.profile-input:hover {
-  background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
+@media (hover: hover) and (pointer: fine) {
+  .profile-input:hover:not(:disabled) {
+    background: var(--interaction-hover-surface);
+  }
 }
 
 .profile-input:focus {
-  outline: none;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
   border: none;
-  box-shadow: 0 0 0 2px var(--accent);
+  box-shadow: none;
   background: var(--surface-soft);
 }
 
@@ -383,9 +386,15 @@ body[data-page="profile"] {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .profile-shell .custom-select-trigger:hover {
-    background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
+  .profile-shell .custom-select-trigger:hover:not(:disabled) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
+}
+
+.profile-shell .custom-select-wrapper.open .custom-select-trigger {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .profile-input.is-invalid,
@@ -407,15 +416,58 @@ body[data-page="profile"] {
   position: relative;
   display: flex;
   align-items: center;
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .profile-budget--with-unit .profile-input {
   padding-right: 96px;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .profile-budget--with-unit:hover {
+    background: var(--interaction-hover-surface);
+  }
+
+  .profile-budget--with-unit:hover .profile-unit {
+    color: var(--interaction-hover-text);
+  }
+}
+
+.profile-budget--with-unit:focus-within .profile-input {
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.profile-budget--with-unit:focus-within {
+  background: var(--surface-soft);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.profile-budget--with-unit:focus-within .profile-unit {
+  color: var(--interaction-active-text);
+}
+
+.profile-budget--with-unit:has(.profile-input:is(.is-invalid, [aria-invalid="true"])) {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
+.profile-budget--with-unit .profile-input:is(.is-invalid, [aria-invalid="true"]) {
+  box-shadow: none;
 }
 
 .profile-unit {
   position: absolute;
   right: var(--space-4);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
   font-size: var(--text-xs);
   font-weight: 500;
   color: var(--text-muted);
@@ -501,7 +553,8 @@ body[data-page="profile"] {
   height: 28px;
   border-radius: var(--radius-sm);
   border: none;
-  background: transparent;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
   color: var(--text-muted);
   display: inline-flex;
   align-items: center;
@@ -512,7 +565,8 @@ body[data-page="profile"] {
 
 @media (hover: hover) and (pointer: fine) {
   .profile-budget-grant-hint__dismiss:hover {
-    color: var(--text);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -522,13 +576,13 @@ body[data-page="profile"] {
 .profile-unit--toggle {
   pointer-events: auto;
   right: var(--space-2);
-  background: var(--surface-solid);
+  background: transparent;
   border: none;
-  box-shadow: var(--shadow-xs);
+  box-shadow: none;
   padding: 2px var(--space-1);
   font-family: inherit;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--text-muted);
   cursor: pointer;
   border-radius: var(--radius-sm);
   transition:
@@ -538,15 +592,15 @@ body[data-page="profile"] {
 
 @media (hover: hover) and (pointer: fine) {
   .profile-unit--toggle:hover {
-    background: var(--surface-soft);
-    color: var(--accent-strong);
+    background: var(--interaction-active-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
 .profile-unit--toggle:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  color: var(--text);
+  outline: none;
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -606,8 +660,8 @@ body[data-page="profile"] {
 
 @media (hover: hover) and (pointer: fine) {
   .profile-info:hover {
-    background: var(--surface-solid);
-    color: var(--text);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -615,7 +669,7 @@ body[data-page="profile"] {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   background: var(--surface-soft);
-  color: var(--text);
+  color: var(--text-muted);
 }
 
 .profile-tooltip {
@@ -731,7 +785,7 @@ textarea.profile-input,
   height: 42px;
   padding: 0 var(--space-3);
   border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: none;
   background: var(--accent);
   color: var(--text-inverse);
   font-size: var(--text-sm);
@@ -849,14 +903,6 @@ textarea.profile-input,
     box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .profile-exam-item:hover,
-  .lang-item:hover {
-    background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
-    box-shadow: var(--shadow-micro);
-  }
-}
-
 .profile-exam-meta,
 .lang-item__main {
   display: flex;
@@ -918,8 +964,9 @@ textarea.profile-input,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .profile-add--secondary:hover {
-    background: color-mix(in srgb, var(--text) 8%, var(--surface-soft));
+  .profile-add--secondary:hover:not(:disabled) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -992,8 +1039,9 @@ textarea.profile-input,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .profile-action-btn--secondary:hover {
-    background: color-mix(in srgb, var(--text) 8%, var(--surface-soft));
+  .profile-action-btn--secondary:hover:not(:disabled) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -1089,7 +1137,7 @@ textarea.profile-input,
 }
 
 .profile-delete--danger:focus-visible {
-  outline: 2px solid var(--line-danger);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 

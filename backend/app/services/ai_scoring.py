@@ -12,6 +12,11 @@ from app.services.finance_modes import (
 )
 from app.services import languages as languages_service
 from app.services import universities as universities_service
+from app.services.university_tracks import (
+    _canonical_major,
+    _normalize_major_text,
+    _iter_programs,
+)
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 
 _UI_BADGE_THRESHOLDS = {
@@ -77,6 +82,51 @@ def _cost_to_usd(amount: Optional[float], currency_code: str) -> float:
         return max(0.0, float(convert(amount, code, "USD")))
     except Exception:
         return max(0.0, float(amount))
+
+
+def _university_matches_major(university: Dict[str, Any], major: str) -> bool:
+    target_major = str(major or "").strip()
+    if not target_major or not isinstance(university, dict):
+        return True
+    m_exact = _canonical_major(target_major)
+    m_raw = _normalize_major_text(target_major)
+    academics = university.get("academics") if isinstance(university.get("academics"), dict) else {}
+    programs = _iter_programs(university)
+
+    for p in programs:
+        if not isinstance(p, dict):
+            continue
+        p_name = _normalize_major_text(p.get("name"))
+        if m_raw and (p_name == m_raw or m_raw in p_name):
+            return True
+        p_tags = p.get("major_tags") or []
+        if isinstance(p_tags, list):
+            for tag in p_tags:
+                tag_exact = _canonical_major(tag)
+                if m_exact and tag_exact == m_exact:
+                    return True
+                if m_raw and _normalize_major_text(tag) == m_raw:
+                    return True
+
+    majors = academics.get("majors") or []
+    if isinstance(majors, list):
+        for m in majors:
+            m_tag = _canonical_major(m)
+            if m_exact and m_tag == m_exact:
+                return True
+            if m_raw and _normalize_major_text(m) == m_raw:
+                return True
+
+    major_tags = academics.get("major_tags") or []
+    if isinstance(major_tags, list):
+        for m in major_tags:
+            m_tag = _canonical_major(m)
+            if m_exact and m_tag == m_exact:
+                return True
+            if m_raw and _normalize_major_text(m) == m_raw:
+                return True
+
+    return False
 
 
 def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict[str, Any]:
@@ -1290,6 +1340,7 @@ def _build_ui_badge_hints(
     cost_usd: Optional[float] = None,
     user_budget: Optional[float] = None,
     aid_any: bool = False,
+    missing_program: bool = False,
 ) -> Dict[str, Any]:
     mismatch01 = _clamp01(_to_num_default(preference_mismatch, 1.0))
     conditional_count = max(0, int(_to_num_default(conditional_requirements, 0.0)))
@@ -1330,11 +1381,14 @@ def _build_ui_badge_hints(
 
     return {
         "showConditionalExamNeeded": show_conditional,
+        "showMissingProgram": bool(missing_program),
+        "missingProgram": bool(missing_program),
         "vibe": vibe,
         "finance": finance,
         "requirements": requirements,
         "budgetAid": budget_aid,
         "priorityOrder": [
+            "missing_program",
             "conditional_exam_needed",
             "your_vibe",
             "top_match",
@@ -1354,6 +1408,7 @@ def _build_ui_badge_hints(
             "generalChance": int(round(general_pct)),
             "meetsMinRequirements": meets_min_requirements,
             "belowRequirements": below_requirements,
+            "missingProgram": bool(missing_program),
             "overBudget": over_budget,
             "aidAny": aid_any,
         },
@@ -1401,6 +1456,7 @@ def sort_universities_ai(
     profile_grant["fundingType"] = "grant"
     profile_grant["funding_type"] = "grant"
     interest_text = str(profile.get("interests") or "").strip()
+    profile_major = str(profile.get("major") or "").strip()
 
     ml_scores_by_id: Dict[str, float] = {}
     ml_status = (
@@ -1500,6 +1556,9 @@ def sort_universities_ai(
                 selected_actual_chance = actual_general_chance
                 selected_chance01 = general_chance01
 
+        missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
+        program_missing_penalty = 0.25 if missing_program else 0.0
+
         admission_risk = _clamp01(1.0 - selected_chance01)
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
         if use_ml:
@@ -1512,9 +1571,14 @@ def sort_universities_ai(
                 + (0.30 * admission_risk)
                 + (0.35 * semantic_penalty)
                 + major_penalty
+                + program_missing_penalty
             )
         else:
-            final_score = _clamp01((0.60 * preference_mismatch) + (0.40 * admission_risk))
+            final_score = _clamp01(
+                (0.60 * preference_mismatch)
+                + (0.40 * admission_risk)
+                + program_missing_penalty
+            )
         hard_score = _clamp01(1.0 - preference_mismatch)
 
         # Resolve the active admission choice
@@ -1574,6 +1638,7 @@ def sort_universities_ai(
             cost_usd=final_price_usd,
             user_budget=ctx["budget"],
             aid_any=has_uni_aid,
+            missing_program=missing_program,
         )
 
         choice_id = str(active_raw_choice.get("id") or active_choice_meta.get("choiceId") or "default")
@@ -1595,6 +1660,7 @@ def sort_universities_ai(
             "admitChance": selected_chance01,
             "meetMinRequirements": meet_min_req,
             "missingRequiredEvidence": active_choice_meta.get("reason") == "missing_evidence" or bool(chance_general.get("missingEvidence")),
+            "missingProgram": missing_program,
             "conditional": is_conditional,
             "conditionalRequirements": conditional_count,
             "costYearUSD": cost_usd,

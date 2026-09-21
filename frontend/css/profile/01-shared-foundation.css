@@ -455,26 +455,6 @@
   }
 }
 
-:root[data-theme="dark"] .profile-info{
-  background: var(--surface-soft);
-  border-color: transparent;
-  color: var(--text-muted);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :root[data-theme="dark"] .profile-info:hover{
-    background: var(--accent-panel);
-    border-color: var(--line-accent);
-    color: var(--accent);
-  }
-}
-
-:root[data-theme="dark"] .profile-info:focus-visible{
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-  color: var(--accent);
-}
-
 .profile-section-tabs {
   margin: 0 24px 12px;
   display: grid;
@@ -507,13 +487,13 @@
 
 @media (hover: hover) and (pointer: fine) {
   .profile-section-tab:hover {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
 }
 
 .profile-section-tab.is-active {
   background: transparent;
-  color: var(--accent);
+  color: var(--interaction-active-text);
   box-shadow: none;
 }
 

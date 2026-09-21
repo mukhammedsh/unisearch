@@ -11,6 +11,21 @@
   display: none !important;
 }
 
+.navbar-search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-xs);
+}
+
+.navbar-search-field:focus-within {
+  background: var(--surface-solid);
+}
+
 /* Mobile search overlay trigger (YouTube-style): sizing and visuals come from
    the shared navbar button group above, so the loupe always matches them. */
 .navbar-search-toggle[hidden] {
@@ -36,8 +51,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .navbar-search-back:hover {
-    background: var(--surface-soft);
-    color: var(--text);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -96,8 +111,8 @@
   border: none;
   border-radius: var(--radius-base);
   outline: 0;
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-xs);
+  background: transparent;
+  box-shadow: none;
   color: var(--text);
   font-size: var(--text-base);
   font-weight: 500;
@@ -112,15 +127,24 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .navbar-search input:hover {
-    box-shadow: var(--shadow-sm);
+  .navbar-search-field:hover {
+    background: var(--interaction-hover-surface);
+  }
+
+  .navbar-search-field:hover .navbar-search-icon {
+    color: var(--interaction-hover-text);
   }
 }
 
 .navbar-search input:focus {
+  outline: none;
   border: none;
-  background: var(--surface-solid);
-  box-shadow: 0 0 0 2px var(--accent), var(--shadow-xs);
+  background: transparent;
+  box-shadow: none;
+}
+
+.navbar-search-field:focus-within .navbar-search-icon {
+  color: var(--interaction-active-text);
 }
 
 .navbar-search input::-webkit-search-cancel-button,
@@ -158,19 +182,19 @@
 }
 
 .navbar-search-clear:active:not(:disabled) {
-  filter: brightness(0.88);
-  transition: filter 0.04s ease;
+  translate: 0 1px;
 }
 
 .navbar-search-clear:focus-visible {
-  background: var(--surface-solid);
-  color: var(--text);
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
+  outline: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .navbar-search-clear:hover {
-    background: var(--surface-solid);
-    color: var(--text);
+    background: var(--interaction-active-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
