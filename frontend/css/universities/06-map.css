@@ -15,8 +15,84 @@
   background: var(--surface-solid);
 }
 
+.u-map-container .leaflet-control-zoom {
+  overflow: hidden;
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
+}
+
 .u-map-container .leaflet-control-zoom a {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
   font-weight: var(--font-weight-medium);
+  line-height: 1;
+  box-shadow: none;
+}
+
+.u-map-container .leaflet-control-zoom a + a {
+  box-shadow: inset 0 1px 0 var(--line-faint);
+}
+
+.u-map-container .leaflet-control-zoom a:hover,
+.u-map-container .leaflet-control-zoom a:focus {
+  background: var(--surface-soft);
+  color: var(--accent);
+}
+
+.u-map-container .leaflet-control-zoom a:focus-visible,
+.u-map-overview-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.u-map-container .leaflet-control-zoom a.leaflet-disabled {
+  background: var(--surface-solid);
+  color: var(--text-muted);
+  opacity: 0.48;
+}
+
+.u-map-overview-control {
+  border: none;
+  background: transparent;
+}
+
+.u-map-overview-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-micro);
+}
+
+.u-map-overview-button:hover {
+  background: var(--surface-soft);
+  color: var(--accent);
+}
+
+.u-map-overview-icon {
+  flex: 0 0 auto;
+}
+
+.u-map-overview-button span:last-child {
+  white-space: nowrap;
 }
 
 .u-map-results {
@@ -206,7 +282,7 @@
 }
 
 .u-map-results-list .uni-logo--inline {
-  position: static;
+  position: relative;
   left: auto;
   bottom: auto;
   flex: 0 0 44px;
@@ -219,6 +295,149 @@
   padding: 4px;
 }
 
+.u-map-logo-cue {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  box-shadow: var(--shadow-micro);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, calc(-50% + var(--space-1)));
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.uni-map-logo-cue__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.u-map-results-footer {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0 var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.u-map-results-more {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+  color: var(--text);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-micro);
+}
+
+.u-map-results-more:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--surface-soft) 92%, var(--text) 8%);
+}
+
+.u-map-results-more:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.u-map-results-more:disabled {
+  cursor: wait;
+  opacity: 0.64;
+}
+
+.u-map-results-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: var(--radius-circle);
+  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+}
+
+.u-map-results-complete {
+  color: var(--text-muted);
+}
+
+.map-point-popup {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 240px;
+  padding: var(--space-3);
+  background: var(--surface-solid);
+}
+
+.map-point-popup__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.map-point-popup__logo {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+}
+
+.map-point-popup__logo img {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-1);
+  object-fit: contain;
+}
+
+.map-point-popup__copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.map-point-popup__copy strong,
+.map-point-popup__copy span {
+  overflow-wrap: anywhere;
+}
+
+.map-point-popup__copy span {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.map-point-popup__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.map-point-popup .uni-details {
+  justify-self: start;
+}
+
+/* Treat Leaflet's shell and pointer as one visual university card. */
+.custom-map-popup .leaflet-popup-content-wrapper,
+.custom-map-popup .leaflet-popup-tip {
+  background: var(--surface-solid);
+}
+
 .uni-card--map .uni-title {
   font-size: 14px;
 }
@@ -228,9 +447,39 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  :root .u-map-results-list .uni-card:not(.uni-card--compare-selected):hover,
+  .u-map-results-list .uni-card.uni-card--compare-selected:hover {
+    transform: none;
+  }
+
+  :root .custom-map-popup .map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover,
+  .custom-map-popup .map-card-wrapper .uni-card.uni-card--compare-selected:hover {
+    transform: none;
+  }
+
+  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) .leaflet-popup-content-wrapper,
+  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) .leaflet-popup-tip {
+    background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
+  }
+
+  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) .leaflet-popup-content-wrapper,
+  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) .leaflet-popup-tip {
+    background: var(--accent-soft);
+  }
+
   .u-map-results-list .uni-card.is-active:hover {
     background: var(--accent-panel);
   }
+
+  .u-map-results-list .uni-card:hover .uni-map-logo-cue {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.u-map-results-list .uni-card:focus-within .uni-map-logo-cue {
+  opacity: 1;
+  transform: translate(-50%, -50%);
 }
 
 .u-map-container {
@@ -306,6 +555,15 @@
 
   .u-map-container {
     min-height: 280px;
+  }
+
+  .u-map-overview-button {
+    width: 44px;
+    padding: 0;
+  }
+
+  .u-map-overview-button span:last-child {
+    display: none;
   }
 
 }

@@ -4,6 +4,17 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.10.0 (2026-09-21) - Scalable Interactive University Map
+
+### Added
+- Added a compact, bounds-aware university map-points API for client-side Leaflet clustering, avoiding full catalog card payloads for map markers.
+- Added progressive loading to the map result rail in pages of 100 universities, with automatic continuation and an accessible manual retry/load-more control.
+- Added complete university-card hydration when opening a map marker, plus clear map zoom controls and a return-to-world action.
+
+### Fixed
+- Kept Leaflet university markers visible when the map wraps horizontally and prevented blank map areas beyond the north and south limits of the Web Mercator projection.
+- Matched map popup pointers to their university cards in light and dark themes and removed vertical card movement on map hover.
+
 ## 6.9.1 (2026-09-21) - Anti-Vibe Coding Guardrails and Code Quality Hardening
 
 ### Added

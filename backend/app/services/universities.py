@@ -1297,6 +1297,45 @@ def to_university_card(
     return out
 
 
+def to_university_map_point(
+    u: Dict[str, Any],
+    search_lang: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Return the compact payload needed to build a clustered map marker."""
+    if not isinstance(u, dict):
+        return {}
+
+    coordinates = u.get("coordinates")
+    coordinates_obj = coordinates if isinstance(coordinates, dict) else {}
+    lat = _to_float(coordinates_obj.get("lat"))
+    lon = _to_float(coordinates_obj.get("lon"))
+    if lat is None or lon is None:
+        return {}
+
+    uid = str(u.get("id") or "").strip()
+    location = u.get("location")
+    location_obj = location if isinstance(location, dict) else {}
+    lang = _normalize_search_lang(search_lang)
+    name_value = str(u.get("name") or "")
+    country_value = location_obj.get("country")
+    city_value = location_obj.get("city")
+    if lang != SEARCH_LANG_ENG:
+        name_value = _translate_university_name(uid, name_value, lang)
+        country_value = _translate_group_value("country", country_value, lang)
+        city_value = _translate_group_value("city", city_value, lang)
+
+    return {
+        "id": u.get("id"),
+        "name": name_value,
+        "rank": u.get("rank"),
+        "location": {
+            "country": country_value,
+            "city": city_value,
+        },
+        "coordinates": {"lat": lat, "lon": lon},
+    }
+
+
 def _project_universities(
     items: List[Dict[str, Any]],
     response_mode: str,
@@ -1310,6 +1349,14 @@ def _project_universities(
                 u, format_preference=format_preference, search_lang=search_lang
             )
             for u in items
+        ]
+    if mode == "map":
+        return [
+            point
+            for point in (
+                to_university_map_point(u, search_lang=search_lang) for u in items
+            )
+            if point
         ]
     lang = _normalize_search_lang(search_lang)
     if lang == SEARCH_LANG_ENG:

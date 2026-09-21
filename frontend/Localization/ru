@@ -429,6 +429,17 @@ universities.global: Глобально
 universities.loading: Загрузка университетов
 universities.map_panel.empty: По текущим фильтрам не найдено университетов с координатами на карте.
 universities.map_panel.title: Результаты на карте
+universities.map_panel.showing: Показано {count} из {total}
+universities.map_panel.load_more: Загрузить ещё
+universities.map_panel.loading_more: Загружаем ещё университеты
+universities.map_panel.all_loaded: Все подходящие университеты загружены
+universities.map_panel.load_failed: Не удалось загрузить результаты карты.
+universities.map_panel.points_failed: Не удалось обновить маркеры на карте.
+universities.map_controls.zoom_in: Приблизить
+universities.map_controls.zoom_out: Отдалить
+universities.map_controls.show_world: Показать весь мир
+universities.map_popup.loading: Загружаем карточку университета
+universities.map_popup.failed: Не удалось загрузить карточку университета.
 universities.pagination.next: Далее
 universities.pagination.prev: Назад
 universities.reset: Сброс

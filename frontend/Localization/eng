@@ -426,6 +426,17 @@ universities.global: Global
 universities.loading: Loading universities
 universities.map_panel.empty: No universities with map coordinates match these filters.
 universities.map_panel.title: Results on the map
+universities.map_panel.showing: Showing {count} of {total}
+universities.map_panel.load_more: Load more
+universities.map_panel.loading_more: Loading more universities
+universities.map_panel.all_loaded: All matching universities are loaded
+universities.map_panel.load_failed: Could not load map results.
+universities.map_panel.points_failed: Map markers could not be refreshed.
+universities.map_controls.zoom_in: Zoom in
+universities.map_controls.zoom_out: Zoom out
+universities.map_controls.show_world: Show the whole world
+universities.map_popup.loading: Loading university card
+universities.map_popup.failed: Could not load the university card.
 universities.pagination.next: Next
 universities.pagination.prev: Prev
 universities.reset: Reset
