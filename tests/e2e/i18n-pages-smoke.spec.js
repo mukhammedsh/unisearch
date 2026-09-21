@@ -91,3 +91,25 @@ test("university detail page updates key UI texts for eng/rus", async ({ page })
     );
   }
 });
+
+test("language switching preserves the detail ID after client-side navigation", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+
+  const detailLink = page.locator(".uni-card-link-overlay").first();
+  await expect(detailLink).toBeVisible();
+  const detailHref = await detailLink.getAttribute("href");
+  const expectedId = new URL(detailHref, page.url()).searchParams.get("id");
+
+  await detailLink.click();
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#detailLoading")).not.toHaveClass(/is-visible/);
+
+  await switchLanguage(page, "rus");
+  await expect.poll(() => new URL(page.url()).searchParams.get("id")).toBe(expectedId);
+  await expect(page.locator("#detailState")).not.toContainText("ID не указан");
+
+  await page.reload();
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#detailLoading")).not.toHaveClass(/is-visible/);
+});

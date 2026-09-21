@@ -236,6 +236,7 @@ export async function initUniversityPage() {
   };
 
   if (!id) {
+    setDetailLoading(false);
     if (stateEl) {
       stateEl.innerHTML = `<h2 class="d-state-error">${escapeHtml(t("university.error_no_id", "Error: No ID provided."))}</h2>`;
     }

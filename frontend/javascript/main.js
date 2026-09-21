@@ -505,6 +505,8 @@ async function loadAppRoute(rawHref, options = {}) {
   }
 
   const currentUrl = new URL(window.location.href);
+  const leavingUniversitiesPage = currentRouteContext().isUniversitiesPage
+    && !isUniversitiesListPath(url.pathname);
   if (isProfilePath(url.pathname) && !isProfilePath(currentUrl.pathname)) {
     safeSessionStorage.set(PROFILE_RETURN_URL_KEY, currentUrl.href);
   }
@@ -530,6 +532,14 @@ async function loadAppRoute(rawHref, options = {}) {
   try {
     const html = await fetchRouteHtml(url.href, controller.signal);
     const nextDoc = new DOMParser().parseFromString(html, "text/html");
+
+    if (leavingUniversitiesPage) {
+      const universitiesModule = routeModulePromises.get("universities");
+      if (universitiesModule) {
+        const module = await universitiesModule;
+        module?.disposeUniversitiesPage?.();
+      }
+    }
 
     await syncDocumentHeadFromRoute(nextDoc, url.href);
 

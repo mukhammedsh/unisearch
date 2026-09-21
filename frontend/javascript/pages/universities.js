@@ -108,6 +108,70 @@ let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
 let __universitiesMapResizeTimer = 0;
 
+export function disposeUniversitiesPage() {
+    if (__universitiesProfileUpdatedHandler) {
+        window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
+        __universitiesProfileUpdatedHandler = null;
+    }
+    if (__universitiesLanguageChangedHandler) {
+        window.removeEventListener("languageChanged", __universitiesLanguageChangedHandler);
+        __universitiesLanguageChangedHandler = null;
+    }
+    if (__universitiesMapCardActionHandler) {
+        document.removeEventListener("click", __universitiesMapCardActionHandler, true);
+        __universitiesMapCardActionHandler = null;
+    }
+    if (__universitiesSettingsChangedHandler) {
+        window.removeEventListener("settingsChanged", __universitiesSettingsChangedHandler);
+        __universitiesSettingsChangedHandler = null;
+    }
+    if (__universitiesScrollHandler) {
+        window.removeEventListener("scroll", __universitiesScrollHandler);
+        __universitiesScrollHandler = null;
+    }
+    if (__universitiesPagehideHandler) {
+        window.removeEventListener("pagehide", __universitiesPagehideHandler);
+        __universitiesPagehideHandler = null;
+    }
+    if (__universitiesBeforeunloadHandler) {
+        window.removeEventListener("beforeunload", __universitiesBeforeunloadHandler);
+        __universitiesBeforeunloadHandler = null;
+    }
+    if (__universitiesCurrencyChangedHandler) {
+        window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
+        __universitiesCurrencyChangedHandler = null;
+    }
+    if (__universitiesOnlineReconnectHandler) {
+        window.removeEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
+        __universitiesOnlineReconnectHandler = null;
+    }
+    if (__universitiesMobileFilterKeydownHandler) {
+        document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
+        __universitiesMobileFilterKeydownHandler = null;
+    }
+    if (__universitiesRecentRelocationHandler) {
+        window.removeEventListener("resize", __universitiesRecentRelocationHandler);
+        __universitiesRecentRelocationHandler = null;
+    }
+    if (__universitiesResizeHandler) {
+        window.removeEventListener("resize", __universitiesResizeHandler);
+        __universitiesResizeHandler = null;
+    }
+    if (__universitiesMapResizeTimer) {
+        window.clearTimeout(__universitiesMapResizeTimer);
+        __universitiesMapResizeTimer = 0;
+    }
+    if (__universitiesResizeObserver) {
+        __universitiesResizeObserver.disconnect();
+        __universitiesResizeObserver = null;
+    }
+    document.documentElement.classList.remove("sidebar-filters-open");
+    document.body.classList.remove("sidebar-filters-open");
+    if (document.body.style.overflow === "hidden") {
+        document.body.style.overflow = "";
+    }
+}
+
 export function initUniversitiesPage() {
     const prefCurrency = getPreferredCurrency();
     let currentCurrency = prefCurrency;
@@ -264,59 +328,7 @@ export function initUniversitiesPage() {
     };
 
     if (!el.list) return;
-    if (__universitiesProfileUpdatedHandler) {
-        window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
-        __universitiesProfileUpdatedHandler = null;
-    }
-    if (__universitiesLanguageChangedHandler) {
-        window.removeEventListener("languageChanged", __universitiesLanguageChangedHandler);
-        __universitiesLanguageChangedHandler = null;
-    }
-    if (__universitiesMapCardActionHandler) {
-        document.removeEventListener("click", __universitiesMapCardActionHandler, true);
-        __universitiesMapCardActionHandler = null;
-    }
-    if (__universitiesSettingsChangedHandler) {
-        window.removeEventListener("settingsChanged", __universitiesSettingsChangedHandler);
-        __universitiesSettingsChangedHandler = null;
-    }
-    if (__universitiesScrollHandler) {
-        window.removeEventListener("scroll", __universitiesScrollHandler);
-        __universitiesScrollHandler = null;
-    }
-    if (__universitiesPagehideHandler) {
-        window.removeEventListener("pagehide", __universitiesPagehideHandler);
-        __universitiesPagehideHandler = null;
-    }
-    if (__universitiesBeforeunloadHandler) {
-        window.removeEventListener("beforeunload", __universitiesBeforeunloadHandler);
-        __universitiesBeforeunloadHandler = null;
-    }
-    if (__universitiesMobileFilterKeydownHandler) {
-        document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
-        __universitiesMobileFilterKeydownHandler = null;
-    }
-    document.documentElement.classList.remove("sidebar-filters-open");
-    document.body.classList.remove("sidebar-filters-open");
-    if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = "";
-    }
-    if (__universitiesRecentRelocationHandler) {
-        window.removeEventListener("resize", __universitiesRecentRelocationHandler);
-        __universitiesRecentRelocationHandler = null;
-    }
-    if (__universitiesResizeHandler) {
-        window.removeEventListener("resize", __universitiesResizeHandler);
-        __universitiesResizeHandler = null;
-    }
-    if (__universitiesMapResizeTimer) {
-        window.clearTimeout(__universitiesMapResizeTimer);
-        __universitiesMapResizeTimer = 0;
-    }
-    if (__universitiesResizeObserver) {
-        __universitiesResizeObserver.disconnect();
-        __universitiesResizeObserver = null;
-    }
+    disposeUniversitiesPage();
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });

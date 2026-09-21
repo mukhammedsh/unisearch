@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.20 (2026-09-21) - University Detail Language Switch Fix
+
+### Fixed
+- Preserved the selected university when switching the interface language from a detail page, preventing the missing-ID error and endless loading after a refresh.
+
 ## 6.8.19 (2026-09-21) - Co-founder Role Attribution
 
 ### Documentation
