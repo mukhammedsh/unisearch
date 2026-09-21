@@ -1,6 +1,7 @@
 # UniSearch
 
 [![Tests](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml/badge.svg)](https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=mukhammedsh_unisearch&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mukhammedsh_unisearch)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14732/badge)](https://www.bestpractices.dev/projects/14732)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/mukhammedsh/unisearch/badge)](https://securityscorecards.dev/viewer/?uri=github.com/mukhammedsh/unisearch)
 [![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)

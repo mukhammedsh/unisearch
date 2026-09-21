@@ -4,6 +4,17 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.8.17 (2026-09-21) - SonarCloud Quality Gate and Fuzzing Isolation
+
+### Security
+- Hardened trusted-proxy validation, maintenance-script repository boundaries, dependency installation, and build inputs identified by static analysis.
+- Ran ClusterFuzzLite builds as an unprivileged user while keeping copied source files immutable during fuzzing.
+- Refreshed hash-locked Python dependencies and kept CPU-only PyTorch resolution isolated from the public package index.
+
+### Quality
+- Restored catalog rendering after map warmup and removed static-analysis findings from frontend normalization, accessibility, encoding, icon generation, and design-lint utilities.
+- Added the SonarCloud Quality Gate badge to the project README after achieving a passing gate with no open SonarCloud issues.
+
 ## 6.8.16 (2026-09-21) - SonarCloud Remediation and Security Hardening
 
 ### Security
