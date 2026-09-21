@@ -85,6 +85,11 @@ test("program card major tags are localized in russian", async ({ page }) => {
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-programs']");
 
+  const firstToggle = page.locator("#tab-programs [data-program-toggle]").first();
+  await expect(firstToggle).toBeVisible();
+  await firstToggle.click();
+  await expect(firstToggle).toHaveAttribute("aria-expanded", "true");
+
   const programTags = page.locator("#tab-programs .program-card .program-tag");
   await expect(programTags.first()).toBeVisible();
   await expect(programTags).toContainText(["Компьютерные науки"]);
