@@ -400,7 +400,15 @@ export async function initUniversityPage(options = {}) {
 
     renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, rankStatus, university });
     renderExtraSection({ container: document.getElementById("detailExtra"), university });
-    renderProgramsSection({ admissionsData, container: document.getElementById("detailPrograms"), university });
+    const renderProgramsTab = () => {
+      renderProgramsSection({
+        admissionsData,
+        container: document.getElementById("detailPrograms"),
+        university,
+        profileMajor: String(loadProfile()?.major || "").trim(),
+      });
+    };
+    renderProgramsTab();
 
     const renderAdmissionTab = () => {
       renderAdmissionSection({
@@ -415,6 +423,7 @@ export async function initUniversityPage(options = {}) {
     detailProfileUpdatedHandler = async () => {
       await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
       renderAdmissionTab();
+      renderProgramsTab();
     };
     window.addEventListener("profileUpdated", detailProfileUpdatedHandler);
 

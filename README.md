@@ -18,7 +18,7 @@ UniSearch helps applicants discover and compare universities for **bachelor's st
 - **Applicant profile:** GPA and grading scale, exams, languages, budget, intended major, interests, study mode, and funding preferences.
 - **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags. It is a sorting mode within the catalog.
 - **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
-- **University details:** programs, admission options, requirements, costs, funding, and student life information where data is available.
+- **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available.
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 - **Guide:** a structured reference explaining admission requirements, exams, UniFit, UniChance, and comparison workflows, with section-to-section navigation.

@@ -85,9 +85,63 @@ test("program card major tags are localized in russian", async ({ page }) => {
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-programs']");
 
+  const firstToggle = page.locator("#tab-programs [data-program-toggle]").first();
+  await expect(firstToggle).toBeVisible();
+  await firstToggle.click();
+  await expect(firstToggle).toHaveAttribute("aria-expanded", "true");
+
   const programTags = page.locator("#tab-programs .program-card .program-tag");
   await expect(programTags.first()).toBeVisible();
   await expect(programTags).toContainText(["Компьютерные науки"]);
+});
+
+test("programs tab search filters the list and shows empty state", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "rus");
+  });
+  await page.goto("/university.html?id=mit-usa-cambridge");
+
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.click(".d-tab-btn[data-tab='tab-programs']");
+
+  const search = page.locator("#tab-programs [data-program-search]");
+  await expect(search).toBeVisible();
+  await expect(page.locator("#tab-programs [data-program-empty]")).toBeHidden();
+
+  await search.fill("Физика");
+  await expect(page.locator("#tab-programs .program-card:not([hidden])")).toHaveCount(1);
+  await expect(
+    page.locator("#tab-programs .program-card:not([hidden]) .program-card__title").first()
+  ).toContainText("Физика");
+
+  await search.fill("");
+  await expect(page.locator("#tab-programs .program-card:not([hidden])")).toHaveCount(12);
+
+  await search.fill("zzz-no-such-program");
+  await expect(page.locator("#tab-programs [data-program-empty]")).toBeVisible();
+  await expect(page.locator("#tab-programs .program-card:not([hidden])")).toHaveCount(0);
+});
+
+test("profile major pins and highlights matching programs first", async ({ page }) => {
+  await seedProfile(page, personas.ruStemGrant.profile);
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+  });
+
+  await page.goto("/university.html?id=mit-usa-cambridge");
+
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.click(".d-tab-btn[data-tab='tab-programs']");
+
+  const cards = page.locator("#tab-programs .program-card");
+  await expect(cards.first()).toHaveClass(/program-card--major/);
+  await expect(cards.first().locator(".program-card__title")).toContainText(
+    "Computer Science and Engineering"
+  );
+  await expect(page.locator("#tab-programs .program-card--major")).toHaveCount(3);
+  await expect(
+    page.locator("#tab-programs .program-card--major .program-card__major-badge").first()
+  ).toBeVisible();
 });
 
 test("abai university admission card layout invariants", async ({ page }) => {

@@ -4,6 +4,18 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.11.0 (2026-09-21) - Interactive University Programs
+
+### Added
+- Reworked the university Programs tab into collapsed-by-default detail accordions with per-program admissions data and single-open behavior.
+- Added live program search with result filtering, a clear control, an empty state, and a persisted query per university.
+- Added profile-major matching that pins matching programs first with a "Your major" badge and localized field tags.
+- Re-rendered the Programs tab when the applicant profile changes so major matching stays in sync.
+- Added English and Russian strings for program detail toggles, search controls, and the major badge.
+
+### Fixed
+- Kept every program card collapsed when entering the Programs tab instead of auto-expanding the first program.
+
 ## 6.10.3 (2026-09-21) - Map Results Lifecycle Test Completion
 
 ### Fixed

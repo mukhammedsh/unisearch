@@ -1,14 +1,19 @@
-import { escapeHtml, escapeHtmlAttr, markMotionEnter } from "../../utils.js";
+import { escapeHtml, escapeHtmlAttr, markMotionEnter, motionPress } from "../../utils.js";
 import { t } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
 import { translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import {
+  admissionsDataTypeKey,
+  admissionsDataTypeLabel,
+  admissionsFactChips,
   formatCampusSizeValue,
   formatUiNumber,
   localizeDuration,
+  renderAdmissionsChipRow,
+  renderAdmissionsSourceLink,
+  admissionsSignalSummary,
   renderInlineIcon,
-  renderProgramAdmissionsSignals,
   rankingStatusLabel,
   trProgramLanguage,
   trProgramName,
@@ -173,17 +178,27 @@ export function renderExtraSection({ container, university }) {
   `;
 }
 
+const programSearchQueryByUniversity = new Map();
+const programOpenKeyByUniversity = new Map();
+
 export function renderProgramsSection({
   admissionsData,
   container,
   university,
+  profileMajor = "",
 }) {
   if (!container) return;
 
   const programs = Array.isArray(university?.academics?.programs)
     ? university.academics.programs.filter((program) => program && typeof program === "object")
     : [];
-  const admissionsProgramsHtml = renderProgramAdmissionsSignals(admissionsData);
+  const signalRows = Array.isArray(admissionsData?.programs)
+    ? admissionsData.programs.filter((row) => row && typeof row === "object")
+    : [];
+  const programLevel = admissionsData?.program_level && typeof admissionsData.program_level === "object"
+    ? admissionsData.program_level
+    : {};
+  const institutionWideOnly = String(programLevel?.kind || "").trim().toLowerCase() === "institution_wide_only";
 
   const prettyField = (key) =>
     String(key || "")
@@ -193,6 +208,23 @@ export function renderProgramsSection({
   const isMajorTagField = (key) => {
     const normalized = String(key || "").trim().toLowerCase();
     return normalized === "major_tags" || normalized === "majors" || normalized === "applicable_majors";
+  };
+
+  const tokenizeName = (value) =>
+    String(value || "")
+      .toLowerCase()
+      .replaceAll("&", " ")
+      .split(/[^\p{L}\p{N}]+/u)
+      .map((token) => token.trim())
+      .filter(Boolean);
+
+  const normalizeSignalKey = (value) => tokenizeName(value).join(" ");
+
+  const stripParenthetical = (value) => String(value || "").replace(/\([^)]*\)/g, " ");
+
+  const parenTokenSet = (value) => {
+    const groups = String(value || "").match(/\([^)]*\)/g) || [];
+    return new Set(groups.flatMap((group) => tokenizeName(group)));
   };
 
   const formatProgramValue = (key, value) => {
@@ -213,16 +245,27 @@ export function renderProgramsSection({
     return String(value);
   };
 
-  const renderValueCell = (label, key, rawValue, formattedValue) => {
-    if (Array.isArray(rawValue) && rawValue.length) {
-      const translatedItems = rawValue.map((item) => {
-        const raw = String(item);
+  const formatListValue = (key, value) => {
+    const list = Array.isArray(value) ? value : [value];
+    return list
+      .map((item) => {
+        const raw = String(item ?? "").trim();
+        if (!raw) return "";
         if (String(key) === "study_levels") return trStudyLevel(raw);
         if (String(key) === "language") return trProgramLanguage(raw);
         if (String(key) === "study_mode") return trStudyMode(raw);
         if (isMajorTagField(key)) return trProgramName(raw) || raw;
         return raw;
-      });
+      })
+      .filter(Boolean);
+  };
+
+  const renderValueCell = (label, key, rawValue, formattedValue) => {
+    if (Array.isArray(rawValue) && rawValue.length) {
+      const translatedItems = formatListValue(key, rawValue);
+      if (!translatedItems.length) {
+        return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
+      }
       return `
         <div class="program-card-tags">
           ${translatedItems.map((item) => `<span class="program-tag">${escapeHtml(String(item))}</span>`).join("")}
@@ -255,12 +298,158 @@ export function renderProgramsSection({
     return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
   };
 
+  const renderSignalRows = (rows) => {
+    if (!rows.length) return "";
+    return `
+      <div class="program-signal">
+        <div class="program-signal__label">${escapeHtml(t("university.admissions.program_signals", "Admissions data by program"))}</div>
+        ${rows.map((row) => {
+          const typeKey = admissionsDataTypeKey(row);
+          const checked = String(row?.provenance?.verified_at || admissionsData?.status_date || "").trim();
+          return `
+            <div class="program-signal__row">
+              <span class="program-signal__type">${escapeHtml(admissionsDataTypeLabel(typeKey))}</span>
+              ${renderAdmissionsChipRow(admissionsFactChips(row))}
+              <p class="program-signal__note">${escapeHtml(admissionsSignalSummary(row, { institutionWideOnly }))}</p>
+              ${checked ? `<div class="program-signal__meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(checked)}</div>` : ""}
+              ${renderAdmissionsSourceLink(row, { explainsAbsence: typeKey === "verified-null" })}
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  };
+
   if (programs.length) {
     const knownKeys = new Set(["name", "study_levels", "acceptance_rate_percent", "duration", "language", "study_mode"]);
+    const programIndexByExactKey = new Map();
+    const programIndexesByCoreKey = new Map();
+    programs.forEach((program, idx) => {
+      const exactKey = normalizeSignalKey(program?.name);
+      if (exactKey && !programIndexByExactKey.has(exactKey)) programIndexByExactKey.set(exactKey, idx);
+      const coreKey = normalizeSignalKey(stripParenthetical(program?.name));
+      if (!coreKey) return;
+      if (!programIndexesByCoreKey.has(coreKey)) programIndexesByCoreKey.set(coreKey, []);
+      programIndexesByCoreKey.get(coreKey).push(idx);
+    });
+    const programParenTokens = programs.map((program) => parenTokenSet(program?.name));
+    const signalsByProgram = new Map();
+    const residualSignalRows = [];
+    signalRows.forEach((row) => {
+      const key = normalizeSignalKey(row?.program_name);
+      if (!key) return;
+      let targetIdx = programIndexByExactKey.has(key) ? programIndexByExactKey.get(key) : -1;
+      if (targetIdx < 0) {
+        const coreKey = normalizeSignalKey(stripParenthetical(row?.program_name));
+        const candidates = (coreKey && programIndexesByCoreKey.get(coreKey)) || [];
+        if (candidates.length === 1) targetIdx = candidates[0];
+      }
+      if (targetIdx < 0) {
+        const translatedCoreKey = normalizeSignalKey(stripParenthetical(trProgramName(row?.program_name || "")));
+        const translatedCandidates = (translatedCoreKey && programIndexesByCoreKey.get(translatedCoreKey)) || [];
+        if (translatedCandidates.length === 1) targetIdx = translatedCandidates[0];
+      }
+      if (targetIdx < 0) {
+        const signalParen = parenTokenSet(row?.program_name);
+        if (signalParen.size > 0) {
+          let bestIdx = -1;
+          let bestScore = 0;
+          let tied = false;
+          programParenTokens.forEach((programTokens, idx) => {
+            let score = 0;
+            signalParen.forEach((token) => {
+              if (programTokens.has(token)) score += 1;
+            });
+            if (score > bestScore) {
+              bestScore = score;
+              bestIdx = idx;
+              tied = false;
+            } else if (score === bestScore && score > 0) {
+              tied = true;
+            }
+          });
+          if (bestIdx >= 0 && bestScore >= 2 && !tied) targetIdx = bestIdx;
+        }
+      }
+      if (targetIdx < 0) {
+        residualSignalRows.push(row);
+        return;
+      }
+      if (!signalsByProgram.has(targetIdx)) signalsByProgram.set(targetIdx, []);
+      signalsByProgram.get(targetIdx).push(row);
+    });
+    const expandLabel = t("university.programs.expand", "Show details");
+    const collapseLabel = t("university.programs.collapse", "Hide details");
+    const universityKey = String(university?.id || "").trim();
+    const majorTokenSets = [
+      tokenizeName(profileMajor),
+      tokenizeName(trProgramName(profileMajor || "")),
+    ].filter((tokens) => tokens.length);
+    const rawFieldTags = (program) => [
+      ...(Array.isArray(program?.major_tags) ? program.major_tags : []),
+      ...(Array.isArray(program?.majors) ? program.majors : []),
+      ...(Array.isArray(program?.applicable_majors) ? program.applicable_majors : []),
+    ].map((tag) => normalizeSignalKey(tag)).filter(Boolean);
+    const programMatchesMajor = (program) => {
+      if (!majorTokenSets.length) return false;
+      const tags = rawFieldTags(program);
+      const nameTokens = new Set(tokenizeName(program?.name));
+      return majorTokenSets.some((tokens) =>
+        tags.includes(tokens.join(" ")) || tokens.every((token) => nameTokens.has(token)));
+    };
+    const items = programs.map((program, originalIdx) => {
+      const title = trProgramName(program.name || "")
+        || unknownFieldText("placeholder.field.program_name", "Program name");
+      const summaryParts = [
+        formatProgramValue("duration", program.duration),
+        formatListValue("language", program.language).join(", "),
+        formatProgramValue("study_mode", program.study_mode),
+      ].filter((part) => String(part || "").trim());
+      const fieldParts = [
+        ...formatListValue("major_tags", program.major_tags),
+        ...formatListValue("majors", program.majors),
+        ...formatListValue("applicable_majors", program.applicable_majors),
+      ].filter((part, pos, arr) => part && arr.indexOf(part) === pos);
+      const summaryText = [...summaryParts, ...fieldParts].filter(Boolean).join(" · ");
+      return {
+        program,
+        originalIdx,
+        key: normalizeSignalKey(program?.name) || `program-${originalIdx}`,
+        title,
+        summaryText,
+        haystack: normalizeSignalKey(`${title} ${summaryText} ${program?.name || ""}`),
+        isMajorMatch: programMatchesMajor(program),
+      };
+    }).sort((a, b) => Number(b.isMajorMatch) - Number(a.isMajorMatch));
+    const storedOpenKey = programOpenKeyByUniversity.get(universityKey) || "";
+
     container.innerHTML = `
-      <div class="program-list">
-        ${programs.map((program, idx) => {
+      <div class="program-search">
+        ${renderInlineIcon("magnifying-glass", 18, "program-search__icon")}
+        <input
+          type="search"
+          class="program-search__input"
+          data-program-search
+          placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search programs..."))}"
+          aria-label="${escapeHtmlAttr(t("university.programs.search_label", "Search programs"))}"
+          autocomplete="off"
+        >
+        <button
+          type="button"
+          class="program-search__clear"
+          data-program-search-clear
+          aria-label="${escapeHtmlAttr(t("university.programs.clear_search", "Clear search"))}"
+          hidden
+        >${renderInlineIcon("x-mark", 16)}</button>
+      </div>
+      <div class="program-list" role="list">
+        ${items.map((item, displayIdx) => {
+          const program = item.program;
+          const idx = item.originalIdx;
+          const { title, summaryText } = item;
           const programAcceptance = toFiniteNumber(program.acceptance_rate_percent);
+          const bodyId = `program-body-${displayIdx}`;
+          const isOpen = item.key === storedOpenKey;
           const rows = [
             ...(programAcceptance !== null ? [{
               label: translateWord("acceptance_rate", "Acceptance Rate"),
@@ -308,28 +497,175 @@ export function renderProgramsSection({
             }));
 
           const allRows = [...rows, ...extraRows];
+          const matchedSignals = signalsByProgram.get(idx) || [];
+          const toggleLabel = `${isOpen ? collapseLabel : expandLabel}: ${title}`;
           return `
-            <div class="program-card">
-              <div class="program-card-head">
-                <span class="program-card-kicker">${escapeHtml(translateWord("program", "Program"))} ${idx + 1}</span>
-              </div>
-              <h3 class="program-card-title">
-                ${escapeHtml(trProgramName(program.name || "") || unknownFieldText("placeholder.field.program_name", "Program name"))}
-              </h3>
-              <div class="program-card-rows">
-                ${allRows.map((row) => `
-                  <div class="program-card-row">
-                    <span class="program-card-label">${escapeHtml(row.label)}</span>
-                    ${renderValueCell(row.label, row.key, row.rawValue, row.value)}
+            <article
+              class="program-card${isOpen ? " is-open" : ""}${item.isMajorMatch ? " program-card--major" : ""}"
+              role="listitem"
+              data-program-key="${escapeHtmlAttr(item.key)}"
+              data-search="${escapeHtmlAttr(item.haystack)}"
+            >
+              <button
+                type="button"
+                class="program-card__toggle"
+                data-program-toggle="${displayIdx}"
+                aria-expanded="${isOpen ? "true" : "false"}"
+                aria-controls="${bodyId}"
+                aria-label="${escapeHtmlAttr(toggleLabel)}"
+              >
+                <span class="program-card__text">
+                  <span class="program-card__kicker-row">
+                    <span class="program-card__kicker">${escapeHtml(translateWord("program", "Program"))} ${displayIdx + 1}</span>
+                    ${item.isMajorMatch ? `<span class="program-card__major-badge">${escapeHtml(t("university.programs.major_badge", "Your major"))}</span>` : ""}
+                  </span>
+                  <span class="program-card__title">${escapeHtml(title)}</span>
+                  ${summaryText ? `<span class="program-card__summary">${escapeHtml(summaryText)}</span>` : ""}
+                </span>
+                <span class="program-card__chevron" aria-hidden="true">${renderInlineIcon("chevron-right", 16)}</span>
+              </button>
+              <div class="program-card__body" id="${bodyId}" role="region"${isOpen ? "" : " hidden"}>
+                <div class="program-card__body-inner">
+                  <div class="program-card-rows">
+                    ${allRows.map((row) => `
+                      <div class="program-card-row">
+                        <span class="program-card-label">${escapeHtml(row.label)}</span>
+                        ${renderValueCell(row.label, row.key, row.rawValue, row.value)}
+                      </div>
+                    `).join("")}
                   </div>
-                `).join("")}
+                  ${renderSignalRows(matchedSignals)}
+                </div>
               </div>
-            </div>
+            </article>
           `;
         }).join("")}
       </div>
-      ${admissionsProgramsHtml}
+      <div class="program-empty" data-program-empty hidden>${escapeHtml(t("university.programs.no_results", "No programs match this search."))}</div>
+      ${(() => {
+        const residual = residualSignalRows;
+        if (!residual.length) return "";
+        return `
+          <div class="program-signal program-signal--residual">
+            <div class="program-signal__label">${escapeHtml(t("university.admissions.program_signals", "Admissions data by program"))}</div>
+            ${residual.map((row) => {
+              const typeKey = admissionsDataTypeKey(row);
+              const checked = String(row?.provenance?.verified_at || admissionsData?.status_date || "").trim();
+              return `
+                <div class="program-signal__row">
+                  <span class="program-signal__type">${escapeHtml(admissionsDataTypeLabel(typeKey))} · ${escapeHtml(trProgramName(row?.program_name || ""))}</span>
+                  ${renderAdmissionsChipRow(admissionsFactChips(row))}
+                  <p class="program-signal__note">${escapeHtml(admissionsSignalSummary(row, { institutionWideOnly }))}</p>
+                  ${checked ? `<div class="program-signal__meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(checked)}</div>` : ""}
+                  ${renderAdmissionsSourceLink(row, { explainsAbsence: typeKey === "verified-null" })}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      })()}
     `;
+
+    const pendingCloseByCard = new WeakMap();
+    const prefersReducedMotion = () =>
+      typeof window !== "undefined"
+      && typeof window.matchMedia === "function"
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const setToggleState = (button, card, body, isOpen) => {
+      const title = card.querySelector(".program-card__title")?.textContent?.trim() || "";
+      const label = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
+      const pendingClose = pendingCloseByCard.get(card);
+      if (pendingClose) {
+        clearTimeout(pendingClose);
+        pendingCloseByCard.delete(card);
+      }
+      body.classList.remove("program-card__body--enter", "program-card__body--exit");
+      card.classList.toggle("is-open", isOpen);
+      button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      button.setAttribute("aria-label", label);
+      if (isOpen) {
+        body.removeAttribute("hidden");
+        if (!prefersReducedMotion()) body.classList.add("program-card__body--enter");
+      } else if (prefersReducedMotion()) {
+        body.setAttribute("hidden", "");
+      } else {
+        body.classList.add("program-card__body--exit");
+        pendingCloseByCard.set(card, setTimeout(() => {
+          body.setAttribute("hidden", "");
+          body.classList.remove("program-card__body--exit");
+          pendingCloseByCard.delete(card);
+        }, 160));
+      }
+    };
+
+    container.querySelectorAll("[data-program-toggle]").forEach((button) => {
+      button.addEventListener("click", () => {
+        motionPress(button);
+        const card = button.closest(".program-card");
+        const body = card?.querySelector(".program-card__body");
+        if (!card || !body) return;
+        const wasOpen = card.classList.contains("is-open");
+        container.querySelectorAll(".program-card.is-open").forEach((other) => {
+          if (other === card) return;
+          const otherButton = other.querySelector("[data-program-toggle]");
+          const otherBody = other.querySelector(".program-card__body");
+          if (otherButton && otherBody) setToggleState(otherButton, other, otherBody, false);
+        });
+        setToggleState(button, card, body, !wasOpen);
+        programOpenKeyByUniversity.set(universityKey, !wasOpen ? (card.getAttribute("data-program-key") || "") : "");
+        if (!wasOpen) applyPercentWidths(card);
+      });
+    });
+
+    const searchInput = container.querySelector("[data-program-search]");
+    const searchClear = container.querySelector("[data-program-search-clear]");
+    const searchEmpty = container.querySelector("[data-program-empty]");
+    const applyProgramFilter = () => {
+      const queryTokens = tokenizeName(searchInput ? searchInput.value : "");
+      let visibleCount = 0;
+      container.querySelectorAll(".program-card").forEach((card) => {
+        const haystack = String(card.getAttribute("data-search") || "");
+        const visible = !queryTokens.length || queryTokens.every((token) => haystack.includes(token));
+        if (visible) {
+          card.removeAttribute("hidden");
+          visibleCount += 1;
+        } else {
+          card.setAttribute("hidden", "");
+        }
+      });
+      if (searchEmpty) {
+        if (visibleCount > 0) searchEmpty.setAttribute("hidden", "");
+        else searchEmpty.removeAttribute("hidden");
+      }
+      if (searchClear) {
+        if (searchInput && String(searchInput.value || "").trim()) searchClear.removeAttribute("hidden");
+        else searchClear.setAttribute("hidden", "");
+      }
+    };
+    if (searchInput) {
+      searchInput.value = programSearchQueryByUniversity.get(universityKey) || "";
+      searchInput.addEventListener("input", () => {
+        programSearchQueryByUniversity.set(universityKey, searchInput.value);
+        applyProgramFilter();
+      });
+      searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && String(searchInput.value || "")) {
+          searchInput.value = "";
+          programSearchQueryByUniversity.set(universityKey, "");
+          applyProgramFilter();
+        }
+      });
+      if (searchClear) {
+        searchClear.addEventListener("click", () => {
+          motionPress(searchClear);
+          searchInput.value = "";
+          programSearchQueryByUniversity.set(universityKey, "");
+          applyProgramFilter();
+          searchInput.focus();
+        });
+      }
+      applyProgramFilter();
+    }
   } else {
     const majors = Array.isArray(university?.academics?.majors)
       ? university.academics.majors.map((major) => String(major || "").trim()).filter(Boolean)
@@ -337,9 +673,9 @@ export function renderProgramsSection({
     const majorsHtml = majors.length
       ? majors.map((major) => `<span class="program-major-chip">${escapeHtml(trProgramName(major))}</span>`).join(" ")
       : `<div class="program-empty">${escapeHtml(unknownFieldText("placeholder.field.programs", "Programs"))}</div>`;
-    container.innerHTML = `${majorsHtml}${admissionsProgramsHtml}`;
+    container.innerHTML = `${majorsHtml}${renderSignalRows(signalRows)}`;
   }
 
   applyPercentWidths(container);
-  markMotionEnter(container, ".program-card, .program-major-chip, .admissions-summary-card, .admissions-program-card, .program-empty", { limit: 18, staggerMs: 18 });
+  markMotionEnter(container, ".program-card, .program-major-chip, .program-signal, .program-empty", { limit: 18, staggerMs: 18 });
 }

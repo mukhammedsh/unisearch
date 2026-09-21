@@ -1300,3 +1300,10 @@ exam.component.speaking: Говорение (Speaking)
 common.yes: Да
 common.no: Нет
 
+university.programs.expand: Показать детали
+university.programs.collapse: Скрыть детали
+university.programs.search_placeholder: Поиск программ...
+university.programs.search_label: Поиск по программам
+university.programs.clear_search: Очистить поиск
+university.programs.no_results: По этому запросу программы не найдены.
+university.programs.major_badge: Ваше направление

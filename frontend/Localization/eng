@@ -1302,3 +1302,10 @@ common.yes: Yes
 common.no: No
 
 
+university.programs.expand: Show details
+university.programs.collapse: Hide details
+university.programs.search_placeholder: Search programs...
+university.programs.search_label: Search programs
+university.programs.clear_search: Clear search
+university.programs.no_results: No programs match this search.
+university.programs.major_badge: Your major
