@@ -1,5 +1,6 @@
 import { getCurrentLanguage, t } from "./i18n.js";
 import { API_BASE } from "./utils.js";
+import { normalizeTranslationKey } from "./utils/text.js";
 
 const CACHE = {
   byLang: new Map(),
@@ -10,24 +11,6 @@ function normalizeLang(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (raw.startsWith("ru") || raw === "rus") return "rus";
   return "eng";
-}
-
-function keyify(value) {
-  const source = String(value || "").trim().toLowerCase();
-  let key = "";
-  let pendingSeparator = false;
-  for (const character of source) {
-    const code = character.charCodeAt(0);
-    const isAlphaNumeric = (code >= 48 && code <= 57) || (code >= 97 && code <= 122);
-    if (isAlphaNumeric) {
-      if (pendingSeparator && key) key += "_";
-      key += character;
-      pendingSeparator = false;
-    } else if (key) {
-      pendingSeparator = true;
-    }
-  }
-  return key;
 }
 
 function getPack(lang = getCurrentLanguage()) {
@@ -97,7 +80,7 @@ export function translateDataValue(group, value, fallback = "") {
 
   const map = getGroup(group);
   if (!map) return raw;
-  return map[keyify(raw)] || raw;
+  return map[normalizeTranslationKey(raw)] || raw;
 }
 
 export function translateWord(key, fallback = "") {
@@ -191,7 +174,7 @@ export function translateTrackLabel(value, fallback = "") {
   const pack = getPack();
   const map = pack && typeof pack.track_labels === "object" ? pack.track_labels : null;
   if (map) {
-    const k = keyify(raw);
+    const k = normalizeTranslationKey(raw);
     if (map[k]) return String(map[k]);
     if (map[raw]) return String(map[raw]);
   }
@@ -215,7 +198,7 @@ export function translateProgramName(value, fallback = "") {
   const pack = getPack();
   const map = pack && typeof pack.program_names === "object" ? pack.program_names : null;
   if (map) {
-    const k = keyify(raw);
+    const k = normalizeTranslationKey(raw);
     if (map[k]) return String(map[k]);
     if (map[raw]) return String(map[raw]);
   }

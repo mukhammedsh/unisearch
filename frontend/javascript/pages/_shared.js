@@ -14,6 +14,7 @@ import {
 
 import { heroIcon, stripLeadingDecorations } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
+import { normalizeTranslationKey } from "../utils/text.js";
 import {
   humanizeMachineLabel,
   translateAdmissionText,
@@ -282,23 +283,7 @@ export function splitPriceDisplay(value) {
   return { primary: text, secondary: "" };
 }
 
-export function normalizeTranslationKey(value) {
-  const source = String(value || "").trim().toLowerCase();
-  let key = "";
-  let pendingSeparator = false;
-  for (const character of source) {
-    const code = character.charCodeAt(0);
-    const isAlphaNumeric = (code >= 48 && code <= 57) || (code >= 97 && code <= 122);
-    if (isAlphaNumeric) {
-      if (pendingSeparator && key) key += "_";
-      key += character;
-      pendingSeparator = false;
-    } else if (key) {
-      pendingSeparator = true;
-    }
-  }
-  return key;
-}
+export { normalizeTranslationKey } from "../utils/text.js";
 
 export function translateCostBreakdownLabel(rawKey) {
   const key = normalizeTranslationKey(rawKey);

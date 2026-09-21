@@ -99,7 +99,6 @@ function pixelValues(value) {
       while (source.charCodeAt(index) >= 48 && source.charCodeAt(index) <= 57) index += 1;
     }
     if (source.slice(index, index + 2).toLowerCase() !== "px") {
-      index = start;
       continue;
     }
     values.push({ text: source.slice(start, index + 2), value: Number.parseFloat(source.slice(start, index)) });
