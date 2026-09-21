@@ -23,6 +23,18 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
 
+    def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
+        client = TestClient(app)
+
+        for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
+            resp = client.get(f"/health?warmup={param}")
+            # Without ops admin token / credentials, protected ops request returns 401 or 404 (when OPS_ADMIN_TOKEN is empty/configured)
+            self.assertIn(
+                resp.status_code,
+                (401, 404),
+                f"Expected /health?warmup={param} to be protected, got {resp.status_code}",
+            )
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {
