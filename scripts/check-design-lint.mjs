@@ -130,11 +130,28 @@ function scanCssFile(filePath) {
   const violations = [];
 
   let inRootBlock = false;
+  let currentSelector = "";
+  let selectorBuffer = "";
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const rawLine = rawLines[i];
     const trimmed = line.trim();
+
+    // Track selector context
+    const closeBrace = line.indexOf("}");
+    const openBrace = line.indexOf("{");
+    if (closeBrace >= 0) {
+      currentSelector = "";
+      selectorBuffer = "";
+    }
+    if (openBrace >= 0) {
+      selectorBuffer += " " + line.slice(0, openBrace);
+      currentSelector = selectorBuffer.trim();
+      selectorBuffer = "";
+    } else if (!trimmed.includes(":") && !trimmed.includes(";")) {
+      selectorBuffer += " " + trimmed;
+    }
 
     if (isStyleCss) {
       if (trimmed.startsWith(":root")) inRootBlock = true;
@@ -295,6 +312,38 @@ function scanCssFile(filePath) {
               suggestion: suggestRadiusToken(absNum),
             });
           }
+        }
+      }
+    }
+
+    // 8. Check transition: all (forbidden animation keyword)
+    const transitionValue = declarationValue(line, (property) => property === "transition" || property === "transition-property");
+    if (transitionValue) {
+      if (/\ball\b/i.test(transitionValue)) {
+        violations.push({
+          line: i + 1,
+          type: "animation-transition-all",
+          message: `transition: all is forbidden (triggers heavy reflows/repaints)`,
+          code: rawLine.trim(),
+          suggestion: "Animate only opacity and transform, or specific properties (e.g. background-color, color, box-shadow)",
+        });
+      }
+    }
+
+    // 9. Check borderless UI components (cards, panels, inputs, chips, badges, buttons)
+    const borderValue = declarationValue(line, (property) => property === "border" || property === "border-width" || property.startsWith("border-top") || property.startsWith("border-bottom") || property.startsWith("border-left") || property.startsWith("border-right"));
+    if (borderValue && currentSelector) {
+      const isBorderlessComponent = /(?:^|[,\s>+~])(?:\.card|\.u-card|\.u-filter-card|\.chip|\.u-chip|\.badge|\.btn|\.u-btn|input|button|\.panel|\.drawer|\.tray)(?:[.:#\s>+~]|$)/i.test(currentSelector);
+      if (isBorderlessComponent) {
+        const isForbiddenBorder = /\b[1-9]\d*px\s+solid\b/i.test(borderValue) && !/\btransparent\b/i.test(borderValue);
+        if (isForbiddenBorder) {
+          violations.push({
+            line: i + 1,
+            type: "borderless-component-border",
+            message: `Visible box border "${borderValue}" on borderless component in "${currentSelector}" violates Calm Academic Workspace`,
+            code: rawLine.trim(),
+            suggestion: "Remove border; use surface hierarchy (var(--bg) -> var(--surface-solid) -> var(--surface-soft)) or border: none",
+          });
         }
       }
     }

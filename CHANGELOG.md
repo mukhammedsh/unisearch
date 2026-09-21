@@ -4,6 +4,15 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.9.1 (2026-09-21) - Anti-Vibe Coding Guardrails and Code Quality Hardening
+
+### Added
+- Added automated HTML localization text scanner (`npm run check:hardcoded-text`) to catch untranslated raw text nodes missing `data-i18n` bindings.
+- Added inline style regression guardrail (`npm run check:inline-styles`) with baseline tracking to prevent rogue `style="..."` attributes in HTML and JavaScript.
+- Added Python AST code hygiene test suite (`test_code_hygiene.py`) verifying backend exception handling rules (disallowing bare `except:`, `BaseException` catches, and silent `except Exception: pass` swallows).
+- Extended design system linter (`check-design-lint.mjs`) with checks enforcing borderless UI components and forbidding `transition: all`.
+- Integrated new quality guardrails into the `test:all` pre-release verification pipeline.
+
 ## 6.9.0 (2026-09-21) - Seamless Language Switching and Coverage Expansion
 
 ### Added
