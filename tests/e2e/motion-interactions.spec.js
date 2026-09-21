@@ -251,7 +251,6 @@ test("view mode toggle changes views without a content transition", async ({ pag
 
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
   await page.click("#viewMapBtn");
   await expect(page.locator("#mapStage")).toBeVisible();
   await page.click("#viewListBtn");

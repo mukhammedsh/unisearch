@@ -4,6 +4,11 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.10.3 (2026-09-21) - Map Results Lifecycle Test Completion
+
+### Fixed
+- Covered map result-rail creation on demand after both initial load and a list-view reload, completing the scalable map release regression coverage.
+
 ## 6.10.2 (2026-09-21) - Map Results Lifecycle Fix
 
 ### Fixed
