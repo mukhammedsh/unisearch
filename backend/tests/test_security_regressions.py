@@ -23,6 +23,15 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
 
+    def test_ops_guard_blocks_unauthorized_multiple_slashes(self):
+        client = TestClient(app)
+
+        res_runtime = client.get("http://testserver//ops/runtime")
+        res_health = client.get("http://testserver//health?warmup=true")
+
+        self.assertEqual(res_runtime.status_code, 401)
+        self.assertEqual(res_health.status_code, 401)
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {
