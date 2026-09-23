@@ -87,16 +87,16 @@ test("Stanford graduate tuition coverage keeps quarterly units and the unknown n
 
   setLanguage("eng", { persist: false, emit: false });
   const english = renderProgramCoverage([stanford], program);
-  assert.match(english, /Tuition per quarter \(8–10 units\): USD 15\s?100/);
-  assert.match(english, /Tuition per quarter \(11–18 units\): USD 23\s?239/);
-  assert.match(english, /Summer tuition per unit \(1–7 units\): USD 1\s?510/);
+  assert.match(english, /Tuition per quarter \(8–10 units\): USD 15(?:[,.]|\s)100/);
+  assert.match(english, /Tuition per quarter \(11–18 units\): USD 23(?:[,.]|\s)239/);
+  assert.match(english, /Summer tuition per unit \(1–7 units\): USD 1(?:[,.]|\s)510/);
   assert.match(english, /2027[‐‑‒–—−-]28 rates are unknown/);
   assert.doesNotMatch(english, /Annual tuition/);
 
   setLanguage("ru", { persist: false, emit: false });
   const russian = renderProgramCoverage([stanford], program);
-  assert.match(russian, /Плата за квартал при нагрузке 8–10 единиц: USD 15\s?100/);
-  assert.match(russian, /Летняя плата за единицу \(1–7 единиц\): USD 1\s?510/);
+  assert.match(russian, /Плата за квартал при нагрузке 8–10 единиц: USD 15(?:[,.]|\s)100/);
+  assert.match(russian, /Летняя плата за единицу \(1–7 единиц\): USD 1(?:[,.]|\s)510/);
   assert.match(russian, /тарифы на 2027–28 пока неизвестны/);
   assert.doesNotMatch(russian, /Annual tuition/);
   setLanguage("eng", { persist: false, emit: false });
@@ -129,18 +129,18 @@ test("Stanford JD and MD tuition labels localize, and MD preserves the unconfirm
   setLanguage("eng", { persist: false, emit: false });
   const jdEnglish = renderProgramCoverage([jd], { id: jd.program_id, name: jd.program_name });
   const mdEnglish = renderProgramCoverage([md], { id: md.program_id, name: md.program_name });
-  assert.match(jdEnglish, /Tuition per quarter: USD 26\s?593/);
-  assert.match(mdEnglish, /Tuition per quarter: USD 24\s?034/);
-  assert.match(mdEnglish, /Tuition total for four quarters: USD 96\s?136/);
+  assert.match(jdEnglish, /Tuition per quarter: USD 26(?:[,.]|\s)593/);
+  assert.match(mdEnglish, /Tuition per quarter: USD 24(?:[,.]|\s)034/);
+  assert.match(mdEnglish, /Tuition total for four quarters: USD 96(?:[,.]|\s)136/);
   assert.match(mdEnglish, /2026[-‐‑–]27 academic year; regular MD tuition payable/);
   assert.match(mdEnglish, /2027[-‐‑–]28 rate not confirmed/);
 
   setLanguage("ru", { persist: false, emit: false });
   const jdRussian = renderProgramCoverage([jd], { id: jd.program_id, name: jd.program_name });
   const mdRussian = renderProgramCoverage([md], { id: md.program_id, name: md.program_name });
-  assert.match(jdRussian, /Плата за квартал: USD 26\s?593/);
-  assert.match(mdRussian, /Плата за квартал: USD 24\s?034/);
-  assert.match(mdRussian, /Стоимость обучения за четыре квартала: USD 96\s?136/);
+  assert.match(jdRussian, /Плата за квартал: USD 26(?:[,.]|\s)593/);
+  assert.match(mdRussian, /Плата за квартал: USD 24(?:[,.]|\s)034/);
+  assert.match(mdRussian, /Стоимость обучения за четыре квартала: USD 96(?:[,.]|\s)136/);
   assert.match(mdRussian, /Учебный год 2026–27/);
   assert.match(mdRussian, /тариф на 2027–28 не подтверждён/);
   assert.doesNotMatch(mdRussian, /regular MD tuition payable|2027-28 rate not confirmed/);
