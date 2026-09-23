@@ -49,7 +49,8 @@ async function registerServiceWorker() {
   }
 }
 
-function applyAINameConfig() {
+function applyAINameConfig(root = document) {
+  const scope = root && typeof root.querySelectorAll === "function" ? root : document;
   const tokens = {
     fit: aiName("fit"),
     chance: aiName("chance"),
@@ -60,11 +61,11 @@ function applyAINameConfig() {
       .replaceAll("{fit}", tokens.fit)
       .replaceAll("{chance}", tokens.chance);
 
-  document.querySelectorAll("[data-ai-template]").forEach((el) => {
+  scope.querySelectorAll("[data-ai-template]").forEach((el) => {
     el.textContent = replace(el.getAttribute("data-ai-template"));
   });
 
-  document.querySelectorAll("[data-ai-name]").forEach((el) => {
+  scope.querySelectorAll("[data-ai-name]").forEach((el) => {
     const key = String(el.getAttribute("data-ai-name") || "").trim().toLowerCase();
     if (tokens[key]) el.textContent = tokens[key];
   });
@@ -535,6 +536,20 @@ async function loadAppRoute(rawHref, options = {}) {
   try {
     const html = await fetchRouteHtml(url.href, controller.signal);
     const nextDoc = new DOMParser().parseFromString(html, "text/html");
+
+    try {
+      if (localStorage.getItem("unisearch_universities_scope_notice_dismissed") === "1") {
+        document.documentElement.classList.add("scope-notice-dismissed");
+        const nextNotice = nextDoc.querySelector("#universitiesScopeNotice, #universityScopeNotice, .u-page-scope, .d-page-scope");
+        if (nextNotice) {
+          nextNotice.hidden = true;
+        }
+      }
+    } catch (e) {}
+
+    applyTranslations(nextDoc);
+    applyAINameConfig(nextDoc);
+    hydrateHeroIcons(nextDoc);
 
     if (leavingUniversitiesPage) {
       const universitiesModule = routeModulePromises.get("universities");

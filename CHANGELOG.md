@@ -4,16 +4,33 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
-## 6.13.0 (2026-09-23) - Applicant Planning and Program Coverage
-
 ### Added
 - Expanded applicant profiles with citizenship, education background, target study level, entry cycle, and route context.
 - Added program-scoped admissions, deadline, cost, and funding coverage, with qualification guidance, structured award details, and an applicant planning workspace.
 - Added dated deadline calendar views and English/Russian guidance for missing program facts.
 
-### Improved
+### Changed
 - Expanded official-source data for selected undergraduate, master's, doctoral, and professional routes at MIT, Imperial College London, Stanford, Harvard, and Oxford, while keeping unverified details explicit.
 - Refined UniFit and related profile handling for the broader study-level and applicant context.
+- Removed the unsupported family-income estimate prompt and its unused API field; published aid thresholds remain available as policy information.
+
+## 6.13.0 (2026-09-23) - Seamless Localization and Calm Interactions
+
+### Added
+- Made the profile save state permanently visible next to the back button with distinct saved and unsaved coloring.
+
+### Changed
+- Switched navbar and favicon logos from PNG to theme-aware SVG.
+- Removed the map "Show the whole world" overview control; world navigation remains available through the zoom controls.
+- Standardized section tabs on a 2px pill sliding indicator with matching fallback underlines across catalog, detail, admissions, and profile pages.
+- Replaced press-shift active effects with surface-color active states backed by a shared accent active-surface token.
+- Restyled segmented view toggles, the settings switch, and filter reset controls for consistent surfaces and alignment.
+
+### Fixed
+- Fixed English text flashing when navigating client-side with Russian selected by hydrating localizations from session cache and translating the destination page before display.
+- Kept the dismissed Bachelor's scope notice hidden across SPA navigation without flicker.
+- Showed the shared "No data" label instead of field-name placeholders for missing university facts.
+- Corrected Russian save-state and availability copy.
 
 ## 6.12.0 (2026-09-21) - Major-Aware UniFit Catalog
 

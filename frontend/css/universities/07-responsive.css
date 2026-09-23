@@ -427,10 +427,14 @@
 
   .u-filter-footer__reset,
   .u-filter-footer__apply {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 48px;
     border-radius: var(--radius-base);
     font: inherit;
     font-weight: 500;
+    line-height: 1;
     cursor: pointer;
   }
 

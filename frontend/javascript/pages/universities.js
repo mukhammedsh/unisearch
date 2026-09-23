@@ -2422,36 +2422,6 @@ export function initUniversitiesPage() {
                 zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
             }).addTo(mapInstance);
 
-            const overviewControl = L.control({ position: "topleft" });
-            overviewControl.onAdd = () => {
-                const container = L.DomUtil.create("div", "leaflet-control u-map-overview-control");
-                const button = L.DomUtil.create("button", "u-map-overview-button", container);
-                const label = t("universities.map_controls.show_world", "Show the whole world");
-                button.type = "button";
-                button.title = label;
-                button.setAttribute("aria-label", label);
-                button.innerHTML = `${renderInlineIcon("globe-alt", 18, "u-map-overview-icon")}<span>${escapeHtml(label)}</span>`;
-                L.DomEvent.disableClickPropagation(container);
-                L.DomEvent.disableScrollPropagation(container);
-                L.DomEvent.on(button, "click", (event) => {
-                    L.DomEvent.stop(event);
-                    pendingMapFocusId = "";
-                    updateMapResultsSelection("");
-                    mapInstance.closePopup();
-                    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-                    if (reduceMotion) {
-                        mapInstance.setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM, { animate: false });
-                    } else {
-                        mapInstance.flyTo(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM, {
-                            animate: true,
-                            duration: 0.8,
-                            easeLinearity: 0.25,
-                        });
-                    }
-                });
-                return container;
-            };
-            overviewControl.addTo(mapInstance);
             markersLayer = L.markerClusterGroup({
                 showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
                 chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,

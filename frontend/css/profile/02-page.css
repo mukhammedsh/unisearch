@@ -168,9 +168,22 @@ body[data-page="profile"] {
   .profile-section-tabs .sliding-indicator {
     display: none !important;
   }
+
+  body .profile-section-tabs.has-sliding-indicator .profile-section-tab.is-active::after {
+    display: block !important;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: var(--radius-full);
+    background: var(--accent);
+  }
 }
 
 .profile-section-tab {
+  position: relative;
   background: transparent;
   border: none;
   padding: var(--space-1) 0;
@@ -937,7 +950,7 @@ textarea.profile-input,
   font-size: var(--text-xs);
   font-weight: 500;
   border: none;
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   box-shadow: var(--shadow-xs);
   color: var(--text-muted);
   cursor: pointer;
@@ -985,9 +998,25 @@ textarea.profile-input,
   padding-top: var(--space-2);
 }
 
-.profile-status-wrap,
+.profile-status-wrap {
+  display: flex;
+  align-items: center;
+}
+
 .profile-save-state {
-  display: none !important;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-success);
+  white-space: nowrap;
+  user-select: none;
+  line-height: var(--leading-tight);
+  transition:
+    color var(--motion-fast) var(--motion-ease-standard),
+    opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+.profile-save-state.is-dirty {
+  color: var(--color-warning);
 }
 
 .profile-action-buttons {
@@ -1261,8 +1290,8 @@ textarea.profile-input,
 
   .profile-section-tabs .sliding-indicator {
     display: block !important;
-    height: 3px;
-    border-radius: 999px;
+    height: 2px;
+    border-radius: var(--radius-full);
     bottom: 0;
   }
 
@@ -1272,6 +1301,18 @@ textarea.profile-input,
     padding: var(--space-3) var(--space-1) var(--space-4);
     min-height: auto;
     line-height: 1.25;
+  }
+
+  .profile-section-tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: var(--radius-full);
+    background: var(--accent);
+    display: block !important;
   }
 
   .profile-sidebar-bottom {

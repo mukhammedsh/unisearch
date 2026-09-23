@@ -21,6 +21,7 @@
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
   --accent-faint: color-mix(in srgb, var(--accent) 6%, transparent);
   --accent-panel: color-mix(in srgb, var(--accent) 8%, transparent);
+  --accent-active-surface: color-mix(in srgb, var(--accent) 20%, var(--surface-solid));
   --interaction-hover-text: var(--accent-strong);
   --interaction-hover-surface: var(--accent-panel);
   --interaction-active-text: var(--accent);
@@ -137,6 +138,7 @@
   --accent-soft: color-mix(in srgb, var(--accent) 22%, transparent);
   --accent-faint: color-mix(in srgb, var(--accent) 14%, transparent);
   --accent-panel: color-mix(in srgb, var(--accent) 18%, transparent);
+  --accent-active-surface: color-mix(in srgb, var(--accent) 26%, var(--surface-solid));
   --bg: #0c0d0e;
   --bg-soft: #141517;
   --surface-solid: #18191b;
@@ -507,14 +509,6 @@ a {
   box-shadow: none;
 }
 
-:where(
-  button,
-  .btn,
-  .btn-primary,
-  [role="button"]
-):active:not(:disabled) {
-  translate: 0 1px;
-}
 
 @media (hover: hover) and (pointer: fine) {
   :where(a[href]:not([class]), .text-link):hover {

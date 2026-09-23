@@ -157,7 +157,7 @@ Breakpoints must describe available content space, not a device name. Keep a non
 - Icon-only: square `34-40px`, Heroicons only, always with `aria-label`.
 - Hover should be subtle: surface, text/icon-color, or restrained shadow change. Never use `border-color` as a state cue on a borderless component.
 - Hover text and surfaces use `--interaction-hover-text` and `--interaction-hover-surface`; selected controls use `--interaction-active-text` and `--interaction-active-surface`.
-- Active press: use the shared 1px downward translation. Never darken arbitrary controls with `filter`, use bouncy cartoonish depression (`scale(0.95)`), or add spring recoil.
+- Active press: subtle background/surface color shift (darker hover/active tokens) without physical depression or movement. Never use downward translation (translate/translateY), bouncy cartoonish depression (`scale(0.95)`), or spring recoil.
 - Disabled controls use `--interaction-disabled-opacity`, a `not-allowed` cursor, and no pointer interaction. Native `disabled`, `aria-disabled="true"`, and `.is-disabled` states must render consistently.
 
 ### Inputs and Selects
@@ -186,7 +186,8 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 - Prefer underlined tabs for primary page sections.
 - Keep tabs horizontally scrollable on mobile.
-- Active state: accent text and a small accent underline.
+- Active state: accent text and a 2px pill-rounded accent underline (`height: 2px`, `border-radius: var(--radius-full)`, `background: var(--accent)`, `bottom: 0`).
+- Sliding indicator: interactive tab bars use `setupSlidingIndicator` to smoothly transition the 2px pill indicator between hovered and active tabs. Fallback `::after` underlines match this exact 2px pill specification.
 - Avoid filled pill tabs for major page navigation unless the local pattern already requires it.
 
 ### Tooltips and Floating UI

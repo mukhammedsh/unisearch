@@ -89,7 +89,7 @@ export function renderOverviewSection({
     </span>
   ` : "";
 
-  let rankHtml = `<span>${escapeHtml(unknownFieldText("placeholder.field.global_rank", "Global Rank"))}</span>`;
+  let rankHtml = `<span>${escapeHtml(t("common.no_data", "No data"))}</span>`;
   if (officialRank) {
     rankHtml = `<span class="d-rank-emphasis">#${university.rank}</span>`;
   } else if (rankStatus) {
@@ -99,7 +99,7 @@ export function renderOverviewSection({
   const campusSizeRaw = typeof university.student_life?.size === "string" ? String(university.student_life.size).trim() : "";
   const campusSize = campusSizeRaw
     ? escapeHtml(formatCampusSizeValue(campusSizeRaw))
-    : escapeHtml(unknownFieldText("campus_size", "Campus Size"));
+    : escapeHtml(t("common.no_data", "No data"));
   const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
   const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
   const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m2 (up to 50 ha)"));
@@ -159,14 +159,14 @@ export function renderExtraSection({ container, university }) {
       <div class="uni-tags-wrap">
         <div class="uni-tags-title">${escapeHtml(translateWord("focus_tags", "Focus Tags"))}</div>
         <div class="uni-tags-list">
-          <span class="uni-tag uni-tag--placeholder">${escapeHtml(unknownFieldText("focus_tags", "Focus Tags"))}</span>
+          <span class="uni-tag uni-tag--placeholder">${escapeHtml(t("common.no_data", "No data"))}</span>
         </div>
       </div>
     `;
   const studentCountValue = toFiniteNumber(university?.student_count);
   const studentCount = studentCountValue !== null
     ? new Intl.NumberFormat("en-US").format(studentCountValue)
-    : unknownFieldText("total_students", "Total Students");
+    : t("common.no_data", "No data");
   const formats = Array.isArray(university.academics?.formats)
     ? university.academics.formats.map((value) => escapeHtml(trStudyMode(String(value)))).filter(Boolean).join(", ")
     : "";
@@ -175,7 +175,7 @@ export function renderExtraSection({ container, university }) {
     ${description}
     ${tagsHtml}
     <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
-    <div class="d-kv d-kv--last"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(unknownFieldText("study_formats", "Study Formats"))}</span></div>
+    <div class="d-kv d-kv--last"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(t("common.no_data", "No data"))}</span></div>
   `;
 }
 

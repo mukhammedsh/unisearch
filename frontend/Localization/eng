@@ -438,7 +438,6 @@ universities.map_panel.load_failed: Could not load map results.
 universities.map_panel.points_failed: Map markers could not be refreshed.
 universities.map_controls.zoom_in: Zoom in
 universities.map_controls.zoom_out: Zoom out
-universities.map_controls.show_world: Show the whole world
 universities.map_popup.loading: Loading university card
 universities.map_popup.failed: Could not load the university card.
 universities.pagination.next: Next

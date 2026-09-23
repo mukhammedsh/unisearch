@@ -542,7 +542,7 @@ export function setupSlidingIndicator(containerSelector, itemSelector, activeCla
   const readExtraWidth = () => {
     const raw = getComputedStyle(container).getPropertyValue("--sliding-indicator-extra-width").trim();
     const parsed = Number.parseFloat(raw);
-    return Number.isFinite(parsed) ? parsed : 8;
+    return Number.isFinite(parsed) ? parsed : 0;
   };
 
   const positionTo = (target) => {
