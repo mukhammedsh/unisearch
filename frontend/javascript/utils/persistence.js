@@ -43,7 +43,6 @@ const PROFILE_DEFAULTS = {
   currentResidenceOther: "",
   feeStatusContext: "unknown",
   studyLevel: "Any",
-  familyIncome: "unspecified",
   selectedAdmissionChoices: {},
 };
 
@@ -129,6 +128,7 @@ export function isLegacyProfile(raw) {
     || "gpa_raw" in raw
     || "user_gpa_scale" in raw
     || "study_level" in raw
+    || "familyIncome" in raw
     || "family_income" in raw
     || "family_income_bracket" in raw
     || "selected_admission_choices" in raw
@@ -250,12 +250,6 @@ export function normalizeProfileData(profile) {
   const studyLevel = typeof raw.studyLevel === "string"
     ? raw.studyLevel.trim()
     : (typeof raw.study_level === "string" ? raw.study_level.trim() : PROFILE_DEFAULTS.studyLevel);
-
-  const familyIncome = typeof raw.familyIncome === "string"
-    ? raw.familyIncome.trim()
-    : (typeof raw.family_income_bracket === "string"
-      ? raw.family_income_bracket.trim()
-      : (typeof raw.family_income === "string" ? raw.family_income.trim() : PROFILE_DEFAULTS.familyIncome));
 
   const readOptionalString = (camelKey, snakeKey, maxLength = 120) => {
     const value = typeof raw[camelKey] === "string" ? raw[camelKey] : raw[snakeKey];
@@ -450,7 +444,6 @@ export function normalizeProfileData(profile) {
     currentResidenceOther,
     feeStatusContext,
     studyLevel: studyLevel || PROFILE_DEFAULTS.studyLevel,
-    familyIncome: familyIncome || PROFILE_DEFAULTS.familyIncome,
     selectedAdmissionChoices,
   };
 }
@@ -619,10 +612,6 @@ export function loadProfileForApi() {
   if (String(profile?.studyLevel || "").trim() && String(profile.studyLevel).trim() !== "Any") {
     payload.study_level = String(profile.studyLevel).trim();
   }
-  if (String(profile?.familyIncome || "").trim() && String(profile.familyIncome).trim() !== "unspecified") {
-    payload.family_income_bracket = String(profile.familyIncome).trim();
-  }
-
   return payload;
 }
 

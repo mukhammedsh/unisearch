@@ -1432,14 +1432,6 @@ university.finance.zero_parent_contribution_threshold: Порог нулевог
 university.finance.full_ride_threshold_note: Право на полный пакет финансирования зависит от правил университета и обстоятельств абитуриента.
 university.finance.free_tuition_note: 100% покрытие стоимости обучения для семей, проходящих по доходу
 admission.collapsible.additional_details: Дополнительные требования и инструкции
-profile.family_income_info_title: Пороги финансовой помощи по доходу
-profile.family_income_info_tooltip: Доход — только один из факторов при рассмотрении финансовой помощи. На право и стоимость могут влиять гражданство или резидентство, активы семьи, уровень обучения и правила университета.
-profile.label.family_income: Годовой доход семьи
-profile.option.income_140k_200k: 140 000 – 200 000 $ / год
-profile.option.income_85k_140k: 85 000 – 140 000 $ / год
-profile.option.income_over_200k: Более 200 000 $ / год
-profile.option.income_under_85k: До 85 000 $ / год
-profile.option.income_unspecified: Не указывать / Не определено
 universities.level_segmented.aria: Фильтр по уровню обучения
 universities.level.all: Все уровни
 universities.level.bachelor: Бакалавриат
@@ -1474,13 +1466,6 @@ university.deadlines.timeline_title: График приёмной кампан�
 university.deadlines.title: Сроки подачи заявок и календарь
 university.finance.aid_eligible_badge: Финансовая помощь
 university.finance.free_tuition_badge: Бесплатное обучение
-university.finance.net_price_aid_desc: Семьи в этой категории дохода получают значительные стипендии на основе подтверждённой финансовой потребности.
-university.finance.net_price_aid_eligible: Доступна финансовая помощь
-university.finance.net_price_full_ride_desc: Исходя из указанного дохода вашей семьи, университет покрывает 100% обучения, проживания, питания и медстраховки грантами без займов.
-university.finance.net_price_tuition_desc: Исходя из указанного дохода семьи, стоимость обучения полностью покрывается грантом университета.
-university.finance.net_price_zero_full_ride: 0 $ / год (100% грант Full-Ride)
-university.finance.net_price_zero_tuition: 0 $ за обучение / год (100% грант)
-university.finance.personalized_net_price_title: Проверка помощи по доходу
 university.finance.fee_status_home_desc: Имеющаяся запись указывает на домашний тариф. Подтвердите право на него в университете.
 university.finance.fee_status_domestic_desc: Имеющаяся запись указывает на внутренний тариф. Подтвердите право на него в университете.
 university.finance.fee_status_overseas_desc: Имеющаяся запись указывает на зарубежный тариф. Подтвердите право на него в университете.
@@ -1490,9 +1475,6 @@ university.finance.status_unconfirmed_desc: Одного гражданства 
 university.finance.domestic_and_international_policy: Разные правила помощи для категорий абитуриентов
 university.finance.domestic_and_international_policy_desc: Университет публикует разные правила финансовой помощи для местных и иностранных абитуриентов. Вашу категорию и право на помощь нужно проверить по официальным правилам.
 university.finance.uk_aid_general_desc: Право на стипендию и студенческое финансирование зависит от программы и обстоятельств абитуриента. Проверьте официальные правила университета.
-university.finance.net_price_review: Право на финансовую помощь требует проверки
-university.finance.net_price_review_desc: Одного дохода недостаточно для расчёта итоговой стоимости. На право могут влиять гражданство или резидентство, активы семьи, уровень программы и полные правила подачи заявки.
-university.finance.aid_review_badge: Расчёт недоступен
 university.finance.zero_parent_contrib_badge: Без взноса родителей
 university.tab.deadlines: Дедлайны
 university.deadlines.export_ics: Добавить в календарь (.ics)
@@ -1506,7 +1488,6 @@ university.deadlines.doctoral_research: Исследовательские до�
 university.deadlines.mba_round: Раунд поступления на MBA
 university.deadlines.interviews_label: Собеседования
 university.deadlines.time_label: Время
-university.finance.net_price_review_title: Проверка права на помощь
 university.coverage.title: Данные UniSearch
 university.coverage.note: Здесь показано, какие сведения UniSearch добавил в каталог. «Не добавлено в каталог» не означает, что университет не предлагает такие программы или условия.
 university.coverage.available: Есть в каталоге

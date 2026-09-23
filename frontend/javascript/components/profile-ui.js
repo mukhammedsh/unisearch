@@ -130,7 +130,6 @@ export function initProfileUI() {
     const resetProfileBtn = document.getElementById("resetProfileBtn");
     const profileSaveState = document.getElementById("profileSaveState");
     const studyLevelSelect = document.getElementById("studyLevelSelect");
-    const familyIncomeSelect = document.getElementById("familyIncomeSelect");
     const citizenshipChipsList = document.getElementById("citizenshipChipsList");
     const citizenshipCountrySelect = document.getElementById("citizenshipCountrySelect");
     const citizenshipOtherInput = document.getElementById("citizenshipOtherInput");
@@ -843,7 +842,6 @@ export function initProfileUI() {
         if (profileMajorSelect) profile.major = String(profileMajorSelect.value || "").trim();
         if (profileInterestsInput) profile.interests = getInterestsDraft();
         if (studyLevelSelect) profile.studyLevel = String(studyLevelSelect.value || "Any").trim() || "Any";
-        if (familyIncomeSelect) profile.familyIncome = String(familyIncomeSelect.value || "unspecified").trim() || "unspecified";
         syncApplicantContext();
         profile.citizenships = Array.isArray(profile.citizenships) ? profile.citizenships : [];
         profile.citizenship = profile.citizenships.length ? profile.citizenships[0] : "";
@@ -1075,7 +1073,6 @@ export function initProfileUI() {
         if (profileMajorSelect) profileMajorSelect.value = profile.major || "";
         if (profileInterestsInput) profileInterestsInput.value = profile.interests || "";
         if (studyLevelSelect) studyLevelSelect.value = profile.studyLevel || "Any";
-        if (familyIncomeSelect) familyIncomeSelect.value = profile.familyIncome || "unspecified";
         populateContextCountrySelect(countryOfEducationSelect);
         populateContextCountrySelect(currentResidenceCountrySelect);
         if (countryOfEducationSelect) countryOfEducationSelect.value = profile.countryOfEducation || "";
@@ -1110,7 +1107,6 @@ export function initProfileUI() {
             initCustomSelect("profileMajorSelect");
             initCustomSelect("examNameSelect");
             initCustomSelect("studyLevelSelect");
-            initCustomSelect("familyIncomeSelect");
             initCustomSelect("citizenshipCountrySelect");
             initCustomSelect("countryOfEducationSelect");
             initCustomSelect("educationCredentialSelect");
@@ -1161,7 +1157,6 @@ export function initProfileUI() {
         profile.fundingType = normalizeFundingType(profileFundingTypeSelect?.value || profile.fundingType || "any");
         profile.major = String(profileMajorSelect?.value || profile.major || "").trim();
         profile.studyLevel = String(studyLevelSelect?.value || profile.studyLevel || "Any").trim() || "Any";
-        profile.familyIncome = String(familyIncomeSelect?.value || profile.familyIncome || "unspecified").trim() || "unspecified";
         profile.citizenships = Array.isArray(profile.citizenships) ? profile.citizenships : [];
         profile.citizenship = profile.citizenships.length ? profile.citizenships[0] : "";
         profile = ensureProfileShape(profile);
@@ -1331,13 +1326,6 @@ export function initProfileUI() {
     if (studyLevelSelect) {
         studyLevelSelect.addEventListener("change", () => {
             profile.studyLevel = String(studyLevelSelect.value || "Any").trim() || "Any";
-            refreshSaveState();
-        });
-    }
-
-    if (familyIncomeSelect) {
-        familyIncomeSelect.addEventListener("change", () => {
-            profile.familyIncome = String(familyIncomeSelect.value || "unspecified").trim() || "unspecified";
             refreshSaveState();
         });
     }

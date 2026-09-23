@@ -1124,20 +1124,8 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
     }
   }
 
-  let personalizedNetPrice = null;
-  const familyIncome = String(profile?.familyIncome || profile?.family_income || profile?.family_income_bracket || "").toLowerCase();
-  if (showUndergraduatePolicy && familyIncome && familyIncome !== "unspecified" && (freeTuitionUsd || fullRideUsd || zeroParentContributionUsd || hasNeedBlindPolicy || meetsFullDemonstratedNeed || zeroLoansPolicy)) {
-    personalizedNetPrice = {
-      tier: "aid_review",
-      title: t("university.finance.net_price_review", "Aid eligibility needs review"),
-      desc: t("university.finance.net_price_review_desc", "Income alone cannot determine your net price. Eligibility may depend on citizenship or residency, family assets, program level, and the university's full application rules."),
-      badge: t("university.finance.aid_review_badge", "Estimate not available"),
-      tone: "neutral",
-    };
-  }
-
   return {
-    hasPolicyData: Boolean(feeStatusBadge || aidBadge || thresholds.length || phdFunding || personalizedNetPrice),
+    hasPolicyData: Boolean(feeStatusBadge || aidBadge || thresholds.length || phdFunding),
     feeStatusBadge,
     feeStatusTone,
     feeStatusSummary,
@@ -1146,7 +1134,6 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
     aidDescription,
     thresholds,
     phdFunding,
-    personalizedNetPrice,
   };
 }
 
@@ -1165,19 +1152,6 @@ function renderFinancePolicyOverview(policy) {
           <span>${escapeHtml(t("university.finance.policy_title", "Tuition Status & Financial Aid Policy"))}</span>
         </h3>
       </div>
-
-      ${policy.personalizedNetPrice ? `
-        <div class="finance-net-price-card finance-net-price-card--${escapeHtmlAttr(policy.personalizedNetPrice.tone)}">
-          <div class="finance-net-price-head">
-            <span class="finance-net-price-kicker">${sparkIcon} <span>${escapeHtml(t("university.finance.net_price_review_title", "Aid eligibility review"))}</span></span>
-            <span class="finance-net-price-badge">${escapeHtml(policy.personalizedNetPrice.badge)}</span>
-          </div>
-          <div class="finance-net-price-body">
-            <div class="finance-net-price-figure">${escapeHtml(policy.personalizedNetPrice.title)}</div>
-            <p class="finance-net-price-desc">${escapeHtml(policy.personalizedNetPrice.desc)}</p>
-          </div>
-        </div>
-      ` : ""}
 
       ${policy.feeStatusBadge ? `
         <div class="finance-fee-status-banner">

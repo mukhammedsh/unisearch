@@ -1434,14 +1434,6 @@ university.finance.zero_parent_contribution_threshold: Zero Parent Contribution 
 university.finance.full_ride_threshold_note: Eligibility for a full funding package depends on the university's full policy and applicant circumstances.
 university.finance.free_tuition_note: 100% tuition coverage for qualifying families
 admission.collapsible.additional_details: Additional requirements & instructions
-profile.family_income_info_title: Income-Based Aid Thresholds
-profile.family_income_info_tooltip: Income is only one part of a financial aid review. Citizenship or residency, family assets, study level, and each university's rules can affect eligibility and cost.
-profile.label.family_income: Annual Family Income
-profile.option.income_140k_200k: $140,000 – $200,000 / year
-profile.option.income_85k_140k: $85,000 – $140,000 / year
-profile.option.income_over_200k: Over $200,000 / year
-profile.option.income_under_85k: Under $85,000 / year
-profile.option.income_unspecified: Prefer not to say / Unspecified
 universities.level_segmented.aria: Filter by study level
 universities.level.all: All Levels
 universities.level.bachelor: Bachelor's
@@ -1476,13 +1468,6 @@ university.deadlines.timeline_title: Admissions Timeline
 university.deadlines.title: Application Deadlines & Calendar
 university.finance.aid_eligible_badge: Need-Based Aid
 university.finance.free_tuition_badge: Free Tuition
-university.finance.net_price_aid_desc: Families in your income bracket receive substantial need-based institutional scholarships according to demonstrated need.
-university.finance.net_price_aid_eligible: Need-Based Aid Eligible
-university.finance.net_price_full_ride_desc: Based on your reported family income bracket, this university covers 100% of tuition, room, board, and health fees with zero loans.
-university.finance.net_price_tuition_desc: Based on your reported family income bracket, your tuition is 100% covered by institutional need-based grants.
-university.finance.net_price_zero_full_ride: $0 / year (100% Full-Ride Grant)
-university.finance.net_price_zero_tuition: $0 Tuition / year (100% Need-Based Grant)
-university.finance.personalized_net_price_title: Income-based aid review
 university.finance.fee_status_home_desc: The available record indicates home fee status. Confirm current eligibility with the university.
 university.finance.fee_status_domestic_desc: The available record indicates domestic fee status. Confirm current eligibility with the university.
 university.finance.fee_status_overseas_desc: The available record indicates overseas fee status. Confirm current eligibility with the university.
@@ -1492,9 +1477,6 @@ university.finance.status_unconfirmed_desc: Citizenship alone does not establish
 university.finance.domestic_and_international_policy: Different aid rules by applicant category
 university.finance.domestic_and_international_policy_desc: The university publishes different need-based aid rules for domestic and international applicants. Your category and aid eligibility require review under its official rules.
 university.finance.uk_aid_general_desc: Scholarship and student finance eligibility depends on the applicant's course and circumstances. Check the official university rules.
-university.finance.net_price_review: Aid eligibility needs review
-university.finance.net_price_review_desc: Income alone cannot determine your net price. Eligibility may depend on citizenship or residency, family assets, program level, and the university's full application rules.
-university.finance.aid_review_badge: Estimate not available
 university.finance.zero_parent_contrib_badge: Zero Parent Contribution
 university.tab.deadlines: Deadlines
 university.deadlines.export_ics: Add to calendar (.ics)
@@ -1508,7 +1490,6 @@ university.deadlines.doctoral_research: Doctoral research courses
 university.deadlines.mba_round: MBA application round
 university.deadlines.interviews_label: Interviews
 university.deadlines.time_label: Time
-university.finance.net_price_review_title: Aid eligibility review
 university.coverage.title: Data coverage in UniSearch
 university.coverage.note: This shows what UniSearch currently has catalogued. “Not catalogued” does not tell you whether the university offers it.
 university.coverage.available: Catalogued

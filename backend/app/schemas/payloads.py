@@ -145,7 +145,6 @@ class ProfilePayload(BaseModel):
         "unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"
     ] = "unknown"
     study_level: Optional[str] = Field(default=None, max_length=40)
-    family_income_bracket: Optional[str] = Field(default=None, max_length=60)
     selectedAdmissionChoices: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: List[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
@@ -156,7 +155,7 @@ class ProfilePayload(BaseModel):
         return _strip_or_empty(value)
 
     @field_validator(
-        "interests", "locale", "citizenship", "study_level", "family_income_bracket",
+        "interests", "locale", "citizenship", "study_level",
         "country_of_education", "country_of_education_other", "education_credential",
         "education_credential_other", "intended_entry_cycle", "current_residence_country",
         "current_residence_other", mode="before"

@@ -305,24 +305,13 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(payload.country_of_education_other, 'Kosovo');
     });
 
-    test('bridges each supported study level and family-income choice to the API', () => {
+    test('bridges each supported study level to the API', () => {
       const levels = ['Any', 'Bachelor', 'Master', 'Doctorate', 'MBA'];
       for (const studyLevel of levels) {
         saveProfile({ studyLevel });
         const payload = loadProfileForApi();
         assert.strictEqual(loadProfile().studyLevel, studyLevel);
         assert.strictEqual(payload.study_level, studyLevel === 'Any' ? undefined : studyLevel);
-      }
-
-      const incomeBrackets = ['unspecified', 'under_85k', '85k_140k', '140k_200k', 'over_200k'];
-      for (const familyIncome of incomeBrackets) {
-        saveProfile({ familyIncome });
-        const payload = loadProfileForApi();
-        assert.strictEqual(loadProfile().familyIncome, familyIncome);
-        assert.strictEqual(
-          payload.family_income_bracket,
-          familyIncome === 'unspecified' ? undefined : familyIncome,
-        );
       }
     });
 

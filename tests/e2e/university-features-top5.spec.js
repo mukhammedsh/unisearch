@@ -232,24 +232,6 @@ test("detail page renders dedicated Deadlines tab with interactive timeline", as
   await expect(deadlineCards).toHaveCount(degreeCount);
 });
 
-test("family income selection triggers personalized net price on finance tab", async ({ page }) => {
-  await seedProfile(page, {
-    ...personas.enResearch.profile,
-    familyIncome: "under_85k",
-  });
-  await page.goto("/university.html?id=harvard-usa-cambridge");
-  await expect(page.locator("#detailCard")).toBeVisible();
-
-  // Navigate to Costs & funding tab
-  await page.click(".d-tab-btn[data-tab='tab-finance']");
-
-  const netPriceCard = page.locator(".finance-net-price-card");
-  await expect(netPriceCard).toBeVisible();
-  await expect(netPriceCard).toContainText("needs review");
-  await expect(netPriceCard).toContainText("Income alone cannot determine");
-  await expect(netPriceCard).not.toContainText("$0");
-});
-
 test("UK citizenship alone does not assign a home fee status", async ({ page }) => {
   await seedProfile(page, {
     ...personas.enResearch.profile,
