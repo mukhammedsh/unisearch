@@ -265,6 +265,8 @@ profile.gpa_range: GPA должен быть от {min} до {max}
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
 profile.hint.budget_range: Диапазон: 0‑{max}
+profile.hint.family_income_optional: Необязательно. Сохраняется на этом устройстве. Один доход не определяет право на финансовую помощь.
+profile.family_income_invalid: Укажите сумму от 0 до 1 000 000 000 000.
 profile.hint.low_budget_grant: Бюджет меньше {amount}. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
@@ -275,6 +277,8 @@ profile.hint.interests: Избегайте длинных предложений
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет / год
+profile.label.family_income: Годовой доход семьи
+profile.label.family_income_currency: Валюта дохода
 profile.label.exams: Экзамены
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: Средний балл (GPA)
@@ -299,6 +303,7 @@ profile.option.study_mode_any: Любой (все форматы)
 profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, {example}
+profile.placeholder.family_income: Необязательная сумма
 profile.placeholder.gpa: например, 3.80
 profile.placeholder.interests: Например: информатика, искусственный интеллект, робототехника, разработка игр, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
@@ -838,6 +843,9 @@ university.finance.one_time.applies_to_grant_holders: Обязателен и д
 university.finance.breakdown_note.mandatory_only: Показаны только подтвержденные обязательные траты.
 university.finance.breakdown_note.tuition_fees_only: Показаны только напрямую официальные позиции по обучению и университетским сборам. Итоговая сумма за год может быть выше, потому что источник дает общую оценку расходов на проживание, но не публикует авторитетную разбивку по отдельным категориям.
 university.finance.breakdown_note.partial: Эта разбивка специально неполная. В итоговую сумму также могут входить другие учтенные источником надбавки или недетализированные расходы.
+university.finance.program_tuition_context: Опубликованная полная стоимость обучения за {year}; потенциальные гранты не вычтены. Уточните тариф для года поступления.
+university.finance.published_tuition_per_year: Опубликованная плата за обучение / год
+university.finance.official_tuition_source: Официальный источник стоимости обучения
 university.visit_website: Открыть официальный сайт
 
 # Added localization coverage keys
@@ -1067,9 +1075,9 @@ admission.track.funding_source: Источник финансирования
 admission.track.funding_source_short: Источник
 admission.track.select_tooltip: Выбрать эту комбинацию поступления, чтобы показывать шанс именно по ней и учитывать её в алгоритме UniFit.
 admission.chance_method.profile_short: По профилю зачисленных
-admission.chance_method.profile_detail: На основе профиля баллов зачисленных, а также ваших языковых данных, бюджета и того, насколько вы проходите по требованиям.
+admission.chance_method.profile_detail: На основе профилей баллов зачисленных, с учетом применимых языковых и академических требований.
 admission.chance_method.estimated_short: Оценочно
-admission.chance_method.estimated_detail: Оценка по опубликованным минимумам, средним значениям там, где они есть, языковым требованиям, селективности и бюджету. Такая оценка менее точна, чем расчет по профилю зачисленных.
+admission.chance_method.estimated_detail: Оценка по опубликованным минимумам и средним баллам, если они доступны, применимым языковым требованиям и селективности. Низкая уверенность.
 admission.chance_accuracy.low: Низкая точность
 title.404: Страница не найдена | UniSearch
 error404.kicker: Ошибка
@@ -1334,6 +1342,14 @@ university.programs.field.standard_offer_ib: Стандартное предло
 university.program_coverage.value.home_annual_fee_gbp: Годовая стоимость для категории Home
 university.program_coverage.value.overseas_annual_fee_gbp: Годовая стоимость для категории Overseas
 university.program_coverage.value.tuition_year_usd: Годовая плата за обучение
+university.program_coverage.value.tuition_rate_per_quarter_usd: Плата за квартал
+university.program_coverage.value.tuition_four_quarter_total_usd: Стоимость обучения за четыре квартала
+university.program_coverage.value.tuition_per_quarter_8_10_units_usd: Плата за квартал при нагрузке 8–10 единиц
+university.program_coverage.value.tuition_per_quarter_11_18_units_usd: Плата за квартал при нагрузке 11–18 единиц
+university.program_coverage.value.tuition_per_quarter_above_18_units_usd: Плата за квартал при нагрузке более 18 единиц
+university.program_coverage.value.tuition_per_summer_unit_1_7_usd: Летняя плата за единицу (1–7 единиц)
+university.program_coverage.cycle.stanford_quarterly_tuition: Опубликованная стоимость обучения за {year} начисляется поквартально в зависимости от числа учебных единиц. Годовая сумма зависит от учебной нагрузки и числа кварталов обучения; тарифы на {next_year} пока неизвестны.
+university.program_coverage.cycle.stanford_md_tuition: Учебный год {year}; обычная стоимость обучения по программе MD начисляется за осенний, зимний, весенний и летний кварталы; тариф на {next_year} не подтверждён.
 profile.label.study_level: Целевой уровень обучения
 profile.option.study_level_any: Любой уровень обучения
 profile.option.study_level_bachelor: Бакалавриат
@@ -1428,6 +1444,11 @@ university.finance.uk_aid_home_desc: Доступ к государственн�
 university.finance.uk_aid_intl_desc: Доступны престижные университетские стипендии (Reach Oxford, President's Undergraduate Scholarships).
 university.finance.zero_parent_contrib: Правило устанавливает нулевой ожидаемый вклад родителей; это не определяет полную итоговую стоимость.
 university.finance.zero_parent_contribution_threshold: Порог нулевого вклада родителей
+university.finance.income_comparison_below: Введённый доход ниже опубликованного порога
+university.finance.income_comparison_at_or_above: Введённый доход равен порогу или превышает его
+university.finance.income_comparison_unknown: Сравнение дохода недоступно
+university.finance.income_comparison_caveat: Это сравнение даёт только общий контекст. Оно не определяет право на помощь, размер выплаты или итоговую стоимость.
+university.finance.income_thresholds_note.stanford: Оценки Stanford предполагают типичные активы и уровень стоимости жизни в США; они могут не подходить для семей, живущих за пределами США.
 university.finance.full_ride_threshold_note: Право на полный пакет финансирования зависит от правил университета и обстоятельств абитуриента.
 university.finance.free_tuition_note: 100% покрытие стоимости обучения для семей, проходящих по доходу
 admission.collapsible.additional_details: Дополнительные требования и инструкции
@@ -1638,8 +1659,100 @@ application_workspace.competition: Конкурс
 application_workspace.course_application: Подать заявку на программу
 application_workspace.coverage: Что покрывает
 application_workspace.cycle: Цикл поступления
+application_workspace.cycle_fall_entry: Набор на осень {year} года
+application_workspace.cycle_entry_year: Набор {year} года
+application_workspace.cycle_academic_year: Учебный год {start}–{end}
 application_workspace.cycle_early_action: Ранний приём
 application_workspace.cycle_regular_action: Основной приём
+application_workspace.route.category.mit_sloan_mban_admissions: Поступление на MBAn MIT Sloan
+application_workspace.route.category.mit_phd_doctoral_guarantee: Поступление на программы докторантуры MIT
+application_workspace.route.category.mit_physics_phd_admissions: Поступление на PhD по физике в MIT
+application_workspace.route.category.stanford_msx_track: Поступление на программу Stanford MSx
+application_workspace.route.category.stanford_ms_cs_track: Поступление на магистратуру по информатике Stanford (MS CS)
+application_workspace.route.category.stanford_ms_ee_track: Поступление на магистратуру по электротехнике Stanford (MS EE)
+application_workspace.route.category.stanford_ms_msande_track: Поступление на магистратуру по инженерному менеджменту Stanford (MS&E)
+application_workspace.route.category.stanford_llm_track: Поступление на программу LLM Stanford Law School
+application_workspace.route.category.harvard_college: Поступление на первый курс бакалавриата Harvard College
+application_workspace.route.category.harvard_gsas_phd: Поступление в докторантуру и на PhD-программы Harvard Griffin GSAS
+application_workspace.route.category.harvard_hbs_mba: Поступление на MBA Harvard Business School
+application_workspace.route.category.harvard_hls_jd: Поступление на программу J.D. Harvard Law School
+application_workspace.route.category.harvard_hks_mpp: Поступление на магистерские программы Harvard Kennedy School
+application_workspace.route.category.harvard_route_hls_llm: Поступление на программу LL.M. Harvard Law School
+application_workspace.route.category.harvard_route_hms_md: Поступление на программу M.D. Harvard Medical School
+application_workspace.route.category.harvard_route_seas_gsas_data_science_sm: Поступление на магистратуру по науке о данных (S.M.) Harvard
+application_workspace.route.category.harvard_route_seas_gsas_cse_sm: Поступление на магистратуру по вычислительной науке и инженерии (S.M.) Harvard
+application_workspace.route.category.harvard_route_gsd_march_i: Поступление на программу M.Arch. I Harvard Graduate School of Design
+application_workspace.route.category.harvard_route_gsd_march_ii: Поступление на программу M.Arch. II Harvard Graduate School of Design
+application_workspace.route.category.harvard_route_chan_mph_45: Поступление на очную программу MPH-45 Harvard Chan
+application_workspace.route.category.harvard_route_chan_mph_65: Поступление на очную программу MPH-65 Harvard Chan
+application_workspace.route.category.harvard_route_chan_mph_generalist: Поступление на онлайн-программу MPH-Generalist Harvard Chan
+application_workspace.route.category.harvard_route_hgse_edm: Поступление на программу Ed.M. Harvard Graduate School of Education
+application_workspace.route.category.harvard_route_gsas_phd_computer_science: Поступление на PhD по информатике Harvard Griffin GSAS
+application_workspace.route.category.harvard_route_gsas_phd_economics: Поступление на PhD по экономике Harvard Griffin GSAS
+application_workspace.route.category.harvard_route_gsas_hils_phd_bbs: Поступление на PhD по биологическим и биомедицинским наукам Harvard Griffin GSAS
+application_workspace.route.category.harvard_route_gsas_phd_physics: Поступление на PhD по физике Harvard Griffin GSAS
+application_workspace.route.category.harvard_route_gsas_phd_government: Поступление на PhD по политологии Harvard Griffin GSAS
+application_workspace.route.profile.mit_sloan_mban_profile: Профиль абитуриента MBAn
+application_workspace.route.profile.mit_phd_standard: Профиль абитуриента докторантуры
+application_workspace.route.profile.mit_physics_phd_applicant: Абитуриент PhD по физике
+application_workspace.route.profile.harvard_college: Профиль абитуриента SAT
+application_workspace.route.profile.harvard_college_act: Профиль абитуриента ACT
+application_workspace.route.profile.gsas_phd_profile: Профиль абитуриента GSAS PhD
+application_workspace.route.profile.hbs_mba_profile: Профиль абитуриента MBA HBS
+application_workspace.route.profile.hls_jd_profile: Профиль абитуриента J.D. HLS
+application_workspace.route.profile.hks_mpp_profile: Магистр публичной политики (MPP)
+application_workspace.route.profile.hks_mpa_profile: Магистр государственного управления (MPA)
+application_workspace.route.profile.hks_mpaid_profile: Магистр государственного управления в области международного развития (MPA/ID)
+application_workspace.route.profile.hks_mcmpa_profile: Магистр государственного управления для опытных специалистов (MC/MPA)
+application_workspace.route.profile.harvard_route_hls_llm_profile: Профиль абитуриента LL.M. Harvard Law School
+application_workspace.route.profile.harvard_route_hms_md_profile: Профиль абитуриента M.D. Harvard Medical School
+application_workspace.route.profile.harvard_route_seas_gsas_data_science_sm_profile: Профиль абитуриента по науке о данных (S.M.)
+application_workspace.route.profile.harvard_route_seas_gsas_cse_sm_profile: Профиль абитуриента по вычислительной науке и инженерии (S.M.)
+application_workspace.route.profile.harvard_route_gsd_march_i_profile: Профиль абитуриента M.Arch. I
+application_workspace.route.profile.harvard_route_gsd_march_ii_profile: Профиль абитуриента M.Arch. II
+application_workspace.route.profile.harvard_route_chan_mph_45_profile: Профиль абитуриента MPH-45
+application_workspace.route.profile.harvard_route_chan_mph_65_profile: Профиль абитуриента MPH-65
+application_workspace.route.profile.harvard_route_chan_mph_generalist_profile: Профиль абитуриента MPH-Generalist
+application_workspace.route.profile.harvard_route_hgse_edm_profile: Профиль абитуриента Ed.M.
+application_workspace.route.profile.harvard_route_gsas_phd_computer_science_profile: Профиль абитуриента PhD по информатике
+application_workspace.route.profile.harvard_route_gsas_phd_economics_profile: Профиль абитуриента PhD по экономике
+application_workspace.route.profile.harvard_route_gsas_hils_phd_bbs_profile: Профиль абитуриента PhD по биологическим и биомедицинским наукам
+application_workspace.route.profile.harvard_route_gsas_phd_physics_profile: Профиль абитуриента PhD по физике
+application_workspace.route.profile.harvard_route_gsas_phd_government_profile: Профиль абитуриента PhD по политологии
+application_workspace.route.program.Sloan MBAn: Магистратура по бизнес-аналитике (MBAn)
+application_workspace.route.program.mit-physics-phd-course-8: PhD по физике (Course 8)
+application_workspace.route.program.harvard-hbs-mba: MBA Harvard Business School
+application_workspace.route.program.harvard-hks-mpp: Магистр публичной политики (MPP) Harvard Kennedy School
+application_workspace.route.program.harvard-hks-mpa: Магистр государственного управления (MPA) Harvard Kennedy School
+application_workspace.route.program.harvard-hls-jd: J.D. Harvard Law School
+application_workspace.route.program.harvard-hls-llm: LL.M. Harvard Law School
+application_workspace.route.program.harvard-hms-md: M.D. Harvard Medical School
+application_workspace.route.program.harvard-seas-gsas-data-science-sm: Магистратура по науке о данных (S.M.) Harvard
+application_workspace.route.program.harvard-seas-gsas-cse-sm: Магистратура по вычислительной науке и инженерии (S.M.) Harvard
+application_workspace.route.program.harvard-gsd-march-i: M.Arch. I Harvard
+application_workspace.route.program.harvard-gsd-march-ii: M.Arch. II Harvard
+application_workspace.route.program.harvard-chan-mph-45: MPH-45 Harvard Chan
+application_workspace.route.program.harvard-chan-mph-65: MPH-65 Harvard Chan
+application_workspace.route.program.harvard-chan-mph-generalist: MPH-Generalist Harvard Chan
+application_workspace.route.program.harvard-hgse-edm: Ed.M. Harvard
+application_workspace.route.program.harvard-gsas-phd-computer-science: PhD по информатике Harvard Griffin GSAS
+application_workspace.route.program.harvard-gsas-phd-economics: PhD по экономике Harvard Griffin GSAS
+application_workspace.route.program.harvard-gsas-hils-phd-bbs: PhD по биологическим и биомедицинским наукам Harvard Griffin GSAS
+application_workspace.route.program.harvard-gsas-phd-physics: PhD по физике Harvard Griffin GSAS
+application_workspace.route.program.harvard-gsas-phd-government: PhD по политологии Harvard Griffin GSAS
+application_workspace.route.funding.mit_sloan_specialized_paid: Магистратура с самостоятельной оплатой
+application_workspace.route.funding.mit_sloan_mban_merit_fellowship: Стипендия MBAn за достижения
+application_workspace.route.funding.harvard_college: Стандартный семейный взнос
+application_workspace.route.funding.harvard_college-grant-financial-aid: Грант Harvard Financial Aid Initiative (HFAI)
+application_workspace.route.funding.harvard_college_act: Профиль поступления по ACT
+application_workspace.route.funding.harvard_college_act-grant-financial-aid: Грант Harvard Financial Aid Initiative
+application_workspace.route.funding.gsas_phd_guaranteed_5yr: Пятилетний гарантированный пакет финансирования GSAS
+application_workspace.route.funding.hbs_need_based_fellowship: Стипендия HBS по финансовой потребности
+application_workspace.route.funding.hbs_self_funded: Самостоятельная оплата стандартной программы HBS
+application_workspace.route.funding.hls_need_based_grant: Грант HLS по финансовой потребности
+application_workspace.route.funding.hls_paid: Стандартная стоимость обучения HLS
+application_workspace.route.funding.hks_fellowships: Стипендии за государственную и общественную службу HKS
+application_workspace.route.funding.hks_paid: Стандартная стоимость обучения HKS
 application_workspace.deadline_type_course: Подача заявки на программу
 application_workspace.deadline_type_financial_aid: Подача заявки на финансовую помощь
 application_workspace.deadline_type_early_deadline: Ранний срок подачи
@@ -1697,6 +1810,9 @@ application_workspace.separate_award: Подать заявку на грант
 application_workspace.source_unknown: Официальный источник не указан
 application_workspace.steps: Этапы
 application_workspace.timezone_unknown: часовой пояс не указан
+application_workspace.timezone_pacific: тихоокеанское время США
+application_workspace.timezone_uk: время Великобритании
+application_workspace.timezone_eastern: восточное время США
 application_workspace.title: План поступления
 application_workspace.track_not_selected: Маршрут поступления не выбран. Уточните его на странице университета.
 application_workspace.verify_deadline: Проверьте срок на официальной странице
@@ -1720,7 +1836,7 @@ university.finance.award.deadline_label.class_of_2029_round_1: Набор 2029 �
 university.finance.award.deadline_label.class_of_2029_round_2: Набор 2029 года — раунд 2
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.name: Стипендия MIT по финансовой потребности (MIT Need-Based Scholarship)
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.program_scope: Бакалавриат MIT: поступление на первый курс и перевод
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.applicant_scope: Иностранные кандидаты, не имеющие права на федеральную помощь США студентам
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.applicant_scope: Кандидаты на первый курс бакалавриата и перевод, запрашивающие помощь MIT с учётом финансовой потребности. Кандидаты из США также подают FAFSA; для иностранных действует отдельный процесс MIT.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.cycle: Поступление в 2027 году
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.eligibility: Иностранных кандидатов рассматривают по той же системе оценки финансовой потребности, что и кандидатов из США. MIT заявляет, что покрывает 100% подтверждённой потребности. Запрос помощи не влияет на рассмотрение заявки благодаря политике need-blind.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.coverage: Стипендия MIT определяется по финансовому положению семьи; сумма индивидуальна и неизвестна до рассмотрения заявки.
@@ -1730,25 +1846,25 @@ university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.1: 
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.2: Передайте через IDOC налоговые декларации родителей или документы о доходах; при необходимости приложите перевод на английский.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.3: Проверяйте запрошенные документы и предложение о финансовой помощи в портале MIT Application Portal.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.0: CSS Profile
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.1: Налоговые декларации родителей или справки о зарплате за период двухлетней давности
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.2: Сведения о заработке, банковских остатках, инвестициях и доходах, не облагаемых налогом
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.3: Документы IDOC; при необходимости — переводы
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.1: FAFSA для кандидатов из США
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.2: Налоговые декларации родителей или справки о заработке за два года до подачи
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.3: Сведения о заработке, банковских остатках, инвестициях и необлагаемом доходе
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.competition: Право на помощь определяется индивидуально; число стипендий и доля получателей не опубликованы.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.renewal: Подавайте документы заново каждый учебный год; дальнейшее право на помощь определяется правилами MIT.
 university.finance.award.copy.mit-eecs-phd-funding.name: Финансирование PhD в MIT EECS
 university.finance.award.copy.mit-eecs-phd-funding.program_scope: Только докторантура MIT EECS
 university.finance.award.copy.mit-eecs-phd-funding.applicant_scope: Вновь принятые студенты PhD EECS; условия назначения и поддержки определяются после зачисления
-university.finance.award.copy.mit-eecs-phd-funding.cycle: Цикл подачи 2026 года; год начала учёбы нужно уточнить в EECS
-university.finance.award.copy.mit-eecs-phd-funding.eligibility: После зачисления кандидатов PhD EECS автоматически рассматривают на кафедральные стипендии и оплачиваемые должности. Поддержка зависит от решений о зачислении и назначении, соответствия исследованию и дальнейшей успеваемости.
-university.finance.award.copy.mit-eecs-phd-funding.coverage: Поддержка на первый год по стипендии или должности EECS покрывает обучение, медицинскую страховку и ежемесячные выплаты. Сумму и последующие назначения определяют индивидуально.
+university.finance.award.copy.mit-eecs-phd-funding.cycle: Цикл подачи 2026 года; на странице EECS год начала обучения указан неоднозначно
+university.finance.award.copy.mit-eecs-phd-funding.eligibility: Новые кандидаты, принятые на PhD в EECS, автоматически рассматриваются на кафедральные стипендии и ассистентские позиции по материалам заявки. Во время назначения поддержка покрывает полную стоимость обучения, ежемесячную стипендию и медицинскую страховку.
+university.finance.award.copy.mit-eecs-phd-funding.coverage: EECS указывает, что ассистентские позиции покрывают полную стоимость обучения и ежемесячную стипендию на срок назначения. Новых аспирантов рассматривают на кафедральные стипендии и ассистентские позиции; продление и дальнейшая поддержка зависят от успеваемости, назначения и доступного финансирования.
 university.finance.award.copy.mit-eecs-phd-funding.renewal: Должность может назначаться на один семестр; продление зависит от результатов, прогресса и финансирования руководителя. Проверьте полный график поддержки в письме с предложением.
 university.finance.award.copy.mit-eecs-phd-funding.competition: Кафедральные стипендии и должности распределяют после решения о зачислении; конкретная награда не обещана до получения предложения.
-university.finance.award.copy.mit-eecs-phd-funding.course_application_deadline: Срок подачи на PhD EECS — 1 декабря 2026 года; уточните в EECS год начала учёбы.
+university.finance.award.copy.mit-eecs-phd-funding.course_application_deadline: Заявка на PhD EECS: 1 декабря 2026 года, 23:59 по восточному времени; формулировка страницы о годе поступления неоднозначна
 university.finance.award.copy.mit-eecs-phd-funding.award_application_deadline: Отдельная заявка на кафедральное финансирование не требуется; рассмотрение вместе с заявкой на PhD EECS
-university.finance.award.copy.mit-eecs-phd-funding.deadline_timezone: На странице EECS не опубликован; проверьте время в портале подачи
+university.finance.award.copy.mit-eecs-phd-funding.deadline_timezone: Восточное время США
 university.finance.award.copy.mit-eecs-phd-funding.steps.0: Подайте заявку на PhD EECS и подтверждающие документы до срока кафедры.
 university.finance.award.copy.mit-eecs-phd-funding.steps.1: Проверьте в предложении об учёбе и финансировании плату, выплаты, страховку, срок назначения и условия продления.
-university.finance.award.copy.mit-eecs-phd-funding.documents.0: Заявка на PhD EECS с обязательными учебными документами; отдельная кафедральная форма финансирования не указана
+university.finance.award.copy.mit-eecs-phd-funding.documents.0: Заявка на докторскую программу EECS
 university.finance.award.copy.mit-eecs-phd-funding.documents.1: Эссе об исследовательской работе и целях
 university.finance.award.copy.mit-eecs-phd-funding.documents.2: Эссе об академическом и интеллектуальном пути
 university.finance.award.copy.mit-eecs-phd-funding.documents.3: Три рекомендации
@@ -1758,40 +1874,40 @@ university.finance.award.copy.mit-sloan-mba-fellowships.name: Стипендии
 university.finance.award.copy.mit-sloan-mba-fellowships.program_scope: Только очная MBA
 university.finance.award.copy.mit-sloan-mba-fellowships.applicant_scope: Кандидаты, принятые на указанную программу MIT Sloan
 university.finance.award.copy.mit-sloan-mba-fellowships.cycle: Опубликованные сведения о финансировании за 2026–27; условия для набора 2027 года отдельно не опубликованы
-university.finance.award.copy.mit-sloan-mba-fellowships.eligibility: После зачисления студентов MBA автоматически рассматривают на стипендии MIT Sloan и MIT. Порядок получения помощи по потребности различается для иностранных кандидатов, граждан США и постоянных резидентов.
-university.finance.award.copy.mit-sloan-mba-fellowships.coverage: Сумма и условия зависят от конкретной стипендии; на указанной странице суммы не опубликованы. Сведения о помощи по потребности предоставляются после зачисления.
+university.finance.award.copy.mit-sloan-mba-fellowships.eligibility: Все принятые кандидаты MBA, включая иностранных, рассматриваются на стипендии за заслуги. Отбор учитывает академические достижения, профессиональные результаты и потенциальный вклад. Информация о займах и других способах финансирования после зачисления зависит от гражданства или статуса проживания.
+university.finance.award.copy.mit-sloan-mba-fellowships.coverage: Стипендии покрывают стоимость обучения; индивидуальные суммы не опубликованы. На отдельных условиях могут быть доступны займы, спонсорская поддержка или ассистентские позиции; это не гранты.
 university.finance.award.copy.mit-sloan-mba-fellowships.renewal: Условия продления для программы на странице не указаны; проверьте письмо с предложением о стипендии.
 university.finance.award.copy.mit-sloan-mba-fellowships.competition: Число стипендий ограничено; количество, размеры и доля получателей на странице не указаны.
 university.finance.award.copy.mit-sloan-mba-fellowships.course_application_deadline: Совпадает со сроком заявки на программу при автоматическом рассмотрении
 university.finance.award.copy.mit-sloan-mba-fellowships.award_application_deadline: Отдельный срок для автоматического рассмотрения на стипендию не указан
 university.finance.award.copy.mit-sloan-mba-fellowships.deadline_timezone: Смотрите инструкцию по подаче на программу
-university.finance.award.copy.mit-sloan-mba-fellowships.steps.0: Автоматическое рассмотрение после зачисления; для некоторых стипендий вне Sloan и внешних наград требуются отдельные заявки.
+university.finance.award.copy.mit-sloan-mba-fellowships.steps.0: Принятые кандидаты автоматически рассматриваются на стипендии MIT Sloan и MIT за заслуги; отдельная заявка на стипендию Sloan не нужна.
 university.finance.award.copy.mit-sloan-mba-fellowships.documents.0: Документы для заявки на программу; дополнительных документов для автоматического рассмотрения не указано
 university.finance.award.copy.mit-sloan-mfin-fellowships.name: Стипендии программы Master of Finance MIT Sloan
 university.finance.award.copy.mit-sloan-mfin-fellowships.program_scope: Только MFin
 university.finance.award.copy.mit-sloan-mfin-fellowships.applicant_scope: Кандидаты, принятые на указанную программу MIT Sloan
 university.finance.award.copy.mit-sloan-mfin-fellowships.cycle: Опубликованные сведения о финансировании за 2026–27; условия для набора 2027 года отдельно не опубликованы
 university.finance.award.copy.mit-sloan-mfin-fellowships.eligibility: Ограниченное число стипендий для принятых кандидатов любого гражданства и академического профиля; всех рассматривают автоматически.
-university.finance.award.copy.mit-sloan-mfin-fellowships.coverage: Суммы на странице не указаны. Ожидается, что студенты MFin оплачивают обучение сами; доступны отдельные позиции TA/RA.
+university.finance.award.copy.mit-sloan-mfin-fellowships.coverage: Суммы стипендии MIT Master of Finance не опубликованы; есть несколько конкурсных позиций TA/RA с оплатой, зависящей от нагрузки.
 university.finance.award.copy.mit-sloan-mfin-fellowships.renewal: Условия продления для программы на странице не указаны; проверьте письмо с предложением о стипендии.
 university.finance.award.copy.mit-sloan-mfin-fellowships.competition: Число стипендий ограничено; количество, размеры и доля получателей на странице не указаны.
 university.finance.award.copy.mit-sloan-mfin-fellowships.course_application_deadline: Совпадает со сроком заявки на программу при автоматическом рассмотрении
 university.finance.award.copy.mit-sloan-mfin-fellowships.award_application_deadline: Отдельный срок для автоматического рассмотрения на стипендию не указан
 university.finance.award.copy.mit-sloan-mfin-fellowships.deadline_timezone: Смотрите инструкцию по подаче на программу
-university.finance.award.copy.mit-sloan-mfin-fellowships.steps.0: Автоматическое рассмотрение без отдельной заявки. О стипендии обычно сообщают вместе с решением о зачислении.
+university.finance.award.copy.mit-sloan-mfin-fellowships.steps.0: Автоматическое рассмотрение на стипендию MIT Master of Finance; отдельная заявка не нужна, о награде обычно сообщают при зачислении.
 university.finance.award.copy.mit-sloan-mfin-fellowships.documents.0: Документы для заявки на программу; дополнительных документов для автоматического рассмотрения не указано
 university.finance.award.copy.mit-sloan-mban-fellowships.name: Стипендии программы Master of Business Analytics MIT Sloan
 university.finance.award.copy.mit-sloan-mban-fellowships.program_scope: Только MBAn
 university.finance.award.copy.mit-sloan-mban-fellowships.applicant_scope: Кандидаты, принятые на указанную программу MIT Sloan
 university.finance.award.copy.mit-sloan-mban-fellowships.cycle: Опубликованные сведения о финансировании за 2026–27; условия для набора 2027 года отдельно не опубликованы
 university.finance.award.copy.mit-sloan-mban-fellowships.eligibility: Ограниченное число стипендий для принятых кандидатов любого гражданства и академического профиля; всех принятых рассматривают автоматически.
-university.finance.award.copy.mit-sloan-mban-fellowships.coverage: Суммы на странице не указаны. Доступны отдельные позиции RA/TA; должность и оплату определяют индивидуально.
+university.finance.award.copy.mit-sloan-mban-fellowships.coverage: Ограниченное число стипендий за заслуги присуждается принятым кандидатам любого гражданства; суммы не опубликованы. Некоторые позиции RA/TA могут предусматривать оплату и частичное покрытие стоимости обучения.
 university.finance.award.copy.mit-sloan-mban-fellowships.renewal: Условия продления для программы на странице не указаны; проверьте письмо с предложением о стипендии.
 university.finance.award.copy.mit-sloan-mban-fellowships.competition: Число стипендий ограничено; количество, размеры и доля получателей на странице не указаны.
 university.finance.award.copy.mit-sloan-mban-fellowships.course_application_deadline: Совпадает со сроком заявки на программу при автоматическом рассмотрении
 university.finance.award.copy.mit-sloan-mban-fellowships.award_application_deadline: Отдельный срок для автоматического рассмотрения на стипендию не указан
 university.finance.award.copy.mit-sloan-mban-fellowships.deadline_timezone: Смотрите инструкцию по подаче на программу
-university.finance.award.copy.mit-sloan-mban-fellowships.steps.0: Автоматическое рассмотрение без отдельной заявки.
+university.finance.award.copy.mit-sloan-mban-fellowships.steps.0: Всех принятых автоматически рассматривают на стипендии за заслуги; дополнительные компоненты заявки на стипендию не требуются.
 university.finance.award.copy.mit-sloan-mban-fellowships.documents.0: Документы для заявки на программу; дополнительных документов для автоматического рассмотрения не указано
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.name: Стипендии HKS за общественное лидерство и программа LRAP
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.program_scope: Программы MPP и MPA Harvard Kennedy School
@@ -1814,23 +1930,119 @@ university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.0
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.1: Общее эссе для финансовой помощи, до 750 слов
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.2: Дополнительные эссе или заявки, если их требует выбранная стипендия
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.3: FAFSA для подходящих граждан США, постоянных резидентов и других кандидатов на федеральный заём (рекомендуется, но не обязательно для всех стипендий)
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.name: Грант HLS и программа погашения займов LIPP
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.program_scope: Программа J.D. Harvard Law School и подходящие выпускники
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.applicant_scope: Студенты J.D., ежегодно подающие на помощь по потребности; для выпускников LIPP действуют отдельные условия.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.cycle: Набор J.D. осенью 2027 года; потребность пересматривают ежегодно
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.eligibility: Студенты JD могут ежегодно подавать на помощь по потребности. Право на грант зависит от ежегодного расчёта потребности; для LIPP отдельно проверяют заём, занятость и доход выпускника.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.coverage: Грант HLS по потребности не превышает стоимость обучения; некоторым кандидатам доступны только займы. LIPP помогает погашать подходящие займы по своим правилам для долга и занятости.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.renewal: Помощь по потребности пересматривают каждый учебный год. Для LIPP нужна отдельная заявка и одобрение по текущим правилам.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.competition: По данным HLS, примерно половина кандидатов на финансовую помощь JD получает грант HLS; остальным могут быть доступны займы.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.course_application_deadline: Срок заявки на J.D. — 5 февраля 2027 года в 23:59 ET
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.deadline_timezone: Восточное время США для заявки на J.D.; срок финансовой помощи 2027–28 уточните после зачисления
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.0: Подайте заявку на J.D. до срока приёма.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.1: После зачисления откройте портал финансовой службы HLS и выберите заявку на грант по потребности либо только на заём; HLS не использует CSS Profile.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.2: Передайте финансовые сведения студента и, если требуют правила года, родителей; уточните срок подачи на помощь 2027–28 в портале.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.3: Подходящие выпускники подают на LIPP отдельно по действующим правилам погашения займов.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.0: Заявка в финансовую службу HLS после зачисления
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.1: Финансовые сведения студента и, когда требуется, родителей, а также налоговые документы, запрошенные в портале
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.2: Отдельная заявка на LIPP и сведения о подходящем займе и занятости после выпуска
+university.finance.award.copy.hls-jd-need-based-grant.name: Грант Harvard Law School J.D. по финансовой потребности
+university.finance.award.copy.hls-jd-need-based-grant.program_scope: Программа J.D. Harvard Law School; помощь для зачисленных студентов
+university.finance.award.copy.hls-jd-need-based-grant.applicant_scope: Зачисленные студенты J.D., ежегодно подающие на помощь по потребности; LIPP — отдельная программа после выпуска и не входит в этот грант или текущий расчёт стоимости.
+university.finance.award.copy.hls-jd-need-based-grant.cycle: Набор J.D. осенью 2027 года; помощь пересматривают ежегодно
+university.finance.award.copy.hls-jd-need-based-grant.eligibility: Студенты J.D. могут ежегодно подавать на помощь по потребности. Право на грант зависит от ежегодного расчёта; некоторые кандидаты получают только займы. Для выпускников действуют отдельные условия и заявка на LIPP; эта программа не входит в данный грант.
+university.finance.award.copy.hls-jd-need-based-grant.coverage: Гранты HLS по потребности ограничены стоимостью обучения; некоторые кандидаты получают только займы. Запись не включает LIPP и не считает погашение займов после выпуска снижением текущих расходов.
+university.finance.award.copy.hls-jd-need-based-grant.renewal: Помощь по потребности пересматривают каждый учебный год. Выпускники, которым подходит LIPP, подают на неё отдельно по действующим правилам программы.
+university.finance.award.copy.hls-jd-need-based-grant.competition: По данным HLS, грантовую помощь получают около 50% кандидатов J.D., подавших заявку на финансовую помощь; остальным могут быть доступны займы.
+university.finance.award.copy.hls-jd-need-based-grant.course_application_deadline: Срок подачи заявки на J.D. — 5 февраля 2027 года в 23:59 ET
+university.finance.award.copy.hls-jd-need-based-grant.deadline_timezone: Восточное время США для заявки на J.D.; срок подачи на финансовую помощь 2027–28 уточните после зачисления
+university.finance.award.copy.hls-jd-need-based-grant.steps.0: Подайте заявку на J.D. до срока приёма.
+university.finance.award.copy.hls-jd-need-based-grant.steps.1: После зачисления откройте портал финансовой службы HLS и выберите заявку на грант по потребности или только на заём; HLS не использует CSS Profile.
+university.finance.award.copy.hls-jd-need-based-grant.steps.2: Передайте финансовые сведения студента и, если этого требуют правила текущего года, родителей; уточните в портале срок подачи на помощь за 2027–28 год.
+university.finance.award.copy.hls-jd-need-based-grant.documents.0: Заявка в финансовую службу HLS после зачисления
+university.finance.award.copy.hls-jd-need-based-grant.documents.1: Финансовые сведения студента и, если требуется, родителей, а также запрошенные налоговые документы
+university.finance.award.copy.hls-llm-need-based-financial-aid.name: Финансовая помощь HLS по потребности для LL.M.
+university.finance.award.copy.hls-llm-need-based-financial-aid.program_scope: Программа LL.M. Harvard Law School
+university.finance.award.copy.hls-llm-need-based-financial-aid.applicant_scope: Кандидаты на LL.M., подающие на помощь по подтверждённой финансовой потребности, включая иностранных кандидатов, соответствующих условиям.
+university.finance.award.copy.hls-llm-need-based-financial-aid.cycle: Набор на LL.M. с началом обучения в августе 2027 года
+university.finance.award.copy.hls-llm-need-based-financial-aid.eligibility: Помощь HLS в основном зависит от финансовой потребности и может включать грант, заём или их сочетание; право на помощь и её состав определяются индивидуально.
+university.finance.award.copy.hls-llm-need-based-financial-aid.coverage: В 2026–27 году средний грант составлял около половины стоимости обучения; некоторым студентам с особенно высокой потребностью могут покрыть всё обучение и часть расходов на проживание. Исторические результаты не гарантируют будущую помощь.
+university.finance.award.copy.hls-llm-need-based-financial-aid.renewal: Программа LL.M. длится один год; следуйте условиям индивидуального решения о помощи.
+university.finance.award.copy.hls-llm-need-based-financial-aid.competition: Помощь зависит от финансовой потребности; результат за 2026–27 год не гарантирует помощь следующему набору.
+university.finance.award.copy.hls-llm-need-based-financial-aid.course_application_deadline: Срок подачи заявки на LL.M. — 1 декабря 2026 года в 23:59 ET
+university.finance.award.copy.hls-llm-need-based-financial-aid.award_application_deadline: При необходимости заявка на финансовую помощь подаётся вместе с заявкой на программу; уточните в HLS срок для любых отдельных форм.
+university.finance.award.copy.hls-llm-need-based-financial-aid.deadline_timezone: Восточное время США
+university.finance.award.copy.hls-llm-need-based-financial-aid.steps.0: Подайте заявку на набор LL.M. с началом обучения в августе 2027 года до 1 декабря 2026 года.
+university.finance.award.copy.hls-llm-need-based-financial-aid.steps.1: Если запрашиваете помощь, заполните заявку HLS на финансовую помощь для магистратуры.
+university.finance.award.copy.hls-llm-need-based-financial-aid.steps.2: Проверьте сроки подачи на внешние стипендии для вашей страны.
+university.finance.award.copy.hls-llm-need-based-financial-aid.documents.0: Онлайн-заявка LL.M. на финансовую помощь
+university.finance.award.copy.hls-llm-need-based-financial-aid.documents.1: Финансовые документы, запрошенные HLS
+university.finance.award.copy.hls-llm-need-based-financial-aid.documents.2: Дополнительные документы для страновых стипендий, если применимо
+university.finance.award.copy.hms-md-need-based-aid.name: Стипендии и займы HMS для студентов M.D. по финансовой потребности
+university.finance.award.copy.hms-md-need-based-aid.program_scope: Программа M.D. Harvard Medical School
+university.finance.award.copy.hms-md-need-based-aid.applicant_scope: Студенты M.D., подающие на помощь по финансовой потребности; иностранные кандидаты и участники DACA используют институциональные или частные источники, а не федеральную помощь США.
+university.finance.award.copy.hms-md-need-based-aid.cycle: Правила 2026–27 года; кандидаты на поступление осенью 2027 года
+university.finance.award.copy.hms-md-need-based-aid.eligibility: Приём в HMS проводится без учёта возможности оплачивать обучение. Иностранные кандидаты и участники DACA подают стандартные документы на помощь и проходят аналогичную оценку потребности; подходящим кандидатам сначала предлагают стандартный пакет институциональных или частных займов.
+university.finance.award.copy.hms-md-need-based-aid.coverage: Грантовая формула HMS: стоимость обучения и обязательные сборы за вычетом ожидаемого семейного взноса по расчёту университета. Оставшиеся расходы могут покрываться займами; суммы зависят от потребности и права на помощь.
+university.finance.award.copy.hms-md-need-based-aid.renewal: Следуйте правилам HMS, требованиям к успеваемости и ежегодному решению о финансовой помощи.
+university.finance.award.copy.hms-md-need-based-aid.competition: Помощь зависит от финансовой потребности; индивидуальная сумма не гарантирована.
+university.finance.award.copy.hms-md-need-based-aid.deadline_timezone: HMS не подтвердил общедоступный срок подачи на помощь за 2027–28 год; следуйте графику для зачисленных студентов.
+university.finance.award.copy.hms-md-need-based-aid.steps.0: После подачи заявки на поступление отправьте документы на помощь, когда получите приглашение.
+university.finance.award.copy.hms-md-need-based-aid.steps.1: Подайте CSS Profile для оценки институциональной потребности, а FAFSA — если имеете право на федеральную помощь.
+university.finance.award.copy.hms-md-need-based-aid.steps.2: Иностранным кандидатам и участникам DACA следует проверить требования к частным займам и документам для визы.
+university.finance.award.copy.hms-md-need-based-aid.documents.0: CSS Profile
+university.finance.award.copy.hms-md-need-based-aid.documents.1: FAFSA для кандидатов, имеющих право на федеральную помощь США
+university.finance.award.copy.hms-md-need-based-aid.documents.2: Финансовые документы студента и родителей, запрошенные HMS
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.name: Финансирование PhD программ GSAS (Notice of Financial Support)
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.program_scope: Пять включённых в каталог PhD-маршрутов GSAS
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.applicant_scope: Зачисленные студенты PhD; условия и дальнейшее право на помощь зависят от программы и студента.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.cycle: Опубликованная сетка стоимости обучения за 2026–27 год; условия предложений на 2027–28 год не опубликованы
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.eligibility: В индивидуальном уведомлении о финансовой поддержке могут быть указаны условия финансирования зачисленного студента; эта запись не гарантирует единый пакет или сумму.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.coverage: В индивидуальном уведомлении указаны гранты на обучение и сборы, стипендия или иная поддержка, срок финансирования, обязанности по преподаванию или исследованиям и условия успеваемости.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.renewal: Следуйте индивидуальному уведомлению о финансовой поддержке и правилам успеваемости программы.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.competition: Условия зависят от предложения; это не отдельная общая стипендия университета.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.course_application_deadline: Уточните срок подачи в выбранной кафедре.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.award_application_deadline: В изученном источнике GSAS отдельный срок подачи на финансирование не указан.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.deadline_timezone: Сроки подачи на кафедры — 17:00 ET
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.steps.0: Подайте заявку на выбранную PhD-программу GSAS.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.steps.1: Проверьте индивидуальное уведомление о финансовой поддержке: суммы, срок, обязанности и условия.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.documents.0: Заявка на кафедральную PhD-программу GSAS
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.documents.1: Индивидуальное уведомление о финансировании после его получения
+university.finance.award.copy.harvard-chan-mph-school-aid.name: Гранты и стипендии Harvard Chan для программ MPH
+university.finance.award.copy.harvard-chan-mph-school-aid.program_scope: Очные программы MPH-45 и MPH-65 и онлайн-программа MPH-Generalist Harvard Chan
+university.finance.award.copy.harvard-chan-mph-school-aid.applicant_scope: Кандидаты из США, других стран и без документов, если они соответствуют условиям указанных форматов MPH; право на гранты и займы зависит от их источника.
+university.finance.award.copy.harvard-chan-mph-school-aid.cycle: Правила на 2026–27 год; срок подачи на финансирование за 2027–28 год не подтверждён
+university.finance.award.copy.harvard-chan-mph-school-aid.eligibility: Кандидаты на MPH-45, MPH-65 и MPH-Generalist могут подавать на гранты и стипендии Chan, включая иностранных кандидатов. Условия зависят от конкретной награды.
+university.finance.award.copy.harvard-chan-mph-school-aid.coverage: Количество грантов и стипендий ограничено; они не покрывают всю потребность каждого студента. Суммы различаются.
+university.finance.award.copy.harvard-chan-mph-school-aid.renewal: Следуйте условиям решения о награде и требованиям к успеваемости.
+university.finance.award.copy.harvard-chan-mph-school-aid.competition: Ограниченные награды на основе финансовой потребности и/или заслуг.
+university.finance.award.copy.harvard-chan-mph-school-aid.course_application_deadline: Выберите формат в SOPHAS; сроки разных программ MPH могут отличаться.
+university.finance.award.copy.harvard-chan-mph-school-aid.deadline_timezone: Изученные страницы не подтверждают срок подачи на помощь за 2027–28 год; проверьте актуальную заявку Chan.
+university.finance.award.copy.harvard-chan-mph-school-aid.steps.0: Подайте заявку на выбранный формат через SOPHAS и Harvard Chan.
+university.finance.award.copy.harvard-chan-mph-school-aid.steps.1: Подайте актуальную заявку Chan на грант или стипендию до опубликованного срока.
+university.finance.award.copy.harvard-chan-mph-school-aid.steps.2: Отдельно проверьте право на федеральные и частные займы.
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.0: Заявка SOPHAS
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.1: Заявка Harvard Chan на финансовую помощь
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.2: FAFSA только для кандидатов, имеющих право на федеральную помощь США
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.3: Другие материалы, запрошенные для выбранного процесса финансовой помощи
+university.finance.award.copy.hgse-edm-need-based-grant.name: Грант HGSE по потребности для Ed.M.
+university.finance.award.copy.hgse-edm-need-based-grant.program_scope: Программа Ed.M. Harvard Graduate School of Education
+university.finance.award.copy.hgse-edm-need-based-grant.applicant_scope: Студенты Ed.M. очной и заочной форм, включая иностранных студентов, с подтверждённой финансовой потребностью.
+university.finance.award.copy.hgse-edm-need-based-grant.cycle: 2027–2028
+university.finance.award.copy.hgse-edm-need-based-grant.eligibility: HGSE назначает гранты по потребности студентам Ed.M. согласно правилам школы. Иностранные студенты имеют право на помощь; FAFSA доступна только гражданам США и обладателям постоянного резидентства.
+university.finance.award.copy.hgse-edm-need-based-grant.coverage: Сумма гранта различается и не гарантирована; проверьте индивидуальные материалы по финансовой помощи.
+university.finance.award.copy.hgse-edm-need-based-grant.renewal: Условия зависят от гранта; следуйте правилам HGSE о продлении и успеваемости.
+university.finance.award.copy.hgse-edm-need-based-grant.competition: Институциональная помощь по финансовой потребности.
+university.finance.award.copy.hgse-edm-need-based-grant.course_application_deadline: 5 января 2027 года
+university.finance.award.copy.hgse-edm-need-based-grant.award_application_deadline: 12 февраля 2027 года
+university.finance.award.copy.hgse-edm-need-based-grant.deadline_timezone: На общедоступной странице не указано точное время или часовой пояс.
+university.finance.award.copy.hgse-edm-need-based-grant.steps.0: Подайте заявку на программу Ed.M.
+university.finance.award.copy.hgse-edm-need-based-grant.steps.1: Подайте заявку HGSE на финансовую помощь до 12 февраля 2027 года.
+university.finance.award.copy.hgse-edm-need-based-grant.steps.2: Если имеете право на FAFSA, подайте её до той же даты.
+university.finance.award.copy.hgse-edm-need-based-grant.documents.0: Заявка HGSE на финансовую помощь
+university.finance.award.copy.hgse-edm-need-based-grant.documents.1: FAFSA для граждан США и обладателей постоянного резидентства
+university.finance.award.copy.hgse-edm-need-based-grant.documents.2: Финансовые документы, запрошенные в заявке на помощь
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.name: Программа стипендий Saul Zaentz Fellows (Ed.M.)
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.program_scope: Программа Ed.M. Harvard Graduate School of Education
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.applicant_scope: Кандидаты на Ed.M., заинтересованные в дошкольном образовании; ожидается не менее трёх лет непосредственного опыта. Подавать могут иностранные кандидаты и кандидаты из США.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.cycle: 2027–2028
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.eligibility: При отборе учитываются академические достижения и подтверждённая приверженность работе в сфере дошкольного образования. Предпочтение отдают очной учёбе и кандидатам с подтверждённой финансовой потребностью.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.coverage: Пакет покрывает половину стоимости обучения; отбор конкурсный и не гарантирует получение стипендии.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.renewal: Следуйте условиям награды и требованиям к успеваемости.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.competition: Конкурсная стипендия.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.course_application_deadline: 5 января 2027 года
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.award_application_deadline: 12 февраля 2027 года
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.deadline_timezone: На общедоступной странице не указано точное время или часовой пояс.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.steps.0: Подайте заявку на программу Ed.M.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.steps.1: До 12 февраля 2027 года отправьте материалы на финансовую помощь HGSE и выполните все требования к стипендии в портале кандидата.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.steps.2: Если имеете право на FAFSA, подайте её до той же даты.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.documents.0: Заявка HGSE на финансовую помощь
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.documents.1: Подтверждения для стипендии, запрошенные HGSE
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.documents.2: FAFSA для граждан США и обладателей постоянного резидентства
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.name: Стипендии Stanford GSB по финансовой потребности
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.program_scope: Только программа MBA Stanford GSB
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.applicant_scope: Зачисленные на MBA Stanford кандидаты с подтверждённой финансовой потребностью независимо от гражданства
@@ -1976,6 +2188,7 @@ university.finance.award.copy.imperial-inspires-2027.cycle: 2027–2028
 university.finance.award.copy.imperial-inspires-2027.eligibility: Программа должна участвовать в Imperial Inspires, а кандидат — соответствовать условиям стипендии и минимальным требованиям программы. Для поступающих в 2027 году предусмотрено не менее 300 стипендий в направлениях инженерии, естественных наук, медицины и Imperial Business School.
 university.finance.award.copy.imperial-inspires-2027.coverage: 15 000 фунтов в год за каждый год программы на оплату обучения и расходы на проживание.
 university.finance.award.copy.imperial-inspires-2027.course_application_deadline: Срок UCAS для бакалавриата зависит от программы; многие программы используют общий срок рассмотрения 13 января 2027 года. Сроки магистратуры зависят от программы и раунда приёма.
+university.finance.award.copy.imperial-inspires-2027.award_application_deadline: Решения по стипендиям для бакалавриата планируют принять к середине апреля 2027 года; до приглашения отдельного фиксированного срока нет.
 university.finance.award.copy.imperial-inspires-2027.deadline_timezone: Срок подачи на стипендию не опубликован
 university.finance.award.copy.imperial-inspires-2027.steps.0: Подайте заявку UCAS на бакалавриат или заявку My Imperial на магистратуру после открытия приёма в сентябре 2026 года.
 university.finance.award.copy.imperial-inspires-2027.steps.1: Уточните, участвует ли выбранная программа в Imperial Inspires и соответствуете ли вы условиям стипендии и минимальным требованиям.
@@ -2006,6 +2219,18 @@ university.finance.award.copy.presidents-phd-scholarships.renewal: Финанс�
 university.finance.award.copy.imperial-bursary-home-only.name: Стипендия Imperial только для тарифа Home (Imperial Bursary)
 university.finance.award.copy.imperial-bursary-home-only.cycle: Начало обучения в 2026 или 2027 году
 university.finance.award.copy.imperial-bursary-home-only.eligibility: Только для кандидатов со статусом оплаты Home; проверьте актуальные правила для программы и года поступления.
+university.finance.award.copy.imperial-bursary-home-only.program_scope: Программы бакалавриата Imperial, в том числе интегрированные; только для кандидатов со статусом оплаты Home.
+university.finance.award.copy.imperial-bursary-home-only.applicant_scope: Студенты бакалавриата Imperial со статусом оплаты Home, годовым доходом семьи ниже 70 000 фунтов и заявкой на государственный заём с проверкой дохода.
+university.finance.award.copy.imperial-bursary-home-only.coverage: На 2026–27 год стандартная годовая выплата составляет 5 000 фунтов при доходе семьи 0–16 000; 4 400 фунтов при 16 001–50 000; 3 300 фунтов при 50 001–55 000; 2 200 фунтов при 55 001–60 000; либо 1 000 фунтов при 60 001–70 000. Студенты MBBS со статусом Home получают дополнительную выплату на клинических курсах 5 и 6 в Лондоне; подходящим выпускникам опеки и студентам, не поддерживающим отношения с семьёй, могут дополнительно выплатить 500 фунтов.
+university.finance.award.copy.imperial-bursary-home-only.renewal: Проверяется каждый учебный год с учётом продолжения обучения на бакалавриате, статуса оплаты Home, дохода семьи и обязательной оценки для государственного займа.
+university.finance.award.copy.imperial-bursary-home-only.competition: Конкурсный отбор не проводится; подходящие студенты получают выплату автоматически после проверки дохода и статуса оплаты.
+university.finance.award.copy.imperial-bursary-home-only.deadline_timezone: Imperial не указывает часовой пояс
+university.finance.award.copy.imperial-bursary-home-only.course_application_deadline: Отдельная заявка на выплату не нужна; подайте заявку на государственный заём с проверкой дохода через соответствующий региональный орган на учебный год программы.
+university.finance.award.copy.imperial-bursary-home-only.award_application_deadline: Imperial должен получить сведения о доходе семьи до 31 мая после начала учебного года; для поступивших осенью 2027 года — до 31 мая 2028 года.
+university.finance.award.copy.imperial-bursary-home-only.steps.0: Подайте заявку на государственный заём с проверкой дохода через соответствующий региональный орган, даже если не планируете брать заём.
+university.finance.award.copy.imperial-bursary-home-only.steps.1: Дайте согласие передать Imperial сведения о доходе семьи для рассмотрения права на выплату.
+university.finance.award.copy.imperial-bursary-home-only.steps.2: Отдельная заявка Imperial Bursary не нужна; Imperial подтвердит сумму после оценки студенческого финансирования.
+university.finance.award.copy.imperial-bursary-home-only.documents.0: Сведения о доходе семьи, переданные через региональную систему студенческого финансирования
 university.finance.award.copy.epsrc-ukri-cdt-studentships.name: Стипендии центров докторантской подготовки EPSRC / UKRI
 university.finance.award.copy.epsrc-ukri-cdt-studentships.program_scope: Только программы центров докторантской подготовки EPSRC; уточните конкретный маршрут CDT
 university.finance.award.copy.epsrc-ukri-cdt-studentships.cycle: Зависит от программы
@@ -2018,6 +2243,7 @@ university.finance.award.copy.deans-impact-scholarship.coverage: MSc — 25 000 
 university.finance.award.copy.deans-impact-scholarship.renewal: Указанные программы MSc и очная MBA длятся один год; условия выплаты смотрите в предложении о стипендии.
 university.finance.award.copy.deans-impact-scholarship.competition: Конкурсный отбор; число стипендий по каждой программе на официальной странице не указано.
 university.finance.award.copy.deans-impact-scholarship.course_application_deadline: Используйте срок раунда поступления, опубликованный для выбранной программы MSc или MBA.
+university.finance.award.copy.deans-impact-scholarship.award_application_deadline: Отдельный фиксированный срок подачи заявки на стипендию не опубликован; приглашение на письменное задание для MSc или видеозадание для MBA следует за заявкой на программу.
 university.finance.award.copy.deans-impact-scholarship.steps.0: Подайте заявку на подходящую программу MSc или MBA Imperial Business School.
 university.finance.award.copy.deans-impact-scholarship.steps.1: После приглашения отправьте дополнительное задание: письменное для MSc или видео для MBA.
 university.finance.award.copy.deans-impact-scholarship.documents.0: Заявка на подходящую программу и необходимые для неё документы
@@ -2025,3 +2251,122 @@ university.finance.award.copy.deans-impact-scholarship.documents.1: Письме
 university.program_coverage.value.undergraduate_home_expected_tuition_gbp: Ожидаемая стоимость бакалавриата по тарифу Home (ожидает утверждения)
 university.finance.award.copy.deans-impact-scholarship.cycle: 2027–2028
 university.finance.award.copy.presidents-phd-scholarships.cycle: 2027–2028
+university.finance.award.copy.mit-meche-phd-departmental-support.competition: Доступность финансирования и отбор на стипендии зависят от программы; суммы и доля получателей не опубликованы.
+university.finance.award.copy.mit-math-phd-departmental-support.name: Кафедральное финансирование MIT для PhD по математике
+university.finance.award.copy.mit-meche-phd-departmental-support.steps.1: Уточните у офиса аспирантуры порядок финансирования для выбранной исследовательской программы.
+university.finance.award.copy.mit-math-phd-departmental-support.cycle: Поступление в 2027 году; последняя опубликованная сетка стипендий относится к 2025–26 году
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.renewal: Покрытие соответствует длительности подходящей программы; уточните условия продления и выплаты у Фонда.
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.3: Плата за подачу или одобренное освобождение от неё
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.3: Резюме или CV
+university.finance.award.copy.mit-meche-phd-departmental-support.applicant_scope: Кандидаты на указанную исследовательскую степень по машиностроению; условия поддержки зависят от программы и индивидуального предложения
+university.finance.award.copy.mit-economics-phd-departmental-support.renewal: Финансирование в третий–шестой годы зависит от удовлетворительной успеваемости; индивидуальное назначение и летние условия следует уточнить в письменном предложении.
+university.finance.award.copy.mit-math-phd-departmental-support.deadline_timezone: Восточное время США
+university.finance.award.copy.mit-sloan-aker-scholarship.renewal: По информации Aker, поддержка обычно продолжается весь срок программы при нормальном прогрессе; точные условия подтверждает Aker.
+university.finance.award.copy.mit-meche-phd-departmental-support.award_application_deadline: Отдельный срок для будущих студентов не опубликован; спросите офис аспирантуры машиностроительного факультета о дополнительных шагах.
+university.finance.award.copy.mit-economics-phd-departmental-support.steps.1: Уточните у администратора аспирантуры внешнее финансирование и отдельные заявки на конкретные награды.
+university.finance.award.copy.mit-math-phd-departmental-support.competition: Отдельная заявка на поддержку не нужна; предложение о финансировании получают все принятые студенты.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.competition: Конкурсного отбора нет; указано, что снижение применяется ко всем студентам MBAn.
+university.finance.award.copy.mit-sloan-aker-scholarship.cycle: На текущей странице стипендии MIT не указаны срок подачи заявки и учебный год награды
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.renewal: Однократное снижение стоимости обучения на уровне программы; отдельные условия продления не опубликованы.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.award_application_deadline: Отдельная заявка не опубликована
+university.finance.award.copy.mit-economics-phd-departmental-support.competition: Кафедральный пакет описан для всех принятых студентов; стипендии на диссертацию и внешние награды присуждаются отдельно на конкурсной основе.
+university.finance.award.copy.mit-sloan-mba-fellowships.steps.1: После зачисления изучите инструкции по финансированию для вашей категории гражданства или проживания; на внешние награды подавайте отдельные заявки.
+university.finance.award.copy.mit-meche-phd-departmental-support.eligibility: Кафедра указывает исследовательские и преподавательские ассистентские позиции, а также стипендии как возможные виды поддержки аспирантов. На указанной странице о поступлении конкретный пакет каждому будущему кандидату PhD не гарантируется.
+university.finance.award.copy.mit-physics-phd-departmental-support.competition: Всех принятых рассматривают на ограниченное число внутренних стипендий; также используются позиции RA/TA. До зачисления конкретная награда или сумма не гарантируется.
+university.finance.award.copy.mit-physics-phd-departmental-support.award_application_deadline: Отдельной заявки на кафедральную стипендию нет; автоматическое рассмотрение проходит вместе с заявкой на PhD
+university.finance.award.copy.mit-meche-phd-departmental-support.steps.0: Подайте заявку в аспирантуру по машиностроению и укажите интерес к подходящим вариантам поддержки.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.steps.0: Подайте заявку на соответствующую программу MIT Sloan.
+university.finance.award.copy.mit-meche-phd-departmental-support.steps.2: Проверьте в письменном предложении покрытие обучения, стипендию, страховку, сроки назначения и условия продления.
+university.finance.award.copy.mit-physics-phd-departmental-support.course_application_deadline: Для поступления осенью 2027 года: 15 декабря 2026 года, 23:59 по восточному времени США
+university.finance.award.copy.mit-meche-phd-departmental-support.renewal: Условия продления назначений и стипендий для будущих студентов не опубликованы. Уточните требования к успеваемости, длительность и летние условия в предложении и у офиса аспирантуры машиностроительного факультета.
+university.finance.award.copy.mit-physics-phd-departmental-support.cycle: Поступление в 2027 году; размер стипендии на страницах для будущих студентов не указан
+university.finance.award.copy.mit-economics-phd-departmental-support.deadline_timezone: Официальная страница не указывает час или часовой пояс срока
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.competition: Указаны две стипендии; количество кандидатов и доля получателей не опубликованы.
+university.finance.award.copy.mit-economics-phd-departmental-support.coverage: В первые два года: полная стоимость обучения, индивидуальная медицинская страховка на 12 месяцев и стипендия за девятимесячный учебный год. В третий–шестой годы: ассистентская позиция, полная стоимость обучения, стипендия за девять месяцев и страховка. Возможны летние исследовательские назначения или стипендии; точные суммы для набора 2027 года и летнее покрытие не указаны.
+university.finance.award.copy.mit-math-phd-departmental-support.steps.1: При необходимости запросите освобождение от сбора до 20 ноября 2026 года.
+university.finance.award.copy.mit-sloan-aker-scholarship.course_application_deadline: Подайте заявку на соответствующую программу Sloan до её собственного срока.
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.1: Академические транскрипты
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.2: Рекомендательные письма
+university.finance.award.copy.mit-economics-phd-departmental-support.applicant_scope: Принятые на PhD по экономике; финансирование после второго года зависит от удовлетворительной успеваемости
+university.finance.award.copy.mit-meche-phd-departmental-support.cycle: Поступление в 2027 году; суммы и условия назначений на 2027–28 год не опубликованы
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.deadline_timezone: Восточное время США
+university.finance.award.copy.mit-math-phd-departmental-support.steps.2: Уточните в предложении текущую стипендию, страховку, летнее покрытие и требования к успеваемости.
+university.finance.award.copy.mit-sloan-aker-scholarship.documents.0: MIT Sloan не публикует список; проверьте инструкции к заявке по ссылке на этой странице
+university.finance.award.copy.mit-economics-phd-departmental-support.eligibility: Кафедра описывает поддержку для всех принятых на PhD: стипендия в первый и второй годы, затем ассистентские позиции в третий–шестой годы при удовлетворительной успеваемости.
+university.finance.award.copy.mit-math-phd-departmental-support.applicant_scope: Все принятые на PhD по математике при условии удовлетворительной успеваемости
+university.finance.award.copy.mit-meche-phd-departmental-support.name: Кафедральное финансирование MIT для PhD по машиностроению
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.4: Подтверждение знания английского, если требуется
+university.finance.award.copy.mit-physics-phd-departmental-support.applicant_scope: Принятые на PhD по физике студенты с хорошей успеваемостью; вид и срок индивидуальной поддержки определяет кафедра
+university.finance.award.copy.mit-meche-phd-departmental-support.documents.0: Материалы заявки в аспирантуру; отдельный список документов для финансирования будущих студентов кафедра не публикует
+university.finance.award.copy.mit-math-phd-departmental-support.documents.3: Не менее трёх рекомендательных писем
+university.finance.award.copy.mit-sloan-aker-scholarship.coverage: Aker указывает, что грант дополняет другие источники финансирования и покрывает полные расходы на учёбу и проживание. Награда зависит от зачисления в поддерживаемый университет и окончательного подтверждения стипендии.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.documents.0: Заявка на MBAn; отдельную форму для снижения платы за обучение не публикуют
+university.finance.award.copy.mit-physics-phd-departmental-support.steps.0: Подайте заявку на PhD по физике до срока кафедры; при необходимости запросите освобождение от сбора до 1 декабря.
+university.finance.award.copy.mit-economics-phd-departmental-support.award_application_deadline: Для основного пакета поддержки отдельную заявку не публикуют; для некоторых внутренних и внешних стипендий позже проходят отдельные конкурсы
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.steps.0: Подайте заявку на программу MBAn до установленного срока.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.steps.2: Уточните в Фонде список документов и условия стипендии.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.course_application_deadline: 5 января 2027 года, 15:00 по восточному времени США
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.cycle: Текущее описание награды MIT Sloan; ежегодные сроки зависят от даты решения о зачислении
+university.finance.award.copy.mit-physics-phd-departmental-support.program_scope: Только PhD по физике
+university.finance.award.copy.mit-math-phd-departmental-support.eligibility: Кафедра указывает, что финансирование предлагают всем принятым студентам; поддержка гарантирована на пять лет при удовлетворительной успеваемости.
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.1: Транскрипты колледжа или университета
+university.finance.award.copy.mit-physics-phd-departmental-support.name: Кафедральное финансирование MIT для PhD по физике
+university.finance.award.copy.mit-math-phd-departmental-support.course_application_deadline: Инструкция кафедры указывает 1 декабря 2026 года, 23:59 по восточному времени; каталог OGE указывает 15 декабря. Перед подачей проверьте срок в действующем портале.
+university.finance.award.copy.mit-sloan-aker-scholarship.program_scope: MBA, магистратура по финансам (MFin) и магистратура по бизнес-аналитике (MBAn) MIT Sloan
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.2: Три рекомендательных письма
+university.finance.award.copy.mit-physics-phd-departmental-support.coverage: Полная стоимость обучения, ежемесячная стипендия на проживание и медицинская страховка на 12 месяцев в период финансирования. Срок стипендии различается: часто один год, иногда три или пять лет. После окончания первоначальной стипендии студенту нужно обеспечить дальнейшее финансирование от исследовательской группы.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.name: Стипендия Fundación Gondra Barandiarán для MIT Sloan
+university.finance.award.copy.mit-economics-phd-departmental-support.steps.2: Проверьте в предложении сумму стипендии, оплату обучения, страховку, график назначений, летнюю поддержку и требования к успеваемости.
+university.finance.award.copy.mit-math-phd-departmental-support.coverage: Полная стоимость обучения, стипендия и индивидуальная медицинская страховка. В сетке 2025–26 также указана летняя стипендия на один месяц; сумма на 2027–28 год на указанной странице не опубликована.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.program_scope: MBA, магистратура по финансам (MFin) и магистратура по бизнес-аналитике (MBAn) MIT Sloan
+university.finance.award.copy.mit-math-phd-departmental-support.documents.0: Онлайн-заявка в аспирантуру
+university.finance.award.copy.mit-sloan-aker-scholarship.steps.0: MIT Sloan сообщает, что нужно подать отдельную заявку через Aker Scholarship; следуйте актуальным инструкциям и сроку по ссылке со страницы финансирования MIT Sloan.
+university.finance.award.copy.mit-physics-phd-departmental-support.steps.1: Проверьте в предложении о зачислении тип поддержки, оплату обучения, стипендию, страховку, срок назначения или стипендии и требования к успеваемости.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.4: Документы IDOC; при необходимости — переводы
+university.finance.award.copy.mit-math-phd-departmental-support.steps.0: Подайте заявку на PhD по математике и выберите или запросите доступные в ней варианты поддержки.
+university.finance.award.copy.mit-math-phd-departmental-support.award_application_deadline: Отдельная заявка на финансовую поддержку не требуется; её предлагают всем принятым студентам
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.program_scope: Только магистратура MIT Sloan по бизнес-аналитике (MBAn)
+university.finance.award.copy.mit-meche-phd-departmental-support.program_scope: Исследовательские программы PhD и ScD по машиностроению
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.name: Снижение платы за обучение на проекте Analytics Capstone программы MBAn MIT Sloan
+university.finance.award.copy.mit-physics-phd-departmental-support.renewal: Продолжение поддержки зависит от успеваемости, условий назначения или стипендии и финансирования исследовательской группы; уточните полный график в письменном предложении.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.deadline_timezone: На странице MIT Sloan не указан
+university.finance.award.copy.mit-math-phd-departmental-support.renewal: Поддержка гарантируется на пять лет при удовлетворительной успеваемости; уточните актуальный размер стипендии и летние условия для вашего набора в предложении.
+university.finance.award.copy.mit-meche-phd-departmental-support.coverage: Полная исследовательская или преподавательская ассистентская ставка покрывает полную стоимость обучения и выплачивает стипендию на срок назначения. Стипендии присуждаются по заслугам и обычно предназначены для принятых напрямую на PhD. Длительность, страховку, летнюю поддержку и продление следует уточнить в предложении.
+university.finance.award.copy.mit-meche-phd-departmental-support.course_application_deadline: Для поступления в 2027 году: 1 декабря 2026 года, 23:59 по восточному времени США
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.steps.1: После зачисления уточните сумму выставленного счёта и субсидии в офисе финансирования Sloan.
+university.finance.award.copy.mit-economics-phd-departmental-support.steps.0: Подайте заявку на PhD по экономике до 15 декабря 2026 года.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.coverage: Снижение стоимости обучения не менее чем на 22 000 долларов США. Опубликованная стоимость MBAn в размере 96 884 долларов не учитывает летнюю субсидию; уточните выставленный счёт и возможные сборы за семестр в офисе финансирования Sloan.
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.0: Онлайн-заявка в аспирантуру
+university.finance.award.copy.mit-sloan-mban-fellowships.steps.1: Количество исследовательских ассистентских позиций ограничено; оплата зависит от условий назначения.
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.0: Онлайн-заявка
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.4: Образец письменной работы
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.award_application_deadline: Подайте заявку в Fundación Gondra Barandiarán в течение 20 дней после решения о зачислении; дополнительные требования устанавливает Фонд.
+university.finance.award.copy.mit-sloan-aker-scholarship.deadline_timezone: На официальных страницах не указан
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.5: Результат теста по английскому, если требуется
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.eligibility: MIT Sloan указывает, что снижение стоимости обучения на проекте Capstone получают все студенты MBAn.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.eligibility: По данным MIT Sloan, стипендия предназначена двум гражданам Испании с инженерным образованием испанского университета, поступающим на MBA, MFin или MBAn.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.course_application_deadline: Кандидаты MBA должны быть зачислены в раунде 1 или 2; для MFin и MBAn действует график поступления на соответствующую программу.
+university.finance.award.copy.mit-sloan-aker-scholarship.eligibility: Кандидат должен быть гражданином Норвегии или иметь тесную связь с Норвегией; Aker ориентируется на сильных в учёбе кандидатов, желающих внести вклад в общество. На момент подачи нельзя уже учиться на программе.
+university.finance.award.copy.mit-sloan-aker-scholarship.competition: Внешняя конкурсная стипендия; MIT и Aker не публикуют отдельную статистику отбора для этой программы.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.documents.0: Отдельная заявка в Фонд; подробный список документов на указанной странице MIT Sloan не опубликован
+university.finance.award.copy.mit-sloan-aker-scholarship.name: Стипендия Aker для MBA, MFin и MBAn MIT Sloan
+university.finance.award.copy.mit-math-phd-departmental-support.documents.4: Подтверждение знания английского, если требуется
+university.finance.award.copy.mit-math-phd-departmental-support.documents.1: Заявление о целях обучения
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.applicant_scope: Два гражданина Испании с инженерным образованием испанского университета, принятые на подходящую программу MIT Sloan
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.cycle: Опубликованные данные о стоимости обучения и текущих условиях программы на 2026–27 год
+university.finance.award.copy.mit-economics-phd-departmental-support.name: Кафедральное финансирование MIT для PhD по экономике
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.coverage: Полная стоимость обучения: два года MBA либо 12-месячная программа MFin или MBAn. На указанной странице MIT расходы на проживание не включены.
+university.finance.award.copy.mit-math-phd-departmental-support.documents.2: Электронные транскрипты бакалавриата
+university.finance.award.copy.mit-meche-phd-departmental-support.deadline_timezone: Восточное время США
+university.finance.award.copy.mit-physics-phd-departmental-support.eligibility: Всех принятых кандидатов автоматически рассматривают на кафедральные стипендии без отдельной заявки. Физический факультет указывает, что аспиранты обычно получают финансирование каждый год при хорошей успеваемости.
+university.finance.award.copy.mit-sloan-aker-scholarship.applicant_scope: Граждане Норвегии или кандидаты с тесной связью с Норвегией, поступающие на очную магистратуру MIT
+university.finance.award.copy.mit-economics-phd-departmental-support.cycle: Поступление в 2027 году; индивидуальные условия указаны в предложении
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.applicant_scope: Все студенты MBAn, участвующие в проекте Analytics Capstone
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.6: Требование GRE для поступления в сентябре 2027 года не подтверждено текущей страницей; уточните его на кафедре
+university.finance.award.copy.mit-math-phd-departmental-support.documents.5: Плата за подачу или одобренное освобождение от неё
+university.finance.award.copy.mit-economics-phd-departmental-support.program_scope: PhD по экономике и трек PhD по экономике бизнеса MIT
+university.finance.award.copy.mit-economics-phd-departmental-support.course_application_deadline: 15 декабря 2026 года для поступления в сентябре 2027 года
+university.finance.award.copy.mit-sloan-aker-scholarship.award_application_deadline: MIT Sloan не публикует срок; проверьте инструкции Aker Scholarship по ссылке со страницы MIT Sloan о финансировании.
+university.finance.award.copy.mit-physics-phd-departmental-support.deadline_timezone: Восточное время США
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.steps.1: Если вы соответствуете требованиям и вас приняли, подайте отдельную заявку в Fundación Gondra Barandiarán в течение 20 дней после решения о зачислении.
+university.finance.award.copy.mit-math-phd-departmental-support.program_scope: Только PhD по математике

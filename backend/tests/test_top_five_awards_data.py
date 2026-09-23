@@ -19,6 +19,18 @@ class TopFiveAwardsDataTests(unittest.TestCase):
             for award in finance.get("scholarships_and_funding", [])
         }
 
+    def test_stanford_international_aid_requires_admission_request_and_separate_forms(self) -> None:
+        award = self.awards("stanford-university-usa-ca")[
+            "stanford-international-undergraduate-need-based-aid"
+        ]
+        self.assertEqual(award["application_process"], "separate")
+        self.assertIn("admission application", award["application_process_note"])
+        self.assertIn("request", award["steps"][0])
+        self.assertIn(
+            "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html",
+            award["source_urls"],
+        )
+
     def test_named_awards_have_actionable_scope_and_official_sources(self) -> None:
         expected = {
             "mit-usa-cambridge": {"mit-undergraduate-need-based-scholarship"},
@@ -30,7 +42,7 @@ class TopFiveAwardsDataTests(unittest.TestCase):
                 "harvard-college-need-based-financial-aid",
                 "hbs-need-based-mba-fellowship",
                 "hks-public-service-fellowships-mpp-mpa",
-                "hls-jd-need-based-grant-and-lipp",
+                "hls-jd-need-based-grant",
             },
             "university-of-oxford-uk-oxford": {
                 "oxford-reach-oxford-scholarship-2027",

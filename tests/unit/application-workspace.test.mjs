@@ -12,7 +12,18 @@ globalThis.fetch = async (url) => {
 };
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 await initI18n();
-const { buildApplicationTasks, createApplicationTaskIcs } = await import("../../frontend/javascript/pages/application-workspace.js");
+const { buildApplicationTasks, createApplicationTaskIcs, localizedTimezone } = await import("../../frontend/javascript/pages/application-workspace.js");
+
+test("application workspace localizes Pacific and UK deadline time zones in Russian", () => {
+  setLanguage("ru", { persist: false, emit: false });
+  try {
+    assert.equal(localizedTimezone("US Pacific Time"), "тихоокеанское время США");
+    assert.equal(localizedTimezone("UK time"), "время Великобритании");
+    assert.equal(localizedTimezone("US Eastern Time; exact hour not published"), "восточное время США; exact hour not published");
+  } finally {
+    setLanguage("eng", { persist: false, emit: false });
+  }
+});
 
 test("application workspace keeps MIT early-action course and aid deadlines separate", () => {
   const university = {
@@ -51,6 +62,51 @@ test("application workspace keeps MIT early-action course and aid deadlines sepa
   assert.match(award.detail, /CSS Profile/);
   assert.equal(award.cycle.toLowerCase().includes("early action"), true);
   assert.ok(createApplicationTaskIcs(award));
+});
+
+test("MIT Physics plan uses the selected program deadline and Russian route metadata", () => {
+  setLanguage("ru", { persist: false, emit: false });
+  try {
+  const university = {
+    id: "mit-usa-cambridge",
+    academics: { programs: [{
+      id: "mit-physics-phd-course-8",
+      course_number: "Course 8 PhD",
+      name: "Doctor of Philosophy in Physics (Course 8 PhD)",
+      application_deadline: "December 15, 2026 at 11:59 p.m. Eastern Time for fall 2027 entry",
+      cycle: "Fall 2027 entry",
+      source_url: "https://physics.mit.edu/academic-programs/graduate-students/graduate-admissions/",
+    }] },
+    admission_categories: [{
+      id: "mit_physics_phd_admissions",
+      label: "MIT Physics PhD Admission",
+      study_levels: ["Doctorate"],
+      application_deadline: "Deadlines vary by doctoral program; check the program page.",
+      cycle: "Fall 2027 entry",
+      source_url: "https://oge.mit.edu/graduate-admissions/applications/",
+      requirement_profiles: [{ id: "mit_physics_phd_applicant", label: "Physics PhD Applicant" }],
+    }],
+    finance: { scholarships_and_funding: [] },
+  };
+  const [course] = buildApplicationTasks(university, {
+    categoryId: "mit_physics_phd_admissions",
+    requirementProfileId: "mit_physics_phd_applicant",
+    programId: "mit-physics-phd-course-8",
+    programName: "Doctor of Philosophy in Physics (Course 8 PhD)",
+  });
+
+  assert.equal(course.date, "2026-12-15");
+  assert.equal(course.time, "11:59 p.m.");
+  assert.equal(course.timezone, "Eastern Time");
+  assert.equal(course.sourceUrl, "https://physics.mit.edu/academic-programs/graduate-students/graduate-admissions/");
+  assert.equal(course.cycle, "Набор на осень 2027 года");
+  assert.match(course.detail, /Поступление на PhD по физике в MIT/);
+  assert.match(course.detail, /Абитуриент PhD по физике/);
+  const calendar = createApplicationTaskIcs(course);
+  assert.match(calendar, /DTSTART:20261216T045900Z/);
+  } finally {
+    setLanguage("eng", { persist: false, emit: false });
+  }
 });
 
 test("application workspace keeps exact separate award cutoffs and exposes steps", () => {
@@ -130,7 +186,10 @@ test("application workspace exposes each dated scholarship round separately", ()
 test("application workspace does not invent a route before the applicant selects one", () => {
   const university = {
     id: "sample",
-    finance: { scholarships_and_funding: [{ id: "award", name: "Award", study_level: "Bachelor", applicant_scope: "Applicants worldwide", award_application_deadline: "2027-01-01", source_url: "https://www.example.edu/award" }] },
+    finance: {
+      source_url: "https://www.example.edu/program/first-course",
+      scholarships_and_funding: [{ id: "award", name: "Award", study_level: "Bachelor", applicant_scope: "Applicants worldwide", award_application_deadline: "2027-01-01", source_url: "https://www.example.edu/award" }],
+    },
     admission_categories: [
       { id: "early", label: "Early Action", study_levels: ["Bachelor"], application_deadline: "2026-11-01", source_url: "https://www.example.edu/early" },
       { id: "regular", label: "Regular Action", study_levels: ["Bachelor"], application_deadline: "2027-01-04", source_url: "https://www.example.edu/regular" },
@@ -140,6 +199,7 @@ test("application workspace does not invent a route before the applicant selects
   assert.equal(tasks[0].date, null);
   assert.equal(tasks[0].sourceUrl, "");
   assert.equal(tasks.some((task) => task.awardId === "award"), false);
+  assert.equal(tasks.find((task) => task.kind === "funding").sourceUrl, "");
 });
 
 test("award candidates respect explicit program exclusions and domestic eligibility", () => {
@@ -171,6 +231,48 @@ test("award candidates respect explicit program exclusions and domestic eligibil
   const dualCitizen = buildApplicationTasks(imperial, { categoryId: "undergrad", choiceKey: "undergrad" }, { citizenships: ["GB", "KZ"] }).find((task) => task.awardId === "home-bursary");
   assert.equal(ukCitizenAbroad.warning, true);
   assert.equal(dualCitizen.warning, true);
+});
+
+test("application workspace excludes an explicitly program-scoped award from other selected programs", () => {
+  const oxford = {
+    id: "university-of-oxford-uk-oxford",
+    admission_categories: [{ id: "oxford-pgt", label: "Graduate taught course", study_levels: ["Master"] }],
+    finance: { scholarships_and_funding: [{
+      id: "oxford-weidenfeld-hoffmann-2027",
+      name: "Weidenfeld-Hoffmann Scholarships and Leadership Programme",
+      study_level: "Master",
+      program_ids: ["msc_advanced_computer_science_pgt", "mba_said_business_school_pgt", "bcl_bachelor_of_civil_law_pgt"],
+      program_scope: "Oxford MSc Advanced Computer Science, MBA and BCL in this catalogue",
+      applicant_scope: "Applicants worldwide",
+      award_application_deadline: "2027-01-10",
+      source_url: "https://www.ox.ac.uk/admissions/graduate/fees-and-funding/fees-funding-and-scholarship-search/weidenfeld-hoffmann-scholarships-and-leadership-programme",
+    }] },
+  };
+  const makeTasks = (programId, programName) => buildApplicationTasks(oxford, {
+    categoryId: "oxford-pgt",
+    choiceKey: `oxford-${programId}`,
+    programId,
+    programName,
+  });
+
+  const advancedCs = makeTasks("msc_advanced_computer_science_pgt", "MSc in Advanced Computer Science");
+  const history = makeTasks("mst_history_pgt", "MSt in History (Intellectual History)");
+  assert.equal(advancedCs.some((task) => task.awardId === "oxford-weidenfeld-hoffmann-2027"), true);
+  assert.equal(history.some((task) => task.awardId === "oxford-weidenfeld-hoffmann-2027"), false);
+
+  const mixedRouteOxford = {
+    ...oxford,
+    admission_categories: [{
+      ...oxford.admission_categories[0],
+      program_ids: ["msc_advanced_computer_science_pgt", "mst_history_pgt"],
+    }],
+  };
+  const mixedRouteAward = buildApplicationTasks(mixedRouteOxford, {
+    categoryId: "oxford-pgt",
+    choiceKey: "oxford-shared-pgt-route",
+  }).find((task) => task.awardId === "oxford-weidenfeld-hoffmann-2027");
+  assert.equal(mixedRouteAward.warning, true);
+  assert.match(mixedRouteAward.title, /Check eligibility and next steps/);
 });
 
 test("multi-level award strings match each declared study level and legacy PhD labels", () => {

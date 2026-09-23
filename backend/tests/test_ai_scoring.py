@@ -274,8 +274,9 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual([], unknown_result["choices"])
         self.assertEqual("no_choices", unknown_result["reason"])
 
-    def test_any_level_prefers_official_score_profile_over_higher_fallback(self):
-        stanford = uni_service.get_university_by_id("stanford-university-usa-ca")
+    def test_any_level_prefers_official_score_profile_when_available(self):
+        # MIT publishes SAT quartiles and median in its official Common Data Set.
+        mit = uni_service.get_university_by_id("mit-usa-cambridge")
         profile = {
             "budget": 100000,
             "gpa": 3.9,
@@ -283,13 +284,12 @@ class AiScoringTests(unittest.TestCase):
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 8.0}],
         }
 
-        result = estimate_uni_chance(stanford, profile)
+        result = estimate_uni_chance(mit, profile)
         official = [row for row in result["choices"] if row.get("chanceModel") == "official_score_profile"]
         fallback = [row for row in result["choices"] if row.get("chanceModel") == "estimated_fallback"]
 
         self.assertTrue(official)
         self.assertTrue(fallback)
-        self.assertGreater(max(row["chancePercent"] for row in fallback), max(row["chancePercent"] for row in official))
         self.assertEqual("official_score_profile", result["chanceModel"])
         self.assertEqual("SAT", official[0]["userExamId"])
 
@@ -2011,7 +2011,81 @@ class AiScoringTests(unittest.TestCase):
         self.assertAlmostEqual(_normalize_exam_score("GPA", 3.8), 90.0)
         self.assertAlmostEqual(_normalize_exam_score("GPA", 3.0), 50.0)
 
-    def test_scholarship_boost_applied_for_high_academic_grant_tracks(self):
+    def test_uni_chance_is_invariant_to_budget_and_funding_choice(self):
+        uni = {
+            "id": "u-chance-funding-invariance",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 20000},
+            "academics": {"acceptance_rate_percent": 50},
+            "admission_categories": [
+                {
+                    "id": "cat",
+                    "label": "Cat",
+                    "requirement_profiles": [
+                        {
+                            "id": "same-admission-route",
+                            "label": "Same Admission Route",
+                            "requirements": {"SAT": 1200},
+                            "score_profile": _demo_score_profile("SAT", p25=60, median=75, p75=90),
+                            "funding_options": [
+                                {"id": "paid", "label": "Paid", "funding_type": "paid"},
+                                {"id": "grant", "label": "Grant", "funding_type": "grant"},
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+        base_profile = {
+            "locale": "eng",
+            "gpa": 3.9,
+            "exams": [{"id": "SAT", "score": 1450}],
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 8.0}],
+        }
+
+        low_budget = _estimate_uni_chance(uni, {**base_profile, "budget": 1000})
+        high_budget = _estimate_uni_chance(uni, {**base_profile, "budget": 100000})
+        paid = _estimate_uni_chance(uni, {
+            **base_profile,
+            "budget": 100000,
+            "selectedAdmissionChoices": {"u-chance-funding-invariance": _choice_selection("cat::same-admission-route::paid")},
+        })
+        grant = _estimate_uni_chance(uni, {
+            **base_profile,
+            "budget": 100000,
+            "selectedAdmissionChoices": {"u-chance-funding-invariance": _choice_selection("cat::same-admission-route::grant")},
+        })
+
+        low_budget_chance = next(row["chancePercent"] for row in low_budget["choices"] if row["fundingOptionId"] == "paid")
+        high_budget_chance = next(row["chancePercent"] for row in high_budget["choices"] if row["fundingOptionId"] == "paid")
+        self.assertNotEqual(
+            next(row["details"]["affordability"] for row in low_budget["choices"] if row["fundingOptionId"] == "paid"),
+            next(row["details"]["affordability"] for row in high_budget["choices"] if row["fundingOptionId"] == "paid"),
+        )
+        self.assertEqual(low_budget_chance, high_budget_chance)
+        self.assertEqual("official_score_profile", low_budget["chanceModel"])
+        self.assertEqual("official_score_profile", high_budget["chanceModel"])
+        self.assertEqual(paid["overallChance"], grant["overallChance"])
+
+        fallback_profile = {
+            **uni["admission_categories"][0]["requirement_profiles"][0],
+        }
+        fallback_profile.pop("score_profile")
+        fallback_uni = {
+            **uni,
+            "id": "u-chance-funding-invariance-fallback",
+            "admission_categories": [{
+                **uni["admission_categories"][0],
+                "requirement_profiles": [fallback_profile],
+            }],
+        }
+        fallback_low_budget = _estimate_uni_chance(fallback_uni, {**base_profile, "budget": 1000})
+        fallback_high_budget = _estimate_uni_chance(fallback_uni, {**base_profile, "budget": 100000})
+        self.assertEqual("estimated_fallback", fallback_low_budget["chanceModel"])
+        self.assertEqual("estimated_fallback", fallback_high_budget["chanceModel"])
+        self.assertEqual(fallback_low_budget["overallChance"], fallback_high_budget["overallChance"])
+
+    def test_grant_track_does_not_change_admission_probability(self):
         uni = {
             "id": "u-scholarship-test",
             "rank": 50,
@@ -2056,7 +2130,53 @@ class AiScoringTests(unittest.TestCase):
         grant_chance = choices_by_id["prof_grant"]["chancePercent"]
         self.assertIsNotNone(paid_chance)
         self.assertIsNotNone(grant_chance)
-        self.assertGreaterEqual(grant_chance, paid_chance)
+        self.assertEqual(grant_chance, paid_chance)
+        self.assertFalse(any(
+            factor.get("key") in {"affordability_fit", "affordability_gap", "scholarship_support"}
+            for row in res.get("choices", [])
+            for factor in row.get("factors", [])
+        ))
+
+    def test_official_chance_responds_to_language_strength_without_budget_effect(self):
+        uni = {
+            "id": "u-official-language-strength",
+            "rank": 50,
+            "finance": {"total_cost_year_usd": 20000},
+            "academics": {"acceptance_rate_percent": 50},
+            "admission_categories": _categories_from_requirement_profiles([
+                {
+                    "id": "same-admission-route",
+                    "label": "Same Admission Route",
+                    "requirements": {"SAT": 1200},
+                    "score_profile": _demo_score_profile("SAT", p25=60, median=75, p75=90),
+                    "language_requirements_mode": "all",
+                    "language_requirements": [
+                        {"code": "en", "requirements": {"IELTS": 6.5}, "stats_avg": {"IELTS": 8.0}}
+                    ],
+                }
+            ]),
+        }
+        base_profile = {
+            "budget": 30000,
+            "exams": [{"id": "SAT", "score": 1450}],
+        }
+        borderline = _estimate_uni_chance(uni, {
+            **base_profile,
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
+        })
+        strong = _estimate_uni_chance(uni, {
+            **base_profile,
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 8.0}],
+        })
+        borderline_choice = borderline["choices"][0]
+        strong_choice = strong["choices"][0]
+
+        self.assertEqual("official_score_profile", borderline_choice["chanceModel"])
+        self.assertEqual("official_score_profile", strong_choice["chanceModel"])
+        self.assertEqual(100, borderline_choice["details"]["feasibilityGate"])
+        self.assertEqual(100, strong_choice["details"]["feasibilityGate"])
+        self.assertLess(borderline_choice["details"]["language"], strong_choice["details"]["language"])
+        self.assertLess(borderline_choice["chancePercent"], strong_choice["chancePercent"])
 
     def test_missing_required_evidence_does_not_convert_to_zero_chance(self):
         uni = {

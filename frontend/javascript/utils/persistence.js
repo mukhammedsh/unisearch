@@ -7,7 +7,7 @@ import {
 } from "./config.js";
 import { API_LANG_DEFAULT, API_LANG_SUPPORTED, getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { safeLocalStorage } from "./safe-storage.js";
-import { convert } from "../currency.js";
+import { CURRENCY_FORMAT_MAP, convert } from "../currency.js";
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const FILTERS_KEY = "unisearch_filters";
@@ -23,6 +23,8 @@ const PROFILE_DEFAULTS = {
   _v: PROFILE_VERSION,
   budget: "",
   budgetCurrency: "USD",
+  familyIncomeAmount: "",
+  familyIncomeCurrency: "USD",
   gpa: "",
   gpaScale: 4,
   exams: [],
@@ -128,9 +130,6 @@ export function isLegacyProfile(raw) {
     || "gpa_raw" in raw
     || "user_gpa_scale" in raw
     || "study_level" in raw
-    || "familyIncome" in raw
-    || "family_income" in raw
-    || "family_income_bracket" in raw
     || "selected_admission_choices" in raw
     || "country_of_education" in raw
     || "country_of_education_other" in raw
@@ -198,8 +197,8 @@ export function normalizeProfileData(profile) {
     "applicantRoute", "applicant_route", "intendedEntryCycle", "intended_entry_cycle",
     "currentResidenceCountry", "current_residence_country", "currentResidenceOther", "current_residence_other",
     "feeStatusContext", "fee_status_context",
-    "familyIncome", "family_income", "family_income_bracket",
     "selectedAdmissionChoices", "selected_admission_choices",
+    "familyIncomeAmount", "familyIncomeCurrency",
   ]);
   const extraFields = {};
   for (const [k, v] of Object.entries(raw)) {
@@ -215,6 +214,22 @@ export function normalizeProfileData(profile) {
   const budget = raw.budget === null || raw.budget === undefined || raw.budget === "" ? "" : raw.budget;
   const budgetCurrencyRaw = String(raw.budgetCurrency || raw.budget_currency || "").trim().toUpperCase();
   const budgetCurrency = budgetCurrencyRaw || PROFILE_DEFAULTS.budgetCurrency;
+  const incomeAmountRaw = raw.familyIncomeAmount;
+  let incomeAmountValue = "";
+  if (typeof incomeAmountRaw === "number") {
+    incomeAmountValue = incomeAmountRaw;
+  } else if (typeof incomeAmountRaw === "string" && incomeAmountRaw.trim()) {
+    incomeAmountValue = Number(incomeAmountRaw.trim());
+  } else if (incomeAmountRaw !== "" && incomeAmountRaw !== null && incomeAmountRaw !== undefined) {
+    incomeAmountValue = NaN;
+  }
+  const familyIncomeAmount = Number.isFinite(incomeAmountValue) && incomeAmountValue >= 0 && incomeAmountValue <= 1_000_000_000_000
+    ? incomeAmountValue
+    : "";
+  const incomeCurrencyRaw = typeof raw.familyIncomeCurrency === "string" ? raw.familyIncomeCurrency.trim().toUpperCase() : "";
+  const familyIncomeCurrency = Object.prototype.hasOwnProperty.call(CURRENCY_FORMAT_MAP, incomeCurrencyRaw)
+    ? incomeCurrencyRaw
+    : PROFILE_DEFAULTS.familyIncomeCurrency;
   const major = String(raw.major ?? "").trim();
   const studyMode = String(raw.studyMode || PROFILE_DEFAULTS.studyMode).trim() || PROFILE_DEFAULTS.studyMode;
   const parseFundingType = (val) => {
@@ -424,6 +439,8 @@ export function normalizeProfileData(profile) {
     _v: version,
     budget,
     budgetCurrency,
+    familyIncomeAmount,
+    familyIncomeCurrency,
     gpa: normalizedGpa === null ? "" : normalizedGpa,
     gpaScale,
     exams,

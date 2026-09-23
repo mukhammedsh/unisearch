@@ -11,7 +11,7 @@ import {
 } from "../../utils.js";
 import { heroIcon } from "../../icons.js";
 import { getCurrentLanguage, t } from "../../i18n.js";
-import { formatMoney, formatPrice } from "../../currency.js";
+import { FALLBACK_RATES, convert, formatMoney, formatPrice } from "../../currency.js";
 import {
   admissionChoiceKey,
   applyPercentWidths,
@@ -387,7 +387,7 @@ export function getFinanceForChoice(choice, universityFinance) {
   }
   const levels = getCategoryLevelsList(choice).map(normalizeLevelKey);
   const scope = String(choice?.scope || "").toLowerCase();
-  const isGraduate = levels.some((level) => ["master", "mba", "doctorate"].includes(level))
+  const isGraduate = levels.some((level) => ["master", "mba", "doctorate", "professional"].includes(level))
     || /^(graduate|postgraduate|doctoral)/.test(scope);
   return isGraduate ? null : universityFinance;
 }
@@ -446,6 +446,48 @@ function getCommonAnnualCostRange(choices, universityFinance) {
   return range.academicYear && (range.scope || range.feeStatus) ? range : null;
 }
 
+function getProgramTuitionForChoice(choice, university) {
+  const programIds = Array.isArray(choice?.program_ids) ? choice.program_ids.map((id) => String(id || "").trim().toLowerCase()) : [];
+  const selectedProgramId = String(choice?.program_id || choice?.programId || "").trim().toLowerCase();
+  if (!programIds.length && !selectedProgramId) return null;
+  const catalogPrograms = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
+  const identifiersFor = (item) => [item?.id, item?.course_number, item?.name, item?.title]
+    .map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
+  const selectedProgram = selectedProgramId
+    ? catalogPrograms.find((item) => [item?.id, item?.course_number].some((id) => String(id || "").trim().toLowerCase() === selectedProgramId))
+    : null;
+  if (selectedProgramId && (!selectedProgram || (programIds.length && !identifiersFor(selectedProgram).some((id) => programIds.includes(id))))) return null;
+  const resolvedPrograms = selectedProgram ? [selectedProgram] : programIds.map((programId) => {
+    return catalogPrograms.find((item) => identifiersFor(item).includes(programId));
+  });
+  if (!selectedProgram && resolvedPrograms.some((program) => !program)) return null;
+  const programs = [...new Set(resolvedPrograms)];
+  const pricedPrograms = programs.map((program) => ({
+    program,
+    amount: Number(program?.tuition_year_usd),
+    sourceUrl: String(program?.tuition_source_url || "").trim(),
+    currency: String(program?.currency || "USD").trim().toUpperCase(),
+    cycle: String(program?.tuition_cycle || "").trim(),
+  }));
+  if (!pricedPrograms.length || pricedPrograms.some(({ amount, sourceUrl, cycle }) => !Number.isFinite(amount) || amount <= 0 || !sourceUrl || !cycle)) return null;
+  const tuitionSignatures = new Set(pricedPrograms.map(({ amount, currency, cycle }) => {
+    const year = cycle.match(/\b20\d{2}[-–]\d{2,4}\b/)?.[0] || "";
+    return JSON.stringify([amount, currency, year]);
+  }));
+  const { amount, sourceUrl, currency, cycle } = pricedPrograms[0] || {};
+  const year = cycle?.match(/\b20\d{2}[-–]\d{2,4}\b/)?.[0] || "";
+  if (tuitionSignatures.size !== 1 || !year) return null;
+  return {
+    finance: {
+      total_cost_year_usd: amount,
+      costs_breakdown_year_usd: { Tuition: amount },
+      currency,
+    },
+    year,
+    sourceUrl,
+  };
+}
+
 function annualCostRangeContext(range) {
   if (!range) return "";
   const applicantCategory = {
@@ -486,7 +528,7 @@ function getCourseFinanceWithoutAwardOverride(university, choice) {
   if (isPlainObject(category.finance_override)) return category.finance_override;
   const levels = getCategoryLevelsList(choice).map(normalizeLevelKey);
   const scope = String(choice?.scope || "").toLowerCase();
-  const isGraduate = levels.some((level) => ["master", "mba", "doctorate"].includes(level))
+  const isGraduate = levels.some((level) => ["master", "mba", "doctorate", "professional"].includes(level))
     || /^(graduate|postgraduate|doctoral)/.test(scope);
   return isGraduate ? null : university?.finance || null;
 }
@@ -995,7 +1037,7 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
     }
   }
 
-  const targetStudyLevel = normalizeLevelKey(profile?.studyLevel);
+  const targetStudyLevel = normalizeLevelKey(profile?.studyLevel || profile?.study_level);
   const showUndergraduatePolicy = ["", "any", "all", "general", "bachelor"].includes(targetStudyLevel);
   const showDoctoralFunding = ["", "any", "all", "general", "doctorate"].includes(targetStudyLevel);
   const ugPolicy = fin.undergraduate_aid_policy || {};
@@ -1063,10 +1105,36 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
   ) : null;
 
   const thresholds = [];
+  const incomeRaw = profile?.familyIncomeAmount;
+  const hasIncomeAmount = incomeRaw !== null
+    && incomeRaw !== undefined
+    && !(typeof incomeRaw === "string" && incomeRaw.trim() === "");
+  const incomeAmount = !hasIncomeAmount
+    ? null
+    : Number(incomeRaw);
+  const incomeCurrency = String(profile?.familyIncomeCurrency || "USD").trim().toUpperCase();
+  const hasComparableIncome = hasIncomeAmount
+    && targetStudyLevel === "bachelor"
+    && Number.isFinite(incomeAmount)
+    && incomeAmount >= 0
+    && Number.isFinite(FALLBACK_RATES[incomeCurrency])
+    && FALLBACK_RATES[incomeCurrency] > 0;
+  const incomeUsd = hasComparableIncome ? convert(incomeAmount, incomeCurrency, "USD") : null;
+  const incomeComparisonFor = (thresholdUsd) => {
+    const threshold = Number(thresholdUsd);
+    if (!hasIncomeAmount || targetStudyLevel !== "bachelor") return "";
+    if (!hasComparableIncome || !Number.isFinite(incomeUsd) || incomeUsd < 0 || !Number.isFinite(threshold) || threshold <= 0) {
+      return t("university.finance.income_comparison_unknown", "Income comparison unavailable");
+    }
+    return incomeUsd < threshold
+      ? t("university.finance.income_comparison_below", "Entered income is below this published threshold")
+      : t("university.finance.income_comparison_at_or_above", "Entered income is at or above this published threshold");
+  };
   if (zeroParentContributionUsd) {
     thresholds.push({
       label: t("university.finance.zero_parent_contribution_threshold", "Zero Parent Contribution Threshold"),
       value: `< $${Number(zeroParentContributionUsd).toLocaleString("en-US")} / yr`,
+      comparison: incomeComparisonFor(zeroParentContributionUsd),
       note: t("university.finance.zero_parent_contrib", "The policy sets the expected parent contribution to zero; this does not establish total net price."),
     });
   }
@@ -1074,6 +1142,7 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
     thresholds.push({
       label: t("university.finance.full_ride_threshold", "Full-Ride Income Threshold"),
       value: `< $${Number(fullRideUsd).toLocaleString("en-US")} / yr`,
+      comparison: incomeComparisonFor(fullRideUsd),
       note: t("university.finance.full_ride_threshold_note", "Eligibility for a full funding package depends on the university's full policy and applicant circumstances."),
     });
   }
@@ -1081,6 +1150,7 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
     thresholds.push({
       label: t("university.finance.free_tuition_threshold", "Free Tuition Threshold"),
       value: `< $${Number(freeTuitionUsd).toLocaleString("en-US")} / yr`,
+      comparison: incomeComparisonFor(freeTuitionUsd),
       note: t("university.finance.free_tuition_note", "100% tuition coverage for qualifying families"),
     });
   }
@@ -1133,6 +1203,16 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance }) {
     aidTone,
     aidDescription,
     thresholds,
+    thresholdsNote: thresholds.length
+      ? [
+          thresholds.some((threshold) => threshold.comparison)
+            ? t("university.finance.income_comparison_caveat", "This comparison is context only. It does not determine aid eligibility, award amount, or net price.")
+            : "",
+          university?.id === "stanford-university-usa-ca" && aid.income_thresholds_note
+            ? t("university.finance.income_thresholds_note.stanford", "Stanford's income guidelines assume typical assets and US cost-of-living assumptions and may not apply to families living outside the United States.")
+            : "",
+        ].filter(Boolean).join(" ")
+      : "",
     phdFunding,
   };
 }
@@ -1185,10 +1265,12 @@ function renderFinancePolicyOverview(policy) {
               <div class="finance-threshold-item">
                 <span class="finance-threshold-label">${escapeHtml(th.label)}</span>
                 <strong class="finance-threshold-value">${escapeHtml(th.value)}</strong>
+                ${th.comparison ? `<p class="finance-threshold-note">${escapeHtml(th.comparison)}</p>` : ""}
                 ${th.note ? `<p class="finance-threshold-note">${escapeHtml(th.note)}</p>` : ""}
               </div>
             `).join("")}
           </div>
+          ${policy.thresholdsNote ? `<p class="finance-threshold-note">${escapeHtml(policy.thresholdsNote)}</p>` : ""}
         </div>
       ` : ""}
 
@@ -1571,7 +1653,11 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
           const isGrant = getTrackFundingType(funding) === "grant";
           const optionPrice = annualCostForTrack(choice);
           const uniCurrency = (funding?.finance_override || choice?.finance_override || university?.finance)?.currency || university?.finance?.currency || "USD";
-          const priceValue = Number.isFinite(Number(optionPrice)) ? formatPrice(optionPrice, uniCurrency) : unknownFieldText("placeholder.field.cost", "Cost");
+          const hasOptionPrice = optionPrice !== null
+            && optionPrice !== undefined
+            && !(typeof optionPrice === "string" && optionPrice.trim() === "")
+            && Number.isFinite(Number(optionPrice));
+          const priceValue = hasOptionPrice ? formatPrice(optionPrice, uniCurrency) : unknownFieldText("placeholder.field.cost", "Cost");
           const fundingMeta = [
             funding.funding_program ? [t("admission.track.funding_program", "Funding program"), trTrackDescription(university.id, funding.id, funding.funding_program)] : null,
             funding.funding_source ? [t("admission.track.funding_source", "Funding source"), trTrackDescription(university.id, funding.id, funding.funding_source)] : null,
@@ -1891,15 +1977,15 @@ export function renderFinanceSection({
   if (university.finance) {
     const profile = loadProfile() || {};
     const selectedStudyLevel = profile.studyLevel || profile.study_level;
+    const admissionContext = selectedAdmissionContext(university, profile);
     const policyData = resolveFeeStatusAndAid({ university, profile, uniChance });
 
     if (scholarshipContainer) {
-      const selection = selectedAdmissionContext(university, profile);
-      const categoriesForLevel = selection.visibleCategories;
+      const categoriesForLevel = admissionContext.visibleCategories;
       const awardsHtml = renderFundingAwardList(
         university.finance,
         categoriesForLevel,
-        selection.selectedLevel || selectedStudyLevel,
+        admissionContext.selectedLevel || selectedStudyLevel,
         categoriesForLevel,
       );
       const grants = getGrantsFromCategories(categoriesForLevel);
@@ -1988,9 +2074,11 @@ export function renderFinanceSection({
         const optionCardsHtml = group.rows.map((option) => {
           const isGrantTrack = getTrackFundingType(option) === "grant";
           const grantHasAwardSpecificOverride = isGrantTrack && hasFundingSpecificFinanceOverride(university, option);
-          const financeData = grantHasAwardSpecificOverride
+          let financeData = grantHasAwardSpecificOverride
             ? getCourseFinanceWithoutAwardOverride(university, option)
             : getFinanceForChoice(option, university.finance);
+          const programTuition = financeData ? null : getProgramTuitionForChoice(option, university);
+          if (programTuition) financeData = programTuition.finance;
           const totalRange = grantHasAwardSpecificOverride
             ? publishedAnnualCostRange(financeData)
             : publishedAnnualCostRangeForChoice(option, university.finance);
@@ -2024,9 +2112,11 @@ export function renderFinanceSection({
               : null,
           ].filter(Boolean);
 
-          const totalTitle = isGrantTrack
-            ? t("university.finance.cost_before_aid", "Estimated cost before aid")
-            : translateWord("total_per_year", "Total / year");
+          const totalTitle = programTuition
+            ? t("university.finance.published_tuition_per_year", "Published tuition / year")
+            : isGrantTrack
+              ? t("university.finance.cost_before_aid", "Estimated cost before aid")
+              : translateWord("total_per_year", "Total / year");
           const grantEstimateNoteHtml = isGrantTrack
             ? `<p class="finance-aid-note">${escapeHtml(t("university.finance.awards_not_deducted", "A possible award is not subtracted from this amount until it has been officially granted."))}</p>`
             : "";
@@ -2036,6 +2126,9 @@ export function renderFinanceSection({
             : "";
           const rangeNote = totalRange && (financeData?.note || financeData?.costs_breakdown_note)
             ? `<p class="finance-cost-range-note">${escapeHtml(financeData.note || financeData.costs_breakdown_note)}</p>`
+            : "";
+          const programTuitionNote = programTuition
+            ? `<p class="finance-cost-range-note">${escapeHtml(t("university.finance.program_tuition_context", "Published gross tuition for {year}; potential awards are not deducted. Confirm the rate for your entry cycle.").replace("{year}", programTuition.year))} <a href="${escapeHtmlAttr(programTuition.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.finance.official_tuition_source", "Official tuition source"))}</a></p>`
             : "";
           const breakdownHtml = breakdownEntries.length > 1
             ? `
@@ -2073,6 +2166,7 @@ export function renderFinanceSection({
                 <strong class="finance-option-total__value">${escapeHtml(totalText)}</strong>
                 ${rangeContextHtml}
                 ${rangeNote}
+                ${programTuitionNote}
               </div>
 
               ${grantEstimateNoteHtml}

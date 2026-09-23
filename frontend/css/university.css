@@ -7495,6 +7495,15 @@ body[data-page="university"],
 }
 
 @media (max-width: 480px) {
+  .admissions-level-filter,
+  .programs-level-filter {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
   .deadline-calendar__head {
     align-items: flex-start;
     flex-direction: column;

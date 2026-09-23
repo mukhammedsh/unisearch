@@ -1,5 +1,5 @@
 import { escapeHtml, escapeHtmlAttr, markMotionEnter, motionPress } from "../../utils.js";
-import { t } from "../../i18n.js";
+import { getCurrentLanguage, t } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
 import { translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";
@@ -365,6 +365,29 @@ function programCoverageValueStrings(value, inheritedCurrency = "") {
   return [...new Set(output)];
 }
 
+function localizedProgramCoverageCycle(value) {
+  const cycle = String(value || "").trim();
+  if (!getCurrentLanguage().startsWith("ru")) return cycle;
+  const normalizedCycle = cycle.replace(/[‐‑‒–—−]/g, "-");
+  const quarterlyTuition = normalizedCycle.match(/^(20\d{2}-2\d) published (?:Engineering|standard) graduate tuition; billed quarterly by unit load\. Student-specific annual total depends on units and enrolled quarters; (20\d{2}-2\d) rates are unknown\.?$/i);
+  if (quarterlyTuition) {
+    return t(
+      "university.program_coverage.cycle.stanford_quarterly_tuition",
+      "Опубликованная стоимость обучения за {year} начисляется поквартально в зависимости от числа учебных единиц. Годовая сумма зависит от учебной нагрузки и числа кварталов обучения; тарифы на {next_year} пока неизвестны.",
+    ).replace("{year}", quarterlyTuition[1].replace("-", "–"))
+      .replace("{next_year}", quarterlyTuition[2].replace("-", "–"));
+  }
+  const mdTuition = normalizedCycle.match(/^(20\d{2}-2\d) academic year; regular MD tuition payable in Autumn, Winter, Spring, and Summer quarters; (20\d{2}-2\d) rate not confirmed\.?$/i);
+  if (mdTuition) {
+    return t(
+      "university.program_coverage.cycle.stanford_md_tuition",
+      "Учебный год {year}; обычная стоимость обучения по программе MD начисляется за осенний, зимний, весенний и летний кварталы; тариф на {next_year} не подтверждён.",
+    ).replace("{year}", mdTuition[1].replace("-", "–"))
+      .replace("{next_year}", mdTuition[2].replace("-", "–"));
+  }
+  return cycle;
+}
+
 function renderProgramCoverageFact(labelKey, labelFallback, fact, kind) {
   const row = fact && typeof fact === "object" ? fact : {};
   const status = programCoverageFactStatus(row, kind);
@@ -375,7 +398,7 @@ function renderProgramCoverageFact(labelKey, labelFallback, fact, kind) {
     : {};
   const values = programCoverageValueStrings(guidanceCost ? scopedGuidanceValues : row.values);
   const sourceUrl = programCoverageSourceUrl(row.source_url);
-  const cycle = String(row.cycle || "").trim();
+  const cycle = localizedProgramCoverageCycle(row.cycle);
   const verifiedAt = String(row.verified_at || "").trim();
   const nextAction = row.status === "not_catalogued"
     ? t(`university.program_coverage.next_action.${kind}`, "Check the official course page for this entry cycle.")

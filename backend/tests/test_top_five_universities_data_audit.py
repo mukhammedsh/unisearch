@@ -156,7 +156,9 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
             category for category in harvard["admission_categories"]
             if category["id"] == "harvard_college"
         )
-        self.assertIn("Annual first-year cycle", harvard_first_year["cycle"])
+        # Current catalog coverage is scoped to the Fall 2027 cohort; Harvard
+        # publishes the round deadlines as month/day values without a year.
+        self.assertEqual("Fall 2027 first-year admission", harvard_first_year["cycle"])
         self.assertTrue(all("20" not in round_row["deadline"] for round_row in harvard_first_year["admission_rounds"]))
 
     def test_harvard_budget_and_program_scoped_costs_remain_explicit(self) -> None:
@@ -260,6 +262,50 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
                 self.assertEqual([row["date"] for row in program["deadlines"]], dates)
                 self.assertTrue(all(row["cycle"] == "2027 entry" for row in program["deadlines"]))
                 self.assertTrue(all(row["source_url"] == program["source_url"] for row in program["deadlines"]))
+
+    def test_oxford_route_ids_and_aid_scopes_match_current_course_cards(self) -> None:
+        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        oxford = rows["university-of-oxford-uk-oxford"]
+        categories = {row["id"]: row for row in oxford["admission_categories"]}
+        programs = {row["id"]: row for row in oxford["academics"]["programs"]}
+
+        self.assertEqual(
+            categories["university_of_oxford_uk_oxford_computer_science_undergraduate"]["program_ids"],
+            ["computer_science_ug"],
+        )
+        self.assertEqual(
+            categories["university_of_oxford_uk_oxford_mathematics_and_computer_science_undergraduate"]["program_ids"],
+            ["mathematics_and_computer_science_ug"],
+        )
+        self.assertEqual(
+            set(categories["oxford_ppe_and_humanities"]["program_ids"]),
+            {"philosophy_politics_and_economics_ppe_ug", "law_jurisprudence_ug"},
+        )
+        self.assertEqual(categories["oxford_pgt_mst_history"]["program_ids"], ["mst_history_pgt"])
+        self.assertEqual(programs["bcl_bachelor_of_civil_law_pgt"]["study_levels"], ["Master"])
+        self.assertEqual(programs["mst_history_pgt"]["part_time_home_annual_fee_gbp"], 9490)
+        self.assertEqual(programs["mst_history_pgt"]["part_time_overseas_annual_fee_gbp"], 23175)
+
+        awards = {row["id"]: row for row in oxford["finance"]["scholarships_and_funding"]}
+        reach = awards["oxford-reach-oxford-scholarship-2027"]
+        self.assertEqual(len(reach["program_ids"]), 8)
+        self.assertNotIn("medicine_ug", reach["program_ids"])
+        self.assertEqual(
+            set(awards["oxford-clarendon-fund-2027"]["program_ids"]),
+            {
+                "msc_advanced_computer_science_pgt",
+                "msc_mathematical_and_computational_finance_pgt",
+                "mba_said_business_school_pgt",
+                "bcl_bachelor_of_civil_law_pgt",
+                "mst_history_pgt",
+                "dphil_computer_science_pgr",
+                "dphil_law_pgr",
+            },
+        )
+        self.assertEqual(
+            awards["oxford-weidenfeld-hoffmann-2027"]["program_ids"],
+            ["msc_advanced_computer_science_pgt", "mba_said_business_school_pgt", "bcl_bachelor_of_civil_law_pgt"],
+        )
 
     def test_oxford_2027_undergraduate_fees_keep_course_and_medicine_phase(self) -> None:
         rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}

@@ -262,6 +262,8 @@ profile.gpa_range: GPA must be between {min} and {max}
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
 profile.hint.budget_range: Range: 0‑{max}
+profile.hint.family_income_optional: Optional. Saved on this device. Income alone does not determine eligibility for financial aid.
+profile.family_income_invalid: Enter an amount from 0 to 1,000,000,000,000.
 profile.hint.low_budget_grant: Budget is under {amount}. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
@@ -272,6 +274,8 @@ profile.hint.interests: Avoid long sentences and negations ("no X"). The AI auto
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget / year
+profile.label.family_income: Annual family income
+profile.label.family_income_currency: Income currency
 profile.label.exams: Exams
 profile.label.funding_type: Preferred Funding Type
 profile.label.gpa: Grade Point Average (GPA)
@@ -296,6 +300,7 @@ profile.option.study_mode_any: Any (All formats)
 profile.option.study_mode_oncampus: On-campus (Live)
 profile.option.study_mode_online: Online / Distance
 profile.placeholder.budget: e.g. {example}
+profile.placeholder.family_income: Optional amount
 profile.placeholder.gpa: e.g. 3.80
 profile.placeholder.interests: Example: computer science, artificial intelligence, robotics, game development, internships
 profile.placeholder.lang_score: Score (e.g. 7.5)
@@ -835,6 +840,9 @@ university.finance.one_time.applies_to_grant_holders: Also required for grant ho
 university.finance.breakdown_note.mandatory_only: Showing only verified mandatory items.
 university.finance.breakdown_note.tuition_fees_only: Showing only directly official tuition and institutional fee items. The yearly total may still be higher because the source gives an overall living-cost estimate without publishing authoritative subcategory line items.
 university.finance.breakdown_note.partial: This breakdown is intentionally partial. The total may also include other source-side allowances or non-itemized costs.
+university.finance.program_tuition_context: Published gross tuition for {year}; potential awards are not deducted. Confirm the rate for your entry cycle.
+university.finance.published_tuition_per_year: Published tuition / year
+university.finance.official_tuition_source: Official tuition source
 university.visit_website: Visit Official Website
 
 
@@ -1068,9 +1076,9 @@ admission.chance.missing_evidence: Add the required exam scores or language evid
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
 admission.chance_method.profile_short: Profile-based
-admission.chance_method.profile_detail: Based on admitted-score profiles plus your language, affordability, and feasibility context.
+admission.chance_method.profile_detail: Based on admitted-student score profiles, with applicable language and requirement checks.
 admission.chance_method.estimated_short: Estimated
-admission.chance_method.estimated_detail: Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles.
+admission.chance_method.estimated_detail: Estimated from published minimums and averages where available, applicable language requirements, and selectivity. Low confidence.
 admission.chance_accuracy.low: Low confidence
 title.404: Page Not Found | UniSearch
 error404.kicker: Error
@@ -1336,6 +1344,14 @@ university.programs.field.standard_offer_ib: Standard IB offer
 university.program_coverage.value.home_annual_fee_gbp: Home annual course fee
 university.program_coverage.value.overseas_annual_fee_gbp: Overseas annual course fee
 university.program_coverage.value.tuition_year_usd: Annual tuition
+university.program_coverage.value.tuition_rate_per_quarter_usd: Tuition per quarter
+university.program_coverage.value.tuition_four_quarter_total_usd: Tuition total for four quarters
+university.program_coverage.value.tuition_per_quarter_8_10_units_usd: Tuition per quarter (8–10 units)
+university.program_coverage.value.tuition_per_quarter_11_18_units_usd: Tuition per quarter (11–18 units)
+university.program_coverage.value.tuition_per_quarter_above_18_units_usd: Tuition per quarter (above 18 units)
+university.program_coverage.value.tuition_per_summer_unit_1_7_usd: Summer tuition per unit (1–7 units)
+university.program_coverage.cycle.stanford_quarterly_tuition: Published tuition for {year} is billed quarterly by unit load. The annual amount depends on your units and enrolled quarters; rates for {next_year} are unknown.
+university.program_coverage.cycle.stanford_md_tuition: Academic year {year}; regular MD tuition is payable in Autumn, Winter, Spring, and Summer quarters; the {next_year} rate is unconfirmed.
 profile.label.study_level: Target Study Level
 profile.option.study_level_any: Any study level
 profile.option.study_level_bachelor: Bachelor's
@@ -1430,6 +1446,11 @@ university.finance.uk_aid_home_desc: Access to UK student finance loans, Crankst
 university.finance.uk_aid_intl_desc: Competitive university and departmental scholarships (e.g. Reach Oxford, President's Undergraduate Scholarships) available.
 university.finance.zero_parent_contrib: The policy sets the expected parent contribution to zero; this does not establish total net price.
 university.finance.zero_parent_contribution_threshold: Zero Parent Contribution Threshold
+university.finance.income_comparison_below: Entered income is below this published threshold
+university.finance.income_comparison_at_or_above: Entered income is at or above this published threshold
+university.finance.income_comparison_unknown: Income comparison unavailable
+university.finance.income_comparison_caveat: This comparison is context only. It does not determine aid eligibility, award amount, or net price.
+university.finance.income_thresholds_note.stanford: Stanford's income guidelines assume typical assets and US cost-of-living assumptions and may not apply to families living outside the United States.
 university.finance.full_ride_threshold_note: Eligibility for a full funding package depends on the university's full policy and applicant circumstances.
 university.finance.free_tuition_note: 100% tuition coverage for qualifying families
 admission.collapsible.additional_details: Additional requirements & instructions
@@ -1640,8 +1661,100 @@ application_workspace.competition: Competition
 application_workspace.course_application: Submit the course application
 application_workspace.coverage: Coverage
 application_workspace.cycle: Cycle
+application_workspace.cycle_fall_entry: Fall {year} entry
+application_workspace.cycle_entry_year: {year} entry
+application_workspace.cycle_academic_year: Academic year {start}–{end}
 application_workspace.cycle_early_action: Early Action
 application_workspace.cycle_regular_action: Regular Action
+application_workspace.route.category.mit_sloan_mban_admissions: MIT Sloan MBAn admission
+application_workspace.route.category.mit_phd_doctoral_guarantee: MIT doctoral admission
+application_workspace.route.category.mit_physics_phd_admissions: MIT Physics PhD admission
+application_workspace.route.category.stanford_msx_track: Stanford MSx admission
+application_workspace.route.category.stanford_ms_cs_track: Stanford MS in Computer Science admission
+application_workspace.route.category.stanford_ms_ee_track: Stanford MS in Electrical Engineering admission
+application_workspace.route.category.stanford_ms_msande_track: Stanford MS in Management Science and Engineering admission
+application_workspace.route.category.stanford_llm_track: Stanford Law School LLM admission
+application_workspace.route.category.harvard_college: Harvard College first-year admission
+application_workspace.route.category.harvard_gsas_phd: Harvard Griffin GSAS doctoral and PhD admission
+application_workspace.route.category.harvard_hbs_mba: Harvard Business School MBA admission
+application_workspace.route.category.harvard_hls_jd: Harvard Law School J.D. admission
+application_workspace.route.category.harvard_hks_mpp: Harvard Kennedy School master's degree admission
+application_workspace.route.category.harvard_route_hls_llm: Harvard Law School LL.M. admission
+application_workspace.route.category.harvard_route_hms_md: Harvard Medical School M.D. admission
+application_workspace.route.category.harvard_route_seas_gsas_data_science_sm: Harvard Data Science S.M. admission
+application_workspace.route.category.harvard_route_seas_gsas_cse_sm: Harvard Computational Science and Engineering S.M. admission
+application_workspace.route.category.harvard_route_gsd_march_i: Harvard Graduate School of Design M.Arch. I admission
+application_workspace.route.category.harvard_route_gsd_march_ii: Harvard Graduate School of Design M.Arch. II admission
+application_workspace.route.category.harvard_route_chan_mph_45: Harvard Chan MPH-45 admission
+application_workspace.route.category.harvard_route_chan_mph_65: Harvard Chan MPH-65 admission
+application_workspace.route.category.harvard_route_chan_mph_generalist: Harvard Chan online MPH-Generalist admission
+application_workspace.route.category.harvard_route_hgse_edm: Harvard Graduate School of Education Ed.M. admission
+application_workspace.route.category.harvard_route_gsas_phd_computer_science: Harvard Griffin GSAS Computer Science PhD admission
+application_workspace.route.category.harvard_route_gsas_phd_economics: Harvard Griffin GSAS Economics PhD admission
+application_workspace.route.category.harvard_route_gsas_hils_phd_bbs: Harvard Griffin GSAS Biological and Biomedical Sciences PhD admission
+application_workspace.route.category.harvard_route_gsas_phd_physics: Harvard Griffin GSAS Physics PhD admission
+application_workspace.route.category.harvard_route_gsas_phd_government: Harvard Griffin GSAS Government PhD admission
+application_workspace.route.profile.mit_sloan_mban_profile: MBAn applicant profile
+application_workspace.route.profile.mit_phd_standard: Doctoral applicant profile
+application_workspace.route.profile.mit_physics_phd_applicant: Physics PhD applicant
+application_workspace.route.profile.harvard_college: SAT applicant profile
+application_workspace.route.profile.harvard_college_act: ACT applicant profile
+application_workspace.route.profile.gsas_phd_profile: GSAS PhD applicant profile
+application_workspace.route.profile.hbs_mba_profile: HBS MBA applicant profile
+application_workspace.route.profile.hls_jd_profile: HLS J.D. applicant profile
+application_workspace.route.profile.hks_mpp_profile: Master in Public Policy (MPP)
+application_workspace.route.profile.hks_mpa_profile: Master in Public Administration (MPA)
+application_workspace.route.profile.hks_mpaid_profile: Master in Public Administration in International Development (MPA/ID)
+application_workspace.route.profile.hks_mcmpa_profile: Mid-Career Master in Public Administration (MC/MPA)
+application_workspace.route.profile.harvard_route_hls_llm_profile: Harvard Law School LL.M. applicant profile
+application_workspace.route.profile.harvard_route_hms_md_profile: Harvard Medical School M.D. applicant profile
+application_workspace.route.profile.harvard_route_seas_gsas_data_science_sm_profile: Data Science S.M. applicant profile
+application_workspace.route.profile.harvard_route_seas_gsas_cse_sm_profile: Computational Science and Engineering S.M. applicant profile
+application_workspace.route.profile.harvard_route_gsd_march_i_profile: M.Arch. I applicant profile
+application_workspace.route.profile.harvard_route_gsd_march_ii_profile: M.Arch. II applicant profile
+application_workspace.route.profile.harvard_route_chan_mph_45_profile: MPH-45 applicant profile
+application_workspace.route.profile.harvard_route_chan_mph_65_profile: MPH-65 applicant profile
+application_workspace.route.profile.harvard_route_chan_mph_generalist_profile: MPH-Generalist applicant profile
+application_workspace.route.profile.harvard_route_hgse_edm_profile: Ed.M. applicant profile
+application_workspace.route.profile.harvard_route_gsas_phd_computer_science_profile: Computer Science PhD applicant profile
+application_workspace.route.profile.harvard_route_gsas_phd_economics_profile: Economics PhD applicant profile
+application_workspace.route.profile.harvard_route_gsas_hils_phd_bbs_profile: Biological and Biomedical Sciences PhD applicant profile
+application_workspace.route.profile.harvard_route_gsas_phd_physics_profile: Physics PhD applicant profile
+application_workspace.route.profile.harvard_route_gsas_phd_government_profile: Government PhD applicant profile
+application_workspace.route.program.Sloan MBAn: Master of Business Analytics (MBAn)
+application_workspace.route.program.mit-physics-phd-course-8: Physics PhD (Course 8)
+application_workspace.route.program.harvard-hbs-mba: Harvard Business School MBA
+application_workspace.route.program.harvard-hks-mpp: Harvard Kennedy School Master in Public Policy (MPP)
+application_workspace.route.program.harvard-hks-mpa: Harvard Kennedy School Master in Public Administration (MPA)
+application_workspace.route.program.harvard-hls-jd: Harvard Law School J.D.
+application_workspace.route.program.harvard-hls-llm: Harvard Law School LL.M.
+application_workspace.route.program.harvard-hms-md: Harvard Medical School M.D.
+application_workspace.route.program.harvard-seas-gsas-data-science-sm: Data Science S.M.
+application_workspace.route.program.harvard-seas-gsas-cse-sm: Computational Science and Engineering S.M.
+application_workspace.route.program.harvard-gsd-march-i: M.Arch. I
+application_workspace.route.program.harvard-gsd-march-ii: M.Arch. II
+application_workspace.route.program.harvard-chan-mph-45: Harvard Chan MPH-45
+application_workspace.route.program.harvard-chan-mph-65: Harvard Chan MPH-65
+application_workspace.route.program.harvard-chan-mph-generalist: Harvard Chan MPH-Generalist
+application_workspace.route.program.harvard-hgse-edm: Harvard Ed.M.
+application_workspace.route.program.harvard-gsas-phd-computer-science: Harvard Griffin GSAS Computer Science PhD
+application_workspace.route.program.harvard-gsas-phd-economics: Harvard Griffin GSAS Economics PhD
+application_workspace.route.program.harvard-gsas-hils-phd-bbs: Harvard Griffin GSAS Biological and Biomedical Sciences PhD
+application_workspace.route.program.harvard-gsas-phd-physics: Harvard Griffin GSAS Physics PhD
+application_workspace.route.program.harvard-gsas-phd-government: Harvard Griffin GSAS Government PhD
+application_workspace.route.funding.mit_sloan_specialized_paid: Specialized master's — self-funded
+application_workspace.route.funding.mit_sloan_mban_merit_fellowship: MBAn merit fellowship
+application_workspace.route.funding.harvard_college: Standard family contribution
+application_workspace.route.funding.harvard_college-grant-financial-aid: Harvard Financial Aid Initiative (HFAI) grant
+application_workspace.route.funding.harvard_college_act: ACT admission profile
+application_workspace.route.funding.harvard_college_act-grant-financial-aid: Harvard Financial Aid Initiative grant
+application_workspace.route.funding.gsas_phd_guaranteed_5yr: GSAS five-year guaranteed funding package
+application_workspace.route.funding.hbs_need_based_fellowship: HBS need-based fellowship
+application_workspace.route.funding.hbs_self_funded: HBS standard self-funded
+application_workspace.route.funding.hls_need_based_grant: HLS need-based grant
+application_workspace.route.funding.hls_paid: HLS standard tuition
+application_workspace.route.funding.hks_fellowships: HKS public service fellowships
+application_workspace.route.funding.hks_paid: HKS standard tuition
 application_workspace.deadline_type_course: Course application
 application_workspace.deadline_type_financial_aid: Financial aid application
 application_workspace.deadline_type_early_deadline: Early deadline
@@ -1699,6 +1812,9 @@ application_workspace.separate_award: Apply for a funding award
 application_workspace.source_unknown: Official source not recorded
 application_workspace.steps: Steps
 application_workspace.timezone_unknown: time zone not stated
+application_workspace.timezone_pacific: US Pacific Time
+application_workspace.timezone_uk: UK time
+application_workspace.timezone_eastern: US Eastern Time
 application_workspace.title: Application plan
 application_workspace.track_not_selected: No admission track is selected; confirm the route on the university page.
 application_workspace.verify_deadline: Verify on official page
@@ -1722,7 +1838,7 @@ university.finance.award.deadline_label.class_of_2029_round_1: Class of 2029 —
 university.finance.award.deadline_label.class_of_2029_round_2: Class of 2029 — Round 2
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.name: MIT Need-Based Scholarship
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.program_scope: MIT undergraduate first-year and transfer study
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.applicant_scope: International applicants who are not eligible for US federal student aid
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.applicant_scope: Undergraduate first-year and transfer applicants seeking need-based MIT aid; domestic applicants also submit FAFSA, while international applicants use MIT's international process.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.cycle: 2027 entry
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.eligibility: International applicants are considered on the same need-based process as domestic applicants; MIT states it meets 100% of demonstrated need. Requesting aid does not affect admission review under MIT need-blind policy.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.coverage: Need-based MIT Scholarship determined from the family financial profile; award amount is individual and not known before review.
@@ -1732,25 +1848,25 @@ university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.1: 
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.2: Submit parental tax returns or income documentation through IDOC; include English translations when applicable.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.3: Track requested documents and the aid offer in the MIT Application Portal.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.0: CSS Profile
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.1: Parents’ tax returns or wage statements from two years earlier
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.2: Records of earnings, bank balances, investments, and untaxed income
-university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.3: IDOC documentation; translated documents when applicable
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.1: FAFSA for domestic applicants
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.2: Parents’ tax returns or wage statements from two years earlier
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.3: Records of earnings, bank balances, investments, and untaxed income
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.competition: Need-based eligibility is individual; no award count or selection rate published.
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.renewal: Reapply each academic year; continued eligibility follows MIT rules.
 university.finance.award.copy.mit-eecs-phd-funding.name: MIT EECS PhD Funding
 university.finance.award.copy.mit-eecs-phd-funding.program_scope: MIT EECS doctoral admission only
 university.finance.award.copy.mit-eecs-phd-funding.applicant_scope: Newly admitted EECS PhD students; appointment and support terms are set after admission
-university.finance.award.copy.mit-eecs-phd-funding.cycle: 2026 application cycle; entry year needs confirmation from EECS
-university.finance.award.copy.mit-eecs-phd-funding.eligibility: EECS PhD applicants are automatically considered for departmental fellowships and assistantships after admission. Funding depends on the admission and appointment decisions, research fit, and continued progress.
-university.finance.award.copy.mit-eecs-phd-funding.coverage: First-year EECS fellowship or assistantship support covers tuition, medical insurance, and a monthly stipend. The amount and later appointments are determined individually.
+university.finance.award.copy.mit-eecs-phd-funding.cycle: 2026 application cycle; EECS page does not reliably identify the entry year
+university.finance.award.copy.mit-eecs-phd-funding.eligibility: Newly admitted EECS doctoral applicants are automatically considered for departmental fellowships and assistantships based on the admission application; support covers full tuition, a monthly stipend, and medical insurance during the appointment.
+university.finance.award.copy.mit-eecs-phd-funding.coverage: EECS states that assistantships cover full tuition and a monthly stipend for the appointment tenure; newly admitted students are considered for departmental fellowships and assistantship support. Renewal and later support depend on progress, appointment, and available funding.
 university.finance.award.copy.mit-eecs-phd-funding.renewal: Assistantships may be term-based; renewal depends on performance, progress, and available faculty funding. Confirm the full support schedule in the offer letter.
 university.finance.award.copy.mit-eecs-phd-funding.competition: Department fellowships and assistantships are allocated after the admissions decision; no individual applicant is promised a specific award before the offer.
-university.finance.award.copy.mit-eecs-phd-funding.course_application_deadline: EECS PhD application deadline: December 1, 2026; confirm the intended entry year with EECS.
+university.finance.award.copy.mit-eecs-phd-funding.course_application_deadline: December 1, 2026 at 11:59 p.m. Eastern Time; the EECS page has inconsistent entry-year wording
 university.finance.award.copy.mit-eecs-phd-funding.award_application_deadline: No separate departmental funding application; automatic consideration with the EECS PhD application
-university.finance.award.copy.mit-eecs-phd-funding.deadline_timezone: Not published on the EECS page; verify in the application portal
+university.finance.award.copy.mit-eecs-phd-funding.deadline_timezone: Eastern Time
 university.finance.award.copy.mit-eecs-phd-funding.steps.0: Submit the EECS PhD application and supporting documents by the department deadline.
 university.finance.award.copy.mit-eecs-phd-funding.steps.1: Review the admission and funding offer for tuition, stipend, insurance, appointment length, and renewal conditions.
-university.finance.award.copy.mit-eecs-phd-funding.documents.0: EECS PhD application and its required academic documents; no separate departmental funding form stated
+university.finance.award.copy.mit-eecs-phd-funding.documents.0: EECS doctoral application
 university.finance.award.copy.mit-eecs-phd-funding.documents.1: Research activities and goals essay
 university.finance.award.copy.mit-eecs-phd-funding.documents.2: Academic and intellectual journey essay
 university.finance.award.copy.mit-eecs-phd-funding.documents.3: Three recommendations
@@ -1760,40 +1876,40 @@ university.finance.award.copy.mit-sloan-mba-fellowships.name: MIT Sloan MBA Fell
 university.finance.award.copy.mit-sloan-mba-fellowships.program_scope: Full-time MBA only
 university.finance.award.copy.mit-sloan-mba-fellowships.applicant_scope: Applicants admitted to the named MIT Sloan degree program
 university.finance.award.copy.mit-sloan-mba-fellowships.cycle: 2026-27 published funding information; 2027-entry award terms not separately published
-university.finance.award.copy.mit-sloan-mba-fellowships.eligibility: Incoming MBA students are automatically considered for MIT Sloan and MIT fellowships after admission. Needs-based aid steps differ for international students, U.S. citizens, and permanent residents.
-university.finance.award.copy.mit-sloan-mba-fellowships.coverage: Award amount and eligibility depend on the individual fellowship; amounts are not specified on the cited page. Need-based aid information becomes available after admission.
+university.finance.award.copy.mit-sloan-mba-fellowships.eligibility: All admitted MBA candidates, including international students, are considered for merit-based fellowships; selection is based on academic excellence, professional achievements, and potential contribution. Loan and other finance steps vary by citizenship or residency and become available after admission.
+university.finance.award.copy.mit-sloan-mba-fellowships.coverage: Fellowships are applied to tuition; award amounts are individual and not published. Loans, sponsorship, or assistantships may be available under separate terms; these are not grants.
 university.finance.award.copy.mit-sloan-mba-fellowships.renewal: Program-specific renewal terms not stated on the cited page; confirm in the award offer.
 university.finance.award.copy.mit-sloan-mba-fellowships.competition: Limited fellowships; no count, award size, or selection rate published on the cited page.
 university.finance.award.copy.mit-sloan-mba-fellowships.course_application_deadline: Same as the degree application deadline where automatic consideration applies
 university.finance.award.copy.mit-sloan-mba-fellowships.award_application_deadline: No separate deadline stated for automatic fellowship consideration
 university.finance.award.copy.mit-sloan-mba-fellowships.deadline_timezone: See the degree application instructions
-university.finance.award.copy.mit-sloan-mba-fellowships.steps.0: Automatic consideration after admission; some non-Sloan and external awards require separate applications.
+university.finance.award.copy.mit-sloan-mba-fellowships.steps.0: Admitted candidates are automatically considered for Sloan and MIT merit fellowships; no separate Sloan fellowship application is required.
 university.finance.award.copy.mit-sloan-mba-fellowships.documents.0: Degree application materials; no additional fellowship application documents stated for automatic consideration
 university.finance.award.copy.mit-sloan-mfin-fellowships.name: MIT Sloan Master of Finance Fellowships
 university.finance.award.copy.mit-sloan-mfin-fellowships.program_scope: MFin only
 university.finance.award.copy.mit-sloan-mfin-fellowships.applicant_scope: Applicants admitted to the named MIT Sloan degree program
 university.finance.award.copy.mit-sloan-mfin-fellowships.cycle: 2026-27 published funding information; 2027-entry award terms not separately published
 university.finance.award.copy.mit-sloan-mfin-fellowships.eligibility: A limited number are awarded to admitted candidates of all citizenships and academic backgrounds; all applicants are automatically considered.
-university.finance.award.copy.mit-sloan-mfin-fellowships.coverage: Award amounts are not stated on the cited page. MFin students are expected to be self-funded; some TA/RA positions are available.
+university.finance.award.copy.mit-sloan-mfin-fellowships.coverage: MIT Master of Finance Fellowship amounts are not published; several competitive TA/RA positions offer compensation that varies by workload.
 university.finance.award.copy.mit-sloan-mfin-fellowships.renewal: Program-specific renewal terms not stated on the cited page; confirm in the award offer.
 university.finance.award.copy.mit-sloan-mfin-fellowships.competition: Limited fellowships; no count, award size, or selection rate published on the cited page.
 university.finance.award.copy.mit-sloan-mfin-fellowships.course_application_deadline: Same as the degree application deadline where automatic consideration applies
 university.finance.award.copy.mit-sloan-mfin-fellowships.award_application_deadline: No separate deadline stated for automatic fellowship consideration
 university.finance.award.copy.mit-sloan-mfin-fellowships.deadline_timezone: See the degree application instructions
-university.finance.award.copy.mit-sloan-mfin-fellowships.steps.0: Automatic consideration; no separate application. Award typically communicated with admission.
+university.finance.award.copy.mit-sloan-mfin-fellowships.steps.0: Automatic consideration for the MIT Master of Finance Fellowship; no separate application, with awards typically communicated at admission.
 university.finance.award.copy.mit-sloan-mfin-fellowships.documents.0: Degree application materials; no additional fellowship application documents stated for automatic consideration
 university.finance.award.copy.mit-sloan-mban-fellowships.name: MIT Sloan Master of Business Analytics Fellowships
 university.finance.award.copy.mit-sloan-mban-fellowships.program_scope: MBAn only
 university.finance.award.copy.mit-sloan-mban-fellowships.applicant_scope: Applicants admitted to the named MIT Sloan degree program
 university.finance.award.copy.mit-sloan-mban-fellowships.cycle: 2026-27 published funding information; 2027-entry award terms not separately published
 university.finance.award.copy.mit-sloan-mban-fellowships.eligibility: A limited number are awarded to admitted candidates of all citizenships and academic backgrounds; all admitted candidates are automatically considered.
-university.finance.award.copy.mit-sloan-mban-fellowships.coverage: Award amounts are not stated on the cited page. Some RA/TA positions are available, with position and compensation determined individually.
+university.finance.award.copy.mit-sloan-mban-fellowships.coverage: A limited number of merit fellowships are awarded to admitted candidates of all citizenships; award amounts are not published. Some RA/TA positions may provide compensation and partial tuition support.
 university.finance.award.copy.mit-sloan-mban-fellowships.renewal: Program-specific renewal terms not stated on the cited page; confirm in the award offer.
 university.finance.award.copy.mit-sloan-mban-fellowships.competition: Limited fellowships; no count, award size, or selection rate published on the cited page.
 university.finance.award.copy.mit-sloan-mban-fellowships.course_application_deadline: Same as the degree application deadline where automatic consideration applies
 university.finance.award.copy.mit-sloan-mban-fellowships.award_application_deadline: No separate deadline stated for automatic fellowship consideration
 university.finance.award.copy.mit-sloan-mban-fellowships.deadline_timezone: See the degree application instructions
-university.finance.award.copy.mit-sloan-mban-fellowships.steps.0: Automatic consideration; no separate application.
+university.finance.award.copy.mit-sloan-mban-fellowships.steps.0: All admitted candidates are automatically considered for merit fellowships; no additional fellowship application components are required.
 university.finance.award.copy.mit-sloan-mban-fellowships.documents.0: Degree application materials; no additional fellowship application documents stated for automatic consideration
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.name: HKS Public Leadership Fellowships & LRAP
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.program_scope: Harvard Kennedy School MPP and MPA
@@ -1816,23 +1932,119 @@ university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.0
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.1: General financial-aid essay, maximum 750 words
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.2: Additional award-specific essays or separate applications when required by the selected fellowship
 university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.3: FAFSA for U.S. citizens, permanent residents, or eligible noncitizens seeking federal student-loan eligibility (encouraged, not a universal fellowship requirement)
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.name: HLS Grant & Low Income Protection Plan (LIPP)
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.program_scope: Harvard Law School J.D. program and eligible graduates
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.applicant_scope: J.D. students applying annually for need-based aid; LIPP has separate eligibility for graduates.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.cycle: Fall 2027 J.D. entry; aid reassessed annually
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.eligibility: JD students may apply for annual need-based aid. HLS grant eligibility depends on the annual need calculation; LIPP has separate loan, employment, and income rules for eligible graduates.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.coverage: HLS need-based grants are capped at tuition; some aid applicants receive loans only. LIPP provides loan-repayment assistance under its current program rules, which vary by eligible debt and employment plan.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.renewal: Need-based aid is reassessed each academic year. LIPP participation requires a separate application and approval under the current program rules.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.competition: HLS reports that approximately 50% of JD financial-aid applicants qualify for HLS grant assistance; others may qualify for loans.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.course_application_deadline: February 5, 2027 at 11:59 p.m. ET for the J.D. application
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.deadline_timezone: US Eastern Time for the J.D. application; confirm the 2027-28 financial-aid deadline after admission
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.0: Submit the J.D. application by its admission deadline.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.1: After admission, access the HLS Student Financial Services portal and choose the need-based grant or loan-only application; HLS does not use the CSS Profile.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.2: Submit the student financial information and parent information when required by the current annual aid policy; confirm the 2027-28 aid deadline in the portal.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.3: Eligible graduates seeking LIPP must apply separately under the current loan-repayment rules.
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.0: HLS Student Financial Services application after admission
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.1: Student and, when required, parent financial information and supporting tax documents requested in the portal
-university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.2: Separate LIPP application and eligible loan and employment information after graduation
+university.finance.award.copy.hls-jd-need-based-grant.name: Harvard Law School J.D. Need-Based Grant
+university.finance.award.copy.hls-jd-need-based-grant.program_scope: Harvard Law School J.D. program; aid for enrolled students
+university.finance.award.copy.hls-jd-need-based-grant.applicant_scope: Admitted and enrolled J.D. students applying for annual need-based aid; LIPP is a separate post-graduation process, not part of this grant or current cost.
+university.finance.award.copy.hls-jd-need-based-grant.cycle: Fall 2027 J.D. entry; aid reassessed annually
+university.finance.award.copy.hls-jd-need-based-grant.eligibility: J.D. students may apply for annual need-based aid. HLS grant eligibility depends on the annual need calculation; some applicants receive loans only. LIPP has separate eligibility and application rules for graduates and is not part of this grant.
+university.finance.award.copy.hls-jd-need-based-grant.coverage: HLS need-based grants are capped at tuition; some aid applicants receive loans only. This record excludes LIPP and does not treat post-graduation loan repayment as a reduction in current cost.
+university.finance.award.copy.hls-jd-need-based-grant.renewal: Need-based aid is reassessed each academic year. LIPP, if applicable after graduation, requires a separate application under its current program rules.
+university.finance.award.copy.hls-jd-need-based-grant.competition: HLS reports that approximately 50% of J.D. financial-aid applicants qualify for HLS grant assistance; others may qualify for loans.
+university.finance.award.copy.hls-jd-need-based-grant.course_application_deadline: February 5, 2027 at 11:59 p.m. ET for the J.D. application
+university.finance.award.copy.hls-jd-need-based-grant.deadline_timezone: US Eastern Time for the J.D. application; confirm the 2027-28 financial-aid deadline after admission
+university.finance.award.copy.hls-jd-need-based-grant.steps.0: Submit the J.D. application by its admission deadline.
+university.finance.award.copy.hls-jd-need-based-grant.steps.1: After admission, access the HLS Student Financial Services portal and choose the need-based grant or loan-only application; HLS does not use the CSS Profile.
+university.finance.award.copy.hls-jd-need-based-grant.steps.2: Submit student financial information and parent information when required by the current annual aid policy; confirm the 2027-28 aid deadline in the portal.
+university.finance.award.copy.hls-jd-need-based-grant.documents.0: HLS Student Financial Services application after admission
+university.finance.award.copy.hls-jd-need-based-grant.documents.1: Student and, when required, parent financial information and supporting tax documents requested in the portal
+university.finance.award.copy.hls-llm-need-based-financial-aid.name: HLS LL.M. Need-Based Financial Aid
+university.finance.award.copy.hls-llm-need-based-financial-aid.program_scope: Harvard Law School LL.M.
+university.finance.award.copy.hls-llm-need-based-financial-aid.applicant_scope: LL.M. applicants requesting aid with demonstrated need, including eligible international applicants.
+university.finance.award.copy.hls-llm-need-based-financial-aid.cycle: LL.M. class beginning August 2027
+university.finance.award.copy.hls-llm-need-based-financial-aid.eligibility: HLS aid is primarily need-based and may consist of grants, loans, or a combination; individual eligibility and composition vary.
+university.finance.award.copy.hls-llm-need-based-financial-aid.coverage: For 2026-27, the average grant was about half tuition; some exceptionally high-need students may receive full tuition and some living costs. Historical outcomes do not guarantee a future award.
+university.finance.award.copy.hls-llm-need-based-financial-aid.renewal: One-year LL.M.; follow individual award terms.
+university.finance.award.copy.hls-llm-need-based-financial-aid.competition: Need-based; the 2026-27 outcome is not a promise for the next class.
+university.finance.award.copy.hls-llm-need-based-financial-aid.course_application_deadline: December 1, 2026 at 11:59 p.m. ET
+university.finance.award.copy.hls-llm-need-based-financial-aid.award_application_deadline: The financial-aid application is included when applicable; confirm any separate form date with HLS.
+university.finance.award.copy.hls-llm-need-based-financial-aid.deadline_timezone: US Eastern Time
+university.finance.award.copy.hls-llm-need-based-financial-aid.steps.0: Apply to the August 2027 LL.M. class by December 1, 2026.
+university.finance.award.copy.hls-llm-need-based-financial-aid.steps.1: Complete the HLS graduate financial-aid application if seeking aid.
+university.finance.award.copy.hls-llm-need-based-financial-aid.steps.2: Check country-specific external awards for their own deadlines.
+university.finance.award.copy.hls-llm-need-based-financial-aid.documents.0: Online LL.M. financial-aid application
+university.finance.award.copy.hls-llm-need-based-financial-aid.documents.1: Financial records requested by HLS
+university.finance.award.copy.hls-llm-need-based-financial-aid.documents.2: Additional country-award application materials when applicable
+university.finance.award.copy.hms-md-need-based-aid.name: Harvard Medical School MD Need-Based Scholarships and Loans
+university.finance.award.copy.hms-md-need-based-aid.program_scope: Harvard Medical School MD program
+university.finance.award.copy.hms-md-need-based-aid.applicant_scope: MD students applying for need-based aid; international and DACA-eligible students use institutional/private sources rather than US federal aid.
+university.finance.award.copy.hms-md-need-based-aid.cycle: 2026-27 policy; Fall 2027 applicants
+university.finance.award.copy.hms-md-need-based-aid.eligibility: HMS selects for admission without regard to ability to pay. International and DACA-eligible students submit standard aid materials and receive a similar need assessment; qualifying students are first offered a standard institutional or private loan package.
+university.finance.award.copy.hms-md-need-based-aid.coverage: The HMS scholarship formula is tuition and mandatory fees minus the institutional expected family contribution. Loans may cover remaining costs; individual amounts depend on need and eligibility.
+university.finance.award.copy.hms-md-need-based-aid.renewal: Follow HMS aid policy, satisfactory academic progress, and each annual aid determination.
+university.finance.award.copy.hms-md-need-based-aid.competition: Need-based; individual award amounts are not guaranteed.
+university.finance.award.copy.hms-md-need-based-aid.deadline_timezone: HMS has not confirmed a public 2027-28 aid deadline; follow the admitted-student timeline.
+university.finance.award.copy.hms-md-need-based-aid.steps.0: Submit aid materials when invited after applying for admission.
+university.finance.award.copy.hms-md-need-based-aid.steps.1: Submit CSS Profile for institutional need analysis and FAFSA if eligible for federal aid.
+university.finance.award.copy.hms-md-need-based-aid.steps.2: International and DACA applicants should review private-loan and visa resource requirements.
+university.finance.award.copy.hms-md-need-based-aid.documents.0: CSS Profile
+university.finance.award.copy.hms-md-need-based-aid.documents.1: FAFSA for eligible US federal-aid applicants
+university.finance.award.copy.hms-md-need-based-aid.documents.2: Student and parent financial documents requested by HMS
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.name: GSAS PhD Financial Support (Notice of Financial Support)
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.program_scope: The five catalogued GSAS PhD routes
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.applicant_scope: Admitted PhD students; terms and continuing eligibility are program- and student-specific.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.cycle: 2026-27 published tuition schedule; 2027-28 offer terms not published
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.eligibility: A Notice of Financial Support may specify funding for an admitted student; this listing does not guarantee a common package or amount.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.coverage: The individual notice determines tuition and fee grants, stipend or support, years, teaching or research duties, and progress conditions.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.renewal: Follow the individual Notice of Financial Support and program progress rules.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.competition: Offer-specific; not a separate university-wide scholarship.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.course_application_deadline: See each department route.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.award_application_deadline: No separate funding deadline stated in the reviewed GSAS source.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.deadline_timezone: Department application deadlines are 5 p.m. ET.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.steps.0: Apply to the selected GSAS PhD department.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.steps.1: Review the individual Notice of Financial Support for amounts, duration, duties, and conditions.
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.documents.0: Department-specific GSAS application
+university.finance.award.copy.harvard-gsas-phd-offer-based-support.documents.1: Individual funding notice when issued
+university.finance.award.copy.harvard-chan-mph-school-aid.name: Harvard Chan MPH Grants and Scholarships
+university.finance.award.copy.harvard-chan-mph-school-aid.program_scope: Harvard Chan residential MPH-45, residential MPH-65, and online MPH-Generalist
+university.finance.award.copy.harvard-chan-mph-school-aid.applicant_scope: Eligible domestic, international, and undocumented applicants in these listed MPH formats; aid and loan eligibility vary by source.
+university.finance.award.copy.harvard-chan-mph-school-aid.cycle: 2026-27 policy; 2027-28 award deadline unconfirmed
+university.finance.award.copy.harvard-chan-mph-school-aid.eligibility: Applicants in MPH-45, MPH-65, and MPH-Generalist may apply for Chan grants and scholarships, including international applicants. Award eligibility varies.
+university.finance.award.copy.harvard-chan-mph-school-aid.coverage: School grants and scholarships are limited and do not meet every student's full need; amounts vary.
+university.finance.award.copy.harvard-chan-mph-school-aid.renewal: Follow award notice and academic-progress terms.
+university.finance.award.copy.harvard-chan-mph-school-aid.competition: Limited, need- and/or merit-based awards.
+university.finance.award.copy.harvard-chan-mph-school-aid.course_application_deadline: Select the format in SOPHAS; do not assume one date across all MPH formats.
+university.finance.award.copy.harvard-chan-mph-school-aid.deadline_timezone: The reviewed pages do not confirm the 2027-28 aid deadline; check the current Chan aid application.
+university.finance.award.copy.harvard-chan-mph-school-aid.steps.0: Apply to the intended format through SOPHAS and Chan.
+university.finance.award.copy.harvard-chan-mph-school-aid.steps.1: Submit the current Chan grant or scholarship application by the published aid date.
+university.finance.award.copy.harvard-chan-mph-school-aid.steps.2: Check federal and private loan eligibility separately.
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.0: SOPHAS application
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.1: Harvard Chan aid application
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.2: FAFSA only for eligible US federal-aid applicants
+university.finance.award.copy.harvard-chan-mph-school-aid.documents.3: Other materials requested for the selected aid process
+university.finance.award.copy.hgse-edm-need-based-grant.name: HGSE Ed.M. Need-Based Grant
+university.finance.award.copy.hgse-edm-need-based-grant.program_scope: Harvard Graduate School of Education Ed.M.
+university.finance.award.copy.hgse-edm-need-based-grant.applicant_scope: Full-time and part-time Ed.M. students, including international students, with demonstrated financial need.
+university.finance.award.copy.hgse-edm-need-based-grant.cycle: 2027-2028
+university.finance.award.copy.hgse-edm-need-based-grant.eligibility: HGSE Need-Based Grants are awarded to Ed.M. students based on need under HGSE policy. International students are eligible; FAFSA is limited to US citizens and permanent residents.
+university.finance.award.copy.hgse-edm-need-based-grant.coverage: Award amounts vary and are not guaranteed; check individual aid materials.
+university.finance.award.copy.hgse-edm-need-based-grant.renewal: Award-specific; follow HGSE renewal and progress rules.
+university.finance.award.copy.hgse-edm-need-based-grant.competition: Need-based institutional aid.
+university.finance.award.copy.hgse-edm-need-based-grant.course_application_deadline: January 5, 2027
+university.finance.award.copy.hgse-edm-need-based-grant.award_application_deadline: February 12, 2027
+university.finance.award.copy.hgse-edm-need-based-grant.deadline_timezone: Exact hour and time zone are not stated on the public page.
+university.finance.award.copy.hgse-edm-need-based-grant.steps.0: Submit the Ed.M. admission application.
+university.finance.award.copy.hgse-edm-need-based-grant.steps.1: Submit the HGSE Financial Aid Application by February 12, 2027.
+university.finance.award.copy.hgse-edm-need-based-grant.steps.2: Submit FAFSA by that date if eligible.
+university.finance.award.copy.hgse-edm-need-based-grant.documents.0: HGSE Financial Aid Application
+university.finance.award.copy.hgse-edm-need-based-grant.documents.1: FAFSA for US citizens and permanent residents
+university.finance.award.copy.hgse-edm-need-based-grant.documents.2: Financial records requested in the aid application
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.name: Saul Zaentz Fellows Program (Ed.M.)
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.program_scope: Harvard Graduate School of Education Ed.M.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.applicant_scope: Ed.M. applicants committed to early-childhood education; at least three years of direct experience is a stated target. International and US applicants may apply.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.cycle: 2027-2028
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.eligibility: Selection considers academic excellence and demonstrated early-childhood career commitment. Full-time enrollment and demonstrated need receive preference.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.coverage: Award package covers half tuition; selection is competitive and not guaranteed.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.renewal: Check award terms and satisfactory-progress rules.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.competition: Competitive fellowship.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.course_application_deadline: January 5, 2027
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.award_application_deadline: February 12, 2027
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.deadline_timezone: Exact hour and time zone are not stated on the public page.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.steps.0: Submit the Ed.M. admission application.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.steps.1: Submit HGSE aid materials by February 12, 2027 and complete any fellowship items requested in the applicant portal.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.steps.2: Submit FAFSA by that date if eligible.
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.documents.0: HGSE Financial Aid Application
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.documents.1: Fellowship evidence requested by HGSE
+university.finance.award.copy.hgse-saul-zaentz-edm-fellowship.documents.2: FAFSA for US citizens and permanent residents
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.name: Stanford GSB Need-Based Fellowships
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.program_scope: Stanford GSB MBA only
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.applicant_scope: Admitted Stanford MBA students with demonstrated financial need, regardless of citizenship
@@ -1978,6 +2190,7 @@ university.finance.award.copy.imperial-inspires-2027.cycle: 2027–2028
 university.finance.award.copy.imperial-inspires-2027.eligibility: Course must participate in Imperial Inspires and applicant must meet scholarship eligibility and course minimum entry requirements. At least 300 awards are offered for 2027 entry across Engineering, Natural Sciences, Medicine, and Imperial Business School.
 university.finance.award.copy.imperial-inspires-2027.coverage: £15,000 per year for each year of the course, towards tuition fees and living costs.
 university.finance.award.copy.imperial-inspires-2027.course_application_deadline: Undergraduate UCAS deadline varies by course; many courses use the 2027-01-13 equal consideration deadline. Postgraduate taught deadline varies by course and admissions round.
+university.finance.award.copy.imperial-inspires-2027.award_application_deadline: Undergraduate awards are scheduled by mid-April 2027; there is no separate fixed deadline before invitation.
 university.finance.award.copy.imperial-inspires-2027.deadline_timezone: Not published for the scholarship application
 university.finance.award.copy.imperial-inspires-2027.steps.0: Submit an undergraduate UCAS or postgraduate taught My Imperial application after applications open in September 2026.
 university.finance.award.copy.imperial-inspires-2027.steps.1: Confirm that the chosen course participates in Imperial Inspires and that you meet its eligibility and minimum course requirements.
@@ -2019,6 +2232,7 @@ university.finance.award.copy.deans-impact-scholarship.coverage: MSc: GBP 25,000
 university.finance.award.copy.deans-impact-scholarship.renewal: The listed MSc and Full-Time MBA programmes are one-year courses; check the award offer for payment conditions.
 university.finance.award.copy.deans-impact-scholarship.competition: Competitive selection; the official scholarship page does not state a course-level award count.
 university.finance.award.copy.deans-impact-scholarship.course_application_deadline: Use the admission round published for the selected MSc or MBA course.
+university.finance.award.copy.deans-impact-scholarship.award_application_deadline: No separate fixed award deadline is published; invited MSc written or MBA video assessment follows the course application.
 university.finance.award.copy.deans-impact-scholarship.steps.0: Submit the eligible Imperial Business School MSc or MBA application.
 university.finance.award.copy.deans-impact-scholarship.steps.1: After invitation, submit the scholarship assessment: written for MSc or video for MBA.
 university.finance.award.copy.deans-impact-scholarship.documents.0: Eligible course application and its required documents
@@ -2026,4 +2240,135 @@ university.finance.award.copy.deans-impact-scholarship.documents.1: Invited writ
 university.program_coverage.value.undergraduate_home_expected_tuition_gbp: Expected Home undergraduate tuition (subject to approval)
 university.finance.award.copy.deans-impact-scholarship.cycle: 2027-28
 university.finance.award.copy.imperial-bursary-home-only.eligibility: Home fee status only; the current award page must be checked for the applicable programme and year.
+university.finance.award.copy.imperial-bursary-home-only.program_scope: Catalogued Imperial undergraduate courses, including integrated undergraduate degrees; Home fee status only.
+university.finance.award.copy.imperial-bursary-home-only.applicant_scope: Imperial undergraduate students assessed for Home fee status, with annual household income below GBP 70,000, who apply for a means-tested government loan.
+university.finance.award.copy.imperial-bursary-home-only.coverage: For 2026-27, the standard annual award is GBP 5,000 for household income GBP 0-16,000; GBP 4,400 for GBP 16,001-50,000; GBP 3,300 for GBP 50,001-55,000; GBP 2,200 for GBP 55,001-60,000; or GBP 1,000 for GBP 60,001-70,000. Home MBBS students receive additional bursary in London clinical years 5 and 6; eligible care leavers and estranged students may receive an additional GBP 500.
+university.finance.award.copy.imperial-bursary-home-only.renewal: Assessed each academic year based on continued undergraduate attendance, Home fee status, household income and required government-loan assessment.
+university.finance.award.copy.imperial-bursary-home-only.competition: No competitive selection is published; eligible students qualify automatically after the income and fee-status criteria are met.
+university.finance.award.copy.imperial-bursary-home-only.deadline_timezone: Not specified by Imperial
+university.finance.award.copy.imperial-bursary-home-only.course_application_deadline: No separate bursary application; complete the regional means-tested government-loan application for the course year.
+university.finance.award.copy.imperial-bursary-home-only.award_application_deadline: Imperial must receive household income information by 31 May after the academic year starts; for autumn 2027 entrants, 31 May 2028.
+university.finance.award.copy.imperial-bursary-home-only.steps.0: Apply for a means-tested government loan through the relevant regional funding body, even if you do not intend to borrow it.
+university.finance.award.copy.imperial-bursary-home-only.steps.1: Consent to sharing household-income information with Imperial for bursary assessment.
+university.finance.award.copy.imperial-bursary-home-only.steps.2: No separate Imperial Bursary application is required; Imperial confirms the amount after the student-finance assessment.
+university.finance.award.copy.imperial-bursary-home-only.documents.0: Household-income information submitted through the regional student-finance process
 university.finance.award.copy.epsrc-ukri-cdt-studentships.eligibility: Eligibility, participating programmes, funding, and deadlines depend on the individual UKRI Centre for Doctoral Training.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.4: IDOC documentation; translated documents when applicable
+university.finance.award.copy.mit-meche-phd-departmental-support.name: MIT Mechanical Engineering PhD Departmental Support
+university.finance.award.copy.mit-meche-phd-departmental-support.program_scope: Mechanical Engineering PhD and ScD research programs
+university.finance.award.copy.mit-meche-phd-departmental-support.applicant_scope: Applicants to the named Mechanical Engineering research degree; support terms depend on the program and individual offer
+university.finance.award.copy.mit-meche-phd-departmental-support.cycle: 2027 entry; 2027-28 award amounts and appointment terms not published
+university.finance.award.copy.mit-meche-phd-departmental-support.eligibility: The department lists research assistantships, teaching assistantships, and fellowships as possible support for research students. It does not promise a specific package to every prospective PhD student on the cited admissions page.
+university.finance.award.copy.mit-meche-phd-departmental-support.coverage: A full-time research or teaching assistantship provides full tuition and a stipend during the appointment. Fellowship selection is merit-based and is typically reserved for students admitted directly to the PhD. Duration, health insurance, summer support, and renewal must be confirmed in the offer.
+university.finance.award.copy.mit-meche-phd-departmental-support.renewal: Appointment and fellowship renewal conditions are not specified for prospective students; confirm satisfactory-progress, duration, and summer terms in the offer and with the Mechanical Engineering graduate office.
+university.finance.award.copy.mit-meche-phd-departmental-support.competition: Funding availability and fellowship selection are program-specific; no award amount or selection rate is published on the cited page.
+university.finance.award.copy.mit-meche-phd-departmental-support.deadline_timezone: Eastern Time
+university.finance.award.copy.mit-meche-phd-departmental-support.course_application_deadline: December 1, 2026 at 11:59 p.m. Eastern Time for 2027 entry
+university.finance.award.copy.mit-meche-phd-departmental-support.award_application_deadline: No separate prospective-student funding deadline published; ask the Mechanical Engineering graduate office whether additional steps are required.
+university.finance.award.copy.mit-meche-phd-departmental-support.steps.0: Submit the Mechanical Engineering graduate application and select any relevant support interest in the application.
+university.finance.award.copy.mit-meche-phd-departmental-support.steps.1: Contact the graduate office to confirm the funding process for the intended research program.
+university.finance.award.copy.mit-meche-phd-departmental-support.steps.2: Review the written offer for tuition coverage, stipend, insurance, appointment dates, and renewal terms.
+university.finance.award.copy.mit-meche-phd-departmental-support.documents.0: Graduate application materials; department does not publish separate prospective funding documents
+university.finance.award.copy.mit-physics-phd-departmental-support.name: MIT Physics PhD Departmental Support
+university.finance.award.copy.mit-physics-phd-departmental-support.program_scope: Physics PhD only
+university.finance.award.copy.mit-physics-phd-departmental-support.applicant_scope: Admitted Physics PhD students in good standing; individual support source and term are set by the department
+university.finance.award.copy.mit-physics-phd-departmental-support.cycle: 2027 entry; stipend amount is not stated on the cited prospective pages
+university.finance.award.copy.mit-physics-phd-departmental-support.eligibility: All admitted candidates are considered for departmental fellowships without a separate application. Physics states PhD students are typically funded each year while in good standing.
+university.finance.award.copy.mit-physics-phd-departmental-support.coverage: Full tuition, monthly living stipend, and 12 months of health insurance while funded. Fellowship duration varies: many cover the first year, while some cover three or five years. Students must arrange ongoing group support when an initial fellowship ends.
+university.finance.award.copy.mit-physics-phd-departmental-support.renewal: Continued support depends on good standing, appointment or fellowship terms, and research-group funding; confirm the full schedule in the written offer.
+university.finance.award.copy.mit-physics-phd-departmental-support.competition: All admitted candidates are considered for a limited number of internal fellowships; RA/TA support is also used. No pre-admission award or amount is promised.
+university.finance.award.copy.mit-physics-phd-departmental-support.deadline_timezone: Eastern Time
+university.finance.award.copy.mit-physics-phd-departmental-support.course_application_deadline: December 15, 2026 at 11:59 p.m. Eastern Time for fall 2027 entry
+university.finance.award.copy.mit-physics-phd-departmental-support.award_application_deadline: No separate departmental fellowship application; automatic consideration with the PhD application
+university.finance.award.copy.mit-physics-phd-departmental-support.steps.0: Submit the Physics PhD application by the department deadline and request a fee waiver before December 1 if needed.
+university.finance.award.copy.mit-physics-phd-departmental-support.steps.1: Review the admission offer for the support type, tuition, stipend, insurance, appointment or fellowship duration, and progress conditions.
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.0: Online graduate application
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.1: Academic transcripts
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.2: Letters of recommendation
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.3: Application fee or approved fee waiver
+university.finance.award.copy.mit-physics-phd-departmental-support.documents.4: English proficiency evidence when required
+university.finance.award.copy.mit-math-phd-departmental-support.name: MIT Mathematics PhD Departmental Support
+university.finance.award.copy.mit-math-phd-departmental-support.program_scope: Mathematics PhD only
+university.finance.award.copy.mit-math-phd-departmental-support.applicant_scope: All admitted Mathematics PhD students, subject to satisfactory progress
+university.finance.award.copy.mit-math-phd-departmental-support.cycle: 2027 entry; latest stated stipend schedule is 2025-26
+university.finance.award.copy.mit-math-phd-departmental-support.eligibility: The department states that all admitted students are offered support, with five-year support guaranteed for students making satisfactory progress.
+university.finance.award.copy.mit-math-phd-departmental-support.coverage: Full tuition, a stipend, and individual health insurance. The 2025-26 schedule also describes one month of summer fellowship; the department has not posted a 2027-28 stipend amount on the cited page.
+university.finance.award.copy.mit-math-phd-departmental-support.renewal: Support is guaranteed for five years subject to satisfactory progress; confirm the entering cohort's current stipend and summer terms in the offer.
+university.finance.award.copy.mit-math-phd-departmental-support.competition: No separate support application; all admitted students are offered support.
+university.finance.award.copy.mit-math-phd-departmental-support.deadline_timezone: Eastern Time
+university.finance.award.copy.mit-math-phd-departmental-support.course_application_deadline: Department instructions list December 1, 2026 at 11:59 p.m. Eastern Time; OGE's doctoral directory lists December 15, so confirm the live portal deadline before submission.
+university.finance.award.copy.mit-math-phd-departmental-support.award_application_deadline: No separate financial-support application; all admitted students are offered support
+university.finance.award.copy.mit-math-phd-departmental-support.steps.0: Submit the Mathematics PhD application and select or request any support options shown in the application.
+university.finance.award.copy.mit-math-phd-departmental-support.steps.1: Request a fee waiver by November 20, 2026 if needed.
+university.finance.award.copy.mit-math-phd-departmental-support.steps.2: Review the offer for current stipend, insurance, summer coverage, and satisfactory-progress conditions.
+university.finance.award.copy.mit-math-phd-departmental-support.documents.0: Online graduate application
+university.finance.award.copy.mit-math-phd-departmental-support.documents.1: Statement of objectives
+university.finance.award.copy.mit-math-phd-departmental-support.documents.2: Electronic undergraduate transcripts
+university.finance.award.copy.mit-math-phd-departmental-support.documents.3: Three or more recommendation letters
+university.finance.award.copy.mit-math-phd-departmental-support.documents.4: English proficiency evidence when required
+university.finance.award.copy.mit-math-phd-departmental-support.documents.5: Application fee or approved fee waiver
+university.finance.award.copy.mit-economics-phd-departmental-support.name: MIT Economics PhD Departmental Support
+university.finance.award.copy.mit-economics-phd-departmental-support.program_scope: MIT Economics PhD and Business Economics PhD tracks
+university.finance.award.copy.mit-economics-phd-departmental-support.applicant_scope: Students admitted to the Economics PhD program; support after year two depends on satisfactory progress
+university.finance.award.copy.mit-economics-phd-departmental-support.cycle: 2027 entry; offer states individual award terms
+university.finance.award.copy.mit-economics-phd-departmental-support.eligibility: The department describes support for all admitted PhD students: fellowship support in years one and two, followed by assistantships in years three through six, contingent on satisfactory academic progress.
+university.finance.award.copy.mit-economics-phd-departmental-support.coverage: Years one and two: full tuition, 12-month individual health insurance, and a stipend for the nine-month academic year. Years three through six: assistantship, full tuition, nine-month stipend, and health insurance. Additional summer research appointments or fellowships may be available; exact 2027 entry stipend and summer coverage are not stated.
+university.finance.award.copy.mit-economics-phd-departmental-support.renewal: Years three through six support is contingent on satisfactory academic progress; individual appointment and summer terms should be confirmed in the written offer.
+university.finance.award.copy.mit-economics-phd-departmental-support.competition: Department package is described for all admitted students; dissertation fellowships and external awards are separately competitive.
+university.finance.award.copy.mit-economics-phd-departmental-support.deadline_timezone: The official page does not state a deadline hour or timezone
+university.finance.award.copy.mit-economics-phd-departmental-support.course_application_deadline: December 15, 2026 for September 2027 entry
+university.finance.award.copy.mit-economics-phd-departmental-support.award_application_deadline: No separate department funding application published for the admission package; some internal and external fellowships have separate later competitions
+university.finance.award.copy.mit-economics-phd-departmental-support.steps.0: Submit the Economics PhD application by December 15, 2026.
+university.finance.award.copy.mit-economics-phd-departmental-support.steps.1: Contact the graduate administrator about external funding and any award-specific applications.
+university.finance.award.copy.mit-economics-phd-departmental-support.steps.2: Review the admission offer for stipend amount, tuition, insurance, appointment schedule, summer support, and progress conditions.
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.0: Online application
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.1: College transcripts
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.2: Three letters of recommendation
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.3: Resume or CV
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.4: Writing sample
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.5: English proficiency score where required
+university.finance.award.copy.mit-economics-phd-departmental-support.documents.6: GRE for September 2027 entry is not confirmed by the current page; verify with the department
+university.finance.award.copy.mit-sloan-mba-fellowships.steps.1: Review post-admission financing instructions for the applicant's citizenship or residency category; apply separately for external awards.
+university.finance.award.copy.mit-sloan-mban-fellowships.steps.1: Research assistantships are available in limited numbers; compensation depends on the appointment.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.name: MIT Sloan MBAn Analytics Capstone Tuition Offset
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.program_scope: MIT Sloan Master of Business Analytics only
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.applicant_scope: All MBAn students participating in the Analytics Capstone Project
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.cycle: 2026-27 published tuition and current program terms
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.eligibility: MIT Sloan states that all MBAn students receive the Capstone tuition offset.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.coverage: USD 22,000 or more in tuition subsidy. The published USD 96,884 MBAn tuition rate excludes the summer tuition subsidy; confirm the billed amount and any applicable term charges with Sloan Student Funding.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.renewal: One program-level tuition offset; no separate renewal terms published.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.competition: Not competitive; the offset is stated to apply to all MBAn students.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.deadline_timezone: Eastern Time
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.course_application_deadline: January 5, 2027 at 3:00 p.m. Eastern Time
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.award_application_deadline: No separate application published
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.steps.0: Apply to the MBAn program by its deadline.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.steps.1: Review the billed tuition and subsidy with the Sloan Student Funding Office after admission.
+university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.documents.0: MBAn application; no separate offset application published
+university.finance.award.copy.mit-sloan-aker-scholarship.name: Aker Scholarship for MIT Sloan MBA, MFin, and MBAn
+university.finance.award.copy.mit-sloan-aker-scholarship.program_scope: MIT Sloan MBA, Master of Finance, and Master of Business Analytics
+university.finance.award.copy.mit-sloan-aker-scholarship.applicant_scope: Norwegian applicants or applicants with a strong connection to Norway who are pursuing full-time postgraduate study at MIT
+university.finance.award.copy.mit-sloan-aker-scholarship.cycle: MIT's current scholarship page does not specify the award deadline or academic-year cycle
+university.finance.award.copy.mit-sloan-aker-scholarship.eligibility: Applicants need to be Norwegian or have a strong connection to Norway; Aker describes the scholarship as for academically strong applicants who want to contribute to society. Applicants must not already be enrolled in the program when applying.
+university.finance.award.copy.mit-sloan-aker-scholarship.coverage: Aker says its grant supplements other funding to cover the full cost of study and living. An award is conditional on admission to a supported university and final scholarship confirmation.
+university.finance.award.copy.mit-sloan-aker-scholarship.renewal: Aker states that support normally continues through the degree with normal progress; exact award terms are confirmed by Aker.
+university.finance.award.copy.mit-sloan-aker-scholarship.competition: Competitive external scholarship; MIT and Aker do not publish a program-specific selection rate.
+university.finance.award.copy.mit-sloan-aker-scholarship.deadline_timezone: Not stated on the official pages
+university.finance.award.copy.mit-sloan-aker-scholarship.course_application_deadline: Apply to the relevant Sloan program by its own admissions deadline.
+university.finance.award.copy.mit-sloan-aker-scholarship.award_application_deadline: Not published by MIT Sloan; check the Aker Scholarship application information linked from the MIT Sloan financing page.
+university.finance.award.copy.mit-sloan-aker-scholarship.steps.0: MIT Sloan says applicants must apply separately through Aker Scholarship; follow the current instructions and deadline linked from the MIT Sloan financing page.
+university.finance.award.copy.mit-sloan-aker-scholarship.documents.0: Not published on the MIT Sloan page; check the application instructions linked from that page
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.name: Fundación Gondra Barandiarán Scholarship for MIT Sloan
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.program_scope: MIT Sloan MBA, Master of Finance, and Master of Business Analytics
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.applicant_scope: Two Spanish nationals with engineering degrees from Spanish universities who are admitted to an eligible MIT Sloan program
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.cycle: Current MIT Sloan award description; award-specific annual dates depend on admission decision
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.eligibility: MIT Sloan states this award is for two Spanish nationals who earned engineering degrees from Spanish universities and will join the MBA, MFin, or MBAn.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.coverage: Full tuition for two years of MBA study, or the 12-month MFin or MBAn program; MIT does not state coverage for living expenses on the cited page.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.renewal: Coverage follows the eligible program duration; confirm renewal and disbursement conditions with the Foundation.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.competition: Two awards are stated; no applicant count or selection rate is published.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.deadline_timezone: Not stated on the MIT Sloan page
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.course_application_deadline: MBA applicants must be admitted in Round 1 or Round 2; MFin and MBAn follow their program admission cycle.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.award_application_deadline: Apply to Fundación Gondra Barandiarán within 20 days after the admission decision; the Foundation sets any further requirements.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.steps.0: Apply to the relevant MIT Sloan program.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.steps.1: If eligible and admitted, submit a separate application to Fundación Gondra Barandiarán within 20 days after the admission decision.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.steps.2: Confirm required documents and award terms with the Foundation.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.documents.0: Separate Foundation application; detailed document list is not published on the cited MIT Sloan page

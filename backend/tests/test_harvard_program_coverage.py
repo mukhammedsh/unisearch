@@ -108,6 +108,61 @@ class HarvardProgramCoverageTests(unittest.TestCase):
                     self.assertTrue(hks_award["documents"])
                     self.assertIn("does not publish one universal", hks_award["document_scope_note"])
 
+    def test_harvard_school_routes_keep_degree_level_cost_and_aid_scopes(self):
+        programs = {
+            row.get("id"): row
+            for row in self.harvard["academics"]["programs"]
+            if row.get("id")
+        }
+        self.assertEqual(programs["harvard-hls-jd"]["study_levels"], ["Professional"])
+        self.assertEqual(programs["harvard-hms-md"]["study_levels"], ["Professional"])
+        self.assertEqual(programs["harvard-hls-llm"]["application_deadline"], "2026-12-01 23:59 ET")
+        self.assertEqual(programs["harvard-hls-llm"]["tuition_academic_year"], "2026-27")
+        self.assertIsNone(programs["harvard-hms-md"].get("tuition_year_usd"))
+
+        awards_by_program = {
+            program_id: {
+                award["id"]
+                for award in self.coverage[program_id]["awards"]["items"]
+            }
+            for program_id in ("harvard-hls-jd", "harvard-hms-md", "harvard-hls-llm")
+        }
+        self.assertIn("hls-jd-need-based-grant", awards_by_program["harvard-hls-jd"])
+        self.assertIn("hms-md-need-based-aid", awards_by_program["harvard-hms-md"])
+        self.assertIn("hls-llm-need-based-financial-aid", awards_by_program["harvard-hls-llm"])
+
+        hls_grant = next(award for award in self.harvard["finance"]["scholarships_and_funding"] if award["id"] == "hls-jd-need-based-grant")
+        self.assertNotIn("LIPP", hls_grant["name"])
+        self.assertIn("post-graduation", hls_grant["applicant_scope"])
+        self.assertIn("does not include LIPP", hls_grant["coverage"])
+
+        self.assertEqual(programs["harvard-gsd-march-i"]["duration"], "3.5 years")
+        self.assertEqual(programs["harvard-gsd-march-ii"]["duration"], "2 years")
+        self.assertEqual(programs["harvard-chan-mph-45"]["tuition_year_usd"], 77400)
+        self.assertEqual(programs["harvard-chan-mph-65"]["tuition_year_usd"], 67760)
+        self.assertEqual(programs["harvard-chan-mph-generalist"]["tuition_year_usd"], 38700)
+        self.assertNotIn("harvard-gsas-phd-offer-based-support", {
+            award["id"]
+            for award in self.coverage["harvard-seas-gsas-data-science-sm"]["awards"]["items"]
+        })
+
+        category_program_ids = {
+            category["id"]: set(category.get("program_ids", []))
+            for category in self.harvard["admission_categories"]
+        }
+        self.assertEqual(category_program_ids["harvard_hls_jd"], {"harvard-hls-jd"})
+        self.assertEqual(category_program_ids["harvard_route_hms_md"], {"harvard-hms-md"})
+        self.assertEqual(
+            category_program_ids["harvard_gsas_phd"],
+            {
+                "harvard-gsas-phd-computer-science",
+                "harvard-gsas-phd-economics",
+                "harvard-gsas-hils-phd-bbs",
+                "harvard-gsas-phd-physics",
+                "harvard-gsas-phd-government",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

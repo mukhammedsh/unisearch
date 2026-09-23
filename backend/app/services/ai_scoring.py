@@ -1220,9 +1220,7 @@ def _compute_estimated_fallback_chance(
     track: Dict[str, Any],
     academic: float,
     language: float,
-    affordability: float,
     feasibility_gate: float,
-    scholarship_boost: float,
     missing_evidence: bool,
     hard_pass_all: bool,
     conditional_requirements: int,
@@ -1237,7 +1235,6 @@ def _compute_estimated_fallback_chance(
 
     academic_curve = _clamp01(float(academic)) ** 1.75
     language_curve = _clamp01(float(language)) ** 1.55
-    affordability_curve = _clamp01(float(affordability)) ** 1.10
     feasibility_curve = _clamp(0.92 + (0.08 * _clamp01(float(feasibility_gate))), 0.92, 1.0)
     evidence_factor = 0.96 if missing_evidence else 1.0
     has_language_rules = len(_collect_language_requirements(track).get("items", [])) > 0
@@ -1246,20 +1243,17 @@ def _compute_estimated_fallback_chance(
 
     if has_language_rules:
         base = (
-            (0.60 * academic_curve)
+            (0.72 * academic_curve)
             + (0.18 * language_curve)
-            + (0.12 * affordability_curve)
             + (0.10 * acceptance_signal)
         )
     else:
         base = (
-            (0.72 * academic_curve)
-            + (0.18 * affordability_curve)
+            (0.90 * academic_curve)
             + (0.10 * acceptance_signal)
         )
 
-    scholarship_bonus = 0.25 * max(0.0, float(scholarship_boost))
-    chance01 = _clamp01((base * feasibility_curve * evidence_factor) + scholarship_bonus)
+    chance01 = _clamp01(base * feasibility_curve * evidence_factor)
     return {
         "chance01": float(chance01),
         "confidence": "low",
@@ -1888,10 +1882,8 @@ def _build_chance_factors(
     *,
     academic: float,
     language: float,
-    affordability: float,
     selectivity: float,
     acceptance_rate_percent: Optional[float] = None,
-    scholarship_boost: float = 0.0,
     missing_evidence: bool,
     conditional_requirements: int,
     hard_pass_all: bool,
@@ -1956,32 +1948,6 @@ def _build_chance_factors(
             "Language proof",
             "Language evidence is weak or incomplete for this route.",
             "medium",
-        ))
-
-    if affordability >= 0.8:
-        factors.append(_chance_factor(
-            "affordability_fit",
-            "positive",
-            "Affordability",
-            "Estimated yearly cost is within the profile budget context.",
-            "low",
-        ))
-    elif affordability <= 0.3:
-        factors.append(_chance_factor(
-            "affordability_gap",
-            "negative",
-            "Affordability",
-            "Estimated yearly cost is high compared with the profile budget context.",
-            "medium",
-        ))
-
-    if scholarship_boost > 0:
-        factors.append(_chance_factor(
-            "scholarship_support",
-            "positive",
-            "Scholarships",
-            "Scholarship or grant context improves affordability in the estimate.",
-            "low",
         ))
 
     if acceptance_rate_percent is not None:
@@ -2221,6 +2187,8 @@ def estimate_uni_chance(
         fit = _track_fit(choice, ctx["userScores"], ctx["userLanguages"], lang_cfg, mode="chance")
         academic = float(fit.get("fit", 0.0))
         language = float(fit.get("langScore", 0.0))
+        has_language_requirements = bool(_collect_language_requirements(choice).get("items"))
+        language_factor = 0.75 + (0.25 * language) if has_language_requirements else 1.0
         selectivity = _acceptance_score(university, mode="chance")
         choice_has_required_evidence = _track_has_required_evidence(choice)
         aid_any = choice.get("funding_type") == "grant"
@@ -2275,8 +2243,6 @@ def estimate_uni_chance(
         chance_model = "none"
 
         track_badges = _track_verified_badges(choice)
-        is_grant_track = _get_track_funding_type(choice) == "grant" or bool(choice.get("scholarships"))
-        scholarship_boost = 0.05 if (is_grant_track and academic >= 0.85 and language >= 0.80) else 0.0
 
         if not has_evidence:
             no_data_reason = "missing_evidence"
@@ -2305,9 +2271,7 @@ def estimate_uni_chance(
                     if chance01_raw is None:
                         no_data_reason = no_data_reason or "no_score_profile"
                     else:
-                        context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
-                        effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
-                        chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + effective_boost)
+                        chance01 = _clamp01(float(chance01_raw) * language_factor * feasibility_gate)
                         chance_pct = int(round(chance01 * 100.0))
                         confidence = str(chance_meta.get("confidence") or "estimated")
                         range_low, range_high = _calculate_chance_range(chance01, confidence)
@@ -2327,9 +2291,7 @@ def estimate_uni_chance(
                     chance_meta = {"chance01": None, "confidence": "no_data"}
                 chance01_raw = _to_num(chance_meta.get("chance01"))
                 if chance01_raw is not None:
-                    context_factor = _clamp(0.55 + (0.25 * language) + (0.20 * affordability), 0.35, 1.0)
-                    effective_boost = scholarship_boost if float(chance01_raw) > 0.0 else 0.0
-                    chance01 = _clamp01((float(chance01_raw) * context_factor * feasibility_gate) + effective_boost)
+                    chance01 = _clamp01(float(chance01_raw) * language_factor * feasibility_gate)
                     chance_pct = int(round(chance01 * 100.0))
                     confidence = str(chance_meta.get("confidence") or "low")
                     range_low, range_high = _calculate_chance_range(chance01, confidence)
@@ -2340,9 +2302,7 @@ def estimate_uni_chance(
                         track=choice,
                         academic=academic,
                         language=language,
-                        affordability=affordability,
                         feasibility_gate=feasibility_gate,
-                        scholarship_boost=scholarship_boost,
                         missing_evidence=bool(fit.get("missingEvidence")),
                         hard_pass_all=bool(fit.get("hardPassAll")),
                         conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
@@ -2364,10 +2324,8 @@ def estimate_uni_chance(
         factors = _build_chance_factors(
             academic=academic,
             language=language,
-            affordability=affordability,
             selectivity=selectivity,
             acceptance_rate_percent=acceptance_rate_percent,
-            scholarship_boost=scholarship_boost,
             missing_evidence=bool(fit.get("missingEvidence")) or no_data_reason == "missing_evidence",
             conditional_requirements=int(fit.get("conditionalRequirements", 0) or 0),
             hard_pass_all=bool(fit.get("hardPassAll")),

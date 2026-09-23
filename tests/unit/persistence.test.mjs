@@ -38,6 +38,8 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       const p = normalizeProfileData(null);
       assert.ok(!('name' in p), 'nickname field must not exist');
       assert.strictEqual(p.budget, '');
+      assert.strictEqual(p.familyIncomeAmount, '');
+      assert.strictEqual(p.familyIncomeCurrency, 'USD');
       assert.strictEqual(p.gpa, '');
       assert.deepStrictEqual(p.exams, []);
       assert.deepStrictEqual(p.languages, []);
@@ -63,6 +65,33 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(normalizeProfileData({ fundingType: 'GRANT' }).fundingType, 'grant');
       assert.strictEqual(normalizeProfileData({ fundingType: 'paid' }).fundingType, 'paid');
       assert.strictEqual(normalizeProfileData({ fundingType: 'scholarship' }).fundingType, 'any');
+    });
+
+    test('keeps optional family income amount and currency local and preserves legacy income buckets opaquely', () => {
+      const normalized = normalizeProfileData({
+        familyIncomeAmount: '85000',
+        familyIncomeCurrency: 'eur',
+        familyIncome: 'under_85k',
+      });
+
+      assert.strictEqual(normalized.familyIncomeAmount, 85000);
+      assert.strictEqual(normalized.familyIncomeCurrency, 'EUR');
+      assert.strictEqual(normalized.familyIncome, 'under_85k');
+      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: -1 }).familyIncomeAmount, '');
+      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: false }).familyIncomeAmount, '');
+      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: true }).familyIncomeAmount, '');
+      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: {} }).familyIncomeAmount, '');
+      assert.strictEqual(normalizeProfileData({ familyIncomeCurrency: 'ZZZ' }).familyIncomeCurrency, 'USD');
+
+      saveProfile(normalized);
+      const loaded = loadProfile();
+      assert.strictEqual(loaded.familyIncomeAmount, 85000);
+      assert.strictEqual(loaded.familyIncomeCurrency, 'EUR');
+      assert.strictEqual(loaded.familyIncome, 'under_85k');
+      const apiPayload = loadProfileForApi();
+      assert.strictEqual(apiPayload.familyIncomeAmount, undefined);
+      assert.strictEqual(apiPayload.familyIncomeCurrency, undefined);
+      assert.strictEqual(apiPayload.familyIncome, undefined);
     });
 
     test('truncates interests to 1200 characters', () => {

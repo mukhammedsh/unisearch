@@ -418,13 +418,13 @@ function chanceModelDetail(model) {
   if (raw === "estimated_fallback") {
     return t(
       "admission.chance_method.estimated_detail",
-      "Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles."
+      "Estimated from published minimums and averages where available, applicable language requirements, and selectivity. Low confidence."
     );
   }
   if (raw === "official_score_profile") {
     return t(
       "admission.chance_method.profile_detail",
-      "Based on admitted-score profiles plus your language, affordability, and feasibility context."
+      "Based on admitted-student score profiles, with applicable language and requirement checks."
     );
   }
   return "";
@@ -533,7 +533,7 @@ export function renderUniChanceSummary(uniChance) {
   const tone = chanceTone(chance);
   const chanceModel = String(uniChance?.chanceModel || "").trim();
   const chanceSub = chanceModelDetail(chanceModel)
-    || translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.");
+    || translateWord("admission_probability_sub", "Estimated from available academic, language, and admissions data for your profile.");
   const chanceMethodShort = chanceModelShort(chanceModel);
   const chanceAccuracy = chanceAccuracyNote(chanceModel);
   const chancePercentClass = chanceAccuracy ? "chance-low-confidence" : tone.cls;

@@ -27,7 +27,7 @@ import {
   trapFocus,
 } from "../utils.js";
 import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { convert, formatMoney, getPreferredCurrency, niceStep } from "../currency.js";
+import { CURRENCY_FORMAT_MAP, convert, formatMoney, getPreferredCurrency, niceStep } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { hydrateHeroIcons } from "../icons.js";
@@ -91,6 +91,8 @@ export function initProfileUI() {
     const budgetInput = document.getElementById("budgetInput");
     const profileBudgetUnit = document.getElementById("profileBudgetUnit");
     const budgetHint = budgetInput?.closest(".profile-field")?.querySelector(".profile-hint");
+    const familyIncomeInput = document.getElementById("familyIncomeInput");
+    const familyIncomeCurrencySelect = document.getElementById("familyIncomeCurrencySelect");
     const gpaInput = document.getElementById("gpaInput");
     const gpaUnit = document.getElementById("gpaUnit");
     const gpaHint = document.getElementById("gpaHint");
@@ -252,6 +254,8 @@ export function initProfileUI() {
         return JSON.stringify({
             budget: String(p.budget ?? "").trim(),
             budgetCurrency: String(p.budgetCurrency || "USD").toUpperCase(),
+            familyIncomeAmount: String(p.familyIncomeAmount ?? "").trim(),
+            familyIncomeCurrency: String(p.familyIncomeCurrency || "USD").toUpperCase(),
             gpa: String(p.gpa ?? "").trim(),
             gpaScale: Number(p.gpaScale) === 5 ? 5 : 4,
             major: String(p.major || "").trim(),
@@ -417,6 +421,19 @@ export function initProfileUI() {
             budgetInput.maxLength = String(maxBudget).length;
         }
         renderLowBudgetGrantHint();
+    };
+
+    const populateFamilyIncomeCurrencyOptions = () => {
+        if (!familyIncomeCurrencySelect || familyIncomeCurrencySelect.options.length) return;
+        const fragment = document.createDocumentFragment();
+        Object.keys(CURRENCY_FORMAT_MAP).sort().forEach((code) => {
+            const option = document.createElement("option");
+            option.value = code;
+            option.dataset.i18n = `currency.opt.${code.toLowerCase()}`;
+            option.textContent = t(`currency.opt.${code.toLowerCase()}`, code);
+            fragment.appendChild(option);
+        });
+        familyIncomeCurrencySelect.appendChild(fragment);
     };
 
     const refreshSaveState = () => {
@@ -835,6 +852,8 @@ export function initProfileUI() {
     const syncInputsToDraft = () => {
         if (budgetInput) profile.budget = String(budgetInput.value || "").trim();
         profile.budgetCurrency = getBudgetCurrency();
+        if (familyIncomeInput) profile.familyIncomeAmount = String(familyIncomeInput.value || "").trim().replace(/,/g, ".");
+        if (familyIncomeCurrencySelect) profile.familyIncomeCurrency = String(familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
         if (gpaInput) profile.gpa = normalizeGpaRaw(gpaInput.value || "");
         profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         if (studyModeSelect) profile.studyMode = String(studyModeSelect.value || "Any").trim() || "Any";
@@ -877,6 +896,23 @@ export function initProfileUI() {
             return { ok: false, value: "" };
         }
         setFieldInvalid(budgetInput, false);
+        return { ok: true, value: val };
+    };
+
+    const validateFamilyIncomeInput = () => {
+        const rawVal = String(familyIncomeInput?.value || "").trim().replace(/,/g, ".");
+        if (!rawVal) {
+            setFieldInvalid(familyIncomeInput, false);
+            return { ok: true, value: "" };
+        }
+        const val = Number(rawVal);
+        if (!Number.isFinite(val) || val < 0 || val > 1_000_000_000_000) {
+            const message = t("profile.family_income_invalid", "Enter an amount from 0 to 1,000,000,000,000.");
+            setFieldInvalid(familyIncomeInput, true, message);
+            familyIncomeInput?.focus();
+            return { ok: false, value: "" };
+        }
+        setFieldInvalid(familyIncomeInput, false);
         return { ok: true, value: val };
     };
 
@@ -1051,6 +1087,7 @@ export function initProfileUI() {
 
     const applyDraftToInputs = () => {
         setFieldInvalid(budgetInput, false);
+        setFieldInvalid(familyIncomeInput, false);
         setFieldInvalid(gpaInput, false);
         setFieldInvalid(examScoreInput, false);
 
@@ -1066,6 +1103,13 @@ export function initProfileUI() {
         }
 
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
+        populateFamilyIncomeCurrencyOptions();
+        if (familyIncomeInput) familyIncomeInput.value = profile.familyIncomeAmount === "" ? "" : String(profile.familyIncomeAmount);
+        if (familyIncomeCurrencySelect) {
+            familyIncomeCurrencySelect.value = profile.familyIncomeAmount === ""
+                ? getBudgetCurrency()
+                : profile.familyIncomeCurrency || getBudgetCurrency();
+        }
         updateGpaScaleUI(Number(profile.gpaScale) === 5 ? 5 : 4);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
         if (studyModeSelect) studyModeSelect.value = profile.studyMode || "Any";
@@ -1104,6 +1148,7 @@ export function initProfileUI() {
         if (typeof initCustomSelect === "function") {
             initCustomSelect("studyModeSelect");
             initCustomSelect("profileFundingTypeSelect");
+            initCustomSelect("familyIncomeCurrencySelect");
             initCustomSelect("profileMajorSelect");
             initCustomSelect("examNameSelect");
             initCustomSelect("studyLevelSelect");
@@ -1145,11 +1190,15 @@ export function initProfileUI() {
 
         const budgetCheck = validateBudgetInput();
         if (!budgetCheck.ok) return false;
+        const familyIncomeCheck = validateFamilyIncomeInput();
+        if (!familyIncomeCheck.ok) return false;
         const gpaCheck = validateGpaInput();
         if (!gpaCheck.ok) return false;
 
         profile.budget = budgetCheck.value;
         profile.budgetCurrency = getBudgetCurrency();
+        profile.familyIncomeAmount = familyIncomeCheck.value;
+        profile.familyIncomeCurrency = String(familyIncomeCurrencySelect?.value || getBudgetCurrency()).toUpperCase();
         profile.gpa = gpaCheck.value;
         profile.gpaScale = Number(profile.gpaScale) === 5 ? 5 : 4;
         profile.interests = getInterestsDraft();
@@ -1162,6 +1211,7 @@ export function initProfileUI() {
         profile = ensureProfileShape(profile);
 
         if (budgetInput) budgetInput.value = profile.budget === "" ? "" : String(profile.budget);
+        if (familyIncomeInput) familyIncomeInput.value = profile.familyIncomeAmount === "" ? "" : String(profile.familyIncomeAmount);
         if (gpaInput) gpaInput.value = profile.gpa === "" ? "" : String(profile.gpa);
 
         profileStoragePersistent = saveProfile(profile);
@@ -1422,6 +1472,26 @@ export function initProfileUI() {
         });
     }
 
+    if (familyIncomeInput) {
+        familyIncomeInput.addEventListener("input", () => {
+            setFieldInvalid(familyIncomeInput, false);
+            profile.familyIncomeAmount = String(familyIncomeInput.value || "").trim().replace(/,/g, ".");
+            refreshSaveState();
+        });
+        familyIncomeInput.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter") return;
+            event.preventDefault();
+            saveAllProfileChanges();
+        });
+    }
+
+    if (familyIncomeCurrencySelect) {
+        familyIncomeCurrencySelect.addEventListener("change", () => {
+            profile.familyIncomeCurrency = String(familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
+            refreshSaveState();
+        });
+    }
+
     lowBudgetGrantDismissBtn?.addEventListener("click", () => {
         motionPress(lowBudgetGrantDismissBtn);
         lowBudgetGrantHintDismissed = true;
@@ -1578,6 +1648,10 @@ export function initProfileUI() {
 
     window.addEventListener("currencyChanged", () => {
         const activeCurrency = getBudgetCurrency();
+        if (familyIncomeInput && !String(familyIncomeInput.value || "").trim() && familyIncomeCurrencySelect) {
+            familyIncomeCurrencySelect.value = activeCurrency;
+            profile.familyIncomeCurrency = activeCurrency;
+        }
         const prevCurrency = profile.budgetCurrency || "USD";
         if (prevCurrency !== activeCurrency) {
             const rawBudget = budgetInput ? budgetInput.value.trim() : String(profile.budget ?? "").trim();

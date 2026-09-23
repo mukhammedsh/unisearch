@@ -36,8 +36,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 1. MIT (requires SAT)
         res_mit = estimate_uni_chance(self.mit, profile)
-        chance_mit = res_mit.get("overallChance")
-        self.assertTrue(chance_mit is None or chance_mit == 0, f"Alexey in MIT should have 0% or None chance, got {chance_mit}%")
+        # No SAT/ACT means no official MIT score profile applies; any numeric result is a low-confidence fallback.
+        self.assertEqual("estimated_fallback", res_mit.get("chanceModel"))
+        self.assertEqual("low", res_mit.get("confidence"))
+        self.assertFalse(any(row.get("chanceModel") == "official_score_profile" for row in res_mit.get("choices", [])))
 
         # 2. TUM (meets requirements)
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -130,7 +132,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         """
         Adil: GPA 3.80, SAT 1550, IELTS 7.5, budget $0.
         Has high scores but zero budget.
-        At MIT, need-based aid preserves chance with budget penalty (20% to 40%).
+        MIT's admission estimate is based on academic evidence and remains independent of budget.
         At TUM and NU, chance is preserved via tuition-free education / grants (45% to 90%).
         """
         profile = {
@@ -151,7 +153,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
         self.assertIsNotNone(chance_mit)
-        self.assertTrue(20 <= chance_mit <= 40, f"Adil in MIT should be in 20-40% range, got {chance_mit}%")
+        self.assertTrue(40 <= chance_mit <= 60, f"Adil in MIT should be in 40-60% range, got {chance_mit}%")
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -222,8 +224,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 1. MIT
         res_mit = estimate_uni_chance(self.mit, profile)
-        chance_mit = res_mit.get("overallChance")
-        self.assertTrue(chance_mit is None or chance_mit == 0, f"Anonymous in MIT should have 0% or None chance, got {chance_mit}%")
+        # An empty profile can only receive the documented low-confidence estimate, not a verified MIT profile result.
+        self.assertEqual("estimated_fallback", res_mit.get("chanceModel"))
+        self.assertEqual("low", res_mit.get("confidence"))
+        self.assertFalse(any(row.get("chanceModel") == "official_score_profile" for row in res_mit.get("choices", [])))
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)

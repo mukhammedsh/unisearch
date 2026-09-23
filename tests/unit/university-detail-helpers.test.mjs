@@ -25,6 +25,7 @@ global.fetch = async (url) => {
 };
 
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+const { loadProfile, saveProfile } = await import("../../frontend/javascript/utils/persistence.js");
 const { EXAM_CONFIG } = await import("../../frontend/javascript/utils/config.js");
 const {
   admissionChoiceKey,
@@ -49,6 +50,7 @@ await initI18n();
 const {
   getFinanceChoicesForStudyLevel,
   getFinanceForChoice,
+  renderAdmissionSection,
   renderFinanceSection,
   resolveFeeStatusAndAid,
 } = await import("../../frontend/javascript/pages/university/render-sections.js");
@@ -204,6 +206,208 @@ test("a single scoped published range keeps its currency in the summary and fina
   assert.match(container.innerHTML, /Estimated cost before aid/);
 });
 
+test("published MBAn tuition is shown as gross tuition for paid and fellowship options", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const profileKey = "unisearch_profile";
+  const previousProfile = localStorage.getItem(profileKey);
+  localStorage.setItem(profileKey, JSON.stringify({ studyLevel: "Master" }));
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const priceEl = { innerHTML: "", textContent: "" };
+  const university = {
+    id: "mit-usa-cambridge",
+    finance: { currency: "USD", scholarships_and_funding: [] },
+    academics: { programs: [{
+      course_number: "Sloan MBAn",
+      name: "Master of Business Analytics (MBAn)",
+      tuition_year_usd: 96884,
+      currency: "USD",
+      tuition_cycle: "2026-27 published annual tuition, excluding summer tuition subsidy; 2027 entry rate not yet stated",
+      tuition_source_url: "https://mitsloan.mit.edu/master-of-business-analytics/admissions/tuition-and-financial-aid",
+    }] },
+    admission_categories: [{
+      id: "mit_sloan_mban_admissions",
+      label: "MIT Sloan Master of Business Analytics (MBAn)",
+      study_level: "Master",
+      program_ids: ["Sloan MBAn"],
+      requirement_profiles: [{
+        id: "mit_sloan_mban_profile",
+        label: "MBAn Applicant Profile",
+        funding_options: [
+          { id: "paid", label: "Self-funded", funding_type: "paid" },
+          { id: "merit", label: "MBAn Merit Fellowship", funding_type: "grant" },
+        ],
+      }],
+    }],
+  };
+
+  try {
+    renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, university });
+    assert.equal((container.innerHTML.match(/\$96,884/g) || []).length, 4);
+    assert.match(container.innerHTML, /Published gross tuition for 2026.{0,2}27/);
+    assert.match(container.innerHTML, /potential awards are not deducted/);
+    assert.equal((container.innerHTML.match(/Published tuition \/ year/g) || []).length, 2);
+    assert.doesNotMatch(container.innerHTML, /Estimated cost before aid|Total \/ year/);
+    assert.match(container.innerHTML, /master-of-business-analytics\/admissions\/tuition-and-financial-aid/);
+    assert.doesNotMatch(container.innerHTML, /\$74,884/);
+    assert.doesNotMatch(priceEl.innerHTML, /\$96,884/);
+
+    setLanguage("ru", { persist: false, emit: false });
+    container.innerHTML = "";
+    renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, university });
+    assert.equal((container.innerHTML.match(/Опубликованная плата за обучение \/ год/g) || []).length, 2);
+  } finally {
+    if (previousProfile === null) localStorage.removeItem(profileKey);
+    else localStorage.setItem(profileKey, previousProfile);
+    setLanguage("eng", { persist: false, emit: false });
+  }
+});
+
+test("undergraduate Finance compares profile income in its saved currency without implying eligibility", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const previousProfile = loadProfile();
+  const previousWindowStorage = window.localStorage;
+  const profileStorage = new Map();
+  window.localStorage = {
+    getItem: (key) => profileStorage.get(key) ?? null,
+    setItem: (key, value) => profileStorage.set(key, String(value)),
+    removeItem: (key) => profileStorage.delete(key),
+  };
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const university = {
+    id: "harvard-usa-cambridge",
+    finance: {
+      currency: "USD",
+      financial_aid: {
+        zero_contribution_income_threshold_usd: 100000,
+        free_tuition_income_threshold_usd: 200000,
+      },
+      scholarships_and_funding: [],
+    },
+    admission_categories: [{ id: "harvard-college", label: "Harvard College", study_level: "Bachelor", funding_options: [{ id: "paid", funding_type: "paid" }] }],
+  };
+  const render = () => renderFinanceSection({ annualCostForTrack: () => null, container, university });
+
+  try {
+    saveProfile({
+      studyLevel: "Bachelor",
+      familyIncomeAmount: 120000,
+      familyIncomeCurrency: "EUR",
+    });
+    render();
+    assert.equal((container.innerHTML.match(/Entered income is at or above this published threshold/g) || []).length, 1, container.innerHTML);
+    assert.equal((container.innerHTML.match(/Entered income is below this published threshold/g) || []).length, 1);
+    assert.match(container.innerHTML, /This comparison is context only\. It does not determine aid eligibility, award amount, or net price\./);
+
+    saveProfile({ studyLevel: "Bachelor", familyIncomeAmount: "", familyIncomeCurrency: "USD" });
+    container.innerHTML = "";
+    render();
+    assert.doesNotMatch(container.innerHTML, /Income comparison unavailable|Entered income is/);
+    assert.doesNotMatch(container.innerHTML, /This comparison is context only/);
+    const nullIncomePolicy = resolveFeeStatusAndAid({
+      university,
+      profile: { studyLevel: "Bachelor", familyIncomeAmount: null, familyIncomeCurrency: "USD" },
+    });
+    assert.ok(nullIncomePolicy.thresholds.every((threshold) => !threshold.comparison));
+
+    const invalidIncomePolicy = resolveFeeStatusAndAid({
+      university,
+      profile: { studyLevel: "Bachelor", familyIncomeAmount: "not-a-number", familyIncomeCurrency: "USD" },
+    });
+    assert.ok(invalidIncomePolicy.thresholds.every((threshold) => threshold.comparison === "Income comparison unavailable"));
+    const unsupportedCurrencyPolicy = resolveFeeStatusAndAid({
+      university,
+      profile: { studyLevel: "Bachelor", familyIncomeAmount: 50000, familyIncomeCurrency: "ZZZ" },
+    });
+    assert.ok(unsupportedCurrencyPolicy.thresholds.every((threshold) => threshold.comparison === "Income comparison unavailable"));
+
+    saveProfile({ studyLevel: "Master", familyIncomeAmount: 50000, familyIncomeCurrency: "USD" });
+    container.innerHTML = "";
+    render();
+    assert.doesNotMatch(container.innerHTML, /finance-threshold-comparison|Income comparison unavailable|Entered income is/);
+  } finally {
+    saveProfile(previousProfile);
+    window.localStorage = previousWindowStorage;
+    setLanguage("eng", { persist: false, emit: false });
+  }
+});
+
+test("Stanford undergraduate Finance shows the published outside-US income note", async () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const previousProfile = loadProfile();
+  const previousWindowStorage = window.localStorage;
+  const profileStorage = new Map();
+  window.localStorage = {
+    getItem: (key) => profileStorage.get(key) ?? null,
+    setItem: (key, value) => profileStorage.set(key, String(value)),
+    removeItem: (key) => profileStorage.delete(key),
+  };
+  saveProfile({ studyLevel: "Bachelor", familyIncomeAmount: 85000, familyIncomeCurrency: "USD" });
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
+  const stanford = rows.find((row) => row.id === "stanford-university-usa-ca");
+
+  try {
+    renderFinanceSection({ annualCostForTrack: () => null, container, university: stanford });
+    assert.match(container.innerHTML, /may not apply to families living outside the United States/);
+    assert.match(container.innerHTML, /This comparison is context only/);
+
+    setLanguage("ru", { persist: false, emit: false });
+    container.innerHTML = "";
+    renderFinanceSection({ annualCostForTrack: () => null, container, university: stanford });
+    assert.match(container.innerHTML, /могут не подходить для семей, живущих за пределами США/);
+    assert.match(container.innerHTML, /Это сравнение даёт только общий контекст/);
+  } finally {
+    saveProfile(previousProfile);
+    window.localStorage = previousWindowStorage;
+    setLanguage("eng", { persist: false, emit: false });
+  }
+});
+
+test("a multi-program route requires every ID to match and tuition to agree", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const profileKey = "unisearch_profile";
+  const previousProfile = localStorage.getItem(profileKey);
+  localStorage.setItem(profileKey, JSON.stringify({ studyLevel: "Master" }));
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const priceEl = { innerHTML: "", textContent: "" };
+  const university = {
+    finance: { currency: "USD", scholarships_and_funding: [] },
+    academics: { programs: [
+      { course_number: "Program A", tuition_year_usd: 80000, currency: "USD", tuition_cycle: "2026-27 tuition", tuition_source_url: "https://example.edu/program-a/tuition" },
+      { course_number: "Program B", tuition_year_usd: 100000, currency: "USD", tuition_cycle: "2026-27 tuition", tuition_source_url: "https://example.edu/program-b/tuition" },
+    ] },
+    admission_categories: [{
+      id: "shared-masters-route",
+      label: "Shared Master's admission",
+      study_level: "Master",
+      program_ids: ["Program A", "Program B", "Program C not in catalog"],
+      requirement_profiles: [{
+        id: "shared-profile",
+        label: "Applicant profile",
+        funding_options: [{ id: "paid", label: "Self-funded", funding_type: "paid" }],
+      }],
+    }],
+  };
+
+  try {
+    renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, university });
+    const route = container.innerHTML;
+    assert.match(route, /Total cost unknown/);
+    assert.match(route, /Cost breakdown unknown/);
+    assert.doesNotMatch(route, /\$80,000|\$100,000/);
+    assert.doesNotMatch(route, /program-a\/tuition|program-b\/tuition/);
+
+    university.academics.programs[1].tuition_year_usd = 80000;
+    container.innerHTML = "";
+    renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, university });
+    assert.match(container.innerHTML, /Total cost unknown/);
+    assert.doesNotMatch(container.innerHTML, /\$80,000|\$100,000/);
+  } finally {
+    if (previousProfile === null) localStorage.removeItem(profileKey);
+    else localStorage.setItem(profileKey, previousProfile);
+  }
+});
+
 test("a program-scoped range is shown in its option with applicant and cycle context, not as a university summary", () => {
   setLanguage("eng", { persist: false, emit: false });
   const container = { innerHTML: "", querySelectorAll: () => [] };
@@ -278,6 +482,35 @@ test("a university-scoped range does not leak into a different undergraduate cat
 
   assert.equal((container.innerHTML.match(/\$95,134–\$100,134/g) || []).length, 1);
   assert.doesNotMatch(priceEl.innerHTML, /\$95,134/);
+});
+
+test("Harvard Law JD shows its published tuition without presenting it as total cost", async () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const profileKey = "unisearch_profile";
+  const previousProfile = localStorage.getItem(profileKey);
+  localStorage.setItem(profileKey, JSON.stringify({ studyLevel: "Professional" }));
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const priceEl = { innerHTML: "", textContent: "" };
+  const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
+  const harvard = rows.find((row) => row.id === "harvard-usa-cambridge");
+
+  try {
+    renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, university: harvard });
+    const jdHeadingIndex = container.innerHTML.indexOf("<h3>Harvard Law School (HLS - Juris Doctor)</h3>");
+    const jdStart = container.innerHTML.lastIndexOf('<section class="finance-track-group', jdHeadingIndex);
+    const jdEnd = container.innerHTML.indexOf("</section>", jdHeadingIndex);
+    const jdCard = jdStart >= 0 && jdEnd >= 0 ? container.innerHTML.slice(jdStart, jdEnd) : "";
+    assert.ok(jdCard, "the professional JD finance route is rendered");
+    assert.match(jdCard, /\$84,400/);
+    assert.match(jdCard, /Published tuition \/ year/);
+    assert.match(jdCard, /Published gross tuition for 2026.{1}27/);
+    assert.match(jdCard, /href="https:\/\/hls\.harvard\.edu\/sfs\/financial-aid\/financial-aid-policy\/cost-of-attendance\/"/);
+    assert.doesNotMatch(jdCard, /Total \/ year|Estimated cost before aid/);
+    assert.doesNotMatch(priceEl.innerHTML, /\$84,400/);
+  } finally {
+    if (previousProfile === null) localStorage.removeItem(profileKey);
+    else localStorage.setItem(profileKey, previousProfile);
+  }
 });
 
 test("map marker markup escapes URLs and cluster counts are normalized", () => {
@@ -415,6 +648,44 @@ test("profile funding options take precedence and grants are deduplicated", () =
   }]);
 });
 
+test("admission funding options keep unknown prices localized instead of rendering zero", () => {
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const university = {
+    id: "imperial-college-london-uk",
+    finance: { currency: "GBP" },
+    admission_categories: [{
+      id: "imperial-bachelor-route",
+      label: "Bachelor applicants",
+      study_level: "Bachelor",
+      requirement_profiles: [{
+        id: "international-applicant",
+        label: "International applicant",
+        funding_options: [{ id: "inpires", label: "Inspires scholarship", funding_type: "grant" }],
+      }],
+    }],
+  };
+  const render = () => renderAdmissionSection({
+    annualCostForTrack: () => null,
+    container,
+    uniChanceByChoiceKey: new Map(),
+    university,
+  });
+
+  try {
+    setLanguage("eng", { persist: false, emit: false });
+    render();
+    assert.match(container.innerHTML, /Cost unknown/);
+    assert.doesNotMatch(container.innerHTML, /≈\s*£?\$?0(?:\.00)?/);
+
+    setLanguage("ru", { persist: false, emit: false });
+    render();
+    assert.match(container.innerHTML, /Стоимость: нет данных/);
+    assert.doesNotMatch(container.innerHTML, /≈\s*£?\$?0(?:[,.]00)?/);
+  } finally {
+    setLanguage("eng", { persist: false, emit: false });
+  }
+});
+
 test("chance tones cover all public thresholds", () => {
   assert.equal(chanceTone(80).cls, "chance-high");
   assert.equal(chanceTone(60).cls, "chance-good");
@@ -449,6 +720,8 @@ test("chance summary distinguishes empty, missing evidence, selected, and estima
   assert.match(selected, /Selected:/);
   assert.match(selected, /Recommended/);
   assert.match(selected, /Profile-based/);
+  assert.match(selected, /Based on admitted-student score profiles, with applicable language and requirement checks/);
+  assert.doesNotMatch(selected, /affordability|budget/i);
   assert.match(selected, /data-width-pct="72"/);
 
   const estimated = renderUniChanceSummary({
@@ -458,7 +731,26 @@ test("chance summary distinguishes empty, missing evidence, selected, and estima
   });
   assert.match(estimated, /Low confidence/);
   assert.match(estimated, /Estimated/);
+  assert.match(estimated, /published minimums and averages where available, applicable language requirements, and selectivity/);
+  assert.doesNotMatch(estimated, /affordability|budget/i);
   assert.match(estimated, /chance-percent-wrap--low-confidence/);
+
+  setLanguage("rus", { persist: false, emit: false });
+  const russianProfile = renderUniChanceSummary({
+    overallChance: 72,
+    bestChoiceLabel: "SAT route",
+    chanceModel: "official_score_profile",
+  });
+  const russianEstimate = renderUniChanceSummary({
+    overallChance: 35,
+    bestChoiceLabel: "General",
+    chanceModel: "estimated_fallback",
+  });
+  assert.match(russianProfile, /На основе профилей баллов зачисленных, с учетом применимых языковых и академических требований/);
+  assert.match(russianEstimate, /Оценка по опубликованным минимумам и средним баллам, если они доступны, применимым языковым требованиям и селективности/);
+  assert.match(russianEstimate, /Низкая уверенность/);
+  assert.doesNotMatch(`${russianProfile}${russianEstimate}`, /бюджет|финанс/i);
+  setLanguage("eng", { persist: false, emit: false });
 });
 
 test("chance summary explains distinct no-data reasons", () => {

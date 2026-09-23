@@ -10,7 +10,7 @@ global.fetch = async (url) => {
   return { ok: false, async text() { return ""; } };
 };
 
-const { initI18n } = await import("../../frontend/javascript/i18n.js");
+const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { renderProgramCoverage, resolveDisplayedCoverageProgram, resolveProgramCoverage } = await import("../../frontend/javascript/pages/university/render-content.js");
 await initI18n();
 
@@ -63,6 +63,118 @@ test("Imperial Home fee guidance shows its provisional amount without a generic 
   assert.match(html, /Expected Home undergraduate tuition \(subject to approval\): GBP 10[\s,]050/);
   assert.match(html, /subject to parliamentary approval/);
   assert.doesNotMatch(html, /USD 40,000/);
+});
+
+test("Stanford graduate tuition coverage keeps quarterly units and the unknown next cycle explicit", () => {
+  const stanford = row({
+    program_id: "stanford-ms-cs",
+    program_name: "Master of Science in Computer Science (MS CS)",
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "program_specific",
+      values: {
+        tuition_per_quarter_8_10_units_usd: 15100,
+        tuition_per_quarter_11_18_units_usd: 23239,
+        tuition_per_quarter_above_18_units_usd: 1549,
+        tuition_per_summer_unit_1_7_usd: 1510,
+        currency: null,
+      },
+      cycle: "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+      source_url: "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+    },
+  });
+  const program = { id: stanford.program_id, name: stanford.program_name };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([stanford], program);
+  assert.match(english, /Tuition per quarter \(8–10 units\): USD 15\s?100/);
+  assert.match(english, /Tuition per quarter \(11–18 units\): USD 23\s?239/);
+  assert.match(english, /Summer tuition per unit \(1–7 units\): USD 1\s?510/);
+  assert.match(english, /2027[‐‑‒–—−-]28 rates are unknown/);
+  assert.doesNotMatch(english, /Annual tuition/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([stanford], program);
+  assert.match(russian, /Плата за квартал при нагрузке 8–10 единиц: USD 15\s?100/);
+  assert.match(russian, /Летняя плата за единицу \(1–7 единиц\): USD 1\s?510/);
+  assert.match(russian, /тарифы на 2027–28 пока неизвестны/);
+  assert.doesNotMatch(russian, /Annual tuition/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("Stanford JD and MD tuition labels localize, and MD preserves the unconfirmed next cycle", () => {
+  const jd = row({
+    program_id: "stanford-jd",
+    program_name: "Juris Doctor (JD)",
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "program_specific",
+      values: { tuition_year_usd: 79779, tuition_rate_per_quarter_usd: 26593, currency: "USD" },
+      cycle: "2026-27 published tuition; three tuition quarters total USD 79,779, before separate mandatory school fees. Cardinal Care may be waived. 2027-28 rates are unknown.",
+      source_url: "https://law.stanford.edu/apply/tuition-financial-aid/cost-of-attendance/",
+    },
+  });
+  const md = row({
+    program_id: "stanford-md",
+    program_name: "Doctor of Medicine (MD)",
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "program_specific",
+      values: { tuition_rate_per_quarter_usd: 24034, tuition_four_quarter_total_usd: 96136, currency: "USD" },
+      cycle: "2026-27 academic year; regular MD tuition payable in Autumn, Winter, Spring, and Summer quarters; 2027-28 rate not confirmed",
+      source_url: "https://med.stanford.edu/md/mdhandbook/section-7-tuition-and-financial-aid/tuition---fees.html",
+    },
+  });
+
+  setLanguage("eng", { persist: false, emit: false });
+  const jdEnglish = renderProgramCoverage([jd], { id: jd.program_id, name: jd.program_name });
+  const mdEnglish = renderProgramCoverage([md], { id: md.program_id, name: md.program_name });
+  assert.match(jdEnglish, /Tuition per quarter: USD 26\s?593/);
+  assert.match(mdEnglish, /Tuition per quarter: USD 24\s?034/);
+  assert.match(mdEnglish, /Tuition total for four quarters: USD 96\s?136/);
+  assert.match(mdEnglish, /2026[-‐‑–]27 academic year; regular MD tuition payable/);
+  assert.match(mdEnglish, /2027[-‐‑–]28 rate not confirmed/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const jdRussian = renderProgramCoverage([jd], { id: jd.program_id, name: jd.program_name });
+  const mdRussian = renderProgramCoverage([md], { id: md.program_id, name: md.program_name });
+  assert.match(jdRussian, /Плата за квартал: USD 26\s?593/);
+  assert.match(mdRussian, /Плата за квартал: USD 24\s?034/);
+  assert.match(mdRussian, /Стоимость обучения за четыре квартала: USD 96\s?136/);
+  assert.match(mdRussian, /Учебный год 2026–27/);
+  assert.match(mdRussian, /тариф на 2027–28 не подтверждён/);
+  assert.doesNotMatch(mdRussian, /regular MD tuition payable|2027-28 rate not confirmed/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("Stanford LLM coverage presents Knight-Hennessy only as a potential award", () => {
+  const llm = row({
+    program_id: "stanford-llm",
+    program_name: "Master of Laws (LLM)",
+    awards: {
+      status: "available",
+      scope: "award_program_scope",
+      items: [{
+        id: "stanford-knight-hennessy-scholars-2027",
+        name: "Knight-Hennessy Scholars",
+        program_scope: "Separate competitive award; eligibility must be confirmed for the current cohort.",
+        source_url: "https://knight-hennessy.stanford.edu/",
+      }],
+    },
+  });
+  const program = { id: llm.program_id, name: llm.program_name };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([llm], program);
+  assert.match(english, /Potential award records; not confirmed funding/);
+  assert.match(english, /Records do not confirm applicant eligibility or an award/);
+  assert.doesNotMatch(english, /Confirmed funding|Confirmed award/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([llm], program);
+  assert.match(russian, /Возможные гранты/);
+  assert.match(russian, /не подтверждают право кандидата на участие или получение гранта/);
+  setLanguage("eng", { persist: false, emit: false });
 });
 
 test("Oxford graduate program keeps generic graduate deadline outside the course deadline fact", () => {

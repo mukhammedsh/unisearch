@@ -1,11 +1,11 @@
-import { t } from "../i18n.js";
+import { getCurrentLanguage, t } from "../i18n.js";
 import { loadProfile } from "../utils/persistence.js";
 import { routeUniversityDetail } from "../routes.js";
 import { fetchUniversityDetailCached, readIdListStorage, SAVED_UNIVERSITIES_KEY } from "./shared/cache.js";
 import { createDeadlineIcs, parseExactDeadlineDate } from "./university/deadline-calendar.js";
 import { buildPostOfferTasks } from "./application-workspace-postoffer.js";
 import { resolveQualificationGuidance } from "./university/render-content.js";
-import { translateFundingAwardField } from "../university-translations.js";
+import { translateFundingAwardField, translateProgramName, translateTrackLabel } from "../university-translations.js";
 
 export const APPLICATION_CHECKLIST_KEY = "unisearch_application_checklist_v1";
 export const APPLICATION_POST_OFFER_KEY = "unisearch_application_post_offer_v1";
@@ -99,20 +99,77 @@ function selectedTrackLabel(category, selection) {
   const profile = profiles.find((row) => text(row?.id) === text(selection?.requirementProfileId));
   const funding = (Array.isArray(profile?.funding_options) ? profile.funding_options : [])
     .find((row) => text(row?.id) === text(selection?.fundingOptionId));
-  return [selection?.programName, category?.label || category?.name, profile?.label, funding?.label || funding?.name]
-    .map(text).filter(Boolean).join(" · ");
+  const routeLabel = (namespace, id, value) => {
+    const translated = t(`application_workspace.route.${namespace}.${text(id)}`, "");
+    return translated || translateTrackLabel(text(value));
+  };
+  return [
+    routeLabel("program", selection?.programId || selection?.programName,
+      translateProgramName(text(selection?.programName), text(selection?.programName))),
+    routeLabel("category", category?.id, category?.label || category?.name),
+    routeLabel("profile", profile?.id, profile?.label),
+    routeLabel("funding", funding?.id, funding?.label || funding?.name),
+  ].map(text).filter(Boolean).join(" · ");
+}
+
+function localizedCycle(value) {
+  const raw = text(value);
+  const locale = getCurrentLanguage().startsWith("ru") ? "ru" : "en";
+  if (locale === "en") return raw;
+  const fallEntry = raw.match(/\bFall\s+(\d{4})\s+entry\b/i);
+  if (fallEntry) return t("application_workspace.cycle_fall_entry", "Осень {year}").replace("{year}", fallEntry[1]);
+  const genericEntry = raw.match(/\b(\d{4})\s+entry\b/i);
+  if (genericEntry) return t("application_workspace.cycle_entry_year", "Набор {year}").replace("{year}", genericEntry[1]);
+  const academicYear = raw.match(/\b(20\d{2})[-–](\d{2,4})\b/);
+  if (academicYear) {
+    const endYear = academicYear[2].length === 2 ? `${academicYear[1].slice(0, 2)}${academicYear[2]}` : academicYear[2];
+    return t("application_workspace.cycle_academic_year", "Учебный год {start}–{end}")
+      .replace("{start}", academicYear[1]).replace("{end}", endYear);
+  }
+  return raw;
+}
+
+export function localizedTimezone(value) {
+  const raw = text(value);
+  if (!raw || !getCurrentLanguage().startsWith("ru")) return raw;
+  return raw
+    .replace(/US Pacific Time|Pacific Time/gi, t("application_workspace.timezone_pacific", "тихоокеанское время США"))
+    .replace(/UK time/gi, t("application_workspace.timezone_uk", "время Великобритании"))
+    .replace(/US Eastern Time|Eastern Time/gi, t("application_workspace.timezone_eastern", "восточное время США"));
+}
+
+function localizedTime(value) {
+  const raw = text(value);
+  if (!getCurrentLanguage().startsWith("ru")) return raw;
+  const match = raw.match(/^(\d{1,2}):(\d{2})\s*(a\.?m\.?|p\.?m\.?)?$/i);
+  if (!match) return raw;
+  let hour = Number(match[1]);
+  if (/p\.?m\.?/i.test(match[3] || "") && hour < 12) hour += 12;
+  if (/a\.?m\.?/i.test(match[3] || "") && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${match[2]}`;
+}
+
+function programCourseDeadline(program) {
+  if (!program || !text(program.application_deadline)) return null;
+  const deadline = normalizeDeadline(program.application_deadline, {
+    cycle: program.cycle,
+    source_url: program.source_url,
+  });
+  return deadline.date && deadline.sourceUrl ? deadline : null;
 }
 
 function normalizeDeadline(value, metadata = {}) {
   const deadlineText = text(value);
-  const dateValue = deadlineText.match(/^(\d{4}-\d{2}-\d{2})(?=$|[T ;])/ )?.[1] || deadlineText;
+  const dateValue = deadlineText.match(/^(\d{4}-\d{2}-\d{2})(?=$|[T ;])/ )?.[1]
+    || deadlineText.match(/^([A-Za-z]+\s+\d{1,2},\s*\d{4})/)?.[1]
+    || deadlineText;
   const exactDate = parseExactDeadlineDate(dateValue);
   return {
     raw: deadlineText,
     date: exactDate,
     cycle: text(metadata.cycle || metadata.academic_year || metadata.academicYear),
-    timezone: text(metadata.deadline_timezone || metadata.timezone || metadata.time_zone || metadata.timezone_name || metadata.timezone_abbreviation || (metadata.time_uk || /\bUK time\b/i.test(deadlineText) ? "UK time" : "")),
-    time: text(metadata.time || metadata.time_uk || metadata.deadline_time || metadata.cutoff_time || deadlineText.match(/\b(\d{1,2}:\d{2})\b/)?.[1]),
+    timezone: text(metadata.deadline_timezone || metadata.timezone || metadata.time_zone || metadata.timezone_name || metadata.timezone_abbreviation || (metadata.time_uk || /\bUK time\b/i.test(deadlineText) ? "UK time" : deadlineText.match(/\b(?:US )?(?:Eastern|Central|Mountain|Pacific) Time\b/i)?.[0] || "")),
+    time: text(metadata.time || metadata.time_uk || metadata.deadline_time || metadata.cutoff_time || deadlineText.match(/(\d{1,2}:\d{2}\s*(?:a\.?m\.?|p\.?m\.?)?)/i)?.[1]),
     label: text(metadata.round)
       ? `${t("application_workspace.round", "Round")} ${text(metadata.round)}`
       : text(metadata.deadline_type)
@@ -156,6 +213,48 @@ function selectedProgram(university, selection) {
   return programName
     ? programs.find((program) => text(program?.name || program?.title).toLowerCase().replace(/\s+/g, " ") === programName) || null
     : null;
+}
+
+function postOfferFeeSourceUrl(university, selection, category, program) {
+  const profiles = Array.isArray(category?.requirement_profiles) ? category.requirement_profiles : [];
+  const profile = profiles.find((row) => text(row?.id) === text(selection?.requirementProfileId));
+  const fundingOptions = Array.isArray(profile?.funding_options) && profile.funding_options.length
+    ? profile.funding_options
+    : (Array.isArray(category?.funding_options) ? category.funding_options : []);
+  const funding = fundingOptions.find((row) => text(row?.id) === text(selection?.fundingOptionId));
+  const scopedFinance = funding?.finance_override || profile?.finance_override || category?.finance_override;
+  const programRefs = [
+    ...(Array.isArray(category?.program_ids) ? category.program_ids : []),
+    ...(Array.isArray(category?.program_names) ? category.program_names : []),
+  ].map((value) => text(value).toLowerCase()).filter(Boolean);
+  const programIds = [program?.id, program?.course_number, program?.name, program?.title]
+    .map((value) => text(value).toLowerCase()).filter(Boolean);
+  const programMatchesCategory = program && (!programRefs.length || programIds.some((id) => programRefs.includes(id)));
+  const scopedSources = [
+    programMatchesCategory ? program?.tuition_source_url : "",
+    programMatchesCategory ? program?.fee_source_url : "",
+    scopedFinance?.source_url,
+    scopedFinance?.sourceUrl,
+    category?.tuition_source_url,
+    category?.fee_source_url,
+    category?.finance_source_url,
+  ];
+  for (const source of scopedSources) {
+    const url = safeUrl(source);
+    if (url) return url;
+  }
+
+  const scope = text(university?.finance?.scope).toLowerCase();
+  const routeLevels = [...levelsOf(category), ...levelsOf(program)];
+  const scopeMatchesRoute = routeLevels.some((level) => {
+    if (levelMatches(level, "Bachelor")) return /undergraduate|bachelor|first.year/.test(scope);
+    if (levelMatches(level, "Master")) return /graduate|postgraduate|master|mba|mfin|mban/.test(scope);
+    if (levelMatches(level, "Doctorate")) return /graduate|postgraduate|doctoral|phd|doctorate/.test(scope);
+    return levelMatches(level, "Professional") && /professional|law school|medical school/.test(scope);
+  });
+  return scopeMatchesRoute
+    ? safeUrl(university?.finance?.source_url || university?.finance?.sourceUrl)
+    : "";
 }
 
 function sharedUndergraduateDeadline(university, category, selection) {
@@ -232,6 +331,24 @@ function assessApplicantScope(award) {
 }
 
 function assessProgramScope(award, category, selection) {
+  const explicitProgramIds = [
+    ...(Array.isArray(award?.program_ids) ? award.program_ids : []),
+    ...(Array.isArray(award?.applicable_program_ids) ? award.applicable_program_ids : []),
+  ].map((value) => text(value).toLowerCase()).filter(Boolean);
+  if (explicitProgramIds.length) {
+    const selectedProgramId = text(selection?.programId || selection?.program_id).toLowerCase();
+    if (selectedProgramId) return explicitProgramIds.includes(selectedProgramId) ? "eligible" : "ineligible";
+    const categoryProgramIds = [
+      ...(Array.isArray(category?.program_ids) ? category.program_ids : []),
+      ...(Array.isArray(category?.applicable_program_ids) ? category.applicable_program_ids : []),
+    ].map((value) => text(value).toLowerCase()).filter(Boolean);
+    if (categoryProgramIds.length) {
+      const applicableCount = categoryProgramIds.filter((id) => explicitProgramIds.includes(id)).length;
+      if (!applicableCount) return "ineligible";
+      return applicableCount === categoryProgramIds.length ? "eligible" : "unknown";
+    }
+    return "unknown";
+  }
   const scope = text(award.program_scope || award.programScope).toLowerCase();
   const route = `${text(selection?.programName)} ${text(selection?.programId)} ${text(category?.label)} ${text(category?.name)} ${text(category?.id)}`.toLowerCase();
   if (!scope || /all programs|all courses|any degree|all eligible programs/.test(scope)) return "eligible";
@@ -276,7 +393,7 @@ function awardTasks(university, category, selection) {
       kind: "funding",
       title: t("application_workspace.funding_research", "Check funding eligibility and application steps"),
       detail: t("application_workspace.funding_unknown_detail", "Award eligibility, required documents, and deadline are not confirmed in the available data."),
-      sourceUrl: safeUrl(university?.finance?.source_url),
+      sourceUrl: "",
       cycle: "",
       date: null,
       rawDeadline: "",
@@ -380,18 +497,22 @@ function awardTasks(university, category, selection) {
 export function buildApplicationTasks(university, selection = {}, _applicantContext = {}) {
   const category = findSelectedCategory(university, selection);
   const track = selectedTrackLabel(category, selection);
+  const program = selectedProgram(university, selection);
+  const specificProgramDeadline = programCourseDeadline(program);
   const deadlines = courseDeadlines(category);
   const exactCategoryDeadlines = deadlines.filter((deadline) => deadline.date);
   const routeDeadline = sharedUndergraduateDeadline(university, category, selection);
-  const fallbackDeadline = deadlines.length > 1 || exactCategoryDeadlines.length
+  const fallbackDeadline = specificProgramDeadline || (deadlines.length > 1 || exactCategoryDeadlines.length
     ? null
-    : routeDeadline || scholarshipCourseDeadline(university, category, selection) || deadlines[0] || normalizeDeadline("", category || {});
-  const selectedDeadlines = deadlines.length > 1
+    : routeDeadline || scholarshipCourseDeadline(university, category, selection) || deadlines[0] || normalizeDeadline("", category || {}));
+  const selectedDeadlines = specificProgramDeadline
+    ? [specificProgramDeadline]
+    : deadlines.length > 1
     ? deadlines
     : exactCategoryDeadlines.length ? exactCategoryDeadlines : [fallbackDeadline];
   const courseTasks = selectedDeadlines.map((deadline, index) => {
     const roundLabel = deadline.label || (selectedDeadlines.length > 1 ? `${t("application_workspace.round", "Round")} ${index + 1}` : "");
-    const courseSource = safeUrl(category?.source_url || category?.sourceUrl || deadline.sourceUrl);
+    const courseSource = safeUrl(deadline.sourceUrl || category?.source_url || category?.sourceUrl);
     return {
       id: `${university.id}:course-application${selectedDeadlines.length > 1 ? `:round-${index + 1}` : ""}`,
       kind: "application",
@@ -406,7 +527,7 @@ export function buildApplicationTasks(university, selection = {}, _applicantCont
       ].filter(Boolean),
       sourceUrl: courseSource,
       actionHref: category ? "" : routeUniversityDetail(university.id),
-      cycle: deadline.cycle || text(category?.cycle),
+      cycle: localizedCycle(deadline.cycle || text(category?.cycle)),
       date: deadline.date,
       rawDeadline: deadline.raw,
       timezone: deadline.timezone,
@@ -450,15 +571,17 @@ export function buildApplicationTasks(university, selection = {}, _applicantCont
 
 export function createApplicationTaskIcs(task) {
   if (!task?.date || !task?.sourceUrl || task?.calendarEligible === false || (!Object.hasOwn(task, "calendarEligible") && task?.warning)) return null;
-  const time = text(task.time).match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  const time = text(task.time).match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)?$/i);
   const zoneText = text(task.timezone).toLowerCase();
   const timeZone = zoneText.includes("eastern") ? "America/New_York"
     : zoneText.includes("pacific") ? "America/Los_Angeles"
       : zoneText.includes("uk") || zoneText.includes("british") ? "Europe/London"
         : (/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)+$/.test(text(task.timezone)) ? text(task.timezone) : "");
   if (time && timeZone) {
-    const [, hourRaw, minuteRaw, secondRaw = "00"] = time;
-    const hour = Number(hourRaw);
+    const [, hourRaw, minuteRaw, secondRaw = "00", meridiem = ""] = time;
+    let hour = Number(hourRaw);
+    if (/p\.?m\.?/i.test(meridiem) && hour < 12) hour += 12;
+    if (/a\.?m\.?/i.test(meridiem) && hour === 12) hour = 0;
     const minute = Number(minuteRaw);
     const second = Number(secondRaw);
     if (hour > 23 || minute > 59 || second > 59) return null;
@@ -510,8 +633,9 @@ function escapeHtml(value) {
 function taskDeadline(task) {
   if (!task.rawDeadline) return t("application_workspace.deadline_unknown", "Deadline not confirmed");
   if (!task.date) return `${t("application_workspace.verify_deadline", "Verify on official page")}: ${task.rawDeadline}`;
-  const date = new Intl.DateTimeFormat(undefined, { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${task.date}T00:00:00Z`));
-  return `${date}${task.time ? ` · ${task.time}` : ""}${task.timezone ? ` · ${task.timezone}` : ` · ${t("application_workspace.timezone_unknown", "time zone not stated")}`}`;
+  const locale = getCurrentLanguage().startsWith("ru") ? "ru-RU" : "en-US";
+  const date = new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${task.date}T00:00:00Z`));
+  return `${date}${task.time ? ` · ${localizedTime(task.time)}` : ""}${task.timezone ? ` · ${localizedTimezone(task.timezone)}` : ` · ${t("application_workspace.timezone_unknown", "time zone not stated")}`}`;
 }
 
 function renderTask(task, state) {
@@ -521,7 +645,7 @@ function renderTask(task, state) {
     <label class="application-workspace__check"><input type="checkbox" data-task-toggle="${escapeHtml(task.id)}" ${done ? "checked" : ""}><span>${escapeHtml(task.title)}</span></label>
     ${task.detailLines?.length ? `<ul class="application-workspace__detail-list">${task.detailLines.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : task.detail ? `<p class="application-workspace__detail">${escapeHtml(task.detail).replaceAll("\n", "<br>")}</p>` : ""}
     ${task.qualificationWarning ? `<p class="application-workspace__qualification-warning">${escapeHtml(t("application_workspace.qualification_not_accepted", "The selected qualification is listed as not accepted for this route. Review accepted alternatives and the official program requirements before treating this plan as applicable."))}${task.qualificationSourceUrl ? ` <a href="${escapeHtml(task.qualificationSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("application_workspace.qualification_source", "Official program requirements"))}</a>` : ""}</p>` : ""}
-    <p class="application-workspace__meta">${task.cycle ? `${escapeHtml(t("application_workspace.cycle", "Cycle"))}: ${escapeHtml(task.cycle)} · ` : ""}${escapeHtml(taskDeadline(task))}</p>
+    <p class="application-workspace__meta">${task.cycle ? `${escapeHtml(t("application_workspace.cycle", "Cycle"))}: ${escapeHtml(localizedCycle(task.cycle))} · ` : ""}${escapeHtml(taskDeadline(task))}</p>
     ${task.warning ? `<p class="application-workspace__warning">${escapeHtml(t("application_workspace.verify_warning", "Confirm eligibility, exact cutoff, and time zone with the official source."))}</p>` : ""}
     <div class="application-workspace__links">${task.sourceUrl ? `<a href="${escapeHtml(task.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("application_workspace.official_source", "Official source"))}</a>` : task.actionHref ? `<a href="${escapeHtml(task.actionHref)}">${escapeHtml(t("application_workspace.select_track", "Open university and select an admission track"))}</a>` : `<span>${escapeHtml(t("application_workspace.source_unknown", "Official source not recorded"))}</span>`}${ics ? `<button type="button" data-export-task="${escapeHtml(task.id)}">${escapeHtml(t("application_workspace.add_calendar", "Add to calendar (.ics)"))}</button>` : ""}</div>
   </li>`;
@@ -537,8 +661,18 @@ function renderPostOfferTask(task, state) {
   </li>`;
 }
 
-function renderPostOfferSection(university, checklist, postOfferState) {
-  const tasks = buildPostOfferTasks(university);
+function renderPostOfferSection(university, checklist, postOfferState, selection = {}) {
+  const hasSelectedRoute = Boolean(selection?.choiceKey || selection?.categoryId);
+  const category = hasSelectedRoute ? findSelectedCategory(university, selection) : null;
+  const program = hasSelectedRoute ? selectedProgram(university, selection) : null;
+  const feeSourceUrl = hasSelectedRoute
+    ? postOfferFeeSourceUrl(university, selection, category, program)
+    : "";
+  const postOfferUniversity = {
+    ...university,
+    finance: { ...university?.finance, source_url: feeSourceUrl, sourceUrl: feeSourceUrl },
+  };
+  const tasks = buildPostOfferTasks(postOfferUniversity);
   if (!tasks.length) return "";
   const accepted = postOfferState[university.id] === true;
   return `<section class="application-workspace__postoffer" aria-labelledby="postoffer-${escapeHtml(university.id)}">
@@ -585,7 +719,7 @@ export function initApplicationWorkspace({ button = document.querySelector("[dat
       const tasks = university._loadError ? [] : buildApplicationTasks(university, selections[university.id] || {}, profile);
       tasks.forEach((task) => taskIndex.set(task.id, task));
       const name = text(university.name || university.short_name || university.id);
-      return `<section class="application-workspace__university"><h3>${escapeHtml(name)}</h3>${university._loadError ? `<p>${escapeHtml(t("application_workspace.load_error", "University details could not be loaded. Open the university page and retry."))}</p>` : `<ol>${tasks.map((task) => renderTask(task, checklist)).join("")}</ol>${renderPostOfferSection(university, checklist, postOfferState)}`}</section>`;
+      return `<section class="application-workspace__university"><h3>${escapeHtml(name)}</h3>${university._loadError ? `<p>${escapeHtml(t("application_workspace.load_error", "University details could not be loaded. Open the university page and retry."))}</p>` : `<ol>${tasks.map((task) => renderTask(task, checklist)).join("")}</ol>${renderPostOfferSection(university, checklist, postOfferState, selections[university.id] || {})}`}</section>`;
     }).join("");
     host.innerHTML = `<div class="application-workspace__head"><div><h2 id="applicationWorkspaceTitle">${escapeHtml(t("application_workspace.title", "Application plan"))}</h2><p>${escapeHtml(t("application_workspace.intro", "Track course applications and funding awards for your saved universities."))}</p></div><button type="button" data-close-application-workspace>${escapeHtml(t("application_workspace.close", "Close"))}</button></div><div class="application-workspace__list">${sections}</div>`;
     host.removeAttribute("aria-busy");

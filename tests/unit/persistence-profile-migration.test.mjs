@@ -56,9 +56,9 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(isLegacyProfile({ _v: 2, gpa_raw: 4.85 }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, user_gpa_scale: 5 }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, study_level: 'Master' }), true);
-      assert.strictEqual(isLegacyProfile({ _v: 2, familyIncome: 'under_85k' }), true);
-      assert.strictEqual(isLegacyProfile({ _v: 2, family_income_bracket: 'under_85k' }), true);
-      assert.strictEqual(isLegacyProfile({ _v: 2, family_income: 'under_85k' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, familyIncome: 'under_85k' }), false);
+      assert.strictEqual(isLegacyProfile({ _v: 2, family_income_bracket: 'under_85k' }), false);
+      assert.strictEqual(isLegacyProfile({ _v: 2, family_income: 'under_85k' }), false);
       assert.strictEqual(isLegacyProfile({ _v: 2, citizenships: 'KZ, US' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, country_of_education: 'KZ' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, selected_admission_choices: {} }), true);
@@ -340,15 +340,28 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
   });
 
   describe('Legacy profile migration on loadProfile()', () => {
-    test('removes previously saved family income from a current-version profile', () => {
-      mockStore['unisearch_profile'] = JSON.stringify({ _v: PROFILE_VERSION, major: 'Physics', familyIncome: 'under_85k' });
+    test('preserves legacy family income buckets as opaque local profile data', () => {
+      const original = {
+        _v: PROFILE_VERSION,
+        major: 'Physics',
+        familyIncome: 'under_85k',
+        family_income: '85k_140k',
+        family_income_bracket: 'over_200k',
+      };
+      mockStore['unisearch_profile'] = JSON.stringify(original);
 
       const loaded = loadProfile();
 
       assert.strictEqual(loaded.major, 'Physics');
-      assert.strictEqual(loaded.familyIncome, undefined);
-      assert.strictEqual(JSON.parse(mockStore['unisearch_profile']).familyIncome, undefined);
+      assert.strictEqual(loaded.familyIncome, 'under_85k');
+      assert.strictEqual(loaded.family_income, '85k_140k');
+      assert.strictEqual(loaded.family_income_bracket, 'over_200k');
+      assert.deepStrictEqual(JSON.parse(mockStore['unisearch_profile']), original);
+      const writesAfterFirstLoad = setItemCalls;
+      assert.strictEqual(loadProfile().family_income_bracket, 'over_200k');
+      assert.strictEqual(setItemCalls, writesAfterFirstLoad, 'Current profiles with opaque legacy buckets must not be migrated repeatedly');
       assert.strictEqual(loadProfileForApi().family_income_bracket, undefined);
+      assert.strictEqual(setItemCalls, writesAfterFirstLoad, 'API projection must not trigger another profile migration write');
     });
 
     test('migrates full legacy profile with snake_case and camelCase legacy aliases', () => {
@@ -430,8 +443,8 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(loaded.studyMode, 'Campus');
       assert.strictEqual(loaded.studyLevel, 'Master');
       assert.strictEqual(loaded.study_level, undefined);
+      assert.strictEqual(loaded.family_income_bracket, 'under_85k');
       assert.strictEqual(loaded.familyIncome, undefined);
-      assert.strictEqual(loaded.family_income_bracket, undefined);
       assert.strictEqual(loadProfileForApi().family_income_bracket, undefined);
       assert.deepStrictEqual(loaded.citizenships, ['KZ', 'US']);
       assert.strictEqual(loaded.citizenship, 'KZ');

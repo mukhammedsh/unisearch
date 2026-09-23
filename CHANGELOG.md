@@ -4,15 +4,18 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.14.0 (2026-09-24) - Applicant Planning and University Coverage
+
 ### Added
-- Expanded applicant profiles with citizenship, education background, target study level, entry cycle, and route context.
-- Added program-scoped admissions, deadline, cost, and funding coverage, with qualification guidance, structured award details, and an applicant planning workspace.
+- Expanded applicant profiles with citizenship, education background, target study level, entry cycle, route context, and optional annual family income saved locally.
+- Added program-scoped admissions, deadline, cost, and funding coverage, qualification guidance, structured award details, and an applicant planning workspace.
 - Added dated deadline calendar views and English/Russian guidance for missing program facts.
+- Added official-source data for selected undergraduate, master's, doctoral, and professional routes at MIT, Imperial College London, Stanford, Harvard, and Oxford; coverage remains limited to catalogued routes.
 
 ### Changed
-- Expanded official-source data for selected undergraduate, master's, doctoral, and professional routes at MIT, Imperial College London, Stanford, Harvard, and Oxford, while keeping unverified details explicit.
-- Refined UniFit and related profile handling for the broader study-level and applicant context.
-- Removed the unsupported family-income estimate prompt and its unused API field; published aid thresholds remain available as policy information.
+- Refined UniFit and applicant profile handling for broader study-level and route context.
+- Kept UniChance independent of budget and grant preferences, and displayed family-income comparisons with published aid thresholds as context rather than an eligibility or award decision.
+- Clarified funding conditions, application steps, and deadlines; potential awards are not treated as guaranteed or deducted from published costs.
 
 ## 6.13.0 (2026-09-23) - Seamless Localization and Calm Interactions
 

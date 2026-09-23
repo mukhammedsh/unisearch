@@ -144,6 +144,32 @@
               </div>
             </article>
 
+            <!-- Optional household financial context -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.family_income">Annual family income</h3>
+              </div>
+
+              <div class="profile-field">
+                <label class="sr-only" for="familyIncomeInput" data-i18n="profile.label.family_income">Annual family income</label>
+                <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                  <input
+                    id="familyIncomeInput"
+                    class="profile-input"
+                    type="text"
+                    inputmode="decimal"
+                    maxlength="15"
+                    data-i18n-placeholder="profile.placeholder.family_income"
+                    aria-label="Annual family income"
+                    data-i18n-aria-label="profile.label.family_income"
+                  />
+                  <label class="sr-only" for="familyIncomeCurrencySelect" data-i18n="profile.label.family_income_currency">Income currency</label>
+                  <select id="familyIncomeCurrencySelect" class="profile-input profile-input--select" aria-label="Income currency" data-i18n-aria-label="profile.label.family_income_currency"></select>
+                </div>
+                <div class="profile-hint" data-i18n="profile.hint.family_income_optional">Optional. Saved on this device. Income alone does not determine eligibility for financial aid.</div>
+              </div>
+            </article>
+
             <!-- Study Format Card -->
             <article class="profile-card-block">
               <div class="profile-card-head">

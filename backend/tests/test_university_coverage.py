@@ -23,7 +23,7 @@ class UniversityCoverageTests(unittest.TestCase):
         self.assertEqual(coverage["bachelor"]["programs"], "available")
         self.assertEqual(
             coverage["bachelor"]["deadlines"],
-            {"exact_dated": "not_catalogued", "approximate_or_yearless": "available"},
+            {"exact_dated": "available", "approximate_or_yearless": "available"},
         )
         self.assertEqual(coverage["bachelor"]["costs"]["undergraduate_root_finance"], "available")
 
@@ -36,7 +36,8 @@ class UniversityCoverageTests(unittest.TestCase):
         coverage = get_university_by_id("imperial-college-london-uk", localized=True)["coverage_by_level"]
         self.assertEqual(coverage["bachelor"]["deadlines"]["exact_dated"], "available")
         self.assertEqual(coverage["master"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(coverage["doctorate"]["deadlines"]["exact_dated"], "not_catalogued")
+        # Computing PhD publishes four 2027 department review cutoffs.
+        self.assertEqual(coverage["doctorate"]["deadlines"]["exact_dated"], "available")
         self.assertEqual(coverage["mba"]["costs"]["program_specific"], "not_catalogued")
         self.assertEqual(coverage["mba"]["costs"]["undergraduate_root_finance"], "not_catalogued")
 
@@ -147,7 +148,7 @@ class UniversityCoverageTests(unittest.TestCase):
         )
         self.assertEqual(coverage, {})
 
-    def test_mit_bachelor_programs_reference_only_explicit_general_route_and_root_cost_guidance(self):
+    def test_mit_bachelor_programs_include_first_year_and_transfer_routes_with_root_cost_guidance(self):
         university = get_university_by_id("mit-usa-cambridge", localized=True)
         program = next(
             row for row in university["coverage_by_program"]
@@ -157,9 +158,11 @@ class UniversityCoverageTests(unittest.TestCase):
         self.assertEqual(program["program_id"], "Course 6-3")
         self.assertEqual(program["requirements"]["scope"], "institution_wide_route")
         self.assertEqual(program["requirements"]["status"], "available")
-        self.assertEqual(program["deadline"]["scope"], "institution_wide_route")
-        self.assertEqual(program["deadline"]["status"], "approximate_or_yearless")
-        self.assertEqual(program["deadline"]["cycle"], "Annual first-year cycle; official page does not identify an entry year.")
+        self.assertEqual(program["deadline"]["scope"], "shared_admission_route")
+        self.assertEqual(program["deadline"]["status"], "exact_dated")
+        self.assertEqual(program["deadline"]["cycle"], "Annual first-year cycle; the official page lists recurring dates without naming an entry year.")
+        self.assertIn("Fall 2027 entry: March 1, 2027", " ".join(program["deadline"]["values"]))
+        self.assertIn("January 4", program["deadline"]["values"])
         self.assertEqual(program["tuition_mandatory_fees"]["scope"], "university_guidance")
         self.assertNotIn("tuition_free_income_threshold_usd", program["tuition_mandatory_fees"]["values"])
         award = program["awards"]["items"][0]
@@ -207,7 +210,7 @@ class UniversityCoverageTests(unittest.TestCase):
         self.assertTrue(clarendon["source_url"].startswith("https://www.ox.ac.uk/"))
         self.assertEqual(clarendon["verified_at"], "2026-09-23")
 
-    def test_imperial_phd_scholarship_rounds_are_not_course_admission_deadlines(self):
+    def test_imperial_computing_phd_department_rounds_are_course_deadlines(self):
         university = get_university_by_id("imperial-college-london-uk", localized=True)
         phd = next(
             row for row in university["coverage_by_program"]
@@ -218,7 +221,14 @@ class UniversityCoverageTests(unittest.TestCase):
             if row["program_name"] == "MSc Advanced Computing"
         )
 
-        self.assertEqual(phd["deadline"]["status"], "approximate_or_yearless")
+        self.assertEqual(phd["deadline"]["status"], "exact_dated")
+        self.assertEqual(phd["deadline"]["scope"], "program_specific")
+        self.assertEqual(phd["deadline"]["cycle"], "2027 entry")
+        self.assertEqual(phd["deadline"]["source_url"], "https://www.imperial.ac.uk/computing/prospective-students/phd/")
+        self.assertEqual(
+            [row["date"] for row in phd["deadline"]["values"] if isinstance(row, dict)],
+            ["2026-10-01", "2026-12-01", "2027-02-01", "2027-04-01"],
+        )
         self.assertTrue(all("scholarship" not in str(value).lower() for value in phd["deadline"]["values"]))
         self.assertEqual(taught["deadline"]["status"], "exact_dated")
         self.assertEqual(taught["deadline"]["cycle"], "2027 entry")
@@ -285,8 +295,8 @@ class UniversityCoverageTests(unittest.TestCase):
 
     def test_mit_eecs_phd_funding_does_not_attach_to_other_doctorates(self):
         mit = get_university_by_id("mit-usa-cambridge", localized=True)
-        eecs = next(row for row in mit["coverage_by_program"] if row["program_id"] == "Course 6 PhD")
-        mechanical = next(row for row in mit["coverage_by_program"] if row["program_id"] == "Course 2 PhD")
+        eecs = next(row for row in mit["coverage_by_program"] if row["program_id"] == "mit-eecs-phd-course-6")
+        mechanical = next(row for row in mit["coverage_by_program"] if row["program_id"] == "mit-meche-phd-course-2")
         self.assertEqual(eecs["requirements"]["scope"], "program_specific")
         self.assertEqual(eecs["deadline"]["status"], "exact_dated")
         self.assertEqual(eecs["deadline"]["scope"], "program_specific")

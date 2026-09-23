@@ -191,7 +191,7 @@ test("top-five structured award copy and Oxford Reach deadlines render in Russia
     university: {
       id: oxford.id,
       finance: { scholarships_and_funding: [reach] },
-      admission_categories: [{ id: "undergraduate", label: "Undergraduate", study_levels: ["Bachelor"] }],
+      admission_categories: [{ id: "undergraduate", label: "Undergraduate", study_levels: ["Bachelor"], program_ids: ["computer_science_ug"] }],
     },
   });
 
@@ -238,6 +238,33 @@ test("all catalogued top-five award copy fields have Russian labels", async () =
           assert.notEqual(t(`university.finance.award.coverage_item.${coverage}`, coverage), coverage, `${award.id}:coverage:${coverage}`);
         }
       }
+    }
+  }
+  const harvard = universities.find((row) => row.id === "harvard-usa-cambridge");
+  const hlsJdGrant = harvard.finance.scholarships_and_funding.find((award) => award.id === "hls-jd-need-based-grant");
+  const translatedGrantName = translateFundingAwardField(hlsJdGrant, "name", hlsJdGrant.name);
+  const translatedGrantCoverage = translateFundingAwardField(hlsJdGrant, "coverage", hlsJdGrant.coverage);
+  assert.match(translatedGrantName, /Грант/);
+  assert.doesNotMatch(translatedGrantName, /LIPP/);
+  assert.match(translatedGrantCoverage, /не включает LIPP/);
+
+  for (const category of harvard.admission_categories || []) {
+    assert.notEqual(
+      t(`application_workspace.route.category.${category.id}`, category.label),
+      category.label,
+      `Harvard route category ${category.id}`,
+    );
+    for (const programId of category.program_ids || []) {
+      assert.notEqual(t(`application_workspace.route.program.${programId}`, programId), programId, `Harvard route program ${programId}`);
+    }
+    for (const profile of category.requirement_profiles || []) {
+      assert.notEqual(t(`application_workspace.route.profile.${profile.id}`, profile.label), profile.label, `Harvard route profile ${profile.id}`);
+      for (const option of profile.funding_options || []) {
+        assert.notEqual(t(`application_workspace.route.funding.${option.id}`, option.label), option.label, `Harvard funding option ${option.id}`);
+      }
+    }
+    for (const option of category.funding_options || []) {
+      assert.notEqual(t(`application_workspace.route.funding.${option.id}`, option.label), option.label, `Harvard funding option ${option.id}`);
     }
   }
   assert.match(t("university.finance.award.applicant_scope.domestic_only", "Home fee status only"), /статус Home/);

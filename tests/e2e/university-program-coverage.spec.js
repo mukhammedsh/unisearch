@@ -88,6 +88,15 @@ async function openPrograms(page, universityId) {
   await expect(page.locator("#detailPrograms .program-coverage")).toBeVisible();
 }
 
+test("MIT program level filters fit a 390px viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openPrograms(page, "mit-usa-cambridge");
+  const filter = page.locator("#detailPrograms .programs-level-filter");
+  await expect(filter).toBeVisible();
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await expect(filter.locator(".programs-level-tab").last()).toBeVisible();
+});
+
 test("selected top-five program coverage keeps routes, course dates, and award deadlines in their own scopes", async ({ page }) => {
   for (const universityId of Object.keys(coverageRows)) {
     await page.route(`**/universities/${universityId}*`, async (route) => {

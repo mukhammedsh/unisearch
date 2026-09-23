@@ -34,8 +34,8 @@ class TestIntlScoringCalibration(unittest.TestCase):
         self.assertIsNone(_normalize_gpa_score(5.01))
         self.assertIsNone(_normalize_gpa_score(-0.5))
 
-    def test_stanford_uses_official_score_profile(self):
-        """Verify Stanford with SAT 1550 and GPA 3.9/4.0 uses official_score_profile and yields ~50% chance."""
+    def test_stanford_without_published_median_uses_low_confidence_fallback(self):
+        """Stanford publishes score quartiles but no median, so UniChance must not treat a midpoint as official."""
         profile = {
             "locale": "eng",
             "budget": 100000,
@@ -45,10 +45,9 @@ class TestIntlScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {},
         }
         res = estimate_uni_chance(self.stanford, profile)
-        self.assertEqual(res.get("chanceModel"), "official_score_profile")
-        chance = res.get("overallChance")
-        self.assertIsNotNone(chance)
-        self.assertTrue(45 <= chance <= 58, f"Stanford chance expected between 45-58%, got {chance}%")
+        self.assertEqual(res.get("chanceModel"), "estimated_fallback")
+        self.assertEqual("low", res.get("confidence"))
+        self.assertTrue(res.get("chanceAvailable"))
 
     def test_imperial_college_a_level_route(self):
         """Verify Imperial College London evaluates top A-Level applicants with high realistic chance."""
