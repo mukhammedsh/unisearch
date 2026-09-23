@@ -17,6 +17,7 @@ from app.services.university_tracks import (
     _normalize_major_text,
     _iter_programs,
 )
+from app.services.citizenship import resolve_citizenship_status
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 
 _UI_BADGE_THRESHOLDS = {
@@ -129,16 +130,64 @@ def _university_matches_major(university: Dict[str, Any], major: str) -> bool:
     return False
 
 
+def _finance_cost_range(finance: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    minimum = _to_num(finance.get("total_cost_year_min"))
+    maximum = _to_num(finance.get("total_cost_year_max"))
+    if minimum is None or maximum is None or minimum < 0 or maximum < minimum:
+        return None
+    return {
+        "min": float(minimum),
+        "max": float(maximum),
+        "currency": str(finance.get("currency") or "").strip().upper() or None,
+        "academic_year": finance.get("academic_year"),
+        "source": finance.get("source"),
+        "source_url": finance.get("source_url"),
+        "source_urls": finance.get("source_urls"),
+        "fee_status": finance.get("fee_status"),
+        "scope": finance.get("scope"),
+    }
+
+
 def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict[str, Any]:
     track_fin = track.get("finance_override") if isinstance(track.get("finance_override"), dict) else {}
     uni_fin = university.get("finance") if isinstance(university.get("finance"), dict) else {}
-    currency = str(track_fin.get("currency") or uni_fin.get("currency") or "USD").strip().upper()
+    levels = track.get("study_levels") if isinstance(track.get("study_levels"), list) else []
+    raw_scope = track.get("scope")
+    scope = (
+        " ".join(str(value or "") for value in raw_scope.values()).strip().lower()
+        if isinstance(raw_scope, dict)
+        else str(raw_scope or "").strip().lower()
+    )
+    scope_level = (
+        _normalize_study_level_str(raw_scope.get("level"))
+        if isinstance(raw_scope, dict)
+        else _normalize_study_level_str(raw_scope)
+    )
+    graduate_track = (
+        any(_normalize_study_level_str(level) in {"master", "mba", "doctorate"} for level in levels)
+        or scope_level in {"master", "mba", "doctorate"}
+        or scope.startswith(("graduate", "postgraduate", "doctoral"))
+    )
+    track_range = _finance_cost_range(track_fin)
+    university_range = _finance_cost_range(uni_fin)
     total = _to_num(track_fin.get("total_cost_year_usd"))
-    if total is None:
+    cost_range = track_range if total is None else None
+    if total is None and cost_range is None and not graduate_track:
         total = _to_num(uni_fin.get("total_cost_year_usd"))
+        if total is None:
+            cost_range = university_range
+    known_currency = (
+        track_fin.get("currency")
+        or (track_range or {}).get("currency")
+        or uni_fin.get("currency")
+        or (university_range or {}).get("currency")
+    )
+    currency = str(known_currency or "USD").strip().upper()
+    if cost_range and not cost_range.get("currency") and known_currency:
+        cost_range = {**cost_range, "currency": currency}
     total_usd = _cost_to_usd(total, currency)
     breakdown = track_fin.get("costs_breakdown_year_usd")
-    if not isinstance(breakdown, dict):
+    if not isinstance(breakdown, dict) and not graduate_track:
         breakdown = uni_fin.get("costs_breakdown_year_usd")
     if not isinstance(breakdown, dict):
         breakdown = {}
@@ -149,6 +198,41 @@ def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict
         "track_finance": track_fin,
         "university_finance": uni_fin,
         "currency": currency,
+        "unavailable": total is None and cost_range is None,
+        "cost_range": cost_range,
+    }
+
+
+def _track_cost_range_payload(university: Dict[str, Any], track: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    finance = _finance_for_cost(university, track)
+    cost_range = finance.get("cost_range")
+    if not isinstance(cost_range, dict):
+        return None
+    currency = str(cost_range.get("currency") or "").strip().upper() or None
+    minimum = float(cost_range["min"])
+    maximum = float(cost_range["max"])
+    minimum_usd = maximum_usd = None
+    if currency == "USD":
+        minimum_usd, maximum_usd = minimum, maximum
+    elif currency:
+        try:
+            from app.services.currency import convert
+            minimum_usd = max(0.0, float(convert(minimum, currency, "USD")))
+            maximum_usd = max(0.0, float(convert(maximum, currency, "USD")))
+        except ValueError:
+            minimum_usd = maximum_usd = None
+    return {
+        "minNative": minimum,
+        "maxNative": maximum,
+        "currency": currency,
+        "minUSD": minimum_usd,
+        "maxUSD": maximum_usd,
+        "academicYear": cost_range.get("academic_year"),
+        "feeStatus": cost_range.get("fee_status"),
+        "scope": cost_range.get("scope"),
+        "source": cost_range.get("source"),
+        "sourceUrl": cost_range.get("source_url"),
+        "sourceUrls": cost_range.get("source_urls"),
     }
 
 
@@ -179,6 +263,12 @@ def _effective_track_cost_details(
     currency = str(finance.get("currency") or "USD").strip().upper()
 
     if mode == "on-campus":
+        cost_range = finance.get("cost_range")
+        if isinstance(cost_range, dict):
+            max_native = float(cost_range["max"])
+            return _cost_to_usd(max_native, currency), max_native, currency, "on-campus_range"
+        if finance.get("unavailable"):
+            return 0.0, 0.0, currency, "unavailable"
         return max(0.0, total_usd), max(0.0, raw_total), currency, "on-campus_exact"
 
     if mode == "online":
@@ -1487,6 +1577,14 @@ def sort_universities_ai(
         row_id = str(row.get("id") or "").strip()
         choices = universities_service.expand_admission_choices(row.get("admission_categories"))
         choices = [t for t in choices if isinstance(t, dict)]
+        target_level = _normalize_study_level_str(
+            profile.get("studyLevel") or profile.get("study_level") or ""
+        )
+        eligible_choices = [
+            (idx, choice)
+            for idx, choice in enumerate(choices)
+            if target_level == "any" or _choice_matches_study_level(choice, target_level)
+        ]
         selected_choice_key = _selected_choice_key_for_university(profile, row)
 
         uni_factors = _extract_university_factors(row)
@@ -1536,8 +1634,8 @@ def sort_universities_ai(
         # Check if user explicitly chose a track for this university
         selected_by_user = bool(chance_general.get("selectedByUser")) and selected_general_choice is not None
         selected_raw_choice = None
-        if selected_choice_key and choices:
-            for idx, c in enumerate(choices):
+        if selected_choice_key and eligible_choices:
+            for idx, c in eligible_choices:
                 if _admission_choice_key(c, idx) == selected_choice_key:
                     selected_raw_choice = c
                     break
@@ -1591,31 +1689,45 @@ def sort_universities_ai(
         )
 
         active_raw_choice: Dict[str, Any] = {}
-        if choices:
-            for idx, c in enumerate(choices):
+        if eligible_choices:
+            for idx, c in eligible_choices:
                 if _admission_choice_key(c, idx) == active_choice_key:
                     active_raw_choice = c
                     break
             if not active_raw_choice:
-                active_raw_choice = choices[0]
-                active_choice_key = _admission_choice_key(active_raw_choice, 0)
+                active_idx, active_raw_choice = eligible_choices[0]
+                active_choice_key = _admission_choice_key(active_raw_choice, active_idx)
 
         # Active choice chance metadata
         choice_meta_list = active_chance_bundle.get("choices") if isinstance(active_chance_bundle.get("choices"), list) else []
         active_choice_meta = _choice_result_by_key(choice_meta_list, active_choice_key) or {}
 
-        cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
-            row, active_raw_choice, preferred_mode=preferred_mode
-        )
+        if not eligible_choices and target_level != "any":
+            finance = row.get("finance") if isinstance(row.get("finance"), dict) else {}
+            cost_usd, cost_native = 0.0, 0.0
+            cost_currency, cost_mode = str(finance.get("currency") or "USD").strip().upper(), "unavailable"
+        else:
+            cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
+                row, active_raw_choice, preferred_mode=preferred_mode
+            )
         aid_any = _get_track_funding_type(active_raw_choice) == "grant"
-        aid_eligible = aid_any
 
         # A grant route only signals possible funding. Do not turn it into a
         # net price unless the track itself supplies a verified finance override.
         # _effective_track_cost_details() already uses that override when present.
-        final_price_native = cost_native
+        cost_range_payload = (
+            _track_cost_range_payload(row, active_raw_choice)
+            if cost_mode == "on-campus_range"
+            else None
+        )
+        cost_unavailable = cost_mode in {
+            "unavailable",
+            "online_missing_tuition",
+            "on-campus_range",
+        }
+        final_price_native = None if cost_unavailable else cost_native
 
-        final_price_usd = _cost_to_usd(final_price_native, cost_currency)
+        final_price_usd = None if final_price_native is None else _cost_to_usd(final_price_native, cost_currency)
 
         choice_factors = active_choice_meta.get("factors") if isinstance(active_choice_meta.get("factors"), list) else []
         below_req = any(f.get("key") == "requirements_gap" for f in choice_factors) or active_choice_meta.get("reason") == "requirements_not_met"
@@ -1655,7 +1767,7 @@ def sort_universities_ai(
             "finalPriceUSD": final_price_usd,
             "currency": cost_currency,
             "aidAny": aid_any,
-            "aidEligible": aid_eligible,
+            "aidEligible": None,
             "grantName": str(active_raw_choice.get("funding_program") or "") if aid_any else "",
             "admitChance": selected_chance01,
             "meetMinRequirements": meet_min_req,
@@ -1663,10 +1775,10 @@ def sort_universities_ai(
             "missingProgram": missing_program,
             "conditional": is_conditional,
             "conditionalRequirements": conditional_count,
-            "costYearUSD": cost_usd,
-            "costYearNative": cost_native,
-            "grantPotential": selected_chance01 if aid_eligible else 0.0,
-            "grantEligible": aid_eligible,
+            "costYearUSD": None if cost_unavailable else cost_usd,
+            "costYearNative": None if cost_unavailable else cost_native,
+            "grantPotential": selected_chance01 if aid_any else 0.0,
+            "grantEligible": None,
             "hardScore": hard_score,
             "distanceScore": _clamp01(1.0 - preference_mismatch),
             "totalDistance": total_distance,
@@ -1692,6 +1804,7 @@ def sort_universities_ai(
             "mlReason": str(ml_status.get("reason") or ""),
             "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
             "costMode": cost_mode,
+            "costRange": cost_range_payload,
             "recommendedChoiceKey": recommended_choice_key,
             "recommendedChoiceId": recommended_choice_id,
             "recommendedChoiceLabel": recommended_choice_label,
@@ -1934,6 +2047,82 @@ def _build_chance_factors(
     return factors
 
 
+def _normalize_study_level_str(val: Any) -> str:
+    s = str(val or "").strip().lower()
+    if not s or s == "any":
+        return "any"
+    tokens = set(re.sub(r"[^a-z0-9]+", " ", s).split())
+    if "mba" in tokens or "master of business administration" in s:
+        return "mba"
+    if tokens.intersection({"master", "masters", "msc", "ma", "meng", "graduate", "postgrad"}):
+        return "master"
+    if tokens.intersection({"undergrad", "undergraduate", "bachelor", "bsc", "ba"}) or "first-year" in s or "first_year" in s:
+        return "bachelor"
+    if tokens.intersection({"doctor", "doctoral", "doctorate", "phd", "dphil"}):
+        return "doctorate"
+    return s
+
+
+def _choice_matches_study_level(choice: Dict[str, Any], target_level: str) -> bool:
+    if not target_level or target_level == "any":
+        return True
+    raw_levels = choice.get("study_levels")
+    levels = [_normalize_study_level_str(x) for x in raw_levels] if isinstance(raw_levels, list) else []
+    raw_scope = choice.get("scope")
+    if isinstance(raw_scope, dict):
+        scope_values = [str(value or "") for value in raw_scope.values()]
+        scope_level = _normalize_study_level_str(raw_scope.get("level"))
+    else:
+        scope_values = [str(raw_scope or "")]
+        scope_text = str(raw_scope or "").strip().lower()
+        if scope_text.startswith(("doctoral", "doctorate", "postgraduate_research", "postgraduate research")):
+            scope_level = "doctorate"
+        elif scope_text.startswith(("graduate", "postgraduate_taught", "postgraduate taught")):
+            scope_level = "master"
+        else:
+            scope_level = _normalize_study_level_str(raw_scope)
+    scope = " ".join(scope_values).strip().lower()
+    if scope_level not in {"bachelor", "master", "mba", "doctorate"}:
+        scope_level = "any"
+
+    if target_level == "mba":
+        if "mba" in levels:
+            return True
+        if levels and not {"master", "mba"}.intersection(levels):
+            return False
+        description = " ".join(str(choice.get(key) or "") for key in (
+            "category_id", "category_label", "label", "program_name", "description", "scope",
+        ))
+        return bool(re.search(r"\bmba\b|master of business administration", description, re.IGNORECASE))
+
+    # Explicitly scoped levels are authoritative. Use scope only for legacy
+    # categories that predate study_levels, where it is the remaining signal.
+    if levels:
+        if target_level == "master":
+            return bool({"master", "mba"}.intersection(levels))
+        return target_level in levels
+
+    if scope_level != "any":
+        if target_level == "master" and scope_level == "mba":
+            return True
+        if scope_level != target_level:
+            return False
+        return True
+
+    if target_level == "bachelor":
+        if any(value.strip().lower() in {"general", "program", "program_group"} for value in scope_values):
+            return True
+        return scope.startswith(("undergraduate", "bachelor", "first-year", "first year"))
+
+    if target_level == "master":
+        return scope.startswith(("graduate", "postgraduate_taught", "postgraduate taught"))
+
+    if target_level == "doctorate":
+        return scope.startswith(("doctoral", "doctorate", "postgraduate_research", "postgraduate research"))
+
+    return bool(scope and _normalize_study_level_str(scope) == target_level)
+
+
 def estimate_uni_chance(
     university: Dict[str, Any],
     profile: Optional[Dict[str, Any]] = None,
@@ -1966,23 +2155,51 @@ def estimate_uni_chance(
         entries = [row for row in entries if _get_track_funding_type(row["choice"]) == funding_type]
     selected_choice_key = _selected_choice_key_for_university(profile, university)
 
+    target_level = _normalize_study_level_str(
+        profile.get("studyLevel") or profile.get("study_level") or ""
+    )
+
+    if target_level and target_level != "any":
+        matching_entries = [
+            row
+            for row in entries
+            if _choice_matches_study_level(row["choice"], target_level)
+        ]
+        entries = matching_entries
+
     has_evidence = bool(ctx["userScores"]) or any(
         isinstance(v, dict) and (bool(v.get("native")) or _to_num(v.get("cefr")) is not None or bool(v.get("exams")))
         for v in (ctx["userLanguages"] or {}).values()
     )
+
+    citizenships = profile.get("citizenships") or []
+    if isinstance(citizenships, str):
+        citizenships = [c.strip() for c in citizenships.split(",") if c.strip()]
+    elif isinstance(citizenships, list):
+        citizenships = [str(c).strip() for c in citizenships if str(c).strip()]
+    if not citizenships and profile.get("citizenship"):
+        citizenships = [str(profile.get("citizenship")).strip()]
+    location = university.get("location")
+    uni_country = str(
+        (location.get("country") if isinstance(location, dict) else None)
+        or university.get("country")
+        or ""
+    )
+    citizenship_status = resolve_citizenship_status(uni_country, citizenships)
+
     if not entries:
         return {
             "overallChance": None,
             "level": _no_data_chance_level(profile),
             "bestChoiceKey": "none",
             "bestChoiceId": "",
-            "bestChoiceLabel": "No choices for selected funding type",
+            "bestChoiceLabel": "No choices for selected filters",
             "recommendedChoiceKey": "none",
             "recommendedChoiceId": "",
-            "recommendedChoiceLabel": "No choices for selected funding type",
+            "recommendedChoiceLabel": "No choices for selected filters",
             "selectedChoiceKey": "none",
             "selectedChoiceId": "",
-            "selectedChoiceLabel": "No choices for selected funding type",
+            "selectedChoiceLabel": "No choices for selected filters",
             "choices": [],
             "missingEvidence": not has_evidence,
             "conditional": False,
@@ -1991,9 +2208,10 @@ def estimate_uni_chance(
             "choiceSelectionSource": "recommended",
             "chanceAvailable": False,
             "reason": "no_choices",
-            "label": "Нет вариантов для выбранного типа финансирования"
+            "label": "Нет вариантов для выбранных фильтров"
             if _chance_locale(profile) == "rus"
-            else "No choices for the selected funding type",
+            else "No choices for the selected filters",
+            "citizenshipStatus": citizenship_status,
         }
 
     per_choice = []
@@ -2192,6 +2410,7 @@ def estimate_uni_chance(
     per_choice.sort(
         key=lambda x: (
             x.get("chancePercent") is None,
+            0 if x.get("chanceModel") == "official_score_profile" else 1,
             -float(_to_num(x.get("chancePercent")) or 0.0),
             str(x.get("choiceLabel") or ""),
         )
@@ -2238,12 +2457,42 @@ def estimate_uni_chance(
         "chanceModel": str(best.get("chanceModel") or "none"),
         "rangeLowPercent": best.get("rangeLowPercent"),
         "rangeHighPercent": best.get("rangeHighPercent"),
+        "citizenshipStatus": citizenship_status,
     }
 
 
 def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
     user_major = str(profile.get("major") or "").strip()
+    study_level = _normalize_study_level_str(profile.get("studyLevel") or profile.get("study_level"))
+    choices = universities_service.expand_admission_choices(university.get("admission_categories"))
+    has_graduate_choices = any(
+        isinstance(choice, dict)
+        and any(
+            _choice_matches_study_level(choice, level)
+            for level in ("master", "doctorate")
+        )
+        for choice in choices
+    )
+    has_undergraduate_choices = any(
+        isinstance(choice, dict) and _choice_matches_study_level(choice, "bachelor")
+        for choice in choices
+    )
+    if study_level in {"master", "mba", "doctorate"} or (
+        study_level == "any" and has_graduate_choices and not has_undergraduate_choices
+    ):
+        return {
+            "title": "Estimated ROI (Return on Investment)",
+            "salary_used_usd": None,
+            "annual_cost_usd": None,
+            "roi_value": None,
+            "roi_label": "No Data",
+            "roi_tone": "neutral",
+            "context_type": "insufficient_level_data",
+            "user_major": user_major,
+            "matched_major": "",
+            "salary_data_points": 0,
+        }
     preferred_mode = _normalize_study_mode(
         profile.get("studyMode")
         or profile.get("study_mode")
@@ -2306,19 +2555,45 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
         salary_used = fallback_salary
 
     annual_cost = _effective_track_cost(university, {}, preferred_mode=preferred_mode)
-    choices = universities_service.expand_admission_choices(university.get("admission_categories"))
+    cost_available = True
     if choices:
         prices = []
         for choice in choices:
             if not isinstance(choice, dict):
                 continue
-            cost = _track_cost(university, choice, preferred_mode=preferred_mode)
-            if cost is not None and cost > 0:
-                prices.append(cost)
+            if study_level == "any" and has_undergraduate_choices:
+                # Early-career salary data is not a graduate-level salary
+                # estimate. When level is unspecified, pair it with a
+                # bachelor's cost instead of selecting a cheaper graduate fee.
+                if not _choice_matches_study_level(choice, "bachelor"):
+                    continue
+            elif study_level != "any" and not _choice_matches_study_level(choice, study_level):
+                continue
+            cost_usd, _cost_native, _currency, cost_mode = _effective_track_cost_details(
+                university, choice, preferred_mode=preferred_mode
+            )
+            if cost_mode not in {"unavailable", "online_missing_tuition"}:
+                prices.append(cost_usd)
         if prices:
             annual_cost = min(prices)
+        elif annual_cost <= 0:
+            cost_available = False
     if annual_cost <= 0:
-        annual_cost = 1.0
+        cost_available = False
+
+    if not cost_available:
+        return {
+            "title": "Estimated ROI (Return on Investment)",
+            "salary_used_usd": None,
+            "annual_cost_usd": None,
+            "roi_value": None,
+            "roi_label": "No Data",
+            "roi_tone": "neutral",
+            "context_type": "no_cost_data",
+            "user_major": user_major,
+            "matched_major": "",
+            "salary_data_points": len(salary_entries),
+        }
 
     if salary_used <= 0:
         return {

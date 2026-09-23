@@ -4,8 +4,10 @@ from unittest.mock import Mock, patch
 from app.services import universities as uni_service
 from app.services.ai_scoring import (
     _build_user_context,
+    _effective_track_cost_details,
     estimate_uni_chance as _estimate_uni_chance,
     sort_universities_ai as _sort_universities_ai,
+    _choice_matches_study_level,
 )
 
 
@@ -81,6 +83,340 @@ def sort_universities_ai(items, profile=None, **kwargs):
 
 
 class AiScoringTests(unittest.TestCase):
+    def test_legacy_general_program_scopes_remain_bachelor_only(self):
+        for scope in ("general", "program", "program_group"):
+            with self.subTest(scope=scope):
+                choice = {"scope": scope}
+                self.assertTrue(_choice_matches_study_level(choice, "bachelor"))
+                self.assertFalse(_choice_matches_study_level(choice, "master"))
+                self.assertFalse(_choice_matches_study_level(choice, "doctorate"))
+
+        self.assertFalse(_choice_matches_study_level({"scope": "graduate_business"}, "bachelor"))
+        self.assertFalse(_choice_matches_study_level({"scope": "doctoral_research"}, "bachelor"))
+
+    def test_graduate_roi_requires_level_specific_cost_and_outcomes(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        university = {
+            "finance": {"total_cost_year_usd": 85960},
+            "outcomes": {"early_career_salary_usd": 120000},
+        }
+        result = estimate_university_roi(university, {"studyLevel": "MBA", "major": "Business"})
+
+        self.assertIsNone(result["annual_cost_usd"])
+        self.assertIsNone(result["roi_value"])
+        self.assertEqual("insufficient_level_data", result["context_type"])
+
+    def test_graduate_track_without_own_price_does_not_inherit_undergraduate_cost(self):
+        university = {
+            "id": "graduate-cost-u",
+            "name": "Graduate Cost University",
+            "finance": {"currency": "USD", "total_cost_year_usd": 85960},
+            "admission_categories": [
+                _admission_category(
+                    "mba",
+                    "Full-Time MBA",
+                    [{"id": "general", "label": "MBA"}],
+                    study_levels=["Master"],
+                    scope="graduate_business",
+                )
+            ],
+        }
+        mba = {"study_levels": ["Master"], "scope": "graduate_business"}
+
+        self.assertEqual((0.0, 0.0, "USD", "unavailable"), _effective_track_cost_details(university, mba))
+        self.assertEqual(85960, _effective_track_cost_details(university, {"study_levels": ["Bachelor"]})[0])
+
+        match_data = sort_universities_ai([university], profile={"studyLevel": "Master"})[0]["matchData"]
+        self.assertEqual("unavailable", match_data["costMode"])
+        self.assertIsNone(match_data["finalPrice"])
+        self.assertIsNone(match_data["finalPriceUSD"])
+        self.assertIsNone(match_data["costYearUSD"])
+        self.assertIsNone(match_data["costYearNative"])
+
+    def test_missing_bachelor_cost_stays_unknown_in_sort_and_roi(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        university = {
+            "id": "missing-cost-u",
+            "name": "Missing Cost University",
+            "admission_categories": [
+                _admission_category("bachelor", "Bachelor", [{"id": "general", "label": "General", "requirements": {}, "stats_avg": {}}])
+            ],
+            "outcomes": {"early_career_salary_usd": 100000},
+        }
+
+        match = sort_universities_ai([university], profile={"studyLevel": "Bachelor"})[0]["matchData"]
+        roi = estimate_university_roi(university, {"studyLevel": "Bachelor"})
+
+        self.assertEqual("unavailable", match["costMode"])
+        self.assertIsNone(match["finalPrice"])
+        self.assertIsNone(match["finalPriceUSD"])
+        self.assertIsNone(match["costYearUSD"])
+        self.assertIsNone(match["costYearNative"])
+        self.assertEqual("no_cost_data", roi["context_type"])
+        self.assertIsNone(roi["annual_cost_usd"])
+        self.assertIsNone(roi["roi_value"])
+
+    def test_bachelor_roi_does_not_use_a_graduate_track_price(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        university = {
+            "id": "level-specific-roi-u",
+            "name": "Level Specific ROI University",
+            "finance": {"total_cost_year_usd": 50000},
+            "admission_categories": [
+                _admission_category(
+                    "bachelor",
+                    "Bachelor",
+                    [{"id": "general", "label": "Bachelor"}],
+                    study_levels=["Bachelor"],
+                    scope="undergraduate",
+                    finance_override={"total_cost_year_usd": 50000, "currency": "USD"},
+                ),
+                _admission_category(
+                    "mba",
+                    "MBA",
+                    [{"id": "general", "label": "MBA"}],
+                    study_levels=["MBA"],
+                    scope="graduate_business",
+                    finance_override={"total_cost_year_usd": 20000, "currency": "USD"},
+                )
+            ],
+            "outcomes": {"early_career_salary_usd": 100000},
+        }
+
+        result = estimate_university_roi(university, {"studyLevel": "Bachelor"})
+        any_level_result = estimate_university_roi(university, {"studyLevel": "Any"})
+
+        self.assertEqual(50000.0, result["annual_cost_usd"])
+        self.assertEqual(2.0, result["roi_value"])
+        self.assertEqual(50000.0, any_level_result["annual_cost_usd"])
+        self.assertEqual(2.0, any_level_result["roi_value"])
+
+    def test_any_level_roi_is_unknown_when_only_graduate_costs_exist(self):
+        from app.services.ai_scoring import estimate_university_roi
+
+        university = {
+            "id": "graduate-only-roi-u",
+            "name": "Graduate Only ROI University",
+            "admission_categories": [
+                _admission_category(
+                    "mba",
+                    "MBA",
+                    [{"id": "general", "label": "MBA"}],
+                    study_levels=["MBA"],
+                    scope="graduate_business",
+                    finance_override={"total_cost_year_usd": 20000, "currency": "USD"},
+                )
+            ],
+            "outcomes": {"early_career_salary_usd": 100000},
+        }
+
+        result = estimate_university_roi(university, {"studyLevel": "Any"})
+
+        self.assertEqual("insufficient_level_data", result["context_type"])
+        self.assertIsNone(result["annual_cost_usd"])
+        self.assertIsNone(result["roi_value"])
+
+    def test_grant_route_does_not_claim_verified_aid_eligibility(self):
+        university = {
+            "id": "possible-grant-u",
+            "name": "Possible Grant University",
+            "finance": {"total_cost_year_usd": 30000},
+            "admission_categories": [
+                _admission_category(
+                    "grant",
+                    "Grant route",
+                    [{"id": "general", "label": "General", "requirements": {}, "stats_avg": {}}],
+                    funding_options=[{"id": "grant", "label": "Grant route", "funding_type": "grant"}],
+                )
+            ],
+        }
+
+        match = sort_universities_ai([university], profile={"studyLevel": "Bachelor"})[0]["matchData"]
+
+        self.assertTrue(match["aidAny"])
+        self.assertIsNone(match["aidEligible"])
+        self.assertIsNone(match["grantEligible"])
+
+    def test_mba_profile_excludes_other_masters_admission_choices(self):
+        university = {
+            "id": "mba-level-filter-u",
+            "name": "MBA Level Filter University",
+            "finance": {"total_cost_year_usd": 20000},
+            "academics": {},
+            "admission_categories": [
+                _admission_category("mba", "Full-Time MBA", [{"id": "general", "label": "MBA"}], study_levels=["Master"], scope="graduate_business"),
+                _admission_category("msc", "Master of Finance", [{"id": "general", "label": "MSc"}], study_levels=["Master"], scope="postgraduate_taught"),
+            ],
+        }
+
+        result = estimate_uni_chance(university, {"studyLevel": "MBA"})
+
+        self.assertEqual(1, len(result["choices"]))
+        self.assertTrue(result["choices"][0]["choiceKey"].startswith("mba::"))
+
+    def test_any_study_level_keeps_all_levels_and_unknown_level_matches_none(self):
+        university = {
+            "id": "study-level-semantics-u",
+            "name": "Study Level Semantics University",
+            "admission_categories": [
+                _admission_category("bachelor", "Bachelor", [{"id": "general", "label": "Bachelor"}], study_levels=["Bachelor"]),
+                _admission_category("master", "Master", [{"id": "general", "label": "Master"}], study_levels=["Master"]),
+            ],
+        }
+
+        any_result = estimate_uni_chance(university, {"studyLevel": "Any"})
+        unknown_result = estimate_uni_chance(university, {"studyLevel": "Unrecognized level"})
+
+        self.assertEqual({"bachelor::general", "master::general"}, {row["choiceKey"] for row in any_result["choices"]})
+        self.assertEqual([], unknown_result["choices"])
+        self.assertEqual("no_choices", unknown_result["reason"])
+
+    def test_any_level_prefers_official_score_profile_over_higher_fallback(self):
+        stanford = uni_service.get_university_by_id("stanford-university-usa-ca")
+        profile = {
+            "budget": 100000,
+            "gpa": 3.9,
+            "exams": [{"id": "SAT", "score": 1550}],
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 8.0}],
+        }
+
+        result = estimate_uni_chance(stanford, profile)
+        official = [row for row in result["choices"] if row.get("chanceModel") == "official_score_profile"]
+        fallback = [row for row in result["choices"] if row.get("chanceModel") == "estimated_fallback"]
+
+        self.assertTrue(official)
+        self.assertTrue(fallback)
+        self.assertGreater(max(row["chancePercent"] for row in fallback), max(row["chancePercent"] for row in official))
+        self.assertEqual("official_score_profile", result["chanceModel"])
+        self.assertEqual("SAT", official[0]["userExamId"])
+
+    def test_master_level_uses_legacy_scope_and_does_not_reactivate_saved_bachelor_choice(self):
+        university = {
+            "id": "legacy-level-scope-u",
+            "name": "Legacy Level Scope University",
+            "admission_categories": [
+                _admission_category("bachelor", "Bachelor", [{"id": "general", "label": "Bachelor"}], scope={"level": "bachelor", "type": "general"}),
+                _admission_category("master", "Master", [{"id": "general", "label": "Master"}], scope={"level": "graduate", "type": "taught"}),
+            ],
+        }
+        profile = {
+            "studyLevel": "Master",
+            "selectedAdmissionChoices": {"legacy-level-scope-u": _choice_selection("bachelor::general")},
+        }
+
+        result = estimate_uni_chance(university, profile)
+
+        self.assertEqual(["master::general"], [row["choiceKey"] for row in result["choices"]])
+        self.assertEqual("master::general", result["bestChoiceKey"])
+        self.assertFalse(result["selectedByUser"])
+
+    def test_mit_top_five_result_ignores_saved_off_level_choice(self):
+        from app.services.university_tracks import expand_admission_choices
+
+        mit = uni_service.get_university_by_id("mit-usa-cambridge")
+        self.assertIsNotNone(mit)
+        bachelor_choice = next(
+            choice
+            for choice in expand_admission_choices(mit.get("admission_categories"))
+            if choice.get("category_id") == "mit_regular"
+        )
+        profile = {
+            "studyLevel": "Master",
+            "selectedAdmissionChoices": {
+                "mit-usa-cambridge": _choice_selection(bachelor_choice.get("choice_key")),
+            },
+        }
+
+        chance = estimate_uni_chance(mit, profile)
+        top_five = sort_universities_ai([mit], profile=profile, budget_vs_prestige=100)
+        match_data = top_five[0].get("matchData", {})
+
+        self.assertTrue(chance["choices"])
+        self.assertTrue(all("bachelor" not in str(row.get("choiceKey")).lower() for row in chance["choices"]))
+        self.assertNotEqual(bachelor_choice.get("choice_key"), chance.get("bestChoiceKey"))
+        self.assertNotEqual(bachelor_choice.get("choice_key"), match_data.get("selectedChoiceKey"))
+        self.assertFalse(match_data.get("selectedByUser"))
+
+    def test_oxford_computer_science_range_keeps_gbp_and_no_fake_scalar_price(self):
+        from app.services.university_tracks import expand_admission_choices
+
+        oxford = uni_service.get_university_by_id("university-of-oxford-uk-oxford")
+        self.assertIsNotNone(oxford)
+        choice = next(
+            row
+            for row in expand_admission_choices(oxford.get("admission_categories"))
+            if row.get("category_id") == "university_of_oxford_uk_oxford_computer_science_undergraduate"
+            and row.get("funding_type") == "paid"
+        )
+        profile = {
+            "studyLevel": "Bachelor",
+            "selectedAdmissionChoices": {
+                oxford["id"]: _choice_selection(choice.get("choice_key")),
+            },
+        }
+
+        with patch(
+            "app.services.currency.convert",
+            side_effect=lambda amount, source, target: float(amount) * 2.0,
+        ):
+            result = sort_universities_ai([oxford], profile=profile)[0]["matchData"]
+
+        self.assertEqual("on-campus_range", result["costMode"])
+        self.assertIsNone(result["finalPrice"])
+        self.assertIsNone(result["finalPriceUSD"])
+        self.assertIsNone(result["costYearNative"])
+        self.assertIsNone(result["costYearUSD"])
+        self.assertEqual(
+            {
+                "minNative": 79855.0,
+                "maxNative": 86155.0,
+                "currency": "GBP",
+                "minUSD": 159710.0,
+                "maxUSD": 172310.0,
+                "academicYear": "2027-28",
+                "feeStatus": "overseas",
+                "scope": "program",
+                "source": "Oxford Computer Science course page",
+                "sourceUrl": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science",
+                "sourceUrls": [
+                    "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science",
+                    "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs",
+                ],
+            },
+            result["costRange"],
+        )
+
+    def test_unconvertible_range_keeps_native_bounds_and_leaves_usd_unknown(self):
+        from app.services.university_tracks import expand_admission_choices
+
+        oxford = uni_service.get_university_by_id("university-of-oxford-uk-oxford")
+        self.assertIsNotNone(oxford)
+        choice = next(
+            row
+            for row in expand_admission_choices(oxford.get("admission_categories"))
+            if row.get("category_id") == "university_of_oxford_uk_oxford_computer_science_undergraduate"
+            and row.get("funding_type") == "paid"
+        )
+        profile = {
+            "studyLevel": "Bachelor",
+            "selectedAdmissionChoices": {
+                oxford["id"]: _choice_selection(choice.get("choice_key")),
+            },
+        }
+
+        with patch("app.services.currency.convert", side_effect=ValueError("unsupported currency")):
+            result = sort_universities_ai([oxford], profile=profile)[0]["matchData"]
+
+        cost_range = result["costRange"]
+        self.assertEqual(79855.0, cost_range["minNative"])
+        self.assertEqual(86155.0, cost_range["maxNative"])
+        self.assertEqual("GBP", cost_range["currency"])
+        self.assertIsNone(cost_range["minUSD"])
+        self.assertIsNone(cost_range["maxUSD"])
+
     def test_build_user_context_flattens_composite_exam_components(self):
         profile = {
             "exams": [
@@ -1163,7 +1499,8 @@ class AiScoringTests(unittest.TestCase):
         result = sort_universities_ai(items, profile=profile, budget_vs_prestige=50, funding_type="any")
         match = result[0].get("matchData", {})
 
-        self.assertAlmostEqual(0.0, float(match.get("costYearUSD", 0.0)), places=6)
+        self.assertIsNone(match.get("costYearUSD"))
+        self.assertIsNone(match.get("finalPrice"))
         self.assertEqual("online_missing_tuition", str(match.get("costMode")))
 
     def test_ai_sort_preserves_sticker_price_for_grant_track_without_verified_net_price(self):

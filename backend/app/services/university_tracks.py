@@ -351,6 +351,7 @@ def _admission_choice_from_parts(
         "scholarships": copy.deepcopy(profile.get("scholarships", category.get("scholarships", []))),
         "applicable_majors": copy.deepcopy(profile.get("applicable_majors", category.get("applicable_majors", []))),
         "scope": copy.deepcopy(profile.get("scope", category.get("scope"))),
+        "study_levels": copy.deepcopy(profile.get("study_levels", category.get("study_levels", []))),
         "program_ids": copy.deepcopy(profile.get("program_ids", category.get("program_ids", []))),
         "program_names": copy.deepcopy(profile.get("program_names", category.get("program_names", []))),
     }

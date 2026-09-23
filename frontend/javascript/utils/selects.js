@@ -58,11 +58,35 @@ export function initCustomSelect(selectId) {
     wrapper.appendChild(customOptions);
   }
 
-  const listboxId = customOptions.id || `custom-options-${selectId}`;
-  customOptions.id = listboxId;
-  customOptions.setAttribute("role", "listbox");
-
+  const popupId = customOptions.id || `custom-options-${selectId}`;
+  customOptions.id = popupId;
   const selectLabel = select.getAttribute("aria-label") || select.getAttribute("title") || select.name || "";
+  const searchable = select.dataset.searchable === "true";
+  let optionList = searchable ? customOptions.querySelector(".custom-select-option-list") : null;
+  if (searchable && !optionList) {
+    optionList = document.createElement("div");
+    optionList.className = "custom-select-option-list";
+  }
+  const listboxId = searchable ? `${popupId}-listbox` : popupId;
+  if (optionList) {
+    optionList.id = listboxId;
+    optionList.setAttribute("role", "listbox");
+    customOptions.setAttribute("role", "presentation");
+  } else {
+    customOptions.setAttribute("role", "listbox");
+  }
+  let searchInput = searchable ? customOptions.querySelector(".custom-select-search") : null;
+  if (searchable && !searchInput) {
+    searchInput = document.createElement("input");
+    searchInput.type = "search";
+    searchInput.className = "custom-select-search";
+    searchInput.autocomplete = "off";
+  }
+  if (searchInput) {
+    searchInput.placeholder = select.dataset.searchPlaceholder || "";
+    searchInput.setAttribute("aria-label", select.dataset.searchPlaceholder || selectLabel || "");
+  }
+
   trigger.setAttribute("role", "combobox");
   trigger.setAttribute("aria-haspopup", "listbox");
   trigger.setAttribute("aria-expanded", "false");
@@ -70,13 +94,14 @@ export function initCustomSelect(selectId) {
   trigger.setAttribute("tabindex", select.disabled ? "-1" : "0");
   if (selectLabel) {
     trigger.setAttribute("aria-label", selectLabel);
-    customOptions.setAttribute("aria-label", selectLabel);
+    (optionList || customOptions).setAttribute("aria-label", selectLabel);
   }
 
   let highlightedIndex = -1;
 
   const getEnabledOptions = () => {
-    return Array.from(customOptions.querySelectorAll(".custom-option:not(.is-disabled)"));
+    return Array.from(customOptions.querySelectorAll(".custom-option:not(.is-disabled)"))
+      .filter((option) => !option.hidden);
   };
 
   const setHighlightedOption = (index, scrollIntoView = true) => {
@@ -145,10 +170,16 @@ export function initCustomSelect(selectId) {
     wrapper.classList.add("open");
     trigger.setAttribute("aria-expanded", "true");
 
+    if (searchInput) {
+      searchInput.value = "";
+      customOptions.querySelectorAll(".custom-option[hidden]").forEach((option) => { option.hidden = false; });
+    }
+
     const enabled = getEnabledOptions();
     const curVal = String(select.value || "");
     const curIdx = enabled.findIndex((opt) => String(opt.getAttribute("data-value") || "") === curVal);
     setHighlightedOption(curIdx >= 0 ? curIdx : 0, true);
+    if (searchInput) searchInput.focus();
   };
 
   const closeSelect = (restoreFocus = false) => {
@@ -159,6 +190,7 @@ export function initCustomSelect(selectId) {
     wrapper.classList.remove("open-up");
     trigger.setAttribute("aria-expanded", "false");
     customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
+    if (searchInput) searchInput.value = "";
     highlightedIndex = -1;
     if (restoreFocus) {
       try { trigger.focus(); } catch (e) {}
@@ -191,6 +223,11 @@ export function initCustomSelect(selectId) {
 
   const rebuildCustomOptions = () => {
     customOptions.innerHTML = "";
+    if (searchInput) customOptions.appendChild(searchInput);
+    if (optionList) {
+      optionList.innerHTML = "";
+      customOptions.appendChild(optionList);
+    }
     const fragment = document.createDocumentFragment();
     let optIndex = 0;
 
@@ -231,7 +268,7 @@ export function initCustomSelect(selectId) {
       }
     });
 
-    customOptions.appendChild(fragment);
+    (optionList || customOptions).appendChild(fragment);
   };
 
   function updateTrigger() {
@@ -259,6 +296,33 @@ export function initCustomSelect(selectId) {
   };
 
   syncFromNativeSelect();
+
+  if (searchInput && searchInput.dataset.bound !== "1") {
+    searchInput.dataset.bound = "1";
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLocaleLowerCase();
+      customOptions.querySelectorAll(".custom-option").forEach((option) => {
+        const label = String(option.getAttribute("data-label") || "").toLocaleLowerCase();
+        const value = String(option.getAttribute("data-value") || "").toLocaleLowerCase();
+        option.hidden = Boolean(query) && !label.includes(query) && !value.includes(query);
+      });
+      highlightedIndex = -1;
+      setHighlightedOption(0, false);
+    });
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeSelect(true);
+      } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        setHighlightedOption(highlightedIndex + (event.key === "ArrowDown" ? 1 : -1));
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        const option = getEnabledOptions()[highlightedIndex];
+        if (option) selectOptionByNode(option);
+      }
+    });
+  }
 
   if (customOptions.dataset.bound !== "1") {
     customOptions.dataset.bound = "1";

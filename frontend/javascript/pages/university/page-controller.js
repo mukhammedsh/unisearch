@@ -15,8 +15,8 @@ import { t, tFormat } from "../../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities } from "../../routes.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import { initUniversityTranslations } from "../../university-translations.js";
-import { renderExtraSection, renderOverviewSection, renderProgramsSection } from "./render-content.js";
-import { renderAdmissionSection, renderFinanceSection } from "./render-sections.js";
+import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance } from "./render-content.js";
+import { getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection } from "./render-sections.js";
 import {
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
@@ -36,7 +36,6 @@ import {
   unknownFieldText,
   writeIdListStorage,
 } from "../_shared.js";
-import { getAdmissionChoicesFromCategories } from "../../university-detail-helpers.js";
 
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
@@ -317,10 +316,14 @@ export async function initUniversityPage(options = {}) {
     const translatedCity = trCity(university?.location?.city || "");
     const translatedCountry = trCountry(university?.location?.country || "");
     const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
-    const annualCostForTrack = (track) => modeAwareAnnualCost(((track && track.finance_override) || university.finance || {}), profileStudyMode);
+    const profileStudyLevel = loadProfile()?.studyLevel || loadProfile()?.study_level;
+    const annualCostForTrack = (track) => {
+      const finance = getFinanceForChoice(track, university.finance);
+      return finance ? modeAwareAnnualCost(finance, profileStudyMode) : undefined;
+    };
     const minPrice = (() => {
-      const fundingOptions = getAdmissionChoicesFromCategories(university.admission_categories);
-      let value = modeAwareAnnualCost(university.finance || {}, profileStudyMode);
+      const fundingOptions = getFinanceChoicesForStudyLevel(university.admission_categories, profileStudyLevel);
+      let value = profileStudyLevel ? undefined : modeAwareAnnualCost(university.finance || {}, profileStudyMode);
       if (fundingOptions.length) {
         const prices = fundingOptions
           .map((option) => annualCostForTrack(option))
@@ -399,13 +402,68 @@ export async function initUniversityPage(options = {}) {
         : {});
 
     renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, rankStatus, university });
+    renderCoverageSection({
+      container: document.getElementById("detailCoverage"),
+      coverageByLevel: university?.coverage_by_level,
+    });
     renderExtraSection({ container: document.getElementById("detailExtra"), university });
+    const resolveQualificationProgram = (profile) => {
+      const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
+      const choices = profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object"
+        ? profile.selectedAdmissionChoices
+        : {};
+      const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
+      const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
+      if (programId) {
+        const found = programs.find((program) => String(program?.id || "").trim() === programId);
+        if (found) return found;
+      }
+      const targetNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
+        .map((value) => String(value || "").trim().toLowerCase())
+        .filter(Boolean);
+      if (!targetNames.length) return null;
+      return programs.find((program) => {
+        const name = String(program?.name || "").trim().toLowerCase();
+        return name && targetNames.some((target) => name === target || name.includes(target) || target.includes(name));
+      }) || null;
+    };
+
+    const resolveCoverageProgram = (profile) => {
+      const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
+      const choices = profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object"
+        ? profile.selectedAdmissionChoices
+        : {};
+      const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
+      const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
+      if (programId) {
+        return programs.find((program) => String(program?.id || program?.course_number || "").trim() === programId) || null;
+      }
+      const exactNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
+        .map((value) => String(value || "").trim().toLowerCase().replace(/\s+/g, " "))
+        .filter(Boolean);
+      if (!exactNames.length) return null;
+      return programs.find((program) => {
+        const name = String(program?.name || "").trim().toLowerCase().replace(/\s+/g, " ");
+        return name && exactNames.includes(name);
+      }) || null;
+    };
+
     const renderProgramsTab = () => {
+      const profile = loadProfile() || {};
+      const selectedProgram = resolveQualificationProgram(profile);
+      const coverageProgram = resolveCoverageProgram(profile);
       renderProgramsSection({
         admissionsData,
         container: document.getElementById("detailPrograms"),
         university,
-        profileMajor: String(loadProfile()?.major || "").trim(),
+        profileMajor: String(profile.major || "").trim(),
+        coverageProgram,
+      });
+      renderQualificationGuidance({
+        container: document.getElementById("detailQualificationGuidance"),
+        profile,
+        university,
+        program: selectedProgram,
       });
     };
     renderProgramsTab();
@@ -420,25 +478,40 @@ export async function initUniversityPage(options = {}) {
       });
     };
     renderAdmissionTab();
-    detailProfileUpdatedHandler = async () => {
-      await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
-      renderAdmissionTab();
-      renderProgramsTab();
+
+    const renderDeadlinesTab = () => {
+      renderDeadlinesTabSection({
+        container: document.getElementById("detailDeadlines"),
+        university,
+      });
     };
-    window.addEventListener("profileUpdated", detailProfileUpdatedHandler);
+    renderDeadlinesTab();
 
     const scholarshipEl = document.getElementById("detailScholarshipInfo");
     const priceEl = document.getElementById("detailPrice");
 
-    renderFinanceSection({
-      annualCostForTrack,
-      container: document.getElementById("detailFinance"),
-      priceEl,
-      profileStudyMode,
-      scholarshipContainer: scholarshipEl,
-      uniRoi,
-      university,
-    });
+    const renderFinanceTab = () => {
+      renderFinanceSection({
+        annualCostForTrack,
+        container: document.getElementById("detailFinance"),
+        priceEl,
+        profileStudyMode,
+        scholarshipContainer: scholarshipEl,
+        uniRoi,
+        uniChance,
+        university,
+      });
+    };
+    renderFinanceTab();
+
+    detailProfileUpdatedHandler = async () => {
+      await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
+      renderAdmissionTab();
+      renderDeadlinesTab();
+      renderProgramsTab();
+      renderFinanceTab();
+    };
+    window.addEventListener("profileUpdated", detailProfileUpdatedHandler);
 
     if (stateEl) stateEl.textContent = "";
     if (cardEl) {

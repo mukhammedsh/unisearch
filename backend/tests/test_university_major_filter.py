@@ -39,6 +39,18 @@ class UniversityMajorFilterTests(unittest.TestCase):
                 },
                 "admission_categories": [],
             },
+            {
+                "id": "u-mba",
+                "name": "MBA University",
+                "location": {"country": "USA", "city": "Boston", "state": "MA"},
+                "academics": {
+                    "programs": [
+                        {"name": "Master of Business Administration", "study_levels": ["Master"], "study_mode": "On-campus"},
+                        {"name": "Master of Finance", "study_levels": ["Master"], "study_mode": "On-campus"},
+                    ]
+                },
+                "admission_categories": [],
+            },
         ]
 
         normalized = [uni_service._normalize_university_schema(copy.deepcopy(x)) for x in rows]
@@ -71,6 +83,31 @@ class UniversityMajorFilterTests(unittest.TestCase):
 
         ids = [x.get("id") for x in result.get("items", [])]
         self.assertEqual(["u-cs"], ids)
+
+    def test_mba_filter_matches_mba_program_not_every_masters_program(self):
+        items, meta = self._mock_data()
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(study_level="MBA", paginate=False)
+
+        ids = [x.get("id") for x in result.get("items", [])]
+        self.assertEqual(["u-mba"], ids)
+
+    def test_doctorate_filter_matches_phd_program_level(self):
+        items, meta = self._mock_data()
+        phd = {
+            "id": "u-phd",
+            "name": "PhD University",
+            "location": {"country": "UK", "city": "London"},
+            "academics": {"programs": [{"name": "Physics PhD", "study_levels": ["PhD"]}]},
+            "admission_categories": [],
+        }
+        normalized = uni_service._normalize_university_schema(copy.deepcopy(phd))
+        items.append(normalized)
+        meta.append(uni_service._build_university_meta(normalized))
+        with patch("app.services.universities.get_universities_with_meta", return_value=(items, meta)):
+            result = uni_service.list_universities(study_level="doctorate", paginate=False)
+
+        self.assertEqual(["u-phd"], [x.get("id") for x in result.get("items", [])])
 
 
 if __name__ == "__main__":

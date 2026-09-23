@@ -4,6 +4,17 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 6.13.0 (2026-09-23) - Applicant Planning and Program Coverage
+
+### Added
+- Expanded applicant profiles with citizenship, education background, target study level, entry cycle, and route context.
+- Added program-scoped admissions, deadline, cost, and funding coverage, with qualification guidance, structured award details, and an applicant planning workspace.
+- Added dated deadline calendar views and English/Russian guidance for missing program facts.
+
+### Improved
+- Expanded official-source data for selected undergraduate, master's, doctoral, and professional routes at MIT, Imperial College London, Stanford, Harvard, and Oxford, while keeping unverified details explicit.
+- Refined UniFit and related profile handling for the broader study-level and applicant context.
+
 ## 6.12.0 (2026-09-21) - Major-Aware UniFit Catalog
 
 ### Added

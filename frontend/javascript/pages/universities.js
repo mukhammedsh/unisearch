@@ -277,7 +277,9 @@ export function initUniversitiesPage() {
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
         scopeNotice: $("universitiesScopeNotice"),
-        scopeNoticeDismiss: $("dismissUniversitiesScopeNotice")
+        scopeNoticeDismiss: $("dismissUniversitiesScopeNotice"),
+        catalogLevelSegmented: $("catalogLevelSegmented"),
+        catalogLevelButtons: Array.from(document.querySelectorAll(".catalog-level-btn")),
     };
     const ensureCompareTrayNode = () => {
         if (el.compareTray) return;
@@ -448,6 +450,7 @@ export function initUniversitiesPage() {
     };
 
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
+    setupSlidingIndicator(".catalog-level-segmented", ".catalog-level-btn", "is-active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -681,6 +684,16 @@ export function initUniversitiesPage() {
         const mode = state.only_saved ? "favorites" : "all";
         el.savedFilterButtons.forEach((btn) => {
             const active = String(btn.getAttribute("data-saved-filter") || "") === mode;
+            btn.classList.toggle("is-active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+    }
+
+    function syncCatalogLevelButtons() {
+        const current = String(state.study_level || "").toLowerCase();
+        el.catalogLevelButtons.forEach((btn) => {
+            const btnLevel = String(btn.getAttribute("data-level") || "").toLowerCase();
+            const active = (btnLevel === current);
             btn.classList.toggle("is-active", active);
             btn.setAttribute("aria-pressed", active ? "true" : "false");
         });
@@ -1852,6 +1865,16 @@ export function initUniversitiesPage() {
     el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
+
+    el.catalogLevelButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const nextLevel = String(btn.getAttribute("data-level") || "").trim().toLowerCase();
+            if (state.study_level === nextLevel) return;
+            state.study_level = nextLevel;
+            syncCatalogLevelButtons();
+            refetch();
+        });
+    });
 
     el.savedFilterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -3159,6 +3182,7 @@ export function initUniversitiesPage() {
         if (el.minInput) el.minInput.value = state.min_tuition;
         if (el.maxInput) el.maxInput.value = state.max_tuition;
         syncSavedFilterButtons();
+        syncCatalogLevelButtons();
         
         fillTrack(); 
         updateSliderLabels();

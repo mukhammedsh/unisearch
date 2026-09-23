@@ -284,13 +284,16 @@ async function initRoutePage(ctx = currentRouteContext()) {
 
   if (ctx.isUniversitiesPage) {
     maybeWakeBackend();
-    const [module] = await Promise.all([
+    const [module, workspaceModule] = await Promise.all([
       loadRouteModule("universities"),
+      import("./pages/application-workspace.js"),
       ensureExamConfig(),
       ensureLanguageConfig(),
       ensureCityDatabase(),
     ]);
-    return module?.initUniversitiesPage?.();
+    workspaceModule?.initApplicationWorkspace?.();
+    await module?.initUniversitiesPage?.();
+    return;
   }
   if (ctx.isUniversityPage) {
     const [module] = await Promise.all([

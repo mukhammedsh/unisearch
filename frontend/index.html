@@ -41,6 +41,7 @@
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/universities.css" />
+  <link rel="stylesheet" href="css/application-workspace.css" />
 
 </head>
 
@@ -53,8 +54,8 @@
     <section id="universitiesScopeNotice" class="u-page-scope" aria-label="Current study scope" data-i18n-aria-label="universities.scope_note.aria">
       <div class="u-page-scope__inner">
         <div class="u-page-scope__content">
-          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only</p>
-          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">The catalog shows bachelor's programs and related admissions information.</p>
+          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Multi-Level Degree Catalog</p>
+          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">Explore bachelor, master, PhD, and MBA programs, admission timelines, and citizenship-aware financial aid.</p>
         </div>
         <button id="dismissUniversitiesScopeNotice" class="u-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
           <span data-heroicon="x-mark" data-icon-size="18"></span>
@@ -66,6 +67,14 @@
       <div class="u-section-meta">
         <div id="uFoundSummary" class="u-found" aria-live="polite">
           <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
+        </div>
+
+        <div id="catalogLevelSegmented" class="catalog-level-segmented" role="group" aria-label="Study level" data-i18n-aria-label="universities.level_segmented.aria">
+          <button type="button" class="catalog-level-btn is-active" data-level="" data-i18n="universities.level.all" aria-pressed="true">All Levels</button>
+          <button type="button" class="catalog-level-btn" data-level="bachelor" data-i18n="universities.level.bachelor" aria-pressed="false">Bachelor's</button>
+          <button type="button" class="catalog-level-btn" data-level="master" data-i18n="universities.level.master" aria-pressed="false">Master's</button>
+          <button type="button" class="catalog-level-btn" data-level="doctorate" data-i18n="universities.level.doctorate" aria-pressed="false">PhD</button>
+          <button type="button" class="catalog-level-btn" data-level="mba" data-i18n="universities.level.mba" aria-pressed="false">MBA</button>
         </div>
 
         <div class="u-section-actions">
@@ -81,6 +90,7 @@
             <span aria-hidden="true" data-heroicon="adjustments-horizontal" data-icon-size="16"></span>
             <span id="compareModeLabel" data-i18n="universities.compare.enter">Compare mode</span>
           </button>
+          <button id="openApplicationWorkspace" class="u-compare-mode-btn application-workspace-open" type="button" data-open-application-workspace data-i18n="application_workspace.open">Application plan</button>
         </div>
       </div>
     </div>
@@ -316,6 +326,7 @@
   </main>
 
   <div id="compareTray" class="compare-tray" aria-live="polite" hidden></div>
+  <section id="applicationWorkspace" class="application-workspace" role="dialog" aria-modal="true" aria-labelledby="applicationWorkspaceTitle" hidden></section>
 
   <script src="env.js"></script>
   <script src="config.js"></script>

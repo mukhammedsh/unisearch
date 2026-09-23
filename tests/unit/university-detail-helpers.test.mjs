@@ -46,6 +46,240 @@ const {
 
 await initI18n();
 
+const {
+  getFinanceChoicesForStudyLevel,
+  getFinanceForChoice,
+  renderFinanceSection,
+  resolveFeeStatusAndAid,
+} = await import("../../frontend/javascript/pages/university/render-sections.js");
+
+test("finance choices follow the selected degree level", () => {
+  const categories = [
+    { id: "ug", label: "Undergraduate", study_levels: ["Bachelor"] },
+    { id: "msc", label: "Master of Finance", study_levels: ["Master"] },
+    { id: "mba", label: "Full-Time MBA", study_levels: ["Master"] },
+  ];
+  assert.deepEqual(getFinanceChoicesForStudyLevel(categories, "MBA").map((choice) => choice.category_id), ["mba"]);
+  assert.deepEqual(getFinanceChoicesForStudyLevel(categories, "Bachelor").map((choice) => choice.category_id), ["ug"]);
+  assert.equal(getFinanceChoicesForStudyLevel(categories, "Any").length, 3);
+  const baseFinance = { total_cost_year_usd: 85960, currency: "USD" };
+  assert.equal(getFinanceForChoice(getFinanceChoicesForStudyLevel(categories, "MBA")[0], baseFinance), null);
+  assert.deepEqual(getFinanceForChoice(getFinanceChoicesForStudyLevel(categories, "Bachelor")[0], baseFinance), baseFinance);
+});
+
+test("legacy scoped categories are treated as bachelor while unscoped categories stay unknown", () => {
+  const categories = [
+    { id: "princeton-first-year", scope: "program_group", label: "First-Year Admission" },
+    { id: "legacy-general", scope: "general", label: "General" },
+    { id: "legacy-program", scope: "program", label: "Program route" },
+    { id: "unscoped", label: "Unclassified route" },
+    { id: "graduate", study_levels: ["Master"] },
+  ];
+
+  assert.deepEqual(
+    getFinanceChoicesForStudyLevel(categories, "Bachelor").map((choice) => choice.category_id),
+    ["princeton-first-year", "legacy-general", "legacy-program"],
+  );
+  assert.deepEqual(
+    getFinanceChoicesForStudyLevel(categories, "Master").map((choice) => choice.category_id),
+    ["graduate"],
+  );
+});
+
+test("need-blind status does not imply full need coverage or zero loans", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const result = resolveFeeStatusAndAid({
+    university: { finance: { financial_aid: { need_blind: true, basis: "need" } } },
+    profile: { studyLevel: "Bachelor" },
+  });
+
+  assert.equal(result.aidBadge, "Need-Blind Undergraduate Admission");
+  assert.doesNotMatch(result.aidDescription, /100%|loan/i);
+  assert.deepEqual(result.thresholds, []);
+  assert.equal(resolveFeeStatusAndAid({
+    university: { finance: { financial_aid: { need_blind: true, basis: "need" } } },
+    profile: { studyLevel: "Master" },
+  }).aidBadge, "");
+
+  const confirmedCoverage = resolveFeeStatusAndAid({
+    university: {
+      finance: {
+        financial_aid: {
+          need_blind: true,
+          basis: "need",
+          meets_full_demonstrated_need: true,
+          zero_loans_policy: true,
+        },
+      },
+    },
+    profile: { studyLevel: "Bachelor" },
+  });
+  assert.ok(confirmedCoverage.thresholds.some((item) => item.label === "Full demonstrated need met"));
+  assert.ok(confirmedCoverage.thresholds.some((item) => item.label === "Aid packages without loans"));
+});
+
+test("uncatalogued aid and unknown costs are described accurately in English and Russian", () => {
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const scholarshipContainer = { innerHTML: "" };
+  const priceEl = { innerHTML: "" };
+  const university = {
+    finance: { currency: "USD", total_cost_year_usd: null, financial_aid: { need_based: true } },
+    admission_categories: [{
+      id: "bachelor-route",
+      label: "Undergraduate route",
+      scope: "program_group",
+      funding_options: [{
+        id: "paid-option",
+        label: "Self-funded",
+        funding_type: "paid",
+        finance_override: { currency: "USD", total_cost_year_usd: null },
+      }],
+    }],
+  };
+
+  for (const [language, expected] of [
+    ["eng", "No grant options are catalogued here"],
+    ["ru", "В каталоге нет вариантов грантов"],
+  ]) {
+    setLanguage(language, { persist: false, emit: false });
+    renderFinanceSection({
+      annualCostForTrack: () => null,
+      container,
+      priceEl,
+      scholarshipContainer,
+      university,
+    });
+    assert.ok(scholarshipContainer.innerHTML.includes(expected));
+    assert.doesNotMatch(priceEl.innerHTML, /\$0(?:\.00)?/);
+    assert.ok(!container.innerHTML.includes("$0.00"));
+  }
+});
+
+test("a single scoped published range keeps its currency in the summary and finance option", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const summaryLabels = {
+    ".price-header": { textContent: "" },
+    ".price-context": { textContent: "" },
+  };
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const priceEl = {
+    innerHTML: "",
+    textContent: "",
+    closest: () => ({ querySelector: (selector) => summaryLabels[selector] }),
+  };
+  const university = {
+    finance: {
+      currency: "USD",
+      total_cost_year_range: { min: 95134, max: 100134, currency: "USD", academic_year: "2026-27" },
+      scope: "Harvard College undergraduate cost of attendance; domestic and international applicants",
+    },
+    admission_categories: [{
+      id: "college",
+      label: "Harvard College Undergraduate",
+      study_level: "Bachelor",
+      scope: "undergraduate_general",
+      requirement_profiles: [{
+        id: "college-profile",
+        label: "General",
+        funding_options: [
+          { id: "paid", label: "Standard", funding_type: "paid" },
+          { id: "grant", label: "Need-based Aid", funding_type: "grant", funding_program: "Need-based Aid" },
+        ],
+      }],
+    }],
+  };
+
+  renderFinanceSection({
+    annualCostForTrack: () => null,
+    container,
+    priceEl,
+    university,
+  });
+
+  assert.equal(priceEl.textContent, "$95,134–$100,134");
+  assert.equal(summaryLabels[".price-header"].textContent, "Published annual cost range");
+  assert.match(summaryLabels[".price-context"].textContent, /2026-27/);
+  assert.match(container.innerHTML, /\$95,134–\$100,134/);
+  assert.match(container.innerHTML, /Harvard College undergraduate cost of attendance/);
+  assert.match(container.innerHTML, /Estimated cost before aid/);
+});
+
+test("a program-scoped range is shown in its option with applicant and cycle context, not as a university summary", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const priceEl = { innerHTML: "", textContent: "" };
+  const university = {
+    finance: { currency: "GBP", total_cost_year_usd: null },
+    admission_categories: [
+      {
+        id: "oxford-cs",
+        label: "Undergraduate admission (Computer Science)",
+        study_level: "Bachelor",
+        scope: "program",
+        finance_override: {
+          total_cost_year_min: 79855,
+          total_cost_year_max: 86155,
+          currency: "GBP",
+          academic_year: "2027-28",
+          fee_status: "overseas",
+          scope: "program",
+          note: "Published course cost range <img src=x> depends on living costs.",
+        },
+        funding_options: [{ id: "paid", label: "Overseas fee", funding_type: "paid" }],
+      },
+      {
+        id: "oxford-maths-cs",
+        label: "Undergraduate admission (Mathematics and Computer Science)",
+        study_level: "Bachelor",
+        scope: "program",
+      },
+    ],
+  };
+
+  renderFinanceSection({
+    annualCostForTrack: () => null,
+    container,
+    priceEl,
+    university,
+  });
+
+  assert.match(container.innerHTML, /£79,855–£86,155/);
+  assert.match(container.innerHTML, /Overseas applicants/);
+  assert.match(container.innerHTML, /Academic year: 2027.28/);
+  assert.match(container.innerHTML, /&lt;img src=x&gt;/);
+  assert.doesNotMatch(priceEl.innerHTML, /£79,855/);
+  assert.doesNotMatch(priceEl.textContent, /£79,855/);
+});
+
+test("a university-scoped range does not leak into a different undergraduate category", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const priceEl = { innerHTML: "", textContent: "" };
+  const university = {
+    finance: {
+      currency: "USD",
+      total_cost_year_min: 95134,
+      total_cost_year_max: 100134,
+      academic_year: "2026-27",
+      scope: "Harvard College undergraduate cost of attendance",
+    },
+    admission_categories: [
+      { id: "college", label: "Harvard College (Undergraduate First-Year)", study_level: "Bachelor", scope: "undergraduate_general" },
+      { id: "other", label: "Other Undergraduate Program", study_level: "Bachelor", scope: "program" },
+    ],
+  };
+
+  renderFinanceSection({
+    annualCostForTrack: () => null,
+    container,
+    priceEl,
+    university,
+  });
+
+  assert.equal((container.innerHTML.match(/\$95,134–\$100,134/g) || []).length, 1);
+  assert.doesNotMatch(priceEl.innerHTML, /\$95,134/);
+});
+
 test("map marker markup escapes URLs and cluster counts are normalized", () => {
   const marker = mapMarkerLogoHtml('logo.png" onerror="alert(1)');
   assert.match(marker, /logo\.png&quot; onerror=&quot;alert\(1\)/);

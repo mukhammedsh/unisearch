@@ -63,6 +63,26 @@ _SUBJECTIVE_OR_UNVERIFIED_TAGS = frozenset({
     "technology",
 })
 
+TOP_FIVE_PILOT_SOURCE_HOSTS = {
+    "mit-usa-cambridge": ("mit.edu", "mitadmissions.org"),
+    "imperial-college-london-uk": ("imperial.ac.uk",),
+    "stanford-university-usa-ca": ("stanford.edu",),
+    "harvard-usa-cambridge": ("harvard.edu", "hbs.edu"),
+    "university-of-oxford-uk-oxford": ("ox.ac.uk",),
+}
+TOP_FIVE_VALID_ADMISSION_SCOPES = {
+    "general",
+    "program",
+    "program_group",
+    "undergraduate_faculty",
+    "undergraduate_department",
+    "undergraduate_general",
+    "postgraduate_taught",
+    "postgraduate_research",
+    "graduate_business",
+    "doctoral_research",
+}
+
 
 def _is_non_empty_text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
@@ -437,6 +457,146 @@ def _audit_published_admission(
     for key in ("scope", "audience", "cycle", "source_url", "verified_at"):
         if not _is_non_empty_text(published.get(key)):
             errors.append(f"{uid}: {label}.{key} is required for comparable admission data")
+
+
+def _iter_nested_source_urls(value: Any, path: str) -> Iterable[Tuple[str, str]]:
+    if isinstance(value, dict):
+        for key, child in value.items():
+            child_path = f"{path}.{key}"
+            if key.endswith("url") and isinstance(child, str) and child.strip():
+                yield child_path, child.strip()
+            yield from _iter_nested_source_urls(child, child_path)
+    elif isinstance(value, list):
+        list_key = path.rsplit(".", 1)[-1].lower()
+        for index, child in enumerate(value):
+            child_path = f"{path}[{index}]"
+            if list_key.endswith("source_urls") and isinstance(child, str) and child.strip():
+                yield child_path, child.strip()
+            else:
+                yield from _iter_nested_source_urls(child, child_path)
+
+
+def _has_deadline_field(value: Any) -> bool:
+    if isinstance(value, dict):
+        return any(
+            "deadline" in key.lower() or key in ("deadlines", "admission_rounds") or _has_deadline_field(child)
+            for key, child in value.items()
+        )
+    if isinstance(value, list):
+        return any(_has_deadline_field(child) for child in value)
+    return False
+
+
+def _audit_top_five_pilot(errors: List[str], uid: str, university: Dict[str, Any]) -> None:
+    """Apply stricter source and scope checks to the five recently enriched records."""
+    allowed_hosts = TOP_FIVE_PILOT_SOURCE_HOSTS.get(uid)
+    if not allowed_hosts:
+        return
+
+    for root_key in ("deadlines", "finance", "admission_categories"):
+        root_value = university.get(root_key)
+        for source_path, source_url in _iter_nested_source_urls(root_value, root_key):
+            parsed = urlparse(source_url)
+            hostname = (parsed.hostname or "").lower().rstrip(".")
+            if parsed.scheme not in ("http", "https") or not hostname:
+                errors.append(f"{uid}: {source_path} must be a valid official university URL")
+            elif not any(hostname == domain or hostname.endswith(f".{domain}") for domain in allowed_hosts):
+                errors.append(f"{uid}: {source_path} links outside the university's official domains: {hostname}")
+
+    categories = university.get("admission_categories")
+    if isinstance(categories, list):
+        expected_levels = {
+            "undergraduate_general": {"Bachelor"},
+            "undergraduate_department": {"Bachelor"},
+            "undergraduate_faculty": {"Bachelor"},
+            "postgraduate_taught": {"Master"},
+            "graduate_business": {"Master"},
+            "postgraduate_research": {"Doctorate", "PhD"},
+            "doctoral_research": {"Doctorate", "PhD"},
+        }
+        for category_index, category in enumerate(categories):
+            if not isinstance(category, dict):
+                continue
+            category_path = f"admission_categories[{category_index}]"
+            scope = str(category.get("scope") or "").strip().lower()
+            if scope not in TOP_FIVE_VALID_ADMISSION_SCOPES:
+                errors.append(f"{uid}: {category_path}.scope is invalid for the top-five data pilot")
+            levels = category.get("study_levels")
+            if levels is None and _is_non_empty_text(category.get("degree_level")):
+                levels = [category["degree_level"]]
+            if scope in expected_levels:
+                if not isinstance(levels, list) or not any(level in expected_levels[scope] for level in levels):
+                    errors.append(f"{uid}: {category_path}.study_levels do not match scope '{scope}'")
+            if _has_deadline_field(category):
+                deadline_rows = category.get("deadlines")
+                if not isinstance(deadline_rows, list):
+                    deadline_rows = category.get("admission_rounds")
+                row_metadata_complete = isinstance(deadline_rows, list) and all(
+                    not isinstance(deadline_row, dict)
+                    or not _has_deadline_field(deadline_row)
+                    or (_is_non_empty_text(deadline_row.get("cycle")) and _is_non_empty_text(deadline_row.get("source_url")))
+                    for deadline_row in deadline_rows
+                )
+                if not row_metadata_complete and not _is_non_empty_text(category.get("cycle")):
+                    errors.append(f"{uid}: {category_path}.cycle is required when admission deadlines are present")
+                if not row_metadata_complete and not _is_non_empty_text(category.get("source_url")):
+                    errors.append(f"{uid}: {category_path}.source_url is required when admission deadlines are present")
+                if not _is_non_empty_text(category.get("verified_at")):
+                    errors.append(f"{uid}: {category_path}.verified_at is required when admission deadlines are present")
+                elif not _is_valid_iso_date(category.get("verified_at")):
+                    errors.append(f"{uid}: {category_path}.verified_at must be valid YYYY-MM-DD date")
+            fee_fields = [
+                (key, value) for key, value in category.items()
+                if key in {"application_fee_usd", "application_fee_gbp", "application_fee_by_program_usd", "application_fee_by_program_gbp"}
+            ]
+            for fee_key, fee_value in fee_fields:
+                amounts = fee_value.values() if isinstance(fee_value, dict) else (fee_value,)
+                if fee_value is not None and any(
+                    not isinstance(amount, (int, float)) or isinstance(amount, bool) or float(amount) < 0
+                    for amount in amounts
+                ):
+                    errors.append(f"{uid}: {category_path}.{fee_key} must contain non-negative numeric application fees")
+            if fee_fields:
+                for metadata_key in ("cycle", "source_url", "verified_at"):
+                    if not _is_non_empty_text(category.get(metadata_key)):
+                        errors.append(f"{uid}: {category_path}.{metadata_key} is required for application fee data")
+                if _is_non_empty_text(category.get("verified_at")) and not _is_valid_iso_date(category.get("verified_at")):
+                    errors.append(f"{uid}: {category_path}.verified_at must be valid YYYY-MM-DD date")
+
+    deadlines = university.get("deadlines")
+    if isinstance(deadlines, dict):
+        for section_name, section in deadlines.items():
+            if not isinstance(section, dict) or not _has_deadline_field(section):
+                continue
+            section_path = f"deadlines.{section_name}"
+            if not _is_non_empty_text(section.get("cycle")):
+                errors.append(f"{uid}: {section_path}.cycle is required when deadlines are present")
+            if not _is_non_empty_text(section.get("source_url")):
+                errors.append(f"{uid}: {section_path}.source_url is required when deadlines are present")
+            if not _is_non_empty_text(section.get("verified_at")):
+                errors.append(f"{uid}: {section_path}.verified_at is required when deadlines are present")
+            elif not _is_valid_iso_date(section.get("verified_at")):
+                errors.append(f"{uid}: {section_path}.verified_at must be valid YYYY-MM-DD date")
+
+    finance = university.get("finance")
+    if isinstance(finance, dict):
+        breakdown = finance.get("costs_breakdown_year_usd")
+        if breakdown is not None:
+            if not isinstance(breakdown, dict) or any(
+                not isinstance(amount, (int, float)) or isinstance(amount, bool) or float(amount) < 0
+                for amount in breakdown.values()
+            ):
+                errors.append(f"{uid}: finance.costs_breakdown_year_usd must contain non-negative numeric values")
+            sources = finance.get("costs_breakdown_source_urls")
+            if not isinstance(sources, list) or not sources:
+                errors.append(f"{uid}: finance.costs_breakdown_source_urls is required for a cost breakdown")
+            if isinstance(breakdown, dict) and "costs_breakdown_year_usd" in finance and finance.get("currency") != "USD":
+                errors.append(f"{uid}: finance.costs_breakdown_year_usd requires USD currency")
+            for metadata_key in ("academic_year", "fee_status", "scope", "verified_at"):
+                if not _is_non_empty_text(finance.get(metadata_key)):
+                    errors.append(f"{uid}: finance.{metadata_key} is required for a dated cost breakdown")
+            if _is_non_empty_text(finance.get("verified_at")) and not _is_valid_iso_date(finance.get("verified_at")):
+                errors.append(f"{uid}: finance.verified_at must be valid YYYY-MM-DD date")
 
 
 VALID_FACT_STATUSES = {
@@ -840,8 +1000,9 @@ def audit_dataset(
             errors.append(f"{uid}: finance must be object")
         else:
             total_cost = finance.get("total_cost_year_usd")
-            if not isinstance(total_cost, (int, float)) or float(total_cost) < 0:
-                errors.append(f"{uid}: finance.total_cost_year_usd must be non-negative number")
+            if uid not in TOP_FIVE_PILOT_SOURCE_HOSTS or total_cost is not None:
+                if not isinstance(total_cost, (int, float)) or float(total_cost) < 0:
+                    errors.append(f"{uid}: finance.total_cost_year_usd must be non-negative number")
             _audit_comparable_finance(errors, uid, "finance", finance)
             _audit_one_time_costs(errors, uid, finance)
 
@@ -858,7 +1019,19 @@ def audit_dataset(
                 if not _is_non_empty_text(category.get("label")):
                     errors.append(f"{uid}: admission_categories[{c_idx}].label is empty")
                 scope = str(category.get("scope") or "").strip().lower()
-                if scope not in ("general", "program", "program_group"):
+                valid_scopes = (
+                    "general",
+                    "program",
+                    "program_group",
+                    "undergraduate_faculty",
+                    "undergraduate_department",
+                    "undergraduate_general",
+                    "postgraduate_taught",
+                    "postgraduate_research",
+                    "graduate_business",
+                    "doctoral_research",
+                )
+                if scope not in valid_scopes:
                     warnings.append(f"{uid}: admission_categories[{c_idx}].scope is '{scope or 'empty'}'")
                 category_label = f"admission_categories[{c_idx}]"
                 _audit_published_admission(
@@ -931,6 +1104,8 @@ def audit_dataset(
                         f_type = str(funding.get("funding_type") or "").strip().lower()
                         if f_type not in ("grant", "paid"):
                             warnings.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].funding_options[{f_idx}].funding_type is '{f_type or 'empty'}'")
+
+        _audit_top_five_pilot(errors, uid, row)
 
         fact_provenance = row.get("fact_provenance")
         if not isinstance(fact_provenance, dict):

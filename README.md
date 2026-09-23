@@ -8,17 +8,17 @@
 [![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-UniSearch helps applicants discover and compare universities for **bachelor's studies**, exploring admissions requirements, costs, and funding options based on their profile.
+UniSearch helps applicants discover and compare universities across study levels, exploring programs, admissions requirements, costs, and funding options based on their profile. Coverage varies by university and program; time-sensitive facts include official sources and verification dates.
 
 [Open the website](https://unisearch-frontend.onrender.com/) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 ## Features
 
 - **Catalog on the homepage:** search, location and cost filters, sorting, favorites, and list or clustered map views with progressively loaded map results.
-- **Applicant profile:** GPA and grading scale, exams, languages, budget, intended major, interests, study mode, and funding preferences.
+- **Applicant profile:** GPA and grading scale, exams, languages, budget, intended major, interests, study mode, funding preferences, and multiple citizenships selected from a searchable country list.
 - **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags, including a clear program-not-offered warning when a catalog alternative does not match the intended major. It is a sorting mode within the catalog.
 - **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
-- **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available.
+- **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available. The deadlines tab includes a month calendar for exact dated events; approximate and yearless deadlines remain in the timeline and list.
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 - **Guide:** a structured reference explaining admission requirements, exams, UniFit, UniChance, and comparison workflows, with section-to-section navigation.
@@ -32,6 +32,8 @@ UniFit measures preference fit, while UniChance estimates admission chances. Uni
 ROI is a simplified ratio, not the payback period for an entire degree or a forecast of personal earnings. If salary data for the chosen major is missing, the calculation may use general university salary data.
 
 Verified facts and requirements come from official sources. Catalog coverage is incomplete: missing values are preferred over invented facts. Some UniFit factors use proxy estimates and should not be treated as verified university statistics.
+
+University detail pages include a study-level data coverage summary for programs, admission requirements, deadline precision, costs, and aid. “Not catalogued” means UniSearch has no matching data listed; it does not indicate whether the university offers that program or policy. Coverage describes catalog presence and does not itself verify a fact.
 
 ## Run locally
 

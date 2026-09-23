@@ -220,6 +220,65 @@ html.scope-notice-dismissed #universitiesScopeNotice {
   font-size: 16px;
 }
 
+.catalog-level-segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  box-shadow: none;
+}
+
+.catalog-level-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  line-height: 1.4;
+  white-space: nowrap;
+  box-shadow: none;
+  transition: color var(--motion-fast) var(--motion-ease-standard), background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.catalog-level-btn:hover {
+  color: var(--text);
+}
+
+.catalog-level-btn.is-active {
+  background: var(--surface-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  font-weight: 600;
+}
+
+.catalog-level-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .catalog-level-segmented {
+    overflow-x: auto;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
+
+  .catalog-level-segmented::-webkit-scrollbar {
+    display: none;
+  }
+
+  .catalog-level-btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 1024px) {
   .u-section-bar {
     display: flex;

@@ -20,6 +20,7 @@ from app.services.finance_modes import (
     normalize_study_mode as _normalize_study_mode,
 )
 from app.services import search as search_service
+from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program
 
 
 def _uniq_non_empty(items: List[Any]) -> List[str]:
@@ -76,7 +77,7 @@ def _sanitize_public_source_urls(data: Any) -> Any:
 
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
-UNIVERSITY_DETAIL_REPR_VERSION = 4
+UNIVERSITY_DETAIL_REPR_VERSION = 6
 COLLEGE_SCORECARD_PUBLIC_API_KEY = "DEMO_KEY"
 COLLEGE_SCORECARD_HOST = "api.data.gov"
 COLLEGE_SCORECARD_PATH_PREFIX = "/ed/collegescorecard/"
@@ -808,10 +809,10 @@ def _to_bool(x: Any) -> bool:
 
 def _effective_university_cost(
     u: Dict[str, Any], format_preference: Any = "any"
-) -> float:
+) -> Optional[float]:
     mode = _normalize_study_mode(format_preference)
     finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
-    total = _to_float(finance.get("total_cost_year_usd")) or 0.0
+    total = _to_float(finance.get("total_cost_year_usd"))
     breakdown = finance.get("costs_breakdown_year_usd")
     if not isinstance(breakdown, dict):
         breakdown = {}
@@ -829,18 +830,20 @@ def _effective_university_cost(
         mode_total = _mode_total_from_finance(finance, "online")
         if mode_total is not None and mode_total >= 0:
             return max(0.0, mode_total)
-        return 0.0
+        return None
 
-    return max(0.0, total)
+    return max(0.0, total) if total is not None else None
 
 
 def _effective_university_cost_usd(
     u: Dict[str, Any], format_preference: Any = "any"
-) -> float:
+) -> Optional[float]:
     mode = _normalize_study_mode(format_preference)
     raw_cost = _effective_university_cost(u, format_preference=mode)
+    if raw_cost is None:
+        return None
     if raw_cost <= 0:
-        return 0.0
+        return raw_cost
     finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
     currency_code = str(finance.get("currency") or "USD").strip().upper()
     if not currency_code or currency_code == "USD":
@@ -848,8 +851,39 @@ def _effective_university_cost_usd(
     try:
         from app.services.currency import convert
         return max(0.0, float(convert(raw_cost, currency_code, "USD")))
-    except Exception:
-        return raw_cost
+    except ValueError:
+        return None
+
+
+def _university_cost_range(u: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
+    minimum = _to_float(finance.get("total_cost_year_min"))
+    maximum = _to_float(finance.get("total_cost_year_max"))
+    if minimum is None or maximum is None or minimum < 0 or maximum < minimum:
+        return None
+
+    currency = str(finance.get("currency") or "").strip().upper() or None
+    minimum_usd = maximum_usd = None
+    if currency == "USD":
+        minimum_usd, maximum_usd = minimum, maximum
+    elif currency:
+        try:
+            from app.services.currency import convert
+            minimum_usd = max(0.0, float(convert(minimum, currency, "USD")))
+            maximum_usd = max(0.0, float(convert(maximum, currency, "USD")))
+        except ValueError:
+            minimum_usd = maximum_usd = None
+
+    return {
+        "min": minimum,
+        "max": maximum,
+        "currency": currency,
+        "min_usd": minimum_usd,
+        "max_usd": maximum_usd,
+        "academic_year": finance.get("academic_year"),
+        "source_url": finance.get("source_url"),
+        "source_urls": finance.get("source_urls"),
+    }
 
 
 from app.services.university_tracks import (
@@ -984,6 +1018,9 @@ def _build_university_meta(u: Dict[str, Any], rus_names: Optional[Dict[str, str]
             program_levels.extend(lv)
         else:
             program_levels.append(lv)
+        program_name = str(p.get("name") or "")
+        if re.search(r"\bMBA\b|\bMaster(?:'s)?\s+of\s+Business\s+Administration\b", program_name, re.IGNORECASE):
+            program_levels.append("MBA")
     program_formats = [p.get("study_mode") for p in programs]
     major_exact = _uniq_non_empty(
         [
@@ -1242,6 +1279,8 @@ def to_university_card(
     aid_obj = aid if isinstance(aid, dict) else {}
     coordinates = u.get("coordinates")
     coordinates_obj = coordinates if isinstance(coordinates, dict) else {}
+    card_cost = _effective_university_cost(u, format_preference=mode)
+    card_cost_range = _university_cost_range(u)
 
     name_value = str(u.get("name") or "")
     country_value = location_obj.get("country")
@@ -1264,10 +1303,11 @@ def to_university_card(
             "state": state_value,
         },
         "finance": {
-            "total_cost_year_usd": _effective_university_cost(
-                u, format_preference=mode
+            "total_cost_year_usd": card_cost,
+            "total_cost_year_range": card_cost_range,
+            "currency": finance_obj.get("currency") or (
+                "USD" if card_cost is not None else (card_cost_range or {}).get("currency")
             ),
-            "currency": finance_obj.get("currency") or "USD",
             "financial_aid": {
                 "merit_based": _to_bool(aid_obj.get("merit_based")),
                 "need_based": _to_bool(aid_obj.get("need_based")),
@@ -1387,17 +1427,18 @@ def _apply_sort(
     if sort == "tuition_asc":
         return sorted(
             items,
-            key=lambda u: _effective_university_cost_usd(
-                u, format_preference=format_preference
+            key=lambda u: (
+                (cost := _effective_university_cost_usd(u, format_preference=format_preference)) is None,
+                cost if cost is not None else 0.0,
             ),
         )
     if sort == "tuition_desc":
         return sorted(
             items,
-            key=lambda u: _effective_university_cost_usd(
-                u, format_preference=format_preference
+            key=lambda u: (
+                (cost := _effective_university_cost_usd(u, format_preference=format_preference)) is None,
+                -(cost if cost is not None else 0.0),
             ),
-            reverse=True,
         )
 
     if sort == "acceptance_asc":
@@ -1500,7 +1541,10 @@ def get_university_by_id(
         return None
     if not localized:
         return item
-    return _localize_university_payload(item, search_lang)
+    payload = _localize_university_payload(item, search_lang)
+    payload["coverage_by_level"] = build_coverage_by_level(item)
+    payload["coverage_by_program"] = build_coverage_by_program(item)
+    return payload
 
 
 def get_university_etag(university_id: str, search_lang: Optional[str] = None) -> str:
@@ -1696,7 +1740,11 @@ def list_universities(
         pairs = [
             (u, meta_row)
             for (u, meta_row) in pairs
-            if any(x == sl for x in meta_row.get("study_levels", []))
+            if any(
+                _safe_lower(x) == sl
+                or (sl in ("doctorate", "phd") and _safe_lower(x) in ("doctorate", "phd"))
+                for x in meta_row.get("study_levels", [])
+            )
         ]
 
     if format:

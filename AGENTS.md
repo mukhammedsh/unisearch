@@ -4,7 +4,7 @@
 
 - **Communication:** Communicate with the user in Russian unless they request another language.
 - **Repository language:** Keep the project itself in English. Write source code, identifiers, code comments, logs, developer-facing messages, documentation, issue/PR text, commit messages, and `CHANGELOG.md` entries in English. Russian is allowed only in Russian localization files and source data whose actual content is Russian.
-- **Product scope:** Bachelor’s studies only. Ignore master’s and PhD programs unless the user explicitly changes the product scope.
+- **Product scope:** Cover university information across undergraduate, master's, doctoral, and professional programs. Keep each fact tied to its applicable study level, program, applicant category, and admissions cycle; do not apply a policy from one scope to another.
 - **Implementation:** Follow established project patterns. Find the nearest code and design analogue before writing new code. Do not modify files outside the task.
 - **Commits:** Write meaningful English commit messages from the user’s perspective, without bot attribution.
 - **Encoding:** Before every commit, run `npm run fix:encoding` followed by `npm run check:encoding`. Never commit mojibake, BOM, or invalid UTF-8.

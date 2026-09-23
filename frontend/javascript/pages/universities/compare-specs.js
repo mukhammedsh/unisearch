@@ -68,6 +68,37 @@ export const compareSlotLabel = (index) => tFormat(
   `University ${index + 1}`
 );
 
+function hasUnconfirmedGrantPrice(university, choices = null) {
+    const selectedFunding = compareSelectedAdmissionOption(university, choices);
+    return getTrackFundingType(selectedFunding) === "grant"
+        && Boolean(selectedFunding?.__is_funding_option)
+        && selectedFunding?.finance_override
+        && typeof selectedFunding.finance_override === "object";
+}
+
+function compareCostContextForDisplay(university, choices = null) {
+    if (hasUnconfirmedGrantPrice(university, choices)) {
+        return {
+            min: null,
+            max: null,
+            currency: String(university?.finance?.currency || "USD").trim().toUpperCase(),
+            academicYear: "",
+            feeStatus: "",
+            scope: "",
+            source: "",
+            sourceUrl: "",
+            verifiedAt: "",
+        };
+    }
+    return compareSelectedCostContext(university, choices);
+}
+
+function compareAnnualCostForDisplay(university, choices = null) {
+    return hasUnconfirmedGrantPrice(university, choices)
+        ? null
+        : compareSelectedAnnualCost(university, choices);
+}
+
 export const compareOptionFundingDeltaPreview = (entry, entries) => {
     const option = entry?.option || {};
     if (getTrackFundingType(option) !== "grant") return "";
@@ -380,7 +411,13 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.funding_choice", "Selected funding"),
             type: "text",
             direction: "neutral",
-            getter: compareFundingChoiceText,
+            getter: (university) => {
+                const selectedFunding = compareSelectedAdmissionOption(university);
+                const label = compareFundingChoiceText(university);
+                return getTrackFundingType(selectedFunding) === "grant"
+                    ? `${label} · ${t("universities.compare.funding.not_awarded", "Potential award; not confirmed")}`
+                    : label;
+            },
             score: false,
             reason: false,
         },
@@ -446,12 +483,12 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.total_cost", "Total / year"),
             type: "number",
             direction: "lower",
-            getter: compareSelectedAnnualCost,
-            formatter: (_value, u) => formatCompareCostRange(compareSelectedCostContext(u)),
-            sourceGetter: compareSelectedCostContext,
+            getter: compareAnnualCostForDisplay,
+            formatter: (_value, u) => formatCompareCostRange(compareCostContextForDisplay(u)),
+            sourceGetter: compareCostContextForDisplay,
             materiality: 0.1,
             comparable: (rows) => compareCostContextsComparable(
-                rows.map((row) => compareSelectedCostContext(row.university))
+                rows.map((row) => compareCostContextForDisplay(row.university))
             ),
         },
         {
@@ -461,7 +498,7 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.tuition_fees", "Tuition + fees"),
             type: "text",
             direction: "neutral",
-            getter: (u) => compareCostBreakdownText(u, "tuition"),
+            getter: (u) => hasUnconfirmedGrantPrice(u) ? t("common.na", "N/A") : compareCostBreakdownText(u, "tuition"),
         },
         {
             key: "living_costs",
@@ -470,7 +507,7 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.living_costs", "Living cost items"),
             type: "text",
             direction: "neutral",
-            getter: (u) => compareCostBreakdownText(u, "living"),
+            getter: (u) => hasUnconfirmedGrantPrice(u) ? t("common.na", "N/A") : compareCostBreakdownText(u, "living"),
         },
         {
             key: "aid",
@@ -848,7 +885,7 @@ const compareAdmissionTheme = (universities, context) => {
 };
 
 const compareFinanceTheme = (universities, context) => {
-    const costs = universities.map((university) => compareSelectedCostContext(university, context?.choices));
+    const costs = universities.map((university) => compareCostContextForDisplay(university, context?.choices));
     const available = costs.every((cost) => (
         cost?.min !== null
         && cost?.min !== undefined
@@ -864,6 +901,9 @@ const compareFinanceTheme = (universities, context) => {
     } else if (comparable) {
         status = "tradeoff";
         summary = t("universities.compare.finance.tradeoff", "Compare the published sticker cost with each university's aid policy; neither alone is the final net price.");
+    }
+    if (universities.some((university) => hasUnconfirmedGrantPrice(university, context?.choices))) {
+        summary = t("universities.compare.finance.grant_unconfirmed", "A selected grant is only a potential award. Its amount is not a confirmed cost or discount until formally awarded.");
     }
     return {
         key: "finance",

@@ -189,6 +189,11 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             "Compulsory_Fees",
             "Student_Services_and_Health_Fees",
         }
+        scoped_prices_unknown = {
+            "imperial-college-london-uk",
+            "university-of-oxford-uk-oxford",
+            "harvard-usa-cambridge",
+        }
 
         for item in items:
             university_id = str((item or {}).get("id") or "")
@@ -205,14 +210,43 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
 
             finance = data.get("finance") or {}
             breakdown = finance.get("costs_breakdown_year_usd") or {}
-            total = float(finance.get("total_cost_year_usd") or 0.0)
-            self.assertGreater(total, 0.0, f"{university_id} missing total_cost_year_usd")
+            raw_total = finance.get("total_cost_year_usd")
+            if raw_total is None:
+                self.assertIn(university_id, scoped_prices_unknown, f"{university_id} unexpectedly has no annual total")
+                if not breakdown:
+                    self.assertIn(university_id, {"imperial-college-london-uk", "university-of-oxford-uk-oxford"})
+                    continue
+                total = None
+            else:
+                total = float(raw_total)
+                self.assertGreater(total, 0.0, f"{university_id} missing total_cost_year_usd")
 
             self.assertTrue(breakdown, f"{university_id} missing visible truthful breakdown")
-            self.assertTrue(
-                forbidden_keys.isdisjoint(set(breakdown.keys())),
-                f"{university_id} still exposes forbidden discretionary breakdown keys",
-            )
+            if university_id == "harvard-usa-cambridge":
+                # Harvard College publishes this scoped undergraduate COA as a
+                # range. Personal expenses are an explicit line in that budget;
+                # the root scalar stays null so the range is not flattened.
+                self.assertEqual("2026-27", finance.get("academic_year"))
+                self.assertEqual(
+                    "Harvard College undergraduate cost of attendance, one academic year; domestic and international applicants",
+                    finance.get("scope"),
+                )
+                cost_range = finance
+                self.assertEqual(95134, cost_range.get("total_cost_year_min"))
+                self.assertEqual(100134, cost_range.get("total_cost_year_max"))
+                self.assertTrue(str(finance.get("source_url") or "").startswith("https://"))
+                self.assertIn("Personal_Expenses", breakdown)
+                harvard_forbidden_keys = forbidden_keys - {"Personal_Expenses"}
+                self.assertTrue(
+                    harvard_forbidden_keys.isdisjoint(set(breakdown.keys())),
+                    f"{university_id} includes costs outside its published College budget breakdown",
+                )
+                self.assertEqual(95134, sum(float(value or 0.0) for value in breakdown.values()))
+            else:
+                self.assertTrue(
+                    forbidden_keys.isdisjoint(set(breakdown.keys())),
+                    f"{university_id} still exposes forbidden discretionary breakdown keys",
+                )
             self.assertTrue(
                 all(float(value or 0.0) > 0.0 for value in breakdown.values()),
                 f"{university_id} contains non-positive breakdown values",
@@ -226,11 +260,52 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                 )
 
             summed = sum(float(value or 0.0) for value in breakdown.values())
-            self.assertLessEqual(
-                summed,
-                total + 0.01,
-                f"{university_id} visible breakdown exceeds total_cost_year_usd",
-            )
+            if total is not None:
+                self.assertLessEqual(
+                    summed,
+                    total + 0.01,
+                    f"{university_id} visible breakdown exceeds total_cost_year_usd",
+                )
+
+    def test_imperial_and_oxford_unverified_global_costs_remain_null_in_list_and_detail(self):
+        expected = {
+            "imperial-college-london-uk": "GBP",
+            "university-of-oxford-uk-oxford": "GBP",
+        }
+        response = self.client.get("/universities?limit=2000&fields=card&sort=name_asc")
+        self.assertEqual(response.status_code, 200)
+        cards = {str(row.get("id")): row for row in response.json().get("items") or []}
+
+        for university_id, currency in expected.items():
+            with self.subTest(university_id=university_id):
+                card = cards.get(university_id)
+                self.assertIsNotNone(card)
+                card_finance = card.get("finance") or {}
+                self.assertIsNone(card_finance.get("total_cost_year_usd"))
+                self.assertEqual(currency, card_finance.get("currency"))
+
+                detail_response = self.client.get(f"/universities/{university_id}")
+                self.assertEqual(detail_response.status_code, 200)
+                detail_finance = detail_response.json().get("finance") or {}
+                self.assertIsNone(detail_finance.get("total_cost_year_usd"))
+                self.assertEqual(currency, detail_finance.get("currency"))
+
+    def test_harvard_root_cost_range_is_projected_without_a_scalar_price(self):
+        response = self.client.get("/universities?limit=2000&fields=card&sort=name_asc")
+        self.assertEqual(response.status_code, 200)
+        cards = {str(row.get("id")): row for row in response.json().get("items") or []}
+        card = cards.get("harvard-usa-cambridge")
+        self.assertIsNotNone(card)
+        finance = card.get("finance") or {}
+
+        self.assertIsNone(finance.get("total_cost_year_usd"))
+        self.assertEqual("USD", finance.get("currency"))
+        cost_range = finance.get("total_cost_year_range") or {}
+        self.assertEqual(95134, cost_range.get("min"))
+        self.assertEqual(100134, cost_range.get("max"))
+        self.assertEqual("USD", cost_range.get("currency"))
+        self.assertEqual(95134, cost_range.get("min_usd"))
+        self.assertEqual(100134, cost_range.get("max_usd"))
 
     def test_university_detail_localizes_campus_size_group_by_lang(self):
         response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
@@ -279,6 +354,11 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             self.assertEqual(detail.status_code, 200, university_id)
             finance = detail.json().get("finance") or {}
             status = str(finance.get("costs_breakdown_status") or "")
+            if university_id in {"imperial-college-london-uk", "university-of-oxford-uk-oxford"}:
+                self.assertIsNone(finance.get("total_cost_year_usd"), university_id)
+                self.assertEqual("GBP", finance.get("currency"), university_id)
+                self.assertFalse(finance.get("costs_breakdown_year_usd"), university_id)
+                continue
             self.assertIn(status, allowed, f"{university_id} missing valid costs_breakdown_status")
 
     def test_one_time_costs_are_separate_from_annual_costs(self):
@@ -567,12 +647,15 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                 )
                 self.assertEqual(response.status_code, 200)
                 data = response.json()
-                self.assertEqual("no_salary_data", data.get("context_type"))
+                self.assertIn(data.get("context_type"), {"no_salary_data", "insufficient_level_data"})
                 self.assertIsNone(data.get("salary_used_usd"))
                 self.assertIsNone(data.get("roi_value"))
                 self.assertEqual("No Data", data.get("roi_label"))
                 self.assertEqual("neutral", data.get("roi_tone"))
-                self.assertGreater(float(data.get("annual_cost_usd", 0.0)), 0.0)
+                if data.get("context_type") == "no_salary_data":
+                    self.assertGreater(float(data.get("annual_cost_usd", 0.0)), 0.0)
+                else:
+                    self.assertIsNone(data.get("annual_cost_usd"))
 
     def test_compare_profiles_batch_empty_list(self):
         response = self.client.post(
@@ -612,23 +695,15 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         item_ids = [item.get("id") for item in items]
         item_gpas = [_get_university_gpa(raw_by_id.get(uid, {})) for uid in item_ids]
 
-        # Top 25 universities have valid GPAs in non-increasing order
-        present_gpas = item_gpas[:25]
-        self.assertTrue(all(g is not None for g in present_gpas))
+        # Universities with a published GPA appear first in descending order.
+        present_gpas = [g for g in item_gpas if g is not None]
+        self.assertTrue(present_gpas)
+        self.assertEqual(item_gpas, present_gpas + [None] * (len(item_gpas) - len(present_gpas)))
         for i in range(len(present_gpas) - 1):
             self.assertGreaterEqual(present_gpas[i], present_gpas[i + 1])
 
-        # Remaining 25 universities have no GPA requirement (None)
-        none_gpas = item_gpas[25:]
-        self.assertTrue(all(g is None for g in none_gpas))
-
-        # First items must strictly match top GPA universities
-        self.assertEqual(item_ids[0], "harvard-usa-cambridge")
-        self.assertEqual(item_ids[1], "mit-usa-cambridge")
-        self.assertEqual(item_ids[2], "university-of-pennsylvania-usa-philadelphia")
-
         # Universities without GPA must be sorted alphabetically by name
-        none_names = [str(item.get("name") or "").lower() for item in items[25:]]
+        none_names = [str(item.get("name") or "").lower() for item in items[len(present_gpas):]]
         self.assertEqual(none_names, sorted(none_names))
 
 

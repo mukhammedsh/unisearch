@@ -176,6 +176,176 @@
               </div>
             </article>
 
+            <!-- Target Study Level Card -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.study_level">Target Study Level</h3>
+              </div>
+
+              <div class="profile-field">
+                <label class="sr-only" for="studyLevelSelect" data-i18n="profile.label.study_level">Target Study Level</label>
+                <select id="studyLevelSelect" class="profile-input profile-input--select" aria-label="Target Study Level" data-i18n-aria-label="profile.label.study_level">
+                  <option value="Any" data-i18n="profile.option.study_level_any">Any / All Levels</option>
+                  <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor / Undergraduate</option>
+                  <option value="Master" data-i18n="profile.option.study_level_master">Master / Postgraduate</option>
+                  <option value="Doctorate" data-i18n="profile.option.study_level_doctorate">Doctorate / PhD</option>
+                  <option value="MBA" data-i18n="profile.option.study_level_mba">Graduate Business / MBA</option>
+                </select>
+              </div>
+            </article>
+
+            <!-- Family Income & Aid Eligibility Card -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <div class="profile-card-head-row">
+                  <h3 class="profile-card-title" data-i18n="profile.label.family_income">Annual Family Income</h3>
+                  <span class="profile-info-wrap">
+                    <button
+                      type="button"
+                      class="profile-info"
+                      aria-label="How family income affects financial aid"
+                      data-i18n-aria-label="profile.family_income_info_title"
+                    >
+                      <span data-heroicon="information-circle" data-icon-size="16"></span>
+                    </button>
+                    <span class="profile-tooltip" role="tooltip">
+                      <strong data-i18n="profile.family_income_info_title">Income-Based Aid Thresholds</strong>
+                      <span data-i18n="profile.family_income_info_tooltip">
+                        Income is only one part of a financial aid review. Citizenship or residency, family assets, study level, and each university's rules can affect eligibility and cost.
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="profile-field">
+                <label class="sr-only" for="familyIncomeSelect" data-i18n="profile.label.family_income">Annual Family Income</label>
+                <select id="familyIncomeSelect" class="profile-input profile-input--select" aria-label="Annual Family Income" data-i18n-aria-label="profile.label.family_income">
+                  <option value="unspecified" data-i18n="profile.option.income_unspecified">Prefer not to say / Unspecified</option>
+                  <option value="under_85k" data-i18n="profile.option.income_under_85k">Under $85,000 / year (Full-Ride Tier)</option>
+                  <option value="85k_140k" data-i18n="profile.option.income_85k_140k">$85,000 – $140,000 / year (Free Tuition Tier)</option>
+                  <option value="140k_200k" data-i18n="profile.option.income_140k_200k">$140,000 – $200,000 / year (Expanded Aid Tier)</option>
+                  <option value="over_200k" data-i18n="profile.option.income_over_200k">Over $200,000 / year</option>
+                </select>
+              </div>
+            </article>
+
+            <!-- Citizenship & Residency Card -->
+            <article class="profile-card-block profile-card-block--full">
+              <div class="profile-card-head">
+                <div class="profile-card-head-row">
+                  <h3 class="profile-card-title" data-i18n="profile.label.citizenship">Citizenship &amp; Residency</h3>
+                  <span class="profile-info-wrap">
+                    <button
+                      type="button"
+                      class="profile-info"
+                      aria-label="How citizenship affects admission &amp; tuition"
+                      data-i18n-aria-label="profile.citizenship_info_title"
+                    >
+                      <span data-heroicon="information-circle" data-icon-size="16"></span>
+                    </button>
+                    <span class="profile-tooltip" role="tooltip">
+                      <strong data-i18n="profile.citizenship_info_title">How citizenship affects tuition</strong>
+                      <span data-i18n="profile.citizenship_info_tooltip">
+                        Citizenship can affect fee and aid rules, but it does not determine eligibility by itself. Universities may also consider residency history, immigration status, and program.
+                      </span>
+                    </span>
+                  </span>
+                </div>
+                <p class="profile-card-desc" data-i18n="profile.field.citizenship.desc">
+                  Select your citizenship(s). You can add multiple citizenships if you hold dual nationality.
+                </p>
+              </div>
+
+              <div class="profile-citizenship-workspace">
+                <div id="citizenshipChipsList" class="profile-citizenship-chips" role="list">
+                  <!-- Rendered dynamically -->
+                </div>
+
+                <div class="profile-citizenship-add-form">
+                  <div class="profile-citizenship-add-row">
+                    <label class="sr-only" for="citizenshipCountrySelect" data-i18n="profile.citizenship.select_country">Select Country</label>
+                    <select id="citizenshipCountrySelect" class="profile-input profile-input--select" aria-label="Select Country" data-i18n-aria-label="profile.citizenship.select_country" data-searchable="true" data-flags="off">
+                      <option value="" data-i18n="profile.citizenship.choose_placeholder">-- Choose a country / citizenship --</option>
+                      <option value="OTHER" data-i18n="profile.citizenship.other_option">Other / International</option>
+                    </select>
+                    <input
+                      type="text"
+                      id="citizenshipOtherInput"
+                      class="profile-input profile-citizenship-other-input"
+                      placeholder="Enter country name"
+                      data-i18n-placeholder="profile.citizenship.other_placeholder"
+                      style="display: none;"
+                    />
+                    <button type="button" id="addCitizenshipBtn" class="profile-button-subtle">
+                      <span data-heroicon="plus" data-icon-size="16"></span>
+                      <span data-i18n="profile.citizenship.add_btn">Add citizenship</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="profile-card-block profile-card-block--full">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.applicant_context.title">Education and application context</h3>
+                <p class="profile-card-desc" data-i18n="profile.applicant_context.optional_hint">Optional. These details help you review each university's requirements; they do not confirm qualification recognition or fee status.</p>
+              </div>
+              <div class="profile-applicant-context-grid">
+                <div class="profile-field">
+                  <label for="countryOfEducationSelect" data-i18n="profile.applicant_context.country_education">Country where you studied</label>
+                  <select id="countryOfEducationSelect" class="profile-input profile-input--select" data-searchable="true" data-flags="off">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="OTHER" data-i18n="profile.applicant_context.other">Other</option>
+                  </select>
+                  <input id="countryOfEducationOtherInput" class="profile-input profile-context-other-input" type="text" maxlength="80" placeholder="Enter country" data-i18n-placeholder="profile.applicant_context.country_other_placeholder" hidden />
+                </div>
+                <div class="profile-field">
+                  <label for="educationCredentialSelect" data-i18n="profile.applicant_context.credential">Credential or curriculum</label>
+                  <select id="educationCredentialSelect" class="profile-input profile-input--select">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="ib" data-i18n="profile.applicant_context.credential_ib">International Baccalaureate (IB)</option>
+                    <option value="a_level" data-i18n="profile.applicant_context.credential_a_level">A levels</option>
+                    <option value="us_high_school_diploma" data-i18n="profile.applicant_context.credential_us_diploma">US high school diploma</option>
+                    <option value="national_secondary" data-i18n="profile.applicant_context.credential_national">National secondary qualification</option>
+                    <option value="vocational" data-i18n="profile.applicant_context.credential_vocational">Vocational or professional qualification</option>
+                    <option value="other" data-i18n="profile.applicant_context.other">Other</option>
+                  </select>
+                  <input id="educationCredentialOtherInput" class="profile-input profile-context-other-input" type="text" maxlength="120" placeholder="Describe your credential or curriculum" data-i18n-placeholder="profile.applicant_context.credential_other_placeholder" hidden />
+                </div>
+                <div class="profile-field">
+                  <label for="applicantRouteSelect" data-i18n="profile.applicant_context.route">Application route</label>
+                  <select id="applicantRouteSelect" class="profile-input profile-input--select">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="first_year" data-i18n="profile.applicant_context.route_first_year">First-year applicant</option>
+                    <option value="transfer" data-i18n="profile.applicant_context.route_transfer">Transfer applicant</option>
+                    <option value="graduate" data-i18n="profile.applicant_context.route_graduate">Graduate applicant</option>
+                  </select>
+                </div>
+                <div class="profile-field">
+                  <label for="intendedEntryCycleInput" data-i18n="profile.applicant_context.entry_cycle">Intended entry cycle</label>
+                  <input id="intendedEntryCycleInput" class="profile-input" type="text" maxlength="40" placeholder="e.g. 2027 Fall" data-i18n-placeholder="profile.applicant_context.entry_cycle_placeholder" />
+                </div>
+                <div class="profile-field">
+                  <label for="currentResidenceCountrySelect" data-i18n="profile.applicant_context.current_residence">Current country of residence</label>
+                  <select id="currentResidenceCountrySelect" class="profile-input profile-input--select" data-searchable="true" data-flags="off">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="OTHER" data-i18n="profile.applicant_context.other">Other</option>
+                  </select>
+                  <input id="currentResidenceOtherInput" class="profile-input profile-context-other-input" type="text" maxlength="80" placeholder="Enter country" data-i18n-placeholder="profile.applicant_context.country_other_placeholder" hidden />
+                </div>
+                <div class="profile-field">
+                  <label for="feeStatusContextSelect" data-i18n="profile.applicant_context.fee_context">Fee status at the university (if known)</label>
+                  <select id="feeStatusContextSelect" class="profile-input profile-input--select">
+                    <option value="unknown" data-i18n="profile.applicant_context.fee_unknown">Not sure / not confirmed</option>
+                    <option value="self_reported_home_domestic" data-i18n="profile.applicant_context.fee_home">Home / domestic (self-reported)</option>
+                    <option value="self_reported_international_overseas" data-i18n="profile.applicant_context.fee_international">International / overseas (self-reported)</option>
+                    <option value="other" data-i18n="profile.applicant_context.fee_other">Other or not sure</option>
+                  </select>
+                </div>
+              </div>
+            </article>
+
           </div>
         </div>
 
@@ -309,7 +479,7 @@
                 <select id="langKind" class="profile-input" aria-label="Type" data-i18n-aria-label="profile.type"></select>
               </div>
 
-              <div id="cefrContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
+              <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
                 <label class="mini-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
                 <select id="langCefr" class="profile-input" aria-label="CEFR" data-i18n-aria-label="profile.cefr">
                   <option value="1">A1</option>
@@ -321,12 +491,12 @@
                 </select>
               </div>
 
-              <div id="examContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
+              <div id="examContainer" class="profile-lang-conditional lang-control-item">
                 <label class="mini-label" for="langExam" data-i18n="profile.exam">Exam</label>
                 <select id="langExam" class="profile-input" data-flags="off" aria-label="Exam" data-i18n-aria-label="profile.exam"></select>
               </div>
 
-              <div id="scoreContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
+              <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
                 <label class="mini-label" for="langExamScore" data-i18n="profile.score">Score</label>
                 <input
                   id="langExamScore"

@@ -24,6 +24,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         """
         profile = {
             "locale": "eng",
+            "studyLevel": "bachelor",
             "budget": 10000,
             "gpa": 3.40,
             "exams": [],
@@ -57,6 +58,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         """
         profile = {
             "locale": "eng",
+            "studyLevel": "bachelor",
             "budget": 100000,
             "gpa": 3.92,
             "exams": [
@@ -94,6 +96,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         """
         profile = {
             "locale": "eng",
+            "studyLevel": "bachelor",
             "budget": 15000,
             "gpa": 3.28,
             "exams": [
@@ -132,6 +135,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         """
         profile = {
             "locale": "eng",
+            "studyLevel": "bachelor",
             "budget": 0,
             "gpa": 3.80,
             "exams": [
@@ -164,11 +168,14 @@ class TestPersonaScoringCalibration(unittest.TestCase):
     def test_lisa_borderline_ielts(self):
         """
         Lisa: GPA 3.60, SAT 1480, IELTS 6.5, budget $50,000.
-        Filtered out at MIT (minimum IELTS 7.5).
+        MIT requires an SAT or ACT score and recommends English proficiency
+        evidence for some applicants. Its published IELTS minimum is 7,
+        not 7.5, and the recommendation cannot be applied to every applicant.
         Passes at TUM (IELTS 6.5 >= 6.5) and NU (IELTS 6.5 >= 6.5).
         """
         profile = {
             "locale": "eng",
+            "studyLevel": "bachelor",
             "budget": 50000,
             "gpa": 3.60,
             "exams": [
@@ -180,10 +187,11 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {}
         }
 
-        # 1. MIT (filtered out by IELTS)
+        # 1. MIT (low estimate, without a blanket IELTS eligibility gate)
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
-        self.assertTrue(chance_mit is None or chance_mit == 0, f"Lisa in MIT should have 0% or None chance, got {chance_mit}%")
+        self.assertIsNotNone(chance_mit)
+        self.assertLessEqual(chance_mit, 10)
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -204,6 +212,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         """
         profile = {
             "locale": "eng",
+            "studyLevel": "bachelor",
             "budget": 0,
             "gpa": 0,
             "exams": [],

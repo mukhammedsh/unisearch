@@ -715,8 +715,8 @@ universities.sort_name_asc: Name A-Z
 universities.sort_rank_asc: Global Rank
 universities.sort_strategy: Sort Strategy
 universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
-universities.scope_note.title: Bachelor's programs only
-universities.scope_note.body: The catalog shows bachelor's programs and related admissions information.
+universities.scope_note.title: Multi-Level Degree Catalog
+universities.scope_note.body: Explore bachelor, master, PhD, and MBA programs, admission timelines, and citizenship-aware financial aid.
 universities.scope_note.aria: Current study scope
 universities.scope_note.dismiss: Dismiss notice
 accessibility.skip_to_main: Skip to main content
@@ -741,10 +741,10 @@ university.action.compare_label: Compare
 university.action.compare_active: In comparison
 university.ask_placeholder: Ask about admission, scholarships, housing, deadlines...
 university.available_majors: Available Majors
-university.scope_badge: Bachelor's only for now
-university.scope_summary: This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.
+university.scope_badge: Academic Explorer
+university.scope_summary: Compare programs, application deadlines, and tuition information across study levels. Funding and eligibility depend on the program and applicant category.
 university.summary_aria: University summary
-university.programs_scope_note: Current list below is limited to bachelor's programs.
+university.programs_scope_note: Official programs and degree routes published by the institution.
 university.official_admissions_data: Official admissions data
 university.official_admissions_note: UniSearch shows only official published admissions metrics. If a university does not publish a rate, we keep it empty instead of guessing.
 university.admissions.university_wide: University-wide
@@ -1266,8 +1266,8 @@ terms.nav.updates: 8. Updates & Contact
 terms.acceptance.title: 1. Acceptance of Terms
 terms.acceptance.p1: By accessing or using the UniSearch website and related tools, you acknowledge that you have read, understood, and agreed to these Terms of Use. If you do not agree, please discontinue using the service.
 terms.purpose.title: 2. Scope & Service Purpose
-terms.purpose.p1: UniSearch is an independent academic discovery and search workspace built to help prospective students research undergraduate programs, entrance requirements, tuition rates, and funding options.
-terms.purpose.p2: The catalog is strictly focused on undergraduate studies and aggregates officially published institutional data.
+terms.purpose.p1: UniSearch is an independent academic discovery and search workspace built to help prospective students research programs across study levels, entrance requirements, tuition rates, and funding options.
+terms.purpose.p2: The catalog aggregates officially published institutional data. Coverage varies by university and program.
 terms.disclaimer.title: 3. Informational Nature & Educational Disclaimer
 terms.disclaimer.callout: Notice: UniSearch is not an admissions office and is not officially affiliated with the universities listed. Algorithmic scores are preliminary estimates and do not guarantee admission.
 terms.disclaimer.educational_status: UniSearch is an independent, non-commercial research initiative developed by high school students as an applied educational endeavor. The service is not an official admissions office, accredited governmental body, or formal admissions agency.
@@ -1313,3 +1313,737 @@ university.programs.search_label: Search programs
 university.programs.clear_search: Clear search
 university.programs.no_results: No programs match this search.
 university.programs.major_badge: Your major
+university.programs.field.degree_titles: Awarded degree
+university.programs.field.degree_type: Degree type
+university.programs.field.faculty: Faculty
+university.programs.field.department: Department
+university.programs.field.admissions_tests: Admissions tests
+university.programs.field.admissions_test_notes: Admissions test guidance
+university.programs.field.academic_entry_requirement: Academic entry requirement
+university.programs.field.entry_requirements: Entry requirements
+university.programs.field.required_documents: Required documents
+university.programs.field.application_deadline: Course application deadline
+university.programs.field.scholarship_consideration_deadline: Scholarship consideration deadline
+university.programs.field.home_annual_fee_gbp: Home annual course fee
+university.programs.field.overseas_annual_fee_gbp: Overseas annual course fee
+university.programs.field.tuition_year_usd: Annual tuition
+university.programs.field.application_fee_usd: Application fee
+university.programs.field.application_fee_gbp: Application fee
+university.programs.field.tuition_status: Tuition status
+university.programs.field.tuition_note: Tuition scope
+university.programs.field.admissions_test: Admissions test
+university.programs.field.standard_offer_a_level: Standard A-level offer
+university.programs.field.standard_offer_ib: Standard IB offer
+university.program_coverage.value.home_annual_fee_gbp: Home annual course fee
+university.program_coverage.value.overseas_annual_fee_gbp: Overseas annual course fee
+university.program_coverage.value.tuition_year_usd: Annual tuition
+profile.label.study_level: Target Study Level
+profile.option.study_level_any: Any study level
+profile.option.study_level_bachelor: Bachelor's
+profile.option.study_level_master: Master's
+profile.option.study_level_doctorate: Doctorate / PhD
+profile.option.study_level_mba: MBA
+profile.label.citizenship: Citizenship & Residency
+profile.field.citizenship.desc: Add one or multiple citizenships to evaluate tuition, fees, and financial aid in your favor.
+profile.citizenship_info_title: Citizenship & Residency Impact
+profile.citizenship_info_tooltip: Citizenship can affect fee and aid rules, but it does not determine eligibility by itself. Universities may also consider residency history, immigration status, and program. Add all citizenships you hold so they can be considered during review.
+profile.citizenship.select_country: Select a country...
+profile.citizenship.add_btn: Add
+profile.citizenship.other_option: Other country
+profile.citizenship.other_placeholder: Enter country name...
+profile.citizenship.empty_hint: No citizenships added yet. Add your citizenships for fee and aid policy review.
+profile.citizenship.search_placeholder: Search countries
+profile.citizenship.primary_badge: Primary
+profile.citizenship.set_primary_title: Set as primary citizenship
+profile.citizenship.remove_title: Remove citizenship
+profile.citizenship.max_count: You can add up to {count} citizenships
+profile.citizenship.choose_placeholder: Select country
+country.name.kz: Kazakhstan
+country.name.us: United States
+country.name.gb: United Kingdom
+country.name.ru: Russia
+country.name.cn: China
+country.name.de: Germany
+country.name.fr: France
+country.name.ca: Canada
+country.name.au: Australia
+country.name.sg: Singapore
+country.name.ch: Switzerland
+country.name.jp: Japan
+country.name.kr: South Korea
+country.name.nl: Netherlands
+country.name.tr: Turkey
+country.name.uz: Uzbekistan
+country.name.kg: Kyrgyzstan
+country.name.in: India
+university.admissions.deadlines_title: Application Deadlines & Timeline
+university.admissions.deadlines_subtitle: Official admission cycles, decision notification dates, and application fees.
+university.admissions.cycle_label: Cycle
+university.admissions.deadline_label: Deadline
+university.admissions.notification_label: Notification
+university.admissions.reply_label: Reply by
+university.admissions.aid_deadline_label: Financial aid deadline
+university.admissions.portal_fee_label: Portal & Fee
+university.admissions.fee_waiver_available: Fee waiver available
+university.admissions.all_levels: All Degrees
+university.admissions.filter_by_level: Filter admission tracks by degree level
+university.programs.filter_by_level: Filter programs by degree level
+university.finance.policy_title: Tuition Status & Financial Aid Policy
+university.finance.fee_status_label: Your Tuition Fee Status
+university.finance.aid_policy_label: Admissions Aid Policy
+university.finance.thresholds_title: Undergraduate income-based aid policies
+university.finance.phd_funding_title: Doctoral (PhD) Funding Guarantee
+university.finance.scholarships_title: Prestigious Scholarships & Fellowships
+university.finance.home_status: UK Home Fee Status
+university.finance.domestic_status: US Domestic Status
+university.finance.overseas_status: International / Overseas Status
+university.finance.need_blind_universal: Universal Need-Blind
+university.finance.need_blind_domestic: Need-Blind (Domestic)
+university.finance.need_aware_international: Need-Aware (International)
+university.finance.zero_loans: Aid packages without loans
+university.finance.zero_loans_value: No loans
+university.finance.published_range_title: Published annual cost range
+university.finance.range_scope_label: Applies to
+university.finance.academic_year_label: Academic year
+university.finance.range_applicants.domestic: Domestic applicants
+university.finance.range_applicants.home: Home-fee applicants
+university.finance.range_applicants.overseas: Overseas applicants
+university.finance.range_applicants.international: International applicants
+university.finance.full_ride_threshold: Full Ride Threshold
+university.finance.free_tuition_threshold: Free Tuition Threshold
+university.finance.home_status_desc: As a UK national, your tuition is capped at the statutory domestic rate (~£9,250–£9,535/year).
+university.finance.overseas_status_desc: International students pay published overseas faculty rates (£35,470–£53,700/year).
+university.finance.domestic_status_desc: Eligible for federal financial aid (FAFSA), in-state or domestic rate evaluation, and institutional need-based grants.
+university.finance.overseas_us_desc: Evaluated under institutional international financial aid policies.
+university.finance.need_blind_universal_desc: Need-blind undergraduate admission applies to domestic and international applicants under the published policy.
+university.finance.need_blind_domestic_desc: Need-blind undergraduate admission applies to domestic applicants covered by the published policy.
+university.finance.need_blind_international: Need-Blind (International)
+university.finance.need_blind_international_desc: Need-blind undergraduate admission applies to international applicants covered by the published policy.
+university.finance.need_blind_unscoped: Need-Blind Undergraduate Admission
+university.finance.need_blind_unscoped_desc: The available record identifies undergraduate admission as need-blind but does not specify the applicant categories covered.
+university.finance.aid_not_catalogued: No grant options are catalogued here. Check the university's official financial aid policy.
+university.finance.full_demonstrated_need: Full demonstrated need met
+university.finance.full_demonstrated_need_note: The university states that it meets 100% of demonstrated undergraduate financial need for applicants covered by this policy.
+university.finance.zero_loans_note: The published undergraduate aid policy says eligible aid packages do not include loans.
+university.finance.need_aware_intl_desc: Need-aware review for international applicants: financial aid requests are considered during admission, but 100% of demonstrated need is met once admitted.
+university.finance.merit_and_need: Statutory & Merit Scholarships
+university.finance.uk_aid_home_desc: Access to UK student finance loans, Crankstart Scholarships, and Oxford/Imperial bursaries.
+university.finance.uk_aid_intl_desc: Competitive university and departmental scholarships (e.g. Reach Oxford, President's Undergraduate Scholarships) available.
+university.finance.zero_parent_contrib: The policy sets the expected parent contribution to zero; this does not establish total net price.
+university.finance.zero_parent_contribution_threshold: Zero Parent Contribution Threshold
+university.finance.full_ride_threshold_note: Eligibility for a full funding package depends on the university's full policy and applicant circumstances.
+university.finance.free_tuition_note: 100% tuition coverage for qualifying families
+admission.collapsible.additional_details: Additional requirements & instructions
+profile.family_income_info_title: Income-Based Aid Thresholds
+profile.family_income_info_tooltip: Income is only one part of a financial aid review. Citizenship or residency, family assets, study level, and each university's rules can affect eligibility and cost.
+profile.label.family_income: Annual Family Income
+profile.option.income_140k_200k: $140,000 – $200,000 / year
+profile.option.income_85k_140k: $85,000 – $140,000 / year
+profile.option.income_over_200k: Over $200,000 / year
+profile.option.income_under_85k: Under $85,000 / year
+profile.option.income_unspecified: Prefer not to say / Unspecified
+universities.level_segmented.aria: Filter by study level
+universities.level.all: All Levels
+universities.level.bachelor: Bachelor's
+universities.level.doctorate: PhD
+universities.level.master: Master's
+universities.level.mba: MBA
+university.deadlines.aid_desc: Submission of family financial documents and scholarship applications.
+university.deadlines.aid_title: CSS Profile & Grant Filing
+university.deadlines.all_levels: All Degrees
+university.deadlines.calendar_empty_month: No exact deadlines this month.
+university.deadlines.calendar_events: deadlines
+university.deadlines.calendar_next: Next month
+university.deadlines.calendar_no_exact: No deadlines with an exact published date and year. See the timeline below for approximate or yearless deadlines.
+university.deadlines.calendar_partial_note: Deadlines without an exact date and year appear only in the list below.
+university.deadlines.calendar_previous: Previous month
+university.deadlines.calendar_title: Deadline calendar
+university.deadlines.decision_desc: Official admissions and scholarship decisions released online.
+university.deadlines.decision_title: Admissions Notification
+university.deadlines.early_desc: Early submission round for priority consideration.
+university.deadlines.filter_by_level: Filter deadlines by degree level
+university.deadlines.intro: Published application deadlines, decision dates, and fees. Check the university's official admissions page for the current cycle.
+university.deadlines.none_for_level: No published deadlines for this study level.
+university.deadlines.milestone_aid: Financial Aid Application
+university.deadlines.milestone_decision: Decision Notification
+university.deadlines.milestone_early: Early Action / Round 1
+university.deadlines.milestone_regular: Regular Decision / Round 2
+university.deadlines.milestone_reply: Candidate Reply Date
+university.deadlines.regular_desc: Main admissions cycle application submission.
+university.deadlines.reply_desc: Candidate reply deadline to accept offer and enroll.
+university.deadlines.reply_title: Acceptance & Deposit
+university.deadlines.timeline_title: Admissions Timeline
+university.deadlines.title: Application Deadlines & Calendar
+university.finance.aid_eligible_badge: Need-Based Aid
+university.finance.free_tuition_badge: Free Tuition
+university.finance.net_price_aid_desc: Families in your income bracket receive substantial need-based institutional scholarships according to demonstrated need.
+university.finance.net_price_aid_eligible: Need-Based Aid Eligible
+university.finance.net_price_full_ride_desc: Based on your reported family income bracket, this university covers 100% of tuition, room, board, and health fees with zero loans.
+university.finance.net_price_tuition_desc: Based on your reported family income bracket, your tuition is 100% covered by institutional need-based grants.
+university.finance.net_price_zero_full_ride: $0 / year (100% Full-Ride Grant)
+university.finance.net_price_zero_tuition: $0 Tuition / year (100% Need-Based Grant)
+university.finance.personalized_net_price_title: Income-based aid review
+university.finance.fee_status_home_desc: The available record indicates home fee status. Confirm current eligibility with the university.
+university.finance.fee_status_domestic_desc: The available record indicates domestic fee status. Confirm current eligibility with the university.
+university.finance.fee_status_overseas_desc: The available record indicates overseas fee status. Confirm current eligibility with the university.
+university.finance.doctoral_funding_title: Doctoral funding
+university.finance.status_unconfirmed: Fee status requires an eligibility check
+university.finance.status_unconfirmed_desc: Citizenship alone does not establish home, domestic, or overseas fee status. Residency history and the university's rules may also matter.
+university.finance.domestic_and_international_policy: Different aid rules by applicant category
+university.finance.domestic_and_international_policy_desc: The university publishes different need-based aid rules for domestic and international applicants. Your category and aid eligibility require review under its official rules.
+university.finance.uk_aid_general_desc: Scholarship and student finance eligibility depends on the applicant's course and circumstances. Check the official university rules.
+university.finance.net_price_review: Aid eligibility needs review
+university.finance.net_price_review_desc: Income alone cannot determine your net price. Eligibility may depend on citizenship or residency, family assets, program level, and the university's full application rules.
+university.finance.aid_review_badge: Estimate not available
+university.finance.zero_parent_contrib_badge: Zero Parent Contribution
+university.tab.deadlines: Deadlines
+university.deadlines.export_ics: Add to calendar (.ics)
+university.deadlines.official_source: Official source
+university.deadlines.guidance_title: Admissions guidance
+university.deadlines.graduate_guidance_title: Graduate deadline guidance
+university.deadlines.guidance_course_dependent: Deadlines vary by course. Check the course page for its exact date.
+university.deadlines.undergraduate_ucas: Undergraduate (UCAS)
+university.deadlines.postgraduate_taught: Postgraduate taught courses
+university.deadlines.doctoral_research: Doctoral research courses
+university.deadlines.mba_round: MBA application round
+university.deadlines.interviews_label: Interviews
+university.deadlines.time_label: Time
+university.finance.net_price_review_title: Aid eligibility review
+university.coverage.title: Data coverage in UniSearch
+university.coverage.note: This shows what UniSearch currently has catalogued. “Not catalogued” does not tell you whether the university offers it.
+university.coverage.available: Catalogued
+university.coverage.not_catalogued: Not catalogued
+university.coverage.unknown: Coverage unavailable
+university.coverage.no_levels: UniSearch has no study-level coverage recorded for this university yet. This does not indicate which programs the university offers.
+university.coverage.level.bachelor: Bachelor's
+university.coverage.level.master: Master's
+university.coverage.level.doctorate: Doctorate
+university.coverage.level.professional: Professional
+university.coverage.level.mba: MBA
+university.coverage.programs: Programs
+university.coverage.requirements: Admission requirements
+university.coverage.deadlines_exact: Deadlines with exact date and year
+university.coverage.deadlines_approximate: Approximate or yearless deadlines
+university.coverage.costs_program: Program-specific costs
+university.coverage.costs_undergraduate: University-wide undergraduate cost data
+university.coverage.aid: Aid and funding
+profile.applicant_context.country_search: Search countries
+profile.applicant_context.title: Education and application context
+profile.applicant_context.optional_hint: Optional. These details help you review each university's requirements; they do not confirm qualification recognition or fee status.
+profile.applicant_context.country_education: Country where you studied
+profile.applicant_context.country_other_placeholder: Enter country
+profile.applicant_context.credential: Credential or curriculum
+profile.applicant_context.credential_ib: International Baccalaureate (IB)
+profile.applicant_context.credential_a_level: A levels
+profile.applicant_context.credential_us_diploma: US high school diploma
+profile.applicant_context.credential_national: National secondary qualification
+profile.applicant_context.credential_vocational: Vocational or professional qualification
+profile.applicant_context.credential_other_placeholder: Describe your credential or curriculum
+profile.applicant_context.current_residence: Current country of residence
+profile.applicant_context.entry_cycle: Intended entry cycle
+profile.applicant_context.entry_cycle_placeholder: e.g. 2027 Fall
+profile.applicant_context.fee_context: Fee status at the university (if known)
+profile.applicant_context.fee_home: Home / domestic (self-reported)
+profile.applicant_context.fee_international: International / overseas (self-reported)
+profile.applicant_context.fee_other: Other or not sure
+profile.applicant_context.fee_unknown: Not sure / not confirmed
+profile.applicant_context.optional: Not specified
+profile.applicant_context.other: Other
+profile.applicant_context.route: Application route
+profile.applicant_context.route_first_year: First-year applicant
+profile.applicant_context.route_transfer: Transfer applicant
+profile.applicant_context.route_graduate: Graduate applicant
+universities.compare.finance.grant_unconfirmed: A selected grant is only a potential award. Its amount is not a confirmed cost or discount until formally awarded.
+universities.compare.funding.not_awarded: Potential award; not confirmed
+university.finance.award_application: How to apply
+university.finance.award_competition: Competition
+university.finance.award_course_deadline: Course application deadline
+university.finance.award_coverage: What it covers
+university.finance.award_deadline: Award application deadline
+university.finance.award_details: Steps, documents, and conditions
+university.finance.award_documents: Documents
+university.finance.award_eligibility: Who can apply
+university.finance.award_none_for_scope: No listed awards match this study level and program.
+university.finance.award_not_confirmed: Award not confirmed
+university.finance.award_open_source: Open university page
+university.finance.award_process.automatic: No separate award application; reviewed with the course application
+university.finance.award_process.course_application_selection: Select the award in the course application
+university.finance.award_process.post_offer: Apply after receiving an admission offer
+university.finance.award_process.separate: Separate award application required
+university.finance.award_renewal: Renewal
+university.finance.award_round: Round
+university.finance.award_source: Official source
+university.finance.award_steps: Application steps
+university.finance.award_timezone: Time zone
+university.finance.award_title_fallback: Funding award
+university.finance.award_unknown: Not published
+university.finance.award_verified: Verified
+university.finance.awards_not_deducted: A possible award is not subtracted from this amount until it has been officially granted.
+university.finance.awards_not_guaranteed: These are funding opportunities, not award offers. Estimated costs do not decrease unless aid is officially awarded.
+university.qualification_guidance.checked_label: Official page checked
+university.qualification_guidance.title: Qualification guidance
+university.qualification_guidance.cycle_label: Intended entry cycle
+university.qualification_guidance.cycle_scope_label: Cycle coverage
+university.qualification_guidance.cycle_unspecified: Entry cycle not specified in your profile.
+university.qualification_guidance.exact_credential_action: Add the exact certificate title in your profile to check the published Kazakhstan entry.
+university.qualification_guidance.level_label: Study level
+university.qualification_guidance.no_eligibility_notice: This is qualification guidance, not an admission or eligibility decision. Grades, subjects, program rules, and the applicable cycle still need review.
+university.qualification_guidance.official_source: Open official qualification guidance
+university.qualification_guidance.program_label: Program
+university.qualification_guidance.program_source: Open official program requirements
+university.qualification_guidance.reason.accepted_ib: The university lists the International Baccalaureate Diploma as an accepted qualification type. Course-specific grades and required subjects still apply.
+university.qualification_guidance.reason.contextual_review: The university reviews academic records in the context of the school and country. Its published guidance does not set a country-level acceptance decision for this credential.
+university.qualification_guidance.reason.cycle_review: The intended entry cycle is outside the cycle supported by this verification.
+university.qualification_guidance.reason.graduate_review: Graduate requirements depend on the exact program and prior degree. Review the selected program's official requirements.
+university.qualification_guidance.reason.oxford_attestat: Oxford lists Kazakhstan's Attestat / Svidetel' stvo o Srednem Obrazovanii as not accepted for its standard undergraduate offer. Further study and another accepted qualification are needed.
+university.qualification_guidance.reason.select_program: Choose the exact graduate program to open its official course requirements.
+university.qualification_guidance.reason.unknown: No verified decision for this exact qualification combination is catalogued.
+university.qualification_guidance.status.accepted: Accepted qualification
+university.qualification_guidance.status.needs_review: Needs official review
+university.qualification_guidance.status.not_accepted: Explicitly not accepted
+university.qualification_guidance.scope.oxford_attestat: This applies to Oxford's standard first-year undergraduate offer. The Attestat alone does not meet it; further study and another accepted qualification are needed.
+university.qualification_guidance.scope.oxford_ib: This acceptance is for the qualification type across undergraduate courses; course-specific grades and required subjects still apply.
+university.qualification_guidance.scope.imperial_ib: This confirms the qualification type only. Course-specific grade thresholds and additional subjects are not checked here.
+university.qualification_guidance.scope.contextual_review: Contextual admissions guidance only. No country-level qualification acceptance or rejection is inferred.
+university.qualification_guidance.scope.mit_review: MIT reviews international academic records in the context of the school and country. This guidance does not set a country-level acceptance decision for the credential.
+university.qualification_guidance.scope.stanford_review: Stanford considers international applications in the context of the school and country. This page does not publish a country-level acceptance decision for the credential.
+university.qualification_guidance.scope.harvard_review: Harvard uses the same application requirements for students inside and outside the United States. This page does not publish a country-level diploma decision.
+university.qualification_guidance.scope.oxford_review: Oxford publishes country-specific school-leaving qualification decisions for first-year undergraduate entry. Course subject and grade requirements still apply.
+university.qualification_guidance.scope.imperial_review: Imperial publishes accepted undergraduate qualification equivalencies. Individual courses may require higher grades or additional subjects.
+university.qualification_guidance.scope.graduate_review: Review the selected official program page for its current graduate requirements.
+university.qualification_guidance.cycle_scope.current_policy: Current published policy; the source does not specify an entry year.
+university.qualification_guidance.cycle_scope.current_guidance: Current published guidance; the source does not specify an entry year.
+university.qualification_guidance.cycle_scope.verify_entry_year: Current published guidance; confirm that it applies to your intended entry year.
+university.qualification_guidance.cycle_scope.program_page: Check the selected program page for its named entry cycle and current requirements.
+university.program_coverage.title: Coverage for selected program
+university.program_coverage.select_program: Select a specific program in your admission track or profile to check its data.
+university.program_coverage.no_program_record: No coverage record is catalogued for this selected program.
+university.program_coverage.requirements: Requirements
+university.program_coverage.course_deadline: Course application deadline
+university.program_coverage.tuition: Tuition and mandatory fees
+university.program_coverage.awards: Potential awards
+university.program_coverage.not_catalogued: Not catalogued
+university.program_coverage.next_action.requirements: Check the course entry requirements for your qualification and applicant category.
+university.program_coverage.next_action.deadline: Confirm the course application deadline and entry year on the official admissions page.
+university.program_coverage.next_action.cost: Confirm your fee status and the course fee for this entry year with the university.
+university.program_coverage.next_action.awards: Check the official course funding page and each award's eligibility and application steps.
+university.program_coverage.catalogued: Catalogued
+university.program_coverage.deadline_exact: Published dated course deadline
+university.program_coverage.deadline_approximate: Published wording; exact date or year is missing
+university.program_coverage.cycle: Cycle
+university.program_coverage.cycle_unknown: Unknown
+university.program_coverage.verified: Verified
+university.program_coverage.source: Official source
+university.program_coverage.source_unknown: Official source not catalogued
+university.program_coverage.round: Round
+university.program_coverage.award_potential: Potential award records; not confirmed funding
+university.program_coverage.award_caution: Records do not confirm applicant eligibility or an award. Check each award's stated scope.
+university.program_coverage.award_fallback: Unnamed award
+university.program_coverage.award_program_scope: Award program scope
+university.program_coverage.award_applicant_scope: Applicant scope to check
+university.program_coverage.award_deadline: Award application deadline
+university.program_coverage.award_deadline_unknown: Award application deadline not catalogued
+university.program_coverage.scope.program_specific: Specific to this program
+university.program_coverage.scope.shared_route: Shared admission route
+university.program_coverage.scope.institution_route: University-wide admission route
+university.program_coverage.scope.university_guidance: University-level guidance; not a program price
+university.program_coverage.scope.award_scope: Award record; confirm program and applicant eligibility
+university.program_coverage.scope.not_catalogued: No data catalogued.
+application_workspace.add_calendar: Add to calendar (.ics)
+application_workspace.open: Application plan
+application_workspace.applicant_scope: Applicant scope
+application_workspace.application_process: Application process
+application_workspace.award_fallback: Funding award
+application_workspace.check_award_eligibility: Check eligibility and next steps
+application_workspace.close: Close
+application_workspace.competition: Competition
+application_workspace.course_application: Submit the course application
+application_workspace.coverage: Coverage
+application_workspace.cycle: Cycle
+application_workspace.cycle_early_action: Early Action
+application_workspace.cycle_regular_action: Regular Action
+application_workspace.deadline_type_course: Course application
+application_workspace.deadline_type_financial_aid: Financial aid application
+application_workspace.deadline_type_early_deadline: Early deadline
+application_workspace.deadline_type_equal_consideration: Equal consideration deadline
+application_workspace.deadline_type_final_closing: Final closing date
+application_workspace.deadline_type_rolling_decision: Rolling admissions
+application_workspace.deadline_type_round_1: Round 1
+application_workspace.deadline_type_round_2: Round 2
+application_workspace.deadline_type_round_3: Round 3
+application_workspace.deadline_type_round_4: Round 4
+application_workspace.deadline_type_scholarship_round_1: Scholarship round 1
+application_workspace.deadline_type_scholarship_round_2: Scholarship round 2
+application_workspace.deadline_type_scholarship_round_3: Scholarship round 3
+application_workspace.deadline_unknown: Deadline not confirmed
+application_workspace.documents: Documents
+application_workspace.empty_saved: Save universities to build an application plan.
+application_workspace.financial_aid_application: Submit financial aid materials
+application_workspace.financial_aid_docs_detail: The university lists a separate financial aid deadline. Confirm required documents and applicant eligibility.
+application_workspace.funding_research: Check funding eligibility and application steps
+application_workspace.funding_selected: Review the selected funding option
+application_workspace.funding_unknown_detail: Award eligibility, required documents, and deadline are not confirmed in the available data.
+application_workspace.intro: Track course applications and funding awards for your saved universities.
+application_workspace.load_error: University details could not be loaded. Open the university page and retry.
+application_workspace.official_source: Official source
+application_workspace.post_offer_award: Submit a post-offer award application
+application_workspace.post_offer_award_source: Open official award instructions
+application_workspace.post_offer_confirm_award: Confirm each awarded aid amount and its conditions
+application_workspace.post_offer_confirm_award_detail: Check your official award or aid letter. Potential awards are not confirmed funds and are not subtracted from published costs.
+application_workspace.post_offer_confirm_cost: Confirm your official total cost and payment schedule
+application_workspace.post_offer_confirm_cost_detail: Use the university's official fee statement for your program and cycle. Any amount not published here remains unknown; this plan does not calculate a net price.
+application_workspace.post_offer_confirm_funds: Confirm available funds
+application_workspace.post_offer_confirm_funds_detail: Check the current official financial evidence requirements for your visa and university.
+application_workspace.post_offer_fee_source: Open official fee information
+application_workspace.post_offer_funds_source: Open official financial evidence guidance
+application_workspace.post_offer_gate: I have received and accepted an offer
+application_workspace.post_offer_heading: After accepting an offer
+application_workspace.post_offer_locked: Start these steps only after accepting an offer. This status is self-reported and is not verified by the university.
+application_workspace.post_offer_no_deadline: No deadline is set here; follow the current official instructions.
+application_workspace.post_offer_request_visa_document: Check how to request your university visa document
+application_workspace.post_offer_i20_detail: After you accept an offer, follow the university's instructions for requesting an I-20 or DS-2019. The university determines the required documents and process.
+application_workspace.post_offer_cas_detail: After you accept an offer, follow the university's instructions for requesting a CAS. The university determines the required documents and process.
+application_workspace.post_offer_source_unknown: Official fee source not recorded; confirm directly with the university.
+application_workspace.post_offer_visa_source: Open official visa document guidance
+application_workspace.process_automatic: Automatic consideration
+application_workspace.process_course_application_selection: Select the award in the course application
+application_workspace.process_post_offer: Separate application after an offer
+application_workspace.process_separate: Separate application
+application_workspace.process_unknown: Not specified
+application_workspace.program_scope: Eligible programs
+application_workspace.renewal: Renewal
+application_workspace.review_automatic_award: Check automatic award consideration
+application_workspace.round: Round
+application_workspace.select_track: Open university and select an admission track
+application_workspace.separate_award: Apply for a funding award
+application_workspace.source_unknown: Official source not recorded
+application_workspace.steps: Steps
+application_workspace.timezone_unknown: time zone not stated
+application_workspace.title: Application plan
+application_workspace.track_not_selected: No admission track is selected; confirm the route on the university page.
+application_workspace.verify_deadline: Verify on official page
+application_workspace.verify_warning: Confirm eligibility, exact cutoff, and time zone with the official source.
+application_workspace.deadline_scope_shared_route: This is the published deadline for the selected shared undergraduate route; check the official page for course-specific requirements.
+application_workspace.qualification_not_accepted: The selected qualification is listed as not accepted for this route. Review accepted alternatives and the official program requirements before treating this plan as applicable.
+application_workspace.qualification_source: Official program requirements
+university.finance.award_basis.need: Need-based
+university.finance.award_basis.merit: Merit-based
+university.finance.award_basis.need_and_merit: Need and merit
+university.finance.award.coverage_item.full_tuition: Full tuition
+university.finance.award.coverage_item.living_stipend: Living stipend
+university.finance.award.coverage_item.consumables: Research consumables allowance
+university.finance.award.coverage_item.partial_tuition: Partial tuition support
+university.finance.award.applicant_scope.domestic_only: Home fee status only; this is not determined by citizenship alone
+university.finance.award.deadline_label.early_action: Early Action
+university.finance.award.deadline_label.regular_action: Regular Action
+university.finance.award.deadline_label.restrictive_early_action: Restrictive Early Action
+university.finance.award.deadline_label.regular_decision: Regular Decision
+university.finance.award.deadline_label.class_of_2029_round_1: Class of 2029 — Round 1
+university.finance.award.deadline_label.class_of_2029_round_2: Class of 2029 — Round 2
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.name: MIT Need-Based Scholarship
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.program_scope: MIT undergraduate first-year and transfer study
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.applicant_scope: International applicants who are not eligible for US federal student aid
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.cycle: 2027 entry
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.eligibility: International applicants are considered on the same need-based process as domestic applicants; MIT states it meets 100% of demonstrated need. Requesting aid does not affect admission review under MIT need-blind policy.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.coverage: Need-based MIT Scholarship determined from the family financial profile; award amount is individual and not known before review.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.deadline_timezone: US Eastern Time; exact hour not published
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.0: Submit the MIT first-year application by the applicable admission deadline.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.1: Submit the CSS Profile and list MIT (code 3514).
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.2: Submit parental tax returns or income documentation through IDOC; include English translations when applicable.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.steps.3: Track requested documents and the aid offer in the MIT Application Portal.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.0: CSS Profile
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.1: Parents’ tax returns or wage statements from two years earlier
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.2: Records of earnings, bank balances, investments, and untaxed income
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.documents.3: IDOC documentation; translated documents when applicable
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.competition: Need-based eligibility is individual; no award count or selection rate published.
+university.finance.award.copy.mit-undergraduate-need-based-scholarship.renewal: Reapply each academic year; continued eligibility follows MIT rules.
+university.finance.award.copy.mit-eecs-phd-funding.name: MIT EECS PhD Funding
+university.finance.award.copy.mit-eecs-phd-funding.program_scope: MIT EECS doctoral admission only
+university.finance.award.copy.mit-eecs-phd-funding.applicant_scope: Newly admitted EECS PhD students; appointment and support terms are set after admission
+university.finance.award.copy.mit-eecs-phd-funding.cycle: 2026 application cycle; entry year needs confirmation from EECS
+university.finance.award.copy.mit-eecs-phd-funding.eligibility: EECS PhD applicants are automatically considered for departmental fellowships and assistantships after admission. Funding depends on the admission and appointment decisions, research fit, and continued progress.
+university.finance.award.copy.mit-eecs-phd-funding.coverage: First-year EECS fellowship or assistantship support covers tuition, medical insurance, and a monthly stipend. The amount and later appointments are determined individually.
+university.finance.award.copy.mit-eecs-phd-funding.renewal: Assistantships may be term-based; renewal depends on performance, progress, and available faculty funding. Confirm the full support schedule in the offer letter.
+university.finance.award.copy.mit-eecs-phd-funding.competition: Department fellowships and assistantships are allocated after the admissions decision; no individual applicant is promised a specific award before the offer.
+university.finance.award.copy.mit-eecs-phd-funding.course_application_deadline: EECS PhD application deadline: December 1, 2026; confirm the intended entry year with EECS.
+university.finance.award.copy.mit-eecs-phd-funding.award_application_deadline: No separate departmental funding application; automatic consideration with the EECS PhD application
+university.finance.award.copy.mit-eecs-phd-funding.deadline_timezone: Not published on the EECS page; verify in the application portal
+university.finance.award.copy.mit-eecs-phd-funding.steps.0: Submit the EECS PhD application and supporting documents by the department deadline.
+university.finance.award.copy.mit-eecs-phd-funding.steps.1: Review the admission and funding offer for tuition, stipend, insurance, appointment length, and renewal conditions.
+university.finance.award.copy.mit-eecs-phd-funding.documents.0: EECS PhD application and its required academic documents; no separate departmental funding form stated
+university.finance.award.copy.mit-eecs-phd-funding.documents.1: Research activities and goals essay
+university.finance.award.copy.mit-eecs-phd-funding.documents.2: Academic and intellectual journey essay
+university.finance.award.copy.mit-eecs-phd-funding.documents.3: Three recommendations
+university.finance.award.copy.mit-eecs-phd-funding.documents.4: Transcripts
+university.finance.award.copy.mit-eecs-phd-funding.documents.5: English proficiency exam scores when required; waiver may be available
+university.finance.award.copy.mit-sloan-mba-fellowships.name: MIT Sloan MBA Fellowships and Scholarships
+university.finance.award.copy.mit-sloan-mba-fellowships.program_scope: Full-time MBA only
+university.finance.award.copy.mit-sloan-mba-fellowships.applicant_scope: Applicants admitted to the named MIT Sloan degree program
+university.finance.award.copy.mit-sloan-mba-fellowships.cycle: 2026-27 published funding information; 2027-entry award terms not separately published
+university.finance.award.copy.mit-sloan-mba-fellowships.eligibility: Incoming MBA students are automatically considered for MIT Sloan and MIT fellowships after admission. Needs-based aid steps differ for international students, U.S. citizens, and permanent residents.
+university.finance.award.copy.mit-sloan-mba-fellowships.coverage: Award amount and eligibility depend on the individual fellowship; amounts are not specified on the cited page. Need-based aid information becomes available after admission.
+university.finance.award.copy.mit-sloan-mba-fellowships.renewal: Program-specific renewal terms not stated on the cited page; confirm in the award offer.
+university.finance.award.copy.mit-sloan-mba-fellowships.competition: Limited fellowships; no count, award size, or selection rate published on the cited page.
+university.finance.award.copy.mit-sloan-mba-fellowships.course_application_deadline: Same as the degree application deadline where automatic consideration applies
+university.finance.award.copy.mit-sloan-mba-fellowships.award_application_deadline: No separate deadline stated for automatic fellowship consideration
+university.finance.award.copy.mit-sloan-mba-fellowships.deadline_timezone: See the degree application instructions
+university.finance.award.copy.mit-sloan-mba-fellowships.steps.0: Automatic consideration after admission; some non-Sloan and external awards require separate applications.
+university.finance.award.copy.mit-sloan-mba-fellowships.documents.0: Degree application materials; no additional fellowship application documents stated for automatic consideration
+university.finance.award.copy.mit-sloan-mfin-fellowships.name: MIT Sloan Master of Finance Fellowships
+university.finance.award.copy.mit-sloan-mfin-fellowships.program_scope: MFin only
+university.finance.award.copy.mit-sloan-mfin-fellowships.applicant_scope: Applicants admitted to the named MIT Sloan degree program
+university.finance.award.copy.mit-sloan-mfin-fellowships.cycle: 2026-27 published funding information; 2027-entry award terms not separately published
+university.finance.award.copy.mit-sloan-mfin-fellowships.eligibility: A limited number are awarded to admitted candidates of all citizenships and academic backgrounds; all applicants are automatically considered.
+university.finance.award.copy.mit-sloan-mfin-fellowships.coverage: Award amounts are not stated on the cited page. MFin students are expected to be self-funded; some TA/RA positions are available.
+university.finance.award.copy.mit-sloan-mfin-fellowships.renewal: Program-specific renewal terms not stated on the cited page; confirm in the award offer.
+university.finance.award.copy.mit-sloan-mfin-fellowships.competition: Limited fellowships; no count, award size, or selection rate published on the cited page.
+university.finance.award.copy.mit-sloan-mfin-fellowships.course_application_deadline: Same as the degree application deadline where automatic consideration applies
+university.finance.award.copy.mit-sloan-mfin-fellowships.award_application_deadline: No separate deadline stated for automatic fellowship consideration
+university.finance.award.copy.mit-sloan-mfin-fellowships.deadline_timezone: See the degree application instructions
+university.finance.award.copy.mit-sloan-mfin-fellowships.steps.0: Automatic consideration; no separate application. Award typically communicated with admission.
+university.finance.award.copy.mit-sloan-mfin-fellowships.documents.0: Degree application materials; no additional fellowship application documents stated for automatic consideration
+university.finance.award.copy.mit-sloan-mban-fellowships.name: MIT Sloan Master of Business Analytics Fellowships
+university.finance.award.copy.mit-sloan-mban-fellowships.program_scope: MBAn only
+university.finance.award.copy.mit-sloan-mban-fellowships.applicant_scope: Applicants admitted to the named MIT Sloan degree program
+university.finance.award.copy.mit-sloan-mban-fellowships.cycle: 2026-27 published funding information; 2027-entry award terms not separately published
+university.finance.award.copy.mit-sloan-mban-fellowships.eligibility: A limited number are awarded to admitted candidates of all citizenships and academic backgrounds; all admitted candidates are automatically considered.
+university.finance.award.copy.mit-sloan-mban-fellowships.coverage: Award amounts are not stated on the cited page. Some RA/TA positions are available, with position and compensation determined individually.
+university.finance.award.copy.mit-sloan-mban-fellowships.renewal: Program-specific renewal terms not stated on the cited page; confirm in the award offer.
+university.finance.award.copy.mit-sloan-mban-fellowships.competition: Limited fellowships; no count, award size, or selection rate published on the cited page.
+university.finance.award.copy.mit-sloan-mban-fellowships.course_application_deadline: Same as the degree application deadline where automatic consideration applies
+university.finance.award.copy.mit-sloan-mban-fellowships.award_application_deadline: No separate deadline stated for automatic fellowship consideration
+university.finance.award.copy.mit-sloan-mban-fellowships.deadline_timezone: See the degree application instructions
+university.finance.award.copy.mit-sloan-mban-fellowships.steps.0: Automatic consideration; no separate application.
+university.finance.award.copy.mit-sloan-mban-fellowships.documents.0: Degree application materials; no additional fellowship application documents stated for automatic consideration
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.name: HKS Public Leadership Fellowships & LRAP
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.program_scope: Harvard Kennedy School MPP and MPA
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.applicant_scope: HKS MPP and MPA applicants who submit the financial-aid application before the admission decision; award-specific eligibility applies.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.cycle: 2027-2028
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.eligibility: HKS master’s applicants who submit the financial-aid application before the admission decision; eligibility varies by individual award, degree program, and any stated service or other criteria.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.coverage: Limited merit-based scholarships and fellowships, generally applied to tuition and fees; some awards include a living stipend. Award amount and coverage vary by program and award. Loan repayment assistance is separate and applies after graduation under its own rules.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.renewal: Award-specific; the public general funding page does not state one renewal rule for all HKS awards.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.competition: Funding is limited and competitive; HKS states that scholarship and fellowship selection is merit-based, with financial need affecting the amount of some awards.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.course_application_deadline: December 1, 2026 at 12:00 p.m. (noon) ET
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.award_application_deadline: 2027-01-15 12:00 p.m. ET
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.deadline_timezone: US Eastern Time
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.steps.0: Submit the HKS master’s admission application by December 1, 2026 before accessing the financial-aid application.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.steps.1: Complete the HKS Financial Aid Application after applying for admission and before the admission decision; submit it by January 15, 2027 at 12 p.m. ET.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.steps.2: Complete household income and asset information and answer the award-eligibility questions in the financial-aid application.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.steps.3: Upload the general financial-aid essay (750 words maximum) describing public-service commitment, professional interests and aspirations, and how HKS will help meet those goals.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.steps.4: Upload any additional essay requested for an individual award; some research-center and CGS international fellowships require a separate application.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.steps.5: U.S. citizens, permanent residents, and eligible noncitizens are encouraged to submit FAFSA for federal student-loan eligibility.
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.0: HKS Financial Aid Application with household income and asset information
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.1: General financial-aid essay, maximum 750 words
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.2: Additional award-specific essays or separate applications when required by the selected fellowship
+university.finance.award.copy.hks-public-service-fellowships-mpp-mpa.documents.3: FAFSA for U.S. citizens, permanent residents, or eligible noncitizens seeking federal student-loan eligibility (encouraged, not a universal fellowship requirement)
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.name: HLS Grant & Low Income Protection Plan (LIPP)
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.program_scope: Harvard Law School J.D. program and eligible graduates
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.applicant_scope: J.D. students applying annually for need-based aid; LIPP has separate eligibility for graduates.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.cycle: Fall 2027 J.D. entry; aid reassessed annually
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.eligibility: JD students may apply for annual need-based aid. HLS grant eligibility depends on the annual need calculation; LIPP has separate loan, employment, and income rules for eligible graduates.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.coverage: HLS need-based grants are capped at tuition; some aid applicants receive loans only. LIPP provides loan-repayment assistance under its current program rules, which vary by eligible debt and employment plan.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.renewal: Need-based aid is reassessed each academic year. LIPP participation requires a separate application and approval under the current program rules.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.competition: HLS reports that approximately 50% of JD financial-aid applicants qualify for HLS grant assistance; others may qualify for loans.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.course_application_deadline: February 5, 2027 at 11:59 p.m. ET for the J.D. application
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.deadline_timezone: US Eastern Time for the J.D. application; confirm the 2027-28 financial-aid deadline after admission
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.0: Submit the J.D. application by its admission deadline.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.1: After admission, access the HLS Student Financial Services portal and choose the need-based grant or loan-only application; HLS does not use the CSS Profile.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.2: Submit the student financial information and parent information when required by the current annual aid policy; confirm the 2027-28 aid deadline in the portal.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.steps.3: Eligible graduates seeking LIPP must apply separately under the current loan-repayment rules.
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.0: HLS Student Financial Services application after admission
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.1: Student and, when required, parent financial information and supporting tax documents requested in the portal
+university.finance.award.copy.hls-jd-need-based-grant-and-lipp.documents.2: Separate LIPP application and eligible loan and employment information after graduation
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.name: Stanford GSB Need-Based Fellowships
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.program_scope: Stanford GSB MBA only
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.applicant_scope: Admitted Stanford MBA students with demonstrated financial need, regardless of citizenship
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.cycle: Fall 2027 entry; fellowship amount determined after admission
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.eligibility: MBA admission is need-blind. After admission, applicants with demonstrated financial need may apply for a Stanford GSB fellowship; expected student contribution and aid are determined from their financial documents.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.coverage: Non-repayable fellowship based on individual need; Stanford may combine fellowships with loans. No applicant-specific amount is known before the aid decision.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.renewal: Financial aid application must be renewed each year of the two-year MBA.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.competition: Stanford reports that approximately half of MBA students receive fellowship funds; demonstrated need does not establish an award amount before review.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.course_application_deadline: Stanford MBA admission Round 1: 2026-09-09; Round 2: 2027-01-06; Round 3: 2027-04-07
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.award_application_deadline: Provided to admitted students by GSB Financial Aid; no Fall 2027 aid deadline published on the cited page
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.deadline_timezone: Check the admission round page for its time zone; the post-admission aid deadline is not yet published
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.0: Apply to the Stanford MBA by a published admission round.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.1: If admitted, request the GSB financial aid instructions and submit the institutional application.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.2: Submit tax and wage documentation for the required years; US citizens and permanent residents also submit FAFSA.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.3: Review the individual fellowship and loan offer and renew the application in the second year.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.documents.0: GSB institutional financial aid application
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.documents.1: For international students: tax statements and wage statements for the last two years from all countries of employment
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.documents.2: For US citizens or permanent residents: FAFSA, federal tax returns for two prior years with schedules and W-2s, and most recent pay stub
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.documents.3: Spouse financial documents if applicable
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.name: Weidenfeld-Hoffmann Scholarships and Leadership Programme
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.program_scope: Oxford MSc Advanced Computer Science, MBA and BCL in this catalogue; the full official eligible-course list is broader
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.applicant_scope: Applicants ordinarily resident in an eligible country, including Kazakhstan, for a new full-time eligible Oxford graduate course
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.cycle: 2027-28 entry
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.eligibility: Apply for a new full-time eligible course, meet the country-of-ordinary-residence rule, intend to return home, and show how the course supports public life. Deferred 2027-28 offer holders and current Oxford students are normally ineligible. A course offer by the December or January funding deadline is required.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.coverage: 100% of course fees and a living-cost grant of at least GBP 21,805 for the agreed course fee-liability period, plus leadership development.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.renewal: Covers the full fee-liability period for the agreed eligible course, subject to award terms.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.competition: Competitive selection; eligible applicants may be interviewed online in April 2027. An eligible application and course offer do not guarantee funding.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.course_application_deadline: The chosen course’s relevant December 2026 or January 2027 funding deadline; see its official course page
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.award_application_deadline: Same course deadline: select the scholarship and upload the separate statement with the graduate application
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.deadline_timezone: UK time; exact hour depends on the course deadline
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.steps.0: Confirm that the chosen course and country of ordinary residence appear on the 2027-28 eligibility lists.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.steps.1: Select Weidenfeld-Hoffmann in the Oxford graduate application.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.steps.2: Upload the 2027-28 Weidenfeld-Hoffmann Scholarships Statement and submit by the course funding deadline.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.steps.3: Obtain a course offer by that deadline; attend an interview if shortlisted.
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.documents.0: Oxford graduate course application and all course-required materials
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.documents.1: Weidenfeld-Hoffmann Scholarships Statement 2027/28
+university.finance.award.copy.oxford-weidenfeld-hoffmann-2027.documents.2: Nationality and ordinary-residence details in the graduate application
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.name: Stanford Undergraduate Need-Based Financial Aid (International)
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.program_scope: Stanford undergraduate first-year admission
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.applicant_scope: International applicants; citizenship and aid request are assessed under Stanford’s international policy
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.cycle: 2027 entry
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.eligibility: International applicants must request aid in the admission application. Stanford says aid request is a factor in the admission evaluation for international citizens; applicants admitted with aid requested are considered for full demonstrated need. Applicants who state they will not request aid and are admitted are generally ineligible to apply later during their four undergraduate years.
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.coverage: Need-based Stanford scholarship and aid package based on demonstrated family need; individual amount determined after review.
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.deadline_timezone: US Pacific Time; exact hour not published
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.steps.0: Indicate on the Stanford admission application that you are requesting financial aid.
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.steps.1: Submit the CSS Profile (school code 4704).
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.steps.2: Submit the International Student Supplement through Stanford’s document upload process.
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.steps.3: Submit any tax or supporting documents requested by the Financial Aid Office.
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.documents.0: CSS Profile
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.documents.1: International Student Supplement
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.documents.2: Parent income and tax documentation if requested
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.documents.3: Noncustodial Parent Waiver Request and supporting evidence only if applicable
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.competition: Limited institutional resources; aid request makes international admission more selective. Award rate not stated on the cited page.
+university.finance.award.copy.stanford-international-undergraduate-need-based-aid.renewal: Institutional aid requires annual reapplication; check current-year rules.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.name: Knight-Hennessy Scholars
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.program_scope: Full-time Stanford graduate degrees; program-specific eligibility applies
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.applicant_scope: Applicants from all countries; first bachelor’s degree earned January 2020 or later (military service exception); must separately apply to and enroll in an eligible Stanford graduate degree
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.cycle: 2027 cohort
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.eligibility: Requires separate, concurrent KHS and Stanford graduate program applications. The graduate application must meet the KHS applicant deadline for that program or December 1, 2026, whichever is earlier. MBA applicants must apply by the GSB Round 1 deadline.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.coverage: Up to three years of graduate funding: tuition and associated fees, living and academic expenses, and annual travel stipend; exact terms depend on degree duration and funding rules.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.course_application_deadline: Stanford graduate program deadline; varies by program and may be earlier than 2026-12-01
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.deadline_timezone: US Pacific Time
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.0: Check the 2027 cohort eligibility rules.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.1: Submit the KHS application by October 6, 2026 at 1:00 p.m. Pacific Time.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.2: Submit a separate Stanford graduate degree application by the earlier of the program deadline for KHS applicants or December 1, 2026.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.3: If applying to the Stanford MBA, meet the GSB Round 1 deadline.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.documents.0: KHS application materials listed in the live KHS application, including application essays, transcript, resume, and recommendations
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.documents.1: Separate Stanford graduate degree application and program-specific materials
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.competition: Highly selective; KHS publishes no formula or guaranteed qualifying score.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.renewal: Up to three years; not a general renewable award beyond the scholar’s eligible degree period.
+university.finance.award.copy.harvard-college-need-based-financial-aid.name: Harvard College Need-Based Financial Aid (Harvard Financial Aid Initiative)
+university.finance.award.copy.harvard-college-need-based-financial-aid.program_scope: Harvard College undergraduate degree programs
+university.finance.award.copy.harvard-college-need-based-financial-aid.applicant_scope: Admitted domestic and international students with demonstrated financial need
+university.finance.award.copy.harvard-college-need-based-financial-aid.cycle: 2027–2028
+university.finance.award.copy.harvard-college-need-based-financial-aid.eligibility: International students are eligible for the same need-based aid as US students. Harvard states admission is need-blind and meets demonstrated need; amounts depend on individual family circumstances and typical-asset assumptions.
+university.finance.award.copy.harvard-college-need-based-financial-aid.coverage: Need-based Harvard grant aid; the individual award is determined from the financial aid application. Published income examples are not guaranteed award amounts.
+university.finance.award.copy.harvard-college-need-based-financial-aid.deadline_timezone: US Eastern Time; exact hour not published
+university.finance.award.copy.harvard-college-need-based-financial-aid.steps.0: Submit the 2027-2028 CSS Profile (Harvard code 3434).
+university.finance.award.copy.harvard-college-need-based-financial-aid.steps.1: After completing CSS Profile, submit the IDOC packet with the requested actual tax and income documents.
+university.finance.award.copy.harvard-college-need-based-financial-aid.steps.2: International applicants submit national income/tax documents with English translations; if parents do not file taxes, submit wage statements, pay slips, or employer letters.
+university.finance.award.copy.harvard-college-need-based-financial-aid.steps.3: US citizens and eligible noncitizens also submit FAFSA.
+university.finance.award.copy.harvard-college-need-based-financial-aid.documents.0: CSS Profile
+university.finance.award.copy.harvard-college-need-based-financial-aid.documents.1: IDOC packet: parents’ 2025 tax/income documents and student documents as applicable
+university.finance.award.copy.harvard-college-need-based-financial-aid.documents.2: Business/farm or trust documents when applicable
+university.finance.award.copy.harvard-college-need-based-financial-aid.documents.3: FAFSA only for US citizens, permanent residents, and other eligible noncitizens
+university.finance.award.copy.harvard-college-need-based-financial-aid.competition: No award count or selection rate published; aid is based on demonstrated need.
+university.finance.award.copy.harvard-college-need-based-financial-aid.renewal: Apply for aid each academic year.
+university.finance.award.copy.hbs-need-based-mba-fellowship.name: HBS Need-Based Fellowship
+university.finance.award.copy.hbs-need-based-mba-fellowship.program_scope: Harvard Business School MBA
+university.finance.award.copy.hbs-need-based-mba-fellowship.applicant_scope: Admitted MBA students, including international students, with demonstrated financial need
+university.finance.award.copy.hbs-need-based-mba-fellowship.cycle: MBA Class of 2029; matriculating Fall 2027
+university.finance.award.copy.hbs-need-based-mba-fellowship.eligibility: Only admitted HBS MBA students can apply for need-based financial aid. Need calculation considers prior three years of income, assets, socioeconomic background, and undergraduate debt.
+university.finance.award.copy.hbs-need-based-mba-fellowship.coverage: Need-based gift aid ranges from $2,000 to full tuition per year. HBS reports approximately half of students receive fellowships; individual award amounts vary.
+university.finance.award.copy.hbs-need-based-mba-fellowship.deadline_timezone: Not published for the financial aid application
+university.finance.award.copy.hbs-need-based-mba-fellowship.steps.0: Apply for admission to HBS.
+university.finance.award.copy.hbs-need-based-mba-fellowship.steps.1: After admission, submit the MBA Financial Aid Application.
+university.finance.award.copy.hbs-need-based-mba-fellowship.steps.2: Submit the Certification of Finances Form if you are not a US citizen or permanent resident.
+university.finance.award.copy.hbs-need-based-mba-fellowship.steps.3: Submit prior three years of income verification; submit FAFSA if you are a US citizen or permanent resident.
+university.finance.award.copy.hbs-need-based-mba-fellowship.documents.0: MBA Financial Aid Application
+university.finance.award.copy.hbs-need-based-mba-fellowship.documents.1: Certification of Finances Form for non-US citizens and permanent residents
+university.finance.award.copy.hbs-need-based-mba-fellowship.documents.2: Income verification for prior three years (for example tax returns and W-2s)
+university.finance.award.copy.hbs-need-based-mba-fellowship.documents.3: FAFSA for US citizens and permanent residents
+university.finance.award.copy.hbs-need-based-mba-fellowship.documents.4: Additional supporting documents if requested
+university.finance.award.copy.hbs-need-based-mba-fellowship.competition: Competitive need-based review; HBS reports about half of students receive need-based fellowships, not a guarantee for any applicant.
+university.finance.award.copy.hbs-need-based-mba-fellowship.renewal: Financial aid is awarded for the MBA program; renewal terms are determined in the aid offer and not specified on the public page.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.name: Reach Oxford Scholarship
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.program_scope: Oxford undergraduate courses except Medicine
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.applicant_scope: New undergraduate students who are nationals of OECD DAC ODA recipient countries and meet the scheme’s academic, financial, social commitment, and home-country study criteria
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.cycle: 2027 entry
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.eligibility: An Oxford admission offer is required before scholarship consideration. Priority goes to applicants who have not studied at undergraduate level before and intend to return to their country after study.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.coverage: Course fees, a grant for living costs, and one return air fare per year for the course duration (three or four years depending on course).
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.course_application_deadline: UCAS application by 2026-10-15 18:00
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.award_application_deadline_label: Scholarship application deadline
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.deadline_timezone: UK time
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.steps.0: Apply for an Oxford undergraduate course through UCAS by October 15, 2026 at 6 p.m. UK time.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.steps.1: Receive an Oxford offer.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.steps.2: When the 2027 scholarship application opens in January 2027, complete the separate Reach Oxford scholarship application by January 26, 2027.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.steps.3: If selected, maintain satisfactory academic progress and submit the required annual report.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.documents.0: Oxford undergraduate admission application and offer
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.documents.1: Separate Reach Oxford scholarship application; exact form and supporting-document list for 2027 to be published in January 2027
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.competition: Around 2–3 awards per year; competition is very high, and Oxford has no additional funding for unsuccessful candidates.
+university.finance.award.copy.oxford-reach-oxford-scholarship-2027.renewal: Continued award is subject to satisfactory academic progress; annual report required.
+university.finance.award.copy.oxford-clarendon-fund-2027.name: Clarendon Fund Scholarship
+university.finance.award.copy.oxford-clarendon-fund-2027.program_scope: Eligible full-time or part-time Oxford Master’s and DPhil courses
+university.finance.award.copy.oxford-clarendon-fund-2027.applicant_scope: Applicants of any nationality or ordinary residence who apply for a new eligible degree-bearing Master’s or DPhil course by the relevant December or January course deadline
+university.finance.award.copy.oxford-clarendon-fund-2027.cycle: 2027–2028
+university.finance.award.copy.oxford-clarendon-fund-2027.eligibility: Automatic consideration when the complete graduate course application is submitted by the relevant December or January funding deadline; course and scholarship selection are separate decisions.
+university.finance.award.copy.oxford-clarendon-fund-2027.coverage: Full course fees plus an annual living-cost grant. 2027-2028 stipend amount has not yet been published in the cited applicant guidance.
+university.finance.award.copy.oxford-clarendon-fund-2027.course_application_deadline: Relevant Oxford graduate course deadline, typically December or January; exact date is course-specific
+university.finance.award.copy.oxford-clarendon-fund-2027.award_application_deadline: Same as the relevant Oxford graduate course application deadline
+university.finance.award.copy.oxford-clarendon-fund-2027.deadline_timezone: UK time; exact hour is course-specific
+university.finance.award.copy.oxford-clarendon-fund-2027.steps.0: Apply to the eligible Oxford graduate course by its relevant December or January deadline.
+university.finance.award.copy.oxford-clarendon-fund-2027.steps.1: Submit the complete course application; there is no separate Clarendon scholarship form.
+university.finance.award.copy.oxford-clarendon-fund-2027.steps.2: Provide the academic record, personal statement, and referees’ reports required for the course application.
+university.finance.award.copy.oxford-clarendon-fund-2027.documents.0: Complete Oxford graduate course application
+university.finance.award.copy.oxford-clarendon-fund-2027.documents.1: Course-specific academic transcripts, statement, and referee reports; no additional Clarendon documents
+university.finance.award.copy.oxford-clarendon-fund-2027.competition: Highly competitive global award; selection is based on academic excellence and potential. No award count is stated on this applicant page.
+university.finance.award.copy.oxford-clarendon-fund-2027.renewal: Award duration follows the eligible course period, subject to award conditions; exact duration and renewal terms are determined by the course and award offer.
+university.finance.award.copy.imperial-inspires-2027.name: Imperial Inspires Scholarship
+university.finance.award.copy.imperial-inspires-2027.program_scope: All undergraduate courses and selected postgraduate taught courses listed as participating; excludes postgraduate research
+university.finance.award.copy.imperial-inspires-2027.applicant_scope: International students eligible for the Overseas tuition fee rate
+university.finance.award.copy.imperial-inspires-2027.cycle: 2027–2028
+university.finance.award.copy.imperial-inspires-2027.eligibility: Course must participate in Imperial Inspires and applicant must meet scholarship eligibility and course minimum entry requirements. At least 300 awards are offered for 2027 entry across Engineering, Natural Sciences, Medicine, and Imperial Business School.
+university.finance.award.copy.imperial-inspires-2027.coverage: £15,000 per year for each year of the course, towards tuition fees and living costs.
+university.finance.award.copy.imperial-inspires-2027.course_application_deadline: Undergraduate UCAS deadline varies by course; many courses use the 2027-01-13 equal consideration deadline. Postgraduate taught deadline varies by course and admissions round.
+university.finance.award.copy.imperial-inspires-2027.deadline_timezone: Not published for the scholarship application
+university.finance.award.copy.imperial-inspires-2027.steps.0: Submit an undergraduate UCAS or postgraduate taught My Imperial application after applications open in September 2026.
+university.finance.award.copy.imperial-inspires-2027.steps.1: Confirm that the chosen course participates in Imperial Inspires and that you meet its eligibility and minimum course requirements.
+university.finance.award.copy.imperial-inspires-2027.steps.2: If eligible, wait for an invitation and submit the additional essay through the admissions i360 portal.
+university.finance.award.copy.imperial-inspires-2027.steps.3: Check the award terms and conditions for the participating course and its current round.
+university.finance.award.copy.imperial-inspires-2027.documents.0: Course application and course-specific materials
+university.finance.award.copy.imperial-inspires-2027.documents.1: Additional essay through i360 after invitation
+university.finance.award.copy.imperial-inspires-2027.documents.2: Other required documents and exact scholarship criteria vary by participating course; not yet fully published
+university.finance.award.copy.imperial-inspires-2027.competition: Highly competitive; Imperial says not all applicants will be successful. No course-level award count published.
+university.finance.award.copy.imperial-inspires-2027.renewal: For awards longer than 11 months, eligibility is reviewed annually; award may be withdrawn for failure to meet academic expectations or other stated conditions.
+university.finance.award.copy.presidents-phd-scholarships.name: President’s PhD Scholarships
+university.finance.award.copy.presidents-phd-scholarships.program_scope: Imperial PhD research programmes
+university.finance.award.copy.presidents-phd-scholarships.applicant_scope: Applicants worldwide; no nationality restriction
+university.finance.award.copy.presidents-phd-scholarships.cycle: 2027–2028
+university.finance.award.copy.presidents-phd-scholarships.eligibility: Applicants worldwide with outstanding academic and research potential must identify and obtain agreement from an Imperial supervisor, then select the scholarship in the PhD application. Department-specific conditions apply.
+university.finance.award.copy.presidents-phd-scholarships.deadline_timezone: UK time
+university.finance.award.copy.presidents-phd-scholarships.course_application_deadline: Department and programme deadline; varies by PhD programme
+university.finance.award.copy.presidents-phd-scholarships.steps.0: Contact an Imperial academic supervisor and obtain agreement to supervise.
+university.finance.award.copy.presidents-phd-scholarships.steps.1: Submit the PhD admission application through Imperial’s online application system.
+university.finance.award.copy.presidents-phd-scholarships.steps.2: Select President’s PhD Scholarship in the funding section of the additional questions.
+university.finance.award.copy.presidents-phd-scholarships.steps.3: Include the required two-page personal statement and department-specific application materials.
+university.finance.award.copy.presidents-phd-scholarships.steps.4: The department considers eligible applications; no standalone scholarship form is required.
+university.finance.award.copy.presidents-phd-scholarships.documents.0: PhD application and research proposal
+university.finance.award.copy.presidents-phd-scholarships.documents.1: Transcripts and academic records
+university.finance.award.copy.presidents-phd-scholarships.documents.2: Two-page structured personal statement
+university.finance.award.copy.presidents-phd-scholarships.documents.3: Departmental statement and interview evidence as applicable
+university.finance.award.copy.presidents-phd-scholarships.competition: 50 awards across Imperial; selection is competitive, and a supervisor agreement or eligible application does not guarantee an award.
+university.finance.award.copy.presidents-phd-scholarships.renewal: Funding lasts 3.5 years subject to award terms; £2,000 consumables support is for the first three years.
+university.finance.award.copy.imperial-bursary-home-only.name: Imperial Bursary (Home Fee Status Only)
+university.finance.award.copy.imperial-bursary-home-only.cycle: 2026 and 2027 course starts
+university.finance.award.copy.epsrc-ukri-cdt-studentships.name: EPSRC / UKRI CDT studentships
+university.finance.award.copy.epsrc-ukri-cdt-studentships.program_scope: EPSRC-funded Centre for Doctoral Training cohort programmes only; confirm the specific CDT route
+university.finance.award.copy.epsrc-ukri-cdt-studentships.cycle: Program-specific
+university.finance.award.copy.deans-impact-scholarship.name: Dean’s Impact Scholarship
+university.finance.award.copy.deans-impact-scholarship.program_scope: Imperial Business School MSc and MBA programmes; confirm course participation
+university.finance.award.copy.deans-impact-scholarship.applicant_scope: Home and Overseas applicants entering an eligible Imperial Business School MSc or MBA programme
+university.finance.award.copy.deans-impact-scholarship.eligibility: New entrants with outstanding leadership potential, strong all-round applications and a demonstrated or prospective impact in business or society; confirm the eligible course.
+university.finance.award.copy.deans-impact-scholarship.coverage: MSc: GBP 25,000; Full-Time MBA: up to 50% of tuition fees. An award is not guaranteed.
+university.finance.award.copy.deans-impact-scholarship.renewal: The listed MSc and Full-Time MBA programmes are one-year courses; check the award offer for payment conditions.
+university.finance.award.copy.deans-impact-scholarship.competition: Competitive selection; the official scholarship page does not state a course-level award count.
+university.finance.award.copy.deans-impact-scholarship.course_application_deadline: Use the admission round published for the selected MSc or MBA course.
+university.finance.award.copy.deans-impact-scholarship.steps.0: Submit the eligible Imperial Business School MSc or MBA application.
+university.finance.award.copy.deans-impact-scholarship.steps.1: After invitation, submit the scholarship assessment: written for MSc or video for MBA.
+university.finance.award.copy.deans-impact-scholarship.documents.0: Eligible course application and its required documents
+university.finance.award.copy.deans-impact-scholarship.documents.1: Invited written assessment for MSc or video assessment for MBA
+university.program_coverage.value.undergraduate_home_expected_tuition_gbp: Expected Home undergraduate tuition (subject to approval)
+university.finance.award.copy.deans-impact-scholarship.cycle: 2027-28
+university.finance.award.copy.imperial-bursary-home-only.eligibility: Home fee status only; the current award page must be checked for the applicable programme and year.
+university.finance.award.copy.epsrc-ukri-cdt-studentships.eligibility: Eligibility, participating programmes, funding, and deadlines depend on the individual UKRI Centre for Doctoral Training.

@@ -34,6 +34,7 @@
 
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/university.css" />
+  <link rel="stylesheet" href="/css/university-qualification-guidance.css" />
 
 </head>
 
@@ -46,8 +47,8 @@
       <section id="universityScopeNotice" class="d-page-scope" aria-label="Current study scope">
         <div class="d-page-scope__inner">
           <div class="d-page-scope__content">
-            <p class="d-page-scope__eyebrow" data-i18n="university.scope_badge">Bachelor's only for now</p>
-            <p class="d-page-scope__text" data-i18n="university.scope_summary">This page currently shows bachelor's programs and related admission data. Master's and other study levels may appear later.</p>
+            <p class="d-page-scope__eyebrow" data-i18n="university.scope_badge">Academic Explorer</p>
+            <p class="d-page-scope__text" data-i18n="university.scope_summary">Compare programs, application deadlines, and tuition information across study levels. Funding and eligibility depend on the program and applicant category.</p>
           </div>
           <button id="dismissUniversityScopeNotice" class="d-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
             <span data-heroicon="x-mark" data-icon-size="18"></span>
@@ -111,6 +112,9 @@
           <button class="d-tab-btn" data-tab="tab-admission">
             <span class="icon" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
           </button>
+          <button class="d-tab-btn" data-tab="tab-deadlines">
+            <span class="icon" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Deadlines</span>
+          </button>
           <button class="d-tab-btn" data-tab="tab-finance">
             <span class="icon" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs</span>
           </button>
@@ -126,14 +130,23 @@
             <div class="d-box">
                <div class="d-box-title" data-i18n="university.overview">Overview</div>
                <div id="detailRecommendations" class="d-box-text"></div>
+               <section class="university-coverage-section" aria-labelledby="universityCoverageTitle">
+                 <h3 id="universityCoverageTitle" class="university-coverage-section__title" data-i18n="university.coverage.title">Data coverage in UniSearch</h3>
+                 <p class="d-box-note university-coverage-section__note" data-i18n="university.coverage.note">This shows what UniSearch currently has catalogued. “Not catalogued” does not tell you whether the university offers it.</p>
+                 <div id="detailCoverage" class="d-box-text"></div>
+               </section>
             </div>
           </div>
 
           <div id="tab-programs" class="d-tab-pane">
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.available_majors">Available Majors</div>
-              <p class="d-box-note" data-i18n="university.programs_scope_note">Current list below is limited to bachelor's programs.</p>
+              <p class="d-box-note" data-i18n="university.programs_scope_note">Official programs and degree routes published by the institution.</p>
               <div id="detailPrograms" class="d-box-text"></div>
+              <section class="qualification-guidance" aria-labelledby="qualificationGuidanceTitle">
+                <h2 id="qualificationGuidanceTitle" class="qualification-guidance__title" data-i18n="university.qualification_guidance.title">Qualification guidance</h2>
+                <div id="detailQualificationGuidance" class="qualification-guidance__content"></div>
+              </section>
             </div>
           </div>
 
@@ -141,6 +154,14 @@
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.entry_requirements">Admission Categories</div>
               <div id="detailRequirements" class="d-box-text"></div>
+            </div>
+          </div>
+
+          <div id="tab-deadlines" class="d-tab-pane">
+            <div class="d-box">
+              <div class="d-box-title" data-i18n="university.deadlines.title">Application Deadlines &amp; Calendar</div>
+              <p class="d-box-note" data-i18n="university.deadlines.intro">Published application deadlines, decision dates, and fees. Check the university's official admissions page for the current cycle.</p>
+              <div id="detailDeadlines" class="d-box-text"></div>
             </div>
           </div>
 

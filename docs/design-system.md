@@ -11,7 +11,7 @@ Use this document as the source of truth for new UI work. The global stylesheet 
 - Borderless surface hierarchy: UniSearch intentionally avoids visible box borders. Cards, panels, inputs, chips, badges, and buttons are borderless in resting, hover, active, and selected states. Use semantic surface contrast (`var(--surface-soft)`, `var(--surface-solid)`), restrained micro-elevation (`var(--shadow-xs)`, `var(--shadow-micro)`), and disciplined whitespace instead. The main catalog search and filter bar is the visual reference for this modern, minimal clarity.
 - Keep visual hierarchy clear and never let two adjacent visible components share an indistinguishable surface: page background -> solid working surfaces -> soft nested controls -> selectively raised controls or overlays.
 - Use real university media where it helps identify a university. Do not use atmospheric imagery when the user needs to inspect a concrete university.
-- Keep bachelor-only product scope visible where relevant. Do not imply other study levels unless the product scope changes.
+- Label study levels clearly wherever programs, admission requirements, deadlines, and funding policies differ. Do not imply that a fact for one level applies to another.
 
 ## Tokens
 
