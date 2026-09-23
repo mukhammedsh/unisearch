@@ -2,8 +2,8 @@
 # ClusterFuzzLite build script for UniSearch.
 # Installs backend dependencies and packages Python fuzz targets into $OUT using compile_python_fuzzer.
 
-# Install exact pinned dependencies required by backend services during fuzzing
-python3 -m pip install fastapi==0.141.1 uvicorn==0.52.4 pydantic==2.13.5 redis==8.1.0 prometheus-fastapi-instrumentator==8.1.0 sentry-sdk==2.69.1 "numpy>=1.26.0"
+# Install dependencies required by backend services
+python3 -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
 
 # Pre-compile Python bytecode
 python3 -m compileall -q backend/app
