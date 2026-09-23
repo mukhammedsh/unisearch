@@ -305,7 +305,7 @@ profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
 profile.preference_saved: Предпочтение сохранено
 profile.state.saved: Сохранено
-profile.state.saved_local: Сохранено на этом устройстве
+profile.state.saved_local: Сохранено
 profile.state.saved_session: Сохранено до закрытия вкладки
 profile.state.unsaved: Есть несохраненные изменения
 profile.unsaved.title: Несохраненные изменения
@@ -359,7 +359,7 @@ ranking.source_status.mixed: Смешанный источник
 ranking.source_status.official: Официальный рейтинг
 ranking.source_status.excluded: Исключен из опубликованного рейтинга
 ranking.source_status.not_listed: Не входит в опубликованный рейтинг
-ranking.source_status.not_published: недоступно
+ranking.source_status.not_published: Недоступно
 ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
@@ -441,7 +441,6 @@ universities.map_panel.load_failed: Не удалось загрузить ре�
 universities.map_panel.points_failed: Не удалось обновить маркеры на карте.
 universities.map_controls.zoom_in: Приблизить
 universities.map_controls.zoom_out: Отдалить
-universities.map_controls.show_world: Показать весь мир
 universities.map_popup.loading: Загружаем карточку университета
 universities.map_popup.failed: Не удалось загрузить карточку университета.
 universities.pagination.next: Далее
@@ -846,7 +845,7 @@ common.loading: Загрузка
 common.ai_short: ИИ
 common.placeholder_unknown: {field}: нет данных
 common.no_data: Нет данных
-common.na: недоступно
+common.na: Недоступно
 common.close: Закрыть
 placeholder.field.university_name: Название университета
 placeholder.field.location: Расположение

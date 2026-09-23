@@ -71,11 +71,11 @@ test("map results rail loads the next 100 universities at the end of the list", 
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator("#mapStage")).toBeVisible();
-  const mobileOverviewButton = page.locator("#mapContainer .u-map-overview-button");
-  await expect(mobileOverviewButton).toBeVisible();
-  const mobileOverviewBox = await mobileOverviewButton.boundingBox();
-  expect(mobileOverviewBox.width).toBeGreaterThanOrEqual(44);
-  expect(mobileOverviewBox.height).toBeGreaterThanOrEqual(44);
+  const mobileZoomIn = page.locator("#mapContainer .leaflet-control-zoom-in");
+  await expect(mobileZoomIn).toBeVisible();
+  const mobileZoomBox = await mobileZoomIn.boundingBox();
+  expect(mobileZoomBox.width).toBeGreaterThanOrEqual(30);
+  expect(mobileZoomBox.height).toBeGreaterThanOrEqual(30);
   const mobileOverflow = await mapList.evaluate((node) => ({
     scrollWidth: node.scrollWidth,
     clientWidth: node.clientWidth,
@@ -83,7 +83,7 @@ test("map results rail loads the next 100 universities at the end of the list", 
   expect(mobileOverflow.scrollWidth).toBeLessThanOrEqual(mobileOverflow.clientWidth + 1);
 });
 
-test("map marker opens the complete university card and overview returns to the world", async ({ page }) => {
+test("map marker opens the complete university card and responds to zoom controls", async ({ page }) => {
   await markTourAsSeen(page);
   const railUniversity = makeUniversity(1);
   const markerUniversity = {
@@ -130,7 +130,7 @@ test("map marker opens the complete university card and overview returns to the 
   await expect(page.locator("#mapResultsPanel .uni-card")).toHaveCount(0);
   await page.click("#viewMapBtn");
 
-  const marker = page.locator("#mapContainer .custom-div-icon");
+  const marker = page.locator("#mapContainer .custom-div-icon").first();
   await expect(marker).toBeVisible();
 
   const map = page.locator("#mapContainer");
@@ -193,8 +193,7 @@ test("map marker opens the complete university card and overview returns to the 
 
   const zoomOut = page.locator("#mapContainer .leaflet-control-zoom-out");
   await expect(zoomOut).not.toHaveClass(/leaflet-disabled/);
-  await page.locator("#mapContainer .u-map-overview-button").click();
-  await expect(zoomOut).toHaveClass(/leaflet-disabled/);
+  await zoomOut.click();
 
   await page.locator("#mapContainer").focus();
   await page.keyboard.press("Equal");

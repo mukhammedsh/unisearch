@@ -113,3 +113,85 @@ test("language switching preserves the detail ID after client-side navigation", 
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailLoading")).not.toHaveClass(/is-visible/);
 });
+
+test("client-side navigation with Russian language renders destination page directly in Russian without English flash", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "rus");
+  });
+
+  await page.goto("/index.html");
+  await expect(page.locator("#profileBtn")).toBeVisible();
+
+  // Install a MutationObserver to detect if any newly attached DOM contains raw English i18n text
+  await page.evaluate(() => {
+    window.__sawEnglishFlash = false;
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          const aboutTitle = node.matches?.("[data-i18n='about.title']")
+            ? node
+            : node.querySelector?.("[data-i18n='about.title']");
+          if (aboutTitle && aboutTitle.textContent.includes("We are the abiturient team")) {
+            window.__sawEnglishFlash = true;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+
+  // Navigate to About page via client-side routing
+  const aboutLink = page.locator(".footer-product-links a[data-route='about']");
+  await expect(aboutLink).toBeVisible();
+  await aboutLink.click();
+
+  const aboutHeading = page.locator("[data-i18n='about.title']");
+  await expect(aboutHeading).toBeVisible();
+  await expect(aboutHeading).toContainText("Мы — команда абитуриентов, создавшая UniSearch.");
+
+  const sawEnglish = await page.evaluate(() => window.__sawEnglishFlash);
+  expect(sawEnglish).toBe(false);
+});
+
+test("dismissed scope notice does not flicker or appear when navigating to university detail page", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_universities_scope_notice_dismissed", "1");
+  });
+
+  await page.goto("/index.html");
+  await expect(page.locator("#profileBtn")).toBeVisible();
+  await expect(page.locator("#universitiesScopeNotice")).toBeHidden();
+
+  // Install a MutationObserver to detect if #universityScopeNotice is ever added in a visible/non-hidden state
+  await page.evaluate(() => {
+    window.__sawScopeNoticeFlash = false;
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          const notice = node.matches?.("#universityScopeNotice, .d-page-scope")
+            ? node
+            : node.querySelector?.("#universityScopeNotice, .d-page-scope");
+          if (notice && !notice.hidden && getComputedStyle(notice).display !== "none") {
+            window.__sawScopeNoticeFlash = true;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+
+  const detailLink = page.locator(".uni-card-link-overlay").first();
+  await expect(detailLink).toBeVisible();
+  await detailLink.click();
+
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#universityScopeNotice")).toBeHidden();
+
+  const sawNoticeFlash = await page.evaluate(() => window.__sawScopeNoticeFlash);
+  expect(sawNoticeFlash).toBe(false);
+});
+

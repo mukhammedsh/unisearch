@@ -68,10 +68,10 @@
 }
 
 .view-toggles {
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   border: none;
   color: var(--text);
-  box-shadow: var(--shadow-micro);
+  box-shadow: var(--shadow-xs);
 }
 
 .u-map-container {

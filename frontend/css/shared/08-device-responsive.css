@@ -395,10 +395,11 @@ canvas {
 /* Sliding Indicator */
 .has-sliding-indicator {
   position: relative;
+  --sliding-indicator-extra-width: 0px;
 }
 .sliding-indicator {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   left: 0;
   height: 2px;
   width: 1px;
@@ -410,7 +411,7 @@ canvas {
   pointer-events: none;
   transform-origin: left bottom;
   z-index: 1;
-  border-radius: 2px 2px 0 0;
+  border-radius: var(--radius-full);
 }
 
 body .has-sliding-indicator .is-active::after,
