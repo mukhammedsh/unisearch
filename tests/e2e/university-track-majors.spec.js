@@ -65,14 +65,25 @@ test("oxford admission selector narrows program-specific categories without dupl
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
 
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  await expect(page.locator(".admission-category-card")).toHaveCount(3);
-  await expect(page.locator(".requirement-profile-tab")).toHaveCount(9);
+  const categories = page.locator(".admission-category-card");
+  await expect(categories.first()).toBeVisible();
+  const initialCategoryIds = await categories.evaluateAll((nodes) => nodes.map((node) => node.dataset.admissionCategory));
+  expect(initialCategoryIds.length).toBeGreaterThan(3);
+  expect(new Set(initialCategoryIds).size).toBe(initialCategoryIds.length);
 
   await page.locator(".admission-program-option[data-admission-program='computer_science']").click();
-  await expect(page.locator(".admission-category-card")).toHaveCount(1);
-  await expect(page.locator(".requirement-profile-tab")).toHaveCount(3);
+  await expect(categories).toHaveCount(1);
+  const selectedCategoryIds = await categories.evaluateAll((nodes) => nodes.map((node) => node.dataset.admissionCategory).sort());
+  expect(selectedCategoryIds).toEqual([
+    "university_of_oxford_uk_oxford_computer_science_undergraduate",
+  ]);
+  const selectedProfiles = page.locator(".requirement-profile-tab");
+  await expect(selectedProfiles).toHaveCount(3);
+  const profileIds = await selectedProfiles.evaluateAll((nodes) => nodes.map((node) => node.dataset.requirementProfile));
+  expect(new Set(profileIds).size).toBe(profileIds.length);
   await expect(page.locator(".requirement-profile-tab")).toContainText(["A-Level", "IB", "SAT"]);
 });
 

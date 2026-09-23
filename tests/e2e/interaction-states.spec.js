@@ -190,7 +190,9 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectColor(unitToggle, hoverColor);
     await expectCompositeFocus(unitToggle, gpaComposite, accentColor);
 
-    const infoButton = page.locator(".profile-info").first();
+    await expect(page.locator('[data-profile-tab="scores"]')).toHaveAttribute("aria-selected", "true");
+    const infoButton = page.locator('[data-profile-section="scores"] .profile-info').first();
+    await expect(infoButton).toBeVisible();
     await expectColor(infoButton, mutedColor);
     await infoButton.hover();
     await expectBackground(infoButton, hoverSurface);

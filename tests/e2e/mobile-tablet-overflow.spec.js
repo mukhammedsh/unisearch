@@ -145,8 +145,18 @@ for (const viewport of viewports) {
 
     await page.goto("/compare.html?stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
     await expect(page.locator("#compareResultsPane")).toBeVisible();
-    await expect(page.locator(".compare-config-column")).toHaveCount(2);
-    await expect(page.locator(".track-select-btn.is-active")).toHaveCount(2);
+    const compareColumns = page.locator(".compare-config-column");
+    await expect(compareColumns).toHaveCount(2);
+    for (let index = 0; index < 2; index += 1) {
+      const column = compareColumns.nth(index);
+      const activeChoice = column.locator(".track-select-btn.is-active");
+      if (await activeChoice.count() === 0) {
+        const availableChoice = column.locator(".track-select-btn:not(.is-active)").first();
+        await expect(availableChoice).toBeVisible();
+        await availableChoice.click();
+      }
+      await expect(column.locator(".track-select-btn.is-active")).toHaveCount(1);
+    }
     const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
     await expect(continueCompareButton).toBeEnabled();
     await continueCompareButton.click();

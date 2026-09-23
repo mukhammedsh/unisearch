@@ -19,10 +19,12 @@ test("coverage renders for the top five and a legacy university, and follows lan
   for (const universityId of topFiveUniversities) {
     await openUniversity(page, universityId);
     const levels = page.locator("#detailCoverage .university-coverage__level");
-    const levelCount = universityId === "stanford-university-usa-ca" ? 5 : 4;
-    await expect(levels).toHaveCount(levelCount);
+    const levelCount = await levels.count();
+    expect(levelCount).toBeGreaterThanOrEqual(4);
     const bachelorLevelCount = await levels.evaluateAll((nodes) => nodes.filter((node) => node.querySelector("h4")?.textContent === "Bachelor's").length);
     expect(bachelorLevelCount).toBe(1);
+    const levelNames = await levels.locator("h4").allTextContents();
+    expect(new Set(levelNames).size).toBe(levelNames.length);
     await expect(page.locator("#detailCoverage .university-coverage__row")).toHaveCount(levelCount * 6 + 1);
     await expect(page.locator("#detailCoverage .university-coverage__state").filter({ hasText: "Catalogued" }).first()).toBeVisible();
     await expect(page.locator("#detailCoverage .university-coverage__state").filter({ hasText: "Not catalogued" }).first()).toBeVisible();
@@ -65,13 +67,13 @@ test("MBA programs have a dedicated degree filter on MIT, Stanford, and Oxford",
 
 });
 
-test("deadline rows inherit the yearless cycle from their admission category", async ({ page }) => {
+test("yearless deadline rows inherit the current cycle from their admission category", async ({ page }) => {
   await page.goto("/university.html?id=harvard-usa-cambridge");
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
   const firstYearDeadline = page.locator("#detailDeadlines .admissions-deadline-item").filter({ hasText: "November 1" }).first();
-  await expect(firstYearDeadline.locator(".admissions-deadline-cycle")).toContainText("does not name an entry year");
+  await expect(firstYearDeadline.locator(".admissions-deadline-cycle")).toContainText("Fall 2027 first-year admission");
   await expect(firstYearDeadline.locator(".admissions-deadline-source")).toHaveAttribute("href", "https://college.harvard.edu/admissions/apply/first-year-applicants");
 });

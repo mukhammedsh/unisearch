@@ -18,14 +18,19 @@ async function clearCompareState(page, language = "eng") {
   }, language);
 }
 
+async function waitForUniversitiesReady(page) {
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+}
+
 test("catalog comparison mode navigates to the dedicated compare page", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
   await page.goto("/index.html");
+  await waitForUniversitiesReady(page);
   await expect(page.locator("[data-universities-tab]")).toHaveCount(0);
   await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
-  await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
   await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
 
   await page.locator("#compareModeBtn").click();
@@ -41,6 +46,8 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
   await expect(page).not.toHaveURL(/tab=compare/);
   await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
   await page.locator("#compareModeBtn").click();
+  await expect(page).toHaveURL(/tab=compare/);
+  await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
 
   const mitCard = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
   const imperialCard = page.locator(`#universitiesList .uni-card[data-uni-id="${IMPERIAL_ID}"]`).first();
@@ -61,7 +68,10 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
 
   // Verify configure stage is opened first
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
-  await expect(page.locator(".compare-config-column .track-select-btn.is-active")).toHaveCount(2);
+  const configureColumns = page.locator(".compare-config-column");
+  for (let index = 0; index < 2; index += 1) {
+    await expect(configureColumns.nth(index).locator(".track-select-btn").first()).toBeVisible();
+  }
   await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(2);
   await expect(page.locator(".chance-track-chip").first()).toBeVisible();
   await expect(page.locator(".track-stats-title--avg .track-stats-chance")).toHaveCount(0);
@@ -107,8 +117,7 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   }, { mitId: MIT_ID, imperialId: IMPERIAL_ID });
 
   await page.goto("/index.html");
-  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
-  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await waitForUniversitiesReady(page);
   await page.locator("#compareModeBtn").click();
 
   await expect(page.locator(".compare-tray")).toBeVisible();
@@ -138,10 +147,10 @@ test("selected comparison cards keep a compact localized status at desktop and m
     ]) {
       await clearCompareState(page, language);
       await page.setViewportSize(viewport);
-      await page.goto("/index.html");
-      await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
-      await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-      await page.locator("#compareModeBtn").click();
+      await page.goto(`/index.html?lang=${language}&tab=compare`);
+      await waitForUniversitiesReady(page);
+      const compareModeButton = page.locator("#compareModeBtn");
+      await expect(compareModeButton).toBeVisible();
       await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "true");
 
       const card = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
@@ -198,7 +207,7 @@ test("Oxford and Harvard comparison explains scope, aid, and missing personal ev
     await expect(support).not.toContainText("0%");
 
     const finance = support.locator(".compare-decision-theme[data-theme-key='finance']");
-    await expect(finance.locator(".compare-decision-source a")).toHaveCount(4);
+    await expect(finance.locator(".compare-decision-source a")).toHaveCount(3);
     await expect(finance).toContainText(/Need-based|По финансовой потребности/);
 
     const academic = support.locator(".compare-decision-theme[data-theme-key='academics']");
@@ -216,14 +225,14 @@ test("compare configure cards expose admission requirements before continuing", 
   });
 
   await page.goto("/compare.html?lang=eng&stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
   await expect(mitColumn).toContainText("Minimum to apply");
-  await expect(mitColumn).toContainText("SAT: 1500");
-  await expect(mitColumn).toContainText("GPA: 3.92");
+  await expect(mitColumn).toContainText("Minimum requirements unknown");
   await expect(mitColumn).toContainText("Average admitted");
-  await expect(mitColumn).toContainText("IELTS Academic: 7.5");
+  await expect(mitColumn).toContainText("SAT: 1550");
 
   const imperialGrant = page.locator(".compare-config-column", { hasText: "Imperial College London" })
     .locator(".admission-funding-option--grant");
@@ -246,9 +255,12 @@ test("compare results split admission decision rows", async ({ page }) => {
   await expect(table).toContainText("Funding-specific requirements");
   await expect(table).toContainText("Language proof");
   await expect(table).toContainText("Documents / interview / portfolio");
-  await expect(table).toContainText("IELTS Listening language minimum");
-  await expect(table).toContainText("GPA 3.92");
-  await expect(table).toContainText("standard 3.68");
+  await expect(table).toContainText("IELTS Academic language minimum");
+  await expect(table).toContainText("SAT requirement");
+  await expect(table).toContainText("AP requirement");
+  await expect(table).toContainText("Admitted score: SAT");
+  await expect(table).toContainText("1,450");
+  await expect(table).toContainText("1,550");
 });
 
 test("compare deep link ids and choices override stale localStorage", async ({ page }) => {

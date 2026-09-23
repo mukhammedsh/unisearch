@@ -141,7 +141,7 @@ test("exact Imperial deadline export preserves its official source and admission
   expect(exportedIcs).toContain(`Source: ${sourceUrl}`);
 });
 
-test("yearless Harvard first-year deadlines retain their source and cycle without calendar export", async ({ page }) => {
+test("yearless Harvard first-year deadlines retain their source and current cycle without calendar export", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, study_level: "Bachelor" }));
   });
@@ -153,7 +153,7 @@ test("yearless Harvard first-year deadlines retain their source and cycle withou
 
   const firstYearDeadline = page.locator("#detailDeadlines .admissions-deadline-item").filter({ hasText: "November 1" }).first();
   await expect(firstYearDeadline).toBeVisible();
-  await expect(firstYearDeadline.locator(".admissions-deadline-cycle")).toContainText("does not name an entry year");
+  await expect(firstYearDeadline.locator(".admissions-deadline-cycle")).toContainText("Fall 2027 first-year admission");
   await expect(firstYearDeadline.locator(".admissions-deadline-source")).toHaveAttribute("href", "https://college.harvard.edu/admissions/apply/first-year-applicants");
   await expect(page.locator("#detailDeadlines [data-calendar-export]")).toHaveCount(0);
   await expect(page.locator("#detailDeadlines .deadline-calendar")).toContainText("exact published date and year");
