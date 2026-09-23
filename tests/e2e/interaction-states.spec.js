@@ -96,12 +96,12 @@ test("shared controls use one hover, active, focus, pressed, and disabled contra
   });
 
   const pressedProbe = page.locator("#interaction-state-probe");
-  await pressedProbe.scrollIntoViewIfNeeded();
   const box = await pressedProbe.boundingBox();
   expect(box).toBeTruthy();
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
-  expect(await pressedProbe.evaluate((node) => getComputedStyle(node).translate)).toBe("0px 1px");
+  expect(await pressedProbe.evaluate((node) => getComputedStyle(node).translate)).toBe("none");
+  expect(await pressedProbe.evaluate((node) => getComputedStyle(node).transform)).toBe("none");
   await page.mouse.up();
 
   const disabledStyle = await page.locator("#disabled-state-probe").evaluate((node) => {
@@ -145,11 +145,11 @@ test("compare mode uses the same neutral control surface in light and dark theme
 
   const compareMode = page.locator("#compareModeBtn");
   await expect.poll(() => compareMode.evaluate((node) => getComputedStyle(node).backgroundColor))
-    .toBe(await resolvedBackgroundToken(page, "--surface-soft"));
+    .toBe(await resolvedBackgroundToken(page, "--surface-solid"));
 
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   await expect.poll(() => compareMode.evaluate((node) => getComputedStyle(node).backgroundColor))
-    .toBe(await resolvedBackgroundToken(page, "--surface-soft"));
+    .toBe(await resolvedBackgroundToken(page, "--surface-solid"));
 });
 
 test("profile controls follow the shared interaction contract in light and dark themes", async ({ page }) => {

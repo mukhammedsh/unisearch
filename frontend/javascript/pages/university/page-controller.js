@@ -140,13 +140,17 @@ function setupScopeNotice() {
   }
 
   notice.hidden = dismissed;
-  if (dismissed) return;
+  if (dismissed) {
+    document.documentElement.classList.add("scope-notice-dismissed");
+    return;
+  }
 
   const dismissBtn = document.getElementById("dismissUniversityScopeNotice");
   if (!dismissBtn) return;
 
   dismissBtn.addEventListener("click", () => {
     notice.hidden = true;
+    document.documentElement.classList.add("scope-notice-dismissed");
     try {
       localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
     } catch (e) {

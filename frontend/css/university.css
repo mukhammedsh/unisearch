@@ -25,8 +25,10 @@
   margin: 0 0 12px;
 }
 
-.d-page-scope[hidden] {
-  display: none;
+.d-page-scope[hidden],
+html.scope-notice-dismissed #universityScopeNotice,
+html.scope-notice-dismissed .d-page-scope {
+  display: none !important;
 }
 
 .d-page-scope__inner {
@@ -1695,8 +1697,8 @@
 .admission-program-option,
 .requirement-profile-tab {
   appearance: none;
+  position: relative;
   border: 0;
-  border-bottom: 2px solid transparent;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
@@ -1708,8 +1710,20 @@
   white-space: nowrap;
   transition:
   color var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
   background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admission-program-option::after,
+.requirement-profile-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1729,7 +1743,11 @@
 .admission-program-option.is-active,
 .requirement-profile-tab.is-active {
   color: var(--accent);
-  border-bottom-color: var(--accent);
+}
+
+.admission-program-option.is-active::after,
+.requirement-profile-tab.is-active::after {
+  background: var(--accent);
 }
 
 .admission-scope-note {
@@ -2906,6 +2924,7 @@
 }
 
 .d-tabs {
+  --sliding-indicator-extra-width: 0px;
   margin-top: 0;
   padding: 0 16px;
   gap: 20px;
@@ -2914,6 +2933,13 @@
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
+}
+
+.d-tabs .sliding-indicator {
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
 }
 
 .d-tabs::-webkit-scrollbar {
@@ -2952,8 +2978,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 3px;
-  border-radius: 999px;
+  height: 2px;
+  border-radius: var(--radius-full);
   background: var(--accent);
 }
 
@@ -3553,11 +3579,11 @@
 .d-tab-btn.active::after {
   content: "";
   position: absolute;
-  left: 8px;
-  right: 8px;
+  left: 0;
+  right: 0;
   bottom: 0;
-  height: 3px;
-  border-radius: 999px;
+  height: 2px;
+  border-radius: var(--radius-full);
   background: var(--accent);
 }
 
@@ -3683,8 +3709,8 @@
   }
 
   .d-tab-btn.active::after {
-    left: 4px;
-    right: 4px;
+    left: 0;
+    right: 0;
   }
 
   .d-box,
@@ -5186,9 +5212,10 @@ body[data-page="university"],
 }
 
 .requirement-profile-tab {
+  appearance: none;
   border: none;
+  position: relative;
   background: transparent;
-  border-bottom: 2px solid transparent;
   border-radius: 0;
   padding: 8px 12px;
   font-size: 13px;
@@ -5196,7 +5223,19 @@ body[data-page="university"],
   color: var(--text-muted);
   cursor: pointer;
   white-space: nowrap;
-  transition: color var(--motion-fast, 160ms), border-color var(--motion-fast, 160ms);
+  transition: color var(--motion-fast, 160ms);
+}
+
+.requirement-profile-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  transition: background-color var(--motion-fast, 160ms);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -5207,8 +5246,11 @@ body[data-page="university"],
 
 .requirement-profile-tab.is-active {
   color: var(--accent);
-  border-bottom-color: var(--accent);
   font-weight: 500;
+}
+
+.requirement-profile-tab.is-active::after {
+  background: var(--accent);
 }
 
 .requirement-profile-panel {

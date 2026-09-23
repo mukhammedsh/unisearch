@@ -181,10 +181,7 @@
   display: none;
 }
 
-.navbar-search-clear:active:not(:disabled) {
-  translate: 0 1px;
-}
-
+.navbar-search-clear:active:not(:disabled),
 .navbar-search-clear:focus-visible {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);

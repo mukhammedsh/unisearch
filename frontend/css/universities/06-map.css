@@ -48,8 +48,7 @@
   color: var(--accent);
 }
 
-.u-map-container .leaflet-control-zoom a:focus-visible,
-.u-map-overview-button:focus-visible {
+.u-map-container .leaflet-control-zoom a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -58,41 +57,6 @@
   background: var(--surface-solid);
   color: var(--text-muted);
   opacity: 0.48;
-}
-
-.u-map-overview-control {
-  border: none;
-  background: transparent;
-}
-
-.u-map-overview-button {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: 0 var(--space-3);
-  border: none;
-  border-radius: var(--radius-base);
-  background: var(--surface-solid);
-  color: var(--text);
-  font: inherit;
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  box-shadow: var(--shadow-micro);
-}
-
-.u-map-overview-button:hover {
-  background: var(--surface-soft);
-  color: var(--accent);
-}
-
-.u-map-overview-icon {
-  flex: 0 0 auto;
-}
-
-.u-map-overview-button span:last-child {
-  white-space: nowrap;
 }
 
 .u-map-results {
@@ -571,13 +535,6 @@
     min-height: 280px;
   }
 
-  .u-map-overview-button {
-    width: 44px;
-    padding: 0;
-  }
 
-  .u-map-overview-button span:last-child {
-    display: none;
-  }
 
 }

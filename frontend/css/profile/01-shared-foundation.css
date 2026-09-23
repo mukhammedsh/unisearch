@@ -641,7 +641,7 @@
 
 .profile-delete{
   border: none;
-  background: var(--surface);
+  background: var(--surface-solid);
   color: var(--text-muted);
   padding: 8px 12px;
   border-radius: 10px;
@@ -928,7 +928,17 @@
   border: none;
 }
 
-.profile-progress-fill,
+.profile-progress-fill {
+  background: var(--accent);
+}
+
 .profile-section-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
   background: var(--accent);
 }
