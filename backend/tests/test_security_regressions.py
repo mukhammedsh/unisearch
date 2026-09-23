@@ -23,6 +23,17 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
 
+    def test_ops_guard_normalizes_trailing_slashes_and_unslashed_ops_path(self):
+        client = TestClient(app)
+
+        res_metrics_slash = client.get("/metrics/")
+        res_ops_unslashed = client.get("/ops")
+        res_health_slash_warmup = client.get("/health/?warmup=1")
+
+        self.assertIn(res_metrics_slash.status_code, (401, 404))
+        self.assertIn(res_ops_unslashed.status_code, (401, 404))
+        self.assertIn(res_health_slash_warmup.status_code, (401, 404))
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {
