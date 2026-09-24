@@ -116,8 +116,8 @@ test("Stanford professional MD and graduate unit-load tuition stay program-scope
   await setProgramSelection(page, "stanford-university-usa-ca", "Master", "stanford-ms-cs", "Master of Science in Computer Science (MS CS)");
   await openPrograms(page, "stanford-university-usa-ca");
   const graduateTuition = page.locator('#detailPrograms .program-coverage [data-coverage-kind="cost"]');
-  await expect(graduateTuition).toContainText("Tuition per quarter (8–10 units)");
-  await expect(graduateTuition).toContainText("Tuition per quarter (11–18 units)");
+  await expect(graduateTuition).toContainText("per quarter · 8–10 units: USD 15,100");
+  await expect(graduateTuition).toContainText("per quarter · 11–18 units: USD 23,239");
 });
 
 test("selected top-five program coverage keeps routes, course dates, and award deadlines in their own scopes", async ({ page }) => {
