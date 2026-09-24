@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 
 from app.main import app
-from app.core.security import RedisSlidingWindowRateLimiter
+from app.core.security import RedisSlidingWindowRateLimiter, is_protected_ops_request, request_scope_path
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
@@ -22,6 +22,35 @@ class SecurityRegressionTests(unittest.TestCase):
 
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
+
+    def test_ops_guard_blocks_unauthorized_multiple_slashes(self):
+        client = TestClient(app)
+
+        res_runtime = client.get("http://testserver//ops/runtime")
+        res_health = client.get("http://testserver//health?warmup=true")
+
+        self.assertEqual(res_runtime.status_code, 401)
+        self.assertEqual(res_health.status_code, 401)
+
+    def test_request_scope_path_normalization_branches(self):
+        self.assertEqual(request_scope_path(None), "")
+
+        class EmptyPathRequest:
+            scope = {"path": ""}
+
+        class TrailingSlashRequest:
+            scope = {"path": "//ops/runtime/"}
+
+        class OpsExactRequest:
+            scope = {"path": "//ops"}
+            query_params = {}
+
+        self.assertEqual(request_scope_path(EmptyPathRequest()), "/")
+        self.assertEqual(request_scope_path(TrailingSlashRequest()), "/ops/runtime/")
+
+        ops_req = OpsExactRequest()
+        self.assertEqual(request_scope_path(ops_req), "/ops")
+        self.assertTrue(is_protected_ops_request(ops_req))
 
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {

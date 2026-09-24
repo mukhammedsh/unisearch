@@ -1,5 +1,6 @@
 import hmac
 import ipaddress
+import posixpath
 import threading
 import time
 import uuid
@@ -271,12 +272,19 @@ def request_scope_path(request: Optional[Request]) -> str:
         return ""
     scope = getattr(request, "scope", {}) or {}
     path = str(scope.get("path") or "").strip()
-    return path or "/"
+    if not path:
+        return "/"
+    while path.startswith("//"):
+        path = path[1:]
+    normalized = posixpath.normpath(path)
+    if path.endswith("/") and normalized != "/" and not normalized.endswith("/"):
+        normalized += "/"
+    return normalized
 
 
 def is_protected_ops_request(request: Request) -> bool:
     path = request_scope_path(request)
-    if path.startswith("/ops/"):
+    if path == "/ops" or path.startswith("/ops/"):
         return True
     if path == str(METRICS_PATH or "/metrics"):
         return True
