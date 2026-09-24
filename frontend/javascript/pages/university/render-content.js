@@ -107,6 +107,14 @@ export function renderOverviewSection({
   const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 m2 (200+ ha)"));
   const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
 
+  const studentCountValue = toFiniteNumber(university?.student_count);
+  const studentCount = studentCountValue !== null
+    ? new Intl.NumberFormat("en-US").format(studentCountValue)
+    : t("common.no_data", "No data");
+  const formats = Array.isArray(university.academics?.formats)
+    ? university.academics.formats.map((value) => escapeHtml(trStudyMode(String(value)))).filter(Boolean).join(", ")
+    : "";
+
   container.innerHTML = `
     <div class="d-kv">
       <span class="d-kv-label">
@@ -116,6 +124,8 @@ export function renderOverviewSection({
       ${rankHtml}
     </div>
     ${acceptanceRow}
+    <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
+    <div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(t("common.no_data", "No data"))}</span></div>
     <div class="d-kv d-kv--last">
       <span class="d-kv-label">
         ${campusSizeLabel}
@@ -163,19 +173,9 @@ export function renderExtraSection({ container, university }) {
         </div>
       </div>
     `;
-  const studentCountValue = toFiniteNumber(university?.student_count);
-  const studentCount = studentCountValue !== null
-    ? new Intl.NumberFormat("en-US").format(studentCountValue)
-    : t("common.no_data", "No data");
-  const formats = Array.isArray(university.academics?.formats)
-    ? university.academics.formats.map((value) => escapeHtml(trStudyMode(String(value)))).filter(Boolean).join(", ")
-    : "";
-
   container.innerHTML = `
     ${description}
     ${tagsHtml}
-    <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
-    <div class="d-kv d-kv--last"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(t("common.no_data", "No data"))}</span></div>
   `;
 }
 

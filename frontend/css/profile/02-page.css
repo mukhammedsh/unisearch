@@ -168,18 +168,6 @@ body[data-page="profile"] {
   .profile-section-tabs .sliding-indicator {
     display: none !important;
   }
-
-  body .profile-section-tabs.has-sliding-indicator .profile-section-tab.is-active::after {
-    display: block !important;
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2px;
-    border-radius: var(--radius-full);
-    background: var(--accent);
-  }
 }
 
 .profile-section-tab {
@@ -652,6 +640,8 @@ body[data-page="profile"] {
   position: relative;
   display: inline-flex;
   align-items: center;
+  z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
 .profile-info {
@@ -744,15 +734,28 @@ body[data-page="profile"] {
 }
 
 .profile-card-block:has(.profile-info-wrap.is-open),
+.profile-card-block:has(.profile-info-wrap.is-closed),
+.profile-card-block:has(.profile-info-wrap.is-closing),
 .profile-card-block:has(.profile-info-wrap:hover),
+.profile-card-block:has(.profile-info-wrap:focus-within),
 .profile-card-head:has(.profile-info-wrap.is-open),
+.profile-card-head:has(.profile-info-wrap.is-closed),
+.profile-card-head:has(.profile-info-wrap.is-closing),
 .profile-card-head:has(.profile-info-wrap:hover),
+.profile-card-head:has(.profile-info-wrap:focus-within),
 .profile-label-row:has(.profile-info-wrap.is-open),
+.profile-label-row:has(.profile-info-wrap.is-closed),
+.profile-label-row:has(.profile-info-wrap.is-closing),
 .profile-label-row:has(.profile-info-wrap:hover),
+.profile-label-row:has(.profile-info-wrap:focus-within),
 .profile-info-wrap.is-open,
-.profile-info-wrap:hover {
+.profile-info-wrap.is-closed,
+.profile-info-wrap.is-closing,
+.profile-info-wrap:hover,
+.profile-info-wrap:focus-within {
   position: relative;
   z-index: var(--z-dropdown) !important;
+  transition-delay: 0s;
 }
 
 /* --------------------------------------------------------------------------

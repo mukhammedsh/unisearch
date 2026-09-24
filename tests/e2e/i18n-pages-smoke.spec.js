@@ -7,7 +7,7 @@ const LOCALES = [
     guide: "Guide",
     filter: "Filter",
     searchPlaceholder: "Search university...",
-    backToList: "Back to list",
+    backToList: "Back",
     programsTab: "Programs",
   },
   {
@@ -15,7 +15,7 @@ const LOCALES = [
     guide: "Гайд",
     filter: "Фильтр",
     searchPlaceholder: "Поиск университета...",
-    backToList: "Назад к списку",
+    backToList: "Назад",
     programsTab: "Программы",
   },
 ];
@@ -83,7 +83,7 @@ test("university detail page updates key UI texts for eng/rus", async ({ page })
   for (const locale of LOCALES) {
     await switchLanguage(page, locale.code);
     await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(locale.guide);
-    await expect(page.locator("[data-i18n='university.back_to_list']")).toContainText(locale.backToList);
+    await expect(page.locator("#detailBackBtn")).toHaveAttribute("aria-label", locale.backToList);
     await expect(page.locator(".d-tab-btn[data-tab='tab-programs'] [data-i18n='university.tab.programs']")).toContainText(locale.programsTab);
     await expect(page.locator("#detailLocation img.flag-icon-inline")).toHaveCount(1);
     await expect(page.locator("#detailScholarshipInfo")).toContainText(

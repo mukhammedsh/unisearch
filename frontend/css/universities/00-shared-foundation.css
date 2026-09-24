@@ -2,13 +2,26 @@
 
 /* Extracted from 02-shell-tooltips.css. */
 .uni-card:has(.ui-tooltip-wrap.is-open),
+.uni-card:has(.ui-tooltip-wrap.is-closed),
+.uni-card:has(.ui-tooltip-wrap.is-closing),
 
-.uni-card:has(.ui-tooltip-wrap:not(.is-closed):hover) {
+.uni-card:has(.ui-tooltip-wrap:not(.is-closed):hover),
+.uni-card:has(.ui-tooltip-wrap:not(.is-closed):focus-within) {
   z-index: var(--z-card-elevated);
 }
 
 .uni-card .ui-tooltip-wrap {
   z-index: 2;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
+}
+
+.uni-card .ui-tooltip-wrap:not(.is-closed):hover,
+.uni-card .ui-tooltip-wrap:not(.is-closed):focus-within,
+.uni-card .ui-tooltip-wrap.is-open,
+.uni-card .ui-tooltip-wrap.is-closed,
+.uni-card .ui-tooltip-wrap.is-closing {
+  z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
 }
 
 /* Extracted from 06-motion-accessibility.css. */

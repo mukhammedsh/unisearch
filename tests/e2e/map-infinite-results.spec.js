@@ -199,3 +199,101 @@ test("map marker opens the complete university card and responds to zoom control
   await page.keyboard.press("Equal");
   await expect(zoomOut).not.toHaveClass(/leaflet-disabled/);
 });
+
+test("repeated click on the focused marker does not recenter the map", async ({ page }) => {
+  await markTourAsSeen(page);
+  const markerUniversity = {
+    ...makeUniversity(999),
+    id: "stable-focus-university",
+    name: "Stable Focus University",
+    coordinates: { lat: 0, lon: 0 },
+  };
+
+  await page.route("**/universities/map-points?*", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ items: [markerUniversity], count: 1, total: 1, truncated: false }),
+    });
+  });
+
+  await page.route(/\/universities\/stable-focus-university(?:\?|$)/, async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      headers: { ETag: '"stable-focus"' },
+      body: JSON.stringify(markerUniversity),
+    });
+  });
+
+  await page.route("**/universities?*", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get("view") !== "map") {
+      await route.continue();
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ items: [makeUniversity(1)], count: 1, total: 1, page: 1, limit: 100 }),
+    });
+  });
+
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await page.click("#viewMapBtn");
+
+  const marker = page.locator("#mapContainer .custom-div-icon").first();
+  await expect(marker).toBeVisible();
+
+  const map = page.locator("#mapContainer");
+  const mapBox = await map.boundingBox();
+  for (let index = 0; index < 5; index += 1) {
+    await page.mouse.move(mapBox.x + (mapBox.width * 0.25), mapBox.y + (mapBox.height * 0.5));
+    await page.mouse.down();
+    await page.mouse.move(mapBox.x + (mapBox.width * 0.75), mapBox.y + (mapBox.height * 0.5), { steps: 6 });
+    await page.mouse.up();
+  }
+  await expect.poll(async () => {
+    const markerBox = await marker.boundingBox();
+    return markerBox
+      && markerBox.x >= mapBox.x
+      && markerBox.x <= mapBox.x + mapBox.width
+      && markerBox.y >= mapBox.y
+      && markerBox.y <= mapBox.y + mapBox.height;
+  }).toBe(true);
+
+  await marker.click();
+  const popupCard = page.locator("#mapContainer .custom-map-popup .map-card-wrapper .uni-card");
+  await expect(popupCard).toBeVisible();
+
+  // Wait until the flight + popup autoPan settle so the marker stops moving.
+  // Positions are measured relative to the map container in a single JS task
+  // so a page scroll between two separate measurements cannot skew the
+  // result: only a real map pan/zoom changes these coordinates.
+  const markerInMap = () => page.evaluate(() => {
+    const markerEl = document.querySelector("#mapContainer .custom-div-icon");
+    const mapEl = document.querySelector("#mapContainer");
+    if (!markerEl || !mapEl) return null;
+    const markerBox = markerEl.getBoundingClientRect();
+    const mapBox = mapEl.getBoundingClientRect();
+    return { x: markerBox.x - mapBox.x, y: markerBox.y - mapBox.y };
+  });
+  await expect.poll(async () => {
+    const first = await markerInMap();
+    await page.waitForTimeout(300);
+    const second = await markerInMap();
+    if (!first || !second) return false;
+    return Math.abs(first.x - second.x) < 1 && Math.abs(first.y - second.y) < 1;
+  }).toBe(true);
+
+  const boxBefore = await markerInMap();
+  // Second click on the already focused marker: the map must stay put and the
+  // open card must survive instead of flying back to the marker logo.
+  await marker.click();
+  await page.waitForTimeout(1800);
+  const boxAfter = await markerInMap();
+  expect(Math.abs(boxAfter.x - boxBefore.x)).toBeLessThan(5);
+  expect(Math.abs(boxAfter.y - boxBefore.y)).toBeLessThan(5);
+  await expect(popupCard).toBeVisible();
+});

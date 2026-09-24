@@ -30,20 +30,28 @@
   display: inline-flex;
   align-items: center;
   z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
 .profile-info-wrap:hover,
 .profile-info-wrap:focus-within,
-.profile-info-wrap.is-open {
+.profile-info-wrap.is-open,
+.profile-info-wrap.is-closed,
+.profile-info-wrap.is-closing {
   z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
 }
 
 .profile-card-head:has(.profile-info-wrap:hover),
 .profile-card-head:has(.profile-info-wrap:focus-within),
 .profile-card-head:has(.profile-info-wrap.is-open),
+.profile-card-head:has(.profile-info-wrap.is-closed),
+.profile-card-head:has(.profile-info-wrap.is-closing),
 .profile-card-block:has(.profile-info-wrap:hover),
 .profile-card-block:has(.profile-info-wrap:focus-within),
-.profile-card-block:has(.profile-info-wrap.is-open) {
+.profile-card-block:has(.profile-info-wrap.is-open),
+.profile-card-block:has(.profile-info-wrap.is-closed),
+.profile-card-block:has(.profile-info-wrap.is-closing) {
   position: relative;
   z-index: var(--z-dropdown);
 }

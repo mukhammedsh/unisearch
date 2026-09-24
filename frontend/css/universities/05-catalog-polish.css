@@ -197,12 +197,16 @@
   display: inline-flex;
   flex: 0 0 auto;
   z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
 .uni-status-tooltip:not(.is-closed):hover,
 .uni-status-tooltip:not(.is-closed):focus-within,
-.uni-status-tooltip.is-open {
+.uni-status-tooltip.is-open,
+.uni-status-tooltip.is-closed,
+.uni-status-tooltip.is-closing {
   z-index: var(--z-card-tooltip);
+  transition-delay: 0s;
 }
 
 .uni-status-trigger {
@@ -296,7 +300,10 @@
 }
 
 .uni-card:has(.uni-status-tooltip:not(.is-closed):hover),
+.uni-card:has(.uni-status-tooltip:not(.is-closed):focus-within),
 .uni-card:has(.uni-status-tooltip.is-open),
+.uni-card:has(.uni-status-tooltip.is-closed),
+.uni-card:has(.uni-status-tooltip.is-closing),
 .uni-card:has(.uni-status-overflow.is-open) {
   z-index: var(--z-card-elevated);
 }
@@ -908,7 +915,10 @@
     max-height: var(--sidebar-max-height, calc(100dvh - 105px));
     overflow-y: auto;
     overflow-x: hidden;
-    overscroll-behavior-y: auto;
+    /* Independent panels invariant: filter scroll must never chain into
+       page scroll (or vice versa). Keep `contain` here; `auto` re-links
+       the sidebar and catalog scroll positions on wheel/touch. */
+    overscroll-behavior-y: contain;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 0 0 var(--space-4) 0;
@@ -939,9 +949,13 @@
   .u-field:has(.u-info-wrap:hover),
   .u-field:has(.u-info-wrap:focus-within),
   .u-field:has(.u-info-wrap.is-open),
+  .u-field:has(.u-info-wrap.is-closed),
+  .u-field:has(.u-info-wrap.is-closing),
   .tradeoff-field:has(.u-info-wrap:hover),
   .tradeoff-field:has(.u-info-wrap:focus-within),
-  .tradeoff-field:has(.u-info-wrap.is-open) {
+  .tradeoff-field:has(.u-info-wrap.is-open),
+  .tradeoff-field:has(.u-info-wrap.is-closed),
+  .tradeoff-field:has(.u-info-wrap.is-closing) {
     position: relative;
     z-index: var(--z-dropdown);
   }
@@ -952,9 +966,13 @@
 .u-field:has(.u-info-wrap:hover),
 .u-field:has(.u-info-wrap:focus-within),
 .u-field:has(.u-info-wrap.is-open),
+.u-field:has(.u-info-wrap.is-closed),
+.u-field:has(.u-info-wrap.is-closing),
 .tradeoff-field:has(.u-info-wrap:hover),
 .tradeoff-field:has(.u-info-wrap:focus-within),
-.tradeoff-field:has(.u-info-wrap.is-open) {
+.tradeoff-field:has(.u-info-wrap.is-open),
+.tradeoff-field:has(.u-info-wrap.is-closed),
+.tradeoff-field:has(.u-info-wrap.is-closing) {
   position: relative;
   z-index: var(--z-dropdown);
 }
@@ -1009,12 +1027,13 @@
   padding: 0;
   border: none;
   border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  background: transparent;
   color: var(--color-warning);
   line-height: 0;
   cursor: pointer;
-  transition: background-color var(--motion-fast) var(--motion-ease-standard),
-              color var(--motion-fast) var(--motion-ease-standard);
+  transition: color var(--motion-fast) var(--motion-ease-standard),
+              opacity var(--motion-fast) var(--motion-ease-standard);
+  opacity: 0.75;
 }
 
 .u-unifit-warning__dismiss .ui-icon {
@@ -1028,12 +1047,14 @@
 }
 
 .u-unifit-warning__dismiss:active {
-  background: color-mix(in srgb, var(--color-warning) 24%, transparent);
+  background: transparent;
+  opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .u-unifit-warning__dismiss:hover {
-    background: color-mix(in srgb, var(--color-warning) 16%, transparent);
+    background: transparent;
     color: var(--color-warning);
+    opacity: 1;
   }
 }
