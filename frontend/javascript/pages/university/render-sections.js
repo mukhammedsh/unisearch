@@ -548,7 +548,9 @@ function extractUniversityDeadlines(university, categories) {
   const seenKeys = new Set();
 
   const addRound = (round) => {
-    const key = `${round.level}:${round.title}:${round.deadline}`;
+    const key = round.publicationStatus === "conflicting" && round.id
+      ? `${round.level}:${round.id}`
+      : `${round.level}:${round.title}:${round.deadline}`;
     if (seenKeys.has(key)) return;
     seenKeys.add(key);
     items.push(round);
@@ -663,21 +665,26 @@ function extractUniversityDeadlines(university, categories) {
           const roundName = dl.round || dl.deadline_type || catLabel;
           const dlDate = dl.application_deadline || dl.date || "";
           addRound({
+            id: dl.id || "",
             level: levelDisplay,
             levelKey,
             title: `${catLabel} (${roundName})`,
             cycle: dl.cycle || cat.cycle || cat.academic_year || "",
             scope: dl.scope || cat.scope || levelDisplay,
             sourceUrl: safeHttpUrl(dl.source_url || cat.source_url),
+            conflictingSourceUrl: safeHttpUrl(dl.conflicting_source_url),
+            publicationStatus: dl.publication_status || "",
             approximate: dl.approximate === true || dl.is_approximate === true,
             deadline: dlDate,
+            time: dl.time || "",
+            timezone: dl.timezone || "",
             notification: dl.decision_notification || "",
             aidDeadline: dl.financial_aid_deadline || "",
             replyDeadline: dl.reply_deadline || "",
             portal,
             fee,
             waiver,
-            notes: dl.notes || (dl.time_uk ? `${t("university.deadlines.time_label", "Time")}: ${dl.time_uk} UK` : ""),
+            notes: dl.notes || dl.note || (dl.time_uk ? `${t("university.deadlines.time_label", "Time")}: ${dl.time_uk} UK` : ""),
           });
         });
       }
@@ -789,9 +796,9 @@ export function renderDeadlinesTabSection({ container, university }) {
     ? allDeadlines
     : allDeadlines.filter((d) => d.levelKey === activeLevel || d.levelKey === "general");
 
-  const filteredDeadlines = filtered.filter((item) => item.deadline);
+  const filteredDeadlines = filtered.filter((item) => item.deadline || ["conflicting", "not_yet_published", "unknown"].includes(item.publicationStatus));
   const filteredGuidance = filtered.filter((item) => item.guidance);
-  const milestones = filteredDeadlines.map((item, index) => ({
+  const milestones = filteredDeadlines.filter((item) => item.deadline).map((item, index) => ({
     step: index + 1,
     phase: trStudyLevel(item.level),
     date: item.deadline,
@@ -856,6 +863,17 @@ export function renderDeadlinesTabSection({ container, university }) {
       ${filteredDeadlines.map((item, index) => {
         const feeStr = item.fee ? escapeHtml(String(item.fee)) : "";
         const waiverStr = item.waiver ? `<span class="admissions-fee-waiver">${escapeHtml(t("university.admissions.fee_waiver_available", "Fee waiver available"))}</span>` : "";
+        const conflicting = item.publicationStatus === "conflicting";
+        const publicationStatus = conflicting
+          ? t("university.program_coverage.deadline_conflicting", "Official deadline information conflicts")
+          : item.publicationStatus === "not_yet_published"
+            ? t("university.program_coverage.deadline_not_published", "Not yet published by the university")
+            : t("university.program_coverage.not_catalogued", "Not catalogued");
+        const nextAction = conflicting
+          ? t("university.program_coverage.next_action.deadline_conflicting", "Compare the official admissions pages and confirm the applicable deadline with the university.")
+          : item.publicationStatus === "not_yet_published"
+            ? t("university.program_coverage.next_action.deadline_not_published", "Check the official admissions page for updates to the deadline.")
+            : t("university.program_coverage.next_action.deadline", "Confirm the course application deadline and entry year on the official admissions page.");
         return `
           <article class="admissions-deadline-item" id="deadline-card-${index}">
             <div class="admissions-deadline-item-head">
@@ -865,10 +883,14 @@ export function renderDeadlinesTabSection({ container, university }) {
             <h4 class="admissions-deadline-name">${escapeHtml(item.title)}</h4>
             ${item.cycle ? `<div class="admissions-deadline-cycle">${escapeHtml(t("university.admissions.cycle_label", "Cycle"))}: ${escapeHtml(item.cycle)}</div>` : ""}
             ${item.scope ? `<div class="admissions-deadline-scope">${escapeHtml(item.scope)}</div>` : ""}
-            <div class="admissions-deadline-row admissions-deadline-row--primary">
-              <span class="admissions-deadline-label">${escapeHtml(t("university.admissions.deadline_label", "Deadline"))}:</span>
-              <strong class="admissions-deadline-date">${escapeHtml(item.deadline)}</strong>
-            </div>
+            ${item.deadline ? `
+              <div class="admissions-deadline-row admissions-deadline-row--primary">
+                <span class="admissions-deadline-label">${escapeHtml(t("university.admissions.deadline_label", "Deadline"))}:</span>
+                <strong class="admissions-deadline-date">${escapeHtml(item.deadline)}</strong>
+              </div>
+            ` : `<p class="admissions-deadline-publication-status">${escapeHtml(publicationStatus)}</p>
+              <p class="admissions-deadline-notes">${escapeHtml(nextAction)}</p>`}
+            ${item.time ? `<div class="admissions-deadline-row admissions-deadline-time"><span class="admissions-deadline-label">${escapeHtml(t("university.deadlines.time_label", "Time"))}:</span><span>${escapeHtml(item.time)}${item.timezone ? ` ${escapeHtml(item.timezone)}` : ""}</span></div>` : ""}
             ${item.notification ? `
               <div class="admissions-deadline-row">
                 <span class="admissions-deadline-label">${escapeHtml(t("university.admissions.notification_label", "Notification"))}:</span>
@@ -895,6 +917,7 @@ export function renderDeadlinesTabSection({ container, university }) {
             ` : ""}
             ${item.notes ? `<p class="admissions-deadline-notes">${escapeHtml(item.notes)}</p>` : ""}
             ${item.sourceUrl ? `<a class="admissions-deadline-source" href="${escapeHtmlAttr(item.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.deadlines.official_source", "Official source"))}</a>` : ""}
+            ${item.conflictingSourceUrl ? `<a class="admissions-deadline-source" href="${escapeHtmlAttr(item.conflictingSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.program_coverage.source", "Official source"))}</a>` : ""}
           </article>
         `;
       }).join("")}

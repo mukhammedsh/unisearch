@@ -24,6 +24,8 @@ _DAY_MONTH_DATE_RE = re.compile(
 )
 _ISO_DATE_RE = re.compile(r"\b20\d{2}-\d{2}-\d{2}\b")
 _AID_TERMS = re.compile(r"\b(?:aid|grant|scholarship|fellowship|assistantship|stipend|tuition waiver)\b", re.I)
+_UNPUBLISHED_DEADLINE_TEXT = re.compile(r"\b(?:not yet published|not published|not been published|to be announced|\bTBA\b)\b", re.I)
+_CONFLICTING_DEADLINE_TEXT = re.compile(r"\b(?:conflict|conflicting|inconsistent|contradictory|disagree)\b", re.I)
 
 
 def _non_empty_text(value: Any) -> bool:
@@ -228,6 +230,17 @@ def _deadline_status(
 
 
 def _has_program_cost(program: Dict[str, Any]) -> bool:
+    price_facts = program.get("price_facts")
+    if isinstance(price_facts, list) and any(
+        isinstance(fact, dict)
+        and str(fact.get("publication_status") or "").strip().lower() == "published"
+        and isinstance(fact.get("amount"), (int, float))
+        and not isinstance(fact.get("amount"), bool)
+        and fact["amount"] > 0
+        for fact in price_facts
+    ):
+        return True
+
     def visit(value: Any, key: str = "") -> bool:
         key_lower = key.lower()
         cost_field = any(token in key_lower for token in ("tuition", "cost", "fee")) and not any(
@@ -392,7 +405,10 @@ _PROGRAM_REQUIREMENT_FIELDS = (
     "standard_offer_ib", "language_requirements", "required_documents", "minimum_gpa",
 )
 _COURSE_DEADLINE_KEYS = ("deadline", "deadlines", "application_deadline", "admission_rounds", "mba_rounds", "mba_deadlines")
-_NON_COURSE_DEADLINE = re.compile(r"scholarship|funding|financial aid|award|studentship", re.I)
+_NON_COURSE_DEADLINE = re.compile(
+    r"scholarship|funding|financial aid|award|studentship|test.?booking|test.?registration|standardized.?test|admissions.?test",
+    re.I,
+)
 
 
 def _fact_status(status: str, scope: str = "not_catalogued", **metadata: Any) -> Dict[str, Any]:
@@ -476,10 +492,15 @@ def _course_deadline_rows(value: Any) -> List[Any]:
         for item in value:
             rows.extend(_course_deadline_rows(item))
     elif isinstance(value, dict):
+        scoped_deadlines = value.get("scoped_deadlines")
+        if isinstance(scoped_deadlines, list):
+            return _course_deadline_rows(scoped_deadlines)
         kind = " ".join(str(value.get(key) or "") for key in ("deadline_type", "type", "kind", "notes"))
         if _NON_COURSE_DEADLINE.search(kind):
             return rows
-        if any(key in value for key in ("date", "application_deadline", "deadline")):
+        if any(key in value for key in ("date", "application_deadline", "deadline")) or (
+            "publication_status" in value and _non_empty_text(value.get("deadline_type"))
+        ):
             rows.append(value)
         else:
             for key, child in value.items():
@@ -497,6 +518,67 @@ def _deadline_values_for_record(record: Dict[str, Any]) -> List[Any]:
         if key in record:
             rows.extend(_course_deadline_rows(record.get(key)))
     return rows
+
+
+def _row_program_ids(row: Dict[str, Any]) -> Set[str]:
+    value = row.get("program_ids") or row.get("applicable_program_ids")
+    if isinstance(value, str):
+        value = [value]
+    return {str(item or "").strip().lower() for item in value if str(item or "").strip()} if isinstance(value, list) else set()
+
+
+def _scoped_fact_matches_program(row: Any, program: Dict[str, Any]) -> bool:
+    """Filter additive fact rows without changing legacy row interpretation."""
+    if not isinstance(row, dict) or "publication_status" not in row:
+        return True
+    refs = _row_program_ids(row)
+    if refs:
+        identifiers = {
+            str(program.get("id") or "").strip().lower(),
+            str(program.get("course_number") or "").strip().lower(),
+            _program_name(program).lower(),
+        }
+        if not refs.intersection(identifiers):
+            return False
+    row_levels = row.get("study_levels")
+    if isinstance(row_levels, str):
+        row_levels = [row_levels]
+    if isinstance(row_levels, list):
+        scoped_levels = _levels_for_record({"study_levels": row_levels})
+        program_levels = _levels_for_record(program, program=True)
+        if "mba" in program_levels:
+            program_levels.add("master")
+        if scoped_levels and program_levels and not scoped_levels.intersection(program_levels):
+            return False
+    return True
+
+
+def _deadline_rows_for_program(record: Dict[str, Any], program: Dict[str, Any]) -> List[Any]:
+    return [row for row in _deadline_values_for_record(record) if _scoped_fact_matches_program(row, program)]
+
+
+def _published_deadline_rows(rows: List[Any]) -> List[Any]:
+    return [
+        row for row in rows
+        if (
+            str(row.get("publication_status") or "").strip().lower() == "published"
+            if isinstance(row, dict) and "publication_status" in row
+            else _legacy_deadline_publication_status(row) is None
+        )
+    ]
+
+
+def _legacy_deadline_publication_status(row: Any) -> str | None:
+    if isinstance(row, dict) and "publication_status" in row:
+        return None
+    text = row if isinstance(row, str) else " ".join(
+        str(row.get(key) or "") for key in ("date", "deadline", "application_deadline", "notes")
+    ) if isinstance(row, dict) else ""
+    if _UNPUBLISHED_DEADLINE_TEXT.search(text):
+        return "not_yet_published"
+    if _CONFLICTING_DEADLINE_TEXT.search(text):
+        return "conflicting"
+    return None
 
 
 def _deadline_strings(rows: Iterable[Any]) -> List[str]:
@@ -521,21 +603,67 @@ def _deadline_strings(rows: Iterable[Any]) -> List[str]:
 
 
 def _deadline_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], university: Dict[str, Any]) -> Dict[str, Any]:
-    rows = _deadline_values_for_record(program)
+    program_rows = _deadline_rows_for_program(program, program)
+    rows = _published_deadline_rows(program_rows)
     sources: List[Dict[str, Any]] = [program]
     scope = "program_specific"
     if not rows:
         route_rows: List[Any] = []
         matching = [route for route in routes if _matches_program(route, program)]
         for route in matching:
-            route_rows.extend(_deadline_values_for_record(route))
+            route_rows.extend(_deadline_rows_for_program(route, program))
+        program_refs = {
+            str(program.get("id") or "").strip().lower(),
+            str(program.get("course_number") or "").strip().lower(),
+            _program_name(program).lower(),
+        }
+        exact_route_rows = [
+            row for row in route_rows
+            if isinstance(row, dict)
+            and row.get("applicability") == "program_specific"
+            and _row_program_ids(row).intersection(program_refs)
+        ]
+        explicit_program_unknown = any(
+            isinstance(row, dict) and row.get("publication_status") not in (None, "published")
+            or _legacy_deadline_publication_status(row) is not None
+            for row in program_rows
+        )
+        if exact_route_rows:
+            route_rows = exact_route_rows
+        elif explicit_program_unknown:
+            route_rows = []
         if route_rows:
+            program_specific_rows = [
+                row for row in route_rows
+                if isinstance(row, dict)
+                and "publication_status" in row
+                and row.get("applicability") == "program_specific"
+            ]
+            if program_specific_rows:
+                route_rows = program_specific_rows
             rows = route_rows
             sources = matching
-            scope = "program_specific" if any(_single_program_route(route) for route in matching) else (
+            scope = "program_specific" if any(
+                isinstance(row, dict) and row.get("applicability") == "program_specific"
+                for row in route_rows
+            ) or any(_single_program_route(route) for route in matching) else (
                 "shared_admission_route" if any(_program_refs(route) for route in matching) else "institution_wide_route"
             )
-        elif "bachelor" in _levels_for_record(program, program=True):
+        else:
+            structured_unknowns = [
+                row for row in program_rows
+                if isinstance(row, dict) and row.get("publication_status") not in (None, "published")
+            ]
+            if structured_unknowns:
+                rows = structured_unknowns
+            else:
+                program_publication_status = next(
+                    (_legacy_deadline_publication_status(row) for row in program_rows if _legacy_deadline_publication_status(row)),
+                    None,
+                )
+                if program_publication_status:
+                    rows = [{"publication_status": program_publication_status, "deadline_type": "course_application"}]
+        if not rows and "bachelor" in _levels_for_record(program, program=True):
             # Root undergraduate timelines commonly define a single university deadline.
             # Never project generic graduate deadlines onto named graduate programs.
             root_deadlines = university.get("deadlines")
@@ -548,16 +676,28 @@ def _deadline_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], univer
             if rows:
                 sources = undergraduate_roots
                 scope = "university_guidance"
+    scoped_rows = rows
+    rows = _published_deadline_rows(scoped_rows)
     strings = _deadline_strings(rows)
     status = NOT_CATALOGUED
     if strings:
         status = "exact_dated" if any(_has_exact_dated_deadline(value) for value in strings) else "approximate_or_yearless"
     metadata = {
-        "source_url": _metadata_value(sources, ("deadline_source_url", "source_url", "url")) or next((str(row.get("source_url")).strip() for row in rows if isinstance(row, dict) and _non_empty_text(row.get("source_url"))), None),
-        "cycle": _metadata_value(sources, ("deadline_cycle", "cycle", "academic_year")) or next((str(row.get("cycle")).strip() for row in rows if isinstance(row, dict) and _non_empty_text(row.get("cycle"))), None),
-        "verified_at": _verified_at(sources),
+        "source_url": next((str(row.get("source_url")).strip() for row in scoped_rows if isinstance(row, dict) and _non_empty_text(row.get("source_url"))), None) or _metadata_value(sources, ("deadline_source_url", "source_url", "url")),
+        "cycle": next((str(row.get("cycle")).strip() for row in scoped_rows if isinstance(row, dict) and _non_empty_text(row.get("cycle"))), None) or _metadata_value(sources, ("deadline_cycle", "cycle", "academic_year")),
+        "verified_at": next((str(row.get("verified_at")).strip() for row in scoped_rows if isinstance(row, dict) and _non_empty_text(row.get("verified_at"))), None) or _verified_at(sources),
     }
-    return {**_fact_status(status, scope, **metadata), "values": rows}
+    result = {**_fact_status(status, scope, **metadata), "values": rows}
+    publication_facts = [
+        {key: value for key, value in row.items() if key not in {"date", "deadline", "application_deadline", "time", "timezone"}}
+        for row in scoped_rows
+        if isinstance(row, dict) and row.get("publication_status") not in (None, "published")
+    ]
+    if publication_facts:
+        result["publication_facts"] = publication_facts
+        if not rows:
+            result["publication_status"] = publication_facts[0].get("publication_status")
+    return result
 
 
 def _program_cost_values(record: Dict[str, Any]) -> Dict[str, Any]:
@@ -583,6 +723,54 @@ def _program_cost_values(record: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
+def _all_structured_price_facts(record: Any, program: Dict[str, Any]) -> List[Dict[str, Any]]:
+    if not isinstance(record, dict):
+        return []
+    facts = record.get("price_facts")
+    if not isinstance(facts, list):
+        return []
+    return [fact for fact in facts if isinstance(fact, dict) and _scoped_fact_matches_program(fact, program)]
+
+
+def _structured_price_facts(record: Any, program: Dict[str, Any]) -> List[Dict[str, Any]]:
+    return [
+        fact for fact in _all_structured_price_facts(record, program)
+        if str(fact.get("publication_status") or "").strip().lower() == "published"
+    ]
+
+
+def _price_fact_values(facts: List[Dict[str, Any]]) -> Dict[str, Any]:
+    values: Dict[str, Any] = {}
+    for fact in facts:
+        amount = fact.get("amount")
+        if not isinstance(amount, (int, float)) or isinstance(amount, bool) or amount <= 0:
+            continue
+        parts = [
+            fact.get("kind"), fact.get("fee_status"), fact.get("applicant_category"),
+            fact.get("period"), fact.get("quantity_basis"), fact.get("currency"),
+        ]
+        key = "_".join(re.sub(r"[^a-z0-9]+", "_", str(part or "").lower()).strip("_") for part in parts if part)
+        values[key] = amount
+    return values
+
+
+def _legacy_historical_values(record: Dict[str, Any], excluded_cycles: Set[str]) -> Optional[Dict[str, Any]]:
+    cycle = str(record.get("tuition_cycle") or record.get("cycle") or record.get("academic_year") or "").strip()
+    if not cycle or cycle in excluded_cycles:
+        return None
+    values = _program_cost_values(record)
+    if not values:
+        return None
+    source = record.get("tuition_source_url") or record.get("source_url")
+    return {
+        "values": values,
+        "currency": record.get("currency"),
+        "cycle": cycle,
+        "source_url": source,
+        "verified_at": record.get("verified_at") or record.get("tuition_verified_at"),
+    }
+
+
 def _root_costs(finance: Any) -> Dict[str, Any]:
     if not isinstance(finance, dict):
         return {}
@@ -602,17 +790,116 @@ def _root_costs(finance: Any) -> Dict[str, Any]:
 
 
 def _cost_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], university: Dict[str, Any]) -> Dict[str, Any]:
+    entries = [(fact, program) for fact in _all_structured_price_facts(program, program)]
+    if not entries:
+        for route in routes:
+            if not _matches_program(route, program):
+                continue
+            override = route.get("finance_override") or {}
+            entries.extend((fact, override) for fact in _all_structured_price_facts(override, program))
+            if entries:
+                break
+
+    if entries:
+        published_entries = [(fact, record) for fact, record in entries if str(fact.get("publication_status") or "").strip().lower() == "published"]
+        publication_entries = [(fact, record) for fact, record in entries if str(fact.get("publication_status") or "").strip().lower() != "published"]
+        unknown_cycles = {str(fact.get("cycle") or "").strip() for fact, _record in publication_entries}
+        unknown_cycles.discard("")
+
+        # An unknown/conflicting fact suppresses only a published value in the same
+        # fee-status bucket and cycle. Home and Overseas prices remain independent.
+        unknown_scopes = {
+            (
+                str(fact.get("cycle") or "").strip(),
+                str(fact.get("kind") or "").strip().lower(),
+                str(fact.get("period") or "").strip().lower(),
+                str(fact.get("currency") or "").strip().upper(),
+                str(fact.get("fee_status") or "").strip().lower(),
+                str(fact.get("applicant_category") or "").strip().lower(),
+            )
+            for fact, _record in publication_entries
+        }
+        visible_entries = [
+            (fact, record) for fact, record in published_entries
+            if (not unknown_cycles or str(fact.get("cycle") or "").strip() in unknown_cycles)
+            if (
+                str(fact.get("cycle") or "").strip(),
+                str(fact.get("kind") or "").strip().lower(),
+                str(fact.get("period") or "").strip().lower(),
+                str(fact.get("currency") or "").strip().upper(),
+                str(fact.get("fee_status") or "").strip().lower(),
+                str(fact.get("applicant_category") or "").strip().lower(),
+            ) not in unknown_scopes
+        ]
+        publication_facts = [
+            {key: value for key, value in fact.items() if key not in {"amount", "legacy_field"}}
+            for fact, _record in publication_entries
+        ]
+        statuses = {str(fact.get("publication_status") or "unknown") for fact, _record in publication_entries}
+        publication_status = next(iter(statuses)) if len(statuses) == 1 else "conflicting" if statuses else None
+        historical_facts = [fact for fact, _record in published_entries
+                            if unknown_cycles and str(fact.get("cycle") or "").strip() not in unknown_cycles]
+        historical_legacy_values = _legacy_historical_values(program, unknown_cycles) if not historical_facts else None
+        if not historical_legacy_values and not historical_facts:
+            for _fact, record in publication_entries:
+                historical_legacy_values = _legacy_historical_values(record, unknown_cycles)
+                if historical_legacy_values:
+                    break
+
+        visible_facts = [fact for fact, _record in visible_entries]
+        values = _price_fact_values(visible_facts)
+        # When current-cycle publication is unknown, keep top-level provenance on
+        # that unknown even if older published values are retained for context.
+        meta_fact = ( [fact for fact, _record in publication_entries] if publication_entries and not visible_facts
+                     else visible_facts or [fact for fact, _record in publication_entries])[0]
+        metadata_record = next((record for fact, record in entries if fact is meta_fact), program)
+        result = {
+            **_fact_status(
+                AVAILABLE if visible_facts else NOT_CATALOGUED,
+                str(meta_fact.get("applicability") or "program_specific"),
+                source_url=meta_fact.get("source_url") or _source_url([metadata_record]),
+                cycle=meta_fact.get("cycle") or _cycle([metadata_record]),
+                verified_at=meta_fact.get("verified_at") or _verified_at([metadata_record]),
+            ),
+            "values": values,
+        }
+        if visible_facts:
+            result["price_facts"] = visible_facts
+        if publication_facts:
+            result["publication_facts"] = publication_facts
+            result["publication_status"] = publication_status
+        if historical_facts:
+            result["historical_price_facts"] = historical_facts
+        if historical_legacy_values:
+            result["historical_legacy_values"] = historical_legacy_values
+        return result
+
     values = _program_cost_values(program)
     if values:
         values["currency"] = program.get("currency")
         return {**_fact_status(AVAILABLE, "program_specific", source_url=program.get("tuition_source_url") or _source_url([program]), cycle=program.get("tuition_cycle") or _cycle([program]), verified_at=_verified_at([program])), "values": values}
-    matching = [route for route in routes if _matches_program(route, program) and _program_cost_values(route.get("finance_override") or {})]
+    matching = []
+    for route in routes:
+        if not _matches_program(route, program):
+            continue
+        override = route.get("finance_override") or {}
+        facts = _structured_price_facts(override, program)
+        if facts or _program_cost_values(override):
+            matching.append((route, facts))
     if matching:
-        values = _program_cost_values(matching[0].get("finance_override") or {})
-        values["currency"] = (matching[0].get("finance_override") or {}).get("currency")
-        refs = _program_refs(matching[0])
-        scope = "program_specific" if _single_program_route(matching[0]) else "shared_admission_route" if refs else "institution_wide_route"
-        return {**_fact_status(AVAILABLE, scope, source_url=_source_url([matching[0].get("finance_override") or {}, matching[0]]), cycle=_cycle([matching[0].get("finance_override") or {}, matching[0]]), verified_at=_verified_at([matching[0].get("finance_override") or {}, matching[0]])), "values": values}
+        route, facts = matching[0]
+        override = route.get("finance_override") or {}
+        if facts:
+            values = _price_fact_values(facts)
+        else:
+            values = _program_cost_values(override)
+            values["currency"] = override.get("currency")
+        refs = _program_refs(route)
+        scope = str(facts[0].get("applicability")) if facts and facts[0].get("applicability") else "program_specific" if _single_program_route(route) else "shared_admission_route" if refs else "institution_wide_route"
+        fact = {**_fact_status(AVAILABLE, scope, source_url=(facts[0].get("source_url") if facts else None) or _source_url([override, route]), cycle=(facts[0].get("cycle") if facts else None) or _cycle([override, route]), verified_at=(facts[0].get("verified_at") if facts else None) or _verified_at([override, route])), "values": values}
+        if facts:
+            fact["price_facts"] = facts
+        return fact
     program_levels = _levels_for_record(program, program=True)
     finance = university.get("finance")
     values = _root_costs(finance) if "bachelor" in program_levels else {}

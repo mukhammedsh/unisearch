@@ -128,6 +128,32 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.university["admission_categories"][0]["scope"] = "legacy_unknown_scope"
         self.assertEqual([], self.audit("university-outside-pilot"))
 
+    def test_scoped_deadline_and_price_facts_validate_and_price_matches_legacy_field(self) -> None:
+        self.university["academics"] = {"programs": [{
+            "id": "oxford-test-msc", "name": "Test MSc", "study_levels": ["Master"],
+            "tuition_year_gbp": 20000,
+            "application_deadline": [{
+                "id": "oxford-test-msc-2027-deadline", "deadline_type": "course_application",
+                "publication_status": "published", "applicability": "program_specific",
+                "study_levels": ["Master"], "date": "2027-01-06", "time": "12:00",
+                "timezone": "Europe/London", "cycle": "2027-28 entry",
+                "source_url": "https://www.ox.ac.uk/admissions/graduate/courses/test-msc",
+                "verified_at": "2026-09-24",
+            }],
+            "price_facts": [{
+                "id": "oxford-test-msc-tuition-2027", "kind": "tuition", "amount": 20000,
+                "currency": "GBP", "period": "academic_year", "fee_status": "home",
+                "applicability": "program_specific", "study_levels": ["Master"],
+                "publication_status": "published", "cycle": "2027-28 entry",
+                "source_url": "https://www.ox.ac.uk/admissions/graduate/courses/test-msc",
+                "verified_at": "2026-09-24", "legacy_field": "tuition_year_gbp",
+            }],
+        }]}
+        self.assertEqual([], self.audit())
+
+        self.university["academics"]["programs"][0]["price_facts"][0]["amount"] = 21000
+        self.assertTrue(any("must equal legacy numeric field 'tuition_year_gbp'" in error for error in self.audit()))
+
     def test_annual_first_year_deadlines_do_not_infer_an_entry_year(self) -> None:
         rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
         mit = rows["mit-usa-cambridge"]

@@ -1470,14 +1470,14 @@ university.deadlines.calendar_previous: Предыдущий месяц
 university.deadlines.calendar_title: Календарь дедлайнов
 university.deadlines.decision_desc: Публикация официальных решений приёмной комиссии и стипендий онлайн.
 university.deadlines.decision_title: Решения приёмной комиссии
-university.deadlines.early_desc: Ранний раунд подачи заявки для приоритетного рассмотрения.
+university.deadlines.early_desc: Ранний этап подачи заявки для приоритетного рассмотрения.
 university.deadlines.filter_by_level: Фильтр дедлайнов по уровню обучения
 university.deadlines.intro: Опубликованные сроки подачи, даты решений и сборы. Проверьте сайт приёмной комиссии университета для актуального цикла.
 university.deadlines.none_for_level: Для этого уровня обучения сроки подачи не опубликованы.
 university.deadlines.milestone_aid: Подача на финансовую помощь
 university.deadlines.milestone_decision: Решение приёмной комиссии
-university.deadlines.milestone_early: Ранняя подача (Early) / Round 1
-university.deadlines.milestone_regular: Основной раунд (Regular) / Round 2
+university.deadlines.milestone_early: Ранний этап подачи (Early Action / Round 1)
+university.deadlines.milestone_regular: Основной этап принятия решений (Regular Decision / Round 2)
 university.deadlines.milestone_reply: Подтверждение зачисления и депозит
 university.deadlines.regular_desc: Подача заявки в основной цикл приёмной кампании.
 university.deadlines.reply_desc: Срок ответа абитуриента для подтверждения места и зачисления.
@@ -1505,7 +1505,7 @@ university.deadlines.guidance_course_dependent: Сроки зависят от �
 university.deadlines.undergraduate_ucas: Бакалавриат (UCAS)
 university.deadlines.postgraduate_taught: Программы магистратуры
 university.deadlines.doctoral_research: Исследовательские докторские программы
-university.deadlines.mba_round: Раунд поступления на MBA
+university.deadlines.mba_round: Этап подачи заявки на MBA
 university.deadlines.interviews_label: Собеседования
 university.deadlines.time_label: Время
 university.coverage.title: Данные UniSearch
@@ -1645,181 +1645,37 @@ university.program_coverage.award_deadline_unknown: Срок подачи зая
 university.program_coverage.scope.program_specific: Данные относятся к этой программе
 university.program_coverage.scope.shared_route: Данные общие для маршрута поступления
 university.program_coverage.scope.institution_route: Данные относятся к университетскому маршруту поступления
+university.program_coverage.scope.route_wide: Данные относятся ко всему маршруту поступления
+university.program_coverage.scope.institution_wide: Данные относятся ко всему университету
 university.program_coverage.scope.university_guidance: Рекомендации университета; это не стоимость конкретной программы
 university.program_coverage.scope.award_scope: Запись о гранте; проверьте условия для программы и кандидата
 university.program_coverage.scope.not_catalogued: Данные не внесены в каталог.
-application_workspace.add_calendar: Добавить в календарь (.ics)
-application_workspace.open: План поступления
-application_workspace.applicant_scope: Для каких кандидатов
-application_workspace.application_process: Порядок подачи заявки
-application_workspace.award_fallback: Грант
-application_workspace.check_award_eligibility: Проверить условия и дальнейшие шаги
-application_workspace.close: Закрыть
-application_workspace.competition: Конкурс
-application_workspace.course_application: Подать заявку на программу
-application_workspace.coverage: Что покрывает
-application_workspace.cycle: Цикл поступления
-application_workspace.cycle_fall_entry: Набор на осень {year} года
-application_workspace.cycle_entry_year: Набор {year} года
-application_workspace.cycle_academic_year: Учебный год {start}–{end}
-application_workspace.cycle_early_action: Ранний приём
-application_workspace.cycle_regular_action: Основной приём
-application_workspace.route.category.mit_sloan_mban_admissions: Поступление на MBAn MIT Sloan
-application_workspace.route.category.mit_phd_doctoral_guarantee: Поступление на программы докторантуры MIT
-application_workspace.route.category.mit_physics_phd_admissions: Поступление на PhD по физике в MIT
-application_workspace.route.category.stanford_msx_track: Поступление на программу Stanford MSx
-application_workspace.route.category.stanford_ms_cs_track: Поступление на магистратуру по информатике Stanford (MS CS)
-application_workspace.route.category.stanford_ms_ee_track: Поступление на магистратуру по электротехнике Stanford (MS EE)
-application_workspace.route.category.stanford_ms_msande_track: Поступление на магистратуру по инженерному менеджменту Stanford (MS&E)
-application_workspace.route.category.stanford_llm_track: Поступление на программу LLM Stanford Law School
-application_workspace.route.category.harvard_college: Поступление на первый курс бакалавриата Harvard College
-application_workspace.route.category.harvard_gsas_phd: Поступление в докторантуру и на PhD-программы Harvard Griffin GSAS
-application_workspace.route.category.harvard_hbs_mba: Поступление на MBA Harvard Business School
-application_workspace.route.category.harvard_hls_jd: Поступление на программу J.D. Harvard Law School
-application_workspace.route.category.harvard_hks_mpp: Поступление на магистерские программы Harvard Kennedy School
-application_workspace.route.category.harvard_route_hls_llm: Поступление на программу LL.M. Harvard Law School
-application_workspace.route.category.harvard_route_hms_md: Поступление на программу M.D. Harvard Medical School
-application_workspace.route.category.harvard_route_seas_gsas_data_science_sm: Поступление на магистратуру по науке о данных (S.M.) Harvard
-application_workspace.route.category.harvard_route_seas_gsas_cse_sm: Поступление на магистратуру по вычислительной науке и инженерии (S.M.) Harvard
-application_workspace.route.category.harvard_route_gsd_march_i: Поступление на программу M.Arch. I Harvard Graduate School of Design
-application_workspace.route.category.harvard_route_gsd_march_ii: Поступление на программу M.Arch. II Harvard Graduate School of Design
-application_workspace.route.category.harvard_route_chan_mph_45: Поступление на очную программу MPH-45 Harvard Chan
-application_workspace.route.category.harvard_route_chan_mph_65: Поступление на очную программу MPH-65 Harvard Chan
-application_workspace.route.category.harvard_route_chan_mph_generalist: Поступление на онлайн-программу MPH-Generalist Harvard Chan
-application_workspace.route.category.harvard_route_hgse_edm: Поступление на программу Ed.M. Harvard Graduate School of Education
-application_workspace.route.category.harvard_route_gsas_phd_computer_science: Поступление на PhD по информатике Harvard Griffin GSAS
-application_workspace.route.category.harvard_route_gsas_phd_economics: Поступление на PhD по экономике Harvard Griffin GSAS
-application_workspace.route.category.harvard_route_gsas_hils_phd_bbs: Поступление на PhD по биологическим и биомедицинским наукам Harvard Griffin GSAS
-application_workspace.route.category.harvard_route_gsas_phd_physics: Поступление на PhD по физике Harvard Griffin GSAS
-application_workspace.route.category.harvard_route_gsas_phd_government: Поступление на PhD по политологии Harvard Griffin GSAS
-application_workspace.route.profile.mit_sloan_mban_profile: Профиль абитуриента MBAn
-application_workspace.route.profile.mit_phd_standard: Профиль абитуриента докторантуры
-application_workspace.route.profile.mit_physics_phd_applicant: Абитуриент PhD по физике
-application_workspace.route.profile.harvard_college: Профиль абитуриента SAT
-application_workspace.route.profile.harvard_college_act: Профиль абитуриента ACT
-application_workspace.route.profile.gsas_phd_profile: Профиль абитуриента GSAS PhD
-application_workspace.route.profile.hbs_mba_profile: Профиль абитуриента MBA HBS
-application_workspace.route.profile.hls_jd_profile: Профиль абитуриента J.D. HLS
-application_workspace.route.profile.hks_mpp_profile: Магистр публичной политики (MPP)
-application_workspace.route.profile.hks_mpa_profile: Магистр государственного управления (MPA)
-application_workspace.route.profile.hks_mpaid_profile: Магистр государственного управления в области международного развития (MPA/ID)
-application_workspace.route.profile.hks_mcmpa_profile: Магистр государственного управления для опытных специалистов (MC/MPA)
-application_workspace.route.profile.harvard_route_hls_llm_profile: Профиль абитуриента LL.M. Harvard Law School
-application_workspace.route.profile.harvard_route_hms_md_profile: Профиль абитуриента M.D. Harvard Medical School
-application_workspace.route.profile.harvard_route_seas_gsas_data_science_sm_profile: Профиль абитуриента по науке о данных (S.M.)
-application_workspace.route.profile.harvard_route_seas_gsas_cse_sm_profile: Профиль абитуриента по вычислительной науке и инженерии (S.M.)
-application_workspace.route.profile.harvard_route_gsd_march_i_profile: Профиль абитуриента M.Arch. I
-application_workspace.route.profile.harvard_route_gsd_march_ii_profile: Профиль абитуриента M.Arch. II
-application_workspace.route.profile.harvard_route_chan_mph_45_profile: Профиль абитуриента MPH-45
-application_workspace.route.profile.harvard_route_chan_mph_65_profile: Профиль абитуриента MPH-65
-application_workspace.route.profile.harvard_route_chan_mph_generalist_profile: Профиль абитуриента MPH-Generalist
-application_workspace.route.profile.harvard_route_hgse_edm_profile: Профиль абитуриента Ed.M.
-application_workspace.route.profile.harvard_route_gsas_phd_computer_science_profile: Профиль абитуриента PhD по информатике
-application_workspace.route.profile.harvard_route_gsas_phd_economics_profile: Профиль абитуриента PhD по экономике
-application_workspace.route.profile.harvard_route_gsas_hils_phd_bbs_profile: Профиль абитуриента PhD по биологическим и биомедицинским наукам
-application_workspace.route.profile.harvard_route_gsas_phd_physics_profile: Профиль абитуриента PhD по физике
-application_workspace.route.profile.harvard_route_gsas_phd_government_profile: Профиль абитуриента PhD по политологии
-application_workspace.route.program.Sloan MBAn: Магистратура по бизнес-аналитике (MBAn)
-application_workspace.route.program.mit-physics-phd-course-8: PhD по физике (Course 8)
-application_workspace.route.program.harvard-hbs-mba: MBA Harvard Business School
-application_workspace.route.program.harvard-hks-mpp: Магистр публичной политики (MPP) Harvard Kennedy School
-application_workspace.route.program.harvard-hks-mpa: Магистр государственного управления (MPA) Harvard Kennedy School
-application_workspace.route.program.harvard-hls-jd: J.D. Harvard Law School
-application_workspace.route.program.harvard-hls-llm: LL.M. Harvard Law School
-application_workspace.route.program.harvard-hms-md: M.D. Harvard Medical School
-application_workspace.route.program.harvard-seas-gsas-data-science-sm: Магистратура по науке о данных (S.M.) Harvard
-application_workspace.route.program.harvard-seas-gsas-cse-sm: Магистратура по вычислительной науке и инженерии (S.M.) Harvard
-application_workspace.route.program.harvard-gsd-march-i: M.Arch. I Harvard
-application_workspace.route.program.harvard-gsd-march-ii: M.Arch. II Harvard
-application_workspace.route.program.harvard-chan-mph-45: MPH-45 Harvard Chan
-application_workspace.route.program.harvard-chan-mph-65: MPH-65 Harvard Chan
-application_workspace.route.program.harvard-chan-mph-generalist: MPH-Generalist Harvard Chan
-application_workspace.route.program.harvard-hgse-edm: Ed.M. Harvard
-application_workspace.route.program.harvard-gsas-phd-computer-science: PhD по информатике Harvard Griffin GSAS
-application_workspace.route.program.harvard-gsas-phd-economics: PhD по экономике Harvard Griffin GSAS
-application_workspace.route.program.harvard-gsas-hils-phd-bbs: PhD по биологическим и биомедицинским наукам Harvard Griffin GSAS
-application_workspace.route.program.harvard-gsas-phd-physics: PhD по физике Harvard Griffin GSAS
-application_workspace.route.program.harvard-gsas-phd-government: PhD по политологии Harvard Griffin GSAS
-application_workspace.route.funding.mit_sloan_specialized_paid: Магистратура с самостоятельной оплатой
-application_workspace.route.funding.mit_sloan_mban_merit_fellowship: Стипендия MBAn за достижения
-application_workspace.route.funding.harvard_college: Стандартный семейный взнос
-application_workspace.route.funding.harvard_college-grant-financial-aid: Грант Harvard Financial Aid Initiative (HFAI)
-application_workspace.route.funding.harvard_college_act: Профиль поступления по ACT
-application_workspace.route.funding.harvard_college_act-grant-financial-aid: Грант Harvard Financial Aid Initiative
-application_workspace.route.funding.gsas_phd_guaranteed_5yr: Пятилетний гарантированный пакет финансирования GSAS
-application_workspace.route.funding.hbs_need_based_fellowship: Стипендия HBS по финансовой потребности
-application_workspace.route.funding.hbs_self_funded: Самостоятельная оплата стандартной программы HBS
-application_workspace.route.funding.hls_need_based_grant: Грант HLS по финансовой потребности
-application_workspace.route.funding.hls_paid: Стандартная стоимость обучения HLS
-application_workspace.route.funding.hks_fellowships: Стипендии за государственную и общественную службу HKS
-application_workspace.route.funding.hks_paid: Стандартная стоимость обучения HKS
-application_workspace.deadline_type_course: Подача заявки на программу
-application_workspace.deadline_type_financial_aid: Подача заявки на финансовую помощь
-application_workspace.deadline_type_early_deadline: Ранний срок подачи
-application_workspace.deadline_type_equal_consideration: Срок для рассмотрения на равных условиях
-application_workspace.deadline_type_final_closing: Окончательный срок подачи
-application_workspace.deadline_type_rolling_decision: Рассмотрение заявок по мере поступления
-application_workspace.deadline_type_round_1: Этап 1
-application_workspace.deadline_type_round_2: Этап 2
-application_workspace.deadline_type_round_3: Этап 3
-application_workspace.deadline_type_round_4: Этап 4
-application_workspace.deadline_type_scholarship_round_1: Этап 1 конкурса на стипендию
-application_workspace.deadline_type_scholarship_round_2: Этап 2 конкурса на стипендию
-application_workspace.deadline_type_scholarship_round_3: Этап 3 конкурса на стипендию
-application_workspace.deadline_unknown: Срок не подтверждён
-application_workspace.documents: Документы
-application_workspace.empty_saved: Сохраните университеты, чтобы составить план поступления.
-application_workspace.financial_aid_application: Подать документы на финансовую помощь
-application_workspace.financial_aid_docs_detail: Университет указывает отдельный срок подачи документов на финансовую помощь. Уточните список документов и условия для кандидатов.
-application_workspace.funding_research: Проверить условия получения финансирования и порядок подачи заявки
-application_workspace.funding_selected: Проверить выбранный вариант финансирования
-application_workspace.funding_unknown_detail: По доступным данным нельзя подтвердить условия получения гранта, список документов и срок подачи заявки.
-application_workspace.intro: Отслеживайте заявки на программы и гранты в сохранённых университетах.
-application_workspace.load_error: Не удалось загрузить сведения об университете. Откройте его страницу и повторите попытку.
-application_workspace.official_source: Официальный источник
-application_workspace.post_offer_award: Подать заявку на грант после получения предложения о зачислении
-application_workspace.post_offer_award_source: Открыть официальные инструкции по гранту
-application_workspace.post_offer_confirm_award: Подтвердить сумму и условия каждой присуждённой выплаты
-application_workspace.post_offer_confirm_award_detail: Проверьте официальное письмо о гранте или финансовой помощи. Возможные гранты не считаются подтверждёнными средствами и не вычитаются из опубликованной стоимости.
-application_workspace.post_offer_confirm_cost: Уточнить полную стоимость и график платежей по официальным данным
-application_workspace.post_offer_confirm_cost_detail: Используйте официальное уведомление университета о стоимости для вашей программы и цикла поступления. Если сумма здесь не опубликована, она остаётся неизвестной; этот план не рассчитывает стоимость за вычетом гранта.
-application_workspace.post_offer_confirm_funds: Подтвердить наличие средств
-application_workspace.post_offer_confirm_funds_detail: Проверьте актуальные официальные требования университета и визовой службы к подтверждению финансов.
-application_workspace.post_offer_fee_source: Открыть официальные сведения о стоимости
-application_workspace.post_offer_funds_source: Открыть официальные требования к подтверждению финансов
-application_workspace.post_offer_gate: Я получил(а) предложение о зачислении и принял(а) его
-application_workspace.post_offer_heading: После принятия предложения о зачислении
-application_workspace.post_offer_locked: Начинайте эти шаги только после принятия предложения о зачислении. Этот статус указан вами и не подтверждён университетом.
-application_workspace.post_offer_no_deadline: Срок здесь не указан; следуйте актуальным официальным инструкциям.
-application_workspace.post_offer_request_visa_document: Узнать, как запросить визовый документ университета
-application_workspace.post_offer_i20_detail: После принятия предложения о зачислении следуйте инструкциям университета по запросу формы I-20 или DS-2019. Университет определяет необходимые документы и порядок оформления.
-application_workspace.post_offer_cas_detail: После принятия предложения о зачислении следуйте инструкциям университета по запросу CAS. Университет определяет необходимые документы и порядок оформления.
-application_workspace.post_offer_source_unknown: Официальный источник сведений о стоимости не указан; уточните информацию напрямую в университете.
-application_workspace.post_offer_visa_source: Открыть официальные требования к визовым документам
-application_workspace.process_automatic: Автоматическое рассмотрение
-application_workspace.process_course_application_selection: Выберите стипендию в заявке на программу
-application_workspace.process_post_offer: Отдельная заявка после получения предложения о зачислении
-application_workspace.process_separate: Отдельная заявка
-application_workspace.process_unknown: Не указано
-application_workspace.program_scope: Подходящие программы
-application_workspace.renewal: Продление
-application_workspace.review_automatic_award: Проверить условия автоматического рассмотрения на грант
-application_workspace.round: Этап
-application_workspace.select_track: Открыть страницу университета и выбрать маршрут поступления
-application_workspace.separate_award: Подать заявку на грант
-application_workspace.source_unknown: Официальный источник не указан
-application_workspace.steps: Этапы
-application_workspace.timezone_unknown: часовой пояс не указан
-application_workspace.timezone_pacific: тихоокеанское время США
-application_workspace.timezone_uk: время Великобритании
-application_workspace.timezone_eastern: восточное время США
-application_workspace.title: План поступления
-application_workspace.track_not_selected: Маршрут поступления не выбран. Уточните его на странице университета.
-application_workspace.verify_deadline: Проверьте срок на официальной странице
-application_workspace.verify_warning: Уточните в официальном источнике условия участия, точный срок и часовой пояс.
-application_workspace.deadline_scope_shared_route: Это опубликованный срок для выбранного общего маршрута поступления на бакалавриат. Проверьте на официальной странице требования конкретной программы.
-application_workspace.qualification_not_accepted: Указано, что выбранная квалификация не принимается для этого маршрута. Прежде чем считать план подходящим, проверьте принимаемые альтернативы и официальные требования программы.
-application_workspace.qualification_source: Официальные требования программы
+university.program_coverage.deadline_not_published: Университет ещё не опубликовал срок
+university.program_coverage.next_action.deadline_not_published: Следите за обновлениями срока на официальной странице приёма.
+university.program_coverage.deadline_conflicting: Официальные сведения о сроке подачи расходятся
+university.program_coverage.next_action.deadline_conflicting: Сравните официальные страницы приёма и уточните подходящий срок в университете.
+university.program_coverage.price_not_published: Текущий тариф ещё не опубликован
+university.program_coverage.next_action.price_not_published: Проверьте официальную страницу стоимости обучения после публикации актуальных тарифов.
+university.program_coverage.price_conflicting: Официальные сведения о стоимости расходятся
+university.program_coverage.next_action.price_conflicting: Сравните официальные страницы со стоимостью и уточните подходящий тариф в университете.
+university.program_coverage.price.kind.tuition: Стоимость обучения
+university.program_coverage.price.kind.application_fee: Сбор за подачу заявки
+university.program_coverage.price.kind.mandatory_fee: Обязательный сбор
+university.program_coverage.price.fee_status.home: Домашний тариф
+university.program_coverage.price.fee_status.overseas: Зарубежный тариф
+university.program_coverage.price.fee_status.international: Тариф для иностранных студентов
+university.program_coverage.price.fee_status.same_all_statuses: Одинаково для всех тарифных статусов
+university.program_coverage.price.period.academic_year: за учебный год
+university.program_coverage.price.period.one_time: разово
+university.program_coverage.price.period.quarter: за квартал
+university.program_coverage.price.period.credit: за учебный кредит
+university.program_coverage.price.quantity_basis.8_10_units: нагрузка 8–10 учебных единиц
+university.program_coverage.price.quantity_basis.11_18_units: нагрузка 11–18 учебных единиц
+university.program_coverage.price.quantity_basis.above_18_units: нагрузка более 18 учебных единиц
+university.program_coverage.price.quantity_basis.summer_1_7_units: летом, нагрузка 1–7 учебных единиц
+university.program_coverage.price.quantity_basis.first_year: первый год обучения
+university.program_coverage.price.quantity_basis.second_year: второй год обучения
+university.program_coverage.price.quantity_basis.12_20_units: нагрузка 12–20 учебных единиц
 university.finance.award_basis.need: По финансовой потребности
 university.finance.award_basis.merit: За достижения
 university.finance.award_basis.need_and_merit: По потребности и достижениям
@@ -1828,12 +1684,12 @@ university.finance.award.coverage_item.living_stipend: Стипендия на �
 university.finance.award.coverage_item.consumables: Расходы на исследовательские материалы
 university.finance.award.coverage_item.partial_tuition: Частичная оплата обучения
 university.finance.award.applicant_scope.domestic_only: Только статус Home по оплате; он определяется не только гражданством
-university.finance.award.deadline_label.early_action: Ранний раунд (Early Action)
-university.finance.award.deadline_label.regular_action: Основной раунд (Regular Action)
-university.finance.award.deadline_label.restrictive_early_action: Ограниченный ранний раунд (Restrictive Early Action)
-university.finance.award.deadline_label.regular_decision: Основной раунд решений (Regular Decision)
-university.finance.award.deadline_label.class_of_2029_round_1: Набор 2029 года — раунд 1
-university.finance.award.deadline_label.class_of_2029_round_2: Набор 2029 года — раунд 2
+university.finance.award.deadline_label.early_action: Ранний этап подачи (Early Action)
+university.finance.award.deadline_label.regular_action: Основной этап подачи (Regular Action)
+university.finance.award.deadline_label.restrictive_early_action: Ограниченный ранний этап подачи (Restrictive Early Action)
+university.finance.award.deadline_label.regular_decision: Основной этап принятия решений (Regular Decision)
+university.finance.award.deadline_label.class_of_2029_round_1: Набор 2029 года — этап 1 (Round 1)
+university.finance.award.deadline_label.class_of_2029_round_2: Набор 2029 года — этап 2 (Round 2)
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.name: Стипендия MIT по финансовой потребности (MIT Need-Based Scholarship)
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.program_scope: Бакалавриат MIT: поступление на первый курс и перевод
 university.finance.award.copy.mit-undergraduate-need-based-scholarship.applicant_scope: Кандидаты на первый курс бакалавриата и перевод, запрашивающие помощь MIT с учётом финансовой потребности. Кандидаты из США также подают FAFSA; для иностранных действует отдельный процесс MIT.
@@ -2051,10 +1907,10 @@ university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.eligibility
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.coverage: Безвозвратная помощь зависит от личной потребности; Stanford может сочетать стипендию с займами. Индивидуальная сумма неизвестна до решения о помощи.
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.renewal: Заявку на финансовую помощь нужно подавать заново на каждый год двухлетней MBA.
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.competition: По данным Stanford, помощь получают около половины студентов MBA; подтверждённая потребность сама по себе не определяет сумму до рассмотрения.
-university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.course_application_deadline: Поступление на MBA Stanford: раунд 1 — 9 сентября 2026 года; раунд 2 — 6 января 2027 года; раунд 3 — 7 апреля 2027 года
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.course_application_deadline: Поступление на MBA Stanford: этап подачи 1 (Round 1) — 9 сентября 2026 года; этап 2 (Round 2) — 6 января 2027 года; этап 3 (Round 3) — 7 апреля 2027 года
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.award_application_deadline: GSB Financial Aid сообщает срок зачисленным студентам; срок помощи для осени 2027 года на указанной странице не опубликован
-university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.deadline_timezone: Часовой пояс раунда проверьте на странице приёма; срок подачи на помощь после зачисления пока не опубликован
-university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.0: Подайте заявку на MBA Stanford в один из опубликованных раундов.
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.deadline_timezone: Часовой пояс этапа подачи проверьте на странице приёма; срок подачи на помощь после зачисления пока не опубликован
+university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.0: Подайте заявку на MBA Stanford на одном из опубликованных этапов подачи.
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.1: После зачисления запросите инструкции GSB по помощи и заполните внутреннюю заявку.
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.2: Предоставьте налоговые документы и сведения о доходах за требуемые годы; граждане и постоянные жители США также подают FAFSA.
 university.finance.award.copy.stanford-gsb-need-based-mba-fellowship.steps.3: Проверьте индивидуальное предложение по стипендии и займам и обновите заявку на второй год.
@@ -2101,14 +1957,14 @@ university.finance.award.copy.stanford-knight-hennessy-scholars-2027.name: Ст�
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.program_scope: Очные программы магистратуры и докторантуры Stanford; требования зависят от программы
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.applicant_scope: Кандидаты из любых стран; первая степень бакалавра должна быть получена не ранее января 2020 года (есть исключение для военной службы); требуется отдельная заявка на подходящую программу graduate-уровня Stanford и зачисление на неё
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.cycle: Набор 2027 года
-university.finance.award.copy.stanford-knight-hennessy-scholars-2027.eligibility: Нужно одновременно подать отдельные заявки на KHS и graduate-программу Stanford. Заявка на graduate-программу должна быть подана до срока для кандидатов KHS либо до 1 декабря 2026 года — в зависимости от того, какой срок наступит раньше. Для MBA действует срок первого раунда GSB.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.eligibility: Нужно одновременно подать отдельные заявки на KHS и graduate-программу Stanford. Заявка на graduate-программу должна быть подана до срока для кандидатов KHS либо до 1 декабря 2026 года — в зависимости от того, какой срок наступит раньше. Для MBA действует срок первого этапа подачи заявки в GSB (Round 1).
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.coverage: Финансирование graduate-обучения сроком до трёх лет: обучение и связанные сборы, проживание и академические расходы, ежегодная транспортная выплата. Условия зависят от длительности программы и правил финансирования.
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.course_application_deadline: Срок программы graduate-уровня Stanford зависит от программы и может наступить до 1 декабря 2026 года
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.deadline_timezone: Тихоокеанское время США
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.0: Проверьте правила участия для набора 2027 года.
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.1: Подайте заявку KHS до 6 октября 2026 года, 13:00 по тихоокеанскому времени.
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.2: Отдельно подайте заявку на graduate-программу Stanford до более раннего из сроков: срока для кандидатов KHS на этой программе или 1 декабря 2026 года.
-university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.3: При подаче на MBA выполните требования первого раунда GSB.
+university.finance.award.copy.stanford-knight-hennessy-scholars-2027.steps.3: При подаче на MBA выполните требования первого этапа подачи заявки в GSB (Round 1).
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.documents.0: Материалы заявки KHS по актуальному списку, включая эссе, выписку оценок, резюме и рекомендации
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.documents.1: Отдельная заявка на graduate-программу Stanford и материалы по требованиям программы
 university.finance.award.copy.stanford-knight-hennessy-scholars-2027.competition: Конкурс крайне высокий; KHS не публикует формулу отбора или гарантированный проходной балл.
@@ -2165,6 +2021,21 @@ university.finance.award.copy.oxford-reach-oxford-scholarship-2027.documents.0: 
 university.finance.award.copy.oxford-reach-oxford-scholarship-2027.documents.1: Отдельная заявка Reach Oxford; точная форма и список документов для 2027 года будут опубликованы в январе 2027 года
 university.finance.award.copy.oxford-reach-oxford-scholarship-2027.competition: Присуждается около 2–3 стипендий в год; конкурс очень высокий. Для кандидатов, не прошедших отбор, дополнительное финансирование не предусмотрено.
 university.finance.award.copy.oxford-reach-oxford-scholarship-2027.renewal: Стипендия сохраняется при удовлетворительной успеваемости; требуется ежегодный отчёт.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.name: Стипендия Crankstart (Crankstart Scholarship)
+university.finance.award.copy.oxford-crankstart-scholarship-2027.program_scope: Некоторые программы первого высшего образования из этого каталога; действуют требования к проживанию в Великобритании и доходу семьи. Graduate Entry Medicine A101 не входит в каталог.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.applicant_scope: Жители Великобритании, проживавшие в стране не менее трёх лет не только ради учёбы, начинающие первое высшее образование и имеющие годовой доход семьи не выше 32 500 фунтов.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.cycle: Набор 2027 года
+university.finance.award.copy.oxford-crankstart-scholarship-2027.eligibility: Отдельная заявка Crankstart не нужна. Oxford принимает решение по результатам оценки дохода семьи региональным агентством финансирования. Кандидат может отказаться от Crankstart и вместо этого пройти рассмотрение на Oxford Bursary.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.coverage: Ежегодная выплата на проживание, а также доступ к оплачиваемым стажировкам, волонтёрским проектам и мероприятиям сообщества стипендиатов. Для отдельных выплат за стажировки, а также поддержки студентов с опытом пребывания под опекой или без семейной поддержки действуют дополнительные условия; они не гарантируются базовой стипендией.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.renewal: Ежегодную поддержку оценивают по действующим условиям Crankstart и результатам проверки дохода семьи.
+university.finance.award.copy.oxford-home-bursary-2027.name: Стипендия Oxford (Oxford Bursary)
+university.finance.award.copy.oxford-home-bursary-2027.program_scope: Некоторые программы первого высшего образования из этого каталога; это не общий грант для студентов с тарифом Overseas. Graduate Entry Medicine A101 не входит в каталог.
+university.finance.award.copy.oxford-home-bursary-2027.applicant_scope: Студенты со статусом оплаты Home, начинающие получать первое высшее образование: граждане Великобритании или Республики Ирландия, проживающие в Великобритании или Ирландии, из семей с невысоким доходом и не имеющие права на Crankstart либо не участвующие в этой программе. Студенты из ЕС, ЕЭЗ и Швейцарии со статусом settled или pre-settled могут подходить при соблюдении требований к проживанию.
+university.finance.award.copy.oxford-home-bursary-2027.cycle: Набор 2027 года
+university.finance.award.copy.oxford-home-bursary-2027.eligibility: Отдельная заявка в Oxford не нужна. Требуется оценка дохода семьи региональным агентством студенческого финансирования; для поступающих в 2027 году её нужно пройти до 30 мая 2028 года. Требуются первое высшее образование и право на тариф Home.
+university.finance.award.copy.oxford-home-bursary-2027.coverage: Ежегодная безвозвратная выплата на проживание; суммы на 2027–28 год зависят от дохода и приведены в карточке гранта. Студенты с правом на выплату для первого высшего образования в Великобритании могут отдельно претендовать на транспортную доплату Oxford, зависящую от расстояния; она не входит в указанные суммы.
+university.finance.award.copy.oxford-home-bursary-2027.renewal: Доход и соответствие условиям проверяются каждый учебный год по правилам Oxford и правительства.
+university.finance.award.copy.oxford-home-bursary-2027.course_application_deadline: Подайте заявку через UCAS до 15 октября 2026 года, 18:00 по времени Великобритании.
 university.finance.award.copy.oxford-clarendon-fund-2027.name: Стипендия Clarendon Fund
 university.finance.award.copy.oxford-clarendon-fund-2027.program_scope: Подходящие очные и заочные программы магистратуры и DPhil в Оксфорде
 university.finance.award.copy.oxford-clarendon-fund-2027.applicant_scope: Кандидаты любого гражданства и места проживания на новую программу с присуждением степени, если заявка подана до соответствующего декабрьского или январского срока программы
@@ -2187,13 +2058,13 @@ university.finance.award.copy.imperial-inspires-2027.applicant_scope: Иност
 university.finance.award.copy.imperial-inspires-2027.cycle: 2027–2028
 university.finance.award.copy.imperial-inspires-2027.eligibility: Программа должна участвовать в Imperial Inspires, а кандидат — соответствовать условиям стипендии и минимальным требованиям программы. Для поступающих в 2027 году предусмотрено не менее 300 стипендий в направлениях инженерии, естественных наук, медицины и Imperial Business School.
 university.finance.award.copy.imperial-inspires-2027.coverage: 15 000 фунтов в год за каждый год программы на оплату обучения и расходы на проживание.
-university.finance.award.copy.imperial-inspires-2027.course_application_deadline: Срок UCAS для бакалавриата зависит от программы; многие программы используют общий срок рассмотрения 13 января 2027 года. Сроки магистратуры зависят от программы и раунда приёма.
+university.finance.award.copy.imperial-inspires-2027.course_application_deadline: Срок UCAS для бакалавриата зависит от программы; многие программы используют общий срок рассмотрения 13 января 2027 года. Сроки магистратуры зависят от программы и этапа подачи заявки.
 university.finance.award.copy.imperial-inspires-2027.award_application_deadline: Решения по стипендиям для бакалавриата планируют принять к середине апреля 2027 года; до приглашения отдельного фиксированного срока нет.
 university.finance.award.copy.imperial-inspires-2027.deadline_timezone: Срок подачи на стипендию не опубликован
 university.finance.award.copy.imperial-inspires-2027.steps.0: Подайте заявку UCAS на бакалавриат или заявку My Imperial на магистратуру после открытия приёма в сентябре 2026 года.
 university.finance.award.copy.imperial-inspires-2027.steps.1: Уточните, участвует ли выбранная программа в Imperial Inspires и соответствуете ли вы условиям стипендии и минимальным требованиям.
 university.finance.award.copy.imperial-inspires-2027.steps.2: Если вы соответствуете условиям, дождитесь приглашения и отправьте дополнительное эссе через портал приёма i360.
-university.finance.award.copy.imperial-inspires-2027.steps.3: Проверьте условия стипендии для участвующей программы и текущего раунда.
+university.finance.award.copy.imperial-inspires-2027.steps.3: Проверьте условия стипендии для участвующей программы и текущего этапа конкурса.
 university.finance.award.copy.imperial-inspires-2027.documents.0: Заявка на программу и документы по её требованиям
 university.finance.award.copy.imperial-inspires-2027.documents.1: Дополнительное эссе в i360 после приглашения
 university.finance.award.copy.imperial-inspires-2027.documents.2: Другие документы и точные критерии зависят от участвующей программы; сведения опубликованы не полностью
@@ -2242,7 +2113,7 @@ university.finance.award.copy.deans-impact-scholarship.eligibility: Новые �
 university.finance.award.copy.deans-impact-scholarship.coverage: MSc — 25 000 GBP; очная MBA — до 50 % стоимости обучения. Получение стипендии не гарантировано.
 university.finance.award.copy.deans-impact-scholarship.renewal: Указанные программы MSc и очная MBA длятся один год; условия выплаты смотрите в предложении о стипендии.
 university.finance.award.copy.deans-impact-scholarship.competition: Конкурсный отбор; число стипендий по каждой программе на официальной странице не указано.
-university.finance.award.copy.deans-impact-scholarship.course_application_deadline: Используйте срок раунда поступления, опубликованный для выбранной программы MSc или MBA.
+university.finance.award.copy.deans-impact-scholarship.course_application_deadline: Используйте опубликованный срок подачи заявки для выбранной программы MSc или MBA.
 university.finance.award.copy.deans-impact-scholarship.award_application_deadline: Отдельный фиксированный срок подачи заявки на стипендию не опубликован; приглашение на письменное задание для MSc или видеозадание для MBA следует за заявкой на программу.
 university.finance.award.copy.deans-impact-scholarship.steps.0: Подайте заявку на подходящую программу MSc или MBA Imperial Business School.
 university.finance.award.copy.deans-impact-scholarship.steps.1: После приглашения отправьте дополнительное задание: письменное для MSc или видео для MBA.
@@ -2345,7 +2216,7 @@ university.finance.award.copy.mit-sloan-aker-scholarship.deadline_timezone: На
 university.finance.award.copy.mit-economics-phd-departmental-support.documents.5: Результат теста по английскому, если требуется
 university.finance.award.copy.mit-sloan-mban-capstone-tuition-offset.eligibility: MIT Sloan указывает, что снижение стоимости обучения на проекте Capstone получают все студенты MBAn.
 university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.eligibility: По данным MIT Sloan, стипендия предназначена двум гражданам Испании с инженерным образованием испанского университета, поступающим на MBA, MFin или MBAn.
-university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.course_application_deadline: Кандидаты MBA должны быть зачислены в раунде 1 или 2; для MFin и MBAn действует график поступления на соответствующую программу.
+university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.course_application_deadline: Кандидаты MBA должны получить предложение о зачислении по итогам этапа 1 или 2 (Round 1 или Round 2); для MFin и MBAn действует график поступления на соответствующую программу.
 university.finance.award.copy.mit-sloan-aker-scholarship.eligibility: Кандидат должен быть гражданином Норвегии или иметь тесную связь с Норвегией; Aker ориентируется на сильных в учёбе кандидатов, желающих внести вклад в общество. На момент подачи нельзя уже учиться на программе.
 university.finance.award.copy.mit-sloan-aker-scholarship.competition: Внешняя конкурсная стипендия; MIT и Aker не публикуют отдельную статистику отбора для этой программы.
 university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.documents.0: Отдельная заявка в Фонд; подробный список документов на указанной странице MIT Sloan не опубликован

@@ -4,6 +4,20 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 7.0.0 (2026-09-24) - Scoped Admissions Facts and Product Direction
+
+### Added
+- Expanded selected MIT, Imperial College London, Stanford, Harvard, and Oxford records with more program- and route-scoped admissions, deadline, price, and funding facts, including official sources, applicable cycles, fee statuses, and publication states.
+- Showed unpublished or conflicting course deadlines and fees with their scope, official source, and a useful next action instead of presenting an unsupported date or amount.
+- Established the [admissions product model](docs/admissions-product-model.md) and [migration checklist](todo.md) for the next stages: complete top-five catalog and schema drafts, coordinated backend/frontend integration, then the remaining 45 universities. This documents planned work; the new model is not yet the runtime format.
+
+### Fixed
+- Kept Oxford test-booking dates out of course-application deadline coverage and preserved separate dated, undated, and conflicting deadline states.
+- Corrected selected top-five coverage for historical versus unpublished fees, program-specific costs, and shared versus program-specific application routes.
+
+### Removed
+- Removed the application planning workspace and its saved checklist interface. Admissions and funding information remains available in university details. This removal changes the previously committed `6.14.0` workflow, so this release uses a major version.
+
 ## 6.14.0 (2026-09-24) - Applicant Planning and University Coverage
 
 ### Added

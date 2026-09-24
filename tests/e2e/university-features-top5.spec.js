@@ -107,8 +107,9 @@ test("exact Imperial deadline export preserves its official source and admission
   await expect(exactDeadline).toBeVisible();
   const publishedDate = (await exactDeadline.locator(".admissions-deadline-date").textContent()).replace(/[\u2010-\u2015\u2212]/g, "-");
   expect(publishedDate).toBe(exactDate);
+  await expect(exactDeadline.locator(".admissions-deadline-time")).toContainText("18:00 Europe/London");
   const publishedCycle = (await exactDeadline.locator(".admissions-deadline-cycle").textContent()).replace(/[\u2010-\u2015\u2212]/g, "-");
-  expect(publishedCycle).toContain("2027-28 entry");
+  expect(publishedCycle).toContain("2027 entry");
   const sourceUrl = await exactDeadline.locator(".admissions-deadline-source").getAttribute("href");
   expect(sourceUrl).toBe("https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/");
 
@@ -137,7 +138,7 @@ test("exact Imperial deadline export preserves its official source and admission
 
   const exportedIcs = await page.evaluate(async () => (await window.__lastCalendarExport).replace(/\r\n[ \t]/g, ""));
   expect(exportedIcs).toContain("DTSTART;VALUE=DATE:20270113");
-  expect(exportedIcs).toContain("Admissions cycle: 2027-28 entry");
+  expect(exportedIcs).toContain("Admissions cycle: 2027 entry");
   expect(exportedIcs).toContain(`Source: ${sourceUrl}`);
 });
 
@@ -225,6 +226,30 @@ test("detail page renders dedicated Deadlines tab with interactive timeline", as
   await allTab.click();
   const expectedCount = Number((await allTab.textContent()).match(/\((\d+)\)/)?.[1]);
   await expect(deadlineCards).toHaveCount(expectedCount);
+
+  const conflictCards = deadlineCards.filter({ hasText: "Official deadline information conflicts" });
+  await expect(conflictCards).toHaveCount(2);
+  for (const conflictCard of await conflictCards.all()) {
+    await expect(conflictCard.locator(".admissions-deadline-cycle")).toContainText("Fall 2027 entry");
+    await expect(conflictCard.locator(".admissions-deadline-date")).toHaveCount(0);
+    await expect(conflictCard.locator(".admissions-deadline-notes").first()).toContainText("Compare the official admissions pages");
+    await expect(conflictCard.locator(".admissions-deadline-source")).toHaveCount(2);
+  }
+
+  await page.evaluate(() => {
+    const language = document.getElementById("languageSelect");
+    language.value = "rus";
+    language.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  const russianConflicts = deadlineCards.filter({ hasText: "Официальные сведения о сроке подачи расходятся" });
+  await expect(russianConflicts).toHaveCount(2);
+  await expect(russianConflicts.first().locator(".admissions-deadline-notes").first()).toContainText("Сравните официальные страницы приёма");
+  await page.evaluate(() => {
+    const language = document.getElementById("languageSelect");
+    language.value = "eng";
+    language.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  await expect(deadlineCards.filter({ hasText: "Official deadline information conflicts" })).toHaveCount(2);
 
   const degreeTab = page.locator("#detailDeadlines [data-deadlines-level]:not([data-deadlines-level='all'])").first();
   const degreeCount = Number((await degreeTab.textContent()).match(/\((\d+)\)/)?.[1]);

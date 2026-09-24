@@ -31,7 +31,7 @@ test("Oxford rejects only the explicitly named Kazakhstan Attestat and accepts a
     },
   });
   assert.equal(rejected.status, "not_accepted");
-  assert.equal(rejected.verifiedAt, "2026-09-23");
+  assert.equal(rejected.verifiedAt, "2026-09-24");
   assert.match(rejected.sourceUrl, /^https:\/\/www\.ox\.ac\.uk\//);
 
   const accepted = resolveQualificationGuidance({

@@ -1,47 +1,54 @@
-# Top-five university pilot: orchestration runbook
+# Admissions-model migration runbook
 
-This runbook is for a new Codex task whose coordinator uses GPT-6 Sol at high reasoning effort and delegates bounded work to GPT-6 Luna at high reasoning effort. The product scope and completion gate live in `.tmp_test/todo.md`; repository rules live in `AGENTS.md`. Read those files instead of copying their contents into agent prompts.
+## Purpose and scope
 
-## Start from the actual local state
+Read `AGENTS.md`, [the admissions product model](docs/admissions-product-model.md), and [the migration checklist](todo.md) before assigning work. The current delivery order is: define the canonical schema and inventory all degree-level study options at MIT, Imperial College London, Stanford, Harvard, and Oxford; then integrate the backend and frontend; then migrate and update the other 45 universities. The existing selected routes are a starting point, not the completeness boundary. Keep incompatible draft data outside the active runtime catalog until the application can read the new schema.
 
-1. Work in the same local checkout that contains this file and `.tmp_test/todo.md`. The todo file is Git-ignored, and the previous task left an uncommitted cleanup. A fresh worktree will not contain either uncommitted state or ignored files unless they are explicitly transferred.
-2. Read `AGENTS.md`, `.tmp_test/todo.md`, `git status --short`, the current diff, and the latest commit. Reconcile the todo's historical counts and completed items with the working tree before editing. Preserve existing changes and do not redo completed work.
-3. State the next concrete applicant-facing outcome and its verification before delegating. Work through the todo's stages; do not treat its counts as evidence of factual completeness.
-4. Do not commit, push, tag, bump the version, or publish without the user's explicit authorization under `AGENTS.md`.
+For each study option and its real application path, keep facts specific to the relevant study level, applicant category, fee status, and admissions cycle. The product should help an applicant establish:
 
-## Coordinator and subagent responsibilities
+- whether the route and their qualification fit, including explicitly unknown eligibility details;
+- the application portal, steps, documents, and dated or unpublished admissions and aid deadlines;
+- applicable tuition and mandatory fees with currency, period, cycle, and Home/Overseas or other fee status;
+- relevant funding, its eligibility and application process, separate deadline, coverage, and renewal conditions.
 
-- The Sol coordinator owns scope, assignments, conflict prevention, acceptance decisions, and the user-facing report. It reviews evidence, diffs, and check summaries. It should not routinely edit product code or run tests itself; assign those operations to Luna workers so the coordinator's context stays small.
-- Use two or three Luna High workers at a time for substantial tasks. The available concurrency limit may be lower; inspect it and keep a slot for the coordinator. The workers research, edit their assigned files, run focused tests, repair failures, and report results. Prefer adding a small lookup to an existing worker brief over creating another agent.
-- Group a worker's university assignment across its current routes, costs, and funding so the same official pages are not researched repeatedly. Let one Luna worker own the shared `backend/data/universities.json` at a time, for one university or bounded batch. Other Luna workers can research upcoming universities into separate ignored evidence files or edit genuinely disjoint frontend/backend/test files. Hand over shared-file ownership explicitly before the next worker edits it.
-- Give each worker a narrow brief: university and route IDs, expected applicant outcome, official-source rule, files it owns, files it must not edit, focused checks to run, and a completion format. Pass only the relevant todo section and file pointers, not the entire conversation. When the tool requires a model override, request `gpt-6-luna` with `high` reasoning and a short or empty history fork.
-- Each Luna implementation worker writes the applicable code, data, tests, and a short ignored evidence file under `.tmp_test/evidence/`. The coordinator reviews the resulting shared-worktree diff and either accepts it or sends a concrete correction back to a Luna worker. Do not use parallel writers for the same file, and do not ask Sol to rewrite a worker's patch as the normal integration step.
-- Ask workers to return only changed files, a short decision summary, their evidence-file path, exact checks and results, and unresolved questions. The evidence file should cover: route/program and applicant scope; confirmed requirement and documents; admission steps/deadline; cost with currency, year, and fee status; relevant award eligibility, application process, separate deadline, coverage, renewal; official URL; checked date; unresolved point and next action. Group rules shared by several undergraduate majors.
-- Assign final unit/backend, data, static, and browser verification to Luna workers with nonconflicting ownership; the Sol coordinator checks the reports and inspects relevant failures or diffs. If a Luna worker is unavailable or hits a usage limit, continue with available workers and report any blocked work. Do not silently switch models or claim an unrun check passed.
+Use official university pages and university-hosted admissions documents. Preserve an honest unknown and an official next action when a fact is not published or cannot be confirmed. Do not infer a university-wide rule for a specific school, level, route, or applicant category.
 
-## Context and token discipline
+## Start and checkpoint
 
-- Keep `.tmp_test/todo.md` as the task list and create a small ignored `.tmp_test/orchestrator-state.md` for live state. After each milestone, record only: completed todo IDs, changed files, source-evidence paths, checks with outcomes, open decisions, and the next action. This state file is a checkpoint, not a transcript.
-- Read targeted files and bounded ranges; search with `rg` before opening large files. Avoid sending large JSON, complete command logs, or copied web pages into the coordinator's context. Keep full source detail in evidence files and return concise summaries with links and file references.
-- Batch independent research and read-only checks. Serialize edits to shared files and approval-sensitive actions. Do not repeatedly ask multiple agents to investigate the same page or issue.
-- Workers run focused tests while changing one route or subsystem and broader checks at the todo's final gate. They must not rerun a passed check without a relevant subsequent change or concrete failure. Record exact commands and outcomes in the state file; the coordinator reads the concise result, not the complete log unless a failure needs diagnosis.
-- If context is compacted or the task continues later, re-read the short state file, the relevant todo section, `git status`, and affected diff. Do not reconstruct progress from the full chat history.
+1. Work in the existing checkout unless the coordinator explicitly transfers the required uncommitted and ignored state. Read `AGENTS.md`, `todo.md`, this runbook, `git status --short`, and the current diff before editing.
+2. If `.tmp_test/evidence/` or `.tmp_test/orchestrator-state.md` exists in the current checkout, read the relevant checkpoint files. Reconcile them with the current tree and coordinator handoff before acting.
+3. Keep source research and concise implementation evidence under `.tmp_test/evidence/`. Update `.tmp_test/orchestrator-state.md` after milestones with completed routes, changed files, evidence paths, exact check results, open questions, current shared-file owner, and next action. Do not use the state file as a transcript.
+4. Do not carry temporary snapshot metadata or old test totals into durable guidance. Recalculate current state from the checkout and fresh check results.
 
-## Product and evidence gates
+## Coordination and ownership
 
-- Finish the current selected routes for MIT, Imperial College London, Stanford, Harvard, and Oxford. Do not expand to their full degree catalogs, add country-specific duplicate programs, add UI languages, or rewrite architecture without a demonstrated applicant case.
-- Use only official university pages and university-hosted admissions PDFs for university facts. Recheck dynamic dates, fees, and policies for the applicable cycle. Preserve exact program, level, applicant category, citizenship/residence or fee-status conditions, and source provenance.
-- A missing fact is an explicit unknown with an official next action. A potential award is never a confirmed award or a net-price discount. A university-wide undergraduate policy must not become a graduate-program fact.
-- For each meaningful route, verify the three applicant questions from the todo: eligibility; steps, documents, and separate deadlines; applicable costs and aid. Then verify that profile, program detail, finance, coverage, and application plan agree.
-- The Sol coordinator reviews every integrated diff. Luna workers run the checks required by `AGENTS.md` and exercise representative browser journeys across all five universities and study levels. Mark a todo item complete only after its evidence and behavior are checked. Report unresolved facts honestly rather than claiming the five universities are complete based on data counts or passing tests alone.
+- The coordinator owns scope, assignments, shared-file ownership, acceptance, integrated review, and the user-facing report. Delegate bounded research, implementation, and validation work to GPT-6 Luna workers at high reasoning effort when requested and available.
+- Keep assignments non-overlapping. Give each university a separate draft data owner where possible. Only one worker may edit a shared schema, template, or `backend/data/universities.json` at a time; make ownership and handoff explicit.
+- Include the university, program or route IDs, applicant case, official-source requirement, owned and excluded files, focused checks, and report format in each assignment.
+- Workers report changed files, the decision made, evidence path, exact commands and outcomes, and unresolved questions. The coordinator reviews each diff and evidence before accepting it.
+- Preserve existing uncommitted work. Do not commit, push, tag, bump the version, or publish without explicit user authorization and the applicable `AGENTS.md` workflow.
 
-## Starter prompt for a new local task
+## Data and product review
 
-> Work in the existing local UniSearch checkout that contains `orchestrator.md` and `.tmp_test/todo.md`. Act as the GPT-6 Sol High coordinator. Read `AGENTS.md`, `orchestrator.md`, the todo, Git status, and the current diff before editing. Use GPT-6 Luna High subagents as the workers: assign them bounded university research, code and data edits, tests, repairs, and final browser verification. Keep your own work to task assignment, conflict management, diff/evidence review, acceptance, and a concise Russian report; do not routinely edit product files or run tests yourself. Only one Luna worker may edit the shared university JSON at a time. Keep full official-source evidence in separate ignored files and a concise checkpoint in `.tmp_test/orchestrator-state.md`. Execute the todo through its completion gate and preserve honest unknowns. Preserve all existing uncommitted changes. Do not commit, push, tag, bump the version, or publish without my explicit authorization.
+- Inventory the official degree-level study options for each top-five university. Distinguish options chosen after institutional admission from courses or programs that applicants apply to directly. Map each option to its real application target and applicant path; shared paths should remain shared.
+- Keep application deadlines separate from scholarship, aid, or studentship deadlines. Include date, time, and timezone when officially available; retain cycle and source provenance on scoped facts.
+- Keep tuition, mandatory fees, living estimates, potential aid, and officially granted aid distinct. Never show an old amount as the current cycle or turn missing data into zero, ineligibility, or a guaranteed award.
+- During the data-first stage, keep the active runtime readable by storing breaking-schema work as drafts. During integration, review the full producer-to-applicant path: source data, backend projection/API, frontend rendering, localization, and saved identifiers or selections. The new canonical format does not need a permanent legacy reader.
 
-## Sources for the orchestration approach
+## Verification and completion
 
-- [OpenAI: Multi-agent](https://developers.openai.com/api/docs/guides/agents-api/multi-agent) — independent bounded tasks, separate agent contexts, and coordination for shared files.
-- [OpenAI: Orchestration and handoffs](https://developers.openai.com/api/docs/guides/agents/orchestration) — manager ownership and adding specialists only when they help.
-- [OpenAI: Run long horizon tasks with Codex](https://developers.openai.com/blog/run-long-horizon-tasks-with-codex) — durable specification, milestone checkpoints, validation, and externalized progress.
-- [OpenAI: Compaction](https://developers.openai.com/api/docs/guides/compaction) — why long conversations need a compact state; the project checkpoint above is a human-readable complement, not an API configuration instruction.
+- Run focused checks while implementing. For active `backend/data/` changes, run `npm run audit:data`; validate draft structure and official evidence directly when the runtime audit does not read the draft. Draft contributors need not run backend or UI tests for each new field; run those during integration. Check source URLs only for affected sources.
+- During backend/frontend integration, exercise representative applicant journeys across institutional, course-specific, graduate, doctoral, and professional application targets, including relevant international qualification and funding cases. Wait for page readiness before browser interactions.
+- The coordinator completes integrated checks after shared-file edits are finished, reviews the final diff and reports, and records any remaining limitation as an explicit unknown or follow-up.
+- The top-five data stage is complete only when an official catalog inventory accounts for all in-scope study options at each university, each option has the correct application target or an explicit unresolved classification, and scoped facts have official evidence or a clear unknown and next action. Backend/frontend integration has its own later gate in the product model. A passing audit or test suite alone does not prove factual completeness.
+
+## New-task starter
+
+> Work in the existing UniSearch checkout. Read `AGENTS.md`, `docs/admissions-product-model.md`, `todo.md`, `orchestrator.md`, the current Git status and diff, and any relevant `.tmp_test` checkpoints. Coordinate bounded GPT-6 Luna High assignments. Complete the canonical top-five catalog and data first, integrate backend/frontend second, and migrate the other 45 universities last. Keep shared-file ownership serial and explicit, use only official university sources, retain applicant/program/cycle scope, and report evidence, changed files, exact checks, and unresolved facts. Preserve uncommitted changes. Do not perform Git release actions without my explicit authorization.
+
+## Orchestration references
+
+- [OpenAI multi-agent guide](https://developers.openai.com/api/docs/guides/agents-api/multi-agent)
+- [OpenAI orchestration and handoffs](https://developers.openai.com/api/docs/guides/agents/orchestration)
+- [OpenAI long-horizon Codex tasks](https://developers.openai.com/blog/run-long-horizon-tasks-with-codex)
+- [OpenAI context compaction](https://developers.openai.com/api/docs/guides/compaction)

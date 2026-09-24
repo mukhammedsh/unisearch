@@ -279,6 +279,8 @@ const PROGRAM_COVERAGE_SCOPE_KEYS = {
   program_specific: "university.program_coverage.scope.program_specific",
   shared_admission_route: "university.program_coverage.scope.shared_route",
   institution_wide_route: "university.program_coverage.scope.institution_route",
+  route_wide: "university.program_coverage.scope.route_wide",
+  institution_wide: "university.program_coverage.scope.institution_wide",
   university_guidance: "university.program_coverage.scope.university_guidance",
   award_program_scope: "university.program_coverage.scope.award_scope",
   not_catalogued: "university.program_coverage.scope.not_catalogued",
@@ -306,6 +308,34 @@ export function resolveProgramCoverage({ coverageByProgram = [], program = null 
   }) || null;
 }
 
+export function resolveProgramByIdentifier(programs, identifier) {
+  const candidates = Array.isArray(programs) ? programs : [];
+  const target = String(identifier || "").trim();
+  if (!target) return null;
+  const currentIdMatch = candidates.find((program) => [program?.id, program?.program_id]
+    .some((value) => String(value || "").trim() === target));
+  if (currentIdMatch) return currentIdMatch;
+  return candidates.find((program) => [program?.course_number, program?.legacy_id, ...(Array.isArray(program?.legacy_ids) ? program.legacy_ids : [])]
+    .some((value) => String(value || "").trim() === target)) || null;
+}
+
+export function resolveProgramByName(programs, names, { allowPartial = false } = {}) {
+  const candidates = Array.isArray(programs) ? programs : [];
+  const targets = (Array.isArray(names) ? names : [names])
+    .map((value) => normalizedProgramCoverageText(value))
+    .filter(Boolean);
+  if (!targets.length) return null;
+  const namedPrograms = candidates.map((program) => ({
+    program,
+    name: normalizedProgramCoverageText(program?.name || program?.program_name),
+  })).filter((entry) => entry.name);
+  const exactMatches = namedPrograms.filter(({ name }) => targets.includes(name));
+  if (exactMatches.length === 1) return exactMatches[0].program;
+  if (exactMatches.length > 1 || !allowPartial) return null;
+  const partialMatches = namedPrograms.filter(({ name }) => targets.some((target) => name.includes(target) || target.includes(name)));
+  return partialMatches.length === 1 ? partialMatches[0].program : null;
+}
+
 function programCoverageScopeLabel(scope) {
   const value = String(scope || "not_catalogued").trim();
   const key = PROGRAM_COVERAGE_SCOPE_KEYS[value];
@@ -313,6 +343,8 @@ function programCoverageScopeLabel(scope) {
     program_specific: "Specific to this program",
     shared_admission_route: "Shared admission route",
     institution_wide_route: "University-wide admission route",
+    route_wide: "Route-wide",
+    institution_wide: "Institution-wide",
     university_guidance: "University-level guidance; not a program price",
     award_program_scope: "Award record; confirm program and applicant eligibility",
     not_catalogued: "No data catalogued",
@@ -320,12 +352,63 @@ function programCoverageScopeLabel(scope) {
   return t(key || "university.program_coverage.scope.not_catalogued", fallback);
 }
 
+function hasUnpublishedDeadline(fact) {
+  const publicationStatuses = [fact?.publication_status, ...(Array.isArray(fact?.publication_facts) ? fact.publication_facts.map((item) => item?.publication_status) : [])];
+  return publicationStatuses.includes("not_yet_published");
+}
+
+function hasConflictingDeadline(fact) {
+  const publicationStatuses = [fact?.publication_status, ...(Array.isArray(fact?.publication_facts) ? fact.publication_facts.map((item) => item?.publication_status) : [])];
+  return publicationStatuses.includes("conflicting");
+}
+
+function hasUnpublishedPrice(fact) {
+  return Array.isArray(fact?.publication_facts) && fact.publication_facts.some((item) => item?.publication_status === "not_yet_published");
+}
+
+function hasConflictingPrice(fact) {
+  return fact?.publication_status === "conflicting"
+    || (Array.isArray(fact?.publication_facts) && fact.publication_facts.some((item) => item?.publication_status === "conflicting"));
+}
+
 function programCoverageFactStatus(fact, kind) {
   const status = String(fact?.status || "not_catalogued").trim();
+  if (kind === "deadline" && hasConflictingDeadline(fact)) return t("university.program_coverage.deadline_conflicting", "Official deadline information conflicts");
+  if (kind === "deadline" && status === "not_catalogued" && hasUnpublishedDeadline(fact)) return t("university.program_coverage.deadline_not_published", "Not yet published by the university");
+  if (kind === "cost" && hasConflictingPrice(fact)) return t("university.program_coverage.price_conflicting", "Official fee information conflicts");
+  if (kind === "cost" && hasUnpublishedPrice(fact)) return t("university.program_coverage.price_not_published", "Current fee not yet published");
   if (status === "not_catalogued") return t("university.program_coverage.not_catalogued", "Not catalogued");
   if (kind === "deadline" && status === "exact_dated") return t("university.program_coverage.deadline_exact", "Published dated course deadline");
   if (kind === "deadline" && status === "approximate_or_yearless") return t("university.program_coverage.deadline_approximate", "Published wording; exact date or year is missing");
   return t("university.program_coverage.catalogued", "Catalogued");
+}
+
+function programCoveragePriceFactStrings(facts) {
+  return facts.flatMap((fact) => {
+    if (!fact || typeof fact !== "object") return [];
+    const kind = String(fact.kind || "").trim().toLowerCase();
+    const feeStatus = String(fact.fee_status || "").trim().toLowerCase();
+    const period = String(fact.period || "").trim().toLowerCase();
+    const quantityBasis = String(fact.quantity_basis || "").trim().toLowerCase();
+    const labels = [
+      kind ? t(`university.program_coverage.price.kind.${kind}`, kind.replaceAll("_", " ")) : "",
+      feeStatus ? t(`university.program_coverage.price.fee_status.${feeStatus}`, feeStatus.replaceAll("_", " ")) : "",
+      period ? t(`university.program_coverage.price.period.${period}`, period.replaceAll("_", " ")) : "",
+      quantityBasis ? t(`university.program_coverage.price.quantity_basis.${quantityBasis}`, quantityBasis.replaceAll("_", " ")) : "",
+    ].filter(Boolean);
+    if (["not_yet_published", "conflicting"].includes(fact.publication_status)) {
+      const currency = String(fact.currency || "").trim();
+      const amount = fact.publication_status === "conflicting"
+        ? t("university.program_coverage.price_conflicting", "Official fee information conflicts")
+        : t("university.program_coverage.price_not_published", "Current fee not yet published");
+      return [`${labels.join(" · ")}: ${amount}${currency ? ` (${currency})` : ""}`];
+    }
+    if (typeof fact.amount !== "number" || !Number.isFinite(fact.amount) || fact.amount <= 0) return [];
+    const locale = getCurrentLanguage().startsWith("ru") ? "ru-RU" : "en-US";
+    const amount = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(fact.amount);
+    const currency = String(fact.currency || "").trim();
+    return [`${labels.join(" · ")}: ${currency ? `${currency} ` : ""}${amount}`];
+  });
 }
 
 function programCoverageValueStrings(value, inheritedCurrency = "") {
@@ -392,17 +475,32 @@ function renderProgramCoverageFact(labelKey, labelFallback, fact, kind) {
   const row = fact && typeof fact === "object" ? fact : {};
   const status = programCoverageFactStatus(row, kind);
   const scope = programCoverageScopeLabel(row.scope);
+  const deadlineNotPublished = kind === "deadline" && row.status === "not_catalogued" && hasUnpublishedDeadline(row);
+  const deadlineConflicting = kind === "deadline" && hasConflictingDeadline(row);
+  const priceNotPublished = kind === "cost" && hasUnpublishedPrice(row);
+  const priceConflicting = kind === "cost" && hasConflictingPrice(row);
   const guidanceCost = kind === "cost" && row.scope === "university_guidance";
   const scopedGuidanceValues = guidanceCost && row.values && typeof row.values === "object"
     ? { undergraduate_home_expected_tuition_gbp: row.values.undergraduate_home_expected_tuition_gbp }
     : {};
-  const values = programCoverageValueStrings(guidanceCost ? scopedGuidanceValues : row.values);
+  const priceFacts = Array.isArray(row.price_facts) ? row.price_facts : [];
+  const values = deadlineNotPublished ? [] : kind === "cost" && (priceFacts.length || priceNotPublished || priceConflicting)
+    ? programCoveragePriceFactStrings([...priceFacts, ...(Array.isArray(row.publication_facts) ? row.publication_facts : [])])
+    : programCoverageValueStrings(guidanceCost ? scopedGuidanceValues : row.values);
   const sourceUrl = programCoverageSourceUrl(row.source_url);
   const cycle = localizedProgramCoverageCycle(row.cycle);
   const verifiedAt = String(row.verified_at || "").trim();
-  const nextAction = row.status === "not_catalogued"
-    ? t(`university.program_coverage.next_action.${kind}`, "Check the official course page for this entry cycle.")
-    : "";
+  const nextAction = deadlineConflicting
+    ? t("university.program_coverage.next_action.deadline_conflicting", "Compare the official admissions pages and confirm the applicable deadline with the university.")
+    : priceConflicting
+      ? t("university.program_coverage.next_action.price_conflicting", "Compare the official fee pages and confirm the applicable rate with the university.")
+      : priceNotPublished
+      ? t("university.program_coverage.next_action.price_not_published", "Check the official fee page when current rates are published.")
+      : row.status === "not_catalogued"
+        ? deadlineNotPublished
+          ? t("university.program_coverage.next_action.deadline_not_published", "Check the official admissions page for updates to the deadline.")
+          : t(`university.program_coverage.next_action.${kind}`, "Check the official course page for this entry cycle.")
+        : "";
   return `<div class="program-coverage__fact" data-coverage-kind="${escapeHtmlAttr(kind)}">
     <div class="program-coverage__fact-heading"><strong>${escapeHtml(t(labelKey, labelFallback))}</strong><span class="program-coverage__status">${escapeHtml(status)}</span></div>
     <p class="program-coverage__scope">${escapeHtml(scope)}</p>

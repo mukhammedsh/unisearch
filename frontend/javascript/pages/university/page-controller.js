@@ -15,7 +15,7 @@ import { t, tFormat } from "../../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities } from "../../routes.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import { initUniversityTranslations } from "../../university-translations.js";
-import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance } from "./render-content.js";
+import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
 import { getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection } from "./render-sections.js";
 import {
   fetchUniversityDetailCached,
@@ -419,17 +419,14 @@ export async function initUniversityPage(options = {}) {
       const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
       const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
       if (programId) {
-        const found = programs.find((program) => String(program?.id || "").trim() === programId);
+        const found = resolveProgramByIdentifier(programs, programId);
         if (found) return found;
       }
       const targetNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
-        .map((value) => String(value || "").trim().toLowerCase())
+        .map((value) => String(value || "").trim())
         .filter(Boolean);
       if (!targetNames.length) return null;
-      return programs.find((program) => {
-        const name = String(program?.name || "").trim().toLowerCase();
-        return name && targetNames.some((target) => name === target || name.includes(target) || target.includes(name));
-      }) || null;
+      return resolveProgramByName(programs, targetNames, { allowPartial: true });
     };
 
     const resolveCoverageProgram = (profile) => {
@@ -440,16 +437,14 @@ export async function initUniversityPage(options = {}) {
       const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
       const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
       if (programId) {
-        return programs.find((program) => String(program?.id || program?.course_number || "").trim() === programId) || null;
+        const found = resolveProgramByIdentifier(programs, programId);
+        if (found) return found;
       }
       const exactNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
-        .map((value) => String(value || "").trim().toLowerCase().replace(/\s+/g, " "))
+        .map((value) => String(value || "").trim())
         .filter(Boolean);
       if (!exactNames.length) return null;
-      return programs.find((program) => {
-        const name = String(program?.name || "").trim().toLowerCase().replace(/\s+/g, " ");
-        return name && exactNames.includes(name);
-      }) || null;
+      return resolveProgramByName(programs, exactNames);
     };
 
     const renderProgramsTab = () => {

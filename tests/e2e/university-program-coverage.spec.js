@@ -7,7 +7,7 @@ const universityById = Object.fromEntries(universities.map((university) => [univ
 
 function selectedProgram(universityId, programId) {
   const university = universityById[universityId];
-  return university.academics.programs.find((program) => (program.id || program.course_number) === programId);
+  return university.academics.programs.find((program) => [program.id, program.program_id, program.course_number, program.legacy_id, ...(Array.isArray(program.legacy_ids) ? program.legacy_ids : [])].includes(programId));
 }
 
 function awardContract(universityId, awardId) {
@@ -97,6 +97,29 @@ test("MIT program level filters fit a 390px viewport", async ({ page }) => {
   await expect(filter.locator(".programs-level-tab").last()).toBeVisible();
 });
 
+test("Stanford professional MD and graduate unit-load tuition stay program-scoped", async ({ page }) => {
+  await page.goto("/university.html?id=stanford-university-usa-ca");
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#detailName")).not.toBeEmpty();
+  await setProgramSelection(page, "stanford-university-usa-ca", "Professional", "stanford-md", "Doctor of Medicine (MD)");
+  await openPrograms(page, "stanford-university-usa-ca");
+
+  const coverage = page.locator("#detailPrograms .program-coverage");
+  await expect(coverage.locator(".program-coverage__program")).toContainText("Doctor of Medicine (MD)");
+  const deadline = coverage.locator('[data-coverage-kind="deadline"]');
+  await expect(deadline).toContainText("Entering class of 2027");
+  await expect(deadline).toContainText(/2026[-‐‑‒–—−]10[-‐‑‒–—−]09/);
+  const tuition = coverage.locator('[data-coverage-kind="cost"]');
+  await expect(tuition).toContainText("USD");
+  await expect(tuition).toContainText("96,136");
+
+  await setProgramSelection(page, "stanford-university-usa-ca", "Master", "stanford-ms-cs", "Master of Science in Computer Science (MS CS)");
+  await openPrograms(page, "stanford-university-usa-ca");
+  const graduateTuition = page.locator('#detailPrograms .program-coverage [data-coverage-kind="cost"]');
+  await expect(graduateTuition).toContainText("Tuition per quarter (8–10 units)");
+  await expect(graduateTuition).toContainText("Tuition per quarter (11–18 units)");
+});
+
 test("selected top-five program coverage keeps routes, course dates, and award deadlines in their own scopes", async ({ page }) => {
   for (const universityId of Object.keys(coverageRows)) {
     await page.route(`**/universities/${universityId}*`, async (route) => {
@@ -152,4 +175,67 @@ test("selected top-five program coverage keeps routes, course dates, and award d
   await expect(imperialAwards).toContainText("Award application deadline");
   await expect(imperialAwards).toContainText(/2026[-‐‑‒–—−]11[-‐‑‒–—−]02/);
   await expect(imperialAwards).toContainText("not confirmed funding");
+});
+
+test("Harvard saved program names resolve unique concentrations but leave split legacy routes unselected", async ({ page }) => {
+  const universityId = "harvard-usa-cambridge";
+  await page.goto(`/university.html?id=${universityId}`);
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#detailName")).not.toBeEmpty();
+
+  await setProgramSelection(page, universityId, "Bachelor", "Computer Science", "Computer Science");
+  await page.reload();
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await expect(page.locator("#detailQualificationGuidance .qualification-guidance__meta").filter({ hasText: /^Program:/ })).toContainText("Computer Science");
+
+  for (const legacyName of ["Architecture (MArch)", "Public Health (MPH)"]) {
+    await setProgramSelection(page, universityId, "Master", legacyName, legacyName);
+    await page.reload();
+    await expect(page.locator("#detailCard")).toBeVisible();
+    await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+    await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+    const coverage = page.locator("#detailPrograms .program-coverage");
+    await expect(coverage).toContainText("Select a specific program");
+    await expect(coverage.locator(".program-coverage__program")).toHaveCount(0);
+    await expect(page.locator("#detailQualificationGuidance .qualification-guidance__meta").filter({ hasText: /^Program:/ })).toHaveCount(0);
+  }
+});
+
+test("Oxford qualification guidance flags Kazakhstan Attestat in English and Russian on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_profile", JSON.stringify({
+      studyLevel: "Bachelor",
+      applicantRoute: "first_year",
+      countryOfEducation: "KZ",
+      educationCredential: "other",
+      educationCredentialOther: "Attestat/Svidetel' stvo o Srednem Obrazovanii (Certificate of Secondary Education)",
+      intendedEntryCycle: "2027 Fall",
+    }));
+  });
+  await page.goto("/university.html?id=university-of-oxford-uk-oxford");
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#detailName")).not.toBeEmpty();
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+
+  const guidance = page.locator("#detailQualificationGuidance .qualification-guidance__result");
+  await expect(guidance.locator(".qualification-guidance__status")).toContainText("Explicitly not accepted");
+  await expect(guidance).toContainText("Kazakhstan's Attestat");
+  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /ox\.ac\.uk/);
+
+  await page.evaluate(() => {
+    const language = document.getElementById("languageSelect");
+    language.value = "rus";
+    language.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  await page.waitForFunction(() => {
+    const language = document.getElementById("languageSelect");
+    return language?.value === "rus" && language.dataset.loading !== "1" && !language.disabled;
+  });
+  await expect(guidance.locator(".qualification-guidance__status")).toContainText("Официально указана как не принимаемая");
+  await expect(guidance).toContainText("аттестат Казахстана");
+  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /ox\.ac\.uk/);
 });

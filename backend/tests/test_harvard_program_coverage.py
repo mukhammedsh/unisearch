@@ -91,11 +91,22 @@ class HarvardProgramCoverageTests(unittest.TestCase):
                 self.assertEqual(row["requirements"]["status"], "available")
                 self.assertEqual(row["requirements"]["cycle"], admission_cycle)
                 self.assertEqual(row["deadline"]["status"], "exact_dated")
-                self.assertEqual(row["tuition_mandatory_fees"]["status"], "available")
-                self.assertEqual(row["tuition_mandatory_fees"]["cycle"], "2026-27")
-                self.assertEqual(
-                    row["tuition_mandatory_fees"]["values"]["tuition_year_usd"], tuition
+                cost = row["tuition_mandatory_fees"]
+                self.assertEqual(cost["status"], "not_catalogued")
+                self.assertEqual(cost["cycle"], "2027-28")
+                self.assertEqual(cost["publication_status"], "not_yet_published")
+                self.assertEqual(cost["values"], {})
+                self.assertTrue(cost["source_url"].startswith("https://"))
+                self.assertTrue(any(
+                    fact["publication_status"] == "not_yet_published"
+                    and fact["cycle"] == "2027-28"
+                    for fact in cost["publication_facts"]
+                ))
+                historical = next(
+                    fact for fact in cost["historical_price_facts"]
+                    if fact["cycle"] == "2026-27"
                 )
+                self.assertEqual(historical["amount"], tuition)
                 self.assertEqual(row["awards"]["status"], "available")
                 self.assertTrue(row["awards"]["items"])
                 if program_id in {"harvard-hks-mpp", "harvard-hks-mpa"}:

@@ -1647,181 +1647,37 @@ university.program_coverage.award_deadline_unknown: Award application deadline n
 university.program_coverage.scope.program_specific: Specific to this program
 university.program_coverage.scope.shared_route: Shared admission route
 university.program_coverage.scope.institution_route: University-wide admission route
+university.program_coverage.scope.route_wide: Route-wide
+university.program_coverage.scope.institution_wide: Institution-wide
 university.program_coverage.scope.university_guidance: University-level guidance; not a program price
 university.program_coverage.scope.award_scope: Award record; confirm program and applicant eligibility
 university.program_coverage.scope.not_catalogued: No data catalogued.
-application_workspace.add_calendar: Add to calendar (.ics)
-application_workspace.open: Application plan
-application_workspace.applicant_scope: Applicant scope
-application_workspace.application_process: Application process
-application_workspace.award_fallback: Funding award
-application_workspace.check_award_eligibility: Check eligibility and next steps
-application_workspace.close: Close
-application_workspace.competition: Competition
-application_workspace.course_application: Submit the course application
-application_workspace.coverage: Coverage
-application_workspace.cycle: Cycle
-application_workspace.cycle_fall_entry: Fall {year} entry
-application_workspace.cycle_entry_year: {year} entry
-application_workspace.cycle_academic_year: Academic year {start}–{end}
-application_workspace.cycle_early_action: Early Action
-application_workspace.cycle_regular_action: Regular Action
-application_workspace.route.category.mit_sloan_mban_admissions: MIT Sloan MBAn admission
-application_workspace.route.category.mit_phd_doctoral_guarantee: MIT doctoral admission
-application_workspace.route.category.mit_physics_phd_admissions: MIT Physics PhD admission
-application_workspace.route.category.stanford_msx_track: Stanford MSx admission
-application_workspace.route.category.stanford_ms_cs_track: Stanford MS in Computer Science admission
-application_workspace.route.category.stanford_ms_ee_track: Stanford MS in Electrical Engineering admission
-application_workspace.route.category.stanford_ms_msande_track: Stanford MS in Management Science and Engineering admission
-application_workspace.route.category.stanford_llm_track: Stanford Law School LLM admission
-application_workspace.route.category.harvard_college: Harvard College first-year admission
-application_workspace.route.category.harvard_gsas_phd: Harvard Griffin GSAS doctoral and PhD admission
-application_workspace.route.category.harvard_hbs_mba: Harvard Business School MBA admission
-application_workspace.route.category.harvard_hls_jd: Harvard Law School J.D. admission
-application_workspace.route.category.harvard_hks_mpp: Harvard Kennedy School master's degree admission
-application_workspace.route.category.harvard_route_hls_llm: Harvard Law School LL.M. admission
-application_workspace.route.category.harvard_route_hms_md: Harvard Medical School M.D. admission
-application_workspace.route.category.harvard_route_seas_gsas_data_science_sm: Harvard Data Science S.M. admission
-application_workspace.route.category.harvard_route_seas_gsas_cse_sm: Harvard Computational Science and Engineering S.M. admission
-application_workspace.route.category.harvard_route_gsd_march_i: Harvard Graduate School of Design M.Arch. I admission
-application_workspace.route.category.harvard_route_gsd_march_ii: Harvard Graduate School of Design M.Arch. II admission
-application_workspace.route.category.harvard_route_chan_mph_45: Harvard Chan MPH-45 admission
-application_workspace.route.category.harvard_route_chan_mph_65: Harvard Chan MPH-65 admission
-application_workspace.route.category.harvard_route_chan_mph_generalist: Harvard Chan online MPH-Generalist admission
-application_workspace.route.category.harvard_route_hgse_edm: Harvard Graduate School of Education Ed.M. admission
-application_workspace.route.category.harvard_route_gsas_phd_computer_science: Harvard Griffin GSAS Computer Science PhD admission
-application_workspace.route.category.harvard_route_gsas_phd_economics: Harvard Griffin GSAS Economics PhD admission
-application_workspace.route.category.harvard_route_gsas_hils_phd_bbs: Harvard Griffin GSAS Biological and Biomedical Sciences PhD admission
-application_workspace.route.category.harvard_route_gsas_phd_physics: Harvard Griffin GSAS Physics PhD admission
-application_workspace.route.category.harvard_route_gsas_phd_government: Harvard Griffin GSAS Government PhD admission
-application_workspace.route.profile.mit_sloan_mban_profile: MBAn applicant profile
-application_workspace.route.profile.mit_phd_standard: Doctoral applicant profile
-application_workspace.route.profile.mit_physics_phd_applicant: Physics PhD applicant
-application_workspace.route.profile.harvard_college: SAT applicant profile
-application_workspace.route.profile.harvard_college_act: ACT applicant profile
-application_workspace.route.profile.gsas_phd_profile: GSAS PhD applicant profile
-application_workspace.route.profile.hbs_mba_profile: HBS MBA applicant profile
-application_workspace.route.profile.hls_jd_profile: HLS J.D. applicant profile
-application_workspace.route.profile.hks_mpp_profile: Master in Public Policy (MPP)
-application_workspace.route.profile.hks_mpa_profile: Master in Public Administration (MPA)
-application_workspace.route.profile.hks_mpaid_profile: Master in Public Administration in International Development (MPA/ID)
-application_workspace.route.profile.hks_mcmpa_profile: Mid-Career Master in Public Administration (MC/MPA)
-application_workspace.route.profile.harvard_route_hls_llm_profile: Harvard Law School LL.M. applicant profile
-application_workspace.route.profile.harvard_route_hms_md_profile: Harvard Medical School M.D. applicant profile
-application_workspace.route.profile.harvard_route_seas_gsas_data_science_sm_profile: Data Science S.M. applicant profile
-application_workspace.route.profile.harvard_route_seas_gsas_cse_sm_profile: Computational Science and Engineering S.M. applicant profile
-application_workspace.route.profile.harvard_route_gsd_march_i_profile: M.Arch. I applicant profile
-application_workspace.route.profile.harvard_route_gsd_march_ii_profile: M.Arch. II applicant profile
-application_workspace.route.profile.harvard_route_chan_mph_45_profile: MPH-45 applicant profile
-application_workspace.route.profile.harvard_route_chan_mph_65_profile: MPH-65 applicant profile
-application_workspace.route.profile.harvard_route_chan_mph_generalist_profile: MPH-Generalist applicant profile
-application_workspace.route.profile.harvard_route_hgse_edm_profile: Ed.M. applicant profile
-application_workspace.route.profile.harvard_route_gsas_phd_computer_science_profile: Computer Science PhD applicant profile
-application_workspace.route.profile.harvard_route_gsas_phd_economics_profile: Economics PhD applicant profile
-application_workspace.route.profile.harvard_route_gsas_hils_phd_bbs_profile: Biological and Biomedical Sciences PhD applicant profile
-application_workspace.route.profile.harvard_route_gsas_phd_physics_profile: Physics PhD applicant profile
-application_workspace.route.profile.harvard_route_gsas_phd_government_profile: Government PhD applicant profile
-application_workspace.route.program.Sloan MBAn: Master of Business Analytics (MBAn)
-application_workspace.route.program.mit-physics-phd-course-8: Physics PhD (Course 8)
-application_workspace.route.program.harvard-hbs-mba: Harvard Business School MBA
-application_workspace.route.program.harvard-hks-mpp: Harvard Kennedy School Master in Public Policy (MPP)
-application_workspace.route.program.harvard-hks-mpa: Harvard Kennedy School Master in Public Administration (MPA)
-application_workspace.route.program.harvard-hls-jd: Harvard Law School J.D.
-application_workspace.route.program.harvard-hls-llm: Harvard Law School LL.M.
-application_workspace.route.program.harvard-hms-md: Harvard Medical School M.D.
-application_workspace.route.program.harvard-seas-gsas-data-science-sm: Data Science S.M.
-application_workspace.route.program.harvard-seas-gsas-cse-sm: Computational Science and Engineering S.M.
-application_workspace.route.program.harvard-gsd-march-i: M.Arch. I
-application_workspace.route.program.harvard-gsd-march-ii: M.Arch. II
-application_workspace.route.program.harvard-chan-mph-45: Harvard Chan MPH-45
-application_workspace.route.program.harvard-chan-mph-65: Harvard Chan MPH-65
-application_workspace.route.program.harvard-chan-mph-generalist: Harvard Chan MPH-Generalist
-application_workspace.route.program.harvard-hgse-edm: Harvard Ed.M.
-application_workspace.route.program.harvard-gsas-phd-computer-science: Harvard Griffin GSAS Computer Science PhD
-application_workspace.route.program.harvard-gsas-phd-economics: Harvard Griffin GSAS Economics PhD
-application_workspace.route.program.harvard-gsas-hils-phd-bbs: Harvard Griffin GSAS Biological and Biomedical Sciences PhD
-application_workspace.route.program.harvard-gsas-phd-physics: Harvard Griffin GSAS Physics PhD
-application_workspace.route.program.harvard-gsas-phd-government: Harvard Griffin GSAS Government PhD
-application_workspace.route.funding.mit_sloan_specialized_paid: Specialized master's — self-funded
-application_workspace.route.funding.mit_sloan_mban_merit_fellowship: MBAn merit fellowship
-application_workspace.route.funding.harvard_college: Standard family contribution
-application_workspace.route.funding.harvard_college-grant-financial-aid: Harvard Financial Aid Initiative (HFAI) grant
-application_workspace.route.funding.harvard_college_act: ACT admission profile
-application_workspace.route.funding.harvard_college_act-grant-financial-aid: Harvard Financial Aid Initiative grant
-application_workspace.route.funding.gsas_phd_guaranteed_5yr: GSAS five-year guaranteed funding package
-application_workspace.route.funding.hbs_need_based_fellowship: HBS need-based fellowship
-application_workspace.route.funding.hbs_self_funded: HBS standard self-funded
-application_workspace.route.funding.hls_need_based_grant: HLS need-based grant
-application_workspace.route.funding.hls_paid: HLS standard tuition
-application_workspace.route.funding.hks_fellowships: HKS public service fellowships
-application_workspace.route.funding.hks_paid: HKS standard tuition
-application_workspace.deadline_type_course: Course application
-application_workspace.deadline_type_financial_aid: Financial aid application
-application_workspace.deadline_type_early_deadline: Early deadline
-application_workspace.deadline_type_equal_consideration: Equal consideration deadline
-application_workspace.deadline_type_final_closing: Final closing date
-application_workspace.deadline_type_rolling_decision: Rolling admissions
-application_workspace.deadline_type_round_1: Round 1
-application_workspace.deadline_type_round_2: Round 2
-application_workspace.deadline_type_round_3: Round 3
-application_workspace.deadline_type_round_4: Round 4
-application_workspace.deadline_type_scholarship_round_1: Scholarship round 1
-application_workspace.deadline_type_scholarship_round_2: Scholarship round 2
-application_workspace.deadline_type_scholarship_round_3: Scholarship round 3
-application_workspace.deadline_unknown: Deadline not confirmed
-application_workspace.documents: Documents
-application_workspace.empty_saved: Save universities to build an application plan.
-application_workspace.financial_aid_application: Submit financial aid materials
-application_workspace.financial_aid_docs_detail: The university lists a separate financial aid deadline. Confirm required documents and applicant eligibility.
-application_workspace.funding_research: Check funding eligibility and application steps
-application_workspace.funding_selected: Review the selected funding option
-application_workspace.funding_unknown_detail: Award eligibility, required documents, and deadline are not confirmed in the available data.
-application_workspace.intro: Track course applications and funding awards for your saved universities.
-application_workspace.load_error: University details could not be loaded. Open the university page and retry.
-application_workspace.official_source: Official source
-application_workspace.post_offer_award: Submit a post-offer award application
-application_workspace.post_offer_award_source: Open official award instructions
-application_workspace.post_offer_confirm_award: Confirm each awarded aid amount and its conditions
-application_workspace.post_offer_confirm_award_detail: Check your official award or aid letter. Potential awards are not confirmed funds and are not subtracted from published costs.
-application_workspace.post_offer_confirm_cost: Confirm your official total cost and payment schedule
-application_workspace.post_offer_confirm_cost_detail: Use the university's official fee statement for your program and cycle. Any amount not published here remains unknown; this plan does not calculate a net price.
-application_workspace.post_offer_confirm_funds: Confirm available funds
-application_workspace.post_offer_confirm_funds_detail: Check the current official financial evidence requirements for your visa and university.
-application_workspace.post_offer_fee_source: Open official fee information
-application_workspace.post_offer_funds_source: Open official financial evidence guidance
-application_workspace.post_offer_gate: I have received and accepted an offer
-application_workspace.post_offer_heading: After accepting an offer
-application_workspace.post_offer_locked: Start these steps only after accepting an offer. This status is self-reported and is not verified by the university.
-application_workspace.post_offer_no_deadline: No deadline is set here; follow the current official instructions.
-application_workspace.post_offer_request_visa_document: Check how to request your university visa document
-application_workspace.post_offer_i20_detail: After you accept an offer, follow the university's instructions for requesting an I-20 or DS-2019. The university determines the required documents and process.
-application_workspace.post_offer_cas_detail: After you accept an offer, follow the university's instructions for requesting a CAS. The university determines the required documents and process.
-application_workspace.post_offer_source_unknown: Official fee source not recorded; confirm directly with the university.
-application_workspace.post_offer_visa_source: Open official visa document guidance
-application_workspace.process_automatic: Automatic consideration
-application_workspace.process_course_application_selection: Select the award in the course application
-application_workspace.process_post_offer: Separate application after an offer
-application_workspace.process_separate: Separate application
-application_workspace.process_unknown: Not specified
-application_workspace.program_scope: Eligible programs
-application_workspace.renewal: Renewal
-application_workspace.review_automatic_award: Check automatic award consideration
-application_workspace.round: Round
-application_workspace.select_track: Open university and select an admission track
-application_workspace.separate_award: Apply for a funding award
-application_workspace.source_unknown: Official source not recorded
-application_workspace.steps: Steps
-application_workspace.timezone_unknown: time zone not stated
-application_workspace.timezone_pacific: US Pacific Time
-application_workspace.timezone_uk: UK time
-application_workspace.timezone_eastern: US Eastern Time
-application_workspace.title: Application plan
-application_workspace.track_not_selected: No admission track is selected; confirm the route on the university page.
-application_workspace.verify_deadline: Verify on official page
-application_workspace.verify_warning: Confirm eligibility, exact cutoff, and time zone with the official source.
-application_workspace.deadline_scope_shared_route: This is the published deadline for the selected shared undergraduate route; check the official page for course-specific requirements.
-application_workspace.qualification_not_accepted: The selected qualification is listed as not accepted for this route. Review accepted alternatives and the official program requirements before treating this plan as applicable.
-application_workspace.qualification_source: Official program requirements
+university.program_coverage.deadline_not_published: Not yet published by the university
+university.program_coverage.next_action.deadline_not_published: Check the official admissions page for updates to the deadline.
+university.program_coverage.deadline_conflicting: Official deadline information conflicts
+university.program_coverage.next_action.deadline_conflicting: Compare the official admissions pages and confirm the applicable deadline with the university.
+university.program_coverage.price_not_published: Current fee not yet published
+university.program_coverage.next_action.price_not_published: Check the official fee page when current rates are published.
+university.program_coverage.price_conflicting: Official fee information conflicts
+university.program_coverage.next_action.price_conflicting: Compare the official fee pages and confirm the applicable rate with the university.
+university.program_coverage.price.kind.tuition: Tuition
+university.program_coverage.price.kind.application_fee: Application fee
+university.program_coverage.price.kind.mandatory_fee: Mandatory fee
+university.program_coverage.price.fee_status.home: Home fee status
+university.program_coverage.price.fee_status.overseas: Overseas fee status
+university.program_coverage.price.fee_status.international: International fee status
+university.program_coverage.price.fee_status.same_all_statuses: Same for all fee statuses
+university.program_coverage.price.period.academic_year: per academic year
+university.program_coverage.price.period.one_time: one-time
+university.program_coverage.price.period.quarter: per quarter
+university.program_coverage.price.period.credit: per credit
+university.program_coverage.price.quantity_basis.8_10_units: 8–10 units
+university.program_coverage.price.quantity_basis.11_18_units: 11–18 units
+university.program_coverage.price.quantity_basis.above_18_units: above 18 units
+university.program_coverage.price.quantity_basis.summer_1_7_units: summer, 1–7 units
+university.program_coverage.price.quantity_basis.first_year: first year
+university.program_coverage.price.quantity_basis.second_year: second year
+university.program_coverage.price.quantity_basis.12_20_units: 12–20 units
 university.finance.award_basis.need: Need-based
 university.finance.award_basis.merit: Merit-based
 university.finance.award_basis.need_and_merit: Need and merit
@@ -2167,6 +2023,21 @@ university.finance.award.copy.oxford-reach-oxford-scholarship-2027.documents.0: 
 university.finance.award.copy.oxford-reach-oxford-scholarship-2027.documents.1: Separate Reach Oxford scholarship application; exact form and supporting-document list for 2027 to be published in January 2027
 university.finance.award.copy.oxford-reach-oxford-scholarship-2027.competition: Around 2–3 awards per year; competition is very high, and Oxford has no additional funding for unsuccessful candidates.
 university.finance.award.copy.oxford-reach-oxford-scholarship-2027.renewal: Continued award is subject to satisfactory academic progress; annual report required.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.name: Crankstart Scholarship
+university.finance.award.copy.oxford-crankstart-scholarship-2027.program_scope: Selected first undergraduate degree routes in this catalogue; UK-residency and household-income criteria apply. Graduate Entry Medicine A101 is outside this catalogue.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.applicant_scope: UK residents who have been resident in the UK for at least three years other than for education, are starting their first undergraduate degree, and have annual household income of £32,500 or less.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.cycle: 2027 entry
+university.finance.award.copy.oxford-crankstart-scholarship-2027.eligibility: No separate Crankstart application. Oxford makes offers based on the household-income assessment by the regional funding agency. Applicants may decline Crankstart and be assessed for an Oxford Bursary instead.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.coverage: Annual living-cost bursary plus access to funded internships, volunteering and scholar-community activities. Separate internship and care-experienced/estranged support have additional conditions and are not guaranteed base-bursary amounts.
+university.finance.award.copy.oxford-crankstart-scholarship-2027.renewal: Annual support is assessed under the current Crankstart terms and household-income assessment.
+university.finance.award.copy.oxford-home-bursary-2027.name: Oxford Bursary
+university.finance.award.copy.oxford-home-bursary-2027.program_scope: Selected first undergraduate degree routes in this catalogue; not a general award for Overseas fee-status applicants. Graduate Entry Medicine A101 is outside this catalogue.
+university.finance.award.copy.oxford-home-bursary-2027.applicant_scope: Eligible Home-fee-status students starting a first undergraduate degree: UK students, or Republic of Ireland nationals living in the UK or Ireland, from a lower-income household and not eligible for or not taking Crankstart; eligible EU/EEA/Swiss settled or pre-settled-status students may qualify if residence requirements are met.
+university.finance.award.copy.oxford-home-bursary-2027.cycle: 2027 entry
+university.finance.award.copy.oxford-home-bursary-2027.eligibility: No separate Oxford application. A regional student-finance agency household-income assessment is required; complete it by 30 May 2028 for 2027 starters. First undergraduate degree and Home fee-status eligibility apply.
+university.finance.award.copy.oxford-home-bursary-2027.coverage: Annual non-repayable living-cost bursary; 2027-28 amounts are income-banded in award_amounts. Eligible UK first-degree bursary holders may separately qualify for a distance-based Oxford Travel Supplement; that separate supplement is not included in these amounts.
+university.finance.award.copy.oxford-home-bursary-2027.renewal: Income assessment and eligibility are checked for each academic year under Oxford and government rules.
+university.finance.award.copy.oxford-home-bursary-2027.course_application_deadline: UCAS application by 2026-10-15 18:00 UK time
 university.finance.award.copy.oxford-clarendon-fund-2027.name: Clarendon Fund Scholarship
 university.finance.award.copy.oxford-clarendon-fund-2027.program_scope: Eligible full-time or part-time Oxford Master’s and DPhil courses
 university.finance.award.copy.oxford-clarendon-fund-2027.applicant_scope: Applicants of any nationality or ordinary residence who apply for a new eligible degree-bearing Master’s or DPhil course by the relevant December or January course deadline

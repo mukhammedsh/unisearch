@@ -18,7 +18,6 @@ UniSearch helps applicants discover and compare universities across study levels
 - **Applicant profile:** GPA and grading scale, exams, languages, budget, optional annual family income, intended major, interests, study mode, funding preferences, education background, study level, entry cycle, and multiple citizenships selected from a searchable country list. Family income is stored on the device and used only to show context against published aid thresholds.
 - **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags, including a clear program-not-offered warning when a catalog alternative does not match the intended major. It is a sorting mode within the catalog.
 - **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
-- **Application plan:** organize a selected admission route with its requirements, deadlines, documents, and funding next steps.
 - **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available. Selected routes at MIT, Imperial College London, Stanford, Harvard, and Oxford have expanded program-level coverage; this is a pilot, not a complete catalog of each university. The deadlines tab includes a month calendar for exact dated events; approximate and yearless deadlines remain in the timeline and list.
 - **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
@@ -168,6 +167,6 @@ npm run test:e2e:pr             # Playwright E2E suite
 
 For the full browser matrix, install Chromium, Firefox, and WebKit with `npx playwright install`, then run `npm run test:e2e:nightly`. Automated checks are configured in [.github/workflows/](.github/workflows/).
 
-Architecture: [docs/architecture.md](docs/architecture.md). Roadmap: [docs/roadmap.md](docs/roadmap.md). Governance: [GOVERNANCE.md](GOVERNANCE.md). Security baseline tracking: [docs/security-baseline.md](docs/security-baseline.md). Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Interface rules: [design system](docs/design-system.md). Version history: [CHANGELOG.md](CHANGELOG.md).
+Architecture: [docs/architecture.md](docs/architecture.md). Admissions direction: [product model](docs/admissions-product-model.md) and [migration checklist](todo.md). Roadmap: [docs/roadmap.md](docs/roadmap.md). Governance: [GOVERNANCE.md](GOVERNANCE.md). Security baseline tracking: [docs/security-baseline.md](docs/security-baseline.md). Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Interface rules: [design system](docs/design-system.md). Version history: [CHANGELOG.md](CHANGELOG.md).
 
 Source code is distributed under the [MIT License](LICENSE). University logos, names, and photographs belong to their respective owners and are not covered by the code license; see `LICENSE` for details.

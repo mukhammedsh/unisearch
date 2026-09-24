@@ -11,7 +11,7 @@ global.fetch = async (url) => {
 };
 
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { renderProgramCoverage, resolveDisplayedCoverageProgram, resolveProgramCoverage } = await import("../../frontend/javascript/pages/university/render-content.js");
+const { renderProgramCoverage, resolveDisplayedCoverageProgram, resolveProgramByIdentifier, resolveProgramByName, resolveProgramCoverage } = await import("../../frontend/javascript/pages/university/render-content.js");
 await initI18n();
 
 function row(overrides = {}) {
@@ -44,6 +44,309 @@ test("MIT undergraduate coverage labels general route and university cost guidan
   assert.match(html, /university-level guidance; not a program price/i);
   assert.doesNotMatch(html, /USD 66,720/);
   assert.match(html, /https:\/\/mitadmissions\.org\/apply\/firstyear\/deadlines-requirements\//);
+});
+
+test("route-wide and institution-wide facts have localized scope labels", () => {
+  const route = row({ requirements: { status: "available", scope: "route_wide" } });
+  const institution = row({ requirements: { status: "available", scope: "institution_wide" } });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  assert.match(renderProgramCoverage([route], program), /Route-wide/);
+  assert.match(renderProgramCoverage([institution], program), /Institution-wide/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  assert.match(renderProgramCoverage([route], program), /Данные относятся ко всему маршруту поступления/);
+  assert.match(renderProgramCoverage([institution], program), /Данные относятся ко всему университету/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("structured Home price facts show localized fee status, period, currency, and source metadata", () => {
+  const priced = row({
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "route_wide",
+      values: { tuition_home_academic_year_gbp: 10050, currency: "GBP" },
+      price_facts: [{
+        kind: "tuition",
+        amount: 10050,
+        currency: "GBP",
+        period: "academic_year",
+        fee_status: "home",
+      }],
+      cycle: "2027-28",
+      source_url: "https://uni.example/fees",
+      verified_at: "2026-09-24",
+    },
+  });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([priced], program);
+  assert.match(english, /Route-wide/);
+  assert.match(english, /Tuition · Home fee status · per academic year: GBP 10[\s,]050/);
+  assert.doesNotMatch(english, /Overseas|tuition_home_academic_year_gbp/);
+  assert.match(english, /2027[-‐‑‒–—−]28/);
+  assert.match(english, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  assert.match(english, /https:\/\/uni\.example\/fees/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([priced], program);
+  assert.match(russian, /Домашний тариф · за учебный год/);
+  assert.match(russian, /GBP\s+10[\s,]050/);
+  assert.doesNotMatch(russian, /Overseas|tuition_home_academic_year_gbp/);
+  assert.match(russian, /2027[-‐‑‒–—−]28/);
+  assert.match(russian, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("Stanford structured tuition distinguishes every unit-load price basis in English and Russian", () => {
+  const stanford = row({
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "program_specific",
+      price_facts: [
+        { kind: "tuition", amount: 15100, currency: "USD", period: "quarter", quantity_basis: "8_10_units", fee_status: "same_all_statuses" },
+        { kind: "tuition", amount: 23239, currency: "USD", period: "quarter", quantity_basis: "11_18_units", fee_status: "same_all_statuses" },
+        { kind: "tuition", amount: 1549, currency: "USD", period: "credit", quantity_basis: "above_18_units", fee_status: "same_all_statuses" },
+        { kind: "tuition", amount: 1510, currency: "USD", period: "credit", quantity_basis: "summer_1_7_units", fee_status: "same_all_statuses" },
+        { kind: "tuition", amount: 79000, currency: "USD", period: "academic_year", quantity_basis: "first_year", fee_status: "same_all_statuses" },
+        { kind: "tuition", amount: 80000, currency: "USD", period: "academic_year", quantity_basis: "second_year", fee_status: "same_all_statuses" },
+        { kind: "tuition", amount: 2300, currency: "USD", period: "credit", quantity_basis: "12_20_units", fee_status: "same_all_statuses" },
+      ],
+      cycle: "2026-27",
+      source_url: "https://uni.example/tuition",
+    },
+  });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([stanford], program);
+  assert.match(english, /per quarter · 8–10 units: USD 15,100/);
+  assert.match(english, /per quarter · 11–18 units: USD 23,239/);
+  assert.match(english, /per credit · above 18 units: USD 1,549/);
+  assert.match(english, /per credit · summer, 1–7 units: USD 1,510/);
+  assert.match(english, /first year: USD 79,000/);
+  assert.match(english, /second year: USD 80,000/);
+  assert.match(english, /per credit · 12–20 units: USD 2,300/);
+  assert.doesNotMatch(english, /quantity_basis|8_10_units|above_18_units/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([stanford], program);
+  assert.match(russian, /за квартал · нагрузка 8–10 учебных единиц/);
+  assert.match(russian, /за квартал · нагрузка 11–18 учебных единиц/);
+  assert.match(russian, /за учебный кредит · нагрузка более 18 учебных единиц/);
+  assert.match(russian, /за учебный кредит · летом, нагрузка 1–7 учебных единиц/);
+  assert.match(russian, /первый год обучения: USD 79[\s,]000/);
+  assert.match(russian, /второй год обучения: USD 80[\s,]000/);
+  assert.match(russian, /за учебный кредит · нагрузка 12–20 учебных единиц/);
+  assert.doesNotMatch(russian, /quantity_basis|8_10_units|above_18_units/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("an unpublished course deadline keeps its official status and source metadata", () => {
+  const unpublished = row({
+    deadline: {
+      status: "not_catalogued",
+      publication_status: "not_yet_published",
+      publication_facts: [{ publication_status: "not_yet_published" }],
+      scope: "program_specific",
+      values: [],
+      cycle: "Fall 2027 entry",
+      source_url: "https://uni.example/deadlines",
+      verified_at: "2026-09-24",
+    },
+  });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([unpublished], program);
+  const deadlineStart = english.indexOf('data-coverage-kind="deadline"');
+  const costStart = english.indexOf('data-coverage-kind="cost"');
+  const englishDeadline = english.slice(deadlineStart, costStart);
+  assert.match(englishDeadline, /Not yet published by the university/);
+  assert.doesNotMatch(englishDeadline, /Not catalogued/);
+  assert.match(englishDeadline, /Check the official admissions page for updates to the deadline/);
+  assert.match(englishDeadline, /Fall 2027 entry/);
+  assert.match(englishDeadline, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  assert.match(englishDeadline, /https:\/\/uni\.example\/deadlines/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([unpublished], program);
+  const russianDeadlineStart = russian.indexOf('data-coverage-kind="deadline"');
+  const russianCostStart = russian.indexOf('data-coverage-kind="cost"');
+  const russianDeadline = russian.slice(russianDeadlineStart, russianCostStart);
+  assert.match(russianDeadline, /Университет ещё не опубликовал срок/);
+  assert.doesNotMatch(russianDeadline, /Нет данных в каталоге/);
+  assert.match(russianDeadline, /Следите за обновлениями срока на официальной странице приёма/);
+  assert.match(russianDeadline, /Fall 2027 entry/);
+  assert.match(russianDeadline, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("an unpublished additional round does not hide published course deadline values", () => {
+  const mixed = row({
+    deadline: {
+      status: "exact_dated",
+      publication_facts: [{ publication_status: "not_yet_published", round: "Round 2" }],
+      scope: "program_specific",
+      values: [{ date: "2026-12-02", round: 1 }],
+      cycle: "2027 entry",
+      source_url: "https://uni.example/deadlines",
+      verified_at: "2026-09-24",
+    },
+  });
+  const html = renderProgramCoverage([mixed], { id: "p1", name: "Selected Program" });
+  const deadlineStart = html.indexOf('data-coverage-kind="deadline"');
+  const costStart = html.indexOf('data-coverage-kind="cost"');
+  const deadline = html.slice(deadlineStart, costStart);
+
+  assert.match(deadline, /Published dated course deadline/);
+  assert.doesNotMatch(deadline, /Not yet published by the university/);
+  assert.match(deadline, /2026[-‐‑‒–—−]12[-‐‑‒–—−]02 · Round 1/);
+});
+
+test("conflicting deadline publication shows a localized status and official follow-up without a date", () => {
+  const conflicting = row({
+    deadline: {
+      status: "not_catalogued",
+      publication_status: "conflicting",
+      publication_facts: [{ publication_status: "conflicting" }],
+      scope: "program_specific",
+      values: [],
+      cycle: "Fall 2027 entry",
+      source_url: "https://uni.example/deadlines",
+      verified_at: "2026-09-24",
+    },
+  });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([conflicting], program);
+  const englishDeadline = english.slice(english.indexOf('data-coverage-kind="deadline"'), english.indexOf('data-coverage-kind="cost"'));
+  assert.match(englishDeadline, /Official deadline information conflicts/);
+  assert.match(englishDeadline, /Compare the official admissions pages and confirm the applicable deadline/);
+  assert.match(englishDeadline, /Fall 2027 entry/);
+  assert.match(englishDeadline, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  assert.match(englishDeadline, /https:\/\/uni\.example\/deadlines/);
+  assert.doesNotMatch(englishDeadline, /program-coverage__values/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([conflicting], program);
+  const russianDeadline = russian.slice(russian.indexOf('data-coverage-kind="deadline"'), russian.indexOf('data-coverage-kind="cost"'));
+  assert.match(russianDeadline, /Официальные сведения о сроке подачи расходятся/);
+  assert.match(russianDeadline, /Сравните официальные страницы приёма и уточните подходящий срок/);
+  assert.doesNotMatch(russianDeadline, /program-coverage__values/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("saved legacy course number and current program ID both resolve to the same program", () => {
+  const migrated = { id: "mit-course-6-3-bachelor", course_number: "Course 6-3", name: "Computer Science and Engineering" };
+  const programs = [migrated];
+
+  assert.equal(resolveProgramByIdentifier(programs, "Course 6-3"), migrated);
+  assert.equal(resolveProgramByIdentifier(programs, "mit-course-6-3-bachelor"), migrated);
+  assert.equal(resolveProgramByIdentifier(programs, "unknown"), null);
+});
+
+test("a saved program name still resolves when a migrated program has no matching legacy ID", () => {
+  const migrated = { id: "harvard-cs-concentration", name: "Computer Science" };
+  const programs = [migrated];
+
+  assert.equal(resolveProgramByName(programs, "Computer Science"), migrated);
+  assert.equal(resolveProgramByName(programs, "Computer Science, Harvard College"), null);
+  assert.equal(resolveProgramByName(programs, "Computer Science, Harvard College", { allowPartial: true }), migrated);
+});
+
+test("ambiguous legacy Harvard program names do not select the first new route", () => {
+  const programs = [
+    { id: "harvard-gsd-march-i", name: "Architecture (MArch I)" },
+    { id: "harvard-gsd-march-ii", name: "Architecture (MArch II)" },
+    { id: "harvard-chan-mph-45", name: "Public Health (MPH-45, residential)" },
+    { id: "harvard-chan-mph-65", name: "Public Health (MPH-65, residential)" },
+    { id: "harvard-chan-mph-generalist", name: "Public Health (MPH-Generalist, online/part-time)" },
+  ];
+
+  assert.equal(resolveProgramByName(programs, "Architecture (MArch)", { allowPartial: true }), null);
+  assert.equal(resolveProgramByName(programs, "Public Health (MPH)", { allowPartial: true }), null);
+  assert.equal(resolveProgramByName(programs, "Architecture (MArch II)"), programs[1]);
+  assert.equal(resolveProgramByName(programs, "Public Health (MPH-65, residential)"), programs[3]);
+});
+
+test("an unpublished Imperial Home fee stays unknown while the published Overseas fee remains scoped", () => {
+  const imperial = row({
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "program_specific",
+      values: { tuition_overseas_academic_year_gbp: 43000, currency: "GBP" },
+      price_facts: [{ kind: "tuition", amount: 43000, currency: "GBP", period: "academic_year", fee_status: "overseas", publication_status: "published" }],
+      publication_status: "not_yet_published",
+      publication_facts: [{ kind: "tuition", currency: "GBP", period: "academic_year", fee_status: "home", publication_status: "not_yet_published", cycle: "2027-28", source_url: "https://uni.example/fees", verified_at: "2026-09-24" }],
+      historical_legacy_values: { values: { tuition_home_academic_year_gbp: 10050 }, currency: "GBP", cycle: "2026-27" },
+      cycle: "2027-28",
+      source_url: "https://uni.example/fees",
+      verified_at: "2026-09-24",
+    },
+  });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([imperial], program);
+  const englishCost = english.slice(english.indexOf('data-coverage-kind="cost"'), english.indexOf('data-coverage-kind="awards"'));
+  assert.match(englishCost, /Tuition · Home fee status · per academic year: Current fee not yet published \(GBP\)/);
+  assert.match(englishCost, /Tuition · Overseas fee status · per academic year: GBP 43,000/);
+  assert.match(englishCost, /2027[-‐‑‒–—−]28/);
+  assert.match(englishCost, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  assert.match(englishCost, /https:\/\/uni\.example\/fees/);
+  assert.doesNotMatch(englishCost, /10,050|2026[-‐‑‒–—−]27/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([imperial], program);
+  const russianCost = russian.slice(russian.indexOf('data-coverage-kind="cost"'), russian.indexOf('data-coverage-kind="awards"'));
+  assert.match(russianCost, /Стоимость обучения · Домашний тариф · за учебный год: Текущий тариф ещё не опубликован \(GBP\)/);
+  assert.match(russianCost, /Зарубежный тариф · за учебный год: GBP\s+43[\s,]000/);
+  assert.doesNotMatch(russianCost, /10[\s,]050/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("conflicting Imperial fee publication shows scope and source without hiding another published fee status", () => {
+  const imperial = row({
+    tuition_mandatory_fees: {
+      status: "available",
+      scope: "program_specific",
+      publication_status: "conflicting",
+      values: { tuition_overseas_academic_year_gbp: 43000, currency: "GBP" },
+      price_facts: [{ kind: "tuition", amount: 43000, currency: "GBP", period: "academic_year", fee_status: "overseas", publication_status: "published" }],
+      publication_facts: [{ kind: "tuition", currency: "GBP", period: "academic_year", fee_status: "home", publication_status: "conflicting" }],
+      historical_legacy_values: { values: { tuition_home_academic_year_gbp: 10050 }, currency: "GBP", cycle: "2026-27" },
+      cycle: "2027-28",
+      source_url: "https://uni.example/fees",
+      verified_at: "2026-09-24",
+    },
+  });
+  const program = { id: "p1", name: "Selected Program" };
+
+  setLanguage("eng", { persist: false, emit: false });
+  const english = renderProgramCoverage([imperial], program);
+  const englishCost = english.slice(english.indexOf('data-coverage-kind="cost"'), english.indexOf('data-coverage-kind="awards"'));
+  assert.match(englishCost, /Official fee information conflicts/);
+  assert.match(englishCost, /Compare the official fee pages and confirm the applicable rate/);
+  assert.match(englishCost, /Tuition · Home fee status · per academic year: Official fee information conflicts \(GBP\)/);
+  assert.match(englishCost, /Tuition · Overseas fee status · per academic year: GBP 43,000/);
+  assert.match(englishCost, /2027[-‐‑‒–—−]28/);
+  assert.match(englishCost, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
+  assert.match(englishCost, /https:\/\/uni\.example\/fees/);
+  assert.doesNotMatch(englishCost, /10,050|2026[-‐‑‒–—−]27/);
+
+  setLanguage("ru", { persist: false, emit: false });
+  const russian = renderProgramCoverage([imperial], program);
+  const russianCost = russian.slice(russian.indexOf('data-coverage-kind="cost"'), russian.indexOf('data-coverage-kind="awards"'));
+  assert.match(russianCost, /Официальные сведения о стоимости расходятся/);
+  assert.match(russianCost, /Сравните официальные страницы со стоимостью и уточните подходящий тариф/);
+  assert.match(russianCost, /Домашний тариф · за учебный год: Официальные сведения о стоимости расходятся \(GBP\)/);
+  assert.match(russianCost, /Зарубежный тариф · за учебный год: GBP\s+43[\s,]000/);
+  assert.doesNotMatch(russianCost, /10[\s,]050/);
+  setLanguage("eng", { persist: false, emit: false });
 });
 
 test("Imperial Home fee guidance shows its provisional amount without a generic program price", () => {

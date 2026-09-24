@@ -248,25 +248,6 @@ test("all catalogued top-five award copy fields have Russian labels", async () =
   assert.doesNotMatch(translatedGrantName, /LIPP/);
   assert.match(translatedGrantCoverage, /не включает LIPP/);
 
-  for (const category of harvard.admission_categories || []) {
-    assert.notEqual(
-      t(`application_workspace.route.category.${category.id}`, category.label),
-      category.label,
-      `Harvard route category ${category.id}`,
-    );
-    for (const programId of category.program_ids || []) {
-      assert.notEqual(t(`application_workspace.route.program.${programId}`, programId), programId, `Harvard route program ${programId}`);
-    }
-    for (const profile of category.requirement_profiles || []) {
-      assert.notEqual(t(`application_workspace.route.profile.${profile.id}`, profile.label), profile.label, `Harvard route profile ${profile.id}`);
-      for (const option of profile.funding_options || []) {
-        assert.notEqual(t(`application_workspace.route.funding.${option.id}`, option.label), option.label, `Harvard funding option ${option.id}`);
-      }
-    }
-    for (const option of category.funding_options || []) {
-      assert.notEqual(t(`application_workspace.route.funding.${option.id}`, option.label), option.label, `Harvard funding option ${option.id}`);
-    }
-  }
   assert.match(t("university.finance.award.applicant_scope.domestic_only", "Home fee status only"), /статус Home/);
 });
 
