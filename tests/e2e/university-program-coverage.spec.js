@@ -110,8 +110,8 @@ test("Stanford professional MD and graduate unit-load tuition stay program-scope
   await expect(deadline).toContainText("Entering class of 2027");
   await expect(deadline).toContainText(/2026[-‐‑‒–—−]10[-‐‑‒–—−]09/);
   const tuition = coverage.locator('[data-coverage-kind="cost"]');
-  await expect(tuition).toContainText("USD");
-  await expect(tuition).toContainText("96,136");
+  await expect(tuition).toContainText("per quarter");
+  await expect(tuition).toContainText("USD 24,034");
 
   await setProgramSelection(page, "stanford-university-usa-ca", "Master", "stanford-ms-cs", "Master of Science in Computer Science (MS CS)");
   await openPrograms(page, "stanford-university-usa-ca");
