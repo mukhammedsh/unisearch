@@ -1,5 +1,5 @@
 fastapi==0.141.1
-uvicorn==0.52.4
+uvicorn==0.53.0
 pydantic==2.13.5
 torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; platform_system == "Linux" and platform_machine == "x86_64"
 torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_aarch64.whl ; platform_system == "Linux" and platform_machine == "aarch64"
@@ -9,4 +9,4 @@ torch==2.14.0 ; platform_system == "Darwin"
 sentence-transformers==6.0.1
 redis==8.1.0
 prometheus-fastapi-instrumentator==8.1.0
-sentry-sdk==2.69.1
+sentry-sdk==2.69.2
