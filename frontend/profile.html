@@ -125,23 +125,6 @@
                 </div>
                 <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0–1,000,000</div>
               </div>
-
-              <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
-                <div class="profile-budget-grant-hint__content">
-                  <span data-heroicon="sparkles" data-icon-size="16"></span>
-                  <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
-                    Budget is under $1000. Maybe you need Grant only.
-                  </span>
-                </div>
-                <div class="profile-budget-grant-hint__actions">
-                  <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
-                    Set Grant only
-                  </button>
-                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
-                    <span data-heroicon="x-mark" data-icon-size="16"></span>
-                  </button>
-                </div>
-              </div>
             </article>
 
             <!-- Optional household financial context -->
@@ -199,6 +182,23 @@
                   <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
                   <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
                 </select>
+              </div>
+
+              <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
+                <div class="profile-budget-grant-hint__content">
+                  <span data-heroicon="sparkles" data-icon-size="16"></span>
+                  <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
+                    Budget is under $1000. Maybe you need Grant only.
+                  </span>
+                </div>
+                <div class="profile-budget-grant-hint__actions">
+                  <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
+                    Set Grant only
+                  </button>
+                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
+                    <span data-heroicon="x-mark" data-icon-size="16"></span>
+                  </button>
+                </div>
               </div>
             </article>
 

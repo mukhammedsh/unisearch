@@ -1165,9 +1165,13 @@ export function initUniversitiesPage() {
             return;
         }
 
-        const rect = sidebar.getBoundingClientRect();
+        // Independent panels invariant: sidebar geometry must never depend on
+        // the live scroll position. Derive the height from the sticky `top`
+        // offset only (stable across scrolls), so scrolling the catalog can
+        // neither resize nor shift the filter column.
+        const computedTop = Number.parseFloat(window.getComputedStyle(sidebar).top) || 90;
         const bottomGap = 16;
-        const availableHeight = Math.max(200, Math.floor(window.innerHeight - rect.top - bottomGap));
+        const availableHeight = Math.max(200, Math.floor(window.innerHeight - computedTop - bottomGap));
         if (lastAppliedSidebarMaxHeight !== availableHeight) {
             lastAppliedSidebarMaxHeight = availableHeight;
             sidebar.style.setProperty("--sidebar-max-height", `${availableHeight}px`);
@@ -1529,6 +1533,17 @@ export function initUniversitiesPage() {
     let markersByUniId = new Map();
     const mapPopupLoads = new Map();
     let activeMapUniId = String(focusUniId || "").trim();
+    // Serializes programmatic "fly, then open the card" flights so concurrent
+    // clicks cannot reopen a stale popup after a newer flight has started.
+    let mapFocusSeq = 0;
+    // Counts opened map popups. A repeat marker click makes Leaflet toggle the
+    // focused card closed right before our handler runs, so the focus must
+    // only be cleared when no reopen follows the close (checked below).
+    let mapPopupOpenCount = 0;
+    // Guards our own programmatic closePopup (flight start) so it never wipes
+    // the focus the flight has just selected. Genuine closes always arrive as
+    // separate tasks and are unaffected.
+    let suppressMapCloseClear = false;
     let mapLibrariesPromise = null;
     let mapInitPromise = null;
     let mapWarmupScheduled = false;
@@ -2307,7 +2322,9 @@ export function initUniversitiesPage() {
     };
 
     const onCatalogScroll = () => {
-        scheduleSyncSidebarMaxHeight();
+        // Independent panels invariant: window scroll must never recompute
+        // sidebar geometry (see syncSidebarMaxHeight). Only viewport
+        // clearance and scroll persistence are scroll-safe here.
         syncMobileFilterFooterClearance();
         if (scrollSaveTimer) return;
         scrollSaveTimer = window.setTimeout(() => {
@@ -2446,12 +2463,23 @@ export function initUniversitiesPage() {
                 }
             });
             markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
+            mapInstance.on('popupopen', () => {
+                mapPopupOpenCount += 1;
+            });
             mapInstance.on('popupclose', (e) => {
-                if (markersByUniId.size === 0) return;
+                if (suppressMapCloseClear || markersByUniId.size === 0) return;
                 const source = e.popup && typeof e.popup.getSource === "function" ? e.popup.getSource() : e.popup?._source;
                 const closedUniId = source?.options?.uniId;
                 if (closedUniId && closedUniId === activeMapUniId) {
-                    updateMapResultsSelection("");
+                    const closeCount = mapPopupOpenCount;
+                    window.setTimeout(() => {
+                        // A repeat click on the focused marker makes Leaflet
+                        // toggle its card closed and our handler reopens it in
+                        // the same task: keep the focus then, clear it only on
+                        // a real close.
+                        if (mapPopupOpenCount !== closeCount) return;
+                        if (closedUniId === activeMapUniId) updateMapResultsSelection("");
+                    }, 0);
                 }
             });
             mapInstance.on('moveend', scheduleMapPointsRefresh);
@@ -2496,9 +2524,102 @@ export function initUniversitiesPage() {
         });
     }
 
+    // Settles the map before a programmatic flight: closes any open card (its
+    // autoPan/keepInView would fight the flight) and stops an in-progress pan
+    // animation. The stop is required: starting flyTo over a running panBy
+    // leaves Leaflet 1.9.4 with a stale `leaflet-pan-anim` pane transform, so
+    // the map renders offset from its true view until something resyncs it.
+    function settleMapForFlight() {
+        suppressMapCloseClear = true;
+        try {
+            mapInstance.closePopup();
+        } finally {
+            suppressMapCloseClear = false;
+        }
+        try {
+            if (mapInstance._panAnim) mapInstance._panAnim.stop();
+        } catch (error) {
+            // Pan-animation internals are version-specific; the flight below
+            // still works, it just cannot reuse the cleanup.
+        }
+    }
+
+    // Flies to the marker with no popup on the map: an open popup would fight
+    // the flight with its own autoPan/keepInView panning. The card opens once,
+    // after the flight has actually arrived (a stale moveend from the
+    // cancelled pan is ignored via the arrival check below).
+    function flyMapToUniversity(targetId, latLng, { openPopup = true, zoom = 14 } = {}) {
+        updateMapResultsSelection(targetId);
+        const focusSeq = ++mapFocusSeq;
+        const flightStartedAt = Date.now();
+        const awaitArrival = () => {
+            if (!mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
+                if (mapInstance) mapInstance.off("moveend", awaitArrival);
+                return;
+            }
+            // The flight lasts 1s; an arrival much later means the user took
+            // over the map, so never surprise-open the card afterwards.
+            if (Date.now() - flightStartedAt > 2500) {
+                mapInstance.off("moveend", awaitArrival);
+                return;
+            }
+            let arrived = false;
+            try {
+                arrived = mapInstance.distance(mapInstance.getCenter(), latLng) < 20;
+            } catch (error) {
+                arrived = false;
+            }
+            if (!arrived) return;
+            mapInstance.off("moveend", awaitArrival);
+            const current = markersByUniId.get(targetId);
+            if (current) {
+                current.setZIndexOffset(1200);
+                try {
+                    if (openPopup && !current.getPopup()?.isOpen()) current.openPopup();
+                } catch (error) {
+                    if (openPopup) current.openPopup();
+                }
+            }
+            // Heal any pan animation left hanging by the flight: a starved
+            // rAF (background/headless page) can leave Leaflet with a stale
+            // `leaflet-pan-anim` pane transform, so the map renders offset
+            // from its true view until something resyncs it. Fast-forwarding
+            // renders the same end state the pan was heading to, so this is
+            // visually a no-op when animations run normally.
+            window.setTimeout(() => {
+                if (focusSeq !== mapFocusSeq || !mapInstance || state.viewMode !== "map") return;
+                try {
+                    if (mapInstance._panAnim) mapInstance._panAnim.stop();
+                } catch (error) {
+                    // Pan-animation internals are version-specific.
+                }
+            }, 400);
+        };
+        mapInstance.on("moveend", awaitArrival);
+        // Closes the just auto-opened popup (Leaflet opens it synchronously on
+        // marker click, before our handler runs) and any previous card, so the
+        // flight owns the viewport until arrival. Same-tick close: no flicker.
+        settleMapForFlight();
+        mapInstance.flyTo(latLng, zoom, {
+            animate: true,
+            duration: 1.0,
+            easeLinearity: 0.2
+        });
+    }
+
     function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
         const targetId = String(uniId || "").trim();
         if (!targetId || !mapInstance) return;
+        if (targetId === activeMapUniId) {
+            const current = markersByUniId.get(targetId);
+            let popupOpen = false;
+            try {
+                popupOpen = Boolean(current && typeof current.getPopup === "function" && current.getPopup()?.isOpen());
+            } catch (error) {
+                popupOpen = false;
+            }
+            if (popupOpen) return;
+        }
         const marker = markersByUniId.get(targetId);
         if (!marker) {
             const item = mapResultsItems.find((row) => String(row?.id || "") === targetId);
@@ -2507,6 +2628,7 @@ export function initUniversitiesPage() {
             if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
             pendingMapFocusId = targetId;
             updateMapResultsSelection(targetId);
+            settleMapForFlight();
             mapInstance.flyTo([lat, lon], zoom, {
                 animate: true,
                 duration: 1.0,
@@ -2515,25 +2637,18 @@ export function initUniversitiesPage() {
             return;
         }
 
-        updateMapResultsSelection(targetId);
         const latLng = marker.getLatLng();
-        const openTarget = () => {
-            marker.setZIndexOffset(1200);
-            if (openPopup) marker.openPopup();
-        };
-
         if (fly) {
-            mapInstance.once('moveend', openTarget);
-            mapInstance.flyTo(latLng, zoom, {
-                animate: true,
-                duration: 1.0,
-                easeLinearity: 0.2
-            });
+            flyMapToUniversity(targetId, latLng, { openPopup, zoom });
             return;
         }
 
+        updateMapResultsSelection(targetId);
         mapInstance.panTo(latLng);
-        openTarget();
+        const current = markersByUniId.get(targetId);
+        if (!current) return;
+        current.setZIndexOffset(1200);
+        if (openPopup) current.openPopup();
     }
 
     function mapResultsFooterHtml() {
@@ -2907,18 +3022,23 @@ export function initUniversitiesPage() {
                 marker.on("popupopen", () => {
                     hydrateMapMarkerPopup(marker, u).catch((error) => console.warn("Map university card failed to load", error));
                 });
-                marker.on('click', function(e) {
+                marker.on('click', function() {
                     const clickedMarker = this;
-                    updateMapResultsSelection(uniId);
+                    if (uniId === activeMapUniId) {
+                        // Repeat click on the focused marker: Leaflet toggles
+                        // its card closed right before this handler runs, so
+                        // reopen it in place and never re-fly to the logo.
+                        let popupOpen = false;
+                        try {
+                            popupOpen = Boolean(clickedMarker.getPopup()?.isOpen());
+                        } catch (error) {
+                            popupOpen = false;
+                        }
+                        if (!popupOpen) clickedMarker.openPopup();
+                        return;
+                    }
                     clickedMarker.setZIndexOffset(1000);
-                    mapInstance.once('moveend', () => {
-                        if (!clickedMarker.getPopup().isOpen()) clickedMarker.openPopup();
-                    });
-                    mapInstance.flyTo(e.target.getLatLng(), 16, {
-                        animate: true,
-                        duration: 1.0,
-                        easeLinearity: 0.2
-                    });
+                    flyMapToUniversity(uniId, clickedMarker.getLatLng(), { openPopup: true, zoom: 16 });
                 });
                 newMarkers.push(marker);
                 markersByUniId.set(uniId, marker);

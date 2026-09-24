@@ -4,6 +4,20 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 7.1.0 (2026-09-24) - Cover Back Button and Steadier Map Interactions
+
+### Added
+- Added a circular back button overlaid on the university detail cover, replacing the previous "Back to list" link in the header actions; the label is shortened to "Back" in English and Russian.
+- Showed the Total Students and Study Formats rows in the university overview section instead of the extra section.
+
+### Fixed
+- Hardened map "fly, then open the card" flights: concurrent flights are serialized so rapid clicks can no longer reopen a stale card, a repeat click on the focused marker keeps the focus, and the card opens only after the flight actually arrives, never after the user takes over the map.
+- Kept the catalog filter sidebar stable while scrolling by deriving its height from the sticky top offset instead of the live scroll position.
+- Stabilized profile and catalog metric tooltip stacking across open, closed, and closing states.
+
+### Changed
+- Moved the low-budget grant hint from the budget block to the funding-preferences block on the profile page.
+
 ## 7.0.0 (2026-09-24) - Scoped Admissions Facts and Product Direction
 
 ### Added

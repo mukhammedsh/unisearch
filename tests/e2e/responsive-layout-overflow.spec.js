@@ -41,10 +41,13 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     });
     await page.waitForTimeout(200);
 
-    // Verify sidebar bottom does not overflow below the viewport
+    // Independent panels: the sidebar keeps a stable viewport-clamped height
+    // that does not depend on page scroll position. At the very top of the
+    // page its bottom may extend below the fold; every control stays
+    // reachable through the sidebar's own inner scroll without moving the page.
     const sidebarBox = await sidebar.boundingBox();
     expect(sidebarBox).not.toBeNull();
-    expect(sidebarBox.y + sidebarBox.height).toBeLessThanOrEqual(800);
+    const sidebarHeightAtTop = sidebarBox.height;
 
     // Scroll sidebar to its bottom
     await page.evaluate(() => {
@@ -66,6 +69,7 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     const scrolledSidebarBox = await sidebar.boundingBox();
     expect(scrolledSidebarBox).not.toBeNull();
     expect(scrolledSidebarBox.y).toBeCloseTo(90, 0);
+    expect(scrolledSidebarBox.height).toBeCloseTo(sidebarHeightAtTop, 0);
     expect(scrolledSidebarBox.y + scrolledSidebarBox.height).toBeLessThanOrEqual(800);
   });
 
@@ -178,6 +182,92 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     await page.goto("/index.html");
     await page.waitForSelector(".uni-card");
     await expect(mobileFilterToggle).toBeVisible();
+  });
+
+  test("keeps filter sidebar and catalog scroll positions independent on desktop", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    });
+    await page.goto("/index.html");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    const sidebar = page.locator("#uSidebar");
+    await expect(sidebar).toBeVisible();
+
+    // Expand the filter column so it always overflows its clamped height.
+    await page.evaluate(() => {
+      const countrySelect = document.getElementById("countrySelect");
+      const usOpt = Array.from(countrySelect.options).find(o => o.value.includes("US") || o.text.includes("United States"));
+      if (usOpt) {
+        countrySelect.value = usOpt.value;
+        countrySelect.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+    await page.waitForTimeout(200);
+
+    const isSidebarScrollable = await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      return el.scrollHeight > el.clientHeight + 1;
+    });
+    expect(isSidebarScrollable).toBe(true);
+
+    const before = await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      const box = el.getBoundingClientRect();
+      return { y: box.y, height: box.height, scrollTop: el.scrollTop, pageY: window.scrollY };
+    });
+    expect(before.pageY).toBe(0);
+
+    // 1. Scrolling the catalog (page) must not resize or inner-scroll the filters.
+    await page.evaluate(() => window.scrollTo(0, 400));
+    await page.waitForTimeout(200);
+
+    const afterPageScroll = await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      const box = el.getBoundingClientRect();
+      return { y: box.y, height: box.height, scrollTop: el.scrollTop, pageY: window.scrollY };
+    });
+    expect(afterPageScroll.pageY).toBeGreaterThan(0);
+    expect(afterPageScroll.y).toBeCloseTo(90, 0);
+    expect(afterPageScroll.height).toBeCloseTo(before.height, 0);
+    expect(afterPageScroll.scrollTop).toBe(0);
+
+    // 2. Wheeling over the catalog must not move the filter inner scroll.
+    const catalogBox = await page.locator("#universitiesCatalogPane").boundingBox();
+    expect(catalogBox).not.toBeNull();
+    await page.mouse.move(catalogBox.x + catalogBox.width / 2, catalogBox.y + 120);
+    await page.mouse.wheel(0, 400);
+    await page.waitForTimeout(200);
+
+    const afterCatalogWheel = await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      const box = el.getBoundingClientRect();
+      return { y: box.y, scrollTop: el.scrollTop, pageY: window.scrollY };
+    });
+    expect(afterCatalogWheel.pageY).toBeGreaterThan(afterPageScroll.pageY);
+    expect(afterCatalogWheel.y).toBeCloseTo(90, 0);
+    expect(afterCatalogWheel.scrollTop).toBe(0);
+
+    // 3. Wheeling at the filter scroll boundaries must not chain into page scroll.
+    await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      el.scrollTop = el.scrollHeight;
+    });
+    await page.waitForTimeout(100);
+    const sidebarBox = await sidebar.boundingBox();
+    expect(sidebarBox).not.toBeNull();
+    const pageYBeforeSidebarWheel = await page.evaluate(() => window.scrollY);
+    await page.mouse.move(sidebarBox.x + sidebarBox.width / 2, sidebarBox.y + sidebarBox.height / 2);
+    await page.mouse.wheel(0, 500);
+    await page.waitForTimeout(250);
+
+    const afterSidebarWheel = await page.evaluate(() => {
+      const el = document.getElementById("uSidebar");
+      return { scrollTop: el.scrollTop, scrollMax: el.scrollHeight - el.clientHeight, pageY: window.scrollY };
+    });
+    expect(afterSidebarWheel.scrollTop).toBeCloseTo(afterSidebarWheel.scrollMax, 0);
+    expect(afterSidebarWheel.pageY).toBe(pageYBeforeSidebarWheel);
   });
 
   test("keeps navbar logo left-aligned under 560px viewport", async ({ page }) => {

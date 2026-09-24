@@ -621,23 +621,33 @@ html.scope-notice-dismissed .u-page-scope {
   align-items: center;
   flex-shrink: 0;
   z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
 .u-info-wrap:hover,
 .u-info-wrap:focus-within,
-.u-info-wrap.is-open {
+.u-info-wrap.is-open,
+.u-info-wrap.is-closed,
+.u-info-wrap.is-closing {
   z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
 }
 
 .u-label-with-help:has(.u-info-wrap:hover),
 .u-label-with-help:has(.u-info-wrap:focus-within),
 .u-label-with-help:has(.u-info-wrap.is-open),
+.u-label-with-help:has(.u-info-wrap.is-closed),
+.u-label-with-help:has(.u-info-wrap.is-closing),
 .tradeoff-field:has(.u-info-wrap:hover),
 .tradeoff-field:has(.u-info-wrap:focus-within),
 .tradeoff-field:has(.u-info-wrap.is-open),
+.tradeoff-field:has(.u-info-wrap.is-closed),
+.tradeoff-field:has(.u-info-wrap.is-closing),
 .u-field:has(.u-info-wrap:hover),
 .u-field:has(.u-info-wrap:focus-within),
-.u-field:has(.u-info-wrap.is-open) {
+.u-field:has(.u-info-wrap.is-open),
+.u-field:has(.u-info-wrap.is-closed),
+.u-field:has(.u-info-wrap.is-closing) {
   position: relative;
   z-index: var(--z-dropdown);
 }
