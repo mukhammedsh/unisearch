@@ -30,6 +30,17 @@ class ApiHardeningTests(unittest.TestCase):
         self.assertIn("X-Request-Id", response.headers)
         self.assertEqual("nosniff", response.headers.get("X-Content-Type-Options"))
         self.assertEqual("DENY", response.headers.get("X-Frame-Options"))
+        self.assertEqual("same-origin", response.headers.get("Cross-Origin-Opener-Policy"))
+        self.assertEqual("none", response.headers.get("X-Permitted-Cross-Domain-Policies"))
+
+    def test_security_headers_included_on_normal_responses(self):
+        client = TestClient(app)
+        response = client.get("/")
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("nosniff", response.headers.get("X-Content-Type-Options"))
+        self.assertEqual("DENY", response.headers.get("X-Frame-Options"))
+        self.assertEqual("same-origin", response.headers.get("Cross-Origin-Opener-Policy"))
+        self.assertEqual("none", response.headers.get("X-Permitted-Cross-Domain-Policies"))
 
     def test_docs_disabled_when_docs_enabled_is_false(self):
         with patch("app.core.settings.DOCS_ENABLED", False):
