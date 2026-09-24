@@ -28,7 +28,7 @@ for (const scenario of cases) {
       const card = document.querySelector(".d-card");
       const cover = document.querySelector(".d-cover");
       const activeTab = document.querySelector(".d-tab-btn.active");
-      const back = document.querySelector(".d-back");
+      const back = document.querySelector(".d-cover-back");
       const visibleLinks = Array.from(document.querySelectorAll(".d-site-link")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
