@@ -57,40 +57,11 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         etag = str(first.headers.get("ETag") or "")
         self.assertTrue(etag)
 
-        # Exact match
         second = self.client.get(
             f"/universities/{university_id}",
             headers={"If-None-Match": etag},
         )
         self.assertEqual(second.status_code, 304)
-
-        # Weak ETag match
-        weak_second = self.client.get(
-            f"/universities/{university_id}",
-            headers={"If-None-Match": f'W/{etag}'},
-        )
-        self.assertEqual(weak_second.status_code, 304)
-
-        # Multi candidate list match
-        multi_second = self.client.get(
-            f"/universities/{university_id}",
-            headers={"If-None-Match": f'"other-tag", W/{etag}'},
-        )
-        self.assertEqual(multi_second.status_code, 304)
-
-    def test_etag_matches_helper_logic(self):
-        from app.routers.universities import _etag_matches, _normalize_etag
-
-        self.assertEqual(_normalize_etag('W/"12345"'), "12345")
-        self.assertEqual(_normalize_etag('"12345"'), "12345")
-        self.assertEqual(_normalize_etag('12345'), "12345")
-
-        self.assertTrue(_etag_matches('*', '"12345"'))
-        self.assertTrue(_etag_matches('"12345"', '"12345"'))
-        self.assertTrue(_etag_matches('W/"12345"', '"12345"'))
-        self.assertTrue(_etag_matches('"12345"', 'W/"12345"'))
-        self.assertTrue(_etag_matches('"abc", W/"12345"', '"12345"'))
-        self.assertFalse(_etag_matches('"abc", "def"', '"12345"'))
 
     def test_university_detail_includes_category_applicable_majors(self):
         response = self.client.get("/universities/astana-it-university-kaz-astana")

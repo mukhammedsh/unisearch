@@ -23,6 +23,19 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
 
+    def test_ops_guard_normalizes_paths_and_prevents_traversal_bypasses(self):
+        client = TestClient(app)
+
+        # Paths that normalize to /ops/runtime in TestClient / Starlette
+        paths = [
+            "/ops//runtime",
+            "/./ops/runtime",
+            "/foo/../ops/runtime",
+        ]
+        for path in paths:
+            res = client.get(path)
+            self.assertEqual(res.status_code, 401, f"Path {path} bypassed ops authentication guard")
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {
