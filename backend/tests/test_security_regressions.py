@@ -36,6 +36,24 @@ class SecurityRegressionTests(unittest.TestCase):
             res = client.get(path)
             self.assertEqual(res.status_code, 401, f"Path {path} bypassed ops authentication guard")
 
+    def test_request_scope_path_normalization_branches(self):
+        from app.core.security import request_scope_path
+
+        class DummyReq:
+            def __init__(self, path):
+                self.scope = {"path": path} if path is not None else None
+
+        self.assertEqual(request_scope_path(None), "")
+        self.assertEqual(request_scope_path(DummyReq(None)), "/")
+        self.assertEqual(request_scope_path(DummyReq("")), "/")
+        self.assertEqual(request_scope_path(DummyReq("   ")), "/")
+        self.assertEqual(request_scope_path(DummyReq("//ops/runtime")), "/ops/runtime")
+        self.assertEqual(request_scope_path(DummyReq("///ops//runtime/")), "/ops/runtime/")
+        self.assertEqual(request_scope_path(DummyReq("/foo/../ops/runtime")), "/ops/runtime")
+        self.assertEqual(request_scope_path(DummyReq("relative/path")), "/relative/path")
+        self.assertEqual(request_scope_path(DummyReq("/dir/")), "/dir/")
+        self.assertEqual(request_scope_path(DummyReq("/")), "/")
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {
