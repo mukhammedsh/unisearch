@@ -266,12 +266,24 @@ def request_client_ip(request: Optional[Request]) -> str:
     return normalized_direct
 
 
+import posixpath
+
+
 def request_scope_path(request: Optional[Request]) -> str:
     if request is None:
         return ""
     scope = getattr(request, "scope", {}) or {}
-    path = str(scope.get("path") or "").strip()
-    return path or "/"
+    raw_path = str(scope.get("path") or "").strip()
+    if not raw_path:
+        return "/"
+    # Strip any consecutive leading slashes then collapse '.' / '..'
+    stripped = "/" + raw_path.lstrip("/")
+    normalized = posixpath.normpath(stripped)
+    if not normalized.startswith("/"):
+        normalized = "/" + normalized
+    if raw_path.endswith("/") and normalized != "/":
+        normalized += "/"
+    return normalized
 
 
 def is_protected_ops_request(request: Request) -> bool:
