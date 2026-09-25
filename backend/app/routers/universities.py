@@ -32,16 +32,26 @@ _COMPARE_PROFILES_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
 _COMPARE_PROFILES_CACHE_LOCK = threading.Lock()
 
 
+def _normalize_etag(value: str) -> str:
+    s = str(value or "").strip()
+    if s.lower().startswith("w/"):
+        s = s[2:].strip()
+    if s.startswith('"') and s.endswith('"') and len(s) >= 2:
+        s = s[1:-1].strip()
+    return s
+
+
 def _etag_matches(if_none_match: str, etag: str) -> bool:
     raw = str(if_none_match or "").strip()
     if not raw:
         return False
     if raw == "*":
         return True
-    target = etag.strip()
-    target_weak = f"W/{target}"
+    target_norm = _normalize_etag(etag)
+    if not target_norm:
+        return False
     candidates = [part.strip() for part in raw.split(",") if part.strip()]
-    return target in candidates or target_weak in candidates
+    return any(_normalize_etag(cand) == target_norm for cand in candidates)
 
 
 def _request_client_key(request: Optional[Request]) -> str:
