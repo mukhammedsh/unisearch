@@ -73,6 +73,24 @@ class SecurityRegressionTests(unittest.TestCase):
                 currency_service.fetch_rates()
             self.assertIn("non-public address", str(ctx.exception))
 
+    def test_currency_fetch_rates_validates_public_url_variations(self):
+        with patch("app.services.currency.CURRENCY_RATES_API_URL", "ftp://example.com/latest"):
+            with self.assertRaises(RuntimeError) as ctx:
+                currency_service.fetch_rates()
+            self.assertIn("scheme", str(ctx.exception))
+
+        with patch("app.services.currency.CURRENCY_RATES_API_URL", "http:///latest"):
+            with self.assertRaises(RuntimeError) as ctx:
+                currency_service.fetch_rates()
+            self.assertIn("empty host", str(ctx.exception))
+
+        with patch("app.services.currency._validate_public_url") as mock_validate:
+            with patch("app.services.currency.urlopen") as mock_urlopen:
+                mock_urlopen.return_value.__enter__.return_value.read.return_value = b'{"rates": {"EUR": 0.9}}'
+                res = currency_service.fetch_rates("USD")
+                self.assertEqual(res["rates"]["EUR"], 0.9)
+                mock_validate.assert_called_once()
+
         with patch("app.services.currency.CURRENCY_RATES_API_URL", "http://169.254.169.254/latest"):
             with self.assertRaises(RuntimeError) as ctx:
                 currency_service.fetch_rates()
