@@ -1,13 +1,16 @@
+import ipaddress
 import json
 import logging
 import math
 import re
+import socket
 import threading
 import time
 from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any, Dict, Optional
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import Request as UrlRequest, urlopen
 
 from app.core.paths import CURRENCY_FILTER_LIMITS_PATH
@@ -254,6 +257,43 @@ def _clear_cache_for_testing() -> None:
     _LAST_FETCH_TIME = None
 
 
+def _is_public_ip(address: str) -> bool:
+    try:
+        ip = ipaddress.ip_address(address)
+    except ValueError:
+        return False
+    return not (
+        ip.is_private
+        or ip.is_loopback
+        or ip.is_link_local
+        or ip.is_multicast
+        or ip.is_reserved
+        or ip.is_unspecified
+    )
+
+
+def _validate_public_url(url: str) -> None:
+    if not (url.startswith("https://") or url.startswith("http://")):
+        raise RuntimeError("Invalid currency API URL scheme: must start with https:// or http://")
+    parsed = urlparse(url)
+    host = str(parsed.hostname or "").strip()
+    if not host:
+        raise RuntimeError("Invalid currency API URL host: empty host")
+    try:
+        port = parsed.port or (443 if parsed.scheme == "https" else 80)
+        infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except OSError as e:
+        raise RuntimeError(f"Currency API URL host cannot be resolved: {e}") from e
+
+    addresses = {str(row[4][0]) for row in infos if row and row[4]}
+    if not addresses:
+        raise RuntimeError("Currency API URL host resolved to no addresses")
+
+    non_public = [addr for addr in sorted(addresses) if not _is_public_ip(addr)]
+    if non_public:
+        raise RuntimeError(f"Currency API URL points to a non-public address: {non_public[0]}")
+
+
 def fetch_rates(base: str = "USD") -> Dict[str, Any]:
     """Fetches real-time exchange rates from the configured API provider using urllib.request."""
     base_code = (base or "USD").strip().upper()
@@ -261,13 +301,12 @@ def fetch_rates(base: str = "USD") -> Dict[str, Any]:
         raise ValueError(f"Invalid base currency code: {base}")
 
     url = CURRENCY_RATES_API_URL
-    if not (url.startswith("https://") or url.startswith("http://")):
-        raise RuntimeError("Invalid currency API URL scheme: must start with https:// or http://")
-
     if "{base}" in url:
         url = url.format(base=base_code)
     elif url.endswith("/USD") and base_code != "USD":
         url = f"{url[:-3]}{base_code}"
+
+    _validate_public_url(url)
 
     req = UrlRequest(
         url,
