@@ -3,7 +3,7 @@
 # Installs backend dependencies and packages Python fuzz targets into $OUT using compile_python_fuzzer.
 
 # Install dependencies required by backend services
-python3 -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+python3 -m pip install fastapi uvicorn pydantic redis prometheus-fastapi-instrumentator sentry-sdk
 
 # Pre-compile Python bytecode
 python3 -m compileall -q backend/app
