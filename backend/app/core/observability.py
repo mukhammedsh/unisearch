@@ -47,7 +47,22 @@ def _scrub_sensitive(value: Any) -> Any:
         out = {}
         for key, item in value.items():
             key_text = str(key or "").strip().lower()
-            if key_text in _SENSITIVE_KEYS or any(part in key_text for part in ("token", "secret", "password", "authorization")):
+            if key_text in _SENSITIVE_KEYS or any(
+                part in key_text
+                for part in (
+                    "token",
+                    "secret",
+                    "password",
+                    "authorization",
+                    "cookie",
+                    "auth",
+                    "session",
+                    "credential",
+                    "api_key",
+                    "apikey",
+                    "api-key",
+                )
+            ):
                 out[key] = "[Filtered]"
             else:
                 out[key] = _scrub_sensitive(item)
