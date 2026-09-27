@@ -831,10 +831,8 @@ tokenizers==0.23.2 \
     # via
     #   sentence-transformers
     #   transformers
-torch==2.14.0+cpu \
-    --hash=sha256:019463a7566401db8b1ed142026086db8fa680abda49ec41a60a8718d88e891d \
-    --hash=sha256:a09987c95ec4cffdb6df798d3d641558110a334cfccce22f2f046d83142bc260 \
-    --hash=sha256:d30207cb89e713dfd6afb5d592b30d9ef252acf80407c5543157ea7b07c4d9a0
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl \
+    --hash=sha256:a09987c95ec4cffdb6df798d3d641558110a334cfccce22f2f046d83142bc260
     # via
     #   -r backend/requirements.txt
     #   sentence-transformers
