@@ -4,7 +4,7 @@
 
 # Install dependencies required by backend services
 python3 -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock || \
-  python3 -m pip install fastapi uvicorn pydantic sentence-transformers redis prometheus-fastapi-instrumentator sentry-sdk torch --extra-index-url https://download.pytorch.org/whl/cpu
+  python3 -m pip install -r backend/requirements-dev.txt || true
 
 # Pre-compile Python bytecode
 python3 -m compileall -q backend/app
