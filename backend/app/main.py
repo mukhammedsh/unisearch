@@ -165,6 +165,8 @@ def _security_headers() -> dict[str, str]:
     return {
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "Cross-Origin-Opener-Policy": "same-origin",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
         "Content-Security-Policy": (

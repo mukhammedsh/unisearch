@@ -23,6 +23,17 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
 
+    def test_ops_guard_handles_case_insensitive_and_base_ops_paths(self):
+        client = TestClient(app)
+
+        runtime_upper = client.get("/OPS/runtime")
+        runtime_mixed = client.get("/Ops/Runtime")
+        ops_base = client.get("/ops")
+
+        self.assertEqual(runtime_upper.status_code, 401)
+        self.assertEqual(runtime_mixed.status_code, 401)
+        self.assertEqual(ops_base.status_code, 401)
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {

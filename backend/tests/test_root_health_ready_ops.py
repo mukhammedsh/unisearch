@@ -68,6 +68,8 @@ class RootAndOpsApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual("nosniff", response.headers.get("x-content-type-options"))
         self.assertEqual("DENY", response.headers.get("x-frame-options"))
+        self.assertEqual("none", response.headers.get("x-permitted-cross-domain-policies"))
+        self.assertEqual("same-origin", response.headers.get("cross-origin-opener-policy"))
         csp = response.headers.get("content-security-policy", "")
         self.assertIn("frame-ancestors", csp)
         self.assertIn("script-src 'self' https://unpkg.com", csp)

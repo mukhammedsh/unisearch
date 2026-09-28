@@ -275,10 +275,11 @@ def request_scope_path(request: Optional[Request]) -> str:
 
 
 def is_protected_ops_request(request: Request) -> bool:
-    path = request_scope_path(request)
-    if path.startswith("/ops/"):
+    path = request_scope_path(request).lower()
+    metrics_path = str(METRICS_PATH or "/metrics").lower()
+    if path == "/ops" or path.startswith("/ops/"):
         return True
-    if path == str(METRICS_PATH or "/metrics"):
+    if path == metrics_path or path.startswith(f"{metrics_path}/"):
         return True
     if path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on"}:
         return True
