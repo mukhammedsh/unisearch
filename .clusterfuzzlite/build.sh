@@ -2,6 +2,8 @@
 # ClusterFuzzLite build script for UniSearch.
 # Installs backend dependencies and packages Python fuzz targets into $OUT using compile_python_fuzzer.
 
+export PYTHONPATH=$SRC/unisearch/backend:${PYTHONPATH:-}
+
 # Install dependencies required by backend services
 python3 -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock || \
   python3 -m pip install -r backend/requirements-dev.txt || true
