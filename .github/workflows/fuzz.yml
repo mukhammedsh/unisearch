@@ -23,6 +23,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      - name: Prepare unprivileged build directories
+        run: |
+          # Match the fuzzer UID in .clusterfuzzlite/Dockerfile for bind-mounted output.
+          sudo install -d -o 10001 -g 10001 -m 755 "$GITHUB_WORKSPACE/build-out" "$GITHUB_WORKSPACE/work"
+
       - name: Build and run fuzzers
         id: build
         uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
