@@ -1,13 +1,16 @@
+import ipaddress
 import json
 import logging
 import math
 import re
+import socket
 import threading
 import time
 from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any, Dict, Optional
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import Request as UrlRequest, urlopen
 
 from app.core.paths import CURRENCY_FILTER_LIMITS_PATH
@@ -254,6 +257,40 @@ def _clear_cache_for_testing() -> None:
     _LAST_FETCH_TIME = None
 
 
+def _validate_currency_api_url_ssrf(url: str) -> None:
+    """Validate that the currency API endpoint targets a public IP address to prevent SSRF."""
+    parsed = urlparse(url)
+    scheme = str(parsed.scheme or "").lower()
+    if scheme not in ("http", "https"):
+        raise RuntimeError("Invalid currency API URL scheme: must start with https:// or http://")
+
+    hostname = parsed.hostname
+    if not hostname:
+        raise RuntimeError("Invalid currency API URL: missing hostname")
+
+    try:
+        ip = ipaddress.ip_address(hostname)
+        if not ip.is_global:
+            raise RuntimeError(f"Forbidden currency API endpoint: non-public IP target '{hostname}'")
+        return
+    except ValueError:
+        pass
+
+    try:
+        addr_info = socket.getaddrinfo(hostname, None)
+    except socket.gaierror as e:
+        raise RuntimeError(f"Currency API hostname resolution failed: {e}") from e
+
+    for family, _, _, _, sockaddr in addr_info:
+        ip_str = sockaddr[0]
+        try:
+            ip = ipaddress.ip_address(ip_str)
+            if not ip.is_global:
+                raise RuntimeError(f"Forbidden currency API endpoint: non-public IP target '{ip_str}'")
+        except ValueError:
+            continue
+
+
 def fetch_rates(base: str = "USD") -> Dict[str, Any]:
     """Fetches real-time exchange rates from the configured API provider using urllib.request."""
     base_code = (base or "USD").strip().upper()
@@ -261,13 +298,12 @@ def fetch_rates(base: str = "USD") -> Dict[str, Any]:
         raise ValueError(f"Invalid base currency code: {base}")
 
     url = CURRENCY_RATES_API_URL
-    if not (url.startswith("https://") or url.startswith("http://")):
-        raise RuntimeError("Invalid currency API URL scheme: must start with https:// or http://")
-
     if "{base}" in url:
         url = url.format(base=base_code)
     elif url.endswith("/USD") and base_code != "USD":
         url = f"{url[:-3]}{base_code}"
+
+    _validate_currency_api_url_ssrf(url)
 
     req = UrlRequest(
         url,

@@ -9,11 +9,35 @@ from httpx import ASGITransport, AsyncClient
 from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter
 from app.core.settings import REQUEST_BODY_MAX_BYTES
+from unittest.mock import patch
+
 from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.services.currency import _validate_currency_api_url_ssrf, fetch_rates
 from scripts import audit_universities_data
 
 
 class SecurityRegressionTests(unittest.TestCase):
+    def test_currency_api_ssrf_validation_rejects_private_and_internal_targets(self):
+        forbidden_urls = [
+            "http://127.0.0.1:8000/rates",
+            "http://localhost/rates",
+            "http://169.254.169.254/latest/meta-data/",
+            "http://10.0.0.1/api",
+            "http://172.16.0.1/api",
+            "http://192.168.1.1/api",
+        ]
+
+        for target_url in forbidden_urls:
+            with self.subTest(url=target_url):
+                with self.assertRaises(RuntimeError) as ctx:
+                    _validate_currency_api_url_ssrf(target_url)
+                self.assertIn("Forbidden currency API endpoint", str(ctx.exception))
+
+    def test_fetch_rates_aborts_on_non_public_api_url(self):
+        with patch("app.services.currency.CURRENCY_RATES_API_URL", "http://127.0.0.1:8000/rates"):
+            with self.assertRaises(RuntimeError) as ctx:
+                fetch_rates("USD")
+            self.assertIn("Forbidden currency API endpoint", str(ctx.exception))
     def test_ops_guard_uses_scope_path_not_host_confused_url_path(self):
         client = TestClient(app)
 
