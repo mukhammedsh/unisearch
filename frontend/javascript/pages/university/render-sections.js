@@ -997,7 +997,7 @@ function renderDeadlineCalendar(universityId, deadlines) {
     .filter((entry) => entry.date);
   const undatedCount = deadlines.length - dated.length;
   if (!dated.length) {
-    return `<section class="deadline-calendar"><h4>${escapeHtml(t("university.deadlines.calendar_title", "Deadline calendar"))}</h4><p>${escapeHtml(t("university.deadlines.calendar_no_exact", "No deadlines with an exact published date and year. See the timeline below for approximate or yearless deadlines."))}</p></section>`;
+    return `<section class="deadline-calendar"><h4>${escapeHtml(t("university.deadlines.calendar_title", "Deadline calendar"))}</h4><p>${escapeHtml(t("university.deadlines.calendar_no_exact", "No deadlines with an exact published date and year. See the deadline list for approximate or yearless deadlines."))}</p></section>`;
   }
 
   dated.sort((a, b) => a.date.localeCompare(b.date));

@@ -7619,6 +7619,20 @@ body[data-page="university"],
   .d-head {
     padding-top: 12px;
   }
+
+  .d-title-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .d-title,
+  .d-head-links {
+    width: 100%;
+  }
+
+  .d-head-links {
+    margin-left: 0;
+  }
 }
 
 /* MIT pilot: keep the chosen course and its next action ahead of supporting data. */

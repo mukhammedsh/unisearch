@@ -1512,7 +1512,7 @@ university.deadlines.all_levels: All Degrees
 university.deadlines.calendar_empty_month: No exact deadlines this month.
 university.deadlines.calendar_events: deadlines
 university.deadlines.calendar_next: Next month
-university.deadlines.calendar_no_exact: No deadlines with an exact published date and year. See the timeline below for approximate or yearless deadlines.
+university.deadlines.calendar_no_exact: No deadlines with an exact published date and year. See the deadline list for approximate or yearless deadlines.
 university.deadlines.calendar_partial_note: Deadlines without an exact date and year appear only in the list below.
 university.deadlines.calendar_previous: Previous month
 university.deadlines.calendar_title: Deadline calendar

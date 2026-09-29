@@ -1510,7 +1510,7 @@ university.deadlines.all_levels: Все ступени
 university.deadlines.calendar_empty_month: В этом месяце нет дедлайнов с точной датой.
 university.deadlines.calendar_events: дедлайнов
 university.deadlines.calendar_next: Следующий месяц
-university.deadlines.calendar_no_exact: Нет опубликованных дедлайнов с точной датой и годом. Приблизительные сроки и даты без года смотрите в списке ниже.
+university.deadlines.calendar_no_exact: Нет опубликованных дедлайнов с точной датой и годом. Приблизительные сроки и даты без года смотрите в списке сроков.
 university.deadlines.calendar_partial_note: Дедлайны без точной даты и года показаны только в списке ниже.
 university.deadlines.calendar_previous: Предыдущий месяц
 university.deadlines.calendar_title: Календарь дедлайнов

@@ -31,7 +31,12 @@ for (const [programId, width, language, descriptionText] of [
     await page.setViewportSize({ width, height: 900 });
     await page.addInitScript((selectedLanguage) => localStorage.setItem("unisearch_ui_language_v1", selectedLanguage), language);
     await page.goto("/university.html?id=mit-usa-cambridge");
-    await expect(page.locator("#detailName")).not.toBeEmpty();
+    await expect(page.locator("#detailCard")).toBeVisible();
+    await expect(page.locator("#detailName")).toBeVisible();
+    if (width === 390) {
+      const titleWidth = await page.locator("#detailName").evaluate((node) => node.getBoundingClientRect().width);
+      expect(titleWidth).toBeGreaterThan(width * 0.7);
+    }
     await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
     await page.locator("#tab-programs [data-program-level='master']").click();
     const program = page.locator(".program-card", { has: page.locator(`[data-program-admission='${programId}']`) });
@@ -76,7 +81,7 @@ for (const [width, language, theme] of [
     await expect(route).toContainText(language === "rus" ? "4,0/5,0" : "4.0/5.0");
     await expect(route).toContainText(language === "rus" ? "UniSearch не может оценить" : "UniSearch cannot assess");
     await expect(route).not.toContainText(language === "rus" ? "нет опубликованных измеримых минимумов" : "no measurable published minimums");
-    await expect(route.locator(".chance-track-chip")).toHaveCount(0);
+    expect((await route.locator(".chance-track-chip").allTextContents()).join(" ")).not.toMatch(/\d+%/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   });
 }
@@ -203,9 +208,9 @@ test("admission categories show applicable programs", async ({ page }) => {
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const majors = page.locator(".admission-applicable-programs .tag");
-  await expect(majors.first()).toBeVisible();
-  await expect(majors).toContainText(["Computer Science"]);
+  const programs = page.locator(".admission-program-selector .admission-program-option");
+  await expect(programs.first()).toBeVisible();
+  await expect(programs).toContainText(["General requirements", "Computer Science"]);
 });
 
 test("admission category major tags are localized in russian", async ({ page }) => {
@@ -217,9 +222,9 @@ test("admission category major tags are localized in russian", async ({ page }) 
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const majors = page.locator(".admission-applicable-programs .tag");
-  await expect(majors.first()).toBeVisible();
-  await expect(majors).toContainText(["Компьютерные науки"]);
+  const programs = page.locator(".admission-program-selector .admission-program-option");
+  await expect(programs.first()).toBeVisible();
+  await expect(programs).toContainText(["Общие требования", "Компьютерные науки"]);
 });
 
 test("nazarbayev university shows one admission category with requirement profiles", async ({ page }) => {
@@ -793,8 +798,8 @@ test("abai university admission card layout invariants", async ({ page }) => {
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const applicablePrograms = page.locator(".admission-applicable-programs").first();
-  await expect(applicablePrograms).toBeVisible();
+  const programSelector = page.locator(".admission-program-selector").first();
+  await expect(programSelector).toBeVisible();
 
   const fundingOption = page.locator(".admission-funding-option").first();
   await expect(fundingOption).toBeVisible();
@@ -805,19 +810,12 @@ test("abai university admission card layout invariants", async ({ page }) => {
   const side = header.locator(".admission-funding-option-side");
   await expect(side).toBeVisible();
 
-  const chanceChip = fundingOption.locator(".chance-track-chip").first();
-  await expect(chanceChip).toBeVisible();
-  const paddingLeft = await chanceChip.evaluate((el) => window.getComputedStyle(el).paddingLeft);
-  expect(paddingLeft).toBe("0px");
-
   await expect(fundingOption.locator(".admission-funding-option-main")).toHaveCount(0);
   const fundingMain = page.locator(".admission-funding-option").nth(1).locator(".admission-funding-option-main");
   await expect(fundingMain).toBeVisible();
   const mainHeight = await fundingMain.evaluate((el) => el.getBoundingClientRect().height);
   expect(mainHeight).toBeLessThan(150);
 
-  const card = page.locator(".admission-category-card").first();
-  await card.screenshot({ path: "C:/Users/aigul/.gemini/antigravity/brain/696e06cd-77ec-4b07-95ef-f1c938a602f4/scratch/admission_card_abai.png" });
 });
 
 test("abai university general tab layout invariants and spacing", async ({ page }) => {
@@ -843,5 +841,4 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   const secondBoxPaddingTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).paddingTop);
   expect(secondBoxPaddingTop).toBe("20px");
 
-  await generalTab.screenshot({ path: "C:/Users/aigul/.gemini/antigravity/brain/696e06cd-77ec-4b07-95ef-f1c938a602f4/scratch/general_tab_preview.png" });
 });

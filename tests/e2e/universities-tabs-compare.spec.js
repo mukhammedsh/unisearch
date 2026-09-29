@@ -251,16 +251,15 @@ test("compare results split admission decision rows", async ({ page }) => {
   const table = page.locator(".compare-table");
   await expect(table).toContainText("Selected route");
   await expect(table).toContainText("Academic minimums");
-  await expect(table).toContainText("Admitted score context");
+  await expect(table).not.toContainText("Admitted score context");
   await expect(table).toContainText("Funding-specific requirements");
   await expect(table).toContainText("Language proof");
   await expect(table).toContainText("Documents / interview / portfolio");
   await expect(table).toContainText("IELTS Academic language minimum");
   await expect(table).toContainText("SAT requirement");
   await expect(table).toContainText("AP requirement");
-  await expect(table).toContainText("Admitted score: SAT");
   await expect(table).toContainText("1,450");
-  await expect(table).toContainText("1,550");
+  await expect(table).not.toContainText("1,550");
 });
 
 test("compare deep link ids and choices override stale localStorage", async ({ page }) => {

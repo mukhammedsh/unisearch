@@ -2,25 +2,25 @@ const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
 const { selectors } = require("./helpers/selectors");
 
-test("detail page renders UniChance/ROI and recomputes after profile update", async ({ page }) => {
+test("detail page keeps unscored MIT estimates unavailable after profile update", async ({ page }) => {
   await seedProfile(page, {
     ...personas.enResearch.profile,
     major: "Computer Science",
     gpa: 99,
     exams: [{ exam: "SAT", score: 1550 }],
   });
-  await page.goto("/university.html?id=mit-usa-cambridge");
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor");
 
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toHaveText("University Name");
 
   await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await page.locator(".mit-admission-analysis summary").click();
   await expect(page.locator(".chance-panel")).toBeVisible();
-  await expect(page.locator(".chance-percent")).toContainText("%");
+  await expect(page.locator(".chance-percent")).toContainText("?");
 
   await page.click(".d-tab-btn[data-tab='tab-finance']");
-  await expect(page.locator(".roi-box")).toBeVisible();
-  await expect(page.locator(".roi-box")).toContainText("ROI");
+  await expect(page.locator(".roi-box")).toHaveCount(0);
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
@@ -42,7 +42,7 @@ test("detail page renders UniChance/ROI and recomputes after profile update", as
 
   await page.click(selectors.profileCloseBtn);
   await page.click(".d-tab-btn[data-tab='tab-finance']");
-  await expect(page.locator(".roi-box")).toBeVisible();
+  await expect(page.locator(".roi-box")).toHaveCount(0);
 });
 
 test("detail page hides ROI when official salary data is missing", async ({ page }) => {
@@ -64,7 +64,7 @@ test("detail page tooltips are tap-friendly and interactive on admission and ove
     gpa: 99,
     exams: [{ exam: "SAT", score: 1550 }],
   });
-  await page.goto("/university.html?id=mit-usa-cambridge");
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor");
   await expect(page.locator("#detailCard")).toBeVisible();
 
   // 1. Overview Global Rank tooltip click to toggle
@@ -79,6 +79,7 @@ test("detail page tooltips are tap-friendly and interactive on admission and ove
 
   // 2. Admission tab tooltips (chance badge / factor chips)
   await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await page.locator(".mit-admission-analysis summary").click();
   await expect(page.locator(".chance-panel")).toBeVisible();
 
   const factorTrigger = page.locator(".track-factor-chip-wrap .ui-tooltip-trigger").first();

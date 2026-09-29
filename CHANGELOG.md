@@ -22,6 +22,7 @@ All notable project changes should be recorded here.
 - Keep UniChance unscored when a route's published minima have not been reviewed or cannot be checked from the existing profile, with a distinct explanation for each state.
 
 ### Fixed
+- Restore readable university titles on mobile after the shared detail-header update, and make the no-exact-deadline calendar guidance accurate for collapsed MIT timelines.
 - Add a sourced undergraduate Business Analytics (Course 15-2) curriculum summary and direct MIT catalog and Sloan curriculum links; distinguish degree requirements from admission prerequisites.
 - Group program metadata beside its labels, show study descriptions as readable paragraphs, and expose official program sources and the shared MIT first-year application context. Identify summaries that have not yet been collected, and use a badge instead of a full-card accent fill for the selected major.
 - Keep single-option route and cycle controls visible, distinguish absent published minimums from missing applicant evidence, and make historical score ranges expandable in admission details.
