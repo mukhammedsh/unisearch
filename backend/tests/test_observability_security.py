@@ -14,6 +14,7 @@ class ObservabilitySecurityTests(unittest.TestCase):
              patch("app.core.observability.sentry_sdk") as sdk:
             setup_observability(FastAPI())
             options = sdk.init.call_args.kwargs
+            self.assertFalse(options["include_local_variables"])
             for hook in ("before_send", "before_send_transaction"):
                 with self.subTest(hook=hook):
                     event = {"request": {"headers": {"x-custom-ops": "private", "user-agent": "browser"}},

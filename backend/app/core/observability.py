@@ -86,6 +86,7 @@ def setup_observability(app: FastAPI) -> None:
                 dsn=SENTRY_DSN,
                 traces_sample_rate=max(0.0, min(1.0, float(SENTRY_TRACES_SAMPLE_RATE))),
                 send_default_pii=False,
+                include_local_variables=False,
                 before_send=_before_send,
                 before_send_transaction=_before_send,
             )

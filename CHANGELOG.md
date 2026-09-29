@@ -4,6 +4,18 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 7.2.1 (2026-09-30) - Operations and Telemetry Hardening
+
+### Fixed
+- Require operations authorization for every supported true health-warmup value and for protected routes served under an ASGI root path.
+- Filter credential headers, session fields, and the configured operations header from both Sentry error events and transactions; disable stack-frame local capture to avoid retaining raw request copies.
+- Keep ClusterFuzzLite compilation unprivileged, install a hash-locked schema dependency set, and bundle backend imports and catalog data into both fuzz targets.
+
+### Changed
+- Add same-origin opener isolation and disable legacy cross-domain policies on API responses.
+- Update Uvicorn, Sentence Transformers, and Sentry SDK with synchronized runtime and development locks; refresh pinned CodeQL, setup-uv, and Codecov actions.
+- Use a patch increment because these changes harden existing behavior and maintenance workflows without adding a product capability.
+
 ## 7.2.0 (2026-09-30) - Admissions Context and MIT Catalog
 
 ### Added
