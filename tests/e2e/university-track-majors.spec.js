@@ -123,12 +123,13 @@ test("MIT matching Business Analytics keeps its title and major badge on one hea
   const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-bs-15-2']") });
   await expect(program).toHaveClass(/program-card--major/);
   await expect(program.locator(".program-card__major-badge")).toBeVisible();
-  const alignment = await program.evaluate((node) => {
-    const title = node.querySelector(".program-card__title").getBoundingClientRect();
-    const badge = node.querySelector(".program-card__major-badge").getBoundingClientRect();
-    return Math.abs(title.y + title.height / 2 - (badge.y + badge.height / 2));
+  const centerDelta = await program.evaluate((card) => {
+    // Sample both elements in one frame while the shared tab entrance animates.
+    const title = card.querySelector(".program-card__title").getBoundingClientRect();
+    const badge = card.querySelector(".program-card__major-badge").getBoundingClientRect();
+    return Math.abs(title.y + title.height / 2 - badge.y - badge.height / 2);
   });
-  expect(alignment).toBeLessThanOrEqual(2);
+  expect(centerDelta).toBeLessThanOrEqual(2);
   await program.locator("[data-program-toggle]").click();
   await program.screenshot({ path: "output/playwright/mit-course15-2-matching-major-dark.png" });
   await page.setViewportSize({ width: 390, height: 844 });
