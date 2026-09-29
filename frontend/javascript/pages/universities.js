@@ -203,7 +203,6 @@ export function initUniversitiesPage() {
     let currentCurrency = prefCurrency;
     let currentLimits = getFilterLimits(prefCurrency);
     const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
-    const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
     const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
 
     if (window.history && "scrollRestoration" in window.history) {
@@ -276,8 +275,6 @@ export function initUniversitiesPage() {
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
-        scopeNotice: $("universitiesScopeNotice"),
-        scopeNoticeDismiss: $("dismissUniversitiesScopeNotice"),
         catalogLevelSegmented: $("catalogLevelSegmented"),
         catalogLevelButtons: Array.from(document.querySelectorAll(".catalog-level-btn")),
     };
@@ -326,42 +323,12 @@ export function initUniversitiesPage() {
         return exams.length > 0 || langs.length > 0;
     }
 
-    const setupScopeNotice = () => {
-        if (!el.scopeNotice) return;
-
-        let dismissed = false;
-        try {
-            dismissed = localStorage.getItem(SCOPE_NOTICE_DISMISSED_KEY) === "1";
-        } catch (e) {
-            dismissed = false;
-        }
-
-        el.scopeNotice.hidden = dismissed;
-        if (dismissed) {
-            document.documentElement.classList.add("scope-notice-dismissed");
-        }
-        if (dismissed || !el.scopeNoticeDismiss) return;
-
-        el.scopeNoticeDismiss.addEventListener("click", () => {
-            el.scopeNotice.hidden = true;
-            document.documentElement.classList.add("scope-notice-dismissed");
-            try {
-                localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
-            } catch (e) {
-                // Ignore storage errors; the notice still closes for this page view.
-            }
-            scheduleSyncSidebarMaxHeight();
-            scheduleSyncWorkspaceDepth();
-        });
-    };
-
     if (!el.list) return;
     disposeUniversitiesPage();
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
     bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
-    setupScopeNotice();
 
     const closeAllStatusOverflows = () => {
         document.querySelectorAll(".uni-status-overflow.is-open").forEach((wrap) => {
@@ -1249,7 +1216,7 @@ export function initUniversitiesPage() {
         if (warningText) {
             blocks.push(`
                 <div class="u-state-card u-state-card--warning" role="status">
-                    <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.warning_title", "Temporary ranking fallback"))}</div>
+                    <div class="u-state-card__title">${escapeHtml(t("universities.state.warning_title", "Interests unavailable"))}</div>
                     <div class="u-state-card__text">${escapeHtml(warningText)}</div>
                 </div>
             `.trim());
@@ -1258,7 +1225,7 @@ export function initUniversitiesPage() {
         if (emptyText) {
             blocks.push(`
                 <div class="u-state-card u-state-card--empty" role="status">
-                    <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.empty_title", "No results for current filters"))}</div>
+                    <div class="u-state-card__title">${escapeHtml(t("universities.state.empty_title", "No results for current filters"))}</div>
                     <div class="u-state-card__text">${escapeHtml(emptyText)}</div>
                 </div>
             `.trim());
@@ -3755,22 +3722,13 @@ export function initUniversitiesPage() {
         };
         const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
         const preferenceMismatch = Number(match.preferenceMismatch);
-        const grantChance = Number(match.grantChance);
-        const generalChance = Number(match.generalChance);
-        const selectedChanceType = String(match.selectedChanceType || "").toLowerCase();
         const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
-        const hintedFinance = String(badgeHints.finance || "").toLowerCase();
         const hintedRequirements = String(badgeHints.requirements || "").toLowerCase();
         const hintedBudgetAid = String(badgeHints.budgetAid || "").toLowerCase();
-        const financePref = Number(state.budget_vs_prestige);
-        const inGrantMode = selectedChanceType ? selectedChanceType === "grant" : financePref < 50;
-        const inPaidMode = selectedChanceType ? selectedChanceType === "general" : financePref > 50;
         const conditionalCount = Number(match.conditionalRequirements || 0);
         const hasConditionalExamWarning = (badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0);
         const hasVeryHighVibeMatch = hintedVibe === "your_vibe" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch <= 0.14);
         const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
-        const likelyGrant = hintedFinance === "likely_grant" || (!hintedFinance && inGrantMode && Number.isFinite(grantChance) && grantChance >= 65);
-        const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
         const meetsMinRequirements = hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning);
         const belowRequirements = hintedRequirements === "below_requirements" || (!hintedRequirements && match.meetMinRequirements === false);
         const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
@@ -3803,13 +3761,6 @@ export function initUniversitiesPage() {
             addStatusIndicator("sparkles", "match", t("universities.badge.your_vibe", "Your Vibe"), t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders."));
         } else if (hasHighVibeMatch) {
             addStatusIndicator("check-badge", "match", t("universities.badge.top_match", "Good Match"), t("universities.why.top_match", "This university is a good preference match for your current slider setup."));
-        }
-
-        // Priority 3: financial route tag from finance slider mode + chance
-        if (likelyGrant) {
-            addStatusIndicator("banknotes", "grant", t("universities.badge.likely_grant", "Likely Grant"), t("universities.why.likely_grant", "In grant-priority mode, this university has a strong grant admission chance."));
-        } else if (paidAdmission) {
-            addStatusIndicator("briefcase", "finance", t("universities.badge.paid_admission", "Paid Admission"), t("universities.why.paid_admission", "In willing-to-pay mode, this university has a strong general admission chance."));
         }
 
         // Status tags: requirements + budget + aid.

@@ -6,7 +6,7 @@
   <base href="./" />
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.guide">Guide | UniSearch</title>
-  <meta name="description" content="Comprehensive guide to using UniSearch: program search, profile configuration, UniFit scoring, and admissions chance calculation." />
+  <meta name="description" content="Guide to using UniSearch for program search, UniFit ranking, and fit with published admission requirements." />
   <meta name="theme-color" content="#5D17EB" />
 
   <!-- Open Graph / Facebook / Telegram -->
@@ -14,21 +14,21 @@
   <meta property="og:site_name" content="UniSearch" />
   <meta property="og:url" content="https://unisearch-frontend.onrender.com/guide.html" />
   <meta property="og:title" content="Guide | UniSearch" />
-  <meta property="og:description" content="How to use UniSearch to research undergraduate programs, compare tuition, and calculate admission fit." />
+  <meta property="og:description" content="How to use UniSearch to research university programs, compare costs, and assess admission fit." />
   <meta property="og:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta property="og:image:secure_url" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1586" />
   <meta property="og:image:height" content="992" />
-  <meta property="og:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta property="og:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://unisearch-frontend.onrender.com/guide.html" />
   <meta name="twitter:title" content="Guide | UniSearch" />
-  <meta name="twitter:description" content="How to use UniSearch to research undergraduate programs and calculate admission fit." />
+  <meta name="twitter:description" content="How to use UniSearch to research university programs and assess admission fit." />
   <meta name="twitter:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
-  <meta name="twitter:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
 
@@ -85,12 +85,12 @@
         <section id="guide-unifit" class="guide-section">
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> is a sorting mode, not a filter. It ranks the whole catalog for your profile with a single number, and the smaller the number, the higher the university lands. That number blends three ingredients — preference mismatch, admission risk, and interest relevance — as a weighted sum:</p>
+            <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from UniChance, which is only the requirements fit component:</p>
             <pre class="guide-formula" data-i18n="guide.unifit.formula">mismatch = (|practice - uni| + |social - uni| + |city - uni| + |budget - uni|) / 4</pre>
             <p data-i18n="guide.unifit.p2">Change anything in the profile — an exam score, the budget, a slider — and the list is recomputed from scratch, so what you see always reflects your current data. Each ingredient is scaled from 0 to 1.</p>
-            <p data-i18n="guide.unifit.p3">Your side of the comparison is four sliders — Focus, Atmosphere, Finance, Location. The Finance slider does double duty: besides measuring taste, it decides which chance feeds the risk — grant, paid, or their average in the middle.</p>
-            <p data-i18n="guide.unifit.p4">The badges on the cards are fixed cutoffs on these same numbers rather than a separate opinion. Your Vibe means a mismatch of 0.14 or less, Good Match 0.22 or less, Likely Grant a grant chance of 65 or more, and Paid Admission a general chance of 45 or more.</p>
-            <p data-i18n="guide.unifit.p5">Missing exams never delete a university from the list. They show up on the chance side instead — as a conditional mark or as missing data.</p>
+            <p data-i18n="guide.unifit.p3">Focus, Atmosphere, Finance, and Location are preference sliders. The Finance slider expresses a preference between budget and prestige; it is not your budget amount and does not estimate grant or paid admission odds.</p>
+            <p data-i18n="guide.unifit.p4">Preference badges describe slider alignment. Requirement badges describe whether the current profile meets applicable published minimums. Neither predicts an admission decision or funding award.</p>
+            <p data-i18n="guide.unifit.p5">Missing exam or language evidence can make a requirements fit score unavailable. The university remains in the catalog, and the missing evidence is shown separately.</p>
           </div>
         </section>
 
@@ -102,18 +102,18 @@
             <p data-i18n="guide.ml.p2">That similarity becomes the semantic third of the UniFit score. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching.</p>
             <p data-i18n="guide.ml.p3">The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off, while every extra filler word dilutes the signal.</p>
             <p data-i18n="guide.ml.p4">Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion.</p>
-            <p data-i18n="guide.ml.p5">Interests only reorder the list; they never override requirements or chances. If the model itself is unavailable, interests change nothing at all.</p>
+            <p data-i18n="guide.ml.p5">Interests only reorder the list; they never override requirements or requirements fit. If the model itself is unavailable, interests change nothing at all.</p>
           </div>
         </section>
 
         <section id="guide-unichance" class="guide-section">
-          <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">UniChance</span> (estimated admission chance 0-100)</h2>
+          <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">UniChance</span> (fit to published requirements, 0–100)</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">UniChance</span> estimates your admission probability from 0 to 100 for a single admission choice — never for a university as a whole. The number on the card belongs to your strongest choice inside that university. It is computed in layers:</p>
-            <pre class="guide-formula" data-i18n="guide.unichance.formula">chance = base * context * gate + grantBoost</pre>
-            <p data-i18n="guide.unichance.p2">At the core sits your score placed on the distribution of admitted students: the p25, median, and p75 percentiles fix a bell curve, and the area under the curve becomes the base probability. That base is then pulled back to earth — by the acceptance rate, thin language proof, cost above budget, failed minimums.</p>
-            <p data-i18n="guide.unichance.p3">Read the result in bands: 80–100 is high, 60–79 good, 40–59 medium, below 40 low. Every estimate also carries an uncertainty range that widens as the data thins out.</p>
-            <p data-i18n="guide.unichance.p4">Where there is nothing solid to compute from, there is no number at all, only the reason. A missing estimate is never drawn as zero.</p>
+            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">UniChance</span> is a 0–100 fit score for your profile against evaluable published academic and language minimums for the selected requirement profile. It is not an admission probability and does not predict a funding award.</p>
+            <pre class="guide-formula" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
+            <p data-i18n="guide.unichance.p2">The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.</p>
+            <p data-i18n="guide.unichance.p3">The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.</p>
+            <p data-i18n="guide.unichance.p4">If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, UniChance shows no score and explains what is missing. Missing evidence is not treated as zero.</p>
           </div>
         </section>
 
@@ -125,7 +125,7 @@
             <p data-i18n="guide.roi.p2">The cost is the cheapest admission choice total for your study mode, converted into one currency. The salary comes only from verified graduate data: your selected major when published, otherwise the average across published majors.</p>
             <p data-i18n="guide.roi.p3">When a university publishes no usable salary data, the ROI block simply disappears instead of guessing. Missing data is never plotted as zero.</p>
             <p data-i18n="guide.roi.p4">Treat the number as a planning ratio rather than a promise: your program, country, skills, and right to work shape the real outcome far more than any average.</p>
-            <p data-i18n="guide.roi.p5">Since ROI says nothing about whether you will get in at all, always read it next to chance and the full yearly cost.</p>
+            <p data-i18n="guide.roi.p5">ROI does not describe admission eligibility. Read it alongside UniChance, published acceptance statistics, and the full yearly cost.</p>
           </div>
         </section>
 
@@ -134,7 +134,7 @@
           <div class="guide-doc">
             <p data-i18n="guide.comparison.p1">Comparing lives on the Universities page in its own Comparing tab, while the rest of the catalog keeps working as usual — only this tab collects a shortlist. Pick universities from cards or map pins and press Compare, and click a picked card again to remove it.</p>
             <p data-i18n="guide.comparison.p2">The results table only ever compares like with like: the same academic year, the same fee status, the same scope. Each row then ends with an honest verdict — an advantage for one side, a trade-off, parity, incomparable data, or simply missing data — and the page never crowns an overall winner.</p>
-            <p data-i18n="guide.comparison.p3">Published selectivity is baked into the table, but it is not your admission probability: chance is computed separately and shown alongside. Anything never published officially stays marked unavailable instead of quietly turning into a zero or a victory.</p>
+            <p data-i18n="guide.comparison.p3">Published acceptance rates are institution or course statistics, depending on their source. They are separate from your UniChance requirements fit score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.</p>
           </div>
         </section>
 
@@ -142,7 +142,7 @@
           <h2 data-i18n="guide.admission.title">How admission choices work</h2>
           <div class="guide-doc">
             <p data-i18n="guide.admission.p1">Universities do not admit "in general" — they admit onto routes. A category is one such route; inside it sit requirement profiles, the score variants of that route; and a funding option completes the picture. Category plus profile plus funding is called a choice, and everything on this site is computed per choice.</p>
-            <p data-i18n="guide.admission.p2">Requirements are minimums: clear them all and the choice considers you, miss one and it stays shut. But minimums only open the door — the average scores of admitted students show where the competition actually stands, so plan against the average.</p>
+            <p data-i18n="guide.admission.p2">Published minimums describe route-specific requirements, but exceptions or holistic review may apply. Published admitted-student score ranges are historical context, not cutoffs or guarantees.</p>
             <p data-i18n="guide.admission.p3">Language proof follows the same logic with one extra switch. Mode any means a single proof from the list is enough; mode all means every listed proof is required. A native language counts wherever the route accepts it.</p>
             <p data-i18n="guide.admission.p4">Scores from different countries are first brought to common scales — GPA is normalized to 4.0 before anything is computed. Higher is better for every exam with a single exception, JLPT, where a lower number means stronger Japanese.</p>
           </div>
@@ -153,7 +153,7 @@
           <div class="guide-doc">
             <p data-i18n="guide.exam_basics.p1">Every admission choice runs two independent checks: your academic scores and your language proof. The two never compensate for each other — a brilliant math score will not cover a missing IELTS.</p>
             <p data-i18n="guide.exam_basics.p2">Thresholds are set per university, per category, and per profile, which is why two tracks at the same university can demand completely different scores. Read the selected choice itself.</p>
-            <p data-i18n="guide.exam_basics.p3">The practical order never changes: close every minimum first, since a single failed minimum shuts the choice regardless of the rest, and only then push past the admitted average.</p>
+            <p data-i18n="guide.exam_basics.p3">Check the published minimums for your selected route and profile. Compare admitted-student ranges only as historical context; they are not requirements and do not predict an individual outcome.</p>
           </div>
         </section>
 
@@ -178,7 +178,7 @@
                 <li data-i18n="guide.tags.standard.acceptance">Acceptance Rate: official selectivity, wherever the university publishes one.</li>
                 <li data-i18n="guide.tags.standard.aid_available">Aid Available: the university runs at least one grant track worth opening.</li>
                 <li data-i18n="guide.tags.standard.over_budget">Over Budget: the estimated year cost runs above your budget — the gap is explicit.</li>
-                <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available: the same warning with a lifeline — a grant track exists.</li>
+                <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available means the published cost exceeds your budget and a funding option exists. Its award and amount are not confirmed.</li>
               </ul>
             </div>
 
@@ -189,10 +189,8 @@
                 <li data-i18n="guide.tags.ai.conditional">Conditional / Exam Needed: a required exam still has no evidence in your profile.</li>
                 <li data-i18n="guide.tags.ai.your_vibe">Your Vibe: near-perfect preference alignment — mismatch of 0.14 or less.</li>
                 <li data-i18n="guide.tags.ai.top_match">Good Match: mismatch of 0.22 or less, a solid fit short of Your Vibe.</li>
-                <li data-i18n="guide.tags.ai.likely_grant">Likely Grant: a grant route where your chance reaches 65 or more.</li>
-                <li data-i18n="guide.tags.ai.paid_admission">Paid Admission: the same for the paid route at 45 or more.</li>
-                <li data-i18n="guide.tags.ai.requirements_met">Requirements Met: every minimum of the active choice passes.</li>
-                <li data-i18n="guide.tags.ai.below_requirements">Below Requirements: at least one minimum fails — the chance section names the culprit.</li>
+                <li data-i18n="guide.tags.ai.requirements_met">Requirements Met means all evaluable published academic and language minimums pass on your current data; other admission conditions may still apply.</li>
+                <li data-i18n="guide.tags.ai.below_requirements">Below Requirements means at least one evaluable published minimum is unmet; see the requirements fit section for details.</li>
               </ul>
             </div>
           </div>

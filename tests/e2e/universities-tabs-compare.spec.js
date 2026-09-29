@@ -231,8 +231,8 @@ test("compare configure cards expose admission requirements before continuing", 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
   await expect(mitColumn).toContainText("Minimum to apply");
   await expect(mitColumn).toContainText("Minimum requirements unknown");
-  await expect(mitColumn).toContainText("Average admitted");
-  await expect(mitColumn).toContainText("SAT: 1550");
+  await expect(mitColumn).toContainText("No verified average admitted data published.");
+  await expect(mitColumn).not.toContainText("SAT: 1550");
 
   const imperialGrant = page.locator(".compare-config-column", { hasText: "Imperial College London" })
     .locator(".admission-funding-option--grant");

@@ -21,82 +21,6 @@
   padding: 0 24px;
 }
 
-.d-page-scope {
-  margin: 0 0 12px;
-}
-
-.d-page-scope[hidden],
-html.scope-notice-dismissed #universityScopeNotice,
-html.scope-notice-dismissed .d-page-scope {
-  display: none !important;
-}
-
-.d-page-scope__inner {
-  padding: 20px 20px;
-  border-radius: var(--radius-xl);
-  border: none;
-  background: var(--card);
-  box-shadow: var(--shadow-micro);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.d-page-scope__content {
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-.d-page-scope__dismiss {
-  width: 36px;
-  height: 36px;
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 12px;
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-xs);
-  color: var(--muted);
-  cursor: pointer;
-  transition:
-  background-color var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
-  color var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .d-page-scope__dismiss:hover {
-    background: var(--accent-panel);
-    color: var(--accent);
-  }
-}
-
-.d-page-scope__dismiss:focus-visible {
-  background: var(--accent-panel);
-  color: var(--accent);
-}
-
-.d-page-scope__eyebrow {
-  margin: 0 0 8px;
-  color: var(--text);
-  font-size: var(--text-base);
-  line-height: 1.35;
-  font-weight: 500;
-}
-
-.d-page-scope__text {
-  margin: 0;
-  max-width: 820px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.6;
-  font-weight: 500;
-}
-
 .d-state {
   color: var(--muted);
   font-size: 13px;
@@ -1895,6 +1819,130 @@ html.scope-notice-dismissed .d-page-scope {
   line-height: 1.45;
 }
 
+.admission-context-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.admission-context-control {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.admission-context-control select {
+  min-width: 180px;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  color: var(--text);
+  background: var(--surface-soft);
+  border: 0;
+  border-radius: var(--radius-base);
+  font: inherit;
+}
+
+.admission-context-control select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admissions-deadline-scope {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 480px) {
+  .admission-context-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admission-context-control select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.mit-admission-context {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+
+.mit-admission-context > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.mit-admission-context__label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mit-admission-context h2,
+.mit-admission-context p {
+  margin: 0;
+}
+
+.mit-admission-context h2 {
+  color: var(--text);
+  font-size: var(--text-lg);
+  line-height: 1.35;
+}
+
+.mit-admission-context p {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.mit-admission-context a {
+  align-self: flex-start;
+  color: var(--accent);
+}
+
+.mit-admission-context__action,
+.program-card__admission-action {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mit-admission-context__action:hover,
+.program-card__admission-action:hover {
+  background: var(--accent-panel);
+}
+
+.mit-admission-context__action:focus-visible,
+.program-card__admission-action:focus-visible,
+.mit-admission-context a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .mit-admission-context {
+    flex-direction: column;
+    padding: 16px;
+  }
+}
+
 .admission-category-list {
   display: grid;
   gap: 16px;
@@ -2320,6 +2368,27 @@ html.scope-notice-dismissed .d-page-scope {
 
 .track-lang-rule-average {
   color: var(--text-grant);
+}
+
+.track-published-score-range {
+  color: var(--text-muted);
+}
+
+.track-published-score-range > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: var(--space-2);
+}
+
+.track-published-score-range > summary {
+  color: var(--text);
+  cursor: pointer;
+}
+
+.track-published-score-range > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .track-extra-req {
@@ -2946,15 +3015,6 @@ html.scope-notice-dismissed .d-page-scope {
   max-width: 1180px;
 }
 
-.d-page-scope {
-  margin-bottom: 16px;
-  border: none;
-  border-left: 4px solid var(--accent);
-  border-radius: var(--radius-xl);
-  background: var(--card);
-  box-shadow: none;
-}
-
 .d-card {
   border: none;
   border-radius: 0;
@@ -3224,7 +3284,6 @@ html.scope-notice-dismissed .d-page-scope {
   box-shadow: none;
 }
 
-:root[data-theme="dark"] .d-page-scope,
 :root[data-theme="dark"] .d-card,
 :root[data-theme="dark"] #tab-admission .d-box,
 :root[data-theme="dark"] #tab-finance .finance-box,
@@ -3474,11 +3533,6 @@ html.scope-notice-dismissed .d-page-scope {
     overflow-x: clip;
   }
 
-  .d-page-scope {
-    padding: 16px 16px 16px;
-    border-radius: 16px;
-  }
-
   .d-card {
     max-width: 100%;
   }
@@ -3555,13 +3609,6 @@ html.scope-notice-dismissed .d-page-scope {
 
 :root[data-theme="dark"] .d-page {
   background: var(--bg);
-}
-
-.d-page-scope {
-  border-color: transparent;
-  border-left: 4px solid var(--accent);
-  background: var(--card);
-  box-shadow: none;
 }
 
 .d-card {
@@ -3996,11 +4043,6 @@ html.scope-notice-dismissed .d-page-scope {
     padding-right: var(--mobile-safe-gutter, 16px);
   }
 
-  .d-page-scope {
-    padding: 16px 16px;
-    border-radius: var(--radius-xl);
-  }
-
   .d-tabs {
     overflow-x: auto;
     overflow-y: hidden;
@@ -4028,10 +4070,6 @@ html.scope-notice-dismissed .d-page-scope {
   .d-container {
     padding-left: 12px;
     padding-right: 12px;
-  }
-
-  .d-page-scope__text {
-    font-size: 13px;
   }
 
   .d-cover {
@@ -4099,10 +4137,6 @@ html.scope-notice-dismissed .d-page-scope {
   .d-container {
     padding-left: 10px;
     padding-right: 10px;
-  }
-
-  .d-page-scope {
-    padding: 12px 12px;
   }
 
   .d-head {
@@ -4335,10 +4369,6 @@ body[data-page="university"],
 
 :root[data-theme="dark"] #tab-general .d-box + .d-box {
   border-top: none;
-}
-
-.d-page-scope {
-  border-left-color: var(--accent);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -6376,13 +6406,60 @@ body[data-page="university"],
   gap: var(--space-3);
 }
 
+.program-card__description,
+.program-card__route-note {
+  margin: 0;
+  max-width: 80ch;
+  color: var(--text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.program-card__route-note {
+  color: var(--text-muted);
+}
+
+.program-card__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.program-card__source {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  color: var(--accent);
+  font-size: var(--text-sm);
+}
+
+.program-card__source:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.program-card__admission-action {
+  align-self: flex-start;
+}
+
 #tab-programs .program-card-rows {
   gap: 0;
 }
 
 #tab-programs .program-card-row {
+  justify-content: flex-start;
   padding: 8px 0;
   border-top: 1px solid var(--line-faint);
+}
+
+#tab-programs .program-card-value {
+  text-align: left;
+}
+
+#tab-programs .program-card-tags {
+  justify-content: flex-start;
 }
 
 #tab-programs .program-card-row:first-child {
@@ -6542,18 +6619,14 @@ body[data-page="university"],
   color: var(--accent);
 }
 
-#tab-programs .program-card--major {
-  background: var(--accent-panel);
+#tab-programs .program-card--major .program-card__chevron {
+  background: var(--surface-solid);
 }
 
 @media (hover: hover) and (pointer: fine) {
   #tab-programs .program-card--major .program-card__toggle:hover {
-    background: var(--accent-soft);
+    background: var(--surface-solid);
   }
-}
-
-#tab-programs .program-card--major .program-card__chevron {
-  background: var(--surface-solid);
 }
 
 #tab-programs .program-card--major.is-open .program-card__chevron {
@@ -7380,10 +7453,18 @@ body[data-page="university"],
 }
 
 .university-coverage-section {
+  padding-top: var(--space-4);
+}
+
+.university-coverage-section__content {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   padding-top: var(--space-4);
+}
+
+.university-coverage-section > summary {
+  cursor: pointer;
 }
 
 .university-coverage-section__title {
@@ -7537,5 +7618,310 @@ body[data-page="university"],
 @media (max-width: 768px) {
   .d-head {
     padding-top: 12px;
+  }
+}
+
+/* MIT pilot: keep the chosen course and its next action ahead of supporting data. */
+.university--mit #tab-programs .program-card__title {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.university--mit #tab-programs .program-card__text {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-3);
+}
+
+.university--mit #tab-programs .program-card__kicker-row {
+  display: contents;
+}
+
+.university--mit #tab-programs .program-card__major-badge {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+
+.university--mit #tab-programs .program-card__toggle {
+  min-height: 64px;
+}
+
+.university--mit #tab-programs .program-card__kicker-row:empty {
+  display: none;
+}
+
+.university--mit #tab-programs .program-card__summary {
+  white-space: normal;
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+@media (max-width: 768px) {
+  .university--mit #tab-programs .program-card__text {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .university--mit #tab-programs .program-card__major-badge {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .university--mit #tab-programs .program-card__summary {
+    grid-row: 3;
+  }
+}
+
+.university--mit #tab-admission .admission-category-list {
+  margin-top: var(--space-4);
+}
+
+.university--mit #tab-admission .admission-category-card {
+  display: block;
+  background: var(--surface-soft);
+}
+
+.university--mit #tab-admission details.admission-category-card > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.university--mit #tab-admission details.admission-category-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.university--mit #tab-admission details.admission-category-card > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.university--mit #tab-admission details.admission-category-card > :not(summary) {
+  margin-top: var(--space-4);
+}
+
+.university--mit #tab-admission .mit-route-chevron {
+  flex: none;
+  color: var(--text-muted);
+  transition: transform var(--motion-fast);
+}
+
+.university--mit #tab-admission details[open] .mit-route-chevron {
+  transform: rotate(180deg);
+}
+
+.mit-admission-analysis,
+.mit-deadline-calendar {
+  margin-top: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+
+.mit-admission-analysis > summary,
+.mit-deadline-calendar > summary {
+  padding: var(--space-4);
+  color: var(--text);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.mit-admission-analysis > summary:focus-visible,
+.mit-deadline-calendar > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mit-admission-analysis > :not(summary),
+.mit-deadline-calendar > :not(summary) {
+  margin: 0 var(--space-4) var(--space-4);
+}
+
+.mit-section-context {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+}
+
+.admission-decision-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.mit-section-context span {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.mit-section-context strong {
+  color: var(--text);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+}
+
+.university--mit #tab-deadlines .admissions-deadline-item {
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+.university--mit #tab-deadlines .admissions-deadlines-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.university--mit #tab-deadlines .admissions-deadline-portal {
+  display: none;
+}
+
+.university--mit #tab-deadlines .admissions-deadline-name {
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+}
+
+.university--mit #tab-deadlines .admissions-deadline-date {
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums;
+}
+
+.university--mit #tab-deadlines .deadline-calendar__day,
+.university--mit #tab-deadlines .deadline-calendar__blank {
+  min-height: 44px;
+}
+
+.university--mit #tab-finance .finance-summary-container {
+  align-items: start;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+}
+
+.university--mit #tab-finance .finance-summary-right {
+  margin-top: 0;
+}
+
+.university--mit #tab-finance .total-price-card,
+.university--mit #tab-finance .scholarship-card {
+  justify-content: flex-start;
+  min-height: 0;
+}
+
+.mit-aid-details > summary {
+  color: var(--accent);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.mit-aid-details > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mit-aid-details > :not(summary) {
+  margin-top: var(--space-4);
+}
+
+.mit-annual-budget {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+
+.mit-finance-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.mit-finance-hint button {
+  flex: none;
+  border: 0;
+  border-radius: var(--radius-base);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-soft);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.mit-finance-hint button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mit-annual-budget__head,
+.mit-annual-budget dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.mit-annual-budget h3,
+.mit-annual-budget dl,
+.mit-annual-budget dd {
+  margin: 0;
+}
+
+.mit-annual-budget h3 {
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.mit-annual-budget__head span,
+.mit-annual-budget dt {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.mit-annual-budget dl {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.mit-annual-budget dd {
+  color: var(--text);
+  font-size: var(--text-base);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mit-annual-budget a {
+  justify-self: start;
+  color: var(--accent);
+  font-size: var(--text-sm);
+}
+
+.mit-annual-budget a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .university--mit #tab-deadlines .admissions-deadlines-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .university--mit #tab-finance .finance-summary-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .university--mit #tab-finance .finance-summary-left,
+  .university--mit #tab-finance .finance-summary-right {
+    margin: 0;
   }
 }

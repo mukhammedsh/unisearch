@@ -68,7 +68,7 @@ test("UniFit warning returns after a reload or a new UniFit selection", async ({
   await expect(warning).toBeVisible();
 });
 
-test("UniFit cards prioritize status icons in order: conditional -> vibe -> finance", async ({ page }) => {
+test("UniFit cards show requirement and preference signals without grant odds", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -108,10 +108,10 @@ test("UniFit cards prioritize status icons in order: conditional -> vibe -> fina
   await expect(firstCard).toBeVisible();
 
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(3);
+  await expect(statuses).toHaveCount(2);
   await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
   await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
-  await expect(statuses.nth(2)).toHaveAttribute("aria-label", /Likely Grant/);
+  await expect(firstCard).not.toContainText("Likely Grant");
   await expect(page.locator("#unifitWarningBanner")).toBeVisible();
   await expect(firstCard.locator(".uni-why")).toHaveCount(0);
 });
@@ -150,9 +150,9 @@ test("UniFit card status icons still work when backend hints are missing (fronte
   const firstCard = page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(2);
+  await expect(statuses).toHaveCount(1);
   await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Good Match/);
-  await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Paid Admission/);
+  await expect(firstCard).not.toContainText("Paid Admission");
 });
 
 test("UniFit card hides Requirements Met when conditional exam warning is present", async ({ page }) => {
@@ -195,7 +195,7 @@ test("UniFit card hides Requirements Met when conditional exam warning is presen
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(3);
+  await expect(statuses).toHaveCount(2);
 });
 
 test("UniFit card caps overlay status icons at four by priority", async ({ page }) => {
@@ -242,23 +242,15 @@ test("UniFit card caps overlay status icons at four by priority", async ({ page 
   await expect(firstCard).toBeVisible();
 
   const rowStatuses = firstCard.locator(".uni-card-statuses > .uni-status-tooltip > .uni-status-trigger");
-  await expect(rowStatuses).toHaveCount(3);
+  await expect(rowStatuses).toHaveCount(4);
   await expect(rowStatuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
   await expect(rowStatuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
-  await expect(rowStatuses.nth(2)).toHaveAttribute("aria-label", /Likely Grant/);
+  await expect(rowStatuses.nth(2)).toHaveAttribute("aria-label", /Below Requirements/);
+  await expect(rowStatuses.nth(3)).toHaveAttribute("aria-label", /Aid Available/);
+  await expect(firstCard).not.toContainText("Likely Grant");
 
   const overflowTrigger = firstCard.locator(".uni-status-overflow-trigger");
-  await expect(overflowTrigger).toBeVisible();
-  await expect(overflowTrigger).toHaveText("+2");
-
-  const popover = firstCard.locator(".uni-status-overflow-popover");
-  await expect(popover).toBeHidden();
-
-  await overflowTrigger.click();
-  await expect(popover).toBeVisible();
-  const popoverStatuses = popover.locator(".uni-status-trigger");
-  await expect(popoverStatuses).toHaveCount(2);
-  await expect(popoverStatuses.nth(0)).toHaveAttribute("aria-label", /Below Requirements/);
+  await expect(overflowTrigger).toHaveCount(0);
 });
 
 test("UniFit card status icon logic caps at four", async ({ page }) => {
@@ -303,7 +295,7 @@ test("UniFit card status icon logic caps at four", async ({ page }) => {
   await page.goto("/index.html");
   const cardStatuses = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses > *");
   await expect(cardStatuses).toHaveCount(4);
-  await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-status-overflow-trigger")).toHaveText("+2");
+  await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-status-overflow-trigger")).toHaveCount(0);
 });
 
 test("UniFit cards render zero to four compact status icons", async ({ page }) => {
@@ -407,11 +399,11 @@ test("UniFit cards render zero to four compact status icons", async ({ page }) =
 
   await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses")).toHaveCount(0);
   await expect(page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]').locator(".uni-status-trigger")).toHaveCount(1);
-  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-status-trigger")).toHaveCount(2);
-  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-status-trigger")).toHaveCount(3);
-  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-status-trigger")).toHaveCount(4);
+  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-status-trigger")).toHaveCount(1);
+  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-status-trigger")).toHaveCount(2);
+  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-status-trigger")).toHaveCount(3);
   await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-card-statuses > *")).toHaveCount(4);
-  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-status-overflow-trigger")).toHaveText("+2");
+  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-status-overflow-trigger")).toHaveCount(0);
 });
 
 test("UniFit card renders Program Not Offered warning badge when selected profile major is missing", async ({ page }) => {
@@ -474,6 +466,7 @@ test("UniFit overflow popover toggles on click and dismisses on Escape", async (
           conditional: true,
           conditionalRequirements: 2,
           meetMinRequirements: false,
+          missingProgram: true,
           aidAny: true,
           uiBadgeHints: {
             showConditionalExamNeeded: true,

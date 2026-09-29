@@ -11,8 +11,51 @@ global.fetch = async (url) => {
 };
 
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { renderProgramCoverage, resolveDisplayedCoverageProgram, resolveProgramByIdentifier, resolveProgramByName, resolveProgramCoverage } = await import("../../frontend/javascript/pages/university/render-content.js");
+const { getProgramLevelKeys, renderProgramCoverage, renderProgramsSection, resolveDisplayedCoverageProgram, resolveProgramByIdentifier, resolveProgramByName, resolveProgramCoverage } = await import("../../frontend/javascript/pages/university/render-content.js");
 await initI18n();
+
+test("MBA level does not depend on the translated program name", () => {
+  const base = { study_levels: ["Master"], degree_type: "MBA + SM" };
+  assert.deepEqual(getProgramLevelKeys({ ...base, name: "Leaders for Global Operations dual degree" }), ["mba"]);
+  assert.deepEqual(getProgramLevelKeys({ ...base, name: "Двойная степень Leaders for Global Operations (MBA и SM)" }), ["mba"]);
+});
+
+test("MIT study-option details separate curriculum from admission and expose official pages", () => {
+  setLanguage("eng");
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderProgramsSection({
+    container,
+    university: { id: "mit-usa-cambridge", academics: { programs: [{
+      id: "mit-bs-15-2", name: "Business Analytics (Course 15-2)", study_levels: ["Bachelor"],
+      description: "A curriculum focused on data modeling & optimization.",
+      url: "https://mitsloan.mit.edu/programs/undergraduate/",
+      source_url: "https://catalog.mit.edu/degree-charts/business-analytics-course-15-2/",
+    }] } },
+  });
+  assert.match(container.innerHTML, /A curriculum focused on data modeling &amp; optimization/);
+  assert.match(container.innerHTML, /first-year applicants apply to MIT as a whole/);
+  assert.match(container.innerHTML, /data-program-admission="mit-bs-15-2"/);
+  assert.match(container.innerHTML, /href="https:\/\/mitsloan\.mit\.edu\/programs\/undergraduate\/"/);
+  assert.match(container.innerHTML, /href="https:\/\/catalog\.mit\.edu\/degree-charts\/business-analytics-course-15-2\/"/);
+  assert.doesNotMatch(container.innerHTML, /program-card-label">Description/);
+});
+
+test("a sparse program points to its curriculum without inventing a summary", () => {
+  setLanguage("rus");
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderProgramsSection({
+    container,
+    university: { id: "mit-usa-cambridge", academics: { programs: [{
+      id: "mit-bs-15-3", name: "Finance (Course 15-3)", study_levels: ["Bachelor"],
+      source_url: "https://catalog.mit.edu/degree-charts/",
+    }] } },
+  });
+  assert.match(container.innerHTML, /Подробное описание пока не добавлено в UniSearch/);
+  assert.match(container.innerHTML, /Официальная страница программы/);
+  assert.match(container.innerHTML, /специальность выбирают после первого курса/);
+  assert.doesNotMatch(container.innerHTML, /нет данных/);
+  setLanguage("eng");
+});
 
 function row(overrides = {}) {
   return {
@@ -179,7 +222,7 @@ test("an unpublished course deadline keeps its official status and source metada
   assert.match(russianDeadline, /Университет ещё не опубликовал срок/);
   assert.doesNotMatch(russianDeadline, /Нет данных в каталоге/);
   assert.match(russianDeadline, /Следите за обновлениями срока на официальной странице приёма/);
-  assert.match(russianDeadline, /Fall 2027 entry/);
+  assert.match(russianDeadline, /Поступление осенью 2027 года/);
   assert.match(russianDeadline, /2026[-‐‑‒–—−]09[-‐‑‒–—−]24/);
   setLanguage("eng", { persist: false, emit: false });
 });

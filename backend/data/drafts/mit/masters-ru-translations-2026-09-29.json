@@ -1,0 +1,1350 @@
+{
+  "schema_version": "candidate-translations-1",
+  "institution_id": "mit-usa-cambridge",
+  "source_fragment": "masters-candidates-2026-09-29.json",
+  "checked_at": "2026-09-29",
+  "programs": {
+    "mit-aero-sm": {
+      "en": {
+        "name": "Master of Science in Aeronautics and Astronautics",
+        "description": "Master of Science in Aeronautics and Astronautics offered through Aeronautics and Astronautics. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по аэронавтике и астронавтике (SM)",
+        "description": "Программу «Магистр естественных наук по аэронавтике и астронавтике (SM)» ведёт кафедра аэронавтики и астронавтики MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-bioeng-meng": {
+      "en": {
+        "name": "Master of Engineering in Biomedical Engineering",
+        "description": "Master of Engineering in Biomedical Engineering offered through Biological Engineering. Applicant scope: MIT undergraduates only."
+      },
+      "ru": {
+        "name": "Магистр инженерии по биомедицинской инженерии (MEng)",
+        "description": "Программу «Магистр инженерии по биомедицинской инженерии (MEng)» ведёт кафедра биологической инженерии MIT. Подать заявление могут только студенты бакалавриата MIT."
+      }
+    },
+    "mit-architecture-building-technology-smbt": {
+      "en": {
+        "name": "Master of Science in Building Technology",
+        "description": "Master of Science in Building Technology offered through Architecture. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по строительным технологиям (SMBT)",
+        "description": "Программу «Магистр естественных наук по строительным технологиям (SMBT)» ведёт кафедра архитектуры MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-chemical-engineering-practice-mscep": {
+      "en": {
+        "name": "Master of Science in Chemical Engineering Practice",
+        "description": "Master of Science in Chemical Engineering Practice offered through Chemical Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по практике химической инженерии (MSCEP)",
+        "description": "Программу «Магистр естественных наук по практике химической инженерии (MSCEP)» ведёт кафедра химической инженерии MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-cee-meng": {
+      "en": {
+        "name": "Master of Engineering in Civil and Environmental Engineering",
+        "description": "Master of Engineering in Civil and Environmental Engineering offered through Civil and Environmental Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр инженерии по гражданской и экологической инженерии (MEng)",
+        "description": "Программу «Магистр инженерии по гражданской и экологической инженерии (MEng)» ведёт кафедра гражданской и экологической инженерии MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-eaps-earth-planetary-sm": {
+      "en": {
+        "name": "Master of Science in Earth and Planetary Sciences",
+        "description": "Master of Science in Earth and Planetary Sciences offered through Earth, Atmospheric, and Planetary Sciences. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по наукам о Земле и планетах (SM)",
+        "description": "Программу «Магистр естественных наук по наукам о Земле и планетах (SM)» ведёт кафедра наук о Земле, атмосфере и планетах MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-eaps-atmospheric-sm": {
+      "en": {
+        "name": "Master of Science in Atmospheric Science",
+        "description": "Master of Science in Atmospheric Science offered through Earth, Atmospheric, and Planetary Sciences. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по атмосферным наукам (SM)",
+        "description": "Программу «Магистр естественных наук по атмосферным наукам (SM)» ведёт кафедра наук о Земле, атмосфере и планетах MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-eaps-climate-sm": {
+      "en": {
+        "name": "Master of Science in Climate Physics and Chemistry",
+        "description": "Master of Science in Climate Physics and Chemistry offered through Earth, Atmospheric, and Planetary Sciences. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по физике и химии климата (SM)",
+        "description": "Программу «Магистр естественных наук по физике и химии климата (SM)» ведёт кафедра наук о Земле, атмосфере и планетах MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-materials-sm": {
+      "en": {
+        "name": "Master of Science in Materials Science and Engineering",
+        "description": "Master of Science in Materials Science and Engineering offered through Materials Science and Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по материаловедению и инженерии (SM)",
+        "description": "Программу «Магистр естественных наук по материаловедению и инженерии (SM)» ведёт кафедра материаловедения и инженерии MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-math-fifth-year-masc": {
+      "en": {
+        "name": "Fifth-Year Master of Applied Science in Mathematics",
+        "description": "Fifth-Year Master of Applied Science in Mathematics offered through Mathematics. Applicant scope: Current MIT students only."
+      },
+      "ru": {
+        "name": "Пятилетняя программа магистра прикладных наук по математике (MASc)",
+        "description": "Программу «Пятилетняя программа магистра прикладных наук по математике (MASc)» ведёт кафедра математики MIT. Подать заявление могут только действующие студенты MIT."
+      }
+    },
+    "mit-meche-manufacturing-meng": {
+      "en": {
+        "name": "Master of Engineering in Manufacturing",
+        "description": "Master of Engineering in Manufacturing offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр инженерии по производству (MEng)",
+        "description": "Программу «Магистр инженерии по производству (MEng)» ведёт кафедра машиностроения MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-meche-mechanical-sm": {
+      "en": {
+        "name": "Master of Science in Mechanical Engineering",
+        "description": "Master of Science in Mechanical Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по машиностроению (SM)",
+        "description": "Программу «Магистр естественных наук по машиностроению (SM)» ведёт кафедра машиностроения MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-meche-ocean-sm": {
+      "en": {
+        "name": "Master of Science in Ocean Engineering",
+        "description": "Master of Science in Ocean Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по океанической инженерии (SM)",
+        "description": "Программу «Магистр естественных наук по океанической инженерии (SM)» ведёт кафедра машиностроения MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-meche-oceanographic-sm": {
+      "en": {
+        "name": "Master of Science in Oceanographic Engineering",
+        "description": "Master of Science in Oceanographic Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по океанографической инженерии (SM)",
+        "description": "Программу «Магистр естественных наук по океанографической инженерии (SM)» ведёт кафедра машиностроения MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-meche-naval-sm": {
+      "en": {
+        "name": "Master of Science in Naval Architecture and Marine Engineering",
+        "description": "Master of Science in Naval Architecture and Marine Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по кораблестроению и морской инженерии (SM)",
+        "description": "Программу «Магистр естественных наук по кораблестроению и морской инженерии (SM)» ведёт кафедра машиностроения MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-media-arts-sm": {
+      "en": {
+        "name": "Master of Science in Media Arts and Sciences",
+        "description": "Master of Science in Media Arts and Sciences offered through Media Arts and Sciences. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по медиаискусству и медианаукам (SM)",
+        "description": "Программу «Магистр естественных наук по медиаискусству и медианаукам (SM)» ведёт программа медиаискусства и медианаук MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-nuclear-sm": {
+      "en": {
+        "name": "Master of Science in Nuclear Science and Engineering",
+        "description": "Master of Science in Nuclear Science and Engineering offered through Nuclear Science and Engineering. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по ядерной науке и инженерии (SM)",
+        "description": "Программу «Магистр естественных наук по ядерной науке и инженерии (SM)» ведёт кафедра ядерной науки и инженерии MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-physics-sm": {
+      "en": {
+        "name": "Master of Science in Physics",
+        "description": "A Physics SM available only by special-case admission; MIT's normal graduate Physics program leads to the PhD.",
+        "entry_requirements": "MIT states that admission to its Physics SM is available only in special cases, such as U.S. military officers."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по физике (SM)",
+        "description": "Поступление на магистерскую программу по физике возможно только в особых случаях, например для офицеров вооружённых сил США. Основной путь последипломного обучения физике в MIT ведёт к степени PhD.",
+        "entry_requirements": "MIT допускает на магистерскую программу по физике только в особых случаях, например офицеров вооружённых сил США."
+      }
+    },
+    "mit-political-science-sm": {
+      "en": {
+        "name": "Master of Science in Political Science",
+        "description": "A one-year SM in Political Science focused on applied research. Applicants specify a field of specialization."
+      },
+      "ru": {
+        "name": "Магистр естественных наук по политологии (SM)",
+        "description": "Годичная магистерская программа по политологии посвящена прикладным исследованиям. При подаче заявления кандидат указывает специализацию."
+      }
+    },
+    "mit-urban-city-planning-mcp": {
+      "en": {
+        "name": "Master in City Planning",
+        "description": "Master in City Planning offered through Urban Studies and Planning. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр городского планирования (MCP)",
+        "description": "Программу «Магистр городского планирования (MCP)» ведёт кафедра урбанистики и планирования MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-urban-sustainability-sm": {
+      "en": {
+        "name": "Master in Sustainability Studies and Urban Planning",
+        "description": "Master in Sustainability Studies and Urban Planning offered through Urban Studies and Planning. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр по исследованиям устойчивого развития и городского планирования (SM)",
+        "description": "Программу «Магистр по исследованиям устойчивого развития и городского планирования (SM)» ведёт кафедра урбанистики и планирования MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-scm-blended-masc": {
+      "en": {
+        "name": "Master of Applied Science in Supply Chain Management (Blended)",
+        "description": "Master of Applied Science in Supply Chain Management (Blended) offered through Supply Chain Management Blended. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр прикладных наук по управлению цепочками поставок, смешанный формат (MASc)",
+        "description": "Программу «Магистр прикладных наук по управлению цепочками поставок, смешанный формат (MASc)» ведёт смешанная программа по управлению цепочками поставок MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-scm-blended-meng": {
+      "en": {
+        "name": "Master of Engineering in Supply Chain Management (Blended)",
+        "description": "Master of Engineering in Supply Chain Management (Blended) offered through Supply Chain Management Blended. Confirm program-specific eligibility on the official admissions page."
+      },
+      "ru": {
+        "name": "Магистр инженерии по управлению цепочками поставок, смешанный формат (MEng)",
+        "description": "Программу «Магистр инженерии по управлению цепочками поставок, смешанный формат (MEng)» ведёт смешанная программа по управлению цепочками поставок MIT. Уточните требования для этой программы на официальной странице приёма."
+      }
+    },
+    "mit-whoi-naval-sm": {
+      "en": {
+        "name": "Master of Science for U.S. Naval Officers (MIT-WHOI)",
+        "description": "MIT-WHOI Master of Science for U.S. Naval officers. Navy applicants must begin in the summer term."
+      },
+      "ru": {
+        "name": "Магистр естественных наук для офицеров ВМС США, программа MIT–WHOI (SM)",
+        "description": "Совместная программа MIT–WHOI для офицеров ВМС США. Для них обучение начинается в летнем семестре."
+      }
+    },
+    "mit-architecture-march-mit-grad-architecture": {
+      "en": {
+        "name": "Master of Architecture (MArch)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Магистр архитектуры (MArch)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-architecture-studies-sm-mit-grad-architecture": {
+      "en": {
+        "name": "Architecture Studies (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Архитектурные исследования (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-art-culture-and-technology-sm-mit-grad-architecture": {
+      "en": {
+        "name": "Art, Culture, and Technology (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Искусство, культура и технологии (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-city-planning-sm-mit-grad-urban-studies-and-planning": {
+      "en": {
+        "name": "City Planning (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established."
+      },
+      "ru": {
+        "name": "Городское планирование (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. Отдельный путь подачи заявления на магистерскую программу для внешних кандидатов пока не подтверждён."
+      }
+    },
+    "mit-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering": {
+      "en": {
+        "name": "Civil and Environmental Engineering (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Гражданская и экологическая инженерия (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy": {
+      "en": {
+        "name": "Data, Economics, and Design of Policy (MASc)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Данные, экономика и разработка государственной политики (MASc)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-linguistics-sm-mit-grad-linguistics": {
+      "en": {
+        "name": "Linguistics (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established."
+      },
+      "ru": {
+        "name": "Лингвистика (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. Отдельный путь подачи заявления на магистерскую программу для внешних кандидатов пока не подтверждён."
+      }
+    },
+    "mit-science-writing-sm-mit-grad-science-writing": {
+      "en": {
+        "name": "Science Writing (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Научная коммуникация (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-mathematics-of-data-sm-mit-grad-mathematics": {
+      "en": {
+        "name": "Mathematics of Data (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established."
+      },
+      "ru": {
+        "name": "Математика данных (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. Отдельный путь подачи заявления на магистерскую программу для внешних кандидатов пока не подтверждён."
+      }
+    },
+    "mit-computational-science-and-engineering-sm-mit-grad-computational-science-and-engineering-phd": {
+      "en": {
+        "name": "Computational Science and Engineering (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established."
+      },
+      "ru": {
+        "name": "Вычислительные науки и инженерия (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. Отдельный путь подачи заявления на магистерскую программу для внешних кандидатов пока не подтверждён."
+      }
+    },
+    "mit-engineering-and-management-sm-mit-grad-system-design-and-management": {
+      "en": {
+        "name": "Engineering and Management (System Design and Management) (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Инженерия и менеджмент, программа System Design and Management (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-music-technology-and-computation-masc-mit-grad-music-technology-and-computation": {
+      "en": {
+        "name": "Music Technology and Computation (MASc)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Музыкальные технологии и вычислительные методы (MASc)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-music-technology-and-computation-sm-mit-grad-music-technology-and-computation": {
+      "en": {
+        "name": "Music Technology and Computation (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Музыкальные технологии и вычислительные методы (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-real-estate-development-sm-mit-grad-center-for-real-estate": {
+      "en": {
+        "name": "Real Estate Development (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Девелопмент недвижимости (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-supply-chain-management-masc-mit-grad-supply-chain-management-residential": {
+      "en": {
+        "name": "Supply Chain Management (MASc)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Управление цепочками поставок (MASc)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-supply-chain-management-meng-mit-grad-supply-chain-management-residential": {
+      "en": {
+        "name": "Supply Chain Management (MEng)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Управление цепочками поставок (MEng)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-technology-and-policy-sm-mit-grad-technology-and-policy-program": {
+      "en": {
+        "name": "Technology and Policy (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Технологии и государственная политика (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-transportation-sm-mit-grad-transportation": {
+      "en": {
+        "name": "Transportation (SM)",
+        "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established."
+      },
+      "ru": {
+        "name": "Транспортные системы (SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. Отдельный путь подачи заявления на магистерскую программу для внешних кандидатов пока не подтверждён."
+      }
+    },
+    "mit-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program": {
+      "en": {
+        "name": "MIT Sloan Evening MBA",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Вечерняя программа MBA MIT Sloan",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program": {
+      "en": {
+        "name": "MIT Executive MBA",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Программа Executive MBA MIT Sloan",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-mit-sloan-fellows-mba-program-mba-mit-grad-mit-sloan-fellows-mba-program": {
+      "en": {
+        "name": "MIT Sloan Fellows MBA",
+        "description": "Most participants earn the MBA through the 12-month MIT Sloan Fellows program."
+      },
+      "ru": {
+        "name": "Программа MIT Sloan Fellows, степень MBA",
+        "description": "Большинство участников 12-месячной программы MIT Sloan Fellows получают степень MBA."
+      }
+    },
+    "mit-mit-sloan-fellows-mba-program-sm-in-management-mit-grad-mit-sloan-fellows-mba-program": {
+      "en": {
+        "name": "MIT Sloan Fellows Master of Science in Management",
+        "description": "A thesis-based SM in Management available within the 12-month MIT Sloan Fellows program instead of the MBA."
+      },
+      "ru": {
+        "name": "Программа MIT Sloan Fellows, магистр наук по менеджменту (SM)",
+        "description": "Участники 12-месячной программы MIT Sloan Fellows, выполнившие дипломную работу, могут получить степень SM по менеджменту вместо MBA."
+      }
+    },
+    "mit-mit-sloan-fellows-mba-program-sm-in-management-of-technology-mit-grad-mit-sloan-fellows-mba-program": {
+      "en": {
+        "name": "MIT Sloan Fellows Master of Science in Management of Technology",
+        "description": "A thesis-based SM in Management of Technology available within the 12-month MIT Sloan Fellows program instead of the MBA."
+      },
+      "ru": {
+        "name": "Программа MIT Sloan Fellows, магистр наук по управлению технологиями (SM)",
+        "description": "Участники 12-месячной программы MIT Sloan Fellows, выполнившие дипломную работу, могут получить степень SM по управлению технологиями вместо MBA."
+      }
+    },
+    "mit-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations": {
+      "en": {
+        "name": "Leaders for Global Operations dual degree",
+        "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details."
+      },
+      "ru": {
+        "name": "Двойная степень Leaders for Global Operations (MBA и SM)",
+        "description": "Эта степень указана в каталоге MIT за 2026/27 учебный год. В Управлении последипломного образования MIT указан путь подачи заявления на программу; уточните требования и сроки текущего набора."
+      }
+    },
+    "mit-engineer-civil": {
+      "en": {
+        "name": "Civil Engineer",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера-строителя (CE)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-electrical": {
+      "en": {
+        "name": "Electrical Engineer",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера-электрика (EE)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-aeronautics": {
+      "en": {
+        "name": "Engineer in Aeronautics and Astronautics",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера по аэронавтике и астронавтике (EAA)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-computer-science": {
+      "en": {
+        "name": "Engineer in Computer Science",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера по информатике (ECS)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-environmental": {
+      "en": {
+        "name": "Environmental Engineer",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера по экологической инженерии (EnvE)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-materials": {
+      "en": {
+        "name": "Materials Engineer",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера по материаловедению (MatE)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-mechanical": {
+      "en": {
+        "name": "Mechanical Engineer",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень инженера-механика (MechE)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-engineer-naval": {
+      "en": {
+        "name": "Naval Engineer",
+        "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle."
+      },
+      "ru": {
+        "name": "Профессиональная степень военно-морского инженера (NavE)",
+        "description": "MIT присуждает эту профессиональную инженерную степень по программе более высокого уровня, чем магистратура. Уточните требования кафедры и сроки текущего набора."
+      }
+    },
+    "mit-dual-march-mcp": {
+      "en": {
+        "name": "Simultaneous Master of Architecture and Master in City Planning",
+        "description": "Students admitted to Architecture or Urban Studies and Planning may propose this pair; a separate dual-degree approval and admissions process follows. This is not a separate first application from outside MIT.",
+        "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree."
+      },
+      "ru": {
+        "name": "Одновременное получение степеней магистра архитектуры и магистра городского планирования (MArch/MCP)",
+        "description": "Студенты, поступившие на архитектуру или урбанистику и планирование, могут предложить совместный учебный план. Затем требуется отдельное согласование и рассмотрение заявления на вторую степень. Это не самостоятельный путь первого поступления в MIT.",
+        "entry_requirements": "Для участия в программе одновременного получения двух степеней сначала необходимо поступить на одну из составляющих её программ MIT."
+      }
+    },
+    "mit-dual-smarchs-mcp": {
+      "en": {
+        "name": "Simultaneous Master of Science in Architecture Studies and Master in City Planning",
+        "description": "Students admitted to Architecture or Urban Studies and Planning may propose this pair; a separate dual-degree approval and admissions process follows. This is not a separate first application from outside MIT.",
+        "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree."
+      },
+      "ru": {
+        "name": "Одновременное получение степеней магистра наук по архитектурным исследованиям и магистра городского планирования (SMArchS/MCP)",
+        "description": "Студенты, поступившие на архитектуру или урбанистику и планирование, могут предложить совместный учебный план. Затем требуется отдельное согласование и рассмотрение заявления на вторую степень. Это не самостоятельный путь первого поступления в MIT.",
+        "entry_requirements": "Для участия в программе одновременного получения двух степеней сначала необходимо поступить на одну из составляющих её программ MIT."
+      }
+    },
+    "mit-dual-mcp-mst": {
+      "en": {
+        "name": "Simultaneous Master in City Planning and Master of Science in Transportation",
+        "description": "Students admitted to City Planning or Transportation may apply to the other program during their first year. This is not a separate first application from outside MIT.",
+        "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree."
+      },
+      "ru": {
+        "name": "Одновременное получение степеней магистра городского планирования и магистра наук по транспорту (MCP/MST)",
+        "description": "Студенты, поступившие на городское планирование или транспортную программу, могут в первый год подать заявление на вторую программу. Это не самостоятельный путь первого поступления в MIT.",
+        "entry_requirements": "Для участия в программе одновременного получения двух степеней сначала необходимо поступить на одну из составляющих её программ MIT."
+      }
+    },
+    "mit-dual-mcp-msred": {
+      "en": {
+        "name": "Simultaneous Master in City Planning and Master of Science in Real Estate Development",
+        "description": "Students admitted to City Planning or Real Estate Development may apply to the other program during their first year. This is not a separate first application from outside MIT.",
+        "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree."
+      },
+      "ru": {
+        "name": "Одновременное получение степеней магистра городского планирования и магистра наук по девелопменту недвижимости (MCP/MSRED)",
+        "description": "Студенты, поступившие на городское планирование или девелопмент недвижимости, могут в первый год подать заявление на вторую программу. Это не самостоятельный путь первого поступления в MIT.",
+        "entry_requirements": "Для участия в программе одновременного получения двух степеней сначала необходимо поступить на одну из составляющих её программ MIT."
+      }
+    },
+    "mit-dual-mcp-mba": {
+      "en": {
+        "name": "Simultaneous Master in City Planning and Master of Business Administration",
+        "description": "MIT OGE lists this combination; the timing and process for the second-degree application still need verification. This is not a separate first application from outside MIT.",
+        "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree."
+      },
+      "ru": {
+        "name": "Одновременное получение степеней магистра городского планирования и MBA (MCP/MBA)",
+        "description": "MIT указывает это сочетание степеней, но сроки и порядок подачи заявления на вторую программу ещё требуют проверки. Это не самостоятельный путь первого поступления в MIT.",
+        "entry_requirements": "Для участия в программе одновременного получения двух степеней сначала необходимо поступить на одну из составляющих её программ MIT."
+      }
+    }
+  },
+  "routes": {
+    "mit_grad_architecture_admissions": {
+      "en": {
+        "label": "Architecture application",
+        "description": "Apply to Architecture for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Architecture"
+      },
+      "ru": {
+        "label": "Поступление: архитектура",
+        "description": "Подайте заявление на программу «архитектура», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "архитектура"
+      }
+    },
+    "mit_grad_civil_environmental_admissions": {
+      "en": {
+        "label": "Civil and Environmental Engineering application",
+        "description": "Apply to Civil and Environmental Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Civil and Environmental Engineering"
+      },
+      "ru": {
+        "label": "Поступление: гражданская и экологическая инженерия",
+        "description": "Подайте заявление на программу «гражданская и экологическая инженерия», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "гражданская и экологическая инженерия"
+      }
+    },
+    "mit_grad_dedp_admissions": {
+      "en": {
+        "label": "Data, Economics, and Design of Policy application",
+        "description": "Apply to Data, Economics, and Design of Policy for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Data, Economics, and Design of Policy"
+      },
+      "ru": {
+        "label": "Поступление: данные, экономика и разработка государственной политики",
+        "description": "Подайте заявление на программу «данные, экономика и разработка государственной политики», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "данные, экономика и разработка государственной политики"
+      }
+    },
+    "mit_grad_science_writing_admissions": {
+      "en": {
+        "label": "Science Writing application",
+        "description": "Apply to Science Writing for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Science Writing"
+      },
+      "ru": {
+        "label": "Поступление: научная коммуникация",
+        "description": "Подайте заявление на программу «научная коммуникация», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "научная коммуникация"
+      }
+    },
+    "mit_grad_sdm_admissions": {
+      "en": {
+        "label": "System Design and Management application",
+        "description": "Apply to System Design and Management for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "System Design and Management"
+      },
+      "ru": {
+        "label": "Поступление: проектирование систем и менеджмент",
+        "description": "Подайте заявление на программу «проектирование систем и менеджмент», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "проектирование систем и менеджмент"
+      }
+    },
+    "mit_grad_music_technology_admissions": {
+      "en": {
+        "label": "Music Technology and Computation application",
+        "description": "Apply to Music Technology and Computation for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Music Technology and Computation"
+      },
+      "ru": {
+        "label": "Поступление: музыкальные технологии и вычислительные методы",
+        "description": "Подайте заявление на программу «музыкальные технологии и вычислительные методы», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "музыкальные технологии и вычислительные методы"
+      }
+    },
+    "mit_grad_real_estate_admissions": {
+      "en": {
+        "label": "Center for Real Estate application",
+        "description": "Apply to Center for Real Estate for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Center for Real Estate"
+      },
+      "ru": {
+        "label": "Поступление: Центр недвижимости MIT",
+        "description": "Подайте заявление на программу «Центр недвижимости MIT», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "Центр недвижимости MIT"
+      }
+    },
+    "mit_grad_scm_residential_admissions": {
+      "en": {
+        "label": "Supply Chain Management Residential application",
+        "description": "Apply to Supply Chain Management Residential for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Supply Chain Management Residential"
+      },
+      "ru": {
+        "label": "Поступление: очная программа по управлению цепочками поставок",
+        "description": "Подайте заявление на программу «очная программа по управлению цепочками поставок», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "очная программа по управлению цепочками поставок"
+      }
+    },
+    "mit_grad_scm_blended_admissions": {
+      "en": {
+        "label": "Supply Chain Management Blended application",
+        "description": "Apply to Supply Chain Management Blended for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Supply Chain Management Blended"
+      },
+      "ru": {
+        "label": "Поступление: смешанная программа по управлению цепочками поставок",
+        "description": "Подайте заявление на программу «смешанная программа по управлению цепочками поставок», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "смешанная программа по управлению цепочками поставок"
+      }
+    },
+    "mit_grad_tpp_admissions": {
+      "en": {
+        "label": "Technology and Policy Program application",
+        "description": "Apply to Technology and Policy Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Technology and Policy Program"
+      },
+      "ru": {
+        "label": "Поступление: программа «Технологии и государственная политика»",
+        "description": "Подайте заявление на программу «программа «Технологии и государственная политика»», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "программа «Технологии и государственная политика»"
+      }
+    },
+    "mit_grad_lgo_admissions": {
+      "en": {
+        "label": "Leaders for Global Operations application",
+        "description": "Apply to Leaders for Global Operations for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Leaders for Global Operations"
+      },
+      "ru": {
+        "label": "Поступление: программа Leaders for Global Operations",
+        "description": "Подайте заявление на программу «программа Leaders for Global Operations», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "программа Leaders for Global Operations"
+      }
+    },
+    "mit_grad_aero_admissions": {
+      "en": {
+        "label": "Aeronautics and Astronautics application",
+        "description": "Apply to Aeronautics and Astronautics for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Aeronautics and Astronautics"
+      },
+      "ru": {
+        "label": "Поступление: аэронавтика и астронавтика",
+        "description": "Подайте заявление на программу «аэронавтика и астронавтика», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "аэронавтика и астронавтика"
+      }
+    },
+    "mit_grad_chemical_admissions": {
+      "en": {
+        "label": "Chemical Engineering application",
+        "description": "Apply to Chemical Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Chemical Engineering"
+      },
+      "ru": {
+        "label": "Поступление: химическая инженерия",
+        "description": "Подайте заявление на программу «химическая инженерия», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "химическая инженерия"
+      }
+    },
+    "mit_grad_eaps_admissions": {
+      "en": {
+        "label": "Earth, Atmospheric, and Planetary Sciences application",
+        "description": "Apply to Earth, Atmospheric, and Planetary Sciences for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Earth, Atmospheric, and Planetary Sciences"
+      },
+      "ru": {
+        "label": "Поступление: науки о Земле, атмосфере и планетах",
+        "description": "Подайте заявление на программу «науки о Земле, атмосфере и планетах», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "науки о Земле, атмосфере и планетах"
+      }
+    },
+    "mit_grad_materials_admissions": {
+      "en": {
+        "label": "Materials Science and Engineering application",
+        "description": "Apply to Materials Science and Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Materials Science and Engineering"
+      },
+      "ru": {
+        "label": "Поступление: материаловедение и инженерия",
+        "description": "Подайте заявление на программу «материаловедение и инженерия», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "материаловедение и инженерия"
+      }
+    },
+    "mit_grad_meche_admissions": {
+      "en": {
+        "label": "Mechanical Engineering application",
+        "description": "Apply to Mechanical Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Mechanical Engineering"
+      },
+      "ru": {
+        "label": "Поступление: машиностроение",
+        "description": "Подайте заявление на программу «машиностроение», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "машиностроение"
+      }
+    },
+    "mit_grad_media_arts_admissions": {
+      "en": {
+        "label": "Media Arts and Sciences application",
+        "description": "Apply to Media Arts and Sciences for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Media Arts and Sciences"
+      },
+      "ru": {
+        "label": "Поступление: медиаискусство и медианауки",
+        "description": "Подайте заявление на программу «медиаискусство и медианауки», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "медиаискусство и медианауки"
+      }
+    },
+    "mit_grad_nuclear_admissions": {
+      "en": {
+        "label": "Nuclear Science and Engineering application",
+        "description": "Apply to Nuclear Science and Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Nuclear Science and Engineering"
+      },
+      "ru": {
+        "label": "Поступление: ядерная наука и инженерия",
+        "description": "Подайте заявление на программу «ядерная наука и инженерия», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "ядерная наука и инженерия"
+      }
+    },
+    "mit_grad_physics_admissions": {
+      "en": {
+        "label": "Physics application",
+        "description": "Physics SM admission is available only in special cases, for example U.S. military officers. MIT's normal graduate Physics program leads to the PhD.",
+        "target": "Physics",
+        "entry_requirements": [
+          "Special-case Physics SM applicant; confirm eligibility with the MIT Physics graduate office before applying."
+        ]
+      },
+      "ru": {
+        "label": "Поступление: физика",
+        "description": "Поступление на магистерскую программу по физике возможно только в особых случаях, например для офицеров вооружённых сил США. Основной путь последипломного обучения физике в MIT ведёт к степени PhD.",
+        "target": "физика",
+        "entry_requirements": [
+          "Магистратура по физике доступна только в особых случаях. Перед подачей заявления уточните право на поступление в приёмной комиссии кафедры физики MIT."
+        ]
+      }
+    },
+    "mit_grad_political_admissions": {
+      "en": {
+        "label": "Political Science application",
+        "description": "Apply to Political Science for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Political Science"
+      },
+      "ru": {
+        "label": "Поступление: политология",
+        "description": "Подайте заявление на программу «политология», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "политология"
+      }
+    },
+    "mit_grad_urban_planning_admissions": {
+      "en": {
+        "label": "Urban Studies and Planning application",
+        "description": "Apply to Urban Studies and Planning for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "Urban Studies and Planning"
+      },
+      "ru": {
+        "label": "Поступление: урбанистика и планирование",
+        "description": "Подайте заявление на программу «урбанистика и планирование», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "урбанистика и планирование"
+      }
+    },
+    "mit_grad_whoi_admissions": {
+      "en": {
+        "label": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering application",
+        "description": "Apply to MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering"
+      },
+      "ru": {
+        "label": "Поступление: совместная программа MIT–WHOI по океанографии и прикладным наукам и инженерии океана",
+        "description": "Подайте заявление на программу «совместная программа MIT–WHOI по океанографии и прикладным наукам и инженерии океана», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "совместная программа MIT–WHOI по океанографии и прикладным наукам и инженерии океана"
+      }
+    },
+    "mit_sloan_evening_mba_admissions": {
+      "en": {
+        "label": "MIT Sloan Evening MBA Program application",
+        "description": "Apply to MIT Sloan Evening MBA Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT Sloan Evening MBA Program"
+      },
+      "ru": {
+        "label": "Поступление: вечерняя программа MBA MIT Sloan",
+        "description": "Подайте заявление на программу «вечерняя программа MBA MIT Sloan», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "вечерняя программа MBA MIT Sloan"
+      }
+    },
+    "mit_sloan_executive_mba_admissions": {
+      "en": {
+        "label": "MIT Sloan Executive MBA Program application",
+        "description": "Apply to MIT Sloan Executive MBA Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT Sloan Executive MBA Program"
+      },
+      "ru": {
+        "label": "Поступление: программа Executive MBA MIT Sloan",
+        "description": "Подайте заявление на программу «программа Executive MBA MIT Sloan», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "программа Executive MBA MIT Sloan"
+      }
+    },
+    "mit_sloan_fellows_mba_admissions": {
+      "en": {
+        "label": "MIT Sloan Fellows MBA Program application",
+        "description": "One MIT Sloan Fellows application leads to the MBA program. Admitted students who complete a thesis may earn an SM in Management or Management of Technology instead of the MBA.",
+        "target": "MIT Sloan Fellows MBA Program"
+      },
+      "ru": {
+        "label": "Поступление: программа MIT Sloan Fellows MBA",
+        "description": "На программу MIT Sloan Fellows подают одно заявление. Поступившие студенты, выполнившие дипломную работу, могут получить степень SM по менеджменту или управлению технологиями вместо MBA.",
+        "target": "программа MIT Sloan Fellows MBA"
+      }
+    },
+    "mit_sloan_mfin_admissions": {
+      "en": {
+        "label": "MIT Sloan Master of Finance application",
+        "description": "Apply to MIT Sloan Master of Finance for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT Sloan Master of Finance"
+      },
+      "ru": {
+        "label": "Поступление: программа магистра финансов MIT Sloan",
+        "description": "Подайте заявление на программу «программа магистра финансов MIT Sloan», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "программа магистра финансов MIT Sloan"
+      }
+    },
+    "mit_sloan_mban_admissions": {
+      "en": {
+        "label": "MIT Sloan Master of Business Analytics application",
+        "description": "Apply to MIT Sloan Master of Business Analytics for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT Sloan Master of Business Analytics"
+      },
+      "ru": {
+        "label": "Поступление: программа магистра бизнес-аналитики MIT Sloan",
+        "description": "Подайте заявление на программу «программа магистра бизнес-аналитики MIT Sloan», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "программа магистра бизнес-аналитики MIT Sloan"
+      }
+    },
+    "mit_sloan_msms_admissions": {
+      "en": {
+        "label": "MIT Sloan Master of Science in Management Studies application",
+        "description": "Apply to MIT Sloan Master of Science in Management Studies for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT Sloan Master of Science in Management Studies"
+      },
+      "ru": {
+        "label": "Поступление: программа магистра наук по управленческим исследованиям MIT Sloan",
+        "description": "Подайте заявление на программу «программа магистра наук по управленческим исследованиям MIT Sloan», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "программа магистра наук по управленческим исследованиям MIT Sloan"
+      }
+    },
+    "mit_sloan_mba_admissions": {
+      "en": {
+        "label": "MIT Sloan Traditional MBA Program application",
+        "description": "Apply to MIT Sloan Traditional MBA Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+        "target": "MIT Sloan Traditional MBA Program"
+      },
+      "ru": {
+        "label": "Поступление: очная программа MBA MIT Sloan",
+        "description": "Подайте заявление на программу «очная программа MBA MIT Sloan», чтобы претендовать на соответствующие магистерские или профессиональные степени. Проверьте требования и сроки текущего набора на официальной странице программы.",
+        "target": "очная программа MBA MIT Sloan"
+      }
+    },
+    "mit_grad_eecs_engineer_admissions": {
+      "en": {
+        "label": "Electrical Engineering and Computer Science Engineer degree application",
+        "description": "MIT OGE lists Electrical Engineer and Engineer in Computer Science as degree choices within EECS. Check award-specific admission eligibility with the department.",
+        "target": "Electrical Engineering and Computer Science"
+      },
+      "ru": {
+        "label": "Поступление: электротехника и информатика",
+        "description": "MIT указывает степени инженера-электрика и инженера по информатике среди программ кафедры электротехники и информатики. Уточните на кафедре условия поступления для каждой степени.",
+        "target": "электротехника и информатика"
+      }
+    }
+  },
+  "program_description_updates": {
+    "mit-aero-sm": {
+      "en_description": "Graduate study combines advanced aerospace subjects with a research or design thesis; students can focus on areas such as propulsion, space systems, controls, or aerospace computation.",
+      "ru_description": "Углублённые дисциплины по аэрокосмической технике сочетаются с исследовательской или проектной дипломной работой. Возможные направления включают двигательные установки, космические системы, управление и вычислительные методы.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/aeronautics-astronautics/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-bioeng-meng": {
+      "en_description": "A five-year MIT undergraduate pathway that combines an engineering or science bachelor's degree with graduate biomedical engineering study, linking engineering methods to molecular and genomic biology.",
+      "ru_description": "Пятилетний путь для студентов бакалавриата MIT сочетает первую степень по инженерии или естественным наукам с изучением биомедицинской инженерии на магистерском уровне. Основная тема — применение инженерных методов к молекулярной и геномной биологии.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/biological-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-architecture-building-technology-smbt": {
+      "en_description": "Studies engineering principles for buildings and cities, including structural performance, construction, energy modelling, daylight, and thermal comfort; the program includes a thesis.",
+      "ru_description": "Программа посвящена инженерным решениям для зданий и городов: конструкциям, строительству, моделированию энергопотребления, дневному освещению и тепловому комфорту. Обучение включает дипломную работу.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-chemical-engineering-practice-mscep": {
+      "en_description": "Combines graduate chemical engineering coursework with MIT's Practice School, where students solve projects at industrial sites under MIT faculty supervision instead of writing a master's thesis.",
+      "ru_description": "Магистерские дисциплины по химической инженерии сочетаются с практической школой MIT: студенты решают задачи на промышленных площадках под руководством преподавателей MIT. Практика заменяет магистерскую диссертацию.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/chemical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-cee-meng": {
+      "en_description": "A nine-month professional program built around intensive coursework and applied engineering projects, with tracks in climate and sustainability, data science for engineering systems, and structural mechanics and design.",
+      "ru_description": "Девятимесячная профессиональная программа сочетает интенсивные занятия с прикладными инженерными проектами. Доступны направления по климату и устойчивому развитию, анализу инженерных систем и проектированию конструкций.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/civil-environmental-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-eaps-earth-planetary-sm": {
+      "en_description": "An individually arranged program of graduate study and research in Earth and planetary processes, using physics, chemistry, and mathematics to investigate natural systems.",
+      "ru_description": "Индивидуальная программа занятий и исследований охватывает процессы Земли и других планет. Для изучения природных систем применяются методы физики, химии и математики.",
+      "source_url": "https://catalog.mit.edu/schools/science/earth-atmospheric-planetary-sciences/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-eaps-atmospheric-sm": {
+      "en_description": "An individually arranged program of graduate study and research in atmospheric chemistry and dynamics, using physics, chemistry, and mathematics to investigate natural systems.",
+      "ru_description": "Индивидуальная программа занятий и исследований охватывает химия и динамика атмосферы. Для изучения природных систем применяются методы физики, химии и математики.",
+      "source_url": "https://catalog.mit.edu/schools/science/earth-atmospheric-planetary-sciences/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-eaps-climate-sm": {
+      "en_description": "An individually arranged program of graduate study and research in climate chemistry, dynamics, and paleoclimate, using physics, chemistry, and mathematics to investigate natural systems.",
+      "ru_description": "Индивидуальная программа занятий и исследований охватывает химия и динамика климата, а также палеоклимат. Для изучения природных систем применяются методы физики, химии и математики.",
+      "source_url": "https://catalog.mit.edu/schools/science/earth-atmospheric-planetary-sciences/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-materials-sm": {
+      "en_description": "Studies how the structure and composition of materials determine their properties, with graduate specialization in areas such as electronic materials, energy materials, and nanotechnology.",
+      "ru_description": "Программа исследует, как структура и состав материалов определяют их свойства. Возможные специализации включают электронные и энергетические материалы, а также нанотехнологии.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/materials-science-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-math-fifth-year-masc": {
+      "en_description": "MIT lists this fifth-year applied mathematics award for current students, but the reviewed official pages do not establish a distinct curriculum for this award.",
+      "ru_description": "MIT указывает эту пятилетнюю программу прикладной математики для своих студентов. В проверенных официальных источниках отдельное описание учебного плана для этой степени не найдено.",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "review_status": "curriculum_unverified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-meche-manufacturing-meng": {
+      "en_description": "A 12-month professional program in manufacturing that prepares students for technical leadership in industry through advanced mechanical engineering and manufacturing study.",
+      "ru_description": "Двенадцатимесячная профессиональная программа по производству готовит к техническому руководству в промышленности через углублённое изучение машиностроения и производственных процессов.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-meche-mechanical-sm": {
+      "en_description": "Graduate mechanical engineering study combines advanced subjects with an original research, development, or design thesis.",
+      "ru_description": "Углублённые дисциплины по машиностроению сочетаются с дипломной работой на основе собственного исследования, разработки или проектирования.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-meche-ocean-sm": {
+      "en_description": "Graduate study in ocean engineering combines advanced subjects, mathematics, and an original research, development, or design thesis.",
+      "ru_description": "Углублённые дисциплины по океанической инженерии и математике дополняются дипломной работой на основе собственного исследования, разработки или проектирования.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-meche-oceanographic-sm": {
+      "en_description": "Graduate study in oceanographic engineering combines advanced subjects, mathematics, and an original research, development, or design thesis.",
+      "ru_description": "Углублённые дисциплины по океанографической инженерии и математике дополняются дипломной работой на основе собственного исследования, разработки или проектирования.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-meche-naval-sm": {
+      "en_description": "Graduate study in naval architecture and marine engineering combines advanced subjects, mathematics, and an original research, development, or design thesis.",
+      "ru_description": "Углублённые дисциплины по кораблестроения и морской инженерии и математике дополняются дипломной работой на основе собственного исследования, разработки или проектирования.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-media-arts-sm": {
+      "en_description": "Students investigate and create technologies that shape expression, communication, learning, and interaction, working closely with a Media Lab research adviser and completing a thesis.",
+      "ru_description": "Студенты исследуют и создают технологии, влияющие на творчество, коммуникацию, обучение и взаимодействие. Они работают с научным руководителем в Media Lab и пишут дипломную работу.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/media-arts-sciences/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-nuclear-sm": {
+      "en_description": "Builds broad knowledge of nuclear science and engineering as preparation for work in the nuclear field or further research; departmental topics include reactors, radiation, materials, and plasma.",
+      "ru_description": "Программа даёт широкую подготовку по ядерной науке и инженерии для работы в отрасли или дальнейших исследований. Темы кафедры включают реакторы, радиацию, материалы и плазму.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/nuclear-science-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-urban-city-planning-mcp": {
+      "en_description": "A two-year professional planning program with practice-oriented study in city design, environmental planning, housing and community development, or international development.",
+      "ru_description": "Двухлетняя профессиональная программа по городскому планированию с практическими направлениями: городской дизайн, экологическое планирование, жилищное и общественное развитие либо международное развитие.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-urban-sustainability-sm": {
+      "en_description": "A one-year research-oriented degree for experienced professionals, combining sustainability coursework with individually planned electives and a thesis under a faculty adviser.",
+      "ru_description": "Годичная исследовательская программа для специалистов с опытом работы. Она сочетает дисциплины по устойчивому развитию, индивидуально подобранные курсы и дипломную работу под руководством преподавателя.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-scm-blended-masc": {
+      "en_description": "The blended MASc route follows the MITx Supply Chain Management MicroMasters credential and includes five months on campus studying logistics, supply chain design, inventory, transport, analytics, and leadership.",
+      "ru_description": "Смешанная программа MASc рассчитана на обладателей сертификата MITx MicroMasters по управлению цепочками поставок. Пять месяцев обучения в кампусе охватывают логистику, проектирование цепочек поставок, запасы, перевозки, аналитику и лидерство.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/supply-chain-management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-scm-blended-meng": {
+      "en_description": "The blended MEng route follows the MITx Supply Chain Management MicroMasters credential and includes five months on campus studying logistics, supply chain design, inventory, transport, analytics, and leadership.",
+      "ru_description": "Смешанная программа MEng рассчитана на обладателей сертификата MITx MicroMasters по управлению цепочками поставок. Пять месяцев обучения в кампусе охватывают логистику, проектирование цепочек поставок, запасы, перевозки, аналитику и лидерство.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/supply-chain-management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-architecture-march-mit-grad-architecture": {
+      "en_description": "A professional architecture degree built around design studios, building technology, architectural history and theory, professional practice, and an independent design thesis.",
+      "ru_description": "Профессиональная архитектурная программа строится вокруг проектных студий, строительных технологий, истории и теории архитектуры, профессиональной практики и самостоятельного дипломного проекта.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-architecture-studies-sm-mit-grad-architecture": {
+      "en_description": "A research-based architecture degree allowing focused study in areas such as building technology, design and computation, urbanism, or history, theory, and criticism.",
+      "ru_description": "Исследовательская программа по архитектуре позволяет сосредоточиться на строительных технологиях, проектировании и вычислительных методах, урбанистике либо истории, теории и критике архитектуры.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-art-culture-and-technology-sm-mit-grad-architecture": {
+      "en_description": "A studio- and research-based program exploring art's relationship to culture and technology through media such as video, sound, performance, photography, and experimental forms.",
+      "ru_description": "Программа сочетает художественную практику и исследования связи искусства с культурой и технологиями. Среди рабочих форматов — видео, звук, перформанс, фотография и экспериментальные медиа.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-city-planning-sm-mit-grad-urban-studies-and-planning": {
+      "en_description": "The reviewed current DUSP catalog describes the MCP and a Sustainability Studies and Planning SM, but does not establish a separate City Planning SM curriculum; confirm this draft award before display.",
+      "ru_description": "В актуальном каталоге кафедры указаны MCP и SM по устойчивому развитию и планированию. Отдельная учебная программа «Городское планирование (SM)» в проверенных источниках не подтверждена; запись требует проверки до публикации.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "review_status": "curriculum_unverified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering": {
+      "en_description": "A two-year research-intensive degree in a chosen area of civil and environmental engineering, pursued with a faculty research group and completed with an original master's thesis.",
+      "ru_description": "Двухлетняя исследовательская программа по выбранной области гражданской или экологической инженерии. Студент работает в научной группе преподавателя и завершает обучение оригинальной дипломной работой.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/civil-environmental-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy": {
+      "en_description": "A five-month blended applied-science degree in data, economics, and policy design with public-policy and international-development tracks; entry requires the MITx DEDP MicroMasters credential.",
+      "ru_description": "Пятимесячная смешанная программа прикладных наук по данным, экономике и разработке политики с направлениями государственной политики и международного развития. Для поступления требуется сертификат MITx MicroMasters по DEDP.",
+      "source_url": "https://catalog.mit.edu/degree-charts/master-applied-science-data-economics-design-policy/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-linguistics-sm-mit-grad-linguistics": {
+      "en_description": "MIT's Indigenous Language Initiative offers a two-year linguistics SM for members of indigenous communities whose languages are threatened, supporting language preservation and revitalization work.",
+      "ru_description": "Двухлетняя программа MIT Indigenous Language Initiative предназначена для представителей коренных сообществ, чьи языки находятся под угрозой исчезновения. Обучение помогает вести работу по сохранению и возрождению языков.",
+      "source_url": "https://catalog.mit.edu/schools/humanities-arts-social-sciences/linguistics-philosophy/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-science-writing-sm-mit-grad-science-writing": {
+      "en_description": "An intensive one-year program in explaining science to the public through formats such as news, long-form features, audio and video documentary, data visualization, and podcasts.",
+      "ru_description": "Интенсивная годичная программа учит рассказывать о науке широкой аудитории в новостях, больших статьях, аудио- и видеодокументалистике, визуализации данных и подкастах.",
+      "source_url": "https://catalog.mit.edu/schools/humanities-arts-social-sciences/comparative-media-studies-writing/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-mathematics-of-data-sm-mit-grad-mathematics": {
+      "en_description": "Advanced study of the mathematical foundations of data science and artificial intelligence, including probability, statistics, algorithms, and information theory.",
+      "ru_description": "Углублённое изучение математических основ анализа данных и искусственного интеллекта: вероятности, статистики, алгоритмов и теории информации.",
+      "source_url": "https://catalog.mit.edu/schools/science/mathematics/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-computational-science-and-engineering-sm-mit-grad-computational-science-and-engineering-phd": {
+      "en_description": "An interdisciplinary research degree in computational methods for complex engineered and natural systems, combining numerical analysis, simulation, optimization, and an original thesis.",
+      "ru_description": "Междисциплинарная исследовательская программа по вычислительным методам для сложных технических и природных систем. Она объединяет численный анализ, моделирование, оптимизацию и оригинальную дипломную работу.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/computational-science-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineering-and-management-sm-mit-grad-system-design-and-management": {
+      "en_description": "Combines systems engineering, management, leadership, and a chosen technical field to study the full process of developing complex systems.",
+      "ru_description": "Программа объединяет системную инженерию, менеджмент, лидерство и выбранную техническую область для изучения полного цикла разработки сложных систем.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/system-design-management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-music-technology-and-computation-masc-mit-grad-music-technology-and-computation": {
+      "en_description": "A one-year coursework-based program in computational models of music, with machine learning, real-time interaction, music information retrieval, digital instruments, and a capstone project.",
+      "ru_description": "Годичная программа с акцентом на учебные дисциплины изучает вычислительные модели музыки: машинное обучение, интерактивные системы реального времени, поиск музыкальной информации и цифровые инструменты. Завершается итоговым проектом.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/music-technology-computation/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-music-technology-and-computation-sm-mit-grad-music-technology-and-computation": {
+      "en_description": "A one-year thesis-based program in computational music models, including machine learning, audio signal processing, acoustics, and digital instruments; this SM route is for MIT undergraduates.",
+      "ru_description": "Годичная исследовательская программа по вычислительным моделям музыки охватывает машинное обучение, обработку звука, акустику и цифровые инструменты. Вариант SM предназначен для студентов бакалавриата MIT.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/music-technology-computation/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-real-estate-development-sm-mit-grad-center-for-real-estate": {
+      "en_description": "An interdisciplinary degree in real estate design, planning, construction, management, finance, and marketing, with a development studio and written thesis.",
+      "ru_description": "Междисциплинарная программа охватывает проектирование, планирование, строительство, управление, финансы и маркетинг недвижимости. В неё входят проектная студия и письменная дипломная работа.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/real-estate-development/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-supply-chain-management-masc-mit-grad-supply-chain-management-residential": {
+      "en_description": "A ten-month residential supply-chain program covering logistics systems, network design, inventory, transport, analytics, and leadership; the award is oriented toward industry or consulting.",
+      "ru_description": "Десятимесячная очная программа охватывает логистические системы, проектирование сетей, управление запасами, перевозки, аналитику и лидерство. Вариант степени ориентирован на подготовку к работе в промышленности или консалтинге.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/supply-chain-management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-supply-chain-management-meng-mit-grad-supply-chain-management-residential": {
+      "en_description": "A ten-month residential supply-chain program covering logistics systems, network design, inventory, transport, analytics, and leadership; the award is oriented toward research or future doctoral study.",
+      "ru_description": "Десятимесячная очная программа охватывает логистические системы, проектирование сетей, управление запасами, перевозки, аналитику и лидерство. Вариант степени ориентирован на подготовку к исследованиям или будущей докторантуре.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/supply-chain-management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-technology-and-policy-sm-mit-grad-technology-and-policy-program": {
+      "en_description": "Combines advanced work in a chosen technical field with economics, politics, quantitative methods, social science, and a research thesis on technology's role in policy.",
+      "ru_description": "Углублённые технические дисциплины сочетаются с экономикой, политологией, количественными методами и социальными науками. Исследовательская работа посвящена роли технологий в государственной политике.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/technology-policy/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-transportation-sm-mit-grad-transportation": {
+      "en_description": "An interdisciplinary transportation degree combining analytical methods, programming, policy and technology subjects, specialized electives, and a research thesis.",
+      "ru_description": "Междисциплинарная программа по транспорту сочетает аналитические методы, программирование, политику и технологии, предметы по специализации и исследовательскую дипломную работу.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program": {
+      "en_description": "A 22-month MBA for local working professionals, with evening classes, management core subjects, electives, and applied learning.",
+      "ru_description": "Двадцатидвухмесячная программа MBA для работающих специалистов, проживающих поблизости от MIT. Занятия проходят по вечерам и включают основные управленческие дисциплины, предметы по выбору и прикладное обучение.",
+      "source_url": "https://catalog.mit.edu/schools/sloan-management/management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program": {
+      "en_description": "An executive MBA for experienced leaders studying general management, leadership, innovation, and entrepreneurship through MIT Sloan's executive curriculum.",
+      "ru_description": "Программа Executive MBA для опытных руководителей охватывает общее управление, лидерство, инновации и предпринимательство в рамках учебного плана MIT Sloan.",
+      "source_url": "https://catalog.mit.edu/schools/sloan-management/management/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations": {
+      "en_description": "A two-year dual-degree program combining Sloan management study with a master's in engineering or operations research and an industry-based thesis project.",
+      "ru_description": "Двухлетняя программа двойной степени сочетает менеджмент MIT Sloan с магистратурой по инженерии или исследованию операций и дипломным проектом в компании-партнёре.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/leaders-global-operations/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-civil": {
+      "en_description": "Advanced professional study in civil engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по гражданской инженерии на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-electrical": {
+      "en_description": "Advanced professional study in electrical engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по электротехники на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-aeronautics": {
+      "en_description": "Advanced professional study in aeronautics and astronautics beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по аэронавтики и астронавтики на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-computer-science": {
+      "en_description": "Advanced professional study in computer science beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по информатики на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-environmental": {
+      "en_description": "Advanced professional study in environmental engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по экологической инженерии на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-materials": {
+      "en_description": "Advanced professional study in materials engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по инженерии материалов на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-mechanical": {
+      "en_description": "Advanced professional study in mechanical engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по машиностроения на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    },
+    "mit-engineer-naval": {
+      "en_description": "Advanced professional study in naval engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "ru_description": "Профессиональная подготовка по кораблестроения и морской инженерии на уровне выше магистратуры. Требуются утверждённая программа углублённых дисциплин и дипломная работа.",
+      "source_url": "https://catalog.mit.edu/schools/engineering/mechanical-engineering/",
+      "review_status": "verified",
+      "checked_at": "2026-09-29"
+    }
+  }
+}

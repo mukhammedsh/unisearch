@@ -47,13 +47,32 @@ const {
 
 await initI18n();
 
+test("a route without published minimums explains the unavailable percentage once", () => {
+  const assessment = {
+    scoreMeaning: "published_requirements_met_percent", chancePercent: null,
+    reason: "no_published_requirements",
+    factors: [{ key: "insufficient_data", status: "neutral" }],
+  };
+  setLanguage("eng");
+  assert.match(renderTrackChanceChip(assessment), /no measurable published minimums/);
+  assert.doesNotMatch(renderTrackChanceChip(assessment), /profile evidence/);
+  assert.equal(renderTrackFactors(assessment), "");
+  setLanguage("rus");
+  assert.match(renderTrackChanceChip(assessment), /нет опубликованных измеримых минимумов/);
+  setLanguage("eng");
+});
+
 const {
   getFinanceChoicesForStudyLevel,
   getFinanceForChoice,
+  getAdmissionContextProfile,
   renderAdmissionSection,
+  renderDeadlinesTabSection,
   renderFinanceSection,
   resolveFeeStatusAndAid,
+  selectAdmissionProgram,
 } = await import("../../frontend/javascript/pages/university/render-sections.js");
+const { renderOverviewSection } = await import("../../frontend/javascript/pages/university/render-content.js");
 
 test("finance choices follow the selected degree level", () => {
   const categories = [
@@ -67,6 +86,68 @@ test("finance choices follow the selected degree level", () => {
   const baseFinance = { total_cost_year_usd: 85960, currency: "USD" };
   assert.equal(getFinanceForChoice(getFinanceChoicesForStudyLevel(categories, "MBA")[0], baseFinance), null);
   assert.deepEqual(getFinanceForChoice(getFinanceChoicesForStudyLevel(categories, "Bachelor")[0], baseFinance), baseFinance);
+});
+
+test("manual program context overrides a stale camel-case profile choice without changing saved profile or requested cycle", () => {
+  window.location.search = "?admission_program=graduate-physics&admission_level=bachelor&admission_route=first_year";
+  const savedProfile = {
+    studyLevel: "Bachelor",
+    applicantRoute: "first_year",
+    intendedEntryCycle: "Fall 2027",
+    selectedAdmissionChoices: { test_university: { programId: "undergraduate-cs", choiceKey: "old-choice" } },
+  };
+  const university = {
+    id: "test_university",
+    academics: { programs: [{ id: "graduate-physics", name: "Physics PhD", study_level: "Doctorate" }] },
+    admission_categories: [{
+      id: "physics-route",
+      label: "Physics PhD",
+      scope: "program",
+      study_level: "Doctorate",
+      applicant_route: "graduate",
+      cycle: "Fall 2028",
+      program_ids: ["graduate-physics"],
+    }],
+  };
+
+  const requestProfile = getAdmissionContextProfile(university, savedProfile);
+  assert.equal(requestProfile.study_level, "Doctorate");
+  assert.equal(requestProfile.applicant_route, "graduate");
+  assert.equal(requestProfile.intended_entry_cycle, "Fall 2027");
+  assert.equal(requestProfile.studyLevel, "Doctorate");
+  assert.equal(requestProfile.applicantRoute, "graduate");
+  assert.equal(requestProfile.intendedEntryCycle, "Fall 2027");
+  assert.deepEqual(requestProfile.selectedAdmissionChoices.test_university, { programId: "graduate-physics" });
+  assert.equal(savedProfile.studyLevel, "Bachelor");
+  assert.equal(savedProfile.applicantRoute, "first_year");
+  assert.equal(savedProfile.intendedEntryCycle, "Fall 2027");
+  assert.equal(savedProfile.selectedAdmissionChoices.test_university.programId, "undergraduate-cs");
+  window.location.search = "";
+});
+
+test("cycle context keeps equivalent requested values selected and labels only proven mismatches", () => {
+  const university = {
+    id: "cycle_context_test",
+    admission_categories: [
+      { id: "fall", label: "Fall route", scope: "general", study_level: "Bachelor", applicant_route: "first_year", cycle: "2027 Fall entry" },
+      { id: "spring", label: "Spring route", scope: "general", study_level: "Bachelor", applicant_route: "first_year", cycle: "Spring 2027 entry" },
+    ],
+  };
+  const render = (cycle) => {
+    window.location.search = `?admission_cycle=${encodeURIComponent(cycle)}`;
+    const container = { innerHTML: "", querySelectorAll: () => [], querySelector: () => null };
+    renderAdmissionSection({ annualCostForTrack: () => null, container, university });
+    return container.innerHTML;
+  };
+
+  const equivalent = render("Fall 2027");
+  assert.match(equivalent, /<option value="Fall 2027" selected>Fall 2027<\/option>/);
+  assert.doesNotMatch(equivalent, /Fall 2027 \(does not match listed cycle data\)/);
+  assert.match(equivalent, /2027 Fall entry/);
+
+  const mismatch = render("Fall 2028");
+  assert.match(mismatch, /<option value="Fall 2028" selected>Fall 2028 \(does not match listed cycle data\)<\/option>/);
+  window.location.search = "";
 });
 
 test("legacy scoped categories are treated as bachelor while unscoped categories stay unknown", () => {
@@ -211,6 +292,7 @@ test("published MBAn tuition is shown as gross tuition for paid and fellowship o
   const profileKey = "unisearch_profile";
   const previousProfile = localStorage.getItem(profileKey);
   localStorage.setItem(profileKey, JSON.stringify({ studyLevel: "Master" }));
+  window.location.search = "?admission_program=sloan-mban";
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const priceEl = { innerHTML: "", textContent: "" };
   const university = {
@@ -218,6 +300,7 @@ test("published MBAn tuition is shown as gross tuition for paid and fellowship o
     finance: { currency: "USD", scholarships_and_funding: [] },
     academics: { programs: [{
       course_number: "Sloan MBAn",
+      id: "sloan-mban",
       name: "Master of Business Analytics (MBAn)",
       tuition_year_usd: 96884,
       currency: "USD",
@@ -227,6 +310,7 @@ test("published MBAn tuition is shown as gross tuition for paid and fellowship o
     admission_categories: [{
       id: "mit_sloan_mban_admissions",
       label: "MIT Sloan Master of Business Analytics (MBAn)",
+      scope: "program",
       study_level: "Master",
       program_ids: ["Sloan MBAn"],
       requirement_profiles: [{
@@ -256,10 +340,123 @@ test("published MBAn tuition is shown as gross tuition for paid and fellowship o
     renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, university });
     assert.equal((container.innerHTML.match(/Опубликованная плата за обучение \/ год/g) || []).length, 2);
   } finally {
+    window.location.search = "";
     if (previousProfile === null) localStorage.removeItem(profileKey);
     else localStorage.setItem(profileKey, previousProfile);
     setLanguage("eng", { persist: false, emit: false });
   }
+});
+
+test("overview scopes acceptance-rate label to undergraduate metadata", () => {
+  const render = (language, kind) => {
+    setLanguage(language, { persist: false, emit: false });
+    const container = { innerHTML: "" };
+    renderOverviewSection({
+      acceptanceMeta: {},
+      acceptanceRate: 4.56,
+      container,
+      officialRank: false,
+      rankStatus: "",
+      university: { academics: { admissions: { university_wide: { kind } } } },
+    });
+    return container.innerHTML;
+  };
+
+  assert.match(render("eng", "undergraduate_institution_wide"), /Undergraduate acceptance rate/);
+  assert.match(render("rus", "undergraduate_institution_wide"), /Доля зачисленных на бакалавриат/);
+  assert.match(render("eng", "graduate_institution_wide"), /Acceptance Rate/);
+  assert.doesNotMatch(render("eng", "graduate_institution_wide"), /Undergraduate acceptance rate/);
+});
+
+test("MIT guest finance uses the selected graduate program and keeps unrelated tuition and aid unknown", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const profileKey = "unisearch_profile";
+  const previousProfile = localStorage.getItem(profileKey);
+  localStorage.removeItem(profileKey);
+  const program = { id: "mit-mfin", name: "Master of Finance", study_levels: ["Master"] };
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const scholarshipContainer = { innerHTML: "" };
+  const priceEl = { innerHTML: "", textContent: "" };
+  const university = {
+    id: "mit-usa-cambridge",
+    location: { country: "USA" },
+    finance: {
+      currency: "USD",
+      total_cost_year_usd: 100000,
+      scope: "MIT undergraduate cost of attendance",
+      undergraduate_aid_policy: { need_blind_domestic: true, need_blind_international: true, meets_full_demonstrated_need: true },
+      doctorate_funding_guarantee: { notes: "Doctoral funding information" },
+      scholarships_and_funding: [
+        { id: "undergraduate-award", name: "Undergraduate award", study_level: "Bachelor", program_ids: ["mit-bachelor"] },
+        { id: "mfin-award", name: "MFin fellowship", study_level: "Master", program_ids: ["mit-mfin"] },
+      ],
+    },
+    academics: { programs: [program] },
+    admission_categories: [
+      { id: "mit-undergraduate", label: "MIT Undergraduate", scope: "program", study_levels: ["Bachelor"], program_ids: ["mit-bachelor"] },
+      {
+        id: "mit-mfin-route",
+        label: "MIT Sloan Master of Finance",
+        scope: "program",
+        study_levels: ["Master"],
+        program_ids: ["mit-mfin"],
+        requirement_profiles: [{ id: "mfin-profile", label: "Applicant", funding_options: [{ id: "paid", label: "Self-funded", funding_type: "paid" }] }],
+      },
+    ],
+  };
+
+  try {
+    selectAdmissionProgram(university, program);
+    window.location.search = "?admission_program=mit-mfin";
+    renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, scholarshipContainer, university });
+
+    assert.match(container.innerHTML, /MIT Sloan Master of Finance/);
+    assert.match(container.innerHTML, /Total cost unknown/);
+    assert.doesNotMatch(container.innerHTML, /MIT Undergraduate|\$100,000|Need-Blind|Doctoral funding information/);
+    assert.doesNotMatch(scholarshipContainer.innerHTML, /Undergraduate award/);
+    assert.match(scholarshipContainer.innerHTML, /MFin fellowship/);
+    assert.doesNotMatch(priceEl.innerHTML, /\$100,000/);
+  } finally {
+    if (previousProfile === null) localStorage.removeItem(profileKey);
+    else localStorage.setItem(profileKey, previousProfile);
+    window.location.search = "";
+  }
+});
+
+test("MIT deadlines follow the selected program", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const mfin = { id: "mit-mfin", name: "Master of Finance", study_levels: ["Master", "Doctorate"] };
+  const physics = { id: "mit-physics", name: "Physics PhD", study_levels: ["Doctorate"] };
+  const unreviewedProgram = { id: "mit-management", name: "Management Program", study_levels: ["Master"] };
+  const university = {
+    id: "mit-usa-cambridge",
+    academics: { programs: [mfin, physics, unreviewedProgram] },
+    admission_categories: [
+      { id: "mfin-route", label: "MIT Sloan MFin", scope: "program", study_levels: ["Master", "Doctorate"], program_ids: ["mit-mfin"], application_deadline: "January 5, 2027" },
+      { id: "physics-route", label: "MIT Physics PhD", scope: "program", study_levels: ["Doctorate"], program_ids: ["mit-physics"], application_deadline: "December 15, 2026" },
+    ],
+  };
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+
+  selectAdmissionProgram(university, mfin);
+  window.location.search = "?admission_program=mit-mfin";
+  renderDeadlinesTabSection({ container, university });
+  assert.match(container.innerHTML, /MIT Sloan MFin/);
+  assert.doesNotMatch(container.innerHTML, /MIT Physics PhD/);
+  assert.doesNotMatch(container.innerHTML, /data-deadlines-level/);
+
+  selectAdmissionProgram(university, physics);
+  window.location.search = "?admission_program=mit-physics";
+  renderDeadlinesTabSection({ container, university });
+  assert.match(container.innerHTML, /MIT Physics PhD/);
+  assert.doesNotMatch(container.innerHTML, /MIT Sloan MFin/);
+
+  selectAdmissionProgram(university, unreviewedProgram);
+  window.location.search = "?admission_program=mit-management";
+  renderDeadlinesTabSection({ container, university });
+  assert.match(container.innerHTML, /Deadline details have not been reviewed for this program\./);
+  assert.doesNotMatch(container.innerHTML, /No deadlines published\./);
+  window.location.search = "";
 });
 
 test("undergraduate Finance compares profile income in its saved currency without implying eligibility", () => {
@@ -486,9 +683,8 @@ test("a university-scoped range does not leak into a different undergraduate cat
 
 test("Harvard Law JD shows its published tuition without presenting it as total cost", async () => {
   setLanguage("eng", { persist: false, emit: false });
-  const profileKey = "unisearch_profile";
-  const previousProfile = localStorage.getItem(profileKey);
-  localStorage.setItem(profileKey, JSON.stringify({ studyLevel: "Professional" }));
+  const previousProfile = loadProfile();
+  saveProfile({ studyLevel: "Professional" });
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const priceEl = { innerHTML: "", textContent: "" };
   const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
@@ -508,8 +704,7 @@ test("Harvard Law JD shows its published tuition without presenting it as total 
     assert.doesNotMatch(jdCard, /Total \/ year|Estimated cost before aid/);
     assert.doesNotMatch(priceEl.innerHTML, /\$84,400/);
   } finally {
-    if (previousProfile === null) localStorage.removeItem(profileKey);
-    else localStorage.setItem(profileKey, previousProfile);
+    saveProfile(previousProfile);
   }
 });
 
@@ -686,6 +881,47 @@ test("admission funding options keep unknown prices localized instead of renderi
   }
 });
 
+test("requirements fit stays with its profile when paid and grant options are listed", () => {
+  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const university = {
+    id: "sample-university",
+    finance: { currency: "USD" },
+    admission_categories: [{
+      id: "bachelor",
+      label: "Bachelor applicants",
+      study_level: "Bachelor",
+      requirement_profiles: [{
+        id: "general",
+        label: "General applicant",
+        requirements: { SAT: 1200 },
+        funding_options: [
+          { id: "paid", funding_type: "paid", label: "Paid" },
+          { id: "grant", funding_type: "grant", label: "Grant" },
+        ],
+      }],
+    }],
+  };
+  const fit = { scoreMeaning: "published_requirements_met_percent", chancePercent: 75, factors: [] };
+
+  setLanguage("eng", { persist: false, emit: false });
+  renderAdmissionSection({
+    annualCostForTrack: () => 42000,
+    container,
+    uniChanceByChoiceKey: new Map([
+      [admissionChoiceKey({ id: "bachelor" }, { id: "general" }, null), fit],
+      [admissionChoiceKey({ id: "bachelor" }, { id: "general" }, { id: "paid" }), fit],
+      [admissionChoiceKey({ id: "bachelor" }, { id: "general" }, { id: "grant" }), fit],
+    ]),
+    university,
+  });
+
+  assert.equal((container.innerHTML.match(/class="chance-track-chip/g) || []).length, 1);
+  assert.match(container.innerHTML, /Annual cost before any award:<\/strong> \$42,000/);
+  assert.equal((container.innerHTML.match(/class="admission-funding-option(?:\s|")/g) || []).length, 2);
+  const fundingMarkup = container.innerHTML.slice(container.innerHTML.indexOf('class="admission-funding-option'));
+  assert.doesNotMatch(fundingMarkup, /chance-track-chip/);
+});
+
 test("chance tones cover all public thresholds", () => {
   assert.equal(chanceTone(80).cls, "chance-high");
   assert.equal(chanceTone(60).cls, "chance-good");
@@ -694,93 +930,100 @@ test("chance tones cover all public thresholds", () => {
   assert.equal(chanceTone("invalid").cls, "chance-low");
 });
 
-test("chance summary distinguishes empty, missing evidence, selected, and estimated states", () => {
+test("requirements fit summary requires confirmed semantics and preserves unavailable evidence", () => {
   setLanguage("eng", { persist: false, emit: false });
   const empty = renderUniChanceSummary(null);
   assert.match(empty, /chance-percent chance-low">\?</);
   assert.match(empty, /data-width-pct="0"/);
+  assert.match(empty, /not enough applicable requirements or profile evidence/);
+
+  const legacyChance = renderUniChanceSummary({ overallChance: 72 });
+  assert.doesNotMatch(legacyChance, /72%/);
+  assert.match(legacyChance, /meaning could not be confirmed/);
 
   const missing = renderUniChanceSummary({
     overallChance: null,
+    scoreMeaning: "published_requirements_met_percent",
     reason: "missing_exam_score",
     bestChoiceLabel: "SAT route",
   });
-  assert.match(missing, /Need exam data/);
+  assert.match(missing, /Add the required exam data/);
   assert.match(missing, /SAT route/);
 
   const selected = renderUniChanceSummary({
     overallChance: 72,
+    scoreMeaning: "published_requirements_met_percent",
     bestChoiceLabel: "Paid route",
     bestChoiceKey: "paid",
     recommendedChoiceLabel: "Grant route",
     recommendedChoiceKey: "grant",
     selectedByUser: true,
-    chanceModel: "official_score_profile",
   });
   assert.match(selected, /Selected:/);
   assert.match(selected, /Recommended/);
-  assert.match(selected, /Profile-based/);
-  assert.match(selected, /Based on admitted-student score profiles, with applicable language and requirement checks/);
+  assert.match(selected, /Fit to published requirements/);
+  assert.match(selected, /Share of evaluable published academic and language minimum checks met/);
+  assert.match(selected, /not an admission probability/i);
+  assert.doesNotMatch(selected, /admitted-student|acceptance rate|confidence range/i);
   assert.doesNotMatch(selected, /affordability|budget/i);
   assert.match(selected, /data-width-pct="72"/);
 
-  const estimated = renderUniChanceSummary({
+  const noNumericMinimum = renderUniChanceSummary({
     overallChance: "35",
+    scoreMeaning: "unverified_old_probability",
     bestChoiceLabel: "General",
-    chanceModel: "estimated_fallback",
   });
-  assert.match(estimated, /Low confidence/);
-  assert.match(estimated, /Estimated/);
-  assert.match(estimated, /published minimums and averages where available, applicable language requirements, and selectivity/);
-  assert.doesNotMatch(estimated, /affordability|budget/i);
-  assert.match(estimated, /chance-percent-wrap--low-confidence/);
+  assert.doesNotMatch(noNumericMinimum, /35%/);
+  assert.match(noNumericMinimum, /meaning could not be confirmed/);
+  assert.doesNotMatch(noNumericMinimum, /Low confidence|Estimated|admitted-student|acceptance rate/i);
 
   setLanguage("rus", { persist: false, emit: false });
   const russianProfile = renderUniChanceSummary({
     overallChance: 72,
+    scoreMeaning: "published_requirements_met_percent",
     bestChoiceLabel: "SAT route",
-    chanceModel: "official_score_profile",
   });
-  const russianEstimate = renderUniChanceSummary({
-    overallChance: 35,
-    bestChoiceLabel: "General",
-    chanceModel: "estimated_fallback",
-  });
-  assert.match(russianProfile, /На основе профилей баллов зачисленных, с учетом применимых языковых и академических требований/);
-  assert.match(russianEstimate, /Оценка по опубликованным минимумам и средним баллам, если они доступны, применимым языковым требованиям и селективности/);
-  assert.match(russianEstimate, /Низкая уверенность/);
-  assert.doesNotMatch(`${russianProfile}${russianEstimate}`, /бюджет|финанс/i);
+  const russianNoMeaning = renderUniChanceSummary({ overallChance: 35 });
+  assert.match(russianProfile, /Доля проверяемых опубликованных академических и языковых минимумов, которые выполнены/);
+  assert.match(russianNoMeaning, /смысл этого показателя не подтверждён/);
+  assert.match(russianProfile, /это не вероятность поступления/i);
+  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /профилей зачисленных|диапазон уверенности/i);
+  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /бюджет|финанс/i);
   setLanguage("eng", { persist: false, emit: false });
 });
 
 test("chance summary explains distinct no-data reasons", () => {
-  assert.match(renderUniChanceSummary({ overallChance: "", reason: "requirements_not_met" }), /do not meet a required minimum/);
-  assert.match(renderUniChanceSummary({ overallChance: null, reason: "missing_evidence" }), /Add the required exam scores/);
-  assert.match(renderUniChanceSummary({ overallChance: null, label: "Custom unavailable reason" }), /Custom unavailable reason/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: "", reason: "requirements_not_met" }), /do not meet a required minimum/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "missing_evidence" }), /Add the required exam scores/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "unassessed_minimums" }), /technical GPA minimums of 4\.25\/5\.0 and overall GPA minimums of 4\.0\/5\.0/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "requirements_not_reviewed" }), /minimums have not yet been reviewed/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, label: "Custom unavailable reason" }), /not enough applicable requirements or profile evidence/i);
 });
 
 test("track chance chips handle no data, invalid badges, and numeric zero", () => {
-  assert.match(renderTrackChanceChip(null), /Admission probability/);
-  assert.match(renderTrackChanceChip({ chancePercent: null, reason: "requirements_not_met" }), /required minimum/);
-  assert.match(renderTrackChanceChip({ chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /UniChance 0%/);
-  assert.match(renderTrackChanceChip({ chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /Need-aware aid/);
+  assert.match(renderTrackChanceChip(null), /not enough applicable requirements or profile evidence/);
+  assert.match(renderTrackChanceChip({ scoreMeaning: "published_requirements_met_percent", chancePercent: null, reason: "requirements_not_met" }), /required minimum/);
+  assert.match(renderTrackChanceChip({ chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /meaning could not be confirmed/);
+  assert.match(renderTrackChanceChip({ scoreMeaning: "published_requirements_met_percent", chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /Requirements fit 0%/);
+  assert.match(renderTrackChanceChip({ scoreMeaning: "published_requirements_met_percent", chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /Need-aware aid/);
   assert.doesNotMatch(renderTrackChanceChip({ chancePercent: 0, badges: ["unknown"] }), /admission-chance-badge/);
 });
 
-test("factor rendering filters invalid rows and maps positive, negative, and neutral tones", () => {
+test("requirements fit factor rendering filters invalid rows and maps positive, negative, and neutral tones", () => {
   assert.equal(renderTrackFactors(null), "");
-  const html = renderTrackFactors({ factors: [
+  assert.equal(renderTrackFactors({ factors: [{ key: "academic_strength", status: "positive" }] }), "");
+  const html = renderTrackFactors({ scoreMeaning: "published_requirements_met_percent", factors: [
     null,
     [],
     {},
-    { key: "academic_strength", status: "positive", label: "Strong", message: "Ready" },
-    { key: "academic_gap", status: "negative", label: "Gap", impact_text: "Improve" },
-    { key: "custom", status: "other", message: "Review manually" },
+    { key: "requirements_met", status: "positive", label: "Requirements", message: "Ready" },
+    { key: "requirements_gap", status: "negative", label: "Requirements", impact_text: "Improve" },
+    { key: "insufficient_data", status: "other", message: "Review manually" },
   ] });
   assert.match(html, /factor-positive/);
   assert.match(html, /factor-negative/);
   assert.match(html, /factor-neutral/);
-  assert.match(html, /Review manually/);
+  assert.match(html, /not enough applicable requirements or profile evidence to calculate this fit score/i);
 });
 
 test("funding badges infer grant or paid semantics", () => {
@@ -798,26 +1041,27 @@ test("renderTrackFactors localizes known factor keys in Russian", () => {
   setLanguage("rus", { persist: false, emit: false });
 
   const html = renderTrackFactors({
+    scoreMeaning: "published_requirements_met_percent",
     factors: [
       {
-        key: "academic_strength",
+        key: "requirements_met",
         status: "positive",
-        label: "Academic profile",
-        message: "Academic scores are strong for this requirement profile.",
+        label: "Requirements",
+        message: "All measurable published minimums are met.",
       },
     ],
   });
 
-  assert.match(html, /Сильный академический профиль/);
-  assert.match(html, /Академические баллы хорошо подходят для этого профиля требований\./);
-  assert.doesNotMatch(html, /Academic profile/);
-  assert.doesNotMatch(html, /Academic scores are strong/);
+  assert.match(html, /Требования выполнены/);
+  assert.match(html, /Все измеряемые опубликованные минимумы выполнены\./);
+  assert.doesNotMatch(html, /Requirements/);
 });
 
-test("renderTrackFactors localizes holistic_review_selectivity in Russian", () => {
+test("requirements fit factors suppress legacy acceptance and selectivity factors", () => {
   setLanguage("rus", { persist: false, emit: false });
 
   const html = renderTrackFactors({
+    scoreMeaning: "published_requirements_met_percent",
     factors: [
       {
         key: "holistic_review_selectivity",
@@ -828,16 +1072,14 @@ test("renderTrackFactors localizes holistic_review_selectivity in Russian", () =
     ],
   });
 
-  assert.match(html, /Комплексное рассмотрение/);
-  assert.match(html, /В вузах с приемом (&lt;|<)10% баллы тестов — лишь базовый фильтр/);
-  assert.doesNotMatch(html, /Holistic review/);
-  assert.doesNotMatch(html, /screening baseline/);
+  assert.equal(html, "");
 });
 
-test("renderTrackFactors keeps backend fallback for unknown factor keys", () => {
+test("requirements fit factors suppress unsupported factor keys", () => {
   setLanguage("rus", { persist: false, emit: false });
 
   const html = renderTrackFactors({
+    scoreMeaning: "published_requirements_met_percent",
     factors: [
       {
         key: "future_signal",
@@ -848,8 +1090,7 @@ test("renderTrackFactors keeps backend fallback for unknown factor keys", () => 
     ],
   });
 
-  assert.match(html, /Future signal/);
-  assert.match(html, /Backend fallback stays visible\./);
+  assert.equal(html, "");
 });
 
 test("renderTrackChanceChip uses Russian badge labels without mixed English terms", () => {
@@ -857,6 +1098,7 @@ test("renderTrackChanceChip uses Russian badge labels without mixed English term
 
   const html = renderTrackChanceChip({
     chancePercent: 72,
+    scoreMeaning: "published_requirements_met_percent",
     badges: ["foundation_required", "need_aware", "need_blind"],
   });
 
@@ -944,6 +1186,7 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
 test("renderTrackChanceChip and renderTrackFactors render accessible ui-tooltip structure", () => {
   const badgeHtml = renderTrackChanceChip({
     chancePercent: 85,
+    scoreMeaning: "published_requirements_met_percent",
     badges: ["need_blind"],
   });
   assert.match(badgeHtml, /class="ui-tooltip-wrap admission-chance-badge-wrap"/);
@@ -951,16 +1194,107 @@ test("renderTrackChanceChip and renderTrackFactors render accessible ui-tooltip 
   assert.match(badgeHtml, /class="ui-tooltip-bubble admission-chance-tooltip__content" role="tooltip"/);
 
   const factorHtml = renderTrackFactors({
+    scoreMeaning: "published_requirements_met_percent",
     factors: [
       {
-        key: "academic_strength",
+        key: "requirements_met",
         status: "positive",
-        label: "Academic strength",
-        message: "Strong profile.",
+        label: "Requirements",
+        message: "All measurable published minimums are met.",
       },
     ],
   });
   assert.match(factorHtml, /class="ui-tooltip-wrap track-factor-chip-wrap"/);
   assert.match(factorHtml, /<button type="button" class="ui-tooltip-trigger track-factor-chip factor-positive"/);
   assert.match(factorHtml, /class="ui-tooltip-bubble track-factor-tooltip__content" role="tooltip"/);
+});
+test("selected admission context puts course conditions first and keeps history separate", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  window.location.search = "?admission_program=computing&admission_route=first_year&admission_cycle=2027%20entry";
+  const university = {
+    id: "ux-course", academics: { programs: [{ id: "computing", name: "Computing", study_levels: ["Bachelor"] }] },
+    admission_categories: [{ id: "route", label: "Computing entry", description: "Shared application description", study_level: "Bachelor", applicant_route: "first_year", program_ids: ["computing"], cycle: "2027 entry", source_url: "https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/", deadlines: [{ cycle: "Annual cycle; the official page does not publish an entry year for these dates." }], requirement_profiles: [{ id: "a-level", label: "A-Level", description: "Shared application description", requirements: {}, requirements_note: "A*A*A including Mathematics", requirements_source_url: "https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/" }] }],
+  };
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  const fit = { scoreMeaning: "published_requirements_met_percent", chancePercent: 100, factors: [] };
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null, uniChanceByChoiceKey: new Map([["route::a-level",fit]]) });
+  assert.match(container.innerHTML, /Selected program/);
+  assert.equal((container.innerHTML.match(/Shared application description/g) || []).length, 1);
+  assert.match(container.innerHTML, /A\*A\*A including Mathematics/);
+  assert.match(container.innerHTML, /percentage covers numeric minimums only/);
+  assert.ok(container.innerHTML.indexOf("A*A*A including Mathematics") < container.innerHTML.indexOf("Requirements fit and historical statistics"));
+  assert.doesNotMatch(container.innerHTML, /<option[^>]+Annual cycle/);
+  assert.match(container.innerHTML, /data-admission-open-tab="tab-finance"/);
+  assert.match(container.innerHTML, /https:\/\/www.imperial.ac.uk\/study\/courses\/undergraduate\/computing-meng\//);
+  window.location.search = "";
+});
+
+test("no matching assessment avoids exposing an API fallback choice label", () => {
+  setLanguage("ru", { persist: false, emit: false });
+  const html = renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "no_choices", bestChoiceLabel: "No choices for selected filters" });
+  assert.match(html, /Проверьте выбранный маршрут/);
+  assert.doesNotMatch(html, /No choices|Лучший вариант:/);
+  setLanguage("eng", { persist: false, emit: false });
+});
+test("funding with an explicit first-year route does not leak into transfer", async () => {
+  const { getFundingAwardsForSelection } = await import("../../frontend/javascript/pages/university/render-sections.js");
+  const finance = { scholarships_and_funding: [{ id: "first-year-aid", study_level: "Bachelor", applicant_routes: ["first_year"] },{ id: "unknown-route-aid", study_level: "Bachelor" }] };
+  assert.deepEqual(getFundingAwardsForSelection(finance,[{applicant_route:"transfer"}],"Bachelor").map(a=>a.id),["unknown-route-aid"]);
+  assert.equal(getFundingAwardsForSelection(finance,[{applicant_route:"first_year"}],"Bachelor").length,2);
+  assert.equal(getFundingAwardsForSelection(finance,[{}],"Bachelor").length,2);
+  window.location.search = "?admission_route=transfer";
+  const scholarshipContainer = { innerHTML: "" };
+  renderFinanceSection({
+    annualCostForTrack: () => null, container: { innerHTML: "", querySelectorAll: () => [] }, scholarshipContainer,
+    university: { id: "ux-transfer-funding", finance: { scholarships_and_funding: [finance.scholarships_and_funding[0]] }, admission_categories: [{ id: "transfer", study_level: "Bachelor", applicant_route: "transfer", funding_source_url: "https://financialaid.stanford.edu/undergrad/apply/" }] },
+  });
+  assert.match(scholarshipContainer.innerHTML, /<a href="https:\/\/financialaid\.stanford\.edu\/undergrad\/apply\/"/);
+  assert.doesNotMatch(scholarshipContainer.innerHTML, /&lt;a/);
+  window.location.search = "";
+
+});
+
+test("Russian program names remain distinct when restoring a selected program ID", () => {
+  setLanguage("rus", { persist: false, emit: false });
+  window.location.search = "?admission_program=cs-ru&admission_route=transfer&admission_cycle=2027";
+  const university = { id: "ux-russian-programs", academics: { programs: [
+    { id: "physics-ru", name: "Физика", study_levels: ["Bachelor"] },
+    { id: "cs-ru", name: "Компьютерные науки", study_levels: ["Bachelor"] },
+  ] }, admission_categories: [
+    { id: "physics-route", label: "Физика", scope: "program", study_level: "Bachelor", applicant_route: "transfer", program_ids: ["physics-ru"] },
+    { id: "cs-route", label: "Компьютерные науки", scope: "program", study_level: "Bachelor", applicant_route: "transfer", program_ids: ["cs-ru"] },
+  ] };
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null });
+  assert.match(container.innerHTML, /data-admission-category="cs-route"/);
+  assert.doesNotMatch(container.innerHTML, /data-admission-category="physics-route"/);
+  assert.match(container.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="компьютерные_науки"/);
+  window.location.search = "";
+  setLanguage("eng", { persist: false, emit: false });
+});
+
+test("admission descriptions deduplicate the localized paragraph", async () => {
+  const translations = JSON.parse(await readFile(new URL("../../backend/data/universities_translations.json", import.meta.url), "utf8"));
+  const pack = translations.languages.rus;
+  const source = "One university-wide first-year application through the Common Application; applicants apply to Stanford, not to a selected major. SAT or ACT is required. Need-blind for US applicants; international applicants are need-aware if requesting aid.";
+  const localized = pack.admission_exact[source];
+  assert.ok(localized);
+  const previousFetch = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => ({ lang: "rus", data: pack }) });
+  try {
+    const { loadUniversityTranslationsForLanguage } = await import("../../frontend/javascript/university-translations.js");
+    await loadUniversityTranslationsForLanguage("rus", true);
+  } finally {
+    global.fetch = previousFetch;
+  }
+  setLanguage("rus", { persist: false, emit: false });
+  window.location.search = "";
+  const university = { id: "ux-localized-description", admission_categories: [{
+    id: "first-year", label: "First-year", scope: "general", study_level: "Bachelor", applicant_route: "first_year",
+    description: source, requirement_profiles: [{ id: "applicant", description: localized, requirements: {} }],
+  }] };
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null });
+  assert.equal(container.innerHTML.split(localized).length - 1, 1);
+  setLanguage("eng", { persist: false, emit: false });
 });

@@ -1,0 +1,191 @@
+[
+  {
+    "description": "The curriculum combines programming, algorithms, discrete mathematics, and probability with system design in computation structures, electrical circuits, and signal processing. Students add coursework from electrical engineering tracks and further Course 6 subjects.",
+    "description_ru": "Учебный план объединяет программирование, алгоритмы, дискретную математику и теорию вероятностей с проектированием вычислительных структур, электрических цепей и систем обработки сигналов. Студенты также выбирают предметы из направлений электротехники и другие курсы Course 6.",
+    "name": "Electrical Engineering with Computing (Course 6-5)",
+    "id": "mit-bs-6-5",
+    "department": "Department of Electrical Engineering and Computer Science",
+    "source_url": "https://catalog.mit.edu/degree-charts/electrical-engineering-computing-course-6-5/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The program covers microeconomics, macroeconomics, statistical methods, and econometric data science, with advanced economics electives. The degree chart also includes a thesis option and electives in areas such as economic modeling, market design, and public policy.",
+    "description_ru": "Программа охватывает микроэкономику, макроэкономику, статистические методы и эконометрику с анализом данных, а также углублённые курсы по экономике. В плане также предусмотрены дипломная работа и выборные курсы по экономическому моделированию, дизайну рынков и государственной политике.",
+    "name": "Economics (Course 14-1)",
+    "id": "mit-bs-14-1",
+    "department": "Department of Economics",
+    "source_url": "https://catalog.mit.edu/degree-charts/economics-course-14/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum combines economics, corporate financial accounting, business communication, organizational processes, and probability or statistics. Students select a management concentration and supporting electives such as operations management, marketing, strategy, or investments.",
+    "description_ru": "Учебный план сочетает экономику, финансовый учёт компаний, деловую коммуникацию, организационные процессы и теорию вероятностей или статистику. Студенты выбирают специализацию в менеджменте и дополнительные курсы, например по управлению операциями, маркетингу, стратегии или инвестициям.",
+    "name": "Management (Course 15-1)",
+    "id": "mit-bs-15-1",
+    "department": "MIT Sloan School of Management",
+    "source_url": "https://catalog.mit.edu/degree-charts/management-course-15-1/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The program centers on architectural design studios and techniques, with coursework in building environmental technologies, structural design, computational making, and modern architecture. The degree chart also includes restricted electives and an undergraduate thesis.",
+    "description_ru": "Программа сосредоточена на архитектурных проектных студиях и методах проектирования, а также включает технологии среды зданий, конструктивное проектирование, вычислительные методы изготовления и современную архитектуру. План также предусматривает выборные курсы и дипломную работу.",
+    "name": "Architecture (Course 4)",
+    "id": "mit-bs-4",
+    "department": "Department of Architecture",
+    "source_url": "https://catalog.mit.edu/degree-charts/architecture-course-4/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum combines design studios in objects, interaction, or information visualization with visual communication, design across scales, art and spatial practices, computational making, and design history. It also includes a research seminar and undergraduate thesis.",
+    "description_ru": "Учебный план сочетает студии проектирования объектов, взаимодействия или визуализации информации с визуальной коммуникацией, проектированием на разных масштабах, художественными и пространственными практиками, вычислительными методами изготовления и историей дизайна. Также предусмотрены исследовательский семинар и дипломная работа.",
+    "name": "Art and Design (Course 4-B)",
+    "id": "mit-bs-4-b",
+    "department": "Department of Architecture",
+    "source_url": "https://catalog.mit.edu/degree-charts/architecture-course-4-b/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The program combines urban design and development, public policy, microeconomics, and spatial analysis using GIS. Students build a planned set of urban studies and planning electives and complete a senior thesis or project.",
+    "description_ru": "Программа объединяет городской дизайн и развитие, государственную политику, микроэкономику и пространственный анализ с помощью ГИС. Студенты составляют план выборных курсов по городским исследованиям и планированию и выполняют дипломную работу или проект.",
+    "name": "Planning (Course 11)",
+    "id": "mit-bs-11",
+    "department": "Department of Urban Studies and Planning",
+    "source_url": "https://catalog.mit.edu/degree-charts/planning-course-11/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum combines chemistry, molecular biology, genetics, and chemical engineering. Required subjects include biochemical and chemical engineering thermodynamics, fluid mechanics, transport processes, laboratory work, and advanced chemical engineering topics.",
+    "description_ru": "Учебный план объединяет химию, молекулярную биологию, генетику и химическую инженерию. Обязательные предметы включают биохимическую и химико-инженерную термодинамику, механику жидкости, процессы переноса, лабораторную работу и углублённые темы химической инженерии.",
+    "name": "Chemical-Biological Engineering (Course 10-B)",
+    "id": "mit-bs-10-b",
+    "department": "Department of Chemical Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/chemical-biological-engineering-course-10-b/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "This department-recommended chemical engineering plan includes thermodynamics, fluid mechanics, transport processes, and differential equations. Students form a coherent program of study through restricted electives, including laboratory options across chemical, biological, materials, and related engineering areas.",
+    "description_ru": "Рекомендуемый кафедрой план по химической инженерии включает термодинамику, механику жидкости, процессы переноса и дифференциальные уравнения. Студенты формируют целостный учебный план с помощью выборных курсов, включая лабораторные варианты по химической, биологической, материаловедческой и смежным инженерным областям.",
+    "name": "Chemical Engineering as Recommended by the Department of Chemical Engineering (Course 10-C)",
+    "id": "mit-bs-10-c",
+    "department": "Department of Chemical Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/chemical-engineering-course-10-c/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum establishes foundations in programming, probability, civil and environmental engineering design, and environmental data analysis. Students choose core coursework in areas such as environmental systems, mechanics and materials, or energy, transportation, and societal systems.",
+    "description_ru": "Учебный план даёт основы программирования, теории вероятностей, проектирования в гражданской и экологической инженерии и анализа экологических данных. Студенты выбирают профильные курсы в таких областях, как экологические системы, механика и материалы либо энергетика, транспорт и общественные системы.",
+    "name": "Engineering (Course 1-ENG)",
+    "id": "mit-bs-1-eng",
+    "department": "Department of Civil and Environmental Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/engineering-civil-environmental-engineering-course-1-eng/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The core covers design, mechanics and materials, dynamics and control, thermal-fluids engineering, numerical computation, and measurement. Students complete an approved concentration of engineering electives that forms a focused area of study.",
+    "description_ru": "Основная программа охватывает проектирование, механику и материалы, динамику и управление, тепловые и гидродинамические процессы, численные методы и измерения. Студенты проходят утверждённую концентрацию инженерных курсов, формирующую профильную область изучения.",
+    "name": "Engineering (Course 2-A)",
+    "id": "mit-bs-2-a",
+    "department": "Department of Mechanical Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/mechanical-engineering-course-2-a/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum covers chemical engineering fundamentals, including thermodynamics, fluid mechanics, transport processes, and reaction kinetics. Students choose a concentration through related engineering and science electives and laboratory subjects.",
+    "description_ru": "Учебный план охватывает основы химической инженерии, включая термодинамику, механику жидкости, процессы переноса и кинетику реакций. Студенты выбирают концентрацию с помощью связанных инженерных и естественно-научных курсов и лабораторных предметов.",
+    "name": "Engineering (Course 10-ENG)",
+    "id": "mit-bs-10-eng",
+    "department": "Department of Chemical Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/engineering-chemical-engineering-course-10-eng/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The core includes engineering materials and structures, signals and systems, fluid dynamics, thermodynamics and propulsion, and control or dynamics. Students build an approved concentration and complete design, testing, or development work in flight vehicles, space systems, or autonomous vehicles.",
+    "description_ru": "Основная программа включает инженерные материалы и конструкции, сигналы и системы, гидродинамику, термодинамику и силовые установки, а также управление или динамику. Студенты формируют утверждённую концентрацию и выполняют проектную, испытательную или конструкторскую работу по летательным аппаратам, космическим системам или автономным транспортным средствам.",
+    "name": "Engineering (Course 16-ENG)",
+    "id": "mit-bs-16-eng",
+    "department": "Department of Aeronautics and Astronautics",
+    "source_url": "https://catalog.mit.edu/degree-charts/engineering-aeronautics-astronautics-course-16-eng/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum combines thermal-fluids engineering and differential equations with nuclear engineering, ionizing radiation, and nuclear detection laboratory work. Students study a fission or fusion energy system and select computational and mathematics coursework.",
+    "description_ru": "Учебный план сочетает тепловые и гидродинамические процессы и дифференциальные уравнения с ядерной инженерией, ионизирующим излучением и лабораторной работой по ядерному детектированию. Студенты изучают систему ядерного деления или синтеза и выбирают курсы по вычислительным методам и математике.",
+    "name": "Engineering (Course 22-ENG)",
+    "id": "mit-bs-22-eng",
+    "department": "Department of Nuclear Science and Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/engineering-nuclear-science-engineering-course-22-eng/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The program studies material structure, thermodynamics, mechanics, synthesis and design, microstructural evolution, and electronic, optical, and magnetic properties. Laboratory and processing subjects connect these topics to materials projects and manufacturing.",
+    "description_ru": "Программа изучает структуру материалов, термодинамику, механику, синтез и проектирование, эволюцию микроструктуры, а также электронные, оптические и магнитные свойства. Лабораторные курсы и обработка материалов связывают эти темы с проектной работой и производством.",
+    "name": "Materials Science and Engineering (Course 3)",
+    "id": "mit-bs-3",
+    "department": "Department of Materials Science and Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/materials-science-engineering-course-3/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "Students follow a department-recommended plan centered on materials structure and thermodynamics, then select additional materials subjects such as mechanics, synthesis, computational methods, microstructures, properties, processing, and laboratory work. The chart requires a submitted plan of study.",
+    "description_ru": "Студенты следуют рекомендованному кафедрой плану, основанному на структуре и термодинамике материалов, а затем выбирают дополнительные предметы по механике, синтезу, вычислительным методам, микроструктурам, свойствам, обработке материалов и лабораторной работе. План предусматривает представление индивидуального учебного плана.",
+    "name": "Materials Science and Engineering (Course 3-A)",
+    "id": "mit-bs-3-a",
+    "department": "Department of Materials Science and Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/materials-science-engineering-course-3-a/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The core combines mechanical engineering in materials, dynamics and control, thermal-fluids, numerical computation, and instrumentation with ocean-focused subjects in hydrodynamics, marine power and propulsion, and ocean engineering design and experimentation.",
+    "description_ru": "Основная программа объединяет механику и материалы, динамику и управление, тепловые и гидродинамические процессы, численные методы и приборные измерения с предметами по океанической инженерии: гидродинамике, судовой энергетике и силовым установкам, а также проектированию и экспериментам.",
+    "name": "Mechanical and Ocean Engineering (Course 2-OE)",
+    "id": "mit-bs-2-oe",
+    "department": "Department of Mechanical Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/mechanical-ocean-engineering-course-2-oe/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum covers nuclear engineering and ionizing radiation alongside applied nuclear physics, computation, and mathematics. Students complete laboratory and advanced electives in nuclear science and engineering.",
+    "description_ru": "Учебный план охватывает ядерную инженерию и ионизирующее излучение, а также прикладную ядерную физику, вычислительные методы и математику. Студенты выполняют лабораторную работу и выбирают углублённые курсы по ядерной науке и инженерии.",
+    "name": "Nuclear Science and Engineering (Course 22)",
+    "id": "mit-bs-22-ug",
+    "department": "Department of Nuclear Science and Engineering",
+    "source_url": "https://catalog.mit.edu/degree-charts/nuclear-science-engineering-course-22/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "Students study anthropology through subjects on comparing human cultures, how culture works, and the meaning of life, with further anthropology electives. The chart also lists ethnography and fieldwork, and allows a thesis option developed with an advisor.",
+    "description_ru": "Студенты изучают антропологию на курсах о сравнении человеческих культур, устройстве культуры и смысле жизни, а также выбирают дополнительные предметы по антропологии. В плане также указаны этнография и полевые исследования; дипломная работа возможна по согласованию с научным руководителем.",
+    "name": "Anthropology (Course 21A)",
+    "id": "mit-bs-21a",
+    "department": "Anthropology Section",
+    "source_url": "https://catalog.mit.edu/degree-charts/anthropology-course-21a/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The required curriculum begins with media studies and a media practice or production subject, with further study selected from the CMS curriculum. Chart-listed options include game design, documentary, virtual reality, spatial sound, educational technology, and digital humanities.",
+    "description_ru": "Обязательная программа начинается с изучения медиа и предмета по медиапрактике или производству; дальнейшие курсы выбираются из программы CMS. Среди вариантов в плане указаны разработка игр, документалистика, виртуальная реальность, пространственный звук, образовательные технологии и цифровые гуманитарные науки.",
+    "name": "Comparative Media Studies (CMS)",
+    "id": "mit-bs-cms",
+    "department": "Comparative Media Studies/Writing Program",
+    "source_url": "https://catalog.mit.edu/degree-charts/comparative-media-studies-cms/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "Students follow a language-based course of study in French, German, or Spanish, combining advanced language work with cultural and humanities subjects. The degree chart presents separate requirements for each language area.",
+    "description_ru": "Студенты выбирают обучение на основе французского, немецкого или испанского языка, сочетая углублённые языковые курсы с предметами по культуре и гуманитарным наукам. В degree chart приведены отдельные требования для каждой языковой области.",
+    "name": "Global Studies and Languages (Course 21G)",
+    "id": "mit-bs-21g",
+    "department": "Global Languages Section",
+    "source_url": "https://catalog.mit.edu/degree-charts/global-studies-languages-course-21g/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "description": "The curriculum combines a history seminar, theories and methods in historical study, pre-thesis work, and a thesis. Students build a coherent elective plan across two geographical areas, including both premodern and modern history.",
+    "description_ru": "Учебный план сочетает семинар по истории, теории и методы исторического исследования, подготовку к дипломной работе и саму работу. Студенты составляют целостный план выборных курсов по двум географическим областям, включая как до-модерную, так и современную историю.",
+    "name": "History (Course 21H)",
+    "id": "mit-bs-21h",
+    "department": "History Section",
+    "source_url": "https://catalog.mit.edu/degree-charts/history-course-21h/",
+    "verified_at": "2026-09-29"
+  }
+]

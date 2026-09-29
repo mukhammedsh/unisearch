@@ -5,7 +5,7 @@
 - **Communication:** Communicate with the user in Russian unless they request another language.
 - **Repository language:** Keep the project itself in English. Write source code, identifiers, code comments, logs, developer-facing messages, documentation, issue/PR text, commit messages, and `CHANGELOG.md` entries in English. Russian is allowed only in Russian localization files and source data whose actual content is Russian.
 - **Product scope:** Cover university information across undergraduate, master's, doctoral, and professional programs. Keep each fact tied to its applicable study level, program, applicant category, and admissions cycle; do not apply a policy from one scope to another.
-- **Admissions direction:** Before changing the university catalog, admissions or funding data, related APIs, or applicant UI, read [the admissions product model](docs/admissions-product-model.md) and track progress in [the migration checklist](todo.md). They define the distinction between a subject, a study option, and the actual application target, plus the agreed delivery order.
+- **Admissions direction:** Before changing the university catalog, admissions or funding data, related APIs, or applicant UI, read [the admissions product model](docs/admissions-product-model.md) and track progress in [the task checklist](todo.md). Reuse the existing profile fields and keep one selected program/route/applicant/cycle context across facts and estimates. Prove the MIT, Imperial Computing, and Stanford CS contrast journeys and review their UX before mass migration; complete MIT, the other top-five institutions, and the remaining 45 afterward.
 - **Implementation:** Follow established project patterns. Find the nearest code and design analogue before writing new code. Do not modify files outside the task.
 - **Commits:** Write meaningful English commit messages from the user’s perspective, without bot attribution.
 - **Encoding:** Before every commit, run `npm run fix:encoding` followed by `npm run check:encoding`. Never commit mojibake, BOM, or invalid UTF-8.
@@ -46,7 +46,7 @@
 ## 4. Core product logic
 
 - **UniFit:** Implemented in `backend/app/services/ai_scoring.py` as composite personalized ranking.
-- **UniChance:** A `score_profile` enables admitted-score-based estimates. Without one, the API may return a low-confidence `estimated_fallback` or no estimate. Never present a proxy as a verified probability or convert missing data into numeric zero.
+- **UniChance:** The provisional 0–100 value is the share of evaluable published academic and language minimum checks met for the applicable admission path. It is not an admission probability or an aid prediction. Missing evidence or no measurable published minimums yields no score; a verified failure can yield zero. Published admitted-score ranges and acceptance rates are separate facts. Follow the scoring contract in the admissions product model.
 - **ML scoring:** Implemented in `backend/app/services/ml_scoring.py`, with multilingual-e5 embeddings. If the neural model is unavailable, the system reports `unavailable` mode without silent lexical fallback.
 - **Runtime URLs:** Never hardcode API addresses. Use the existing frontend runtime configuration.
 
