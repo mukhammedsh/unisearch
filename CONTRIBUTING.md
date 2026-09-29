@@ -9,6 +9,8 @@ UniSearch is primarily a maintainer-led project with community contributions. Ex
 - Do not add dependencies unless they solve a clear problem and fit an open-source project.
 
 ## Local Setup
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) before setting up the Python environment.
+
 ```bash
 npm install
 cp backend/.env.example backend/.env
@@ -29,7 +31,7 @@ source backend/.venv/bin/activate
 
 Then install backend dependencies and start both servers:
 ```bash
-pip install -r backend/requirements.txt
+uv pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
 npm run dev:backend
 npm run dev:frontend
 ```

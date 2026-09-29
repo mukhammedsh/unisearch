@@ -39,7 +39,7 @@ University detail pages include a study-level data coverage summary for programs
 
 ## Run locally
 
-The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from the repository root.
+The CI baseline is **Python 3.12 and Node.js 20**. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first, then run the commands below from the repository root.
 
 1. Install Node dependencies and create a Python environment:
 
@@ -69,7 +69,7 @@ The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from t
 3. Install backend dependencies:
 
    ```sh
-   python -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+   uv pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
    ```
 
 4. In `backend/.env`, disable interest translation unless you run a separate LibreTranslate service:
@@ -153,7 +153,7 @@ npm run audit:data
 For tests, install the additional dependencies in the active Python environment and the Playwright browser:
 
 ```sh
-python -m pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
+uv pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 npx playwright install chromium
 npm run test:fast               # fast combined unit + backend tests
 npm run test:backend            # all backend tests (or: npm run test:backend -- <test_name>)
