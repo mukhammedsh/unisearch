@@ -7635,6 +7635,12 @@ body[data-page="university"],
   }
 }
 
+@media (max-width: 480px) {
+  .d-container {
+    overflow-x: clip;
+  }
+}
+
 /* MIT pilot: keep the chosen course and its next action ahead of supporting data. */
 .university--mit #tab-programs .program-card__title {
   font-size: var(--text-md);
