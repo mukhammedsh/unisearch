@@ -10,7 +10,6 @@ All notable project changes should be recorded here.
 - Require operations authorization for every supported true health-warmup value and for protected routes served under an ASGI root path.
 - Filter credential headers, session fields, and the configured operations header from both Sentry error events and transactions; disable stack-frame local capture to avoid retaining raw request copies.
 - Keep ClusterFuzzLite compilation unprivileged, install a hash-locked schema dependency set, and bundle backend imports and catalog data into both fuzz targets.
-- Measure the MIT program title and badge in the same animation frame to prevent false E2E alignment failures without relaxing the layout assertion.
 
 ### Changed
 - Add same-origin opener isolation and disable legacy cross-domain policies on API responses.
