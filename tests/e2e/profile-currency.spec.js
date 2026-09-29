@@ -43,10 +43,12 @@ test.describe("Profile Budget Multi-Currency", () => {
     await budgetInput.fill("20000");
     await budgetInput.dispatchEvent("input");
     await expect(grantHint).toBeHidden();
+    await page.fill("#familyIncomeInput", "85000");
+    await setNativeSelect(page, "familyIncomeCurrencySelect", "EUR");
 
     // Save profile
     await page.click(selectors.saveProfileBtn);
-    await page.click(selectors.profileCloseBtn);
+    await page.goto("/index.html");
 
     // 3. Switch currency to KZT via settings
     await page.click("#settingsBtn");
@@ -60,6 +62,8 @@ test.describe("Profile Budget Multi-Currency", () => {
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
     await expect(budgetUnit).toContainText("KZT / year");
+    await expect(page.locator("#familyIncomeInput")).toHaveValue("85000");
+    await expect(page.locator("#familyIncomeCurrencySelect")).toHaveValue("EUR");
 
     // Stored 20,000 USD converted to KZT (~9,000,000 - 10,000,000 KZT)
     const convertedBudgetVal = await budgetInput.inputValue();

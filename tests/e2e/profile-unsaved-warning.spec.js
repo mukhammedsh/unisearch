@@ -43,6 +43,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.click(selectors.saveProfileBtn);
     await expect(page.locator(selectors.saveProfileBtn)).toBeDisabled();
     await expect(page.locator("#profileSaveState")).toHaveText("Saved on this device");
+    await expect(page.locator("#profileSaveState")).toBeVisible();
     await expect(page.locator("#toast-container .toast")).toHaveCount(0);
 
     const check = await page.evaluate(() => {
@@ -94,5 +95,27 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.click(selectors.profileBtn);
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
     await expect(page.locator(selectors.budgetInput)).toHaveValue("");
+  });
+
+  test("profile save state displays 'Сохранено' to the left of the back button in Russian", async ({ page }) => {
+    await markTourAsSeen(page);
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_ui_language_v1", "rus");
+    });
+    await page.goto("/profile.html");
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+
+    await page.fill(selectors.budgetInput, "50000");
+    await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
+    await page.click(selectors.saveProfileBtn);
+    await expect(page.locator(selectors.saveProfileBtn)).toBeDisabled();
+
+    const saveState = page.locator("#profileSaveState");
+    await expect(saveState).toBeVisible();
+    await expect(saveState).toHaveText("Сохранено");
+
+    const saveStateBox = await saveState.boundingBox();
+    const backBtnBox = await page.locator(selectors.profileCloseBtn).boundingBox();
+    expect(saveStateBox.x + saveStateBox.width).toBeLessThanOrEqual(backBtnBox.x);
   });
 });

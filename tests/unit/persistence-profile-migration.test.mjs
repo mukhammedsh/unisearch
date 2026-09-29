@@ -55,6 +55,12 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(isLegacyProfile({ _v: 2, gpa_scale: 5 }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, gpa_raw: 4.85 }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, user_gpa_scale: 5 }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, study_level: 'Master' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, familyIncome: 'under_85k' }), false);
+      assert.strictEqual(isLegacyProfile({ _v: 2, family_income_bracket: 'under_85k' }), false);
+      assert.strictEqual(isLegacyProfile({ _v: 2, family_income: 'under_85k' }), false);
+      assert.strictEqual(isLegacyProfile({ _v: 2, citizenships: 'KZ, US' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, country_of_education: 'KZ' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, selected_admission_choices: {} }), true);
 
       // Contains legacy keys in exams
@@ -334,6 +340,30 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
   });
 
   describe('Legacy profile migration on loadProfile()', () => {
+    test('preserves legacy family income buckets as opaque local profile data', () => {
+      const original = {
+        _v: PROFILE_VERSION,
+        major: 'Physics',
+        familyIncome: 'under_85k',
+        family_income: '85k_140k',
+        family_income_bracket: 'over_200k',
+      };
+      mockStore['unisearch_profile'] = JSON.stringify(original);
+
+      const loaded = loadProfile();
+
+      assert.strictEqual(loaded.major, 'Physics');
+      assert.strictEqual(loaded.familyIncome, 'under_85k');
+      assert.strictEqual(loaded.family_income, '85k_140k');
+      assert.strictEqual(loaded.family_income_bracket, 'over_200k');
+      assert.deepStrictEqual(JSON.parse(mockStore['unisearch_profile']), original);
+      const writesAfterFirstLoad = setItemCalls;
+      assert.strictEqual(loadProfile().family_income_bracket, 'over_200k');
+      assert.strictEqual(setItemCalls, writesAfterFirstLoad, 'Current profiles with opaque legacy buckets must not be migrated repeatedly');
+      assert.strictEqual(loadProfileForApi().family_income_bracket, undefined);
+      assert.strictEqual(setItemCalls, writesAfterFirstLoad, 'API projection must not trigger another profile migration write');
+    });
+
     test('migrates full legacy profile with snake_case and camelCase legacy aliases', () => {
       const legacyStoredProfile = {
         name: 'Legacy Student',
@@ -341,6 +371,17 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
         // NOTE: legacy nickname in `name` must be stripped by migration.
         budget_currency: 'EUR',
         funding_type: 'grant',
+        study_level: 'Master',
+        family_income_bracket: 'under_85k',
+        citizenships: 'KZ, US, kz',
+        country_of_education: 'KZ',
+        education_credential: 'other',
+        education_credential_other: 'NIS Grade 12',
+        applicant_route: 'first_year',
+        intended_entry_cycle: '2027 Fall',
+        current_residence_country: 'OTHER',
+        current_residence_other: 'XK',
+        fee_status_context: 'unknown',
         gpa: 4.85,
         gpa_scale: 5,
         selected_admission_choices: {
@@ -400,6 +441,20 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(loaded.major, 'Informatics');
       assert.strictEqual(loaded.interests, 'Distributed systems');
       assert.strictEqual(loaded.studyMode, 'Campus');
+      assert.strictEqual(loaded.studyLevel, 'Master');
+      assert.strictEqual(loaded.study_level, undefined);
+      assert.strictEqual(loaded.family_income_bracket, 'under_85k');
+      assert.strictEqual(loaded.familyIncome, undefined);
+      assert.strictEqual(loadProfileForApi().family_income_bracket, undefined);
+      assert.deepStrictEqual(loaded.citizenships, ['KZ', 'US']);
+      assert.strictEqual(loaded.citizenship, 'KZ');
+      assert.strictEqual(loaded.countryOfEducation, 'KZ');
+      assert.strictEqual(loaded.educationCredentialOther, 'NIS Grade 12');
+      assert.strictEqual(loaded.applicantRoute, 'first_year');
+      assert.strictEqual(loaded.intendedEntryCycle, '2027 Fall');
+      assert.strictEqual(loaded.currentResidenceCountry, 'OTHER');
+      assert.strictEqual(loaded.currentResidenceOther, 'XK');
+      assert.strictEqual(loaded.feeStatusContext, 'unknown');
 
       // Verify canonical selectedAdmissionChoices
       assert.strictEqual(loaded.selected_admission_choices, undefined);

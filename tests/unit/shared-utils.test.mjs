@@ -657,8 +657,13 @@ test('modeAwareAnnualCost', async (t) => {
     assert.strictEqual(modeAwareAnnualCost(finance, 'on-campus'), 35000);
   });
 
-  await t.test('returns 0 when online data completely missing', () => {
-    assert.strictEqual(modeAwareAnnualCost({}, 'online'), 0);
+  await t.test('keeps absent costs unknown and preserves an explicit zero', () => {
+    assert.strictEqual(modeAwareAnnualCost({}, 'online'), null);
+    assert.strictEqual(modeAwareAnnualCost({}, 'on-campus'), null);
+    assert.strictEqual(modeAwareAnnualCost({ total_cost_year_usd: null }, 'on-campus'), null);
+    assert.strictEqual(modeAwareAnnualCost({ costs_breakdown_year_usd: { Tuition: null } }, 'online'), null);
+    assert.strictEqual(modeAwareAnnualCost({ total_cost_year_usd: 0 }, 'on-campus'), 0);
+    assert.strictEqual(modeAwareAnnualCost({ costs_breakdown_year_usd: { Tuition: 0 } }, 'online'), 0);
   });
 });
 

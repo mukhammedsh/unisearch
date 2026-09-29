@@ -170,6 +170,15 @@ export function translateAdmissionText(value, fallback = "") {
   return out;
 }
 
+export function translateFundingAwardField(award, field, value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return t("university.finance.award_unknown", "Not published");
+  const awardId = String(award?.id || "").trim();
+  const fieldKey = String(field || "").trim();
+  if (!awardId || !fieldKey) return raw;
+  return t(`university.finance.award.copy.${awardId}.${fieldKey}`, raw);
+}
+
 export function translateTrackLabel(value, fallback = "") {
   const raw = String(value || "").trim();
   if (!raw) return String(fallback || "");

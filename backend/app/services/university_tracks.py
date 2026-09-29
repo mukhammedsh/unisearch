@@ -351,6 +351,13 @@ def _admission_choice_from_parts(
         "scholarships": copy.deepcopy(profile.get("scholarships", category.get("scholarships", []))),
         "applicable_majors": copy.deepcopy(profile.get("applicable_majors", category.get("applicable_majors", []))),
         "scope": copy.deepcopy(profile.get("scope", category.get("scope"))),
+        "study_levels": copy.deepcopy(profile.get("study_levels", category.get("study_levels", []))),
+        "study_level": copy.deepcopy(profile.get("study_level", category.get("study_level"))),
+        "applicant_route": copy.deepcopy(profile.get("applicant_route", category.get("applicant_route"))),
+        "application_scope": copy.deepcopy(profile.get("application_scope", category.get("application_scope"))),
+        "target": copy.deepcopy(profile.get("target", category.get("target"))),
+        "major_selection": copy.deepcopy(profile.get("major_selection", category.get("major_selection"))),
+        "cycle": copy.deepcopy(profile.get("cycle", category.get("cycle"))),
         "program_ids": copy.deepcopy(profile.get("program_ids", category.get("program_ids", []))),
         "program_names": copy.deepcopy(profile.get("program_names", category.get("program_names", []))),
     }
@@ -380,7 +387,7 @@ def _admission_choice_from_parts(
     return choice
 
 
-def expand_admission_choices(categories: Any) -> List[Dict[str, Any]]:
+def expand_admission_choices(categories: Any, *, include_funding: bool = True) -> List[Dict[str, Any]]:
     if not isinstance(categories, list):
         return []
 
@@ -393,6 +400,9 @@ def expand_admission_choices(categories: Any) -> List[Dict[str, Any]]:
         if not profile_rows:
             profile_rows = [{"id": "general", "label": category.get("label") or "General requirements"}]
         for profile in profile_rows:
+            if not include_funding:
+                expanded.append(_admission_choice_from_parts(category, profile))
+                continue
             options = _funding_options_from_profile_or_category(category, profile)
             if not options:
                 expanded.append(_admission_choice_from_parts(category, profile))
@@ -408,6 +418,31 @@ def _derive_track_applicable_majors(
     explicit = track.get("applicable_majors")
     if isinstance(explicit, list) and explicit:
         return _uniq_non_empty(explicit)
+
+    linked_names = track.get("program_names")
+    if isinstance(linked_names, str):
+        linked_names = [linked_names]
+    linked_names = _uniq_non_empty(linked_names if isinstance(linked_names, list) else [])
+
+    linked_ids = track.get("program_ids")
+    if isinstance(linked_ids, str):
+        linked_ids = [linked_ids]
+    if not isinstance(linked_ids, list):
+        linked_ids = []
+    linked_ids = {
+        str(program_id or "").strip().lower()
+        for program_id in linked_ids
+    }
+    linked_ids.discard("")
+
+    if linked_names or linked_ids:
+        linked_program_names = [*linked_names]
+        if linked_ids:
+            for program in _iter_programs(u):
+                program_id = str(program.get("id") or "").strip().lower()
+                if program_id in linked_ids:
+                    linked_program_names.append(program.get("name") or program.get("program_name"))
+        return _uniq_non_empty(linked_program_names)
 
     program_names = _track_program_names(u)
     if not program_names:

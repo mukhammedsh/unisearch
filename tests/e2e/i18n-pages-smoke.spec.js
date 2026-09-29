@@ -7,7 +7,7 @@ const LOCALES = [
     guide: "Guide",
     filter: "Filter",
     searchPlaceholder: "Search university...",
-    backToList: "Back to list",
+    backToList: "Back",
     programsTab: "Programs",
   },
   {
@@ -15,7 +15,7 @@ const LOCALES = [
     guide: "Гайд",
     filter: "Фильтр",
     searchPlaceholder: "Поиск университета...",
-    backToList: "Назад к списку",
+    backToList: "Назад",
     programsTab: "Программы",
   },
 ];
@@ -83,7 +83,7 @@ test("university detail page updates key UI texts for eng/rus", async ({ page })
   for (const locale of LOCALES) {
     await switchLanguage(page, locale.code);
     await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText(locale.guide);
-    await expect(page.locator("[data-i18n='university.back_to_list']")).toContainText(locale.backToList);
+    await expect(page.locator("#detailBackBtn")).toHaveAttribute("aria-label", locale.backToList);
     await expect(page.locator(".d-tab-btn[data-tab='tab-programs'] [data-i18n='university.tab.programs']")).toContainText(locale.programsTab);
     await expect(page.locator("#detailLocation img.flag-icon-inline")).toHaveCount(1);
     await expect(page.locator("#detailScholarshipInfo")).toContainText(
@@ -112,4 +112,45 @@ test("language switching preserves the detail ID after client-side navigation", 
   await page.reload();
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailLoading")).not.toHaveClass(/is-visible/);
+});
+
+test("client-side navigation with Russian language renders destination page directly in Russian without English flash", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "rus");
+  });
+
+  await page.goto("/index.html");
+  await expect(page.locator("#profileBtn")).toBeVisible();
+
+  // Install a MutationObserver to detect if any newly attached DOM contains raw English i18n text
+  await page.evaluate(() => {
+    window.__sawEnglishFlash = false;
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          const aboutTitle = node.matches?.("[data-i18n='about.title']")
+            ? node
+            : node.querySelector?.("[data-i18n='about.title']");
+          if (aboutTitle && aboutTitle.textContent.includes("We are the abiturient team")) {
+            window.__sawEnglishFlash = true;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+
+  // Navigate to About page via client-side routing
+  const aboutLink = page.locator(".footer-product-links a[data-route='about']");
+  await expect(aboutLink).toBeVisible();
+  await aboutLink.click();
+
+  const aboutHeading = page.locator("[data-i18n='about.title']");
+  await expect(aboutHeading).toBeVisible();
+  await expect(aboutHeading).toContainText("Мы — команда абитуриентов, создавшая UniSearch.");
+
+  const sawEnglish = await page.evaluate(() => window.__sawEnglishFlash);
+  expect(sawEnglish).toBe(false);
 });

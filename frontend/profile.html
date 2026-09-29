@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="./" />
-  <link rel="icon" href="images/minilogo.png" type="image/png">
+  <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.profile">Applicant Profile | UniSearch</title>
   <meta name="description" content="Configure your applicant profile, academic test scores, and university preferences to get personalized admission estimates." />
   <meta name="theme-color" content="#5D17EB" />
@@ -20,7 +20,7 @@
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1586" />
   <meta property="og:image:height" content="992" />
-  <meta property="og:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta property="og:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -28,7 +28,7 @@
   <meta name="twitter:title" content="Applicant Profile | UniSearch" />
   <meta name="twitter:description" content="Configure your academic background and test scores for personalized matching." />
   <meta name="twitter:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
-  <meta name="twitter:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
 
@@ -109,7 +109,7 @@
               </div>
 
               <div class="profile-field">
-                <div class="profile-budget profile-budget--with-unit">
+                <div class="profile-budget profile-budget--with-unit ui-input-composite">
                   <label class="sr-only" for="budgetInput" data-i18n="profile.label.budget">Total Budget / year</label>
                   <input
                     id="budgetInput"
@@ -125,22 +125,31 @@
                 </div>
                 <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0–1,000,000</div>
               </div>
+            </article>
 
-              <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
-                <div class="profile-budget-grant-hint__content">
-                  <span data-heroicon="sparkles" data-icon-size="16"></span>
-                  <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
-                    Budget is under $1000. Maybe you need Grant only.
-                  </span>
+            <!-- Optional household financial context -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.family_income">Annual family income</h3>
+              </div>
+
+              <div class="profile-field">
+                <label class="sr-only" for="familyIncomeInput" data-i18n="profile.label.family_income">Annual family income</label>
+                <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                  <input
+                    id="familyIncomeInput"
+                    class="profile-input"
+                    type="text"
+                    inputmode="decimal"
+                    maxlength="15"
+                    data-i18n-placeholder="profile.placeholder.family_income"
+                    aria-label="Annual family income"
+                    data-i18n-aria-label="profile.label.family_income"
+                  />
+                  <label class="sr-only" for="familyIncomeCurrencySelect" data-i18n="profile.label.family_income_currency">Income currency</label>
+                  <select id="familyIncomeCurrencySelect" class="profile-input profile-input--select" aria-label="Income currency" data-i18n-aria-label="profile.label.family_income_currency"></select>
                 </div>
-                <div class="profile-budget-grant-hint__actions">
-                  <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
-                    Set Grant only
-                  </button>
-                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
-                    <span data-heroicon="x-mark" data-icon-size="16"></span>
-                  </button>
-                </div>
+                <div class="profile-hint" data-i18n="profile.hint.family_income_optional">Optional. Saved on this device. Income alone does not determine eligibility for financial aid.</div>
               </div>
             </article>
 
@@ -174,6 +183,157 @@
                   <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
                 </select>
               </div>
+
+              <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
+                <div class="profile-budget-grant-hint__content">
+                  <span data-heroicon="sparkles" data-icon-size="16"></span>
+                  <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
+                    Budget is under $1000. Maybe you need Grant only.
+                  </span>
+                </div>
+                <div class="profile-budget-grant-hint__actions">
+                  <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
+                    Set Grant only
+                  </button>
+                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
+                    <span data-heroicon="x-mark" data-icon-size="16"></span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Target Study Level Card -->
+            <article class="profile-card-block">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.label.study_level">Target Study Level</h3>
+              </div>
+
+              <div class="profile-field">
+                <label class="sr-only" for="studyLevelSelect" data-i18n="profile.label.study_level">Target Study Level</label>
+                <select id="studyLevelSelect" class="profile-input profile-input--select" aria-label="Target Study Level" data-i18n-aria-label="profile.label.study_level">
+                  <option value="Any" data-i18n="profile.option.study_level_any">Any / All Levels</option>
+                  <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor / Undergraduate</option>
+                  <option value="Master" data-i18n="profile.option.study_level_master">Master / Postgraduate</option>
+                  <option value="Doctorate" data-i18n="profile.option.study_level_doctorate">Doctorate / PhD</option>
+                  <option value="MBA" data-i18n="profile.option.study_level_mba">Graduate Business / MBA</option>
+                </select>
+              </div>
+            </article>
+
+            <!-- Citizenship & Residency Card -->
+            <article class="profile-card-block profile-card-block--full">
+              <div class="profile-card-head">
+                <div class="profile-card-head-row">
+                  <h3 class="profile-card-title" data-i18n="profile.label.citizenship">Citizenship &amp; Residency</h3>
+                  <span class="profile-info-wrap">
+                    <button
+                      type="button"
+                      class="profile-info"
+                      aria-label="How citizenship affects admission &amp; tuition"
+                      data-i18n-aria-label="profile.citizenship_info_title"
+                    >
+                      <span data-heroicon="information-circle" data-icon-size="16"></span>
+                    </button>
+                    <span class="profile-tooltip" role="tooltip">
+                      <strong data-i18n="profile.citizenship_info_title">How citizenship affects tuition</strong>
+                      <span data-i18n="profile.citizenship_info_tooltip">
+                        Citizenship can affect fee and aid rules, but it does not determine eligibility by itself. Universities may also consider residency history, immigration status, and program.
+                      </span>
+                    </span>
+                  </span>
+                </div>
+                <p class="profile-card-desc" data-i18n="profile.field.citizenship.desc">
+                  Select your citizenship(s). You can add multiple citizenships if you hold dual nationality.
+                </p>
+              </div>
+
+              <div class="profile-citizenship-workspace">
+                <div id="citizenshipChipsList" class="profile-citizenship-chips" role="list">
+                  <!-- Rendered dynamically -->
+                </div>
+
+                <div class="profile-citizenship-add-form">
+                  <div class="profile-citizenship-add-row">
+                    <label class="sr-only" for="citizenshipCountrySelect" data-i18n="profile.citizenship.select_country">Select Country</label>
+                    <select id="citizenshipCountrySelect" class="profile-input profile-input--select" aria-label="Select Country" data-i18n-aria-label="profile.citizenship.select_country" data-searchable="true" data-flags="off">
+                      <option value="" data-i18n="profile.citizenship.choose_placeholder">-- Choose a country / citizenship --</option>
+                      <option value="OTHER" data-i18n="profile.citizenship.other_option">Other / International</option>
+                    </select>
+                    <input
+                      type="text"
+                      id="citizenshipOtherInput"
+                      class="profile-input profile-citizenship-other-input"
+                      placeholder="Enter country name"
+                      data-i18n-placeholder="profile.citizenship.other_placeholder"
+                      style="display: none;"
+                    />
+                    <button type="button" id="addCitizenshipBtn" class="profile-button-subtle">
+                      <span data-heroicon="plus" data-icon-size="16"></span>
+                      <span data-i18n="profile.citizenship.add_btn">Add citizenship</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="profile-card-block profile-card-block--full">
+              <div class="profile-card-head">
+                <h3 class="profile-card-title" data-i18n="profile.applicant_context.title">Education and application context</h3>
+                <p class="profile-card-desc" data-i18n="profile.applicant_context.optional_hint">Optional. These details help you review each university's requirements; they do not confirm qualification recognition or fee status.</p>
+              </div>
+              <div class="profile-applicant-context-grid">
+                <div class="profile-field">
+                  <label for="countryOfEducationSelect" data-i18n="profile.applicant_context.country_education">Country where you studied</label>
+                  <select id="countryOfEducationSelect" class="profile-input profile-input--select" data-searchable="true" data-flags="off">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="OTHER" data-i18n="profile.applicant_context.other">Other</option>
+                  </select>
+                  <input id="countryOfEducationOtherInput" class="profile-input profile-context-other-input" type="text" maxlength="80" placeholder="Enter country" data-i18n-placeholder="profile.applicant_context.country_other_placeholder" hidden />
+                </div>
+                <div class="profile-field">
+                  <label for="educationCredentialSelect" data-i18n="profile.applicant_context.credential">Credential or curriculum</label>
+                  <select id="educationCredentialSelect" class="profile-input profile-input--select">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="ib" data-i18n="profile.applicant_context.credential_ib">International Baccalaureate (IB)</option>
+                    <option value="a_level" data-i18n="profile.applicant_context.credential_a_level">A levels</option>
+                    <option value="us_high_school_diploma" data-i18n="profile.applicant_context.credential_us_diploma">US high school diploma</option>
+                    <option value="national_secondary" data-i18n="profile.applicant_context.credential_national">National secondary qualification</option>
+                    <option value="vocational" data-i18n="profile.applicant_context.credential_vocational">Vocational or professional qualification</option>
+                    <option value="other" data-i18n="profile.applicant_context.other">Other</option>
+                  </select>
+                  <input id="educationCredentialOtherInput" class="profile-input profile-context-other-input" type="text" maxlength="120" placeholder="Describe your credential or curriculum" data-i18n-placeholder="profile.applicant_context.credential_other_placeholder" hidden />
+                </div>
+                <div class="profile-field">
+                  <label for="applicantRouteSelect" data-i18n="profile.applicant_context.route">Application route</label>
+                  <select id="applicantRouteSelect" class="profile-input profile-input--select">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="first_year" data-i18n="profile.applicant_context.route_first_year">First-year applicant</option>
+                    <option value="transfer" data-i18n="profile.applicant_context.route_transfer">Transfer applicant</option>
+                    <option value="graduate" data-i18n="profile.applicant_context.route_graduate">Graduate applicant</option>
+                  </select>
+                </div>
+                <div class="profile-field">
+                  <label for="intendedEntryCycleInput" data-i18n="profile.applicant_context.entry_cycle">Intended entry cycle</label>
+                  <input id="intendedEntryCycleInput" class="profile-input" type="text" maxlength="40" placeholder="e.g. 2027 Fall" data-i18n-placeholder="profile.applicant_context.entry_cycle_placeholder" />
+                </div>
+                <div class="profile-field">
+                  <label for="currentResidenceCountrySelect" data-i18n="profile.applicant_context.current_residence">Current country of residence</label>
+                  <select id="currentResidenceCountrySelect" class="profile-input profile-input--select" data-searchable="true" data-flags="off">
+                    <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                    <option value="OTHER" data-i18n="profile.applicant_context.other">Other</option>
+                  </select>
+                  <input id="currentResidenceOtherInput" class="profile-input profile-context-other-input" type="text" maxlength="80" placeholder="Enter country" data-i18n-placeholder="profile.applicant_context.country_other_placeholder" hidden />
+                </div>
+                <div class="profile-field">
+                  <label for="feeStatusContextSelect" data-i18n="profile.applicant_context.fee_context">Fee status at the university (if known)</label>
+                  <select id="feeStatusContextSelect" class="profile-input profile-input--select">
+                    <option value="unknown" data-i18n="profile.applicant_context.fee_unknown">Not sure / not confirmed</option>
+                    <option value="self_reported_home_domestic" data-i18n="profile.applicant_context.fee_home">Home / domestic (self-reported)</option>
+                    <option value="self_reported_international_overseas" data-i18n="profile.applicant_context.fee_international">International / overseas (self-reported)</option>
+                    <option value="other" data-i18n="profile.applicant_context.fee_other">Other or not sure</option>
+                  </select>
+                </div>
+              </div>
             </article>
 
           </div>
@@ -192,7 +352,7 @@
             </div>
 
             <div class="profile-field profile-field--compact profile-field--gpa">
-              <div class="profile-budget profile-budget--with-unit">
+              <div class="profile-budget profile-budget--with-unit ui-input-composite">
                 <label class="sr-only" for="gpaInput" data-i18n="profile.label.gpa">Grade Point Average (GPA)</label>
                 <input
                   id="gpaInput"
@@ -242,7 +402,7 @@
             <div class="profile-card-head">
               <h3 class="profile-card-title" data-i18n="profile.label.exams">Exams</h3>
               <p class="profile-card-desc" data-i18n="profile.field.exams.desc">
-                Select standardized academic tests you have taken to calculate your admission chances.
+                Add academic test results to check fit with published requirements.
               </p>
             </div>
 
@@ -309,7 +469,7 @@
                 <select id="langKind" class="profile-input" aria-label="Type" data-i18n-aria-label="profile.type"></select>
               </div>
 
-              <div id="cefrContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
+              <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
                 <label class="mini-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
                 <select id="langCefr" class="profile-input" aria-label="CEFR" data-i18n-aria-label="profile.cefr">
                   <option value="1">A1</option>
@@ -321,12 +481,12 @@
                 </select>
               </div>
 
-              <div id="examContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
+              <div id="examContainer" class="profile-lang-conditional lang-control-item">
                 <label class="mini-label" for="langExam" data-i18n="profile.exam">Exam</label>
                 <select id="langExam" class="profile-input" data-flags="off" aria-label="Exam" data-i18n-aria-label="profile.exam"></select>
               </div>
 
-              <div id="scoreContainer" class="profile-lang-conditional lang-control-item" style="display: none;">
+              <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
                 <label class="mini-label" for="langExamScore" data-i18n="profile.score">Score</label>
                 <input
                   id="langExamScore"

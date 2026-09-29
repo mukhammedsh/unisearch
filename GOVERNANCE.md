@@ -2,7 +2,7 @@
 
 This document details the governance structure, decision-making processes, roles, and continuity plans for the UniSearch project.
 
-UniSearch is an open-source academic search and recommendation platform dedicated to transparent, verified bachelor-level admissions discovery.
+UniSearch is an open-source academic search and recommendation platform for transparent, source-backed university discovery across undergraduate, master's, doctoral, and professional study.
 
 ---
 
@@ -11,7 +11,7 @@ UniSearch is an open-source academic search and recommendation platform dedicate
 UniSearch is led jointly by its two co-founders, balanced by transparent public discussions, community pull request reviews, and documented design and architectural standards.
 
 * **Open Discussions:** Feature proposals, scope expansions, and major refactors are discussed openly in GitHub Issues and Discussions.
-* **Merit & Quality Focus:** Decisions are guided by product mission (bachelor-level focus), design system compliance (borderless Calm Academic Workspace), verified data accuracy, and automated test coverage thresholds.
+* **Merit & Quality Focus:** Decisions are guided by the [admissions product model](docs/admissions-product-model.md), design system compliance (borderless Calm Academic Workspace), verified data accuracy, and automated test coverage thresholds.
 * **Co-founder Decisions:** Major architectural, security, and release decisions are made jointly by the co-founders.
 
 ---

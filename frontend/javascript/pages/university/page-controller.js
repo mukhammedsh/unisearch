@@ -15,8 +15,8 @@ import { t, tFormat } from "../../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities } from "../../routes.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import { initUniversityTranslations } from "../../university-translations.js";
-import { renderExtraSection, renderOverviewSection, renderProgramsSection } from "./render-content.js";
-import { renderAdmissionSection, renderFinanceSection } from "./render-sections.js";
+import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
+import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import {
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
@@ -36,7 +36,6 @@ import {
   unknownFieldText,
   writeIdListStorage,
 } from "../_shared.js";
-import { getAdmissionChoicesFromCategories } from "../../university-detail-helpers.js";
 
 let detailProfileUpdatedHandler = null;
 let detailLanguageChangedHandler = null;
@@ -44,6 +43,7 @@ let detailLanguageVisualPendingHandler = null;
 let detailLanguageFinishedHandler = null;
 let detailCurrencyChangedHandler = null;
 let detailOnlineReconnectHandler = null;
+let detailPopStateHandler = null;
 
 function clearDetailLanguageSkeletons() {
   const card = document.getElementById("detailCard");
@@ -124,35 +124,10 @@ function cleanupDetailListeners() {
     window.removeEventListener("app:online-reconnect", detailOnlineReconnectHandler);
     detailOnlineReconnectHandler = null;
   }
-}
-
-const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
-
-function setupScopeNotice() {
-  const notice = document.getElementById("universityScopeNotice");
-  if (!notice) return;
-
-  let dismissed = false;
-  try {
-    dismissed = localStorage.getItem(SCOPE_NOTICE_DISMISSED_KEY) === "1";
-  } catch (e) {
-    dismissed = false;
+  if (detailPopStateHandler) {
+    window.removeEventListener("popstate", detailPopStateHandler);
+    detailPopStateHandler = null;
   }
-
-  notice.hidden = dismissed;
-  if (dismissed) return;
-
-  const dismissBtn = document.getElementById("dismissUniversityScopeNotice");
-  if (!dismissBtn) return;
-
-  dismissBtn.addEventListener("click", () => {
-    notice.hidden = true;
-    try {
-      localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
-    } catch (e) {
-      // Ignore storage errors; the notice still closes for this page view.
-    }
-  });
 }
 
 function renderDetailLocation(university, translatedCity, translatedCountry) {
@@ -252,6 +227,7 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
     saveBtn.querySelector(".d-site-link-label").textContent = isSaved
       ? t("university.action.saved", "Saved")
       : t("university.action.save_label", "Save");
+    saveBtn.setAttribute("aria-label", saveBtn.querySelector(".d-site-link-label").textContent);
   };
 
   updateSaveBtn();
@@ -281,7 +257,6 @@ export async function initUniversityPage(options = {}) {
   const loadingEl = document.getElementById("detailLoading");
 
   cleanupDetailListeners();
-  setupScopeNotice();
   bindInfoTooltips({ wrapSelector: ".d-info-wrap", buttonSelector: ".d-info" });
 
   const setDetailLoading = (isLoading) => {
@@ -308,6 +283,7 @@ export async function initUniversityPage(options = {}) {
       initUniversityTranslations().catch(() => null),
     ]);
     const universityId = String(university.id || id);
+    document.body.classList.toggle("university--mit", universityId === "mit-usa-cambridge");
     rememberRecentUniversity(universityId);
 
     const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
@@ -316,15 +292,19 @@ export async function initUniversityPage(options = {}) {
     const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
     const translatedCity = trCity(university?.location?.city || "");
     const translatedCountry = trCountry(university?.location?.country || "");
-    const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
-    const annualCostForTrack = (track) => modeAwareAnnualCost(((track && track.finance_override) || university.finance || {}), profileStudyMode);
+    let profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
+    const profileStudyLevel = loadProfile()?.studyLevel || loadProfile()?.study_level;
+    const annualCostForTrack = (track) => {
+      const finance = getFinanceForChoice(track, university.finance);
+      return finance ? modeAwareAnnualCost(finance, profileStudyMode) : undefined;
+    };
     const minPrice = (() => {
-      const fundingOptions = getAdmissionChoicesFromCategories(university.admission_categories);
-      let value = modeAwareAnnualCost(university.finance || {}, profileStudyMode);
+      const fundingOptions = getFinanceChoicesForStudyLevel(university.admission_categories, profileStudyLevel);
+      let value = profileStudyLevel ? undefined : modeAwareAnnualCost(university.finance || {}, profileStudyMode);
       if (fundingOptions.length) {
         const prices = fundingOptions
           .map((option) => annualCostForTrack(option))
-          .filter((price) => Number.isFinite(Number(price)) && Number(price) > 0);
+          .filter((price) => price != null && Number.isFinite(Number(price)) && Number(price) >= 0);
         if (prices.length > 0) value = Math.min(...prices);
       }
       return value;
@@ -356,35 +336,46 @@ export async function initUniversityPage(options = {}) {
     let uniChance = null;
     let uniChanceByChoiceKey = new Map();
     let uniRoi = null;
+    let uniChanceRequestVersion = 0;
+    let uniRoiRequestVersion = 0;
+    let contextRevision = 0;
+    const contextProfileForApi = () => getAdmissionContextProfile(university, loadProfileForApi());
 
     const recomputeUniChance = async () => {
+      const requestVersion = ++uniChanceRequestVersion;
       try {
         const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/uni-chance`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ profile: loadProfileForApi() }),
+          body: JSON.stringify({ profile: contextProfileForApi() }),
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data?.detail || "UniChance API Error");
+        if (requestVersion !== uniChanceRequestVersion) return;
         uniChance = data || null;
       } catch (error) {
+        if (requestVersion !== uniChanceRequestVersion) return;
         console.error("Failed to compute UniChance on backend:", error);
         uniChance = null;
       }
+      if (requestVersion !== uniChanceRequestVersion) return;
       uniChanceByChoiceKey = new Map((uniChance?.choices || []).map((choice) => [String(choice.choiceKey), choice]));
     };
 
     const recomputeUniRoi = async () => {
+      const requestVersion = ++uniRoiRequestVersion;
       try {
         const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/roi`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ profile: loadProfileForApi() }),
+          body: JSON.stringify({ profile: contextProfileForApi() }),
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data?.detail || "ROI API Error");
+        if (requestVersion !== uniRoiRequestVersion) return;
         uniRoi = data || null;
       } catch (error) {
+        if (requestVersion !== uniRoiRequestVersion) return;
         console.error("Failed to compute ROI on backend:", error);
         uniRoi = null;
       }
@@ -399,9 +390,74 @@ export async function initUniversityPage(options = {}) {
         : {});
 
     renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, rankStatus, university });
+    renderCoverageSection({
+      container: document.getElementById("detailCoverage"),
+      coverageByLevel: university?.coverage_by_level,
+    });
     renderExtraSection({ container: document.getElementById("detailExtra"), university });
-    renderProgramsSection({ admissionsData, container: document.getElementById("detailPrograms"), university });
+    const resolveQualificationProgram = (profile) => {
+      const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
+      const choices = profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object"
+        ? profile.selectedAdmissionChoices
+        : {};
+      const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
+      const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
+      if (programId) {
+        const found = resolveProgramByIdentifier(programs, programId);
+        if (found) return found;
+      }
+      const targetNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
+        .map((value) => String(value || "").trim())
+        .filter(Boolean);
+      if (!targetNames.length) return null;
+      return resolveProgramByName(programs, targetNames, { allowPartial: true });
+    };
 
+    const resolveCoverageProgram = (profile) => {
+      const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
+      const choices = profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object"
+        ? profile.selectedAdmissionChoices
+        : {};
+      const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
+      const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
+      if (programId) {
+        const found = resolveProgramByIdentifier(programs, programId);
+        if (found) return found;
+      }
+      const exactNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
+        .map((value) => String(value || "").trim())
+        .filter(Boolean);
+      if (!exactNames.length) return null;
+      return resolveProgramByName(programs, exactNames);
+    };
+
+    const renderProgramsTab = () => {
+      const profile = getAdmissionContextProfile(university, loadProfile() || {});
+      const selectedProgram = resolveQualificationProgram(profile);
+      const coverageProgram = resolveCoverageProgram(profile);
+      renderProgramsSection({
+        admissionsData,
+        container: document.getElementById("detailPrograms"),
+        university,
+        profileMajor: String(profile.major || "").trim(),
+        coverageProgram,
+        onProgramAdmissionSelected: (program) => {
+          selectAdmissionProgram(university, program);
+          refreshAdmissionContext();
+          document.querySelector('.d-tab-btn[data-tab="tab-admission"]')?.click();
+          document.querySelector(".d-tabs")?.scrollIntoView({ block: "start" });
+        },
+      });
+      renderQualificationGuidance({
+        container: document.getElementById("detailQualificationGuidance"),
+        profile,
+        university,
+        program: selectedProgram,
+      });
+    };
+    renderProgramsTab();
+
+    let refreshAdmissionContext = () => {};
     const renderAdmissionTab = () => {
       renderAdmissionSection({
         annualCostForTrack,
@@ -409,27 +465,51 @@ export async function initUniversityPage(options = {}) {
         uniChance,
         uniChanceByChoiceKey,
         university,
+        onContextChange: () => refreshAdmissionContext(),
       });
     };
     renderAdmissionTab();
-    detailProfileUpdatedHandler = async () => {
-      await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
-      renderAdmissionTab();
+
+    const renderDeadlinesTab = () => {
+      renderDeadlinesTabSection({
+        container: document.getElementById("detailDeadlines"),
+        university,
+        onContextChange: () => refreshAdmissionContext(),
+      });
     };
-    window.addEventListener("profileUpdated", detailProfileUpdatedHandler);
+    renderDeadlinesTab();
 
     const scholarshipEl = document.getElementById("detailScholarshipInfo");
     const priceEl = document.getElementById("detailPrice");
 
-    renderFinanceSection({
-      annualCostForTrack,
-      container: document.getElementById("detailFinance"),
-      priceEl,
-      profileStudyMode,
-      scholarshipContainer: scholarshipEl,
-      uniRoi,
-      university,
-    });
+    const renderFinanceTab = () => {
+      renderFinanceSection({
+        annualCostForTrack,
+        container: document.getElementById("detailFinance"),
+        priceEl,
+        profileStudyMode,
+        scholarshipContainer: scholarshipEl,
+        uniRoi,
+        uniChance,
+        university,
+      });
+    };
+    renderFinanceTab();
+
+    refreshAdmissionContext = async () => {
+      const revision = ++contextRevision;
+      profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
+      await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
+      if (revision !== contextRevision) return;
+      renderAdmissionTab();
+      renderDeadlinesTab();
+      renderProgramsTab();
+      renderFinanceTab();
+    };
+    detailProfileUpdatedHandler = refreshAdmissionContext;
+    window.addEventListener("profileUpdated", detailProfileUpdatedHandler);
+    detailPopStateHandler = refreshAdmissionContext;
+    window.addEventListener("popstate", detailPopStateHandler);
 
     if (stateEl) stateEl.textContent = "";
     if (cardEl) {

@@ -57,7 +57,7 @@ import {
   renderTrackChanceChip,
   renderUniChanceSummary,
 } from "../university-detail-helpers.js";
-import { renderAdmissionSection } from "./university/render-sections.js";
+import { getFinanceForChoice, renderAdmissionSection } from "./university/render-sections.js";
 
 const COMPARE_PAIR_SIZE = 2;
 const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
@@ -149,7 +149,7 @@ function compareCardsHtml(universities) {
           const uniChance = compareChancesByUniId.get(id);
           const selectedKey = compareChoiceKey(compareAdmissionChoices.get(id));
           const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === selectedKey);
-          return trackChance ? `<div class="compare-uni-card__chance"><small>${escapeHtml(t("universities.compare.personal_estimate", "Personal estimate"))}</small>${renderTrackChanceChip(trackChance)}</div>` : "";
+          return trackChance ? `<div class="compare-uni-card__chance"><small>${escapeHtml(t("universities.compare.requirements_fit_score", "Requirements fit score"))}</small>${renderTrackChanceChip(trackChance)}</div>` : "";
         })()}
         ${(() => {
           const entries = compareAdmissionOptionEntries(u);
@@ -267,7 +267,7 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
       const uniChance = compareChancesByUniId.get(id);
       const uniChanceByChoiceKey = new Map((uniChance?.choices || []).map((choice) => [String(choice.choiceKey), choice]));
       const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || loadProfile()?.study_mode || "");
-      const annualCostForTrack = (track) => modeAwareAnnualCost(((track && track.finance_override) || u.finance || {}), profileStudyMode);
+      const annualCostForTrack = (track) => modeAwareAnnualCost(getFinanceForChoice(track, u.finance), profileStudyMode);
 
       renderAdmissionSection({
         annualCostForTrack,

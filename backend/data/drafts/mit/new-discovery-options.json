@@ -1,0 +1,1563 @@
+{
+  "schema_version": "1.0",
+  "institution_id": "mit",
+  "source_catalog_snapshot": "2026-2027",
+  "checked_at": "2026-09-24",
+  "purpose": "Undergraduate discovery migration candidates. Apply action=replace atomically against replace_active_id; action=add introduces a previously absent degree-chart option.",
+  "application_target": {
+    "classification": "institution_wide",
+    "target_id": "mit",
+    "status": "verified",
+    "selection_timing": "after_institutional_admission"
+  },
+  "options": [
+    {
+      "id": "mit-bs-4",
+      "level": "undergraduate",
+      "name": "Architecture (Course 4)",
+      "course_number": "4",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-4-b",
+      "level": "undergraduate",
+      "name": "Art and Design (Course 4-B)",
+      "course_number": "4-B",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-11",
+      "level": "undergraduate",
+      "name": "Planning (Course 11)",
+      "course_number": "11",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-10-b",
+      "level": "undergraduate",
+      "name": "Chemical-Biological Engineering (Course 10-B)",
+      "course_number": "10-B",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-10-c",
+      "level": "undergraduate",
+      "name": "Chemical Engineering as Recommended by the Department of Chemical Engineering (Course 10-C)",
+      "course_number": "10-C",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-6-5",
+      "level": "undergraduate",
+      "name": "Electrical Engineering with Computing (Course 6-5)",
+      "course_number": "6-5",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "replace",
+      "replace_active_id": "mit-course-6-2-bachelor",
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-1-eng",
+      "level": "undergraduate",
+      "name": "Engineering (Course 1-ENG)",
+      "course_number": "1-ENG",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-2-a",
+      "level": "undergraduate",
+      "name": "Engineering (Course 2-A)",
+      "course_number": "2-A",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-10-eng",
+      "level": "undergraduate",
+      "name": "Engineering (Course 10-ENG)",
+      "course_number": "10-ENG",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-16-eng",
+      "level": "undergraduate",
+      "name": "Engineering (Course 16-ENG)",
+      "course_number": "16-ENG",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-22-eng",
+      "level": "undergraduate",
+      "name": "Engineering (Course 22-ENG)",
+      "course_number": "22-ENG",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-3",
+      "level": "undergraduate",
+      "name": "Materials Science and Engineering (Course 3)",
+      "course_number": "3",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-3-a",
+      "level": "undergraduate",
+      "name": "Materials Science and Engineering (Course 3-A)",
+      "course_number": "3-A",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-2-oe",
+      "level": "undergraduate",
+      "name": "Mechanical and Ocean Engineering (Course 2-OE)",
+      "course_number": "2-OE",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-22-ug",
+      "level": "undergraduate",
+      "name": "Nuclear Science and Engineering (Course 22)",
+      "course_number": "22-ug",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21a",
+      "level": "undergraduate",
+      "name": "Anthropology (Course 21A)",
+      "course_number": "21A",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-cms",
+      "level": "undergraduate",
+      "name": "Comparative Media Studies (CMS)",
+      "course_number": "CMS",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-14-1",
+      "level": "undergraduate",
+      "name": "Economics (Course 14-1)",
+      "course_number": "14-1",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "replace",
+      "replace_active_id": "mit-course-14-bachelor",
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21g",
+      "level": "undergraduate",
+      "name": "Global Studies and Languages (Course 21G)",
+      "course_number": "21G",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21h",
+      "level": "undergraduate",
+      "name": "History (Course 21H)",
+      "course_number": "21H",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21e",
+      "level": "undergraduate",
+      "name": "Humanities and Engineering (Course 21E)",
+      "course_number": "21E",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21s",
+      "level": "undergraduate",
+      "name": "Humanities and Science (Course 21S)",
+      "course_number": "21S",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-24-2",
+      "level": "undergraduate",
+      "name": "Linguistics and Philosophy (Course 24-2)",
+      "course_number": "24-2",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21l",
+      "level": "undergraduate",
+      "name": "Literature (Course 21L)",
+      "course_number": "21L",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-14-2",
+      "level": "undergraduate",
+      "name": "Mathematical Economics (Course 14-2)",
+      "course_number": "14-2",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21m",
+      "level": "undergraduate",
+      "name": "Music (Course 21M)",
+      "course_number": "21M",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-24-1",
+      "level": "undergraduate",
+      "name": "Philosophy (Course 24-1)",
+      "course_number": "24-1",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-17",
+      "level": "undergraduate",
+      "name": "Political Science (Course 17)",
+      "course_number": "17",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21t",
+      "level": "undergraduate",
+      "name": "Theater Arts (Course 21T)",
+      "course_number": "21T",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-21w",
+      "level": "undergraduate",
+      "name": "Writing (Course 21W)",
+      "course_number": "21W",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-15-2",
+      "level": "undergraduate",
+      "name": "Business Analytics (Course 15-2)",
+      "course_number": "15-2",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-15-3",
+      "level": "undergraduate",
+      "name": "Finance (Course 15-3)",
+      "course_number": "15-3",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-15-1",
+      "level": "undergraduate",
+      "name": "Management (Course 15-1)",
+      "course_number": "15-1",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "replace",
+      "replace_active_id": "mit-course-15-bachelor",
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-7",
+      "level": "undergraduate",
+      "name": "Biology (Course 7)",
+      "course_number": "7",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-5",
+      "level": "undergraduate",
+      "name": "Chemistry (Course 5)",
+      "course_number": "5",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-12",
+      "level": "undergraduate",
+      "name": "Earth, Atmospheric, and Planetary Sciences (Course 12)",
+      "course_number": "12",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-18-c",
+      "level": "undergraduate",
+      "name": "Mathematics with Computer Science (Course 18-C)",
+      "course_number": "18-C",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-5-7",
+      "level": "undergraduate",
+      "name": "Chemistry and Biology (Course 5-7)",
+      "course_number": "5-7",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-1-12",
+      "level": "undergraduate",
+      "name": "Climate System Science and Engineering (Course 1-12)",
+      "course_number": "1-12",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-6-9",
+      "level": "undergraduate",
+      "name": "Computation and Cognition (Course 6-9)",
+      "course_number": "6-9",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-6-7",
+      "level": "undergraduate",
+      "name": "Computer Science and Molecular Biology (Course 6-7)",
+      "course_number": "6-7",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-6-14",
+      "level": "undergraduate",
+      "name": "Computer Science, Economics, and Data Science (Course 6-14)",
+      "course_number": "6-14",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    },
+    {
+      "id": "mit-bs-11-6",
+      "level": "undergraduate",
+      "name": "Urban Science and Planning with Computer Science (Course 11-6)",
+      "course_number": "11-6",
+      "selection_timing": "after_institutional_admission",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "route_id": null,
+      "route_status": "needs_review",
+      "action": "add",
+      "replace_active_id": null,
+      "source_ids": [
+        "undergraduate-catalog",
+        "major-selection"
+      ]
+    }
+  ]
+}

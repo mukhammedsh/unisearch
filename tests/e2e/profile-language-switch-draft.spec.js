@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
-const { openProfileTab, selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test("language switch keeps unsaved profile draft", async ({ page }) => {
@@ -13,6 +13,8 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
   await page.fill(selectors.budgetInput, "27890");
+  await page.fill("#familyIncomeInput", "85000");
+  await setNativeSelect(page, "familyIncomeCurrencySelect", "EUR");
   await openProfileTab(page, "preferences");
   await page.fill(selectors.interestsInput, "AI and robotics labs in big cities");
   await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
@@ -28,6 +30,8 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
   await expect(page.locator(selectors.budgetInput)).toHaveValue("27890");
+  await expect(page.locator("#familyIncomeInput")).toHaveValue("85000");
+  await expect(page.locator("#familyIncomeCurrencySelect")).toHaveValue("EUR");
   await openProfileTab(page, "preferences");
   await expect(page.locator(selectors.interestsInput)).toHaveValue("AI and robotics labs in big cities");
   await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();

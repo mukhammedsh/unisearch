@@ -389,10 +389,10 @@ export function getAdmissionChoicesFromCategories(categories) {
 
 export function chanceTone(chance) {
   const value = Number(chance) || 0;
-  if (value >= 80) return { cls: "chance-high", label: translateWord("high_chance", "High chance") };
-  if (value >= 60) return { cls: "chance-good", label: translateWord("good_chance", "Good chance") };
-  if (value >= 40) return { cls: "chance-medium", label: translateWord("moderate_chance", "Moderate chance") };
-  return { cls: "chance-low", label: translateWord("low_chance", "Low chance") };
+  if (value >= 80) return { cls: "chance-high", label: t("admission.requirements_fit.strong", "Strong fit") };
+  if (value >= 60) return { cls: "chance-good", label: t("admission.requirements_fit.good", "Good fit") };
+  if (value >= 40) return { cls: "chance-medium", label: t("admission.requirements_fit.partial", "Partial fit") };
+  return { cls: "chance-low", label: t("admission.requirements_fit.low", "Low fit") };
 }
 
 function parseChanceValue(value) {
@@ -402,44 +402,15 @@ function parseChanceValue(value) {
   return Number.isFinite(numeric) ? numeric : null;
 }
 
-function chanceModelShort(model) {
-  const raw = String(model || "").trim().toLowerCase();
-  if (raw === "estimated_fallback") {
-    return t("admission.chance_method.estimated_short", "Estimated");
-  }
-  if (raw === "official_score_profile") {
-    return t("admission.chance_method.profile_short", "Profile-based");
-  }
-  return "";
-}
-
-function chanceModelDetail(model) {
-  const raw = String(model || "").trim().toLowerCase();
-  if (raw === "estimated_fallback") {
-    return t(
-      "admission.chance_method.estimated_detail",
-      "Estimated from published minimums, averages where available, language rules, selectivity, and affordability. Lower confidence than admitted-score profiles."
-    );
-  }
-  if (raw === "official_score_profile") {
-    return t(
-      "admission.chance_method.profile_detail",
-      "Based on admitted-score profiles plus your language, affordability, and feasibility context."
-    );
-  }
-  return "";
-}
-
-function chanceAccuracyNote(model) {
-  const raw = String(model || "").trim().toLowerCase();
-  if (raw === "estimated_fallback") {
-    return t("admission.chance_accuracy.low", "Low confidence");
-  }
-  return "";
-}
-
 function chanceNoDataHelpNote(uniChance) {
+  if (uniChance && String(uniChance.scoreMeaning || "").trim() !== "published_requirements_met_percent") {
+    return t("admission.requirements_fit.unavailable_method", "Requirements fit score is unavailable because its meaning could not be confirmed.");
+  }
   const reason = String(uniChance?.reason || "").trim().toLowerCase();
+  if (reason === "no_published_requirements") return t("admission.requirements_fit.no_published_requirements", "This route has no measurable published minimums, so a requirements fit percentage cannot be calculated. Review the official application requirements.");
+  if (reason === "unassessed_minimums") return t("admission.requirements_fit.unassessed_minimums", "Published minimums cannot be assessed with the available profile fields, so no requirements fit percentage is calculated.");
+  if (reason === "requirements_not_reviewed") return t("admission.requirements_fit.requirements_not_reviewed", "Published academic and language minimums have not yet been reviewed for this route. Check the official program page before applying.");
+  if (reason === "no_choices") return t("admission.requirements_fit.no_applicable_path", "No assessed path matches this context. Review the selected route and entry cycle against the official requirements.");
   if (reason === "requirements_not_met") {
     return t(
       "admission.chance.requirements_not_met",
@@ -449,39 +420,50 @@ function chanceNoDataHelpNote(uniChance) {
   if (reason === "missing_evidence") {
     return t(
       "admission.chance.missing_evidence",
-      "Add the required exam scores or language evidence to calculate a personal estimate."
+      "Add the required exam scores or language evidence to calculate a requirements fit score."
     );
   }
   if (reason === "missing_exam_score") {
     return t(
       "admission.chance.need_exam_data_track",
-      "Need exam data to see the chance for this requirement profile."
+      "Add the required exam data to see a fit score for this requirement profile."
     );
   }
-  return "";
+  return t(
+    "admission.requirements_fit.insufficient_data",
+    "There is not enough applicable requirements or profile evidence to calculate this fit score."
+  );
 }
 
 export function renderUniChanceSummary(uniChance) {
+  const chanceTitle = t("admission.requirements_fit.title", "Fit to published requirements");
+  const chanceDescription = t(
+    "admission.requirements_fit.description",
+    "Share of evaluable published academic and language minimum checks met. This score is not an admission probability."
+  );
   if (!uniChance) {
-    const chanceTitle = translateWord("admission_probability_title", "Admission Probability");
     return `
       <div class="chance-panel">
         <div class="chance-head">
           <div>
             <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
-            <div class="chance-sub">${escapeHtml(translateUnknownField(chanceTitle, "Admission probability"))}</div>
+            <div class="chance-sub">${escapeHtml(chanceDescription)}</div>
           </div>
           <div class="chance-percent-wrap">
             <div class="chance-percent chance-low">?</div>
           </div>
         </div>
         <div class="chance-meter"><div class="chance-fill chance-low" data-width-pct="0"></div></div>
+        <div class="chance-inline-note">${escapeHtml(chanceNoDataHelpNote(null))}</div>
         <div class="chance-foot">${escapeHtml(translateUnknownWord("placeholder.field.best_choice", "Best choice"))}</div>
       </div>
     `;
   }
-  const chanceRaw = parseChanceValue(uniChance?.overallChance);
-  const activeChoiceRaw = String(uniChance.bestChoiceLabel || "").trim();
+  const scoreMeaning = String(uniChance?.scoreMeaning || "").trim();
+  const chanceRaw = scoreMeaning === "published_requirements_met_percent"
+    ? parseChanceValue(uniChance?.overallChance)
+    : null;
+  const activeChoiceRaw = uniChance.reason === "no_choices" ? "" : String(uniChance.bestChoiceLabel || "").trim();
   const activeChoiceLabel = activeChoiceRaw
     ? translateTrackLabel(activeChoiceRaw, activeChoiceRaw)
     : translateUnknownWord("placeholder.field.best_choice", "Best choice");
@@ -505,18 +487,15 @@ export function renderUniChanceSummary(uniChance) {
 
   if (chanceRaw === null) {
     const noDataTitle = t("common.no_data", "No data");
-    const noDataLabel = String(
-      uniChance?.label || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
-    ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
-    const helpNote = chanceNoDataHelpNote(uniChance) || (noDataLabel !== noDataTitle ? noDataLabel : "");
+    const helpNote = chanceNoDataHelpNote(uniChance);
     const footContent = activeChoiceRaw
       ? `${escapeHtml(choiceLabelTitle)}: <strong>${escapeHtml(activeChoiceLabel)}</strong>${recommendationFoot}`
-      : escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"));
+      : escapeHtml(t("admission.requirements_fit.title", "Fit to published requirements"));
     return `
       <div class="chance-panel">
         <div class="chance-head">
           <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
+            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
             <div class="chance-sub">${escapeHtml(noDataTitle)}</div>
           </div>
           <div class="chance-percent-wrap">
@@ -531,26 +510,19 @@ export function renderUniChanceSummary(uniChance) {
   }
   const chance = chanceRaw;
   const tone = chanceTone(chance);
-  const chanceModel = String(uniChance?.chanceModel || "").trim();
-  const chanceSub = chanceModelDetail(chanceModel)
-    || translateWord("admission_probability_sub", "Estimated from your profile, minimum requirements, language rules, selectivity, and affordability context.");
-  const chanceMethodShort = chanceModelShort(chanceModel);
-  const chanceAccuracy = chanceAccuracyNote(chanceModel);
-  const chancePercentClass = chanceAccuracy ? "chance-low-confidence" : tone.cls;
   return `
       <div class="chance-panel">
         <div class="chance-head">
           <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(translateWord("admission_probability_title", "Admission Probability"))}</div>
-            <div class="chance-sub">${escapeHtml(chanceSub)}</div>
+            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
+            <div class="chance-sub">${escapeHtml(chanceDescription)}</div>
           </div>
-          <div class="chance-percent-wrap${chanceAccuracy ? " chance-percent-wrap--low-confidence" : ""}">
-            <div class="chance-percent ${chancePercentClass}">${chance}%</div>
-            ${chanceAccuracy ? `<div class="chance-percent-note">${escapeHtml(chanceAccuracy)}</div>` : ""}
+          <div class="chance-percent-wrap">
+            <div class="chance-percent ${tone.cls}">${chance}%</div>
           </div>
         </div>
         <div class="chance-meter"><div class="chance-fill ${tone.cls}" data-width-pct="${chance}"></div></div>
-        <div class="chance-foot">${escapeHtml(choiceLabelTitle)}: <strong>${escapeHtml(activeChoiceLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}${chanceMethodShort ? ` • ${escapeHtml(chanceMethodShort)}` : ""}</div>
+        <div class="chance-foot">${escapeHtml(choiceLabelTitle)}: <strong>${escapeHtml(activeChoiceLabel)}</strong>${recommendationFoot} • ${escapeHtml(tone.label)}</div>
       </div>
   `;
 }
@@ -560,19 +532,21 @@ export function renderTrackChanceChip(trackChance) {
 
   let chipHtml = "";
   if (!trackChance) {
-    chipHtml = `<div class="chance-track-chip">${escapeHtml(translateUnknownWord("placeholder.field.admission_probability", "Admission probability"))}</div>`;
+    chipHtml = `<div class="chance-track-chip">${escapeHtml(chanceNoDataHelpNote(null))}</div>`;
   } else {
-    const chance = parseChanceValue(trackChance?.chancePercent);
+    const scoreMeaning = String(trackChance?.scoreMeaning || "").trim();
+    const chance = scoreMeaning === "published_requirements_met_percent"
+      ? parseChanceValue(trackChance?.chancePercent)
+      : null;
     if (chance === null) {
       const noDataLabel = String(
         chanceNoDataHelpNote(trackChance)
-        || trackChance?.label
-        || translateUnknownWord("placeholder.field.admission_probability", "Admission probability")
-      ).trim() || translateUnknownWord("placeholder.field.admission_probability", "Admission probability");
+        || t("admission.requirements_fit.title", "Fit to published requirements")
+      ).trim() || t("admission.requirements_fit.title", "Fit to published requirements");
       chipHtml = `<div class="chance-track-chip">${escapeHtml(noDataLabel)}</div>`;
     } else {
       const tone = chanceTone(chance);
-      chipHtml = `<div class="chance-track-chip ${tone.cls}">${escapeHtml(aiName("chance"))} ${chance}%</div>`;
+      chipHtml = `<div class="chance-track-chip ${tone.cls}">${escapeHtml(t("admission.requirements_fit.short", "Requirements fit"))} ${chance}%</div>`;
     }
   }
 
@@ -580,7 +554,12 @@ export function renderTrackChanceChip(trackChance) {
 }
 
 export function renderTrackFactors(trackChance) {
-  const factors = Array.isArray(trackChance?.factors) ? trackChance.factors : [];
+  if (String(trackChance?.scoreMeaning || "").trim() !== "published_requirements_met_percent") return "";
+  if (trackChance?.reason === "no_published_requirements") return "";
+  const requirementFactorKeys = ["missing_evidence", "insufficient_data", "requirements_met", "requirements_gap"];
+  const factors = Array.isArray(trackChance?.factors)
+    ? trackChance.factors.filter((factor) => requirementFactorKeys.includes(String(factor?.key || "")))
+    : [];
   const factorChips = factors.map(renderTrackFactorChip).filter(Boolean);
   if (!factorChips.length) return "";
 
@@ -672,19 +651,9 @@ function factorTone(status) {
 
 const TRACK_FACTOR_I18N_KEYS = new Set([
   "missing_evidence",
-  "conditional_requirements",
-  "requirements_gap",
-  "academic_strength",
-  "academic_gap",
-  "language_strength",
-  "language_gap",
-  "affordability_fit",
-  "affordability_gap",
-  "scholarship_support",
-  "holistic_review_selectivity",
-  "high_selectivity",
-  "accessibility_signal",
   "insufficient_data",
+  "requirements_met",
+  "requirements_gap",
 ]);
 
 function normalizeTrackFactorKey(value) {

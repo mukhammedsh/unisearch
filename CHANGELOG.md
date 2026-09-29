@@ -4,6 +4,144 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 7.2.0 (2026-09-30) - Admissions Context and MIT Catalog
+
+### Added
+- Add sourced English and Russian study summaries, localized department labels, and direct MIT degree-chart links for all active MIT undergraduate options.
+- Add internal EECS MEng study options for MIT Courses 6-7P and 6-14P, linked to their shared application route and official degree charts.
+- Add the MIT Sloan MSMS partner-school application route with its 2027 deadline and a separately dated 2026-27 tuition-and-fee reference.
+- Expand MIT's runtime catalog with sourced master's, doctoral, and advanced professional degree options and their verified program or department application targets.
+- Add the internal MIT Course 6-9P MEng route with published technical and overall GPA minima, its recurring application window, and explicit funding uncertainty.
+- Add source-backed master's and doctoral study descriptions with Russian translations for the new MIT catalog options.
+
+### Changed
+- Correct the EECS MEng application closing description to the last day of finals, as published by MIT EECS.
+- Use profile defaults and restorable detail-page program, study-level, applicant-route, and entry-cycle selections across admissions, qualification guidance, deadlines, costs, and academic estimates. Scope UniFit and ROI inputs to compatible catalogued choices.
+- Define UniChance's percentage as the share of evaluable published academic and language minimums met, with no score when evidence or measurable minimums are missing. Show historical admitted or enrolled score ranges and acceptance rates as separate facts instead of treating them as an admission probability.
+- Include the applicant's annual budget and applicable pre-award annual cost in UniFit ranking when both are known. Omit missing academic and cost components instead of substituting a neutral percentage; keep funding outcomes separate from admission assessment.
+- Keep UniChance unscored when a route's published minima have not been reviewed or cannot be checked from the existing profile, with a distinct explanation for each state.
+
+### Fixed
+- Restore readable university titles and prevent horizontal overflow on mobile after the shared detail-header update; make the no-exact-deadline calendar guidance accurate for collapsed MIT timelines.
+- Add a sourced undergraduate Business Analytics (Course 15-2) curriculum summary and direct MIT catalog and Sloan curriculum links; distinguish degree requirements from admission prerequisites.
+- Group program metadata beside its labels, show study descriptions as readable paragraphs, and expose official program sources and the shared MIT first-year application context. Identify summaries that have not yet been collected, and use a badge instead of a full-card accent fill for the selected major.
+- Keep single-option route and cycle controls visible, distinguish absent published minimums from missing applicant evidence, and make historical score ranges expandable in admission details.
+- Put selected program, route, cycle and official course conditions before optional catalog coverage and historical statistics. Clarify that numerical requirements fit does not assess separate textual conditions.
+- Preserve Russian program selections across admissions and costs, localize reviewed route/deadline/cost text and save-button accessibility labels, and keep Stanford first-year aid deadlines out of transfer funding views with an official transfer next step.
+- Keep Stanford undergraduate Computer Science separate from professional admission summaries and give Imperial Computing BEng/MEng its own officially sourced 2027 requirements.
+- Preserve MIT Spring transfer applicant restrictions beside deadlines and in calendar exports. Keep missing costs distinct from published zero amounts and prevent undergraduate costs from substituting for graduate costs.
+- Remove grant-odds and paid-admission badges that inferred outcomes from the academic fit score.
+- Correct MIT's Common Data Set ACT percentiles and remove unsupported Early Action SAT Composite statistics and mislabeled score averages.
+- Remove an unsupported separate MIT City Planning SM listing and identify the Transportation master's award and application path as MST.
+- Show restricted MIT graduate eligibility in the selected-program admission context and remove an unverified external route for two EECS Engineer awards.
+
+## 7.1.0 (2026-09-24) - Cover Back Button and Steadier Map Interactions
+
+### Added
+- Added a circular back button overlaid on the university detail cover, replacing the previous "Back to list" link in the header actions; the label is shortened to "Back" in English and Russian.
+- Showed the Total Students and Study Formats rows in the university overview section instead of the extra section.
+
+### Fixed
+- Hardened map "fly, then open the card" flights: concurrent flights are serialized so rapid clicks can no longer reopen a stale card, a repeat click on the focused marker keeps the focus, and the card opens only after the flight actually arrives, never after the user takes over the map.
+- Kept the catalog filter sidebar stable while scrolling by deriving its height from the sticky top offset instead of the live scroll position.
+- Stabilized profile and catalog metric tooltip stacking across open, closed, and closing states.
+
+### Changed
+- Moved the low-budget grant hint from the budget block to the funding-preferences block on the profile page.
+
+## 7.0.0 (2026-09-24) - Scoped Admissions Facts and Product Direction
+
+### Added
+- Expanded selected MIT, Imperial College London, Stanford, Harvard, and Oxford records with more program- and route-scoped admissions, deadline, price, and funding facts, including official sources, applicable cycles, fee statuses, and publication states.
+- Showed unpublished or conflicting course deadlines and fees with their scope, official source, and a useful next action instead of presenting an unsupported date or amount.
+- Established the [admissions product model](docs/admissions-product-model.md) and [migration checklist](todo.md) for the next stages: complete top-five catalog and schema drafts, coordinated backend/frontend integration, then the remaining 45 universities. This documents planned work; the new model is not yet the runtime format.
+
+### Fixed
+- Kept Oxford test-booking dates out of course-application deadline coverage and preserved separate dated, undated, and conflicting deadline states.
+- Corrected selected top-five coverage for historical versus unpublished fees, program-specific costs, and shared versus program-specific application routes.
+
+### Removed
+- Removed the application planning workspace and its saved checklist interface. Admissions and funding information remains available in university details. This removal changes the previously committed `6.14.0` workflow, so this release uses a major version.
+
+## 6.14.0 (2026-09-24) - Applicant Planning and University Coverage
+
+### Added
+- Expanded applicant profiles with citizenship, education background, target study level, entry cycle, route context, and optional annual family income saved locally.
+- Added program-scoped admissions, deadline, cost, and funding coverage, qualification guidance, structured award details, and an applicant planning workspace.
+- Added dated deadline calendar views and English/Russian guidance for missing program facts.
+- Added official-source data for selected undergraduate, master's, doctoral, and professional routes at MIT, Imperial College London, Stanford, Harvard, and Oxford; coverage remains limited to catalogued routes.
+
+### Changed
+- Refined UniFit and applicant profile handling for broader study-level and route context.
+- Kept UniChance independent of budget and grant preferences, and displayed family-income comparisons with published aid thresholds as context rather than an eligibility or award decision.
+- Clarified funding conditions, application steps, and deadlines; potential awards are not treated as guaranteed or deducted from published costs.
+
+## 6.13.0 (2026-09-23) - Seamless Localization and Calm Interactions
+
+### Added
+- Made the profile save state permanently visible next to the back button with distinct saved and unsaved coloring.
+
+### Changed
+- Switched navbar and favicon logos from PNG to theme-aware SVG.
+- Removed the map "Show the whole world" overview control; world navigation remains available through the zoom controls.
+- Standardized section tabs on a 2px pill sliding indicator with matching fallback underlines across catalog, detail, admissions, and profile pages.
+- Replaced press-shift active effects with surface-color active states backed by a shared accent active-surface token.
+- Restyled segmented view toggles, the settings switch, and filter reset controls for consistent surfaces and alignment.
+
+### Fixed
+- Fixed English text flashing when navigating client-side with Russian selected by hydrating localizations from session cache and translating the destination page before display.
+- Kept the dismissed Bachelor's scope notice hidden across SPA navigation without flicker.
+- Showed the shared "No data" label instead of field-name placeholders for missing university facts.
+- Corrected Russian save-state and availability copy.
+
+## 6.12.0 (2026-09-21) - Major-Aware UniFit Catalog
+
+### Added
+- Kept universities without the selected study program in UniFit results, lowered their fit ranking, and marked them with a localized "Program Not Offered" status so applicants can compare alternatives transparently.
+- Added an accessible overflow control for extra catalog-card status indicators, including outside-click and Escape-key dismissal.
+- Standardized hover, active, focus, and disabled control states through shared interaction tokens and composite input surfaces.
+
+### Fixed
+- Rejected fractional annual budgets in profile API payloads to keep the integer budget contract consistent across clients.
+
+## 6.11.0 (2026-09-21) - Interactive University Programs
+
+### Added
+- Reworked the university Programs tab into collapsed-by-default detail accordions with per-program admissions data and single-open behavior.
+- Added live program search with result filtering, a clear control, an empty state, and a persisted query per university.
+- Added profile-major matching that pins matching programs first with a "Your major" badge and localized field tags.
+- Re-rendered the Programs tab when the applicant profile changes so major matching stays in sync.
+- Added English and Russian strings for program detail toggles, search controls, and the major badge.
+
+### Fixed
+- Kept every program card collapsed when entering the Programs tab instead of auto-expanding the first program.
+
+## 6.10.3 (2026-09-21) - Map Results Lifecycle Test Completion
+
+### Fixed
+- Covered map result-rail creation on demand after both initial load and a list-view reload, completing the scalable map release regression coverage.
+
+## 6.10.2 (2026-09-21) - Map Results Lifecycle Fix
+
+### Fixed
+- Updated map-view interaction coverage for on-demand result-rail rendering, preventing a stale preloading assertion from failing the release test suite.
+
+## 6.10.1 (2026-09-21) - Map Catalog Isolation Fix
+
+### Fixed
+- Prevented hidden map-result cards from duplicating catalog cards in the list DOM before the map is opened.
+
+## 6.10.0 (2026-09-21) - Scalable Interactive University Map
+
+### Added
+- Added a compact, bounds-aware university map-points API for client-side Leaflet clustering, avoiding full catalog card payloads for map markers.
+- Added progressive loading to the map result rail in pages of 100 universities, with automatic continuation and an accessible manual retry/load-more control.
+- Added complete university-card hydration when opening a map marker, plus clear map zoom controls and a return-to-world action.
+
+### Fixed
+- Kept Leaflet university markers visible when the map wraps horizontally and prevented blank map areas beyond the north and south limits of the Web Mercator projection.
+- Matched map popup pointers to their university cards in light and dark themes and removed vertical card movement on map hover.
+
 ## 6.9.1 (2026-09-21) - Anti-Vibe Coding Guardrails and Code Quality Hardening
 
 ### Added

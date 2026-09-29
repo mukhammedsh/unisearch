@@ -350,14 +350,20 @@
   align-items: center;
   max-width: 100%;
   z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
 .ui-tooltip-wrap:not(.is-closed):hover,
 
 .ui-tooltip-wrap:not(.is-closed):focus-within,
 
-.ui-tooltip-wrap.is-open {
+.ui-tooltip-wrap.is-open,
+
+.ui-tooltip-wrap.is-closed,
+
+.ui-tooltip-wrap.is-closing {
   z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
 }
 
 .ui-tooltip-trigger {
@@ -450,14 +456,24 @@
 
 /* Elevation of parent containers when an open tooltip is inside */
 
-.d-kv:has(.ui-tooltip-wrap.is-open) {
+.d-kv:has(.ui-tooltip-wrap.is-open),
+.d-kv:has(.ui-tooltip-wrap.is-closed),
+.d-kv:has(.ui-tooltip-wrap.is-closing),
+.d-kv:has(.ui-tooltip-wrap:not(.is-closed):hover),
+.d-kv:has(.ui-tooltip-wrap:not(.is-closed):focus-within) {
   position: relative;
   z-index: var(--z-dropdown);
 }
 
 .track-factors-badges:has(.ui-tooltip-wrap.is-open),
 
-.track-factors-badges:has(.ui-tooltip-wrap:not(.is-closed):hover) {
+.track-factors-badges:has(.ui-tooltip-wrap.is-closed),
+
+.track-factors-badges:has(.ui-tooltip-wrap.is-closing),
+
+.track-factors-badges:has(.ui-tooltip-wrap:not(.is-closed):hover),
+
+.track-factors-badges:has(.ui-tooltip-wrap:not(.is-closed):focus-within) {
   position: relative;
   z-index: var(--z-dropdown);
 }

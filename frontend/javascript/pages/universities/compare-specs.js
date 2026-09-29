@@ -68,6 +68,37 @@ export const compareSlotLabel = (index) => tFormat(
   `University ${index + 1}`
 );
 
+function hasUnconfirmedGrantPrice(university, choices = null) {
+    const selectedFunding = compareSelectedAdmissionOption(university, choices);
+    return getTrackFundingType(selectedFunding) === "grant"
+        && Boolean(selectedFunding?.__is_funding_option)
+        && selectedFunding?.finance_override
+        && typeof selectedFunding.finance_override === "object";
+}
+
+function compareCostContextForDisplay(university, choices = null) {
+    if (hasUnconfirmedGrantPrice(university, choices)) {
+        return {
+            min: null,
+            max: null,
+            currency: String(university?.finance?.currency || "USD").trim().toUpperCase(),
+            academicYear: "",
+            feeStatus: "",
+            scope: "",
+            source: "",
+            sourceUrl: "",
+            verifiedAt: "",
+        };
+    }
+    return compareSelectedCostContext(university, choices);
+}
+
+function compareAnnualCostForDisplay(university, choices = null) {
+    return hasUnconfirmedGrantPrice(university, choices)
+        ? null
+        : compareSelectedAnnualCost(university, choices);
+}
+
 export const compareOptionFundingDeltaPreview = (entry, entries) => {
     const option = entry?.option || {};
     if (getTrackFundingType(option) !== "grant") return "";
@@ -145,11 +176,7 @@ export const compareSelectedRequirementKeys = (u) => {
 export const compareSelectedAverageKeys = (u) => {
     const option = compareSelectedAdmissionOption(u);
     const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
-    const keys = Object.keys(stats).filter((key) => compareAverageScoreValue(u, key) !== null);
-    const scoreProfile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
-    const profileExam = String(scoreProfile?.exam_id || "").trim();
-    if (profileExam && compareAverageScoreValue(u, profileExam) !== null) keys.push(profileExam);
-    return Array.from(new Set(keys));
+    return Object.keys(stats).filter((key) => compareAverageScoreValue(u, key) !== null);
 };
 
 export const compareSelectedLanguageRequirementKeys = (u) => {
@@ -179,14 +206,7 @@ export const compareAverageScoreValue = (u, examId) => {
         const n = toFiniteNumber(value);
         if (n !== null) values.push(n);
     });
-    if (values.length) return Math.max(...values);
-    const scoreProfile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
-    const compatible = Array.isArray(scoreProfile?.compatible_exam_ids) ? scoreProfile.compatible_exam_ids : [];
-    const profileExams = [scoreProfile?.exam_id, ...compatible].map(canonicalizeExamId).filter(Boolean);
-    if (profileExams.includes(canonicalizeExamId(examId))) {
-        return toFiniteNumber(scoreProfile?.median_raw ?? scoreProfile?.median_normalized);
-    }
-    return null;
+    return values.length ? Math.max(...values) : null;
 };
 
 export const compareLanguageRequirementValue = (u, examId) => {
@@ -380,7 +400,13 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.funding_choice", "Selected funding"),
             type: "text",
             direction: "neutral",
-            getter: compareFundingChoiceText,
+            getter: (university) => {
+                const selectedFunding = compareSelectedAdmissionOption(university);
+                const label = compareFundingChoiceText(university);
+                return getTrackFundingType(selectedFunding) === "grant"
+                    ? `${label} · ${t("universities.compare.funding.not_awarded", "Potential award; not confirmed")}`
+                    : label;
+            },
             score: false,
             reason: false,
         },
@@ -446,12 +472,12 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.total_cost", "Total / year"),
             type: "number",
             direction: "lower",
-            getter: compareSelectedAnnualCost,
-            formatter: (_value, u) => formatCompareCostRange(compareSelectedCostContext(u)),
-            sourceGetter: compareSelectedCostContext,
+            getter: compareAnnualCostForDisplay,
+            formatter: (_value, u) => formatCompareCostRange(compareCostContextForDisplay(u)),
+            sourceGetter: compareCostContextForDisplay,
             materiality: 0.1,
             comparable: (rows) => compareCostContextsComparable(
-                rows.map((row) => compareSelectedCostContext(row.university))
+                rows.map((row) => compareCostContextForDisplay(row.university))
             ),
         },
         {
@@ -461,7 +487,7 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.tuition_fees", "Tuition + fees"),
             type: "text",
             direction: "neutral",
-            getter: (u) => compareCostBreakdownText(u, "tuition"),
+            getter: (u) => hasUnconfirmedGrantPrice(u) ? t("common.na", "N/A") : compareCostBreakdownText(u, "tuition"),
         },
         {
             key: "living_costs",
@@ -470,7 +496,7 @@ export const buildCompareSpecs = (universities) => {
             label: t("universities.compare.row.living_costs", "Living cost items"),
             type: "text",
             direction: "neutral",
-            getter: (u) => compareCostBreakdownText(u, "living"),
+            getter: (u) => hasUnconfirmedGrantPrice(u) ? t("common.na", "N/A") : compareCostBreakdownText(u, "living"),
         },
         {
             key: "aid",
@@ -780,22 +806,21 @@ const selectedChanceForUniversity = (university, context = {}) => {
 };
 
 const compareChanceFactText = (chance) => {
+    if (String(chance?.scoreMeaning || "").trim() !== "published_requirements_met_percent") {
+        return t("admission.requirements_fit.unavailable_method", "Requirements fit score is unavailable because its meaning could not be confirmed.");
+    }
     const value = toFiniteNumber(chance?.chancePercent ?? chance?.overallChance);
     if (value !== null && chance?.chanceAvailable !== false) {
-        const confidence = String(chance?.confidence || chance?.confidenceLevel || "").trim().toLowerCase();
-        const confidenceLabels = {
-            high: t("universities.compare.confidence.high", "high confidence"),
-            medium: t("universities.compare.confidence.medium", "medium confidence"),
-            low: t("universities.compare.confidence.low", "low confidence"),
-        };
-        const confidenceText = confidenceLabels[confidence] || t("universities.compare.confidence.estimated", "estimated");
-        return `${comparePercentText(value)} · ${confidenceText}`;
+        return comparePercentText(value);
     }
     const reason = String(chance?.reason || "").trim().toLowerCase();
     if (reason === "requirements_not_met") {
         return t("admission.chance.requirements_not_met", "A required minimum is not met");
     }
-    return t("universities.compare.profile_missing", "Add the required profile evidence");
+    return t(
+        "admission.requirements_fit.insufficient_data",
+        "There is not enough applicable requirements or profile evidence to calculate this fit score."
+    );
 };
 
 const compareAdmissionTheme = (universities, context) => {
@@ -811,7 +836,7 @@ const compareAdmissionTheme = (universities, context) => {
     const summary = !publishedAvailable
         ? t("universities.compare.admissions.missing", "Published admission data is incomplete, so no selectivity comparison is made.")
         : (comparable
-            ? t("universities.compare.admissions.comparable", "Published rates describe selectivity, not your personal probability of admission.")
+            ? t("universities.compare.admissions.comparable", "Published acceptance rates are institution or course statistics; they are separate from your requirements fit score.")
             : t("universities.compare.admissions.incomparable", "The published rates use different course or institution scopes, audiences, or cycles."));
 
     return {
@@ -834,7 +859,7 @@ const compareAdmissionTheme = (universities, context) => {
                 id: String(university?.id || ""),
                 name: compareUniversityName(university),
                 facts: [
-                    compareDecisionFact(t("universities.compare.personal_estimate", "Personal estimate"), compareChanceFactText(chance)),
+                    compareDecisionFact(t("universities.compare.requirements_fit_score", "Requirements fit score"), compareChanceFactText(chance)),
                     compareDecisionFact(
                         t("universities.compare.published_rate", "Published selectivity"),
                         publishedValue,
@@ -848,7 +873,7 @@ const compareAdmissionTheme = (universities, context) => {
 };
 
 const compareFinanceTheme = (universities, context) => {
-    const costs = universities.map((university) => compareSelectedCostContext(university, context?.choices));
+    const costs = universities.map((university) => compareCostContextForDisplay(university, context?.choices));
     const available = costs.every((cost) => (
         cost?.min !== null
         && cost?.min !== undefined
@@ -864,6 +889,9 @@ const compareFinanceTheme = (universities, context) => {
     } else if (comparable) {
         status = "tradeoff";
         summary = t("universities.compare.finance.tradeoff", "Compare the published sticker cost with each university's aid policy; neither alone is the final net price.");
+    }
+    if (universities.some((university) => hasUnconfirmedGrantPrice(university, context?.choices))) {
+        summary = t("universities.compare.finance.grant_unconfirmed", "A selected grant is only a potential award. Its amount is not a confirmed cost or discount until formally awarded.");
     }
     return {
         key: "finance",

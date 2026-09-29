@@ -18,6 +18,23 @@ def _category(category_id, label, profiles, **extra):
 
 
 class AdmissionCategoryTests(unittest.TestCase):
+    def test_oxford_program_category_uses_only_its_linked_program(self):
+        university = uni_service.get_university_by_id("university-of-oxford-uk-oxford")
+        self.assertIsNotNone(university)
+
+        medicine = next(
+            category
+            for category in university.get("admission_categories") or []
+            if category.get("id") == "oxford_ug_medicine"
+        )
+
+        self.assertEqual(["medicine_ug"], medicine.get("program_ids"))
+        self.assertEqual(
+            ["Medicine (Pre-clinical & Clinical)"],
+            medicine.get("applicable_majors"),
+        )
+        self.assertNotIn("Computer Science", medicine.get("applicable_majors"))
+
     def test_normalize_schema_hides_foundation_only_category_from_bachelor_scope(self):
         row = {
             "id": "nu-demo",

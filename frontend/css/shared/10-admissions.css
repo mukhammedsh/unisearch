@@ -58,8 +58,8 @@
 .admission-program-option,
 .requirement-profile-tab {
   appearance: none;
+  position: relative;
   border: 0;
-  border-bottom: 2px solid transparent;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
@@ -71,14 +71,26 @@
   white-space: nowrap;
   transition:
     color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
     background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admission-program-option::after,
+.requirement-profile-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .admission-program-option:hover,
   .requirement-profile-tab:hover {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -91,8 +103,12 @@
 
 .admission-program-option.is-active,
 .requirement-profile-tab.is-active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--interaction-active-text);
+}
+
+.admission-program-option.is-active::after,
+.requirement-profile-tab.is-active::after {
+  background: var(--accent);
 }
 
 .admission-scope-note {

@@ -97,6 +97,13 @@ class SchemaStandardizationTests(unittest.TestCase):
         self.assertEqual(choice["requirementProfileId"], "req-1")
         self.assertEqual(choice["fundingOptionId"], "fund-1")
 
+    def test_selected_admission_program_without_choice_key_survives_profile_conversion(self):
+        payload = {"selectedAdmissionChoices": {"stanford": {"programId": "cs-bs"}}}
+
+        dumped = to_profile_dict(ProfilePayload.model_validate(payload))
+
+        self.assertEqual(dumped["selectedAdmissionChoices"]["stanford"], {"programId": "cs-bs"})
+
     def test_selected_admission_choices_snake_case_alias_removed(self):
         # Top-level snake_case selected_admission_choices is ignored
         payload = {
@@ -381,7 +388,7 @@ class ConsumerStandardizationTests(unittest.TestCase):
             }
         }
         selections = _normalize_selected_admission_choices(profile)
-        self.assertEqual(selections, {"mit-usa-cambridge": "mit_regular::mit_regular::mit_regular"})
+        self.assertEqual(selections, {"mit-usa-cambridge": {"choiceKey": "mit_regular::mit_regular::mit_regular"}})
 
     def test_normalize_selected_admission_choices_legacy_snake_top_level_ignored(self):
         profile = {

@@ -555,6 +555,16 @@
   display: inline-flex;
   max-width: 100%;
   z-index: 2;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
+}
+
+.uni-metric-tooltip:hover,
+.uni-metric-tooltip:focus-within,
+.uni-metric-tooltip.is-open,
+.uni-metric-tooltip.is-closed,
+.uni-metric-tooltip.is-closing {
+  z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
 }
 
 .uni-metric--rank {
@@ -614,7 +624,7 @@
   }
   .uni-metric--rank:hover .uni-metric-icon,
   .uni-metric--rank:hover .uni-metric-label {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
   .uni-metric--rank:hover .uni-metric-value {
     color: var(--accent);
@@ -725,7 +735,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 @media (hover: hover) and (pointer: fine) {
 
 .uni-action-btn:hover {
-  color: var(--accent);
+  color: var(--interaction-hover-text);
 }
 }
 
@@ -877,7 +887,7 @@ body.universities-compare-mode .uni-action-btn--favorite {
 
 @media (hover: hover) and (pointer: fine) {
   .u-recent__link:hover {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 }
 

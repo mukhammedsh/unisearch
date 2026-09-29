@@ -1,8 +1,8 @@
 import { frontendStaticAsset, getCurrentTheme } from "../utils.js";
 
-const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.png");
-const NAV_LOGO_DARK = frontendStaticAsset("images/darklogo.png");
-const NAV_LOGO_FALLBACK = frontendStaticAsset("images/minilogo.png");
+const NAV_LOGO_LIGHT = frontendStaticAsset("images/whitelogo.svg");
+const NAV_LOGO_DARK = frontendStaticAsset("images/darklogo.svg");
+const NAV_LOGO_FALLBACK = frontendStaticAsset("images/minilogo.svg");
 let themeUiSyncBound = false;
 
 export function syncNavbarLogo(themeOverride = "") {

@@ -65,7 +65,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .guide-back:hover {
-    color: var(--accent-strong);
+    color: var(--interaction-hover-text);
     text-decoration: underline;
   }
 }
@@ -122,12 +122,13 @@
 
 @media (hover: hover) and (pointer: fine) {
   .guide-nav a:hover {
+    color: var(--interaction-hover-text);
     text-decoration: underline;
   }
 }
 
 .guide-nav a.is-active {
-  color: var(--text);
+  color: var(--interaction-active-text);
   font-weight: 500;
 }
 
@@ -188,8 +189,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .guide-section-navigation__button:hover {
-    background: var(--accent-soft);
-    color: var(--accent-strong);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -457,7 +458,8 @@ body[data-page="guide"] {
 
   @media (hover: hover) and (pointer: fine) {
     .guide-mobile-nav-toggle:hover {
-      background: var(--surface-soft);
+      background: var(--interaction-hover-surface);
+      color: var(--interaction-hover-text);
     }
   }
 

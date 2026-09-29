@@ -1,7 +1,9 @@
 import { getPreferredCurrency } from "./currency.js";
 import { stabilizeNumericRanges } from "./utils/text.js";
+import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
+const I18N_SESSION_CACHE_PREFIX = "unisearch_i18n_pack_v1_";
 
 const LANG_ENG = "eng";
 const LANG_RUS = "rus";
@@ -83,7 +85,7 @@ async function _fetchLocalizationText(file, timeoutMs) {
   const controller = typeof AbortController === "function" ? new AbortController() : null;
   let timeoutId = 0;
   const fetchPromise = fetch(file, {
-    cache: "no-store",
+    cache: "default",
     ...(controller ? { signal: controller.signal } : {}),
   })
     .then((res) => (res.ok ? res.text() : ""))
@@ -107,7 +109,28 @@ async function _fetchLocalizationText(file, timeoutMs) {
   }
 }
 
+function _hydratePacksFromSession() {
+  const langs = [LANG_ENG, LANG_RUS];
+  langs.forEach((lang) => {
+    if (Object.keys(DICT[lang] || {}).length > 0) return;
+    try {
+      const cached = safeSessionStorage.get(`${I18N_SESSION_CACHE_PREFIX}${lang}`, "");
+      if (!cached) return;
+      const parsed = _parseLocalizationFile(cached);
+      if (!parsed || typeof parsed !== "object") return;
+      DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+
+      const code = String(parsed["meta.code"] || "").trim();
+      const navKey = lang === LANG_ENG ? "nav.lang.eng" : "nav.lang.rus";
+      if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
+    } catch (e) {
+      // ignore
+    }
+  });
+}
+
 async function _loadLocalizationPacks() {
+  _hydratePacksFromSession();
   if (__packsLoaded) return;
   if (__packsLoadPromise) return __packsLoadPromise;
 
@@ -123,6 +146,8 @@ async function _loadLocalizationPacks() {
           const parsed = _parseLocalizationFile(raw);
           if (!parsed || typeof parsed !== "object") return;
           DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+
+          safeSessionStorage.set(`${I18N_SESSION_CACHE_PREFIX}${lang}`, raw);
 
           const code = String(parsed["meta.code"] || "").trim();
           const navKey = lang === LANG_ENG ? "nav.lang.eng" : "nav.lang.rus";
@@ -233,11 +258,13 @@ export function setLanguage(lang, options = {}) {
 }
 
 export async function initI18n() {
-  await _loadLocalizationPacks();
+  _hydratePacksFromSession();
   const stored = readStoredLang();
   const detected = detectDeviceLang();
   const resolved = normalizeLang(stored || detected) || LANG_ENG;
   setLanguage(resolved, { persist: !stored, emit: false });
+
+  await _loadLocalizationPacks();
   return currentLang;
 }
 

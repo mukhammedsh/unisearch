@@ -68,7 +68,7 @@ test("UniFit warning returns after a reload or a new UniFit selection", async ({
   await expect(warning).toBeVisible();
 });
 
-test("UniFit cards prioritize status icons in order: conditional -> vibe -> finance", async ({ page }) => {
+test("UniFit cards show requirement and preference signals without grant odds", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
   await page.route("**/universities/ai-sort", async (route) => {
@@ -108,10 +108,10 @@ test("UniFit cards prioritize status icons in order: conditional -> vibe -> fina
   await expect(firstCard).toBeVisible();
 
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(3);
+  await expect(statuses).toHaveCount(2);
   await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
   await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
-  await expect(statuses.nth(2)).toHaveAttribute("aria-label", /Likely Grant/);
+  await expect(firstCard).not.toContainText("Likely Grant");
   await expect(page.locator("#unifitWarningBanner")).toBeVisible();
   await expect(firstCard.locator(".uni-why")).toHaveCount(0);
 });
@@ -150,9 +150,9 @@ test("UniFit card status icons still work when backend hints are missing (fronte
   const firstCard = page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(2);
+  await expect(statuses).toHaveCount(1);
   await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Good Match/);
-  await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Paid Admission/);
+  await expect(firstCard).not.toContainText("Paid Admission");
 });
 
 test("UniFit card hides Requirements Met when conditional exam warning is present", async ({ page }) => {
@@ -195,7 +195,7 @@ test("UniFit card hides Requirements Met when conditional exam warning is presen
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(3);
+  await expect(statuses).toHaveCount(2);
 });
 
 test("UniFit card caps overlay status icons at four by priority", async ({ page }) => {
@@ -241,12 +241,16 @@ test("UniFit card caps overlay status icons at four by priority", async ({ page 
   const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(firstCard).toBeVisible();
 
-  const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(4);
-  await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
-  await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
-  await expect(statuses.nth(2)).toHaveAttribute("aria-label", /Likely Grant/);
-  await expect(statuses.nth(3)).toHaveAttribute("aria-label", /Below Requirements/);
+  const rowStatuses = firstCard.locator(".uni-card-statuses > .uni-status-tooltip > .uni-status-trigger");
+  await expect(rowStatuses).toHaveCount(4);
+  await expect(rowStatuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
+  await expect(rowStatuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
+  await expect(rowStatuses.nth(2)).toHaveAttribute("aria-label", /Below Requirements/);
+  await expect(rowStatuses.nth(3)).toHaveAttribute("aria-label", /Aid Available/);
+  await expect(firstCard).not.toContainText("Likely Grant");
+
+  const overflowTrigger = firstCard.locator(".uni-status-overflow-trigger");
+  await expect(overflowTrigger).toHaveCount(0);
 });
 
 test("UniFit card status icon logic caps at four", async ({ page }) => {
@@ -289,8 +293,9 @@ test("UniFit card status icon logic caps at four", async ({ page }) => {
   });
 
   await page.goto("/index.html");
-  const statuses = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses .uni-status-trigger");
-  await expect(statuses).toHaveCount(4);
+  const cardStatuses = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses > *");
+  await expect(cardStatuses).toHaveCount(4);
+  await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-status-overflow-trigger")).toHaveCount(0);
 });
 
 test("UniFit cards render zero to four compact status icons", async ({ page }) => {
@@ -394,8 +399,107 @@ test("UniFit cards render zero to four compact status icons", async ({ page }) =
 
   await expect(page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]').locator(".uni-card-statuses")).toHaveCount(0);
   await expect(page.locator('.uni-card[data-uni-id="harvard-usa-cambridge"]').locator(".uni-status-trigger")).toHaveCount(1);
-  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-status-trigger")).toHaveCount(2);
-  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-status-trigger")).toHaveCount(3);
-  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-status-trigger")).toHaveCount(4);
-  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-status-trigger")).toHaveCount(4);
+  await expect(page.locator('.uni-card[data-uni-id="stanford-university-usa-ca"]').locator(".uni-status-trigger")).toHaveCount(1);
+  await expect(page.locator('.uni-card[data-uni-id="eth-zurich-ch-zurich"]').locator(".uni-status-trigger")).toHaveCount(2);
+  await expect(page.locator('.uni-card[data-uni-id="epfl-ch-lausanne"]').locator(".uni-status-trigger")).toHaveCount(3);
+  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-card-statuses > *")).toHaveCount(4);
+  await expect(page.locator('.uni-card[data-uni-id="technical-university-of-munich-de-munich"]').locator(".uni-status-overflow-trigger")).toHaveCount(0);
+});
+
+test("UniFit card renders Program Not Offered warning badge when selected profile major is missing", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    const items = [
+      {
+        id: "mit-usa-cambridge",
+        name: "Missing Program University",
+        rank: 1,
+        location: { country: "USA", city: "Cambridge" },
+        finance: { total_cost_year_usd: 50000 },
+        academics: { acceptance_rate_percent: 4 },
+        matchData: {
+          finalPrice: 50000,
+          missingProgram: true,
+          uiBadgeHints: {
+            missingProgram: true,
+          },
+        },
+      },
+    ];
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse(items)),
+    });
+  });
+
+  await page.goto("/index.html");
+  const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
+  await expect(firstCard).toBeVisible();
+
+  const badge = firstCard.locator(".uni-status-trigger--warning");
+  await expect(badge).toBeVisible();
+  await expect(badge).toHaveAttribute("aria-label", /Program Not Offered/);
+  await badge.hover();
+  await expect(firstCard.locator(".uni-status-tooltip__content")).toContainText("Program Not Offered");
+});
+
+test("UniFit overflow popover toggles on click and dismisses on Escape", async ({ page }) => {
+  await seedProfile(page, personas.enResearch.profile);
+
+  await page.route("**/universities/ai-sort", async (route) => {
+    const items = [
+      {
+        id: "mit-usa-cambridge",
+        name: "Overflow Test University",
+        rank: 1,
+        location: { country: "USA", city: "Cambridge" },
+        finance: { total_cost_year_usd: 95000 },
+        academics: { acceptance_rate_percent: 5 },
+        matchData: {
+          finalPrice: 95000,
+          preferenceMismatch: 0.08,
+          selectedChanceType: "grant",
+          grantChance: 90,
+          generalChance: 40,
+          conditional: true,
+          conditionalRequirements: 2,
+          meetMinRequirements: false,
+          missingProgram: true,
+          aidAny: true,
+          uiBadgeHints: {
+            showConditionalExamNeeded: true,
+            vibe: "your_vibe",
+            finance: "likely_grant",
+          },
+        },
+      },
+    ];
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(makeAiSortResponse(items)),
+    });
+  });
+
+  await page.goto("/index.html");
+  const firstCard = page.locator('.uni-card[data-uni-id="mit-usa-cambridge"]');
+  await expect(firstCard).toBeVisible();
+
+  const overflowBtn = firstCard.locator(".uni-status-overflow-trigger");
+  const popover = firstCard.locator(".uni-status-overflow-popover");
+  await expect(overflowBtn).toBeVisible();
+  await expect(overflowBtn).toHaveAttribute("aria-expanded", "false");
+  await expect(popover).toBeHidden();
+
+  // Open popover
+  await overflowBtn.click();
+  await expect(overflowBtn).toHaveAttribute("aria-expanded", "true");
+  await expect(popover).toBeVisible();
+
+  // Dismiss on Escape
+  await page.keyboard.press("Escape");
+  await expect(overflowBtn).toHaveAttribute("aria-expanded", "false");
+  await expect(popover).toBeHidden();
 });

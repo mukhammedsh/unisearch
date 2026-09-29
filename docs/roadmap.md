@@ -3,9 +3,22 @@
 This document outlines the planned direction, engineering tracks, and product milestones for UniSearch.
 Items are ordered by strategic execution phases and dependencies rather than fixed calendar dates.
 
+## Current priority: admissions product model
+
+The [admissions product model](admissions-product-model.md) is the current contract for university catalog and applicant-journey work. Its sequence is:
+
+1. Connect existing profile fields to one selected applicant context across admissions, scoring, deadlines, costs, and funding; fix confirmed cross-program, level, route, and cycle leakage.
+2. Define UniFit, UniChance, and budget-ranking semantics. Validate guest and profile journeys for MIT Course 6-3 first-year and transfer, Imperial Computing MEng through UCAS, and Stanford Computer Science through university-wide first-year and transfer routes.
+3. Have the user review the representative applicant experience before mass migration. MIT's complete all-level catalog inventory remains open but does not block validation of these contrasting cases; complete it before claiming MIT coverage.
+4. Extend the reviewed model to the remaining top-five universities, then refresh and migrate the other 45 using the verified model.
+
+Use profile fields that already exist, including education country and credential, applicant route, intended entry cycle, current residence, and self-reported fee-status context. Do not add a duplicate questionnaire. Do not infer immigration status, university-assessed Home/Overseas fee status, or aid eligibility from residence or nationality alone; show unknown when applicability is not established.
+
+This work covers undergraduate, master's, doctoral, and professional study now. It does not depend on the authentication, PostgreSQL, or mobile milestones below. Reassess the ordering of those separate tracks after the admissions migration.
+
 ---
 
-## Strategic Phases & Milestones
+## Other strategic phases and milestones
 
 ```
 Phase 1: Stabilization & Refinement
@@ -22,7 +35,6 @@ Phase 3: Mobile Experience & Rich Media
   └── [Features & UX] Campus Media Gallery on University Detail Pages
 
 Phase 4: Academic Expansion & Community
-  ├── [Expansion] Multi-Degree Level Expansion (Master's & PhD)
   ├── [Features & UX] Student & Alumni Reviews and Community Ratings
   └── [Expansion] Global Catalog Scaling (100+ Institutions)
 ```
@@ -39,7 +51,7 @@ Phase 4: Academic Expansion & Community
 * **Key Tasks:**
   - **Design & Typography:** Audit all screens against the Calm Academic Workspace specification (`frontend/css/style.css`, `docs/design-system.md`). Eliminate visual noise, unnecessary box borders, and align spacing to the 4/8-px grid.
   - **Static & Token Guards:** Ensure 100% pass rate across baseline health scripts (`npm run check:tokens`, `npm run check:i18n`, `npm run audit:data`).
-  - **Catalog Verification:** Lock the current catalog scope (50 institutions) and verify all official admissions URLs and program links.
+  - **Catalog Verification:** Follow the admissions-model sequence above; do not claim complete top-five or 50-university program coverage from the current runtime catalog. Validate scope across the representative admission routes before beginning mass migration.
   - **Test Suite Depth:** Cover critical user journeys with Playwright E2E scenarios and maintain >= 80% statement and branch coverage across both frontend and backend.
 
 ### 2. Percentage GPA Scale Support (0–100%)
@@ -49,7 +61,7 @@ Phase 4: Academic Expansion & Community
 * **Goal:** Add academic performance input and evaluation using percentage scales (0–100%) to accommodate international applicants (CIS, Central Asia, Europe) whose secondary education does not use standard 4.0 GPA.
 * **Key Tasks:**
   - **Frontend:** Add a scale selector (4.0 / 5.0 / 100%) in the catalog filters and UniChance profile drawer.
-  - **Backend:** Implement robust score normalization in `backend/app/services/ai_scoring.py` for admission probability estimation.
+  - **Backend:** Implement robust score normalization in `backend/app/services/ai_scoring.py` for scoped academic-evidence comparison. Any probability presentation must meet the evidence and calibration requirements in the admissions product model.
   - **Validation:** Enforce bounds validation (0–100) and reject malformed inputs.
   - **Localization:** Provide English and Russian localization strings in `frontend/Localization/`.
 * **Dependencies:** Follows completion of the UI stabilization cycle.
@@ -90,9 +102,9 @@ Phase 4: Academic Expansion & Community
 * **Key Tasks:**
   - **Schema Architecture:** Define relational models using SQLAlchemy 2.0 (`users`, `user_favorites`, `universities`, `programs`, `admission_criteria`).
   - **Database Migrations:** Configure Alembic for declarative schema versioning and zero-downtime migrations.
-  - **Data Migration:** Build and verify a lossless migration script exporting all 50 existing institutions into PostgreSQL with Pydantic validation.
+  - **Data Migration:** Migrate the then-active university catalog with Pydantic validation; do not silently publish unverified draft records.
   - **Query Performance:** Add indexing for full-text search, filter combinations, and geographic bounding queries.
-  - **Contract Preservation:** Keep existing REST API endpoint contracts unchanged to ensure uninterrupted frontend compatibility.
+  - **Contract Preservation:** Preserve the API contract in force at the time of this database migration. The earlier admissions-model integration may intentionally change it.
 * **Dependencies:** Depends on Google Auth integration; must complete before mobile app launch and user reviews.
 
 ---
@@ -128,19 +140,7 @@ Phase 4: Academic Expansion & Community
 
 ## Phase 4: Academic Expansion & Community
 
-### 8. Multi-Degree Level Expansion (Master's & PhD)
-* **Track:** Expansion
-* **Priority:** P2 (Medium)
-* **Status:** Planned
-* **Goal:** Expand product scope beyond Bachelor's degrees to support Master's and Doctoral (PhD) programs.
-* **Key Tasks:**
-  - **Scope Revision:** Formally update `AGENTS.md` and data models to support multi-level degree admissions.
-  - **Program Schema:** Add `degree_level` (Bachelor, Master, PhD) and advanced criteria (GRE/GMAT, research publications, portfolio requirements, work experience).
-  - **Algorithm Calibration:** Tune UniFit and UniChance scoring heuristics to account for graduate admissions selectivity.
-  - **UI Controls:** Add degree-level switchers across catalog search, comparison trays, and profile settings.
-* **Dependencies:** Built on top of PostgreSQL and verified mobile client; precedes catalog expansion.
-
-### 9. Student & Alumni Reviews and Community Ratings
+### 8. Student & Alumni Reviews and Community Ratings
 * **Track:** Features & UX
 * **Priority:** P3 (Low)
 * **Status:** Planned
@@ -150,9 +150,9 @@ Phase 4: Academic Expansion & Community
   - **Evaluation Criteria:** Multi-dimensional rating scales (academics, housing, campus life, career support, community culture).
   - **Catalog Integration:** Sort and filter catalog results by student ratings and review counts.
   - **Moderation:** Implement administrative moderation tooling and community reporting workflows.
-* **Dependencies:** Requires Google Auth, PostgreSQL persistence, and degree-level expansion.
+* **Dependencies:** Requires Google Auth and PostgreSQL persistence.
 
-### 10. Global Catalog Scaling (100+ Institutions)
+### 9. Global Catalog Scaling (100+ Institutions)
 * **Track:** Expansion
 * **Priority:** P3 (Low)
 * **Status:** Planned

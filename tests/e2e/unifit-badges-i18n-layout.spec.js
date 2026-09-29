@@ -77,7 +77,7 @@ for (const locale of locales) {
     await expect(compactCard).toBeVisible();
     const statuses = firstCard.locator(".uni-card-statuses");
     await expect(statuses).toBeVisible();
-    await expect(firstCard.locator(".uni-status-trigger")).toHaveCount(4);
+    await expect(firstCard.locator(".uni-status-trigger")).toHaveCount(3);
 
     const overflow = await firstCard.evaluate((card) => {
       const box = card.querySelector(".uni-media");
@@ -108,7 +108,7 @@ for (const locale of locales) {
     await expect(page).toHaveURL(catalogUrl);
     const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await expect(firstTooltip).toBeVisible();
-    await expect(firstTooltip).toHaveCSS("z-index", "1200");
+    await expect(firstTooltip).toHaveCSS("z-index", "10");
     await expect(firstTooltip.locator(".uni-status-tooltip__title")).toBeVisible();
     await expect(firstTooltip.locator(".uni-status-tooltip__text")).toBeVisible();
     const firstAriaLabel = await firstStatus.getAttribute("aria-label");

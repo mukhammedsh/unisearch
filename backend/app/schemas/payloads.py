@@ -1,7 +1,7 @@
 import re
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator, model_validator
 
 
 MAX_LIST_ITEMS = 50
@@ -123,7 +123,7 @@ class ProfileLanguageInput(BaseModel):
 class ProfilePayload(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
+    budget: Optional[StrictInt] = Field(default=None, ge=0, le=1_000_000)
     gpa: Optional[float] = Field(default=None, ge=0, le=5.0)
     gpa_scale: Optional[float] = Field(default=None, ge=1.0, le=5.0)
     major: str = Field(default="", max_length=120)
@@ -131,6 +131,20 @@ class ProfilePayload(BaseModel):
     locale: Optional[str] = Field(default=None, max_length=16)
     studyMode: str = Field(default="", max_length=40)
     fundingType: str = Field(default="", max_length=20)
+    citizenship: Optional[str] = Field(default=None, max_length=80)
+    citizenships: List[str] = Field(default_factory=list, max_length=10)
+    country_of_education: Optional[str] = Field(default=None, max_length=80)
+    country_of_education_other: Optional[str] = Field(default=None, max_length=80)
+    education_credential: Optional[str] = Field(default=None, max_length=80)
+    education_credential_other: Optional[str] = Field(default=None, max_length=120)
+    applicant_route: Optional[Literal["first_year", "transfer", "graduate"]] = None
+    intended_entry_cycle: Optional[str] = Field(default=None, max_length=40)
+    current_residence_country: Optional[str] = Field(default=None, max_length=80)
+    current_residence_other: Optional[str] = Field(default=None, max_length=80)
+    fee_status_context: Literal[
+        "unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"
+    ] = "unknown"
+    study_level: Optional[str] = Field(default=None, max_length=40)
     selectedAdmissionChoices: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: List[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
@@ -140,10 +154,57 @@ class ProfilePayload(BaseModel):
     def _normalize_text_fields(cls, value: Any) -> str:
         return _strip_or_empty(value)
 
-    @field_validator("interests", "locale", mode="before")
+    @field_validator(
+        "interests", "locale", "citizenship", "study_level",
+        "country_of_education", "country_of_education_other", "education_credential",
+        "education_credential_other", "intended_entry_cycle", "current_residence_country",
+        "current_residence_other", mode="before"
+    )
     @classmethod
     def _normalize_optional_text(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
+
+    @field_validator("citizenships", mode="before")
+    @classmethod
+    def _normalize_citizenships(cls, value: Any) -> List[str]:
+        if value is None:
+            return []
+        if isinstance(value, str):
+            raw_items = [c.strip() for c in value.split(",") if c.strip()]
+        elif isinstance(value, (list, tuple, set)):
+            raw_items = [str(c).strip() for c in value if str(c).strip()]
+        else:
+            raise ValueError("citizenships must be a string or a list of strings")
+        seen = set()
+        out = []
+        for item in raw_items:
+            key = item.upper()
+            if len(item) > 80:
+                raise ValueError("citizenship values must be 80 characters or fewer")
+            if key not in seen:
+                seen.add(key)
+                out.append(item)
+        if len(out) > 10:
+            raise ValueError("at most 10 citizenship values are allowed")
+        return out
+
+    @model_validator(mode="after")
+    def _sync_citizenship_fields(self) -> "ProfilePayload":
+        if self.citizenships:
+            self.citizenship = self.citizenships[0]
+        elif self.citizenship and not self.citizenships:
+            self.citizenships = [self.citizenship]
+        return self
+
+    @model_validator(mode="after")
+    def _validate_route_matches_target_level(self) -> "ProfilePayload":
+        graduate_levels = {"master", "doctorate", "mba", "graduate", "phd"}
+        level = str(self.study_level or "").strip().lower()
+        if level in graduate_levels and self.applicant_route in {"first_year", "transfer"}:
+            raise ValueError("first-year and transfer routes require an undergraduate target level")
+        if level in {"bachelor", "undergraduate"} and self.applicant_route == "graduate":
+            raise ValueError("graduate route requires a graduate target level")
+        return self
 
     @field_validator("selectedAdmissionChoices", mode="before")
     @classmethod
@@ -161,18 +222,20 @@ class ProfilePayload(BaseModel):
                 raise ValueError(f"Invalid university ID in selectedAdmissionChoices: {uni[:32]}")
             if len(selection) > MAX_SELECTED_CHOICE_KEYS:
                 raise ValueError("selectedAdmissionChoices entry has too many keys")
-            choice = _strip_or_none(selection.get("choiceKey"))
-            if choice:
-                if len(choice) > 128:
-                    raise ValueError("choiceKey exceeds maximum allowed length (128 chars)")
-                out[uni] = {
-                    "programId": _strip_or_empty(selection.get("programId"))[:128],
-                    "programName": _strip_or_empty(selection.get("programName"))[:200],
-                    "categoryId": _strip_or_empty(selection.get("categoryId"))[:128],
-                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId"))[:128],
-                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId"))[:128],
-                    "choiceKey": choice,
-                }
+            fields = {
+                "programId": (128, _strip_or_empty(selection.get("programId"))),
+                "programName": (200, _strip_or_empty(selection.get("programName"))),
+                "categoryId": (128, _strip_or_empty(selection.get("categoryId"))),
+                "requirementProfileId": (128, _strip_or_empty(selection.get("requirementProfileId"))),
+                "fundingOptionId": (128, _strip_or_empty(selection.get("fundingOptionId"))),
+                "choiceKey": (128, _strip_or_empty(selection.get("choiceKey"))),
+            }
+            for field, (max_length, text) in fields.items():
+                if len(text) > max_length:
+                    raise ValueError(f"{field} exceeds maximum allowed length ({max_length} chars)")
+            normalized = {field: text for field, (_limit, text) in fields.items() if text}
+            if normalized.get("choiceKey") or normalized.get("programId"):
+                out[uni] = normalized
         return out
 
 
@@ -219,7 +282,6 @@ class UniversitiesAiSortRequest(BaseModel):
     @classmethod
     def _normalize_optional_text(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
-
 
 class ProfileOnlyRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")

@@ -185,8 +185,7 @@ test("view mode toggle changes views without a content transition", async ({ pag
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
-  // Both real destinations are prepared before the first interaction.
-  await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
+  // The map results rail is populated only when map mode is selected.
   await expect(page.locator("#viewMapBtn")).toBeEnabled();
 
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
@@ -252,7 +251,6 @@ test("view mode toggle changes views without a content transition", async ({ pag
 
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await expect(page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first()).toBeAttached();
   await page.click("#viewMapBtn");
   await expect(page.locator("#mapStage")).toBeVisible();
   await page.click("#viewListBtn");
@@ -274,6 +272,7 @@ test("map results rail renders status badges in vertical column without overlapp
   });
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+  const aiResponsePromise = page.waitForResponse((r) => r.url().includes("/universities/ai-sort") && r.status() === 200);
   await setNativeSelect(page, "sortSelect", "uni_ai");
 
   const confirmBtn = page.locator("#unifitWarningModal [data-action='confirm']");
@@ -281,6 +280,9 @@ test("map results rail renders status badges in vertical column without overlapp
     await confirmBtn.click();
     await expect(page.locator("#unifitWarningModal")).toBeHidden();
   }
+
+  await aiResponsePromise;
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   await page.click("#viewMapBtn");
   await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
@@ -290,6 +292,8 @@ test("map results rail renders status badges in vertical column without overlapp
   await expect(cardWithStatuses).toBeVisible();
 
   const triggers = cardWithStatuses.locator(".uni-status-trigger");
+  await expect(triggers.nth(0)).toBeVisible();
+  await expect(triggers.nth(1)).toBeVisible();
   const count = await triggers.count();
   expect(count).toBeGreaterThanOrEqual(2);
 
@@ -333,4 +337,49 @@ test("university detail tabs stay clickable after client-side route", async ({ p
   await page.click(".d-tab-btn[data-tab='tab-admission']");
   await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+});
+
+test("tab sliding indicators use a unified 2px full-pill line across filters and pages", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  // Filter tabs (.u-saved-filter)
+  const filterIndicator = page.locator(".u-saved-filter .sliding-indicator");
+  await expect(filterIndicator).toHaveCount(1);
+  const filterStyle = await filterIndicator.evaluate((el) => {
+    const cs = getComputedStyle(el);
+    return {
+      height: cs.height,
+      borderRadius: cs.borderRadius,
+      bottom: cs.bottom,
+    };
+  });
+  expect(filterStyle.height).toBe("2px");
+  expect(filterStyle.borderRadius).toBe("999px");
+  expect(filterStyle.bottom).toBe("0px");
+
+  // Hover over Favorites tab moves indicator
+  const favBtn = page.locator(".u-saved-filter__btn[data-saved-filter='favorites']");
+  await favBtn.hover();
+  await expect.poll(async () => {
+    return filterIndicator.evaluate((el) => el.style.opacity);
+  }).toBe("1");
+
+  // University detail tabs (.d-tabs)
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailCard")).toBeVisible();
+  const detailIndicator = page.locator(".d-tabs .sliding-indicator");
+  await expect(detailIndicator).toHaveCount(1);
+  const detailStyle = await detailIndicator.evaluate((el) => {
+    const cs = getComputedStyle(el);
+    return {
+      height: cs.height,
+      borderRadius: cs.borderRadius,
+      bottom: cs.bottom,
+    };
+  });
+  expect(detailStyle.height).toBe("2px");
+  expect(detailStyle.borderRadius).toBe("999px");
+  expect(detailStyle.bottom).toBe("0px");
 });

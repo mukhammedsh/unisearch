@@ -68,7 +68,7 @@ export function showUniversitiesTour(options = {}) {
                 label: t("tour.step1.label", "How UniSearch helps"),
                 kicker: t("tour.step1.kicker", "Welcome"),
                 title: t("tour.step1.title", "Start with a clear plan"),
-                desc: t("tour.step1.desc", "UniSearch helps you choose bachelor's universities that fit your goals. You do not need to know where to begin: work through the same simple route every time."),
+                desc: t("tour.step1.desc", "UniSearch helps you explore universities and programs that fit your goals. Start with a subject, then check the application requirements that apply to each program."),
                 points: [
                     t("tour.step1.point1", "Tell us what matters to you in your profile."),
                     t("tour.step1.point2", "Browse widely, then use filters to narrow the list."),

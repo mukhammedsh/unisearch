@@ -30,20 +30,28 @@
   display: inline-flex;
   align-items: center;
   z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
 .profile-info-wrap:hover,
 .profile-info-wrap:focus-within,
-.profile-info-wrap.is-open {
+.profile-info-wrap.is-open,
+.profile-info-wrap.is-closed,
+.profile-info-wrap.is-closing {
   z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
 }
 
 .profile-card-head:has(.profile-info-wrap:hover),
 .profile-card-head:has(.profile-info-wrap:focus-within),
 .profile-card-head:has(.profile-info-wrap.is-open),
+.profile-card-head:has(.profile-info-wrap.is-closed),
+.profile-card-head:has(.profile-info-wrap.is-closing),
 .profile-card-block:has(.profile-info-wrap:hover),
 .profile-card-block:has(.profile-info-wrap:focus-within),
-.profile-card-block:has(.profile-info-wrap.is-open) {
+.profile-card-block:has(.profile-info-wrap.is-open),
+.profile-card-block:has(.profile-info-wrap.is-closed),
+.profile-card-block:has(.profile-info-wrap.is-closing) {
   position: relative;
   z-index: var(--z-dropdown);
 }
@@ -455,26 +463,6 @@
   }
 }
 
-:root[data-theme="dark"] .profile-info{
-  background: var(--surface-soft);
-  border-color: transparent;
-  color: var(--text-muted);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :root[data-theme="dark"] .profile-info:hover{
-    background: var(--accent-panel);
-    border-color: var(--line-accent);
-    color: var(--accent);
-  }
-}
-
-:root[data-theme="dark"] .profile-info:focus-visible{
-  background: var(--accent-panel);
-  border-color: var(--line-accent);
-  color: var(--accent);
-}
-
 .profile-section-tabs {
   margin: 0 24px 12px;
   display: grid;
@@ -507,13 +495,13 @@
 
 @media (hover: hover) and (pointer: fine) {
   .profile-section-tab:hover {
-    color: var(--text);
+    color: var(--interaction-hover-text);
   }
 }
 
 .profile-section-tab.is-active {
   background: transparent;
-  color: var(--accent);
+  color: var(--interaction-active-text);
   box-shadow: none;
 }
 
@@ -661,7 +649,7 @@
 
 .profile-delete{
   border: none;
-  background: var(--surface);
+  background: var(--surface-solid);
   color: var(--text-muted);
   padding: 8px 12px;
   border-radius: 10px;
@@ -948,7 +936,17 @@
   border: none;
 }
 
-.profile-progress-fill,
+.profile-progress-fill {
+  background: var(--accent);
+}
+
 .profile-section-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
   background: var(--accent);
 }

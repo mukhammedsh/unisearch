@@ -8,18 +8,18 @@
 [![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-UniSearch helps applicants discover and compare universities for **bachelor's studies**, exploring admissions requirements, costs, and funding options based on their profile.
+UniSearch helps applicants discover and compare universities across study levels, exploring programs, admissions requirements, costs, and funding options based on their profile. Coverage varies by university and program; time-sensitive facts include official sources and verification dates.
 
 [Open the website](https://unisearch-frontend.onrender.com/) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 ## Features
 
-- **Catalog on the homepage:** search, location and cost filters, sorting, list and map views, and favorites.
-- **Applicant profile:** GPA and grading scale, exams, languages, budget, intended major, interests, study mode, and funding preferences.
-- **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags. It is a sorting mode within the catalog.
+- **Catalog on the homepage:** search, location and cost filters, sorting, favorites, and list or clustered map views with progressively loaded map results.
+- **Applicant profile:** GPA and grading scale, exams, languages, budget, optional annual family income, intended major, interests, study mode, funding preferences, education background, study level, entry cycle, and multiple citizenships selected from a searchable country list. Family income is stored on the device and used only to show context against published aid thresholds.
+- **UniFit:** personalized catalog sorting based on the profile, preference sliders, available requirements checks, and the applicant's annual budget when an applicable annual cost is known. It is a sorting mode within the catalog, with explanatory tags and a program-not-offered warning when a catalog alternative does not match the intended major.
 - **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
-- **University details:** programs, admission options, requirements, costs, funding, and student life information where data is available.
-- **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
+- **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available. Selected routes at MIT, Imperial College London, Stanford, Harvard, and Oxford have expanded program-level coverage; this is a pilot, not a complete catalog of each university. The deadlines tab includes a month calendar for exact dated events; approximate and yearless deadlines remain in the timeline and list.
+- **UniChance:** a 0–100 requirements-fit percentage for the applicable admission path, based on the share of measurable published academic and language minimums met. Missing evidence or no measurable minimums produces no score. Historical admitted or enrolled score ranges and acceptance rates are shown separately where available.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 - **Guide:** a structured reference explaining admission requirements, exams, UniFit, UniChance, and comparison workflows, with section-to-section navigation.
 
@@ -27,15 +27,19 @@ The interface supports English and Russian, multi-currency conversion (60+ curre
 
 ### Understanding the estimates
 
-UniFit measures preference fit, while UniChance estimates admission chances. UniChance uses admitted-student score statistics (`score_profile`) when available; otherwise, it may return a low-confidence estimate or a no-data state. These calculations do not guarantee admission.
+UniFit uses the profile's annual budget against the applicable annual cost before any award; unknown costs and potential grants do not become a zero or a guaranteed discount. UniChance is independent of budget and funding preferences and is not an admission probability or a funding prediction. Both tools preserve missing evidence as unknown rather than filling it with a neutral percentage.
+
+Published family-income thresholds are policy context only. A profile income comparison does not determine financial-aid eligibility or an award amount. Funding details describe published conditions and application steps; they do not guarantee an award, and possible aid is not deducted from displayed costs.
 
 ROI is a simplified ratio, not the payback period for an entire degree or a forecast of personal earnings. If salary data for the chosen major is missing, the calculation may use general university salary data.
 
 Verified facts and requirements come from official sources. Catalog coverage is incomplete: missing values are preferred over invented facts. Some UniFit factors use proxy estimates and should not be treated as verified university statistics.
 
+University detail pages include a study-level data coverage summary for programs, admission requirements, deadline precision, costs, and aid. “Not catalogued” means UniSearch has no matching data listed; it does not indicate whether the university offers that program or policy. Coverage describes catalog presence and does not itself verify a fact.
+
 ## Run locally
 
-The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from the repository root.
+The CI baseline is **Python 3.12 and Node.js 20**. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first, then run the commands below from the repository root.
 
 1. Install Node dependencies and create a Python environment:
 
@@ -65,7 +69,7 @@ The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from t
 3. Install backend dependencies:
 
    ```sh
-   python -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+   uv pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
    ```
 
 4. In `backend/.env`, disable interest translation unless you run a separate LibreTranslate service:
@@ -149,7 +153,7 @@ npm run audit:data
 For tests, install the additional dependencies in the active Python environment and the Playwright browser:
 
 ```sh
-python -m pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
+uv pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 npx playwright install chromium
 npm run test:fast               # fast combined unit + backend tests
 npm run test:backend            # all backend tests (or: npm run test:backend -- <test_name>)
@@ -163,6 +167,6 @@ npm run test:e2e:pr             # Playwright E2E suite
 
 For the full browser matrix, install Chromium, Firefox, and WebKit with `npx playwright install`, then run `npm run test:e2e:nightly`. Automated checks are configured in [.github/workflows/](.github/workflows/).
 
-Architecture: [docs/architecture.md](docs/architecture.md). Roadmap: [docs/roadmap.md](docs/roadmap.md). Governance: [GOVERNANCE.md](GOVERNANCE.md). Security baseline tracking: [docs/security-baseline.md](docs/security-baseline.md). Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Interface rules: [design system](docs/design-system.md). Version history: [CHANGELOG.md](CHANGELOG.md).
+Architecture: [docs/architecture.md](docs/architecture.md). Admissions direction: [product model](docs/admissions-product-model.md) and [migration checklist](todo.md). Roadmap: [docs/roadmap.md](docs/roadmap.md). Governance: [GOVERNANCE.md](GOVERNANCE.md). Security baseline tracking: [docs/security-baseline.md](docs/security-baseline.md). Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Interface rules: [design system](docs/design-system.md). Version history: [CHANGELOG.md](CHANGELOG.md).
 
 Source code is distributed under the [MIT License](LICENSE). University logos, names, and photographs belong to their respective owners and are not covered by the code license; see `LICENSE` for details.

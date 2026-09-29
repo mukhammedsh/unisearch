@@ -245,6 +245,117 @@ def list_universities(
     return result
 
 
+@router.get(
+    "/universities/map-points",
+    summary="List university map points",
+    description="Returns compact university coordinates inside the requested map bounds for client-side Leaflet clustering.",
+)
+def list_university_map_points(
+    west: float = Query(..., ge=-180, le=180),
+    south: float = Query(..., ge=-90, le=90),
+    east: float = Query(..., ge=-180, le=180),
+    north: float = Query(..., ge=-90, le=90),
+    q: Optional[str] = Query(None, max_length=200),
+    country: Optional[str] = Query(None, max_length=80),
+    city: Optional[str] = Query(None, max_length=80),
+    region: Optional[str] = Query(None, max_length=80),
+    major: Optional[str] = Query(None, max_length=120),
+    study_level: Optional[str] = Query(None, max_length=40),
+    funding_type: Optional[str] = Query(None, max_length=20),
+    format: Optional[str] = Query(None, max_length=32),
+    user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
+    min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    min_acceptance: Optional[float] = Query(None, ge=0, le=100),
+    max_acceptance: Optional[float] = Query(None, ge=0, le=100),
+    size: Optional[str] = Query(None, max_length=40),
+    lang: Optional[str] = Query(None, max_length=16),
+    request: Request = None,
+    response: Response = None,
+):
+    if south > north:
+        raise HTTPException(status_code=422, detail="south must not exceed north")
+
+    search_lang = _resolve_search_lang(lang, request)
+    cache_payload = {
+        "west": round(west, 5),
+        "south": round(south, 5),
+        "east": round(east, 5),
+        "north": round(north, 5),
+        "q": q,
+        "country": country,
+        "city": city,
+        "region": region,
+        "major": major,
+        "study_level": study_level,
+        "funding_type": funding_type,
+        "format": format,
+        "user_budget": user_budget,
+        "min_tuition": min_tuition,
+        "max_tuition": max_tuition,
+        "min_acceptance": min_acceptance,
+        "max_acceptance": max_acceptance,
+        "size": size,
+        "search_lang": search_lang,
+    }
+    redis_cache_key = _cache_key("api:universities:map-points", cache_payload)
+    cached = cache_get_json(redis_cache_key)
+    if isinstance(cached, dict):
+        if response is not None:
+            response.headers["Cache-Control"] = "public, max-age=60"
+            response.headers["X-Redis-Cache"] = "HIT"
+        return cached
+
+    result = uni_service.list_universities(
+        q=q,
+        country=country,
+        city=city,
+        region=region,
+        major=major,
+        study_level=study_level,
+        funding_type=funding_type,
+        format=format,
+        user_budget=user_budget,
+        min_tuition=min_tuition,
+        max_tuition=max_tuition,
+        min_acceptance=min_acceptance,
+        max_acceptance=max_acceptance,
+        size=size,
+        sort="rank_asc",
+        page=1,
+        limit=10_000,
+        paginate=False,
+        response_mode="map",
+        search_lang=search_lang,
+    )
+
+    def is_in_bounds(item: Dict[str, Any]) -> bool:
+        coordinates = item.get("coordinates") if isinstance(item, dict) else None
+        if not isinstance(coordinates, dict):
+            return False
+        try:
+            lat = float(coordinates.get("lat"))
+            lon = float(coordinates.get("lon"))
+        except (TypeError, ValueError):
+            return False
+        longitude_matches = west <= lon <= east if west <= east else (lon >= west or lon <= east)
+        return south <= lat <= north and longitude_matches
+
+    bounded_items = [item for item in result.get("items", []) if is_in_bounds(item)]
+    total = len(bounded_items)
+    payload = {
+        "items": bounded_items[:10_000],
+        "count": min(total, 10_000),
+        "total": total,
+        "truncated": total > 10_000,
+    }
+    cache_set_json(redis_cache_key, payload, ttl_seconds=max(1, int(REDIS_CACHE_TTL_SEC)))
+    if response is not None:
+        response.headers["Cache-Control"] = "public, max-age=60"
+        response.headers["X-Redis-Cache"] = "MISS"
+    return payload
+
+
 @router.post("/universities/ai-sort", summary="AI-sorted university list (UniFit)", description="Sorts universities by profile fit using the UniFit algorithm. Considers exams, budget, interests, languages, and preference sliders to produce a personalized ranking.")
 def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Request, response: Response = None):
     profile = to_profile_dict(payload.profile)
@@ -276,12 +387,16 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     cache_hit = sorted_items is not None
 
     if sorted_items is None:
+        effective_profile = dict(profile)
+        if major and not effective_profile.get("major"):
+            effective_profile["major"] = major
+
         base = uni_service.list_universities(
             q=q,
             country=country,
             city=city,
             region=region,
-            major=major,
+            major=None,
             study_level=study_level,
             funding_type=None,
             format=fmt,
@@ -301,7 +416,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
 
         sorted_items = ai_scoring_service.sort_universities_ai(
             base.get("items", []),
-            profile=profile,
+            profile=effective_profile,
             practice_vs_science=practice_vs_science,
             social_vs_hardcore=social_vs_hardcore,
             budget_vs_prestige=budget_vs_prestige,
@@ -389,7 +504,7 @@ def get_university(
     return u
 
 
-@router.post("/universities/{university_id}/uni-chance", summary="Admission chance estimate (UniChance)", description="Estimates the user's admission probability for a specific university based on their profile, exams, and languages.")
+@router.post("/universities/{university_id}/uni-chance", summary="Published requirements fit (UniChance)", description="Returns the percentage of measurable published academic and language minimum checks met for the applicable admission choice. This score is not an admission probability.")
 def get_university_uni_chance(
     university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
     payload: ProfileOnlyRequest = ...,

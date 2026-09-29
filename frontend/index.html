@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="./" />
-  <link rel="icon" href="images/minilogo.png" type="image/png">
+  <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.universities">Universities | UniSearch</title>
-  <meta name="description" content="Browse and filter bachelor's programs and global university admissions data across tuition, location, and test score criteria." />
+  <meta name="description" content="Browse university programs across study levels and compare admissions, tuition, location, and entry requirements." />
   <meta name="theme-color" content="#5D17EB" />
 
   <!-- Open Graph / Facebook / Telegram -->
@@ -14,13 +14,13 @@
   <meta property="og:site_name" content="UniSearch" />
   <meta property="og:url" content="https://unisearch-frontend.onrender.com/" />
   <meta property="og:title" content="University Catalog | UniSearch" />
-  <meta property="og:description" content="Explore international universities, filter by tuition cost, acceptance rates, and entrance requirements for undergraduate studies." />
+  <meta property="og:description" content="Explore university programs across study levels and compare tuition, admissions, and entry requirements." />
   <meta property="og:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta property="og:image:secure_url" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1586" />
   <meta property="og:image:height" content="992" />
-  <meta property="og:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta property="og:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -28,17 +28,9 @@
   <meta name="twitter:title" content="University Catalog | UniSearch" />
   <meta name="twitter:description" content="Explore international universities, filter by tuition cost, acceptance rates, and entrance requirements." />
   <meta name="twitter:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
-  <meta name="twitter:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
-  <script>
-    try {
-      if (localStorage.getItem("unisearch_universities_scope_notice_dismissed") === "1") {
-        document.documentElement.classList.add("scope-notice-dismissed");
-      }
-    } catch (e) {}
-  </script>
-
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/universities.css" />
 
@@ -50,22 +42,18 @@
   </div>
   <main class="u-page">
     <h1 class="sr-only" data-i18n="universities.page_heading">Universities</h1>
-    <section id="universitiesScopeNotice" class="u-page-scope" aria-label="Current study scope" data-i18n-aria-label="universities.scope_note.aria">
-      <div class="u-page-scope__inner">
-        <div class="u-page-scope__content">
-          <p class="u-page-scope__eyebrow" data-i18n="universities.scope_note.title">Bachelor's programs only</p>
-          <p class="u-page-scope__text" data-i18n="universities.scope_note.body">The catalog shows bachelor's programs and related admissions information.</p>
-        </div>
-        <button id="dismissUniversitiesScopeNotice" class="u-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
-          <span data-heroicon="x-mark" data-icon-size="18"></span>
-        </button>
-      </div>
-    </section>
-
     <div class="u-section-bar">
       <div class="u-section-meta">
         <div id="uFoundSummary" class="u-found" aria-live="polite">
           <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
+        </div>
+
+        <div id="catalogLevelSegmented" class="catalog-level-segmented" role="group" aria-label="Study level" data-i18n-aria-label="universities.level_segmented.aria">
+          <button type="button" class="catalog-level-btn is-active" data-level="" data-i18n="universities.level.all" aria-pressed="true">All Levels</button>
+          <button type="button" class="catalog-level-btn" data-level="bachelor" data-i18n="universities.level.bachelor" aria-pressed="false">Bachelor's</button>
+          <button type="button" class="catalog-level-btn" data-level="master" data-i18n="universities.level.master" aria-pressed="false">Master's</button>
+          <button type="button" class="catalog-level-btn" data-level="doctorate" data-i18n="universities.level.doctorate" aria-pressed="false">PhD</button>
+          <button type="button" class="catalog-level-btn" data-level="mba" data-i18n="universities.level.mba" aria-pressed="false">MBA</button>
         </div>
 
         <div class="u-section-actions">

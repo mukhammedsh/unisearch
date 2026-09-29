@@ -76,11 +76,13 @@ const LAYOUT_HTML = `
 
   <div class="navbar-search" id="universitySearch" role="search" hidden>
     <button id="navbarSearchBack" class="navbar-search-back" type="button" aria-label="Back to navigation" data-i18n-aria-label="navbar.search.back" title="Back to navigation" data-i18n-title="navbar.search.back" hidden>${heroIcon("arrow-left", "ui-icon ui-icon--18")}</button>
-    <span class="navbar-search-icon" aria-hidden="true">${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</span>
-    <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" spellcheck="false" />
-    <button id="searchClearBtn" class="navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
-      ${heroIcon("x-mark", "ui-icon ui-icon--16")}
-    </button>
+    <div class="navbar-search-field ui-input-composite">
+      <span class="navbar-search-icon" aria-hidden="true">${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</span>
+      <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" spellcheck="false" />
+      <button id="searchClearBtn" class="navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
+        ${heroIcon("x-mark", "ui-icon ui-icon--16")}
+      </button>
+    </div>
   </div>
 
   <div class="navbar-right">

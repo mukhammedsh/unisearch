@@ -222,6 +222,7 @@ import {
   getGrantsFromCategories,
   renderTrackFundingBadge, 
 } from "../../university-detail-helpers.js";
+import { getFinanceForChoice } from "../university/render-sections.js";
 
 export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
@@ -505,28 +506,13 @@ export function compareSelectedAdmissionOption(u, compareAdmissionChoices = null
 
 export function compareSelectedFinance(u, compareAdmissionChoices = null) {
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
-  return (option?.finance_override && typeof option.finance_override === "object")
-    ? option.finance_override
-    : (u?.finance || {});
+  return getFinanceForChoice(option, u?.finance) || {};
 }
 
 export function compareSelectedAnnualCost(u, compareAdmissionChoices = null) {
   const finance = compareSelectedFinance(u, compareAdmissionChoices);
   const profileMode = normalizeStudyModeForCost(loadProfile()?.studyMode || loadProfile()?.study_mode || "");
-  const hasSelectedCostData = [
-    finance?.total_cost_year_usd,
-    finance?.costs_breakdown_year_usd,
-    finance?.total_cost_year_usd_by_mode,
-    finance?.costs_breakdown_year_usd_by_mode,
-  ].some((value) => (
-    value !== null
-    && value !== undefined
-    && value !== ""
-    && (typeof value !== "object" || Object.keys(value).length > 0)
-  ));
-  const modeCost = hasSelectedCostData ? modeAwareAnnualCost(finance, profileMode) : null;
-  const total = modeCost ?? finance?.total_cost_year_usd ?? u?.finance?.total_cost_year_usd;
-  return toFiniteNumber(total);
+  return toFiniteNumber(modeAwareAnnualCost(finance, profileMode));
 }
 
 export function compareSelectedCostContext(u, compareAdmissionChoices = null) {

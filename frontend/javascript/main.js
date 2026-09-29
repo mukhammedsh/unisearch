@@ -49,7 +49,8 @@ async function registerServiceWorker() {
   }
 }
 
-function applyAINameConfig() {
+function applyAINameConfig(root = document) {
+  const scope = root && typeof root.querySelectorAll === "function" ? root : document;
   const tokens = {
     fit: aiName("fit"),
     chance: aiName("chance"),
@@ -60,11 +61,11 @@ function applyAINameConfig() {
       .replaceAll("{fit}", tokens.fit)
       .replaceAll("{chance}", tokens.chance);
 
-  document.querySelectorAll("[data-ai-template]").forEach((el) => {
+  scope.querySelectorAll("[data-ai-template]").forEach((el) => {
     el.textContent = replace(el.getAttribute("data-ai-template"));
   });
 
-  document.querySelectorAll("[data-ai-name]").forEach((el) => {
+  scope.querySelectorAll("[data-ai-name]").forEach((el) => {
     const key = String(el.getAttribute("data-ai-name") || "").trim().toLowerCase();
     if (tokens[key]) el.textContent = tokens[key];
   });
@@ -290,7 +291,8 @@ async function initRoutePage(ctx = currentRouteContext()) {
       ensureLanguageConfig(),
       ensureCityDatabase(),
     ]);
-    return module?.initUniversitiesPage?.();
+    await module?.initUniversitiesPage?.();
+    return;
   }
   if (ctx.isUniversityPage) {
     const [module] = await Promise.all([
@@ -532,6 +534,10 @@ async function loadAppRoute(rawHref, options = {}) {
   try {
     const html = await fetchRouteHtml(url.href, controller.signal);
     const nextDoc = new DOMParser().parseFromString(html, "text/html");
+
+    applyTranslations(nextDoc);
+    applyAINameConfig(nextDoc);
+    hydrateHeroIcons(nextDoc);
 
     if (leavingUniversitiesPage) {
       const universitiesModule = routeModulePromises.get("universities");

@@ -87,6 +87,7 @@ import {
   writeIdListStorage,
   shouldOpenUniversitiesInNewTab,
   rememberRecentUniversity,
+  fetchUniversityDetailCached,
   getDetailCacheEntry,
   toFiniteNumber,
   resolveUniversityCardPrice,
@@ -109,6 +110,9 @@ let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
 let __universitiesMapResizeTimer = 0;
+let __universitiesOverflowClickHandler = null;
+let __universitiesOverflowKeydownHandler = null;
+let __universitiesMapResultsObserver = null;
 
 export function disposeUniversitiesPage() {
     if (__universitiesProfileUpdatedHandler) {
@@ -175,6 +179,18 @@ export function disposeUniversitiesPage() {
         __universitiesResizeObserver.disconnect();
         __universitiesResizeObserver = null;
     }
+    if (__universitiesOverflowClickHandler) {
+        document.removeEventListener("click", __universitiesOverflowClickHandler);
+        __universitiesOverflowClickHandler = null;
+    }
+    if (__universitiesOverflowKeydownHandler) {
+        document.removeEventListener("keydown", __universitiesOverflowKeydownHandler);
+        __universitiesOverflowKeydownHandler = null;
+    }
+    if (__universitiesMapResultsObserver) {
+        __universitiesMapResultsObserver.disconnect();
+        __universitiesMapResultsObserver = null;
+    }
     document.documentElement.classList.remove("sidebar-filters-open");
     document.body.classList.remove("sidebar-filters-open");
     if (document.body.style.overflow === "hidden") {
@@ -187,7 +203,6 @@ export function initUniversitiesPage() {
     let currentCurrency = prefCurrency;
     let currentLimits = getFilterLimits(prefCurrency);
     const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
-    const SCOPE_NOTICE_DISMISSED_KEY = "unisearch_universities_scope_notice_dismissed";
     const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
 
     if (window.history && "scrollRestoration" in window.history) {
@@ -260,8 +275,8 @@ export function initUniversitiesPage() {
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
-        scopeNotice: $("universitiesScopeNotice"),
-        scopeNoticeDismiss: $("dismissUniversitiesScopeNotice")
+        catalogLevelSegmented: $("catalogLevelSegmented"),
+        catalogLevelButtons: Array.from(document.querySelectorAll(".catalog-level-btn")),
     };
     const ensureCompareTrayNode = () => {
         if (el.compareTray) return;
@@ -308,42 +323,66 @@ export function initUniversitiesPage() {
         return exams.length > 0 || langs.length > 0;
     }
 
-    const setupScopeNotice = () => {
-        if (!el.scopeNotice) return;
-
-        let dismissed = false;
-        try {
-            dismissed = localStorage.getItem(SCOPE_NOTICE_DISMISSED_KEY) === "1";
-        } catch (e) {
-            dismissed = false;
-        }
-
-        el.scopeNotice.hidden = dismissed;
-        if (dismissed) {
-            document.documentElement.classList.add("scope-notice-dismissed");
-        }
-        if (dismissed || !el.scopeNoticeDismiss) return;
-
-        el.scopeNoticeDismiss.addEventListener("click", () => {
-            el.scopeNotice.hidden = true;
-            document.documentElement.classList.add("scope-notice-dismissed");
-            try {
-                localStorage.setItem(SCOPE_NOTICE_DISMISSED_KEY, "1");
-            } catch (e) {
-                // Ignore storage errors; the notice still closes for this page view.
-            }
-            scheduleSyncSidebarMaxHeight();
-            scheduleSyncWorkspaceDepth();
-        });
-    };
-
     if (!el.list) return;
     disposeUniversitiesPage();
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
     bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
-    setupScopeNotice();
+
+    const closeAllStatusOverflows = () => {
+        document.querySelectorAll(".uni-status-overflow.is-open").forEach((wrap) => {
+            wrap.classList.remove("is-open");
+            const trigger = wrap.querySelector(".uni-status-overflow-trigger");
+            if (trigger) trigger.setAttribute("aria-expanded", "false");
+            const popover = wrap.querySelector(".uni-status-overflow-popover");
+            if (popover) popover.hidden = true;
+        });
+    };
+
+    __universitiesOverflowClickHandler = (evt) => {
+        const target = evt.target instanceof Element ? evt.target : null;
+        if (!target) return;
+
+        const trigger = target.closest(".uni-status-overflow-trigger");
+        if (trigger) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            const wrap = trigger.closest(".uni-status-overflow");
+            if (!wrap) return;
+            const popover = wrap.querySelector(".uni-status-overflow-popover");
+            const isCurrentlyOpen = wrap.classList.contains("is-open");
+
+            closeAllStatusOverflows();
+
+            if (!isCurrentlyOpen) {
+                wrap.classList.add("is-open");
+                trigger.setAttribute("aria-expanded", "true");
+                if (popover) popover.hidden = false;
+            }
+            return;
+        }
+
+        if (!target.closest(".uni-status-overflow")) {
+            closeAllStatusOverflows();
+        }
+    };
+    document.addEventListener("click", __universitiesOverflowClickHandler);
+
+    __universitiesOverflowKeydownHandler = (evt) => {
+        if (evt.key === "Escape") {
+            const openWrap = document.querySelector(".uni-status-overflow.is-open");
+            if (openWrap) {
+                evt.preventDefault();
+                const trigger = openWrap.querySelector(".uni-status-overflow-trigger");
+                closeAllStatusOverflows();
+                if (trigger && typeof trigger.focus === "function") {
+                    trigger.focus();
+                }
+            }
+        }
+    };
+    document.addEventListener("keydown", __universitiesOverflowKeydownHandler);
 
     let unifitWarningBannerDismissed = false;
 
@@ -378,6 +417,7 @@ export function initUniversitiesPage() {
     };
 
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
+    setupSlidingIndicator(".catalog-level-segmented", ".catalog-level-btn", "is-active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -511,6 +551,7 @@ export function initUniversitiesPage() {
     let focusUniDone = false;
 
     const CACHE_TTL_MS = 30000;
+    const MAP_RESULTS_PAGE_SIZE = 100;
     const AI_FAST_FALLBACK_MS = 450;
     const SKELETON_SHOW_DELAY_MS = 120;
     const SKELETON_FADE_MS = 160;
@@ -523,12 +564,23 @@ export function initUniversitiesPage() {
     let lastAiFetchAt = 0;
     let listFetchController = null;
     let aiFetchController = null;
+    let mapPointsFetchController = null;
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     let hasInitialListPaint = false;
     let hasRestoredInitialScroll = false;
     let uniFitWarningShownInSession = false;
     let lastRenderedItems = [];
+    let mapResultsItems = [];
+    let mapResultsPage = 0;
+    let mapResultsTotal = 0;
+    let mapResultsHasMore = false;
+    let mapResultsLoadingMore = false;
+    let mapResultsLoadFailed = false;
+    let mapResultsRunSeq = 0;
+    let mapPointsRunSeq = 0;
+    let lastMapPointsBounds = null;
+    let pendingMapFocusId = "";
     let viewModesReady = false;
     let savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
     let compareUniversityIds = new Set(
@@ -599,6 +651,16 @@ export function initUniversitiesPage() {
         const mode = state.only_saved ? "favorites" : "all";
         el.savedFilterButtons.forEach((btn) => {
             const active = String(btn.getAttribute("data-saved-filter") || "") === mode;
+            btn.classList.toggle("is-active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+    }
+
+    function syncCatalogLevelButtons() {
+        const current = String(state.study_level || "").toLowerCase();
+        el.catalogLevelButtons.forEach((btn) => {
+            const btnLevel = String(btn.getAttribute("data-level") || "").toLowerCase();
+            const active = (btnLevel === current);
             btn.classList.toggle("is-active", active);
             btn.setAttribute("aria-pressed", active ? "true" : "false");
         });
@@ -1070,9 +1132,13 @@ export function initUniversitiesPage() {
             return;
         }
 
-        const rect = sidebar.getBoundingClientRect();
+        // Independent panels invariant: sidebar geometry must never depend on
+        // the live scroll position. Derive the height from the sticky `top`
+        // offset only (stable across scrolls), so scrolling the catalog can
+        // neither resize nor shift the filter column.
+        const computedTop = Number.parseFloat(window.getComputedStyle(sidebar).top) || 90;
         const bottomGap = 16;
-        const availableHeight = Math.max(200, Math.floor(window.innerHeight - rect.top - bottomGap));
+        const availableHeight = Math.max(200, Math.floor(window.innerHeight - computedTop - bottomGap));
         if (lastAppliedSidebarMaxHeight !== availableHeight) {
             lastAppliedSidebarMaxHeight = availableHeight;
             sidebar.style.setProperty("--sidebar-max-height", `${availableHeight}px`);
@@ -1150,7 +1216,7 @@ export function initUniversitiesPage() {
         if (warningText) {
             blocks.push(`
                 <div class="u-state-card u-state-card--warning" role="status">
-                    <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.warning_title", "Temporary ranking fallback"))}</div>
+                    <div class="u-state-card__title">${escapeHtml(t("universities.state.warning_title", "Interests unavailable"))}</div>
                     <div class="u-state-card__text">${escapeHtml(warningText)}</div>
                 </div>
             `.trim());
@@ -1159,7 +1225,7 @@ export function initUniversitiesPage() {
         if (emptyText) {
             blocks.push(`
                 <div class="u-state-card u-state-card--empty" role="status">
-                    <div class="u-state-card__title">${escapeHtml(t("universities.scope_note.empty_title", "No results for current filters"))}</div>
+                    <div class="u-state-card__title">${escapeHtml(t("universities.state.empty_title", "No results for current filters"))}</div>
                     <div class="u-state-card__text">${escapeHtml(emptyText)}</div>
                 </div>
             `.trim());
@@ -1432,10 +1498,38 @@ export function initUniversitiesPage() {
     let mapInstance = null;
     let markersLayer = null;
     let markersByUniId = new Map();
+    const mapPopupLoads = new Map();
     let activeMapUniId = String(focusUniId || "").trim();
+    // Serializes programmatic "fly, then open the card" flights so concurrent
+    // clicks cannot reopen a stale popup after a newer flight has started.
+    let mapFocusSeq = 0;
+    // Counts opened map popups. A repeat marker click makes Leaflet toggle the
+    // focused card closed right before our handler runs, so the focus must
+    // only be cleared when no reopen follows the close (checked below).
+    let mapPopupOpenCount = 0;
+    // Guards our own programmatic closePopup (flight start) so it never wipes
+    // the focus the flight has just selected. Genuine closes always arrive as
+    // separate tasks and are unaffected.
+    let suppressMapCloseClear = false;
     let mapLibrariesPromise = null;
     let mapInitPromise = null;
     let mapWarmupScheduled = false;
+    const MAP_OVERVIEW_CENTER = [25, 0];
+    const MAP_MIN_ZOOM = 2;
+    const MAP_MAX_LATITUDE = 85.0511287798;
+    // Give worldCopyJump enough horizontal room to normalize a wrapped view,
+    // while preventing panning beyond the finite north/south extent of Web Mercator.
+    const MAP_WORLD_WRAP_BOUNDS = [
+        [-MAP_MAX_LATITUDE, -540],
+        [MAP_MAX_LATITUDE, 540],
+    ];
+    const MAP_MAX_ZOOM = 18;
+    const scheduleMapPointsRefresh = debounce(() => {
+        if (state.viewMode !== "map" || !mapInstance) return;
+        const visibleBounds = mapInstance.getBounds();
+        if (lastMapPointsBounds && lastMapPointsBounds.contains(visibleBounds)) return;
+        refreshMapPoints().catch((error) => console.warn("Map points refresh failed", error));
+    }, 250);
 
     const MAP_ASSETS = {
         leafletCss: {
@@ -1754,6 +1848,16 @@ export function initUniversitiesPage() {
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
 
+    el.catalogLevelButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const nextLevel = String(btn.getAttribute("data-level") || "").trim().toLowerCase();
+            if (state.study_level === nextLevel) return;
+            state.study_level = nextLevel;
+            syncCatalogLevelButtons();
+            refetch();
+        });
+    });
+
     el.savedFilterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
             const nextOnlySaved = String(btn.getAttribute("data-saved-filter") || "") === "favorites";
@@ -1868,7 +1972,7 @@ export function initUniversitiesPage() {
     el.list.addEventListener("click", (e) => {
         const target = e.target instanceof Element ? e.target : null;
         if (!target) return;
-        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger")) return;
+        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .uni-status-overflow")) return;
         const detailLink = target.closest(".uni-card-link-overlay");
         if (detailLink) {
             const card = detailLink.closest("[data-uni-id]");
@@ -2185,7 +2289,9 @@ export function initUniversitiesPage() {
     };
 
     const onCatalogScroll = () => {
-        scheduleSyncSidebarMaxHeight();
+        // Independent panels invariant: window scroll must never recompute
+        // sidebar geometry (see syncSidebarMaxHeight). Only viewport
+        // clearance and scroll persistence are scroll-safe here.
         syncMobileFilterFooterClearance();
         if (scrollSaveTimer) return;
         scrollSaveTimer = window.setTimeout(() => {
@@ -2236,6 +2342,9 @@ export function initUniversitiesPage() {
         if (el.list) el.list.style.display = mode === "list" ? "grid" : "none";
         if (el.pagination) el.pagination.style.display = mode === "list" ? "flex" : "none";
         if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
+        if (mode !== "map" && __universitiesMapResultsObserver) {
+            __universitiesMapResultsObserver.disconnect();
+        }
     }
 
     async function switchView(mode, shouldFetch = false) {
@@ -2272,20 +2381,31 @@ export function initUniversitiesPage() {
             const L = await ensureMapLibraries();
             if (mapInstance) return mapInstance;
             mapInstance = L.map('mapContainer', {
-                maxBounds: [[-90, -180], [90, 180]],
+                worldCopyJump: true,
+                maxBounds: MAP_WORLD_WRAP_BOUNDS,
                 maxBoundsViscosity: 1.0,
-                minZoom: 2,
-                maxZoom: 18,
+                minZoom: MAP_MIN_ZOOM,
+                maxZoom: MAP_MAX_ZOOM,
+                zoomControl: false,
                 zoomAnimation: true,
                 zoomAnimationThreshold: 4,
                 fadeAnimation: true,
                 markerZoomAnimation: true,
-                zoomSnap: 0.25,
-                zoomDelta: 0.25,
+                zoomSnap: 1,
+                zoomDelta: 1,
                 wheelDebounceTime: 30,
-                wheelPxPerZoomLevel: 120
-            }).setView([25, 0], 2);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { noWrap: true }).addTo(mapInstance);
+                wheelPxPerZoomLevel: 60,
+                keyboard: true,
+            }).setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                noWrap: false,
+            }).addTo(mapInstance);
+            L.control.zoom({
+                position: "topleft",
+                zoomInTitle: t("universities.map_controls.zoom_in", "Zoom in"),
+                zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
+            }).addTo(mapInstance);
+
             markersLayer = L.markerClusterGroup({
                 showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
                 chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
@@ -2310,14 +2430,26 @@ export function initUniversitiesPage() {
                 }
             });
             markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
+            mapInstance.on('popupopen', () => {
+                mapPopupOpenCount += 1;
+            });
             mapInstance.on('popupclose', (e) => {
-                if (markersByUniId.size === 0) return;
+                if (suppressMapCloseClear || markersByUniId.size === 0) return;
                 const source = e.popup && typeof e.popup.getSource === "function" ? e.popup.getSource() : e.popup?._source;
                 const closedUniId = source?.options?.uniId;
                 if (closedUniId && closedUniId === activeMapUniId) {
-                    updateMapResultsSelection("");
+                    const closeCount = mapPopupOpenCount;
+                    window.setTimeout(() => {
+                        // A repeat click on the focused marker makes Leaflet
+                        // toggle its card closed and our handler reopens it in
+                        // the same task: keep the focus then, clear it only on
+                        // a real close.
+                        if (mapPopupOpenCount !== closeCount) return;
+                        if (closedUniId === activeMapUniId) updateMapResultsSelection("");
+                    }, 0);
                 }
             });
+            mapInstance.on('moveend', scheduleMapPointsRefresh);
             mapInstance.addLayer(markersLayer);
             return mapInstance;
         })().catch((error) => {
@@ -2328,7 +2460,6 @@ export function initUniversitiesPage() {
     }
 
     function warmMapMode(items) {
-        renderMapResultsPanel(items);
         if (mapInstance || mapWarmupScheduled) return;
         mapWarmupScheduled = true;
 
@@ -2360,70 +2491,163 @@ export function initUniversitiesPage() {
         });
     }
 
+    // Settles the map before a programmatic flight: closes any open card (its
+    // autoPan/keepInView would fight the flight) and stops an in-progress pan
+    // animation. The stop is required: starting flyTo over a running panBy
+    // leaves Leaflet 1.9.4 with a stale `leaflet-pan-anim` pane transform, so
+    // the map renders offset from its true view until something resyncs it.
+    function settleMapForFlight() {
+        suppressMapCloseClear = true;
+        try {
+            mapInstance.closePopup();
+        } finally {
+            suppressMapCloseClear = false;
+        }
+        try {
+            if (mapInstance._panAnim) mapInstance._panAnim.stop();
+        } catch (error) {
+            // Pan-animation internals are version-specific; the flight below
+            // still works, it just cannot reuse the cleanup.
+        }
+    }
+
+    // Flies to the marker with no popup on the map: an open popup would fight
+    // the flight with its own autoPan/keepInView panning. The card opens once,
+    // after the flight has actually arrived (a stale moveend from the
+    // cancelled pan is ignored via the arrival check below).
+    function flyMapToUniversity(targetId, latLng, { openPopup = true, zoom = 14 } = {}) {
+        updateMapResultsSelection(targetId);
+        const focusSeq = ++mapFocusSeq;
+        const flightStartedAt = Date.now();
+        const awaitArrival = () => {
+            if (!mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
+                if (mapInstance) mapInstance.off("moveend", awaitArrival);
+                return;
+            }
+            // The flight lasts 1s; an arrival much later means the user took
+            // over the map, so never surprise-open the card afterwards.
+            if (Date.now() - flightStartedAt > 2500) {
+                mapInstance.off("moveend", awaitArrival);
+                return;
+            }
+            let arrived = false;
+            try {
+                arrived = mapInstance.distance(mapInstance.getCenter(), latLng) < 20;
+            } catch (error) {
+                arrived = false;
+            }
+            if (!arrived) return;
+            mapInstance.off("moveend", awaitArrival);
+            const current = markersByUniId.get(targetId);
+            if (current) {
+                current.setZIndexOffset(1200);
+                try {
+                    if (openPopup && !current.getPopup()?.isOpen()) current.openPopup();
+                } catch (error) {
+                    if (openPopup) current.openPopup();
+                }
+            }
+            // Heal any pan animation left hanging by the flight: a starved
+            // rAF (background/headless page) can leave Leaflet with a stale
+            // `leaflet-pan-anim` pane transform, so the map renders offset
+            // from its true view until something resyncs it. Fast-forwarding
+            // renders the same end state the pan was heading to, so this is
+            // visually a no-op when animations run normally.
+            window.setTimeout(() => {
+                if (focusSeq !== mapFocusSeq || !mapInstance || state.viewMode !== "map") return;
+                try {
+                    if (mapInstance._panAnim) mapInstance._panAnim.stop();
+                } catch (error) {
+                    // Pan-animation internals are version-specific.
+                }
+            }, 400);
+        };
+        mapInstance.on("moveend", awaitArrival);
+        // Closes the just auto-opened popup (Leaflet opens it synchronously on
+        // marker click, before our handler runs) and any previous card, so the
+        // flight owns the viewport until arrival. Same-tick close: no flicker.
+        settleMapForFlight();
+        mapInstance.flyTo(latLng, zoom, {
+            animate: true,
+            duration: 1.0,
+            easeLinearity: 0.2
+        });
+    }
+
     function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
         const targetId = String(uniId || "").trim();
         if (!targetId || !mapInstance) return;
+        if (targetId === activeMapUniId) {
+            const current = markersByUniId.get(targetId);
+            let popupOpen = false;
+            try {
+                popupOpen = Boolean(current && typeof current.getPopup === "function" && current.getPopup()?.isOpen());
+            } catch (error) {
+                popupOpen = false;
+            }
+            if (popupOpen) return;
+        }
         const marker = markersByUniId.get(targetId);
-        if (!marker) return;
-
-        updateMapResultsSelection(targetId);
-        const latLng = marker.getLatLng();
-        const openTarget = () => {
-            marker.setZIndexOffset(1200);
-            if (openPopup) marker.openPopup();
-        };
-
-        if (fly) {
-            mapInstance.once('moveend', openTarget);
-            mapInstance.flyTo(latLng, zoom, {
+        if (!marker) {
+            const item = mapResultsItems.find((row) => String(row?.id || "") === targetId);
+            const lat = Number(item?.coordinates?.lat);
+            const lon = Number(item?.coordinates?.lon);
+            if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+            pendingMapFocusId = targetId;
+            updateMapResultsSelection(targetId);
+            settleMapForFlight();
+            mapInstance.flyTo([lat, lon], zoom, {
                 animate: true,
                 duration: 1.0,
-                easeLinearity: 0.2
+                easeLinearity: 0.2,
             });
             return;
         }
 
-        mapInstance.panTo(latLng);
-        openTarget();
-    }
-
-    function renderMapResultsPanel(items) {
-        if (!el.mapResults) return;
-        const mappedItems = (Array.isArray(items) ? items : []).filter((u) => u?.coordinates?.lat && u?.coordinates?.lon);
-
-        if (!mappedItems.length) {
-            el.mapResults.innerHTML = `
-                <div class="u-map-results-empty">${escapeHtml(t("universities.map_panel.empty", "No universities with map coordinates match these filters."))}</div>
-            `;
+        const latLng = marker.getLatLng();
+        if (fly) {
+            flyMapToUniversity(targetId, latLng, { openPopup, zoom });
             return;
         }
 
-        const visibleItems = mappedItems.slice(0, 30);
-        const preferredId = visibleItems.some((u) => String(u.id || "") === activeMapUniId)
-            ? activeMapUniId
-            : (visibleItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
-        activeMapUniId = preferredId;
+        updateMapResultsSelection(targetId);
+        mapInstance.panTo(latLng);
+        const current = markersByUniId.get(targetId);
+        if (!current) return;
+        current.setZIndexOffset(1200);
+        if (openPopup) current.openPopup();
+    }
 
-        const profile = loadProfileForApi();
-        const userBudget = Number.parseFloat(profile.budget);
-        el.mapResults.innerHTML = `
-            <div class="u-map-results-list">
-                ${visibleItems.map((u, idx) => {
-                    const uniId = String(u?.id || "");
-                    return renderCard(u, userBudget, idx, {
-                        hideMedia: true,
-                        mapVariant: true,
-                        isActive: uniId !== "" && uniId === preferredId,
-                    });
-                }).join("")}
+    function mapResultsFooterHtml() {
+        const shown = mapResultsItems.length;
+        const total = Math.max(shown, mapResultsTotal);
+        const summary = tFormat(
+            "universities.map_panel.showing",
+            { count: String(shown), total: String(total) },
+            `Showing ${shown} of ${total}`
+        );
+        const buttonLabel = mapResultsLoadFailed
+            ? t("error.retry", "Retry")
+            : t("universities.map_panel.load_more", "Load more");
+        const loadingText = t("universities.map_panel.loading_more", "Loading more universities");
+        return `
+            <div class="u-map-results-footer" data-map-results-footer>
+                <span class="u-map-results-count" role="status" aria-live="polite">${escapeHtml(summary)}</span>
+                ${mapResultsHasMore ? `
+                    <button type="button" class="u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
+                        ${mapResultsLoadingMore ? `<span class="u-map-results-spinner" aria-hidden="true"></span>${escapeHtml(loadingText)}` : escapeHtml(buttonLabel)}
+                    </button>
+                ` : `<span class="u-map-results-complete">${escapeHtml(t("universities.map_panel.all_loaded", "All matching universities are loaded"))}</span>`}
             </div>
         `;
+    }
 
-        el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]").forEach((card) => {
+    function bindMapResultCards(cards) {
+        cards.forEach((card) => {
             card.addEventListener("click", (event) => {
                 const target = event.target instanceof Element ? event.target : null;
                 if (!target) return;
-                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble")) return;
+                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble, .uni-status-overflow")) return;
                 const uniId = String(card.getAttribute("data-uni-id") || "").trim();
                 if (!uniId) return;
                 const detailsLink = target.closest("a.uni-details");
@@ -2439,14 +2663,288 @@ export function initUniversitiesPage() {
                 }
                 if (isCompareSelectionMode()) {
                     toggleCompareUniversity(uniId);
+                    return;
                 }
-                focusMapUniversity(uniId, {
-                    openPopup: true,
-                    fly: true,
-                    zoom: 14,
-                });
+                focusMapUniversity(uniId, { openPopup: true, fly: true, zoom: 14 });
             });
         });
+    }
+
+    function syncMapResultsObserver() {
+        if (__universitiesMapResultsObserver) {
+            __universitiesMapResultsObserver.disconnect();
+            __universitiesMapResultsObserver = null;
+        }
+        if (!mapResultsHasMore || mapResultsLoadingMore || state.viewMode !== "map") return;
+        const list = el.mapResults?.querySelector(".u-map-results-list");
+        const loadMoreButton = list?.querySelector('[data-action="load-more-map-results"]');
+        if (!list || !loadMoreButton || typeof IntersectionObserver === "undefined") return;
+        __universitiesMapResultsObserver = new IntersectionObserver((entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
+        }, { root: list, rootMargin: "0px 0px 320px 0px", threshold: 0.01 });
+        __universitiesMapResultsObserver.observe(loadMoreButton);
+    }
+
+    function renderMapResultsPanel(items, options = {}) {
+        if (!el.mapResults) return;
+        const append = options.append === true;
+        const nextItems = Array.isArray(items) ? items : [];
+
+        if (!append && !nextItems.length) {
+            el.mapResults.innerHTML = `
+                <div class="u-map-results-empty">${escapeHtml(t("universities.state.empty", "No universities found."))}</div>
+            `;
+            return;
+        }
+
+        const preferredId = mapResultsItems.some((u) => String(u.id || "") === activeMapUniId)
+            ? activeMapUniId
+            : (mapResultsItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
+        activeMapUniId = preferredId;
+
+        const profile = loadProfileForApi();
+        const userBudget = Number.parseFloat(profile.budget);
+        const cardsHtml = nextItems.map((u, idx) => {
+            const uniId = String(u?.id || "");
+            return renderCard(u, userBudget, (mapResultsItems.length - nextItems.length) + idx, {
+                hideMedia: true,
+                mapVariant: true,
+                isActive: uniId !== "" && uniId === preferredId,
+            });
+        }).join("");
+
+        if (!append) {
+            el.mapResults.innerHTML = `<div class="u-map-results-list">${cardsHtml}${mapResultsFooterHtml()}</div>`;
+            bindMapResultCards(Array.from(el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]")));
+        } else {
+            const list = el.mapResults.querySelector(".u-map-results-list");
+            const footer = list?.querySelector("[data-map-results-footer]");
+            if (!list || !footer) {
+                renderMapResultsPanel(mapResultsItems);
+                return;
+            }
+            footer.insertAdjacentHTML("beforebegin", cardsHtml);
+            footer.outerHTML = mapResultsFooterHtml();
+            const appendedIds = new Set(nextItems.map((item) => String(item?.id || "")));
+            bindMapResultCards(Array.from(list.querySelectorAll(".uni-card[data-uni-id]")).filter((card) => appendedIds.has(String(card.getAttribute("data-uni-id") || ""))));
+        }
+
+        const loadMoreButton = el.mapResults.querySelector('[data-action="load-more-map-results"]');
+        loadMoreButton?.addEventListener("click", () => {
+            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
+        });
+        syncMapResultsObserver();
+    }
+
+    function refreshMapResultsFooter() {
+        const footer = el.mapResults?.querySelector("[data-map-results-footer]");
+        if (!footer) return;
+        footer.outerHTML = mapResultsFooterHtml();
+        const loadMoreButton = el.mapResults.querySelector('[data-action="load-more-map-results"]');
+        loadMoreButton?.addEventListener("click", () => {
+            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
+        });
+        syncMapResultsObserver();
+    }
+
+    async function fetchMapResultsPage(page) {
+        if (state.sort === "uni_ai") {
+            const payload = buildAiSortPayload();
+            payload.page = state.only_saved ? 1 : page;
+            payload.limit = state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE;
+            return fetchUniversitiesAiSort(payload);
+        }
+
+        const params = buildParams(true);
+        params.set("page", String(state.only_saved ? 1 : page));
+        params.set("limit", String(state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE));
+        return fetchUniversities(params);
+    }
+
+    async function loadNextMapResults({ reset = false, animateResults = true } = {}) {
+        if (mapResultsLoadingMore || (!reset && !mapResultsHasMore)) return;
+        const runSeq = reset ? ++mapResultsRunSeq : mapResultsRunSeq;
+        const nextPage = reset ? 1 : mapResultsPage + 1;
+        if (reset) {
+            mapResultsItems = [];
+            mapResultsPage = 0;
+            mapResultsTotal = 0;
+            mapResultsHasMore = true;
+            mapResultsLoadFailed = false;
+        }
+
+        mapResultsLoadingMore = true;
+        mapResultsLoadFailed = false;
+        refreshMapResultsFooter();
+
+        try {
+            const data = await fetchMapResultsPage(nextPage);
+            if (data?.__aborted || runSeq !== mapResultsRunSeq || state.viewMode !== "map") return;
+
+            const rawItems = Array.isArray(data.items) ? data.items : [];
+            const pageItems = state.only_saved
+                ? rawItems.filter((item) => savedUniversityIds.has(String(item?.id || "").trim()))
+                : rawItems;
+            const existingIds = new Set(mapResultsItems.map((item) => String(item?.id || "")));
+            const uniqueItems = pageItems.filter((item) => {
+                const id = String(item?.id || "");
+                return id && !existingIds.has(id);
+            });
+
+            mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
+            mapResultsPage = nextPage;
+            mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
+            mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
+            lastRenderedItems = mapResultsItems;
+            state.lastCatalogTotal = mapResultsTotal;
+            if (el.total) el.total.textContent = String(mapResultsTotal);
+            updateUnifitWarningBanner(mapResultsItems);
+
+            renderMapResultsPanel(uniqueItems, { append: !reset });
+            if (animateResults && uniqueItems.length) {
+                const cards = Array.from(el.mapResults?.querySelectorAll(".u-map-results-list .uni-card") || []).slice(-uniqueItems.length);
+                cards.forEach((card, index) => markMotionEnter(card, null, { limit: 1, staggerMs: Math.min(index * 12, 120) }));
+            }
+            renderCompareTray();
+            syncCardActionState();
+            renderRecentlyViewedBar();
+            updateMobileFilterUi();
+            scheduleSyncWorkspaceDepth();
+        } catch (error) {
+            if (runSeq !== mapResultsRunSeq || error?.name === "AbortError") return;
+            mapResultsLoadFailed = true;
+            mapResultsHasMore = true;
+            if (!mapResultsItems.length) {
+                el.mapResults.innerHTML = `
+                    <div class="u-map-results-list">
+                        <div class="u-map-results-empty" role="alert">${escapeHtml(t("universities.map_panel.load_failed", "Could not load map results."))}</div>
+                        ${mapResultsFooterHtml()}
+                    </div>
+                `;
+            }
+            console.error(error);
+        } finally {
+            if (runSeq === mapResultsRunSeq) {
+                mapResultsLoadingMore = false;
+                refreshMapResultsFooter();
+            }
+        }
+    }
+
+    function buildMapPointsParams(bounds) {
+        const params = buildParams(true);
+        ["fields", "page", "limit", "sort", "view", "practice_vs_science", "social_vs_hardcore", "budget_vs_prestige", "city_vs_campus"].forEach((key) => params.delete(key));
+        if (state.sort === "uni_ai") params.delete("major");
+        params.set("west", String(Math.max(-180, bounds.getWest())));
+        params.set("south", String(Math.max(-90, bounds.getSouth())));
+        params.set("east", String(Math.min(180, bounds.getEast())));
+        params.set("north", String(Math.min(90, bounds.getNorth())));
+        return params;
+    }
+
+    async function refreshMapPoints({ force = false } = {}) {
+        if (!mapInstance || state.viewMode !== "map") return;
+        const visibleBounds = mapInstance.getBounds();
+        if (!force && lastMapPointsBounds && lastMapPointsBounds.contains(visibleBounds)) return;
+
+        const requestBounds = visibleBounds.pad(0.35);
+        const params = buildMapPointsParams(requestBounds);
+        const requestSeq = ++mapPointsRunSeq;
+        if (mapPointsFetchController) mapPointsFetchController.abort();
+        const controller = new AbortController();
+        mapPointsFetchController = controller;
+
+        try {
+            const response = await fetch(`${API_BASE}/universities/map-points?${params.toString()}`, { signal: controller.signal });
+            if (!response.ok) throw new Error("Map points API error");
+            const data = await response.json();
+            if (requestSeq !== mapPointsRunSeq || state.viewMode !== "map") return;
+            const points = (Array.isArray(data.items) ? data.items : []).filter((item) => (
+                !state.only_saved || savedUniversityIds.has(String(item?.id || "").trim())
+            ));
+            lastMapPointsBounds = requestBounds;
+            updateMapMarkers(points, { renderResults: false });
+        } catch (error) {
+            if (error?.name !== "AbortError") throw error;
+        } finally {
+            if (mapPointsFetchController === controller) mapPointsFetchController = null;
+        }
+    }
+
+    function renderMapPointPopup(item, stateName = "loading") {
+        const id = String(item?.id || "").trim();
+        const name = textOrUnknown(trUniversityName(item), "placeholder.field.university_name", "University name");
+        const country = trCountry(nested(item, ["location", "country"], ""));
+        const city = trCity(nested(item, ["location", "city"], ""));
+        const locationText = [city, country].filter(Boolean).join(", ");
+        const isFailed = stateName === "failed";
+        const statusText = isFailed
+            ? t("universities.map_popup.failed", "Could not load the university card.")
+            : t("universities.map_popup.loading", "Loading university card");
+        return `
+            <div class="map-card-wrapper map-point-popup" data-uni-id="${escapeHtmlAttr(id)}">
+                <div class="map-point-popup__head">
+                    <span class="map-point-popup__logo"><img src="${escapeHtmlAttr(uniLogoSrc(id, { forceFull: true }))}" alt="" loading="lazy" decoding="async"></span>
+                    <span class="map-point-popup__copy">
+                        <strong>${escapeHtml(name)}</strong>
+                        ${locationText ? `<span>${escapeHtml(locationText)}</span>` : ""}
+                    </span>
+                </div>
+                <span class="map-point-popup__status" role="status">
+                    ${isFailed ? "" : '<span class="u-map-results-spinner" aria-hidden="true"></span>'}
+                    ${escapeHtml(statusText)}
+                </span>
+                <a class="uni-details" href="${routeUniversityDetail(id)}"${universityLinkAttrs()}>${escapeHtml(t("universities.card.view_details", "View details"))}<span aria-hidden="true">→</span></a>
+            </div>
+        `;
+    }
+
+    function renderFullMapPopup(item) {
+        const profile = loadProfileForApi();
+        const userBudget = Number.parseFloat(profile.budget);
+        return `<div class="map-card-wrapper">${renderCard(item, userBudget, 0)}</div>`;
+    }
+
+    function findLoadedMapCard(uniId) {
+        return mapResultsItems.find((item) => String(item?.id || "").trim() === uniId) || null;
+    }
+
+    async function hydrateMapMarkerPopup(marker, point) {
+        const uniId = String(point?.id || "").trim();
+        if (!uniId || !marker) return;
+
+        const loadedCard = findLoadedMapCard(uniId);
+        if (loadedCard) {
+            marker.setPopupContent(renderFullMapPopup(loadedCard));
+            marker.getPopup()?.update();
+            syncCardActionState();
+            return;
+        }
+
+        marker.setPopupContent(renderMapPointPopup(point, "loading"));
+        marker.getPopup()?.update();
+        const cacheKey = `${getCurrentLanguage() || "eng"}:${uniId}`;
+        if (!mapPopupLoads.has(cacheKey)) {
+            const request = fetchUniversityDetailCached(uniId).catch((error) => {
+                mapPopupLoads.delete(cacheKey);
+                throw error;
+            });
+            mapPopupLoads.set(cacheKey, request);
+        }
+
+        try {
+            const detail = await mapPopupLoads.get(cacheKey);
+            if (markersByUniId.get(uniId) !== marker) return;
+            marker.setPopupContent(renderFullMapPopup(detail));
+            marker.getPopup()?.update();
+            syncCardActionState();
+        } catch (error) {
+            if (markersByUniId.get(uniId) !== marker) return;
+            marker.setPopupContent(renderMapPointPopup(point, "failed"));
+            marker.getPopup()?.update();
+            console.warn("Map university card failed to load", error);
+        }
     }
 
     function updateMapMarkers(items, options = {}) {
@@ -2455,7 +2953,6 @@ export function initUniversitiesPage() {
         if (!L) return;
         markersLayer.clearLayers();
         markersByUniId = new Map();
-        const profile = loadProfileForApi(); const userBudget = Number.parseFloat(profile.budget);
         if (options.renderResults !== false) renderMapResultsPanel(items);
         const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
         const popupOptions = {
@@ -2469,7 +2966,9 @@ export function initUniversitiesPage() {
         };
         const newMarkers = [];
         items.forEach(u => {
-            if (u.coordinates?.lat && u.coordinates?.lon) {
+            const latitude = Number(u?.coordinates?.lat);
+            const longitude = Number(u?.coordinates?.lon);
+            if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
                 const uniId = String(u.id || "");
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
@@ -2479,31 +2978,48 @@ export function initUniversitiesPage() {
                     popupAnchor: [0, -24],
                 });
                 const rankValue = Number(u.rank);
-                const marker = L.marker([u.coordinates.lat, u.coordinates.lon], {
+                const marker = L.marker([latitude, longitude], {
                     icon: customIcon,
                     uniId: uniId,
                     uniRank: Number.isFinite(rankValue) ? rankValue : 999999
                 });
-                const cardHTML = `<div class="map-card-wrapper">${renderCard(u, userBudget)}</div>`;
+                const loadedCard = findLoadedMapCard(uniId);
+                const cardHTML = loadedCard ? renderFullMapPopup(loadedCard) : renderMapPointPopup(u, "loading");
                 marker.bindPopup(cardHTML, popupOptions);
-                marker.on('click', function(e) {
+                marker.on("popupopen", () => {
+                    hydrateMapMarkerPopup(marker, u).catch((error) => console.warn("Map university card failed to load", error));
+                });
+                marker.on('click', function() {
                     const clickedMarker = this;
-                    updateMapResultsSelection(uniId);
+                    if (uniId === activeMapUniId) {
+                        // Repeat click on the focused marker: Leaflet toggles
+                        // its card closed right before this handler runs, so
+                        // reopen it in place and never re-fly to the logo.
+                        let popupOpen = false;
+                        try {
+                            popupOpen = Boolean(clickedMarker.getPopup()?.isOpen());
+                        } catch (error) {
+                            popupOpen = false;
+                        }
+                        if (!popupOpen) clickedMarker.openPopup();
+                        return;
+                    }
                     clickedMarker.setZIndexOffset(1000);
-                    mapInstance.once('moveend', () => {
-                        if (!clickedMarker.getPopup().isOpen()) clickedMarker.openPopup();
-                    });
-                    mapInstance.flyTo(e.target.getLatLng(), 16, {
-                        animate: true,
-                        duration: 1.0,
-                        easeLinearity: 0.2
-                    });
+                    flyMapToUniversity(uniId, clickedMarker.getLatLng(), { openPopup: true, zoom: 16 });
                 });
                 newMarkers.push(marker);
                 markersByUniId.set(uniId, marker);
             }
         });
         markersLayer.addLayers(newMarkers);
+        if (pendingMapFocusId && markersByUniId.has(pendingMapFocusId)) {
+            const pendingId = pendingMapFocusId;
+            pendingMapFocusId = "";
+            const pendingMarker = markersByUniId.get(pendingId);
+            updateMapResultsSelection(pendingId);
+            pendingMarker.setZIndexOffset(1200);
+            pendingMarker.openPopup();
+        }
         if (state.viewMode === "map" && focusUniId && !focusUniDone) {
             const target = markersByUniId.get(focusUniId);
             if (target) {
@@ -2723,6 +3239,7 @@ export function initUniversitiesPage() {
         if (el.minInput) el.minInput.value = state.min_tuition;
         if (el.maxInput) el.maxInput.value = state.max_tuition;
         syncSavedFilterButtons();
+        syncCatalogLevelButtons();
         
         fillTrack(); 
         updateSliderLabels();
@@ -3058,6 +3575,39 @@ export function initUniversitiesPage() {
         setUrlParams(urlParams);
 
         try {
+        if (state.viewMode === "map") {
+            if (mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
+            if (state.only_saved && savedUniversityIds.size === 0) {
+                mapResultsItems = [];
+                mapResultsPage = 0;
+                mapResultsTotal = 0;
+                mapResultsHasMore = false;
+                lastRenderedItems = [];
+                state.lastCatalogTotal = 0;
+                if (el.total) el.total.textContent = "0";
+                renderMapResultsPanel([]);
+                updateMapMarkers([], { renderResults: false });
+                return;
+            }
+
+            lastMapPointsBounds = null;
+            await Promise.all([
+                loadNextMapResults({ reset: true, animateResults }),
+                refreshMapPoints({ force: true }).catch((error) => {
+                    console.warn("Map points failed to load", error);
+                    showToast(t("universities.map_panel.points_failed", "Map markers could not be refreshed."), "warning");
+                }),
+            ]);
+            viewModesReady = true;
+            syncViewModeControls();
+            renderUniversitiesState({
+                emptyText: mapResultsItems.length
+                    ? ""
+                    : (state.only_saved ? t("universities.state.empty_saved", "No favorite universities match these filters.") : t("universities.state.empty", "No universities found.")),
+            });
+            return;
+        }
+
         if (state.only_saved && savedUniversityIds.size === 0) {
             renderFetchedData({ items: [], total: 0 }, { animateResults });
             return;
@@ -3172,22 +3722,13 @@ export function initUniversitiesPage() {
         };
         const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
         const preferenceMismatch = Number(match.preferenceMismatch);
-        const grantChance = Number(match.grantChance);
-        const generalChance = Number(match.generalChance);
-        const selectedChanceType = String(match.selectedChanceType || "").toLowerCase();
         const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
-        const hintedFinance = String(badgeHints.finance || "").toLowerCase();
         const hintedRequirements = String(badgeHints.requirements || "").toLowerCase();
         const hintedBudgetAid = String(badgeHints.budgetAid || "").toLowerCase();
-        const financePref = Number(state.budget_vs_prestige);
-        const inGrantMode = selectedChanceType ? selectedChanceType === "grant" : financePref < 50;
-        const inPaidMode = selectedChanceType ? selectedChanceType === "general" : financePref > 50;
         const conditionalCount = Number(match.conditionalRequirements || 0);
         const hasConditionalExamWarning = (badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0);
         const hasVeryHighVibeMatch = hintedVibe === "your_vibe" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch <= 0.14);
         const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
-        const likelyGrant = hintedFinance === "likely_grant" || (!hintedFinance && inGrantMode && Number.isFinite(grantChance) && grantChance >= 65);
-        const paidAdmission = hintedFinance === "paid_admission" || (!hintedFinance && inPaidMode && Number.isFinite(generalChance) && generalChance >= 45);
         const meetsMinRequirements = hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning);
         const belowRequirements = hintedRequirements === "below_requirements" || (!hintedRequirements && match.meetMinRequirements === false);
         const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
@@ -3198,6 +3739,17 @@ export function initUniversitiesPage() {
         const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
         const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
         const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
+        const hasMissingProgram = Boolean(badgeHints.missingProgram || match.missingProgram);
+
+        // Priority 0: warning on missing profile major program
+        if (hasMissingProgram) {
+            addStatusIndicator(
+                "academic-cap",
+                "warning",
+                t("universities.badge.no_matching_program", "Program Not Offered"),
+                t("universities.why.no_matching_program", "This university does not offer the study program selected in your profile.")
+            );
+        }
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
@@ -3209,13 +3761,6 @@ export function initUniversitiesPage() {
             addStatusIndicator("sparkles", "match", t("universities.badge.your_vibe", "Your Vibe"), t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders."));
         } else if (hasHighVibeMatch) {
             addStatusIndicator("check-badge", "match", t("universities.badge.top_match", "Good Match"), t("universities.why.top_match", "This university is a good preference match for your current slider setup."));
-        }
-
-        // Priority 3: financial route tag from finance slider mode + chance
-        if (likelyGrant) {
-            addStatusIndicator("banknotes", "grant", t("universities.badge.likely_grant", "Likely Grant"), t("universities.why.likely_grant", "In grant-priority mode, this university has a strong grant admission chance."));
-        } else if (paidAdmission) {
-            addStatusIndicator("briefcase", "finance", t("universities.badge.paid_admission", "Paid Admission"), t("universities.why.paid_admission", "In willing-to-pay mode, this university has a strong general admission chance."));
         }
 
         // Status tags: requirements + budget + aid.
@@ -3233,9 +3778,29 @@ export function initUniversitiesPage() {
             addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"));
         }
 
-        const statusHtml = statusIndicators.slice(0, 4).join("");
+        const MAX_VISIBLE_BADGES = 4;
+        let statusHtml = "";
+        if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
+            statusHtml = statusIndicators.join("");
+        } else {
+            const visible = statusIndicators.slice(0, MAX_VISIBLE_BADGES - 1);
+            const hidden = statusIndicators.slice(MAX_VISIBLE_BADGES - 1);
+            const hiddenCount = hidden.length;
+            const overflowLabel = tFormat("universities.badge.overflow_more", { count: String(hiddenCount) }, `+${hiddenCount} more badges`);
+            const overflowAria = t("universities.badge.overflow_label", "Additional status indicators");
+            const overflowHtml = `
+                <span class="uni-status-overflow">
+                    <button type="button" class="uni-status-overflow-trigger" aria-label="${escapeHtmlAttr(overflowLabel)}" aria-expanded="false" title="${escapeHtmlAttr(overflowLabel)}">
+                        <span aria-hidden="true">+${hiddenCount}</span>
+                    </button>
+                    <span class="uni-status-overflow-popover" role="region" aria-label="${escapeHtmlAttr(overflowAria)}" hidden>
+                        ${hidden.join("")}
+                    </span>
+                </span>
+            `;
+            statusHtml = `${visible.join("")}${overflowHtml}`;
+        }
 
-        
         // ROI intentionally removed from university cards.
 
         const logoSrc = uniLogoSrc(id);
@@ -3311,8 +3876,11 @@ ${rankInnerHtml}
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
             <div class="uni-logo">${logoImgHtml}</div>
             </div>`;
+        const mapLogoCueHtml = mapVariant
+            ? `<span class="uni-map-logo-cue" aria-hidden="true">${renderInlineIcon("arrow-up-right", 14, "uni-map-logo-cue__icon")}</span>`
+            : "";
         const headHtml = hideMedia
-            ? `<div class="uni-head"><span class="uni-logo uni-logo--inline">${logoImgHtml}</span><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
+            ? `<div class="uni-head"><span class="uni-logo uni-logo--inline">${logoImgHtml}${mapLogoCueHtml}</span><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
             : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
         const detailsHtml = mapVariant
             ? `<a class="uni-details" href="${detailHref}"${universityLinkAttrs()}>${detailLabel}<span aria-hidden="true">→</span></a>`
