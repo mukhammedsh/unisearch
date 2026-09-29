@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from app.core.settings import (
     METRICS_ENABLED,
     METRICS_PATH,
+    OPS_ADMIN_HEADER,
     SENTRY_DSN,
     SENTRY_TRACES_SAMPLE_RATE,
 )
@@ -47,7 +48,24 @@ def _scrub_sensitive(value: Any) -> Any:
         out = {}
         for key, item in value.items():
             key_text = str(key or "").strip().lower()
-            if key_text in _SENSITIVE_KEYS or any(part in key_text for part in ("token", "secret", "password", "authorization")):
+            if key_text in _SENSITIVE_KEYS or key_text == OPS_ADMIN_HEADER.lower() or any(
+                part in key_text
+                for part in (
+                    "token",
+                    "secret",
+                    "password",
+                    "authorization",
+                    "authentication",
+                    "auth_token",
+                    "auth_key",
+                    "cookie",
+                    "session",
+                    "credential",
+                    "api_key",
+                    "apikey",
+                    "api-key",
+                )
+            ):
                 out[key] = "[Filtered]"
             else:
                 out[key] = _scrub_sensitive(item)
@@ -69,6 +87,7 @@ def setup_observability(app: FastAPI) -> None:
                 traces_sample_rate=max(0.0, min(1.0, float(SENTRY_TRACES_SAMPLE_RATE))),
                 send_default_pii=False,
                 before_send=_before_send,
+                before_send_transaction=_before_send,
             )
             logger.info("sentry_enabled traces_sample_rate=%s", SENTRY_TRACES_SAMPLE_RATE)
         except Exception:
