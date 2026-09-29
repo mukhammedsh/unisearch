@@ -2,8 +2,10 @@
 # ClusterFuzzLite build script for UniSearch.
 # Installs backend dependencies and packages Python fuzz targets into $OUT using compile_python_fuzzer.
 
-# Install dependencies required by backend services
-python3 -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+# Install dependencies required by backend services.
+# Note: requirements.txt is used here instead of requirements.lock because the OSS-Fuzz
+# base-builder-python container uses a different Python runtime version than the 3.12-pinned wheels in requirements.lock.
+python3 -m pip install --no-cache-dir -r backend/requirements.txt
 
 # Pre-compile Python bytecode
 python3 -m compileall -q backend/app

@@ -9,3 +9,8 @@ COPY .clusterfuzzlite/fuzz_targets $SRC/unisearch/.clusterfuzzlite/fuzz_targets
 WORKDIR $SRC/unisearch
 
 COPY .clusterfuzzlite/build.sh $SRC/build.sh
+
+RUN useradd --create-home --shell /usr/sbin/nologin fuzzer || true \
+    && chown -R fuzzer:fuzzer "$OUT" "$SRC"
+
+USER fuzzer
