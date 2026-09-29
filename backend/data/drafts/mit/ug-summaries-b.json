@@ -1,0 +1,183 @@
+[
+  {
+    "id": "mit-bs-21e",
+    "name": "Humanities and Engineering (Course 21E)",
+    "description": "The degree pairs a humanities field such as anthropology, history, literature, or comparative media studies with six electives from one approved engineering curriculum. The chart also lists the humanities thesis and communication-intensive requirements. ",
+    "description_ru": "Программа сочетает гуманитарную область — например, антропологию, историю, литературу или сравнительные медиаисследования — с шестью элективными предметами одной утверждённой инженерной программы. В графике также указаны гуманитарная дипломная работа и требования к предметам с интенсивной коммуникационной составляющей.",
+    "source_url": "https://catalog.mit.edu/degree-charts/humanities-engineering-course-21e/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-21s",
+    "name": "Humanities and Science (Course 21S)",
+    "description": "The degree combines a humanities field chosen from the listed areas with six subjects from one approved science curriculum. The chart also includes requirements such as humanities electives and a thesis option in several fields.",
+    "description_ru": "Программа сочетает гуманитарную область из опубликованного списка с шестью предметами одной утверждённой научной программы. В графике также указаны гуманитарные элективы и возможность дипломной работы в нескольких областях.",
+    "source_url": "https://catalog.mit.edu/degree-charts/humanities-science-course-21s/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-24-2",
+    "name": "Linguistics and Philosophy (Course 24-2)",
+    "department": "Department of Linguistics and Philosophy",
+    "description": "The chart presents a linguistics track with Introduction to Linguistics and additional study across linguistics and philosophy. Listed subjects include phonology, syntax, semantics, language acquisition, logic, and philosophy of language.",
+    "description_ru": "График программы включает лингвистический трек с курсом «Введение в лингвистику» и дальнейшим изучением лингвистики и философии. Среди указанных дисциплин — фонология, синтаксис, семантика, усвоение языка, логика и философия языка.",
+    "source_url": "https://catalog.mit.edu/degree-charts/linguistics-philosophy-course-24-2/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-21l",
+    "name": "Literature (Course 21L)",
+    "department": "Literature Section",
+    "description": "The degree centers on literature seminars in literary methods, fiction, drama, poetry, authors, film, cultural interpretation, literary history, and media in cultural context. The chart also specifies study of texts from before 1900 and intermediate or seminar-level literature subjects.",
+    "description_ru": "Программа посвящена семинарам по литературным методам, прозе, драме, поэзии, авторам, кино, культурной интерпретации, истории литературы и медиа в культурном контексте. График также предусматривает изучение текстов до 1900 года и предметы среднего и семинарского уровней.",
+    "source_url": "https://catalog.mit.edu/degree-charts/literature-course-21l/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-14-2",
+    "name": "Mathematical Economics (Course 14-2)",
+    "department": "Economics Department",
+    "description": "The required subjects combine microeconomics and macroeconomics with statistical methods, econometric data science, real analysis, and differential equations or linear algebra. The chart also lists advanced economics options such as game theory and intermediate microeconomic theory.",
+    "description_ru": "Обязательные предметы объединяют микро- и макроэкономику со статистическими методами, эконометрической наукой о данных, вещественным анализом и дифференциальными уравнениями или линейной алгеброй. Среди дальнейших вариантов по экономике указаны теория игр и промежуточная микроэкономическая теория.",
+    "source_url": "https://catalog.mit.edu/degree-charts/mathematical-economics-course-14-2/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-21m",
+    "name": "Music (Course 21M)",
+    "department": "Music and Theater Arts Section",
+    "description": "The chart includes harmony and counterpoint, performance subjects, and advanced seminars in music, musicology, ethnomusicology, and music theory or analysis. Restricted electives are selected from the music curriculum with faculty guidance.",
+    "description_ru": "График включает гармонию и контрапункт, практические занятия по исполнению музыки и продвинутые семинары по музыке, музыкознанию, этномузыкологии и теории или анализу музыки. Элективы выбираются из музыкальной программы при консультации с преподавателями.",
+    "source_url": "https://catalog.mit.edu/degree-charts/music-course-21m/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-24-1",
+    "name": "Philosophy (Course 24-1)",
+    "department": "Department of Linguistics and Philosophy",
+    "description": "The chart requires introductory philosophy, a history-of-philosophy subject, and study in knowledge and reality. Listed choices include classics of Western philosophy, philosophy of religion, philosophical issues in brain science, and minds and machines.",
+    "description_ru": "График требует вводный курс философии, дисциплину по истории философии и изучение познания и реальности. Среди вариантов указаны классики западной философии, философия религии, философские вопросы нейронаук, а также разум и машины.",
+    "source_url": "https://catalog.mit.edu/degree-charts/philosophy-course-24-1/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-17",
+    "name": "Political Science (Course 17)",
+    "department": "Department of Political Science",
+    "description": "The required program includes political science scope and methods, a political science laboratory, and a thesis research design seminar with an undergraduate thesis. Students choose electives across four listed subject groups to form a coherent area of study.",
+    "description_ru": "Обязательная программа включает методы и границы политической науки, лабораторный курс по политологии, семинар по разработке исследования и дипломную работу. Элективы выбираются из четырёх групп дисциплин, чтобы сформировать последовательную область изучения.",
+    "source_url": "https://catalog.mit.edu/degree-charts/political-science-course-17/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-21t",
+    "name": "Theater Arts (Course 21T)",
+    "department": "Music and Theater Arts Section",
+    "description": "The chart offers foundational subjects in acting, physical improvisation, theater design, performance media, script analysis, and playwriting. Students add theater electives selected with a major advisor.",
+    "description_ru": "В графике указаны базовые предметы по актёрскому мастерству, физической импровизации, театральному дизайну, медиа в исполнительском искусстве, анализу пьес и драматургии. Студенты также выбирают театральные элективы вместе с научным руководителем программы.",
+    "source_url": "https://catalog.mit.edu/degree-charts/theater-arts-course-21t/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-21w",
+    "name": "Writing (Course 21W)",
+    "department": "Comparative Media Studies/Writing",
+    "description": "The chart combines a writing pre-thesis tutorial and thesis with workshops in areas such as fiction, genre fiction, science fiction, poetry, interactive narrative, and advanced fiction or poetry. It also lists writing electives, including subjects in creative nonfiction and science writing.",
+    "description_ru": "График объединяет подготовительный семинар перед дипломной работой и саму работу с мастерскими по прозе, жанровой и научной фантастике, поэзии, интерактивному повествованию и продвинутому письму. Также указаны элективы, включая творческий нон-фикшн и научное письмо.",
+    "source_url": "https://catalog.mit.edu/degree-charts/writing-course-21w/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-15-3",
+    "name": "Finance (Course 15-3)",
+    "description": "The chart includes microeconomics or economic analysis for business decisions, laboratories in investments and corporate finance, and corporate financial accounting. Students also choose coursework in statistical methods or applied probability and statistics.",
+    "description_ru": "График включает микроэкономику или экономический анализ для бизнес-решений, лабораторные курсы по инвестициям и корпоративным финансам, а также корпоративный финансовый учёт. Также выбираются предметы по статистическим методам или прикладной теории вероятностей и статистике.",
+    "source_url": "https://catalog.mit.edu/degree-charts/finance-course-15-3/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-7",
+    "name": "Biology (Course 7)",
+    "department": "Department of Biology",
+    "description": "The required subjects include experimental molecular biology, genetics, organic chemistry, biochemistry, cell biology, and thermodynamics. The chart also lists a molecular biology laboratory and alternatives for several chemistry or biology requirements.",
+    "description_ru": "Обязательные предметы включают экспериментальную молекулярную биологию, генетику, органическую химию, биохимию, клеточную биологию и термодинамику. График также включает лабораторию молекулярной биологии и альтернативы для ряда требований по химии и биологии.",
+    "source_url": "https://catalog.mit.edu/degree-charts/biology-course-7/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-5",
+    "name": "Chemistry (Course 5)",
+    "department": "Department of Chemistry",
+    "description": "The standard-option chart lists inorganic and biological chemistry, two organic chemistry subjects, thermodynamics and kinetics, and spectroscopy or molecular electronic structure. It also provides options for laboratory and advanced chemistry coursework.",
+    "description_ru": "График стандартного варианта включает неорганическую и биологическую химию, два предмета по органической химии, термодинамику и кинетику, а также спектроскопию или электронное строение молекул. Предусмотрены варианты лабораторных и продвинутых курсов химии.",
+    "source_url": "https://catalog.mit.edu/degree-charts/chemistry-course-5/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-12",
+    "name": "Earth, Atmospheric, and Planetary Sciences (Course 12)",
+    "department": "Department of Earth, Atmospheric, and Planetary Sciences",
+    "description": "The chart lists introductory coursework in geology, geophysics and planetary science, atmosphere, ocean and climate dynamics, and the global carbon cycle. It also includes laboratory or field subjects and an undergraduate thesis option.",
+    "description_ru": "График включает вводные курсы по геологии, геофизике и планетологии, динамике атмосферы, океана и климата, а также глобальному углеродному циклу. В программе также есть лабораторные или полевые предметы и вариант дипломной работы.",
+    "source_url": "https://catalog.mit.edu/degree-charts/earth-atmospheric-planetary-sciences-course-12/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-18-c",
+    "name": "Mathematics with Computer Science (Course 18-C)",
+    "department": "Department of Mathematics",
+    "description": "The chart combines mathematics subjects such as differential equations, linear algebra, discrete mathematics, and analysis with computer science coursework. Listed subjects include mathematics for computer science, programming, and fundamentals of programming.",
+    "description_ru": "График сочетает математические предметы — дифференциальные уравнения, линейную алгебру, дискретную математику и анализ — с курсами информатики. Среди указанных дисциплин есть математика для компьютерных наук, программирование и основы программирования.",
+    "source_url": "https://catalog.mit.edu/degree-charts/mathematics-computer-science-course-18-c/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-5-7",
+    "name": "Chemistry and Biology (Course 5-7)",
+    "description": "The required subjects combine inorganic, biological, and organic chemistry with chemical biology, thermodynamics, and spectroscopy. The chart also includes genetics and cell biology, with listed laboratory alternatives in chemistry and biology.",
+    "description_ru": "Обязательные предметы объединяют неорганическую, биологическую и органическую химию с химической биологией, термодинамикой и спектроскопией. График также включает генетику и клеточную биологию, а среди вариантов указаны лабораторные курсы по химии и биологии.",
+    "source_url": "https://catalog.mit.edu/degree-charts/chemistry-biology-course-5-7/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-1-12",
+    "name": "Climate System Science and Engineering (Course 1-12)",
+    "description": "The chart includes probability and causal inference for data analysis, environmental data analysis, differential equations, and introductory programming. It also specifies climate and earth-system engineering subjects, including climate dynamics and environmental subjects.",
+    "description_ru": "График включает теорию вероятностей и причинный вывод для анализа данных, анализ экологических данных, дифференциальные уравнения и вводное программирование. Также указаны предметы по инженерии климатических и земных систем, включая динамику климата и экологические дисциплины.",
+    "source_url": "https://catalog.mit.edu/degree-charts/climate-system-science-engineering-course-1-12/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-6-9",
+    "name": "Computation and Cognition (Course 6-9)",
+    "description": "The chart combines computer science programming, neuroscience, linear algebra, and discrete mathematics or differential equations with further subjects in computation and cognition. The listed requirements include Introduction to Neuroscience and programming in Python.",
+    "description_ru": "График объединяет программирование и компьютерные науки, нейронауки, линейную алгебру и дискретную математику либо дифференциальные уравнения с дальнейшими предметами по вычислениям и познанию. Среди указанных требований — «Введение в нейронауки» и программирование на Python.",
+    "source_url": "https://catalog.mit.edu/degree-charts/computation-cognition-6-9/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-6-7",
+    "name": "Computer Science and Molecular Biology (Course 6-7)",
+    "description": "The chart combines introductory programming and computer science with mathematics, molecular biology, and laboratory coursework. Listed biology subjects include genetics and cell biology, alongside chemistry and computational science options.",
+    "description_ru": "График сочетает вводное программирование и компьютерные науки с математикой, молекулярной биологией и лабораторными курсами. Среди биологических дисциплин указаны генетика и клеточная биология, а также курсы по химии и вычислительным наукам.",
+    "source_url": "https://catalog.mit.edu/degree-charts/computer-science-molecular-biology-course-6-7/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-6-14",
+    "name": "Computer Science, Economics, and Data Science (Course 6-14)",
+    "description": "The chart combines linear algebra and computer science subjects such as programming, algorithms, and mathematics for computer science with economics and data science coursework. Its listed foundations also include econometric methods and statistical analysis.",
+    "description_ru": "График объединяет линейную алгебру и компьютерные науки — программирование, алгоритмы и математику для информатики — с экономикой и наукой о данных. Среди указанных основ также есть эконометрические методы и статистический анализ.",
+    "source_url": "https://catalog.mit.edu/degree-charts/computer-science-economics-data-science-course-6-14/",
+    "verified_at": "2026-09-29"
+  },
+  {
+    "id": "mit-bs-11-6",
+    "name": "Urban Science and Planning with Computer Science (Course 11-6)",
+    "department": "Department of Urban Studies and Planning; Department of Electrical Engineering and Computer Science",
+    "description": "The chart combines programming, algorithms, and computer science electives with urban planning, spatial analysis and GIS, policy, and urban technology workshops. Urban science electives include topics such as data science for cities, mobility, housing, and sustainability.",
+    "description_ru": "График объединяет программирование, алгоритмы и элективы по компьютерным наукам с городским планированием, пространственным анализом и ГИС, государственной политикой и мастерскими по городским технологиям. Среди элективов по городским наукам есть анализ данных для городов, мобильность, жильё и устойчивое развитие.",
+    "source_url": "https://catalog.mit.edu/degree-charts/urban-science-planning-computer-science-11-6/",
+    "verified_at": "2026-09-29"
+  }
+]

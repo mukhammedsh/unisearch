@@ -541,17 +541,29 @@ function richUniversity(id, overrides = {}) {
   };
 }
 
-test("compare admission key collectors use selected requirements and score-profile fallbacks", () => {
+test("compare admission key collectors use selected published averages without substituting score medians", () => {
   const university = richUniversity("alpha");
   assert.deepEqual(compareTrackRequirementValues(university, "SAT"), [1300]);
   assert.equal(compareRequirementValue(university, "SAT"), 1300);
   assert.equal(compareAverageScoreValue(university, "SAT"), 1450);
-  assert.equal(compareAverageScoreValue(university, "ACT"), 1450);
+  assert.equal(compareAverageScoreValue(university, "ACT"), null);
   assert.equal(compareLanguageRequirementValue(university, "IELTS"), 7);
   assert.deepEqual(compareSelectedRequirementKeys(university).sort(), ["GPA", "SAT"]);
   assert.deepEqual(compareSelectedAverageKeys(university).sort(), ["GPA", "SAT"]);
   assert.deepEqual(compareSelectedLanguageRequirementKeys(university), ["IELTS"]);
   assert.deepEqual(collectCompareExamKeys([university, richUniversity("beta")], compareSelectedRequirementKeys).sort(), ["GPA", "SAT"]);
+
+  const medianOnly = richUniversity("median-only", {
+    admission_categories: [{
+      id: "regular",
+      requirement_profiles: [{
+        id: "sat",
+        score_profile: { exam_id: "SAT", median_raw: 1500 },
+      }],
+    }],
+  });
+  assert.equal(compareAverageScoreValue(medianOnly, "SAT"), null);
+  assert.deepEqual(compareSelectedAverageKeys(medianOnly), []);
 });
 
 test("grant option delta describes stricter cutoffs and non-grants stay neutral", () => {
@@ -614,19 +626,22 @@ test("comparison context validators reject missing fields and accept normalized 
   ]), true);
 });
 
-test("decision support explains personal chances, finance comparability, academics, and outcomes", () => {
+test("decision support separates requirements fit from published acceptance rates", () => {
   const universities = [richUniversity("alpha"), richUniversity("beta")];
   const context = {
     chances: new Map([
-      ["alpha", { choices: [{ choiceKey: "grant", chancePercent: 70, confidence: "medium" }] }],
-      ["beta", { overallChance: null, reason: "requirements_not_met" }],
+      ["alpha", { choices: [{ choiceKey: "grant", chancePercent: 70, scoreMeaning: "published_requirements_met_percent", confidence: "medium" }] }],
+      ["beta", { overallChance: null, scoreMeaning: "published_requirements_met_percent", reason: "requirements_not_met" }],
     ]),
     choices: new Map([["alpha", { choiceKey: "grant" }]]),
   };
   const themes = buildCompareDecisionSignals(universities, context);
   assert.deepEqual(themes.map((theme) => theme.key), ["admissions", "finance", "academics", "outcomes"]);
   assert.match(themes[0].universities[0].facts[0].value, /70%/);
+  assert.match(themes[0].universities[0].facts[0].label, /Requirements fit score/);
+  assert.doesNotMatch(themes[0].universities[0].facts[0].value, /confidence|probability|odds/i);
   assert.match(themes[0].universities[1].facts[0].value, /required minimum/i);
+  assert.match(themes[0].summary, /separate from your requirements fit score/i);
   assert.equal(themes[1].status, "tradeoff");
   assert.equal(themes[2].status, "tradeoff");
   assert.equal(themes[3].status, "tradeoff");
@@ -635,6 +650,22 @@ test("decision support explains personal chances, finance comparability, academi
   assert.match(html, /What matters for your choice/);
   assert.match(html, /data-theme-key="finance"/);
   assert.match(html, /target="_blank"/);
+});
+
+test("comparison hides numeric UniChance values unless score meaning is confirmed", () => {
+  const universities = [richUniversity("alpha"), richUniversity("beta")];
+  const context = {
+    chances: new Map([
+      ["alpha", { overallChance: 81 }],
+      ["beta", { overallChance: 50, scoreMeaning: "admission_probability" }],
+    ]),
+    choices: new Map(),
+  };
+  const theme = buildCompareDecisionSignals(universities, context)[0];
+  for (const row of theme.universities) {
+    assert.match(row.facts[0].value, /meaning could not be confirmed/i);
+    assert.doesNotMatch(row.facts[0].value, /81%|50%/);
+  }
 });
 
 test("decision support classifies absent rates and costs as missing rather than zero", () => {
@@ -650,4 +681,21 @@ test("decision support classifies absent rates and costs as missing rather than 
 test("selected annual cost preserves explicit zero but rejects an empty finance fallback", () => {
   assert.equal(compareSelectedAnnualCost({ finance: {} }), null);
   assert.equal(compareSelectedAnnualCost({ finance: { total_cost_year_usd: 0 } }), 0);
+});
+
+test("graduate comparison costs do not borrow the undergraduate university budget", () => {
+  const university = {
+    id: "graduate-cost-test",
+    finance: { total_cost_year_usd: 50000 },
+    admission_categories: [{
+      id: "graduate-route",
+      study_levels: ["Master"],
+      requirement_profiles: [{ id: "standard", label: "Master application" }],
+    }],
+  };
+  assert.equal(compareSelectedAnnualCost(university), null);
+  university.admission_categories[0].finance_override = { total_cost_year_usd: null };
+  assert.equal(compareSelectedAnnualCost(university), null);
+  university.admission_categories[0].finance_override = { total_cost_year_usd: 0 };
+  assert.equal(compareSelectedAnnualCost(university), 0);
 });

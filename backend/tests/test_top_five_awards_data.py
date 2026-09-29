@@ -99,8 +99,9 @@ class TopFiveAwardsDataTests(unittest.TestCase):
             for profile in category.get("requirement_profiles", [])
             if profile["id"] == "mit_regular"
         )
-        self.assertEqual(1550, mit_profile["stats_avg"]["SAT"])
         self.assertEqual(1520, mit_profile["score_profile"]["p25_raw"])
+        self.assertEqual("official_common_data_set", mit_profile["score_profile"]["source_scope"])
+        self.assertNotIn("stats_avg", mit_profile)
 
     def test_imperial_existing_awards_are_retained_with_new_awards(self) -> None:
         awards = self.awards("imperial-college-london-uk")

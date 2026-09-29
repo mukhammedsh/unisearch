@@ -107,6 +107,8 @@ test("duration and number localization handles Russian plural boundaries", () =>
   assert.equal(shared.ruPlural(11, "one", "few", "many"), "many");
   assert.equal(shared.ruPlural(-21, "one", "few", "many"), "one");
   assert.equal(shared.localizeDuration("4 years 2 months 3 weeks 1 day 5 semesters"), "4 года 2 месяца 3 недели 1 день 5 семестров");
+  assert.equal(shared.localizeDuration("12 or 18 months"), "12 или 18 месяцев");
+  assert.equal(shared.localizeDuration("2-3 regular terms"), "2-3 обычных семестра");
   assert.equal(shared.localizeDuration(""), "");
   assert.match(shared.formatUiNumber(1234.5), /1[\s ]234,5/);
   assert.equal(shared.formatUiNumber("not-number"), "not-number");

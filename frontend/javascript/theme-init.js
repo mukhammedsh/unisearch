@@ -14,10 +14,4 @@
     document.documentElement.setAttribute("data-theme", "light");
     document.documentElement.style.colorScheme = "light";
   }
-
-  try {
-    if (localStorage.getItem("unisearch_universities_scope_notice_dismissed") === "1") {
-      document.documentElement.classList.add("scope-notice-dismissed");
-    }
-  } catch (e) {}
 })();

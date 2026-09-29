@@ -1,7 +1,7 @@
 import { escapeHtml, escapeHtmlAttr, markMotionEnter, motionPress } from "../../utils.js";
 import { getCurrentLanguage, t } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
-import { translateWord } from "../../university-translations.js";
+import { translateAdmissionText, translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import { loadProfile } from "../../utils/persistence.js";
 import {
@@ -18,6 +18,7 @@ import {
   rankingStatusLabel,
   trProgramLanguage,
   trProgramName,
+  trTrackDescription,
   trStudyLevel,
   trStudyMode,
   trTag,
@@ -49,6 +50,10 @@ export function renderOverviewSection({
   const acceptanceApplicants = toFiniteNumber(acceptanceBasis?.applicants);
   const acceptanceAdmitted = toFiniteNumber(acceptanceBasis?.admitted);
   const acceptanceInfoTitle = escapeHtml(t("university.admissions.official_source", "Official source"));
+  const acceptanceKind = String(university?.academics?.admissions?.university_wide?.kind || "").trim().toLowerCase();
+  const acceptanceLabel = acceptanceKind.startsWith("undergraduate")
+    ? t("ranking.acceptance_undergraduate", "Undergraduate acceptance rate")
+    : t("ranking.acceptance", "Acceptance Rate");
   const acceptanceTooltip = acceptanceSourceUrl ? `
     <span class="d-info-wrap">
       <button type="button" class="d-info" aria-label="${acceptanceInfoTitle}" title="${acceptanceInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
@@ -66,7 +71,7 @@ export function renderOverviewSection({
   const acceptanceRow = `
     <div class="d-kv">
       <span class="d-kv-label">
-        ${escapeHtml(t("ranking.acceptance", "Acceptance Rate"))}
+        ${escapeHtml(acceptanceLabel)}
         ${acceptanceTooltip}
       </span>
       <span>${escapeHtml(acceptanceDisplay)}</span>
@@ -267,7 +272,8 @@ export function getProgramLevelKeys(program) {
   const levels = getProgramLevelsList(program);
   if (!levels.length) return [];
   const name = String(program?.name || "").toLowerCase();
-  const isMbaProgram = /(^|[^a-z])m\.?b\.?a\.?($|[^a-z])/.test(name) || name.includes("master of business administration");
+  const award = String(program?.degree_type || "").toLowerCase();
+  const isMbaProgram = /(^|[^a-z])m\.?b\.?a\.?($|[^a-z])/.test(`${award} ${name}`) || name.includes("master of business administration");
   const keys = levels.map(normalizeProgramLevelKey);
   if (isMbaProgram) {
     return [...new Set(keys.map((key) => key === "master" || key === "professional" ? "mba" : key))];
@@ -452,6 +458,8 @@ function localizedProgramCoverageCycle(value) {
   const cycle = String(value || "").trim();
   if (!getCurrentLanguage().startsWith("ru")) return cycle;
   const normalizedCycle = cycle.replace(/[‐‑‒–—−]/g, "-");
+  const fallEntry = normalizedCycle.match(/^Fall (20\d{2}) entry$/i);
+  if (fallEntry) return t("university.program_coverage.cycle.fall_entry", "Fall {year} entry").replace("{year}", fallEntry[1]);
   const quarterlyTuition = normalizedCycle.match(/^(20\d{2}-2\d) published (?:Engineering|standard) graduate tuition; billed quarterly by unit load\. Student-specific annual total depends on units and enrolled quarters; (20\d{2}-2\d) rates are unknown\.?$/i);
   if (quarterlyTuition) {
     return t(
@@ -468,7 +476,7 @@ function localizedProgramCoverageCycle(value) {
     ).replace("{year}", mdTuition[1].replace("-", "–"))
       .replace("{next_year}", mdTuition[2].replace("-", "–"));
   }
-  return cycle;
+  return translateAdmissionText(cycle, cycle);
 }
 
 function renderProgramCoverageFact(labelKey, labelFallback, fact, kind) {
@@ -570,12 +578,13 @@ export function renderProgramCoverage(coverageByProgram, program) {
     return `<section class="program-coverage" aria-label="${escapeHtmlAttr(heading)}"><h3 class="program-coverage__title">${escapeHtml(heading)}</h3><p class="program-coverage__meta">${escapeHtml(t("university.program_coverage.no_program_record", "No coverage record is catalogued for this selected program."))}</p></section>`;
   }
   const programName = String(row.program_name || program.name || "").trim();
+  const routeWideDeadline = ["shared_admission_route", "institution_wide_route", "route_wide", "institution_wide"].includes(row.deadline?.scope);
   return `<section class="program-coverage" aria-label="${escapeHtmlAttr(heading)}">
     <h3 class="program-coverage__title">${escapeHtml(heading)}</h3>
-    ${programName ? `<p class="program-coverage__program">${escapeHtml(programName)}</p>` : ""}
+    ${programName ? `<p class="program-coverage__program">${escapeHtml(trProgramName(programName) || programName)}</p>` : ""}
     <div class="program-coverage__facts">
       ${renderProgramCoverageFact("university.program_coverage.requirements", "Requirements", row.requirements, "requirements")}
-      ${renderProgramCoverageFact("university.program_coverage.course_deadline", "Course application deadline", row.deadline, "deadline")}
+      ${renderProgramCoverageFact(routeWideDeadline ? "university.program_coverage.route_deadline" : "university.program_coverage.course_deadline", routeWideDeadline ? "Application deadline" : "Course application deadline", row.deadline, "deadline")}
       ${renderProgramCoverageFact("university.program_coverage.tuition", "Tuition and mandatory fees", row.tuition_mandatory_fees, "cost")}
       ${renderProgramCoverageAwards(row.awards, program)}
     </div>
@@ -640,6 +649,7 @@ export function renderProgramsSection({
   university,
   profileMajor = "",
   coverageProgram = null,
+  onProgramAdmissionSelected = null,
 }) {
   if (!container) return;
 
@@ -663,6 +673,7 @@ export function renderProgramsSection({
     "id", "url", "source_url", "source_urls", "deadline_source_url", "tuition_source_url",
     "verified_at", "tuition_verified_at", "cycle", "tuition_cycle", "requirements_cycle",
     "currency", "deadlines", "scholarship_eligibility",
+    "admission_route_id", "price_facts", "tuition_total_usd", "selection_timing",
   ]);
 
   const isMajorTagField = (key) => {
@@ -706,6 +717,9 @@ export function renderProgramsSection({
     }
     if (String(key) === "study_mode") return trStudyMode(String(value));
     if (String(key) === "duration") return localizeDuration(value);
+    if (["description", "entry_requirements", "tuition_status", "department"].includes(String(key))) {
+      return trTrackDescription(university.id, "", value);
+    }
     return String(value);
   };
 
@@ -719,6 +733,7 @@ export function renderProgramsSection({
         if (String(key) === "language") return trProgramLanguage(raw);
         if (String(key) === "study_mode") return trStudyMode(raw);
         if (isMajorTagField(key)) return trProgramName(raw) || raw;
+        if (String(key) === "required_documents") return trTrackDescription(university.id, "", raw);
         return raw;
       })
       .filter(Boolean);
@@ -785,7 +800,7 @@ export function renderProgramsSection({
   };
 
   if (programs.length) {
-    const knownKeys = new Set(["name", "study_levels", "acceptance_rate_percent", "duration", "language", "study_mode"]);
+    const knownKeys = new Set(["name", "study_levels", "acceptance_rate_percent", "duration", "language", "study_mode", "description"]);
     const programIndexByExactKey = new Map();
     const programIndexesByCoreKey = new Map();
     programs.forEach((program, idx) => {
@@ -953,6 +968,11 @@ export function renderProgramsSection({
           const idx = item.originalIdx;
           const { title, summaryText } = item;
           const programAcceptance = toFiniteNumber(program.acceptance_rate_percent);
+          const description = formatProgramValue("description", program.description);
+          const sourceUrl = safeUrl(program.url || program.source_url);
+          const catalogUrl = safeUrl(program.source_url);
+          const isMitUndergraduate = university?.id === "mit-usa-cambridge"
+            && programMatchesStudyLevel(program, "bachelor");
           const bodyId = `program-body-${displayIdx}`;
           const isOpen = item.key === storedOpenKey;
           const rows = [
@@ -1004,7 +1024,7 @@ export function renderProgramsSection({
               value: formatProgramValue(key, value),
             }));
 
-          const allRows = [...rows, ...extraRows];
+          const allRows = [...rows.filter(({ rawValue }) => rawValue != null && rawValue !== "" && (!Array.isArray(rawValue) || rawValue.length)), ...extraRows];
           const matchedSignals = signalsByProgram.get(idx) || [];
           const toggleLabel = `${isOpen ? collapseLabel : expandLabel}: ${title}`;
           return `
@@ -1024,7 +1044,7 @@ export function renderProgramsSection({
               >
                 <span class="program-card__text">
                   <span class="program-card__kicker-row">
-                    <span class="program-card__kicker">${escapeHtml(translateWord("program", "Program"))} ${displayIdx + 1}</span>
+                    ${university?.id === "mit-usa-cambridge" ? "" : `<span class="program-card__kicker">${escapeHtml(translateWord("program", "Program"))} ${displayIdx + 1}</span>`}
                     ${item.isMajorMatch ? `<span class="program-card__major-badge">${escapeHtml(t("university.programs.major_badge", "Your major"))}</span>` : ""}
                   </span>
                   <span class="program-card__title">${escapeHtml(title)}</span>
@@ -1034,15 +1054,26 @@ export function renderProgramsSection({
               </button>
               <div class="program-card__body" id="${bodyId}" role="region"${isOpen ? "" : " hidden"}>
                 <div class="program-card__body-inner">
-                  <div class="program-card-rows">
+                  ${description ? `<p class="program-card__description">${escapeHtml(description)}</p>` : (sourceUrl ? `<p class="program-card__description">${escapeHtml(t("university.programs.summary_incomplete", "A detailed summary is not yet catalogued here. See the official program page for its curriculum."))}</p>` : "")}
+                  ${allRows.length ? `<div class="program-card-rows">
                     ${allRows.map((row) => `
                       <div class="program-card-row">
                         <span class="program-card-label">${escapeHtml(row.label)}</span>
                         ${renderValueCell(row.label, row.key, row.rawValue, row.value)}
                       </div>
                     `).join("")}
-                  </div>
+                  </div>` : ""}
                   ${renderSignalRows(matchedSignals)}
+                  ${isMitUndergraduate ? `<p class="program-card__route-note">${escapeHtml(t("admission.mit.undergraduate_target", "MIT first-year applicants apply to MIT as a whole and choose a major after the first year. This program is a study interest, not a separate admission target."))}</p>` : ""}
+                  <div class="program-card__actions">
+                    ${program.id ? `
+                      <button type="button" class="program-card__admission-action" data-program-admission="${escapeHtmlAttr(String(program.id || ""))}">
+                        ${escapeHtml(t("university.programs.view_admission", "See how to apply"))}
+                      </button>
+                    ` : ""}
+                    ${sourceUrl ? `<a class="program-card__source" href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.programs.official_page", "Official program page"))}${renderInlineIcon("arrow-top-right-on-square", 16)}</a>` : ""}
+                    ${catalogUrl && catalogUrl !== sourceUrl ? `<a class="program-card__source" href="${escapeHtmlAttr(catalogUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.programs.official_catalog", "Official degree catalog"))}${renderInlineIcon("arrow-top-right-on-square", 16)}</a>` : ""}
+                  </div>
                 </div>
               </div>
             </article>
@@ -1072,7 +1103,7 @@ export function renderProgramsSection({
           </div>
         `;
       })()}
-      <div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, displayedCoverageProgram)}</div>
+      ${university?.id === "mit-usa-cambridge" ? "" : `<div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, displayedCoverageProgram)}</div>`}
     `;
 
     const pendingCloseByCard = new WeakMap();
@@ -1132,12 +1163,19 @@ export function renderProgramsSection({
       });
     });
 
+    container.querySelectorAll("[data-program-admission]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const selected = programs.find((program) => String(program.id || "") === button.dataset.programAdmission);
+        if (selected && typeof onProgramAdmissionSelected === "function") onProgramAdmissionSelected(selected);
+      });
+    });
+
     container.querySelectorAll("[data-program-level]").forEach((btn) => {
       btn.addEventListener("click", () => {
         motionPress(btn);
         const lvl = String(btn.getAttribute("data-program-level") || "").trim() || "all";
         programStudyLevelSelectionByUniversity.set(universityKey, lvl);
-        renderProgramsSection({ admissionsData, container, university, profileMajor, coverageProgram });
+        renderProgramsSection({ admissionsData, container, university, profileMajor, coverageProgram, onProgramAdmissionSelected });
       });
     });
 
@@ -1334,7 +1372,7 @@ export function resolveQualificationGuidance({ profile = {}, university = {}, pr
     scopeKey = "";
   }
   if (requiresProgramPage) {
-    sourceUrl = isOfficialSource(program?.url) ? program.url : "";
+    sourceUrl = isOfficialSource(program?.url || program?.source_url) ? (program.url || program.source_url) : "";
     if (!sourceUrl) {
       reasonKey = "university.qualification_guidance.reason.select_program";
       reason = "Choose the exact graduate programme to open its official course requirements.";
@@ -1363,7 +1401,7 @@ export function resolveQualificationGuidance({ profile = {}, university = {}, pr
     needsExactCredential,
     cycle,
     programName: String(program?.name || "").trim(),
-    programUrl: isOfficialSource(program?.url) ? String(program.url) : "",
+    programUrl: isOfficialSource(program?.url || program?.source_url) ? String(program.url || program.source_url) : "",
     studyLevel: level,
   };
 }
@@ -1380,16 +1418,16 @@ export function renderQualificationGuidance({ container, profile = {}, universit
   const statusLabel = t(statusKeys[result.status] || statusKeys.needs_review, result.status === "accepted" ? "Accepted qualification" : (result.status === "not_accepted" ? "Explicitly not accepted" : "Needs official review"));
   const reason = t(result.reasonKey, result.reason);
   const selectedProgram = result.programName
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.program_label", "Programme"))}:</strong> ${escapeHtml(result.programName)}</p>`
+    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.program_label", "Programme"))}:</strong> ${escapeHtml(trProgramName(result.programName) || result.programName)}</p>`
     : "";
   const programSource = result.programUrl
-    ? `<a class="qualification-guidance__source" href="${escapeHtmlAttr(result.programUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.qualification_guidance.program_source", "Open official programme requirements"))}</a>`
+    ? `<a class="qualification-guidance__source" href="${escapeHtmlAttr(result.programUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.qualification_guidance.program_source", "Official program page"))}</a>`
     : "";
   const levelText = result.studyLevel
     ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.level_label", "Study level"))}:</strong> ${escapeHtml(result.studyLevel === "Bachelor" ? trStudyLevel("Bachelor") : trStudyLevel(String(profile.studyLevel || "Graduate")))}</p>`
     : "";
   const selectedCycle = result.cycle
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.cycle_label", "Intended entry cycle"))}:</strong> ${escapeHtml(result.cycle)}</p>`
+    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.cycle_label", "Intended entry cycle"))}:</strong> ${escapeHtml(localizedProgramCoverageCycle(result.cycle))}</p>`
     : `<p class="qualification-guidance__meta">${escapeHtml(t("university.qualification_guidance.cycle_unspecified", "Entry cycle not specified in your profile."))}</p>`;
   const scopeText = result.scopeKey ? t(result.scopeKey, result.scope) : result.scope;
   const scope = scopeText

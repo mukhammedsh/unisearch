@@ -1,0 +1,350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Canonical university catalog draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "institution_id",
+    "catalog_snapshot",
+    "study_options",
+    "exclusions",
+    "notes",
+    "degree_options"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "institution_id": {
+      "type": "string"
+    },
+    "catalog_snapshot": {
+      "type": "object",
+      "required": [
+        "academic_year",
+        "checked_at",
+        "sources"
+      ],
+      "properties": {
+        "academic_year": {
+          "type": "string"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        }
+      }
+    },
+    "study_options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/option"
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "degree_options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/degreeOption"
+      }
+    },
+    "degree_option_review": {
+      "type": "object",
+      "required": [
+        "checked_at",
+        "reviewed_options",
+        "source_groups",
+        "scope_note"
+      ],
+      "properties": {
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "reviewed_options": {
+          "type": "integer"
+        },
+        "source_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope_note": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "id",
+        "url",
+        "title",
+        "checked_at",
+        "scope"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "title": {
+          "type": "string"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "scope": {
+          "type": "string"
+        }
+      }
+    },
+    "fact": {
+      "type": "object",
+      "required": [
+        "status",
+        "value"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "published",
+            "not_yet_published",
+            "not_applicable",
+            "unknown_needs_review"
+          ]
+        },
+        "value": {}
+      }
+    },
+    "option": {
+      "type": "object",
+      "required": [
+        "id",
+        "level",
+        "name",
+        "application_target",
+        "selection_timing",
+        "route_status",
+        "admissions_cycle",
+        "applicant_categories",
+        "cost",
+        "funding",
+        "source_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "undergraduate",
+            "graduate",
+            "professional"
+          ]
+        },
+        "course_number": {
+          "type": "string"
+        },
+        "award_label": {
+          "$ref": "#/$defs/fact"
+        },
+        "application_target": {
+          "type": "object",
+          "required": [
+            "classification",
+            "target_id",
+            "status"
+          ],
+          "properties": {
+            "classification": {
+              "enum": [
+                "institution_wide",
+                "department_or_graduate_program",
+                "course_specific",
+                "unknown"
+              ]
+            },
+            "target_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "status": {
+              "enum": [
+                "verified",
+                "verified_by_oge",
+                "needs_review"
+              ]
+            }
+          }
+        },
+        "selection_timing": {
+          "enum": [
+            "after_institutional_admission",
+            "direct_application_target",
+            "unknown_needs_review"
+          ]
+        },
+        "route_status": {
+          "type": "string"
+        },
+        "admissions_cycle": {
+          "$ref": "#/$defs/fact"
+        },
+        "applicant_categories": {
+          "$ref": "#/$defs/fact"
+        },
+        "cost": {
+          "$ref": "#/$defs/fact"
+        },
+        "funding": {
+          "$ref": "#/$defs/fact"
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "degreeOption": {
+      "type": "object",
+      "required": [
+        "id",
+        "level",
+        "name",
+        "award",
+        "program",
+        "program_family_id",
+        "family_match_status",
+        "application_target",
+        "route_id",
+        "route_status",
+        "admissions_cycle",
+        "applicant_categories",
+        "cost",
+        "funding",
+        "source_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "graduate",
+            "professional"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "award": {
+          "type": "string"
+        },
+        "program": {
+          "type": "string"
+        },
+        "program_family_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "family_match_status": {
+          "enum": [
+            "verified_program_family",
+            "needs_review_no_family_record",
+            "needs_review_family_mapping"
+          ]
+        },
+        "application_target": {
+          "type": "object",
+          "required": [
+            "classification",
+            "target_id",
+            "status"
+          ],
+          "properties": {
+            "classification": {
+              "enum": [
+                "unknown",
+                "department_or_graduate_program",
+                "course_specific"
+              ]
+            },
+            "target_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "status": {
+              "enum": [
+                "needs_review",
+                "verified_by_oge",
+                "verified"
+              ]
+            }
+          }
+        },
+        "route_id": {
+          "type": "null"
+        },
+        "route_status": {
+          "type": "string"
+        },
+        "admissions_cycle": {
+          "$ref": "#/$defs/fact"
+        },
+        "applicant_categories": {
+          "$ref": "#/$defs/fact"
+        },
+        "cost": {
+          "$ref": "#/$defs/fact"
+        },
+        "funding": {
+          "$ref": "#/$defs/fact"
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

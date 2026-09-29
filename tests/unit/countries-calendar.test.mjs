@@ -58,3 +58,15 @@ test("deadline calendar export rejects approximate, yearless, and multi-date ent
   assert.equal(createDeadlineIcs({ deadline: "2026-12-01 to 2026-12-15", title: "Deadline" }), null);
   assert.equal(createDeadlineIcs({ deadline: "2026-12-01", approximate: true, title: "Deadline" }), null);
 });
+
+test("exported spring transfer deadline retains applicant eligibility", () => {
+  const ics = createDeadlineIcs({
+    deadline: "2026-10-15",
+    title: "Transfer application",
+    cycle: "Spring 2027 entry",
+    applicantCategoryLabel: "U.S. citizens and U.S. permanent residents only",
+    applicabilityLabel: "Spring entry only",
+  }).replace(/\r\n[ \t]/g, "");
+  assert.match(ics, /U\.S\. citizens and U\.S\. permanent residents only/);
+  assert.match(ics, /Spring entry only/);
+});

@@ -75,7 +75,7 @@
       },
       "programs": [
         {
-          "program_name": "Computer Science and Engineering (6?3)",
+          "program_name": "Computer Science and Engineering (Course 6-3)",
           "source_scope": "program_verified_null",
           "data_type": "verified-null",
           "scope": "program",
@@ -87,14 +87,14 @@
           "notes": "Stored as verified-null because MIT does not publish a separate undergraduate admission rate or counts for Course 6-3.",
           "sources": [
             {
-              "url": "https://mitadmissions.org/apply/process/",
-              "label": "MIT Admissions process overview"
+              "url": "https://mitadmissions.org/help/faq/majors/",
+              "label": "MIT Admissions: Do students apply to a specific major?"
             }
           ],
           "provenance": {
-            "source": "MIT Admissions process overview",
-            "source_url": "https://mitadmissions.org/apply/process/",
-            "verified_at": "2026-03-25",
+            "source": "MIT Admissions: Do students apply to a specific major?",
+            "source_url": "https://mitadmissions.org/help/faq/majors/",
+            "verified_at": "2026-09-24",
             "status": "official",
             "confidence": "high",
             "method": "Verified-null: MIT official admissions materials explicitly describe institute-wide undergraduate admission rather than major-specific selection.",
@@ -104,7 +104,7 @@
           }
         },
         {
-          "program_name": "Electrical Engineering and Computer Science (6?2/6?5)",
+          "program_name": "Electrical Engineering with Computing (Course 6-5)",
           "source_scope": "program_verified_null",
           "data_type": "verified-null",
           "scope": "program",
@@ -113,17 +113,17 @@
           "acceptance_rate_percent": null,
           "counts": null,
           "semantics": "MIT states that undergraduate applicants apply to the institute as a whole rather than to a particular major, department, or school, so it does not publish public major-level admit totals for Course 6 options.",
-          "notes": "Stored as verified-null because MIT does not publish a separate undergraduate admission rate or counts for Course 6-2/6-5.",
+          "notes": "Stored as verified-null because MIT admits undergraduates to the institute, not to Course 6-5 separately.",
           "sources": [
             {
-              "url": "https://mitadmissions.org/apply/process/",
-              "label": "MIT Admissions process overview"
+              "url": "https://mitadmissions.org/help/faq/majors/",
+              "label": "MIT Admissions: Do students apply to a specific major?"
             }
           ],
           "provenance": {
-            "source": "MIT Admissions process overview",
-            "source_url": "https://mitadmissions.org/apply/process/",
-            "verified_at": "2026-03-25",
+            "source": "MIT Admissions: Do students apply to a specific major?",
+            "source_url": "https://mitadmissions.org/help/faq/majors/",
+            "verified_at": "2026-09-24",
             "status": "official",
             "confidence": "high",
             "method": "Verified-null: MIT official admissions materials explicitly describe institute-wide undergraduate admission rather than major-specific selection.",

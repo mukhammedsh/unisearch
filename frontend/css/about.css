@@ -41,7 +41,7 @@ body[data-page="about"] {
 
 /* --------------------------------------------------------------------------
    Proof Grid — Three repeating cards, no shell wrapper
-   Cards are the only bordered elements (repeating items pattern)
+   Repeating items use surface contrast without outlines
    -------------------------------------------------------------------------- */
 .about-proof-grid {
   display: grid;
@@ -50,16 +50,16 @@ body[data-page="about"] {
 }
 
 .about-proof-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: 16px;
-  transition: border-color var(--motion-fast, 0.15s) ease;
+  transition: background-color var(--motion-fast, 0.15s) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .about-proof-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+    background: var(--interaction-hover-surface);
   }
 }
 
@@ -116,16 +116,16 @@ body[data-page="about"] {
 }
 
 .about-contact-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: 16px;
-  transition: border-color var(--motion-fast, 0.15s) ease;
+  transition: background-color var(--motion-fast, 0.15s) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .about-contact-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+    background: var(--interaction-hover-surface);
   }
 }
 
@@ -179,16 +179,16 @@ body[data-page="about"] {
 }
 
 .team-card {
-  border: 1px solid var(--line);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: var(--space-4);
-  transition: border-color var(--motion-fast, 0.15s) ease;
+  transition: background-color var(--motion-fast, 0.15s) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .team-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+    background: var(--interaction-hover-surface);
   }
 }
 

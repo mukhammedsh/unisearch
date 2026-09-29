@@ -36,7 +36,7 @@ class KazakhstanUntScoringTests(unittest.TestCase):
             self.assertGreater(sp.get("p75_normalized", 0), sp.get("median_normalized", 0))
             self.assertGreater(sp.get("median_normalized", 0), sp.get("p25_normalized", 0))
 
-    def test_estimate_uni_chance_uses_official_score_profile_for_unt_and_ent(self):
+    def test_requirements_fit_does_not_turn_score_profiles_into_admission_chances(self):
         for exam_key in ("UNT", "ENT"):
             for uid in self.KZ_UNIVERSITIES:
                 u = uni_service.get_university_by_id(uid)
@@ -49,44 +49,40 @@ class KazakhstanUntScoringTests(unittest.TestCase):
                     ],
                 }
                 result = ai_scoring.estimate_uni_chance(u, profile)
-                self.assertEqual(
-                    "official_score_profile",
-                    str(result.get("chanceModel") or ""),
-                    f"Expected official_score_profile for {uid} with {exam_key}",
-                )
-                self.assertIsNotNone(result.get("overallChance"))
-                low = result.get("rangeLowPercent")
-                high = result.get("rangeHighPercent")
-                self.assertIsNotNone(low)
-                self.assertIsNotNone(high)
-                self.assertLessEqual(low, high)
-                self.assertGreaterEqual(low, 0.0)
-                self.assertLessEqual(high, 100.0)
+                self.assertEqual("published_requirements_met_percent", result.get("scoreMeaning"))
+                self.assertNotEqual("official_score_profile", result.get("chanceModel"))
+                fit = result.get("overallChance")
+                if fit is None:
+                    self.assertEqual("missing_evidence", result.get("reason"))
+                else:
+                    self.assertGreaterEqual(fit, 0)
+                    self.assertLessEqual(fit, 100)
 
     def test_unt_chances_are_monotonic_with_respect_to_scores(self):
         scores = [65, 85, 105, 115, 125, 135]
         for uid in self.KZ_UNIVERSITIES:
             u = uni_service.get_university_by_id(uid)
-            prev_chance = -1
+            prev_fit = -1
             for s in scores:
                 profile = {
                     "exams": [{"id": "UNT", "score": s}],
                     "languages": [{"code": "ru", "kind": "native"}],
                 }
                 result = ai_scoring.estimate_uni_chance(u, profile)
-                chance = result.get("overallChance", 0) or 0
-                self.assertGreaterEqual(
-                    chance,
-                    prev_chance,
-                    f"Non-monotonic chance for {uid}: score {s} gave {chance} < {prev_chance}",
-                )
-                prev_chance = chance
+                fit = result.get("overallChance")
+                if fit is not None:
+                    self.assertGreaterEqual(
+                        fit,
+                        prev_fit,
+                        f"Non-monotonic requirements fit for {uid}: UNT {s} gave {fit} < {prev_fit}",
+                    )
+                    prev_fit = fit
 
-    def test_medical_schools_have_higher_grant_cutoffs_than_pedagogical(self):
+    def test_admitted_score_distributions_do_not_create_grant_cutoffs(self):
         kaznmu = uni_service.get_university_by_id("asfendiyarov-kazakh-national-medical-university-kaz-almaty")
         abai = uni_service.get_university_by_id("abai-kazakh-national-pedagogical-university-kaz-almaty")
         
-        # At UNT 115, pedagogical school offers good chances while medicine is virtually impossible
+        # Both published UNT minimums are met; historical score distributions are separate facts.
         profile_115 = {
             "exams": [{"id": "UNT", "score": 115}],
             "languages": [{"code": "ru", "kind": "native"}],
@@ -94,8 +90,12 @@ class KazakhstanUntScoringTests(unittest.TestCase):
         res_med = ai_scoring.estimate_uni_chance(kaznmu, profile_115)
         res_ped = ai_scoring.estimate_uni_chance(abai, profile_115)
         
-        self.assertLessEqual(int(res_med.get("overallChance", 0) or 0), 5)
-        self.assertGreaterEqual(int(res_ped.get("overallChance", 0) or 0), 50)
+        self.assertEqual(100, res_med.get("overallChance"))
+        self.assertEqual(100, res_ped.get("overallChance"))
+        self.assertGreater(
+            kaznmu["admission_categories"][0]["requirement_profiles"][0]["score_profile"]["p25_raw"],
+            abai["admission_categories"][0]["requirement_profiles"][0]["score_profile"]["p25_raw"],
+        )
 
 
 if __name__ == "__main__":

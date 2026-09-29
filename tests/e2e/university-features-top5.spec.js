@@ -96,14 +96,14 @@ test("deadline calendar shows exact dates and supports month navigation", async 
 });
 
 test("exact Imperial deadline export preserves its official source and admissions cycle", async ({ page }) => {
-  await page.goto("/university.html?id=imperial-college-london-uk");
+  await page.goto("/university.html?id=imperial-college-london-uk&admission_program=imperial-computing-beng");
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
 
   const exactDate = "2027-01-13";
-  const exactDeadline = page.locator("#detailDeadlines .admissions-deadline-item").filter({ hasText: "Undergraduate Engineering & Computing Route" }).first();
+  const exactDeadline = page.locator("#detailDeadlines .admissions-deadline-item").filter({ hasText: "Computing (BEng/MEng)" }).first();
   await expect(exactDeadline).toBeVisible();
   const publishedDate = (await exactDeadline.locator(".admissions-deadline-date").textContent()).replace(/[\u2010-\u2015\u2212]/g, "-");
   expect(publishedDate).toBe(exactDate);
@@ -111,7 +111,7 @@ test("exact Imperial deadline export preserves its official source and admission
   const publishedCycle = (await exactDeadline.locator(".admissions-deadline-cycle").textContent()).replace(/[\u2010-\u2015\u2212]/g, "-");
   expect(publishedCycle).toContain("2027 entry");
   const sourceUrl = await exactDeadline.locator(".admissions-deadline-source").getAttribute("href");
-  expect(sourceUrl).toBe("https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/");
+  expect(sourceUrl).toBe("https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/");
 
   await page.evaluate(() => {
     const createObjectURL = URL.createObjectURL.bind(URL);
@@ -192,8 +192,8 @@ test("catalog study level switcher is interactive and filters degree levels", as
   ]);
 });
 
-test("detail page renders dedicated Deadlines tab with interactive timeline", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge");
+test("MIT first-year deadlines stay in context and offer an optional calendar", async ({ page }) => {
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor&admission_route=first_year");
   await expect(page.locator("#detailCard")).toBeVisible();
 
   // Deadlines tab button should exist and switch to Deadlines pane
@@ -215,46 +215,29 @@ test("detail page renders dedicated Deadlines tab with interactive timeline", as
     await expect(cycleLabel).not.toBeEmpty();
   }
   await expect(deadlinesPane).not.toContainText("2026–27");
-  const milestones = page.locator(".timeline-milestone");
-  for (const milestone of await milestones.all()) {
-    await expect(milestone.locator(".timeline-milestone-date")).not.toBeEmpty();
-  }
-
-  const levelTabs = page.locator("#detailDeadlines [data-deadlines-level]");
-  await expect(levelTabs).toHaveCount(5);
-  const allTab = page.locator("#detailDeadlines [data-deadlines-level='all']");
-  await allTab.click();
-  const expectedCount = Number((await allTab.textContent()).match(/\((\d+)\)/)?.[1]);
-  await expect(deadlineCards).toHaveCount(expectedCount);
-
-  const conflictCards = deadlineCards.filter({ hasText: "Official deadline information conflicts" });
-  await expect(conflictCards).toHaveCount(2);
-  for (const conflictCard of await conflictCards.all()) {
-    await expect(conflictCard.locator(".admissions-deadline-cycle")).toContainText("Fall 2027 entry");
-    await expect(conflictCard.locator(".admissions-deadline-date")).toHaveCount(0);
-    await expect(conflictCard.locator(".admissions-deadline-notes").first()).toContainText("Compare the official admissions pages");
-    await expect(conflictCard.locator(".admissions-deadline-source")).toHaveCount(2);
-  }
+  await expect(page.locator("#detailDeadlines [data-deadlines-level]")).toHaveCount(0);
+  await expect(deadlineCards).toHaveCount(2);
+  await expect(deadlinesPane).toContainText("Regular Action");
+  await expect(deadlinesPane).toContainText("Early Action");
+  await expect(deadlinesPane).not.toContainText("Transfer");
+  const calendar = page.locator("#detailDeadlines .mit-deadline-calendar");
+  await expect(calendar).not.toHaveAttribute("open", "");
+  await calendar.locator("summary").click();
+  await expect(calendar).toHaveAttribute("open", "");
+  await expect(calendar).toContainText("No deadlines with an exact published date and year");
 
   await page.evaluate(() => {
     const language = document.getElementById("languageSelect");
     language.value = "rus";
     language.dispatchEvent(new Event("change", { bubbles: true }));
   });
-  const russianConflicts = deadlineCards.filter({ hasText: "Официальные сведения о сроке подачи расходятся" });
-  await expect(russianConflicts).toHaveCount(2);
-  await expect(russianConflicts.first().locator(".admissions-deadline-notes").first()).toContainText("Сравните официальные страницы приёма");
+  await expect(deadlinesPane).toContainText("Раннее поступление");
   await page.evaluate(() => {
     const language = document.getElementById("languageSelect");
     language.value = "eng";
     language.dispatchEvent(new Event("change", { bubbles: true }));
   });
-  await expect(deadlineCards.filter({ hasText: "Official deadline information conflicts" })).toHaveCount(2);
-
-  const degreeTab = page.locator("#detailDeadlines [data-deadlines-level]:not([data-deadlines-level='all'])").first();
-  const degreeCount = Number((await degreeTab.textContent()).match(/\((\d+)\)/)?.[1]);
-  await degreeTab.click();
-  await expect(deadlineCards).toHaveCount(degreeCount);
+  await expect(deadlinesPane).toContainText("Early Action");
 });
 
 test("UK citizenship alone does not assign a home fee status", async ({ page }) => {
@@ -274,7 +257,7 @@ test("UK citizenship alone does not assign a home fee status", async ({ page }) 
 });
 
 test("admission track collapses secondary requirements and expands upon click", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge");
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor&admission_route=first_year");
   await expect(page.locator("#detailCard")).toBeVisible();
 
   // Switch to admission tab

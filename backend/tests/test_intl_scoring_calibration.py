@@ -1,3 +1,4 @@
+import copy
 import unittest
 
 from app.services import universities as uni_service
@@ -34,8 +35,8 @@ class TestIntlScoringCalibration(unittest.TestCase):
         self.assertIsNone(_normalize_gpa_score(5.01))
         self.assertIsNone(_normalize_gpa_score(-0.5))
 
-    def test_stanford_without_published_median_uses_low_confidence_fallback(self):
-        """Stanford publishes score quartiles but no median, so UniChance must not treat a midpoint as official."""
+    def test_stanford_score_quartiles_do_not_change_requirements_fit(self):
+        """Changing admitted-score distributions cannot change published-minimum fit."""
         profile = {
             "locale": "eng",
             "budget": 100000,
@@ -45,12 +46,19 @@ class TestIntlScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {},
         }
         res = estimate_uni_chance(self.stanford, profile)
-        self.assertEqual(res.get("chanceModel"), "estimated_fallback")
-        self.assertEqual("low", res.get("confidence"))
+        self.assertEqual("published_requirements_met_percent", res.get("scoreMeaning"))
+        self.assertIsNotNone(res.get("overallChance"))
         self.assertTrue(res.get("chanceAvailable"))
+        no_distribution = copy.deepcopy(self.stanford)
+        for category in no_distribution.get("admission_categories", []):
+            for track in category.get("requirement_profiles", []):
+                if isinstance(track.get("score_profile"), dict):
+                    track["score_profile"].update({"p25_normalized": 0, "median_normalized": 0, "p75_normalized": 100})
+        changed_distribution = estimate_uni_chance(no_distribution, profile)
+        self.assertEqual(res.get("overallChance"), changed_distribution.get("overallChance"))
 
-    def test_imperial_college_a_level_route(self):
-        """Verify Imperial College London evaluates top A-Level applicants with high realistic chance."""
+    def test_imperial_college_a_level_route_reports_published_requirements_fit(self):
+        """A-Level minimum checks are reported as met requirements, not admission odds."""
         profile = {
             "locale": "eng",
             "budget": 100000,
@@ -65,11 +73,11 @@ class TestIntlScoringCalibration(unittest.TestCase):
         res = estimate_uni_chance(self.imperial, profile)
         chance = res.get("overallChance")
         self.assertIsNotNone(chance)
-        self.assertTrue(70 <= chance <= 90, f"Imperial A-Level chance expected between 70-90%, got {chance}%")
+        self.assertEqual(100, chance)
+        self.assertEqual("published_requirements_met_percent", res.get("scoreMeaning"))
         self.assertEqual(res.get("bestChoiceLabel"), "A-Level")
 
-    def test_melbourne_ib_diploma_route(self):
-        """Verify University of Melbourne evaluates competitive IB applicants with high realistic chance."""
+    def test_melbourne_ib_diploma_route_reports_published_requirements_fit(self):
         profile = {
             "locale": "eng",
             "budget": 60000,
@@ -81,11 +89,11 @@ class TestIntlScoringCalibration(unittest.TestCase):
         res = estimate_uni_chance(self.melbourne, profile)
         chance = res.get("overallChance")
         self.assertIsNotNone(chance)
-        self.assertTrue(70 <= chance <= 90, f"Melbourne IB chance expected between 70-90%, got {chance}%")
+        self.assertEqual(100, chance)
+        self.assertEqual("published_requirements_met_percent", res.get("scoreMeaning"))
         self.assertEqual(res.get("bestChoiceLabel"), "IB Diploma")
 
-    def test_tokyo_peak_a_level_route(self):
-        """Verify UTokyo PEAK evaluates competitive A-Level applicants with high realistic chance."""
+    def test_tokyo_peak_a_level_route_reports_published_requirements_fit(self):
         profile = {
             "locale": "eng",
             "budget": 40000,
@@ -97,11 +105,11 @@ class TestIntlScoringCalibration(unittest.TestCase):
         res = estimate_uni_chance(self.tokyo, profile)
         chance = res.get("overallChance")
         self.assertIsNotNone(chance)
-        self.assertTrue(65 <= chance <= 85, f"Tokyo A-Level chance expected between 65-85%, got {chance}%")
+        self.assertEqual(100, chance)
+        self.assertEqual("published_requirements_met_percent", res.get("scoreMeaning"))
         self.assertEqual(res.get("bestChoiceLabel"), "A-Level")
 
-    def test_toronto_a_level_route(self):
-        """Verify University of Toronto evaluates competitive A-Level applicants with high realistic chance."""
+    def test_toronto_a_level_route_reports_published_requirements_fit(self):
         profile = {
             "locale": "eng",
             "budget": 60000,
@@ -113,7 +121,8 @@ class TestIntlScoringCalibration(unittest.TestCase):
         res = estimate_uni_chance(self.toronto, profile)
         chance = res.get("overallChance")
         self.assertIsNotNone(chance)
-        self.assertTrue(75 <= chance <= 95, f"Toronto A-Level chance expected between 75-95%, got {chance}%")
+        self.assertEqual(100, chance)
+        self.assertEqual("published_requirements_met_percent", res.get("scoreMeaning"))
         self.assertEqual(res.get("bestChoiceLabel"), "A-Level")
 
 

@@ -504,7 +504,7 @@ def get_university(
     return u
 
 
-@router.post("/universities/{university_id}/uni-chance", summary="Admission chance estimate (UniChance)", description="Estimates the user's admission probability for a specific university based on their profile, exams, and languages.")
+@router.post("/universities/{university_id}/uni-chance", summary="Published requirements fit (UniChance)", description="Returns the percentage of measurable published academic and language minimum checks met for the applicable admission choice. This score is not an admission probability.")
 def get_university_uni_chance(
     university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
     payload: ProfileOnlyRequest = ...,

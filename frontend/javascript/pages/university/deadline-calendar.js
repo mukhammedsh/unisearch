@@ -50,6 +50,8 @@ export function createDeadlineIcs(item, { now = new Date(), uid = "" } = {}) {
     `Original deadline: ${item.deadline}`,
     item.cycle ? `Admissions cycle: ${item.cycle}` : "",
     item.scope || item.level ? `Scope: ${item.scope || item.level}` : "",
+    item.applicantCategoryLabel || "",
+    item.applicabilityLabel || "",
     item.title ? `Deadline: ${item.title}` : "",
     source ? `Source: ${source}` : "",
     "Confirm exact time and rules with the university.",

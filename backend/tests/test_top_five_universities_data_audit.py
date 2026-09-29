@@ -154,20 +154,93 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.university["academics"]["programs"][0]["price_facts"][0]["amount"] = 21000
         self.assertTrue(any("must equal legacy numeric field 'tuition_year_gbp'" in error for error in self.audit()))
 
-    def test_annual_first_year_deadlines_do_not_infer_an_entry_year(self) -> None:
+    def test_mit_current_cycle_and_program_scoped_physics_route(self) -> None:
         rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
         mit = rows["mit-usa-cambridge"]
-        mit_first_year = [
-            category for category in mit["admission_categories"]
-            if category["id"] in {"mit_regular", "mit_undergrad_early_action"}
-        ]
-        self.assertEqual(2, len(mit_first_year))
-        self.assertTrue(all("Annual first-year cycle" in category["cycle"] for category in mit_first_year))
+        categories = {category["id"]: category for category in mit["admission_categories"]}
+        self.assertEqual("Fall 2027 entry", categories["mit_regular"]["cycle"])
+        self.assertEqual("Fall 2027 entry", categories["mit_undergrad_early_action"]["cycle"])
+        undergraduate_ids = {
+            program["id"] for program in mit["academics"]["programs"]
+            if "Bachelor" in program.get("study_levels", [])
+        }
+        self.assertEqual(52, len(undergraduate_ids))
+        translations = json.loads((DEFAULT_DATA_PATH.parent / "universities_translations.json").read_text(encoding="utf-8"))
+        translated_descriptions = translations["languages"]["rus"]["admission_exact"]
+        for program in mit["academics"]["programs"]:
+            if program.get("department"):
+                self.assertIn(program["department"], translated_descriptions, program["id"])
+        for program in mit["academics"]["programs"]:
+            if program["id"] not in undergraduate_ids:
+                continue
+            self.assertTrue(program.get("description"), program["id"])
+            self.assertIn(program["description"], translated_descriptions, program["id"])
+            self.assertTrue(program.get("source_url", "").startswith("https://catalog.mit.edu/degree-charts/"), program["id"])
+            self.assertNotEqual("https://catalog.mit.edu/degree-charts/", program["source_url"], program["id"])
+        self.assertIn("mit-bs-6-5", undergraduate_ids)
+        self.assertNotIn("mit-course-6-2-bachelor", undergraduate_ids)
+        self.assertEqual(undergraduate_ids, set(categories["mit_regular"]["program_ids"]))
+        self.assertEqual(undergraduate_ids, set(categories["mit_undergrad_early_action"]["program_ids"]))
+        internal_meng = categories["mit_eecs_meng_admissions"]
+        self.assertEqual(
+            {"mit-course-6p-meng", "mit-course-6-7p-meng", "mit-course-6-14p-meng"},
+            set(internal_meng["program_ids"]),
+        )
+        self.assertEqual(set(internal_meng["program_ids"]), set(internal_meng["deadlines"][0]["program_ids"]))
+        self.assertEqual(
+            "mit_eecs_meng_admissions",
+            next(program for program in mit["academics"]["programs"] if program["id"] == "mit-course-6p-meng")["admission_route_id"],
+        )
+        course_69p = next(program for program in mit["academics"]["programs"] if program["id"] == "mit-course-6-9p-meng")
+        bcs_meng = categories["mit_bcs_meng_admissions"]
+        self.assertEqual("mit_bcs_meng_admissions", course_69p["admission_route_id"])
+        self.assertEqual(["mit-course-6-9p-meng"], bcs_meng["program_ids"])
+        self.assertEqual(["mit-course-6-9p-meng"], bcs_meng["deadlines"][0]["program_ids"])
+        self.assertEqual("unknown", bcs_meng["deadlines"][0]["publication_status"])
+        self.assertNotIn("date", bcs_meng["deadlines"][0])
+        bcs_profile = bcs_meng["requirement_profiles"][0]
+        self.assertEqual(
+            [(4.25, "MIT 5.0 scale"), (4.0, "MIT 5.0 scale")],
+            [(row["minimum"], row["scale"]) for row in bcs_profile["unassessed_published_minimums"]],
+        )
+        self.assertIn("not guaranteed", " ".join(bcs_profile["extra_requirements"]))
+        for translated in [course_69p["name"], course_69p["description"], course_69p["entry_requirements"], bcs_profile["requirements_note"], *bcs_profile["extra_requirements"]]:
+            self.assertIn(translated, translated_descriptions)
+        for program in mit["academics"]["programs"]:
+            if program["id"] not in {"mit-course-6-7p-meng", "mit-course-6-14p-meng"}:
+                continue
+            self.assertEqual("mit_eecs_meng_admissions", program["admission_route_id"])
+            self.assertEqual(["Master"], program["study_levels"])
+            self.assertIn(program["description"], translated_descriptions)
+            self.assertIn(program["entry_requirements"], translated_descriptions)
+            self.assertTrue(program["source_url"].startswith("https://catalog.mit.edu/degree-charts/"))
+        msms = next(program for program in mit["academics"]["programs"] if program["id"] == "mit-sloan-msms")
+        msms_route = categories["mit_sloan_msms_admissions"]
+        self.assertEqual("mit_sloan_msms_admissions", msms["admission_route_id"])
+        self.assertEqual(["mit-sloan-msms"], msms_route["program_ids"])
+        self.assertIn("partner or affiliate", msms["entry_requirements"])
+        self.assertIn(msms["entry_requirements"], translated_descriptions)
+        self.assertEqual("2027-02-18", msms_route["deadlines"][0]["date"])
+        self.assertEqual("partner_or_affiliate_school_student_or_graduate", msms_route["deadlines"][0]["applicant_category"])
+        self.assertEqual("tuition_and_mandatory_fee", msms["price_facts"][0]["kind"])
+        self.assertEqual(91892, msms["price_facts"][0]["amount"])
+        self.assertEqual("2026-27 academic year; includes mandatory Sloan program fee", msms["price_facts"][0]["cycle"])
+        self.assertNotIn("mit-bs-4", categories["mit_undergrad_transfer"]["program_ids"])
+        self.assertNotIn("mit-physics-phd-course-8", categories["mit_phd_doctoral_guarantee"]["program_ids"])
+        self.assertNotIn(
+            "Doctor of Philosophy in Physics (Course 8 PhD)",
+            categories["mit_phd_doctoral_guarantee"]["program_names"],
+        )
+        self.assertEqual(["mit-physics-phd-course-8"], categories["mit_physics_phd_admissions"]["program_ids"])
+        self.assertEqual(["mit-physics-scd"], categories["mit_physics_scd_admissions"]["program_ids"])
+        self.assertNotIn("cycle", categories["mit_physics_scd_admissions"])
         doctoral_funding = mit["finance"]["doctorate_funding_guarantee"]
         self.assertIsNone(doctoral_funding["guaranteed"])
         self.assertIsNone(doctoral_funding["stipend_annual_usd_min"])
         self.assertIn("varies significantly by program", doctoral_funding["notes"])
 
+    def test_stanford_and_harvard_first_year_cycles_are_scoped(self) -> None:
+        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
         stanford = rows["stanford-university-usa-ca"]
         stanford_first_year = next(
             category for category in stanford["admission_categories"]
@@ -185,7 +258,85 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         # Current catalog coverage is scoped to the Fall 2027 cohort; Harvard
         # publishes the round deadlines as month/day values without a year.
         self.assertEqual("Fall 2027 first-year admission", harvard_first_year["cycle"])
-        self.assertTrue(all("20" not in round_row["deadline"] for round_row in harvard_first_year["admission_rounds"]))
+        self.assertTrue(all("20" not in row["deadline"] for row in harvard_first_year["admission_rounds"]))
+
+    def test_contrast_routes_and_imperial_computing_requirements_are_course_scoped(self) -> None:
+        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+
+        mit = rows["mit-usa-cambridge"]
+        mit_categories = {row["id"]: row for row in mit["admission_categories"]}
+        for category_id in ("mit_regular", "mit_undergrad_early_action"):
+            category = mit_categories[category_id]
+            self.assertEqual("first_year", category["applicant_route"])
+            self.assertEqual("university_wide", category["application_scope"])
+            self.assertEqual("after_admission", category["major_selection"])
+        transfer = mit_categories["mit_undergrad_transfer"]
+        self.assertEqual("transfer", transfer["applicant_route"])
+        spring_deadlines = [row for row in transfer["deadlines"] if row["cycle"] == "Spring 2027 entry"]
+        self.assertTrue(spring_deadlines)
+        self.assertTrue(all(
+            row["applicant_category"] == "us_citizen_or_permanent_resident_transfer"
+            and row["applicant_category_label"] == "U.S. citizens and U.S. permanent residents only"
+            and row["applicability_label"] == "Spring entry only"
+            for row in spring_deadlines
+        ))
+
+        stanford = rows["stanford-university-usa-ca"]
+        stanford_categories = {row["id"]: row for row in stanford["admission_categories"]}
+        self.assertEqual("first_year", stanford_categories["stanford_standard"]["applicant_route"])
+        self.assertEqual("transfer", stanford_categories["stanford_undergraduate_transfer"]["applicant_route"])
+        self.assertEqual("university_wide", stanford_categories["stanford_undergraduate_transfer"]["application_scope"])
+        self.assertEqual(100, stanford_categories["stanford_undergraduate_transfer"]["application_fee"]["amount"])
+        fee_fact = next(
+            row for row in stanford_categories["stanford_undergraduate_transfer"]["price_facts"]
+            if row["kind"] == "application_fee"
+        )
+        self.assertEqual(100, fee_fact["amount"])
+        self.assertIn("without an entry year", stanford_categories["stanford_undergraduate_transfer"]["cycle"])
+
+        imperial = rows["imperial-college-london-uk"]
+        imperial_categories = {row["id"]: row for row in imperial["admission_categories"]}
+        computing = imperial_categories["imperial_computing_2027"]
+        expected_computing_ids = {"imperial-computing-beng", "imperial-computing-meng"}
+        self.assertEqual(expected_computing_ids, set(computing["program_ids"]))
+        self.assertTrue(expected_computing_ids.isdisjoint(imperial_categories["imperial_eng"]["program_ids"]))
+        self.assertEqual(
+            {
+                "imperial-aeronautical-engineering-meng",
+                "imperial-mechanical-engineering-meng",
+                "imperial-electrical-electronic-engineering-beng-meng",
+                "imperial-chemical-engineering-meng",
+                "imperial-civil-engineering-meng",
+                "imperial-biomedical-engineering-beng-meng",
+            },
+            set(imperial_categories["imperial_eng"]["program_ids"]),
+        )
+        engineering = imperial_categories["imperial_eng"]
+        self.assertEqual(34.5, engineering["application_fee_gbp"])
+        self.assertTrue(any("must take the Engineering and Science Admissions Test (ESAT)" in value for value in engineering["extra_requirements"]))
+        self.assertEqual(
+            "https://www.imperial.ac.uk/study/apply/undergraduate/process/admissions-tests/esat/",
+            engineering["admissions_test_source_url"],
+        )
+        self.assertEqual(34.5, computing["application_fee_gbp"])
+        program_sources = {
+            row["id"]: row["source_url"] for row in imperial["academics"]["programs"]
+            if row["id"] in expected_computing_ids
+        }
+        self.assertEqual("https://www.imperial.ac.uk/study/courses/undergraduate/computing-beng/", program_sources["imperial-computing-beng"])
+        self.assertEqual("https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/", program_sources["imperial-computing-meng"])
+        self.assertEqual("first_year", computing["applicant_route"])
+        self.assertEqual("course_specific", computing["application_scope"])
+        self.assertEqual("2027 entry", computing["cycle"])
+        self.assertEqual(expected_computing_ids, set(computing["deadlines"][0]["program_ids"]))
+        self.assertTrue(expected_computing_ids.isdisjoint(imperial_categories["imperial_eng"]["deadlines"][0]["program_ids"]))
+        profiles = {row["id"]: row for row in computing["requirement_profiles"]}
+        self.assertIn("A*A*A or A*AAA", profiles["imperial_computing_a_level_2027"]["requirements_note"])
+        self.assertIn("A* in Mathematics", profiles["imperial_computing_a_level_2027"]["requirements_note"])
+        self.assertIn("41 points overall", profiles["imperial_computing_ib_2027"]["requirements_note"])
+        self.assertIn("7 in Mathematics at Higher Level", profiles["imperial_computing_ib_2027"]["requirements_note"])
+        self.assertIn("7 in another relevant subject at Higher Level", profiles["imperial_computing_ib_2027"]["requirements_note"])
+        self.assertTrue(any("must sit the Test of Mathematics for University Admission (TMUA)" in value for value in computing["extra_requirements"]))
 
     def test_harvard_budget_and_program_scoped_costs_remain_explicit(self) -> None:
         rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}

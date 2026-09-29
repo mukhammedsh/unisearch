@@ -510,6 +510,8 @@ export function localizeDuration(rawValue) {
 
   if (lang === "rus") {
     return raw
+      .replace(/\bor\b/gi, "или")
+      .replace(/\bregular terms\b/gi, "обычных семестра")
       .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "год", "года", "лет")}`)
       .replace(/\b(\d+)\s*months?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "месяц", "месяца", "месяцев")}`)
       .replace(/\b(\d+)\s*weeks?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "неделя", "недели", "недель")}`)
@@ -940,6 +942,7 @@ export function extractTuitionCostFromBreakdown(breakdown) {
   for (const [key, val] of Object.entries(breakdown)) {
     const k = String(key || "").toLowerCase().replace(/[^a-z]/g, "");
     if (!k.includes("tuition")) continue;
+    if (val == null || String(val).trim() === "") continue;
     const n = Number(val);
     if (Number.isFinite(n) && n >= 0) return n;
   }
@@ -949,8 +952,9 @@ export function extractTuitionCostFromBreakdown(breakdown) {
 export function modeAwareAnnualCost(financeData, preferredModeRaw = "any") {
   const f = financeData && typeof financeData === "object" ? financeData : {};
   const mode = normalizeStudyModeForCost(preferredModeRaw);
-  const totalRaw = Number(f.total_cost_year_usd);
-  const total = Number.isFinite(totalRaw) && totalRaw >= 0 ? totalRaw : 0;
+  const totalRaw = f.total_cost_year_usd;
+  const total = totalRaw != null && String(totalRaw).trim() !== ""
+    && Number.isFinite(Number(totalRaw)) && Number(totalRaw) >= 0 ? Number(totalRaw) : null;
   const breakdown = (f.costs_breakdown_year_usd && typeof f.costs_breakdown_year_usd === "object")
     ? f.costs_breakdown_year_usd
     : {};
@@ -963,7 +967,7 @@ export function modeAwareAnnualCost(financeData, preferredModeRaw = "any") {
     if (Number.isFinite(tuition) && tuition >= 0) return tuition;
     const exactModeTotal = modeTotalFromFinance(f, "online");
     if (Number.isFinite(exactModeTotal) && exactModeTotal >= 0) return exactModeTotal;
-    return 0;
+    return null;
   }
   return total;
 }

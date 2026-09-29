@@ -1,0 +1,2784 @@
+{
+  "schema_version": "candidate-1",
+  "institution_id": "mit-usa-cambridge",
+  "checked_at": "2026-09-29",
+  "catalog_snapshot": "2026-2027 MIT Course Catalog plus current MIT Office of Graduate Education program pages",
+  "source_index_url": "https://oge.mit.edu/graduate-admissions/programs/",
+  "candidate_degree_options": [
+    {
+      "id": "mit-degree-architecture-march-mit-grad-architecture",
+      "name": "Master of Architecture (MArch)",
+      "award": "MArch",
+      "level": "graduate",
+      "program_family_id": "mit-grad-architecture",
+      "route_id": "mit_grad_architecture_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "canonical_draft_id": "mit-degree-architecture-march-mit-grad-architecture",
+      "runtime_program_id": "mit-architecture-march-mit-grad-architecture"
+    },
+    {
+      "id": "mit-degree-architecture-studies-sm-mit-grad-architecture",
+      "name": "Architecture Studies (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-architecture",
+      "route_id": "mit_grad_architecture_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "canonical_draft_id": "mit-degree-architecture-studies-sm-mit-grad-architecture",
+      "runtime_program_id": "mit-architecture-studies-sm-mit-grad-architecture"
+    },
+    {
+      "id": "mit-degree-art-culture-and-technology-sm-mit-grad-architecture",
+      "name": "Art, Culture, and Technology (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-architecture",
+      "route_id": "mit_grad_architecture_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "canonical_draft_id": "mit-degree-art-culture-and-technology-sm-mit-grad-architecture",
+      "runtime_program_id": "mit-art-culture-and-technology-sm-mit-grad-architecture"
+    },
+    {
+      "id": "mit-degree-city-planning-sm-mit-grad-urban-studies-and-planning",
+      "name": "City Planning (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": null,
+      "route_review": "not_offered_in_current_catalog",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-city-planning-sm-mit-grad-urban-studies-and-planning",
+      "runtime_program_id": null,
+      "review_note": "The 2026-27 MIT Urban Studies and Planning catalog lists MCP and Sustainability Studies and Planning SM, but not a separate City Planning SM.",
+      "review_source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/"
+    },
+    {
+      "id": "mit-degree-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering",
+      "name": "Civil and Environmental Engineering (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-civil-and-environmental-engineering",
+      "route_id": "mit_grad_civil_environmental_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "canonical_draft_id": "mit-degree-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering",
+      "runtime_program_id": "mit-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering"
+    },
+    {
+      "id": "mit-degree-electrical-engineering-and-computer-science-course-6-p-meng-mit-grad-eecs-meng-course-6-p",
+      "name": "Electrical Engineering and Computer Science (Course 6-P) (MEng)",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-eecs-meng-course-6-p",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-electrical-engineering-and-computer-science-course-6-p-meng-mit-grad-eecs-meng-course-6-p",
+      "runtime_program_id": "mit-course-6p-meng"
+    },
+    {
+      "id": "mit-degree-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy",
+      "name": "Data, Economics, and Design of Policy (MASc)",
+      "award": "MASc",
+      "level": "graduate",
+      "program_family_id": "mit-grad-data-economics-and-design-of-policy",
+      "route_id": "mit_grad_dedp_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/data-economics-and-development-policy/",
+      "canonical_draft_id": "mit-degree-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy",
+      "runtime_program_id": "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"
+    },
+    {
+      "id": "mit-degree-linguistics-sm-mit-grad-linguistics",
+      "name": "Linguistics (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-linguistics",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-linguistics-sm-mit-grad-linguistics",
+      "runtime_program_id": "mit-linguistics-sm-mit-grad-linguistics"
+    },
+    {
+      "id": "mit-degree-science-writing-sm-mit-grad-science-writing",
+      "name": "Science Writing (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-science-writing",
+      "route_id": "mit_grad_science_writing_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/science-writing/",
+      "canonical_draft_id": "mit-degree-science-writing-sm-mit-grad-science-writing",
+      "runtime_program_id": "mit-science-writing-sm-mit-grad-science-writing"
+    },
+    {
+      "id": "mit-degree-mathematics-of-data-sm-mit-grad-mathematics",
+      "name": "Mathematics of Data (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mathematics",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-mathematics-of-data-sm-mit-grad-mathematics",
+      "runtime_program_id": "mit-mathematics-of-data-sm-mit-grad-mathematics"
+    },
+    {
+      "id": "mit-degree-computation-and-cognition-meng-mit-grad-computation-and-cognition-course-6-9p",
+      "name": "Computation and Cognition (Course 6-9P) (MEng)",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-computation-and-cognition-course-6-9p",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-computation-and-cognition-meng-mit-grad-computation-and-cognition-course-6-9p",
+      "runtime_program_id": "mit-course-6-9p-meng"
+    },
+    {
+      "id": "mit-degree-computational-science-and-engineering-sm-mit-grad-computational-science-and-engineering-phd",
+      "name": "Computational Science and Engineering (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-computational-science-and-engineering-sm-mit-grad-computational-science-and-engineering-phd",
+      "runtime_program_id": "mit-computational-science-and-engineering-sm-mit-grad-computational-science-and-engineering-phd"
+    },
+    {
+      "id": "mit-degree-computer-science-and-molecular-biology-meng-mit-grad-computer-science-and-molecular-biology-course-6-7p",
+      "name": "Computer Science and Molecular Biology (Course 6-7P) (MEng)",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-computer-science-and-molecular-biology-course-6-7p",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-computer-science-and-molecular-biology-meng-mit-grad-computer-science-and-molecular-biology-course-6-7p",
+      "runtime_program_id": "mit-course-6-7p-meng"
+    },
+    {
+      "id": "mit-degree-computer-science-economics-and-data-science-meng-mit-grad-computer-science-economics-and-data-science-course-6-14p",
+      "name": "Computer Science, Economics, and Data Science (Course 6-14P) (MEng)",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-computer-science-economics-and-data-science-course-6-14p",
+      "route_id": null,
+      "route_review": "needs_award_to_application_route_review",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "canonical_draft_id": "mit-degree-computer-science-economics-and-data-science-meng-mit-grad-computer-science-economics-and-data-science-course-6-14p",
+      "runtime_program_id": "mit-course-6-14p-meng"
+    },
+    {
+      "id": "mit-degree-engineering-and-management-sm-mit-grad-system-design-and-management",
+      "name": "Engineering and Management (System Design and Management) (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-system-design-and-management",
+      "route_id": "mit_grad_sdm_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/system-design-and-management/",
+      "canonical_draft_id": "mit-degree-engineering-and-management-sm-mit-grad-system-design-and-management",
+      "runtime_program_id": "mit-engineering-and-management-sm-mit-grad-system-design-and-management"
+    },
+    {
+      "id": "mit-degree-music-technology-and-computation-masc-mit-grad-music-technology-and-computation",
+      "name": "Music Technology and Computation (MASc)",
+      "award": "MASc",
+      "level": "graduate",
+      "program_family_id": "mit-grad-music-technology-and-computation",
+      "route_id": "mit_grad_music_technology_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/music-technology-and-computation/",
+      "canonical_draft_id": "mit-degree-music-technology-and-computation-masc-mit-grad-music-technology-and-computation",
+      "runtime_program_id": "mit-music-technology-and-computation-masc-mit-grad-music-technology-and-computation"
+    },
+    {
+      "id": "mit-degree-music-technology-and-computation-sm-mit-grad-music-technology-and-computation",
+      "name": "Music Technology and Computation (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-music-technology-and-computation",
+      "route_id": "mit_grad_music_technology_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/music-technology-and-computation/",
+      "canonical_draft_id": "mit-degree-music-technology-and-computation-sm-mit-grad-music-technology-and-computation",
+      "runtime_program_id": "mit-music-technology-and-computation-sm-mit-grad-music-technology-and-computation"
+    },
+    {
+      "id": "mit-degree-real-estate-development-sm-mit-grad-center-for-real-estate",
+      "name": "Real Estate Development (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-center-for-real-estate",
+      "route_id": "mit_grad_real_estate_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/center-for-real-estate/",
+      "canonical_draft_id": "mit-degree-real-estate-development-sm-mit-grad-center-for-real-estate",
+      "runtime_program_id": "mit-real-estate-development-sm-mit-grad-center-for-real-estate"
+    },
+    {
+      "id": "mit-degree-supply-chain-management-masc-mit-grad-supply-chain-management-residential",
+      "name": "Supply Chain Management (MASc)",
+      "award": "MASc",
+      "level": "graduate",
+      "program_family_id": "mit-grad-supply-chain-management-residential",
+      "route_id": "mit_grad_scm_residential_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-residential/",
+      "canonical_draft_id": "mit-degree-supply-chain-management-masc-mit-grad-supply-chain-management-residential",
+      "runtime_program_id": "mit-supply-chain-management-masc-mit-grad-supply-chain-management-residential"
+    },
+    {
+      "id": "mit-degree-supply-chain-management-meng-mit-grad-supply-chain-management-residential",
+      "name": "Supply Chain Management (MEng)",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-supply-chain-management-residential",
+      "route_id": "mit_grad_scm_residential_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-residential/",
+      "canonical_draft_id": "mit-degree-supply-chain-management-meng-mit-grad-supply-chain-management-residential",
+      "runtime_program_id": "mit-supply-chain-management-meng-mit-grad-supply-chain-management-residential"
+    },
+    {
+      "id": "mit-degree-technology-and-policy-sm-mit-grad-technology-and-policy-program",
+      "name": "Technology and Policy (SM)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-technology-and-policy-program",
+      "route_id": "mit_grad_tpp_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/technology-and-policy-program/",
+      "canonical_draft_id": "mit-degree-technology-and-policy-sm-mit-grad-technology-and-policy-program",
+      "runtime_program_id": "mit-technology-and-policy-sm-mit-grad-technology-and-policy-program"
+    },
+    {
+      "id": "mit-degree-transportation-sm-mit-grad-transportation",
+      "name": "Master of Science in Transportation (MST)",
+      "award": "MST",
+      "level": "graduate",
+      "program_family_id": "mit-grad-transportation",
+      "route_id": "mit_grad_transportation_mst_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://catalog.mit.edu/degree-charts/master-transportation/",
+      "canonical_draft_id": "mit-degree-transportation-sm-mit-grad-transportation",
+      "runtime_program_id": "mit-transportation-sm-mit-grad-transportation"
+    },
+    {
+      "id": "mit-degree-mit-sloan-traditional-mba-program-mba-mit-grad-mit-sloan-traditional-mba-program",
+      "name": "MIT Sloan Traditional MBA",
+      "award": "MBA",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-traditional-mba-program",
+      "route_id": "mit_sloan_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-mba-program/",
+      "canonical_draft_id": "mit-degree-mit-sloan-traditional-mba-program-mba-mit-grad-mit-sloan-traditional-mba-program",
+      "runtime_program_id": "mit-sloan-mba-full-time"
+    },
+    {
+      "id": "mit-degree-mit-sloan-traditional-mba-program-sm-in-management-mit-grad-mit-sloan-traditional-mba-program",
+      "name": "MIT Sloan Traditional MBA",
+      "award": "SM in Management",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-traditional-mba-program",
+      "route_id": "mit_sloan_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-mba-program/",
+      "canonical_draft_id": "mit-degree-mit-sloan-traditional-mba-program-sm-in-management-mit-grad-mit-sloan-traditional-mba-program",
+      "runtime_program_id": "mit-sloan-mba-full-time"
+    },
+    {
+      "id": "mit-degree-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program",
+      "name": "MIT Sloan Evening MBA",
+      "award": "MBA",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-evening-mba-program",
+      "route_id": "mit_sloan_evening_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+      "canonical_draft_id": "mit-degree-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program",
+      "runtime_program_id": "mit-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program"
+    },
+    {
+      "id": "mit-degree-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program",
+      "name": "MIT Executive MBA",
+      "award": "MBA",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-executive-mba-program",
+      "route_id": "mit_sloan_executive_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-executive-mba-program/",
+      "canonical_draft_id": "mit-degree-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program",
+      "runtime_program_id": "mit-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program"
+    },
+    {
+      "id": "mit-degree-mit-sloan-fellows-mba-program-mba-mit-grad-mit-sloan-fellows-mba-program",
+      "name": "MIT Sloan Fellows MBA",
+      "award": "MBA",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-fellows-mba-program",
+      "route_id": "mit_sloan_fellows_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://mitsloan.mit.edu/mit-sloan-fellows-mba-program/explore-program/curriculum",
+      "canonical_draft_id": "mit-degree-mit-sloan-fellows-mba-program-mba-mit-grad-mit-sloan-fellows-mba-program",
+      "runtime_program_id": "mit-mit-sloan-fellows-mba-program-mba-mit-grad-mit-sloan-fellows-mba-program",
+      "selection_timing": "within_admitted_sloan_fellows_program"
+    },
+    {
+      "id": "mit-degree-mit-sloan-fellows-mba-program-sm-in-management-mit-grad-mit-sloan-fellows-mba-program",
+      "name": "MIT Sloan Fellows Master of Science in Management",
+      "award": "SM in Management",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-fellows-mba-program",
+      "route_id": "mit_sloan_fellows_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://mitsloan.mit.edu/mit-sloan-fellows-mba-program/explore-program/curriculum",
+      "canonical_draft_id": "mit-degree-mit-sloan-fellows-mba-program-sm-in-management-mit-grad-mit-sloan-fellows-mba-program",
+      "runtime_program_id": "mit-mit-sloan-fellows-mba-program-sm-in-management-mit-grad-mit-sloan-fellows-mba-program",
+      "selection_timing": "within_admitted_sloan_fellows_program"
+    },
+    {
+      "id": "mit-degree-mit-sloan-fellows-mba-program-sm-in-management-of-technology-mit-grad-mit-sloan-fellows-mba-program",
+      "name": "MIT Sloan Fellows Master of Science in Management of Technology",
+      "award": "SM in Management of Technology",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-fellows-mba-program",
+      "route_id": "mit_sloan_fellows_mba_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://mitsloan.mit.edu/mit-sloan-fellows-mba-program/explore-program/curriculum",
+      "canonical_draft_id": "mit-degree-mit-sloan-fellows-mba-program-sm-in-management-of-technology-mit-grad-mit-sloan-fellows-mba-program",
+      "runtime_program_id": "mit-mit-sloan-fellows-mba-program-sm-in-management-of-technology-mit-grad-mit-sloan-fellows-mba-program",
+      "selection_timing": "within_admitted_sloan_fellows_program"
+    },
+    {
+      "id": "mit-degree-mit-sloan-master-of-finance-mfin-mit-grad-mit-sloan-master-of-finance",
+      "name": "Master of Finance",
+      "award": "MFin",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-master-of-finance",
+      "route_id": "mit_sloan_mfin_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-finance/",
+      "canonical_draft_id": "mit-degree-mit-sloan-master-of-finance-mfin-mit-grad-mit-sloan-master-of-finance",
+      "runtime_program_id": "mit-sloan-mfin"
+    },
+    {
+      "id": "mit-degree-mit-sloan-master-of-business-analytics-mban-mit-grad-mit-sloan-master-of-business-analytics",
+      "name": "Master of Business Analytics",
+      "award": "MBAn",
+      "level": "professional",
+      "program_family_id": "mit-grad-mit-sloan-master-of-business-analytics",
+      "route_id": "mit_sloan_mban_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-business-analytics/",
+      "canonical_draft_id": "mit-degree-mit-sloan-master-of-business-analytics-mban-mit-grad-mit-sloan-master-of-business-analytics",
+      "runtime_program_id": "mit-sloan-mban"
+    },
+    {
+      "id": "mit-degree-mit-sloan-master-of-science-in-management-studies-msms-mit-grad-mit-sloan-master-of-science-in-management-studies",
+      "name": "Master of Science in Management Studies",
+      "award": "MSMS",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mit-sloan-master-of-science-in-management-studies",
+      "route_id": "mit_sloan_msms_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-science-in-management-studies/",
+      "canonical_draft_id": "mit-degree-mit-sloan-master-of-science-in-management-studies-msms-mit-grad-mit-sloan-master-of-science-in-management-studies",
+      "runtime_program_id": "mit-sloan-msms"
+    },
+    {
+      "id": "mit-degree-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations",
+      "name": "Leaders for Global Operations dual degree",
+      "award": "MBA + SM",
+      "level": "professional",
+      "program_family_id": "mit-grad-leaders-for-global-operations",
+      "route_id": "mit_grad_lgo_admissions",
+      "route_review": "verified_department_or_program_target",
+      "source_url": "https://oge.mit.edu/programs/leaders-for-global-operations/",
+      "canonical_draft_id": "mit-degree-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations",
+      "runtime_program_id": "mit-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations"
+    },
+    {
+      "id": "mit-degree-aero-sm",
+      "name": "Master of Science in Aeronautics and Astronautics",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-aeronautics-and-astronautics",
+      "route_id": "mit_grad_aero_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-aero-sm"
+    },
+    {
+      "id": "mit-degree-bioeng-meng",
+      "name": "Master of Engineering in Biomedical Engineering",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-biological-engineering",
+      "route_id": null,
+      "route_review": "internal_MIT_only_application_path_needs_review",
+      "applicant_scope": "MIT undergraduates only",
+      "source_url": "https://oge.mit.edu/programs/biological-engineering-2/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-bioeng-meng"
+    },
+    {
+      "id": "mit-degree-architecture-building-technology-smbt",
+      "name": "Master of Science in Building Technology",
+      "award": "SMBT",
+      "level": "graduate",
+      "program_family_id": "mit-grad-architecture",
+      "route_id": "mit_grad_architecture_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-architecture-building-technology-smbt"
+    },
+    {
+      "id": "mit-degree-chemical-engineering-practice-mscep",
+      "name": "Master of Science in Chemical Engineering Practice",
+      "award": "MSCEP",
+      "level": "graduate",
+      "program_family_id": "mit-grad-chemical-engineering",
+      "route_id": "mit_grad_chemical_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-chemical-engineering-practice-mscep"
+    },
+    {
+      "id": "mit-degree-cee-meng",
+      "name": "Master of Engineering in Civil and Environmental Engineering",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-civil-and-environmental-engineering",
+      "route_id": "mit_grad_civil_environmental_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-cee-meng"
+    },
+    {
+      "id": "mit-degree-eaps-earth-planetary-sm",
+      "name": "Master of Science in Earth and Planetary Sciences",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-earth-atmospheric-and-planetary-sciences",
+      "route_id": "mit_grad_eaps_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-eaps-earth-planetary-sm"
+    },
+    {
+      "id": "mit-degree-eaps-atmospheric-sm",
+      "name": "Master of Science in Atmospheric Science",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-earth-atmospheric-and-planetary-sciences",
+      "route_id": "mit_grad_eaps_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-eaps-atmospheric-sm"
+    },
+    {
+      "id": "mit-degree-eaps-climate-sm",
+      "name": "Master of Science in Climate Physics and Chemistry",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-earth-atmospheric-and-planetary-sciences",
+      "route_id": "mit_grad_eaps_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-eaps-climate-sm"
+    },
+    {
+      "id": "mit-degree-materials-sm",
+      "name": "Master of Science in Materials Science and Engineering",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-materials-science-and-engineering",
+      "route_id": "mit_grad_materials_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-materials-sm"
+    },
+    {
+      "id": "mit-degree-math-fifth-year-masc",
+      "name": "Fifth-Year Master of Applied Science in Mathematics",
+      "award": "MASc",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mathematics",
+      "route_id": null,
+      "route_review": "internal_MIT_only_application_path_needs_review",
+      "applicant_scope": "Current MIT students only",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-math-fifth-year-masc"
+    },
+    {
+      "id": "mit-degree-meche-manufacturing-meng",
+      "name": "Master of Engineering in Manufacturing",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-meche-manufacturing-meng"
+    },
+    {
+      "id": "mit-degree-meche-mechanical-sm",
+      "name": "Master of Science in Mechanical Engineering",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-meche-mechanical-sm"
+    },
+    {
+      "id": "mit-degree-meche-ocean-sm",
+      "name": "Master of Science in Ocean Engineering",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-meche-ocean-sm"
+    },
+    {
+      "id": "mit-degree-meche-oceanographic-sm",
+      "name": "Master of Science in Oceanographic Engineering",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-meche-oceanographic-sm"
+    },
+    {
+      "id": "mit-degree-meche-naval-sm",
+      "name": "Master of Science in Naval Architecture and Marine Engineering",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-meche-naval-sm"
+    },
+    {
+      "id": "mit-degree-media-arts-sm",
+      "name": "Master of Science in Media Arts and Sciences",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-media-arts-and-sciences",
+      "route_id": "mit_grad_media_arts_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/media-arts-and-sciences/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-media-arts-sm"
+    },
+    {
+      "id": "mit-degree-nuclear-sm",
+      "name": "Master of Science in Nuclear Science and Engineering",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-nuclear-science-and-engineering",
+      "route_id": "mit_grad_nuclear_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-nuclear-sm"
+    },
+    {
+      "id": "mit-degree-physics-sm",
+      "name": "Master of Science in Physics",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-physics",
+      "route_id": "mit_grad_physics_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Special cases only, for example U.S. military officers",
+      "source_url": "https://catalog.mit.edu/schools/science/physics/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-physics-sm"
+    },
+    {
+      "id": "mit-degree-political-science-sm",
+      "name": "Master of Science in Political Science",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-political-science",
+      "route_id": "mit_grad_political_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://catalog.mit.edu/schools/humanities-arts-social-sciences/political-science/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-political-science-sm"
+    },
+    {
+      "id": "mit-degree-urban-city-planning-mcp",
+      "name": "Master in City Planning",
+      "award": "MCP",
+      "level": "graduate",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": "mit_grad_urban_planning_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-urban-city-planning-mcp"
+    },
+    {
+      "id": "mit-degree-urban-sustainability-sm",
+      "name": "Master in Sustainability Studies and Urban Planning",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": "mit_grad_urban_planning_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-urban-sustainability-sm"
+    },
+    {
+      "id": "mit-degree-scm-blended-masc",
+      "name": "Master of Applied Science in Supply Chain Management (Blended)",
+      "award": "MASc",
+      "level": "graduate",
+      "program_family_id": "mit-grad-supply-chain-management-blended",
+      "route_id": "mit_grad_scm_blended_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-blended/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-scm-blended-masc"
+    },
+    {
+      "id": "mit-degree-scm-blended-meng",
+      "name": "Master of Engineering in Supply Chain Management (Blended)",
+      "award": "MEng",
+      "level": "graduate",
+      "program_family_id": "mit-grad-supply-chain-management-blended",
+      "route_id": "mit_grad_scm_blended_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "Graduate applicant; program-specific eligibility remains to review",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-blended/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-scm-blended-meng"
+    },
+    {
+      "id": "mit-degree-whoi-naval-sm",
+      "name": "Master of Science for U.S. Naval Officers (MIT-WHOI)",
+      "award": "SM",
+      "level": "graduate",
+      "program_family_id": "mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering",
+      "route_id": "mit_grad_whoi_admissions",
+      "route_review": "verified_program_target",
+      "applicant_scope": "U.S. Naval officers only",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-whoi-naval-sm"
+    },
+    {
+      "id": "mit-degree-engineer-civil",
+      "name": "Civil Engineer",
+      "award": "CE",
+      "level": "professional",
+      "program_family_id": "mit-grad-civil-and-environmental-engineering",
+      "route_id": null,
+      "route_review": "degree_award_verified_application_target_needs_review",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-civil"
+    },
+    {
+      "id": "mit-degree-engineer-electrical",
+      "name": "Electrical Engineer",
+      "award": "EE",
+      "level": "professional",
+      "program_family_id": "mit-grad-electrical-engineering-and-computer-science",
+      "route_id": null,
+      "route_review": "direct_external_route_unverified",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-electrical",
+      "review_note": "MIT EECS states its external graduate application is for the doctoral program only; the Engineer award has no verified direct external application route.",
+      "review_source_url": "https://www.eecs.mit.edu/academics/graduate-programs/admission-process/"
+    },
+    {
+      "id": "mit-degree-engineer-aeronautics",
+      "name": "Engineer in Aeronautics and Astronautics",
+      "award": "EAA",
+      "level": "professional",
+      "program_family_id": "mit-grad-aeronautics-and-astronautics",
+      "route_id": null,
+      "route_review": "degree_award_verified_application_target_needs_review",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-aeronautics"
+    },
+    {
+      "id": "mit-degree-engineer-computer-science",
+      "name": "Engineer in Computer Science",
+      "award": "ECS",
+      "level": "professional",
+      "program_family_id": "mit-grad-electrical-engineering-and-computer-science",
+      "route_id": null,
+      "route_review": "direct_external_route_unverified",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-computer-science",
+      "review_note": "MIT EECS states its external graduate application is for the doctoral program only; the Engineer award has no verified direct external application route.",
+      "review_source_url": "https://www.eecs.mit.edu/academics/graduate-programs/admission-process/"
+    },
+    {
+      "id": "mit-degree-engineer-environmental",
+      "name": "Environmental Engineer",
+      "award": "EnvE",
+      "level": "professional",
+      "program_family_id": "mit-grad-civil-and-environmental-engineering",
+      "route_id": null,
+      "route_review": "degree_award_verified_application_target_needs_review",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-environmental"
+    },
+    {
+      "id": "mit-degree-engineer-materials",
+      "name": "Materials Engineer",
+      "award": "MatE",
+      "level": "professional",
+      "program_family_id": "mit-grad-materials-science-and-engineering",
+      "route_id": null,
+      "route_review": "degree_award_verified_application_target_needs_review",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-materials"
+    },
+    {
+      "id": "mit-degree-engineer-mechanical",
+      "name": "Mechanical Engineer",
+      "award": "MechE",
+      "level": "professional",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_department_target",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-mechanical"
+    },
+    {
+      "id": "mit-degree-engineer-naval",
+      "name": "Naval Engineer",
+      "award": "NavE",
+      "level": "professional",
+      "program_family_id": "mit-grad-mechanical-engineering",
+      "route_id": "mit_grad_meche_admissions",
+      "route_review": "verified_department_target",
+      "selection_timing": "advanced_engineering_degree",
+      "applicant_scope": "Graduate-level professional degree; department-specific entry conditions need review",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-engineer-naval"
+    },
+    {
+      "id": "mit-degree-dual-march-mcp",
+      "name": "Simultaneous Master of Architecture and Master in City Planning",
+      "award": "MArch/MCP",
+      "level": "professional",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": null,
+      "route_review": "second_degree_application_after_initial_admission; exact_target_needs_review",
+      "selection_timing": "after_initial_graduate_admission",
+      "applicant_scope": "Must first be admitted to one of the constituent MIT graduate degree programs",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-dual-march-mcp"
+    },
+    {
+      "id": "mit-degree-dual-smarchs-mcp",
+      "name": "Simultaneous Master of Science in Architecture Studies and Master in City Planning",
+      "award": "SMArchS/MCP",
+      "level": "professional",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": null,
+      "route_review": "second_degree_application_after_initial_admission; exact_target_needs_review",
+      "selection_timing": "after_initial_graduate_admission",
+      "applicant_scope": "Must first be admitted to one of the constituent MIT graduate degree programs",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-dual-smarchs-mcp"
+    },
+    {
+      "id": "mit-degree-dual-mcp-mst",
+      "name": "Simultaneous Master in City Planning and Master of Science in Transportation",
+      "award": "MCP/MST",
+      "level": "professional",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": null,
+      "route_review": "second_degree_application_after_initial_admission; exact_target_needs_review",
+      "selection_timing": "after_initial_graduate_admission",
+      "applicant_scope": "Must first be admitted to one of the constituent MIT graduate degree programs",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-dual-mcp-mst"
+    },
+    {
+      "id": "mit-degree-dual-mcp-msred",
+      "name": "Simultaneous Master in City Planning and Master of Science in Real Estate Development",
+      "award": "MCP/MSRED",
+      "level": "professional",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": null,
+      "route_review": "second_degree_application_after_initial_admission; exact_target_needs_review",
+      "selection_timing": "after_initial_graduate_admission",
+      "applicant_scope": "Must first be admitted to one of the constituent MIT graduate degree programs",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-dual-mcp-msred"
+    },
+    {
+      "id": "mit-degree-dual-mcp-mba",
+      "name": "Simultaneous Master in City Planning and Master of Business Administration",
+      "award": "MCP/MBA",
+      "level": "professional",
+      "program_family_id": "mit-grad-urban-studies-and-planning",
+      "route_id": null,
+      "route_review": "second_degree_application_after_initial_admission; exact_target_needs_review",
+      "selection_timing": "after_initial_graduate_admission",
+      "applicant_scope": "Must first be admitted to one of the constituent MIT graduate degree programs",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "canonical_draft_id": null,
+      "runtime_program_id": "mit-dual-mcp-mba"
+    }
+  ],
+  "runtime_programs": [
+    {
+      "id": "mit-aero-sm",
+      "name": "Master of Science in Aeronautics and Astronautics",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Aeronautics and Astronautics",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Aeronautics and Astronautics offered through Aeronautics and Astronautics. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_aero_admissions"
+    },
+    {
+      "id": "mit-bioeng-meng",
+      "name": "Master of Engineering in Biomedical Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MEng",
+      "department": "Biological Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Engineering in Biomedical Engineering offered through Biological Engineering. Applicant scope: MIT undergraduates only.",
+      "source_url": "https://oge.mit.edu/programs/biological-engineering-2/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-architecture-building-technology-smbt",
+      "name": "Master of Science in Building Technology",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SMBT",
+      "department": "Architecture",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Building Technology offered through Architecture. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_architecture_admissions"
+    },
+    {
+      "id": "mit-chemical-engineering-practice-mscep",
+      "name": "Master of Science in Chemical Engineering Practice",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MSCEP",
+      "department": "Chemical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Chemical Engineering Practice offered through Chemical Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_chemical_admissions"
+    },
+    {
+      "id": "mit-cee-meng",
+      "name": "Master of Engineering in Civil and Environmental Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MEng",
+      "department": "Civil and Environmental Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Engineering in Civil and Environmental Engineering offered through Civil and Environmental Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_civil_environmental_admissions"
+    },
+    {
+      "id": "mit-eaps-earth-planetary-sm",
+      "name": "Master of Science in Earth and Planetary Sciences",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Earth, Atmospheric, and Planetary Sciences",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Earth and Planetary Sciences offered through Earth, Atmospheric, and Planetary Sciences. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_eaps_admissions"
+    },
+    {
+      "id": "mit-eaps-atmospheric-sm",
+      "name": "Master of Science in Atmospheric Science",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Earth, Atmospheric, and Planetary Sciences",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Atmospheric Science offered through Earth, Atmospheric, and Planetary Sciences. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_eaps_admissions"
+    },
+    {
+      "id": "mit-eaps-climate-sm",
+      "name": "Master of Science in Climate Physics and Chemistry",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Earth, Atmospheric, and Planetary Sciences",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Climate Physics and Chemistry offered through Earth, Atmospheric, and Planetary Sciences. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_eaps_admissions"
+    },
+    {
+      "id": "mit-materials-sm",
+      "name": "Master of Science in Materials Science and Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Materials Science and Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Materials Science and Engineering offered through Materials Science and Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_materials_admissions"
+    },
+    {
+      "id": "mit-math-fifth-year-masc",
+      "name": "Fifth-Year Master of Applied Science in Mathematics",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MASc",
+      "department": "Mathematics",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Fifth-Year Master of Applied Science in Mathematics offered through Mathematics. Applicant scope: Current MIT students only.",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-meche-manufacturing-meng",
+      "name": "Master of Engineering in Manufacturing",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MEng",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Engineering in Manufacturing offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-meche-mechanical-sm",
+      "name": "Master of Science in Mechanical Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Mechanical Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-meche-ocean-sm",
+      "name": "Master of Science in Ocean Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Ocean Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-meche-oceanographic-sm",
+      "name": "Master of Science in Oceanographic Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Oceanographic Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-meche-naval-sm",
+      "name": "Master of Science in Naval Architecture and Marine Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Naval Architecture and Marine Engineering offered through Mechanical Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-media-arts-sm",
+      "name": "Master of Science in Media Arts and Sciences",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Media Arts and Sciences",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Media Arts and Sciences offered through Media Arts and Sciences. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/media-arts-and-sciences/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_media_arts_admissions"
+    },
+    {
+      "id": "mit-nuclear-sm",
+      "name": "Master of Science in Nuclear Science and Engineering",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Nuclear Science and Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Science in Nuclear Science and Engineering offered through Nuclear Science and Engineering. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_nuclear_admissions"
+    },
+    {
+      "id": "mit-physics-sm",
+      "name": "Master of Science in Physics",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Physics",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "A Physics SM available only by special-case admission; MIT's normal graduate Physics program leads to the PhD.",
+      "source_url": "https://catalog.mit.edu/schools/science/physics/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_physics_admissions",
+      "entry_requirements": "MIT states that admission to its Physics SM is available only in special cases, such as U.S. military officers."
+    },
+    {
+      "id": "mit-political-science-sm",
+      "name": "Master of Science in Political Science",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Political Science",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "A one-year SM in Political Science focused on applied research. Applicants specify a field of specialization.",
+      "source_url": "https://catalog.mit.edu/schools/humanities-arts-social-sciences/political-science/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_political_admissions"
+    },
+    {
+      "id": "mit-urban-city-planning-mcp",
+      "name": "Master in City Planning",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MCP",
+      "department": "Urban Studies and Planning",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master in City Planning offered through Urban Studies and Planning. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_urban_planning_admissions"
+    },
+    {
+      "id": "mit-urban-sustainability-sm",
+      "name": "Master in Sustainability Studies and Urban Planning",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Urban Studies and Planning",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master in Sustainability Studies and Urban Planning offered through Urban Studies and Planning. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_urban_planning_admissions"
+    },
+    {
+      "id": "mit-scm-blended-masc",
+      "name": "Master of Applied Science in Supply Chain Management (Blended)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MASc",
+      "department": "Supply Chain Management Blended",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Applied Science in Supply Chain Management (Blended) offered through Supply Chain Management Blended. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-blended/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_scm_blended_admissions"
+    },
+    {
+      "id": "mit-scm-blended-meng",
+      "name": "Master of Engineering in Supply Chain Management (Blended)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MEng",
+      "department": "Supply Chain Management Blended",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Master of Engineering in Supply Chain Management (Blended) offered through Supply Chain Management Blended. Confirm program-specific eligibility on the official admissions page.",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-blended/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_scm_blended_admissions"
+    },
+    {
+      "id": "mit-whoi-naval-sm",
+      "name": "Master of Science for U.S. Naval Officers (MIT-WHOI)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT-WHOI Master of Science for U.S. Naval officers. Navy applicants must begin in the summer term.",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_whoi_admissions"
+    },
+    {
+      "id": "mit-architecture-march-mit-grad-architecture",
+      "name": "Master of Architecture (MArch)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MArch",
+      "department": "Architecture",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_architecture_admissions"
+    },
+    {
+      "id": "mit-architecture-studies-sm-mit-grad-architecture",
+      "name": "Architecture Studies (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Architecture",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_architecture_admissions"
+    },
+    {
+      "id": "mit-art-culture-and-technology-sm-mit-grad-architecture",
+      "name": "Art, Culture, and Technology (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Architecture",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_architecture_admissions"
+    },
+    {
+      "id": "mit-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering",
+      "name": "Civil and Environmental Engineering (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Civil And Environmental Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_civil_environmental_admissions"
+    },
+    {
+      "id": "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy",
+      "name": "Data, Economics, and Design of Policy (MASc)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MASc",
+      "department": "Data Economics And Design Of Policy",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/data-economics-and-development-policy/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_dedp_admissions"
+    },
+    {
+      "id": "mit-linguistics-sm-mit-grad-linguistics",
+      "name": "Linguistics (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Linguistics",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established.",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-science-writing-sm-mit-grad-science-writing",
+      "name": "Science Writing (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Science Writing",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/science-writing/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_science_writing_admissions"
+    },
+    {
+      "id": "mit-mathematics-of-data-sm-mit-grad-mathematics",
+      "name": "Mathematics of Data (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Mathematics",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established.",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-computational-science-and-engineering-sm-mit-grad-computational-science-and-engineering-phd",
+      "name": "Computational Science and Engineering (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Computational Science And Engineering Phd",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The award is verified, but a separate external master's application route has not been established.",
+      "source_url": "https://catalog.mit.edu/degree-charts/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineering-and-management-sm-mit-grad-system-design-and-management",
+      "name": "Engineering and Management (System Design and Management) (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "System Design And Management",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/system-design-and-management/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_sdm_admissions"
+    },
+    {
+      "id": "mit-music-technology-and-computation-masc-mit-grad-music-technology-and-computation",
+      "name": "Music Technology and Computation (MASc)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MASc",
+      "department": "Music Technology And Computation",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/music-technology-and-computation/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_music_technology_admissions"
+    },
+    {
+      "id": "mit-music-technology-and-computation-sm-mit-grad-music-technology-and-computation",
+      "name": "Music Technology and Computation (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Music Technology And Computation",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/music-technology-and-computation/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_music_technology_admissions"
+    },
+    {
+      "id": "mit-real-estate-development-sm-mit-grad-center-for-real-estate",
+      "name": "Real Estate Development (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Center For Real Estate",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/center-for-real-estate/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_real_estate_admissions"
+    },
+    {
+      "id": "mit-supply-chain-management-masc-mit-grad-supply-chain-management-residential",
+      "name": "Supply Chain Management (MASc)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MASc",
+      "department": "Supply Chain Management Residential",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-residential/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_scm_residential_admissions"
+    },
+    {
+      "id": "mit-supply-chain-management-meng-mit-grad-supply-chain-management-residential",
+      "name": "Supply Chain Management (MEng)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MEng",
+      "department": "Supply Chain Management Residential",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-residential/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_scm_residential_admissions"
+    },
+    {
+      "id": "mit-technology-and-policy-sm-mit-grad-technology-and-policy-program",
+      "name": "Technology and Policy (SM)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM",
+      "department": "Technology And Policy Program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/technology-and-policy-program/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_tpp_admissions"
+    },
+    {
+      "id": "mit-transportation-sm-mit-grad-transportation",
+      "name": "Master of Science in Transportation (MST)",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MST",
+      "department": "Transportation",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "An interdisciplinary transportation degree combining analytical methods, programming, policy and technology subjects, specialized electives, and a research thesis.",
+      "source_url": "https://catalog.mit.edu/degree-charts/master-transportation/",
+      "verified_at": "2026-09-29",
+      "description_source": "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/",
+      "admission_route_id": "mit_grad_transportation_mst_admissions"
+    },
+    {
+      "id": "mit-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program",
+      "name": "MIT Sloan Evening MBA",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MBA",
+      "department": "Mit Sloan Evening Mba Program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_sloan_evening_mba_admissions"
+    },
+    {
+      "id": "mit-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program",
+      "name": "MIT Executive MBA",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MBA",
+      "department": "Mit Sloan Executive Mba Program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-executive-mba-program/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_sloan_executive_mba_admissions"
+    },
+    {
+      "id": "mit-mit-sloan-fellows-mba-program-mba-mit-grad-mit-sloan-fellows-mba-program",
+      "name": "MIT Sloan Fellows MBA",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MBA",
+      "department": "Mit Sloan Fellows Mba Program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Most participants earn the MBA through the 12-month MIT Sloan Fellows program.",
+      "source_url": "https://mitsloan.mit.edu/mit-sloan-fellows-mba-program/explore-program/curriculum",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_sloan_fellows_mba_admissions"
+    },
+    {
+      "id": "mit-mit-sloan-fellows-mba-program-sm-in-management-mit-grad-mit-sloan-fellows-mba-program",
+      "name": "MIT Sloan Fellows Master of Science in Management",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM in Management",
+      "department": "Mit Sloan Fellows Mba Program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "A thesis-based SM in Management available within the 12-month MIT Sloan Fellows program instead of the MBA.",
+      "source_url": "https://mitsloan.mit.edu/mit-sloan-fellows-mba-program/explore-program/curriculum",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_sloan_fellows_mba_admissions"
+    },
+    {
+      "id": "mit-mit-sloan-fellows-mba-program-sm-in-management-of-technology-mit-grad-mit-sloan-fellows-mba-program",
+      "name": "MIT Sloan Fellows Master of Science in Management of Technology",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SM in Management of Technology",
+      "department": "Mit Sloan Fellows Mba Program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "A thesis-based SM in Management of Technology available within the 12-month MIT Sloan Fellows program instead of the MBA.",
+      "source_url": "https://mitsloan.mit.edu/mit-sloan-fellows-mba-program/explore-program/curriculum",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_sloan_fellows_mba_admissions"
+    },
+    {
+      "id": "mit-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations",
+      "name": "Leaders for Global Operations dual degree",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MBA + SM",
+      "department": "Leaders For Global Operations",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's 2026-27 catalog lists this degree option. The MIT Office of Graduate Education identifies its program application target; confirm eligibility and current cycle details.",
+      "source_url": "https://oge.mit.edu/programs/leaders-for-global-operations/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_lgo_admissions"
+    },
+    {
+      "id": "mit-engineer-civil",
+      "name": "Civil Engineer",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "CE",
+      "department": "Civil And Environmental Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineer-electrical",
+      "name": "Electrical Engineer",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "EE",
+      "department": "Electrical Engineering And Computer Science",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineer-aeronautics",
+      "name": "Engineer in Aeronautics and Astronautics",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "EAA",
+      "department": "Aeronautics And Astronautics",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineer-computer-science",
+      "name": "Engineer in Computer Science",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "ECS",
+      "department": "Electrical Engineering And Computer Science",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineer-environmental",
+      "name": "Environmental Engineer",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "EnvE",
+      "department": "Civil And Environmental Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineer-materials",
+      "name": "Materials Engineer",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "MatE",
+      "department": "Materials Science And Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-engineer-mechanical",
+      "name": "Mechanical Engineer",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "MechE",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-engineer-naval",
+      "name": "Naval Engineer",
+      "study_levels": [
+        "Professional"
+      ],
+      "degree_type": "NavE",
+      "department": "Mechanical Engineering",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT's Engineer degree is an advanced professional award beyond the master's level. Confirm department-specific entry requirements and current admission cycle.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_grad_meche_admissions"
+    },
+    {
+      "id": "mit-dual-march-mcp",
+      "name": "Simultaneous Master of Architecture and Master in City Planning",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MArch/MCP",
+      "department": "Urban Studies and Planning and partner program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Students admitted to Architecture or Urban Studies and Planning may propose this pair; a separate dual-degree approval and admissions process follows. This is not a separate first application from outside MIT.",
+      "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-dual-smarchs-mcp",
+      "name": "Simultaneous Master of Science in Architecture Studies and Master in City Planning",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "SMArchS/MCP",
+      "department": "Urban Studies and Planning and partner program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Students admitted to Architecture or Urban Studies and Planning may propose this pair; a separate dual-degree approval and admissions process follows. This is not a separate first application from outside MIT.",
+      "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/architecture/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-dual-mcp-mst",
+      "name": "Simultaneous Master in City Planning and Master of Science in Transportation",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MCP/MST",
+      "department": "Urban Studies and Planning and partner program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Students admitted to City Planning or Transportation may apply to the other program during their first year. This is not a separate first application from outside MIT.",
+      "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-dual-mcp-msred",
+      "name": "Simultaneous Master in City Planning and Master of Science in Real Estate Development",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MCP/MSRED",
+      "department": "Urban Studies and Planning and partner program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "Students admitted to City Planning or Real Estate Development may apply to the other program during their first year. This is not a separate first application from outside MIT.",
+      "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree.",
+      "source_url": "https://catalog.mit.edu/schools/architecture-planning/urban-studies-planning/",
+      "verified_at": "2026-09-29"
+    },
+    {
+      "id": "mit-dual-mcp-mba",
+      "name": "Simultaneous Master in City Planning and Master of Business Administration",
+      "study_levels": [
+        "Master"
+      ],
+      "degree_type": "MCP/MBA",
+      "department": "Urban Studies and Planning and partner program",
+      "language": [
+        "English"
+      ],
+      "study_mode": "On-campus",
+      "description": "MIT OGE lists this combination; the timing and process for the second-degree application still need verification. This is not a separate first application from outside MIT.",
+      "entry_requirements": "Initial admission to one constituent MIT graduate degree program is required before pursuing the simultaneous degree.",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29"
+    }
+  ],
+  "runtime_routes": [
+    {
+      "id": "mit_grad_architecture_admissions",
+      "label": "Architecture application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-architecture-march-mit-grad-architecture",
+        "mit-architecture-studies-sm-mit-grad-architecture",
+        "mit-art-culture-and-technology-sm-mit-grad-architecture",
+        "mit-architecture-building-technology-smbt"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Architecture for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Architecture",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Architecture (MArch)",
+        "Architecture Studies (SM)",
+        "Art, Culture, and Technology (SM)",
+        "Master of Science in Building Technology"
+      ]
+    },
+    {
+      "id": "mit_grad_civil_environmental_admissions",
+      "label": "Civil and Environmental Engineering application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-civil-and-environmental-engineering-sm-mit-grad-civil-and-environmental-engineering",
+        "mit-cee-meng"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Civil and Environmental Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Civil and Environmental Engineering",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Civil and Environmental Engineering (SM)",
+        "Master of Engineering in Civil and Environmental Engineering"
+      ]
+    },
+    {
+      "id": "mit_grad_dedp_admissions",
+      "label": "Data, Economics, and Design of Policy application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/data-economics-and-development-policy/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Data, Economics, and Design of Policy for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Data, Economics, and Design of Policy",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Data, Economics, and Design of Policy (MASc)"
+      ]
+    },
+    {
+      "id": "mit_grad_science_writing_admissions",
+      "label": "Science Writing application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/science-writing/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-science-writing-sm-mit-grad-science-writing"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Science Writing for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Science Writing",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Science Writing (SM)"
+      ]
+    },
+    {
+      "id": "mit_grad_sdm_admissions",
+      "label": "System Design and Management application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/system-design-and-management/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-engineering-and-management-sm-mit-grad-system-design-and-management"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to System Design and Management for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "System Design and Management",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Engineering and Management (System Design and Management) (SM)"
+      ]
+    },
+    {
+      "id": "mit_grad_music_technology_admissions",
+      "label": "Music Technology and Computation application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/music-technology-and-computation/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-music-technology-and-computation-masc-mit-grad-music-technology-and-computation",
+        "mit-music-technology-and-computation-sm-mit-grad-music-technology-and-computation"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Music Technology and Computation for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Music Technology and Computation",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Music Technology and Computation (MASc)",
+        "Music Technology and Computation (SM)"
+      ]
+    },
+    {
+      "id": "mit_grad_real_estate_admissions",
+      "label": "Center for Real Estate application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/center-for-real-estate/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-real-estate-development-sm-mit-grad-center-for-real-estate"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Center for Real Estate for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Center for Real Estate",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Real Estate Development (SM)"
+      ]
+    },
+    {
+      "id": "mit_grad_scm_residential_admissions",
+      "label": "Supply Chain Management Residential application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-residential/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-supply-chain-management-masc-mit-grad-supply-chain-management-residential",
+        "mit-supply-chain-management-meng-mit-grad-supply-chain-management-residential"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Supply Chain Management Residential for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Supply Chain Management Residential",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Supply Chain Management (MASc)",
+        "Supply Chain Management (MEng)"
+      ]
+    },
+    {
+      "id": "mit_grad_scm_blended_admissions",
+      "label": "Supply Chain Management Blended application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/supply-chain-management-blended/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-scm-blended-masc",
+        "mit-scm-blended-meng"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Supply Chain Management Blended for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Supply Chain Management Blended",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Applied Science in Supply Chain Management (Blended)",
+        "Master of Engineering in Supply Chain Management (Blended)"
+      ]
+    },
+    {
+      "id": "mit_grad_tpp_admissions",
+      "label": "Technology and Policy Program application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/technology-and-policy-program/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-technology-and-policy-sm-mit-grad-technology-and-policy-program"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Technology and Policy Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Technology and Policy Program",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Technology and Policy (SM)"
+      ]
+    },
+    {
+      "id": "mit_grad_lgo_admissions",
+      "label": "Leaders for Global Operations application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/leaders-for-global-operations/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-leaders-for-global-operations-mba-sm-mit-grad-leaders-for-global-operations"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Leaders for Global Operations for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Leaders for Global Operations",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Leaders for Global Operations dual degree"
+      ]
+    },
+    {
+      "id": "mit_grad_aero_admissions",
+      "label": "Aeronautics and Astronautics application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-aero-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Aeronautics and Astronautics for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Aeronautics and Astronautics",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Aeronautics and Astronautics"
+      ]
+    },
+    {
+      "id": "mit_grad_chemical_admissions",
+      "label": "Chemical Engineering application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-chemical-engineering-practice-mscep"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Chemical Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Chemical Engineering",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Chemical Engineering Practice"
+      ]
+    },
+    {
+      "id": "mit_grad_eaps_admissions",
+      "label": "Earth, Atmospheric, and Planetary Sciences application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-eaps-earth-planetary-sm",
+        "mit-eaps-atmospheric-sm",
+        "mit-eaps-climate-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Earth, Atmospheric, and Planetary Sciences for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Earth, Atmospheric, and Planetary Sciences",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Earth and Planetary Sciences",
+        "Master of Science in Atmospheric Science",
+        "Master of Science in Climate Physics and Chemistry"
+      ]
+    },
+    {
+      "id": "mit_grad_materials_admissions",
+      "label": "Materials Science and Engineering application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-materials-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Materials Science and Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Materials Science and Engineering",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Materials Science and Engineering"
+      ]
+    },
+    {
+      "id": "mit_grad_meche_admissions",
+      "label": "Mechanical Engineering application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-meche-manufacturing-meng",
+        "mit-meche-mechanical-sm",
+        "mit-meche-ocean-sm",
+        "mit-meche-oceanographic-sm",
+        "mit-meche-naval-sm",
+        "mit-engineer-mechanical",
+        "mit-engineer-naval"
+      ],
+      "study_levels": [
+        "Master",
+        "Professional"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Mechanical Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Mechanical Engineering",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Engineering in Manufacturing",
+        "Master of Science in Mechanical Engineering",
+        "Master of Science in Ocean Engineering",
+        "Master of Science in Oceanographic Engineering",
+        "Master of Science in Naval Architecture and Marine Engineering",
+        "Mechanical Engineer",
+        "Naval Engineer"
+      ]
+    },
+    {
+      "id": "mit_grad_media_arts_admissions",
+      "label": "Media Arts and Sciences application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/media-arts-and-sciences/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-media-arts-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Media Arts and Sciences for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Media Arts and Sciences",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Media Arts and Sciences"
+      ]
+    },
+    {
+      "id": "mit_grad_nuclear_admissions",
+      "label": "Nuclear Science and Engineering application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-nuclear-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Nuclear Science and Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Nuclear Science and Engineering",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Nuclear Science and Engineering"
+      ]
+    },
+    {
+      "id": "mit_grad_physics_admissions",
+      "label": "Physics application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://catalog.mit.edu/schools/science/physics/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-physics-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Physics SM admission is available only in special cases, for example U.S. military officers. MIT's normal graduate Physics program leads to the PhD.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Physics",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Physics"
+      ],
+      "entry_requirements": [
+        "Special-case Physics SM applicant; confirm eligibility with the MIT Physics graduate office before applying."
+      ]
+    },
+    {
+      "id": "mit_grad_political_admissions",
+      "label": "Political Science application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/political-science/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-political-science-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Political Science for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Political Science",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Political Science"
+      ]
+    },
+    {
+      "id": "mit_grad_urban_planning_admissions",
+      "label": "Urban Studies and Planning application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-urban-city-planning-mcp",
+        "mit-urban-sustainability-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to Urban Studies and Planning for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "Urban Studies and Planning",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master in City Planning",
+        "Master in Sustainability Studies and Urban Planning"
+      ]
+    },
+    {
+      "id": "mit_grad_whoi_admissions",
+      "label": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering application",
+      "scope": "postgraduate_taught",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-whoi-naval-sm"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science for U.S. Naval Officers (MIT-WHOI)"
+      ]
+    },
+    {
+      "id": "mit_sloan_evening_mba_admissions",
+      "label": "MIT Sloan Evening MBA Program application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+      "verified_at": "2026-09-29",
+      "cycle": "Fall 2027 entry",
+      "program_ids": [
+        "mit-mit-sloan-evening-mba-program-mba-mit-grad-mit-sloan-evening-mba-program"
+      ],
+      "deadlines": [
+        {
+          "window": "round_1",
+          "date": "2026-11-03",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+          "checked_at": "2026-09-29"
+        },
+        {
+          "window": "round_2",
+          "date": "2027-02-02",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+          "checked_at": "2026-09-29"
+        },
+        {
+          "window": "round_3",
+          "date": "2027-04-02",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+          "checked_at": "2026-09-29"
+        },
+        {
+          "window": "round_4",
+          "date": "2027-06-01",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-evening-mba-program/",
+          "checked_at": "2026-09-29"
+        }
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT Sloan Evening MBA Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Evening MBA Program",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "MIT Sloan Evening MBA"
+      ]
+    },
+    {
+      "id": "mit_sloan_executive_mba_admissions",
+      "label": "MIT Sloan Executive MBA Program application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-executive-mba-program/",
+      "verified_at": "2026-09-29",
+      "program_ids": [
+        "mit-mit-sloan-executive-mba-program-mba-mit-grad-mit-sloan-executive-mba-program"
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT Sloan Executive MBA Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Executive MBA Program",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "MIT Executive MBA"
+      ]
+    },
+    {
+      "id": "mit_sloan_fellows_mba_admissions",
+      "label": "MIT Sloan Fellows MBA Program application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-fellows-mba-program/",
+      "verified_at": "2026-09-29",
+      "cycle": "Summer 2027 entry",
+      "program_ids": [
+        "mit-mit-sloan-fellows-mba-program-mba-mit-grad-mit-sloan-fellows-mba-program",
+        "mit-mit-sloan-fellows-mba-program-sm-in-management-mit-grad-mit-sloan-fellows-mba-program",
+        "mit-mit-sloan-fellows-mba-program-sm-in-management-of-technology-mit-grad-mit-sloan-fellows-mba-program"
+      ],
+      "deadlines": [
+        {
+          "window": "round_1",
+          "date": "2026-10-20",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-fellows-mba-program/",
+          "checked_at": "2026-09-29"
+        },
+        {
+          "window": "round_2",
+          "date": "2027-01-26",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-fellows-mba-program/",
+          "checked_at": "2026-09-29"
+        }
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "One MIT Sloan Fellows application leads to the MBA program. Admitted students who complete a thesis may earn an SM in Management or Management of Technology instead of the MBA.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Fellows MBA Program",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "MIT Sloan Fellows MBA",
+        "MIT Sloan Fellows Master of Science in Management",
+        "MIT Sloan Fellows Master of Science in Management of Technology"
+      ]
+    },
+    {
+      "id": "mit_sloan_mfin_admissions",
+      "label": "MIT Sloan Master of Finance application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-finance/",
+      "verified_at": "2026-09-29",
+      "cycle": "Summer 2027 entry",
+      "program_ids": [
+        "mit-sloan-mfin"
+      ],
+      "deadlines": [
+        {
+          "window": "application",
+          "date": "2027-01-05",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-finance/",
+          "checked_at": "2026-09-29"
+        }
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT Sloan Master of Finance for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Master of Finance",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Finance"
+      ]
+    },
+    {
+      "id": "mit_sloan_mban_admissions",
+      "label": "MIT Sloan Master of Business Analytics application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-business-analytics/",
+      "verified_at": "2026-09-29",
+      "cycle": "Fall 2027 entry",
+      "program_ids": [
+        "mit-sloan-mban"
+      ],
+      "deadlines": [
+        {
+          "window": "application",
+          "date": "2027-01-05",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-master-of-business-analytics/",
+          "checked_at": "2026-09-29"
+        }
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT Sloan Master of Business Analytics for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Master of Business Analytics",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Business Analytics"
+      ]
+    },
+    {
+      "id": "mit_sloan_msms_admissions",
+      "label": "MIT Sloan Master of Science in Management Studies application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://mitsloan.mit.edu/msms/master-science-management-studies/admissions",
+      "verified_at": "2026-09-29",
+      "cycle": "Fall 2027 entry",
+      "program_ids": [
+        "mit-sloan-msms"
+      ],
+      "deadlines": [
+        {
+          "window": "application",
+          "date": "2027-02-18",
+          "time": "15:00",
+          "timezone": "America/New_York",
+          "source_url": "https://mitsloan.mit.edu/msms/master-science-management-studies/admissions",
+          "checked_at": "2026-09-29"
+        }
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT Sloan Master of Science in Management Studies for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Master of Science in Management Studies",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "Master of Science in Management Studies"
+      ]
+    },
+    {
+      "id": "mit_sloan_mba_admissions",
+      "label": "MIT Sloan Traditional MBA Program application",
+      "scope": "professional",
+      "application_scope": "department_or_program_specific",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-mba-program/",
+      "verified_at": "2026-09-29",
+      "cycle": "2027 entry",
+      "program_ids": [
+        "mit-sloan-mba-full-time"
+      ],
+      "deadlines": [
+        {
+          "window": "round_1",
+          "date": "2026-09-29",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-mba-program/",
+          "checked_at": "2026-09-29"
+        },
+        {
+          "window": "round_2",
+          "date": "2027-01-12",
+          "time": null,
+          "timezone": null,
+          "source_url": "https://oge.mit.edu/programs/mit-sloan-mba-program/",
+          "checked_at": "2026-09-29"
+        }
+      ],
+      "study_levels": [
+        "Master"
+      ],
+      "applicant_route": "graduate",
+      "description": "Apply to MIT Sloan Traditional MBA Program for the linked master's or professional degree options. Review the official program page for eligibility and the current admission cycle.",
+      "degree_level": "Master",
+      "study_level": "Master",
+      "target": "MIT Sloan Traditional MBA Program",
+      "major_selection": "not_applicable",
+      "program_names": [
+        "MIT Sloan Traditional MBA",
+        "MIT Sloan Traditional MBA"
+      ]
+    },
+    {
+      "id": "mit_grad_transportation_mst_admissions",
+      "label": "Transportation MST application",
+      "description": "Apply to Transportation for the Master of Science in Transportation (MST). Review the official program page for eligibility and the current admission cycle.",
+      "scope": "postgraduate_taught",
+      "degree_level": "Master",
+      "study_levels": [
+        "Master"
+      ],
+      "program_ids": [
+        "mit-transportation-sm-mit-grad-transportation"
+      ],
+      "program_names": [
+        "Master of Science in Transportation (MST)"
+      ],
+      "application_scope": "program_specific",
+      "target": "Transportation graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/transportation/",
+      "verified_at": "2026-09-29",
+      "major_selection": "not_applicable",
+      "study_level": "Master",
+      "requirement_profiles": [
+        {
+          "id": "mit_grad_transportation_mst_admissions_requirements_review",
+          "label": "Transportation MST application",
+          "requirements": {},
+          "requirements_review_status": "not_reviewed",
+          "requirements_note": "Academic and language minimums have not yet been reviewed for this route. Check the official program page before applying.",
+          "description": "Academic and language minimums have not yet been reviewed for this route. Check the official program page before applying."
+        }
+      ]
+    }
+  ],
+  "unresolved_gaps": [
+    "OGE pages list many unyearized December and January deadlines. Do not assign them to Fall 2027 until an explicit cycle source confirms the year.",
+    "The draft's Linguistics SM, Mathematics of Data SM, and Computational Science and Engineering SM are cataloged awards, but OGE pages do not establish open master's admission routes.",
+    "EECS SM is not a terminal master's admission route; MEng options for Courses 6-P, 6-7P, and 6-14P serve qualified MIT undergraduates through an internal process.",
+    "Sloan Fellows MBA OGE page lists only MBA while the MIT Sloan curriculum lists alternative SM awards; their admission target may be shared, but award selection timing needs review.",
+    "Tuition, mandatory fees, funding, and applicant-specific test requirements have not been migrated for these new candidates.",
+    "The Biomedical Engineering MEng and fifth-year Mathematics MASc are restricted to current MIT students; their internal application destinations are not yet verified.",
+    "The fragment intentionally omits unyearized OGE deadlines from runtime_routes. Review the relevant program page for the selected entry cycle before displaying a date.",
+    "Civil Engineer, Environmental Engineer, Materials Engineer, and Engineer in Aeronautics and Astronautics are officially awarded, but this review did not establish a separate application target for each.",
+    "Simultaneous master's pairs are post-admission paths. The MCP/MBA pairing is listed by MIT OGE but a separate MIT catalog section and second-degree application process were not found.",
+    "Do not present an Engineer degree as a master's award: MIT describes it as a separate advanced professional qualification beyond the master's level.",
+    "The separate City Planning SM candidate was rejected after checking the current DUSP catalog. Transportation is the current MST award with a verified OGE application target.",
+    "EECS Engineer awards are listed by OGE, but the department's external application is doctoral-only; their direct admission route remains unverified."
+  ]
+}

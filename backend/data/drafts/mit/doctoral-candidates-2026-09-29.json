@@ -1,0 +1,2171 @@
+{
+  "schema_version": "1.0",
+  "institution_id": "mit",
+  "snapshot_checked_at": "2026-09-29",
+  "scope": "Doctoral candidates from the MIT Office of Graduate Education doctoral program index and program pages; not a claim of complete MIT degree-chart coverage.",
+  "source_index_url": "https://oge.mit.edu/graduate-admissions/programs/doctoral-degrees/",
+  "runtime_programs": [
+    {
+      "id": "mit-aeroastro-phd",
+      "name": "Doctor of Philosophy in Aeronautics and Astronautics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Aeronautics and Astronautics. Apply through the Aeronautics and Astronautics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-aeronautics-and-astronautics",
+      "canonical_degree_option_ids": [
+        "mit-degree-aeronautics-and-astronautics-phd-mit-grad-aeronautics-and-astronautics"
+      ],
+      "admission_route_id": "mit_aeroastro_doctoral_admissions"
+    },
+    {
+      "id": "mit-aeroastro-scd",
+      "name": "Doctor of Science in Aeronautics and Astronautics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Aeronautics and Astronautics. Apply through the Aeronautics and Astronautics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-aeronautics-and-astronautics",
+      "canonical_degree_option_ids": [
+        "mit-degree-aeronautics-and-astronautics-scd-mit-grad-aeronautics-and-astronautics"
+      ],
+      "admission_route_id": "mit_aeroastro_doctoral_admissions"
+    },
+    {
+      "id": "mit-architecture-phd",
+      "name": "Doctor of Philosophy in Architecture",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Architecture. Apply through the Architecture graduate program.",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-architecture",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_architecture_doctoral_admissions"
+    },
+    {
+      "id": "mit-biological-engineering-phd",
+      "name": "Doctor of Philosophy in Biological Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Biological Engineering. Apply through the Biological Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/biological-engineering-2/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-biological-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-biological-engineering-phd-mit-grad-biological-engineering"
+      ],
+      "admission_route_id": "mit_biological_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-biology-phd",
+      "name": "Doctor of Philosophy in Biology",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Biology. Apply through the Biology graduate program.",
+      "source_url": "https://oge.mit.edu/programs/biology/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-biology",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_biology_doctoral_admissions"
+    },
+    {
+      "id": "mit-brain-and-cognitive-sciences-phd",
+      "name": "Doctor of Philosophy in Brain and Cognitive Sciences",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Brain and Cognitive Sciences. Apply through the Brain and Cognitive Sciences graduate program.",
+      "source_url": "https://oge.mit.edu/programs/brain-and-cognitive-sciences/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-brain-and-cognitive-sciences",
+      "canonical_degree_option_ids": [
+        "mit-degree-brain-and-cognitive-sciences-phd-mit-grad-brain-and-cognitive-sciences"
+      ],
+      "admission_route_id": "mit_brain_and_cognitive_sciences_doctoral_admissions"
+    },
+    {
+      "id": "mit-chemical-engineering-phd",
+      "name": "Doctor of Philosophy in Chemical Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Chemical Engineering. Apply through the Chemical Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-chemical-engineering",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_chemical_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-chemical-engineering-scd",
+      "name": "Doctor of Science in Chemical Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Chemical Engineering. Apply through the Chemical Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-chemical-engineering",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_chemical_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-chemistry-phd",
+      "name": "Doctor of Philosophy in Chemistry",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Chemistry. Apply through the Chemistry graduate program.",
+      "source_url": "https://oge.mit.edu/programs/chemistry/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-chemistry",
+      "canonical_degree_option_ids": [
+        "mit-degree-chemistry-phd-mit-grad-chemistry"
+      ],
+      "admission_route_id": "mit_chemistry_doctoral_admissions"
+    },
+    {
+      "id": "mit-civil-and-environmental-engineering-phd",
+      "name": "Doctor of Philosophy in Civil and Environmental Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Civil and Environmental Engineering. Apply through the Civil and Environmental Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-civil-and-environmental-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-civil-and-environmental-engineering-phd-mit-grad-civil-and-environmental-engineering"
+      ],
+      "admission_route_id": "mit_civil_and_environmental_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-civil-and-environmental-engineering-scd",
+      "name": "Doctor of Science in Civil and Environmental Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Civil and Environmental Engineering. Apply through the Civil and Environmental Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-civil-and-environmental-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-civil-and-environmental-engineering-scd-mit-grad-civil-and-environmental-engineering"
+      ],
+      "admission_route_id": "mit_civil_and_environmental_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-computational-and-systems-biology-phd",
+      "name": "Doctor of Philosophy in Computational and Systems Biology",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Computational and Systems Biology. Apply through the Computational and Systems Biology graduate program.",
+      "source_url": "https://oge.mit.edu/programs/computational-and-systems-biology/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-computational-and-systems-biology",
+      "canonical_degree_option_ids": [
+        "mit-degree-computational-and-systems-biology-phd-mit-grad-computational-and-systems-biology"
+      ],
+      "admission_route_id": "mit_computational_and_systems_biology_doctoral_admissions"
+    },
+    {
+      "id": "mit-computational-science-and-engineering-phd",
+      "name": "Doctor of Philosophy in Computational Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Computational Science and Engineering. Apply through the Computational Science and Engineering PhD graduate program.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-computational-science-and-engineering-phd-mit-grad-computational-science-and-engineering-phd"
+      ],
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-earth-atmospheric-and-planetary-sciences-phd",
+      "name": "Doctor of Philosophy in Earth, Atmospheric, and Planetary Sciences",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Earth, Atmospheric, and Planetary Sciences. Apply through the Earth, Atmospheric, and Planetary Sciences graduate program.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-earth-atmospheric-and-planetary-sciences",
+      "canonical_degree_option_ids": [
+        "mit-degree-earth-atmospheric-and-planetary-sciences-phd-mit-grad-earth-atmospheric-and-planetary-sciences"
+      ],
+      "admission_route_id": "mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions"
+    },
+    {
+      "id": "mit-earth-atmospheric-and-planetary-sciences-scd",
+      "name": "Doctor of Science in Earth, Atmospheric, and Planetary Sciences",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Earth, Atmospheric, and Planetary Sciences. Apply through the Earth, Atmospheric, and Planetary Sciences graduate program.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-earth-atmospheric-and-planetary-sciences",
+      "canonical_degree_option_ids": [
+        "mit-degree-earth-atmospheric-and-planetary-sciences-scd-mit-grad-earth-atmospheric-and-planetary-sciences"
+      ],
+      "admission_route_id": "mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions"
+    },
+    {
+      "id": "mit-economics-phd-course-14",
+      "name": "Doctor of Philosophy in Economics (Course 14 PhD)",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Economics. Apply through the Economics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/economics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-economics",
+      "canonical_degree_option_ids": [
+        "mit-degree-economics-phd-mit-grad-economics"
+      ],
+      "admission_route_id": "mit_economics_doctoral_admissions",
+      "existing_runtime_route_id": "mit_phd_doctoral_guarantee",
+      "route_migration_status": "preserve_existing_route_facts_before_switching"
+    },
+    {
+      "id": "mit-eecs-phd-course-6",
+      "name": "Doctor of Philosophy in Computer Science and Engineering (Course 6 PhD)",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Electrical Engineering and Computer Science. Apply through the Electrical Engineering and Computer Science graduate program.",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-electrical-engineering-and-computer-science",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_eecs_doctoral_admissions",
+      "existing_runtime_route_id": "mit_phd_doctoral_guarantee",
+      "route_migration_status": "preserve_existing_route_facts_before_switching"
+    },
+    {
+      "id": "mit-eecs-scd",
+      "name": "Doctor of Science in Electrical Engineering and Computer Science",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Electrical Engineering and Computer Science. Apply through the Electrical Engineering and Computer Science graduate program.",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-electrical-engineering-and-computer-science",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_eecs_doctoral_admissions"
+    },
+    {
+      "id": "mit-hst-memp-phd",
+      "name": "Doctor of Philosophy in Medical Engineering and Medical Physics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Medical Engineering and Medical Physics. Apply through the Health Sciences and Technology (Joint Harvard-MIT Program) graduate program.",
+      "source_url": "https://oge.mit.edu/programs/harvard-mit-health-sciences-and-technology/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-health-sciences-and-technology-joint-harvard-mit-program",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_hst_memp_doctoral_admissions"
+    },
+    {
+      "id": "mit-hasts-phd",
+      "name": "Doctor of Philosophy in History, Anthropology, and Science, Technology, and Society",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in History, Anthropology, and Science, Technology, and Society. Apply through the History, Anthropology, and Science, Technology, and Society graduate program.",
+      "source_url": "https://oge.mit.edu/programs/history-anthropology-and-science-technology-and-society/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-history-anthropology-and-science-technology-and-society",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_hasts_doctoral_admissions"
+    },
+    {
+      "id": "mit-social-and-engineering-systems-phd",
+      "name": "Doctor of Philosophy in Social and Engineering Systems",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Social and Engineering Systems. Apply through the Institute for Data, Systems, and Society graduate program.",
+      "source_url": "https://oge.mit.edu/programs/institute-for-data-systems-and-society/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-institute-for-data-systems-and-society",
+      "canonical_degree_option_ids": [
+        "mit-degree-social-and-engineering-systems-phd-mit-grad-institute-for-data-systems-and-society"
+      ],
+      "admission_route_id": "mit_social_and_engineering_systems_doctoral_admissions"
+    },
+    {
+      "id": "mit-linguistics-phd",
+      "name": "Doctor of Philosophy in Linguistics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Linguistics. Apply through the Linguistics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/linguistics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-linguistics",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_linguistics_doctoral_admissions"
+    },
+    {
+      "id": "mit-materials-science-and-engineering-phd",
+      "name": "Doctor of Philosophy in Materials Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Materials Science and Engineering. Apply through the Materials Science and Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-materials-science-and-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-materials-science-and-engineering-phd-mit-grad-materials-science-and-engineering"
+      ],
+      "admission_route_id": "mit_materials_science_and_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-materials-science-and-engineering-scd",
+      "name": "Doctor of Science in Materials Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Materials Science and Engineering. Apply through the Materials Science and Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-materials-science-and-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-materials-science-and-engineering-scd-mit-grad-materials-science-and-engineering"
+      ],
+      "admission_route_id": "mit_materials_science_and_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-math-phd-course-18",
+      "name": "Doctor of Philosophy in Mathematics (Course 18 PhD)",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Mathematics. Apply through the Mathematics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mathematics",
+      "canonical_degree_option_ids": [
+        "mit-degree-mathematics-phd-mit-grad-mathematics"
+      ],
+      "admission_route_id": "mit_mathematics_doctoral_admissions",
+      "existing_runtime_route_id": "mit_phd_doctoral_guarantee",
+      "route_migration_status": "preserve_existing_route_facts_before_switching"
+    },
+    {
+      "id": "mit-mathematics-scd",
+      "name": "Doctor of Science in Mathematics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Mathematics. Apply through the Mathematics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mathematics",
+      "canonical_degree_option_ids": [
+        "mit-degree-mathematics-scd-mit-grad-mathematics"
+      ],
+      "admission_route_id": "mit_mathematics_doctoral_admissions"
+    },
+    {
+      "id": "mit-meche-phd-course-2",
+      "name": "Doctor of Philosophy in Mechanical Engineering (Course 2 PhD)",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Mechanical Engineering. Apply through the Mechanical Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mechanical-engineering",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_mechanical_engineering_doctoral_admissions",
+      "existing_runtime_route_id": "mit_phd_doctoral_guarantee",
+      "route_migration_status": "preserve_existing_route_facts_before_switching"
+    },
+    {
+      "id": "mit-mechanical-engineering-scd",
+      "name": "Doctor of Science in Mechanical Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Mechanical Engineering. Apply through the Mechanical Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mechanical-engineering",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_mechanical_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-media-arts-and-sciences-phd",
+      "name": "Doctor of Philosophy in Media Arts and Sciences",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Media Arts and Sciences. Available only to current MIT Media Arts and Sciences master's students.",
+      "source_url": "https://oge.mit.edu/programs/media-arts-and-sciences/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-media-arts-and-sciences",
+      "canonical_degree_option_ids": [],
+      "entry_requirements": "Current MIT Media Arts and Sciences master's student; the external SM deadline is not a PhD deadline."
+    },
+    {
+      "id": "mit-microbiology-phd",
+      "name": "Doctor of Philosophy in Microbiology",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Microbiology. Apply through the Microbiology graduate program.",
+      "source_url": "https://oge.mit.edu/programs/microbiology/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-microbiology",
+      "canonical_degree_option_ids": [
+        "mit-degree-microbiology-phd-mit-grad-microbiology"
+      ],
+      "admission_route_id": "mit_microbiology_doctoral_admissions"
+    },
+    {
+      "id": "mit-sloan-management-phd",
+      "name": "Doctor of Philosophy in Management",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Management. Apply through the MIT Sloan PhD Program graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-phd-program/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mit-sloan-phd-program",
+      "canonical_degree_option_ids": [
+        "mit-degree-mit-sloan-phd-program-phd-mit-grad-mit-sloan-phd-program"
+      ],
+      "admission_route_id": "mit_sloan_management_doctoral_admissions"
+    },
+    {
+      "id": "mit-mit-whoi-phd",
+      "name": "Doctor of Philosophy in Oceanography and Applied Ocean Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Oceanography and Applied Ocean Science and Engineering. Apply through the MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-biological-oceanography-phd-mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering",
+        "mit-degree-physical-oceanography-phd-mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering"
+      ],
+      "admission_route_id": "mit_mit_whoi_doctoral_admissions"
+    },
+    {
+      "id": "mit-mit-whoi-scd",
+      "name": "Doctor of Science in Oceanography and Applied Ocean Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Oceanography and Applied Ocean Science and Engineering. Apply through the MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-biological-oceanography-scd-mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering",
+        "mit-degree-physical-oceanography-scd-mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering"
+      ],
+      "admission_route_id": "mit_mit_whoi_doctoral_admissions"
+    },
+    {
+      "id": "mit-nuclear-science-and-engineering-phd",
+      "name": "Doctor of Philosophy in Nuclear Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Nuclear Science and Engineering. Apply through the Nuclear Science and Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-nuclear-science-and-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-nuclear-science-and-engineering-phd-mit-grad-nuclear-science-and-engineering"
+      ],
+      "admission_route_id": "mit_nuclear_science_and_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-nuclear-science-and-engineering-scd",
+      "name": "Doctor of Science in Nuclear Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Nuclear Science and Engineering. Apply through the Nuclear Science and Engineering graduate program.",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-nuclear-science-and-engineering",
+      "canonical_degree_option_ids": [
+        "mit-degree-nuclear-science-and-engineering-scd-mit-grad-nuclear-science-and-engineering"
+      ],
+      "admission_route_id": "mit_nuclear_science_and_engineering_doctoral_admissions"
+    },
+    {
+      "id": "mit-operations-research-phd",
+      "name": "Doctor of Philosophy in Operations Research Center",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Operations Research Center. Apply through the Operations Research Center graduate program.",
+      "source_url": "https://oge.mit.edu/programs/operations-research-center/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-operations-research-center",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_operations_research_doctoral_admissions"
+    },
+    {
+      "id": "mit-philosophy-phd",
+      "name": "Doctor of Philosophy in Philosophy",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Philosophy. Apply through the Philosophy graduate program.",
+      "source_url": "https://oge.mit.edu/programs/philosophy/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-philosophy",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_philosophy_doctoral_admissions"
+    },
+    {
+      "id": "mit-physics-phd-course-8",
+      "name": "Doctor of Philosophy in Physics (Course 8 PhD)",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Physics. Apply through the Physics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/physics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-physics",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_physics_phd_admissions",
+      "existing_runtime_route_id": "mit_physics_phd_admissions"
+    },
+    {
+      "id": "mit-physics-scd",
+      "name": "Doctor of Science in Physics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Research doctorate in Physics. Apply through the Physics graduate program.",
+      "source_url": "https://oge.mit.edu/programs/physics/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-physics",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_physics_phd_admissions"
+    },
+    {
+      "id": "mit-political-science-phd",
+      "name": "Doctor of Philosophy in Political Science",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Political Science. Apply through the Political Science graduate program.",
+      "source_url": "https://oge.mit.edu/programs/political-science/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-political-science",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_political_science_doctoral_admissions"
+    },
+    {
+      "id": "mit-ppsm-phd",
+      "name": "Doctor of Philosophy in Polymers and Soft Matter",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Polymers and Soft Matter. Apply through a participating MIT home department and identify PPSM in that application.",
+      "source_url": "https://oge.mit.edu/programs/program-in-polymers-and-soft-matter/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-program-in-polymers-and-soft-matter",
+      "canonical_degree_option_ids": [],
+      "entry_requirements": "Apply to Biological Engineering, Chemistry, Chemical Engineering, Materials Science and Engineering, or Mechanical Engineering; identify PPSM and submit its notification letter. Admission to the home department is required before PPSM consideration."
+    },
+    {
+      "id": "mit-transportation-phd",
+      "name": "Doctor of Philosophy in Transportation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Transportation. Apply through the Transportation graduate program.",
+      "source_url": "https://oge.mit.edu/programs/transportation/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-transportation",
+      "canonical_degree_option_ids": [
+        "mit-degree-transportation-phd-mit-grad-transportation"
+      ],
+      "admission_route_id": "mit_transportation_doctoral_admissions"
+    },
+    {
+      "id": "mit-urban-studies-and-planning-phd",
+      "name": "Doctor of Philosophy in Urban Studies and Planning",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Research doctorate in Urban Studies and Planning. Apply through the Urban Studies and Planning graduate program.",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-urban-studies-and-planning",
+      "canonical_degree_option_ids": [],
+      "admission_route_id": "mit_urban_studies_and_planning_doctoral_admissions"
+    },
+    {
+      "id": "mit-cse-civil-engineering-and-computation-phd",
+      "name": "Doctor of Philosophy in Civil Engineering and Computation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-civil-engineering-and-computation-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-environmental-engineering-and-computation-phd",
+      "name": "Doctor of Philosophy in Environmental Engineering and Computation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-environmental-engineering-and-computation-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-mechanical-engineering-and-computation-phd",
+      "name": "Doctor of Philosophy in Mechanical Engineering and Computation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-mechanical-engineering-and-computation-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-computational-materials-science-and-engineering-phd",
+      "name": "Doctor of Philosophy in Computational Materials Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-computational-materials-science-and-engineering-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-chemical-engineering-and-computation-phd",
+      "name": "Doctor of Philosophy in Chemical Engineering and Computation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-chemical-engineering-and-computation-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-computational-earth-atmospheric-and-planetary-sciences-phd",
+      "name": "Doctor of Philosophy in Computational Earth, Atmospheric and Planetary Sciences",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-computational-earth-science-and-planetary-sciences-phd"
+      ],
+      "draft_name_conflict": "The older draft omits Atmospheric from this OGE program title; use the current OGE wording."
+    },
+    {
+      "id": "mit-cse-aerospace-engineering-and-computational-science-phd",
+      "name": "Doctor of Philosophy in Aerospace Engineering and Computational Science",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-aerospace-engineering-and-computational-science-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-mathematics-and-computational-science-phd",
+      "name": "Doctor of Philosophy in Mathematics and Computational Science",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-mathematics-and-computational-science-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-nuclear-engineering-and-computation-phd",
+      "name": "Doctor of Philosophy in Nuclear Engineering and Computation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-nuclear-engineering-and-computation-phd"
+      ]
+    },
+    {
+      "id": "mit-cse-computational-nuclear-science-and-engineering-phd",
+      "name": "Doctor of Philosophy in Computational Nuclear Science and Engineering",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "canonical_degree_option_ids": [
+        "mit-degree-computational-nuclear-science-and-engineering-phd"
+      ]
+    },
+    {
+      "id": "mit-chemical-engineering-practice-phdcep",
+      "name": "Doctor of Philosophy in Chemical Engineering Practice (PhDCEP)",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Chemical Engineering Practice doctoral option listed by the department. Confirm its application choice and any prerequisites before publication as a separately selectable route.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "canonical_draft_family_id": "mit-grad-chemical-engineering",
+      "canonical_degree_option_ids": [],
+      "route_status": "needs_review_before_linking"
+    },
+    {
+      "id": "mit-idps-statistics-phd",
+      "name": "Interdisciplinary PhD in Statistics",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "PhD",
+      "description": "Secondary doctoral path for current MIT students in participating doctoral programs. Students submit an internal selection form after enrollment.",
+      "source_url": "https://stat.mit.edu/academics/idps/",
+      "verified_at": "2026-09-29",
+      "entry_requirements": "Current doctoral student in a participating MIT program; selection form is submitted between the end of the second semester and the penultimate semester.",
+      "canonical_draft_family_id": "mit-grad-institute-for-data-systems-and-society",
+      "canonical_degree_option_ids": [
+        "mit-degree-statistics-phd-mit-grad-institute-for-data-systems-and-society"
+      ]
+    },
+    {
+      "id": "mit-transportation-scd",
+      "name": "Doctor of Science in Transportation",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "degree_type": "ScD",
+      "description": "Interdisciplinary doctoral study in transportation with an individualized program crossing academic disciplines and departments. The MIT Course Catalog states graduates may receive a PhD or ScD in Transportation.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/",
+      "verified_at": "2026-09-29",
+      "admission_route_id": "mit_transportation_doctoral_admissions",
+      "canonical_draft_family_id": "mit-grad-transportation",
+      "canonical_degree_option_ids": [
+        "mit-degree-transportation-scd-mit-grad-transportation"
+      ]
+    }
+  ],
+  "runtime_routes": [
+    {
+      "id": "mit_aeroastro_doctoral_admissions",
+      "label": "Aeronautics and Astronautics doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-aeroastro-phd",
+        "mit-aeroastro-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Aeronautics and Astronautics",
+        "Doctor of Science in Aeronautics and Astronautics"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Aeronautics and Astronautics graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_architecture_doctoral_admissions",
+      "label": "Architecture doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-architecture-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Architecture"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Architecture graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_biological_engineering_doctoral_admissions",
+      "label": "Biological Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-biological-engineering-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Biological Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Biological Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/biological-engineering-2/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_biology_doctoral_admissions",
+      "label": "Biology doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-biology-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Biology"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Biology graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/biology/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_brain_and_cognitive_sciences_doctoral_admissions",
+      "label": "Brain and Cognitive Sciences doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-brain-and-cognitive-sciences-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Brain and Cognitive Sciences"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Brain and Cognitive Sciences graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/brain-and-cognitive-sciences/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_chemical_engineering_doctoral_admissions",
+      "label": "Chemical Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-chemical-engineering-phd",
+        "mit-chemical-engineering-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Chemical Engineering",
+        "Doctor of Science in Chemical Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Chemical Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_chemistry_doctoral_admissions",
+      "label": "Chemistry doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-chemistry-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Chemistry"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Chemistry graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/chemistry/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_civil_and_environmental_engineering_doctoral_admissions",
+      "label": "Civil and Environmental Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-civil-and-environmental-engineering-phd",
+        "mit-civil-and-environmental-engineering-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Civil and Environmental Engineering",
+        "Doctor of Science in Civil and Environmental Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Civil and Environmental Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_computational_and_systems_biology_doctoral_admissions",
+      "label": "Computational and Systems Biology doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-computational-and-systems-biology-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Computational and Systems Biology"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Computational and Systems Biology graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/computational-and-systems-biology/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "label": "Computational Science and Engineering PhD doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-computational-science-and-engineering-phd",
+        "mit-cse-civil-engineering-and-computation-phd",
+        "mit-cse-environmental-engineering-and-computation-phd",
+        "mit-cse-mechanical-engineering-and-computation-phd",
+        "mit-cse-computational-materials-science-and-engineering-phd",
+        "mit-cse-chemical-engineering-and-computation-phd",
+        "mit-cse-computational-earth-atmospheric-and-planetary-sciences-phd",
+        "mit-cse-aerospace-engineering-and-computational-science-phd",
+        "mit-cse-mathematics-and-computational-science-phd",
+        "mit-cse-nuclear-engineering-and-computation-phd",
+        "mit-cse-computational-nuclear-science-and-engineering-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Computational Science and Engineering",
+        "Doctor of Philosophy in Civil Engineering and Computation",
+        "Doctor of Philosophy in Environmental Engineering and Computation",
+        "Doctor of Philosophy in Mechanical Engineering and Computation",
+        "Doctor of Philosophy in Computational Materials Science and Engineering",
+        "Doctor of Philosophy in Chemical Engineering and Computation",
+        "Doctor of Philosophy in Computational Earth, Atmospheric and Planetary Sciences",
+        "Doctor of Philosophy in Aerospace Engineering and Computational Science",
+        "Doctor of Philosophy in Mathematics and Computational Science",
+        "Doctor of Philosophy in Nuclear Engineering and Computation",
+        "Doctor of Philosophy in Computational Nuclear Science and Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Computational Science and Engineering PhD graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified",
+      "source_urls": [
+        "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+        "https://cse.mit.edu/programs-admissions/apply/"
+      ],
+      "application_choice": "Standalone CSE PhD or joint Department-CSE PhD; the same applicant may not choose both in one cycle."
+    },
+    {
+      "id": "mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions",
+      "label": "Earth, Atmospheric, and Planetary Sciences doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-earth-atmospheric-and-planetary-sciences-phd",
+        "mit-earth-atmospheric-and-planetary-sciences-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Earth, Atmospheric, and Planetary Sciences",
+        "Doctor of Science in Earth, Atmospheric, and Planetary Sciences"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Earth, Atmospheric, and Planetary Sciences graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_economics_doctoral_admissions",
+      "label": "Economics doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-economics-phd-course-14"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Economics (Course 14 PhD)"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Economics graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/economics/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_eecs_doctoral_admissions",
+      "label": "Electrical Engineering and Computer Science doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-eecs-phd-course-6",
+        "mit-eecs-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Computer Science and Engineering (Course 6 PhD)",
+        "Doctor of Science in Electrical Engineering and Computer Science"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Electrical Engineering and Computer Science graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_hst_memp_doctoral_admissions",
+      "label": "Health Sciences and Technology (Joint Harvard-MIT Program) doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-hst-memp-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Medical Engineering and Medical Physics"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Health Sciences and Technology (Joint Harvard-MIT Program) graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/harvard-mit-health-sciences-and-technology/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_hasts_doctoral_admissions",
+      "label": "History, Anthropology, and Science, Technology, and Society doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-hasts-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in History, Anthropology, and Science, Technology, and Society"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "History, Anthropology, and Science, Technology, and Society graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/history-anthropology-and-science-technology-and-society/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_social_and_engineering_systems_doctoral_admissions",
+      "label": "Institute for Data, Systems, and Society doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-social-and-engineering-systems-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Social and Engineering Systems"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Institute for Data, Systems, and Society graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/institute-for-data-systems-and-society/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_linguistics_doctoral_admissions",
+      "label": "Linguistics doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-linguistics-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Linguistics"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Linguistics graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/linguistics/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_materials_science_and_engineering_doctoral_admissions",
+      "label": "Materials Science and Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-materials-science-and-engineering-phd",
+        "mit-materials-science-and-engineering-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Materials Science and Engineering",
+        "Doctor of Science in Materials Science and Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Materials Science and Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_mathematics_doctoral_admissions",
+      "label": "Mathematics doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-math-phd-course-18",
+        "mit-mathematics-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Mathematics (Course 18 PhD)",
+        "Doctor of Science in Mathematics"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Mathematics graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_mechanical_engineering_doctoral_admissions",
+      "label": "Mechanical Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-meche-phd-course-2",
+        "mit-mechanical-engineering-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Mechanical Engineering (Course 2 PhD)",
+        "Doctor of Science in Mechanical Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Mechanical Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_microbiology_doctoral_admissions",
+      "label": "Microbiology doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-microbiology-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Microbiology"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Microbiology graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/microbiology/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_sloan_management_doctoral_admissions",
+      "label": "MIT Sloan PhD Program doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-sloan-management-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Management"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "MIT Sloan PhD Program graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-phd-program/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_mit_whoi_doctoral_admissions",
+      "label": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-mit-whoi-phd",
+        "mit-mit-whoi-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Oceanography and Applied Ocean Science and Engineering",
+        "Doctor of Science in Oceanography and Applied Ocean Science and Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_nuclear_science_and_engineering_doctoral_admissions",
+      "label": "Nuclear Science and Engineering doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-nuclear-science-and-engineering-phd",
+        "mit-nuclear-science-and-engineering-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Nuclear Science and Engineering",
+        "Doctor of Science in Nuclear Science and Engineering"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Nuclear Science and Engineering graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_operations_research_doctoral_admissions",
+      "label": "Operations Research Center doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-operations-research-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Operations Research Center"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Operations Research Center graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/operations-research-center/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_philosophy_doctoral_admissions",
+      "label": "Philosophy doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-philosophy-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Philosophy"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Philosophy graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/philosophy/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_physics_phd_admissions",
+      "label": "Physics doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-physics-phd-course-8",
+        "mit-physics-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Physics (Course 8 PhD)",
+        "Doctor of Science in Physics"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Physics graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/physics/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified",
+      "integration_action": "preserve_existing_runtime_route; add ScD program ID only after reviewing shared PhD/ScD facts"
+    },
+    {
+      "id": "mit_political_science_doctoral_admissions",
+      "label": "Political Science doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-political-science-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Political Science"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Political Science graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/political-science/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    },
+    {
+      "id": "mit_transportation_doctoral_admissions",
+      "label": "Transportation doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-transportation-phd",
+        "mit-transportation-scd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Transportation",
+        "Doctor of Science in Transportation"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Transportation graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/transportation/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified",
+      "source_urls": [
+        "https://oge.mit.edu/programs/transportation/",
+        "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/"
+      ]
+    },
+    {
+      "id": "mit_urban_studies_and_planning_doctoral_admissions",
+      "label": "Urban Studies and Planning doctoral admission",
+      "scope": "postgraduate_research",
+      "degree_level": "Doctorate",
+      "study_levels": [
+        "Doctorate"
+      ],
+      "program_ids": [
+        "mit-urban-studies-and-planning-phd"
+      ],
+      "program_names": [
+        "Doctor of Philosophy in Urban Studies and Planning"
+      ],
+      "application_scope": "department_or_program_specific",
+      "target": "Urban Studies and Planning graduate application",
+      "applicant_route": "graduate",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29",
+      "cycle_status": "year_unverified",
+      "application_deadline": null,
+      "publication_status": "doctoral program and application target verified; dated cycle/deadline not verified"
+    }
+  ],
+  "doctoral_families": [
+    {
+      "name": "Aeronautics and Astronautics",
+      "draft_family_id": "mit-grad-aeronautics-and-astronautics",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "route_id": "mit_aeroastro_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-aeroastro-phd",
+        "mit-aeroastro-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Architecture",
+      "draft_family_id": "mit-grad-architecture",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "route_id": "mit_architecture_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-architecture-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Biological Engineering",
+      "draft_family_id": "mit-grad-biological-engineering",
+      "source_url": "https://oge.mit.edu/programs/biological-engineering-2/",
+      "route_id": "mit_biological_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-biological-engineering-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Biology",
+      "draft_family_id": "mit-grad-biology",
+      "source_url": "https://oge.mit.edu/programs/biology/",
+      "route_id": "mit_biology_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-biology-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Brain and Cognitive Sciences",
+      "draft_family_id": "mit-grad-brain-and-cognitive-sciences",
+      "source_url": "https://oge.mit.edu/programs/brain-and-cognitive-sciences/",
+      "route_id": "mit_brain_and_cognitive_sciences_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-brain-and-cognitive-sciences-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Chemical Engineering",
+      "draft_family_id": "mit-grad-chemical-engineering",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "route_id": "mit_chemical_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-chemical-engineering-phd",
+        "mit-chemical-engineering-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Chemistry",
+      "draft_family_id": "mit-grad-chemistry",
+      "source_url": "https://oge.mit.edu/programs/chemistry/",
+      "route_id": "mit_chemistry_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-chemistry-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Civil and Environmental Engineering",
+      "draft_family_id": "mit-grad-civil-and-environmental-engineering",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "route_id": "mit_civil_and_environmental_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-civil-and-environmental-engineering-phd",
+        "mit-civil-and-environmental-engineering-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Computational and Systems Biology",
+      "draft_family_id": "mit-grad-computational-and-systems-biology",
+      "source_url": "https://oge.mit.edu/programs/computational-and-systems-biology/",
+      "route_id": "mit_computational_and_systems_biology_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-computational-and-systems-biology-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Computational Science and Engineering PhD",
+      "draft_family_id": "mit-grad-computational-science-and-engineering-phd",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-computational-science-and-engineering-phd",
+        "mit-cse-civil-engineering-and-computation-phd",
+        "mit-cse-environmental-engineering-and-computation-phd",
+        "mit-cse-mechanical-engineering-and-computation-phd",
+        "mit-cse-computational-materials-science-and-engineering-phd",
+        "mit-cse-chemical-engineering-and-computation-phd",
+        "mit-cse-computational-earth-atmospheric-and-planetary-sciences-phd",
+        "mit-cse-aerospace-engineering-and-computational-science-phd",
+        "mit-cse-mathematics-and-computational-science-phd",
+        "mit-cse-nuclear-engineering-and-computation-phd",
+        "mit-cse-computational-nuclear-science-and-engineering-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Earth, Atmospheric, and Planetary Sciences",
+      "draft_family_id": "mit-grad-earth-atmospheric-and-planetary-sciences",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "route_id": "mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-earth-atmospheric-and-planetary-sciences-phd",
+        "mit-earth-atmospheric-and-planetary-sciences-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Economics",
+      "draft_family_id": "mit-grad-economics",
+      "source_url": "https://oge.mit.edu/programs/economics/",
+      "route_id": "mit_economics_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-economics-phd-course-14"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Electrical Engineering and Computer Science",
+      "draft_family_id": "mit-grad-electrical-engineering-and-computer-science",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "route_id": "mit_eecs_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-eecs-phd-course-6",
+        "mit-eecs-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Health Sciences and Technology (Joint Harvard-MIT Program)",
+      "draft_family_id": "mit-grad-health-sciences-and-technology-joint-harvard-mit-program",
+      "source_url": "https://oge.mit.edu/programs/harvard-mit-health-sciences-and-technology/",
+      "route_id": "mit_hst_memp_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-hst-memp-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "History, Anthropology, and Science, Technology, and Society",
+      "draft_family_id": "mit-grad-history-anthropology-and-science-technology-and-society",
+      "source_url": "https://oge.mit.edu/programs/history-anthropology-and-science-technology-and-society/",
+      "route_id": "mit_hasts_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-hasts-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Institute for Data, Systems, and Society",
+      "draft_family_id": "mit-grad-institute-for-data-systems-and-society",
+      "source_url": "https://oge.mit.edu/programs/institute-for-data-systems-and-society/",
+      "route_id": "mit_social_and_engineering_systems_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-social-and-engineering-systems-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Linguistics",
+      "draft_family_id": "mit-grad-linguistics",
+      "source_url": "https://oge.mit.edu/programs/linguistics/",
+      "route_id": "mit_linguistics_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-linguistics-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Materials Science and Engineering",
+      "draft_family_id": "mit-grad-materials-science-and-engineering",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "route_id": "mit_materials_science_and_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-materials-science-and-engineering-phd",
+        "mit-materials-science-and-engineering-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Mathematics",
+      "draft_family_id": "mit-grad-mathematics",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "route_id": "mit_mathematics_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-math-phd-course-18",
+        "mit-mathematics-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Mechanical Engineering",
+      "draft_family_id": "mit-grad-mechanical-engineering",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "route_id": "mit_mechanical_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-meche-phd-course-2",
+        "mit-mechanical-engineering-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Media Arts and Sciences",
+      "draft_family_id": "mit-grad-media-arts-and-sciences",
+      "source_url": "https://oge.mit.edu/programs/media-arts-and-sciences/",
+      "route_id": null,
+      "runtime_program_ids": [
+        "mit-media-arts-and-sciences-phd"
+      ],
+      "applicant_scope": "current_mit_mas_masters_only",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Microbiology",
+      "draft_family_id": "mit-grad-microbiology",
+      "source_url": "https://oge.mit.edu/programs/microbiology/",
+      "route_id": "mit_microbiology_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-microbiology-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "MIT Sloan PhD Program",
+      "draft_family_id": "mit-grad-mit-sloan-phd-program",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-phd-program/",
+      "route_id": "mit_sloan_management_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-sloan-management-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering",
+      "draft_family_id": "mit-grad-mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "route_id": "mit_mit_whoi_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-mit-whoi-phd",
+        "mit-mit-whoi-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Nuclear Science and Engineering",
+      "draft_family_id": "mit-grad-nuclear-science-and-engineering",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "route_id": "mit_nuclear_science_and_engineering_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-nuclear-science-and-engineering-phd",
+        "mit-nuclear-science-and-engineering-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Operations Research Center",
+      "draft_family_id": "mit-grad-operations-research-center",
+      "source_url": "https://oge.mit.edu/programs/operations-research-center/",
+      "route_id": "mit_operations_research_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-operations-research-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Philosophy",
+      "draft_family_id": "mit-grad-philosophy",
+      "source_url": "https://oge.mit.edu/programs/philosophy/",
+      "route_id": "mit_philosophy_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-philosophy-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Physics",
+      "draft_family_id": "mit-grad-physics",
+      "source_url": "https://oge.mit.edu/programs/physics/",
+      "route_id": "mit_physics_phd_admissions",
+      "runtime_program_ids": [
+        "mit-physics-phd-course-8",
+        "mit-physics-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ]
+    },
+    {
+      "name": "Political Science",
+      "draft_family_id": "mit-grad-political-science",
+      "source_url": "https://oge.mit.edu/programs/political-science/",
+      "route_id": "mit_political_science_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-political-science-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Program in Polymers and Soft Matter",
+      "draft_family_id": "mit-grad-program-in-polymers-and-soft-matter",
+      "source_url": "https://oge.mit.edu/programs/program-in-polymers-and-soft-matter/",
+      "route_id": null,
+      "runtime_program_ids": [
+        "mit-ppsm-phd"
+      ],
+      "applicant_scope": "home_department_applicant_only",
+      "award_options": [
+        "PhD"
+      ]
+    },
+    {
+      "name": "Transportation",
+      "draft_family_id": "mit-grad-transportation",
+      "source_url": "https://oge.mit.edu/programs/transportation/",
+      "route_id": "mit_transportation_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-transportation-phd",
+        "mit-transportation-scd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD",
+        "ScD"
+      ],
+      "source_urls": [
+        "https://oge.mit.edu/programs/transportation/",
+        "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/"
+      ]
+    },
+    {
+      "name": "Urban Studies and Planning",
+      "draft_family_id": "mit-grad-urban-studies-and-planning",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "route_id": "mit_urban_studies_and_planning_doctoral_admissions",
+      "runtime_program_ids": [
+        "mit-urban-studies-and-planning-phd"
+      ],
+      "applicant_scope": "graduate_applicant_to_this_program",
+      "award_options": [
+        "PhD"
+      ]
+    }
+  ],
+  "unresolved_gaps": [
+    "OGE application opening and deadline month/day listings omit a year on most pages; 2027 dates are not projected from them.",
+    "PhD and ScD share department program pages when both are listed. Separate degree awards do not imply separate application forms.",
+    "Architecture program-level tracks and several catalog-specific degree labels need mapping before separate selectable cards.",
+    "MIT-WHOI research areas and catalog oceanography fields need degree/route reconciliation before separate cards.",
+    "CSE catalog ScD labels are not listed on the current CSE OGE program page; only PhD candidates are proposed for runtime.",
+    "Chemical Engineering Practice PhDCEP appears on the OGE page, but its separate application choice and eligibility have not been verified.",
+    "Program-specific funding, cost, requirements, and cycle dates remain unknown except where existing published runtime records already verify them.",
+    "The older draft labels Computational Earth, Science and Planetary Sciences; the current OGE page labels Computational Earth, Atmospheric and Planetary Sciences.",
+    "Transportation ScD is confirmed as an interchangeable award by the MIT Course Catalog; OGE lists only the PhD title. The Transportation doctoral application target is shared; verify whether the applicant chooses the award before or after admission."
+  ],
+  "draft_doctoral_options_not_runtime_candidates": [
+    {
+      "id": "mit-degree-biological-engineering-scd-mit-grad-biological-engineering",
+      "name": "Biological Engineering (ScD)",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-social-and-engineering-systems-scd-mit-grad-institute-for-data-systems-and-society",
+      "name": "Social and Engineering Systems (ScD)",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-aerospace-engineering-and-computational-science-scd",
+      "name": "Aerospace Engineering and Computational Science",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-chemical-engineering-and-computation-scd",
+      "name": "Chemical Engineering and Computation",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-civil-engineering-and-computation-scd",
+      "name": "Civil Engineering and Computation",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-computational-earth-science-and-planetary-sciences-scd",
+      "name": "Computational Earth, Science and Planetary Sciences",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-computational-materials-science-and-engineering-scd",
+      "name": "Computational Materials Science and Engineering",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-computational-nuclear-science-and-engineering-scd",
+      "name": "Computational Nuclear Science and Engineering",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-environmental-engineering-and-computation-scd",
+      "name": "Environmental Engineering and Computation",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-mathematics-and-computational-science-scd",
+      "name": "Mathematics and Computational Science",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-mechanical-engineering-and-computation-scd",
+      "name": "Mechanical Engineering and Computation",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    },
+    {
+      "id": "mit-degree-nuclear-engineering-and-computation-scd",
+      "name": "Nuclear Engineering and Computation",
+      "award": "ScD",
+      "review_reason": "The degree appears in the older catalog draft but was not confirmed as a separately selectable doctoral option on the current OGE program page; reconcile its department/catalog evidence before runtime publication."
+    }
+  ],
+  "integration_notes": [
+    "The runtime_programs and runtime_routes arrays are research candidates, not a complete production schema. Preserve established runtime program IDs and their detailed facts when merging.",
+    "Before moving mit-eecs-phd-course-6, mit-meche-phd-course-2, mit-math-phd-course-18, or mit-economics-phd-course-14 from mit_phd_doctoral_guarantee to their proposed department route IDs, migrate their existing route-specific requirements, deadlines, fees, funding and source provenance. The current generic route contains those facts; changing only admission_route_id would hide them.",
+    "Keep mit-physics-phd-course-8 on its existing mit_physics_phd_admissions route. PhD and ScD options listed on one OGE department page share an application target; do not create separate portals merely for the different award.",
+    "The Media Arts and Sciences PhD and the Interdisciplinary PhD in Statistics are internal-only paths. PPSM uses one of five home-department applications and has no standalone application. These options intentionally have no admission_route_id.",
+    "CSE standalone and joint PhD options use the CSE application, with a one-choice-per-cycle restriction. The named joint degree fields are separate degree options under this application, not ten separate portals."
+  ]
+}
