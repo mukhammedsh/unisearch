@@ -2,6 +2,7 @@ import asyncio
 import concurrent.futures
 import threading
 import unittest
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
@@ -25,15 +26,32 @@ class SecurityRegressionTests(unittest.TestCase):
 
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
         client = TestClient(app)
+        with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:
+            for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
+                with self.subTest(param=param):
+                    self.assertEqual(client.get(f"/health?warmup={param}").status_code, 401)
+            warmup.assert_not_called()
+            for param in ["t", "y"]:
+                response = client.get(f"/health?warmup={param}", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+                self.assertEqual(response.status_code, 200)
+            self.assertEqual(warmup.call_count, 2)
+            warmup.reset_mock()
+            self.assertEqual(client.get("/health?warmup=false").status_code, 200)
+            warmup.assert_not_called()
 
-        for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
-            resp = client.get(f"/health?warmup={param}")
-            # Without ops admin token / credentials, protected ops request returns 401 or 404 (when OPS_ADMIN_TOKEN is empty/configured)
-            self.assertIn(
-                resp.status_code,
-                (401, 404),
-                f"Expected /health?warmup={param} to be protected, got {resp.status_code}",
-            )
+    def test_ops_guard_matches_routes_under_root_path(self):
+        client = TestClient(app, root_path="/api")
+        with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:
+            for path in ["/api/ops/runtime", "/api/health?warmup=true", "/api/health?warmup=y"]:
+                with self.subTest(path=path):
+                    self.assertEqual(client.get(path).status_code, 401)
+            self.assertEqual(client.post("/api/ops/warmup").status_code, 401)
+            warmup.assert_not_called()
+            response = client.get("/api/health?warmup=t", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+            self.assertEqual(response.status_code, 200)
+            warmup.assert_called_once()
+            self.assertEqual(client.get("/api/health").status_code, 200)
+            self.assertEqual(client.get("/apix/health?warmup=true").status_code, 404)
 
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {

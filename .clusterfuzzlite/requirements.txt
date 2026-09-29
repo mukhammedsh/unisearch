@@ -1,0 +1,2 @@
+# Keep schema validation aligned with backend/requirements.txt; ML is disabled in fuzz targets.
+pydantic==2.13.5
