@@ -3,6 +3,7 @@ import unittest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.routers import universities as universities_router
 
 
 class UniversitiesEndpointsContractTests(unittest.TestCase):
@@ -524,9 +525,22 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         chance_data = uni_chance.json()
         self.assertIn("overallChance", chance_data)
         self.assertIn("choices", chance_data)
+        self.assertEqual("published_requirements_met_percent", chance_data.get("scoreMeaning"))
+        self.assertNotIn("confidence", chance_data)
+        self.assertNotIn("rangeLowPercent", chance_data)
+        self.assertNotIn("rangeHighPercent", chance_data)
+        self.assertTrue(all(
+            choice.get("scoreMeaning") == "published_requirements_met_percent"
+            for choice in chance_data.get("choices", [])
+        ))
         overall_chance = chance_data.get("overallChance")
         if overall_chance is not None:
             self.assertTrue(0 <= float(overall_chance) <= 100)
+        route = next(
+            route for route in universities_router.router.routes
+            if getattr(route, "path", "") == "/universities/{university_id}/uni-chance"
+        )
+        self.assertIn("not an admission probability", route.description.lower())
 
         roi = self.client.post(
             f"/universities/{university_id}/roi",

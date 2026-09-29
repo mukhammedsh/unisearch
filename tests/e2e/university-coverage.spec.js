@@ -12,6 +12,9 @@ async function openUniversity(page, id) {
   await page.goto(`/university.html?id=${id}`);
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
+  const coverage = page.locator(".university-coverage-section");
+  await expect(coverage).not.toHaveAttribute("open", "");
+  await coverage.locator("summary").click();
   await expect(page.locator("#detailCoverage .university-coverage__level").first()).toBeVisible();
 }
 

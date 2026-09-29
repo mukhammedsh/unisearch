@@ -5,10 +5,12 @@ UniSearch is primarily a maintainer-led project with community contributions. Ex
 ## Before You Start
 - Check the nearest existing implementation before adding a new pattern.
 - Keep changes narrow. Avoid mixing feature work, refactors, formatting churn, and data updates in one PR.
-- Do not expand product scope without discussion. UniSearch currently targets bachelor-level university discovery.
+- Follow the [admissions product model](docs/admissions-product-model.md): cover undergraduate, master's, doctoral, and professional study, and keep facts scoped to the relevant program and applicant route.
 - Do not add dependencies unless they solve a clear problem and fit an open-source project.
 
 ## Local Setup
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) before setting up the Python environment.
+
 ```bash
 npm install
 cp backend/.env.example backend/.env
@@ -29,7 +31,7 @@ source backend/.venv/bin/activate
 
 Then install backend dependencies and start both servers:
 ```bash
-pip install -r backend/requirements.txt
+uv pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
 npm run dev:backend
 npm run dev:frontend
 ```

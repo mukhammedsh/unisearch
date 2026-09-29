@@ -26,7 +26,6 @@ class PersonaUniChanceRegressionTests(unittest.TestCase):
 
         for persona in self.personas:
             profile = persona.get("profile") if isinstance(persona.get("profile"), dict) else {}
-            expected_missing = bool(((persona.get("expectations") or {}).get("expect_missing_evidence")))
             for university_id in self.university_ids:
                 with self.subTest(persona=persona.get("id"), university_id=university_id):
                     response = self.client.post(
@@ -36,13 +35,19 @@ class PersonaUniChanceRegressionTests(unittest.TestCase):
                     self.assertEqual(response.status_code, 200)
                     data = response.json()
                     self.assertIn("overallChance", data)
+                    self.assertEqual("published_requirements_met_percent", data.get("scoreMeaning"))
                     self.assertIn("choices", data)
                     self.assertIn("missingEvidence", data)
                     overall_chance = data.get("overallChance")
                     if overall_chance is not None:
                         self.assertTrue(0 <= float(overall_chance) <= 100)
                     self.assertIsInstance(data.get("choices"), list)
-                    self.assertEqual(expected_missing, bool(data.get("missingEvidence")))
+                    if overall_chance is None:
+                        self.assertFalse(data.get("chanceAvailable"))
+                        self.assertIn(data.get("reason"), {"missing_evidence", "no_published_requirements", "no_choices"})
+                    else:
+                        self.assertTrue(data.get("chanceAvailable"))
+                        self.assertFalse(data.get("missingEvidence"))
 
                     for track in data.get("choices", []):
                         chance_percent = track.get("chancePercent")

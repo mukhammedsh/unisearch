@@ -77,7 +77,7 @@ for (const locale of locales) {
     await expect(compactCard).toBeVisible();
     const statuses = firstCard.locator(".uni-card-statuses");
     await expect(statuses).toBeVisible();
-    await expect(firstCard.locator(".uni-status-trigger")).toHaveCount(4);
+    await expect(firstCard.locator(".uni-status-trigger")).toHaveCount(3);
 
     const overflow = await firstCard.evaluate((card) => {
       const box = card.querySelector(".uni-media");

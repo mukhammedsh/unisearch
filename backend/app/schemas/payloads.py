@@ -222,18 +222,20 @@ class ProfilePayload(BaseModel):
                 raise ValueError(f"Invalid university ID in selectedAdmissionChoices: {uni[:32]}")
             if len(selection) > MAX_SELECTED_CHOICE_KEYS:
                 raise ValueError("selectedAdmissionChoices entry has too many keys")
-            choice = _strip_or_none(selection.get("choiceKey"))
-            if choice:
-                if len(choice) > 128:
-                    raise ValueError("choiceKey exceeds maximum allowed length (128 chars)")
-                out[uni] = {
-                    "programId": _strip_or_empty(selection.get("programId"))[:128],
-                    "programName": _strip_or_empty(selection.get("programName"))[:200],
-                    "categoryId": _strip_or_empty(selection.get("categoryId"))[:128],
-                    "requirementProfileId": _strip_or_empty(selection.get("requirementProfileId"))[:128],
-                    "fundingOptionId": _strip_or_empty(selection.get("fundingOptionId"))[:128],
-                    "choiceKey": choice,
-                }
+            fields = {
+                "programId": (128, _strip_or_empty(selection.get("programId"))),
+                "programName": (200, _strip_or_empty(selection.get("programName"))),
+                "categoryId": (128, _strip_or_empty(selection.get("categoryId"))),
+                "requirementProfileId": (128, _strip_or_empty(selection.get("requirementProfileId"))),
+                "fundingOptionId": (128, _strip_or_empty(selection.get("fundingOptionId"))),
+                "choiceKey": (128, _strip_or_empty(selection.get("choiceKey"))),
+            }
+            for field, (max_length, text) in fields.items():
+                if len(text) > max_length:
+                    raise ValueError(f"{field} exceeds maximum allowed length ({max_length} chars)")
+            normalized = {field: text for field, (_limit, text) in fields.items() if text}
+            if normalized.get("choiceKey") or normalized.get("programId"):
+                out[uni] = normalized
         return out
 
 

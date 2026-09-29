@@ -7,7 +7,7 @@ try:
     from PIL import Image, ImageOps, ImageFilter
 except ImportError as exc:
     raise SystemExit(
-        "Pillow is required for image generation. Install it locally with: python -m pip install Pillow"
+        "Pillow is required for image generation. Install dev dependencies with: uv pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock"
     ) from exc
 
 

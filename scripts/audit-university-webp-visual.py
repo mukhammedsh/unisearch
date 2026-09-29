@@ -7,7 +7,7 @@ try:
     from PIL import Image, ImageChops, ImageStat
 except ImportError as exc:
     raise SystemExit(
-        "Pillow is required for visual image auditing. Install dev dependencies with: pip install -r backend/requirements-dev.txt"
+        "Pillow is required for visual image auditing. Install dev dependencies with: uv pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock"
     ) from exc
 
 

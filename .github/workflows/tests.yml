@@ -31,10 +31,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.19"
+          enable-cache: true
+
       - name: Install backend dependencies
         run: |
-          pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
-          pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
+          uv pip install --system --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 
       - name: Run backend tests
         working-directory: backend
@@ -81,13 +86,19 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.19"
+          enable-cache: true
+
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "20"
 
       - name: Install backend dependencies
-        run: "pip install --require-hashes --only-binary=:all: -r backend/requirements.lock"
+        run: "uv pip install --system --require-hashes --only-binary=:all: -r backend/requirements.lock"
 
       - name: Install node dependencies
         run: npm ci --ignore-scripts
@@ -136,13 +147,19 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.19"
+          enable-cache: true
+
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "20"
 
       - name: Install backend dependencies
-        run: "pip install --require-hashes --only-binary=:all: -r backend/requirements.lock"
+        run: "uv pip install --system --require-hashes --only-binary=:all: -r backend/requirements.lock"
 
       - name: Install node dependencies
         run: npm ci --ignore-scripts

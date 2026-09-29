@@ -8,7 +8,7 @@ Following NIST IR 7608 and OpenSSF guidelines, this document articulates our thr
 
 ## 1. Context and Threat Model
 
-UniSearch is an open-source academic search and recommendation engine helping applicants discover bachelor's degree programs. The system architecture comprises a vanilla JavaScript frontend, a high-throughput Python (FastAPI) microservice, in-memory Redis caching, neural semantic scoring (`multilingual-e5`), and an authoritative JSON data repository.
+UniSearch is an open-source academic search and recommendation engine helping applicants discover university programs across undergraduate, master's, doctoral, and professional study. The system architecture comprises a vanilla JavaScript frontend, a high-throughput Python (FastAPI) microservice, in-memory Redis caching, neural semantic scoring (`multilingual-e5`), and an authoritative JSON data repository.
 
 ### 1.1 Asset Inventory & Critical Claims
 * **Asset 1: Data Integrity of the University Catalog.** The institutional information (tuition, admissions criteria, deadlines) must remain accurate, verified, and tamper-proof.

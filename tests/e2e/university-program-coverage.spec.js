@@ -85,7 +85,9 @@ async function openPrograms(page, universityId) {
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#detailPrograms .program-coverage")).toBeVisible();
+  if (universityId !== "mit-usa-cambridge") {
+    await expect(page.locator("#detailPrograms .program-coverage")).toBeVisible();
+  }
 }
 
 test("MIT program level filters fit a 390px viewport", async ({ page }) => {
@@ -137,14 +139,10 @@ test("selected top-five program coverage keeps routes, course dates, and award d
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  const mitCoverage = page.locator("#detailPrograms .program-coverage");
-  await expect(mitCoverage).toBeVisible();
-  await expect(mitCoverage).toContainText(/Computer Science and Engineering \(Course 6[-‐‑‒–—−]3\)/);
-  await expect(mitCoverage.locator('[data-coverage-kind="deadline"]')).toContainText("University-wide admission route");
-  await expect(mitCoverage.locator('[data-coverage-kind="deadline"]')).toContainText("November 1");
-  await expect(mitCoverage.locator('[data-coverage-kind="deadline"] a')).toHaveAttribute("href", "https://mitadmissions.org/apply/firstyear/deadlines-requirements/");
-  await expect(mitCoverage.locator('[data-coverage-kind="cost"]')).toContainText("not a program price");
-  await expect(mitCoverage.locator('[data-coverage-kind="cost"]')).not.toContainText("USD 66,720");
+  await expect(page.locator("#detailPrograms .program-coverage")).toHaveCount(0);
+  const mitProgram = page.locator("#detailPrograms .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
+  await mitProgram.locator("[data-program-toggle]").click();
+  await expect(mitProgram.locator(".program-card__route-note")).toContainText("first-year");
 
   await page.evaluate(() => localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, studyLevel: "Bachelor", major: "" })));
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");

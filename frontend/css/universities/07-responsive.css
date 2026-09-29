@@ -3,7 +3,6 @@
 }
 
 @media (max-width: 1180px) {
-  .u-page-scope,
   .u-section-bar,
   .u-layout,
   .compare-results {
@@ -11,7 +10,6 @@
     padding-right: 16px;
   }
 
-  .u-page-scope,
   .u-section-bar {
     margin-bottom: 14px;
   }
@@ -233,7 +231,6 @@
     padding-right: 10px;
   }
 
-  .u-page-scope__inner,
   .u-filter-card,
   .u-map-results,
   .u-map-container {
@@ -323,19 +320,9 @@
     padding-bottom: calc(18px + env(safe-area-inset-bottom));
   }
 
-  .u-page-scope,
   .u-layout {
     padding-left: var(--mobile-safe-gutter, 16px);
     padding-right: var(--mobile-safe-gutter, 16px);
-  }
-
-  .u-page-scope__inner {
-    padding: 16px 16px;
-  }
-
-  .u-page-scope__dismiss {
-    width: 44px;
-    height: 44px;
   }
 
   .u-sidebar {
@@ -594,7 +581,6 @@
 }
 
 @media (max-width: 768px) {
-  .u-page-scope,
   .u-section-bar,
   .u-layout,
   .compare-results {
@@ -602,21 +588,8 @@
     padding-right: 12px;
   }
 
-  .u-page-scope__inner,
   .u-filter-card {
     padding: 12px;
-  }
-
-  .u-page-scope__inner {
-    align-items: center;
-  }
-
-  .u-page-scope__eyebrow {
-    margin: 0;
-  }
-
-  .u-page-scope__text {
-    display: none;
   }
 }
 

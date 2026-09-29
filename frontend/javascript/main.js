@@ -535,16 +535,6 @@ async function loadAppRoute(rawHref, options = {}) {
     const html = await fetchRouteHtml(url.href, controller.signal);
     const nextDoc = new DOMParser().parseFromString(html, "text/html");
 
-    try {
-      if (localStorage.getItem("unisearch_universities_scope_notice_dismissed") === "1") {
-        document.documentElement.classList.add("scope-notice-dismissed");
-        const nextNotice = nextDoc.querySelector("#universitiesScopeNotice, #universityScopeNotice, .u-page-scope, .d-page-scope");
-        if (nextNotice) {
-          nextNotice.hidden = true;
-        }
-      }
-    } catch (e) {}
-
     applyTranslations(nextDoc);
     applyAINameConfig(nextDoc);
     hydrateHeroIcons(nextDoc);

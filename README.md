@@ -16,10 +16,10 @@ UniSearch helps applicants discover and compare universities across study levels
 
 - **Catalog on the homepage:** search, location and cost filters, sorting, favorites, and list or clustered map views with progressively loaded map results.
 - **Applicant profile:** GPA and grading scale, exams, languages, budget, optional annual family income, intended major, interests, study mode, funding preferences, education background, study level, entry cycle, and multiple citizenships selected from a searchable country list. Family income is stored on the device and used only to show context against published aid thresholds.
-- **UniFit:** personalized catalog sorting based on the profile and preference sliders, with explanatory tags, including a clear program-not-offered warning when a catalog alternative does not match the intended major. It is a sorting mode within the catalog.
+- **UniFit:** personalized catalog sorting based on the profile, preference sliders, available requirements checks, and the applicant's annual budget when an applicable annual cost is known. It is a sorting mode within the catalog, with explanatory tags and a program-not-offered warning when a catalog alternative does not match the intended major.
 - **University comparison:** select universities and admission options to compare requirements, finances, and personalized estimates.
 - **University details:** programs with search, collapsed detail accordions, and profile-major highlighting, plus admission options, requirements, costs, funding, and student life information where data is available. Selected routes at MIT, Imperial College London, Stanford, Harvard, and Oxford have expanded program-level coverage; this is a pilot, not a complete catalog of each university. The deadlines tab includes a month calendar for exact dated events; approximate and yearless deadlines remain in the timeline and list.
-- **UniChance:** admission estimates for individual admission options using the applicant's profile and available admissions data.
+- **UniChance:** a 0–100 requirements-fit percentage for the applicable admission path, based on the share of measurable published academic and language minimums met. Missing evidence or no measurable minimums produces no score. Historical admitted or enrolled score ranges and acceptance rates are shown separately where available.
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 - **Guide:** a structured reference explaining admission requirements, exams, UniFit, UniChance, and comparison workflows, with section-to-section navigation.
 
@@ -27,7 +27,7 @@ The interface supports English and Russian, multi-currency conversion (60+ curre
 
 ### Understanding the estimates
 
-UniFit measures preference fit and may use the profile budget when ranking options. UniChance estimates admission chances independently of the budget and grant preferences. It uses admitted-student score statistics (`score_profile`) when available; otherwise, it may return a low-confidence estimate or a no-data state. These calculations do not guarantee admission.
+UniFit uses the profile's annual budget against the applicable annual cost before any award; unknown costs and potential grants do not become a zero or a guaranteed discount. UniChance is independent of budget and funding preferences and is not an admission probability or a funding prediction. Both tools preserve missing evidence as unknown rather than filling it with a neutral percentage.
 
 Published family-income thresholds are policy context only. A profile income comparison does not determine financial-aid eligibility or an award amount. Funding details describe published conditions and application steps; they do not guarantee an award, and possible aid is not deducted from displayed costs.
 
@@ -39,7 +39,7 @@ University detail pages include a study-level data coverage summary for programs
 
 ## Run locally
 
-The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from the repository root.
+The CI baseline is **Python 3.12 and Node.js 20**. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first, then run the commands below from the repository root.
 
 1. Install Node dependencies and create a Python environment:
 
@@ -69,7 +69,7 @@ The CI baseline is **Python 3.12 and Node.js 20**. Run the commands below from t
 3. Install backend dependencies:
 
    ```sh
-   python -m pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
+   uv pip install --require-hashes --only-binary=:all: -r backend/requirements.lock
    ```
 
 4. In `backend/.env`, disable interest translation unless you run a separate LibreTranslate service:
@@ -153,7 +153,7 @@ npm run audit:data
 For tests, install the additional dependencies in the active Python environment and the Playwright browser:
 
 ```sh
-python -m pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
+uv pip install --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 npx playwright install chromium
 npm run test:fast               # fast combined unit + backend tests
 npm run test:backend            # all backend tests (or: npm run test:backend -- <test_name>)

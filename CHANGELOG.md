@@ -4,6 +4,37 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 7.2.0 (2026-09-30) - Admissions Context and MIT Catalog
+
+### Added
+- Add sourced English and Russian study summaries, localized department labels, and direct MIT degree-chart links for all active MIT undergraduate options.
+- Add internal EECS MEng study options for MIT Courses 6-7P and 6-14P, linked to their shared application route and official degree charts.
+- Add the MIT Sloan MSMS partner-school application route with its 2027 deadline and a separately dated 2026-27 tuition-and-fee reference.
+- Expand MIT's runtime catalog with sourced master's, doctoral, and advanced professional degree options and their verified program or department application targets.
+- Add the internal MIT Course 6-9P MEng route with published technical and overall GPA minima, its recurring application window, and explicit funding uncertainty.
+- Add source-backed master's and doctoral study descriptions with Russian translations for the new MIT catalog options.
+
+### Changed
+- Correct the EECS MEng application closing description to the last day of finals, as published by MIT EECS.
+- Use profile defaults and restorable detail-page program, study-level, applicant-route, and entry-cycle selections across admissions, qualification guidance, deadlines, costs, and academic estimates. Scope UniFit and ROI inputs to compatible catalogued choices.
+- Define UniChance's percentage as the share of evaluable published academic and language minimums met, with no score when evidence or measurable minimums are missing. Show historical admitted or enrolled score ranges and acceptance rates as separate facts instead of treating them as an admission probability.
+- Include the applicant's annual budget and applicable pre-award annual cost in UniFit ranking when both are known. Omit missing academic and cost components instead of substituting a neutral percentage; keep funding outcomes separate from admission assessment.
+- Keep UniChance unscored when a route's published minima have not been reviewed or cannot be checked from the existing profile, with a distinct explanation for each state.
+
+### Fixed
+- Restore readable university titles and prevent horizontal overflow on mobile after the shared detail-header update; make the no-exact-deadline calendar guidance accurate for collapsed MIT timelines.
+- Add a sourced undergraduate Business Analytics (Course 15-2) curriculum summary and direct MIT catalog and Sloan curriculum links; distinguish degree requirements from admission prerequisites.
+- Group program metadata beside its labels, show study descriptions as readable paragraphs, and expose official program sources and the shared MIT first-year application context. Identify summaries that have not yet been collected, and use a badge instead of a full-card accent fill for the selected major.
+- Keep single-option route and cycle controls visible, distinguish absent published minimums from missing applicant evidence, and make historical score ranges expandable in admission details.
+- Put selected program, route, cycle and official course conditions before optional catalog coverage and historical statistics. Clarify that numerical requirements fit does not assess separate textual conditions.
+- Preserve Russian program selections across admissions and costs, localize reviewed route/deadline/cost text and save-button accessibility labels, and keep Stanford first-year aid deadlines out of transfer funding views with an official transfer next step.
+- Keep Stanford undergraduate Computer Science separate from professional admission summaries and give Imperial Computing BEng/MEng its own officially sourced 2027 requirements.
+- Preserve MIT Spring transfer applicant restrictions beside deadlines and in calendar exports. Keep missing costs distinct from published zero amounts and prevent undergraduate costs from substituting for graduate costs.
+- Remove grant-odds and paid-admission badges that inferred outcomes from the academic fit score.
+- Correct MIT's Common Data Set ACT percentiles and remove unsupported Early Action SAT Composite statistics and mislabeled score averages.
+- Remove an unsupported separate MIT City Planning SM listing and identify the Transportation master's award and application path as MST.
+- Show restricted MIT graduate eligibility in the selected-program admission context and remove an unverified external route for two EECS Engineer awards.
+
 ## 7.1.0 (2026-09-24) - Cover Back Button and Steadier Map Interactions
 
 ### Added

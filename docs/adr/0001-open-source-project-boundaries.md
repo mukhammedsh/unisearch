@@ -8,7 +8,7 @@ UniSearch is published under the MIT License and can be copied, modified, redist
 
 ## Decision
 
-- Keep UniSearch focused on bachelor-level university discovery and decision support.
+- Cover undergraduate, master's, doctoral, and professional university discovery and decision support. Apply admissions facts only to the study options and applicant routes they describe, as defined in the [admissions product model](../admissions-product-model.md).
 - Keep the frontend framework-free: Vanilla JS, HTML, and CSS variables.
 - Keep the backend on FastAPI with explicit schemas and conservative JSON data sources.
 - Accept only official university pages, official admissions pages, or university-hosted PDFs for verified university facts.
@@ -19,5 +19,5 @@ UniSearch is published under the MIT License and can be copied, modified, redist
 ## Consequences
 
 - Forks may change the scope, stack, or data policy under the MIT License, but upstream UniSearch reviews changes against these boundaries.
-- New contributors have a stable reference for why framework migrations, aggregator-sourced data, and broad scope expansion are rejected by default.
+- New contributors have a stable reference for why framework migrations and aggregator-sourced data are rejected by default, while degree-level scope remains open to verified university programs.
 - Future architectural exceptions should be documented with another ADR instead of being hidden in implementation details.

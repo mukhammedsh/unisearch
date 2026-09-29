@@ -1,0 +1,1226 @@
+{
+  "schema_version": "1.0",
+  "institution_id": "mit",
+  "source_fragment": "doctoral-candidates-2026-09-29.json",
+  "checked_at": "2026-09-29",
+  "programs": {
+    "mit-aeroastro-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Aeronautics and Astronautics",
+        "ru": "Доктор философии (PhD) по аэронавтике и астронавтике"
+      },
+      "description": {
+        "en": "Research doctorate in Aeronautics and Astronautics. Apply through the Aeronautics and Astronautics graduate program.",
+        "ru": "Исследовательская докторская программа по аэронавтике и астронавтике. Подавайте заявку через магистерскую и докторскую программу аэронавтики и астронавтики."
+      }
+    },
+    "mit-aeroastro-scd": {
+      "name": {
+        "en": "Doctor of Science in Aeronautics and Astronautics",
+        "ru": "Доктор наук (ScD) по аэронавтике и астронавтике"
+      },
+      "description": {
+        "en": "Research doctorate in Aeronautics and Astronautics. Apply through the Aeronautics and Astronautics graduate program.",
+        "ru": "Исследовательская докторская программа по аэронавтике и астронавтике. Подавайте заявку через магистерскую и докторскую программу аэронавтики и астронавтики."
+      }
+    },
+    "mit-architecture-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Architecture",
+        "ru": "Доктор философии (PhD) по архитектуре"
+      },
+      "description": {
+        "en": "Research doctorate in Architecture. Apply through the Architecture graduate program.",
+        "ru": "Исследовательская докторская программа по архитектуре. Подавайте заявку через магистерскую и докторскую программу архитектуры."
+      }
+    },
+    "mit-biological-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Biological Engineering",
+        "ru": "Доктор философии (PhD) по биоинженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Biological Engineering. Apply through the Biological Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по биоинженерии. Подавайте заявку через магистерскую и докторскую программу биоинженерии."
+      }
+    },
+    "mit-biology-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Biology",
+        "ru": "Доктор философии (PhD) по биологии"
+      },
+      "description": {
+        "en": "Research doctorate in Biology. Apply through the Biology graduate program.",
+        "ru": "Исследовательская докторская программа по биологии. Подавайте заявку через магистерскую и докторскую программу биологии."
+      }
+    },
+    "mit-brain-and-cognitive-sciences-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Brain and Cognitive Sciences",
+        "ru": "Доктор философии (PhD) по наукам о мозге и когнитивных процессах"
+      },
+      "description": {
+        "en": "Research doctorate in Brain and Cognitive Sciences. Apply through the Brain and Cognitive Sciences graduate program.",
+        "ru": "Исследовательская докторская программа по наукам о мозге и когнитивных процессах. Подавайте заявку через магистерскую и докторскую программу наук о мозге и когнитивных процессах."
+      }
+    },
+    "mit-chemical-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Chemical Engineering",
+        "ru": "Доктор философии (PhD) по химической инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Chemical Engineering. Apply through the Chemical Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по химической инженерии. Подавайте заявку через магистерскую и докторскую программу химической инженерии."
+      }
+    },
+    "mit-chemical-engineering-scd": {
+      "name": {
+        "en": "Doctor of Science in Chemical Engineering",
+        "ru": "Доктор наук (ScD) по химической инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Chemical Engineering. Apply through the Chemical Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по химической инженерии. Подавайте заявку через магистерскую и докторскую программу химической инженерии."
+      }
+    },
+    "mit-chemistry-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Chemistry",
+        "ru": "Доктор философии (PhD) по химии"
+      },
+      "description": {
+        "en": "Research doctorate in Chemistry. Apply through the Chemistry graduate program.",
+        "ru": "Исследовательская докторская программа по химии. Подавайте заявку через магистерскую и докторскую программу химии."
+      }
+    },
+    "mit-civil-and-environmental-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Civil and Environmental Engineering",
+        "ru": "Доктор философии (PhD) по строительной и экологической инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Civil and Environmental Engineering. Apply through the Civil and Environmental Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по строительной и экологической инженерии. Подавайте заявку через магистерскую и докторскую программу строительной и экологической инженерии."
+      }
+    },
+    "mit-civil-and-environmental-engineering-scd": {
+      "name": {
+        "en": "Doctor of Science in Civil and Environmental Engineering",
+        "ru": "Доктор наук (ScD) по строительной и экологической инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Civil and Environmental Engineering. Apply through the Civil and Environmental Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по строительной и экологической инженерии. Подавайте заявку через магистерскую и докторскую программу строительной и экологической инженерии."
+      }
+    },
+    "mit-computational-and-systems-biology-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Computational and Systems Biology",
+        "ru": "Доктор философии (PhD) по вычислительной и системной биологии"
+      },
+      "description": {
+        "en": "Research doctorate in Computational and Systems Biology. Apply through the Computational and Systems Biology graduate program.",
+        "ru": "Исследовательская докторская программа по вычислительной и системной биологии. Подавайте заявку через магистерскую и докторскую программу вычислительной и системной биологии."
+      }
+    },
+    "mit-computational-science-and-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Computational Science and Engineering",
+        "ru": "Доктор философии (PhD) по вычислительным наукам и инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Computational Science and Engineering. Apply through the Computational Science and Engineering PhD graduate program.",
+        "ru": "Исследовательская докторская программа по вычислительным наукам и инженерии. Подавайте заявку через магистерскую и докторскую программу вычислительных наук и инженерии (PhD)."
+      }
+    },
+    "mit-earth-atmospheric-and-planetary-sciences-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Earth, Atmospheric, and Planetary Sciences",
+        "ru": "Доктор философии (PhD) по наукам о Земле, атмосфере и планетах"
+      },
+      "description": {
+        "en": "Research doctorate in Earth, Atmospheric, and Planetary Sciences. Apply through the Earth, Atmospheric, and Planetary Sciences graduate program.",
+        "ru": "Исследовательская докторская программа по наукам о Земле, атмосфере и планетах. Подавайте заявку через магистерскую и докторскую программу наук о Земле, атмосфере и планетах."
+      }
+    },
+    "mit-earth-atmospheric-and-planetary-sciences-scd": {
+      "name": {
+        "en": "Doctor of Science in Earth, Atmospheric, and Planetary Sciences",
+        "ru": "Доктор наук (ScD) по наукам о Земле, атмосфере и планетах"
+      },
+      "description": {
+        "en": "Research doctorate in Earth, Atmospheric, and Planetary Sciences. Apply through the Earth, Atmospheric, and Planetary Sciences graduate program.",
+        "ru": "Исследовательская докторская программа по наукам о Земле, атмосфере и планетах. Подавайте заявку через магистерскую и докторскую программу наук о Земле, атмосфере и планетах."
+      }
+    },
+    "mit-economics-phd-course-14": {
+      "name": {
+        "en": "Doctor of Philosophy in Economics (Course 14 PhD)",
+        "ru": "Доктор философии (PhD) по экономике (Course 14 PhD)"
+      },
+      "description": {
+        "en": "Research doctorate in Economics. Apply through the Economics graduate program.",
+        "ru": "Исследовательская докторская программа по экономике. Подавайте заявку через магистерскую и докторскую программу экономики."
+      }
+    },
+    "mit-eecs-phd-course-6": {
+      "name": {
+        "en": "Doctor of Philosophy in Computer Science and Engineering (Course 6 PhD)",
+        "ru": "Доктор философии (PhD) по компьютерным наукам и инженерии (Course 6 PhD)"
+      },
+      "description": {
+        "en": "Research doctorate in Electrical Engineering and Computer Science. Apply through the Electrical Engineering and Computer Science graduate program.",
+        "ru": "Исследовательская докторская программа по компьютерным наукам и инженерии. Подавайте заявку через магистерскую и докторскую программу электротехники и компьютерных наук."
+      }
+    },
+    "mit-eecs-scd": {
+      "name": {
+        "en": "Doctor of Science in Electrical Engineering and Computer Science",
+        "ru": "Доктор наук (ScD) по электротехнике и компьютерным наукам"
+      },
+      "description": {
+        "en": "Research doctorate in Electrical Engineering and Computer Science. Apply through the Electrical Engineering and Computer Science graduate program.",
+        "ru": "Исследовательская докторская программа по электротехнике и компьютерным наукам. Подавайте заявку через магистерскую и докторскую программу электротехники и компьютерных наук."
+      }
+    },
+    "mit-hst-memp-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Medical Engineering and Medical Physics",
+        "ru": "Доктор философии (PhD) по медицинской инженерии и медицинской физике"
+      },
+      "description": {
+        "en": "Research doctorate in Medical Engineering and Medical Physics. Apply through the Health Sciences and Technology (Joint Harvard-MIT Program) graduate program.",
+        "ru": "Исследовательская докторская программа по медицинской инженерии и медицинской физике. Подавайте заявку через магистерскую и докторскую программу наук и технологий в здравоохранении (совместная программа Гарварда и MIT)."
+      }
+    },
+    "mit-hasts-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in History, Anthropology, and Science, Technology, and Society",
+        "ru": "Доктор философии (PhD) по истории, антропологии и исследованиям науки, технологий и общества"
+      },
+      "description": {
+        "en": "Research doctorate in History, Anthropology, and Science, Technology, and Society. Apply through the History, Anthropology, and Science, Technology, and Society graduate program.",
+        "ru": "Исследовательская докторская программа по истории, антропологии и исследованиям науки, технологий и общества. Подавайте заявку через магистерскую и докторскую программу истории, антропологии и исследований науки, технологий и общества."
+      }
+    },
+    "mit-social-and-engineering-systems-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Social and Engineering Systems",
+        "ru": "Доктор философии (PhD) по социальным и инженерным системам"
+      },
+      "description": {
+        "en": "Research doctorate in Social and Engineering Systems. Apply through the Institute for Data, Systems, and Society graduate program.",
+        "ru": "Исследовательская докторская программа по социальным и инженерным системам. Подавайте заявку через магистерскую и докторскую программу Института данных, систем и общества."
+      }
+    },
+    "mit-linguistics-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Linguistics",
+        "ru": "Доктор философии (PhD) по лингвистике"
+      },
+      "description": {
+        "en": "Research doctorate in Linguistics. Apply through the Linguistics graduate program.",
+        "ru": "Исследовательская докторская программа по лингвистике. Подавайте заявку через магистерскую и докторскую программу лингвистики."
+      }
+    },
+    "mit-materials-science-and-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Materials Science and Engineering",
+        "ru": "Доктор философии (PhD) по материаловедению и инженерии материалов"
+      },
+      "description": {
+        "en": "Research doctorate in Materials Science and Engineering. Apply through the Materials Science and Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по материаловедению и инженерии материалов. Подавайте заявку через магистерскую и докторскую программу материаловедения и инженерии материалов."
+      }
+    },
+    "mit-materials-science-and-engineering-scd": {
+      "name": {
+        "en": "Doctor of Science in Materials Science and Engineering",
+        "ru": "Доктор наук (ScD) по материаловедению и инженерии материалов"
+      },
+      "description": {
+        "en": "Research doctorate in Materials Science and Engineering. Apply through the Materials Science and Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по материаловедению и инженерии материалов. Подавайте заявку через магистерскую и докторскую программу материаловедения и инженерии материалов."
+      }
+    },
+    "mit-math-phd-course-18": {
+      "name": {
+        "en": "Doctor of Philosophy in Mathematics (Course 18 PhD)",
+        "ru": "Доктор философии (PhD) по математике (Course 18 PhD)"
+      },
+      "description": {
+        "en": "Research doctorate in Mathematics. Apply through the Mathematics graduate program.",
+        "ru": "Исследовательская докторская программа по математике. Подавайте заявку через магистерскую и докторскую программу математики."
+      }
+    },
+    "mit-mathematics-scd": {
+      "name": {
+        "en": "Doctor of Science in Mathematics",
+        "ru": "Доктор наук (ScD) по математике"
+      },
+      "description": {
+        "en": "Research doctorate in Mathematics. Apply through the Mathematics graduate program.",
+        "ru": "Исследовательская докторская программа по математике. Подавайте заявку через магистерскую и докторскую программу математики."
+      }
+    },
+    "mit-meche-phd-course-2": {
+      "name": {
+        "en": "Doctor of Philosophy in Mechanical Engineering (Course 2 PhD)",
+        "ru": "Доктор философии (PhD) по машиностроению (Course 2 PhD)"
+      },
+      "description": {
+        "en": "Research doctorate in Mechanical Engineering. Apply through the Mechanical Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по машиностроению. Подавайте заявку через магистерскую и докторскую программу машиностроения."
+      }
+    },
+    "mit-mechanical-engineering-scd": {
+      "name": {
+        "en": "Doctor of Science in Mechanical Engineering",
+        "ru": "Доктор наук (ScD) по машиностроению"
+      },
+      "description": {
+        "en": "Research doctorate in Mechanical Engineering. Apply through the Mechanical Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по машиностроению. Подавайте заявку через магистерскую и докторскую программу машиностроения."
+      }
+    },
+    "mit-media-arts-and-sciences-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Media Arts and Sciences",
+        "ru": "Доктор философии (PhD) по медиаискусству и медиаисследованиям"
+      },
+      "description": {
+        "en": "Research doctorate in Media Arts and Sciences. Available only to current MIT Media Arts and Sciences master's students.",
+        "ru": "Исследовательская докторская программа по медиаискусству и медиаисследованиям. Доступна только действующим магистрантам программы Media Arts and Sciences в MIT."
+      },
+      "entry_requirements": {
+        "en": "Current MIT Media Arts and Sciences master's student; the external SM deadline is not a PhD deadline.",
+        "ru": "Действующий магистрант программы Media Arts and Sciences в MIT; срок подачи внешних заявок на SM не относится к поступлению на PhD."
+      }
+    },
+    "mit-microbiology-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Microbiology",
+        "ru": "Доктор философии (PhD) по микробиологии"
+      },
+      "description": {
+        "en": "Research doctorate in Microbiology. Apply through the Microbiology graduate program.",
+        "ru": "Исследовательская докторская программа по микробиологии. Подавайте заявку через магистерскую и докторскую программу микробиологии."
+      }
+    },
+    "mit-sloan-management-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Management",
+        "ru": "Доктор философии (PhD) по менеджменту"
+      },
+      "description": {
+        "en": "Research doctorate in Management. Apply through the MIT Sloan PhD Program graduate program.",
+        "ru": "Исследовательская докторская программа по менеджменту. Подавайте заявку через магистерскую и докторскую программу докторской программы Школы менеджмента MIT Sloan."
+      }
+    },
+    "mit-mit-whoi-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Oceanography and Applied Ocean Science and Engineering",
+        "ru": "Доктор философии (PhD) по океанографии и прикладным океаническим наукам и инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Oceanography and Applied Ocean Science and Engineering. Apply through the MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по океанографии и прикладным океаническим наукам и инженерии. Подавайте заявку через магистерскую и докторскую программу совместной программы MIT и WHOI по океанографии, прикладным океаническим наукам и инженерии."
+      }
+    },
+    "mit-mit-whoi-scd": {
+      "name": {
+        "en": "Doctor of Science in Oceanography and Applied Ocean Science and Engineering",
+        "ru": "Доктор наук (ScD) по океанографии и прикладным океаническим наукам и инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Oceanography and Applied Ocean Science and Engineering. Apply through the MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по океанографии и прикладным океаническим наукам и инженерии. Подавайте заявку через магистерскую и докторскую программу совместной программы MIT и WHOI по океанографии, прикладным океаническим наукам и инженерии."
+      }
+    },
+    "mit-nuclear-science-and-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Nuclear Science and Engineering",
+        "ru": "Доктор философии (PhD) по ядерным наукам и инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Nuclear Science and Engineering. Apply through the Nuclear Science and Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по ядерным наукам и инженерии. Подавайте заявку через магистерскую и докторскую программу ядерных наук и инженерии."
+      }
+    },
+    "mit-nuclear-science-and-engineering-scd": {
+      "name": {
+        "en": "Doctor of Science in Nuclear Science and Engineering",
+        "ru": "Доктор наук (ScD) по ядерным наукам и инженерии"
+      },
+      "description": {
+        "en": "Research doctorate in Nuclear Science and Engineering. Apply through the Nuclear Science and Engineering graduate program.",
+        "ru": "Исследовательская докторская программа по ядерным наукам и инженерии. Подавайте заявку через магистерскую и докторскую программу ядерных наук и инженерии."
+      }
+    },
+    "mit-operations-research-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Operations Research Center",
+        "ru": "Доктор философии (PhD) по исследованию операций"
+      },
+      "description": {
+        "en": "Research doctorate in Operations Research Center. Apply through the Operations Research Center graduate program.",
+        "ru": "Исследовательская докторская программа по исследованию операций. Подавайте заявку через магистерскую и докторскую программу Центра исследования операций."
+      }
+    },
+    "mit-philosophy-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Philosophy",
+        "ru": "Доктор философии (PhD) по философии"
+      },
+      "description": {
+        "en": "Research doctorate in Philosophy. Apply through the Philosophy graduate program.",
+        "ru": "Исследовательская докторская программа по философии. Подавайте заявку через магистерскую и докторскую программу философии."
+      }
+    },
+    "mit-physics-phd-course-8": {
+      "name": {
+        "en": "Doctor of Philosophy in Physics (Course 8 PhD)",
+        "ru": "Доктор философии (PhD) по физике (Course 8 PhD)"
+      },
+      "description": {
+        "en": "Research doctorate in Physics. Apply through the Physics graduate program.",
+        "ru": "Исследовательская докторская программа по физике. Подавайте заявку через магистерскую и докторскую программу физики."
+      }
+    },
+    "mit-physics-scd": {
+      "name": {
+        "en": "Doctor of Science in Physics",
+        "ru": "Доктор наук (ScD) по физике"
+      },
+      "description": {
+        "en": "Research doctorate in Physics. Apply through the Physics graduate program.",
+        "ru": "Исследовательская докторская программа по физике. Подавайте заявку через магистерскую и докторскую программу физики."
+      }
+    },
+    "mit-political-science-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Political Science",
+        "ru": "Доктор философии (PhD) по политологии"
+      },
+      "description": {
+        "en": "Research doctorate in Political Science. Apply through the Political Science graduate program.",
+        "ru": "Исследовательская докторская программа по политологии. Подавайте заявку через магистерскую и докторскую программу политологии."
+      }
+    },
+    "mit-ppsm-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Polymers and Soft Matter",
+        "ru": "Доктор философии (PhD) по полимерам и мягкому веществу"
+      },
+      "description": {
+        "en": "Research doctorate in Polymers and Soft Matter. Apply through a participating MIT home department and identify PPSM in that application.",
+        "ru": "Исследовательская докторская программа по полимерам и мягкому веществу. Подавайте заявку через один из участвующих департаментов MIT и укажите PPSM в заявке."
+      },
+      "entry_requirements": {
+        "en": "Apply to Biological Engineering, Chemistry, Chemical Engineering, Materials Science and Engineering, or Mechanical Engineering; identify PPSM and submit its notification letter. Admission to the home department is required before PPSM consideration.",
+        "ru": "Подайте заявку в один из департаментов: Biological Engineering, Chemistry, Chemical Engineering, Materials Science and Engineering или Mechanical Engineering. Укажите PPSM и направьте уведомительное письмо. Для рассмотрения в PPSM сначала требуется поступить в выбранный департамент."
+      }
+    },
+    "mit-transportation-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Transportation",
+        "ru": "Доктор философии (PhD) по транспортным системам"
+      },
+      "description": {
+        "en": "Research doctorate in Transportation. Apply through the Transportation graduate program.",
+        "ru": "Исследовательская докторская программа по транспортным системам. Подавайте заявку через магистерскую и докторскую программу транспортных систем."
+      }
+    },
+    "mit-urban-studies-and-planning-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Urban Studies and Planning",
+        "ru": "Доктор философии (PhD) по исследованиям городов и городскому планированию"
+      },
+      "description": {
+        "en": "Research doctorate in Urban Studies and Planning. Apply through the Urban Studies and Planning graduate program.",
+        "ru": "Исследовательская докторская программа по исследованиям городов и городскому планированию. Подавайте заявку через магистерскую и докторскую программу исследований городов и городского планирования."
+      }
+    },
+    "mit-cse-civil-engineering-and-computation-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Civil Engineering and Computation",
+        "ru": "Доктор философии (PhD) по строительной инженерии и вычислительным методам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-environmental-engineering-and-computation-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Environmental Engineering and Computation",
+        "ru": "Доктор философии (PhD) по экологической инженерии и вычислительным методам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-mechanical-engineering-and-computation-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Mechanical Engineering and Computation",
+        "ru": "Доктор философии (PhD) по машиностроению и вычислительным методам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-computational-materials-science-and-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Computational Materials Science and Engineering",
+        "ru": "Доктор философии (PhD) по вычислительному материаловедению и инженерии материалов"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-chemical-engineering-and-computation-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Chemical Engineering and Computation",
+        "ru": "Доктор философии (PhD) по химической инженерии и вычислительным методам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-computational-earth-atmospheric-and-planetary-sciences-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Computational Earth, Atmospheric and Planetary Sciences",
+        "ru": "Доктор философии (PhD) по вычислительным наукам о Земле, атмосфере и планетах"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-aerospace-engineering-and-computational-science-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Aerospace Engineering and Computational Science",
+        "ru": "Доктор философии (PhD) по аэрокосмической инженерии и вычислительным наукам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-mathematics-and-computational-science-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Mathematics and Computational Science",
+        "ru": "Доктор философии (PhD) по математике и вычислительным наукам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-nuclear-engineering-and-computation-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Nuclear Engineering and Computation",
+        "ru": "Доктор философии (PhD) по ядерной инженерии и вычислительным методам"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-cse-computational-nuclear-science-and-engineering-phd": {
+      "name": {
+        "en": "Doctor of Philosophy in Computational Nuclear Science and Engineering",
+        "ru": "Доктор философии (PhD) по вычислительным ядерным наукам и инженерии"
+      },
+      "description": {
+        "en": "Joint department and Computational Science and Engineering doctoral program. Applicants select the joint program in the MIT CSE application; applicants cannot apply to both standalone and joint CSE in the same cycle.",
+        "ru": "Совместная докторская программа профильного департамента и программы вычислительных наук и инженерии. В заявке MIT CSE нужно выбрать совместную программу; в одном цикле нельзя одновременно подать заявку на отдельную и совместную программы CSE."
+      }
+    },
+    "mit-chemical-engineering-practice-phdcep": {
+      "name": {
+        "en": "Doctor of Philosophy in Chemical Engineering Practice (PhDCEP)",
+        "ru": "Доктор философии (PhD) по практической химической инженерии (PhDCEP)"
+      },
+      "description": {
+        "en": "Chemical Engineering Practice doctoral option listed by the department. Confirm its application choice and any prerequisites before publication as a separately selectable route.",
+        "ru": "Департамент указывает докторскую программу по практической химической инженерии. Перед публикацией в качестве отдельного варианта подачи следует уточнить выбор программы в заявке и условия поступления."
+      }
+    },
+    "mit-idps-statistics-phd": {
+      "name": {
+        "en": "Interdisciplinary PhD in Statistics",
+        "ru": "Междисциплинарная программа PhD по статистике"
+      },
+      "description": {
+        "en": "Secondary doctoral path for current MIT students in participating doctoral programs. Students submit an internal selection form after enrollment.",
+        "ru": "Дополнительная докторская программа для действующих докторантов участвующих программ MIT. После зачисления студенты подают внутреннюю форму отбора."
+      },
+      "entry_requirements": {
+        "en": "Current doctoral student in a participating MIT program; selection form is submitted between the end of the second semester and the penultimate semester.",
+        "ru": "Действующий докторант участвующей программы MIT; внутреннюю форму отбора подают после второго семестра и не позднее предпоследнего семестра докторской программы."
+      }
+    },
+    "mit-transportation-scd": {
+      "name": {
+        "en": "Doctor of Science in Transportation",
+        "ru": "Доктор наук (ScD) по транспортным системам"
+      },
+      "description": {
+        "en": "Interdisciplinary doctoral study in transportation with an individualized program crossing academic disciplines and departments. The MIT Course Catalog states graduates may receive a PhD or ScD in Transportation.",
+        "ru": "Междисциплинарная докторская программа по транспортным системам с индивидуальным учебным планом, охватывающим разные дисциплины и департаменты. Согласно каталогу MIT, выпускники могут получить степень PhD или ScD по транспортным системам."
+      }
+    }
+  },
+  "routes": {
+    "mit_aeroastro_doctoral_admissions": {
+      "label": {
+        "en": "Aeronautics and Astronautics doctoral admission",
+        "ru": "Поступление в докторантуру программы аэронавтики и астронавтики"
+      },
+      "target": {
+        "en": "Aeronautics and Astronautics graduate application",
+        "ru": "Заявка на обучение по программе аэронавтики и астронавтики"
+      }
+    },
+    "mit_architecture_doctoral_admissions": {
+      "label": {
+        "en": "Architecture doctoral admission",
+        "ru": "Поступление в докторантуру программы архитектуры"
+      },
+      "target": {
+        "en": "Architecture graduate application",
+        "ru": "Заявка на обучение по программе архитектуры"
+      }
+    },
+    "mit_biological_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Biological Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы биоинженерии"
+      },
+      "target": {
+        "en": "Biological Engineering graduate application",
+        "ru": "Заявка на обучение по программе биоинженерии"
+      }
+    },
+    "mit_biology_doctoral_admissions": {
+      "label": {
+        "en": "Biology doctoral admission",
+        "ru": "Поступление в докторантуру программы биологии"
+      },
+      "target": {
+        "en": "Biology graduate application",
+        "ru": "Заявка на обучение по программе биологии"
+      }
+    },
+    "mit_brain_and_cognitive_sciences_doctoral_admissions": {
+      "label": {
+        "en": "Brain and Cognitive Sciences doctoral admission",
+        "ru": "Поступление в докторантуру программы наук о мозге и когнитивных процессах"
+      },
+      "target": {
+        "en": "Brain and Cognitive Sciences graduate application",
+        "ru": "Заявка на обучение по программе наук о мозге и когнитивных процессах"
+      }
+    },
+    "mit_chemical_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Chemical Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы химической инженерии"
+      },
+      "target": {
+        "en": "Chemical Engineering graduate application",
+        "ru": "Заявка на обучение по программе химической инженерии"
+      }
+    },
+    "mit_chemistry_doctoral_admissions": {
+      "label": {
+        "en": "Chemistry doctoral admission",
+        "ru": "Поступление в докторантуру программы химии"
+      },
+      "target": {
+        "en": "Chemistry graduate application",
+        "ru": "Заявка на обучение по программе химии"
+      }
+    },
+    "mit_civil_and_environmental_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Civil and Environmental Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы строительной и экологической инженерии"
+      },
+      "target": {
+        "en": "Civil and Environmental Engineering graduate application",
+        "ru": "Заявка на обучение по программе строительной и экологической инженерии"
+      }
+    },
+    "mit_computational_and_systems_biology_doctoral_admissions": {
+      "label": {
+        "en": "Computational and Systems Biology doctoral admission",
+        "ru": "Поступление в докторантуру программы вычислительной и системной биологии"
+      },
+      "target": {
+        "en": "Computational and Systems Biology graduate application",
+        "ru": "Заявка на обучение по программе вычислительной и системной биологии"
+      }
+    },
+    "mit_computational_science_and_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Computational Science and Engineering PhD doctoral admission",
+        "ru": "Поступление в докторантуру программы вычислительных наук и инженерии (PhD)"
+      },
+      "target": {
+        "en": "Computational Science and Engineering PhD graduate application",
+        "ru": "Заявка на обучение по программе вычислительных наук и инженерии (PhD)"
+      },
+      "application_choice": {
+        "en": "Standalone CSE PhD or joint Department-CSE PhD; the same applicant may not choose both in one cycle.",
+        "ru": "Отдельная программа CSE PhD или совместная программа профильного департамента и CSE PhD; в одном цикле кандидат может выбрать только один из этих вариантов."
+      }
+    },
+    "mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions": {
+      "label": {
+        "en": "Earth, Atmospheric, and Planetary Sciences doctoral admission",
+        "ru": "Поступление в докторантуру программы наук о Земле, атмосфере и планетах"
+      },
+      "target": {
+        "en": "Earth, Atmospheric, and Planetary Sciences graduate application",
+        "ru": "Заявка на обучение по программе наук о Земле, атмосфере и планетах"
+      }
+    },
+    "mit_economics_doctoral_admissions": {
+      "label": {
+        "en": "Economics doctoral admission",
+        "ru": "Поступление в докторантуру программы экономики"
+      },
+      "target": {
+        "en": "Economics graduate application",
+        "ru": "Заявка на обучение по программе экономики"
+      }
+    },
+    "mit_eecs_doctoral_admissions": {
+      "label": {
+        "en": "Electrical Engineering and Computer Science doctoral admission",
+        "ru": "Поступление в докторантуру программы электротехники и компьютерных наук"
+      },
+      "target": {
+        "en": "Electrical Engineering and Computer Science graduate application",
+        "ru": "Заявка на обучение по программе электротехники и компьютерных наук"
+      }
+    },
+    "mit_hst_memp_doctoral_admissions": {
+      "label": {
+        "en": "Health Sciences and Technology (Joint Harvard-MIT Program) doctoral admission",
+        "ru": "Поступление в докторантуру программы наук и технологий в здравоохранении (совместная программа Гарварда и MIT)"
+      },
+      "target": {
+        "en": "Health Sciences and Technology (Joint Harvard-MIT Program) graduate application",
+        "ru": "Заявка на обучение по программе наук и технологий в здравоохранении (совместная программа Гарварда и MIT)"
+      }
+    },
+    "mit_hasts_doctoral_admissions": {
+      "label": {
+        "en": "History, Anthropology, and Science, Technology, and Society doctoral admission",
+        "ru": "Поступление в докторантуру программы истории, антропологии и исследований науки, технологий и общества"
+      },
+      "target": {
+        "en": "History, Anthropology, and Science, Technology, and Society graduate application",
+        "ru": "Заявка на обучение по программе истории, антропологии и исследований науки, технологий и общества"
+      }
+    },
+    "mit_social_and_engineering_systems_doctoral_admissions": {
+      "label": {
+        "en": "Institute for Data, Systems, and Society doctoral admission",
+        "ru": "Поступление в докторантуру программы Института данных, систем и общества"
+      },
+      "target": {
+        "en": "Institute for Data, Systems, and Society graduate application",
+        "ru": "Заявка на обучение по программе Института данных, систем и общества"
+      }
+    },
+    "mit_linguistics_doctoral_admissions": {
+      "label": {
+        "en": "Linguistics doctoral admission",
+        "ru": "Поступление в докторантуру программы лингвистики"
+      },
+      "target": {
+        "en": "Linguistics graduate application",
+        "ru": "Заявка на обучение по программе лингвистики"
+      }
+    },
+    "mit_materials_science_and_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Materials Science and Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы материаловедения и инженерии материалов"
+      },
+      "target": {
+        "en": "Materials Science and Engineering graduate application",
+        "ru": "Заявка на обучение по программе материаловедения и инженерии материалов"
+      }
+    },
+    "mit_mathematics_doctoral_admissions": {
+      "label": {
+        "en": "Mathematics doctoral admission",
+        "ru": "Поступление в докторантуру программы математики"
+      },
+      "target": {
+        "en": "Mathematics graduate application",
+        "ru": "Заявка на обучение по программе математики"
+      }
+    },
+    "mit_mechanical_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Mechanical Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы машиностроения"
+      },
+      "target": {
+        "en": "Mechanical Engineering graduate application",
+        "ru": "Заявка на обучение по программе машиностроения"
+      }
+    },
+    "mit_microbiology_doctoral_admissions": {
+      "label": {
+        "en": "Microbiology doctoral admission",
+        "ru": "Поступление в докторантуру программы микробиологии"
+      },
+      "target": {
+        "en": "Microbiology graduate application",
+        "ru": "Заявка на обучение по программе микробиологии"
+      }
+    },
+    "mit_sloan_management_doctoral_admissions": {
+      "label": {
+        "en": "MIT Sloan PhD Program doctoral admission",
+        "ru": "Поступление в докторантуру программы докторской программы Школы менеджмента MIT Sloan"
+      },
+      "target": {
+        "en": "MIT Sloan PhD Program graduate application",
+        "ru": "Заявка на обучение по программе докторской программы Школы менеджмента MIT Sloan"
+      }
+    },
+    "mit_mit_whoi_doctoral_admissions": {
+      "label": {
+        "en": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы совместной программы MIT и WHOI по океанографии, прикладным океаническим наукам и инженерии"
+      },
+      "target": {
+        "en": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate application",
+        "ru": "Заявка на обучение по программе совместной программы MIT и WHOI по океанографии, прикладным океаническим наукам и инженерии"
+      }
+    },
+    "mit_nuclear_science_and_engineering_doctoral_admissions": {
+      "label": {
+        "en": "Nuclear Science and Engineering doctoral admission",
+        "ru": "Поступление в докторантуру программы ядерных наук и инженерии"
+      },
+      "target": {
+        "en": "Nuclear Science and Engineering graduate application",
+        "ru": "Заявка на обучение по программе ядерных наук и инженерии"
+      }
+    },
+    "mit_operations_research_doctoral_admissions": {
+      "label": {
+        "en": "Operations Research Center doctoral admission",
+        "ru": "Поступление в докторантуру программы Центра исследования операций"
+      },
+      "target": {
+        "en": "Operations Research Center graduate application",
+        "ru": "Заявка на обучение по программе Центра исследования операций"
+      }
+    },
+    "mit_philosophy_doctoral_admissions": {
+      "label": {
+        "en": "Philosophy doctoral admission",
+        "ru": "Поступление в докторантуру программы философии"
+      },
+      "target": {
+        "en": "Philosophy graduate application",
+        "ru": "Заявка на обучение по программе философии"
+      }
+    },
+    "mit_physics_phd_admissions": {
+      "label": {
+        "en": "Physics doctoral admission",
+        "ru": "Поступление в докторантуру программы физики"
+      },
+      "target": {
+        "en": "Physics graduate application",
+        "ru": "Заявка на обучение по программе физики"
+      }
+    },
+    "mit_political_science_doctoral_admissions": {
+      "label": {
+        "en": "Political Science doctoral admission",
+        "ru": "Поступление в докторантуру программы политологии"
+      },
+      "target": {
+        "en": "Political Science graduate application",
+        "ru": "Заявка на обучение по программе политологии"
+      }
+    },
+    "mit_transportation_doctoral_admissions": {
+      "label": {
+        "en": "Transportation doctoral admission",
+        "ru": "Поступление в докторантуру программы транспортных систем"
+      },
+      "target": {
+        "en": "Transportation graduate application",
+        "ru": "Заявка на обучение по программе транспортных систем"
+      }
+    },
+    "mit_urban_studies_and_planning_doctoral_admissions": {
+      "label": {
+        "en": "Urban Studies and Planning doctoral admission",
+        "ru": "Поступление в докторантуру программы исследований городов и городского планирования"
+      },
+      "target": {
+        "en": "Urban Studies and Planning graduate application",
+        "ru": "Заявка на обучение по программе исследований городов и городского планирования"
+      }
+    }
+  },
+  "program_description_updates": {
+    "mit-aeroastro-phd": {
+      "en": "Research areas include aircraft and space systems, propulsion, autonomous systems, controls, and aerospace computational engineering.",
+      "ru": "Исследования охватывают авиационные и космические системы, двигательные установки, автономные системы, управление и вычислительные методы в аэрокосмической инженерии.",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-aeroastro-scd": {
+      "en": "Research areas include aircraft and space systems, propulsion, autonomous systems, controls, and aerospace computational engineering.",
+      "ru": "Исследования охватывают авиационные и космические системы, двигательные установки, автономные системы, управление и вычислительные методы в аэрокосмической инженерии.",
+      "source_url": "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-architecture-phd": {
+      "en": "Doctoral research may focus on architectural design, urbanism, building technology, computation, or the history and theory of architecture and art.",
+      "ru": "Докторские исследования могут быть посвящены архитектурному проектированию, урбанистике, строительным технологиям, вычислительным методам, истории и теории архитектуры и искусства.",
+      "source_url": "https://oge.mit.edu/programs/architecture/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-biological-engineering-phd": {
+      "en": "Research spans biological imaging, biomaterials, biomechanics, synthetic biology, drug delivery, and tissue engineering.",
+      "ru": "Исследования охватывают биологическую визуализацию, биоматериалы, биомеханику, синтетическую биологию, доставку лекарств и тканевую инженерию.",
+      "source_url": "https://oge.mit.edu/programs/biological-engineering-2/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-biology-phd": {
+      "en": "Research areas include cell and developmental biology, genetics, immunology, microbiology, neurobiology, and structural biology.",
+      "ru": "Направления исследований включают клеточную биологию и биологию развития, генетику, иммунологию, микробиологию, нейробиологию и структурную биологию.",
+      "source_url": "https://oge.mit.edu/programs/biology/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-brain-and-cognitive-sciences-phd": {
+      "en": "Research connects cellular and molecular neuroscience, cognitive science, computation, and systems neuroscience.",
+      "ru": "Исследования объединяют клеточную и молекулярную нейронауку, когнитивные науки, вычислительные методы и системную нейронауку.",
+      "source_url": "https://oge.mit.edu/programs/brain-and-cognitive-sciences/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-chemical-engineering-phd": {
+      "en": "Research spans catalysis, biotechnology, energy engineering, materials, polymers, process systems, and molecular simulation.",
+      "ru": "Исследования охватывают катализ, биотехнологии, энергетическую инженерию, материалы, полимеры, технологические системы и молекулярное моделирование.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-chemical-engineering-scd": {
+      "en": "Research spans catalysis, biotechnology, energy engineering, materials, polymers, process systems, and molecular simulation.",
+      "ru": "Исследования охватывают катализ, биотехнологии, энергетическую инженерию, материалы, полимеры, технологические системы и молекулярное моделирование.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-chemistry-phd": {
+      "en": "The department lists research in chemical biology, inorganic, organic and physical chemistry, materials, and theory.",
+      "ru": "Департамент ведёт исследования в химической биологии, неорганической, органической и физической химии, материаловедении и теоретической химии.",
+      "source_url": "https://oge.mit.edu/programs/chemistry/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-civil-and-environmental-engineering-phd": {
+      "en": "Research areas include environmental chemistry, hydrology, climate, structural mechanics, materials, and transportation networks.",
+      "ru": "Направления исследований включают химию окружающей среды, гидрологию, климат, механику конструкций, материалы и транспортные сети.",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-civil-and-environmental-engineering-scd": {
+      "en": "Research areas include environmental chemistry, hydrology, climate, structural mechanics, materials, and transportation networks.",
+      "ru": "Направления исследований включают химию окружающей среды, гидрологию, климат, механику конструкций, материалы и транспортные сети.",
+      "source_url": "https://oge.mit.edu/programs/civil-and-environmental-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-computational-and-systems-biology-phd": {
+      "en": "Research combines biological networks, genomics, single-cell methods, precision medicine, and machine learning.",
+      "ru": "Исследования объединяют биологические сети, геномику, методы изучения отдельных клеток, персонализированную медицину и машинное обучение.",
+      "source_url": "https://oge.mit.edu/programs/computational-and-systems-biology/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-computational-science-and-engineering-phd": {
+      "en": "The standalone CSE PhD develops computation-focused research across disciplines; joint Department-CSE PhD options integrate computation with a specific engineering or science field.",
+      "ru": "Отдельная программа CSE PhD посвящена междисциплинарным исследованиям в области вычислительных методов; совместные программы профильного департамента и CSE объединяют вычислительные методы с конкретной инженерной или естественно-научной областью.",
+      "source_url": "https://cse.mit.edu/programs-admissions/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-civil-engineering-and-computation-phd": {
+      "en": "Joint doctoral research in Civil Engineering and Computation integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по строительной инженерии и вычислительным методам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-environmental-engineering-and-computation-phd": {
+      "en": "Joint doctoral research in Environmental Engineering and Computation integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по экологической инженерии и вычислительным методам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-mechanical-engineering-and-computation-phd": {
+      "en": "Joint doctoral research in Mechanical Engineering and Computation integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по машиностроению и вычислительным методам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-computational-materials-science-and-engineering-phd": {
+      "en": "Joint doctoral research in Computational Materials Science and Engineering integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по вычислительному материаловедению и инженерии материалов: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-chemical-engineering-and-computation-phd": {
+      "en": "Joint doctoral research in Chemical Engineering and Computation integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по химической инженерии и вычислительным методам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-computational-earth-atmospheric-and-planetary-sciences-phd": {
+      "en": "Joint doctoral research in Computational Earth, Atmospheric and Planetary Sciences integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по вычислительным наукам о Земле, атмосфере и планетах: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-aerospace-engineering-and-computational-science-phd": {
+      "en": "Joint doctoral research in Aerospace Engineering and Computational Science integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по аэрокосмической инженерии и вычислительным наукам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-mathematics-and-computational-science-phd": {
+      "en": "Joint doctoral research in Mathematics and Computational Science integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по математике и вычислительным наукам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-nuclear-engineering-and-computation-phd": {
+      "en": "Joint doctoral research in Nuclear Engineering and Computation integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по ядерной инженерии и вычислительным методам: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-cse-computational-nuclear-science-and-engineering-phd": {
+      "en": "Joint doctoral research in Computational Nuclear Science and Engineering integrates computation with the named disciplinary field.",
+      "ru": "Совместная докторская программа по вычислительным ядерным наукам и инженерии: исследования объединяют вычислительные методы с указанной предметной областью.",
+      "source_url": "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-earth-atmospheric-and-planetary-sciences-phd": {
+      "en": "Research covers atmospheric and climate science, geobiology, geochemistry, geology, geophysics, and planetary science.",
+      "ru": "Исследования охватывают науки об атмосфере и климате, геобиологию, геохимию, геологию, геофизику и планетологию.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-earth-atmospheric-and-planetary-sciences-scd": {
+      "en": "Research covers atmospheric and climate science, geobiology, geochemistry, geology, geophysics, and planetary science.",
+      "ru": "Исследования охватывают науки об атмосфере и климате, геобиологию, геохимию, геологию, геофизику и планетологию.",
+      "source_url": "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-economics-phd-course-14": {
+      "en": "Research areas include econometrics, development, labor, finance, health, macroeconomics, microeconomics, and political economy.",
+      "ru": "Направления исследований включают эконометрику, развитие, экономику труда, финансы, здравоохранение, макроэкономику, микроэкономику и политическую экономию.",
+      "source_url": "https://oge.mit.edu/programs/economics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-eecs-phd-course-6": {
+      "en": "Research spans circuits and devices, energy and photonics, computer systems, theory, artificial intelligence, robotics, and machine learning.",
+      "ru": "Исследования охватывают схемы и устройства, энергетику и фотонику, компьютерные системы, теорию, искусственный интеллект, робототехнику и машинное обучение.",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-eecs-scd": {
+      "en": "Research spans circuits and devices, energy and photonics, computer systems, theory, artificial intelligence, robotics, and machine learning.",
+      "ru": "Исследования охватывают схемы и устройства, энергетику и фотонику, компьютерные системы, теорию, искусственный интеллект, робототехнику и машинное обучение.",
+      "source_url": "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-hst-memp-phd": {
+      "en": "The Medical Engineering and Medical Physics program supports research in biomedical imaging, medical devices, computational biology, regenerative medicine, and related health technologies.",
+      "ru": "Программа медицинской инженерии и медицинской физики охватывает биомедицинскую визуализацию, медицинские устройства, вычислительную биологию, регенеративную медицину и смежные технологии здравоохранения.",
+      "source_url": "https://oge.mit.edu/programs/harvard-mit-health-sciences-and-technology/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-hasts-phd": {
+      "en": "The interdisciplinary HASTS program studies the social, cultural, and political life of science and technology through history, anthropology, and science and technology studies.",
+      "ru": "Междисциплинарная программа HASTS изучает социальные, культурные и политические аспекты науки и технологий с помощью истории, антропологии и исследований науки и технологий.",
+      "source_url": "https://hasts.mit.edu/about/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-social-and-engineering-systems-phd": {
+      "en": "Social and Engineering Systems research includes autonomous and energy systems, finance, social networks, and urban systems.",
+      "ru": "Исследования социальных и инженерных систем охватывают автономные и энергетические системы, финансы, социальные сети и городские системы.",
+      "source_url": "https://oge.mit.edu/programs/institute-for-data-systems-and-society/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-linguistics-phd": {
+      "en": "The doctoral curriculum develops research in generative linguistics, with a focus on formal models of human language.",
+      "ru": "Докторская программа готовит к исследованиям в генеративной лингвистике с акцентом на формальные модели человеческого языка.",
+      "source_url": "https://linguistics.mit.edu/graduate/curriculum/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-materials-science-and-engineering-phd": {
+      "en": "Research areas include biomedical, electronic, photonic, structural, and polymeric materials, as well as computational materials science.",
+      "ru": "Исследования охватывают биомедицинские, электронные, фотонные, конструкционные и полимерные материалы, а также вычислительное материаловедение.",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-materials-science-and-engineering-scd": {
+      "en": "Research areas include biomedical, electronic, photonic, structural, and polymeric materials, as well as computational materials science.",
+      "ru": "Исследования охватывают биомедицинские, электронные, фотонные, конструкционные и полимерные материалы, а также вычислительное материаловедение.",
+      "source_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-math-phd-course-18": {
+      "en": "Research spans algebra, geometry, analysis, applied mathematics, probability, statistics, and scientific computation.",
+      "ru": "Исследования охватывают алгебру, геометрию, анализ, прикладную математику, теорию вероятностей, статистику и научные вычисления.",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-mathematics-scd": {
+      "en": "Research spans algebra, geometry, analysis, applied mathematics, probability, statistics, and scientific computation.",
+      "ru": "Исследования охватывают алгебру, геометрию, анализ, прикладную математику, теорию вероятностей, статистику и научные вычисления.",
+      "source_url": "https://oge.mit.edu/programs/mathematics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-meche-phd-course-2": {
+      "en": "Research areas include mechanics, design and manufacturing, energy, fluid dynamics, robotics, biomaterials, and ocean engineering.",
+      "ru": "Направления исследований включают механику, проектирование и производство, энергетику, гидродинамику, робототехнику, биоматериалы и океаническую инженерию.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-mechanical-engineering-scd": {
+      "en": "Research areas include mechanics, design and manufacturing, energy, fluid dynamics, robotics, biomaterials, and ocean engineering.",
+      "ru": "Направления исследований включают механику, проектирование и производство, энергетику, гидродинамику, робототехнику, биоматериалы и океаническую инженерию.",
+      "source_url": "https://oge.mit.edu/programs/mechanical-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-media-arts-and-sciences-phd": {
+      "en": "Media Lab research groups work across areas such as affective computing, biomechatronics, city science, personal robots, and tangible media. The PhD is available only to current MIT Media Arts and Sciences master’s students.",
+      "ru": "Исследовательские группы Media Lab работают, в частности, над аффективными вычислениями, биомехатроникой, наукой о городах, персональными роботами и осязаемыми медиа. PhD доступна только действующим магистрантам программы Media Arts and Sciences в MIT.",
+      "source_url": "https://oge.mit.edu/programs/media-arts-and-sciences/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-microbiology-phd": {
+      "en": "Research areas include microbial genetics and physiology, host–microbe interactions, virology, microbial ecology, and computational microbiology.",
+      "ru": "Исследования охватывают генетику и физиологию микроорганизмов, взаимодействия микробов с организмом хозяина, вирусологию, микробную экологию и вычислительную микробиологию.",
+      "source_url": "https://oge.mit.edu/programs/microbiology/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-sloan-management-phd": {
+      "en": "Research fields include accounting, finance, marketing, organization studies, system dynamics, and technological innovation.",
+      "ru": "Направления исследований включают бухгалтерский учёт, финансы, маркетинг, изучение организаций, системную динамику и технологические инновации.",
+      "source_url": "https://oge.mit.edu/programs/mit-sloan-phd-program/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-mit-whoi-phd": {
+      "en": "Research areas span biological, chemical, and physical oceanography, marine geology and geophysics, and applied ocean science and engineering.",
+      "ru": "Исследования охватывают биологическую, химическую и физическую океанографию, морскую геологию и геофизику, а также прикладные океанические науки и инженерию.",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-mit-whoi-scd": {
+      "en": "Research areas span biological, chemical, and physical oceanography, marine geology and geophysics, and applied ocean science and engineering.",
+      "ru": "Исследования охватывают биологическую, химическую и физическую океанографию, морскую геологию и геофизику, а также прикладные океанические науки и инженерию.",
+      "source_url": "https://oge.mit.edu/programs/mit-whoi-joint-program-in-oceanography-applied-ocean-science-and-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-nuclear-science-and-engineering-phd": {
+      "en": "Research areas include fission reactors and fuel cycles, fusion and plasma physics, nuclear security, materials, and quantum engineering.",
+      "ru": "Исследования охватывают реакторы деления и топливные циклы, термоядерный синтез и физику плазмы, ядерную безопасность, материалы и квантовую инженерию.",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-nuclear-science-and-engineering-scd": {
+      "en": "Research areas include fission reactors and fuel cycles, fusion and plasma physics, nuclear security, materials, and quantum engineering.",
+      "ru": "Исследования охватывают реакторы деления и топливные циклы, термоядерный синтез и физику плазмы, ядерную безопасность, материалы и квантовую инженерию.",
+      "source_url": "https://oge.mit.edu/programs/nuclear-science-and-engineering/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-operations-research-phd": {
+      "en": "The interdepartmental program develops optimization, stochastic modeling, statistics, machine learning, and decision methods for real problems.",
+      "ru": "Междепартаментская программа развивает методы оптимизации, стохастического моделирования, статистики, машинного обучения и принятия решений для решения практических задач.",
+      "source_url": "https://oge.mit.edu/programs/operations-research-center/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-philosophy-phd": {
+      "en": "The doctoral curriculum includes logic, ethics, metaphysics, epistemology, philosophy of science and language, and the history of philosophy.",
+      "ru": "Докторская программа включает логику, этику, метафизику, эпистемологию, философию науки и языка, а также историю философии.",
+      "source_url": "https://philosophy.mit.edu/phd",
+      "verified_at": "2026-09-29"
+    },
+    "mit-physics-phd-course-8": {
+      "en": "Experimental and theoretical research spans astrophysics, condensed matter, high-energy and nuclear physics, plasma physics, and quantum information science.",
+      "ru": "Экспериментальные и теоретические исследования охватывают астрофизику, физику конденсированного состояния, физику высоких энергий и ядра, физику плазмы и квантовую информацию.",
+      "source_url": "https://oge.mit.edu/programs/physics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-physics-scd": {
+      "en": "Experimental and theoretical research spans astrophysics, condensed matter, high-energy and nuclear physics, plasma physics, and quantum information science.",
+      "ru": "Экспериментальные и теоретические исследования охватывают астрофизику, физику конденсированного состояния, физику высоких энергий и ядра, физику плазмы и квантовую информацию.",
+      "source_url": "https://oge.mit.edu/programs/physics/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-political-science-phd": {
+      "en": "Research areas include American and comparative politics, international relations, political economy, security studies, and political methods.",
+      "ru": "Направления исследований включают американскую и сравнительную политику, международные отношения, политическую экономию, исследования безопасности и политологические методы.",
+      "source_url": "https://oge.mit.edu/programs/political-science/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-ppsm-phd": {
+      "en": "The interdisciplinary program studies biomaterials, functional and nanostructured polymers, polymer mechanics and physics, self-assembly, and related topics. Applicants apply through a participating home department.",
+      "ru": "Междисциплинарная программа изучает биоматериалы, функциональные и наноструктурированные полимеры, механику и физику полимеров, самосборку и смежные темы. Заявку подают через один из участвующих департаментов.",
+      "source_url": "https://oge.mit.edu/programs/program-in-polymers-and-soft-matter/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-transportation-phd": {
+      "en": "The interdepartmental doctorate combines transportation systems analysis with an individually designed study across areas such as optimization, planning and policy, logistics, and demand.",
+      "ru": "Междепартаментская докторская программа сочетает анализ транспортных систем с индивидуальным учебным планом по таким направлениям, как оптимизация, планирование и политика, логистика и моделирование спроса.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-transportation-scd": {
+      "en": "The interdepartmental doctorate combines transportation systems analysis with an individually designed study across areas such as optimization, planning and policy, logistics, and demand.",
+      "ru": "Междепартаментская докторская программа сочетает анализ транспортных систем с индивидуальным учебным планом по таким направлениям, как оптимизация, планирование и политика, логистика и моделирование спроса.",
+      "source_url": "https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-urban-studies-and-planning-phd": {
+      "en": "Research areas include city design, housing, environmental policy, community and economic development, urban data science, and mobility.",
+      "ru": "Исследования охватывают городское проектирование, жильё, экологическую политику, развитие местных сообществ и экономики, городскую аналитику и мобильность.",
+      "source_url": "https://oge.mit.edu/programs/urban-studies-and-planning/",
+      "verified_at": "2026-09-29"
+    },
+    "mit-chemical-engineering-practice-phdcep": {
+      "en": "Chemical Engineering Practice doctoral option listed by the department. Confirm its application choice and any prerequisites before publication as a separately selectable route.",
+      "ru": "Департамент указывает докторскую программу по практической химической инженерии. Перед публикацией в качестве отдельного варианта подачи следует уточнить выбор программы в заявке и условия поступления.",
+      "source_url": "https://oge.mit.edu/programs/chemical-engineering/",
+      "verified_at": "2026-09-29",
+      "status": "existing_specific_description"
+    },
+    "mit-idps-statistics-phd": {
+      "en": "Secondary doctoral path for current MIT students in participating doctoral programs. Students submit an internal selection form after enrollment.",
+      "ru": "Дополнительная докторская программа для действующих докторантов участвующих программ MIT. После зачисления студенты подают внутреннюю форму отбора.",
+      "source_url": "https://stat.mit.edu/academics/idps/",
+      "verified_at": "2026-09-29",
+      "status": "existing_specific_description"
+    }
+  }
+}

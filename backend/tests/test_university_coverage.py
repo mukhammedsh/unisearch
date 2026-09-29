@@ -13,13 +13,34 @@ class UniversityCoverageTests(unittest.TestCase):
     def setUpClass(cls):
         cls.client = TestClient(app)
 
+    def test_mit_graduate_routes_keep_awards_and_eligibility_scoped(self):
+        university = get_university_by_id("mit-usa-cambridge")
+        programs = {row["id"]: row for row in university["academics"]["programs"]}
+        routes = {row["id"]: row for row in university["admission_categories"]}
+
+        self.assertNotIn("mit-city-planning-sm-mit-grad-urban-studies-and-planning", programs)
+        mst = programs["mit-transportation-sm-mit-grad-transportation"]
+        self.assertEqual(mst["name"], "Master of Science in Transportation (MST)")
+        route = routes[mst["admission_route_id"]]
+        self.assertEqual(route["program_ids"], [mst["id"]])
+        self.assertEqual(route["requirement_profiles"][0]["requirements_review_status"], "not_reviewed")
+        self.assertEqual(route["requirement_profiles"][0]["requirements"], {})
+        self.assertNotIn("mit_grad_eecs_engineer_admissions", routes)
+        for id in ("mit-engineer-electrical", "mit-engineer-computer-science"):
+            self.assertNotIn("admission_route_id", programs[id])
+        self.assertIn(
+            "before applying",
+            programs["mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"]["entry_requirements"],
+        )
+
     def test_pilot_detail_api_reports_level_scoped_coverage(self):
         response = self.client.get("/universities/mit-usa-cambridge")
         self.assertEqual(response.status_code, 200)
         coverage = response.json().get("coverage_by_level")
         program_coverage = response.json().get("coverage_by_program")
-        self.assertEqual(set(coverage), {"bachelor", "master", "doctorate", "mba"})
+        self.assertEqual(set(coverage), {"bachelor", "master", "doctorate", "professional", "mba"})
         self.assertTrue(program_coverage)
+        self.assertEqual(coverage["professional"]["programs"], "available")
 
         self.assertEqual(coverage["bachelor"]["programs"], "available")
         self.assertEqual(
@@ -352,6 +373,17 @@ class UniversityCoverageTests(unittest.TestCase):
         self.assertEqual(eecs["tuition_mandatory_fees"]["cycle"].split(";")[0], "2026-27 standard graduate full tuition per fall/spring term")
         self.assertEqual([award["id"] for award in eecs["awards"]["items"]], ["mit-eecs-phd-funding"])
         self.assertFalse(any(award["id"] == "mit-eecs-phd-funding" for award in mechanical["awards"]["items"]))
+
+    def test_mit_msms_keeps_current_cost_unknown_and_older_fee_as_reference(self):
+        mit = get_university_by_id("mit-usa-cambridge", localized=True)
+        msms = next(row for row in mit["coverage_by_program"] if row["program_id"] == "mit-sloan-msms")
+        self.assertEqual("2027-02-18", msms["deadline"]["values"][0]["date"])
+        fees = msms["tuition_mandatory_fees"]
+        self.assertEqual("not_catalogued", fees["status"])
+        self.assertEqual("unknown", fees["publication_status"])
+        self.assertEqual({}, fees["values"])
+        self.assertEqual(91892, fees["historical_price_facts"][0]["amount"])
+        self.assertEqual("tuition_and_mandatory_fee", fees["historical_price_facts"][0]["kind"])
 
     def test_stanford_mba_fellowship_and_oxford_course_award_are_scoped(self):
         stanford = get_university_by_id("stanford-university-usa-ca", localized=True)["coverage_by_program"]

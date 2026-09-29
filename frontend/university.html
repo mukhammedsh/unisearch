@@ -6,7 +6,7 @@
   <base href="/" />
   <link rel="icon" href="/images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.university">University | UniSearch</title>
-  <meta name="description" content="Detailed university profile, undergraduate tuition fees, admission requirements, deadlines, and financial aid information." />
+  <meta name="description" content="Explore university programs, admission requirements, deadlines, costs, and funding across study levels." />
   <meta name="theme-color" content="#5D17EB" />
 
   <!-- Open Graph / Facebook / Telegram -->
@@ -20,7 +20,7 @@
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1586" />
   <meta property="og:image:height" content="992" />
-  <meta property="og:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta property="og:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -28,7 +28,7 @@
   <meta name="twitter:title" content="University Details | UniSearch" />
   <meta name="twitter:description" content="In-depth university breakdown: tuition, acceptance requirements, and financial aid." />
   <meta name="twitter:image" content="https://unisearch-frontend.onrender.com/images/unisearch-preview.png" />
-  <meta name="twitter:image:alt" content="UniSearch — Undergraduate university discovery and admissions comparison platform" />
+  <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="/javascript/theme-init.js"></script>
 
@@ -44,17 +44,6 @@
   </div>
   <main class="d-page">
     <div class="d-container">
-      <section id="universityScopeNotice" class="d-page-scope" aria-label="Current study scope">
-        <div class="d-page-scope__inner">
-          <div class="d-page-scope__content">
-            <p class="d-page-scope__eyebrow" data-i18n="university.scope_badge">Academic Explorer</p>
-            <p class="d-page-scope__text" data-i18n="university.scope_summary">Compare programs, application deadlines, and tuition information across study levels. Funding and eligibility depend on the program and applicant category.</p>
-          </div>
-          <button id="dismissUniversityScopeNotice" class="d-page-scope__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.scope_note.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.scope_note.dismiss">
-            <span data-heroicon="x-mark" data-icon-size="18"></span>
-          </button>
-        </div>
-      </section>
       <div id="detailState" class="d-state"></div>
       <section id="detailLoading" class="d-loading" aria-hidden="true">
         <div class="d-loading-card">
@@ -94,7 +83,7 @@
                   <span data-heroicon="map-pin" data-icon-size="20"></span>
                   <span class="d-site-link-label" data-i18n="university.action.map">Map</span>
                 </a>
-                <button id="detailSaveBtn" class="d-site-link" title="Save" data-i18n-title="university.action.save" aria-label="Save" aria-pressed="false">
+                <button id="detailSaveBtn" class="d-site-link" title="Save" data-i18n-title="university.action.save" aria-label="Save" data-i18n-aria-label="university.action.save_label" aria-pressed="false">
                   <span data-heroicon="star" data-icon-size="20" class="uni-action-icon"></span>
                   <span class="d-site-link-label" data-i18n="university.action.save_label">Save</span>
                 </button>
@@ -132,11 +121,13 @@
             <div class="d-box">
                <div class="d-box-title" data-i18n="university.overview">Overview</div>
                <div id="detailRecommendations" class="d-box-text"></div>
-               <section class="university-coverage-section" aria-labelledby="universityCoverageTitle">
-                 <h3 id="universityCoverageTitle" class="university-coverage-section__title" data-i18n="university.coverage.title">Data coverage in UniSearch</h3>
+               <details class="university-coverage-section">
+                 <summary id="universityCoverageTitle" class="university-coverage-section__title" data-i18n="university.coverage.title">Data coverage in UniSearch</summary>
+                 <div class="university-coverage-section__content">
                  <p class="d-box-note university-coverage-section__note" data-i18n="university.coverage.note">This shows what UniSearch currently has catalogued. “Not catalogued” does not tell you whether the university offers it.</p>
                  <div id="detailCoverage" class="d-box-text"></div>
-               </section>
+                 </div>
+               </details>
             </div>
           </div>
 
@@ -171,7 +162,7 @@
              <div class="d-box finance-box">
               <header class="finance-section-header">
                 <h2 class="d-box-title" data-i18n="university.finance.title">Costs &amp; funding</h2>
-                <p class="d-box-note" data-i18n="university.finance.intro">Compare the estimated annual budget for each available funding option.</p>
+                <p class="d-box-note" data-i18n="university.finance.intro">Review published annual costs and funding opportunities.</p>
               </header>
 
               <div class="finance-summary-container">

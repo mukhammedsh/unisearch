@@ -176,11 +176,7 @@ export const compareSelectedRequirementKeys = (u) => {
 export const compareSelectedAverageKeys = (u) => {
     const option = compareSelectedAdmissionOption(u);
     const stats = (option?.stats_avg && typeof option.stats_avg === "object") ? option.stats_avg : {};
-    const keys = Object.keys(stats).filter((key) => compareAverageScoreValue(u, key) !== null);
-    const scoreProfile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
-    const profileExam = String(scoreProfile?.exam_id || "").trim();
-    if (profileExam && compareAverageScoreValue(u, profileExam) !== null) keys.push(profileExam);
-    return Array.from(new Set(keys));
+    return Object.keys(stats).filter((key) => compareAverageScoreValue(u, key) !== null);
 };
 
 export const compareSelectedLanguageRequirementKeys = (u) => {
@@ -210,14 +206,7 @@ export const compareAverageScoreValue = (u, examId) => {
         const n = toFiniteNumber(value);
         if (n !== null) values.push(n);
     });
-    if (values.length) return Math.max(...values);
-    const scoreProfile = (option?.score_profile && typeof option.score_profile === "object") ? option.score_profile : null;
-    const compatible = Array.isArray(scoreProfile?.compatible_exam_ids) ? scoreProfile.compatible_exam_ids : [];
-    const profileExams = [scoreProfile?.exam_id, ...compatible].map(canonicalizeExamId).filter(Boolean);
-    if (profileExams.includes(canonicalizeExamId(examId))) {
-        return toFiniteNumber(scoreProfile?.median_raw ?? scoreProfile?.median_normalized);
-    }
-    return null;
+    return values.length ? Math.max(...values) : null;
 };
 
 export const compareLanguageRequirementValue = (u, examId) => {
@@ -817,22 +806,21 @@ const selectedChanceForUniversity = (university, context = {}) => {
 };
 
 const compareChanceFactText = (chance) => {
+    if (String(chance?.scoreMeaning || "").trim() !== "published_requirements_met_percent") {
+        return t("admission.requirements_fit.unavailable_method", "Requirements fit score is unavailable because its meaning could not be confirmed.");
+    }
     const value = toFiniteNumber(chance?.chancePercent ?? chance?.overallChance);
     if (value !== null && chance?.chanceAvailable !== false) {
-        const confidence = String(chance?.confidence || chance?.confidenceLevel || "").trim().toLowerCase();
-        const confidenceLabels = {
-            high: t("universities.compare.confidence.high", "high confidence"),
-            medium: t("universities.compare.confidence.medium", "medium confidence"),
-            low: t("universities.compare.confidence.low", "low confidence"),
-        };
-        const confidenceText = confidenceLabels[confidence] || t("universities.compare.confidence.estimated", "estimated");
-        return `${comparePercentText(value)} · ${confidenceText}`;
+        return comparePercentText(value);
     }
     const reason = String(chance?.reason || "").trim().toLowerCase();
     if (reason === "requirements_not_met") {
         return t("admission.chance.requirements_not_met", "A required minimum is not met");
     }
-    return t("universities.compare.profile_missing", "Add the required profile evidence");
+    return t(
+        "admission.requirements_fit.insufficient_data",
+        "There is not enough applicable requirements or profile evidence to calculate this fit score."
+    );
 };
 
 const compareAdmissionTheme = (universities, context) => {
@@ -848,7 +836,7 @@ const compareAdmissionTheme = (universities, context) => {
     const summary = !publishedAvailable
         ? t("universities.compare.admissions.missing", "Published admission data is incomplete, so no selectivity comparison is made.")
         : (comparable
-            ? t("universities.compare.admissions.comparable", "Published rates describe selectivity, not your personal probability of admission.")
+            ? t("universities.compare.admissions.comparable", "Published acceptance rates are institution or course statistics; they are separate from your requirements fit score.")
             : t("universities.compare.admissions.incomparable", "The published rates use different course or institution scopes, audiences, or cycles."));
 
     return {
@@ -871,7 +859,7 @@ const compareAdmissionTheme = (universities, context) => {
                 id: String(university?.id || ""),
                 name: compareUniversityName(university),
                 facts: [
-                    compareDecisionFact(t("universities.compare.personal_estimate", "Personal estimate"), compareChanceFactText(chance)),
+                    compareDecisionFact(t("universities.compare.requirements_fit_score", "Requirements fit score"), compareChanceFactText(chance)),
                     compareDecisionFact(
                         t("universities.compare.published_rate", "Published selectivity"),
                         publishedValue,

@@ -7,9 +7,12 @@ Items are ordered by strategic execution phases and dependencies rather than fix
 
 The [admissions product model](admissions-product-model.md) is the current contract for university catalog and applicant-journey work. Its sequence is:
 
-1. Define the new data model and inventory the complete official degree-level study options for MIT, Imperial College London, Stanford, Harvard, and Oxford. Keep incompatible records as drafts until runtime integration.
-2. Update backend and frontend together so applicants can see the real application target, relevant route, scoped requirements, deadlines, costs, and funding.
-3. Refresh and migrate the other 45 universities using the proven model.
+1. Connect existing profile fields to one selected applicant context across admissions, scoring, deadlines, costs, and funding; fix confirmed cross-program, level, route, and cycle leakage.
+2. Define UniFit, UniChance, and budget-ranking semantics. Validate guest and profile journeys for MIT Course 6-3 first-year and transfer, Imperial Computing MEng through UCAS, and Stanford Computer Science through university-wide first-year and transfer routes.
+3. Have the user review the representative applicant experience before mass migration. MIT's complete all-level catalog inventory remains open but does not block validation of these contrasting cases; complete it before claiming MIT coverage.
+4. Extend the reviewed model to the remaining top-five universities, then refresh and migrate the other 45 using the verified model.
+
+Use profile fields that already exist, including education country and credential, applicant route, intended entry cycle, current residence, and self-reported fee-status context. Do not add a duplicate questionnaire. Do not infer immigration status, university-assessed Home/Overseas fee status, or aid eligibility from residence or nationality alone; show unknown when applicability is not established.
 
 This work covers undergraduate, master's, doctoral, and professional study now. It does not depend on the authentication, PostgreSQL, or mobile milestones below. Reassess the ordering of those separate tracks after the admissions migration.
 
@@ -48,7 +51,7 @@ Phase 4: Academic Expansion & Community
 * **Key Tasks:**
   - **Design & Typography:** Audit all screens against the Calm Academic Workspace specification (`frontend/css/style.css`, `docs/design-system.md`). Eliminate visual noise, unnecessary box borders, and align spacing to the 4/8-px grid.
   - **Static & Token Guards:** Ensure 100% pass rate across baseline health scripts (`npm run check:tokens`, `npm run check:i18n`, `npm run audit:data`).
-  - **Catalog Verification:** Follow the admissions-model sequence above; do not claim complete top-five or 50-university program coverage from the current runtime catalog.
+  - **Catalog Verification:** Follow the admissions-model sequence above; do not claim complete top-five or 50-university program coverage from the current runtime catalog. Validate scope across the representative admission routes before beginning mass migration.
   - **Test Suite Depth:** Cover critical user journeys with Playwright E2E scenarios and maintain >= 80% statement and branch coverage across both frontend and backend.
 
 ### 2. Percentage GPA Scale Support (0–100%)
@@ -58,7 +61,7 @@ Phase 4: Academic Expansion & Community
 * **Goal:** Add academic performance input and evaluation using percentage scales (0–100%) to accommodate international applicants (CIS, Central Asia, Europe) whose secondary education does not use standard 4.0 GPA.
 * **Key Tasks:**
   - **Frontend:** Add a scale selector (4.0 / 5.0 / 100%) in the catalog filters and UniChance profile drawer.
-  - **Backend:** Implement robust score normalization in `backend/app/services/ai_scoring.py` for admission probability estimation.
+  - **Backend:** Implement robust score normalization in `backend/app/services/ai_scoring.py` for scoped academic-evidence comparison. Any probability presentation must meet the evidence and calibration requirements in the admissions product model.
   - **Validation:** Enforce bounds validation (0–100) and reject malformed inputs.
   - **Localization:** Provide English and Russian localization strings in `frontend/Localization/`.
 * **Dependencies:** Follows completion of the UI stabilization cycle.

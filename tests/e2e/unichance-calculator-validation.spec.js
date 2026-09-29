@@ -2,13 +2,14 @@ const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
 
 test.describe("UniChance Calculator Validation", () => {
-  test("anonymous user sees an unavailable personal chance", async ({ page }) => {
+  test("anonymous user sees unavailable requirements fit", async ({ page }) => {
     // 1. Open Nazarbayev University page without a filled profile
     await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
     await expect(page.locator("#detailCard")).toBeVisible();
 
     // 2. Click the "Admission" tab
     await page.click(".d-tab-btn[data-tab='tab-admission']");
+    await page.locator(".mit-admission-analysis summary").click();
 
     // 3. Missing profile evidence is not represented as a fabricated 0%.
     const chancePercent = page.locator(".chance-percent");
@@ -16,7 +17,7 @@ test.describe("UniChance Calculator Validation", () => {
     await expect(chancePercent).toHaveClass(/chance-low/);
   });
 
-  test("user with strong profile sees positive admission chances and high chance badges", async ({ page }) => {
+  test("user with strong profile sees positive requirements fit", async ({ page }) => {
     // 1. Set strong profile (ruStemGrant: SAT 1490, IELTS 7.5, GPA 3.84)
     await seedProfile(page, personas.ruStemGrant.profile);
 
@@ -26,12 +27,13 @@ test.describe("UniChance Calculator Validation", () => {
 
     // 3. Click the "Admission" tab
     await page.click(".d-tab-btn[data-tab='tab-admission']");
+    await page.locator(".mit-admission-analysis summary").click();
 
     // 4. Empty profile warning should not be visible
     const warning = page.locator(".chance-warning");
     await expect(warning).not.toBeVisible();
 
-    // 5. Should display high chance percentage (>= 45%)
+    // 5. The percentage represents published minimum checks met, not admission probability.
     const chancePercent = page.locator(".chance-percent");
     await expect(chancePercent).toBeVisible();
     const percentText = await chancePercent.textContent();

@@ -8,6 +8,14 @@ This document defines the target product and data model for the top-five migrati
 
 ## Applicant-facing model
 
+### Decision outcome
+
+The primary outcome is a useful shortlist that an applicant can explain: what they could study, which application path applies, which published requirements their evidence meets or leaves unresolved, what the applicable cost is, and why an option matches their preferences. Kazakhstan applicants are a key audience; citizenship, education system, and qualification must remain separate so that studying abroad or holding multiple citizenships does not select the wrong rules.
+
+The intended journey is optional profile or manual context → relevant study options and a reasoned shortlist → actual application target and applicable route → scoped requirements, dates, costs, and funding. A university dossier supports that decision. Catalog size and coverage badges alone do not establish that the journey works.
+
+Keep the verified MIT facts and its explanation of post-admission major selection. Rework the shared selection and scoring path where required; a full codebase rewrite is not an agreed prerequisite. Validate contrasting institutional and course-specific applications before scaling the current MIT interface to more institutions.
+
 The applicant moves through four connected concepts:
 
 1. **Discovery subject** — a broad subject or specialty the applicant wants to explore, such as computer science, economics, or biomedical engineering. This is a search and discovery concept. It may map to multiple programs and does not itself imply an application route.
@@ -146,6 +154,35 @@ The final schema may use a different nesting or field names. It must preserve th
 
 ## Applicant interface implications
 
+### Reuse the existing profile
+
+The profile already collects and persists the following context, and `frontend/javascript/utils/persistence.js` sends it to the API. A field being accepted by the API does not prove that route filtering, scoring, or every detail section uses it.
+
+| Existing input | Required use in the journey |
+| --- | --- |
+| Citizenship(s) | Review explicitly nationality-dependent route or aid rules; retain unknown applicability when other legal criteria are missing. |
+| Country of education and credential/curriculum | Select matching qualification guidance and subject/grade rules; exam scores alone do not establish recognition of the qualification. |
+| Applicant route (`first_year`, `transfer`, `graduate`) | Narrow the actual application paths, their requirements, and relevant dates. |
+| Intended entry cycle | Select facts for that cycle; identify yearless, conflicting, or unavailable information explicitly. |
+| Current country of residence | Use only where an official rule depends on residence. It does not establish immigration or permanent-resident status. |
+| Self-reported fee status | Show the appropriate fee context where applicable, with its self-reported status; do not treat this global hint as a confirmed classification by every university. |
+| Study level, subject, exams, languages, and GPA | Identify relevant options and compare evidence against scoped requirements. |
+| Budget and preferences | Explain affordability and preference fit using the selected option's known costs; potential aid is separate from awarded aid. |
+
+Use populated profile values without asking the same questions again. Let a visitor choose or override the context for an individual university without rewriting their general profile. Ask only for a missing detail that changes applicability; otherwise show the unresolved state and official next action. If a route depends on a legal status the profile does not hold, do not infer it from nationality or current residence.
+
+One selected context must govern the program-to-admission transition, requirements, dates, finance, qualification guidance, and the estimate summary. Manual selection must be restorable after reload or opening a supported link, and a profile update must not leave a stale summary from another program or level. Keep fact groups distinguishable within that context; a particular tab count or page layout remains an implementation decision.
+
+### Detail-page context contract
+
+The detail page uses local URL overrides before a supported saved program selection and profile defaults. Selecting a program does not change the general profile. Supported query parameters are `admission_program` (a catalog program ID), `admission_level` (the applicable level key), `admission_route` (`first_year`, `transfer`, or `graduate`), and `admission_cycle` (the source cycle or an explicit entry year/term). Reload and browser history restore these overrides. Invalid identifiers must not create an application target or an estimate.
+
+For example, `university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor&admission_level=bachelor&admission_route=first_year&admission_cycle=Fall%202027` opens the reviewed MIT undergraduate interest in its first-year context. The interest remains distinct from the institutional application target.
+
+The request-local profile uses the existing `study_level`, `applicant_route`, `intended_entry_cycle`, and `selectedAdmissionChoices[university_id].programId` fields. A program-only selection is valid and does not require an invented `choiceKey`. Estimates and ranking exclude explicitly incompatible linked programs, levels, routes, and cycles. Missing scope metadata remains unresolved; it does not prove eligibility. An academic-year range does not automatically establish an entry cycle.
+
+Costs from another explicitly dated academic year may be shown as source-labelled references, but must not appear as a confirmed current-cycle price. Missing amounts remain unknown; a published zero remains zero. This context integration does not calibrate admission probabilities or change ranking weights.
+
 The interface should make the context legible before showing a fact:
 
 1. Let the applicant search or browse by subject/specialty and narrow by study level and location as those filters become available.
@@ -155,26 +192,57 @@ The interface should make the context legible before showing a fact:
 5. For each key fact, make source and checked date available. Distinguish a published value, confirmed lack of publication, and review needed in plain language. Link to the specific official page or PDF.
 6. Never imply a verified chance of admission or a guaranteed award from an estimate. Explain what evidence or applicant details would be needed for a more useful estimate.
 
+The reviewed detail-page layout puts the selected program/route/cycle before requirement facts and provides the relevant official application link with deadline and cost actions. Catalog coverage and historical statistics remain expandable. When a numerical fit is available alongside textual conditions, explicitly state that subjects, grades, documents and other eligibility conditions need separate review. A localized program title must not replace its stable ID in saved selections or API requests.
+
+Program summaries must distinguish a collected catalog entry from a researched study description. A title and study level alone do not establish that curriculum or program facts are unavailable from the university. Show the official program source and identify an incomplete summary when details have not been collected. Keep curriculum and degree-completion requirements separate from applicant admission requirements; institution-wide admission remains shared even when the study option has a detailed curriculum.
+
+Funding records can declare `applicant_routes` when their verified applicability is route-specific. Filter a record only for a known incompatible route; absent route metadata does not establish ineligibility. If no award is catalogued for the selection, say so without implying that the applicant cannot receive aid and use the applicable category's `funding_source_url` for an official next step where available.
+
+Browsing and manual selection must work without an account or completed profile. A visitor can choose a study option, applicant category, route, and intake to read applicable official facts. A profile may narrow choices and improve estimates, but missing profile fields must leave applicability or UniChance unknown/low-confidence rather than silently choose an applicant category, exam, or funding status.
+
+An exam is evidence used by a route, not necessarily a separate application route. A university may accept SAT or ACT through the same first-year application; another program may require a distinct assessment or application. Funding is a related decision after the applicable admission path is known. A grant, assistantship, or self-funded outcome may add its own eligibility, documents, dates, or costs, and should become a separate admission route only when the institution actually uses a separate admission process.
+
+UniFit should compare preferences, subject fit, affordability, and applicable routes. Any academic estimate used by ranking must belong to that context and have a disclosed evidence basis. It must not maximize over routes the applicant cannot use, treat a funding outcome as a second admission chance, or turn an estimate without matching evidence into a verified probability. A guest can still compare official program and route facts manually.
+
+### Scoring meaning and unresolved decisions
+
+- **UniFit:** personalized suitability ranking. Compare the profile's annual USD budget with the selected route's applicable annual USD cost. A known price above budget lowers the recommendation without hiding it. An unknown price remains unknown, and a possible grant is not subtracted before an award is confirmed. The finance-versus-prestige preference is a separate input. A dated price from another entry cycle cannot establish current affordability; a published zero remains a known zero.
+- **UniChance direction:** retain a 0–100 percentage, provisionally under the UniChance name, for the share of evaluable published academic and language minimum checks the applicant meets on the selected admission path. This is a requirements match, not a probability of admission, a share of all holistic admission criteria, or a funding prediction. Missing required evidence, a route whose minima have not been reviewed, or a route with no measurable published minimums produces no percentage; the last two states must have distinct explanations. Published minima that the profile cannot assess, such as MIT Course 6-9P's separate technical and overall GPA thresholds, also produce no percentage. An unmet known minimum can produce a real zero. Admitted-score distributions and acceptance rates remain separately labelled context; neither generates or adjusts this percentage. A probability claim requires calibration against real application outcomes in the same scope.
+- **Unknown evidence:** preserve no-data states in the API, presentation, and ranking. If a route has no requirements-match percentage, omit that component from its ranking score and normalize the remaining available components; disclose that academic evidence did not inform the order. Never substitute a neutral 50%, treat missing evidence as a pass or fail, or display it as zero.
+- **Funding:** review affordability and award applicability separately from admission. A paid or grant outcome is not another admission chance unless a genuinely different admissions process exists.
+- **Interest matching:** the current semantic ranking is university-level. Do not claim that it recommends or estimates a particular course until the selected course and its applicable route are used end to end.
+
+UniFit uses a lower-is-better score. Preference mismatch and requirements gap have weights 0.60 and 0.40 when semantic matching is unavailable; with university-level semantic matching they have weights 0.35 and 0.30, with semantic gap at 0.35. When both a positive annual budget and applicable annual cost are known, affordability gap is `max(0, 1 - budget / cost)` with weight 0.20; a known cost within budget, including published zero, has gap zero. Missing requirements or cost omits that component, and the weighted sum is divided by the sum of available weights. Published cost ranges contribute only when the whole range is within budget or its minimum is above budget; otherwise affordability is unresolved. Existing missing-program and negligible-semantic-match penalties remain. The score is a ranking aid, not a probability or a guarantee that an applicant qualifies or receives aid.
+
+The final UniChance name, whether a probability can later be supported by outcome data, and future calibration of the ranking weights remain open product decisions. Before changing weights, check representative cases: a known price just above budget must rank lower than the same option within budget; missing cost must not become zero or a grant-adjusted price; a missing academic match must not become an invented 50%; and paid/grant funding on one application path must not create different admission assessments. Do not select new weights solely to produce attractive percentages.
+
 Follow the established Calm Academic Workspace and localization rules in `AGENTS.md` when these implications are implemented. This document defines product meaning, not a new visual system.
 
 ## Delivery sequence
 
 Keep product direction and execution order explicit:
 
-### Phase 1 — top-five data and schema
+### Phase 0 — prove the shared decision journey
 
-1. Build the top-five university inventories first: MIT, Imperial College London, Stanford, Harvard, and Oxford.
-2. Inventory all degree-level study options in each university's official catalog across undergraduate, master's, doctoral, and professional study. Map their subjects, application targets, routes, applicant categories, cycles/rounds, and fact scopes from official sources. Record when an option is post-admission or is not itself an application target. Do not present the currently represented records as a complete inventory without checking each official catalog.
-3. Draft and review the target data contract against real cases before building broad abstractions. Mark missing or conflicting official facts honestly.
-4. Publish a canonical, legacy-free schema and example template for data contributors. Agents may add or consolidate fields in the draft schema as real official facts require, documenting their scope and an example. Existing API or frontend compatibility must not block draft data entry; integration checks belong to Phase 2.
-5. If the target representation is incompatible with the live `backend/data/universities.json` readers, keep the canonical top-five draft outside the active runtime data path until the backend and frontend migration is ready. An illustrative location such as `docs/data-drafts/top-five-admissions.json` is not an established repository path; inspect current conventions and choose the actual draft location during implementation.
-6. Do not partially replace active records in a way that makes the current app misread them. The draft can be authoritative for the planned model without becoming runtime input prematurely.
+1. Connect the existing profile and manual program selection to one applicable context across the backend, frontend, scoring, and saved selections. Reuse inspected helpers and fields; extend the contract only for a demonstrated missing distinction.
+2. Resolve the concrete scope, requirement, unknown-cost, and state-restoration problems tracked in [the task checklist](../todo.md). Recheck official facts for affected routes before modifying data.
+3. Define honest UniFit/UniChance semantics and the budget/unknown-evidence behavior, then implement and verify the affected calculation and presentation together.
+4. Exercise MIT Course 6-3 first-year and transfer, Imperial Computing MEng undergraduate-entry UCAS, and Stanford undergraduate Computer Science first-year and transfer. These are contrast cases, not claims of full university coverage. Include guests, populated and incomplete synthetic profiles, reload, context changes, English/Russian, desktop/mobile, and light/dark themes.
+5. Let the user review the working journey and incorporate concrete usability findings before mass catalog migration. Keep an additional reviewed MIT graduate/doctoral example to catch undergraduate fact leakage.
 
-### Phase 2 — backend and frontend
+Completing every MIT catalog record is not a prerequisite for this contrast-case review. MIT remains the main inventory pilot, and full degree-level coverage remains in scope.
 
-After the top-five model and records have been reviewed, migrate backend loading, API contracts, frontend rendering, and any affected search/scoring consumers together. Present the route and scoped facts accurately in applicant journeys. Compatibility is a migration choice, not a permanent requirement: no legacy compatibility reader is required long term. Avoid breaking the current app midway; switch runtime data and consumers as a coordinated change, then remove obsolete paths once no longer needed.
+### Phase 1 — complete the MIT catalog and integrated routes
 
-Verify that the API and UI resolve each selected study option to the correct application target, do not leak a fact across routes or cycles, distinguish admission from funding deadlines, and preserve unknown states. Test representative institutional, course-specific, graduate, doctoral, professional, and post-offer cases before the top-five data becomes public runtime guidance.
+1. Finish the dated official degree-level inventory across undergraduate, graduate, doctoral, and professional study, including internal MEng and Sloan cases. Preserve unresolved classifications and official next actions.
+2. Finalize the smallest canonical schema and contributor example based on the reviewed journey. Keep incompatible drafts outside the active catalog until readers are ready; remove obsolete readers after integration.
+3. Integrate accepted records and verify all relevant MIT applicant paths using the proven shared context. Review the full MIT experience with the user. Do not equate completion of Phase 0 with complete MIT coverage.
+
+### Phase 2 — extend the reviewed model to the other top-five universities
+
+Inventory Imperial College London, Stanford, Harvard, and Oxford from their official degree-level catalogs. Extend the schema only for verified cases MIT cannot express, then migrate each institution's reviewed data and applicant journey in coherent batches. Preserve the existing app while a breaking draft format is being integrated; remove obsolete paths after the corresponding readers move to the new contract. No permanent legacy reader is required.
+
+Verify course-specific undergraduate applications, integrated degrees, graduate deadlines, professional program windows, and funding variations that differ from MIT. Review API, frontend, scoring, and saved selections whenever the contract changes.
 
 ### Phase 3 — remaining 45 universities
 
@@ -182,7 +250,7 @@ Once the top-five implementation provides a proven pattern, migrate the other 45
 
 Contributors may extend and reconcile the canonical template during this draft collection without updating the backend or running UI tests for each new field. Before publication, integrate every accepted field into the API and UI, audit links and fact scopes, and run the relevant contract and applicant-journey checks once for the combined change.
 
-The sequence is data/schema first for the top five, application integration second, then the remaining 45 data migrations with fact refresh. Backend and frontend rework follows the top-five model rather than leading it.
+The sequence is a shared journey proven on the three contrast cases, user review, completion of MIT, completion of the other four top-five institutions, and then the remaining 45. Within each batch, source-backed data and scope decisions precede publication of the coordinated backend/frontend change. The open problems and implementation progress belong in [todo.md](../todo.md); [orchestrator.md](../orchestrator.md) defines execution and ownership.
 
 ## Acceptance criteria
 

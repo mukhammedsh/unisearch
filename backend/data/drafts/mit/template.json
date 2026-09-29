@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "institution_id": "mit",
+  "catalog_snapshot": {
+    "academic_year": "2026-2027",
+    "checked_at": "2026-09-24",
+    "sources": [
+      {
+        "id": "mit-official-catalog",
+        "url": "https://catalog.mit.edu/degree-charts/",
+        "title": "Official catalog page title",
+        "checked_at": "2026-09-24",
+        "scope": "Specific catalog coverage established here."
+      }
+    ]
+  },
+  "study_options": [
+    {
+      "id": "mit-example-course-6-3",
+      "level": "undergraduate",
+      "name": "Computer Science and Engineering (Course 6-3)",
+      "course_number": "6-3",
+      "application_target": {
+        "classification": "institution_wide",
+        "target_id": "mit",
+        "status": "verified"
+      },
+      "selection_timing": "after_institutional_admission",
+      "route_status": "shared first-year route verified; other categories need review",
+      "admissions_cycle": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "applicant_categories": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "cost": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "funding": {
+        "status": "unknown_needs_review",
+        "value": null
+      },
+      "source_ids": [
+        "mit-official-catalog"
+      ]
+    }
+  ],
+  "exclusions": [
+    "List out-of-scope classes, minors, and non-degree offerings"
+  ],
+  "notes": [
+    "Record catalog snapshot and explicit unresolved coverage."
+  ],
+  "degree_options": [],
+  "degree_option_review": {
+    "checked_at": "2026-09-24",
+    "reviewed_options": 0,
+    "source_groups": [],
+    "scope_note": "Add only degree/award options tied to an official source."
+  }
+}
