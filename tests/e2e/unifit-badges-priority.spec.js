@@ -12,6 +12,49 @@ function makeAiSortResponse(items) {
   };
 }
 
+test("UniFit distinguishes unknown fit from failure and explains the actual evidence and budget", async ({ page }) => {
+  await seedProfile(page, { ...personas.enResearch.profile, budget: 20000 });
+  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
+  await page.route("**/universities/ai-sort", async (route) => {
+    const shared = {
+      name: "Scoped Evidence University", location: { country: "USA", city: "Boston" },
+      finance: { total_cost_year_usd: 30000 },
+      admission_categories: [{ id: "unrelated-aid", requirement_profiles: [{ id: "general", funding_options: [{ id: "award", funding_type: "grant" }] }] }],
+    };
+    await route.fulfill({ json: makeAiSortResponse([
+      { ...shared, id: "unknown-fit-u", matchData: {
+        aidAny: false, meetMinRequirements: false, requirementsFitPercent: null,
+        requirementsReason: "no_published_requirements", scoreMeaning: "published_requirements_met_percent",
+        finalPrice: null, finalPriceUSD: null, costMode: "unavailable", preferenceMismatch: 0.1,
+        userPreferences: { practice_vs_science: 0.7 }, factors: { practice_vs_science: 0.8 },
+      } },
+      { ...shared, id: "unmet-fit-u", matchData: {
+        aidAny: false, meetMinRequirements: false, requirementsFitPercent: 0, finalPrice: 30000,
+        finalPriceUSD: 30000, currency: "USD", preferenceMismatch: 0.5,
+        requirementChecks: [{ exam: "IELTS", minimum: 7.5, provided: 7, status: "unmet" }],
+      } },
+      { ...shared, id: "missing-fit-u", matchData: {
+        aidAny: false, meetMinRequirements: false, requirementsFitPercent: null, conditional: true,
+        conditionalRequirements: 1, finalPrice: 10000, preferenceMismatch: 0.5,
+        requirementChecks: [{ exam: "GMAT_FOCUS or GMAT or GRE", minimum: null, provided: null, status: "missing" }],
+      } },
+    ]) });
+  });
+  await page.goto("/index.html");
+  const unknown = page.locator('.uni-card[data-uni-id="unknown-fit-u"]');
+  await expect(unknown).toBeVisible();
+  await expect(unknown.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveCount(0);
+  await expect(unknown.locator(".uni-status-trigger[aria-label*='Aid Available']")).toHaveCount(0);
+  await expect(unknown.locator(".uni-status-trigger[aria-label*='No data']")).toHaveAttribute("aria-label", /no measurable published minimums/);
+  await expect(unknown.locator(".uni-status-trigger[aria-label*='Your Vibe']")).toHaveAttribute("aria-label", /Focus.*70\/100.*80\/100/);
+  const unmet = page.locator('.uni-card[data-uni-id="unmet-fit-u"]');
+  await expect(unmet.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveAttribute("aria-label", /IELTS.*7.5.*7.*Below minimum/);
+  await expect(unmet.locator(".uni-status-trigger[aria-label*='Over Budget']")).toHaveAttribute("aria-label", /30.*20.*Potential funding has not been deducted/);
+  const missing = page.locator('.uni-card[data-uni-id="missing-fit-u"]');
+  await expect(missing.locator(".uni-status-trigger[aria-label*='Conditional']")).toHaveAttribute("aria-label", /GMAT.*GRE.*Not provided/);
+  await expect(missing.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveCount(0);
+});
+
 test("UniFit warning returns after a reload or a new UniFit selection", async ({ page }) => {
   await seedProfile(page, personas.enResearch.profile);
 
@@ -221,6 +264,7 @@ test("UniFit card caps overlay status icons at four by priority", async ({ page 
           conditional: true,
           conditionalRequirements: 2,
           meetMinRequirements: false,
+          requirementsFitPercent: 0, // Verified minimum failure, distinct from an unknown fit.
           aidAny: true,
           uiBadgeHints: {
             showConditionalExamNeeded: true,
@@ -276,6 +320,7 @@ test("UniFit card status icon logic caps at four", async ({ page }) => {
           conditional: true,
           conditionalRequirements: 2,
           meetMinRequirements: false,
+          requirementsFitPercent: 0, // Verified minimum failure, distinct from an unknown fit.
           aidAny: true,
           uiBadgeHints: {
             showConditionalExamNeeded: true,
@@ -381,7 +426,8 @@ test("UniFit cards render zero to four compact status icons", async ({ page }) =
           grantChance: 80, // Likely Grant
           conditional: true, // Conditional
           conditionalRequirements: 1,
-          meetMinRequirements: false, // Below requirements
+          meetMinRequirements: false,
+          requirementsFitPercent: 0, // Verified minimum failure, distinct from an unknown fit. // Below requirements
           aidAny: true,
         },
       },
@@ -466,6 +512,7 @@ test("UniFit overflow popover toggles on click and dismisses on Escape", async (
           conditional: true,
           conditionalRequirements: 2,
           meetMinRequirements: false,
+          requirementsFitPercent: 0, // Verified minimum failure, distinct from an unknown fit.
           missingProgram: true,
           aidAny: true,
           uiBadgeHints: {

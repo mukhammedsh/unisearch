@@ -6,6 +6,7 @@ from app.services.ai_scoring import (
     _build_user_context,
     _effective_track_cost_details,
     estimate_uni_chance as _estimate_uni_chance,
+    estimate_university_roi as _estimate_university_roi,
     sort_universities_ai as _sort_universities_ai,
     _choice_matches_study_level,
 )
@@ -152,6 +153,87 @@ class AiScoringTests(unittest.TestCase):
         }
         result = estimate_uni_chance(university, {"study_level": "Bachelor", "applicant_route": "transfer"})
         self.assertEqual(["unknown"], [row["categoryId"] for row in result["choices"]])
+
+    def test_unknown_route_and_program_scope_do_not_produce_a_contextual_unichance(self):
+        university = {
+            "id": "unresolved-scope-u",
+            "academics": {"programs": [{"id": "course-a", "name": "Course A", "study_levels": ["Bachelor"]}]},
+            "admission_categories": [
+                _admission_category(
+                    "general", "General admission", [{"id": "general", "label": "General", "requirements": {"GPA": 3.0}}],
+                ),
+            ],
+        }
+
+        result = estimate_uni_chance(university, {
+            "study_level": "Bachelor",
+            "applicant_route": "transfer",
+            "selectedAdmissionChoices": {"unresolved-scope-u": {"programId": "course-a"}},
+            "gpa": 4.0,
+        })
+
+        self.assertIsNone(result["overallChance"])
+        self.assertEqual("applicability_unknown", result["reason"])
+        choice = result["choices"][0]
+        self.assertEqual("unknown", choice["applicability"]["route"])
+        self.assertEqual("unknown", choice["applicability"]["program"])
+        self.assertTrue(any(factor["key"] == "applicability_unknown" for factor in choice["factors"]))
+
+    def test_stale_explicit_program_context_is_unknown_in_chance_and_rankings(self):
+        university = {
+            "id": "stale-program-scope-u",
+            "academics": {"programs": [{"id": "current-course", "name": "Current Course", "study_levels": ["Master"]}]},
+            "admission_categories": [
+                _admission_category(
+                    "current-course-route", "Current Course route", [{"id": "profile", "requirements": {"SAT": 1200}}],
+                    study_level="Master", applicant_route="graduate", program_ids=["current-course"],
+                ),
+            ],
+        }
+        profile = {
+            "study_level": "Master", "applicant_route": "graduate", "gpa": 4.0,
+            "exams": [{"id": "SAT", "score": 1500}],
+            "selectedAdmissionChoices": {"stale-program-scope-u": {"programId": "deleted-course"}},
+        }
+
+        chance = _estimate_uni_chance(university, profile)
+        self.assertIsNone(chance["overallChance"])
+        self.assertEqual("applicability_unknown", chance["reason"])
+        self.assertEqual("unknown", chance["choices"][0]["applicability"]["program"])
+
+        ranked = _sort_universities_ai([university], profile=profile)[0]["matchData"]
+        self.assertEqual("applicability_unknown", ranked["requirementsReason"])
+        self.assertEqual("unknown", ranked["applicability"]["program"])
+        self.assertIsNone(ranked["requirementsFitPercent"])
+
+    def test_legacy_choice_without_explicit_context_keeps_its_requirements_fit(self):
+        university = {
+            "id": "legacy-context-u",
+            "admission_categories": [
+                _admission_category(
+                    "general", "General admission", [{"id": "general", "label": "General", "requirements": {"GPA": 3.0}}],
+                ),
+            ],
+        }
+
+        result = estimate_uni_chance(university, {"study_level": "Bachelor", "gpa": 4.0})
+
+        self.assertEqual(100, result["overallChance"])
+        self.assertEqual("not_selected", result["choices"][0]["applicability"]["route"])
+
+    def test_academic_year_reference_does_not_establish_an_entry_cycle(self):
+        university = {
+            "id": "academic-year-scope-u",
+            "admission_categories": [_admission_category(
+                "general", "General admission", [{"id": "general", "requirements": {"GPA": 3.0}}],
+                applicant_route="graduate", study_level="Master", cycle="2026-27",
+            )],
+        }
+        result = estimate_uni_chance(university, {
+            "study_level": "Master", "applicant_route": "graduate", "intended_entry_cycle": "Fall 2027", "gpa": 4.0,
+        })
+        self.assertIsNone(result["overallChance"])
+        self.assertEqual("unknown", result["choices"][0]["applicability"]["cycle"])
 
     def test_old_university_cost_is_not_returned_as_current_for_new_entry_cycle(self):
         university = {
@@ -510,7 +592,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("published_requirements_met_percent", result["scoreMeaning"])
         self.assertIsNone(result["overallChance"])
         self.assertTrue(all(row["chancePercent"] is None for row in result["choices"]))
-        self.assertTrue(all(row["reason"] in {"no_published_requirements", "unassessed_minimums", "requirements_not_reviewed"} for row in result["choices"]))
+        self.assertTrue(all(row["reason"] in {"missing_evidence", "no_published_requirements", "unassessed_minimums", "requirements_not_reviewed"} for row in result["choices"]))
 
     def test_master_level_uses_legacy_scope_and_does_not_reactivate_saved_bachelor_choice(self):
         university = {
@@ -531,6 +613,31 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual(["master::general"], [row["choiceKey"] for row in result["choices"]])
         self.assertEqual("master::general", result["bestChoiceKey"])
         self.assertFalse(result["selectedByUser"])
+
+    def test_russian_masters_label_preserves_mit_sloan_mba_route_across_scoring_and_roi(self):
+        mit = uni_service.get_university_by_id("mit-usa-cambridge")
+        self.assertIsNotNone(mit)
+        profile = {
+            "studyLevel": "Магистратура",
+            "applicant_route": "graduate",
+            "intended_entry_cycle": "2027 entry",
+            "selectedAdmissionChoices": {
+                mit["id"]: {"programId": "mit-sloan-mba-full-time"},
+            },
+        }
+
+        chance = estimate_uni_chance(mit, profile)
+        mba_choices = [row for row in chance["choices"] if row["categoryId"] == "mit_sloan_mba_admissions"]
+        self.assertTrue(mba_choices)
+        self.assertTrue(all(row["applicability"]["program"] == "matched" for row in mba_choices))
+        self.assertIn("missing_evidence", {row["reason"] for row in mba_choices})
+
+        ranked = sort_universities_ai([mit], profile=profile)[0]["matchData"]
+        self.assertEqual("mit_sloan_mba_admissions", ranked["categoryId"])
+        self.assertEqual("matched", ranked["applicability"]["program"])
+
+        roi = _estimate_university_roi(mit, profile)
+        self.assertEqual("insufficient_level_data", roi["context_type"])
 
     def test_mit_top_five_result_ignores_saved_off_level_choice(self):
         from app.services.university_tracks import expand_admission_choices
@@ -558,6 +665,26 @@ class AiScoringTests(unittest.TestCase):
         self.assertNotEqual(bachelor_choice.get("choice_key"), chance.get("bestChoiceKey"))
         self.assertNotEqual(bachelor_choice.get("choice_key"), match_data.get("selectedChoiceKey"))
         self.assertFalse(match_data.get("selectedByUser"))
+
+    def test_mit_physics_phd_is_excluded_from_unmapped_generic_doctoral_route(self):
+        from app.services.university_tracks import expand_admission_choices
+
+        mit = uni_service.get_university_by_id("mit-usa-cambridge")
+        choices = expand_admission_choices(mit["admission_categories"])
+        generic = next(row for row in choices if row["category_id"] == "mit_phd_doctoral_guarantee")
+        physics = next(row for row in choices if row["category_id"] == "mit_physics_phd_admissions")
+
+        self.assertEqual([], generic["applicable_majors"])
+        self.assertNotIn("Doctor of Philosophy in Physics (Course 8 PhD)", generic["applicable_majors"])
+        self.assertEqual(["Doctor of Philosophy in Physics (Course 8 PhD)"], physics["applicable_majors"])
+
+        result = estimate_uni_chance(mit, {
+            "studyLevel": "Doctorate",
+            "applicant_route": "graduate",
+            "selectedAdmissionChoices": {mit["id"]: {"programId": "mit-physics-phd-course-8"}},
+        })
+        self.assertIn("mit_physics_phd_admissions", {row["categoryId"] for row in result["choices"]})
+        self.assertNotIn("mit_phd_doctoral_guarantee", {row["categoryId"] for row in result["choices"]})
 
     def test_oxford_computer_science_range_keeps_gbp_and_no_fake_scalar_price(self):
         from app.services.university_tracks import expand_admission_choices
@@ -875,6 +1002,11 @@ class AiScoringTests(unittest.TestCase):
         self.assertNotIn("rangeHighPercent", result)
         self.assertEqual({50}, {choice["chancePercent"] for choice in result["choices"]})
         self.assertTrue(all(choice["scoreMeaning"] == result["scoreMeaning"] for choice in result["choices"]))
+        checks = result["choices"][0]["details"]["checks"]
+        self.assertEqual(
+            {("GPA", "met"), ("SAT", "unmet")},
+            {(row["exam"], row["status"]) for row in checks},
+        )
 
         zero = _estimate_uni_chance(university, {
             **profile,
@@ -882,6 +1014,176 @@ class AiScoringTests(unittest.TestCase):
             "exams": [{"id": "SAT", "score": 1000}],
         })
         self.assertEqual(0, zero["overallChance"])
+
+    def test_uni_chance_reports_missing_and_unsupported_exam_checks(self):
+        missing_university = {
+            "id": "missing-check-u",
+            "admission_categories": [{
+                "id": "route",
+                "requirement_profiles": [{"id": "general", "requirements": {"SAT": 1200}}],
+            }],
+        }
+        missing = _estimate_uni_chance(missing_university, {})
+        self.assertEqual("missing", missing["choices"][0]["details"]["checks"][0]["status"])
+        self.assertEqual("SAT", missing["choices"][0]["missingEvidence"][0]["id"])
+
+        unsupported_university = {
+            "id": "unsupported-check-u",
+            "admission_categories": [{
+                "id": "route",
+                "requirement_profiles": [{"id": "general", "requirements": {"UNSUPPORTED_EXAM": 50}}],
+            }],
+        }
+        unsupported = _estimate_uni_chance(unsupported_university, {
+            "exams": [{"id": "UNSUPPORTED_EXAM", "score": 80}],
+        })
+        self.assertIsNone(unsupported["overallChance"])
+        self.assertEqual("unassessed", unsupported["choices"][0]["details"]["checks"][0]["status"])
+
+    def test_unsupported_language_exam_minimum_is_unassessed_even_with_raw_score(self):
+        university = {
+            "id": "unsupported-language-minimum-u",
+            "admission_categories": [{
+                "id": "route",
+                "language_requirements": [{"code": "en", "requirements": {"UNSUPPORTED_CERT": 50}}],
+                "requirement_profiles": [{"id": "general", "requirements": {}}],
+            }],
+        }
+
+        result = _estimate_uni_chance(university, {
+            "languages": [{"code": "en", "kind": "exam", "exam": "UNSUPPORTED_CERT", "score": 80}],
+        })
+
+        self.assertIsNone(result["overallChance"])
+        self.assertEqual("unassessed_minimums", result["reason"])
+        check = result["choices"][0]["details"]["checks"][0]
+        self.assertEqual("unassessed", check["status"])
+        self.assertIsNone(check["provided"])
+
+    def test_legacy_toefl_language_floor_requires_an_unambiguous_configured_scale(self):
+        university = {
+            "id": "legacy-toefl-language-u",
+            "admission_categories": [{
+                "id": "route",
+                "language_requirements": [{"code": "en", "requirements": {"TOEFL": 100}}],
+                "requirement_profiles": [{"id": "general", "requirements": {}}],
+            }],
+        }
+        compatible = _estimate_uni_chance(university, {
+            "languages": [{"code": "en", "kind": "exam", "exam": "TOEFL_iBT_0_120", "score": 105}],
+        })
+        self.assertEqual(100, compatible["overallChance"])
+        self.assertEqual("met", compatible["choices"][0]["details"]["checks"][0]["status"])
+
+        ambiguous = _estimate_uni_chance({
+            **university,
+            "id": "ambiguous-toefl-language-u",
+            "admission_categories": [{
+                **university["admission_categories"][0],
+                "language_requirements": [{"code": "en", "requirements": {"TOEFL": 5.5}}],
+            }],
+        }, {
+            "languages": [{"code": "en", "kind": "exam", "exam": "TOEFL_iBT_1_6", "score": 6}],
+        })
+        self.assertIsNone(ambiguous["overallChance"])
+        self.assertEqual("unassessed_minimums", ambiguous["reason"])
+        self.assertEqual("unassessed", ambiguous["choices"][0]["details"]["checks"][0]["status"])
+
+    def test_unassessed_published_minimums_remain_visible_with_missing_evidence(self):
+        university = {
+            "id": "mixed-missing-unassessed-u",
+            "admission_categories": [{
+                "id": "route",
+                "requirement_profiles": [{
+                    "id": "general",
+                    "requirements": {"SAT": 1200},
+                    "unassessed_published_minimums": [{
+                        "id": "discipline-gpa", "label": "Discipline GPA", "minimum": "4.8 on local scale",
+                    }],
+                }],
+            }],
+        }
+
+        result = _estimate_uni_chance(university, {})
+
+        self.assertIsNone(result["overallChance"])
+        self.assertEqual("missing_evidence", result["reason"])
+        checks = result["choices"][0]["details"]["checks"]
+        self.assertEqual({("SAT", "missing"), ("Discipline GPA", "unassessed")},
+                         {(row["exam"], row["status"]) for row in checks})
+        self.assertEqual("SAT", result["choices"][0]["missingEvidence"][0]["id"])
+
+    def test_unassessed_language_minimum_shows_provided_score_and_source_condition(self):
+        university = {
+            "id": "unassessed-language-source-u",
+            "admission_categories": [{
+                "id": "route",
+                "requirement_profiles": [{
+                    "id": "general",
+                    "requirements": {},
+                    "unassessed_published_minimums": [{
+                        "id": "english-ielts-minimum",
+                        "label": "IELTS Academic overall band",
+                        "exam_id": "IELTS",
+                        "minimum": 7,
+                        "scale": "0–9 overall band; applicants whose primary language is not English",
+                    }, {
+                        "id": "discipline-gpa-minimum",
+                        "label": "Technical GPA",
+                        "minimum": 4.25,
+                        "scale": "MIT 5.0 scale; Course 6-9 subjects",
+                    }],
+                }],
+            }],
+        }
+
+        result = _estimate_uni_chance(university, {
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5}],
+        })
+
+        self.assertIsNone(result["overallChance"])
+        self.assertEqual("unassessed_minimums", result["reason"])
+        checks = result["choices"][0]["details"]["checks"]
+        ielts = next(row for row in checks if row["exam"] == "IELTS Academic overall band")
+        self.assertEqual("IELTS", ielts["examId"])
+        self.assertEqual("0–9 overall band; applicants whose primary language is not English", ielts["condition"])
+        self.assertEqual(7.5, ielts["provided"])
+        self.assertEqual("unassessed", ielts["status"])
+        gpa = next(row for row in checks if row["exam"] == "Technical GPA")
+        self.assertEqual("MIT 5.0 scale; Course 6-9 subjects", gpa["condition"])
+        self.assertIsNone(gpa["provided"])
+
+    def test_required_exam_alternatives_explain_presence_without_inventing_a_minimum(self):
+        university = {
+            "id": "required-exam-alternative-u",
+            "admission_categories": [{
+                "id": "route",
+                "required_exam_alternatives": [["SAT", "ACT"]],
+                "requirement_profiles": [{"id": "general", "requirements": {}}],
+            }],
+        }
+
+        missing = _estimate_uni_chance(university, {})
+        self.assertEqual("missing_evidence", missing["reason"])
+        self.assertEqual("missing", missing["choices"][0]["details"]["checks"][0]["status"])
+        self.assertIsNone(missing["choices"][0]["details"]["checks"][0]["minimum"])
+
+        supplied = _estimate_uni_chance(university, {"exams": [{"id": "ACT", "score": 30}]})
+        check = supplied["choices"][0]["details"]["checks"][0]
+        self.assertEqual("met", check["status"])
+        self.assertEqual("ACT", check["provided"])
+        self.assertIsNone(check["minimum"])
+
+        unsupported = _estimate_uni_chance({
+            "id": "unsupported-alternative-u",
+            "admission_categories": [{
+                "id": "route",
+                "required_exam_alternatives": [["UNSUPPORTED_EXAM"]],
+                "requirement_profiles": [{"id": "general", "requirements": {}}],
+            }],
+        }, {})
+        self.assertEqual("unassessed_minimums", unsupported["reason"])
+        self.assertEqual("unassessed", unsupported["choices"][0]["details"]["checks"][0]["status"])
 
     def test_mit_first_year_has_no_fit_score_without_published_minimums(self):
         mit = uni_service.get_university_by_id("mit-usa-cambridge")
@@ -897,6 +1199,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertIsNone(result["overallChance"])
         self.assertTrue(all(choice["chancePercent"] is None for choice in first_year))
         self.assertTrue(all(choice["reason"] == "no_published_requirements" for choice in first_year))
+        self.assertTrue(all(choice["details"]["checks"][0]["status"] == "met" for choice in first_year))
         self.assertEqual("published_requirements_met_percent", result["scoreMeaning"])
 
     def test_mit_course_6_9p_published_gpa_minimums_are_reported_unassessed(self):
@@ -911,8 +1214,11 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("unassessed_minimums", result["reason"])
         self.assertIn("cannot be assessed", result["label"])
         self.assertEqual("mit_bcs_meng_admissions", result["categoryId"])
+        check_rows = result["choices"][0]["details"]["checks"]
+        self.assertEqual({"Technical GPA", "Overall GPA"}, {row["exam"] for row in check_rows})
+        self.assertTrue(all(row["status"] == "unassessed" for row in check_rows))
 
-    def test_new_mit_graduate_route_does_not_claim_absent_minimums(self):
+    def test_new_mit_graduate_route_keeps_english_floors_reviewed_but_unassessed(self):
         mit = uni_service.get_university_by_id("mit-usa-cambridge")
         result = _estimate_uni_chance(mit, {
             "studyLevel": "master",
@@ -921,8 +1227,38 @@ class AiScoringTests(unittest.TestCase):
             },
         })
         self.assertIsNone(result["overallChance"])
-        self.assertEqual("requirements_not_reviewed", result["reason"])
+        self.assertEqual("unassessed_minimums", result["reason"])
         self.assertEqual("mit_grad_aero_admissions", result["categoryId"])
+        route = next(row for row in mit["admission_categories"] if row["id"] == "mit_grad_aero_admissions")
+        self.assertEqual("reviewed", route["requirement_profiles"][0]["requirements_review_status"])
+        checks = result["choices"][0]["details"]["checks"]
+        self.assertEqual(
+            {"IELTS", "TOEFL_iBT_0_120", "TOEFL_iBT_1_6", "DET"},
+            {row["examId"] for row in checks},
+        )
+        self.assertTrue(all(row["status"] == "unassessed" and row["provided"] is None for row in checks))
+        self.assertTrue(all("under 2 years" in row["condition"] for row in checks))
+        self.assertIn("unless OGE automatically exempt", checks[0]["condition"])
+
+    def test_unknown_entry_cycle_keeps_mit_aeroastro_english_conditions_unassessed(self):
+        mit = uni_service.get_university_by_id("mit-usa-cambridge")
+        result = _estimate_uni_chance(mit, {
+            "studyLevel": "Doctorate",
+            "applicant_route": "graduate",
+            "intended_entry_cycle": "Fall 2027",
+            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5}],
+            "selectedAdmissionChoices": {mit["id"]: {"programId": "mit-aeroastro-phd"}},
+        })
+
+        choice = next(row for row in result["choices"] if row["categoryId"] == "mit_aeroastro_doctoral_admissions")
+        self.assertIsNone(choice["chancePercent"])
+        self.assertEqual("applicability_unknown", choice["reason"])
+        self.assertEqual("unknown", choice["applicability"]["cycle"])
+        self.assertEqual([], choice["missingEvidence"])
+        self.assertTrue(all(row["status"] == "unassessed" for row in choice["details"]["checks"]))
+        ielts = next(row for row in choice["details"]["checks"] if row.get("examId") == "IELTS")
+        self.assertEqual(7.5, ielts["provided"])
+        self.assertIn("International applicants", ielts["condition"])
 
     def test_uni_chance_counts_language_minimum_and_requires_its_evidence(self):
         university = {
@@ -938,10 +1274,15 @@ class AiScoringTests(unittest.TestCase):
             "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
         })
         self.assertEqual(50, result["overallChance"])
+        self.assertEqual(
+            {("GPA", "met"), ("IELTS", "unmet")},
+            {(row["exam"], row["status"]) for row in result["choices"][0]["details"]["checks"]},
+        )
 
         missing = _estimate_uni_chance(university, {"gpa": 3.5})
         self.assertIsNone(missing["overallChance"])
         self.assertEqual("missing_evidence", missing["reason"])
+        self.assertEqual("IELTS", missing["choices"][0]["missingEvidence"][0]["exam"])
 
     def test_estimate_uni_chance_returns_valid_shape(self):
         university = {
@@ -1489,7 +1830,9 @@ class AiScoringTests(unittest.TestCase):
         self.assertTrue(chance["choices"])
         self.assertTrue(all(not choice["chanceAvailable"] for choice in chance["choices"]))
         self.assertTrue(all(choice["chancePercent"] is None for choice in chance["choices"]))
-        self.assertTrue(all(choice["reason"] in {"no_published_requirements", "requirements_not_reviewed"} for choice in chance["choices"]))
+        self.assertTrue(all(choice["reason"] in {
+            "missing_evidence", "no_published_requirements", "unassessed_minimums", "requirements_not_reviewed",
+        } for choice in chance["choices"]))
 
         without_rate = copy.deepcopy(mit)
         without_rate["academics"].pop("acceptance_rate_percent", None)
@@ -2224,6 +2567,59 @@ class AiScoringTests(unittest.TestCase):
         match_data = sort_res[0].get("matchData", {})
         self.assertEqual(chance_res.get("bestChoiceKey"), match_data.get("recommendedChoiceKey"))
         self.assertEqual(chance_res.get("bestChoiceKey"), match_data.get("selectedChoiceKey"))
+
+    def test_scoped_rank_match_data_exposes_selected_route_requirement_assessment(self):
+        university = {
+            "id": "scoped-assessment-u",
+            "name": "Scoped Assessment University",
+            "aid_any": True,
+            "finance": {"total_cost_year_usd": 100000},
+            "academics": {
+                "programs": [
+                    {"id": "doctoral-a", "name": "Doctoral Program A", "study_levels": ["Doctorate"]},
+                    {"id": "doctoral-b", "name": "Doctoral Program B", "study_levels": ["Doctorate"]},
+                ],
+            },
+            "admission_categories": [
+                _admission_category(
+                    "doctoral-a-route", "Doctoral Program A route", [{
+                        "id": "a-profile", "label": "Program A admissions", "requirements": {},
+                        "requirements_review_status": "reviewed",
+                        "unassessed_published_minimums": [{"label": "Published technical minimum", "minimum": "4.8 on MIT scale"}],
+                        "funding_options": [{"id": "doctoral-a-paid", "label": "Paid route", "funding_type": "paid"}],
+                    }],
+                    applicant_route="graduate", study_level="Doctorate",
+                    application_scope="program_specific", program_ids=["doctoral-a"],
+                ),
+                _admission_category(
+                    "doctoral-b-route", "Doctoral Program B route", [{
+                        "id": "b-profile", "label": "Program B admissions", "requirements": {"GPA": 3.0},
+                        "funding_options": [{"id": "doctoral-b-grant", "label": "Program B grant", "funding_type": "grant"}],
+                    }],
+                    applicant_route="graduate", study_level="Doctorate",
+                    application_scope="program_specific", program_ids=["doctoral-b"],
+                ),
+            ],
+        }
+        profile = {
+            "study_level": "Doctorate",
+            "applicant_route": "graduate",
+            "budget": 1000,
+            "selectedAdmissionChoices": {"scoped-assessment-u": {"programId": "doctoral-a", "fundingOptionId": "doctoral-a-paid"}},
+        }
+
+        match_data = sort_universities_ai([university], profile=profile)[0]["matchData"]
+
+        self.assertEqual("doctoral-a-route::a-profile::doctoral-a-paid", match_data["choiceKey"])
+        self.assertEqual("unassessed_minimums", match_data["requirementsReason"])
+        self.assertEqual(
+            [{"exam": "Published technical minimum", "minimum": "4.8 on MIT scale", "provided": None, "status": "unassessed"}],
+            match_data["requirementChecks"],
+        )
+        self.assertEqual([], match_data["missingEvidence"])
+        self.assertEqual("matched", match_data["applicability"]["program"])
+        self.assertFalse(match_data["aidAny"])
+        self.assertNotIn(match_data["uiBadgeHints"]["budgetAid"], {"aid_available", "over_budget_aid"})
 
     def test_sort_universities_ai_match_data_clean_payload(self):
         items = [

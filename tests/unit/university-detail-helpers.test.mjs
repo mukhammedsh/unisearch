@@ -38,6 +38,7 @@ const {
   mapMarkerLogoHtml,
   renderExamGroup,
   renderGroupedExamPairRows,
+  renderRequirementChecks,
   renderTrackChanceChip,
   renderTrackFactors,
   renderTrackFundingBadge,
@@ -997,7 +998,58 @@ test("chance summary explains distinct no-data reasons", () => {
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "missing_evidence" }), /Add the required exam scores/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "unassessed_minimums" }), /technical GPA minimums of 4\.25\/5\.0 and overall GPA minimums of 4\.0\/5\.0/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "requirements_not_reviewed" }), /minimums have not yet been reviewed/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "applicability_unknown" }), /could not be matched to this program, applicant route, and entry cycle/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, label: "Custom unavailable reason" }), /not enough applicable requirements or profile evidence/i);
+});
+
+test("published requirement checks show exam alternatives and avoid inventing a numeric cutoff", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const missing = renderRequirementChecks({ details: { checks: [
+    { exam: "SAT or ACT", minimum: null, provided: null, status: "missing" },
+  ] } });
+  assert.match(missing, /SAT or ACT/);
+  assert.match(missing, /Required exam evidence/);
+  assert.match(missing, /Add evidence/);
+  assert.doesNotMatch(missing, /Minimum: No data/);
+
+  const recorded = renderRequirementChecks({ details: { checks: [
+    { exam: "SAT or ACT", minimum: null, provided: "SAT", status: "met" },
+  ] } });
+  assert.match(recorded, /Evidence recorded/);
+  assert.match(recorded, /Your profile: SAT/);
+
+  const gre = renderRequirementChecks({ details: { checks: [
+    { exam: "GMAT_FOCUS or GMAT or GRE", minimum: null, provided: "GRE", status: "met" },
+  ] } });
+  assert.match(gre, /Your profile: GRE General Test/);
+
+  const unassessed = renderRequirementChecks({ details: { checks: [
+    { exam: "IELTS Academic band", examId: "IELTS", minimum: 7, provided: 7.5, status: "unassessed", condition: "International applicants unless exempt" },
+    { exam: "Technical GPA", minimum: 4.25, provided: null, status: "unassessed", condition: "MIT 5.0 scale" },
+  ] } });
+  assert.match(unassessed, /Your profile: 7.5/);
+  assert.match(unassessed, /International applicants unless exempt/);
+  assert.match(unassessed, /MIT 5.0 scale/);
+  assert.doesNotMatch(unassessed, /Not provided/);
+
+  const languageAlternatives = renderRequirementChecks({ details: { checks: [
+    { exam: "IELTS", minimum: 7, provided: 7.5, status: "met", mode: "any" },
+    { exam: "TOEFL", minimum: 100, provided: null, status: "missing", mode: "any" },
+  ] } });
+  assert.match(languageAlternatives, /meeting one listed option satisfies that rule/);
+
+  setLanguage("rus", { persist: false, emit: false });
+  const russian = renderRequirementChecks({ details: { checks: [
+    { exam: "SAT or ACT", minimum: null, provided: null, status: "missing" },
+  ] } });
+  assert.match(russian, /Требуется один из экзаменов/);
+  assert.match(russian, /Добавьте подтверждение/);
+  const russianAlternatives = renderRequirementChecks({ details: { checks: [
+    { exam: "IELTS", minimum: 7, provided: null, status: "missing", mode: "any" },
+    { exam: "TOEFL", minimum: 100, provided: null, status: "missing", mode: "any" },
+  ] } });
+  assert.match(russianAlternatives, /достаточно выполнить один из них/);
+  setLanguage("eng", { persist: false, emit: false });
 });
 
 test("track chance chips handle no data, invalid badges, and numeric zero", () => {
@@ -1024,6 +1076,10 @@ test("requirements fit factor rendering filters invalid rows and maps positive, 
   assert.match(html, /factor-negative/);
   assert.match(html, /factor-neutral/);
   assert.match(html, /not enough applicable requirements or profile evidence to calculate this fit score/i);
+  const applicability = renderTrackFactors({ scoreMeaning: "published_requirements_met_percent", factors: [
+    { key: "applicability_unknown", status: "neutral", label: "Applicability", message: "Scope unknown." },
+  ] });
+  assert.match(applicability, /Applicability not confirmed/);
 });
 
 test("funding badges infer grant or paid semantics", () => {
@@ -1297,4 +1353,33 @@ test("admission descriptions deduplicate the localized paragraph", async () => {
   renderAdmissionSection({ container, university, annualCostForTrack: () => null });
   assert.equal(container.innerHTML.split(localized).length - 1, 1);
   setLanguage("eng", { persist: false, emit: false });
+});
+
+
+test("localized program study levels stay canonical in the assessment request", () => {
+  window.location.search = "?admission_program=ru-master";
+  const context = getAdmissionContextProfile({ id: "ru-level", academics: { programs: [
+    { id: "ru-master", name: "Research", study_levels: ["Магистратура"] },
+  ] }, admission_categories: [] }, { studyLevel: "Bachelor" });
+  assert.equal(context.study_level, "Master");
+  assert.equal(context.studyLevel, "Master");
+  window.location.search = "";
+});
+
+
+test("a source note shared by a profile description and its requirements is shown once", () => {
+  const note = "GRE evidence is required; no numeric minimum is published.";
+  const university = { id: "note-once", admission_categories: [{ id: "graduate", label: "Graduate", study_level: "Master", applicant_route: "graduate", requirement_profiles: [{ id: "general", description: note, requirements_note: note, requirements: {} }] }] };
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null });
+  assert.equal(container.innerHTML.split(note).length - 1, 1);
+});
+
+test("funding displays its published coverage without inferring a competitive award", () => {
+  const description = "Covers tuition and health insurance plus a stipend.";
+  const university = { id: "scoped-award", admission_categories: [{ id: "graduate", label: "Graduate", study_level: "Master", applicant_route: "graduate", requirement_profiles: [{ id: "general", requirements: {}, funding_options: [{ id: "program-award", label: "Program support", funding_type: "grant", funding_source: "program", description }] }] }] };
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null });
+  assert.match(container.innerHTML, /Covers tuition and health insurance plus a stipend/);
+  assert.doesNotMatch(container.innerHTML, /competition or ranking/);
 });

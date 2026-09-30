@@ -1,4 +1,100 @@
 {
+  "GRE": {
+    "label": "GRE General Test",
+    "labels": {
+      "eng": "GRE General Test",
+      "rus": "GRE General Test"
+    },
+    "input_mode": "subject_breakdown",
+    "type": "float",
+    "notes": "GRE reports three section scores, not a total. Store and assess each section separately.",
+    "breakdown_scheme": {
+      "fixed_components": [
+        {
+          "exam": "GRE_VERBAL",
+          "label": "Verbal Reasoning"
+        },
+        {
+          "exam": "GRE_QUANTITATIVE",
+          "label": "Quantitative Reasoning"
+        },
+        {
+          "exam": "GRE_ANALYTICAL_WRITING",
+          "label": "Analytical Writing"
+        }
+      ],
+      "total_strategy": "components_only"
+    },
+    "source_url": "https://www.ets.org/gre/test-takers/general-test/scores/understand-scores.html",
+    "verified_at": "2026-09-30"
+  },
+  "GRE_VERBAL": {
+    "label": "GRE Verbal Reasoning",
+    "labels": {
+      "eng": "GRE Verbal Reasoning",
+      "rus": "GRE: вербальное мышление"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 130,
+    "max": 170,
+    "type": "int",
+    "step": 1
+  },
+  "GRE_QUANTITATIVE": {
+    "label": "GRE Quantitative Reasoning",
+    "labels": {
+      "eng": "GRE Quantitative Reasoning",
+      "rus": "GRE: количественное мышление"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 130,
+    "max": 170,
+    "type": "int",
+    "step": 1
+  },
+  "GRE_ANALYTICAL_WRITING": {
+    "label": "GRE Analytical Writing",
+    "labels": {
+      "eng": "GRE Analytical Writing",
+      "rus": "GRE: аналитическое письмо"
+    },
+    "hidden": true,
+    "input_mode": "number",
+    "min": 0,
+    "max": 6,
+    "type": "float",
+    "step": 0.5
+  },
+  "GMAT_FOCUS": {
+    "label": "GMAT (Focus Edition, 205–805)",
+    "labels": {
+      "eng": "GMAT (Focus Edition, 205–805)",
+      "rus": "GMAT (Focus Edition, 205–805)"
+    },
+    "input_mode": "number",
+    "min": 205,
+    "max": 805,
+    "type": "int",
+    "step": 10,
+    "source_url": "https://mitsloan.mit.edu/mba/admissions/how-to-apply",
+    "verified_at": "2026-09-30"
+  },
+  "GMAT": {
+    "label": "GMAT (10th Edition, 200–800)",
+    "labels": {
+      "eng": "GMAT (10th Edition, 200–800)",
+      "rus": "GMAT (10th Edition, 200–800)"
+    },
+    "input_mode": "number",
+    "min": 200,
+    "max": 800,
+    "type": "int",
+    "step": 10,
+    "source_url": "https://mitsloan.mit.edu/mba/admissions/how-to-apply",
+    "verified_at": "2026-09-30"
+  },
   "SAT": {
     "label": "SAT",
     "labels": {

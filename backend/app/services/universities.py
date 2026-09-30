@@ -967,7 +967,11 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
 
             category = copy.deepcopy(raw_category)
             derived_majors = _derive_track_applicable_majors(u, category)
-            if derived_majors:
+            has_explicit_program_mapping = any(
+                isinstance(category.get(key), (list, str))
+                for key in ("program_ids", "program_names")
+            )
+            if derived_majors or has_explicit_program_mapping or isinstance(category.get("applicable_majors"), list):
                 category["applicable_majors"] = derived_majors
 
             raw_profiles = category.get("requirement_profiles")

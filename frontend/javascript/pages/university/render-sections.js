@@ -23,6 +23,7 @@ import {
   getTrackFundingType,
   renderExamGroup,
   renderTrackChanceChip,
+  renderRequirementChecks,
   renderTrackFactors,
   renderTrackFundingBadge,
   renderUniChanceSummary,
@@ -258,6 +259,8 @@ export function getAdmissionContextProfile(university, baseProfile = loadProfile
   const cycle = params.get("admission_cycle");
   if (cycle && cycle.length <= 40) profile.intended_entry_cycle = cycle;
   if (profile.intended_entry_cycle) profile.intendedEntryCycle = profile.intended_entry_cycle;
+  const canonicalLevel = { bachelor: "Bachelor", master: "Master", doctorate: "Doctorate", mba: "MBA", professional: "Professional" }[currentLevel];
+  if (canonicalLevel) profile.studyLevel = profile.study_level = canonicalLevel;
   return profile;
 }
 
@@ -1956,8 +1959,8 @@ function renderFundingDifferences({ category, funding, profile, university }) {
   ].filter(Boolean).join("");
 
   if (!sections) {
-    const isCompetitiveGrant = String(funding?.funding_type || "").toLowerCase() === "grant"
-      || String(funding?.funding_source || "").toLowerCase() === "merit";
+    if (funding?.description || funding?.funding_description) return "";
+    const isCompetitiveGrant = String(funding?.funding_source || "").toLowerCase() === "merit";
     const noteKey = isCompetitiveGrant
       ? "admission.funding_competitive_grant_note"
       : "admission.funding_no_specific_requirements";
@@ -2025,6 +2028,7 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
                 </div>
               </div>
               ${mainContent ? `<div class="admission-funding-option-main">${mainContent}</div>` : ""}
+              ${funding.description || funding.funding_description ? `<div class="admission-funding-diff-note">${escapeHtml(trTrackDescription(university.id, funding.id, funding.description || funding.funding_description))}</div>` : ""}
               ${renderFundingDifferences({ category, funding, profile, university })}
             </div>
           `;
@@ -2049,7 +2053,7 @@ export function renderAdmissionSection({
   const chanceByChoice = uniChanceByChoiceKey instanceof Map ? uniChanceByChoiceKey : new Map();
 
   const warningHtml = uniChance?.missingEvidence
-    ? `<div class="chance-warning">${escapeHtml(translateTemplate("add_profile_evidence", "Add exam scores or language evidence in your profile to unlock a reliable {chance} estimate for this university.", { chance: aiName("chance") }))}</div>`
+    ? `<div class="chance-warning">${escapeHtml(t("admission.requirements_fit.missing_evidence_note", "Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed."))}</div>`
     : "";
   const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
     ? university.academics.admissions
@@ -2111,7 +2115,8 @@ export function renderAdmissionSection({
   }
   const mitBachelor = Boolean(mitProgram && (Array.isArray(mitProgram.study_levels) ? mitProgram.study_levels : [mitProgram.study_level || mitProgram.level])
     .some((level) => normalizeLevelKey(level) === "bachelor"));
-  const mitMissingRoute = Boolean(mitProgram && !visibleCategories.length);
+  const mitMissingRoute = Boolean(mitProgram && !admissionContext.programCategories.length);
+  const mitNoMatchingContext = Boolean(mitProgram && !mitMissingRoute && !visibleCategories.length);
   visibleAdmissionContextByUniversity.set(universityId, {
     selectedLevel: activeLevelKey,
     selectedProgram: selectedProgramKey,
@@ -2164,7 +2169,9 @@ export function renderAdmissionSection({
         <div>
           <span class="mit-admission-context__label">${escapeHtml(t("admission.mit.selected_program", "Selected program"))}</span>
           <h2>${escapeHtml(trProgramName(mitProgram.name || "") || mitProgram.name || "")}</h2>
-          <p>${escapeHtml(mitMissingRoute
+          <p>${escapeHtml(mitNoMatchingContext
+            ? t("admission.mit.context_mismatch", "No reviewed admission option matches the selected applicant route and entry cycle. Change this context or check the official program page.")
+            : mitMissingRoute
             ? (mitProgram.selection_timing === "after_initial_graduate_admission"
               ? t("admission.mit.after_initial_admission", "This combined degree is pursued after initial admission to a constituent MIT graduate program. Check the official page for the second-degree process.")
               : t("admission.mit.route_unverified", "Admissions details for this program have not been verified yet. Check its official page before applying."))
@@ -2174,7 +2181,7 @@ export function renderAdmissionSection({
               ? t("admission.mit.transfer_target", "Transfer applicants follow MIT's separate transfer process. Confirm that the selected transfer route and entry term apply to you.")
             : t("admission.mit.program_options_note", "The application options below are linked to this program. Check its official page for the current entry cycle."))}</p>
           ${mitProgram.entry_requirements ? `<p><strong>${escapeHtml(t("admission.mit.program_condition", "Program-specific eligibility:"))}</strong> ${escapeHtml(trTrackDescription(university.id, "", mitProgram.entry_requirements))}</p>` : ""}
-          ${mitMissingRoute && safeUrl(mitProgram.source_url || mitProgram.url) ? `<a href="${escapeHtmlAttr(safeUrl(mitProgram.source_url || mitProgram.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a>` : ""}
+          ${(mitMissingRoute || mitNoMatchingContext) && safeUrl(mitProgram.source_url || mitProgram.url) ? `<a href="${escapeHtmlAttr(safeUrl(mitProgram.source_url || mitProgram.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a>` : ""}
           ${mitBachelor ? `<a href="https://mitadmissions.org/help/faq/majors/" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a>` : ""}
           ${mitBachelor ? `<p>${escapeHtml(t("admission.mit.aid_separate", "MIT undergraduate financial aid is separate from admission and does not require a different admission route."))} <a href="https://mitadmissions.org/afford/" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.open_source", "Open source"))}</a></p>` : ""}
         </div>
@@ -2182,7 +2189,7 @@ export function renderAdmissionSection({
       </div>`;
     }
     html += warningHtml + (mitProgram ? "" : renderSelectedProgramContext(university, selectedProgramKey) + studyLevelFilterHtml);
-    if (mitProgram && !mitMissingRoute && !contextChance) html += `<p class="admission-scope-note">${escapeHtml(t("admission.mit.no_matching_chance", "No personal estimate is available for this program with the current profile."))}</p>`;
+    if (mitProgram && !mitMissingRoute && !mitNoMatchingContext && !contextChance) html += `<p class="admission-scope-note">${escapeHtml(t("admission.mit.no_matching_chance", "No personal estimate is available for this program with the current profile."))}</p>`;
   }
   if (!mitProgram) html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
   if (!compactMode) html += renderAdmissionContextControls(admissionContext.programCategories.length ? admissionContext.programCategories : levelFilteredCategories, admissionContext);
@@ -2255,7 +2262,7 @@ export function renderAdmissionSection({
           <div>
             <div class="admission-category-kicker">${escapeHtml(t("admission.category", "Admission category"))} &middot; ${escapeHtml(scopeLabel)}${catLevelBadges} &middot; ${escapeHtml(routeText)}</div>
             <h3 class="admission-category-title">${escapeHtml(categoryLabel)}</h3>
-            ${categoryDescription ? `<p class="admission-category-description">${escapeHtml(categoryDescription)}</p>` : ""}
+            ${categoryDescription && categoryDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") ? `<p class="admission-category-description">${escapeHtml(categoryDescription)}</p>` : ""}
             ${deadlinePillHtml}
           </div>
           ${mitProgram ? heroIcon("chevron-down", "ui-icon ui-icon--18 mit-route-chevron") : `<div class="admission-category-count">${escapeHtml(t("admission.profile_count", "{count} profiles").replace("{count}", String(profileRows.length)))}</div>`}
@@ -2298,10 +2305,11 @@ export function renderAdmissionSection({
           ` : ""}
           ${noPublishedMinimums ? renderTrackChanceChip(activeChoiceChance) : ""}
           ${renderTrackFactors(activeChoiceChance)}
-          ${profileDescription && profileDescription !== categoryDescription && profileRows.length === 1 ? `<p class="admission-scope-note">${escapeHtml(profileDescription)}</p>` : ""}
+          ${profileDescription && profileDescription !== categoryDescription && profileDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") && profileRows.length === 1 ? `<p class="admission-scope-note">${escapeHtml(profileDescription)}</p>` : ""}
           ${activeChoiceChance?.chancePercent != null && (activeProfile.requirements_note || category.requirements_note) ? `<p class="admission-scope-note">${escapeHtml(t("admission.requirements_fit.unscored_conditions", "The percentage covers numeric minimums only. Subject, grade, document, and eligibility conditions still need separate review."))}</p>` : ""}
 
           ${renderChoiceRequirements({ category, funding: null, profile: activeProfile, university })}
+          ${!compactMode ? renderRequirementChecks(activeChoiceChance) : ""}
 
           ${profileHasFundingOptions
             ? (mitBachelor ? "" : renderFundingOptions({ annualCostForTrack, category, effectiveSelectedChoiceKey, profile: activeProfile, university }))

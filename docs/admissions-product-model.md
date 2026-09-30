@@ -4,7 +4,7 @@
 
 UniSearch helps applicants discover relevant fields of study, identify the real application route that fits their situation, and make a decision using current, traceable admissions facts. The product is organized around the applicant's intended subject and route, rather than treating a university as if it had one universal set of requirements.
 
-This document defines the target product and data model for the top-five migration: MIT, Imperial College London, Stanford, Harvard, and Oxford. The top-five inventory should cover the official catalog of degree-level study options across undergraduate, master's, doctoral, and professional study. It is a product contract and migration direction, not a claim that the current backend or frontend already implements it, or that the current catalog's records are complete.
+This document defines the target product and data model for all 50 universities. Inventory official degree-level study options across undergraduate, master's, doctoral, and professional study wherever offered. MIT is the first example of research depth, provenance, and completeness; each later university keeps its own academic and admissions structure. Shared representations cover genuinely shared concepts, not assumed MIT policies. This is a product contract and delivery direction, not a claim that the current code or catalog already fulfills it.
 
 ## Applicant-facing model
 
@@ -14,7 +14,7 @@ The primary outcome is a useful shortlist that an applicant can explain: what th
 
 The intended journey is optional profile or manual context → relevant study options and a reasoned shortlist → actual application target and applicable route → scoped requirements, dates, costs, and funding. A university dossier supports that decision. Catalog size and coverage badges alone do not establish that the journey works.
 
-Keep the verified MIT facts and its explanation of post-admission major selection. Rework the shared selection and scoring path where required; a full codebase rewrite is not an agreed prerequisite. Validate contrasting institutional and course-specific applications before scaling the current MIT interface to more institutions.
+Reuse verified facts and useful implementation already present in the checkout. During data collection, describe how each institution connects discovery, study options, and applications; review contrasting structures with draft records rather than implementing a new UI for every field. Backend/frontend integration and real journey verification follow collection for all 50 universities. A full codebase rewrite is not a prerequisite.
 
 The applicant moves through four connected concepts:
 
@@ -48,6 +48,7 @@ The applicant journey is discovery → identify the actual application target an
 
 Requirements, application steps, deadlines, costs, and funding are separate fact groups. Do not combine them into a generic “admissions requirements” blob or a single cost figure.
 
+- **Institution and study information:** retain applicant-relevant location/campus, teaching language, award, format/duration, study content/structure, housing/student support, and officially published career information. Distinguish curriculum and degree-completion requirements from admission prerequisites; scope program-specific information to the actual study option.
 - **Requirements and eligibility:** retain the qualification, subject prerequisite, score, document, test, interview, portfolio, or other condition and the population or route to which it applies. State when a requirement is minimum eligibility versus competitive guidance.
 - **Application process:** retain the application destination, steps, required documents, and any route-specific process notes.
 - **Decision and enrollment:** retain published offer types, response and condition deadlines, deposits, and enrollment steps where they apply. Do not infer one country's post-offer process for another institution or route.
@@ -68,6 +69,8 @@ Publication and review are independent: an official statement that a date is not
 
 Only use official university sources and university-hosted admissions PDFs, in line with `AGENTS.md`. If an official source contradicts another official source, record the ambiguity and seek a route-specific resolution; do not silently choose the more convenient value.
 
+Retain significant exceptions, exemptions, alternatives, conditional requirements, and restrictions together with the condition, affected fact, applicable scope, and source. Extend or reorganize the draft schema when a real fact does not fit. Technical implementation difficulty is never a reason to omit it. Separate publication of a rule from automatic assessment of an applicant: a rule can be fully documented while its assessment remains unresolved. In the integrated product, show the exact condition, whether it applies to the selected program/applicant/cycle, and what profile evidence is missing; no hidden rejection checks are permitted.
+
 ## Why institution-wide assumptions fail
 
 These official examples illustrate why discovery intent, study option, application route, and cycle must not be collapsed:
@@ -83,7 +86,7 @@ These examples are structural counterexamples, not a complete or permanent polic
 
 ## Illustrative data contract
 
-The following JSON shows the relationships and provenance expected in the target model. It is intentionally a compact contract example, not a proposed final storage file, exhaustive schema, or statement that these records already exist. Identifiers and cycle values are illustrative. The MIT record demonstrates a university-wide first-year application target linked to a major chosen after admission. Implement the smallest shape that the inspected code and pilot data require.
+The following JSON illustrates relationships and provenance, not a final storage file, exhaustive schema, or mandatory template for every university. Identifiers and cycle values are illustrative. This MIT example links a university-wide first-year application to a major chosen after admission; another institution can organize those relationships differently. Stage 1 develops the draft schema from researched facts and applicant questions without being limited by the existing runtime's fields.
 
 ```json
 {
@@ -150,7 +153,7 @@ The following JSON shows the relationships and provenance expected in the target
 
 For a course-specific route, `application_target` refers to the actual course/program and its application destination. Funding opportunities are separate records linked to their applicable routes and study options, because their process and deadlines can differ from admission. A fact record should carry enough context to answer: **which route or option, which applicant category, which fee status if relevant, which cycle/window, what value or status, and which official source was checked when?** Do not duplicate institution-level facts into each course where the source defines one shared route; represent the shared scope once and link the applicable options.
 
-The final schema may use a different nesting or field names. It must preserve these distinctions and permit multiple official sources and multiple cycle-specific facts when reality requires them. Avoid adding a generic rule engine, speculative compatibility layers, or unused optional fields before the top-five cases demonstrate a need.
+The final schema may use different nesting or field names and institution-specific structures. It must preserve these distinctions and permit multiple official sources and multiple cycle-specific facts when reality requires them. Maintain documented common conventions for IDs, provenance, scope, statuses, and relationships so the application can read all institutions; do not impose one institutional layout or create 50 unrelated, undocumented formats. Add structures for demonstrated facts, without a speculative rule engine, unused fields, or permanent compatibility layers.
 
 ## Applicant interface implications
 
@@ -174,6 +177,8 @@ Use populated profile values without asking the same questions again. Let a visi
 One selected context must govern the program-to-admission transition, requirements, dates, finance, qualification guidance, and the estimate summary. Manual selection must be restorable after reload or opening a supported link, and a profile update must not leave a stale summary from another program or level. Keep fact groups distinguishable within that context; a particular tab count or page layout remains an implementation decision.
 
 ### Detail-page context contract
+
+The field names and URL parameters below document the existing implementation as a starting point. Stage 2 may change them and their readers together when the reviewed draft model requires it; they do not constrain Stage 1 data collection. Avoid compatibility layers solely for unused early-development formats. Any actual retained profile or selection must be deliberately migrated or visibly reset rather than silently reinterpreted.
 
 The detail page uses local URL overrides before a supported saved program selection and profile defaults. Selecting a program does not change the general profile. Supported query parameters are `admission_program` (a catalog program ID), `admission_level` (the applicable level key), `admission_route` (`first_year`, `transfer`, or `graduate`), and `admission_cycle` (the source cycle or an explicit entry year/term). Reload and browser history restore these overrides. Invalid identifiers must not create an application target or an estimate.
 
@@ -220,53 +225,51 @@ Follow the established Calm Academic Workspace and localization rules in `AGENTS
 
 ## Delivery sequence
 
-Keep product direction and execution order explicit:
+This sequence replaces the previous journey-first/top-five integration gates. Existing implementation and research are inputs to reuse, not work to repeat. Complete the agreed task's stage and report its handoff; do not automatically start the next stage.
 
-### Phase 0 — prove the shared decision journey
+### Stage 1 — data and schema for all 50 universities
 
-1. Connect the existing profile and manual program selection to one applicable context across the backend, frontend, scoring, and saved selections. Reuse inspected helpers and fields; extend the contract only for a demonstrated missing distinction.
-2. Resolve the concrete scope, requirement, unknown-cost, and state-restoration problems tracked in [the task checklist](../todo.md). Recheck official facts for affected routes before modifying data.
-3. Define honest UniFit/UniChance semantics and the budget/unknown-evidence behavior, then implement and verify the affected calculation and presentation together.
-4. Exercise MIT Course 6-3 first-year and transfer, Imperial Computing MEng undergraduate-entry UCAS, and Stanford undergraduate Computer Science first-year and transfer. These are contrast cases, not claims of full university coverage. Include guests, populated and incomplete synthetic profiles, reload, context changes, English/Russian, desktop/mobile, and light/dark themes.
-5. Let the user review the working journey and incorporate concrete usability findings before mass catalog migration. Keep an additional reviewed MIT graduate/doctoral example to catch undergraduate fact leakage.
+**1.1 MIT:** reconcile existing research, drafts, and runtime facts, then complete the dated official degree-level inventory and applicant-relevant fact groups. Include institutional information, study descriptions/structure, real application targets, applicant categories, qualifications, tests, exemptions, prerequisites, documents, process, dates/windows, costs, funding, and published decision/enrollment conditions. Capture all significant found conditions and exceptions with their scope and provenance. Revise the draft schema and MIT example as needed; keep them outside active runtime data. No backend/frontend integration or browser/user UX gate belongs in this task.
 
-Completing every MIT catalog record is not a prerequisite for this contrast-case review. MIT remains the main inventory pilot, and full degree-level coverage remains in scope.
+Completion means the official catalog snapshot is reconciled, each option has a verified application classification or an evidenced unresolved classification, and each applicable fact group has researched facts or a documented gap/status and official next step. Unsupported fields in the current runtime must not limit collection. The scope is information needed to understand the university, choose a degree, and apply; it is not every class, news item, or page on the institution's website. Missing future-cycle publications or contradictory official sources can remain explicit unknowns after documented research. Unsearched groups remain collection tasks.
 
-### Phase 1 — complete the MIT catalog and integrated routes
+**1.2 Other 49:** research each institution independently to the same evidence and coverage standard. Imperial College London, Stanford, Harvard, and Oxford can be the first collection batch, followed by the other 45; both batches remain within Stage 1. Review each institution's own catalog, applications, conditions, exceptions, costs, and funding. Change its draft structure and the shared conventions where real differences require it; do not force an MIT schema or copy MIT policies. Record coverage and unresolved facts per institution. All 50 datasets must pass the Stage 1 evidence/structure review before Stage 2 starts.
 
-1. Finish the dated official degree-level inventory across undergraduate, graduate, doctoral, and professional study, including internal MEng and Sloan cases. Preserve unresolved classifications and official next actions.
-2. Finalize the smallest canonical schema and contributor example based on the reviewed journey. Keep incompatible drafts outside the active catalog until readers are ready; remove obsolete readers after integration.
-3. Integrate accepted records and verify all relevant MIT applicant paths using the proven shared context. Review the full MIT experience with the user. Do not equate completion of Phase 0 with complete MIT coverage.
+During Stage 1, design the relationships and intended applicant answers alongside the data. Use concrete draft examples to check that shared applications, course-specific targets, internal degrees, integrated master's entry, and program-specific exceptions can be represented. This is data/model review, not implementation. Lightweight draft validation may check IDs, references, status/scope, and schema consistency; the runtime audit alone does not validate draft files it does not read. Keep authoritative research in durable draft files rather than only temporary local notes.
 
-### Phase 2 — extend the reviewed model to the other top-five universities
+### Stage 2 — coordinated backend and frontend integration
 
-Inventory Imperial College London, Stanford, Harvard, and Oxford from their official degree-level catalogs. Extend the schema only for verified cases MIT cannot express, then migrate each institution's reviewed data and applicant journey in coherent batches. Preserve the existing app while a breaking draft format is being integrated; remove obsolete paths after the corresponding readers move to the new contract. No permanent legacy reader is required.
+1. Establish the reviewed storage/API contract from all 50 draft datasets. Update loaders, schemas, projections, search, profile evidence, scoring, and frontend consumers together; reuse working components wherever they fulfill the contract.
+2. Support required exams across selection, input validation, persistence, API, assessment, and explanations. Represent sourced alternatives, waivers, and other conditions explicitly. Collecting a difficult rule in Stage 1 does not require inventing a numeric automated check: when evidence cannot establish it, show the rule and the unresolved assessment with missing evidence and the official next step.
+3. Use one selected program/target/route/applicant/cycle context across facts, recommendations, deadlines, costs, and funding. Every applied ranking or restriction condition must be explainable from that context and the applicant's evidence. Keep non-numeric conditions visible alongside the limited UniChance minimum-check percentage.
+4. Switch all 50 universities to the new runtime format in one coordinated cutover after its readers and consumers are ready. Do not leave the other 49 unreadable when activating MIT. Remove obsolete format readers and unnecessary institution-specific branches; no permanent dual-format support is required. Handle retained profile/selection state deliberately.
+5. Verify the integrated contracts and representative journeys, including MIT first-year/transfer/internal MEng/professional/doctoral routes, Imperial Computing undergraduate-entry UCAS, and Stanford CS institutional admission. Include unknown, incompatible, incomplete-profile, and source-conflict cases. Fix contract failures before handing the product to Stage 3.
 
-Verify course-specific undergraduate applications, integrated degrees, graduate deadlines, professional program windows, and funding variations that differ from MIT. Review API, frontend, scoring, and saved selections whenever the contract changes.
+### Stage 3 — complete UI/UX and final verification
 
-### Phase 3 — remaining 45 universities
+Make the integrated information understandable and usable across discovery, programs, applications, requirements, dates, costs, and funding. Refine layout, navigation, explanations, sources, and loading/empty/error states using the existing design system. Implement a coherent applicant journey rather than disconnected program and admissions views; a full redesign or a particular tab count is not required.
 
-Once the top-five implementation provides a proven pattern, migrate the other 45 institutions to the new model while refreshing their facts from official sources. Treat these as drafts until each route and scoped fact is reviewed; do not copy top-five assumptions, old unverified values, or institution-wide defaults across the catalog. Prioritize accurate route coverage and source freshness over filling every field.
+Exercise real guest, populated-profile, and incomplete-profile journeys; context changes, profile updates, reload/back navigation, and saved selection; English/Russian, desktop/mobile, light/dark. Include representative institutions beyond the first five and institution-specific exception cases. Review concrete usability findings with the user, complete applicable checks, and report factual unknowns separately from unfinished implementation. User UX review happens here and does not block Stage 1 research.
 
-Contributors may extend and reconcile the canonical template during this draft collection without updating the backend or running UI tests for each new field. Before publication, integrate every accepted field into the API and UI, audit links and fact scopes, and run the relevant contract and applicant-journey checks once for the combined change.
-
-The sequence is a shared journey proven on the three contrast cases, user review, completion of MIT, completion of the other four top-five institutions, and then the remaining 45. Within each batch, source-backed data and scope decisions precede publication of the coordinated backend/frontend change. The open problems and implementation progress belong in [todo.md](../todo.md); [orchestrator.md](../orchestrator.md) defines execution and ownership.
+Track acceptance, progress, and the one-week planning target in [todo.md](../todo.md). [orchestrator.md](../orchestrator.md) defines task boundaries and handoffs. A future feature, new scoring name, probability model, authentication, or database-engine migration is not a prerequisite for this work.
 
 ## Acceptance criteria
 
-The direction is ready to implement when:
+The completed product must meet these criteria:
 
 - a user can understand that subject search is for discovery and can lead to more than one actual study option or application route;
-- the top-five records inventory degree-level study options across undergraduate, master's, doctoral, and professional study based on official catalogs, with coverage gaps explicitly identified;
+- all 50 institutions have dated official degree-level inventories across their offered study levels, with researched coverage and remaining factual gaps explicitly identified;
 - MIT's official undergraduate majors can be inventoried as post-admission study options without pretending an intended major is the first-year admission target;
 - Oxford undergraduate course-specific selection and Oxford graduate course/deadline variation can be represented without a university-wide default;
 - the model separates study option, application route, applicant category, intake/cycle, and deadline round where the official process distinguishes them;
 - requirements, application deadlines, funding deadlines, costs, and funding remain distinguishable and properly scoped;
+- significant exceptions and conditional rules are retained and displayed; an applicant can see the condition, its applicability, and the missing evidence instead of encountering an unexplained restriction;
 - every verified fact can be traced to an official source and checked date, while not-published and needs-review states remain explicit;
 - cycle-specific values cannot silently appear as current for a different cycle, and amounts are not detached from currency, period, or applicable fee status;
-- the top-five target data can be reviewed outside active runtime data if the current readers cannot yet consume it safely;
-- the coordinated backend/frontend migration has a clear point at which the new top-five model becomes runtime data, without requiring a permanent legacy reader;
-- the later 45-university migration is treated as a fact refresh and scope review, not only a mechanical shape conversion.
+- each institution's actual structure is preserved within documented storage conventions; MIT's structure is not imposed on other institutions;
+- all 50 draft datasets are reviewed outside active runtime data before coordinated integration, without backend/frontend work for every collected field;
+- the coordinated backend/frontend cutover supports all 50 institutions and removes obsolete runtime readers without requiring permanent legacy compatibility;
+- representative real journeys verify usable, localized explanations and consistent context, rather than relying on catalog counts or test totals as proof of completeness.
 
 ## Official references
 

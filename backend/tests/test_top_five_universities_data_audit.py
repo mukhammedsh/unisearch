@@ -225,7 +225,19 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertEqual("tuition_and_mandatory_fee", msms["price_facts"][0]["kind"])
         self.assertEqual(91892, msms["price_facts"][0]["amount"])
         self.assertEqual("2026-27 academic year; includes mandatory Sloan program fee", msms["price_facts"][0]["cycle"])
-        self.assertNotIn("mit-bs-4", categories["mit_undergrad_transfer"]["program_ids"])
+        bachelor_program_ids = [
+            program["id"]
+            for program in mit["academics"]["programs"]
+            if "Bachelor" in program.get("study_levels", [])
+        ]
+        transfer_route = categories["mit_undergrad_transfer"]
+        self.assertCountEqual(bachelor_program_ids, transfer_route["program_ids"])
+        self.assertEqual(52, len(transfer_route["program_ids"]))
+        self.assertEqual(
+            "https://mitadmissions.org/apply/transfer/transfer-eligibility/",
+            transfer_route["requirements_source_url"],
+        )
+        self.assertIn("https://mitadmissions.org/apply/transfer/deadlines/", transfer_route["source_urls"])
         self.assertNotIn("mit-physics-phd-course-8", categories["mit_phd_doctoral_guarantee"]["program_ids"])
         self.assertNotIn(
             "Doctor of Philosophy in Physics (Course 8 PhD)",

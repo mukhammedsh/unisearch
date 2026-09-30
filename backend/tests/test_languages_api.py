@@ -20,6 +20,19 @@ class LanguagesApiTests(unittest.TestCase):
         self.assertIsInstance(data.get("language_exams"), dict)
         self.assertIn("en", data.get("language_exams", {}))
 
+    def test_cambridge_certificates_have_distinct_reported_score_ranges(self):
+        for exam, score, expected in [
+            ("Cambridge_C1_Advanced", 142, 200), ("Cambridge_C1_Advanced", 211, 400),
+            ("Cambridge_C2_Proficiency", 162, 200), ("Cambridge_C2_Proficiency", 230, 200),
+            ("Cambridge_C2_Proficiency", 231, 400), ("Cambridge_C2_Proficiency", 200.5, 400),
+        ]:
+            with self.subTest(exam=exam, score=score):
+                response = self.client.post("/languages/validate", json={"code": "en", "kind": "exam", "exam": exam, "score": score})
+                self.assertEqual(response.status_code, expected)
+                if expected == 200:
+                    self.assertEqual(response.json()["language"]["exam"], exam)
+                    self.assertEqual(response.json()["language"]["score"], score)
+
     def test_validate_language_native(self):
         response = self.client.post(
             "/languages/validate",

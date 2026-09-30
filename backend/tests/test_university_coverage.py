@@ -23,8 +23,14 @@ class UniversityCoverageTests(unittest.TestCase):
         self.assertEqual(mst["name"], "Master of Science in Transportation (MST)")
         route = routes[mst["admission_route_id"]]
         self.assertEqual(route["program_ids"], [mst["id"]])
-        self.assertEqual(route["requirement_profiles"][0]["requirements_review_status"], "not_reviewed")
-        self.assertEqual(route["requirement_profiles"][0]["requirements"], {})
+        mst_profile = route["requirement_profiles"][0]
+        self.assertEqual(mst_profile["requirements_review_status"], "reviewed")
+        self.assertEqual(mst_profile["requirements"], {})
+        self.assertEqual(mst_profile["required_exam_alternatives"], [["GRE"]])
+        self.assertEqual(mst_profile["unassessed_published_minimums"][0]["exam_id"], "IELTS")
+        self.assertIn("international applicants", mst_profile["unassessed_published_minimums"][0]["scale"])
+        self.assertNotIn("funding", mst_profile["requirements_note"].lower())
+        self.assertTrue(any("funding" in note.lower() for note in route["scholarships"]))
         self.assertNotIn("mit_grad_eecs_engineer_admissions", routes)
         for id in ("mit-engineer-electrical", "mit-engineer-computer-science"):
             self.assertNotIn("admission_route_id", programs[id])
@@ -32,6 +38,34 @@ class UniversityCoverageTests(unittest.TestCase):
             "before applying",
             programs["mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"]["entry_requirements"],
         )
+        mitili = programs["mit-linguistics-sm-mit-grad-linguistics"]
+        self.assertEqual(mitili["admission_route_id"], "mit_mitili_sm_admissions")
+        mitili_route = routes[mitili["admission_route_id"]]
+        self.assertEqual(mitili_route["study_levels"], ["Master"])
+        self.assertEqual(mitili_route["program_ids"], [mitili["id"]])
+        self.assertEqual(mitili_route["source_url"], "https://linguistics.mit.edu/mitili/")
+        self.assertEqual(mitili_route["requirements_source_url"], "https://linguistics.mit.edu/mitili/")
+        self.assertIn("MITILI", mitili_route["description"])
+        self.assertEqual(
+            mitili_route["requirement_profiles"][0]["funding_options"][0]["funding_type"],
+            "grant",
+        )
+        self.assertEqual(routes["mit_linguistics_doctoral_admissions"]["program_ids"], ["mit-linguistics-phd"])
+        russian = get_university_by_id("mit-usa-cambridge", search_lang="rus", localized=True)
+        russian_mitili = next(row for row in russian["academics"]["programs"] if row["id"] == mitili["id"])
+        self.assertIn("MITILI", russian_mitili["description"])
+        russian_route = next(row for row in russian["admission_categories"] if row["id"] == mitili_route["id"])
+        self.assertEqual(russian_route["label"], "Поступление в магистратуру MITILI по лингвистике (SM)")
+
+        math_sm = programs["mit-mathematics-of-data-sm-mit-grad-mathematics"]
+        self.assertEqual(math_sm["admission_route_id"], "mit_mathematics_of_data_sm_admissions")
+        math_route = routes[math_sm["admission_route_id"]]
+        self.assertEqual(math_route["program_ids"], [math_sm["id"]])
+        self.assertEqual(math_route["deadlines"][0]["date"], "2026-12-01")
+        self.assertEqual(math_route["requirement_profiles"][0]["requirements"], {})
+        self.assertEqual(math_route["requirement_profiles"][0]["unassessed_published_minimums"][0]["minimum"], 4.8)
+        russian_math_route = next(row for row in russian["admission_categories"] if row["id"] == math_route["id"])
+        self.assertEqual(russian_math_route["label"], "Внутренняя заявка на Mathematics of Data SM")
 
     def test_pilot_detail_api_reports_level_scoped_coverage(self):
         response = self.client.get("/universities/mit-usa-cambridge")

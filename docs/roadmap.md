@@ -7,10 +7,11 @@ Items are ordered by strategic execution phases and dependencies rather than fix
 
 The [admissions product model](admissions-product-model.md) is the current contract for university catalog and applicant-journey work. Its sequence is:
 
-1. Connect existing profile fields to one selected applicant context across admissions, scoring, deadlines, costs, and funding; fix confirmed cross-program, level, route, and cycle leakage.
-2. Define UniFit, UniChance, and budget-ranking semantics. Validate guest and profile journeys for MIT Course 6-3 first-year and transfer, Imperial Computing MEng through UCAS, and Stanford Computer Science through university-wide first-year and transfer routes.
-3. Have the user review the representative applicant experience before mass migration. MIT's complete all-level catalog inventory remains open but does not block validation of these contrasting cases; complete it before claiming MIT coverage.
-4. Extend the reviewed model to the remaining top-five universities, then refresh and migrate the other 45 using the verified model.
+1. **Data and schema:** task 1.1 completes MIT research and draft structure; task 1.2 researches the other 49 institutions, adapting structure to each institution's own programs and admissions. MIT demonstrates quality and depth, not a mandatory schema. Organize all significant sourced conditions and exceptions in durable drafts outside the active runtime, without implementing every new field or requiring UX approval during collection.
+2. **Backend/frontend integration:** after all 50 datasets have been reviewed, support their fields and relationships across the API, profile/exams, scoring, and applicant interface. Activate the new format for all 50 together and remove obsolete readers. Reuse earlier verified work; permanent backward compatibility is not required.
+3. **UI/UX and final verification:** refine the connected applicant journey and verify concrete explanations, applicability, missing profile evidence, official sources, and uncertainty. Exercise MIT, Imperial Computing, Stanford CS, and representative later institutions on desktop/mobile, in English/Russian and light/dark themes; incorporate concrete user feedback here.
+
+Stage 1 reviews data relationships and applicant questions, not a working interface. Researched unknowns and unavailable future-cycle publications remain explicit facts/statuses; unsearched gaps remain tasks. The one-week target and stage completion criteria are tracked in [todo.md](../todo.md). Separate tasks stop at their agreed stage boundary.
 
 Use profile fields that already exist, including education country and credential, applicant route, intended entry cycle, current residence, and self-reported fee-status context. Do not add a duplicate questionnaire. Do not infer immigration status, university-assessed Home/Overseas fee status, or aid eligibility from residence or nationality alone; show unknown when applicability is not established.
 
@@ -51,7 +52,7 @@ Phase 4: Academic Expansion & Community
 * **Key Tasks:**
   - **Design & Typography:** Audit all screens against the Calm Academic Workspace specification (`frontend/css/style.css`, `docs/design-system.md`). Eliminate visual noise, unnecessary box borders, and align spacing to the 4/8-px grid.
   - **Static & Token Guards:** Ensure 100% pass rate across baseline health scripts (`npm run check:tokens`, `npm run check:i18n`, `npm run audit:data`).
-  - **Catalog Verification:** Follow the admissions-model sequence above; do not claim complete top-five or 50-university program coverage from the current runtime catalog. Validate scope across the representative admission routes before beginning mass migration.
+  - **Catalog Verification:** Follow the three-stage admissions sequence above. Review official inventories, institution-specific structure, scoped facts, and exceptions for all 50 drafts first; integrate and exercise the runtime journeys afterward. Runtime record counts and passing audits alone do not establish factual completeness.
   - **Test Suite Depth:** Cover critical user journeys with Playwright E2E scenarios and maintain >= 80% statement and branch coverage across both frontend and backend.
 
 ### 2. Percentage GPA Scale Support (0–100%)

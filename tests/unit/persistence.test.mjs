@@ -113,6 +113,25 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(profile.exams[0].id, 'SAT');
     });
 
+    test('persists GRE sections and distinct GMAT editions into the API payload', () => {
+      const components = [
+        { exam: 'GRE_VERBAL', score: 160 },
+        { exam: 'GRE_QUANTITATIVE', score: 168 },
+        { exam: 'GRE_ANALYTICAL_WRITING', score: 4.5 },
+      ];
+      saveProfile({ exams: [
+        { exam: 'GRE', details: { components, score_strategy: 'components_only' } },
+        { exam: 'GMAT_FOCUS', score: 655 },
+        { exam: 'GMAT', score: 650 },
+      ] });
+      const restored = loadProfileForApi();
+      const gre = restored.exams.find((row) => row.exam === 'GRE');
+      assert.deepStrictEqual(gre.details.components, components);
+      assert.strictEqual(gre.score, undefined);
+      assert.strictEqual(restored.exams.find((row) => row.exam === 'GMAT_FOCUS').score, 655);
+      assert.strictEqual(restored.exams.find((row) => row.exam === 'GMAT').score, 650);
+    });
+
     test('extracts GPA from exams list if gpa field is empty', () => {
       const profile = normalizeProfileData({
         gpa: '',

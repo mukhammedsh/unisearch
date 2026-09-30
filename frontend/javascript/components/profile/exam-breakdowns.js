@@ -442,13 +442,11 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                     </div>
                 `).join("")}
                 <div class="profile-exam-special-hint">${escapeHtml(
-                    tFormat(
+                    selectableMax ? tFormat(
                         "profile.exam_breakdown_hint",
                         { min: selectableMin, max: selectableMax || 0 },
-                        selectableMax
-                            ? `Enter scores by subject. Required subjects stay fixed, and you can choose ${selectableMin}-${selectableMax} extra subjects where needed.`
-                            : "Enter scores by subject."
-                    )
+                        `Enter scores by subject. Required subjects stay fixed, and you can choose ${selectableMin}-${selectableMax} extra subjects where needed.`
+                    ) : t("profile.exam_breakdown_fixed_hint", "Enter the score for each required section.")
                 )}</div>
             </div>
         `;

@@ -29,6 +29,10 @@ The interface supports English and Russian, multi-currency conversion (60+ curre
 
 UniFit uses the profile's annual budget against the applicable annual cost before any award; unknown costs and potential grants do not become a zero or a guaranteed discount. UniChance is independent of budget and funding preferences and is not an admission probability or a funding prediction. Both tools preserve missing evidence as unknown rather than filling it with a neutral percentage.
 
+Admission checks show the published threshold, profile evidence, and whether it is met, unmet, missing, or cannot be assessed. Unknown program, applicant-route, or entry-cycle applicability prevents a contextual percentage. A required exam without a published cutoff is evidence to submit, not an invented minimum score.
+
+The profile supports GRE General Test section scores without creating a total, and separates GMAT Focus Edition (205–805) from GMAT 10th Edition (200–800). Select the edition on the academic-data tab, add the results, and save the profile. Language evidence distinguishes Cambridge C1 Advanced from C2 Proficiency. Program-specific test requirements remain separate: adding an exam does not establish eligibility, a waiver, or admission.
+
 Published family-income thresholds are policy context only. A profile income comparison does not determine financial-aid eligibility or an award amount. Funding details describe published conditions and application steps; they do not guarantee an award, and possible aid is not deducted from displayed costs.
 
 ROI is a simplified ratio, not the payback period for an entire degree or a forecast of personal earnings. If salary data for the chosen major is missing, the calculation may use general university salary data.
@@ -140,6 +144,8 @@ Main endpoints: `GET /universities`, `GET /universities/{id}`, `GET /currency/ra
 
 Update verified facts in `backend/data/official_facts.json` and `backend/data/official_admissions.json`, then use the sync scripts to update `universities.json`. Follow the [data contribution workflow](CONTRIBUTING.md#university-data-changes). Run `npm run audit:data` after data changes and `npm run audit:images` after media changes.
 
+For the planned admissions overhaul, use the [staged checklist](todo.md): collect and organize MIT and the other 49 institutions in drafts first, integrate the reviewed data into backend/frontend second, and complete UI/UX verification third. Each institution keeps its own programs and admissions structure. The synchronization steps above describe the current runtime; draft research is not restricted to its existing fields.
+
 ## Checks and tests
 
 Quick repository checks (activate the Python environment for `audit:data`):
@@ -170,5 +176,7 @@ npm run test:e2e:pr             # Playwright E2E suite
 For the full browser matrix, install Chromium, Firefox, and WebKit with `npx playwright install`, then run `npm run test:e2e:nightly`. Automated checks are configured in [.github/workflows/](.github/workflows/).
 
 Architecture: [docs/architecture.md](docs/architecture.md). Admissions direction: [product model](docs/admissions-product-model.md) and [migration checklist](todo.md). Roadmap: [docs/roadmap.md](docs/roadmap.md). Governance: [GOVERNANCE.md](GOVERNANCE.md). Security baseline tracking: [docs/security-baseline.md](docs/security-baseline.md). Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Interface rules: [design system](docs/design-system.md). Version history: [CHANGELOG.md](CHANGELOG.md).
+
+For admission-data contributors, see [the runtime admissions contract](docs/admissions-runtime-contract.md) for supported requirement fields, per-choice explanations, and source-scoping examples.
 
 Source code is distributed under the [MIT License](LICENSE). University logos, names, and photographs belong to their respective owners and are not covered by the code license; see `LICENSE` for details.

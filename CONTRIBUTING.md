@@ -50,11 +50,13 @@ npm run dev:frontend
 - Do not expose raw technical errors to users through frontend flows.
 
 ## University Data Changes
+- For the planned admissions overhaul, follow the stages in [todo.md](todo.md): research MIT, then the other 49 universities in durable drafts; integrate all 50 afterward; finish UI/UX verification last. Model each institution's own structure and retain sourced exceptions even when the current runtime cannot express them. Do not use the existing runtime contract as the limit for draft collection.
 - Use official university pages, official admissions pages, or official university-hosted PDFs/reports only.
 - Do not use aggregators, marketing summaries, or inferred facts for verified fields.
 - Prefer empty fields over invented data.
 - Keep display names as full university names; put abbreviations only in hidden search aliases.
-- After curated data updates, run:
+- During draft collection, validate draft structure, relationships, coverage, and affected official sources directly. The runtime audit does not prove completeness or validate drafts it does not read. Do not apply drafts through the runtime synchronization scripts before Stage 2 integration.
+- For updates to the existing runtime format, the current synchronization commands are:
   ```bash
   python backend/scripts/apply_official_facts.py --verified-at YYYY-MM-DD
   python backend/scripts/apply_official_admissions.py

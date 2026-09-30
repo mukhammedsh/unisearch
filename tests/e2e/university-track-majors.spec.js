@@ -110,6 +110,50 @@ test("MIT Sloan MSMS keeps partner-school eligibility and its own deadline", asy
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
+test("MITILI Linguistics SM opens its own master's application route", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
+  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
+  await page.locator("#tab-programs [data-program-level='master']").click();
+  const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-linguistics-sm-mit-grad-linguistics']") });
+  await program.locator("[data-program-toggle]").click();
+  await expect(program).toContainText("MITILI");
+  await program.locator("[data-program-admission]").click();
+  await expect(page).toHaveURL(/admission_program=mit-linguistics-sm-mit-grad-linguistics/);
+  const route = page.locator("#tab-admission [data-admission-category='mit_mitili_sm_admissions']");
+  await expect(route).toBeVisible();
+  await expect(route).toContainText("процедуру приёма на программу PhD по лингвистике");
+  await expect(route).toContainText("Statement of Objectives");
+  await expect(route).toContainText("Полная стипендия MITILI");
+  await expect(route.locator(".admission-funding-option")).toContainText("медицинскую страховку");
+  await expect(route.locator(".admission-funding-option")).not.toContainText("по конкурсу или рейтингу");
+  await expect(page.locator("#tab-admission [data-admission-category='mit_linguistics_doctoral_admissions']")).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
+test("MIT Mathematics of Data SM shows its internal route and unassessed GPA", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
+  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
+  await page.locator("#tab-programs [data-program-level='master']").click();
+  const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-mathematics-of-data-sm-mit-grad-mathematics']") });
+  await program.locator("[data-program-toggle]").click();
+  await expect(program).toContainText("действующим студентам бакалавриата MIT");
+  await program.locator("[data-program-admission]").click();
+  const route = page.locator("#tab-admission [data-admission-category='mit_mathematics_of_data_sm_admissions']");
+  await expect(route).toBeVisible();
+  await expect(route).toContainText("4,8/5,0");
+  await expect(route).toContainText("не показывает процент UniChance");
+  expect((await route.locator(".chance-track-chip").allTextContents()).join(" ")).not.toMatch(/\d+%/);
+  await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
+  await expect(page.locator("#tab-deadlines")).toContainText("1 декабря 2026");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
 test("MIT matching Business Analytics keeps its title and major badge on one header row", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await seedProfile(page, { major: "Business Analytics (Course 15-2)", studyLevel: "Bachelor" });
@@ -182,9 +226,10 @@ for (const width of [1280, 390]) {
       await expect(admission.locator(".admission-decision-actions a")).toHaveAttribute("href", /^https:\/\/mitadmissions\.org\//);
       const route = admission.locator("[data-admission-category='mit_regular']");
       await expect(route.locator(".chance-track-chip")).toHaveCount(1);
-      await expect(route.locator(".chance-track-chip")).toContainText("нет опубликованных измеримых минимумов");
-      await expect(route.locator(".track-factors-badges")).toHaveCount(0);
-      await expect(route.locator(".requirement-profile-head")).toHaveCount(0);
+      await expect(route.locator(".chance-track-chip")).toContainText("Добавьте обязательные экзамены");
+      await expect(route.locator(".admission-check-assessments")).toContainText("SAT или ACT");
+      await expect(route.locator(".admission-check-assessments")).toContainText("Не указано");
+      await expect(route.locator(".chance-track-chip")).not.toContainText(/\d+\s*%/);
       const history = route.locator(".track-published-score-range");
       await expect(history).not.toHaveAttribute("open", "");
       await expect(history.locator("a")).toBeHidden();
@@ -642,7 +687,7 @@ test("Stanford CS transfer selection stays separate from first-year and JD", asy
   await expect(page.locator("#tab-admission [data-admission-context='route']")).toHaveValue("transfer");
 });
 
-test("MIT catalog adds reviewed majors without inventing a transfer route", async ({ page }) => {
+test("MIT catalog majors share the sourced university-wide transfer route", async ({ page }) => {
   await page.goto("/university.html?id=mit-usa-cambridge");
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
@@ -657,7 +702,7 @@ test("MIT catalog adds reviewed majors without inventing a transfer route", asyn
   await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Architecture (Course 4)");
   await expect(page.locator("#tab-admission [data-admission-category='mit_regular']")).toBeVisible();
   await expect(page.locator("#tab-admission [data-admission-category='mit_undergrad_early_action']")).toBeVisible();
-  await expect(page.locator("#tab-admission [data-admission-category='mit_undergrad_transfer']")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-category='mit_undergrad_transfer']")).toBeVisible();
 });
 
 test("MIT new major has a Russian title and keeps its official course number", async ({ page }) => {

@@ -69,6 +69,29 @@ class ExamsApiTests(unittest.TestCase):
         self.assertEqual("SAT_MATH", data.get("exam"))
         self.assertEqual(750, int(data.get("score")))
 
+    def test_gre_preserves_sections_without_inventing_a_total(self):
+        components = [
+            {"exam": "GRE_VERBAL", "score": 160},
+            {"exam": "GRE_QUANTITATIVE", "score": 168},
+            {"exam": "GRE_ANALYTICAL_WRITING", "score": 4.5},
+        ]
+        response = self.client.post("/exams/validate", json={"exam": "GRE", "details": {"components": components}})
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertNotIn("score", result)
+        self.assertNotIn("score_total", result["details"])
+        self.assertEqual([row["score"] for row in result["details"]["components"]], [160, 168, 4.5])
+        for invalid in (components[:2], components + [components[0]], [{**components[0], "score": 171}] + components[1:], components[:2] + [{"exam": "GRE_ANALYTICAL_WRITING", "score": 4.25}]):
+            with self.subTest(components=invalid):
+                response = self.client.post("/exams/validate", json={"exam": "GRE", "details": {"components": invalid}})
+                self.assertEqual(response.status_code, 400)
+
+    def test_gmat_editions_have_separate_score_scales(self):
+        for exam, valid, invalid in (("GMAT_FOCUS", 655, 650), ("GMAT", 650, 655)):
+            with self.subTest(exam=exam):
+                self.assertEqual(self.client.post("/exams/validate", json={"exam": exam, "score": valid}).status_code, 200)
+                self.assertEqual(self.client.post("/exams/validate", json={"exam": exam, "score": invalid}).status_code, 400)
+
     def test_validate_exam_rejects_invalid_step(self):
         response = self.client.post(
             "/exams/validate",

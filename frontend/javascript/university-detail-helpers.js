@@ -402,7 +402,7 @@ function parseChanceValue(value) {
   return Number.isFinite(numeric) ? numeric : null;
 }
 
-function chanceNoDataHelpNote(uniChance) {
+export function chanceNoDataHelpNote(uniChance) {
   if (uniChance && String(uniChance.scoreMeaning || "").trim() !== "published_requirements_met_percent") {
     return t("admission.requirements_fit.unavailable_method", "Requirements fit score is unavailable because its meaning could not be confirmed.");
   }
@@ -410,6 +410,7 @@ function chanceNoDataHelpNote(uniChance) {
   if (reason === "no_published_requirements") return t("admission.requirements_fit.no_published_requirements", "This route has no measurable published minimums, so a requirements fit percentage cannot be calculated. Review the official application requirements.");
   if (reason === "unassessed_minimums") return t("admission.requirements_fit.unassessed_minimums", "Published minimums cannot be assessed with the available profile fields, so no requirements fit percentage is calculated.");
   if (reason === "requirements_not_reviewed") return t("admission.requirements_fit.requirements_not_reviewed", "Published academic and language minimums have not yet been reviewed for this route. Check the official program page before applying.");
+  if (reason === "applicability_unknown") return t("admission.requirements_fit.applicability_unknown", "The published requirements could not be matched to this program, applicant route, and entry cycle. Confirm the applicable route on the official page.");
   if (reason === "no_choices") return t("admission.requirements_fit.no_applicable_path", "No assessed path matches this context. Review the selected route and entry cycle against the official requirements.");
   if (reason === "requirements_not_met") {
     return t(
@@ -420,7 +421,7 @@ function chanceNoDataHelpNote(uniChance) {
   if (reason === "missing_evidence") {
     return t(
       "admission.chance.missing_evidence",
-      "Add the required exam scores or language evidence to calculate a requirements fit score."
+      "Add the required exam scores or language evidence to check this route."
     );
   }
   if (reason === "missing_exam_score") {
@@ -556,7 +557,7 @@ export function renderTrackChanceChip(trackChance) {
 export function renderTrackFactors(trackChance) {
   if (String(trackChance?.scoreMeaning || "").trim() !== "published_requirements_met_percent") return "";
   if (trackChance?.reason === "no_published_requirements") return "";
-  const requirementFactorKeys = ["missing_evidence", "insufficient_data", "requirements_met", "requirements_gap"];
+  const requirementFactorKeys = ["applicability_unknown", "missing_evidence", "insufficient_data", "requirements_met", "requirements_gap"];
   const factors = Array.isArray(trackChance?.factors)
     ? trackChance.factors.filter((factor) => requirementFactorKeys.includes(String(factor?.key || "")))
     : [];
@@ -568,6 +569,46 @@ export function renderTrackFactors(trackChance) {
       <span class="track-factors-label">${escapeHtml(t("admission.chance.factors_label", "Why this estimate changed"))}</span>
       ${factorChips.join("")}
     </div>
+  `;
+}
+
+export function renderRequirementChecks(trackChance) {
+  const checks = Array.isArray(trackChance?.details?.checks) ? trackChance.details.checks : [];
+  if (!checks.length) return "";
+  const statusKeys = {
+    met: "admission.requirements_fit.check.met",
+    unmet: "admission.requirements_fit.check.unmet",
+    missing: "admission.requirements_fit.check.missing",
+    unassessed: "admission.requirements_fit.check.unassessed",
+  };
+  const examAlternatives = t("admission.requirements_fit.check.or", "or");
+  const hasOptionalLanguageAlternatives = checks.some((check) => check?.mode === "any");
+  return `
+    <section class="admission-check-assessments" aria-label="${escapeHtmlAttr(t("admission.requirements_fit.checks_title", "Published requirement checks"))}">
+      <h4>${escapeHtml(t("admission.requirements_fit.checks_title", "Published requirement checks"))}</h4>
+      ${hasOptionalLanguageAlternatives ? `<p>${escapeHtml(t("admission.requirements_fit.check.language_any_note", "For language rules that allow alternatives, meeting one listed option satisfies that rule."))}</p>` : ""}
+      <ul>
+        ${checks.map((check) => {
+          const exam = String(check?.examId || check?.exam || "").trim();
+          if (!exam) return "";
+          const examIds = exam.split(/\s+or\s+/i).map((value) => value.trim()).filter(Boolean);
+          const label = examIds.map((id) => getExamDisplayName(id, { locale: getCurrentLanguage() }) || id).join(` ${examAlternatives} `);
+          const minimum = check.minimum == null ? "" : formatExamValue(exam, check.minimum, { context: "requirement", locale: getCurrentLanguage() });
+          const provided = check.provided == null ? "" : (typeof check.provided === "string" && examIds.includes(check.provided)
+            ? getExamDisplayName(check.provided, { locale: getCurrentLanguage() })
+            : formatExamValue(exam, check.provided, { context: "profile", locale: getCurrentLanguage() }));
+          const status = String(check.status || "").trim().toLowerCase();
+          const statusLabel = t(
+            !minimum && status === "met" ? "admission.requirements_fit.check.evidence_recorded" : (statusKeys[status] || "admission.requirements_fit.check.unassessed"),
+            !minimum && status === "met" ? "Evidence recorded" : "Cannot assess",
+          );
+          const requirementLabel = minimum
+            ? `${t("admission.requirements_fit.check.minimum", "Minimum")}: ${minimum}`
+            : `${t(examIds.length > 1 ? "admission.requirements_fit.check.required_exam" : "admission.requirements_fit.check.required_evidence", examIds.length > 1 ? "Required exam evidence" : "Required evidence")}`;
+          return `<li class="admission-check-assessments__row admission-check-assessments__row--${escapeHtmlAttr(status)}"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(requirementLabel)}${check.condition ? `; ${escapeHtml(translateAdmissionText(check.condition, check.condition))}` : ""}</span><span>${escapeHtml(t("admission.requirements_fit.check.profile", "Your profile"))}: ${escapeHtml(provided || (status === "unassessed" ? t("admission.requirements_fit.check.profile_unassessed", "This profile cannot establish the required evidence or exemption.") : t("admission.requirements_fit.check.not_provided", "Not provided")))}</span><span class="admission-check-assessments__status">${escapeHtml(statusLabel)}</span></li>`;
+        }).join("")}
+      </ul>
+    </section>
   `;
 }
 
@@ -650,6 +691,7 @@ function factorTone(status) {
 }
 
 const TRACK_FACTOR_I18N_KEYS = new Set([
+  "applicability_unknown",
   "missing_evidence",
   "insufficient_data",
   "requirements_met",

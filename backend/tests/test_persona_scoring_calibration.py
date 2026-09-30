@@ -48,7 +48,16 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         res_mit = estimate_uni_chance(self.mit, profile)
         self._assert_fit_contract(res_mit)
         self.assertIsNone(res_mit.get("overallChance"))
-        self.assertEqual("no_published_requirements", res_mit.get("reason"))
+        self.assertEqual("missing_evidence", res_mit.get("reason"))
+        first_year = next(choice for choice in res_mit["choices"] if choice["categoryId"] == "mit_regular")
+        self.assertEqual(
+            [{"type": "required_exam_alternative", "ids": ["SAT", "ACT"]}],
+            first_year["missingEvidence"],
+        )
+        self.assertEqual(
+            {"exam": "SAT or ACT", "minimum": None, "provided": None, "status": "missing"},
+            {key: first_year["details"]["checks"][0][key] for key in ("exam", "minimum", "provided", "status")},
+        )
 
         # 2. TUM (meets requirements)
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -215,7 +224,13 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         res_mit = estimate_uni_chance(self.mit, profile)
         self._assert_fit_contract(res_mit)
         self.assertIsNone(res_mit.get("overallChance"))
-        self.assertEqual("no_published_requirements", res_mit.get("reason"))
+        self.assertEqual("missing_evidence", res_mit.get("reason"))
+        first_year = next(choice for choice in res_mit["choices"] if choice["categoryId"] == "mit_regular")
+        self.assertEqual(
+            [{"type": "required_exam_alternative", "ids": ["SAT", "ACT"]}],
+            first_year["missingEvidence"],
+        )
+        self.assertEqual("missing", first_year["details"]["checks"][0]["status"])
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)

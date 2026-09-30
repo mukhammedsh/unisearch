@@ -4842,6 +4842,49 @@ body[data-page="university"],
   line-height: 1.3;
 }
 
+.admission-check-assessments {
+  display: grid;
+  gap: 8px;
+}
+
+.admission-check-assessments h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.admission-check-assessments p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.admission-check-assessments ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admission-check-assessments__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.2fr) repeat(2, minmax(100px, 1fr)) minmax(100px, 0.8fr);
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.admission-check-assessments__row strong,
+.admission-check-assessments__status {
+  color: var(--text);
+  font-weight: 500;
+}
+
 .track-factor-chip {
   padding: 4px 8px;
   font-size: 11px;
@@ -5432,6 +5475,9 @@ body[data-page="university"],
 }
 
 @media (max-width: 768px) {
+  .admission-check-assessments__row {
+    grid-template-columns: 1fr;
+  }
   .admission-requirement-grid {
     grid-template-columns: 1fr;
     gap: 12px;

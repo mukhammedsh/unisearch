@@ -347,9 +347,9 @@ def _admission_choice_from_parts(
         "study_mode": profile.get("study_mode", category.get("study_mode")),
         "language_requirements": copy.deepcopy(profile.get("language_requirements", category.get("language_requirements"))),
         "language_requirements_mode": profile.get("language_requirements_mode", category.get("language_requirements_mode")),
+        "required_exam_alternatives": copy.deepcopy(profile.get("required_exam_alternatives", category.get("required_exam_alternatives", []))),
         "extra_requirements": copy.deepcopy(profile.get("extra_requirements", category.get("extra_requirements"))),
         "scholarships": copy.deepcopy(profile.get("scholarships", category.get("scholarships", []))),
-        "applicable_majors": copy.deepcopy(profile.get("applicable_majors", category.get("applicable_majors", []))),
         "scope": copy.deepcopy(profile.get("scope", category.get("scope"))),
         "study_levels": copy.deepcopy(profile.get("study_levels", category.get("study_levels", []))),
         "study_level": copy.deepcopy(profile.get("study_level", category.get("study_level"))),
@@ -358,9 +358,10 @@ def _admission_choice_from_parts(
         "target": copy.deepcopy(profile.get("target", category.get("target"))),
         "major_selection": copy.deepcopy(profile.get("major_selection", category.get("major_selection"))),
         "cycle": copy.deepcopy(profile.get("cycle", category.get("cycle"))),
-        "program_ids": copy.deepcopy(profile.get("program_ids", category.get("program_ids", []))),
-        "program_names": copy.deepcopy(profile.get("program_names", category.get("program_names", []))),
     }
+    for mapping_key in ("applicable_majors", "program_ids", "program_names"):
+        if mapping_key in profile or mapping_key in category:
+            choice[mapping_key] = copy.deepcopy(profile.get(mapping_key, category.get(mapping_key)))
     if isinstance(merged_requirements, dict) and merged_requirements:
         choice["requirements"] = merged_requirements
     if isinstance(merged_stats_avg, dict) and merged_stats_avg:
@@ -444,6 +445,9 @@ def _derive_track_applicable_majors(
                     linked_program_names.append(program.get("name") or program.get("program_name"))
         return _uniq_non_empty(linked_program_names)
 
+    if _has_explicit_empty_program_mapping(track):
+        return []
+
     program_names = _track_program_names(u)
     if not program_names:
         return []
@@ -484,6 +488,22 @@ def _derive_track_applicable_majors(
         return foundation_programs
 
     return program_names
+
+
+def _has_explicit_empty_program_mapping(track: Dict[str, Any]) -> bool:
+    """Whether route scope is specifically program-bound but has no mapped programs."""
+    mapping_keys = ("program_ids", "program_names")
+    if any(
+        isinstance(track.get(key), (list, str))
+        and _uniq_non_empty(track.get(key) if isinstance(track.get(key), list) else [track.get(key)])
+        for key in mapping_keys
+    ):
+        return False
+    has_empty_mapping = any(isinstance(track.get(key), (list, str)) for key in mapping_keys)
+    scope = str(track.get("application_scope") or "").strip().lower().replace("-", "_")
+    return has_empty_mapping and scope in {
+        "program_specific", "course_specific", "department_or_program_specific",
+    }
 
 
 def _should_keep_track_for_product_scope(
@@ -546,6 +566,9 @@ def _score_profile_program_matches_track(
         return False
     program_name = str(program.get("program_name") or program.get("name") or "").strip()
     if not program_name:
+        return False
+
+    if _has_explicit_empty_program_mapping(track):
         return False
 
     applicable = track.get("applicable_majors")
@@ -731,6 +754,8 @@ def _derive_track_score_profile(
     explicit = track.get("score_profile")
     if isinstance(explicit, dict) and explicit:
         return explicit
+    if _has_explicit_empty_program_mapping(track):
+        return None
 
     academics = u.get("academics")
     academics = academics if isinstance(academics, dict) else {}

@@ -14,6 +14,7 @@ from app.services import languages as languages_service
 from app.services import universities as universities_service
 from app.services.university_tracks import (
     _canonical_major,
+    _has_explicit_empty_program_mapping,
     _normalize_major_text,
     _iter_programs,
 )
@@ -37,6 +38,50 @@ def _preview_text(value: Any, max_len: int = 180) -> str:
 
 def _canonical_exam_key(key: Any) -> str:
     return re.sub(r"[^A-Z0-9]", "", str(key or "").strip().upper())
+
+
+def _configured_language_exam_id(code: str, exam_id: Any, minimum: Any) -> str:
+    """Resolve an exact configured exam or an unambiguous legacy TOEFL total key."""
+    exam_key = _canonical_exam_key(exam_id)
+    exams = languages_service.get_languages_index().get("exams_by_lang", {}).get(code, [])
+    if not isinstance(exams, list):
+        return ""
+    for exam in exams:
+        if isinstance(exam, dict) and _canonical_exam_key(exam.get("id")) == exam_key:
+            return str(exam.get("id") or "")
+
+    # Older catalog rows used "TOEFL" for numeric totals. Accept that key only
+    # when exactly one configured TOEFL total has a range containing its floor.
+    if exam_key != "TOEFL":
+        return ""
+    floor = _to_num(minimum)
+    if floor is None:
+        return ""
+    compatible = [
+        exam for exam in exams
+        if isinstance(exam, dict)
+        and _canonical_exam_key(exam.get("id")).startswith("TOEFL")
+        and (minimum_bound := _to_num(exam.get("min"))) is not None
+        and (maximum_bound := _to_num(exam.get("max"))) is not None
+        and minimum_bound <= floor <= maximum_bound
+    ]
+    return str(compatible[0].get("id") or "") if len(compatible) == 1 else ""
+
+
+def _configured_language_exam_id_any(exam_id: Any) -> str:
+    exam_key = _canonical_exam_key(exam_id)
+    if not exam_key:
+        return ""
+    exams_by_lang = languages_service.get_languages_index().get("exams_by_lang", {})
+    if not isinstance(exams_by_lang, dict):
+        return ""
+    for exams in exams_by_lang.values():
+        if not isinstance(exams, list):
+            continue
+        for exam in exams:
+            if isinstance(exam, dict) and _canonical_exam_key(exam.get("id")) == exam_key:
+                return str(exam.get("id") or "")
+    return ""
 
 
 def _normalize_funding_preference(value: Any) -> str:
@@ -397,6 +442,7 @@ def _normalize_gpa_score(val: Any, scale: Any = None) -> Optional[float]:
 
 def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Dict[str, Any]:
     user_scores: Dict[str, float] = {}
+    valid_exam_ids: set[str] = set()
     user_languages: Dict[str, Dict[str, Any]] = {}
 
     scale = profile.get("gpa_scale")
@@ -419,6 +465,8 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                 details=details,
             )
             _set_best_score(user_scores, parsed.get("exam", exam_id), parsed.get("score"))
+            if parsed.get("exam"):
+                valid_exam_ids.add(str(parsed["exam"]).strip().upper())
             parsed_details = parsed.get("details")
             if isinstance(parsed_details, dict):
                 for bucket_name in ("components", "extra_scores"):
@@ -430,6 +478,8 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                             continue
                         nested_exam = item.get("exam") or item.get("id")
                         _set_best_score(user_scores, nested_exam, item.get("score"))
+                        if nested_exam:
+                            valid_exam_ids.add(str(nested_exam).strip().upper())
         except Exception:
             _set_best_score(user_scores, exam_id, raw_score)
 
@@ -477,6 +527,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                 if parsed_exam_id and parsed_score is not None:
                     _set_best_score(user_languages[code]["exams"], parsed_exam_id, parsed_score)
                     _set_best_score(user_scores, parsed_exam_id, parsed_score)
+                    valid_exam_ids.add(parsed_exam_id.upper())
                 parsed_details = parsed_lang.get("details")
                 if isinstance(parsed_details, dict):
                     bucket = parsed_details.get("components")
@@ -488,6 +539,8 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                             nested_score = item.get("score")
                             _set_best_score(user_languages[code]["exams"], nested_exam, nested_score)
                             _set_best_score(user_scores, nested_exam, nested_score)
+                            if nested_exam:
+                                valid_exam_ids.add(str(nested_exam).strip().upper())
                 continue
             except Exception:
                 score = _to_num(raw_score)
@@ -498,6 +551,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
 
     return {
         "userScores": user_scores,
+        "validExamIds": valid_exam_ids,
         "userLanguages": user_languages,
         "budget": _to_num(profile.get("budget")),
     }
@@ -623,7 +677,12 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
         # Do not infer exam-equivalent score from CEFR/native evidence.
         # Language exam thresholds (IELTS/TestDaF/DSH/etc.) must be met by
         # explicit exam evidence in this language rule.
-        user = _get_user_score(state.get("exams", {}), exam_id, None)
+        configured_exam_id = _configured_language_exam_id(code, exam_id, min_val)
+        if not configured_exam_id or _to_num(min_val) is None:
+            continue
+        user = _get_user_score(state.get("exams", {}), configured_exam_id, None)
+        if user is None and configured_exam_id != exam_id:
+            user = _get_user_score(state.get("exams", {}), exam_id, None)
         if user is None:
             continue
         avg_val = avg.get(exam_id) if exam_id in avg else None
@@ -653,6 +712,51 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
         "gap": 0.0 if passed else float(min_gap),
         "conditional": is_conditional,
     }
+
+
+def _language_rule_assessments(
+    rule: Dict[str, Any], user_languages: Dict[str, Any], lang_cfg: Dict[str, Any], mode: str
+) -> List[Dict[str, Any]]:
+    code = _normalize_lang_code(rule.get("code"), lang_cfg)
+    state = user_languages.get(code) if code else None
+    state = state if isinstance(state, dict) else {}
+    rows: List[Dict[str, Any]] = []
+
+    def add(exam: str, minimum: Any, provided: Any) -> None:
+        passed = bool(_score_requirement(provided, minimum, None, higher_is_better=_is_higher_better(exam), mode="chance").get("pass")) if provided is not None else False
+        rows.append({
+            "exam": exam, "minimum": minimum, "provided": provided,
+            "status": "missing" if provided is None else "met" if passed else "unmet",
+            "mode": mode,
+        })
+
+    if bool(rule.get("accept_native")):
+        rows.append({
+            "exam": f"Native {code or 'language'}", "minimum": None,
+            "provided": "native" if state.get("native") else None,
+            "status": "met" if state.get("native") else "missing", "mode": mode,
+        })
+
+    min_cefr = _to_num(rule.get("min_cefr"))
+    if min_cefr is not None:
+        add(f"CEFR ({code or 'language'})", min_cefr, _to_num(state.get("cefr")))
+
+    requirements = rule.get("requirements")
+    if not isinstance(requirements, dict):
+        requirements = rule.get("exams")
+    if isinstance(requirements, dict):
+        user_exam_scores = state.get("exams") if isinstance(state.get("exams"), dict) else {}
+        for exam_id, raw_minimum in requirements.items():
+            minimum = _to_num(raw_minimum)
+            configured_exam_id = _configured_language_exam_id(code, exam_id, raw_minimum)
+            if minimum is None or not configured_exam_id:
+                rows.append({"exam": str(exam_id), "minimum": raw_minimum, "provided": None, "status": "unassessed", "mode": mode})
+            else:
+                provided = _get_user_score(user_exam_scores, configured_exam_id)
+                if provided is None and configured_exam_id != exam_id:
+                    provided = _get_user_score(user_exam_scores, exam_id)
+                add(str(exam_id), minimum, provided)
+    return rows
 
 
 def _admission_choice_key(choice: Dict[str, Any], idx: int) -> str:
@@ -718,6 +822,8 @@ def _choice_matches_applicant_route(choice: Dict[str, Any], target_route: Any) -
 def _choice_matches_program(choice: Dict[str, Any], program_id: str) -> bool:
     if not program_id:
         return True
+    if _has_explicit_empty_program_mapping(choice):
+        return False
     raw_ids = choice.get("program_ids")
     ids = [str(value or "").strip().casefold() for value in raw_ids] if isinstance(raw_ids, list) else []
     ids = [value for value in ids if value]
@@ -734,6 +840,42 @@ def _choice_matches_entry_cycle(choice: Dict[str, Any], target_cycle: Any) -> bo
     if expected[0] != actual[0]:
         return False
     return not (expected[1] and actual[1] and expected[1] != actual[1])
+
+
+def _choice_applicability(
+    choice: Dict[str, Any], target_route: Any, target_cycle: Any, program_id: str, program_is_known: bool = True
+) -> Dict[str, str]:
+    """Describe whether the selected applicant context is supported by route metadata."""
+    actual_route = str(choice.get("applicant_route") or "").strip().lower()
+    expected_route = str(target_route or "").strip().lower()
+    actual_cycle = _entry_cycle_parts(choice.get("cycle"))
+    expected_cycle = _entry_cycle_parts(target_cycle)
+    raw_program_ids = choice.get("program_ids")
+    program_ids = {
+        str(value or "").strip().casefold()
+        for value in raw_program_ids if str(value or "").strip()
+    } if isinstance(raw_program_ids, list) else set()
+
+    return {
+        "route": (
+            "not_selected" if not expected_route else
+            "unknown" if not actual_route else "matched"
+        ),
+        "cycle": (
+            "not_selected" if not expected_cycle else
+            "unknown" if not actual_cycle or actual_cycle[0] is None or expected_cycle[0] is None else "matched"
+        ),
+        "program": (
+            "not_selected" if not program_id else
+            "unknown" if not program_is_known else
+            "unknown" if not program_ids else
+            "matched" if program_id.casefold() in program_ids else "mismatched"
+        ),
+    }
+
+
+def _applicability_unknown_reason(applicability: Dict[str, str]) -> str:
+    return "applicability_unknown" if "unknown" in applicability.values() else ""
 
 
 def _entry_cycle_parts(value: Any) -> Optional[Tuple[Optional[int], Optional[str]]]:
@@ -846,8 +988,9 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
             "unsupported_exam_normalization": "Track score data is not yet comparable",
             "no_score_profile": "No admitted-score data",
             "no_published_requirements": "No measurable published minimums for this route",
-            "unassessed_minimums": "Published minimums cannot be assessed from the available GPA profile fields",
+            "unassessed_minimums": "Published minimums cannot be assessed from the available profile evidence",
             "requirements_not_reviewed": "Published minimums have not yet been reviewed for this route",
+            "applicability_unknown": "This route is not confirmed for the selected applicant, program, or entry cycle",
         },
         "rus": {
             "missing_evidence": "Добавьте результаты экзаменов или языковые данные",
@@ -856,8 +999,9 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
             "unsupported_exam_normalization": "Пока нельзя корректно сопоставить ваш экзамен с этим вариантом поступления",
             "no_score_profile": "Нет данных о баллах зачисленных",
             "no_published_requirements": "Для этого варианта нет измеримых опубликованных минимумов",
-            "unassessed_minimums": "Опубликованные минимумы нельзя оценить по доступным полям GPA в профиле",
+            "unassessed_minimums": "Опубликованные минимумы нельзя оценить по имеющимся данным профиля",
             "requirements_not_reviewed": "Опубликованные минимумы для этого маршрута ещё не проверены",
+            "applicability_unknown": "Применимость этого маршрута к выбранному типу заявителя, программе или циклу не подтверждена",
         },
     }
     locale = _chance_locale(profile)
@@ -908,14 +1052,18 @@ def _published_requirements_fit(
     university: Dict[str, Any],
     choice: Dict[str, Any],
     user_scores: Dict[str, Any],
+    valid_exam_ids: set[str],
     user_languages: Dict[str, Any],
     lang_cfg: Dict[str, Any],
-) -> Tuple[Optional[int], str, int]:
+) -> Tuple[Optional[int], str, int, List[Dict[str, Any]], List[Dict[str, Any]]]:
     """Score the share of measurable published minimum checks that are met."""
     checks: List[bool] = []
+    measurable_checks = 0
+    assessments: List[Dict[str, Any]] = []
+    missing_evidence: List[Dict[str, Any]] = []
     requirements, unassessed_minimums, review_status = _published_requirements_for_choice(university, choice)
     if review_status == "not_reviewed":
-        return None, "requirements_not_reviewed", 0
+        return None, "requirements_not_reviewed", 0, assessments, missing_evidence
     language_rules = _collect_language_requirements(choice)
     has_language_rules = bool(language_rules.get("items"))
 
@@ -924,12 +1072,26 @@ def _published_requirements_fit(
             continue
         minimum = _normalize_gpa_score(raw_minimum) if str(exam_id).strip().upper() == "GPA" else _to_num(raw_minimum)
         if minimum is None:
+            assessments.append({"exam": str(exam_id), "minimum": raw_minimum, "provided": None, "status": "unassessed"})
             continue
+        exam_key = str(exam_id).strip()
+        is_language_exam = _is_language_exam_key(exam_id)
+        exam_config = (
+            exams_service._config_entry(exam_key)
+            if exam_key.upper() != "GPA" and not is_language_exam
+            else {"min": 0, "max": 5}
+        )
+        if not exam_config:
+            assessments.append({"exam": exam_key, "minimum": minimum, "provided": None, "status": "unassessed"})
+            continue
+        measurable_checks += 1
         user_value = _get_user_score(
             user_scores, exam_id, None if _is_language_exam_key(exam_id) else user_languages
         )
         if user_value is None:
-            return None, "missing_evidence", len(checks)
+            missing_evidence.append({"type": "academic_exam", "id": str(exam_id), "minimum": minimum})
+            assessments.append({"exam": exam_key, "minimum": minimum, "provided": None, "status": "missing"})
+            continue
         result = _score_requirement(
             user_value,
             minimum,
@@ -937,7 +1099,33 @@ def _published_requirements_fit(
             higher_is_better=_is_higher_better(exam_id),
             mode="chance",
         )
-        checks.append(bool(result.get("pass")))
+        passed = bool(result.get("pass"))
+        checks.append(passed)
+        assessments.append({"exam": exam_key, "minimum": minimum, "provided": user_value, "status": "met" if passed else "unmet"})
+
+    raw_exam_alternatives = choice.get("required_exam_alternatives")
+    if isinstance(raw_exam_alternatives, list):
+        for group in raw_exam_alternatives:
+            if not isinstance(group, list):
+                continue
+            exam_ids = [str(value or "").strip() for value in group if str(value or "").strip()]
+            if not exam_ids:
+                continue
+            unsupported_ids = [exam_id for exam_id in exam_ids if not exams_service._config_entry(exam_id)]
+            supplied = next((
+                exam_id for exam_id in exam_ids
+                if exams_service._config_entry(exam_id)
+                and (
+                    exams_service.resolve_exam_key(exam_id).upper() in valid_exam_ids
+                    or _get_user_score(user_scores, exam_id) is not None
+                )
+            ), None)
+            assessments.append({
+                "exam": " or ".join(exam_ids), "minimum": None, "provided": supplied,
+                "status": "met" if supplied else "unassessed" if unsupported_ids else "missing",
+            })
+            if not supplied and not unsupported_ids:
+                missing_evidence.append({"type": "required_exam_alternative", "ids": exam_ids})
 
     measurable_language_rules = []
     for rule in language_rules.get("items", []):
@@ -949,34 +1137,77 @@ def _published_requirements_fit(
         measurable = bool(rule.get("accept_native")) or _to_num(rule.get("min_cefr")) is not None
         measurable = measurable or (
             isinstance(raw_requirements, dict)
-            and any(_to_num(value) is not None for value in raw_requirements.values())
+            and bool(raw_requirements)
         )
         if measurable:
             measurable_language_rules.append(rule)
 
     if language_rules.get("mode") == "any" and measurable_language_rules:
+        measurable_checks += 1
         results = [
             _score_single_language_rule(rule, user_languages, lang_cfg, mode="chance")
             for rule in measurable_language_rules
         ]
+        rule_assessments = [
+            _language_rule_assessments(rule, user_languages, lang_cfg, "any")
+            for rule in measurable_language_rules
+        ]
         if any(bool(result.get("pass")) and not bool(result.get("conditional")) for result in results):
             checks.append(True)
+            assessments.extend(item for rows in rule_assessments for item in rows)
         elif any(bool(result.get("conditional")) for result in results):
-            return None, "missing_evidence", len(checks)
+            missing_evidence.extend(
+                {"type": "language_requirement", "code": str(rule.get("code") or ""), "exam": row.get("exam"), "minimum": row.get("minimum")}
+                for rule, result, rows in zip(measurable_language_rules, results, rule_assessments)
+                if bool(result.get("conditional"))
+                for row in rows if row.get("status") == "missing"
+            )
+            assessments.extend(item for rows in rule_assessments for item in rows)
         else:
             checks.append(False)
+            assessments.extend(item for rows in rule_assessments for item in rows)
     else:
         for rule in measurable_language_rules:
+            measurable_checks += 1
+            rows = _language_rule_assessments(rule, user_languages, lang_cfg, "all")
             result = _score_single_language_rule(rule, user_languages, lang_cfg, mode="chance")
             if bool(result.get("conditional")):
-                return None, "missing_evidence", len(checks)
-            checks.append(bool(result.get("pass")))
+                missing_evidence.extend(
+                    {"type": "language_requirement", "code": str(rule.get("code") or ""), "exam": row.get("exam"), "minimum": row.get("minimum")}
+                    for row in rows if row.get("status") == "missing"
+                )
+                assessments.extend(rows)
+            else:
+                passed = bool(result.get("pass"))
+                checks.append(passed)
+                assessments.extend(rows)
 
+    for row in unassessed_minimums:
+        source_exam_id = str(row.get("exam_id") or "").strip()
+        configured_exam_id = _configured_language_exam_id_any(source_exam_id) if source_exam_id else ""
+        provided = _get_user_score(user_scores, configured_exam_id) if configured_exam_id else None
+        assessment = {
+            "exam": str(row.get("label") or row.get("id") or "Published minimum"),
+            "minimum": row.get("minimum"), "provided": provided, "status": "unassessed",
+        }
+        condition = str(row.get("scale") or "").strip()
+        if condition:
+            assessment["condition"] = condition
+        if configured_exam_id:
+            assessment["examId"] = configured_exam_id
+        assessments.append(assessment)
+
+    if missing_evidence:
+        return None, "missing_evidence", measurable_checks, assessments, missing_evidence
+
+    if unassessed_minimums:
+        return None, "unassessed_minimums", measurable_checks, assessments, missing_evidence
+
+    if any(row.get("status") == "unassessed" for row in assessments):
+        return None, "unassessed_minimums", measurable_checks, assessments, missing_evidence
     if not checks:
-        if unassessed_minimums:
-            return None, "unassessed_minimums", 0
-        return None, "no_published_requirements", 0
-    return int(round(100 * sum(checks) / len(checks))), "", len(checks)
+        return None, "no_published_requirements", 0, assessments, missing_evidence
+    return int(round(100 * sum(checks) / len(checks))), "", measurable_checks, assessments, missing_evidence
 
 
 def _chance_percent_value(value: Any) -> Optional[float]:
@@ -1276,15 +1507,17 @@ def sort_universities_ai(
         target_route = profile.get("applicant_route")
         target_cycle = profile.get("intended_entry_cycle")
         selected_program_id = _selected_program_id_for_university(profile, row)
-        if selected_program_id.casefold() not in _known_program_ids(row, choices):
-            selected_program_id = ""
+        selected_program_is_known = (
+            not selected_program_id
+            or selected_program_id.casefold() in _known_program_ids(row, choices)
+        )
         eligible_choices = [
             (idx, choice)
             for idx, choice in enumerate(choices)
             if (target_level == "any" or _choice_matches_study_level(choice, target_level))
             and _choice_matches_applicant_route(choice, target_route)
             and _choice_matches_entry_cycle(choice, target_cycle)
-            and _choice_matches_program(choice, selected_program_id)
+            and (not selected_program_id or not selected_program_is_known or _choice_matches_program(choice, selected_program_id))
         ]
         selected_choice_key = _selected_choice_key_for_university(profile, row)
 
@@ -1432,10 +1665,11 @@ def sort_universities_ai(
         meet_min_req = active_fit_percent == 100
         is_conditional = active_choice_meta.get("reason") == "missing_evidence"
         conditional_count = 1 if is_conditional else 0
+        active_choice_details = active_choice_meta.get("details") if isinstance(active_choice_meta.get("details"), dict) else {}
+        requirement_checks = active_choice_details.get("checks") if isinstance(active_choice_details.get("checks"), list) else []
+        missing_evidence = active_choice_meta.get("missingEvidence") if isinstance(active_choice_meta.get("missingEvidence"), list) else []
 
         effective_selected_by_user = selected_by_user and active_choice_key != recommended_choice_key
-        has_uni_aid = bool(row.get("aid_any")) or aid_any
-
         ui_badge_hints = _build_ui_badge_hints(
             preference_mismatch=preference_mismatch,
             conditional=is_conditional,
@@ -1443,7 +1677,7 @@ def sort_universities_ai(
             meets_min_requirements=meet_min_req,
             below_requirements=below_req,
             budget_status=budget_status,
-            aid_any=has_uni_aid,
+            aid_any=aid_any,
             missing_program=missing_program,
         )
 
@@ -1466,6 +1700,10 @@ def sort_universities_ai(
             "admitChance": None,
             "requirementsFitPercent": selected_actual_chance,
             "scoreMeaning": "published_requirements_met_percent",
+            "requirementsReason": str(active_choice_meta.get("reason") or ""),
+            "requirementChecks": requirement_checks,
+            "missingEvidence": missing_evidence,
+            "applicability": active_choice_meta.get("applicability") if isinstance(active_choice_meta.get("applicability"), dict) else {},
             "meetMinRequirements": meet_min_req,
             "missingRequiredEvidence": is_conditional,
             "missingProgram": missing_program,
@@ -1594,12 +1832,16 @@ def _build_chance_factors(
         if reason in {"unassessed_minimums", "requirements_not_reviewed"}:
             return []
         key = "missing_evidence" if reason == "missing_evidence" else "insufficient_data"
-        label = "Required evidence" if key == "missing_evidence" else "Published requirements"
-        message = (
-            "Add the missing evidence required to check this route."
-            if key == "missing_evidence"
-            else "This route has no measurable published minimums."
-        )
+        if reason == "applicability_unknown":
+            key, label = "applicability_unknown", "Route applicability"
+            message = "The route is not confirmed for the selected applicant, program, or entry cycle."
+        else:
+            label = "Required evidence" if key == "missing_evidence" else "Published requirements"
+            message = (
+                "Add the missing evidence required to check this route."
+                if key == "missing_evidence"
+                else "This route has no measurable published minimums."
+            )
         return [_chance_factor(key, "neutral", label, message, "medium")]
     if score_percent == 100:
         return [_chance_factor("requirements_met", "positive", "Requirements", "All measurable published minimums are met.", "low")]
@@ -1610,6 +1852,12 @@ def _normalize_study_level_str(val: Any) -> str:
     s = str(val or "").strip().lower()
     if not s or s == "any":
         return "any"
+    if any(token in s for token in ("магистрат", "магистр")):
+        return "master"
+    if any(token in s for token in ("бакалавр", "бакалавриат")):
+        return "bachelor"
+    if any(token in s for token in ("докторант", "аспирант", "доктор философии")):
+        return "doctorate"
     tokens = set(re.sub(r"[^a-z0-9]+", " ", s).split())
     if "mba" in tokens or "master of business administration" in s:
         return "mba"
@@ -1714,15 +1962,17 @@ def estimate_uni_chance(
     target_route = profile.get("applicant_route")
     target_cycle = profile.get("intended_entry_cycle")
     selected_program_id = _selected_program_id_for_university(profile, university)
-    if selected_program_id.casefold() not in _known_program_ids(university, choices):
-        selected_program_id = ""
+    selected_program_is_known = (
+        not selected_program_id
+        or selected_program_id.casefold() in _known_program_ids(university, choices)
+    )
 
     entries = [
         row for row in entries
         if (target_level == "any" or _choice_matches_study_level(row["choice"], target_level))
         and _choice_matches_applicant_route(row["choice"], target_route)
         and _choice_matches_entry_cycle(row["choice"], target_cycle)
-        and _choice_matches_program(row["choice"], selected_program_id)
+        and (not selected_program_id or not selected_program_is_known or _choice_matches_program(row["choice"], selected_program_id))
     ]
 
     has_evidence = bool(ctx["userScores"]) or any(
@@ -1777,13 +2027,27 @@ def estimate_uni_chance(
     for row in entries:
         choice = row["choice"]
         idx = int(row["idx"])
-        chance_pct, no_data_reason, measurable_checks = _published_requirements_fit(
+        applicability = _choice_applicability(
+            choice, target_route, target_cycle, selected_program_id, selected_program_is_known
+        )
+        no_data_reason = _applicability_unknown_reason(applicability)
+        chance_pct, fit_reason, measurable_checks, check_assessments, missing_evidence = _published_requirements_fit(
             university=university,
             choice=choice,
             user_scores=ctx["userScores"],
+            valid_exam_ids=ctx.get("validExamIds", set()),
             user_languages=ctx["userLanguages"],
             lang_cfg=lang_cfg,
         )
+        if no_data_reason:
+            chance_pct = None
+            no_data_reason = "applicability_unknown"
+            missing_evidence = []
+            for assessment in check_assessments:
+                if assessment.get("status") != "unassessed":
+                    assessment["status"] = "unassessed"
+        else:
+            no_data_reason = fit_reason
         track_badges = _track_verified_badges(choice)
         factors = _build_chance_factors(
             score_percent=chance_pct,
@@ -1810,8 +2074,11 @@ def estimate_uni_chance(
                 "chanceAvailable": chance_pct is not None,
                 "reason": no_data_reason,
                 "label": _chance_no_data_label(no_data_reason, profile) if chance_pct is None else "",
+                "applicability": applicability,
+                "missingEvidence": missing_evidence,
                 "details": {
                     "measurableRequirements": measurable_checks,
+                    "checks": check_assessments,
                 },
             }
         )
@@ -1874,8 +2141,6 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
     target_route = profile.get("applicant_route")
     target_cycle = profile.get("intended_entry_cycle")
     selected_program_id = _selected_program_id_for_university(profile, university)
-    if selected_program_id.casefold() not in _known_program_ids(university, choices):
-        selected_program_id = ""
     has_explicit_admission_context = bool(target_route or target_cycle or selected_program_id)
     has_graduate_choices = any(
         isinstance(choice, dict)

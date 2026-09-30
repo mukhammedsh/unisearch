@@ -4,6 +4,12 @@ import { getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { createSafeStorage } from "./safe-storage.js";
 
 const DEFAULT_EXAM_CONFIG = {
+  GRE: { label: "GRE General Test", labels: { eng: "GRE General Test", rus: "GRE General Test" }, input_mode: "subject_breakdown", type: "float", breakdown_scheme: { fixed_components: ["GRE_VERBAL", "GRE_QUANTITATIVE", "GRE_ANALYTICAL_WRITING"], total_strategy: "components_only" } },
+  GRE_VERBAL: { label: "GRE Verbal Reasoning", labels: { eng: "GRE Verbal Reasoning", rus: "GRE: вербальное мышление" }, hidden: true, input_mode: "number", min: 130, max: 170, type: "int", step: 1 },
+  GRE_QUANTITATIVE: { label: "GRE Quantitative Reasoning", labels: { eng: "GRE Quantitative Reasoning", rus: "GRE: количественное мышление" }, hidden: true, input_mode: "number", min: 130, max: 170, type: "int", step: 1 },
+  GRE_ANALYTICAL_WRITING: { label: "GRE Analytical Writing", labels: { eng: "GRE Analytical Writing", rus: "GRE: аналитическое письмо" }, hidden: true, input_mode: "number", min: 0, max: 6, type: "float", step: 0.5 },
+  GMAT_FOCUS: { label: "GMAT (Focus Edition, 205–805)", labels: { eng: "GMAT (Focus Edition, 205–805)", rus: "GMAT (Focus Edition, 205–805)" }, input_mode: "number", min: 205, max: 805, type: "int", step: 10 },
+  GMAT: { label: "GMAT (10th Edition, 200–800)", labels: { eng: "GMAT (10th Edition, 200–800)", rus: "GMAT (10th Edition, 200–800)" }, input_mode: "number", min: 200, max: 800, type: "int", step: 10 },
   SAT: { label: "SAT", labels: { eng: "SAT", rus: "SAT" }, input_mode: "number", min: 400, max: 1600, type: "int", step: 10 },
   ACT: { label: "ACT", labels: { eng: "ACT", rus: "ACT" }, input_mode: "number", min: 1, max: 36, type: "int", step: 1 },
   GPA: { label: "GPA", labels: { eng: "GPA", rus: "GPA" }, input_mode: "number", min: 0, max: 4, type: "float", step: 0.01 },
@@ -111,6 +117,7 @@ const EXAM_LABEL_OVERRIDES = {
   DET: "Duolingo English Test (DET)",
   PTE: "PTE Academic",
   Cambridge_C1_Advanced: "Cambridge C1 Advanced",
+  Cambridge_C2_Proficiency: "Cambridge C2 Proficiency",
   TestDaF_TDN: "TestDaF (TDN)",
   DSH_Level: "DSH Level",
   DELF_DALF_Level: "DELF/DALF Level",
@@ -250,6 +257,8 @@ export const FALLBACK_LANG_LIMITS = {
   Duolingo: { min: 10, max: 160, step: 1 },
   DET: { min: 10, max: 160, step: 1 },
   Cambridge: { min: 80, max: 230, step: 1 },
+  Cambridge_C1_Advanced: { min: 142, max: 210, step: 1 },
+  Cambridge_C2_Proficiency: { min: 162, max: 230, step: 1 },
   PTE: { min: 10, max: 90, step: 1 },
 };
 

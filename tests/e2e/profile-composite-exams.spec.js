@@ -37,3 +37,33 @@ test("profile adds SAT and UNT from their component scores", async ({ page }) =>
   await expect(page.locator(selectors.examList)).toContainText("UNT");
   await expect(page.locator(selectors.examList)).toContainText("UNT Mathematics 45");
 });
+
+test("graduate exams validate separate scales and restore GRE sections after saving", async ({ page }) => {
+  await openScores(page);
+  await setNativeSelect(page, "examNameSelect", "GRE");
+  for (const [exam, score] of [["GRE_VERBAL", "160"], ["GRE_QUANTITATIVE", "168"], ["GRE_ANALYTICAL_WRITING", "4.5"]]) {
+    await page.locator(`[data-breakdown-fixed-row='${exam}'] [data-breakdown-value='number']`).fill(score);
+  }
+  const response = page.waitForResponse((res) => res.url().includes("/exams/validate") && res.request().method() === "POST");
+  await page.click(selectors.addExamBtn);
+  const gre = await (await response).json();
+  expect(gre.score).toBeUndefined();
+  await expect(page.locator(selectors.examList)).toContainText("160");
+  await expect(page.locator(selectors.examList)).toContainText("168");
+  await expect(page.locator(selectors.examList)).toContainText("4.5");
+  await setNativeSelect(page, "examNameSelect", "GMAT_FOCUS");
+  await page.fill(selectors.examScoreInput, "650");
+  await page.click(selectors.addExamBtn);
+  await expect(page.locator(".toast.error")).toHaveCount(1);
+  await expect(page.locator(selectors.examList)).not.toContainText("GMAT");
+  await page.fill(selectors.examScoreInput, "655");
+  await page.click(selectors.addExamBtn);
+  await expect(page.locator(selectors.examList)).toContainText("655");
+  await page.click(selectors.saveProfileBtn);
+  await expect(page.locator(selectors.saveProfileBtn)).toBeDisabled();
+  await page.reload();
+  await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "scores");
+  await expect(page.locator(selectors.examList)).toContainText("168");
+  await expect(page.locator(selectors.examList)).toContainText("655");
+});

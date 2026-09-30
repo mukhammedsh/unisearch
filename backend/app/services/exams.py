@@ -203,7 +203,9 @@ def _coerce_subject_breakdown_submission(
     total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()
     component_scores = [_to_float(row.get("score")) for row in parsed_components]
     numeric_component_scores = [float(row) for row in component_scores if row is not None]
-    if total_strategy == "use_parent_score":
+    if total_strategy == "components_only":
+        total_score = None
+    elif total_strategy == "use_parent_score":
         total_score = _validate_numeric_score(exam_key, cfg, score_raw if score_raw not in (None, "") else raw_value)
     elif total_strategy == "best_of_sum":
         if not numeric_component_scores:
@@ -236,14 +238,15 @@ def _coerce_subject_breakdown_submission(
     display_value = ", ".join(part for part in display_parts if part)
     result: Dict[str, Any] = {
         "exam": exam_key,
-        "score": total_score,
         "details": {
             "components": parsed_components,
             "score_strategy": total_strategy,
             "component_count": len(parsed_components),
-            "score_total": total_score,
         },
     }
+    if total_score is not None:
+        result["score"] = total_score
+        result["details"]["score_total"] = total_score
     if parsed_extra_scores:
         result["details"]["extra_scores"] = parsed_extra_scores
     if display_value:

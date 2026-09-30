@@ -4,6 +4,22 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+### Changed
+- Plan the admissions overhaul in three global stages: institution-specific data/schema research for MIT and the other 49 universities, coordinated backend/frontend integration, and final applicant UI/UX verification. Use MIT as a quality example without imposing its institutional structure or requiring UX approval before data collection.
+
+### Added
+- Support GRE General Test section scores without inventing a total, alongside distinct current and legacy GMAT scales, throughout profile validation, persistence, and admissions evidence checks.
+- Add Cambridge C2 Proficiency as a distinct language certificate and validate the reported C1/C2 score ranges.
+- Show published requirement checks with the applicant's evidence, missing information, and assessment status in admission routes and UniFit card explanations.
+
+### Fixed
+- Preserve unknown program, route, and cycle applicability instead of applying unrelated minimums or cost defaults; keep unsupported language checks and unassessed source conditions visible.
+- Preserve explicit empty program mappings during catalog loading so unlinked routes do not borrow other programs or their score data.
+- Distinguish unknown academic fit from a verified failure, scope funding badges to the selected route, and explain the actual annual cost, budget, and preference indicators used by recommendations.
+- Display published funding coverage instead of replacing every grant with a generic competitive-award claim.
+- Review MIT graduate and professional route policies against official sources, retain exceptions and conflicting or yearless facts explicitly, and extend the shared transfer mapping to all undergraduate study options.
+
+
 ## 7.2.1 (2026-09-30) - Operations and Telemetry Hardening
 
 ### Fixed

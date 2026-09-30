@@ -39,7 +39,7 @@ admission.track.funding_options: Варианты финансирования
 admission.track.options_count: {count} вариантов финансирования
 admission.chance.need_exam_data_track: Добавьте результаты нужных экзаменов, чтобы увидеть соответствие этому профилю требований.
 admission.chance.requirements_not_met: Текущие результаты не соответствуют обязательному минимуму этого варианта поступления.
-admission.chance.missing_evidence: Добавьте обязательные экзамены или подтверждение языка, чтобы рассчитать соответствие требованиям.
+admission.chance.missing_evidence: Добавьте обязательные экзамены или подтверждение языка для проверки этого маршрута.
 extra_requirements: Дополнительные требования
 guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Требования оцениваются для выбранного маршрута поступления и профиля требований. Варианты финансирования показаны отдельно: грант не создаёт отдельную оценку поступления, а указанная годовая стоимость приводится до получения поддержки. Проверяйте применимые маршрут, цикл поступления и профиль.
@@ -1114,6 +1114,9 @@ profile.exam_subject_optional_slot: Доп. предмет {index}
 profile.exam_subject_placeholder: Выберите предмет
 profile.exam_subject_choose_first: Сначала выберите предмет
 profile.exam_breakdown_hint: Введите баллы по предметам. Обязательные предметы остаются фиксированными, а где нужно, можно выбрать ещё {min}-{max} предметов.
+profile.exam_breakdown_fixed_hint: Укажите баллы по каждому обязательному разделу.
+admission.requirements_fit.check.or: или
+universities.why.budget_comparison: Годовая стоимость: {cost}; ваш годовой бюджет: {budget}. Возможное финансирование не вычтено.
 profile.exam_total_placeholder: Общий балл
 profile.exam_subject_required_count: Выберите как минимум {count} предмета для {exam}
 profile.exam_error_range: {exam} должен быть в диапазоне от {min} до {max}
@@ -1175,6 +1178,7 @@ admission.mit.route_unverified: Условия поступления на эт�
 admission.mit.program_options_note: Ниже показаны способы поступления, связанные с этой программой. Проверьте актуальные условия на официальном сайте.
 admission.mit.change_program: Сменить программу
 admission.mit.no_matching_chance: Для этой программы и профиля показатель соответствия требованиям недоступен.
+admission.mit.context_mismatch: Для выбранного маршрута и цикла нет проверенных вариантов поступления. Измените контекст или проверьте официальную страницу программы.
 admission.mit.analysis: Соответствие требованиям и историческая статистика
 admission.program.selector_label: Выбор программы
 admission.program.general_requirements: Общие требования
@@ -1201,6 +1205,8 @@ admission.chance.badge.need_blind: Финансовая нуждаемость �
 admission.chance.badge.need_blind_note: Финансовая нуждаемость не должна снижать оценку поступления в этой модели.
 admission.chance.factor.missing_evidence.label: Не хватает обязательных данных
 admission.chance.factor.missing_evidence.message: Добавьте данные, необходимые для проверки этого маршрута.
+admission.chance.factor.applicability_unknown.label: Применимость не подтверждена
+admission.chance.factor.applicability_unknown.message: Маршрут не подтверждён для выбранного абитуриента, программы или цикла поступления.
 admission.chance.factor.conditional_requirements.label: Условные требования
 admission.chance.factor.conditional_requirements.message: По части требований не найдено подходящее подтверждение в профиле.
 admission.chance.factor.requirements_gap.label: Разрыв по требованиям
@@ -2303,6 +2309,19 @@ university.finance.award.copy.mit-math-phd-departmental-support.program_scope: �
 university.admissions.next_official_step: Открыть официальные требования к заявке
 
 admission.requirements_fit.no_applicable_path: Для этого контекста нет оценённого маршрута. Проверьте выбранный маршрут и цикл по официальным требованиям.
+admission.requirements_fit.applicability_unknown: Не удалось сопоставить опубликованные требования с выбранной программой, маршрутом поступления и циклом. Уточните подходящий маршрут на официальной странице.
+admission.requirements_fit.checks_title: Проверки опубликованных требований
+admission.requirements_fit.check.minimum: Минимум
+admission.requirements_fit.check.required_evidence: Требуется подтверждение
+admission.requirements_fit.check.required_exam: Требуется один из экзаменов
+admission.requirements_fit.check.language_any_note: Если для языкового требования указаны варианты, достаточно выполнить один из них.
+admission.requirements_fit.check.profile: В профиле
+admission.requirements_fit.check.not_provided: Не указано
+admission.requirements_fit.check.met: Выполнено
+admission.requirements_fit.check.evidence_recorded: Подтверждение указано
+admission.requirements_fit.check.unmet: Ниже минимума
+admission.requirements_fit.check.missing: Добавьте подтверждение
+admission.requirements_fit.check.unassessed: Нельзя оценить
 
 admission.requirements_fit.unscored_conditions: Процент учитывает только числовые минимумы. Требования к предметам, оценкам, документам и праву на подачу нужно проверить отдельно.
 
@@ -2315,3 +2334,6 @@ cost_item_books_and_supplies_allowance: Расходы на книги и мат
 cost_item_personal_expenses_allowance: Личные расходы
 admission.mit.after_initial_admission: Совместную степень получают после первоначального поступления на одну из магистерских программ MIT. Порядок оформления второй степени проверьте на официальной странице.
 admission.mit.program_condition: Условия для этой программы:
+universities.why.preference_comparison: {label}: ваша настройка {requested}/100; показатель университета {observed}/100.
+admission.requirements_fit.check.profile_unassessed: Профиль не позволяет подтвердить нужные сведения или право на освобождение.
+admission.requirements_fit.missing_evidence_note: Добавьте указанные ниже подтверждения для проверки маршрута. Процент доступен только при наличии применимых числовых минимумов, которые можно оценить.

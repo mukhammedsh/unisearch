@@ -1069,7 +1069,7 @@ admission.track.funding_source_short: Source
 admission.track.select_tooltip: Select this requirement profile to show its published requirements fit score and use it in UniFit ranking.
 admission.chance.need_exam_data_track: Add the required exam data to see a fit score for this requirement profile.
 admission.chance.requirements_not_met: Your current results do not meet a required minimum for this admission choice.
-admission.chance.missing_evidence: Add the required exam scores or language evidence to calculate a requirements fit score.
+admission.chance.missing_evidence: Add the required exam scores or language evidence to check this route.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
 admission.requirements_fit.title: Fit to published requirements
@@ -1115,6 +1115,9 @@ profile.exam_subject_optional_slot: Optional subject {index}
 profile.exam_subject_placeholder: Select subject
 profile.exam_subject_choose_first: Choose a subject first
 profile.exam_breakdown_hint: Enter scores by subject. Required subjects stay fixed, and you can choose {min}-{max} extra subjects where needed.
+profile.exam_breakdown_fixed_hint: Enter the score for each required section.
+admission.requirements_fit.check.or: or
+universities.why.budget_comparison: Annual cost: {cost}; your annual budget: {budget}. Potential funding has not been deducted.
 profile.exam_total_placeholder: Overall total
 profile.exam_subject_required_count: Choose at least {count} subjects for {exam}
 profile.exam_error_range: {exam} must be between {min} and {max}
@@ -1176,6 +1179,7 @@ admission.mit.route_unverified: Admissions details for this program have not bee
 admission.mit.program_options_note: The application options below are linked to this program. Check its official page for the current entry cycle.
 admission.mit.change_program: Change program
 admission.mit.no_matching_chance: A requirements fit score is unavailable for this program and profile.
+admission.mit.context_mismatch: No reviewed admission option matches the selected applicant route and entry cycle. Change this context or check the official program page.
 admission.mit.analysis: Requirements fit and historical statistics
 admission.program.selector_label: Program selection
 admission.program.general_requirements: General requirements
@@ -1202,6 +1206,8 @@ admission.chance.badge.need_blind: Need-blind review
 admission.chance.badge.need_blind_note: Financial need is not expected to lower the admission review in this estimate.
 admission.chance.factor.missing_evidence.label: Required evidence missing
 admission.chance.factor.missing_evidence.message: Add the missing evidence required to check this route.
+admission.chance.factor.applicability_unknown.label: Applicability not confirmed
+admission.chance.factor.applicability_unknown.message: The route is not confirmed for the selected applicant, program, or entry cycle.
 admission.chance.factor.conditional_requirements.label: Conditional requirements
 admission.chance.factor.conditional_requirements.message: Some requirements are conditional because matching evidence is missing.
 admission.chance.factor.requirements_gap.label: Requirements gap
@@ -2305,6 +2311,19 @@ university.finance.award.copy.mit-sloan-fundacion-gondra-barandiaran.documents.0
 university.admissions.next_official_step: Open official application requirements
 
 admission.requirements_fit.no_applicable_path: No assessed path matches this context. Review the selected route and entry cycle against the official requirements.
+admission.requirements_fit.applicability_unknown: The published requirements could not be matched to this program, applicant route, and entry cycle. Confirm the applicable route on the official page.
+admission.requirements_fit.checks_title: Published requirement checks
+admission.requirements_fit.check.minimum: Minimum
+admission.requirements_fit.check.required_evidence: Required evidence
+admission.requirements_fit.check.required_exam: Required exam evidence
+admission.requirements_fit.check.language_any_note: For language rules that allow alternatives, meeting one listed option satisfies that rule.
+admission.requirements_fit.check.profile: Your profile
+admission.requirements_fit.check.not_provided: Not provided
+admission.requirements_fit.check.met: Met
+admission.requirements_fit.check.evidence_recorded: Evidence recorded
+admission.requirements_fit.check.unmet: Below minimum
+admission.requirements_fit.check.missing: Add evidence
+admission.requirements_fit.check.unassessed: Cannot assess
 
 admission.requirements_fit.unscored_conditions: The percentage covers numeric minimums only. Subject, grade, document, and eligibility conditions still need separate review.
 
@@ -2317,3 +2336,6 @@ cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
 admission.mit.after_initial_admission: This combined degree is pursued after initial admission to a constituent MIT graduate program. Check the official page for the second-degree process.
 admission.mit.program_condition: Program-specific eligibility:
+universities.why.preference_comparison: {label}: your setting {requested}/100; university indicator {observed}/100.
+admission.requirements_fit.check.profile_unassessed: This profile cannot establish the required evidence or exemption.
+admission.requirements_fit.missing_evidence_note: Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed.

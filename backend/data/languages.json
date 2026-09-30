@@ -284,11 +284,24 @@
       {
         "id": "Cambridge_C1_Advanced",
         "label": "Cambridge C1 Advanced (Scale score)",
-        "min": 160,
+        "min": 142,
         "max": 210,
         "type": "int",
         "step": 1,
-        "notes": "Cambridge English Scale range for C1 Advanced reporting."
+        "notes": "Reported scores range from 142 to 210; scores below 160 do not receive a certificate.",
+        "source_url": "https://www.cambridgeenglish.org/exams-and-tests/qualifications/results/",
+        "verified_at": "2026-09-30"
+      },
+      {
+        "id": "Cambridge_C2_Proficiency",
+        "label": "Cambridge C2 Proficiency (Scale score)",
+        "min": 162,
+        "max": 230,
+        "type": "int",
+        "step": 1,
+        "notes": "Reported scores range from 162 to 230; scores below 180 do not receive a certificate.",
+        "source_url": "https://www.cambridgeenglish.org/exams-and-tests/qualifications/results/",
+        "verified_at": "2026-09-30"
       }
     ],
     "de": [
