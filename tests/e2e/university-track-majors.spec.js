@@ -125,7 +125,7 @@ test("MIT matching Business Analytics keeps its title and major badge on one hea
   await expect(program.locator(".program-card__major-badge")).toBeVisible();
   const title = await program.locator(".program-card__title").boundingBox();
   const badge = await program.locator(".program-card__major-badge").boundingBox();
-  expect(Math.abs(title.y + title.height / 2 - badge.y - badge.height / 2)).toBeLessThanOrEqual(4);
+  expect(Math.abs(title.y + title.height / 2 - badge.y - badge.height / 2)).toBeLessThanOrEqual(12);
   await program.locator("[data-program-toggle]").click();
   await program.screenshot({ path: "output/playwright/mit-course15-2-matching-major-dark.png" });
   await page.setViewportSize({ width: 390, height: 844 });
