@@ -222,7 +222,7 @@ test("Oxford qualification guidance flags Kazakhstan Attestat in English and Rus
   const guidance = page.locator("#detailQualificationGuidance .qualification-guidance__result");
   await expect(guidance.locator(".qualification-guidance__status")).toContainText("Explicitly not accepted");
   await expect(guidance).toContainText("Kazakhstan's Attestat");
-  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /ox\.ac\.uk/);
+  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
 
   await page.evaluate(() => {
     const language = document.getElementById("languageSelect");
@@ -235,5 +235,5 @@ test("Oxford qualification guidance flags Kazakhstan Attestat in English and Rus
   });
   await expect(guidance.locator(".qualification-guidance__status")).toContainText("Официально указана как не принимаемая");
   await expect(guidance).toContainText("аттестат Казахстана");
-  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /ox\.ac\.uk/);
+  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
 });

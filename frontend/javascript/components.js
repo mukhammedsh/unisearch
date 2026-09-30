@@ -7,7 +7,6 @@ import {
 import { applyTranslations, getCurrentLanguage, setLanguage, t } from "./i18n.js";
 import { heroIcon } from "./icons.js";
 import {
-  initUniversityTranslations,
   loadUniversityTranslationsForLanguage,
 } from "./university-translations.js";
 import { routeProfile, routeUniversities } from "./routes.js";

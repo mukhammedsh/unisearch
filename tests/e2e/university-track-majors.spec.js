@@ -179,7 +179,7 @@ for (const width of [1280, 390]) {
       await expect(page).toHaveURL(/admission_cycle=/);
       await expect(admission.locator("[data-admission-category='mit_regular']")).toBeVisible();
       await expect(admission.locator("[data-admission-category='mit_undergrad_transfer']")).toHaveCount(0);
-      await expect(admission.locator(".admission-decision-actions a")).toHaveAttribute("href", /mitadmissions\.org/);
+      await expect(admission.locator(".admission-decision-actions a")).toHaveAttribute("href", /^https:\/\/mitadmissions\.org\//);
       const route = admission.locator("[data-admission-category='mit_regular']");
       await expect(route.locator(".chance-track-chip")).toHaveCount(1);
       await expect(route.locator(".chance-track-chip")).toContainText("нет опубликованных измеримых минимумов");

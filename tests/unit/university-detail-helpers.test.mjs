@@ -1225,7 +1225,7 @@ test("selected admission context puts course conditions first and keeps history 
   assert.ok(container.innerHTML.indexOf("A*A*A including Mathematics") < container.innerHTML.indexOf("Requirements fit and historical statistics"));
   assert.doesNotMatch(container.innerHTML, /<option[^>]+Annual cycle/);
   assert.match(container.innerHTML, /data-admission-open-tab="tab-finance"/);
-  assert.match(container.innerHTML, /https:\/\/www.imperial.ac.uk\/study\/courses\/undergraduate\/computing-meng\//);
+  assert.match(container.innerHTML, /href="https:\/\/www\.imperial\.ac\.uk\/study\/courses\/undergraduate\/computing-meng\/"/);
   window.location.search = "";
 });
 

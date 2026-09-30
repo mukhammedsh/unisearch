@@ -15,7 +15,10 @@ global.fetch = async (url) => {
 };
 global.DOMParser = class {
   parseFromString(html) {
-    return { body: { textContent: String(html).replace(/<[^>]*>/g, "") } };
+    if (!html) return { body: { textContent: "" } };
+    const badge = /^<span class="track-funding-badge track-funding-badge--(?:grant|paid)">([^<>]*)<\/span>$/.exec(html);
+    assert.ok(badge, "the DOMParser fixture expects one funding badge");
+    return { body: { textContent: badge[1] } };
   }
 };
 

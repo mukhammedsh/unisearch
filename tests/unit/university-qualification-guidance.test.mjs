@@ -125,7 +125,7 @@ test("renderer exposes an official status, checked date, source, and a precise-c
   });
   assert.equal(result.status, "needs_review");
   assert.match(container.innerHTML, /2026-09-23/);
-  assert.match(container.innerHTML, /www\.ox\.ac\.uk/);
+  assert.match(container.innerHTML, /href="https:\/\/www\.ox\.ac\.uk\/[^"<>]*"/);
   assert.match(container.innerHTML, /profile\.html/);
 });
 

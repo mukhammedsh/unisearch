@@ -1,7 +1,7 @@
 import { EXAM_CONFIG, LANG_CONFIG, aiName, canonicalizeExamId, escapeHtml, escapeHtmlAttr, formatExamValue, getExamDisplayName } from "./utils.js";
 import { getCurrentLanguage, t } from "./i18n.js";
 import { heroIcon } from "./icons.js";
-import { translateAdmissionText, translateTrackLabel, translateUnknownField, translateUnknownWord, translateWord } from "./university-translations.js";
+import { translateAdmissionText, translateTrackLabel, translateUnknownWord, translateWord } from "./university-translations.js";
 
 export function mapMarkerLogoHtml(logoUrl) {
   const safeLogoUrl = escapeHtml(logoUrl);

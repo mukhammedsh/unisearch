@@ -86,7 +86,7 @@ test("MIT undergraduate coverage labels general route and university cost guidan
   assert.match(html, /2027 entry/);
   assert.match(html, /university-level guidance; not a program price/i);
   assert.doesNotMatch(html, /USD 66,720/);
-  assert.match(html, /https:\/\/mitadmissions\.org\/apply\/firstyear\/deadlines-requirements\//);
+  assert.match(html, /href="https:\/\/mitadmissions\.org\/apply\/firstyear\/deadlines-requirements\/"/);
 });
 
 test("route-wide and institution-wide facts have localized scope labels", () => {
