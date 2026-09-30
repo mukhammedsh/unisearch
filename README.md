@@ -122,6 +122,8 @@ docker compose --env-file backend/.env down
 
 See [deployment and API security](docs/deployment_security.md) and [forking and reuse](docs/forking-and-reuse.md). Keep local `.env` files out of Git and secrets out of the public `frontend/env.js` file.
 
+Operations routes and health warmup requests require the configured operations token, including deployments using an ASGI root path. Sentry error events and transactions filter credential fields and the configured `OPS_ADMIN_HEADER`; do not put credentials in URLs or free-form diagnostic messages.
+
 ## Project structure
 
 | Path | Contents |
