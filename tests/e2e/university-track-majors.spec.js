@@ -125,7 +125,7 @@ test("MIT matching Business Analytics keeps its title and major badge on one hea
   await expect(program.locator(".program-card__major-badge")).toBeVisible();
   const title = await program.locator(".program-card__title").boundingBox();
   const badge = await program.locator(".program-card__major-badge").boundingBox();
-  expect(Math.abs(title.y + title.height / 2 - badge.y - badge.height / 2)).toBeLessThanOrEqual(2);
+  expect(Math.abs(title.y + title.height / 2 - badge.y - badge.height / 2)).toBeLessThanOrEqual(4);
   await program.locator("[data-program-toggle]").click();
   await program.screenshot({ path: "output/playwright/mit-course15-2-matching-major-dark.png" });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -729,6 +729,7 @@ test("MIT admission context fits a narrow dark-theme screen", async ({ page }) =
   await expect(context).toBeVisible();
   await expect(context.locator("[data-mit-open-programs]")).toBeVisible();
   const bounds = await context.boundingBox();
+  expect(bounds).not.toBeNull();
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
 

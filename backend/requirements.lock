@@ -922,22 +922,22 @@ torch==2.14.0 ; (platform_machine != 'aarch64' and platform_machine != 'x86_64' 
     # via
     #   -r backend/requirements.txt
     #   sentence-transformers
-torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_aarch64.whl ; platform_machine == 'aarch64' and sys_platform == 'linux' \
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_aarch64.whl ; platform_machine == 'aarch64' and sys_platform == 'linux' and python_version >= '3.12' \
     --hash=sha256:da8140c3d4a41500d29710e35bf8e66a4295ec31026487c69f54a3f583310f8d
     # via
     #   -r backend/requirements.txt
     #   sentence-transformers
-torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; platform_machine == 'x86_64' and sys_platform == 'linux' \
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; platform_machine == 'x86_64' and sys_platform == 'linux' and python_version >= '3.12' \
     --hash=sha256:a09987c95ec4cffdb6df798d3d641558110a334cfccce22f2f046d83142bc260
     # via
     #   -r backend/requirements.txt
     #   sentence-transformers
-torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-win_amd64.whl ; platform_machine == 'AMD64' and sys_platform == 'win32' \
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-win_amd64.whl ; platform_machine == 'AMD64' and sys_platform == 'win32' and python_version >= '3.12' \
     --hash=sha256:738cd9237bf63443a5e5f9652e5115f7b0510b089636a43d4011e9fccede714f
     # via
     #   -r backend/requirements.txt
     #   sentence-transformers
-torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-win_arm64.whl ; platform_machine == 'ARM64' and sys_platform == 'win32' \
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.14.0%2Bcpu-cp312-cp312-win_arm64.whl ; platform_machine == 'ARM64' and sys_platform == 'win32' and python_version >= '3.12' \
     --hash=sha256:420e7dbed969bbd045b34105fa90d1ccf3e5c09c4e9b0d0a5f9df25df9d02d2e
     # via
     #   -r backend/requirements.txt
