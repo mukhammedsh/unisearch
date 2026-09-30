@@ -400,11 +400,6 @@ function selectedAdmissionContext(university, profile) {
     ? queryRoute
     : (profile?.applicant_route || profile?.applicantRoute || "");
   const route = !routeOptions.length || !requestedRoute || routeOptions.includes(requestedRoute) ? requestedRoute : "";
-  const cycleOptions = [...new Set(programCategories.flatMap((category) => [
-    category.cycle,
-    ...(Array.isArray(category.deadlines) ? category.deadlines.map((deadline) => deadline?.cycle) : []),
-    ...(Array.isArray(category.admission_rounds) ? category.admission_rounds.map((round) => round?.cycle) : []),
-  ]).map((value) => String(value || "").trim()).filter(Boolean))];
   const queryCycle = params.get("admission_cycle");
   const requestedCycle = queryCycle && queryCycle.length <= 40
     ? queryCycle
@@ -1049,7 +1044,6 @@ function renderDeadlineCalendar(universityId, deadlines) {
 export function renderDeadlinesTabSection({ container, university, onContextChange }) {
   if (!container) return;
   const universityId = String(university.id || "").trim();
-  const categories = getAdmissionCategories(university);
   const admissionContext = selectedAdmissionContext(university, getAdmissionContextProfile(university));
   const hasProgramSelection = admissionContext.selectedProgram !== GENERAL_PROGRAM_KEY;
   const deadlineCategories = admissionContext.visibleCategories;
@@ -1360,7 +1354,6 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
   const internationalNeedBlind = ugPolicy.need_blind_international === true || aid.international_need_blind === true;
   const genericNeedBlind = aid.need_blind === true && aid.basis === "need";
   const isUniversalNeedBlind = domesticNeedBlind && internationalNeedBlind;
-  const hasNeedBlindPolicy = isUniversalNeedBlind || domesticNeedBlind || internationalNeedBlind || genericNeedBlind;
   const meetsFullDemonstratedNeed = showUndergraduatePolicy && (
     ugPolicy.meets_full_demonstrated_need === true || aid.meets_full_demonstrated_need === true
   );

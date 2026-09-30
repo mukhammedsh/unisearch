@@ -52,12 +52,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 2. TUM (meets requirements)
         res_tum = estimate_uni_chance(self.tum, profile)
-        chance_tum = res_tum.get("overallChance")
         self._assert_fit_contract(res_tum)
 
         # 3. NU (requires SAT)
         res_nu = estimate_uni_chance(self.nu, profile)
-        chance_nu = res_nu.get("overallChance")
         self._assert_fit_contract(res_nu)
 
     def test_maria_top_ivy_persona(self):
@@ -87,12 +85,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
-        chance_tum = res_tum.get("overallChance")
         self._assert_fit_contract(res_tum)
 
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
-        chance_nu = res_nu.get("overallChance")
         self._assert_fit_contract(res_nu)
 
     def test_dias_average_kazakh_persona(self):
@@ -117,12 +113,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 1. MIT
         res_mit = estimate_uni_chance(self.mit, profile)
-        chance_mit = res_mit.get("overallChance")
         self._assert_fit_contract(res_mit)
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
-        chance_tum = res_tum.get("overallChance")
         self._assert_fit_contract(res_tum)
 
         # 3. NU: IELTS evidence is present but below its published minimum,
@@ -160,12 +154,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
-        chance_tum = res_tum.get("overallChance")
         self._assert_fit_contract(res_tum)
 
         # 3. NU (Abay Kunanbayev grant enables studying with $0 budget)
         res_nu = estimate_uni_chance(self.nu, profile)
-        chance_nu = res_nu.get("overallChance")
         self._assert_fit_contract(res_nu)
 
     def test_lisa_borderline_ielts(self):
@@ -198,12 +190,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
-        chance_tum = res_tum.get("overallChance")
         self._assert_fit_contract(res_tum)
 
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
-        chance_nu = res_nu.get("overallChance")
         self._assert_fit_contract(res_nu)
 
     def test_anonymous_empty_profile(self):
@@ -229,12 +219,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
-        chance_tum = res_tum.get("overallChance")
         self._assert_fit_contract(res_tum)
 
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
-        chance_nu = res_nu.get("overallChance")
         self._assert_fit_contract(res_nu)
 
 

@@ -9,7 +9,6 @@ const frontendDir = path.resolve(rootDir, "frontend");
 const baselinePath = path.resolve(scriptDir, "inline-styles-baseline.json");
 
 const args = new Set(process.argv.slice(2));
-const strictMode = args.has("--strict");
 const updateBaseline = args.has("--update-baseline");
 const verbose = args.has("--verbose") || args.has("-v");
 

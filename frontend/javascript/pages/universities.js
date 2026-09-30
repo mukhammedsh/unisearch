@@ -2541,10 +2541,12 @@ export function initUniversitiesPage() {
             const current = markersByUniId.get(targetId);
             if (current) {
                 current.setZIndexOffset(1200);
-                try {
-                    if (openPopup && !current.getPopup()?.isOpen()) current.openPopup();
-                } catch (error) {
-                    if (openPopup) current.openPopup();
+                if (openPopup) {
+                    try {
+                        if (!current.getPopup()?.isOpen()) current.openPopup();
+                    } catch (error) {
+                        current.openPopup();
+                    }
                 }
             }
             // Heal any pan animation left hanging by the flight: a starved
