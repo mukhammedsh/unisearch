@@ -19,6 +19,8 @@ def validate_language(payload: LanguageValidateRequest):
     try:
         return lang_service.validate_language(payload.model_dump(exclude_none=True))
     except ValueError as e:
+        # Security: Return sanitized validation error message without internal traces
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:
+        # Security: Mask unhandled exceptions to prevent internal implementation details or stack traces from leaking
         raise HTTPException(status_code=400, detail="Invalid language payload")
