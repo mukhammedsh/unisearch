@@ -36,10 +36,8 @@ def validate_exam(payload: ExamValidateRequest):
             details=details,
         )
     except ValueError as e:
-        # Security: Return sanitized validation error message without internal traces
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:
-        # Security: Mask unhandled exceptions to prevent internal implementation details or stack traces from leaking
         raise HTTPException(status_code=400, detail="Invalid score format")
 
     return {"ok": True, **result}
