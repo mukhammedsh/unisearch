@@ -1,0 +1,32 @@
+[
+  {
+    "category_id": "mit_grad_sdm_admissions",
+    "source_url": "https://sdm.mit.edu/admission/how-to-apply-ms/",
+    "checked_at": "2026-09-30",
+    "note": "SDM qualifies applicants with a technical BS plus five years technical experience, or technical MS plus three years including leadership; experience must be complete by enrollment. GMAT/GRE recommended, optional, no minimum. Finalists interview. Non-native English speakers need ELP unless holding a degree from an English-language institution: IELTS 7.5, TOEFL legacy 90 (no 1-6 conversion), DET 135, Cambridge 185; test-age rules apply. Application includes transcripts, resume, objectives, leadership essay, three recommendations; fee USD90. August 2027 entry: applications Dec11 2026/Feb26 2027; recommendations Dec18 2026/Mar5 2027; decisions Mar5/May7 2027. International candidates advised first round for visa processing. Do not infer tuition/funding from this page. Profile lacks technical degree, experience, institution language and test date; keep applicable minima unassessed."
+  },
+  {
+    "category_id": "mit_grad_music_technology_admissions",
+    "source_url": "https://oge.mit.edu/programs/music-technology-and-computation/",
+    "checked_at": "2026-09-30",
+    "note": "Separate SM and MASc requirements. SM includes coursework plan, musical/research history, funding plan, research statement and two recommendations. MASc requires coding test, two-project portfolio, project ideas, objectives, resume, transcripts and two recommendations. GRE optional. OGE contradicts itself for SM ELP: application list requires international ELP; test section says no standardized tests including IELTS/TOEFL. SM restriction explicitly refers Fall2025; confirm current eligibility with program rather than infer 2027. MASc international minima IELTS7/legacyTOEFL100, no department ELP waiver; no new scale conversion. Recurring Dec22 23:59 Eastern, year absent, fee USD90. Official transcripts upon admission. One semester fellowship automatically for admitted SM/MASc; TA/RA possibilities not guaranteed. Keep program-specific ELP conflict unassessed with official next action."
+  },
+  {
+    "category_id": "mit_grad_real_estate_admissions",
+    "source_url": "https://oge.mit.edu/programs/center-for-real-estate/",
+    "checked_at": "2026-09-30",
+    "note": "MSRED GRE/GMAT optional strongly recommended; GMAT preferred. International ELP subject to automatic exemption: IELTS7.5, TOEFL100 legacy or5 new, DET135; scores under two years. Department waiver deadline Dec15 2025 is stale, not2027. Typically three-five years real-estate experience; Young Leaders designation accepts exceptional zero-three-year applicants with two academic recommendations allowed. Application objectives, three recommendations, transcripts, CV, fellowship form; portfolio optional. Recurring Jan7 23:59Eastern, year absent; USD90fee. Limited discretionary fellowships, not guaranteed; fellows tuition plus stipend with five-ten hours weekly duties, fellowship tuition only. Premium tuition statement approximate10percent must not create amount. Confirm current waiver deadline and prices with CRE."
+  },
+  {
+    "category_id": "mit_grad_scm_residential_admissions",
+    "source_url": "https://oge.mit.edu/programs/supply-chain-management-residential/",
+    "checked_at": "2026-09-30",
+    "note": "SCMr requires ONE OF SC0x course evidence, GRE, GMAT, no cutoff stated. SC0x is a credential alternative, not an unsupported mandatory exam; absent GRE must not imply failure because profile cannot represent SC0x learner record. International ELP unless automatic exemption: IELTS7, TOEFL100legacy/5new, DET135, Cambridge190; department waivers by email. 2027fall rounds Nov1 2026, Jan31 2027, Apr1 2027 at23:59Eastern. Application objectives, two recommendations, transcripts, CV, video; USD90fee. Partial CTL fellowships considered if applicant indicates interest; awards competitive, some format-specific. No program RA/TA funding or work opportunity. OGE degree list includes other SCALE centers; do not add all as MIT degrees. Do not assume ELP waiver, SC0x, test validity or fellowship eligibility from current profile."
+  },
+  {
+    "category_id": "mit_grad_scm_blended_admissions",
+    "source_url": "https://oge.mit.edu/programs/supply-chain-management-blended/",
+    "checked_at": "2026-09-30",
+    "note": "SCMb requires MITx Supply Chain MicroMasters before completed application: five courses and comprehensive final exam; certificate valid three years. GRE notaccepted as substitute. Early spring January entry; published deadlines Jan10/June19 2027 at23:59Eastern, which do not establish entryyear2027 (June after entry). Confirm intake mapping on departmental source. International ELP unless automatic exemption: IELTS7, TOEFL100legacy/5new, DET135, Cambridge185; department waiver viaemail. Application two recommendations, transcripts,CV,video; USD90fee. Partial competitive fellowships by indicated interest; format-specific restrictions, no guaranteed award. No RA/TA funding. Profile lacks credential/date and exemption evidence; use explicit unassessed conditions, not missing GRE."
+  }
+]

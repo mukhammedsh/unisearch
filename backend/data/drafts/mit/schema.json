@@ -1,45 +1,93 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Canonical university catalog draft",
+  "$id": "https://unisearch.example/drafts/mit/schema-2.0.json",
+  "title": "MIT admissions research draft (not active runtime data)",
   "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "institution_id",
-    "catalog_snapshot",
-    "study_options",
-    "exclusions",
-    "notes",
-    "degree_options"
-  ],
   "properties": {
     "schema_version": {
-      "const": "1.0"
+      "const": "2.0"
     },
-    "institution_id": {
-      "type": "string"
-    },
-    "catalog_snapshot": {
+    "institution": {
       "type": "object",
-      "required": [
-        "academic_year",
-        "checked_at",
-        "sources"
-      ],
       "properties": {
-        "academic_year": {
+        "id": {
+          "const": "mit-usa-cambridge"
+        },
+        "official_name": {
+          "const": "Massachusetts Institute of Technology"
+        }
+      },
+      "required": [
+        "id",
+        "official_name"
+      ],
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "checked_at": {
           "type": "string"
         },
-        "checked_at": {
-          "type": "string",
-          "format": "date"
+        "catalog_period": {
+          "type": "string"
         },
-        "sources": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/source"
-          }
+        "scope": {
+          "type": "string"
+        },
+        "completion_status": {
+          "enum": [
+            "in_progress",
+            "complete",
+            "contributor_example"
+          ]
         }
+      },
+      "required": [
+        "checked_at",
+        "catalog_period",
+        "scope",
+        "completion_status"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "role",
+          "origin"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "program_families": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/family"
       }
     },
     "study_options": {
@@ -48,62 +96,713 @@
         "$ref": "#/$defs/option"
       }
     },
+    "catalog_entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "application_routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fact"
+      }
+    },
     "exclusions": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "reason"
+        ],
+        "additionalProperties": false
       }
     },
-    "notes": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "degree_options": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/degreeOption"
-      }
-    },
-    "degree_option_review": {
+    "coverage": {
       "type": "object",
-      "required": [
-        "checked_at",
-        "reviewed_options",
-        "source_groups",
-        "scope_note"
-      ],
       "properties": {
-        "checked_at": {
-          "type": "string",
-          "format": "date"
-        },
-        "reviewed_options": {
-          "type": "integer"
-        },
-        "source_groups": {
+        "fact_groups": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "scope_note": {
-          "type": "string"
+        "uncompleted_collection": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "historical_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
-      }
+      },
+      "required": [
+        "fact_groups",
+        "uncompleted_collection",
+        "historical_inputs"
+      ],
+      "additionalProperties": false
     }
   },
+  "required": [
+    "schema_version",
+    "institution",
+    "snapshot",
+    "sources",
+    "subjects",
+    "program_families",
+    "study_options",
+    "catalog_entries",
+    "application_routes",
+    "facts",
+    "exclusions",
+    "coverage"
+  ],
+  "additionalProperties": false,
   "$defs": {
-    "source": {
+    "scope": {
       "type": "object",
+      "properties": {
+        "institution_id": {
+          "const": "mit-usa-cambridge"
+        },
+        "study_option_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "route_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "study_levels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applicant_category": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "institution_id",
+        "study_option_ids",
+        "route_ids",
+        "study_levels",
+        "applicant_category"
+      ],
+      "additionalProperties": false
+    },
+    "period": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "named",
+            "yearless_policy"
+          ]
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "condition": {
+      "type": "object",
+      "properties": {
+        "when": {
+          "type": "string"
+        },
+        "effect": {
+          "type": "string"
+        },
+        "related_fact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_applicant_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "when",
+        "effect"
+      ],
+      "additionalProperties": false
+    },
+    "fact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "institution",
+            "study_content",
+            "degree_completion",
+            "eligibility",
+            "subject_preparation",
+            "academic_tests",
+            "language_tests",
+            "documents",
+            "portfolio_interview",
+            "application_process",
+            "application_windows",
+            "costs",
+            "funding",
+            "offer_enrollment",
+            "career"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "value": {},
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "publication_status": {
+          "enum": [
+            "published",
+            "not_published",
+            "unknown",
+            "conflicting"
+          ]
+        },
+        "review_status": {
+          "enum": [
+            "verified",
+            "carried_forward_review",
+            "needs_review",
+            "conflicting",
+            "superseded"
+          ]
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "origin": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "related_fact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolution": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "next_official_step": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "reason",
+            "next_official_step"
+          ],
+          "additionalProperties": false
+        },
+        "superseded_reason": {
+          "type": "string"
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "institution",
+              "study_content",
+              "degree_completion",
+              "eligibility",
+              "subject_preparation",
+              "academic_tests",
+              "language_tests",
+              "documents",
+              "portfolio_interview",
+              "application_process",
+              "application_windows",
+              "costs",
+              "funding",
+              "offer_enrollment",
+              "career"
+            ]
+          }
+        }
+      },
       "required": [
         "id",
-        "url",
-        "title",
+        "group",
+        "summary",
+        "value",
+        "scope",
+        "period",
+        "publication_status",
+        "review_status",
         "checked_at",
-        "scope"
+        "source_ids",
+        "origin",
+        "conditions",
+        "related_fact_ids"
       ],
+      "additionalProperties": false
+    },
+    "option": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "official_name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "study_levels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "awards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "course_number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "program_family_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "format": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string"
+            },
+            "language": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "intensity": {
+              "type": "string"
+            },
+            "schedule": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "mode",
+            "language"
+          ],
+          "additionalProperties": false
+        },
+        "application": {
+          "type": "object",
+          "properties": {
+            "classification": {
+              "type": "string"
+            },
+            "route_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "publication_status": {
+              "enum": [
+                "published",
+                "not_published",
+                "unknown",
+                "conflicting"
+              ]
+            },
+            "review_status": {
+              "enum": [
+                "verified",
+                "carried_forward_review",
+                "needs_review",
+                "conflicting",
+                "superseded"
+              ]
+            },
+            "checked_at": {
+              "type": "string"
+            },
+            "period": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "classification",
+            "route_ids",
+            "reason",
+            "source_ids",
+            "publication_status",
+            "review_status",
+            "checked_at",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "catalog_entry_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "official_name",
+        "kind",
+        "study_levels",
+        "awards",
+        "course_number",
+        "program_family_id",
+        "subject_ids",
+        "format",
+        "application",
+        "source_ids",
+        "fact_ids",
+        "catalog_entry_ids"
+      ],
+      "additionalProperties": false
+    },
+    "route": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "official_target": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "study_option_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "publication_status": {
+          "enum": [
+            "published",
+            "not_published",
+            "unknown",
+            "conflicting"
+          ]
+        },
+        "review_status": {
+          "enum": [
+            "verified",
+            "carried_forward_review",
+            "needs_review",
+            "conflicting",
+            "superseded"
+          ]
+        },
+        "checked_at": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        },
+        "fact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "official_target",
+        "classification",
+        "destination",
+        "study_option_ids",
+        "source_ids",
+        "publication_status",
+        "review_status",
+        "checked_at",
+        "period",
+        "fact_ids"
+      ],
+      "additionalProperties": false
+    },
+    "family": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "official_name": {
+          "type": "string"
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "study_option_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "official_name",
+        "source_ids",
+        "study_option_ids"
+      ],
+      "additionalProperties": false
+    },
+    "entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "official_family_label": {
+          "type": "string"
+        },
+        "official_award_label": {
+          "type": "string"
+        },
+        "official_field_label": {
+          "type": "string"
+        },
+        "program_family_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "study_option_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relationship": {
+          "type": "string"
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checked_at": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        },
+        "publication_status": {
+          "enum": [
+            "published",
+            "not_published",
+            "unknown",
+            "conflicting"
+          ]
+        },
+        "review_status": {
+          "enum": [
+            "verified",
+            "carried_forward_review",
+            "needs_review",
+            "conflicting",
+            "superseded"
+          ]
+        },
+        "excluded_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "application": {
+          "type": "object",
+          "properties": {
+            "classification": {
+              "type": "string"
+            },
+            "route_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "publication_status": {
+              "enum": [
+                "published",
+                "not_published",
+                "unknown",
+                "conflicting"
+              ]
+            },
+            "review_status": {
+              "enum": [
+                "verified",
+                "carried_forward_review",
+                "needs_review",
+                "conflicting",
+                "superseded"
+              ]
+            },
+            "checked_at": {
+              "type": "string"
+            },
+            "period": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "classification",
+            "route_ids",
+            "reason",
+            "source_ids",
+            "publication_status",
+            "review_status",
+            "checked_at",
+            "period"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "official_family_label",
+        "official_award_label",
+        "official_field_label",
+        "program_family_id",
+        "study_option_ids",
+        "relationship",
+        "source_ids",
+        "checked_at",
+        "period",
+        "publication_status",
+        "review_status",
+        "excluded_reason"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
       "properties": {
         "id": {
           "type": "string"
@@ -116,235 +815,24 @@
           "type": "string"
         },
         "checked_at": {
-          "type": "string",
-          "format": "date"
+          "type": "string"
         },
-        "scope": {
+        "access": {
+          "type": "object"
+        },
+        "content_review": {
           "type": "string"
         }
-      }
-    },
-    "fact": {
-      "type": "object",
-      "required": [
-        "status",
-        "value"
-      ],
-      "properties": {
-        "status": {
-          "enum": [
-            "published",
-            "not_yet_published",
-            "not_applicable",
-            "unknown_needs_review"
-          ]
-        },
-        "value": {}
-      }
-    },
-    "option": {
-      "type": "object",
+      },
       "required": [
         "id",
-        "level",
-        "name",
-        "application_target",
-        "selection_timing",
-        "route_status",
-        "admissions_cycle",
-        "applicant_categories",
-        "cost",
-        "funding",
-        "source_ids"
+        "url",
+        "title",
+        "checked_at",
+        "access",
+        "content_review"
       ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "level": {
-          "enum": [
-            "undergraduate",
-            "graduate",
-            "professional"
-          ]
-        },
-        "course_number": {
-          "type": "string"
-        },
-        "award_label": {
-          "$ref": "#/$defs/fact"
-        },
-        "application_target": {
-          "type": "object",
-          "required": [
-            "classification",
-            "target_id",
-            "status"
-          ],
-          "properties": {
-            "classification": {
-              "enum": [
-                "institution_wide",
-                "department_or_graduate_program",
-                "course_specific",
-                "unknown"
-              ]
-            },
-            "target_id": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "status": {
-              "enum": [
-                "verified",
-                "verified_by_oge",
-                "needs_review"
-              ]
-            }
-          }
-        },
-        "selection_timing": {
-          "enum": [
-            "after_institutional_admission",
-            "direct_application_target",
-            "unknown_needs_review"
-          ]
-        },
-        "route_status": {
-          "type": "string"
-        },
-        "admissions_cycle": {
-          "$ref": "#/$defs/fact"
-        },
-        "applicant_categories": {
-          "$ref": "#/$defs/fact"
-        },
-        "cost": {
-          "$ref": "#/$defs/fact"
-        },
-        "funding": {
-          "$ref": "#/$defs/fact"
-        },
-        "source_ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "degreeOption": {
-      "type": "object",
-      "required": [
-        "id",
-        "level",
-        "name",
-        "award",
-        "program",
-        "program_family_id",
-        "family_match_status",
-        "application_target",
-        "route_id",
-        "route_status",
-        "admissions_cycle",
-        "applicant_categories",
-        "cost",
-        "funding",
-        "source_ids"
-      ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "level": {
-          "enum": [
-            "graduate",
-            "professional"
-          ]
-        },
-        "name": {
-          "type": "string"
-        },
-        "award": {
-          "type": "string"
-        },
-        "program": {
-          "type": "string"
-        },
-        "program_family_id": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "family_match_status": {
-          "enum": [
-            "verified_program_family",
-            "needs_review_no_family_record",
-            "needs_review_family_mapping"
-          ]
-        },
-        "application_target": {
-          "type": "object",
-          "required": [
-            "classification",
-            "target_id",
-            "status"
-          ],
-          "properties": {
-            "classification": {
-              "enum": [
-                "unknown",
-                "department_or_graduate_program",
-                "course_specific"
-              ]
-            },
-            "target_id": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "status": {
-              "enum": [
-                "needs_review",
-                "verified_by_oge",
-                "verified"
-              ]
-            }
-          }
-        },
-        "route_id": {
-          "type": "null"
-        },
-        "route_status": {
-          "type": "string"
-        },
-        "admissions_cycle": {
-          "$ref": "#/$defs/fact"
-        },
-        "applicant_categories": {
-          "$ref": "#/$defs/fact"
-        },
-        "cost": {
-          "$ref": "#/$defs/fact"
-        },
-        "funding": {
-          "$ref": "#/$defs/fact"
-        },
-        "source_ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1
-        }
-      }
+      "additionalProperties": false
     }
   }
 }

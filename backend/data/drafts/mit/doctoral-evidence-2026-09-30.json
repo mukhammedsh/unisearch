@@ -1,0 +1,802 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-09-30",
+  "scope": "Live verification of assigned MIT doctoral application families. All fact sources are official MIT OGE or departmental pages. Yearless month/day deadlines are recorded as recurring page text and are not assigned an admission cycle. This is research evidence, not a production source record.",
+  "source_method": "Opened official OGE program pages and department pages linked from them. Follow-up links are marked where evidence must be reconciled before data integration.",
+  "records": [
+    {
+      "route_id": "mit_aeroastro_doctoral_admissions",
+      "family": "Aeronautics and Astronautics",
+      "awards": [
+        "PhD",
+        "ScD"
+      ],
+      "entry_term": "Fall (September); LGO-only summer excluded from this doctoral route",
+      "application_window": "Opens September 1; deadline December 1 at 11:59 PM ET; OGE page does not state cycle year (recurring month/day only)",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without OGE automatic exemption; score under 2 years old by application deadline"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old by deadline"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old by deadline"
+        }
+      ],
+      "elp_exceptions": "OGE automatic exemptions apply. Department waiver request in application if either (a) English was primary/secondary instruction from ages 6–18, or (b) resident at least 3 years in US or a country where English is official AND has a degree from an accredited institution with English as main instruction. No email requests. Scores verified by Feb 1, 2027.",
+      "funding": "Not stated on reviewed OGE program page; confirm with AeroAstro graduate admissions before encoding a guarantee.",
+      "cost": "Program-specific cost not stated; use MIT cost-of-attendance only as institution-wide reference if separately scoped.",
+      "gaps": [
+        "Page lists PhD/ScD and other affiliated routes, but this admission route is departmental; do not merge LGO, CSE, WHOI, TPP, Transportation, or IDPS policies.",
+        "Confirm program-specific doctoral funding on AeroAstro admissions/funding pages."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/aeronautics-and-astronautics/",
+        "https://aeroastro.mit.edu/education/graduate-degrees-requirements/"
+      ],
+      "source_note": "OGE page directly states required documents, test rules, fee, deadline, and waiver policy; department page listed as follow-up only.",
+      "program_ids": [
+        "mit-aeroastro-phd",
+        "mit-aeroastro-scd"
+      ]
+    },
+    {
+      "route_id": "mit_biological_engineering_doctoral_admissions",
+      "family": "Biological Engineering",
+      "awards": [
+        "PhD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 15; deadline December 1 at 11:59 PM ET; year not stated on OGE page",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without OGE automatic exemption; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old"
+        }
+      ],
+      "elp_exceptions": "Department offers no ELP waiver; OGE automatic exemption policy is linked separately. Scores must be under 2 years old.",
+      "funding": "PhD students receive full tuition, stipend for living expenses, and individual health insurance; outside funding encouraged.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Keep LGO supplemental application questions scoped to LGO applicant route, not the PhD route.",
+        "Funding duration/renewal conditions not stated on OGE page."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/biological-engineering-2/",
+        "https://be.mit.edu/graduate-program/"
+      ],
+      "source_note": "OGE page current on check date.",
+      "program_ids": [
+        "mit-biological-engineering-phd"
+      ]
+    },
+    {
+      "route_id": "mit_biology_doctoral_admissions",
+      "family": "Biology",
+      "awards": [
+        "PhD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens October 1; deadline December 1 at 5:00 PM ET; year not stated on OGE page; valid ELP scores due by application deadline; verification due April 15, 2027",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without OGE automatic exemption; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        }
+      ],
+      "elp_exceptions": "Department does not offer ELP waivers; emailed requests are not formal. OGE automatic exemption policy linked on page.",
+      "funding": "All doctoral students receive full-tuition coverage, living stipend, and individual health insurance; external funding encouraged.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Biology page prohibits papers, theses, writing samples, and other supplemental materials.",
+        "OGE page lists WHOI interdisciplinary research, but this route record covers Biology PhD only."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/biology/",
+        "https://biology.mit.edu/graduate/prospective-students/application-process/"
+      ],
+      "source_note": "Current OGE page explicitly says GRE not accepted and ELP waivers unavailable.",
+      "program_ids": [
+        "mit-biology-phd"
+      ]
+    },
+    {
+      "route_id": "mit_brain_and_cognitive_sciences_doctoral_admissions",
+      "family": "Brain and Cognitive Sciences",
+      "awards": [
+        "PhD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 1; deadline December 1 at 11:59 PM ET; year not stated; ELP waiver request deadline November 25 (year not stated)",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without applicable OGE exemption/approved waiver; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old"
+        }
+      ],
+      "elp_exceptions": "OGE automatic exemption applies. Department waiver may be requested if currently enrolled at an English-instruction institution, lived in an English-speaking country for 4+ years, or earned a degree at an English-instruction institution (any country). Documentation required; request by November 25; no papers/theses/writing samples/supplemental materials.",
+      "funding": "Full support described: 12-month stipend, tuition, and individual health insurance; intended to fund entire study regardless of citizenship, with lab expected to support beyond year 3. External fellowship at least 50% of package yields $1,000 stipend supplement per funded year.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "OGE text mistakenly refers to accepted scores for Mechanical Engineering in BCS ELP section; thresholds are present on BCS page but apparent copy error should be verified before migration."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/brain-and-cognitive-sciences/",
+        "https://bcs.mit.edu/academic-program/brain-and-cognitive-sciences-phd-program"
+      ],
+      "source_note": "BCS English-policy sentence contains a likely template mismatch: it says Mechanical Engineering; do not reuse that label as policy scope.",
+      "program_ids": [
+        "mit-brain-and-cognitive-sciences-phd"
+      ]
+    },
+    {
+      "route_id": "mit_chemical_engineering_doctoral_admissions",
+      "family": "Chemical Engineering",
+      "awards": [
+        "PhD",
+        "ScD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens October 1; deadline December 1 at 11:59 PM ET; year not stated; scores must be verified by December 1 at 11:59 PM EST (no year on that sentence)",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of Purpose",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants subject to ELP requirement; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "CAMBRIDGE_C1_C2",
+          "status": "required_if_applicable",
+          "minimum": 190,
+          "applies_to": "Same ELP condition"
+        }
+      ],
+      "elp_exceptions": "No department ELP waivers or appeals. OGE automatic exemption criteria are cross-linked but not reconciled on the page; preserve this tension and confirm eligibility before treating ELP as universally required.",
+      "funding": "PhD/ScD students in good standing are fully funded by department through fellowships, RAs, or TAs, covering tuition, stipend, and individual health coverage.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Program page lists PhDCEP separately; do not reuse this PhD/ScD funding/tests/deadline without confirming PhDCEP route terms."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/chemical-engineering/",
+        "https://cheme.mit.edu/academics/graduate-students/apply/"
+      ],
+      "source_note": "The OGE ELP paragraph accidentally points readers to Aeronautics and Astronautics accepted-score information; thresholds appear as ChemE test list, but external accepted alternatives require source confirmation.",
+      "program_ids": [
+        "mit-chemical-engineering-phd",
+        "mit-chemical-engineering-scd"
+      ]
+    },
+    {
+      "route_id": "mit_chemistry_doctoral_admissions",
+      "family": "Chemistry",
+      "awards": [
+        "PhD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 15; deadline December 1 at 11:59 PM ET; year not stated; verification by February 1, 2027",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Personal statement 500–1,000 words",
+        "Objectives statement 1,000–1,500 words naming three prospective faculty",
+        "Three recommendation letters",
+        "Uploaded transcript PDFs",
+        "ELP evidence for applicable international applicants",
+        "Resume/CV describing research experience"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants subject to ELP requirement; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        }
+      ],
+      "elp_exceptions": "Department does not grant ELP waivers or appeals; OGE general policy is linked. Scores due by application deadline.",
+      "funding": "First-year students usually combine departmental fellowships and RAs while completing teaching requirement; most move to RA after year 1. Continued support after year 1 is subject to available funds and satisfactory record, not an unconditional guarantee.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Only admitted students must send official transcript; do not require paper transcripts from applicants."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/chemistry/",
+        "https://chemistry.mit.edu/academic-programs/graduate-programs/"
+      ],
+      "source_note": "Current OGE page gives route-specific materials and no GRE/ELP waiver.",
+      "program_ids": [
+        "mit-chemistry-phd"
+      ]
+    },
+    {
+      "route_id": "mit_civil_and_environmental_engineering_doctoral_admissions",
+      "family": "Civil and Environmental Engineering",
+      "awards": [
+        "PhD",
+        "ScD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 15; deadline December 15 at 11:59 PM ET; year not stated; verification due December 31, 2026; ELP waiver request by December 1 (year not stated)",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Objectives statement describing experience/purpose and an example of technical work",
+        "Three recommendation letters",
+        "Transcripts",
+        "CV/resume",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "optional",
+          "minimum": null,
+          "validity": "Less than 5 years old; no minimum score"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7.5,
+          "applies_to": "International applicants subject to ELP requirement; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old"
+        }
+      ],
+      "elp_exceptions": "OGE automatic exemptions apply. CEE request permitted only if applicant previously scored above CEE minimum in TOEFL, DET, or IELTS before entering a US graduate program; submit inside application; email requests not considered.",
+      "funding": "The page says all students admitted to SM/PhD track receive RA/fellowships depending on availability, with tuition, insurance, and monthly stipend; all PhD students must secure funding. Wording does not explicitly clarify ScD guarantee.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Funding page uses SM/PhD wording; verify if exact support statement includes ScD applicants before applying it to both awards.",
+        "Optional GRE and ELP checks are route-specific; do not inherit CSE joint GRE requirement automatically.",
+        "Official departmental page link could not be opened during this check; use the OGE page as the verified source and recheck the department site before importing facts not stated by OGE."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/civil-and-environmental-engineering/"
+      ],
+      "source_note": "GRE optional and may be considered; CEE minimum IELTS is 7.5, higher than OGE usual baseline.",
+      "program_ids": [
+        "mit-civil-and-environmental-engineering-phd",
+        "mit-civil-and-environmental-engineering-scd"
+      ]
+    },
+    {
+      "route_id": "mit_computational_and_systems_biology_doctoral_admissions",
+      "family": "Computational and Systems Biology",
+      "awards": [
+        "PhD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens October 1; deadline December 1 at 11:59 PM ET; year not stated",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants subject to ELP requirement"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "applies_to": "Same ELP condition"
+        }
+      ],
+      "elp_exceptions": "Page links MIT general ELP score policy; route page does not state explicit department waiver or score-age rule. Do not infer acceptance of DET/Cambridge from this page.",
+      "funding": "All CSB students fully supported until completion of PhD requirements. Sources may include NIH T32 and federal/international fellowships; verify detailed package components and conditions on CSB website.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "OGE page says Subjects Taken page is optional, other application sections required; CV generally not reviewed.",
+        "Page does not list DET/Cambridge or waiver details. Check linked departmental and OGE policies before encoding further alternatives.",
+        "Official departmental page link could not be opened during this check; use the OGE page as the verified source and recheck the department site before importing facts not stated by OGE."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/computational-and-systems-biology/"
+      ],
+      "source_note": "GRE is explicitly not required and not accepted.",
+      "program_ids": [
+        "mit-computational-and-systems-biology-phd"
+      ]
+    },
+    {
+      "route_id": "mit_computational_science_and_engineering_doctoral_admissions",
+      "family": "Computational Science and Engineering",
+      "awards": [
+        "PhD standalone and 10 named joint CSE PhDs"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 15; deadline December 1 at 11:59 PM ET; year not stated",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application including Courses section",
+        "One-page objectives statement",
+        "Three recommendation letters",
+        "Transcripts",
+        "CV/resume",
+        "GRE",
+        "ELP evidence for international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE_General",
+          "status": "required",
+          "minimum": null,
+          "validity": "Less than 5 years old; institution code 3514, department 0000"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants; strongly preferred"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "applies_to": "International applicants; accepted alternative to IELTS"
+        }
+      ],
+      "elp_exceptions": "No route-specific ELP waiver or automatic-exemption wording found in page text. Confirm with CSE/OGE before applying general exemptions; avoid adding DET/Cambridge absent route evidence.",
+      "funding": "Funding varies by the affiliated/home department; CSE page directs applicants to contact home department.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "OGE page names standalone CSE PhD plus 10 joint PhD titles under this application. Current route ID is shared; verify runtime candidate mapping captures all 11, including joint titles in CSE data, and keeps home-department funding conditional.",
+        "Computer Science applicants are directed to EECS; do not map standard CS applicants to CSE."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/computational-science-and-engineering-phd/",
+        "https://cse.mit.edu/programs-admissions/"
+      ],
+      "source_note": "GRE General is explicitly required of all CSE applicants.",
+      "program_ids": [
+        "mit-computational-science-and-engineering-phd",
+        "mit-cse-civil-engineering-and-computation-phd",
+        "mit-cse-environmental-engineering-and-computation-phd",
+        "mit-cse-mechanical-engineering-and-computation-phd",
+        "mit-cse-computational-materials-science-and-engineering-phd",
+        "mit-cse-chemical-engineering-and-computation-phd",
+        "mit-cse-computational-earth-atmospheric-and-planetary-sciences-phd",
+        "mit-cse-aerospace-engineering-and-computational-science-phd",
+        "mit-cse-mathematics-and-computational-science-phd",
+        "mit-cse-nuclear-engineering-and-computation-phd",
+        "mit-cse-computational-nuclear-science-and-engineering-phd"
+      ]
+    },
+    {
+      "route_id": "mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions",
+      "family": "Earth, Atmospheric, and Planetary Sciences",
+      "awards": [
+        "PhD",
+        "ScD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 1; deadline December 1 at 11:59 PM ET; year not stated; score verification due December 15, 2026",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "GRE General",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE_General",
+          "status": "required",
+          "minimum": null,
+          "validity": "Less than 5 years old"
+        },
+        {
+          "exam": "GRE_Physics_Subject",
+          "status": "optional",
+          "minimum": null
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without applicable automatic exemption/approved waiver; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old"
+        }
+      ],
+      "elp_exceptions": "OGE automatic exemptions apply. Department may consider waiver for 4+ years at accredited English-primary-instruction institution and at least one degree earned in English-primary-instruction language; request through application. IELTS/TOEFL/DET only listed on page.",
+      "funding": "All students admitted to doctoral programs receive stipend, tuition, and insurance through fellowships or RAs; RA is primary after year 1; TA sometimes. Verify terms with EAPS. Limited GRE fee assistance: $100 for ETS fee-reduction-eligible applicants or applicants with MIT OGE application fee waiver; first-come/available funds; excludes MIT-WHOI applicants because joint route does not require GRE.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "OGE page links affiliated WHOI; WHOI route has distinct GRE rule and must remain separate.",
+        "OGE page includes year-specific score-verification date 2026; do not persist as recurring admissions deadline."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/earth-atmospheric-and-planetary-sciences/",
+        "https://eaps.mit.edu/education/graduate-program/graduate-admissions/"
+      ],
+      "source_note": "GRE subject physics is optional; General is required.",
+      "program_ids": [
+        "mit-earth-atmospheric-and-planetary-sciences-phd",
+        "mit-earth-atmospheric-and-planetary-sciences-scd"
+      ]
+    },
+    {
+      "route_id": "mit_eecs_doctoral_admissions",
+      "family": "Electrical Engineering and Computer Science",
+      "awards": [
+        "PhD",
+        "ScD"
+      ],
+      "entry_term": "Fall (September); summer only for LGO students",
+      "application_window": "Opens September 15; deadline December 1 at 11:59 PM ET; year not stated",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Research activities/goals essay",
+        "Academic/intellectual journey essay",
+        "Three recommendation letters",
+        "Transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_required",
+          "applicability": "All applicants; page does not say accepted or considered, so verify department instructions before allowing as evidence"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants; preferred over TOEFL"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "applies_to": "International applicants; below IELTS preference"
+        }
+      ],
+      "elp_exceptions": "Page says TOEFL/IELTS waiver may be available but does not list eligibility criteria. OGE fee waiver available to eligible applicants, separate from ELP waiver.",
+      "funding": "New PhD students automatically considered for fellowship/RA/TA support; package provides full tuition, monthly living stipend, and medical insurance. Departmental support may supplement. Support decision follows admissions decision.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Current doctoral candidate draft appears to list ScD but should be checked for missing EECS PhD candidate under the same route; OGE page explicitly lists both PhD and ScD.",
+        "EECS has no terminal master's admission; SM required before doctoral progression if applicant lacks one, per OGE department policy."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/electrical-engineering-and-computer-science/",
+        "https://www.eecs.mit.edu/academics/graduate-programs/admission-process/"
+      ],
+      "source_note": "Do not infer a GRE-required rule from MIT generally; this route says not required.",
+      "program_ids": [
+        "mit-eecs-phd-course-6",
+        "mit-eecs-scd"
+      ]
+    },
+    {
+      "route_id": "mit_hst_memp_doctoral_admissions",
+      "family": "Health Sciences and Technology (Harvard-MIT), Medical Engineering and Medical Physics",
+      "awards": [
+        "PhD in Medical Engineering and Medical Physics (MEMP)"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 1; deadline December 1 at 11:59 PM ET; year not stated",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Personal statement",
+        "Three recommendation letters",
+        "Unofficial transcripts",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without OGE automatic exemption; under 2 years old"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old"
+        },
+        {
+          "exam": "CAMBRIDGE_C1_C2",
+          "status": "required_if_applicable",
+          "minimum": 185,
+          "applies_to": "International applicants subject to ELP"
+        }
+      ],
+      "elp_exceptions": "OGE automatic exemptions apply. HST may consider departmental ELP waiver for qualified candidates; criteria live on linked HST FAQ and should be extracted before encoding. All reported scores require testing-agency verification.",
+      "funding": "Fully funded for students in good academic standing: living expenses, tuition, and health insurance for duration of graduate studies, supported by fellowships, RAs, and TAs.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "Verify department ELP waiver eligibility on HST FAQ and whether Cambridge scores are under a separate validity window (page only explicitly states under 2 years for IELTS/TOEFL/DET).",
+        "Route ID exists in runtime candidates; distinguish MEMP from other HST tracks not researched here."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/harvard-mit-health-sciences-and-technology/",
+        "https://hst.mit.edu/applying-hst/applying-medical-engineering-and-medical-physics-memp-phd-program/phd-admissions-faq"
+      ],
+      "source_note": "MIT OGE identifies joint Harvard-MIT HST MEMP PhD; this is not a Harvard-only route.",
+      "program_ids": [
+        "mit-hst-memp-phd"
+      ]
+    },
+    {
+      "route_id": "mit_hasts_doctoral_admissions",
+      "family": "History, Anthropology, and Science, Technology, and Society (HASTS)",
+      "awards": [
+        "PhD"
+      ],
+      "entry_term": "Fall (September)",
+      "application_window": "Opens September 15; deadline December 1 at 11:59 PM ET; year not stated; ELP waiver last request day November 19 (year not stated); test-score verification April 1, 2027",
+      "fee_usd": 90,
+      "required_documents": [
+        "Online application",
+        "Statement of objectives",
+        "Three recommendation letters",
+        "Transcripts",
+        "CV/resume",
+        "Writing sample PDF (chapter/article-length maximum)",
+        "ELP evidence for applicable international applicants"
+      ],
+      "tests": [
+        {
+          "exam": "GRE",
+          "status": "not_accepted",
+          "applicability": "All applicants"
+        },
+        {
+          "exam": "IELTS",
+          "status": "required_if_applicable",
+          "minimum": 7,
+          "applies_to": "International applicants without applicable OGE exemption/approved waiver; under 2 years old by deadline"
+        },
+        {
+          "exam": "TOEFL_iBT",
+          "status": "required_if_applicable",
+          "minimum": 100,
+          "alternative_scale": {
+            "iBT26": 5
+          },
+          "applies_to": "Same ELP condition; under 2 years old by deadline"
+        },
+        {
+          "exam": "DET",
+          "status": "required_if_applicable",
+          "minimum": 135,
+          "applies_to": "Same ELP condition; under 2 years old by deadline"
+        },
+        {
+          "exam": "CAMBRIDGE_C1_C2",
+          "status": "required_if_applicable",
+          "minimum": 185,
+          "applies_to": "Same ELP condition"
+        }
+      ],
+      "elp_exceptions": "OGE automatic exemption applies. Department waiver may be requested in the application for (1) 4+ years study at accredited English-primary-instruction institution and at least one degree earned with English primary instruction (master's alone insufficient); (2) English-language primary and secondary schooling plus 3+ years university-level English instruction; or (3) comparable experience, rare and not guaranteed. Waiver request by November 19; be prepared to test if denied.",
+      "funding": "Normally guaranteed six academic years for reasonable academic progress: first five years tuition, 12-month stipend, and individual health insurance; conditional ninth-month sixth-year dissertation fellowship with tuition/insurance if needed and academic standing maintained. Funding via fellowships, TA, RA.",
+      "cost": "Program-specific cost not stated.",
+      "gaps": [
+        "No year is attached to recurring Dec 1 deadline or Nov 19 waiver date; only score verification is explicit for 2027.",
+        "Funding year 6 is conditional and should not be represented as same 12-month package as years 1–5.",
+        "Official departmental page link could not be opened during this check; use the OGE page as the verified source and recheck the department site before importing facts not stated by OGE."
+      ],
+      "sources": [
+        "https://oge.mit.edu/programs/history-anthropology-and-science-technology-and-society/"
+      ],
+      "source_note": "Writing sample is expressly required; no GRE scores accepted.",
+      "program_ids": [
+        "mit-hasts-phd"
+      ]
+    }
+  ]
+}

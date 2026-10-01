@@ -1,64 +1,1576 @@
 {
-  "schema_version": "1.0",
-  "institution_id": "mit",
-  "catalog_snapshot": {
-    "academic_year": "2026-2027",
-    "checked_at": "2026-09-24",
-    "sources": [
-      {
-        "id": "mit-official-catalog",
-        "url": "https://catalog.mit.edu/degree-charts/",
-        "title": "Official catalog page title",
-        "checked_at": "2026-09-24",
-        "scope": "Specific catalog coverage established here."
-      }
-    ]
+  "schema_version": "2.0",
+  "institution": {
+    "id": "mit-usa-cambridge",
+    "official_name": "Massachusetts Institute of Technology"
   },
-  "study_options": [
+  "snapshot": {
+    "checked_at": "2026-09-30",
+    "catalog_period": "2026-2027",
+    "scope": "Filled examples: shared first-year/transfer, conditional second major, internal MEng, partner-school MSMS, unresolved Engineer award, and DEDP exception to ordinary graduate qualifications.",
+    "completion_status": "contributor_example"
+  },
+  "sources": [
     {
-      "id": "mit-example-course-6-3",
-      "level": "undergraduate",
-      "name": "Computer Science and Engineering (Course 6-3)",
-      "course_number": "6-3",
-      "application_target": {
-        "classification": "institution_wide",
-        "target_id": "mit",
-        "status": "verified"
+      "id": "source-106aeb22559a3398",
+      "url": "https://bcs.mit.edu/academic-program/course-6-9-computation-and-cognition/master-engineering-computation-and-cognition",
+      "title": "Master of Engineering in Computation and Cognition | Brain and Cognitive Sciences",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://bcs.mit.edu/academic-program/course-6-9-computation-and-cognition/master-engineering-computation-and-cognition"
       },
-      "selection_timing": "after_institutional_admission",
-      "route_status": "shared first-year route verified; other categories need review",
-      "admissions_cycle": {
-        "status": "unknown_needs_review",
-        "value": null
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-26ed0d09f9d7b22f",
+      "url": "https://catalog.mit.edu/degree-charts/computer-science-engineering-course-6-3/",
+      "title": "Computer Science and Engineering (Course 6-3) | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/degree-charts/computer-science-engineering-course-6-3/"
       },
-      "applicant_categories": {
-        "status": "unknown_needs_review",
-        "value": null
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-91cda86b1b62269a",
+      "url": "https://catalog.mit.edu/degree-charts/master-applied-science-data-economics-design-policy/",
+      "title": "Master of Applied Science in Data, Economics, and Design of Policy | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/degree-charts/master-applied-science-data-economics-design-policy/"
       },
-      "cost": {
-        "status": "unknown_needs_review",
-        "value": null
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-16c367081de2b821",
+      "url": "https://catalog.mit.edu/degree-charts/master-computation-cognition-course-6-9p/",
+      "title": "Computation and Cognition (Course 6-9P) | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/degree-charts/master-computation-cognition-course-6-9p/"
       },
-      "funding": {
-        "status": "unknown_needs_review",
-        "value": null
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-21d6ba3b63479824",
+      "url": "https://catalog.mit.edu/mit/graduate-education/costs/",
+      "title": "Costs | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/mit/graduate-education/costs/"
       },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-1ceb25b10289c5e9",
+      "url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/",
+      "title": "General Degree Requirements | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/mit/graduate-education/general-degree-requirements/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-6267f8d874684442",
+      "url": "https://mitadmissions.org/apply/firstyear/deadlines-requirements/",
+      "title": "Deadlines & requirements | MIT Admissions",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitadmissions.org/apply/firstyear/deadlines-requirements/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-600fe783c80073e0",
+      "url": "https://mitadmissions.org/apply/firstyear/tests-scores/",
+      "title": "Tests & scores | MIT Admissions",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitadmissions.org/apply/firstyear/tests-scores/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-89f62d9f603825b2",
+      "url": "https://mitadmissions.org/apply/transfer/deadlines/",
+      "title": "Transfer deadlines & requirements | MIT Admissions",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitadmissions.org/apply/transfer/deadlines/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-b5cc555ddc10a9e2",
+      "url": "https://mitadmissions.org/help/faq/majors/",
+      "title": "Do students apply to a specific major? | MIT Admissions",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitadmissions.org/help/faq/majors/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-41e46fad48ed1d80",
+      "url": "https://mitsloan.mit.edu/msms/master-science-management-studies/admissions",
+      "title": "Admissions | MSMS | MIT Sloan",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitsloan.mit.edu/msms/master-science-management-studies/admissions"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-0445a5b397371433",
+      "url": "https://mitsloan.mit.edu/msms/master-science-management-studies/explore-program",
+      "title": "Explore the Program | MSMS | MIT Sloan",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitsloan.mit.edu/msms/master-science-management-studies/explore-program"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-6e42f7194ef2b3d8",
+      "url": "https://oge.mit.edu/graduate-admissions/programs/",
+      "title": "Degree programs | Office of Graduate Education",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://oge.mit.edu/graduate-admissions/programs/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-4fe02b39ec113926",
+      "url": "https://oge.mit.edu/programs/data-economics-and-development-policy/",
+      "title": "Data, Economics, and Design of Policy | Office of Graduate Education",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://oge.mit.edu/programs/data-economics-and-development-policy/",
+        "application_link_checked_at": "2026-10-01"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-4d6eb36c133202cb",
+      "url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+      "title": "Materials Science and Engineering | Office of Graduate Education",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://oge.mit.edu/programs/materials-science-and-engineering/",
+        "application_link_checked_at": "2026-10-01"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-cf7765c5a37ea70f",
+      "url": "https://catalog.mit.edu/mit/graduate-education/admissions/",
+      "title": "Admissions | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/mit/graduate-education/admissions/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-2d7626070421fa92",
+      "url": "https://mitadmissions.org/apply/transfer/transfer-eligibility/",
+      "title": "Transfer eligibility | MIT Admissions",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitadmissions.org/apply/transfer/transfer-eligibility/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-ab57cc69ad90a772",
+      "url": "https://catalog.mit.edu/degree-charts/",
+      "title": "Degree Charts | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/degree-charts/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-6e7383823f16b16d",
+      "url": "https://oge.mit.edu/graduate-admissions/admissions-policies/elp-test-requirement/elp-exemptions/",
+      "title": "Exemption from the English Proficiency Test Requirement",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://oge.mit.edu/graduate-admissions/admissions-policies/elp-test-requirement/elp-exemptions/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-91d62c92051b6ff5",
+      "url": "https://catalog.mit.edu/schools/sloan-management/management/",
+      "title": "Management | MIT Course Catalog",
+      "checked_at": "2026-09-30",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/schools/sloan-management/management/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-ed6f79a70ab8fec1",
+      "url": "https://catalog.mit.edu/degree-charts/science-technology-society-sts/",
+      "title": "Science, Technology, and Society/Second Major (STS) | MIT Course Catalog",
+      "checked_at": "2026-10-01",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://catalog.mit.edu/degree-charts/science-technology-society-sts/"
+      },
+      "content_review": "pending"
+    },
+    {
+      "id": "source-588bdc7ebee15d01",
+      "url": "https://economics.mit.edu/academic-programs/masters-programs/masters-data-economics-and-development-policy-dedp/tuition-and",
+      "title": "Tuition and Funding | MIT Economics",
+      "checked_at": "2026-10-01",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://economics.mit.edu/academic-programs/masters-programs/masters-data-economics-and-development-policy-dedp/tuition-and"
+      },
+      "content_review": "HTTP success alone does not imply content review."
+    },
+    {
+      "id": "source-56e039d59442c567",
+      "url": "https://economics.mit.edu/academic-programs/masters-programs/masters-data-economics-and-development-policy-dedp/dedp",
+      "title": "DEDP Admissions | MIT Economics",
+      "checked_at": "2026-10-01",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://economics.mit.edu/academic-programs/masters-programs/masters-data-economics-and-development-policy-dedp/dedp"
+      },
+      "content_review": "HTTP success alone does not imply content review."
+    }
+  ],
+  "subjects": [
+    {
+      "id": "business",
+      "label": "Business",
+      "role": "discovery_subject_not_admission_target",
+      "origin": "existing MIT subject taxonomy"
+    },
+    {
+      "id": "computer_science",
+      "label": "Computer Science",
+      "role": "discovery_subject_not_admission_target",
+      "origin": "existing MIT subject taxonomy"
+    },
+    {
+      "id": "economics",
+      "label": "Economics",
+      "role": "discovery_subject_not_admission_target",
+      "origin": "existing MIT subject taxonomy"
+    },
+    {
+      "id": "engineering",
+      "label": "Engineering",
+      "role": "discovery_subject_not_admission_target",
+      "origin": "existing MIT subject taxonomy"
+    },
+    {
+      "id": "psychology",
+      "label": "Psychology",
+      "role": "discovery_subject_not_admission_target",
+      "origin": "existing MIT subject taxonomy"
+    },
+    {
+      "id": "social_sciences",
+      "label": "Social Sciences",
+      "role": "discovery_subject_not_admission_target",
+      "origin": "existing MIT subject taxonomy"
+    }
+  ],
+  "program_families": [
+    {
+      "id": "mit-grad-data-economics-and-design-of-policy",
+      "official_name": "Data, Economics, and Design of Policy",
       "source_ids": [
-        "mit-official-catalog"
+        "source-ab57cc69ad90a772",
+        "source-6e42f7194ef2b3d8"
+      ],
+      "study_option_ids": [
+        "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"
+      ]
+    },
+    {
+      "id": "mit-grad-materials-science-and-engineering",
+      "official_name": "Materials Science and Engineering",
+      "source_ids": [
+        "source-ab57cc69ad90a772",
+        "source-6e42f7194ef2b3d8"
+      ],
+      "study_option_ids": [
+        "mit-engineer-materials"
+      ]
+    },
+    {
+      "id": "mit-grad-mit-sloan-master-of-science-in-management-studies",
+      "official_name": "MIT Sloan Master of Science in Management Studies",
+      "source_ids": [
+        "source-ab57cc69ad90a772",
+        "source-6e42f7194ef2b3d8"
+      ],
+      "study_option_ids": [
+        "mit-sloan-msms"
+      ]
+    },
+    {
+      "id": "mit-grad-computation-and-cognition-course-6-9p",
+      "official_name": "Computation and Cognition (Course 6-9P)",
+      "source_ids": [
+        "source-16c367081de2b821"
+      ],
+      "study_option_ids": [
+        "mit-course-6-9p-meng"
       ]
     }
   ],
+  "study_options": [
+    {
+      "id": "mit-course-6-3-bachelor",
+      "official_name": "Computer Science and Engineering (Course 6-3)",
+      "kind": "undergraduate_major",
+      "study_levels": [
+        "Bachelor"
+      ],
+      "awards": [
+        "SB"
+      ],
+      "course_number": "6-3",
+      "program_family_id": null,
+      "subject_ids": [
+        "computer_science",
+        "engineering"
+      ],
+      "format": {
+        "mode": "On-campus",
+        "language": [
+          "English"
+        ],
+        "intensity": "Full-time"
+      },
+      "application": {
+        "classification": "post_admission_major",
+        "route_ids": [
+          "mit-first-year",
+          "mit-transfer"
+        ],
+        "reason": "Major selection follows institutional admission.",
+        "source_ids": [
+          "source-26ed0d09f9d7b22f"
+        ],
+        "publication_status": "published",
+        "review_status": "carried_forward_review",
+        "checked_at": "2026-09-29",
+        "period": "Catalog 2026-2027; route cycle in linked facts"
+      },
+      "source_ids": [
+        "source-26ed0d09f9d7b22f"
+      ],
+      "fact_ids": [
+        "mit-course-6-3-bachelor-description"
+      ],
+      "catalog_entry_ids": []
+    },
+    {
+      "id": "mit-course-6-9p-meng",
+      "official_name": "Master of Engineering in Computation and Cognition (Course 6-9P)",
+      "kind": "degree_option",
+      "study_levels": [
+        "Master"
+      ],
+      "awards": [
+        "MEng"
+      ],
+      "course_number": "6-9P",
+      "program_family_id": "mit-grad-computation-and-cognition-course-6-9p",
+      "subject_ids": [
+        "computer_science",
+        "engineering",
+        "psychology"
+      ],
+      "format": {
+        "mode": "not_stated",
+        "language": [
+          "English"
+        ]
+      },
+      "application": {
+        "classification": "internal",
+        "route_ids": [
+          "mit_bcs_meng_admissions"
+        ],
+        "reason": "Earlier official program review links this application target.",
+        "source_ids": [
+          "source-16c367081de2b821"
+        ],
+        "publication_status": "published",
+        "review_status": "carried_forward_review",
+        "checked_at": "2026-09-29",
+        "period": "Catalog 2026-2027; route cycle in linked facts"
+      },
+      "source_ids": [
+        "source-16c367081de2b821"
+      ],
+      "fact_ids": [
+        "mit-course-6-9p-meng-description",
+        "bcs-meng-entry-conditions",
+        "bcs-meng-support",
+        "bcs-meng-academic-tests-unestablished"
+      ],
+      "catalog_entry_ids": []
+    },
+    {
+      "id": "mit-sloan-msms",
+      "official_name": "Master of Science in Management Studies (MSMS)",
+      "kind": "degree_option",
+      "study_levels": [
+        "Master"
+      ],
+      "awards": [
+        "MSMS"
+      ],
+      "course_number": "Sloan MSMS",
+      "program_family_id": "mit-grad-mit-sloan-master-of-science-in-management-studies",
+      "subject_ids": [
+        "business"
+      ],
+      "format": {
+        "mode": "On-campus",
+        "language": [
+          "English"
+        ]
+      },
+      "application": {
+        "classification": "direct_program",
+        "route_ids": [
+          "mit_sloan_msms_admissions"
+        ],
+        "reason": "Earlier official program review links this application target.",
+        "source_ids": [
+          "source-0445a5b397371433"
+        ],
+        "publication_status": "published",
+        "review_status": "carried_forward_review",
+        "checked_at": "2026-09-29",
+        "period": "Catalog 2026-2027; route cycle in linked facts"
+      },
+      "source_ids": [
+        "source-0445a5b397371433"
+      ],
+      "fact_ids": [
+        "mit-sloan-msms-description"
+      ],
+      "catalog_entry_ids": []
+    },
+    {
+      "id": "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy",
+      "official_name": "Master of Applied Science in Data, Economics, and Design of Policy",
+      "kind": "degree_option",
+      "study_levels": [
+        "Master"
+      ],
+      "awards": [
+        "MASc"
+      ],
+      "course_number": null,
+      "program_family_id": "mit-grad-data-economics-and-design-of-policy",
+      "subject_ids": [
+        "computer_science",
+        "economics",
+        "social_sciences"
+      ],
+      "format": {
+        "mode": "On-campus",
+        "language": [
+          "English"
+        ]
+      },
+      "application": {
+        "classification": "direct_program",
+        "route_ids": [
+          "mit_grad_dedp_admissions"
+        ],
+        "reason": "Earlier official program review links this application target.",
+        "source_ids": [
+          "source-4fe02b39ec113926",
+          "source-91cda86b1b62269a"
+        ],
+        "publication_status": "published",
+        "review_status": "carried_forward_review",
+        "checked_at": "2026-09-29",
+        "period": "Catalog 2026-2027; route cycle in linked facts"
+      },
+      "source_ids": [
+        "source-4fe02b39ec113926",
+        "source-91cda86b1b62269a"
+      ],
+      "fact_ids": [
+        "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy-description"
+      ],
+      "catalog_entry_ids": []
+    },
+    {
+      "id": "mit-engineer-materials",
+      "official_name": "Materials Engineer",
+      "kind": "degree_option",
+      "study_levels": [
+        "Professional"
+      ],
+      "awards": [
+        "MatE"
+      ],
+      "course_number": null,
+      "program_family_id": "mit-grad-materials-science-and-engineering",
+      "subject_ids": [
+        "engineering"
+      ],
+      "format": {
+        "mode": "On-campus",
+        "language": [
+          "English"
+        ]
+      },
+      "application": {
+        "classification": "evidenced_unresolved",
+        "route_ids": [],
+        "reason": "OGE recognizes an interdisciplinary Engineer pathway; home-department entry and current external eligibility are unspecified. Next official step: Ask OGE and relevant department which application route leads to MatE and what tests/support apply.",
+        "source_ids": [
+          "source-1ceb25b10289c5e9",
+          "source-4d6eb36c133202cb"
+        ],
+        "publication_status": "unknown",
+        "review_status": "carried_forward_review",
+        "checked_at": "2026-09-29",
+        "period": "Catalog 2026-2027; route cycle in linked facts"
+      },
+      "source_ids": [
+        "source-1ceb25b10289c5e9"
+      ],
+      "fact_ids": [
+        "mit-engineer-materials-description"
+      ],
+      "catalog_entry_ids": []
+    },
+    {
+      "id": "mit-bs-sts",
+      "official_name": "Science, Technology, and Society / Second Major (STS)",
+      "kind": "undergraduate_major",
+      "study_levels": [
+        "Bachelor"
+      ],
+      "awards": [
+        "SB"
+      ],
+      "course_number": "STS",
+      "program_family_id": null,
+      "subject_ids": [
+        "social_sciences"
+      ],
+      "format": {
+        "mode": "On-campus",
+        "language": [
+          "English"
+        ],
+        "intensity": "Full-time"
+      },
+      "application": {
+        "classification": "post_admission_major",
+        "route_ids": [
+          "mit-first-year",
+          "mit-transfer"
+        ],
+        "reason": "Institutional undergraduate entry; this major has additional post-admission selection conditions.",
+        "source_ids": [
+          "source-ed6f79a70ab8fec1",
+          "source-b5cc555ddc10a9e2"
+        ],
+        "publication_status": "published",
+        "review_status": "verified",
+        "checked_at": "2026-09-30",
+        "period": "Catalog 2026-2027"
+      },
+      "source_ids": [
+        "source-ed6f79a70ab8fec1"
+      ],
+      "fact_ids": [
+        "mit-bs-sts-selection"
+      ],
+      "catalog_entry_ids": []
+    }
+  ],
+  "catalog_entries": [],
+  "application_routes": [
+    {
+      "id": "mit-first-year",
+      "official_target": "MIT undergraduate admission",
+      "classification": "institution_wide",
+      "destination": "Dedicated MIT Application (apply.mitadmissions.org)",
+      "study_option_ids": [
+        "mit-course-6-3-bachelor",
+        "mit-bs-sts"
+      ],
+      "source_ids": [
+        "source-6267f8d874684442"
+      ],
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-24",
+      "period": "Fall 2027 entry",
+      "fact_ids": [
+        "mit-bs-sts-selection",
+        "mit-course-6-3-bachelor-description",
+        "ug-sat-act-presence"
+      ]
+    },
+    {
+      "id": "mit-transfer",
+      "official_target": "MIT undergraduate transfer admission",
+      "classification": "institution_wide",
+      "destination": "MIT Transfer Application (apply.mitadmissions.org)",
+      "study_option_ids": [
+        "mit-course-6-3-bachelor",
+        "mit-bs-sts"
+      ],
+      "source_ids": [
+        "source-89f62d9f603825b2",
+        "source-2d7626070421fa92"
+      ],
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-24",
+      "period": "Spring 2027 and Fall 2027 entry",
+      "fact_ids": [
+        "mit-bs-sts-selection",
+        "mit-course-6-3-bachelor-description",
+        "transfer-2027-windows",
+        "ug-sat-act-presence"
+      ]
+    },
+    {
+      "id": "mit_bcs_meng_admissions",
+      "official_target": "MIT Brain and Cognitive Sciences Course 6-9P internal MEng application",
+      "classification": "internal",
+      "destination": "BCS MEng application website",
+      "study_option_ids": [
+        "mit-course-6-9p-meng"
+      ],
+      "source_ids": [
+        "source-106aeb22559a3398"
+      ],
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-29",
+      "period": "Internal MIT Course 6-9 undergraduate application; November or April",
+      "fact_ids": [
+        "bcs-meng-entry-conditions",
+        "bcs-meng-support",
+        "mit-course-6-9p-meng-description",
+        "bcs-meng-academic-tests-unestablished"
+      ]
+    },
+    {
+      "id": "mit_sloan_msms_admissions",
+      "official_target": "MIT Sloan MSMS application",
+      "classification": "department_or_program",
+      "destination": "MIT Sloan MSMS online application",
+      "study_option_ids": [
+        "mit-sloan-msms"
+      ],
+      "source_ids": [
+        "source-41e46fad48ed1d80",
+        "source-0445a5b397371433",
+        "source-91d62c92051b6ff5",
+        "source-21d6ba3b63479824"
+      ],
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-30",
+      "period": "Fall 2027 entry",
+      "fact_ids": [
+        "mit-sloan-msms-description",
+        "mit_sloan_msms_admissions-profile-0"
+      ]
+    },
+    {
+      "id": "mit_grad_dedp_admissions",
+      "official_target": "Data, Economics, and Design of Policy",
+      "classification": "department_or_program",
+      "destination": "https://apply.mit.edu/apply/",
+      "study_option_ids": [
+        "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"
+      ],
+      "source_ids": [
+        "source-4fe02b39ec113926"
+      ],
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-30",
+      "period": "Published program policy; cycle not specified; destination link inspected 2026-10-01",
+      "fact_ids": [
+        "dedp-fellowship-eligibility-and-consideration",
+        "dedp-no-prior-degree-and-track-condition",
+        "dedp-spring-2028-cycle-and-documents",
+        "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy-description"
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "mit_sloan_msms_admissions-profile-0",
+      "group": "eligibility",
+      "summary": "Reviewed requirement context; retain all conditions and unassessed prerequisites.",
+      "value": {
+        "label": "Eligible partner or affiliate school applicant",
+        "rule": "The nine-month, full-time MSMS is for students from partner or affiliate schools who are completing or hold an MBA or comparable management master’s degree. GMAT Focus/10th or GRE is required, with no published minimum. The reviewed Sloan page does not establish its English-test policy. For 2027 entry, the application deadline is February 18, 2027, at 3 p.m. ET. Materials include an application, transcript, résumé and employment history, essays or video statement, two recommendations, test evidence, and an interview by invitation.",
+        "unassessed_published_minimums": [],
+        "requirements": {}
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_sloan_msms_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "As stated in this fact"
+      },
+      "period": {
+        "label": "Fall 2027 entry",
+        "kind": "named"
+      },
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-41e46fad48ed1d80"
+      ],
+      "origin": "runtime_checkpoint_267854f",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "application_windows",
+        "documents",
+        "eligibility",
+        "language_tests",
+        "portfolio_interview"
+      ]
+    },
+    {
+      "id": "mit-course-6-3-bachelor-description",
+      "group": "study_content",
+      "summary": "The degree chart combines programming, software construction, algorithms, computer systems, and mathematics. Students select subjects from computer science tracks and further Course 6 electives.",
+      "value": {
+        "description": "The degree chart combines programming, software construction, algorithms, computer systems, and mathematics. Students select subjects from computer science tracks and further Course 6 electives.",
+        "duration": "4 years"
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-course-6-3-bachelor"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "As stated in this fact"
+      },
+      "period": {
+        "label": "Catalog 2026-2027",
+        "kind": "named"
+      },
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-29",
+      "source_ids": [
+        "source-26ed0d09f9d7b22f"
+      ],
+      "origin": "runtime_checkpoint_267854f",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-course-6-9p-meng-description",
+      "group": "study_content",
+      "summary": "Internal five- to five-and-a-half-year program for current MIT Course 6-9 majors, combining the bachelor's and master's degrees with graduate coursework and a thesis.",
+      "value": {
+        "description": "Internal five- to five-and-a-half-year program for current MIT Course 6-9 majors, combining the bachelor's and master's degrees with graduate coursework and a thesis.",
+        "duration": null
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-course-6-9p-meng"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "As stated in this fact"
+      },
+      "period": {
+        "label": "Catalog 2026-2027",
+        "kind": "named"
+      },
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-29",
+      "source_ids": [
+        "source-16c367081de2b821"
+      ],
+      "origin": "runtime_checkpoint_267854f",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-sloan-msms-description",
+      "group": "study_content",
+      "summary": "A customizable nine-month management degree for eligible current students and graduates of MIT Sloan partner or affiliate schools. It combines advanced coursework with a thesis.",
+      "value": {
+        "description": "A customizable nine-month management degree for eligible current students and graduates of MIT Sloan partner or affiliate schools. It combines advanced coursework with a thesis.",
+        "duration": "9 months"
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-sloan-msms"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "As stated in this fact"
+      },
+      "period": {
+        "label": "Catalog 2026-2027",
+        "kind": "named"
+      },
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-29",
+      "source_ids": [
+        "source-0445a5b397371433"
+      ],
+      "origin": "runtime_checkpoint_267854f",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy-description",
+      "group": "study_content",
+      "summary": "A five-month blended applied-science degree in data, economics, and policy design with public-policy and international-development tracks; entry requires the MITx DEDP MicroMasters credential.",
+      "value": {
+        "description": "A five-month blended applied-science degree in data, economics, and policy design with public-policy and international-development tracks; entry requires the MITx DEDP MicroMasters credential.",
+        "duration": null
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "As stated in this fact"
+      },
+      "period": {
+        "label": "Catalog 2026-2027",
+        "kind": "named"
+      },
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-29",
+      "source_ids": [
+        "source-4fe02b39ec113926",
+        "source-91cda86b1b62269a"
+      ],
+      "origin": "runtime_checkpoint_267854f",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-engineer-materials-description",
+      "group": "study_content",
+      "summary": "Advanced professional study in materials engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+      "value": {
+        "description": "Advanced professional study in materials engineering beyond the master's level, requiring an approved program of higher-level subjects and a thesis.",
+        "duration": null
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-engineer-materials"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Professional"
+        ],
+        "applicant_category": "As stated in this fact"
+      },
+      "period": {
+        "label": "Catalog 2026-2027",
+        "kind": "named"
+      },
+      "publication_status": "published",
+      "review_status": "carried_forward_review",
+      "checked_at": "2026-09-29",
+      "source_ids": [
+        "source-1ceb25b10289c5e9"
+      ],
+      "origin": "runtime_checkpoint_267854f",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "ug-sat-act-presence",
+      "group": "academic_tests",
+      "summary": "SAT or ACT is required; MIT publishes no SAT/ACT cutoff or recommended minimum.",
+      "value": {
+        "presence": "required",
+        "alternatives": [
+          "SAT",
+          "ACT"
+        ],
+        "cutoff": null,
+        "act_writing": "not_required",
+        "act_science": "not_required",
+        "sat_essay": "not_required",
+        "sat_formats": [
+          "paper",
+          "digital"
+        ]
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit-first-year",
+          "mit-transfer"
+        ],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "As stated in the fact"
+      },
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Current published policy; cycle not specified"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-600fe783c80073e0"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests"
+      ]
+    },
+    {
+      "id": "transfer-2027-windows",
+      "group": "application_windows",
+      "summary": "Spring and fall transfer have distinct deadlines and applicant scopes.",
+      "value": {
+        "windows": [
+          {
+            "entry": "Spring 2027 (February)",
+            "date": "2026-10-15",
+            "applicant_category": [
+              "US citizen",
+              "US permanent resident"
+            ]
+          },
+          {
+            "entry": "Fall 2027 (September)",
+            "date": "2027-03-01",
+            "applicant_category": "Domestic and international transfer applicants"
+          }
+        ],
+        "aid_due": "February 15 for all transfer applicants",
+        "test_windows": [
+          "October testing date for spring",
+          "March testing date for fall"
+        ],
+        "reply": [
+          "mid-December spring",
+          "late May fall"
+        ],
+        "exact_time_timezone": "Not published on the reviewed deadline page"
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit-transfer"
+        ],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "As stated in the fact"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Spring and Fall 2027 entry"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-89f62d9f603825b2"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [
+        {
+          "when": "Spring entry",
+          "effect": "Only US citizens and US permanent residents may apply; current residence cannot substitute for permanent-resident status."
+        }
+      ],
+      "related_fact_ids": [],
+      "topics": [
+        "application_windows",
+        "offer_enrollment"
+      ]
+    },
+    {
+      "id": "mit-bs-sts-selection",
+      "group": "degree_completion",
+      "summary": "STS SB is only a second major alongside engineering/science, or another field by case-by-case approval.",
+      "value": {
+        "selection_rule": "STS SB is only a second major alongside engineering/science, or another field by case-by-case approval.",
+        "not_external_admission_prerequisite": true
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-bs-sts"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "As stated in the fact"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Catalog 2026-2027"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-ed6f79a70ab8fec1"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "degree_completion",
+        "subject_preparation"
+      ]
+    },
+    {
+      "id": "graduate-qualification",
+      "group": "eligibility",
+      "summary": "Graduate departments assess an acceptable bachelor equivalent and preparation; no universal country credential acceptance or GPA is implied.",
+      "value": {
+        "regular_admission": "Bachelor degree or equivalent with acceptable standing",
+        "equivalence_decision": "Responsible MIT department",
+        "deficiencies": "May require completion before dependent graduate work",
+        "engineering_doctoral": "Some departments require a master degree first",
+        "universal_gpa_cutoff": null
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [],
+        "study_levels": [
+          "Master",
+          "Doctorate",
+          "Professional"
+        ],
+        "applicant_category": "Degree-seeking graduate applicants; department exceptions remain separate"
+      },
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Current published policy; cycle not specified"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-cf7765c5a37ea70f"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [
+        {
+          "when": "Applying to DEDP",
+          "effect": "DEDP requires no prior bachelor/master degree; complete its MicroMasters instead.",
+          "related_fact_ids": [
+            "dedp-no-prior-degree-and-track-condition"
+          ],
+          "required_applicant_evidence": [
+            "DEDP credential/courses/proctored exam completion"
+          ]
+        }
+      ],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "eligibility",
+        "subject_preparation"
+      ]
+    },
+    {
+      "id": "graduate-elp-automatic-exemption",
+      "group": "language_tests",
+      "summary": "Automatic exemption differs from a discretionary department waiver.",
+      "value": {
+        "alternatives": [
+          {
+            "criterion": "Primary first language was English in the family home"
+          },
+          {
+            "criterion": "Undergraduate equivalent completed within last five years; three to four years at English-speaking university in listed country",
+            "countries": [
+              "Australia",
+              "Canada",
+              "Ireland",
+              "New Zealand",
+              "United Kingdom",
+              "United States"
+            ]
+          }
+        ],
+        "not_automatic": [
+          "English-medium undergraduate degree elsewhere",
+          "Graduate degree",
+          "Foreign branch campus of US/UK university"
+        ],
+        "department_waiver": "Separate discretionary process",
+        "supplemental_tests": "Department may request even when exempt/waived"
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [],
+        "study_levels": [
+          "Master",
+          "Doctorate",
+          "Professional"
+        ],
+        "applicant_category": "Degree-seeking graduate applicants; department exceptions remain separate"
+      },
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Current published policy; cycle not specified"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-6e7383823f16b16d"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [
+        {
+          "when": "Any automatic exemption alternative is documented",
+          "effect": "OGE English test requirement automatically exempt; this does not itself settle program supplemental requirements or EET."
+        }
+      ],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "language_tests"
+      ]
+    },
+    {
+      "id": "bcs-meng-entry-conditions",
+      "group": "eligibility",
+      "summary": "BCS MEng admission has explicit MIT GPA, coursework and research/advisor requirements.",
+      "value": {
+        "technical_gpa": {
+          "minimum": 4.25,
+          "scale": "MIT 5.0",
+          "course_scope": "Letter-graded 6-9 requirements and other Course 6/8/18 subjects"
+        },
+        "overall_gpa": {
+          "minimum": 4,
+          "scale": "MIT 5.0",
+          "assessed_at": "End of applying term"
+        },
+        "major_subjects": "Nine subjects or 102 units",
+        "research": "One UROP or SuperUROP",
+        "advisor": "MIT faculty thesis supervisor required; approved outside co-advisor may join",
+        "thesis": "Purely engineering thesis projects not accepted"
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-course-6-9p-meng"
+        ],
+        "route_ids": [
+          "mit_bcs_meng_admissions"
+        ],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "Current MIT Course 6-9 majors"
+      },
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Current published policy; cycle not specified"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-106aeb22559a3398"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [
+        {
+          "when": "Applicant is not a current MIT Course 6-9 major",
+          "effect": "Not eligible for this internal program; do not evaluate against external graduate minima."
+        }
+      ],
+      "related_fact_ids": [],
+      "topics": [
+        "documents",
+        "eligibility",
+        "subject_preparation"
+      ]
+    },
+    {
+      "id": "bcs-meng-support",
+      "group": "funding",
+      "summary": "BCS MEng funding is not guaranteed and assistantship eligibility has duration/load conditions.",
+      "value": {
+        "ta_ra": "Full appointment pays monthly stipend, full tuition, insurance",
+        "ta_work": "Approximately 20 hours/week",
+        "bcs_ta": "Not typically available",
+        "ra": "Advisor arranged; may be difficult",
+        "eligibility": "First three regular graduate semesters; summer excepted; fourth term by request if prior graduate TA or unusual delay",
+        "load": "Full appointment: two 12-unit subjects plus 12-unit thesis; half appointment may allow another subject"
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-course-6-9p-meng"
+        ],
+        "route_ids": [
+          "mit_bcs_meng_admissions"
+        ],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "Current MIT Course 6-9 majors"
+      },
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Current published policy; cycle not specified"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "source_ids": [
+        "source-106aeb22559a3398"
+      ],
+      "origin": "live_official_review_2026-09-30",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "costs",
+        "funding"
+      ]
+    },
+    {
+      "id": "dedp-no-prior-degree-and-track-condition",
+      "group": "eligibility",
+      "summary": "DEDP expressly requires no prior degree and does not accept GRE/GMAT; MicroMasters is the admission prerequisite.",
+      "value": {
+        "prior_degree_required": false,
+        "credential": "Complete DEDP MicroMasters: five courses, three core/two track electives including one advanced, proctored exams and certificates.",
+        "tracks": [
+          "International Development",
+          "Public Policy"
+        ],
+        "multiple_credentials": "One/both receive the same review.",
+        "change_track": "Before arrival complete MicroMasters electives for the chosen on-campus track.",
+        "transcripts": "All higher-education attendance, even non-degree; initially unofficial.",
+        "GRE_GMAT": "Not accepted.",
+        "credential_performance": "Important in selection; no score cutoff published."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_grad_dedp_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "Only the programme, period and explicitly described applicant conditions"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Current published policy; dates without year remain recurring"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-01",
+      "source_ids": [
+        "source-56e039d59442c567"
+      ],
+      "origin": "Official current page or dated official GET text reviewed on 2026-10-01; source access dates remain separate.",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "academic_tests",
+        "documents",
+        "eligibility"
+      ]
+    },
+    {
+      "id": "dedp-spring-2028-cycle-and-documents",
+      "group": "application_windows",
+      "summary": "The next published DEDP cohort is Spring 2028; application in 2026-2027 precedes campus entry by a year.",
+      "value": {
+        "cohort": "Spring 2028",
+        "application_open": "November 2026; exact day not published.",
+        "deadline": "Approximately mid-January annually; OGE January 15 23:59 Eastern, yearless.",
+        "decision": "Mid-March; enrollment the following January with two-week orientation.",
+        "deferral": "Up to one year.",
+        "documents": {
+          "objectives_maximum_pages": 2,
+          "research_proposal_maximum_pages": 2,
+          "format": "Double spaced, 12pt.",
+          "CV": "No page limit.",
+          "references": 2,
+          "academic_reference": "Encouraged if studying/graduated within three years; later professional references acceptable.",
+          "video_minutes": [
+            1,
+            2
+          ]
+        },
+        "fee": {
+          "amount": 90,
+          "currency": "USD",
+          "period": "One application"
+        },
+        "fee_waiver": "Open application; OGE December 15 yearless; limited DEDP first-come waiver after ineligibility/missed date/denial."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_grad_dedp_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "Only the programme, period and explicitly described applicant conditions"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Explicit Spring 2028 cohort; current recurring application instructions"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-01",
+      "source_ids": [
+        "source-56e039d59442c567",
+        "source-4fe02b39ec113926"
+      ],
+      "origin": "Official current page or dated official GET text reviewed on 2026-10-01; source access dates remain separate.",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "application_windows",
+        "offer_enrollment",
+        "portfolio_interview"
+      ]
+    },
+    {
+      "id": "dedp-fellowship-eligibility-and-consideration",
+      "group": "funding",
+      "summary": "DEDP limited fellowships are not guaranteed; Lemann eligibility is birth OR residence in Brazil plus admission and demonstrated need.",
+      "value": {
+        "DEDP": "Limited full/partial fellowships depend on eligibility, need and funds.",
+        "Lemann": {
+          "birth_or_residence": "Born in or currently reside in Brazil.",
+          "other_conditions": [
+            "DEDP admission",
+            "Financial need sections completed in application"
+          ],
+          "consideration": "All eligible admits automatically considered; no confirmed award inferred."
+        },
+        "external_funding": "Applicant verifies eligibility/program applicability and funding deadlines, which may precede admissions."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_grad_dedp_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "Only the programme, period and explicitly described applicant conditions"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Current published policy; dates without year remain recurring"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-01",
+      "source_ids": [
+        "source-588bdc7ebee15d01"
+      ],
+      "origin": "Official current page or dated official GET text reviewed on 2026-10-01; source access dates remain separate.",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "application_windows",
+        "funding"
+      ]
+    },
+    {
+      "id": "bcs-meng-academic-tests-unestablished",
+      "group": "academic_tests",
+      "summary": "Public Course 6-9 MEng admissions criteria do not establish a separate academic entrance-test policy.",
+      "value": {
+        "reviewed_criteria": [
+          "Technical GPA 4.25/5",
+          "Nine major subjects or 102 units",
+          "Overall GPA 4.0/5 at end of applying term",
+          "UROP or SuperUROP",
+          "MIT faculty thesis supervisor"
+        ],
+        "unestablished": "Whether a separate academic entrance test is required, accepted or excluded. Public silence does not establish no test.",
+        "procedure": "Internal application available in November/April; public criteria do not provide a test checklist."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-course-6-9p-meng"
+        ],
+        "route_ids": [
+          "mit_bcs_meng_admissions"
+        ],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "Only the named route, award and explicitly stated applicant conditions"
+      },
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Current published policy; undated dates retain recurring scope"
+      },
+      "publication_status": "unknown",
+      "review_status": "verified",
+      "checked_at": "2026-10-01",
+      "source_ids": [
+        "source-106aeb22559a3398"
+      ],
+      "origin": "Focused correction using preserved actual official content; source HTTP recheck recorded separately.",
+      "conditions": [],
+      "related_fact_ids": [
+        "bcs-meng-entry-conditions"
+      ],
+      "topics": [
+        "academic_tests"
+      ],
+      "resolution": {
+        "reason": "Public Course 6-9 MEng admissions criteria do not establish a separate academic entrance-test policy.",
+        "next_official_step": "Review current BCS MEng application test instructions or confirm with the BCS academic office; do not import the BCS PhD GRE rule."
+      }
+    }
+  ],
   "exclusions": [
-    "List out-of-scope classes, minors, and non-degree offerings"
+    {
+      "id": "non-degree",
+      "reason": "Individual classes, minors, MOOCs, executive education certificates, ASP, visiting fellows and special/visiting students are not MIT degree programs."
+    },
+    {
+      "id": "generic-doctoral-guarantee",
+      "reason": "The saved application generic doctoral funding category is not a real application target or institution-wide funding guarantee."
+    },
+    {
+      "id": "harvard-md",
+      "reason": "The joint HST MD is awarded by Harvard. Retain catalog relationship; exclude from MIT award census."
+    }
   ],
-  "notes": [
-    "Record catalog snapshot and explicit unresolved coverage."
-  ],
-  "degree_options": [],
-  "degree_option_review": {
-    "checked_at": "2026-09-24",
-    "reviewed_options": 0,
-    "source_groups": [],
-    "scope_note": "Add only degree/award options tied to an official source."
+  "coverage": {
+    "fact_groups": [
+      "institution",
+      "study_content",
+      "degree_completion",
+      "eligibility",
+      "subject_preparation",
+      "academic_tests",
+      "language_tests",
+      "documents",
+      "portfolio_interview",
+      "application_process",
+      "application_windows",
+      "costs",
+      "funding",
+      "offer_enrollment",
+      "career"
+    ],
+    "uncompleted_collection": [
+      "Illustrative subset; read catalog.json and coverage.md for actual MIT completeness."
+    ],
+    "historical_inputs": [
+      "masters-candidates-2026-09-29.json",
+      "doctoral-candidates-2026-09-29.json",
+      "doctoral-evidence-2026-09-30.json",
+      "professional-evidence-2026-09-30.json",
+      "masters-evidence-2026-09-30.json",
+      "route-evidence-2026-09-29.md"
+    ]
   }
 }
