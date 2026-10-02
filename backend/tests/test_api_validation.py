@@ -22,6 +22,16 @@ class ApiValidationTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test_exam_validate_rejects_negative_numeric_score(self):
+        response = self.client.post(
+            "/exams/validate",
+            json={
+                "exam": "SAT",
+                "score": -10,
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+
     def test_ai_sort_rejects_too_long_locale(self):
         response = self.client.post(
             "/universities/ai-sort",
