@@ -169,7 +169,7 @@ def _security_headers() -> dict[str, str]:
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
         "Cross-Origin-Opener-Policy": "same-origin",
-        "Cross-Origin-Resource-Policy": "same-origin",
+        "Cross-Origin-Resource-Policy": "cross-origin",
         "X-Permitted-Cross-Domain-Policies": "none",
         "Content-Security-Policy": (
             "default-src 'self'; "
