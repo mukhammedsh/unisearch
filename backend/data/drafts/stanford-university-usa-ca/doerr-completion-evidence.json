@@ -1,0 +1,5335 @@
+{
+  "institution_id": "stanford-university-usa-ca",
+  "scope": "The 18 Doerr graduate award rows in the 2026-27 Stanford Bulletin, including external, coterminal, internal, intermediate, and joint/dual routes; excludes undergraduate and non-degree minors.",
+  "checked_at": "2026-10-02",
+  "catalog_period": "2026-27 Bulletin; Autumn 2027-28 external admissions and 2026-27 coterm windows where published",
+  "collection_status": "researched_with_evidenced_unknowns",
+  "sources": [
+    {
+      "id": "bulletin-programs",
+      "url": "https://bulletin.stanford.edu/programs",
+      "title": "Stanford Bulletin 2026-27 program inventory",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "grad-directory",
+      "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=grad-program-list",
+      "title": "Stanford external graduate program directory, current table",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "coterm-directory",
+      "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=coterm-program-list",
+      "title": "Stanford coterminal program directory, current table",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "doerr-admissions",
+      "url": "https://sustainability.stanford.edu/admissions",
+      "title": "Doerr School admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "tuition-2026",
+      "url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+      "title": "2026-27 graduate and professional tuition rates",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "coterm-billing",
+      "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/coterminal-degree-programs/coterm-tuition-assessment",
+      "title": "Coterm tuition assessment",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-eps-ms",
+      "url": "https://bulletin.stanford.edu/programs/EPS-MS",
+      "title": "EPS-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-eps-phd",
+      "url": "https://bulletin.stanford.edu/programs/EPS-PHD",
+      "title": "EPS-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-easys-ms",
+      "url": "https://bulletin.stanford.edu/programs/EASYS-MS",
+      "title": "EASYS-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-easys-ma",
+      "url": "https://bulletin.stanford.edu/programs/EASYS-MA",
+      "title": "EASYS-MA | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-ess-ms",
+      "url": "https://bulletin.stanford.edu/programs/ESS-MS",
+      "title": "ESS-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-ess-phd",
+      "url": "https://bulletin.stanford.edu/programs/ESS-PHD",
+      "title": "ESS-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-energy-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENERGY-MS",
+      "title": "ENERGY-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-energy-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENERGY-PHD",
+      "title": "ENERGY-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-envss-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENVSS-PHD",
+      "title": "ENVSS-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-envss-ma",
+      "url": "https://bulletin.stanford.edu/programs/ENVSS-MA",
+      "title": "ENVSS-MA | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-geoph-ms",
+      "url": "https://bulletin.stanford.edu/programs/GEOPH-MS",
+      "title": "GEOPH-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-geoph-phd",
+      "url": "https://bulletin.stanford.edu/programs/GEOPH-PHD",
+      "title": "GEOPH-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-oceans-phd",
+      "url": "https://bulletin.stanford.edu/programs/OCEANS-PHD",
+      "title": "OCEANS-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-oceans-ms",
+      "url": "https://bulletin.stanford.edu/programs/OCEANS-MS",
+      "title": "OCEANS-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-envres-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENVRES-PHD",
+      "title": "ENVRES-PHD | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-envres-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENVRES-MS",
+      "title": "ENVRES-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-sustsci-ms",
+      "url": "https://bulletin.stanford.edu/programs/SUSTSCI-MS",
+      "title": "SUSTSCI-MS | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "bulletin-sustsci-ma",
+      "url": "https://bulletin.stanford.edu/programs/SUSTSCI-MA",
+      "title": "SUSTSCI-MA | Stanford Bulletin (2026-27)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official page on 2026-10-02"
+    },
+    {
+      "id": "eps-application",
+      "url": "https://epsci.stanford.edu/academics-admissions/graduate-program/application-information",
+      "title": "EPS Application Information",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "eps-coterm",
+      "url": "https://epsci.stanford.edu/academics-admissions/coterminal-ms-program",
+      "title": "EPS Coterminal MS Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "ess-admissions",
+      "url": "https://earthsystemscience.stanford.edu/academics-admissions/admissions",
+      "title": "Earth System Science Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "ess-faq",
+      "url": "https://earthsystemscience.stanford.edu/academics-admissions/admissions/admissions-faqs",
+      "title": "Earth System Science Admissions FAQs",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "ese-admissions",
+      "url": "https://ese.stanford.edu/academics-admissions/ese-admissions",
+      "title": "Energy Science and Engineering Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "ese-faq",
+      "url": "https://ese.stanford.edu/academics-admissions/ese-admissions/admissions-faq",
+      "title": "Energy Science and Engineering Admissions FAQ",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "esos-apply",
+      "url": "https://esos.stanford.edu/academics-admissions/how-apply",
+      "title": "Environmental Social Sciences How to Apply",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "esos-program",
+      "url": "https://esos.stanford.edu/academics-admissions/graduate-program",
+      "title": "Environmental Social Sciences Graduate Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "geoph-admissions",
+      "url": "https://geophysics.stanford.edu/admissions",
+      "title": "Geophysics Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "geoph-details",
+      "url": "https://geophysics.stanford.edu/admissions/application-details",
+      "title": "Geophysics Application Details",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "geoph-funding",
+      "url": "https://geophysics.stanford.edu/academics-admissions/admissions/funding",
+      "title": "Geophysics Funding",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official admissions or program content"
+    },
+    {
+      "id": "oceans-admissions",
+      "url": "https://oceans.stanford.edu/oceans.stanford.edu/academics/graduate-program/admissions",
+      "title": "Oceans Graduate Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official page"
+    },
+    {
+      "id": "oceans-resources",
+      "url": "https://oceans.stanford.edu/oceans.stanford.edu/academics/graduate-program/application-resources",
+      "title": "Oceans Application Resources",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official page"
+    },
+    {
+      "id": "oceans-program",
+      "url": "https://oceans.stanford.edu/oceans.stanford.edu/academics/graduate-program",
+      "title": "Oceans Graduate Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official page"
+    },
+    {
+      "id": "eiper-phd",
+      "url": "https://eiper.stanford.edu/academics-admissions/phd-degree/phd-admissions",
+      "title": "E-IPER PhD Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official page"
+    },
+    {
+      "id": "eiper-phd-faq",
+      "url": "https://eiper.stanford.edu/academics-admissions/phd-degree/phd-admissions/phd-admission-faqs",
+      "title": "E-IPER PhD Admissions FAQs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official page"
+    },
+    {
+      "id": "eiper-phd-requirements",
+      "url": "https://eiper.stanford.edu/academics-admissions/phd-degree/phd-admissions/application-requirements",
+      "title": "E-IPER PhD Application Requirements (older deadline retained)",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official page"
+    },
+    {
+      "id": "easys-coterm-page",
+      "url": "https://earthsystems.stanford.edu/academics-admissions/coterminal-programs",
+      "title": "Earth Systems Coterminal Programs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed award distinction and application links"
+    },
+    {
+      "id": "eiper-ms-admissions",
+      "url": "https://eiper.stanford.edu/academics-admissions/joint-and-dual-ms-degree/admissions",
+      "title": "E-IPER Joint and Dual MS Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official program page"
+    },
+    {
+      "id": "eiper-ms-prospective",
+      "url": "https://eiper.stanford.edu/academics-admissions/joint-and-dual-ms-degree/admissions/prospective-stanford-students",
+      "title": "E-IPER Prospective Stanford Students",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official program page"
+    },
+    {
+      "id": "eiper-ms-current",
+      "url": "https://eiper.stanford.edu/academics-admissions/joint-and-dual-ms-degree/admissions/current-stanford-students",
+      "title": "E-IPER Current Stanford Students; 2025-26 date remains on page",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official program page"
+    },
+    {
+      "id": "eiper-ms-faq",
+      "url": "https://eiper.stanford.edu/academics-admissions/joint-and-dual-ms-degree/joint-ms-and-dual-ms-program-faqs",
+      "title": "E-IPER Joint and Dual MS FAQs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official program page"
+    },
+    {
+      "id": "sust-faq",
+      "url": "https://sustainabilityleadership.stanford.edu/grad-programs/degree-faqs",
+      "title": "SUST Degree FAQs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed current structure, eligibility and assistantships"
+    },
+    {
+      "id": "graduate-charges-2026",
+      "url": "https://studentservices.stanford.edu/my-finances/tuition-fees/estimate-your-graduate-charges-0",
+      "title": "Estimate Your Graduate Charges 2026-27",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed tuition-adjacent fees, insurance and variable housing charges"
+    },
+    {
+      "id": "graduate-eligibility",
+      "url": "https://gradadmissions.stanford.edu/apply/eligibility",
+      "title": "Graduate Admissions Eligibility",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official content or retained original review date"
+    },
+    {
+      "id": "graduate-test-scores",
+      "url": "https://gradadmissions.stanford.edu/apply/test-scores",
+      "title": "Graduate Admissions Test Scores",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official content or retained original review date"
+    },
+    {
+      "id": "graduate-application-fee",
+      "url": "https://gradadmissions.stanford.edu/apply/application-fee",
+      "title": "Graduate Admissions Application Fee",
+      "checked_at": "2026-10-02",
+      "content_review_status": "Reviewed official content or retained original review date"
+    },
+    {
+      "id": "eps-graduate-overview",
+      "url": "https://epsci.stanford.edu/academics-admissions/graduate-program",
+      "title": "EPS Graduate Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed official content or retained original review date"
+    },
+    {
+      "id": "esos-materials",
+      "url": "https://esos.stanford.edu/academics-admissions/how-apply/required-materials",
+      "title": "Environmental Social Sciences Required Materials",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed current 2027-28 application details"
+    },
+    {
+      "id": "esos-timeline",
+      "url": "https://esos.stanford.edu/academics-admissions/how-apply/admissions-timeline",
+      "title": "Environmental Social Sciences Admissions Timeline",
+      "checked_at": "2026-10-03",
+      "content_review_status": "Reviewed current 2027-28 application details"
+    }
+  ],
+  "study_options": [
+    {
+      "id": "stanford-eps-ms",
+      "title": "Earth and Planetary Sciences",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "EPS-MS",
+      "application_classification": "external_coterm_and_internal_graduate",
+      "description": "Advanced earth and planetary science coursework and independent research leading to a 45-unit MS. External, Stanford undergraduate coterm, and other-Stanford-graduate petition paths have distinct rules.",
+      "source_ids": [
+        "bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "eps-external",
+        "eps-coterm",
+        "eps-other-grad-ms"
+      ],
+      "fact_ids": [
+        "bulletin-eps-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "eps-external-admissions",
+        "eps-deadline",
+        "eps-tests",
+        "eps-funding",
+        "eps-offer",
+        "eps-coterm-terms",
+        "eps-coterm-eligibility",
+        "eps-internal-ms",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "eps-engineer-current-status",
+        "eps-funding-renewal"
+      ]
+    },
+    {
+      "id": "stanford-eps-phd",
+      "title": "Earth and Planetary Sciences",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "EPS-PHD",
+      "application_classification": "external_and_internal",
+      "description": "Research doctorate in Earth and planetary sciences; PhD admission depends on a suitable faculty mentor, with a direct bachelor-to-PhD path.",
+      "source_ids": [
+        "bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "eps-external",
+        "eps-ms-to-phd"
+      ],
+      "fact_ids": [
+        "bulletin-eps-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "eps-external-admissions",
+        "eps-deadline",
+        "eps-tests",
+        "eps-funding",
+        "eps-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english",
+        "eps-phd-internal"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "eps-engineer-current-status",
+        "eps-funding-renewal",
+        "eps-phd-internal-steps"
+      ]
+    },
+    {
+      "id": "stanford-easys-ms",
+      "title": "Earth Systems",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "EASYS-MS",
+      "application_classification": "coterm_only",
+      "description": "Earth Systems coterminal MS for current Stanford undergraduates: 45 units, environmental systems specialization and optional research thesis.",
+      "source_ids": [
+        "bulletin-easys-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "easys-coterm"
+      ],
+      "fact_ids": [
+        "bulletin-easys-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "easys-coterm-terms",
+        "easys-award-distinction",
+        "easys-common-eligibility",
+        "easys-common-fee-offer",
+        "easys-ms-docs",
+        "easys-ms-structure",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "easys-funding-terms"
+      ]
+    },
+    {
+      "id": "stanford-easys-ma",
+      "title": "Earth Systems",
+      "award": "MA",
+      "level": "master's",
+      "bulletin_code": "EASYS-MA",
+      "application_classification": "coterm_only",
+      "description": "Earth Systems coterminal MA in Environmental Communication for current Stanford undergraduates: 45 units, required EARTHSYS 10 foundation and communication focus.",
+      "source_ids": [
+        "bulletin-easys-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "easys-coterm"
+      ],
+      "fact_ids": [
+        "bulletin-easys-ma-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "easys-coterm-terms",
+        "easys-award-distinction",
+        "easys-common-eligibility",
+        "easys-common-fee-offer",
+        "easys-ma-docs",
+        "easys-ma-prerequisites",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "easys-funding-terms"
+      ]
+    },
+    {
+      "id": "stanford-ess-ms",
+      "title": "Earth System Science",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "ESS-MS",
+      "application_classification": "external",
+      "description": "Earth System Science research-thesis MS; external terminal entry is rare, requires a faculty adviser willing to accept an MS student, and has no coursework-only terminal route.",
+      "source_ids": [
+        "bulletin-ess-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "ess-external"
+      ],
+      "fact_ids": [
+        "bulletin-ess-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "ess-admission-structure",
+        "ess-application-materials",
+        "ess-tests",
+        "ess-deadline",
+        "ess-funding-ms",
+        "ess-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "ess-english-policy"
+      ]
+    },
+    {
+      "id": "stanford-ess-phd",
+      "title": "Earth System Science",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "ESS-PHD",
+      "application_classification": "external",
+      "description": "Earth System Science research doctorate with individual faculty adviser from entry and no first-year rotation; direct bachelor entry is allowed.",
+      "source_ids": [
+        "bulletin-ess-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "ess-external"
+      ],
+      "fact_ids": [
+        "bulletin-ess-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "ess-admission-structure",
+        "ess-application-materials",
+        "ess-tests",
+        "ess-deadline",
+        "ess-funding-phd",
+        "ess-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "ess-english-policy"
+      ]
+    },
+    {
+      "id": "stanford-energy-ms",
+      "title": "Energy Science and Engineering",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "ENERGY-MS",
+      "application_classification": "external_and_coterm",
+      "description": "Energy Science and Engineering MS combines science/engineering coursework with independent research; 49-unit Bulletin minimum and distinct external and coterm routes.",
+      "source_ids": [
+        "bulletin-energy-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "energy-external",
+        "energy-coterm"
+      ],
+      "fact_ids": [
+        "bulletin-energy-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "energy-external-docs",
+        "energy-external-deadline",
+        "energy-prerequisite",
+        "energy-funding",
+        "energy-coterm",
+        "energy-structure",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "energy-engineer-current-status",
+        "energy-funding-duration"
+      ]
+    },
+    {
+      "id": "stanford-energy-phd",
+      "title": "Energy Science and Engineering",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "ENERGY-PHD",
+      "application_classification": "external_and_internal",
+      "description": "Energy Science and Engineering research doctorate in energy systems and related sciences, open to qualified bachelor or master graduates.",
+      "source_ids": [
+        "bulletin-energy-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "energy-external",
+        "energy-ms-to-phd"
+      ],
+      "fact_ids": [
+        "bulletin-energy-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "energy-external-docs",
+        "energy-external-deadline",
+        "energy-prerequisite",
+        "energy-funding",
+        "energy-structure",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english",
+        "energy-ms-phd-internal"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "energy-engineer-current-status",
+        "energy-funding-duration",
+        "energy-ms-phd-internal-terms"
+      ]
+    },
+    {
+      "id": "stanford-envss-phd",
+      "title": "Environmental Social Sciences",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "ENVSS-PHD",
+      "application_classification": "external",
+      "description": "Environmental Social Sciences doctorate with Environmental Behavioral Science or Global Environmental Policy admissions subplan, research, second-year paper and teaching experience.",
+      "source_ids": [
+        "bulletin-envss-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "envss-external"
+      ],
+      "fact_ids": [
+        "bulletin-envss-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "envss-subplans",
+        "envss-application",
+        "envss-funding",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english",
+        "envss-documents",
+        "envss-offer-timeline"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition"
+      ]
+    },
+    {
+      "id": "stanford-envss-ma",
+      "title": "Environmental Social Sciences",
+      "award": "MA",
+      "level": "intermediate graduate",
+      "bulletin_code": "ENVSS-MA",
+      "application_classification": "intermediate_only",
+      "description": "Intermediate Environmental Social Sciences MA restricted to existing PhD students who withdraw or do not advance; no direct admissions.",
+      "source_ids": [
+        "bulletin-envss-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "envss-intermediate-ma"
+      ],
+      "fact_ids": [
+        "bulletin-envss-ma-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "envss-ma-route",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition"
+      ]
+    },
+    {
+      "id": "stanford-geoph-ms",
+      "title": "Geophysics",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "GEOPH-MS",
+      "application_classification": "external_and_coterm",
+      "description": "Geophysics MS with external, Stanford undergraduate coterm and possible internal graduate routes; department-wide selection and research-oriented curriculum.",
+      "source_ids": [
+        "bulletin-geoph-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "geoph-external",
+        "geoph-coterm",
+        "geoph-other-grad-ms"
+      ],
+      "fact_ids": [
+        "bulletin-geoph-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "geoph-admissions",
+        "geoph-documents",
+        "geoph-deadline",
+        "geoph-tests",
+        "geoph-funding",
+        "geoph-coterm",
+        "geoph-fee-waiver-conflict",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "geoph-funding-duration",
+        "geoph-fee-waiver-conflict",
+        "geoph-ms-internal-steps"
+      ]
+    },
+    {
+      "id": "stanford-geoph-phd",
+      "title": "Geophysics",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "GEOPH-PHD",
+      "application_classification": "external",
+      "description": "Geophysics research doctorate; department admits rather than an individual lab, with faculty research fit relevant to review.",
+      "source_ids": [
+        "bulletin-geoph-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "geoph-external"
+      ],
+      "fact_ids": [
+        "bulletin-geoph-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "geoph-admissions",
+        "geoph-documents",
+        "geoph-deadline",
+        "geoph-tests",
+        "geoph-funding",
+        "geoph-fee-waiver-conflict",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "geoph-funding-duration",
+        "geoph-fee-waiver-conflict"
+      ]
+    },
+    {
+      "id": "stanford-oceans-phd",
+      "title": "Oceans",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "OCEANS-PHD",
+      "application_classification": "external",
+      "description": "Oceans research doctorate with faculty adviser on the main campus or at Hopkins Marine Station; interdisciplinary ocean science and sustainability research.",
+      "source_ids": [
+        "bulletin-oceans-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "oceans-external"
+      ],
+      "fact_ids": [
+        "bulletin-oceans-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "oceans-admission",
+        "oceans-documents",
+        "oceans-deadline",
+        "oceans-tests",
+        "oceans-waiver-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "oceans-funding-terms",
+        "oceans-khs-linked-deadline"
+      ]
+    },
+    {
+      "id": "stanford-oceans-ms",
+      "title": "Oceans",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "OCEANS-MS",
+      "application_classification": "current_phd_only_intermediate",
+      "description": "Oceans MS restricted by the 2026-27 Bulletin to existing Oceans PhD students; no external terminal MS application.",
+      "source_ids": [
+        "bulletin-oceans-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "oceans-ms-current-phd"
+      ],
+      "fact_ids": [
+        "bulletin-oceans-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "oceans-ms-restriction",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "oceans-funding-terms"
+      ]
+    },
+    {
+      "id": "stanford-envres-phd",
+      "title": "Environment and Resources (E-IPER)",
+      "award": "PhD",
+      "level": "doctoral",
+      "bulletin_code": "ENVRES-PHD",
+      "application_classification": "external",
+      "description": "E-IPER interdisciplinary Environment and Resources doctorate combining quantitative/multidisciplinary research with faculty advisers across Stanford.",
+      "source_ids": [
+        "bulletin-envres-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "eiper-phd-external"
+      ],
+      "fact_ids": [
+        "bulletin-envres-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "eiper-phd-eligibility",
+        "eiper-phd-documents",
+        "eiper-phd-deadline-offer",
+        "eiper-phd-tests",
+        "eiper-phd-funding",
+        "eiper-jd-phd",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition"
+      ]
+    },
+    {
+      "id": "stanford-envres-ms",
+      "title": "Environment and Resources (E-IPER)",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "ENVRES-MS",
+      "application_classification": "joint_or_dual_stanford_degree_only",
+      "description": "E-IPER Environment and Resources MS only as a joint MBA/JD or eligible dual Stanford graduate degree, with scientific emphasis and capstone; no standalone MS.",
+      "source_ids": [
+        "bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "eiper-ms-prospective",
+        "eiper-ms-current"
+      ],
+      "fact_ids": [
+        "bulletin-envres-ms-degree",
+        "eiper-ms-eligibility",
+        "eiper-ms-application",
+        "eiper-ms-deadline",
+        "eiper-ms-cost-funding",
+        "eiper-ms-structure",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "eiper-ms-next-cycle",
+        "eiper-ms-dual-ms-eligibility"
+      ]
+    },
+    {
+      "id": "stanford-sustsci-ms",
+      "title": "Sustainability Science and Practice",
+      "award": "MS",
+      "level": "master's",
+      "bulletin_code": "SUSTSCI-MS",
+      "application_classification": "coterm_only",
+      "description": "One-year Sustainability Science and Practice coterminal MS for current Stanford undergraduates, with science unit majority, advanced math/statistics and external practicum.",
+      "source_ids": [
+        "bulletin-sustsci-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "sust-coterm"
+      ],
+      "fact_ids": [
+        "bulletin-sustsci-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "sust-eligibility",
+        "sust-presteps",
+        "sust-documents",
+        "sust-structure-shared",
+        "sust-ms-distinction",
+        "sust-funding",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "sust-funding-and-offer"
+      ]
+    },
+    {
+      "id": "stanford-sustsci-ma",
+      "title": "Sustainability Science and Practice",
+      "award": "MA",
+      "level": "master's",
+      "bulletin_code": "SUSTSCI-MA",
+      "application_classification": "coterm_only",
+      "description": "One-year Sustainability Science and Practice coterminal MA for current Stanford undergraduates, with arts unit majority and external practicum.",
+      "source_ids": [
+        "bulletin-sustsci-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "sust-coterm"
+      ],
+      "fact_ids": [
+        "bulletin-sustsci-ma-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "sust-eligibility",
+        "sust-presteps",
+        "sust-documents",
+        "sust-structure-shared",
+        "sust-ma-distinction",
+        "sust-funding",
+        "shared-2026-fees"
+      ],
+      "unresolved_ids": [
+        "doerr-2027-tuition",
+        "sust-funding-and-offer"
+      ]
+    }
+  ],
+  "application_procedures": [
+    {
+      "id": "eps-external",
+      "option_ids": [
+        "stanford-eps-ms",
+        "stanford-eps-phd"
+      ],
+      "classification": "external graduate MS or PhD",
+      "destination": "Stanford Graduate Admissions application, EPS review",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "eps-application",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "eps-coterm",
+      "option_ids": [
+        "stanford-eps-ms"
+      ],
+      "classification": "current Stanford undergraduate coterm",
+      "destination": "Stanford coterminal application and EPS review",
+      "applicant_category": "current_stanford_undergraduate",
+      "cycle": "2026-27 and Autumn 2027-28",
+      "source_ids": [
+        "eps-coterm",
+        "coterm-directory",
+        "bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "eps-other-grad-ms",
+      "option_ids": [
+        "stanford-eps-ms"
+      ],
+      "classification": "internal added MS for student enrolled in another Stanford department",
+      "destination": "Graduate Authorization Petition and EPS Student Services",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "easys-coterm",
+      "option_ids": [
+        "stanford-easys-ms",
+        "stanford-easys-ma"
+      ],
+      "classification": "current Stanford undergraduate coterm",
+      "destination": "Stanford coterminal application and Earth Systems review",
+      "applicant_category": "current_stanford_undergraduate",
+      "cycle": "2026-27 and Autumn 2027-28",
+      "source_ids": [
+        "coterm-directory",
+        "bulletin-easys-ms",
+        "bulletin-easys-ma"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "ess-external",
+      "option_ids": [
+        "stanford-ess-ms",
+        "stanford-ess-phd"
+      ],
+      "classification": "external graduate MS or PhD",
+      "destination": "Stanford Graduate Admissions application selecting Earth System Science MS or PhD; ESS faculty-advisor review",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "ess-admissions",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "energy-external",
+      "option_ids": [
+        "stanford-energy-ms",
+        "stanford-energy-phd"
+      ],
+      "classification": "external graduate MS or PhD",
+      "destination": "Stanford Graduate Admissions application and ESE department review",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "ese-admissions",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "energy-coterm",
+      "option_ids": [
+        "stanford-energy-ms"
+      ],
+      "classification": "current Stanford undergraduate coterm",
+      "destination": "Stanford coterminal application and ESE review",
+      "applicant_category": "current_stanford_undergraduate",
+      "cycle": "2026-27 and Autumn 2027-28",
+      "source_ids": [
+        "coterm-directory",
+        "bulletin-energy-ms"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "energy-ms-to-phd",
+      "option_ids": [
+        "stanford-energy-phd"
+      ],
+      "classification": "current ESE MS student seeking PhD",
+      "destination": "Departmental doctoral application; current departmental MS applicants are considered alongside external applicants",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "bulletin-energy-phd",
+        "ese-faq"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "envss-external",
+      "option_ids": [
+        "stanford-envss-phd"
+      ],
+      "classification": "external PhD application with subplan selection",
+      "destination": "Stanford Graduate Admissions application selecting Environmental Behavioral Science or Global Environmental Policy subplan",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "esos-apply",
+        "bulletin-envss-phd",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "envss-intermediate-ma",
+      "option_ids": [
+        "stanford-envss-ma"
+      ],
+      "classification": "intermediate exit MA only",
+      "destination": "Existing ENVSS PhD student completes departmental MA conditions; no direct admissions",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "bulletin-envss-ma"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "geoph-external",
+      "option_ids": [
+        "stanford-geoph-ms",
+        "stanford-geoph-phd"
+      ],
+      "classification": "external graduate MS or PhD",
+      "destination": "Stanford Graduate Admissions application with Geophysics departmental review",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "geoph-admissions",
+        "geoph-details",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "geoph-coterm",
+      "option_ids": [
+        "stanford-geoph-ms"
+      ],
+      "classification": "current Stanford undergraduate coterm",
+      "destination": "Stanford coterminal application with Geophysics review",
+      "applicant_category": "current_stanford_undergraduate",
+      "cycle": "2026-27",
+      "source_ids": [
+        "bulletin-geoph-ms",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "geoph-other-grad-ms",
+      "option_ids": [
+        "stanford-geoph-ms"
+      ],
+      "classification": "possible internal added MS",
+      "destination": "Contact Geophysics department staff; Bulletin flags internal admission but gives no public steps",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "bulletin-geoph-ms"
+      ],
+      "checked_at": "2026-10-02"
+    },
+    {
+      "id": "oceans-external",
+      "option_ids": [
+        "stanford-oceans-phd"
+      ],
+      "classification": "external PhD application",
+      "destination": "Stanford Graduate Admissions and Oceans adviser review",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "oceans-admissions",
+        "oceans-resources",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-03"
+    },
+    {
+      "id": "oceans-ms-current-phd",
+      "option_ids": [
+        "stanford-oceans-ms"
+      ],
+      "classification": "intermediate MS only for Oceans PhD student",
+      "destination": "Oceans PhD progress and departmental MS requirements",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "bulletin-oceans-ms",
+        "oceans-program"
+      ],
+      "checked_at": "2026-10-03"
+    },
+    {
+      "id": "eiper-phd-external",
+      "option_ids": [
+        "stanford-envres-phd"
+      ],
+      "classification": "external interdisciplinary PhD",
+      "destination": "Stanford Graduate Admissions and E-IPER review",
+      "applicant_category": "external_applicant",
+      "cycle": "Autumn 2027-28",
+      "source_ids": [
+        "eiper-phd",
+        "eiper-phd-faq",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-03"
+    },
+    {
+      "id": "eiper-ms-prospective",
+      "option_ids": [
+        "stanford-envres-ms"
+      ],
+      "classification": "prospective Stanford MBA/JD Joint MS",
+      "destination": "Indicate E-IPER interest within Stanford GSB MBA or Law JD application; E-IPER reviews following school review",
+      "applicant_category": "prospective_stanford_professional_student",
+      "cycle": null,
+      "source_ids": [
+        "eiper-ms-prospective",
+        "eiper-ms-admissions"
+      ],
+      "checked_at": "2026-10-03"
+    },
+    {
+      "id": "eiper-ms-current",
+      "option_ids": [
+        "stanford-envres-ms"
+      ],
+      "classification": "current Stanford graduate Joint/Dual MS",
+      "destination": "E-IPER current-student application with primary program approval for dual path",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "eiper-ms-current",
+        "eiper-ms-admissions",
+        "bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-03"
+    },
+    {
+      "id": "sust-coterm",
+      "option_ids": [
+        "stanford-sustsci-ms",
+        "stanford-sustsci-ma"
+      ],
+      "classification": "current Stanford undergraduate coterminal MA or MS",
+      "destination": "Stanford coterminal portal and SUST program review after required pre-application steps",
+      "applicant_category": "current_stanford_undergraduate",
+      "cycle": "Spring 2026-27",
+      "source_ids": [
+        "bulletin-sustsci-ms",
+        "bulletin-sustsci-ma",
+        "coterm-directory",
+        "sust-faq"
+      ],
+      "checked_at": "2026-10-03"
+    },
+    {
+      "id": "eps-ms-to-phd",
+      "option_ids": [
+        "stanford-eps-phd"
+      ],
+      "classification": "current EPS coterm or MS student applying to PhD",
+      "destination": "EPS internal process; confirm destination with EPS Student Services",
+      "applicant_category": "current_stanford_graduate_student",
+      "cycle": null,
+      "source_ids": [
+        "bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-02"
+    }
+  ],
+  "facts": [
+    {
+      "id": "bulletin-eps-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': True, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-eps-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': True, 'unitsProgramMin': 22}.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-easys-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': False, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-easys-ma-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': False, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-ess-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': False, 'programCurrentPhdOnly': False, 'coterm': False, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-ess-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-ess-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': False, 'unitsProgramMin': 135}.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-ess-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-energy-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': False, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 49}.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-energy-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-energy-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': True, 'unitsProgramMin': 101}.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-energy-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-envss-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': False, 'unitsProgramMin': 46}.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-envss-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-envss-ma-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': False, 'programCurrentPhdOnly': True, 'coterm': False, 'unitsProgramMin': 46}.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "intermediate graduate"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-envss-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-geoph-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': True, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-geoph-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-geoph-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': False, 'unitsProgramMin': 135}.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-geoph-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-oceans-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': False, 'unitsProgramMin': 135}.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-oceans-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-oceans-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': False, 'programCurrentPhdOnly': True, 'coterm': False, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-oceans-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-envres-phd-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': True, 'internalAdmissions': True, 'unitsProgramMin': 135}.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-envres-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-envres-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': True, 'programCurrentPhdOnly': True, 'coterm': False, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-sustsci-ms-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': True, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bulletin-sustsci-ma-degree",
+      "topic": "study_structure",
+      "value": "2026-27 Bulletin degree metadata: {'externalAdmissions': False, 'internalAdmissions': True, 'programCurrentPhdOnly': False, 'coterm': True, 'unitsProgramMin': 45}.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "graduate-tuition-8-10",
+      "topic": "tuition",
+      "value": "USD 14,180 per quarter for 8-10 units in the Graduate School non-Engineering rate, academic year 2026-27. Coterminal students may be billed in the undergraduate tuition group until transition; joint/dual students must check their primary professional-school billing.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd",
+          "stanford-easys-ms",
+          "stanford-easys-ma",
+          "stanford-ess-ms",
+          "stanford-ess-phd",
+          "stanford-energy-ms",
+          "stanford-energy-phd",
+          "stanford-envss-phd",
+          "stanford-envss-ma",
+          "stanford-geoph-ms",
+          "stanford-geoph-phd",
+          "stanford-oceans-phd",
+          "stanford-oceans-ms",
+          "stanford-envres-phd",
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral",
+          "intermediate graduate",
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 charges",
+        "fee_status": []
+      },
+      "source_ids": [
+        "tuition-2026",
+        "coterm-billing"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Rate depends on actual billing classification and enrolled units; this is tuition, not total cost of attendance."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "graduate-tuition-11-18",
+      "topic": "tuition",
+      "value": "USD 21,815 per quarter for 11-18 units in the Graduate School non-Engineering rate, academic year 2026-27. Coterminal students may be billed in the undergraduate tuition group until transition; joint/dual students must check their primary professional-school billing.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd",
+          "stanford-easys-ms",
+          "stanford-easys-ma",
+          "stanford-ess-ms",
+          "stanford-ess-phd",
+          "stanford-energy-ms",
+          "stanford-energy-phd",
+          "stanford-envss-phd",
+          "stanford-envss-ma",
+          "stanford-geoph-ms",
+          "stanford-geoph-phd",
+          "stanford-oceans-phd",
+          "stanford-oceans-ms",
+          "stanford-envres-phd",
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral",
+          "intermediate graduate",
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 charges",
+        "fee_status": []
+      },
+      "source_ids": [
+        "tuition-2026",
+        "coterm-billing"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Rate depends on actual billing classification and enrolled units; this is tuition, not total cost of attendance."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "eps-external-admissions",
+      "topic": "application_documents",
+      "value": "Online application and fee; research-focused statement of purpose; supplemental research questions; three recommendations; scanned official transcripts from postsecondary institutions attended full time for one year or more; TOEFL or IELTS Academic where applicable. The department does not accept modifications or additional documents after submission.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [
+          "eps-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eps-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Contact potential faculty before applying; PhD admission depends on mentor availability."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "eps-deadline",
+      "topic": "application_deadline",
+      "value": "December 4, 2026, 11:59 p.m. PST, for Autumn 2027 MS and PhD. Required materials, scores and letters must arrive by then.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [
+          "eps-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eps-application",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eps-tests",
+      "topic": "tests_and_waivers",
+      "value": "EPS does not require or review GRE scores. TOEFL or IELTS Academic applies unless U.S. citizen/permanent resident, English first language, an English-instruction degree, or at least two years full-time English study/work within the last 10 years; university minimum scores apply.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [
+          "eps-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eps-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eps-funding",
+      "topic": "funding",
+      "value": "Admitted EPS graduate students are automatically considered for a package drawn from fellowships and research/teaching assistantships; it covers up to 10 tuition units and provides a quarterly salary. External funding should be disclosed; Stanford may supplement an insufficient outside fellowship.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [
+          "eps-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "eps-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "No separate departmental aid form. A published duration/renewal guarantee was not identified."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "eps-offer",
+      "topic": "offer_and_enrollment",
+      "value": "EPS says admissions decisions will be released in March 2027. Accepted applicants arrange official transcripts after acceptance when requested.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [
+          "eps-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eps-application",
+        "bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eps-coterm-terms",
+      "topic": "coterm_deadlines",
+      "value": "Winter 2026-27: October 16, 2026; Spring 2026-27: January 15, 2027; Autumn 2027-28: April 16, 2027. GRE not considered; two recommendations required and program proposal optional.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms"
+        ],
+        "procedure_ids": [
+          "eps-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 and Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eps-coterm-eligibility",
+      "topic": "coterm_eligibility",
+      "value": "Current Stanford undergraduates may seek the EPS coterm MS after completing 120 undergraduate units toward graduation. The application should establish potential for strong graduate academic performance.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms"
+        ],
+        "procedure_ids": [
+          "eps-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-eps-ms",
+        "eps-coterm"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eps-internal-ms",
+      "topic": "internal_route",
+      "value": "Stanford students enrolled in another graduate department may seek the EPS MS through a Graduate Authorization Petition; EPS Student Services supplies details. This is separate from the external MS and undergraduate coterm routes.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms"
+        ],
+        "procedure_ids": [
+          "eps-other-grad-ms"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-coterm-terms",
+      "topic": "coterm_deadlines",
+      "value": "Spring 2026-27: January 19, 2027; Autumn 2027-28: April 20, 2027. Two recommendations and a program proposal are required; GRE is not considered.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms",
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 and Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-award-distinction",
+      "topic": "study_structure",
+      "value": "Earth Systems offers two separate coterm awards: the MS emphasizes analytical tools, environmental problem evaluation, specialization and independent research; the MA emphasizes environmental communication. The MA/MS are not external terminal-master application targets.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms",
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ms",
+        "bulletin-easys-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "ess-admission-structure",
+      "topic": "eligibility_and_selection",
+      "value": "ESS admits graduate students to work with an individual faculty member or co-advisors, without first-year rotations. A bachelor degree can lead directly to PhD; no prior MS or specific prerequisite coursework is required. The thesis MS is rarely offered as a terminal degree and a prospective advisor must confirm willingness to take a terminal MS student.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms",
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions",
+        "ess-faq",
+        "bulletin-ess-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": [
+        "ESS does not offer a coursework-only MS for non-PhD students."
+      ]
+    },
+    {
+      "id": "ess-application-materials",
+      "topic": "application_documents",
+      "value": "Electronic application selecting ESS MS or PhD; at most two-page statement of purpose identifying prospective advisors and research fit; supplemental faculty-interest answers; three recommendation letters, including a faculty recommender from the last full-time school unless more than five years out of school; unofficial transcripts for every degree-enrollment institution, with translations where needed.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms",
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Official transcripts and degree conferral evidence are required after an offer is accepted."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "ess-tests",
+      "topic": "tests_and_waivers",
+      "value": "GRE General is optional, with no minimum. ESS says TOEFL/IELTS scores from the past 18 months are required when first language is not English, with an English-instruction degree waiver. Its page lists legacy TOEFL 100/600 and IELTS 7; the central Graduate Admissions source uses the new TOEFL scale and broader exemptions, so the applicable threshold/waiver needs confirmation before assessment.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms",
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions",
+        "ess-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published_with_conflicting_scope",
+      "review_status": "needs_resolution",
+      "conditions": [
+        "Seek ESS/Graduate Admissions confirmation on 2027 TOEFL scale and whether central English-experience exemption applies."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "ess-deadline",
+      "topic": "application_deadline",
+      "value": "December 1, 2026, 5:00 p.m. Pacific Time for Autumn 2027 entry. The page labels the deadline as the 2026-27 admission cycle despite a current directory row for Autumn 2027-28.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms",
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_date_with_cycle_label_conflict",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "ess-funding-phd",
+      "topic": "funding",
+      "value": "Generally ESS PhD candidates receive full financial support for the first five years: typically tuition for up to 10 units plus a quarterly stipend, stated as USD 15,125 per quarter for 2026-27. Outside fellowships are encouraged and may be supplemented to department support level.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": "2026-27 amount; five-year duration",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "ess-funding-ms",
+      "topic": "funding",
+      "value": "ESS MS support is sometimes available but is not guaranteed.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "ess-offer",
+      "topic": "offer_and_enrollment",
+      "value": "ESS says admissions decisions will be made by the end of March and official transcripts/degree evidence follow an accepted offer.",
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms",
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [
+          "ess-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ess-admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "energy-external-docs",
+      "topic": "application_documents",
+      "value": "ESE requires online application, statement of purpose, three recommendations, academic transcripts, supplemental research questions naming up to three faculty and explaining research alignment, GRE General score, and TOEFL/IELTS where applicable. Department reviews academic achievement, research fit, letters and experience holistically; no minimum GPA or GRE score is stated.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms",
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [
+          "energy-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ese-admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "energy-external-deadline",
+      "topic": "application_deadline",
+      "value": "December 1, 2026, 11:59 p.m. Pacific Time; current Graduate Admissions directory assigns this date to Autumn 2027-28, while the ESE webpage incorrectly labels it the 2026-27 admission cycle.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms",
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [
+          "energy-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "ese-admissions",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_date_with_cycle_label_conflict",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "energy-prerequisite",
+      "topic": "eligibility",
+      "value": "Both MS and PhD external applicants require a bachelor degree; PhD may be entered from a BS or MS. An energy-specific undergraduate background is not mandatory. ESE expects strong quantitative preparation but lists no admission GPA/GRE minimum.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms",
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [
+          "energy-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "ese-admissions",
+        "ese-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "energy-funding",
+      "topic": "funding",
+      "value": "ESE says financial aid is available to U.S. and international students, usually a research assistantship of about 20 hours a week with 10 course units, with a teaching assistantship in at least one quarter during support. Its FAQ quotes about USD 3,500 monthly for first-year RA stipend but says it changes each year; do not use the figure as a 2027-28 offer.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms",
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [
+          "energy-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "ese-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_types_historical_amount",
+      "conditions": [
+        "Award, amount and duration are not guaranteed by the cited FAQ."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "energy-coterm",
+      "topic": "coterm_eligibility_and_deadlines",
+      "value": "Current Stanford undergraduates may apply after 120 units. Before graduate work ESE expects MATH 53, CS 106A and CS 106B background. Coterm directory: Winter 2026-27 October 13, 2026; Spring 2026-27 January 19, 2027; Autumn 2027-28 May 18, 2027. Three recommendations required, proposal not considered, GRE General marked required.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms"
+        ],
+        "procedure_ids": [
+          "energy-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 and Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-energy-ms",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "energy-structure",
+      "topic": "study_structure",
+      "value": "ESE MS combines core/related science coursework and independent research; Bulletin requires at least 49 units and a 3.0 degree GPA. Doctorate combines advanced coursework and original research. FAQ says a funded MS commonly takes six quarters and a PhD averages four years beyond MS; these are descriptions, not fixed program durations.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms",
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-energy-ms",
+        "bulletin-energy-phd",
+        "ese-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "envss-subplans",
+      "topic": "study_structure",
+      "value": "Applicants choose EBS or GEP subplan. Both have core courses, visiting-speaker seminars, workshops, second-year paper and teaching experience. Bulletin specifies PhD expected within five years and may consider sixth-year extension for extenuating circumstances; degree progress requires at least 3.0 GPA.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [
+          "envss-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "esos-program",
+        "bulletin-envss-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "envss-application",
+      "topic": "application_deadline_and_selection",
+      "value": "Fall 2027 PhD only; select EBS or GEP subplan in application. Deadline November 17, 2026, 11:59 p.m. PST; late submissions not accepted. Review is holistic on academic record, recommendations, statement and research potential. Bulletin requires undergraduate degree, personal statement and three recommendations. GRE is optional in both subplans but strongly encouraged for GEP full consideration.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [
+          "envss-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "esos-apply",
+        "bulletin-envss-phd",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "envss-funding",
+      "topic": "funding",
+      "value": "ENVSS PhD students in good standing are funded for five academic years under Doerr policy; funding past year five is not guaranteed.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [
+          "envss-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-envss-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Continued good standing."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "envss-ma-route",
+      "topic": "intermediate_award",
+      "value": "The ENVSS MA is not open to direct applicants. It may be awarded to an existing ENVSS PhD student who withdraws or does not advance, subject to MA degree conditions.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-ma"
+        ],
+        "procedure_ids": [
+          "envss-intermediate-ma"
+        ],
+        "levels": [
+          "intermediate graduate"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-envss-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-admissions",
+      "topic": "selection_and_prerequisites",
+      "value": "Geophysics evaluates academic record, letters, statement, research fit/potential and experience holistically; no admission GPA minimum. Admission is departmental rather than to one faculty group, though faculty input matters. Applicants may enter PhD after a BS or MS; MS-first applicants should contact possible faculty advisors.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms",
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [
+          "geoph-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "geoph-admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-documents",
+      "topic": "application_documents",
+      "value": "Online application with USD 125 fee, statement of purpose (recommended maximum 1,500 words), three recommendations, transcripts, English scores if applicable, CV/experience and supplemental questions. CV is described as optional. Accepted offer holders provide official transcripts/degree confirmation.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms",
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [
+          "geoph-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "geoph-details"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-deadline",
+      "topic": "application_deadline",
+      "value": "December 1, 2026, 11:59 p.m. PST, for the current Autumn 2027-28 directory row. The departmental page calls this Autumn 26-27, creating a cycle-label inconsistency.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms",
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [
+          "geoph-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "geoph-details",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_date_with_cycle_label_conflict",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-tests",
+      "topic": "tests",
+      "value": "GRE General is optional and GRE Subject not considered in the current Graduate Admissions directory. Department page directs applicants to central Graduate Admissions for applicable English test rules.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms",
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [
+          "geoph-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "grad-directory",
+        "geoph-details"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-funding",
+      "topic": "funding",
+      "value": "To be considered for departmental funding, check the aid box in the application; no additional aid documents. Admitted Geophysics students typically receive tuition and quarterly salary through fellowship, TA/RA or external sources; other funding should be disclosed and insufficient outside awards may be supplemented.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms",
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [
+          "geoph-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "geoph-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Typical support is not a guarantee of a fixed amount or duration."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-coterm",
+      "topic": "coterm_eligibility_documents_deadlines",
+      "value": "Coterm MS application requires transcript, statement and at least two recommendations; Geophysics faculty letter strengthens the application. No GPA threshold is specified, but rigorous undergraduate performance is expected. Junior-level undergraduates may apply, ideally by autumn senior year. Directory lists Winter 2026-27 October 26, 2026, and Spring 2026-27 January 26, 2027; two recommendations and a proposal required; GRE not considered.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms"
+        ],
+        "procedure_ids": [
+          "geoph-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-geoph-ms",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-fee-waiver-conflict",
+      "topic": "fee_waiver",
+      "value": "Geophysics application-details page gives November 17, 2026 as fee-waiver request deadline; its Funding page instead says November 30 and requests at least two weeks before application deadline. Treat the latter as a conflicting stale statement; confirm with Graduate Admissions before relying on either for a waiver submission.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms",
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [
+          "geoph-external"
+        ],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "geoph-details",
+        "geoph-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published_conflict",
+      "review_status": "needs_resolution",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "oceans-admission",
+      "topic": "eligibility_and_selection",
+      "value": "PhD applicants need a U.S. bachelor degree or foreign equivalent and identify aligned potential faculty; entrants work with a faculty advisor or co-advisors based in Palo Alto or Hopkins Marine Station.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [
+          "oceans-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "oceans-admissions",
+        "oceans-resources"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "oceans-documents",
+      "topic": "application_documents",
+      "value": "Graduate application, USD 125 fee or waiver, statement, three recommendations (maximum four), unofficial transcripts for institutions attended one year or more, English test if required, and current CV. Accepted offer holders provide official transcripts/degree proof.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [
+          "oceans-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "oceans-resources"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "oceans-deadline",
+      "topic": "application_deadline",
+      "value": "December 2, 2026, 5:00 p.m. PST for Autumn 2027-28. Oceans page also says KHS applicants need graduate application by December 1; confirm earlier KHS-linked date with Oceans.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [
+          "oceans-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "oceans-admissions",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_conflict",
+      "review_status": "needs_resolution",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "oceans-tests",
+      "topic": "tests",
+      "value": "Current directory marks GRE General optional and GRE Subject not considered; English test follows Stanford applicability rules.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [
+          "oceans-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "grad-directory",
+        "oceans-resources"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "oceans-waiver-offer",
+      "topic": "fee_waiver_and_offer",
+      "value": "Oceans fee-waiver request deadline is November 18, 2026. Decisions expected by end of March 2027. Late recommendation letters/test scores can be attached after the regular deadline without a guarantee of review.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [
+          "oceans-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "oceans-admissions"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "oceans-ms-restriction",
+      "topic": "application_classification",
+      "value": "2026-27 Bulletin marks Oceans MS current-PhD-only and externalAdmissions=false; Oceans publishes only PhD admission and the external directory has no Oceans MS entry.",
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-ms"
+        ],
+        "procedure_ids": [
+          "oceans-ms-current-phd"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-oceans-ms",
+        "oceans-program",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-phd-eligibility",
+      "topic": "eligibility_and_selection",
+      "value": "Bachelor equivalent required; prior MS and fixed course prerequisites are not required. Quantitative and multidisciplinary research preparation matter. Post-bachelor work experience is common, not an eligibility minimum. Applicant lists potential advisors but need not secure one before applying.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [
+          "eiper-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-phd-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-phd-documents",
+      "topic": "application_documents",
+      "value": "Online application, resume, statement, three recommendations (at least two academic recommended, including recent-school faculty unless more than five years out), four prospective advisers with fit explanation and two short interdisciplinary research/experience answers. The application-requirements page still carries a 2025 deadline; use current PhD Admissions dates.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [
+          "eiper-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-phd-requirements",
+        "eiper-phd-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-phd-deadline-offer",
+      "topic": "application_deadline_and_offer",
+      "value": "December 2, 2026, 11:59 p.m. PST for Autumn 2027-28. Shortlisted applicants may have February 2027 interview/site visit; decisions in March; admitted response due April 15, 2027.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [
+          "eiper-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-phd",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-phd-tests",
+      "topic": "tests",
+      "value": "GRE General and Subject are not required or considered; English testing follows Stanford Graduate Admissions when applicable.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [
+          "eiper-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-phd-faq",
+        "grad-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-phd-funding",
+      "topic": "funding",
+      "value": "E-IPER guarantees admitted PhD students five years of funding regardless of citizenship or financial circumstances, from TA/RA appointments, gifts and endowed funds. No separate E-IPER funding form; admitted students must seek external awards for which eligible.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [
+          "eiper-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-phd",
+        "eiper-phd-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-jd-phd",
+      "topic": "joint_degree",
+      "value": "E-IPER JD/PhD requires separate Stanford Law JD and E-IPER PhD applications and admission to both. E-IPER adds no special funding for the joint degree.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [
+          "eiper-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-phd-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-common-eligibility",
+      "topic": "coterm_eligibility",
+      "value": "Current Stanford undergraduates with at least 120 units toward graduation and Stanford GPA at least 3.4 may apply no later than the quarter before expected undergraduate degree completion. Applications open October 1, 2026 for Spring 2027 and February 1, 2027 for Autumn 2027.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms",
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ms",
+        "bulletin-easys-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-common-fee-offer",
+      "topic": "application_fee_and_offer",
+      "value": "Registrar assesses USD 125 only for accepted and enrolled Earth Systems coterm students. Written admission decision usually comes 3-4 weeks after the applicable deadline.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms",
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ms",
+        "bulletin-easys-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-ms-docs",
+      "topic": "application_documents",
+      "value": "MS requires coterm application, statement, resume, current Stanford unofficial transcript, two recommendations including one from Academic Council master adviser, and a signed course proposal showing a specialization. Student Services must sign the proposal. GRE is not considered in current coterm directory.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ms",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-ma-docs",
+      "topic": "application_documents",
+      "value": "MA Environmental Communication requires coterm application, statement, resume, current Stanford unofficial transcript, two recommendations including MA director Thomas Hayden and another approved adviser, plus proposal signed by director and recommending adviser/co-adviser. GRE is not considered.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-ma-prerequisites",
+      "topic": "prerequisite_and_structure",
+      "value": "MA accepts applicants from any Stanford undergraduate major, but admitted students must complete EARTHSYS 10; it may be concurrent with the MA but cannot count toward the required 45 MA units. Additional foundation courses may rarely be required based on preparation and focus.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ma",
+        "easys-coterm-page"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "easys-ms-structure",
+      "topic": "study_structure",
+      "value": "MS is a 45-unit interdisciplinary Earth Systems coterm; prerequisite courses cannot count toward the 45 units and must be finished by graduation, though not necessarily before application. An optional thesis is available; minimum overall GPA 3.4 must be maintained.",
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms"
+        ],
+        "procedure_ids": [
+          "easys-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-easys-ms",
+        "easys-coterm-page"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-ms-eligibility",
+      "topic": "eligibility",
+      "value": "No stand-alone E-IPER MS. Joint MS requires Stanford MBA or JD; those applicants may apply concurrently with professional-school admission. Dual MS serves eligible Stanford MA/MS, MD or another-department PhD students with home-program approval. GSB MSx excluded. E-IPER FAQ says Dual MS-MS is not offered, conflicting with broader MA/MS wording on admissions/Bulletin pages.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [
+          "eiper-ms-prospective",
+          "eiper-ms-current"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_stanford_professional_student",
+          "current_stanford_graduate_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-ms-admissions",
+        "eiper-ms-faq",
+        "bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "published_with_dual_ms_scope_conflict",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-ms-application",
+      "topic": "application_documents",
+      "value": "Prospective MBA/JD candidates express E-IPER interest in their professional-school application; MBA writes E-IPER prompts, JD applicants submit quantitative preparation and an extra statement after Law admission. Current-student form requires E-IPER questions, resume/CV and Stanford transcript; JD/MA applicants describe quantitative preparation. E-IPER Joint/Dual MS does not consider standardized tests.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [
+          "eiper-ms-prospective",
+          "eiper-ms-current"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_stanford_professional_student",
+          "current_stanford_graduate_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-ms-prospective",
+        "eiper-ms-current",
+        "eiper-ms-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-ms-deadline",
+      "topic": "application_deadline",
+      "value": "Current-student page lists January 30, 2026 for Spring 2026 and says 2026-27 winter-quarter form will be posted later. That past date cannot be used for 2027. Prospective MBA/JD candidates follow their professional-school round and E-IPER instructions.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [
+          "eiper-ms-prospective",
+          "eiper-ms-current"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_stanford_professional_student",
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "2026-27 pending",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-ms-current",
+        "eiper-ms-prospective"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "not_yet_published",
+      "review_status": "verified_future_deadline_not_yet_published",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-ms-cost-funding",
+      "topic": "cost_and_funding",
+      "value": "No E-IPER Joint/Dual MS application fee; matriculants pay USD 125 Registrar fee to add the E-IPER graduate career. Joint MBA/JD students pay professional-school tuition; extra quarters and dual students can be charged graduate tuition by units. E-IPER does not provide general Joint MS funding; consult primary-school aid office.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [
+          "eiper-ms-prospective",
+          "eiper-ms-current"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_stanford_professional_student",
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-ms-admissions",
+        "eiper-ms-faq",
+        "tuition-2026"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eiper-ms-structure",
+      "topic": "study_structure",
+      "value": "Joint MS permits approved coursework to count toward both awards; Dual MS requires both degrees separately. E-IPER includes individualized science/engineering study and capstone. Typical extra duration: MBA 1-3 quarters beyond two years, JD within three years, MIP MA 1-3 quarters beyond two years, MD five years including an extra year.",
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [
+          "eiper-ms-prospective",
+          "eiper-ms-current"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_stanford_professional_student",
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "eiper-ms-faq",
+        "bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-eligibility",
+      "topic": "coterm_eligibility",
+      "value": "Only current Stanford BA/BS students, from any undergraduate field, may seek this coterm; it is not a stand-alone MS/MA. At least 120 undergraduate units must be completed by end of Winter 2027 for Spring matriculation. Admission recommends GPA at least 3.4; degree requires maintaining at least 3.4. Applicant must secure an Academic Council faculty master adviser and signed course proposal.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Spring 2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ms",
+        "bulletin-sustsci-ma",
+        "sust-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-presteps",
+      "topic": "pre_application_and_deadline",
+      "value": "One 2026-27 round for Spring 2027 start. Attend an autumn 2026 one-hour program information session, complete pre-application interview by December 16, 2026 and email a draft proposal/adviser choices before interview. Submit coterm application by January 12, 2027.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Spring 2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ms",
+        "bulletin-sustsci-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-documents",
+      "topic": "application_documents",
+      "value": "Coterm application; statement no more than 800 words; current resume and unofficial Stanford transcript; SUST master program proposal signed by adviser and Student Services Officer; two Stanford-faculty recommendations, including one Academic Council member; optional third letter. Current coterm directory says GRE not considered.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Spring 2026-27",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ms",
+        "bulletin-sustsci-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-structure-shared",
+      "topic": "study_structure",
+      "value": "One-year interdisciplinary coterm with core courses in complex social-environmental systems, decisions/strategy and innovations; electives and a four-unit approximately 120-hour external-organization practicum. At least 45 units total and 34 at 200+ level, with three electives of at least three units.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ms",
+        "bulletin-sustsci-ma",
+        "sust-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-ms-distinction",
+      "topic": "study_structure",
+      "value": "SUST MS requires at least 25 science-designated units among the 45 and approved advanced mathematics plus advanced statistics courses.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ms",
+        "sust-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-ma-distinction",
+      "topic": "study_structure",
+      "value": "SUST MA requires at least 25 arts-designated units among the 45; its course mix emphasizes social sciences/humanities relative to the MS.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 curriculum",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-sustsci-ma",
+        "sust-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "sust-funding",
+      "topic": "funding",
+      "value": "SUST offers a limited number of paid course assistant jobs for some core courses, with priority for SUST students who have graduate standing. Applicants may seek assistantships elsewhere, but SUST does not fund roles outside its program. This is employment opportunity, not a tuition or stipend guarantee.",
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [
+          "sust-coterm"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "sust-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "shared-2026-fees",
+      "topic": "mandatory_and_variable_charges",
+      "value": "For 2026-27 Stanford lists graduate Student Activities Fee USD 69 per quarter, Campus Health Service Fee USD 281 per quarter for Bay Area residents, Cardinal Care insurance USD 2,936 per quarter unless eligible waiver, and one-time Document Fee USD 250 upon first Stanford admission. Housing, food and other charges vary. Current coterm billing group and joint/dual primary-school classification must be determined individually.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd",
+          "stanford-easys-ms",
+          "stanford-easys-ma",
+          "stanford-ess-ms",
+          "stanford-ess-phd",
+          "stanford-energy-ms",
+          "stanford-energy-phd",
+          "stanford-envss-phd",
+          "stanford-envss-ma",
+          "stanford-geoph-ms",
+          "stanford-geoph-phd",
+          "stanford-oceans-phd",
+          "stanford-oceans-ms",
+          "stanford-envres-phd",
+          "stanford-envres-ms",
+          "stanford-sustsci-ms",
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's",
+          "doctoral",
+          "intermediate graduate"
+        ],
+        "applicant_categories": [
+          "enrolled_student"
+        ],
+        "cycle": "2026-27 charges",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-charges-2026",
+        "coterm-billing"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [
+        "Document fee does not recur for a current Stanford student already assessed it.",
+        "Insurance can be waived under Stanford rules."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "doerr-graduate-entry",
+      "topic": "academic_eligibility",
+      "value": "Nonprofessional Stanford graduate applicants must hold or expect before enrollment a U.S. bachelor degree or recognized international equivalent; departments may require more. ",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd",
+          "stanford-ess-ms",
+          "stanford-ess-phd",
+          "stanford-energy-ms",
+          "stanford-energy-phd",
+          "stanford-envss-phd",
+          "stanford-geoph-ms",
+          "stanford-geoph-phd",
+          "stanford-oceans-phd",
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-eligibility"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "doerr-graduate-fee",
+      "topic": "application_fee",
+      "value": "Nonprofessional external graduate application fee is USD 125 at submission. Eligible applicants can request a waiver before applying under Stanford deadlines.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd",
+          "stanford-ess-ms",
+          "stanford-ess-phd",
+          "stanford-energy-ms",
+          "stanford-energy-phd",
+          "stanford-envss-phd",
+          "stanford-geoph-ms",
+          "stanford-geoph-phd",
+          "stanford-oceans-phd",
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-application-fee"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "doerr-graduate-english",
+      "topic": "english_test",
+      "value": "Unless exempt, official TOEFL iBT or IELTS Academic is required. Central minimum for 2027-28: TOEFL 90 for pre-January 21, 2026 testing or 4.5 thereafter; IELTS Academic 7. Department-specific conflicts are separate.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms",
+          "stanford-eps-phd",
+          "stanford-ess-ms",
+          "stanford-ess-phd",
+          "stanford-energy-ms",
+          "stanford-energy-phd",
+          "stanford-envss-phd",
+          "stanford-geoph-ms",
+          "stanford-geoph-phd",
+          "stanford-oceans-phd",
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral",
+          "master's"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-test-scores",
+        "graduate-eligibility"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "eps-phd-internal",
+      "topic": "internal_route",
+      "value": "Bulletin flags an internal EPS PhD path for coterm and master students, without steps or dates.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "energy-ms-phd-internal",
+      "topic": "internal_route",
+      "value": "Energy PhD Bulletin directs current students to the Graduate Admissions system, not Graduate Authorization Petition.",
+      "scope": {
+        "option_ids": [
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-energy-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "envss-documents",
+      "topic": "application_documents",
+      "value": "Online statement of purpose up to two single-spaced pages describing a prospective research question and approach; optional research experience up to two pages; three recommendations, ideally including an academic professor; unofficial transcripts from colleges attended at least one full-time year; applicable English evidence. GRE optional for both subplans, strongly encouraged for GEP; self-reported GRE sufficient for initial review.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [
+          "envss-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "esos-materials"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "envss-offer-timeline",
+      "topic": "offer_and_enrollment",
+      "value": "ESoS fee-waiver request deadline November 3, 2026; January 2027 shortlist virtual interviews; final decisions and admitted site visit invitations in February; admitted response due April 15, 2027. Timeline says dates subject to change.",
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [
+          "envss-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "admitted_student"
+        ],
+        "cycle": "Autumn 2027-28",
+        "fee_status": []
+      },
+      "source_ids": [
+        "esos-timeline"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified_official",
+      "conditions": [],
+      "exceptions": []
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "doerr-2027-tuition",
+      "option_ids": [
+        "stanford-eps-ms",
+        "stanford-eps-phd",
+        "stanford-easys-ms",
+        "stanford-easys-ma",
+        "stanford-ess-ms",
+        "stanford-ess-phd",
+        "stanford-energy-ms",
+        "stanford-energy-phd",
+        "stanford-envss-phd",
+        "stanford-envss-ma",
+        "stanford-geoph-ms",
+        "stanford-geoph-phd",
+        "stanford-oceans-phd",
+        "stanford-oceans-ms",
+        "stanford-envres-phd",
+        "stanford-envres-ms",
+        "stanford-sustsci-ms",
+        "stanford-sustsci-ma"
+      ],
+      "topics": [
+        "tuition",
+        "fees",
+        "living_cost"
+      ],
+      "reason": "Stanford Student Services publishes 2026-27 tuition and charges; it does not establish a 2027-28 tuition rate for these awards. Billing depends on units and coterm or joint/dual status.",
+      "source_ids": [
+        "tuition-2026",
+        "graduate-charges-2026",
+        "coterm-billing"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Recheck 2027-28 Stanford tuition and fee schedules when published and confirm individual billing classification."
+    },
+    {
+      "id": "eps-engineer-current-status",
+      "option_ids": [
+        "stanford-eps-ms",
+        "stanford-eps-phd"
+      ],
+      "topics": [
+        "award_inventory",
+        "application_classification"
+      ],
+      "reason": "EPS department graduate overview mentions an Engineer degree, but the dated 2026-27 Bulletin inventory has EPS MS/PhD and no EPS-ENG row; no current standalone EPS Engineer admissions target or award-specific requirements were found. Do not create an active extra award from the overview alone.",
+      "source_ids": [
+        "bulletin-programs",
+        "eps-application"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask EPS Student Services whether the Engineer award is active for 2026-27 and request its official program or degree requirements page."
+    },
+    {
+      "id": "energy-engineer-current-status",
+      "option_ids": [
+        "stanford-energy-ms",
+        "stanford-energy-phd"
+      ],
+      "topics": [
+        "award_inventory",
+        "application_classification"
+      ],
+      "reason": "Current 2026-27 Bulletin inventory and ESE department graduate page list Energy MS and PhD, not an ENERGY-ENG award. A hypothetical SIS code or historic award would not establish a present applicant route.",
+      "source_ids": [
+        "bulletin-programs",
+        "ese-admissions"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask ESE Student Services for current official Engineer award and admissions documentation if such a route is claimed."
+    },
+    {
+      "id": "eps-funding-renewal",
+      "option_ids": [
+        "stanford-eps-ms",
+        "stanford-eps-phd"
+      ],
+      "topics": [
+        "funding_duration",
+        "funding_renewal",
+        "stipend_amount"
+      ],
+      "reason": "EPS application page describes automatic aid consideration and package components but does not specify a duration, annual renewal rule or exact 2027-28 stipend for each award.",
+      "source_ids": [
+        "eps-application"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Check individual admission/funding offer or ask EPS Student Services for current award terms."
+    },
+    {
+      "id": "easys-funding-terms",
+      "option_ids": [
+        "stanford-easys-ms",
+        "stanford-easys-ma"
+      ],
+      "topics": [
+        "funding_coverage",
+        "funding_renewal"
+      ],
+      "reason": "Reviewed Earth Systems coterm page, Bulletin rules and current directory give application and degree details without a coterm tuition scholarship or renewable funding award for the MA/MS. No lack-of-aid conclusion is implied.",
+      "source_ids": [
+        "easys-coterm-page",
+        "bulletin-easys-ms",
+        "bulletin-easys-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask Earth Systems Student Services about current coterm funding or review the individual financial aid offer."
+    },
+    {
+      "id": "energy-funding-duration",
+      "option_ids": [
+        "stanford-energy-ms",
+        "stanford-energy-phd"
+      ],
+      "topics": [
+        "funding_coverage",
+        "funding_renewal"
+      ],
+      "reason": "ESE FAQ describes RA/TA funding and an illustrative old stipend but not a guaranteed 2027-28 amount, award duration or renewal conditions.",
+      "source_ids": [
+        "ese-faq",
+        "ese-admissions"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask ESE Student Services or inspect the admitted applicant funding offer for 2027-28 terms."
+    },
+    {
+      "id": "geoph-funding-duration",
+      "option_ids": [
+        "stanford-geoph-ms",
+        "stanford-geoph-phd"
+      ],
+      "topics": [
+        "funding_coverage",
+        "funding_renewal"
+      ],
+      "reason": "Geophysics funding page describes typical support and aid-box process but gives no award-specific guarantee, duration, current salary or renewal rule.",
+      "source_ids": [
+        "geoph-funding"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask Geophysics Admissions for the offered award terms and renewal conditions."
+    },
+    {
+      "id": "oceans-funding-terms",
+      "option_ids": [
+        "stanford-oceans-phd",
+        "stanford-oceans-ms"
+      ],
+      "topics": [
+        "funding_coverage",
+        "funding_renewal"
+      ],
+      "reason": "Reviewed Oceans admission, application-resource and PhD program pages describe KHS as a separate scholarship but do not state Oceans departmental PhD support guarantee or how internal PhD-only MS affects funding.",
+      "source_ids": [
+        "oceans-admissions",
+        "oceans-resources",
+        "oceans-program",
+        "bulletin-oceans-ms"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask Oceans graduate program for its doctoral funding and internal-MS terms, and read any admitted-student offer."
+    },
+    {
+      "id": "eiper-ms-next-cycle",
+      "option_ids": [
+        "stanford-envres-ms"
+      ],
+      "topics": [
+        "application_deadline"
+      ],
+      "reason": "Current-student E-IPER page retains a January 2026 past deadline and says the 2026-27 winter application link will be updated. It does not provide the next due date; prospective MBA/JD schedules belong to the primary school.",
+      "source_ids": [
+        "eiper-ms-current",
+        "eiper-ms-prospective"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Check updated E-IPER current-student page in Winter 2026-27, or ask E-IPER; for prospective applicants use current GSB/SLS route deadline."
+    },
+    {
+      "id": "sust-funding-and-offer",
+      "option_ids": [
+        "stanford-sustsci-ms",
+        "stanford-sustsci-ma"
+      ],
+      "topics": [
+        "funding_coverage",
+        "funding_renewal",
+        "offer_date"
+      ],
+      "reason": "SUST FAQ offers limited paid course-assistant openings but no admission-linked scholarship or renewal; reviewed Bulletin and coterm directory do not promise a funding package or fixed offer-notification date.",
+      "source_ids": [
+        "sust-faq",
+        "bulletin-sustsci-ms",
+        "bulletin-sustsci-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask SUST Student Services about current aid and decision timing, and inspect any actual offer."
+    },
+    {
+      "id": "ess-english-policy",
+      "option_ids": [
+        "stanford-ess-ms",
+        "stanford-ess-phd"
+      ],
+      "topics": [
+        "english_test",
+        "waiver"
+      ],
+      "reason": "ESS page still lists legacy TOEFL 100 and a narrower waiver set while Stanford central rules use a new test scale and broader English-experience exemption. The 2027 applicable threshold and waiver cannot be safely automated from the conflicting pages.",
+      "source_ids": [
+        "ess-admissions",
+        "ess-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask ESS Admissions and central Graduate Admissions to confirm 2027 score scale and applicable waiver."
+    },
+    {
+      "id": "geoph-fee-waiver-conflict",
+      "option_ids": [
+        "stanford-geoph-ms",
+        "stanford-geoph-phd"
+      ],
+      "topics": [
+        "fee_waiver_deadline"
+      ],
+      "reason": "Geophysics Application Details says November 17, 2026 for waiver requests; its Funding page says November 30 despite December 1 application deadline and two-week lead time.",
+      "source_ids": [
+        "geoph-details",
+        "geoph-funding"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Confirm 2027 waiver deadline in Stanford Graduate Admissions portal before relying on a departmental date."
+    },
+    {
+      "id": "oceans-khs-linked-deadline",
+      "option_ids": [
+        "stanford-oceans-phd"
+      ],
+      "topics": [
+        "application_deadline"
+      ],
+      "reason": "Oceans admissions page states December 2 for its regular graduate application but December 1 for KHS-linked graduate application.",
+      "source_ids": [
+        "oceans-admissions"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask Oceans or KHS admissions which deadline applies to a KHS applicant."
+    },
+    {
+      "id": "eiper-ms-dual-ms-eligibility",
+      "option_ids": [
+        "stanford-envres-ms"
+      ],
+      "topics": [
+        "eligibility"
+      ],
+      "reason": "E-IPER admissions and Bulletin include Stanford MA/MS current students as dual-MS candidates, while E-IPER FAQ says it does not currently offer Dual MS-MS.",
+      "source_ids": [
+        "eiper-ms-admissions",
+        "eiper-ms-faq",
+        "bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_publication_or_confirmation",
+      "official_next_step": "Ask E-IPER to resolve whether current Stanford MS students may apply and whether the FAQ or admissions page governs."
+    },
+    {
+      "id": "eps-phd-internal-steps",
+      "option_ids": [
+        "stanford-eps-phd"
+      ],
+      "topics": [
+        "internal_application_steps",
+        "internal_deadline",
+        "internal_cost"
+      ],
+      "reason": "EPS PhD Bulletin labels the current coterm/MS route but gives no process, timing or fee.",
+      "source_ids": [
+        "bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_confirmation",
+      "official_next_step": "Ask EPS Student Services for current internal PhD application instructions."
+    },
+    {
+      "id": "geoph-ms-internal-steps",
+      "option_ids": [
+        "stanford-geoph-ms"
+      ],
+      "topics": [
+        "internal_application_steps",
+        "internal_deadline",
+        "internal_cost"
+      ],
+      "reason": "Geophysics MS Bulletin flags internal admission and directs applicants to staff but gives no steps, timing or fee.",
+      "source_ids": [
+        "bulletin-geoph-ms"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_confirmation",
+      "official_next_step": "Ask Geophysics Student Services for the current internal MS route."
+    },
+    {
+      "id": "energy-ms-phd-internal-terms",
+      "option_ids": [
+        "stanford-energy-phd"
+      ],
+      "topics": [
+        "internal_deadline",
+        "internal_fee"
+      ],
+      "reason": "Energy PhD Bulletin sends internal applicants to Graduate Admissions but does not specify whether the external deadline/fee apply.",
+      "source_ids": [
+        "bulletin-energy-phd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "unknown_after_review",
+      "review_status": "needs_official_confirmation",
+      "official_next_step": "Ask ESE Student Services for current internal-applicant deadline and fee."
+    }
+  ],
+  "collection_tasks": [],
+  "coverage_assessments": [
+    {
+      "option_id": "stanford-eps-ms",
+      "procedure_ids": [
+        "eps-external",
+        "eps-coterm",
+        "eps-other-grad-ms"
+      ],
+      "researched_fact_ids": [
+        "bulletin-eps-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "eps-external-admissions",
+        "eps-deadline",
+        "eps-tests",
+        "eps-funding",
+        "eps-offer",
+        "eps-coterm-terms",
+        "eps-coterm-eligibility",
+        "eps-internal-ms",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "eps-engineer-current-status",
+        "eps-funding-renewal"
+      ],
+      "source_ids": [
+        "bulletin-eps-ms",
+        "bulletin-programs",
+        "coterm-billing",
+        "coterm-directory",
+        "eps-application",
+        "eps-coterm",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-eps-phd",
+      "procedure_ids": [
+        "eps-external",
+        "eps-ms-to-phd"
+      ],
+      "researched_fact_ids": [
+        "bulletin-eps-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "eps-external-admissions",
+        "eps-deadline",
+        "eps-tests",
+        "eps-funding",
+        "eps-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english",
+        "eps-phd-internal"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "eps-engineer-current-status",
+        "eps-funding-renewal",
+        "eps-phd-internal-steps"
+      ],
+      "source_ids": [
+        "bulletin-eps-ms",
+        "bulletin-eps-phd",
+        "bulletin-programs",
+        "coterm-billing",
+        "eps-application",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-easys-ms",
+      "procedure_ids": [
+        "easys-coterm"
+      ],
+      "researched_fact_ids": [
+        "bulletin-easys-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "easys-coterm-terms",
+        "easys-award-distinction",
+        "easys-common-eligibility",
+        "easys-common-fee-offer",
+        "easys-ms-docs",
+        "easys-ms-structure",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "easys-funding-terms"
+      ],
+      "source_ids": [
+        "bulletin-easys-ma",
+        "bulletin-easys-ms",
+        "coterm-billing",
+        "coterm-directory",
+        "easys-coterm-page",
+        "graduate-charges-2026",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-easys-ma",
+      "procedure_ids": [
+        "easys-coterm"
+      ],
+      "researched_fact_ids": [
+        "bulletin-easys-ma-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "easys-coterm-terms",
+        "easys-award-distinction",
+        "easys-common-eligibility",
+        "easys-common-fee-offer",
+        "easys-ma-docs",
+        "easys-ma-prerequisites",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "easys-funding-terms"
+      ],
+      "source_ids": [
+        "bulletin-easys-ma",
+        "bulletin-easys-ms",
+        "coterm-billing",
+        "coterm-directory",
+        "easys-coterm-page",
+        "graduate-charges-2026",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-ess-ms",
+      "procedure_ids": [
+        "ess-external"
+      ],
+      "researched_fact_ids": [
+        "bulletin-ess-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "ess-admission-structure",
+        "ess-application-materials",
+        "ess-tests",
+        "ess-deadline",
+        "ess-funding-ms",
+        "ess-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "ess-english-policy"
+      ],
+      "source_ids": [
+        "bulletin-ess-ms",
+        "coterm-billing",
+        "ess-admissions",
+        "ess-faq",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-ess-phd",
+      "procedure_ids": [
+        "ess-external"
+      ],
+      "researched_fact_ids": [
+        "bulletin-ess-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "ess-admission-structure",
+        "ess-application-materials",
+        "ess-tests",
+        "ess-deadline",
+        "ess-funding-phd",
+        "ess-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "ess-english-policy"
+      ],
+      "source_ids": [
+        "bulletin-ess-ms",
+        "bulletin-ess-phd",
+        "coterm-billing",
+        "ess-admissions",
+        "ess-faq",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-energy-ms",
+      "procedure_ids": [
+        "energy-external",
+        "energy-coterm"
+      ],
+      "researched_fact_ids": [
+        "bulletin-energy-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "energy-external-docs",
+        "energy-external-deadline",
+        "energy-prerequisite",
+        "energy-funding",
+        "energy-coterm",
+        "energy-structure",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "energy-engineer-current-status",
+        "energy-funding-duration"
+      ],
+      "source_ids": [
+        "bulletin-energy-ms",
+        "bulletin-energy-phd",
+        "bulletin-programs",
+        "coterm-billing",
+        "coterm-directory",
+        "ese-admissions",
+        "ese-faq",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-energy-phd",
+      "procedure_ids": [
+        "energy-external",
+        "energy-ms-to-phd"
+      ],
+      "researched_fact_ids": [
+        "bulletin-energy-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "energy-external-docs",
+        "energy-external-deadline",
+        "energy-prerequisite",
+        "energy-funding",
+        "energy-structure",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english",
+        "energy-ms-phd-internal"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "energy-engineer-current-status",
+        "energy-funding-duration",
+        "energy-ms-phd-internal-terms"
+      ],
+      "source_ids": [
+        "bulletin-energy-ms",
+        "bulletin-energy-phd",
+        "bulletin-programs",
+        "coterm-billing",
+        "ese-admissions",
+        "ese-faq",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-envss-phd",
+      "procedure_ids": [
+        "envss-external"
+      ],
+      "researched_fact_ids": [
+        "bulletin-envss-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "envss-subplans",
+        "envss-application",
+        "envss-funding",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english",
+        "envss-documents",
+        "envss-offer-timeline"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition"
+      ],
+      "source_ids": [
+        "bulletin-envss-phd",
+        "coterm-billing",
+        "esos-apply",
+        "esos-materials",
+        "esos-program",
+        "esos-timeline",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-envss-ma",
+      "procedure_ids": [
+        "envss-intermediate-ma"
+      ],
+      "researched_fact_ids": [
+        "bulletin-envss-ma-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "envss-ma-route",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition"
+      ],
+      "source_ids": [
+        "bulletin-envss-ma",
+        "coterm-billing",
+        "graduate-charges-2026",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-geoph-ms",
+      "procedure_ids": [
+        "geoph-external",
+        "geoph-coterm",
+        "geoph-other-grad-ms"
+      ],
+      "researched_fact_ids": [
+        "bulletin-geoph-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "geoph-admissions",
+        "geoph-documents",
+        "geoph-deadline",
+        "geoph-tests",
+        "geoph-funding",
+        "geoph-coterm",
+        "geoph-fee-waiver-conflict",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "geoph-funding-duration",
+        "geoph-fee-waiver-conflict",
+        "geoph-ms-internal-steps"
+      ],
+      "source_ids": [
+        "bulletin-geoph-ms",
+        "coterm-billing",
+        "coterm-directory",
+        "geoph-admissions",
+        "geoph-details",
+        "geoph-funding",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-geoph-phd",
+      "procedure_ids": [
+        "geoph-external"
+      ],
+      "researched_fact_ids": [
+        "bulletin-geoph-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "geoph-admissions",
+        "geoph-documents",
+        "geoph-deadline",
+        "geoph-tests",
+        "geoph-funding",
+        "geoph-fee-waiver-conflict",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "geoph-funding-duration",
+        "geoph-fee-waiver-conflict"
+      ],
+      "source_ids": [
+        "bulletin-geoph-phd",
+        "coterm-billing",
+        "geoph-admissions",
+        "geoph-details",
+        "geoph-funding",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-oceans-phd",
+      "procedure_ids": [
+        "oceans-external"
+      ],
+      "researched_fact_ids": [
+        "bulletin-oceans-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "oceans-admission",
+        "oceans-documents",
+        "oceans-deadline",
+        "oceans-tests",
+        "oceans-waiver-offer",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "oceans-funding-terms",
+        "oceans-khs-linked-deadline"
+      ],
+      "source_ids": [
+        "bulletin-oceans-ms",
+        "bulletin-oceans-phd",
+        "coterm-billing",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "oceans-admissions",
+        "oceans-program",
+        "oceans-resources",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-oceans-ms",
+      "procedure_ids": [
+        "oceans-ms-current-phd"
+      ],
+      "researched_fact_ids": [
+        "bulletin-oceans-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "oceans-ms-restriction",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "oceans-funding-terms"
+      ],
+      "source_ids": [
+        "bulletin-oceans-ms",
+        "coterm-billing",
+        "grad-directory",
+        "graduate-charges-2026",
+        "oceans-admissions",
+        "oceans-program",
+        "oceans-resources",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-envres-phd",
+      "procedure_ids": [
+        "eiper-phd-external"
+      ],
+      "researched_fact_ids": [
+        "bulletin-envres-phd-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "eiper-phd-eligibility",
+        "eiper-phd-documents",
+        "eiper-phd-deadline-offer",
+        "eiper-phd-tests",
+        "eiper-phd-funding",
+        "eiper-jd-phd",
+        "shared-2026-fees",
+        "doerr-graduate-entry",
+        "doerr-graduate-fee",
+        "doerr-graduate-english"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition"
+      ],
+      "source_ids": [
+        "bulletin-envres-phd",
+        "coterm-billing",
+        "eiper-phd",
+        "eiper-phd-faq",
+        "eiper-phd-requirements",
+        "grad-directory",
+        "graduate-application-fee",
+        "graduate-charges-2026",
+        "graduate-eligibility",
+        "graduate-test-scores",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-envres-ms",
+      "procedure_ids": [
+        "eiper-ms-prospective",
+        "eiper-ms-current"
+      ],
+      "researched_fact_ids": [
+        "bulletin-envres-ms-degree",
+        "eiper-ms-eligibility",
+        "eiper-ms-application",
+        "eiper-ms-deadline",
+        "eiper-ms-cost-funding",
+        "eiper-ms-structure",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "eiper-ms-next-cycle",
+        "eiper-ms-dual-ms-eligibility"
+      ],
+      "source_ids": [
+        "bulletin-envres-ms",
+        "coterm-billing",
+        "eiper-ms-admissions",
+        "eiper-ms-current",
+        "eiper-ms-faq",
+        "eiper-ms-prospective",
+        "graduate-charges-2026",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-sustsci-ms",
+      "procedure_ids": [
+        "sust-coterm"
+      ],
+      "researched_fact_ids": [
+        "bulletin-sustsci-ms-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "sust-eligibility",
+        "sust-presteps",
+        "sust-documents",
+        "sust-structure-shared",
+        "sust-ms-distinction",
+        "sust-funding",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "sust-funding-and-offer"
+      ],
+      "source_ids": [
+        "bulletin-sustsci-ma",
+        "bulletin-sustsci-ms",
+        "coterm-billing",
+        "coterm-directory",
+        "graduate-charges-2026",
+        "sust-faq",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    },
+    {
+      "option_id": "stanford-sustsci-ma",
+      "procedure_ids": [
+        "sust-coterm"
+      ],
+      "researched_fact_ids": [
+        "bulletin-sustsci-ma-degree",
+        "graduate-tuition-8-10",
+        "graduate-tuition-11-18",
+        "sust-eligibility",
+        "sust-presteps",
+        "sust-documents",
+        "sust-structure-shared",
+        "sust-ma-distinction",
+        "sust-funding",
+        "shared-2026-fees"
+      ],
+      "researched_unknown_ids": [
+        "doerr-2027-tuition",
+        "sust-funding-and-offer"
+      ],
+      "source_ids": [
+        "bulletin-sustsci-ma",
+        "bulletin-sustsci-ms",
+        "coterm-billing",
+        "coterm-directory",
+        "graduate-charges-2026",
+        "sust-faq",
+        "tuition-2026"
+      ],
+      "reviewed_domains": [
+        "award_and_study_structure",
+        "applicant_route_classification",
+        "eligibility_and_prerequisites",
+        "application_materials_and_tests",
+        "current_windows_and_offers",
+        "2026_27_costs_and_fees",
+        "funding_and_renewal",
+        "conditions_exceptions_and_unresolved"
+      ],
+      "collection_task_ids": []
+    }
+  ],
+  "coverage_summary": {
+    "award_options": 18,
+    "application_procedures": 20,
+    "researched_facts": 92,
+    "evidenced_unknowns": 17,
+    "remaining_unsearched_groups": 0,
+    "review_note": "Unknown values have official evidence and next steps. This dossier complements, rather than replaces, shared Stanford Graduate Admissions facts in the original Engineering and Doerr dossier. 2026-27 cost figures are not 2027-28 quotations."
+  }
+}

@@ -1,0 +1,2538 @@
+{
+  "checked_at": "2026-10-01",
+  "source_url": "https://www.imperial.ac.uk/study/courses/",
+  "source_title": "Course search | Study | Imperial College London",
+  "reported_results": 239,
+  "rows": [
+    {
+      "name": "Advanced Aeronautical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-aeronautical-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Work with the latest industry-standard software in a world-leading research department.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Chemical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-chemical-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Undertake advanced study in chemical engineering and enhance your knowledge of basic sciences, mathematics and computing.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Chemical Engineering with Biotechnology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/chemical-engineering-biotechnology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Build an interdisciplinary background in chemical engineering and biological sciences for a career in biotech.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Computational Methods for Aeronautics, Flow Management and Fluid-Structure Interaction",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-methods/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop specialist computational knowledge for a career in aerospace or engineering.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Computing",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-computing/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Study a range of advanced computing concepts and technologies alongside experts in the field.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Materials for Sustainable Infrastructure",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-materials-sustainable-infrastructure/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn about the behaviour and characteristics of civil engineering materials in depth.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Materials Science and Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-materials/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Specialise in materials for energy transition and develop your passion for exploring and creating innovative materials.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Mechanical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-mechanical-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Broaden your knowledge of key areas of mechanical engineering and explore recent developments in the field.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Molecular Synthesis",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/molecular-synthesis/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop skills in synthetic chemistry with a focus on approaches to automate, analyse and understand synthetic processes.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Structural Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-structural-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Receive advanced training and obtain expertise in the analysis, design, and assessment of civil engineering structures.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Advanced Structural Engineering with Data Science",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/structural-engineering-data-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore how data science is revolutionising the way structures are designed, analysed and assessed.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": []
+    },
+    {
+      "name": "Aeronautical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautical-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Learn how vehicles and structures interact with air in this professionally accredited, integrated Master's degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=1",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautical-engineering/#OptionA",
+          "name": "Aeronautical Engineering with an Integrated Year Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautical-engineering/#OptionB",
+          "name": "Aeronautical Engineering with a Year Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautical-engineering/#OptionC",
+          "name": "Aeronautical Engineering with a Year in Industry"
+        }
+      ]
+    },
+    {
+      "name": "Aeronautics with Spacecraft Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautics-spacecraft-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Specialise in the design of space technologies in this professionally accredited, integrated Master's degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Aerospace Sciences",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/aerospace-sciences/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Engage in original research in this multidisciplinary field, working with one of the Department of Aeronautics’ world-leading researchers.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "AI, Economics and Policy",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/ai-economics-policy/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Build expertise at the intersection of AI, economics and policy.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Alternative Protein",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/alternative-protein/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Explore the intersection of engineering biology, food science, entrepreneurship and sustainable systems thinking in this exciting interdisciplinary field.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Analogue and Digital Integrated Circuit Design",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/analogue-digital-circuit-design/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn about integrated circuit design, spanning analogue, mixed-signal, and digital circuits.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Applied Biosciences and Biotechnology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biosciences-biotechnology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain an in-depth understanding of modern bioscience research and acquire the skills needed to pursue a career in the field.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Applied Computational Science and Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/applied-computational-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Discover how numerical methods and computational science can help solve large scale problems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Applied Machine Learning",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/applied-machine-learning/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn to design, implement, and evaluate machine learning systems that are uniquely optimised for the physical constraints of real-world hardware, edge computing, and silicon architecture.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Applied Mathematics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/applied-mathematics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Equipping students with a range of transferable skills in mathematical modelling, analysis and computation for employment in industry and future research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Applied Multiomics in Biomedicine",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/applied-multiomics-biomedicine/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn how big data and experimental research can be harnessed to revolutionise biological sciences and biomedicine.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Artificial Intelligence",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/artificial-intelligence/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Receive intensive training in programming and the fundamentals of artificial intelligence.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": []
+    },
+    {
+      "name": "Artificial Intelligence and Machine Learning",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/artificial-intelligence-machine-learning/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop advanced artificial intelligence and machine learning skills and apply these to real-world problems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=2",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "Previous"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Artificial Intelligence Applications and Innovation",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/applications-innovation/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn AI fundamentals, explore real-world AI applications, develop skills for applied AI and innovation roles",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": []
+    },
+    {
+      "name": "Biochemistry",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Develop skills towards a career in the applied biochemistry and biotechnology industries.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-bsc/#OptionA",
+          "name": "Biochemistry with Research Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-bsc/#OptionB",
+          "name": "Biochemistry with a Year in Industry/Research"
+        }
+      ]
+    },
+    {
+      "name": "Biochemistry",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Investigate the behaviour of living systems at the molecular and cellular level and gain enhanced research skills and experience.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": []
+    },
+    {
+      "name": "Biochemistry with Language for Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-language/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Combine your study of biochemistry with the chance to develop your language skills in a science context.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-language/#OptionA",
+          "name": "Biochemistry with French for Science"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-language/#OptionB",
+          "name": "Biochemistry with German for Science"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-language/#OptionC",
+          "name": "Biochemistry with Spanish for Science"
+        }
+      ]
+    },
+    {
+      "name": "Biochemistry with Management (3 years)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-management/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Deepen your knowledge of biochemistry and build your understanding of the commercial aspects of the industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biochemistry-management/#OptionA",
+          "name": "Biochemistry with Management (4 years)"
+        }
+      ]
+    },
+    {
+      "name": "Biodiversity, Carbon and Nature-based Solutions",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/nature-based-solutions/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain cutting-edge expertise in leveraging ecological processes to enhance biodiversity, carbon storage, and climate change solutions. Explore pathways to net zero, nature recovery, and biodiversity net gain.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": []
+    },
+    {
+      "name": "Bioengineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/bioengineering-mres/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop analytical and problem solving skills for a career in bioengineering.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": []
+    },
+    {
+      "name": "Bioinformatics and Theoretical Systems Biology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/bioinformatics/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Gain the skills to produce effective research in bioinformatics and theoretical systems biology",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": []
+    },
+    {
+      "name": "Biological Sciences",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Understand the behaviour of living systems from the level of cells up to whole organisms and ecosystems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences/#OptionA",
+          "name": "Biological Sciences with Research Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences/#OptionB",
+          "name": "Biological Sciences with a Year in Industry/Research"
+        }
+      ]
+    },
+    {
+      "name": "Biological Sciences",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Investigate the behaviour of living systems from the level of molecules and cells up to whole organisms and ecosystems and gain enhanced research skills and experience.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": []
+    },
+    {
+      "name": "Biological Sciences with Language for Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-language/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Understand the behaviour of living systems as you advance your language skills.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-language/#OptionA",
+          "name": "Biological Sciences with French for Science"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-language/#OptionB",
+          "name": "Biological Sciences with German for Science"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-language/#OptionC",
+          "name": "Biological Sciences with Spanish for Science"
+        }
+      ]
+    },
+    {
+      "name": "Biological Sciences with Management (3 years)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-management/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Build your understanding of biology and develop your management potential with a year at the Imperial Business School.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=3",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biological-sciences-management/#OptionA",
+          "name": "Biological Sciences with Management (4 years)"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Biomaterials and Tissue Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biomaterials-tissue-engineering-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Specialise in materials that can stimulate beneficial biological responses in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biomedical-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Develop a breadth and depth of engineering skills and knowledge to address problems in medicine and biology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biomedical-engineering/#abroad",
+          "name": "Biomedical Engineering with a Year Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biomedical-engineering/#industry",
+          "name": "Biomedical Engineering with a Year in Industry"
+        }
+      ]
+    },
+    {
+      "name": "Biomedical Engineering (Biomaterials)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biomedical-engineering-biomaterials/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore the use of advanced biomaterials in medical and surgical environments.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Engineering (Biomechanics and Mechanobiology)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biomedical-engineering-biomechanics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Tackle bioengineering challenges associated with major diseases and an ageing population. Gain industry recognition with an accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Engineering (Computational Bioengineering)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biomedical-engineering-computational/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Apply mathematical models and techniques to biological data to improve our understanding of how organisms function and how diseases progress.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Engineering (Medical Physics)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biomedical-engineering-medical/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore methods, techniques and applications for the monitoring and imaging of biological systems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Engineering (Neurotechnology)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biomedical-engineering-neurotechnology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop expertise in the science and technology related to nervous systems, brains function and devices in neurotechnology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Research (Bacterial Pathogenesis and Infection)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/bacterial-pathogenesis-infection/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Training in the fundamental aspects of bacterial pathogenesis for a career in biomedical research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Research (Data Science)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/data-science/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Interdisciplinary training in 'big data' analysis, building skills towards a career in biomedical research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Research (Epidemiology, Evolution and Control of Infectious Diseases)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/epidemiology-evolution-control-infectious-diseases/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Specialise in biomedical research within the field of epidemiology, evolution and the control of infectious diseases.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Research (General Biomedical Research)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biomedical-research/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Prepare for a career in biomedical research and discover advanced practical techniques used in experimental and human biomedical sciences.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Research (Microbiome in Health and Disease)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/microbiome-health-disease/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop your biomedical research expertise and explore multidisciplinary approaches to understanding the gut microbiome.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=4",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Biomedical Research (Molecular Basis of Human Disease)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/molecular-basis-of-human-disease/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Train for a career in biomedical research and specialise in molecular mechanisms and structural biology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Research (Respiratory and Cardiovascular Science)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/respiratory-cardiovascular-science/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Gain fundamental skills towards a career in biomedical research and build your knowledge of the basic physiology of cardiac function.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Biomedical Technology Ventures",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biomedical-technology-ventures/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Learn how to improve human healthcare through the application of technology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biomedical-technology-ventures/#industry",
+          "name": "Biomedical Technology Ventures with a Year in Industry"
+        }
+      ]
+    },
+    {
+      "name": "Bioscience Futures: Communication, Innovation and Entrepreneurship",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/bioscience-futures/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Become an agent for change in the biosciences by combining entrepreneurial, communication and commercialisation skills to address global challenges.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Biosystematics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/biosystematics/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Obtain in-depth understanding of the theory and practice of systematics and phylogenetics.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Biotechnology",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Learn to create vital links between biology and technology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology/#OptionA",
+          "name": "Biotechnology with Research Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology/#OptionB",
+          "name": "Biotechnology with a Year in Industry/Research"
+        }
+      ]
+    },
+    {
+      "name": "Biotechnology",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Investigate the behaviour of living systems at the molecular and cellular level, create links between biology and technology and gain enhanced research skills and experience.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Biotechnology with Language for Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology-language/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Broaden your study of biotechnology and advance your language skills.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology-language/#OptionA",
+          "name": "Biotechnology with French for Science"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology-language/#OptionB",
+          "name": "Biotechnology with German for Science"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology-language/#OptionC",
+          "name": "Biotechnology with Spanish for Science"
+        }
+      ]
+    },
+    {
+      "name": "Biotechnology with Management",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/biotechnology-management/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Broaden your study of biotechnology and develop your management potential.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Business Analytics and AI",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/business-analytics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn how to apply the latest academic thinking and analytical and computing tools to help make business decisions.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Business MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/business-mres/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Embark on an inspirational learning experience enabling you to lead research in your field.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": []
+    },
+    {
+      "name": "Cancer Biology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cancer-biology/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Explore advanced technology and approaches used in cancer biology and undertake training towards a research career.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=5",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Cancer Biology (Cancer Informatics)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cancer-informatics/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Prepare for the next frontier in cancer research with an MRes that integrates biology, clinical oncology, and the transformative power of AI and data science.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Cancer Biology (Cancer Innovation)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cancer-innovation/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Learn to tackle biological and medical challenges in cancer, with a focus on translating cutting edge bio- and deep-tech research from concept to application.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Cancer Technology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cancer-technology/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop a unique understanding of cancer from a bioengineering perspective.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Cardiovascular and Respiratory Healthcare (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cardiovascular-healthcare/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your knowledge in cardiovascular and respiratory healthcare and develop skills towards your chosen career field.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cardiovascular-healthcare/#pgdip",
+          "name": "Cardiovascular and Respiratory Healthcare (PG Dip)"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cardiovascular-healthcare/#pgcert",
+          "name": "Cardiovascular and Respiratory Healthcare (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Catalysis: Chemistry and Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/catalysis/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Advance your understanding of chemical transformations and how to tackle challenges in the field of catalysis.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Chemical Biology and Bio-Entrepreneurship",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/chemical-biology/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Learn the skills needed to address future scientific challenges in the emerging discipline of chemical biology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Chemical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemical-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Apply scientific, engineering and business principles to a variety of complex practical issues in this accredited Master's degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemical-engineering/#OptionA",
+          "name": "Chemical Engineering with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Chemistry",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Develop your understanding and problem-solving through interdisciplinary chemistry study and build practical laboratory skills.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Chemistry",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Develop your skills in core and applied chemistry through to Master's level in this professionally accredited course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-msci/#OptionA",
+          "name": "Chemistry with a Year in Industry"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-msci/#OptionB",
+          "name": "Chemistry with Research Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-msci/#OptionC",
+          "name": "Chemistry with Research Abroad and a Year in Industry"
+        }
+      ]
+    },
+    {
+      "name": "Chemistry with Management",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-management/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Deepen your understanding across modern interdisciplinary chemistry and develop your management potential.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": []
+    },
+    {
+      "name": "Chemistry with Medicinal Chemistry",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-medicinal/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Explore the industrial development, production and quality control of new drugs in this specialist chemistry course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-medicinal/#OptionA",
+          "name": "Chemistry with Medicinal Chemistry and a Year in Industry"
+        }
+      ]
+    },
+    {
+      "name": "Chemistry with Molecular Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-molecular-physics/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Focus on the intersection between chemistry, maths and physics on this professionally accredited course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=6",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/chemistry-molecular-physics/#OptionA",
+          "name": "Chemistry with Molecular Physics and a Year in Industry"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Civil Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/civil-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Learn to solve global challenges across the natural and built environment through a world-leading education on this integrated Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/civil-engineering/#OptionA",
+          "name": "Civil Engineering with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Cleantech Innovation",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/cleantech-innovation/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Become a climate innovator and cleantech entrepreneur through this interdisciplinary MSc.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": []
+    },
+    {
+      "name": "Climate Change, Management and Finance",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/climate-change-management-finance/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Lead the way in tackling the challenges of climate change and sustainability in business.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": []
+    },
+    {
+      "name": "Clinical Research (Diabetes and Obesity) MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/diabetes-obesity/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Receive interdisciplinary training in diabetes and obesity research and build skills towards a career in clinical research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/diabetes-obesity/#PGCert",
+          "name": "Clinical Research (Diabetes and Obesity) (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Clinical Research (Human Nutrition) MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/human-nutrition/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Receive broad training and practical experience in designing, implementing and reporting clinical studies.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/human-nutrition/#PGCert",
+          "name": "Clinical Research (Human Nutrition) (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Clinical Research (Multiple Long-Term Conditions) MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/multiple-long-term-conditions/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Receive pioneering training and practical experience within the growing global research field of Multiple Long-Term Conditions (MLTC).",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/multiple-long-term-conditions/#PGCert",
+          "name": "Clinical Research (Multiple Long Term Conditions) (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Clinical Research (Translational Medicine) MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/clinical-research/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Receive broad training and practical experience in designing, implementing and reporting clinical studies.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/clinical-research/#PGCert",
+          "name": "Clinical Research (Translational Medicine) (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Communications and Signal Processing",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/communications-signal-processing/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop an in-depth knowledge of modern information engineering problems and their solutions.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": []
+    },
+    {
+      "name": "Composites – the Science, Technology and Engineering Application of Advanced Composites",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/composites/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore how high performance composite materials are increasingly important in the production of aircraft.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": []
+    },
+    {
+      "name": "Computational Biomedicine (Computational Brain Sciences) (Online) MSc",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-biomedicine-brain-sciences/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn to extract meaning from complex biomedical datasets, and apply computational biology and biomedical AI to understand human disease.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-biomedicine-brain-sciences/#PGDip",
+          "name": "PG Dip Computational Biomedicine (Computational Brain Sciences) (Online)"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-biomedicine-brain-sciences/#PGCert",
+          "name": "PG Cert Computational Biomedicine (Online)"
+        }
+      ]
+    },
+    {
+      "name": "Computational Biomedicine (Computational Genomics) (Online) MSc",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-biomedicine-genomics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn to extract meaning from complex biomedical datasets, and apply computational biology and biomedical AI to understand human disease.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-biomedicine-genomics/#PGDip",
+          "name": "Postgraduate Diploma Computational Biomedicine (Computational Genomics) (Online)"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-biomedicine-genomics/#PGCert",
+          "name": "Postgraduate Certificate Computational Biomedicine (Online)"
+        }
+      ]
+    },
+    {
+      "name": "Computational Ecology and Evolution",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computational-methods-ecology-evolution-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Bring cutting-edge quantitative methods and biological concepts together to solve research problems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=7",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Computing",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computing/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your understanding and knowledge of computer science to prepare for a career in the computing industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Take your study of computing further with advanced modules and an industrial placement in this integrated Master's degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-beng/",
+      "type": "Undergraduate",
+      "award": "BEng",
+      "summary": "Study the engineering of computer hardware and software alongside the mathematical principles of computing.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Artificial Intelligence and Machine Learning)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computing-artificial-intelligence-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your knowledge and understanding of artificial intelligence and machine learning to prepare for a career in the computing industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Artificial Intelligence and Machine Learning)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-artificial-intelligence-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Focus your study of computing on artificial intelligence in this integrated Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (International Programme of Study)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-international-programme-of-study/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Enrich your computing degree with the chance to study abroad in this integrated Master’s course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Security and Reliability)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computing-security-reliability-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Enhance your knowledge of IT security and reliability to prepare for a career in the computing industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Security and Reliability)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-security-reliability-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Learn how modern computer and communications systems can be adapted to build the next generation of secure computing applications.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Software Engineering)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computing-software-engineering-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Specialise in the application of engineering to the design, development, and maintenance of software.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Software Engineering)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-software-engineering-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Focus on how software is engineered to form complex computing systems in this integrated Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Visual Computing and Robotics)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computing-visual-computing-robotics-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Specialise in the study of vision, graphics, intelligent behaviour and biomedical image computing.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": []
+    },
+    {
+      "name": "Computing (Visual Computing and Robotics)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-visual-computing-robotics-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Focus on the implementation and evaluation of systems that depend on computer vision or computer generated imagery.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=8",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Conservation Science and Practice",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/conservation-science-practice/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn to lead conservation programmes to tackle global biodiversity challenges based on conservation science practice",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Control, Robotics and Optimisation",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/control-optimisation/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Study aspects of control theory and optimisation and their application to the design of automated systems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Design Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/design-engineering-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Create innovative products, systems, or solutions through an interdisciplinary approach in engineering, design, and entrepreneurship.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Design Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/design-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Fuse design thinking with engineering knowledge and practice in this highly creative integrated Master’s degree",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Design Engineering Research",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/design-engineering-mres/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop transdisciplinary research skills in Design Engineering and apply these to societal problems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Design with Behaviour Science",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/design-behaviour/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn how to apply behavioural insights to the design of human-centred products and strategies.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Digital Chemistry with AI and Automation (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/digital-chemistry/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Discover how advances in automation, artificial intelligence, and big data are revolutionising the study of chemistry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/digital-chemistry/#PGCert",
+          "name": "Digital Chemistry with AI and Automation (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Digital Health Leadership (PG Dip)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/digital-health-leadership/",
+      "type": "Postgraduate taught",
+      "award": "PG Dip",
+      "summary": "Receive world-class training to accelerate your career as a digital health and AI leader at one of the world’s most respected universities.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/digital-health-leadership/#MSc",
+          "name": "Digital Health Leadership (MSc)"
+        }
+      ]
+    },
+    {
+      "name": "Drug Discovery and Development",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/drug-discovery-development/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Build your expertise in multidisciplinary drug discovery research and explore emerging technologies.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Earth and Planetary Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/earth-planetary-science-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Gain the geological and geophysical skills that underpin modern investigation of solid planetary bodies in the Solar System.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": []
+    },
+    {
+      "name": "Earth and Planetary Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/earth-planetary-science-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Become familiar with the geological and geophysical principles that support solid planetary body exploration",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/earth-planetary-science-msci/#abroad",
+          "name": "Earth and Planetary Science with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Earthquake Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/earthquake-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn to analyse, design and assess structures under seismic action and extreme conditions.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=9",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Ecology and Environmental Biology",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/ecology-environmental-biology/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Focus on important ecological and environmental topics such as climate change, biodiversity and conservation.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Ecology, Evolution and Conservation MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/ecology-evolution-conservation-research/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Obtain the interdisciplinary research skills required to succeed in the fields of ecology, evolution and conservation.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Ecology, Evolution and Conservation MSc",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/ecology-evolution-conservation/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Train in ecology, evolution and conservation concepts and study their applications to biodiversity.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Ecology, Evolution and Conservation with AI Methods",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/ecology-evolution-conservation-ai-methods/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain practical and analytical skills to apply fieldwork, data, AI and machine learning to make an impact on ecological research, conservation and environmental science.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Ecology, Evolution and Conservation with AI Methods MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/ecology-evolution-conservation-research-ai-methods/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Obtain the interdisciplinary research skills required to succeed in the fields of ecology, evolution and conservation.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Economics and Strategy for Business",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/economics-strategy-business/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Prepare for a successful career in specialist economic and management consultancies and financial services.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Economics, Finance and Data Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/economics-finance-data-science/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "A first-of-its-kind degree combining economics, finance, and data science and its applications",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Electrical and Electronic Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electrical-electronic-engineering-beng/",
+      "type": "Undergraduate",
+      "award": "BEng",
+      "summary": "Focus on the design and application of large and small scale electronic systems in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Electrical and Electronic Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electrical-electronic-engineering-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Fuse advanced technical knowledge with innovation, practical expertise, and professional engineering training in this integrated Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electrical-electronic-engineering-meng/#OptionA",
+          "name": "Electrical and Electronic Engineering with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Electrical and Electronic Engineering with Management",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electrical-electronic-engineering-management/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Get set for business with advanced technical knowledge and a specialist business programme in this integrated Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Electronic and Information Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electronic-information-beng/",
+      "type": "Undergraduate",
+      "award": "BEng",
+      "summary": "Combine the technical knowledge and practical skills of both electronic engineering and computing in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": []
+    },
+    {
+      "name": "Electronic and Information Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electronic-information-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Combine the advanced technical knowledge and practical skills of both electronic engineering and computing in this integrated Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=10",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/electronic-information-meng/#abroad",
+          "name": "Electronic and Information Engineering with a Year Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Engineering Fluid Mechanics for the Offshore, Coastal and Built Environments",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/fluid-mechanics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain advanced knowledge of fluid mechanics to solve real-world marine and built-environment challenges in renewable energy, environmental pollution, and urban climate.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Engineering for Biomedicine",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/engineering-biomedicine/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Learn how to tackle modern healthcare challenges with bioengineering technology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Environmental Data Science and Machine Learning",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/environmental-data-science-machine-learning/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Apply computing techniques and machine learning to real-world environmental problems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Environmental Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/environmental-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Analyse the principles and practices needed to protect the environment and human health.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Environmental Engineering with Data Science",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/environmental-engineering-data-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore environmental engineering practices and the use of computational methods and statistical modelling techniques.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Epidemiology (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/epidemiology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Apply statistical and mathematical methods to investigate risk, control and prevention of infectious and chronic diseases.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Executive MBA",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/executive-mba/",
+      "type": "Postgraduate taught",
+      "award": "MBA",
+      "summary": "Maximise your leadership potential without taking time away from your career.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Experimental Biomolecular Sciences (MRes)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/experimental-biomolecular-sciences/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Master key biomolecular lab skills and advanced research techniques to prepare for a career in experimental biomolecular sciences.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/experimental-biomolecular-sciences/#PGCert",
+          "name": "Experimental Biomolecular Sciences (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Experimental Neuroscience",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/experimental-neuroscience/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Receive broad research training in neuroscience to prepare for further PhD study or a career in clinical service.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Finance",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/finance/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Become a leader in the financial sector.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Finance and Accounting",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/finance-accounting/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Become a leader in the financial sector.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": []
+    },
+    {
+      "name": "Financial Technology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/financial-technology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Lead innovation in financial technology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=11",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Full-Time MBA",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/full-time-mba/",
+      "type": "Postgraduate taught",
+      "award": "MBA",
+      "summary": "An accelerated career pathway to responsible business leadership.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Future Power Networks",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/future-power-networks/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your understanding of operating practice, design standards and regulatory policies in the electricity supply industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Genes, Drugs and Stem Cells – Novel Therapies (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/genes-drugs-stem-cells/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Receive a state-of-the-art education in next-generation therapies and build your expertise in translational research",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Genomic Medicine (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/genomic-medicine/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Acquire the knowledge and skills to be able to interpret and understand genomic data across a range of settings.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Geo-Energy with Machine Learning and Data Science",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/geo-energy-machine-learning-data-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop the essential data science and machine learning skills needed to embark on a career as a geoscientist or engineer.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Geological Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/geological-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore geological processes and behaviour of soils and rocks through laboratory testing and fieldwork, to assess geological hazards and support the design of resilient infrastructure.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Geology",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/geology-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Focus on the study of the Earth and how its interior, surface and atmosphere interact in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Geology",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/geology-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Study the Earth's interior, surface, and atmosphere in this professionally accredited Master’s degree",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/geology-msci/#abroad",
+          "name": "Geology with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Geophysics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/geophysics-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Apply mathematical and physical laws to better understand how our planet works.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Geophysics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/geophysics-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Apply mathematical and physical laws to the study of the Earth.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/geophysics-msci/#abroad",
+          "name": "Geophysics with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Geotechnical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/geotechnical-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore the principles of geomechanics, investigate the behaviour of soils and soft rocks, and specialise in areas ranging from earthquake engineering to data science.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": []
+    },
+    {
+      "name": "Geotechnical Engineering with Offshore Renewables",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/offshore-renewables/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain specialist skills in soil behaviour, laboratory testing, numerical modelling and geotechnical design, and apply them to the investigation and development of offshore infrastructure.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=12",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Global Health Management",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/global-health-management/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Empowering future leaders and critical thinkers to tackle global health challenges",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Global Online MBA",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/global-mba/",
+      "type": "Postgraduate taught",
+      "award": "MBA",
+      "summary": "Gain your MBA from anywhere in the world.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Green Chemistry: Energy and the Environment",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/green-chemistry/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Acquire the skills and experience required to thrive in the field of green chemistry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Health Data Analytics and Machine Learning",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/health-data-analytics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop skills in using cutting-edge quantitative methods to fully exploit complex data.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Health Policy (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/health-policy/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Shape the future of global health guided by international academics and practitioners.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/health-policy/#PGCert",
+          "name": "Health Policy (PG Cert)"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/health-policy/#PGDip",
+          "name": "Health Policy (PG Dip)"
+        }
+      ]
+    },
+    {
+      "name": "Human and Biological Robotics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/human-biological-robotics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Advance your knowledge on how bioengineers are leading the way in tackling modern healthcare challenges.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Human Molecular Genetics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/human-molecular-genetics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Train in the theory and application of human genetics to prepare for a research career.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Hydrology and Water Resources Management",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/hydrology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Discover the theoretical background and practical design considerations of hydrology and water resources management.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Immunology (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/immunology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain the knowledge, creativity and critical thinking skills to prepare for a career as a researcher in immunology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/immunology/#PGCert",
+          "name": "Immunology (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Innovation Design Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/innovation-design-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MA/MSc",
+      "summary": "Go beyond boundaries. Build better futures. A programme for fiercely curious changemakers.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Innovation, Entrepreneurship and Management",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/innovation-entrepreneurship-management/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain the skills to create, deliver and capture value from innovation.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": []
+    },
+    {
+      "name": "Intercalated PhD option for Medical Students",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine-phd/",
+      "type": "Undergraduate",
+      "award": "MBBS/PhD",
+      "summary": "Build on your study of Medicine with the chance to complete a PhD as part of your course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=13",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Investment and Wealth Management",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/investment-wealth-management/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Become a leader in the financial sector with CFA affiliation.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Machine Learning and Big Data in the Physical Sciences",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/machine-learning-physical-sciences/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Deepen your understanding of the methodologies used in research involving large data sets.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Machine Learning and Data Science (Online)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/machine-learning-data-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop an in-depth understanding of machine learning models and learn to apply them to real-world problems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Machine Learning and Process Systems Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/process-systems-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop coding and mathematical skills relevant to the process industries.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Master of Public Health",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/public-health-masters/",
+      "type": "Postgraduate taught",
+      "award": "MPH",
+      "summary": "Develop key quantitative analytical skills for a career in public health, epidemiology and health services research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Master of Public Health (Online)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/mph-online/",
+      "type": "Postgraduate taught",
+      "award": "MPH",
+      "summary": "Research the world’s most pressing public health issues through a flexible online degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/mph-online/#PGCert",
+          "name": "Postgraduate Certificate of Public Health (Online)"
+        }
+      ]
+    },
+    {
+      "name": "Materials Science and Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/materials-science-engineering-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Develop your appreciation of materials science and engineering and build your research expertise through to Master's level.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Materials Science and Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/materials-science-engineering-beng/",
+      "type": "Undergraduate",
+      "award": "BEng",
+      "summary": "Investigate materials science and apply this knowledge to engineering projects in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Materials with Nuclear Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/materials-nuclear-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Apply your study of materials to nuclear engineering in this professionally accredited Master’s degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Mathematics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Deepen your understanding of mathematics and enrich your studies on an optional year abroad",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-msci/#OptionA",
+          "name": "Mathematics with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Mathematics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Engage with mathematical ideas that will develop your critical and intellectual abilities and introduce new ways of thinking.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": []
+    },
+    {
+      "name": "Mathematics (Pure Mathematics)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/pure-mathematics-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Develop a broad understanding of mathematical theory and gain in-depth knowledge of pure mathematics.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=14",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Mathematics and Computer Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-computer-science-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Develop powerful logical thinking and technical problem-solving skills that prepare you for exciting opportunities in science, technology and industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics and Computer Science",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-computer-science-beng/",
+      "type": "Undergraduate",
+      "award": "BEng",
+      "summary": "Develop powerful logical thinking and technical problem-solving skills that prepare you for exciting opportunities in science, technology and industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics and Computer Science for Artificial Intelligence",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-computer-science-ai-meng/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Develop powerful analytical and problem-solving skills for leading roles in AI, data science and modern tech.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics and Computer Science for Artificial Intelligence",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-computer-science-ai-beng/",
+      "type": "Undergraduate",
+      "award": "BEng",
+      "summary": "Develop powerful analytical and problem-solving skills for leading roles in AI, data science and modern tech.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics and Finance",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/mathematics-finance/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Broaden your knowledge of mathematics and quantitative finance for a career in the financial services sector.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics with Applied Mathematics/Mathematical Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-applied-physics/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Engage with mathematical ideas and use problem-solving skills and advanced logic to understand real-world phenomena",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics with Mathematical Computation",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-computation/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Apply mathematical thinking to theoretical computer science and advance your knowledge of high performance computing",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics with Statistics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-statistics/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Develop a broad understanding of mathematical theory, concepts and applications and gain an in-depth knowledge of statistics.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mathematics with Statistics for Finance",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mathematics-statistics-finance/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Learn to apply statistical methods to solve problems facing financial services industries.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": []
+    },
+    {
+      "name": "Mechanical Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mechanical-engineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Develop your creative, practical and transferable skills through a broad mechanical engineering curriculum.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mechanical-engineering/#OptionA",
+          "name": "Mechanical Engineering with a Year Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mechanical-engineering/#OptionB",
+          "name": "Mechanical Engineering with a Year in Industry"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mechanical-engineering/#OptionC",
+          "name": "Mechanical Engineering with a Year in Industry and Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Mechanical Engineering with Nuclear Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mechanical-engineering-nuclear/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Enrich your understanding of mechanical and nuclear engineering and develop your manufacturing and design skills.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/mechanical-engineering-nuclear/#OptionA",
+          "name": "Mechanical Eng. with Nuclear Eng. and a Year in Industry"
+        }
+      ]
+    },
+    {
+      "name": "Medical Biosciences",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medical-biosciences/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Assess critical challenges facing human health and gain laboratory and research skills.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=15",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Medical Biosciences with Management",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medical-biosciences-management/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Assess the critical challenges facing human health and develop your management potential.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medical Device Design and Entrepreneurship",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/medical-device-design/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop analytical and entrepreneurial skills towards a career in bioengineering.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medical Robotics and Image-Guided Intervention",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/medical-robotics/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Gain the research experience required to work within the innovative field of medical robotics and surgical imaging",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medical Robotics and Image-Guided Intervention: Clinical Robotics and AI",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/clinical-robotics-ai/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Discover how medical robotics and data science are being applied in the clinic and carry out cutting-edge translational research",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medical Science and Innovation",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medical-science-innovation/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "A four-year, highly integrated undergraduate MSci for students who want to transform scientific discovery into real-world health solutions, from new drugs and devices to smarter health systems and policy change.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medical Ultrasound (Echocardiography)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/medical-ultrasound-echocardiography/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop the research and development skills required to specialise in the field of echocardiography.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medical Ultrasound (Vascular)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/medical-ultrasound-vascular/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Build your research and development skills in medical ultrasound and specialise in vascular ultrasound.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medicine",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine/",
+      "type": "Undergraduate",
+      "award": "MBBS/BSc",
+      "summary": "Study medicine with an integrated approach and start your career with an MBBS and BSc qualification.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Medicine (Graduate Entry) (MBBS 4YFT)",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine-graduate-entry/",
+      "type": "Undergraduate",
+      "award": "MBBS",
+      "summary": "Study at the Pears Cumbria School of Medicine (PCSM), a collaborative and inclusive medical school embedded in the communities of Cumbria, training clinicians who are innovative, adaptable and focused on the delivery of high-quality person-centred care.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Microbiology",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/microbiology/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Focus your study on all types of microorganisms, acquiring the theoretical and practical skills needed for a career in microbiology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Molecular and Cellular Biosciences",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/molecular-cellular-biosciences/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop the fundamental skills needed for a career in biosciences research or academia.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": []
+    },
+    {
+      "name": "Molecular Bioengineering",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/molecular-bioengineering/",
+      "type": "Undergraduate",
+      "award": "MEng",
+      "summary": "Explore engineering, biology and chemistry to understand how vital molecular level interactions can benefit human health",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=16",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/molecular-bioengineering/#abroad",
+          "name": "Molecular Bioengineering with a Year Abroad"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/molecular-bioengineering/#industry",
+          "name": "Molecular Bioengineering with a Year in Industry"
+        },
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Molecular Biology and Pathology of Viruses",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/molecular-biology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Analyse the nature of viruses as cellular parasites and their importance in human, animal and plant diseases.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Molecular Medicine",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/molecular-medicine/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Receive theoretical and practical training using state-of-the-art techniques in molecular and cellular biology as applied to medicine.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Molecular Plant and Microbial Sciences",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/molecular-plant-microbial-sciences/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Research advanced concepts and technologies related to the molecular basis of plant and microbe functions, including two research projects.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "MSc in Management",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/management/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain in-demand and real-world management skills.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Nanomaterials",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/nanomaterials/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Discover how investment in nanotechnology is helping deliver major scientific and technological advances.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Nanomedicine and Nanodiagnostics MRes",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/nanomedicine/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Investigate the unique properties of nanoscale materials for the treatment, detection, visualisation and prevention of diseases.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Neurotechnology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/neurotechnology/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop your expertise for a career at the interface between neuroscience and engineering.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Optics and Photonics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/optics-photonics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Discover why optics is of key importance to many industrial sectors on one of the College’s longest-established courses.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Photonics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/photonics/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop your interests and skills in photonics and be trained in research methods.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/physics-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Broaden your understanding of fundamental and applied physics in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": []
+    },
+    {
+      "name": "Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/physics-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Deepen your knowledge of physics with an integrated year of Master’s level study in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/physics-msci/#OptionA",
+          "name": "Physics with a Year Abroad"
+        }
+      ]
+    },
+    {
+      "name": "Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/physics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Build your physics knowledge to prepare for a research career within a university or national laboratory.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=17",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Physics with Extended Research",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/physics-extended-research/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your knowledge of physics to prepare for a research career within a university or national laboratory.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Physics with Fusion and Plasma Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/fusion-plasma/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain the skills you need to prepare for a research career in plasma physics with a focus on fusion energy.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Physics with Quantum Dynamics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/physics-quantum-dynamics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your knowledge of quantum dynamics to prepare for a research career.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Physics with Theoretical Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/physics-theoretical-msci/",
+      "type": "Undergraduate",
+      "award": "MSci",
+      "summary": "Develop your appreciation of theoretical physics in this professionally accredited integrated Master’s course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Physics with Theoretical Physics",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/physics-theoretical-bsc/",
+      "type": "Undergraduate",
+      "award": "BSc",
+      "summary": "Advance your understanding of theoretical physics in this professionally accredited degree.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Pure Mathematics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/pure-mathematics-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Obtain transferrable mathematical skills needed for employment and future research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Pure Mathematics (Formalisation of Mathematics)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/pure-mathematics-formalisation-msc/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop mathematical skills that are highly valued in both research and the workplace.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Quantum Fields and Fundamental Forces",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/quantum-fields-fundamental-forces/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain the skills you need to undertake future PhD study in fundamental theoretical physics.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Renewable Energy with AI and Data Science: Geology and Geophysics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/renewable-energy/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Apply computational techniques to geological and geophysical data to characterise sites for renewable energy.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Reproductive and Developmental Biology (MSc)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/reproductive-developmental-biology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop your skills for a scientific or clinical career in reproductive and developmental biology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/reproductive-developmental-biology/#PGCert",
+          "name": "Reproductive and Developmental Biology (PG Cert)"
+        }
+      ]
+    },
+    {
+      "name": "Responsible Mining and Metals Finance",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/responsible-mining-metals-finance/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Deepen your understanding of technical and financial assessments of mining and metals projects, key to resourcing the energy transition.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": []
+    },
+    {
+      "name": "Risk Management and Financial Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/risk-management-financial-engineering/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Become a leader in risk management.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=18",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Science Communication",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/science-communication/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Prepare for a range of science communication careers through academic and practical experience.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Science Media Production",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/science-media-production/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop the expertise required to work in broadcast media television or radio.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Sensor Systems Engineering",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/sensor-systems/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop the expertise to engineer sensor systems from end to end: from sensor physics, design and characterisation to instrumentation, signal processing, networks and data interpretation.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Soft Electronic Materials",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/soft-electronic-materials/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Create and optimise new types of electronic materials and devices for a diverse range of applications.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Statistics",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/statistics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Discover a diverse range of statistical tools, applications and methods.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Statistics (Applied Statistics)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/statistics-applied-statistics/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Advance your understanding of theoretical and applied statistics and explore the use of stats in a variety of settings.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Statistics (Data Science and Machine Learning)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/statistics-data-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Build familiarity with a wide range of data science techniques and their application in a variety of settings.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Statistics (Statistical Finance)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/statistics-statistical-finance/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Develop and apply statistical theory and methods in a wide range of situations relevant to commerce and finance.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Statistics (Theory and Methods)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/statistics-theory-methods/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Advance your understanding of statistical methods and their underlying theory.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Strategic Marketing",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/strategic-marketing/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Prepare to lead a data-driven marketing team.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Strategic Marketing (Online)",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/strategic-marketing-online/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Prepare to lead a data-driven marketing team in this online, part-time course.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": []
+    },
+    {
+      "name": "Structural Biology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/structural-biology/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Train in major structural biology techniques for a career in research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=19",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    },
+    {
+      "name": "Sustainability, Environmental Policy and Innovation",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/sustainability-environmental-policy-innovation/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain skills for leadership in sustainability and environmental technology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Sustainable Agriculture and Technology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/sustainable-agriculture-technology/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Lead the next generation of sustainable farming with advanced training in agricultural technologies and ecology.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Sustainable Energy Futures",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/sustainable-energy-futures/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Gain the skills needed to join the next generation of leaders in the energy sector.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Synthetic Cell Science",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/synthetic-cell-science/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Explore new technologies and approaches for making synthetic cells and artificial life and undertake training towards a research career where your breakthroughs impact healthcare and industry.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Systems and Synthetic Biology",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/systems-synthetic-biology/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Hands-on experience in experimental biology and modelling to understand, predict and redesign biological pathways.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Taxonomy, Biodiversity and Evolution",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/taxonomy-biodiversity/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Obtain broad training in modern approaches of taxonomy and collection-based research.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Translational Neuroscience",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/translational-neuroscience/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Receive the advanced training required to understand neurological disorders and develop better treatments.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Translational Research in Surgery, Perioperative and Critical Care",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/translational-research-perioperative/",
+      "type": "Postgraduate taught",
+      "award": "MRes",
+      "summary": "Develop, adapt and trial new models of scientific exploration to accelerate innovations into surgical, perioperative and critical care practice.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Transport",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/transport/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Explore the movement of people and goods to prepare for a career in operations, engineering or transport planning.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Transport with Data Science",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/transport-data-science/",
+      "type": "Postgraduate taught",
+      "award": "MSc",
+      "summary": "Specialise in analysing large volumes of transport data and in developing models for efficient, sustainable, and resilient transport systems.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": []
+    },
+    {
+      "name": "Weekend MBA",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/weekend-mba/",
+      "type": "Postgraduate taught",
+      "award": "MBA",
+      "summary": "Take your executive skills to the next level, without impacting your career.",
+      "search_page": "https://www.imperial.ac.uk/study/courses/?page=20",
+      "variants": [
+        {
+          "url": "https://www.imperial.ac.uk/study/courses/",
+          "name": "1"
+        }
+      ]
+    }
+  ]
+}

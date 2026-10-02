@@ -144,7 +144,7 @@ Main endpoints: `GET /universities`, `GET /universities/{id}`, `GET /currency/ra
 
 Update verified facts in `backend/data/official_facts.json` and `backend/data/official_admissions.json`, then use the sync scripts to update `universities.json`. Follow the [data contribution workflow](CONTRIBUTING.md#university-data-changes). Run `npm run audit:data` after data changes and `npm run audit:images` after media changes.
 
-For the planned admissions overhaul, use the [staged checklist](todo.md): collect and organize MIT and the other 49 institutions in drafts first, integrate the reviewed data into backend/frontend second, and complete UI/UX verification third. Each institution keeps its own programs and admissions structure. The synchronization steps above describe the current runtime; draft research is not restricted to its existing fields.
+For the planned admissions overhaul, use the [staged checklist](todo.md): collect and organize MIT and the other 49 institutions in drafts first, integrate the reviewed data into backend/frontend second, and complete UI/UX verification third. Each institution keeps its own programs and admissions structure. Reviewed Stage 1 examples are available in the [Imperial College London draft](backend/data/drafts/imperial-college-london-uk/README.md) and [Stanford University draft](backend/data/drafts/stanford-university-usa-ca/README.md). The synchronization steps above describe the current runtime; draft research is not restricted to its existing fields.
 
 ## Checks and tests
 

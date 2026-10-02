@@ -1,0 +1,190 @@
+{
+  "purpose": "Filled traversal example: selecting the Business MRes phase resolves integrated programme conditions, not a standalone no-test route.",
+  "selected_option": {
+    "id": "imperial-option-business-mres",
+    "title": "Business MRes",
+    "award": "MRes",
+    "level": "masters",
+    "catalog_classification": "integrated_doctoral_mres_phase",
+    "independent_application": "A course choice or internal route as stated; not inferred from a search row or award label",
+    "course_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/business-mres/",
+    "department": "Imperial Business School",
+    "cycle": "2027 entry",
+    "source_ids": [
+      "imperial_page_business_mres"
+    ],
+    "checked_at": "2026-10-01",
+    "procedure_ids": [
+      "procedure-business-doctoral"
+    ],
+    "variants": [],
+    "ucas_course_codes": [],
+    "inventory_origin": "official_course_search",
+    "application_relationship": "Course-specific choice; see scoped application evidence",
+    "fact_ids": [
+      "fact_business_mres_course_profile",
+      "fact_imperial_business_mres_course_admission_dates_fees_awards",
+      "imperial-business-doctoral-entry",
+      "imperial-business-doctoral-profile-funding"
+    ],
+    "researched_unknown_ids": [
+      "unknown_course_specific_degree_equivalency",
+      "unknown_2027_imperial_inspires_participating_course_list"
+    ]
+  },
+  "application_context": {
+    "id": "procedure-business-doctoral",
+    "option_ids": [
+      "imperial-business-doctoral",
+      "imperial-option-business-mres"
+    ],
+    "application_classification": "integrated_research_application",
+    "destination": "See scoped facts and researched uncertainty",
+    "target": "Business (MRes 2YFT)",
+    "source_ids": [
+      "source-e2f34734a0651582",
+      "source-17c356e9a8ad71bd",
+      "source-13dc087e577b938e"
+    ],
+    "policy_inheritance": "Facts apply only when option, degree, applicant, cycle, fee and route scopes intersect. Shared portal does not imply shared requirements.",
+    "record_kind": "application_context",
+    "independent_application_status": "integrated_research_application"
+  },
+  "fact_index": {
+    "id": "imperial-business-doctoral-entry",
+    "evidence_file": "doctoral-evidence.json",
+    "topic": "academic_application",
+    "scope": {
+      "study_levels": [
+        "doctoral",
+        "masters"
+      ],
+      "option_ids": [
+        "imperial-business-doctoral",
+        "imperial-option-business-mres"
+      ],
+      "route_ids": [
+        "procedure-business-doctoral"
+      ],
+      "applicant_categories": [
+        "Applicants within the described degree, project, employment or funding scope"
+      ],
+      "cycle": "September2027entry",
+      "fee_status": [],
+      "original_scope_note": "",
+      "original_scope": {
+        "study_levels": [
+          "doctoral",
+          "masters"
+        ],
+        "option_ids": [
+          "imperial-business-doctoral",
+          "imperial-option-business-mres"
+        ],
+        "route_ids": [
+          "procedure-business-doctoral"
+        ],
+        "applicant_categories": [
+          "Applicants within the described degree, project, employment or funding scope"
+        ],
+        "cycle": "September2027entry",
+        "fee_status": [],
+        "programme_role": "Business MRes initial phase of the integrated MRes-to-PhD procedure; not unrelated taught masters"
+      }
+    },
+    "source_ids": [
+      "source-17c356e9a8ad71bd",
+      "source-13dc087e577b938e"
+    ],
+    "content_reviewed_at": "2026-10-01",
+    "publication_status": "published",
+    "review_status": "verified"
+  },
+  "resolved_evidence": {
+    "id": "imperial-business-doctoral-entry",
+    "topic": "academic_application",
+    "value": {
+      "cycle": "September2027",
+      "normal_entry": "UK2:1Bachelor plus MasterMerit/Distinction andstrongdissertation; exceptionalstrongFirstBachelorwithoutMastermayqualifywithoutstandingreferences/CV/statement. Strongquantitativemethods:calculus,linearmatrixalgebra,statistics,dataprogramming; qualitativeManagementEntrepreneurshipmayjoinwithoutquantbackgroundcasebycasebutmusttraininMRes.",
+      "test": "GMATorGRE compulsory beforeconsideration, no conditionaltestoffer.90thpercentilepreferrednotguaranteedminimumadmission:classicGMAT700+ (quant50/60verbal39/60writing6/6integrated8/8),Focus655+90thcomponents5yrvalidity;GREquant165/170verbal163/170writing5/6. GREpreferredFinance/EconomicsPublicPolicy/AnalyticsOperations;eitheracceptedall.",
+      "english": "Higherlevel:IELTS7/6.5,TOEFLlegacy100/22,newscale5/5,Duolingo125/115;2yratstart;degreewhollystudied/awardedinlistedcountriesaccepted;sourcecountrylistomitsMalta unlikecentral exemption, do notassumeBusinessMalta automatic. Englishmaybesuppliedafterapplication.",
+      "documents": "CV,statementofpurpose,fulltranscripts,twoacademicreferees,GMAT/GRE,Englishevidence. Outlineinterestsandfaculty;EconomicsPublicPolicyrequiresmorespecificresearchidea. Willingsupervisornotrequiredbeforeapply.",
+      "deadline": "2December2026 beforemidnightUK; allsupportingdocumentsreferencesandtestsneeded, incompleteapplicationsnotprocessed.",
+      "selection": "AcademicSelectionCommittee shortlistthenfaculty-panelinterview,overseasonline;Registrychecksconditionsbeforeofficialoffer.",
+      "variants": "AnalyticsOperations,EconomicsPublicPolicy,Finance,ManagementEntrepreneurship,Marketing; Management application separately selectsInnovationEntrepreneurshiporOrganisationalBehaviourStrategy."
+    },
+    "scope": {
+      "study_levels": [
+        "doctoral",
+        "masters"
+      ],
+      "option_ids": [
+        "imperial-business-doctoral",
+        "imperial-option-business-mres"
+      ],
+      "route_ids": [
+        "procedure-business-doctoral"
+      ],
+      "applicant_categories": [
+        "Applicants within the described degree, project, employment or funding scope"
+      ],
+      "cycle": "September2027entry",
+      "fee_status": [],
+      "programme_role": "Business MRes initial phase of the integrated MRes-to-PhD procedure; not unrelated taught masters"
+    },
+    "source_ids": [
+      "source-17c356e9a8ad71bd",
+      "source-13dc087e577b938e"
+    ],
+    "publication_status": "published",
+    "review_status": "verified",
+    "checked_at": "2026-10-01",
+    "conditions": []
+  },
+  "sources": [
+    {
+      "id": "source-13dc087e577b938e",
+      "url": "https://www.imperial.ac.uk/business-school/phd/funding-scholarships/",
+      "title": "PhD funding and scholarships - Business School",
+      "checked_at": "2026-10-01",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/phd/funding-scholarships/"
+      },
+      "evidence_records": [
+        {
+          "id": "source-13dc087e577b938e",
+          "url": "https://www.imperial.ac.uk/business-school/phd/funding-scholarships/",
+          "title": "PhD funding and scholarships - Business School",
+          "checked_at": "2026-10-01",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/phd/funding-scholarships/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "source-17c356e9a8ad71bd",
+      "url": "https://www.imperial.ac.uk/business-school/phd/admissions/",
+      "title": "PhD admissions - Business School",
+      "checked_at": "2026-10-01",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/phd/admissions/"
+      },
+      "evidence_records": [
+        {
+          "id": "source-17c356e9a8ad71bd",
+          "url": "https://www.imperial.ac.uk/business-school/phd/admissions/",
+          "title": "PhD admissions - Business School",
+          "checked_at": "2026-10-01",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/phd/admissions/"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2554 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-10-02",
+  "collection_status": "in_progress",
+  "owner_scope": "Institution-wide undergraduate first-year and transfer admissions, shared undergraduate financial aid/cost/housing, and central nonprofessional graduate application policy. Professional-school rules are out of scope.",
+  "sources": [
+    {
+      "id": "stanford-ug-firstyear-requirements",
+      "url": "https://admission.stanford.edu/apply/first-year/index.html",
+      "title": "First-Year Applicants — Requirements and Deadlines | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-apply",
+      "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+      "title": "Application and Essays | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-tests",
+      "url": "https://admission.stanford.edu/apply/first-year/testing.html",
+      "title": "Standardized Testing | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-preparation",
+      "url": "https://admission.stanford.edu/apply/first-year/prepare.html",
+      "title": "Preparing for Stanford Academics | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-records",
+      "url": "https://admission.stanford.edu/apply/first-year/forms.html",
+      "title": "Transcript, School Report and Recommendations | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-rounds",
+      "url": "https://admission.stanford.edu/apply/first-year/decision_process.html",
+      "title": "Regular Decision and Restrictive Early Action | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-fee",
+      "url": "https://admission.stanford.edu/apply/first-year/fee.html",
+      "title": "Application Fee/Fee Waiver | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-interview",
+      "url": "https://admission.stanford.edu/apply/first-year/interview.html",
+      "title": "Interview | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-firstyear-arts",
+      "url": "https://admission.stanford.edu/apply/first-year/arts.html",
+      "title": "Arts Portfolio | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-requirements",
+      "url": "https://admission.stanford.edu/apply/transfer/",
+      "title": "Transfer Applicants — Requirements and Deadlines | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-fee",
+      "url": "https://admission.stanford.edu/apply/transfer/fee.html",
+      "title": "Application Fee/Fee Waiver | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-eligibility",
+      "url": "https://admission.stanford.edu/apply/transfer/eligibility.html",
+      "title": "Eligibility | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-apply",
+      "url": "https://admission.stanford.edu/apply/transfer/apply.html",
+      "title": "Application and Essays | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-records",
+      "url": "https://admission.stanford.edu/apply/transfer/transcripts.html",
+      "title": "Transcripts and College Report | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-tests",
+      "url": "https://admission.stanford.edu/apply/transfer/testing.html",
+      "title": "Standardized Testing | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-arts",
+      "url": "https://admission.stanford.edu/apply/transfer/arts.html",
+      "title": "Arts Portfolio | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-international",
+      "url": "https://admission.stanford.edu/apply/international/",
+      "title": "International Applicants | Stanford Undergraduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-budget",
+      "url": "https://financialaid.stanford.edu/undergrad/budget/index.html",
+      "title": "The Student Budget | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-dates",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/index.html",
+      "title": "Requirements and Dates | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-international-rea",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rea_international.html",
+      "title": "Restrictive Early Action—International Students | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-transfer-us",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/transfer_us.html",
+      "title": "Transfer—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-transfer-international",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/transfer_international.html",
+      "title": "Transfer—International Students | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-types",
+      "url": "https://financialaid.stanford.edu/undergrad/types/index.html",
+      "title": "Types of Aid | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-renewal-us",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/continuing_us.html",
+      "title": "Continuing Students—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-renewal-intl",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/continuing_international.html",
+      "title": "Continuing Students—International | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-housing-guarantee",
+      "url": "https://rde.stanford.edu/studenthousing/housing-guarantee-and-eligibility-undergraduate-housing",
+      "title": "Housing Guarantee and Eligibility for Undergraduate Housing | Stanford R&DE",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-housing-frosh-transfer",
+      "url": "https://rde.stanford.edu/studenthousing/freshmen-and-transfer-students",
+      "title": "Frosh and Transfer Students | Stanford R&DE",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-institution-location",
+      "url": "https://www.stanford.edu/about/",
+      "title": "About Stanford | Stanford University",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-how-to-apply",
+      "url": "https://gradadmissions.stanford.edu/apply",
+      "title": "How to Apply | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-eligibility",
+      "url": "https://gradadmissions.stanford.edu/apply/eligibility",
+      "title": "Eligibility | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-test-scores",
+      "url": "https://gradadmissions.stanford.edu/apply/test-scores",
+      "title": "Test Scores | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-application-overview",
+      "url": "https://gradadmissions.stanford.edu/apply/application-overview",
+      "title": "Application Overview | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-records",
+      "url": "https://gradadmissions.stanford.edu/apply/transcripts",
+      "title": "Transcripts (Academic Records) | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-recommendations",
+      "url": "https://gradadmissions.stanford.edu/apply/recommendations",
+      "title": "Recommendations | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-statements",
+      "url": "https://gradadmissions.stanford.edu/apply/statements",
+      "title": "Statements | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-fee",
+      "url": "https://gradadmissions.stanford.edu/apply/application-fee",
+      "title": "Application Fee | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-fee-eligible-programs",
+      "url": "https://gradadmissions.stanford.edu/apply/application-fee/program-participation-waivers/eligible-programs",
+      "title": "Eligible Programs | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-faq",
+      "url": "https://gradadmissions.stanford.edu/apply/faq",
+      "title": "Frequently Asked Questions | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-budget",
+      "url": "https://financialaid.stanford.edu/grad/budget/index.html",
+      "title": "The Student Budget | Stanford Graduate Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-funding-overview",
+      "url": "https://financialaid.stanford.edu/grad/aid/index.html",
+      "title": "Planning for Your Educational Expenses | Stanford Graduate Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-admissions-bulletin",
+      "url": "https://bulletin.stanford.edu/academic-polices/admissions/graduate",
+      "title": "Graduate Admissions | Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-grad-admitted-credentials",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/conditions-admission/academic-credentials",
+      "title": "Verification of Academic Credentials for Incoming Students | Stanford Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-vaden-health",
+      "url": "https://vaden.stanford.edu/health-requirements",
+      "title": "Health Requirements | Vaden Health Services",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-bechtel-visa-process",
+      "url": "https://bechtel.stanford.edu/navigate-international-life/visas/f-1-and-j-1-student-visas/applying-visa-document-newly-admitted",
+      "title": "Before Applying for a Visa Document for Newly Admitted Students | Bechtel International Center",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-funding",
+      "url": "https://knight-hennessy.stanford.edu/program-overview/funding",
+      "title": "Funding | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-transfer-legacy-index",
+      "url": "https://admission.stanford.edu/application/transfer/index.html",
+      "title": "Transfer Applicants | Stanford Undergraduate Admission (legacy application path)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "search_index_excerpt_only_page_access_denied_403"
+    },
+    {
+      "id": "stanford-khs-admission",
+      "url": "https://knight-hennessy.stanford.edu/admission",
+      "title": "Admission | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-eligibility",
+      "url": "https://knight-hennessy.stanford.edu/admission/before-you-apply/eligibility",
+      "title": "Eligibility | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-deadlines",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/application-deadlines",
+      "title": "Application Deadlines | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-application",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/online-application",
+      "title": "Online Application | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-home",
+      "url": "https://knight-hennessy.stanford.edu/",
+      "title": "Knight-Hennessy Scholars at Stanford University",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-requirements",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications",
+      "title": "Preparing Your Applications | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-essays",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/short-answers-essay",
+      "title": "Short Answers & Essay | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-resume",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/resume",
+      "title": "Resume | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-transcripts-tests",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/transcripts-test-scores",
+      "title": "Transcripts & Test Scores | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-recommendations",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/recommendation-letters",
+      "title": "Recommendation Letters | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-khs-evaluation",
+      "url": "https://knight-hennessy.stanford.edu/admission/after-you-apply/evaluation-processes",
+      "title": "Evaluation Processes | Knight-Hennessy Scholars at Stanford",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-rea-us",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rea_us.html",
+      "title": "Restrictive Early Action—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-rd-us",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_us.html",
+      "title": "Regular Decision—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-aid-rd-international",
+      "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html",
+      "title": "Regular Decision—International Students | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-ug-undocumented-aid",
+      "url": "https://financialaid.stanford.edu/undergrad/how/undocumented.html",
+      "title": "Undocumented Students | Stanford Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_facts"
+    }
+  ],
+  "study_options": [],
+  "application_procedures": [
+    {
+      "id": "stanford-first-year",
+      "title": "University-wide first-year undergraduate admission",
+      "levels": [
+        "undergraduate"
+      ],
+      "applicant_categories": [
+        "first-year; includes international applicants applying from secondary school"
+      ],
+      "application_target": "Stanford University undergraduate admission; prospective major/department is not an admission target",
+      "intakes": [
+        "Autumn/Fall only"
+      ],
+      "decision_plans": [
+        "Restrictive Early Action (non-binding)",
+        "Regular Decision"
+      ]
+    },
+    {
+      "id": "stanford-transfer",
+      "title": "University-wide transfer undergraduate admission",
+      "levels": [
+        "undergraduate"
+      ],
+      "applicant_categories": [
+        "transfer; includes international applicants with post-secondary degree-credit study after high school"
+      ],
+      "application_target": "Stanford University undergraduate admission; prospective major/department is not an admission target",
+      "intakes": [
+        "Autumn/Fall only"
+      ],
+      "decision_plans": [
+        "Transfer admission (single annual deadline shown)"
+      ]
+    },
+    {
+      "id": "stanford-nonprofessional-graduate",
+      "title": "Central application process for nonprofessional graduate programs",
+      "levels": [
+        "master",
+        "doctoral",
+        "postgraduate other"
+      ],
+      "applicant_categories": [
+        "domestic",
+        "international"
+      ],
+      "application_target": "One selected Stanford nonprofessional graduate program per academic year, with program-specific supplemental application",
+      "intakes": [
+        "program-defined; central online application currently open for 2027 entry"
+      ]
+    },
+    {
+      "id": "stanford-knight-hennessy",
+      "title": "Separate Knight-Hennessy Scholars selection and funding process",
+      "levels": [
+        "graduate scholarship attached to eligible graduate study"
+      ],
+      "applicant_categories": [
+        "prospective or conditionally admitted graduate students meeting cohort eligibility"
+      ],
+      "application_target": "Knight-Hennessy Scholars fellowship; requires concurrent or already-deferred admission to a separate eligible Stanford full-time graduate degree",
+      "intakes": [
+        "2027 cohort"
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "stanford-ug-admission-is-university-wide",
+      "topic": "application_target",
+      "value": "Applicants apply to Stanford University as a whole and are not admitted to a major, department, or school. A stated prospective major or career interest is nonbinding; choosing an undergraduate major is a post-admission study choice.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year",
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-apply",
+        "stanford-ug-transfer-apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-ug-firstyear-reapply-limit",
+      "topic": "application_restriction",
+      "value": "A person may submit at most three Stanford undergraduate admission applications total, counting first-year and transfer applications together. A person below the limit may reapply.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year",
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-requirements",
+        "stanford-ug-transfer-requirements"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Counts prior undergraduate applications to Stanford across the two procedures."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-firstyear-common-application",
+      "topic": "application_method",
+      "value": "Apply online through the Common Application, including Stanford Questions. Applications open in early August; Stanford Questions are completed in the Common Application after adding Stanford.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry cycle as shown on current 2026 admissions pages",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-apply",
+        "stanford-ug-firstyear-requirements"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-firstyear-fee",
+      "topic": "application_fee",
+      "value": "Application fee is USD 100, nonrefundable. Request the Common App fee waiver and have a counselor/school official verify it in Common App or submit the completed NACAC form as directed. The application may be submitted before waiver approval; Stanford may request more information.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry cycle as shown on current 2026 admissions pages",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-fee"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "This application fee is distinct from CSS Profile charges; Stanford does not issue CSS Profile fee-waiver codes."
+      ],
+      "exceptions": [
+        "International students unable to pay CSS Profile fees or in a country where College Board cannot process payment may use Stanford's International Student Application for Financial Assistance for the aid process; this does not waive the admission fee."
+      ]
+    },
+    {
+      "id": "stanford-firstyear-academic-preparation",
+      "topic": "academic_qualification",
+      "value": "A high-school diploma or equivalent is required to enroll. Stanford publishes no prescribed set of required high-school courses. It recommends rigorous year-on-year study and mastery across English, mathematics, social studies, science, and world language, approximately five academic courses per semester including senior year; these are preparation recommendations, not stated course prerequisites.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-preparation"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The diploma/equivalent is an enrollment qualification; it need not be held when applying."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-firstyear-standardized-tests",
+      "topic": "standardized_tests",
+      "value": "ACT or SAT is required for first-year applicants. Stanford has no minimum score and no score guarantees admission. Either exam is accepted without preference; the redesigned ACT and original ACT are accepted, and the redesigned ACT science section is optional. Applicants self-report highest scores; official scores are required for self-reported scores if admitted and enrolling. SAT is superscored across highest Evidence-Based Reading and Writing and Math sections; ACT superscore may be reported with highest section scores. Writing/essay portions are optional. Stanford recommends tests within five years.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry cycle; ACT transition policy published from 2025-26 onward",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-tests"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Latest possible sittings published for the current cycle: REA ACT by end of September and SAT by end of October; RD ACT and SAT by end of December. Late scores may not arrive in time, and review is not delayed for them."
+      ],
+      "exceptions": [
+        "AP exams are not mandatory, but all AP scores must be self-reported if taken. IB Diploma students outside the US must have predicted marks sent by a school official. British-system applicants must have GCSE results and predicted A-Level marks sent; Stanford says applicants generally have at least three full A-Level courses. These are distinct examination-document rules, not substitutes for ACT/SAT."
+      ]
+    },
+    {
+      "id": "stanford-firstyear-testing-document-editions",
+      "topic": "standardized_test_versions",
+      "value": "The current Stanford page accepts both original and redesigned ACT versions and states the redesigned ACT science section is optional. It does not name a single SAT form/edition cutoff; SAT section superscoring is described. No exemption from the ACT-or-SAT requirement is published on the reviewed current first-year testing page.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-tests"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": [
+        "International applicants do not have an English-proficiency exam requirement for undergraduate admission; this is separate from required ACT/SAT."
+      ]
+    },
+    {
+      "id": "stanford-firstyear-required-records",
+      "topic": "application_documents",
+      "value": "Required components include Common Application; school report and counselor recommendation; official high-school transcript/academic results (grades 9–12); and two academic-teacher recommendations. School officials/testing agencies must send official records directly; applicant-submitted transcripts are not accepted. Report international curriculum results and predictions when available. Any high-school, college/university, or online courses absent from the current high-school transcript require official records.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-requirements",
+        "stanford-ug-firstyear-records"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "A midyear transcript is due February 15 for Regular Decision applicants, REA applicants deferred to RD, and REA admits. Students already graduated do not submit a midyear transcript. Final transcript with graduation date is due July 1 for admitted students who enroll."
+      ],
+      "exceptions": [
+        "An optional additional recommender may submit a letter if they know the applicant well and offer new insight; this is in addition to the two required teacher letters."
+      ]
+    },
+    {
+      "id": "stanford-firstyear-essays",
+      "topic": "essays",
+      "value": "Besides the Common App personal essay, applicants answer several Stanford short questions (each up to 50 words) and write three Stanford short essays, each 100–250 words: an idea/experience that excites learning; a note to a future roommate; and a distinctive contribution based on life experiences, interests, and character.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-firstyear-decision-rounds-deadlines",
+      "topic": "application_deadlines",
+      "value": "For 2027 entry, REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-requirements",
+        "stanford-ug-firstyear-rounds"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Stanford may evaluate and decide an application even if every component has not arrived. Current page lists mid-November/mid-February missing-document notifications."
+      ],
+      "exceptions": [
+        "REA denial is final and the applicant may not reapply RD in that cycle. REA applicants face restrictions on applying to other institutions' early plans, with specified exceptions; applicants must check the official REA policy for their exact concurrent application pattern."
+      ]
+    },
+    {
+      "id": "stanford-firstyear-interview",
+      "topic": "interview",
+      "value": "First-year applicants who attend high school in an interview area and apply REA or RD may be invited to an optional alumni interview. Availability depends on interview-area coverage and volunteer availability; applicants cannot request or schedule one. Not receiving an interview is not a disadvantage.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-interview"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Invitation and available alumni interviewer are required."
+      ],
+      "exceptions": [
+        "No transfer interview policy has been established by this source; do not transfer this fact to the transfer procedure."
+      ]
+    },
+    {
+      "id": "stanford-firstyear-arts-portfolio",
+      "topic": "optional_arts_portfolio",
+      "value": "Optional arts portfolios are available in Art Practice, Dance, Music, and Theater and Performance Studies for applicants wishing to show exceptional fine/performing-arts achievement. Portfolio submission does not require an arts major. Submission is through Stanford's portal after the Common Application; areas have specific materials. Music and Theater/Performance Studies may include an optional arts recommendation; none accepted for Art Practice or Dance. Mail-in items are not returned.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": "2027-entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-arts"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Portfolio deadline is October 20 for REA and December 10 for RD; Common App must be submitted October 15 / December 5 respectively. Transcript, School Report, and teacher evaluations may arrive by standard November 1 / January 5 deadlines. No extension is offered for an arts recommender."
+      ],
+      "exceptions": [
+        "QuestBridge National College Match applicants cannot submit an Arts Portfolio because its timeline does not align with portfolio review."
+      ]
+    },
+    {
+      "id": "stanford-ug-international-review",
+      "topic": "international_applicant_treatment",
+      "value": "Undergraduate international applicants are reviewed in the context of the educational system, country, and school resources where they attend secondary school. The application process otherwise follows the same first-year or transfer route regardless of citizenship/residence. Undergraduate English-proficiency exams are not required; fluency in English is an admission prerequisite, and applicants may self-report English exam scores if they wish.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-international"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Citizenship/legal status matters separately for financial aid and is not inferred from where secondary school was attended."
+      ],
+      "exceptions": [
+        "US citizens, permanent residents, and undocumented/DACA students are treated as domestic for undergraduate admission/aid status as the official FAQ specifies; aid-specific rules still depend on the applicable category."
+      ]
+    },
+    {
+      "id": "stanford-ug-international-financial-aid-admission",
+      "topic": "aid_admission_interaction",
+      "value": "Stanford says it meets demonstrated need for admitted undergraduates regardless of citizenship when aid was requested during the application process. For international citizens, requesting aid is a factor in admission evaluation and makes the process more selective; an international citizen who applies without aid and enrolls after admission is generally ineligible to request undergraduate aid later. US citizens/permanent residents studying abroad remain domestic for aid evaluation.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "US citizen",
+          "US permanent resident",
+          "undocumented/DACA"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-international"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The need-request choice must be made in the admission application; request and eligibility are distinct."
+      ],
+      "exceptions": [
+        "The page describes an exception if an enrolled international student's citizenship status changes and they become eligible for federal student aid; aid may then be considered starting the quarter they become eligible. Confirm case specifics with Stanford Financial Aid."
+      ]
+    },
+    {
+      "id": "stanford-transfer-eligibility-route",
+      "topic": "transfer_eligibility",
+      "value": "Anyone who earned college credit in an associate or bachelor's degree program after high-school completion must use the transfer route. High-school/college dual-enrollment students apply as first-year. Transfer credit must be from an accredited degree-granting institution; vocational, technical, performance, or professional-program credit is excluded. Applicants need a high-school diploma/equivalent/GED to enroll. Applicants with an earned bachelor's degree are not eligible for undergraduate admission.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer",
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer",
+          "first-year"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-eligibility",
+        "stanford-ug-international"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The trigger is post-secondary degree-credit study after secondary school; high-school dual enrollment is expressly treated differently."
+      ],
+      "exceptions": [
+        "No minimum number of completed credits or years is required. Stanford describes approximately two years of full-time, in-person college coursework by entry and consecutive full-time study as typical competitive preparation, not a formal minimum."
+      ]
+    },
+    {
+      "id": "stanford-transfer-credit-cap-and-residency",
+      "topic": "transfer_credit",
+      "value": "Stanford permits at most 90 quarter units of transfer credit (approximately two full-time years). Transfer entrants must complete at least two years of full-time enrollment at Stanford to earn a bachelor's degree, regardless of prior coursework.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-eligibility"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-transfer-fee",
+      "topic": "application_fee",
+      "value": "Official Stanford transfer pages conflict: the general Transfer Applicants requirements page lists USD 90; the dedicated Application Fee/Fee Waiver page says USD 100. Both describe a nonrefundable fee and Common App fee-waiver request. Do not display a single confirmed amount until Stanford resolves the discrepancy.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-requirements",
+        "stanford-ug-transfer-fee"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "conflicting_official_publication",
+      "review_status": "needs_review",
+      "conditions": [
+        "The dedicated fee page says submit Common App fee-waiver selection plus NACAC Transfer Fee Waiver form, and either attach Student Aid Report or obtain school official signature. Applicant need not wait for waiver approval before submitting; Stanford may ask for additional information."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-transfer-standardized-tests",
+      "topic": "standardized_tests",
+      "value": "ACT or SAT is required for transfer applicants. There is no admission minimum or guaranteed-admission score. Self-report highest scores; official score reports are required from enrolled admits. Stanford accepts original and redesigned ACT forms; SAT is superscored across highest Math and Evidence-Based Reading/Writing sections; ACT superscore may be submitted. Stanford recommends results within five years.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": "2027-entry cycle; ACT transition policy published from 2025-26 onward",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-tests"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Latest possible sitting published: ACT by end of January and SAT by end of December for the annual transfer cycle; late scores may not arrive in time and review is not delayed."
+      ],
+      "exceptions": [
+        "The reviewed official transfer testing page states ACT/SAT is required but does not state criteria for exceptions or waivers. Do not assert either that waivers exist or that none exist; ask Undergraduate Admission about an individual case."
+      ]
+    },
+    {
+      "id": "stanford-transfer-application-documents",
+      "topic": "application_documents",
+      "value": "Required materials: Common Application; fee or fee-waiver request; official high-school transcript including graduation date (or equivalent); official transcript from every college/university attended; College Report completed by an official at current/most recent institution; and two academic-instructor recommendations. International leaving exams (A-levels, IB, national exams) must be sent directly by school/testing agency; any AP results taken must all be self-reported. Official school materials are arranged through the school official. A midyear college transcript is not required.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-requirements",
+        "stanford-ug-transfer-records"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Stanford generally allows a grace period after the deadline for school-official materials not controlled by the applicant, and says late third-party items are not penalized; application review can proceed with missing items at Stanford's discretion."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-transfer-essays",
+      "topic": "essays",
+      "value": "Transfer applicants submit a personal statement about reasons for transferring and objectives (250–650 words), several short responses (50-word limit), and Stanford short essays including a learning-excitement response (100–250 words), one choice between a roommate note or community definition/contribution essay (100–250 words), and a distinctive contribution response. Prospective major/career interests are nonbinding.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-transfer-deadline",
+      "topic": "application_deadlines",
+      "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 2. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-requirements"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Stanford may decide an application even when some materials have not arrived."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-transfer-arts-portfolio",
+      "topic": "optional_arts_portfolio",
+      "value": "Transfer applicants may submit a reviewed optional portfolio in Art Practice, Dance, Music, or Theater and Performance Studies; portfolio submission does not require majoring in the arts. Application is due March 15 and materials March 20 through the Stanford portal. Music and Theater/Performance Studies may include optional arts recommendation letters; Art Practice and Dance do not accept these letters. Mailed items are not returned.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-arts"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-ug-tuition-and-budget-2026-27",
+      "topic": "cost_of_attendance",
+      "value": "Published standard undergraduate budget for 2026–27 academic year (Autumn, Winter, Spring; typical full-time student): tuition USD 67,731; housing and food 22,944; student-fees allowance 2,610; books/supplies allowance 855; personal expenses allowance 3,405; travel varies; total USD 97,545. New first-year and transfer students also have one-time orientation USD 525 and document USD 250 fees included in their budget. Tuition, fees, housing, and food are billed quarterly; books, supplies, personal and travel amounts are planning allowances, generally not billed. Health insurance is required; Cardinal Care is assumed in budget for international students, while many other undergraduates waive it with other adequate coverage.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year",
+          "transfer"
+        ],
+        "cycle": "2026-2027 academic year",
+        "fee_status": [
+          "standard undergraduate budget; not differentiated by fee status"
+        ]
+      },
+      "source_ids": [
+        "stanford-ug-budget"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The standard profile assumes unmarried, financially dependent student enrolled full-time for Autumn/Winter/Spring, living in residence hall or off-campus. Actual budgets differ; travel varies. Allowances are not fixed billed charges."
+      ],
+      "exceptions": [
+        "International budget assumes Cardinal Care. For other students, Financial Aid may help with insurance costs if no adequate coverage and substantial need; zero expected parent contribution qualifies for scholarship coverage if no adequate coverage."
+      ]
+    },
+    {
+      "id": "stanford-ug-aid-need-and-scholarship",
+      "topic": "financial_aid",
+      "value": "Stanford describes undergraduate aid as need-based and says it meets demonstrated need for admitted applicants, including international citizens, who request aid during admission. It does not offer merit scholarships except a limited number of athletic scholarships. Domestic admission is need-blind; need can be considered for some international applicants. Estimate with the official net price calculator; aid is not a guaranteed reduction until assessed and awarded.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-international",
+        "stanford-ug-aid-dates"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Aid is based on demonstrated family need; international applicants must indicate an aid request when applying for admission."
+      ],
+      "exceptions": [
+        "The non-need-based athletic scholarship exception is limited; the site does not publish its full eligibility or award amounts in the reviewed shared policy pages."
+      ]
+    },
+    {
+      "id": "stanford-ug-aid-deadlines",
+      "topic": "financial_aid_deadline",
+      "value": "Priority filing dates and expected notification on Stanford's central new-student/continuing-student aid page: first-year REA November 15, aid notification mid-December; first-year RD February 15, notification early April; transfer March 15, notification mid-May; continuing student April 30, notification in August. These are aid application deadlines, separate from admission deadlines. The page does not state a specific entering academic year for the new-student priority-date table.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen/eligible noncitizen",
+          "international",
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-dates"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Required aid documents/forms differ by citizenship, REA/RD/transfer, and new/continuing student. Current detailed REA international aid checklist labels itself 2026–27; do not assume its documentation and tax-year rules automatically apply to 2027–28 entrants. Aid-seeking international students must indicate aid in the admission application. If CSS Profile payment is impossible or unavailable in country, the current checklist permits ISAFA. Divorced/separated/never-married parents submit separate CSS records; a noncustodial-parent waiver requires evidence."
+      ],
+      "exceptions": [
+        "Continuing US citizen/eligible noncitizen institutional scholarship review requires CSS Profile, IDOC/tax documents, and FAFSA; CSS is not needed when seeking only federal/state aid. Continuing international applicants have their own CSS and student tax documentation. This fact is not a complete category-specific aid checklist."
+      ]
+    },
+    {
+      "id": "stanford-ug-aid-renewal",
+      "topic": "aid_renewal",
+      "value": "Financial aid is reassessed for continuing undergraduates each academic year rather than being a fixed four-year amount. For 2026–27, continuing US citizen/eligible noncitizen aid priority date is April 30 with CSS Profile/IDOC and FAFSA; institutional scholarship consideration requires CSS, FAFSA, and tax documents. Continuing international applicants file CSS Profile and required student tax documents by April 30; published award notification date is June 15. Students requesting scholarship beyond four years/twelve quarters must submit a Request for Extended Aid Eligibility.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "continuing US citizen/eligible noncitizen",
+          "continuing international"
+        ],
+        "cycle": "2026-2027 academic year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-renewal-us",
+        "stanford-ug-aid-renewal-intl"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Need-based award amount depends on renewed assessment and applicable financial documentation."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-ug-transfer-aid-checklists-2026-27",
+      "topic": "financial_aid_documents",
+      "value": "For transfer entrants in the published 2026–27 aid checklist, US citizens/eligible noncitizens submit CSS Profile, FAFSA and IDOC (parent tax records); priority date March 15 and mid-May aid notification. CSS Profile, FAFSA and tax documents are all required for institutional scholarship; CSS is not required if seeking only federal/state aid. International transfer applicants use CSS Profile and International Student Supplement; Canadian citizens submit specified Canadian tax records through IDOC and do not submit the supplement. Applicants unable to pay CSS fee or in a country where payment is unavailable may use ISAFA. Divorced/separated/never-married parents submit separate CSS profiles; noncustodial-parent waiver requires supporting documents. International applicants must request aid in the admission application.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen/eligible noncitizen",
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2026-2027 aid cycle as explicitly labelled by Stanford",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-transfer-us",
+        "stanford-ug-aid-transfer-international"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "These are the official 2026–27 checklists; do not carry tax years, forms, or publication timing forward to a later aid cycle without checking its edition."
+      ],
+      "exceptions": [
+        "Undocumented applicants follow US timelines but do not file FAFSA; current transfer page should be checked for the relevant aid year and alternate undocumented-student documents."
+      ]
+    },
+    {
+      "id": "stanford-ug-aid-types",
+      "topic": "financial_aid_types",
+      "value": "Published undergraduate aid types include need-based Stanford University Scholarship (CSS Profile-based; no separate application for individual scholarship funds), federal Pell and Supplemental Educational Opportunity grants (FAFSA-based, automatic consideration), student employment including Federal Work-Study/community-service work study, outside scholarships, and federal Direct/PLUS loans. Stanford says loans are not expected to meet ordinary college costs but may be requested. Stanford does not currently participate in California Student Aid Programs; institutional funds replace Cal Grant for most otherwise-eligible students, with rare stated exceptions. Need-based international aid is from institutional funds; international request affects admission review and aid is limited. A small number of athletic scholarships are the stated merit-aid exception.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen/eligible noncitizen",
+          "international"
+        ],
+        "cycle": "published policy checked 2026-10-02",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-types",
+        "stanford-ug-international",
+        "stanford-ug-aid-dates"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Federal grants/loans require applicable federal eligibility; aid form and eligibility depend on citizenship category. Stanford aid offer, not generic availability, determines a specific student's award."
+      ],
+      "exceptions": [
+        "Cal Grant may still apply in very rare cases for students otherwise ineligible for Stanford institutional aid; Stanford directs such students to provide the award notice."
+      ]
+    },
+    {
+      "id": "stanford-ug-housing-guarantee",
+      "topic": "housing",
+      "value": "Matriculated frosh are guaranteed 12 complete or partial academic-year housing quarters; transfer students receive nine. Housing eligibility requires enrollment and application by the first housing deadline and participation in later rounds when needed. If a guarantee-space assignment is unavailable, guaranteed students are housed by the end of the first week, potentially in temporary guest rooms or graduate residences. Enrolled first-year students are required to live in a university-designated residence unless an exception is announced.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year/frosh",
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-housing-guarantee",
+        "stanford-ug-housing-frosh-transfer"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "A housing guarantee does not guarantee a specific residence or quarter without meeting application deadlines. Housing is for enrolled matriculated degree-program students."
+      ],
+      "exceptions": [
+        "For students more than seven years removed from high school, undergraduate-housing eligibility is restricted; qualifying students are directed to graduate housing. Couples/family options have their own category rules."
+      ]
+    },
+    {
+      "id": "stanford-ug-housing-support",
+      "topic": "institutional_student_support",
+      "value": "Stanford undergraduate residences include live-in faculty or senior-staff Resident Fellows and trained residential staff; Residential Education programming is described as academic, social, and personal support. New frosh and transfer housing assignments are handled by R&DE Student Housing and are associated with the required first-year residence policy.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year/frosh",
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-housing-frosh-transfer"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-university-location",
+      "topic": "institution_location",
+      "value": "Stanford University is in Stanford, California, in the San Francisco Bay Area; Stanford's official postal location is Stanford, CA 94305, United States. Campus location and residential campus context do not determine applicant residency/fee classification.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer",
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "undergraduate",
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-institution-location"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-grad-degree-eligibility",
+      "topic": "academic_qualification",
+      "value": "Central minimum eligibility for graduate admission is a US bachelor's degree or recognized international equivalent held, or expected before enrollment, from a recognized institution, plus English proficiency. Each program may set higher or other admission requirements. International degree-specific equivalency guidance is maintained by Stanford; a WES report is not required at application but may be requested after an accepted offer for credential verification.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2027-entry application currently open",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-eligibility",
+        "stanford-grad-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Program-specific degree level, field preparation, and prerequisites remain owned by each graduate program."
+      ],
+      "exceptions": [
+        "Graduate Admissions university policy applies to graduate degree programs other than programs in the Graduate School of Business and Law and the MD/Physician Assistant Studies programs in Medicine; joint professional degrees require separate admissions. MLA and Honors Cooperative remain within this graduate policy, but have their own program-specific procedures. Coterminal/current-student pathways are separate."
+      ]
+    },
+    {
+      "id": "stanford-grad-english-exemptions",
+      "topic": "english_proficiency_waiver",
+      "value": "No TOEFL/IELTS application score is required when at least one central exemption applies: applicant is a US citizen or permanent resident; English is first language; applicant earned/will earn a US bachelor's, master's, or doctoral degree or international equivalent from a university where all instruction was in English; or has at least two consecutive full-time years of professional or educational experience conducted in English within the past 10 years. Experience must be entirely in English and total 24 consecutive months by application time. No additional evidence is required at application from self-reported qualifying cases; supporting documents may be requested after accepting an offer.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "Autumn 2027-2028 / 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-test-scores",
+        "stanford-grad-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Applicants who do not qualify for any listed exemption must submit an official TOEFL iBT or IELTS Academic score at application."
+      ],
+      "exceptions": [
+        "The central page advises applicants uncertain about English-experience eligibility to answer No and submit a test score. Program-specific higher English minima may still apply."
+      ]
+    },
+    {
+      "id": "stanford-grad-english-scores-2027",
+      "topic": "english_proficiency_test_scores",
+      "value": "Central minimum for admission consideration: TOEFL iBT 90 for tests taken before 2026-01-21; TOEFL iBT 4.5 for tests on/after 2026-01-21; IELTS Academic 7.0. These satisfy consideration only, not automatic admission. Program may impose a higher minimum. For tests administered on/after January 21, 2026, Stanford has adopted the redesigned TOEFL score scale; do not compare old and new numerical scales as if identical. TOEFL MyBest scores are accepted; official scores must be sent by ETS. IELTS scores are reported through the method on the central test page. English tests are valid two years; earliest published valid test dates for Autumn 2027-28 are Sept. 1, 2024. A score below 109 old TOEFL / 5.5 new TOEFL / 8 IELTS requires the Stanford English Placement Test before the first quarter; there are no exceptions to the placement-test rule.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "international and other applicants not meeting exemption"
+        ],
+        "cycle": "Autumn 2027-2028 / 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-test-scores"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "TOEFL and IELTS validity is two years; a graduate program may enforce a stricter validity window. The placement test cutoff is distinct from the admission-consideration minimum."
+      ],
+      "exceptions": [
+        "Waived applicants may still receive an offer condition requiring supporting proof of the exemption. Programs may publish higher test minima. The 2027 KHS applicant guidance states that most graduate programs use TOEFL 5.5 (new scale), reflecting program-specific standards above the 4.5 central floor; KHS applicants must satisfy their selected program's requirement."
+      ]
+    },
+    {
+      "id": "stanford-grad-gre-policy",
+      "topic": "standardized_tests",
+      "value": "GRE General and GRE Subject requirements are set by each nonprofessional graduate program as required, optional, or not considered. If required/optional, official reports go directly from ETS; Stanford's central 2027–28 validity table accepts scores dated September 1, 2021 or later, while programs can require a shorter validity period. A GRE fee-reduction waiver is available to US citizens/permanent residents who receive an ETS GRE Fee Reduction Voucher, even if the program does not require GRE.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "program-defined"
+        ],
+        "cycle": "Autumn 2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-test-scores",
+        "stanford-grad-fee"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Check the specific program's GRE status and accepted score validity."
+      ],
+      "exceptions": [
+        "No shared GRE requirement can be inferred for all graduate programs."
+      ]
+    },
+    {
+      "id": "stanford-grad-application-structure",
+      "topic": "application_method",
+      "value": "The central online application covers nonprofessional graduate programs. Applicant selects one program and entry term; normally only one program application per academic year is permitted, with the stated exception that two Biosciences PhD programs may be selected within one application. The selected program controls supplemental questions and any program-specific materials. Graduate Admissions operates the application and university-wide requirements; the academic program reviews applicants, sets additional criteria, issues decisions and communicates funding offers.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2027 entry application currently open",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-how-to-apply",
+        "stanford-grad-application-overview",
+        "stanford-grad-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "A separate application is required for professional programs; central Graduate Admissions rules here do not govern those routes."
+      ],
+      "exceptions": [
+        "Biosciences PhD allows two program selections within a single application; do not treat this as a second general application allowance."
+      ]
+    },
+    {
+      "id": "stanford-grad-required-documents",
+      "topic": "application_documents",
+      "value": "Central application sections include personal background, program/entry-term selection, academic history, test scores, experience, recommendations, statements, program supplement, and additional information. List every post-secondary institution where enrolled in an undergraduate/graduate degree program and provide its unofficial transcript at application. Three academic or professional recommendations are required (up to four may be entered as backup); statement of purpose is required (recommended maximum 1,000 words), and optional Enriching the Learning Community statement is up to 500 words. Resume/CV guidance, program supplemental items, research/faculty interests, writing samples, and prompts vary by program. Non-English records must be accompanied by original-language records and complete literal professional/institutional English translations. Official transcripts/degree conferral documents are required for verification after offer acceptance and before enrollment.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2027 entry application currently open",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-application-overview",
+        "stanford-grad-records",
+        "stanford-grad-recommendations",
+        "stanford-grad-statements",
+        "stanford-grad-faq",
+        "stanford-grad-how-to-apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Recommendation letters generally share the program application deadline unless the program states otherwise; late letters may be accepted into the file but are not guaranteed review. At least one recommender is strongly recommended to be a university professor familiar with academic work."
+      ],
+      "exceptions": [
+        "This common checklist does not replace program-specific documents, portfolio/technical writing samples, or professional-school materials."
+      ]
+    },
+    {
+      "id": "stanford-grad-application-fee",
+      "topic": "application_fee",
+      "value": "Central fee for a nonprofessional graduate application is USD 125, nonrefundable, payable on submission by accepted card or US checking account. Waiver types include ETS GRE Fee Reduction Voucher for US citizens/permanent residents; good-standing participant in an eligible program; and a school-based waiver subject to the school's eligibility/capacity. Waiver must be requested before application submission, preferably at least 10 business days (two weeks) before program deadline. Late requests are not guaranteed review; after deadline requests are not permitted. Paying before approval ends waiver consideration and fees are not refunded.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international; waiver-specific eligibility varies"
+        ],
+        "cycle": "2027-entry cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-fee",
+        "stanford-grad-fee-eligible-programs"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Eligible-participation program list is for 2027 entry and is versioned; verify exact membership. School-based criteria and deadlines differ by school and sometimes degree level."
+      ],
+      "exceptions": [
+        "Some graduate programs may have limited alternative waiver options; confirm on program site. KHS has no fee for its separate scholarship application but does not waive the Stanford degree-program application fee."
+      ]
+    },
+    {
+      "id": "stanford-grad-deadlines-and-offers",
+      "topic": "application_deadline_and_offer",
+      "value": "Graduate application for 2027 entry is open. Each intended program sets its own deadline; no central universal submission date is published. Program may use interviews. The program communicates its admission decision and offer response deadline; applicants must respond by the program deadline. If admitted and accepting, official transcripts/degree documents are sent to central Graduate Admissions for verification; matriculation follows successful credential review. International students have an enrollment hold until arrival on campus.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2027 entry / Autumn 2027-2028 where program specifies",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-how-to-apply",
+        "stanford-grad-records"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Application, funding, response, enrollment, and supporting-document dates must be collected at the exact program level; shared portal does not imply shared deadlines or offer conditions."
+      ],
+      "exceptions": [
+        "Professional-school applications are separate and excluded from this central process."
+      ]
+    },
+    {
+      "id": "stanford-grad-funding-common-process",
+      "topic": "funding",
+      "value": "The selected nonprofessional graduate program communicates any offer of financial support. Stanford's Graduate Admissions FAQ says applicants in most cases are considered for available departmental funding when they apply and do not need a separate application, but this does not establish a universal award or funding type. Funding availability, eligibility, amount, terms, renewal, and deadline are program- and degree-specific.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "program-defined"
+        ],
+        "cycle": "program-specific 2027-entry cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-faq",
+        "stanford-grad-how-to-apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Do not interpret application as guaranteed consideration in every program or as a funded offer."
+      ],
+      "exceptions": [
+        "This shared fact excludes professional-school funding and the separately applied Knight-Hennessy scholarship."
+      ]
+    },
+    {
+      "id": "stanford-grad-funding-types-and-doctoral-guarantee",
+      "topic": "funding_types_and_renewal",
+      "value": "Graduate funding types include departmental/school/external fellowships, scholarships or grants; research and teaching assistantships (salary plus tuition allowance for service); hourly university work; and student loans. Stanford states continuous 12-month funding for enrolled PhD and DMA doctoral students in good academic standing for up to the first five years, assembled from external or Stanford fellowships and research/teaching assistantships as tailored to program. Some master's students may receive fellowships/assistantships, but most must seek outside funding or loans. Need-based/federal loan aid is requested separately through FAFSA and Stanford's Graduate Student Loan Application; international students generally are not federally eligible and should first contact their department for support.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "US citizen/eligible noncitizen",
+          "international",
+          "program-defined"
+        ],
+        "cycle": "published policy checked 2026-10-02; loan form edition 2026-2027",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-funding-overview",
+        "stanford-grad-faq",
+        "stanford-grad-how-to-apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Five-year doctoral funding statement is expressly limited to enrolled PhD/DMA students in good academic standing and up to the first five years; combination and amounts depend on program. Departmental funding and loan need are distinct."
+      ],
+      "exceptions": [
+        "The institutional 12-month guarantee named by the source covers PhD and DMA, not all doctoral/professional awards. Do not extend it to master's or professional programs."
+      ]
+    },
+    {
+      "id": "stanford-grad-offer-credential-condition",
+      "topic": "offer_conditions",
+      "value": "The Stanford Bulletin states that a graduate program must not offer unconditional acceptance until Graduate Admissions confirms verification of academic credentials and English proficiency. After accepting an offer, the student must provide official transcripts and degree documents for verification before matriculation; international students have an enrollment hold until they arrive on campus. The Bulletin reserves withdrawal of offers in cases including application misrepresentation or serious lack of judgment or integrity.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-admissions-bulletin",
+        "stanford-grad-how-to-apply",
+        "stanford-grad-records"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Offer response/enrollment dates and any program-specific conditions remain set by the selected program and actual offer letter."
+      ],
+      "exceptions": [
+        "The central policy's English exemptions and evidence review do not establish the professional-school admissions conditions."
+      ]
+    },
+    {
+      "id": "stanford-grad-budget-2026-27-reference",
+      "topic": "cost_of_attendance",
+      "value": "The 2026–27 graduate standard budget is explicitly for a single graduate student living on campus with no dependents. Three-quarter academic-year non-tuition total USD 49,116; summer-quarter non-tuition budget USD 12,026; 12-month non-tuition total USD 61,142. The table itemizes rent, food, personal expenses, transportation, books/supplies, campus health fee, and Cardinal Care. Tuition is additional and varies by program/units; off-campus living expenses may be 10–40% higher. This is an institution-wide reference, not a program tuition quote.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "single graduate student; no dependents"
+        ],
+        "cycle": "2026-2027 academic year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-budget"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Tuition omitted from these totals; specific program/unit tuition must be added separately."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-khs-2027-eligibility",
+      "topic": "scholarship_eligibility",
+      "value": "Knight-Hennessy Scholars (KHS) is a separate competitive scholarship/program, not a degree or direct route into Stanford. For 2027 cohort, applicant must separately be admitted to and enroll in an eligible full-time Stanford graduate degree and hold first bachelor's degree earned January 2020 or later (January 2018 or later for military-service extension); current students may qualify if completing first degree by September 2027 under page criteria. Any nationality may apply. Exclusions include Honors Cooperative Program, Master of Liberal Arts, JSD/MLS, current PhD students adding same-discipline MA/MS, and coterminal degrees except current coterminal students applying externally to a new full-time degree beginning with KHS in same year.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-knight-hennessy"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "all nationalities; separately eligible graduate applicants"
+        ],
+        "cycle": "2027 Knight-Hennessy cohort",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-khs-eligibility",
+        "stanford-khs-deadlines"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Scholar status requires both KHS selection and admission/enrollment to an eligible Stanford graduate degree. Eligibility rules are cohort-specific and may change."
+      ],
+      "exceptions": [
+        "KHS is not a JD/MD/MBA admission policy; excluded or professional programs must be checked in their own admissions route. KHS may not defer scholar offers."
+      ]
+    },
+    {
+      "id": "stanford-khs-application-deadlines",
+      "topic": "scholarship_deadlines",
+      "value": "For the 2027 cohort, separate KHS application closes October 6, 2026 at 1 p.m. Pacific Time. Candidate must also submit a separate graduate program application by the earlier of the program deadline designated for KHS applicants or December 1, 2026. MBA applicants must meet MBA Round 1. The scholarship application has no fee; graduate-program application fee remains separately payable or waivable through that program's process.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-knight-hennessy"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "KHS applicant"
+        ],
+        "cycle": "2027 Knight-Hennessy cohort",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-khs-admission",
+        "stanford-khs-deadlines",
+        "stanford-khs-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "For already admitted-and-deferred 2027 students or eligible 2026-starting PhD second-year students, the KHS page says a second degree-program application is not required."
+      ],
+      "exceptions": [
+        "KHS timing does not modify admission deadlines for non-KHS applicants."
+      ]
+    },
+    {
+      "id": "stanford-khs-funding",
+      "topic": "scholarship_funding",
+      "value": "KHS funding is tied to the degree listed in the initial award letter and provides tuition/associated-fee fellowship, living/academic stipend, and economy-class annual travel stipend for up to three years. Newly enrolling scholars receive a one-time relocation stipend; scholars in years two and three may apply for academic-enrichment funds. Public degree table: MA/MBA/MFA/MPP/MS/JSM/MLS/LLM up to six academic quarters (1–2 years); JD nine academic quarters; MD up to 11 quarters (excludes summer of first year); PhD/DMA up to 12 quarters including three summers; JD/MBA nine quarters; MSTP/MD-PhD up to 12 quarters including summers. Program-specific funding supplies additional years: MD years 4–5 under Medical School's standard commitment; PhD/DMA year 4 onward; MSTP year 4 onward under degree-program support. Funding for an additional graduate program may be requested up to KHS's three-year maximum but is not guaranteed. Stipends are taxable; KHS does not reimburse associated taxes.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-knight-hennessy"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "professional graduate degrees explicitly listed by KHS"
+        ],
+        "applicant_categories": [
+          "Knight-Hennessy Scholars selected for eligible graduate degree"
+        ],
+        "cycle": "2027 cohort; published KHS funding framework checked 2026-10-02",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-khs-funding",
+        "stanford-khs-home"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "KHS provides funding for the listed degree in the initial admission letter. Beyond-KHS funding is determined by each degree program's standard commitment; ask the school about individual details. Additional-degree KHS funding is discretionary, not guaranteed."
+      ],
+      "exceptions": [
+        "The KHS funding framework expressly includes professional degrees and joint degrees; this is KHS-specific and does not import central Graduate Admissions requirements into JD/MD/MBA admission. Exact student-specific award amounts and disbursement remain controlled by the award letter."
+      ]
+    },
+    {
+      "id": "stanford-khs-application-components",
+      "topic": "scholarship_application_documents_and_essays",
+      "value": "The 2027 KHS application requires online background/application form, one-page US Letter resume in reverse chronological order, undergraduate and (if applicable) graduate transcripts, any tests required by the selected degree program, two recommendation letters, three short answers, and one essay. Short answers: academic/professional intent (250 words); engagement with a different perspective, courage, and falling short (250 combined); eight improbable facts (150 combined). Essay prompt asks how life influences shaped the applicant (550 words). Recommendations are due with KHS deadline and may be academic, community, or professional; letters must be written in English. Invitation-only later stages are video statement and finalist experience. KHS and degree-program applications are separately and concurrently evaluated; the program's required test scores are also due to KHS by the later of its deadline and the KHS deadline.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-knight-hennessy"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "KHS applicant"
+        ],
+        "cycle": "2027 Knight-Hennessy cohort",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-khs-requirements",
+        "stanford-khs-application",
+        "stanford-khs-resume",
+        "stanford-khs-transcripts-tests",
+        "stanford-khs-recommendations",
+        "stanford-khs-essays",
+        "stanford-khs-evaluation"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "KHS has no minimum GPA/test score; applicant must meet any minima set by selected graduate program. KHS recommendations and graduate-program recommendations have distinct prompts/reviewers and may use different recommenders."
+      ],
+      "exceptions": [
+        "KHS application cannot be edited after submission except test scores, recommenders, resume, and intended Stanford graduate programs. Invitation-only video/finalist stages apply only to selected applicants."
+      ]
+    },
+    {
+      "id": "stanford-ug-international-academic-records",
+      "topic": "international_qualification_documents",
+      "value": "Stanford evaluates international first-year applicants in the context of their school/country and does not require conversion of marks to a US GPA or prefer a national curriculum over A-Level/IB/AP. Applicants should complete the coursework that qualifies them for bachelor-level university study in their own education system and hold the secondary diploma/equivalent by enrollment. Official transcripts, teacher recommendations, marks and predictions must come directly from school officials/testing agencies; transcripts and teacher recommendations must be translated into English and original copies submitted when applicable. The reviewed central Stanford pages do not specify an equivalency ruling for a named Kazakh secondary diploma or country-specific score threshold.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international; secondary qualification completed outside US"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-international",
+        "stanford-ug-firstyear-records"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published_general_policy_with_country_specific_unknown",
+      "review_status": "reviewed",
+      "conditions": [
+        "This is not a claim that any particular certificate is equivalent; applicants need Stanford's individual review of their school credentials."
+      ],
+      "exceptions": [
+        "International applicants with post-secondary degree credit after high-school completion follow transfer eligibility and provide the applicable transfer records; first-year secondary-curriculum policy does not replace that procedure."
+      ]
+    },
+    {
+      "id": "stanford-kazakhstan-undergraduate-credential-equivalence",
+      "topic": "country_specific_qualification_equivalency",
+      "value": "No Stanford-owned public country-specific admissions equivalency table or Kazakhstan credential ruling was located in the reviewed central first-year, transfer, or international applicant guidance. Stanford states that it evaluates each international applicant in their educational context, requires a country-equivalent secondary diploma by enrollment, and does not require GPA conversion; this does not establish that a particular Kazakhstan certificate meets the credential requirement.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "applicant educated in Kazakhstan"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-international",
+        "stanford-ug-transfer-eligibility",
+        "stanford-ug-transfer-records"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "researched_unknown",
+      "review_status": "reviewed",
+      "conditions": [
+        "Undergraduate transfer route is selected by post-high-school college credit; the country of schooling does not itself change the procedure."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-kazakhstan-graduate-credential-verification",
+      "topic": "country_specific_qualification_equivalency",
+      "value": "Stanford Graduate Admissions publishes the general minimum of a US bachelor's degree or international equivalent from a recognized institution but no reviewed Kazakhstan-specific threshold. For incoming students with an undergraduate degree from Kazakhstan (outside US and PRC), Stanford's current public credential-verification policy requires post-offer WES evaluation certifying equivalency to a US bachelor's degree or higher. WES is not required at initial application; its recommendation for uncertain equivalence during application is a separate advisory step.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "applicant with Kazakhstan undergraduate credential"
+        ],
+        "cycle": "current published incoming-student verification policy checked 2026-10-02",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-eligibility",
+        "stanford-grad-admitted-credentials"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published_general_requirement_country_specific_equivalence_undetermined",
+      "review_status": "reviewed",
+      "conditions": [
+        "Official documents are required only after accepting admission. WES verifies credentials; it does not guarantee academic admission, which remains program-level."
+      ],
+      "exceptions": [
+        "PRC degrees have a separate CSSD route. This fact applies Stanford's explicit all-other-country verification rule and does not declare which Kazakhstan credentials are equivalent."
+      ]
+    },
+    {
+      "id": "stanford-international-visa-and-enrollment-steps",
+      "topic": "visa_and_enrollment",
+      "value": "International newly admitted undergraduates and graduate students receive a Bechtel Connect invitation after accepting their Stanford offer to request initial immigration documents. Stanford issues F-1 I-20 or J-1 DS-2019; completed requests are typically processed within four weeks for undergraduates and four to six weeks for graduate students. Undergraduate proof of funding covers one year. Graduate I-20 proof covers nine months/three quarters; J-1 DS-2019 proof covers the full degree. Graduate international students retain an enrollment hold until arrival; F-1/J-1 students must enroll full time to maintain status. I-20/DS-2019 and visa applications are post-offer steps, not admission requirements.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer",
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "undergraduate",
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "international student requiring F-1 or J-1 sponsorship"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-bechtel-visa-process",
+        "stanford-grad-how-to-apply",
+        "stanford-ug-international"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Bechtel requires acceptable financial documents in USD or with USD conversion; evidence must be no older than six months. Students transferring from another US institution coordinate the SEVIS release date."
+      ],
+      "exceptions": [
+        "Some students are sponsored by an outside institution or agency, which may issue their immigration document."
+      ]
+    },
+    {
+      "id": "stanford-incoming-student-health-requirements",
+      "topic": "health_and_immunization_enrollment",
+      "value": "All new Stanford students, including frosh, undergraduate transfers, and graduate students, must complete entry health requirements: immunization records, screening, and when indicated testing/forms. Current public page lists August 15, 2026 for Autumn 2026 entrants and marks Autumn 2027 date not yet published; winter/spring 2027 dates are TBD. Requirements differ for standard nonmedical versus medical/PA students. Medical or religious exemption requests must be filed by the published deadline for the entry quarter. Vaden's 2026 guidance says nonmedical students require MMR documentation and TB screening, with other vaccines recommended or risk-specific; medical/PA requirements are more extensive.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer",
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "undergraduate",
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "new student; nonmedical degree programs"
+        ],
+        "cycle": "Autumn 2026 health dates checked 2026-10-02; Autumn 2027 entry deadline unpublished",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-vaden-health"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published_current_2026_dates_only",
+      "review_status": "reviewed",
+      "conditions": [
+        "Health clearance is required before joining campus; check Vaden's live page for the selected entry quarter because dates can change."
+      ],
+      "exceptions": [
+        "MD/PA students have distinct medical-student immunization and surveillance rules and are outside central nonprofessional Graduate Admissions policy."
+      ]
+    },
+    {
+      "id": "stanford-ug-firstyear-aid-checklists-2026-27",
+      "topic": "financial_aid_documents",
+      "value": "Stanford's published 2026–27 first-year aid checklists distinguish Restrictive Early Action from Regular Decision and domestic/eligible-noncitizen/undocumented from international applicants. For US citizens and eligible noncitizens, CSS Profile (school code 4704), FAFSA (001305), and IDOC parent 2024 federal tax returns/forms are due Nov 15 for REA (mid-December notice) or Feb 15 for RD (April notice). If parents are divorced, separated or never married, each completes a CSS Profile and both submit tax documents; FAFSA parent is the parent providing more support. A noncustodial-parent waiver requires signed request and supporting documentation through IDOC. CSS Profile, FAFSA and IDOC are needed for institutional scholarship; CSS is not required if seeking only federal/state aid. Undocumented students follow domestic dates and submit CSS Profile/tax documents but do not file FAFSA. International aid applicants must request aid on the admission application and submit CSS Profile plus the International Student Supplement; Canadian citizens submit 2024 Canadian tax statements through IDOC and do not submit the supplement. If an international applicant cannot pay the CSS fee or College Board payments are unavailable in their country, the current checklist permits ISAFA instead. For international REA, priority date is Nov 15/mid-December notification; RD is Feb 15/April notification. Divorced/separated/never-married parents each complete CSS; a noncustodial-parent waiver requires evidence through Document Upload.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented",
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2026-2027 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-rea-us",
+        "stanford-ug-aid-rd-us",
+        "stanford-ug-aid-international-rea",
+        "stanford-ug-aid-rd-international",
+        "stanford-ug-undocumented-aid"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "These forms and tax-year instructions are expressly labeled 2026–27 and do not establish the exact 2027–28 applicant checklist. For international applicants, aid request at admission is a condition of later institutional-aid eligibility."
+      ],
+      "exceptions": [
+        "Undocumented students do not file FAFSA. Only Canadian citizens use the specified Canadian tax-IDOC substitution and omit the International Student Supplement. ISAFA is an alternative only when CSS payment is unaffordable or unavailable, not a general replacement."
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "stanford-undergrad-housing-aid-offer-detail",
+      "topic": "post_offer_conditions",
+      "reason": "The shared sources establish reply dates and final transcript/test verification, but the specific admission-offer terms and deposits, if any, live in applicant-specific offer/portal materials and were not published in the reviewed public pages.",
+      "evidence_source_ids": [
+        "stanford-ug-firstyear-requirements",
+        "stanford-ug-transfer-requirements",
+        "stanford-ug-firstyear-records",
+        "stanford-ug-firstyear-tests"
+      ],
+      "official_next_step": "Inspect the applicant's Stanford offer letter and admitted-student portal; ask Undergraduate Admission about a specific condition.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "admitted applicant"
+        ],
+        "cycle": null
+      }
+    },
+    {
+      "id": "stanford-transfer-application-fee-conflict",
+      "topic": "application_fee",
+      "reason": "The general transfer requirements page states USD 90, while the dedicated transfer fee page states USD 100. Both are official and currently accessible; neither page explains the difference.",
+      "evidence_source_ids": [
+        "stanford-ug-transfer-requirements",
+        "stanford-ug-transfer-fee"
+      ],
+      "official_next_step": "Confirm the fee with Stanford Undergraduate Admission before presenting a single amount; retain both published values and checked dates until resolved.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null
+      }
+    },
+    {
+      "id": "stanford-transfer-testing-waiver",
+      "topic": "standardized_test_waiver",
+      "reason": "The reviewed official transfer testing page says ACT or SAT is required, but does not specify whether individual exceptions or waivers are available. Silence is not evidence that no exceptions exist.",
+      "evidence_source_ids": [
+        "stanford-ug-transfer-tests",
+        "stanford-ug-transfer-requirements"
+      ],
+      "official_next_step": "Ask Undergraduate Admission whether the applicant's documented circumstances qualify for an ACT/SAT exception; otherwise treat ACT or SAT as required.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null
+      }
+    },
+    {
+      "id": "stanford-transfer-interview",
+      "topic": "interview",
+      "reason": "The reviewed official transfer requirements and application pages do not describe a transfer interview step or say whether interviews are offered. The first-year optional alumni interview page is scoped to first-year REA/RD applicants and cannot establish transfer interview policy.",
+      "evidence_source_ids": [
+        "stanford-ug-transfer-requirements",
+        "stanford-ug-transfer-apply",
+        "stanford-ug-firstyear-interview"
+      ],
+      "official_next_step": "Ask Undergraduate Admission whether transfer applicants may be interviewed in the applicable cycle; do not infer the first-year interview policy applies.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null
+      }
+    },
+    {
+      "id": "stanford-grad-program-costs-and-renewal",
+      "topic": "tuition_and_funding_conditions",
+      "reason": "The shared 2026–27 graduate budget reports living/insurance allowances but excludes tuition and does not determine program-specific tuition rate, assistantship/fellowship terms, funding deadlines, renewal conditions, fee status, or post-offer conditions.",
+      "evidence_source_ids": [
+        "stanford-grad-budget",
+        "stanford-grad-faq",
+        "stanford-grad-how-to-apply"
+      ],
+      "official_next_step": "Check the selected degree-program tuition/funding page and official offer letter; verify degree, unit load, academic year, duration, award components, renewal requirements, and response date.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "program-defined"
+        ],
+        "cycle": "program-specific"
+      }
+    },
+    {
+      "id": "stanford-khs-individual-award-amounts",
+      "topic": "scholarship_funding_amounts",
+      "reason": "The public KHS funding page specifies components, degree-specific quarter limits, beyond-KHS funding pathways, relocation/enrichment supplements, and tax treatment, but does not publish each scholar's stipend amount, exact tuition/fee ledger, annual travel allowance, or individual funding combination.",
+      "evidence_source_ids": [
+        "stanford-khs-funding"
+      ],
+      "official_next_step": "Use the selected scholar's KHS award letter and the degree program's funding commitment for exact amounts and continuation conditions.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-knight-hennessy"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "professional graduate degrees explicitly listed by KHS"
+        ],
+        "applicant_categories": [
+          "selected Knight-Hennessy Scholar"
+        ],
+        "cycle": "2027 cohort"
+      }
+    },
+    {
+      "id": "stanford-firstyear-aid-2027-28-publication",
+      "topic": "financial_aid_documents",
+      "reason": "The reviewed first-year route-specific checklists are labeled 2026–27, while the current central page gives recurring priority dates without a 2027–28 document checklist. The new-student aid forms/tax-year instructions for Autumn 2027 were not published on the reviewed pages as of 2026-10-02.",
+      "evidence_source_ids": [
+        "stanford-ug-aid-dates",
+        "stanford-ug-aid-rea-us",
+        "stanford-ug-aid-rd-us",
+        "stanford-ug-aid-international-rea",
+        "stanford-ug-aid-rd-international"
+      ],
+      "official_next_step": "Recheck Stanford Financial Aid's first-year REA/RD domestic and international checklist pages when the 2027–28 cycle is released; use the correct entry-cycle tax year and documents.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2027-2028 aid cycle"
+      }
+    },
+    {
+      "id": "stanford-kazakhstan-undergraduate-credential-case",
+      "topic": "country_specific_qualification_equivalency",
+      "reason": "Stanford's reviewed international guidance is contextual and does not publish a Kazakhstan-specific secondary credential equivalency or score threshold. It requires the country-equivalent secondary diploma by enrollment but does not name the Kazakh credential accepted for a specific applicant.",
+      "evidence_source_ids": [
+        "stanford-ug-international",
+        "stanford-ug-transfer-eligibility",
+        "stanford-ug-transfer-records"
+      ],
+      "official_next_step": "Ask Undergraduate Admission to review the applicant's exact school credential, curriculum, mark records and examination documents; do not convert marks or claim credential equivalency without Stanford's assessment.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "educated in Kazakhstan"
+        ],
+        "cycle": null
+      }
+    },
+    {
+      "id": "stanford-kazakhstan-graduate-degree-equivalency",
+      "topic": "country_specific_qualification_equivalency",
+      "reason": "Graduate Admissions publishes a recognized-international-equivalent bachelor's threshold but no Kazakhstan-specific award/length ruling in the reviewed official pages. Stanford's incoming credential policy requires WES verification for an undergraduate degree earned outside the US and PRC, but that evaluation does not establish program admission.",
+      "evidence_source_ids": [
+        "stanford-grad-eligibility",
+        "stanford-grad-admitted-credentials"
+      ],
+      "official_next_step": "Applicants uncertain before applying should ask Graduate Admissions about their exact degree/curriculum; admitted applicants with a Kazakhstan undergraduate degree must arrange the stated WES credential evaluation after accepting the offer.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "Kazakhstan undergraduate credential"
+        ],
+        "cycle": "program-specific 2027 entry"
+      }
+    },
+    {
+      "id": "stanford-health-deadline-autumn-2027",
+      "topic": "health_requirement_deadline",
+      "reason": "The Vaden page reviewed on 2026-10-02 gives August 15, 2026 for Autumn 2026 entrants and leaves the Autumn 2027 deadline unpublished; it warns dates can change.",
+      "evidence_source_ids": [
+        "stanford-ug-vaden-health"
+      ],
+      "official_next_step": "Recheck Vaden's Health Requirements page before the Autumn 2027 start and follow the deadline and exemption filing date then published.",
+      "scope": {
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer",
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "undergraduate",
+          "master",
+          "doctoral",
+          "postgraduate other"
+        ],
+        "applicant_categories": [
+          "new Autumn 2027 entrant"
+        ],
+        "cycle": "Autumn 2027"
+      }
+    }
+  ],
+  "collection_tasks": [
+    {
+      "id": "stanford-transfer-country-qualification-guides",
+      "topic": "international_transfer_qualifications",
+      "status": "completed",
+      "next_step": "Stanford's central international route does not publish a country equivalency table in the reviewed pages. For a Kazakhstan applicant, use the recorded exact-credential inquiry as the next step; collect additional country rules only when a Stanford official page publishes them.",
+      "resolution_fact_ids": [
+        "stanford-kazakhstan-undergraduate-credential-equivalence"
+      ],
+      "resolution_unknown_ids": [
+        "stanford-kazakhstan-undergraduate-credential-case"
+      ],
+      "completion_boundary": "Public standing/cycle policies researched; case-specific or unavailable future-cycle details stay in the linked researched unknowns."
+    },
+    {
+      "id": "stanford-transfer-complete-aid-checklists",
+      "topic": "transfer_financial_aid",
+      "status": "completed",
+      "next_step": "The domestic and international transfer checklists, required forms, 2024 US/2023 Canadian tax years, noncustodial waivers, Canadian exception, aid request rule and March 15 deadline are recorded in the scoped transfer-aid fact. The 2027–28 checklist is not yet published; recheck before the next cycle.",
+      "resolution_fact_ids": [
+        "stanford-ug-transfer-aid-checklists-2026-27",
+        "stanford-ug-firstyear-aid-checklists-2026-27"
+      ],
+      "resolution_unknown_ids": [
+        "stanford-firstyear-aid-2027-28-publication"
+      ],
+      "completion_boundary": "Public standing/cycle policies researched; case-specific or unavailable future-cycle details stay in the linked researched unknowns."
+    },
+    {
+      "id": "stanford-grad-program-universe-policies",
+      "topic": "program_level_exceptions",
+      "status": "completed",
+      "next_step": "Keep this as a parent-owned aggregation task. Program-specific qualification, testing, deadlines, tuition, funding and exceptions are assigned to the Stanford program researchers; do not duplicate their work in this shared-policy dossier.",
+      "resolution_evidence_files": [
+        "engineering-doerr-evidence.json",
+        "doerr-completion-evidence.json",
+        "humanities-education-medicine-evidence.json",
+        "hs-social-science-evidence.json",
+        "medicine-graduate-evidence.json",
+        "professional-evidence.json"
+      ],
+      "completion_note": "All assigned departmental/professional dossiers are frozen with completed research or sourced unknowns; central policy never replaces their programme-specific conditions."
+    },
+    {
+      "id": "stanford-grad-international-degree-equivalency",
+      "topic": "international_qualification_equivalency",
+      "status": "completed",
+      "next_step": "The common recognized-bachelor threshold and post-offer WES policy for all countries other than the US/PRC are recorded, along with a Kazakhstan-specific unknown and direct inquiry step. No country table was found in the reviewed Stanford policy pages.",
+      "resolution_fact_ids": [
+        "stanford-kazakhstan-graduate-credential-verification"
+      ],
+      "resolution_unknown_ids": [
+        "stanford-kazakhstan-graduate-degree-equivalency"
+      ],
+      "completion_boundary": "Public standing/cycle policies researched; case-specific or unavailable future-cycle details stay in the linked researched unknowns."
+    },
+    {
+      "id": "stanford-post_offer-enrollment-details",
+      "topic": "enrollment",
+      "status": "completed",
+      "next_step": "Public visa-document, proof-of-funding, health-clearance and housing rules are recorded. Individual offer terms remain in the admitted-student portal; the Autumn 2027 Vaden deadline is recorded as unpublished and must be refreshed when released.",
+      "resolution_fact_ids": [
+        "stanford-international-visa-and-enrollment-steps",
+        "stanford-incoming-student-health-requirements"
+      ],
+      "resolution_unknown_ids": [
+        "stanford-undergrad-housing-aid-offer-detail",
+        "stanford-health-deadline-autumn-2027"
+      ],
+      "completion_boundary": "Public standing/cycle policies researched; case-specific or unavailable future-cycle details stay in the linked researched unknowns."
+    }
+  ]
+}

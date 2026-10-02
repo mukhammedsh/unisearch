@@ -1,0 +1,2027 @@
+{
+  "institution_id": "stanford-university-usa-ca",
+  "scope": "Professional and professional-adjacent Stanford study options researched from official sources on 2026-10-02. This is a bounded evidence dossier, not a complete Stanford professional catalog.",
+  "checked_at": "2026-10-02",
+  "sources": [
+    {
+      "id": "gsb_mba",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application",
+      "title": "Applying to the MBA Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_mba_essentials",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/application-essentials",
+      "title": "Application Essentials",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_mba_rounds",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/deadlines",
+      "title": "Deadlines for Applying to the MBA Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_mba_cost",
+      "url": "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/cost-attendance",
+      "title": "MBA Cost of Attendance 2026-2027",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_msx_admission",
+      "url": "https://www.gsb.stanford.edu/programs/msx/admission",
+      "title": "Admission to the Stanford MSx Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd",
+      "url": "https://www.gsb.stanford.edu/programs/phd/admission",
+      "title": "Admission to the PhD Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_materials",
+      "url": "https://www.gsb.stanford.edu/programs/phd/admission/application-materials",
+      "title": "PhD Application Materials",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_fields",
+      "url": "https://www.gsb.stanford.edu/programs/phd/fields",
+      "title": "PhD Fields of Study",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_jd_process",
+      "url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+      "title": "JD Application Process",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_advanced_process",
+      "url": "https://law.stanford.edu/apply/how-to-apply/advanced-degree-application-process/",
+      "title": "Advanced Degree Application Process",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_routes",
+      "url": "https://law.stanford.edu/apply/how-to-apply/",
+      "title": "How to Apply: Stanford Law School",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_llm_bulletin",
+      "url": "https://bulletin.stanford.edu/programs/LAW-LLM",
+      "title": "LAW-LLM Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_jsm_bulletin",
+      "url": "https://bulletin.stanford.edu/programs/LAW-JSM/general-aoYks",
+      "title": "LAW-JSM Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_mls_bulletin",
+      "url": "https://bulletin.stanford.edu/programs/LAW-MLS",
+      "title": "LAW-MLS Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_jd_bulletin",
+      "url": "https://bulletin.stanford.edu/programs/LAW-JD",
+      "title": "LAW-JD Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_cost",
+      "url": "https://law.stanford.edu/apply/tuition-financial-aid/cost-of-attendance/",
+      "title": "Stanford Law Cost of Attendance 2026-2027",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_aid",
+      "url": "https://law.stanford.edu/apply/tuition-financial-aid/jd-financial-support/",
+      "title": "JD Financial Support",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_md_timeline",
+      "url": "https://med.stanford.edu/md-admissions/timeline.html",
+      "title": "MD Admissions Timeline",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_md_apply",
+      "url": "https://med.stanford.edu/md-admissions/how-to-apply",
+      "title": "How to Apply: MD Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_md_bulletin",
+      "url": "https://bulletin.stanford.edu/programs/MED-MD/learning-outcomes-I5h8h",
+      "title": "MED-MD Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mstp_internal",
+      "url": "https://med.stanford.edu/mstp/admissions/internaladmissions",
+      "title": "MSTP Internal Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mstp_faq",
+      "url": "https://med.stanford.edu/mstp/admissions/faq",
+      "title": "MSTP Admissions FAQ",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mspa_apply",
+      "url": "https://www.med.stanford.edu/pa/admissions/how-to-apply.html",
+      "title": "How to Apply: Master of Science in PA Studies",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mspa_faq",
+      "url": "https://med.stanford.edu/pa/admissions/frequently-asked-admissions-questions.html",
+      "title": "MSPA Admissions FAQ",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mspa_tuition",
+      "url": "https://med.stanford.edu/pa/tuition.html",
+      "title": "MSPA Tuition",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_ms_bulletin",
+      "url": "https://bulletin.stanford.edu/programs/MED-MS",
+      "title": "MED-MS Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_ms_admissions",
+      "url": "https://bulletin.stanford.edu/programs/MED-MS/admissions-declaration-information-h0Lr4",
+      "title": "MED-MS Admissions and Declaration Information",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_md_cost",
+      "url": "https://med.stanford.edu/md/mdhandbook/section-7-tuition-and-financial-aid/tuition---fees.html",
+      "title": "MD Tuition and Fees 2026-27",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "bulletin_inventory",
+      "url": "https://bulletin.stanford.edu/programs",
+      "title": "Stanford Bulletin 2026-27 Program Inventory",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_metadata"
+    },
+    {
+      "id": "gsb_msx_requirements",
+      "url": "https://www.gsb.stanford.edu/programs/msx/admission/application-requirements",
+      "title": "MSx Application Requirements",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_msx_tests",
+      "url": "https://www.gsb.stanford.edu/programs/msx/admission/application-requirements/test-scores",
+      "title": "MSx Test Scores",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_msx_experience",
+      "url": "https://www.gsb.stanford.edu/programs/msx/admission/application-requirements/professional-experience",
+      "title": "MSx Professional Experience",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_msx_dates",
+      "url": "https://www.gsb.stanford.edu/programs/msx/admission/deadlines",
+      "title": "MSx Application Deadlines",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_msx_cost",
+      "url": "https://www.gsb.stanford.edu/programs/msx/financial-aid/cost-attendance",
+      "title": "MSx Cost of Attendance 2026-27",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_msx_aid",
+      "url": "https://www.gsb.stanford.edu/programs/msx/financial-aid",
+      "title": "MSx Tuition and Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_deadlines",
+      "url": "https://www.gsb.stanford.edu/programs/phd/admission/deadline-decisions",
+      "title": "GSB PhD Deadline and Decisions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_md_requirements",
+      "url": "https://med.stanford.edu/md-admissions/academic-requirements.html",
+      "title": "MD Eligibility and Recommendations",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_md_aid",
+      "url": "https://med.stanford.edu/md/financial-aid.html",
+      "title": "MD Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mstp_external",
+      "url": "https://med.stanford.edu/mstp/admissions.html",
+      "title": "MSTP Admissions and Eligibility",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mspa_timeline",
+      "url": "https://med.stanford.edu/pa/admissions/admissions-timeline.html",
+      "title": "MSPA Admission Timeline 2026-27",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed",
+      "last_rechecked_at": "2026-10-03"
+    },
+    {
+      "id": "med_mspa_requirements",
+      "url": "https://med.stanford.edu/pa/admissions/entrance-requirements.html",
+      "title": "MSPA Requirements and Recommendations",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mspa_aid",
+      "url": "https://med.stanford.edu/pa/financial-aid.html",
+      "title": "MSPA Financial Aid",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "med_mspa_coa_pdf",
+      "url": "https://med.stanford.edu/content/dam/sm/ms-in-pa/MSPA-COA-26-27-accessible.pdf",
+      "title": "MSPA Cost of Attendance 2026-2027",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_jsd_program",
+      "url": "https://law.stanford.edu/education/degrees/advanced-degree-programs/doctor-of-science-of-law-jsd/",
+      "title": "Doctor of Science of Law (JSD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_advanced_programs",
+      "url": "https://law.stanford.edu/education/degrees/advanced-degree-programs/",
+      "title": "Stanford Law Advanced Degree Programs",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_advanced_aid",
+      "url": "https://law.stanford.edu/apply/tuition-financial-aid/advanced-degree-financial-support/",
+      "title": "Advanced Degree Financial Support",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_mls",
+      "url": "https://law.stanford.edu/office-of-student-affairs/master-of-legal-studies/",
+      "title": "Master of Legal Studies (MLS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "law_jd_fee_waiver",
+      "url": "https://law.stanford.edu/wp-content/uploads/2025/09/2026-SLS-JD-Application-Fee-Waiver-Instructions.pdf",
+      "title": "Fall 2026 JD Application Fee Waiver Instructions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_aid",
+      "url": "https://www.gsb.stanford.edu/programs/phd/financial-aid",
+      "title": "GSB PhD Financial Aid",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_english",
+      "url": "https://www.gsb.stanford.edu/programs/phd/admission/application-materials/toefl-ielts",
+      "title": "GSB PhD TOEFL and IELTS",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_gre",
+      "url": "https://www.gsb.stanford.edu/programs/phd/admission/application-materials/graduate-record-examination-gre",
+      "title": "GSB PhD GRE Scores",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_fee_waiver",
+      "url": "https://www.gsb.stanford.edu/programs/phd/admission/application-materials/application-fee-waiver",
+      "title": "GSB PhD Application Fee Waiver",
+      "checked_at": "2026-10-02",
+      "content_review_status": "partially_reviewed_search_excerpt"
+    },
+    {
+      "id": "gsb_mba_fee",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/fee",
+      "title": "MBA Application Fee",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_mba_english",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/test-scores/english-language-proficiency",
+      "title": "MBA English Language Proficiency",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_mba_interviews",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/interviews",
+      "title": "MBA Interviews",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_mba_aid_process",
+      "url": "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/application-process",
+      "title": "MBA Financial Aid Application Process",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "bulletin_gsb_msx",
+      "url": "https://bulletin.stanford.edu/programs/GSB-MSM/general-aoYks",
+      "title": "GSB-MSM Program, Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "tuition_rates_2026_27",
+      "url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+      "title": "2026-2027 Graduate and Professional Tuition Rates",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "non_tuition_fees_2026_27",
+      "url": "https://studentservices.stanford.edu/my-finances/tuition-fees/non-tuition-charges-fees/2026-2027-non-tuition-charges-fees",
+      "title": "2026-2027 Non-Tuition Charges and Fees",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "stanford_grad_residency",
+      "url": "https://bulletin.stanford.edu/academic-polices/degree-requirements/graduate-residency",
+      "title": "Graduate Residency Requirements",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "stanford_doctoral_requirements",
+      "url": "https://bulletin.stanford.edu/academic-polices/degree-requirements/doctoral-degree-requirements",
+      "title": "Doctoral Degree Requirements",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed"
+    },
+    {
+      "id": "gsb_phd_portal",
+      "url": "https://applygsb.stanford.edu/apply/",
+      "title": "Stanford GSB Application Portal",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed"
+    }
+  ],
+  "study_options": [
+    {
+      "id": "stanford-option-gsb-mba",
+      "title": "Stanford MBA",
+      "award": "MBA",
+      "level": "professional",
+      "source_ids": [
+        "gsb_mba",
+        "gsb_mba_rounds"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "gsb_mba_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "Two-year, full-time MBA at Stanford GSB; MBA admission is its own GSB application.",
+      "catalog_code": "GSB-MBA"
+    },
+    {
+      "id": "stanford-option-gsb-msx",
+      "title": "Stanford MSx",
+      "award": "MS",
+      "level": "professional",
+      "source_ids": [
+        "gsb_msx_admission",
+        "bulletin_gsb_msx"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "gsb_msx_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "One-year Master of Science in Management (MSM), known as Stanford MSx, for experienced leaders; distinct official Bulletin catalog code GSB-MSM and separate admissions route.",
+      "catalog_code": "GSB-MSM"
+    },
+    {
+      "id": "stanford-option-law-jd",
+      "title": "Doctor of Jurisprudence",
+      "award": "JD",
+      "level": "professional",
+      "source_ids": [
+        "law_jd_process",
+        "law_jd_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_jd_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "Stanford Law's first professional degree. Application is via LSAC; standard entry is a full-time three-year JD.",
+      "catalog_code": "LAW-JD"
+    },
+    {
+      "id": "stanford-option-law-llm-corporate-governance-practice",
+      "title": "LLM in Corporate Governance and Practice",
+      "award": "LLM",
+      "level": "professional",
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_advanced_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "One of four Stanford Law LLM specializations. LLM admission is limited to applicants with a primary law degree earned outside the United States.",
+      "catalog_code": "LAW-LLM",
+      "parent_option_id": "stanford-option-law-llm"
+    },
+    {
+      "id": "stanford-option-law-llm-environmental-law-policy",
+      "title": "LLM in Environmental Law and Policy",
+      "award": "LLM",
+      "level": "professional",
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_advanced_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "One of four Stanford Law LLM specializations. LLM admission is limited to applicants with a primary law degree earned outside the United States.",
+      "catalog_code": "LAW-LLM",
+      "parent_option_id": "stanford-option-law-llm"
+    },
+    {
+      "id": "stanford-option-law-llm-international-economic-law-business-policy",
+      "title": "LLM in International Economic Law, Business and Policy",
+      "award": "LLM",
+      "level": "professional",
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_advanced_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "One of four Stanford Law LLM specializations. LLM admission is limited to applicants with a primary law degree earned outside the United States.",
+      "catalog_code": "LAW-LLM",
+      "parent_option_id": "stanford-option-law-llm"
+    },
+    {
+      "id": "stanford-option-law-llm-law-science-technology",
+      "title": "LLM in Law, Science and Technology",
+      "award": "LLM",
+      "level": "professional",
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_advanced_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "One of four Stanford Law LLM specializations. LLM admission is limited to applicants with a primary law degree earned outside the United States.",
+      "catalog_code": "LAW-LLM",
+      "parent_option_id": "stanford-option-law-llm"
+    },
+    {
+      "id": "stanford-option-law-jsm",
+      "title": "JSM through the Stanford Program in International Legal Studies (SPILS)",
+      "award": "JSM",
+      "level": "professional",
+      "source_ids": [
+        "law_routes",
+        "law_advanced_process",
+        "law_jsm_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_advanced_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "Research-oriented JSM for JD-equivalent holders admitted to SPILS; SPILS is the actual application target and enrollment does not guarantee later JSD admission.",
+      "catalog_code": "LAW-JSM"
+    },
+    {
+      "id": "stanford-option-law-jsd",
+      "title": "Doctor of the Science of Law",
+      "award": "JSD",
+      "level": "doctoral",
+      "source_ids": [
+        "law_routes",
+        "law_advanced_process"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_jsd_admission"
+      ],
+      "application_classification": "conditional_external_after_spils_or_us_llm",
+      "description": "Selective JSD doctorate, reached through one of two evidenced antecedent tracks: Stanford SPILS or LLM at Stanford/another U.S. law school; prior program admission does not ensure JSD admission.",
+      "catalog_code": "LAW-JSD"
+    },
+    {
+      "id": "stanford-option-law-mls",
+      "title": "Master of Legal Studies",
+      "award": "MLS",
+      "level": "professional",
+      "source_ids": [
+        "law_routes",
+        "law_mls_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_mls_admission"
+      ],
+      "application_classification": "direct_external_limited",
+      "description": "Non-professional degree for a small number of graduate students/scholars without prior legal training whose interdisciplinary research requires legal foundations. Not identified as a coterm degree.",
+      "catalog_code": "LAW-MLS"
+    },
+    {
+      "id": "stanford-option-med-md",
+      "title": "Doctor of Medicine",
+      "award": "MD",
+      "level": "professional",
+      "source_ids": [
+        "med_md_timeline",
+        "med_md_apply",
+        "med_md_bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "med_md_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "Stanford Medicine MD Discovery Curriculum. Applicants apply through AMCAS and, after invitation, complete a Stanford supplemental application.",
+      "catalog_code": "MED-MD"
+    },
+    {
+      "id": "stanford-option-med-md-phd",
+      "title": "Medical Scientist Training Program (MD-PhD)",
+      "award": "MD + PhD",
+      "level": "professional",
+      "source_ids": [
+        "med_md_apply",
+        "med_mstp_faq"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "med_mstp_external_admission"
+      ],
+      "application_classification": "combined_external",
+      "description": "Combined MD and PhD training. Applicant applies through the medical-school process and MSTP selection; research commitment and sustained productive research experience are central. Current Stanford students have a separate internal application.",
+      "parent_option_id": "stanford-option-med-md"
+    },
+    {
+      "id": "stanford-option-pas-ms",
+      "title": "Master of Science in Physician Assistant Studies",
+      "award": "MSPA",
+      "level": "professional",
+      "source_ids": [
+        "med_mspa_apply",
+        "med_mspa_faq",
+        "med_mspa_tuition"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "med_mspa_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "Nine-quarter Stanford PA master’s program open to eligible external and Stanford undergraduate applicants through CASPA; no coterm route.",
+      "catalog_code": "PAS-MS"
+    },
+    {
+      "id": "stanford-option-med-ms",
+      "title": "MS in Medicine, Biomedical Investigation (Berg Scholars)",
+      "award": "MS",
+      "level": "professional",
+      "source_ids": [
+        "med_ms_bulletin",
+        "med_ms_admissions"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "med_berg_internal_admission"
+      ],
+      "application_classification": "restricted_internal",
+      "description": "The MS in Medicine is reserved for MED-MD students. The Biomedical Investigation subplan is the Berg Scholars pathway for approved split-curriculum MD students, with internal application around the end of year two.",
+      "catalog_code": "MED-MS",
+      "subplan": "Biomedical Investigation (Berg Scholars)"
+    },
+    {
+      "id": "stanford-option-gsb-phd",
+      "title": "Business Administration PhD",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "gsb_phd",
+        "gsb_phd_fields"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "gsb_phd_admission"
+      ],
+      "application_classification": "shared_school_application",
+      "description": "Single GSB doctoral degree with seven fields of study: Accounting; Economic Analysis & Policy; Finance; Marketing; Operations, Information & Technology; Organizational Behavior; Political Economics.",
+      "catalog_code": "GSB-PHD"
+    },
+    {
+      "id": "stanford-option-law-llm",
+      "title": "Master of Laws",
+      "award": "LLM",
+      "level": "professional",
+      "catalog_code": "LAW-LLM",
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin",
+        "bulletin_inventory"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "law_advanced_admission"
+      ],
+      "application_classification": "direct_external",
+      "description": "Four named specializations are separately represented as variants of the LLM degree."
+    }
+  ],
+  "application_procedures": [
+    {
+      "id": "gsb_mba_admission",
+      "option_ids": [
+        "stanford-option-gsb-mba"
+      ],
+      "classification": "direct_external",
+      "destination": "Stanford GSB online MBA application",
+      "source_ids": [
+        "gsb_mba",
+        "gsb_mba_essentials",
+        "gsb_mba_rounds"
+      ]
+    },
+    {
+      "id": "gsb_msx_admission",
+      "option_ids": [
+        "stanford-option-gsb-msx"
+      ],
+      "classification": "direct_external",
+      "destination": "Stanford GSB online MSx application; joint MBA/MSx application uses MBA Round 2",
+      "source_ids": [
+        "gsb_msx_admission",
+        "gsb_mba_essentials"
+      ]
+    },
+    {
+      "id": "gsb_phd_admission",
+      "option_ids": [
+        "stanford-option-gsb-phd"
+      ],
+      "classification": "shared_school_application",
+      "destination": "Stanford GSB online PhD application with field of study selected",
+      "source_ids": [
+        "gsb_phd",
+        "gsb_phd_materials",
+        "gsb_phd_fields"
+      ]
+    },
+    {
+      "id": "law_jd_admission",
+      "option_ids": [
+        "stanford-option-law-jd"
+      ],
+      "classification": "direct_external",
+      "destination": "LSAC electronic JD application to Stanford Law School",
+      "source_ids": [
+        "law_jd_process"
+      ]
+    },
+    {
+      "id": "law_advanced_admission",
+      "option_ids": [
+        "stanford-option-law-llm-corporate-governance-practice",
+        "stanford-option-law-llm-environmental-law-policy",
+        "stanford-option-law-llm-international-economic-law-business-policy",
+        "stanford-option-law-llm-law-science-technology",
+        "stanford-option-law-jsm",
+        "stanford-option-law-llm"
+      ],
+      "classification": "shared_advanced_degree_application_with_selection_path",
+      "destination": "LSAC graduate application; select LLM, SPILS, or JSD as relevant. JSD applicants apply to SPILS; SPILS selection precedes possible JSD selection.",
+      "source_ids": [
+        "law_advanced_process",
+        "law_routes"
+      ]
+    },
+    {
+      "id": "law_mls_admission",
+      "option_ids": [
+        "stanford-option-law-mls"
+      ],
+      "classification": "direct_external_limited",
+      "destination": "Stanford Law Graduate Admissions; MLS-specific application process",
+      "source_ids": [
+        "law_routes",
+        "law_mls_bulletin"
+      ]
+    },
+    {
+      "id": "med_md_admission",
+      "option_ids": [
+        "stanford-option-med-md",
+        "stanford-option-med-md-phd"
+      ],
+      "classification": "shared_medical_school_application",
+      "destination": "AMCAS primary application followed by Stanford supplemental application invitation; MSTP consideration is separately selected within the medical application",
+      "source_ids": [
+        "med_md_timeline",
+        "med_md_apply",
+        "med_mstp_faq"
+      ]
+    },
+    {
+      "id": "med_mstp_external_admission",
+      "option_ids": [
+        "stanford-option-med-md-phd"
+      ],
+      "classification": "combined_external",
+      "destination": "MD application plus Stanford MSTP application/consideration; exact current-cycle component and deadlines require confirmation",
+      "source_ids": [
+        "med_md_apply",
+        "med_mstp_faq"
+      ]
+    },
+    {
+      "id": "med_mspa_admission",
+      "option_ids": [
+        "stanford-option-pas-ms"
+      ],
+      "classification": "direct_external",
+      "destination": "CASPA Central Application Service for Physician Assistants",
+      "source_ids": [
+        "med_mspa_apply",
+        "med_mspa_faq"
+      ]
+    },
+    {
+      "id": "med_berg_internal_admission",
+      "option_ids": [
+        "stanford-option-med-ms"
+      ],
+      "classification": "restricted_internal",
+      "destination": "Contact the MED-MS program director; prepare and submit the Berg Scholars application and present to the selection committee",
+      "source_ids": [
+        "med_ms_admissions",
+        "med_ms_bulletin"
+      ]
+    },
+    {
+      "id": "gsb_joint_mba_msx_admission",
+      "option_ids": [
+        "stanford-option-gsb-mba",
+        "stanford-option-gsb-msx"
+      ],
+      "classification": "shared_joint_application",
+      "destination": "One Stanford GSB joint MBA/MSx application, available only at Round 2; each program reviews the application independently.",
+      "source_ids": [
+        "gsb_msx_dates",
+        "gsb_msx_tests",
+        "gsb_msx_admission"
+      ]
+    },
+    {
+      "id": "law_jsd_admission",
+      "option_ids": [
+        "stanford-option-law-jsd"
+      ],
+      "classification": "separate_advanced_degree_admission_after_qualifying_llm_or_spils",
+      "destination": "Separate Stanford Law JSD application through LSAC; eligible track is based on completed Stanford SPILS or an LLM from Stanford/another U.S. law school.",
+      "source_ids": [
+        "law_jsd_program",
+        "law_advanced_process"
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "gsb_mba_eligibility_tests_docs",
+      "topic": "eligibility_tests_application_materials",
+      "value": "MBA applicants require U.S. bachelor degree or equivalent (including eligible international three-year degrees); no minimum GPA. All applicants submit GMAT or GRE (no minimum, no superscore, only one test sitting reported); Executive Assessment not accepted. For 2026-27, scores expiring before Jun 1, 2027 should be officially reported at application submission and may arrive after deadline. English test (TOEFL, IELTS Academic or PTE Academic) is required if undergraduate classes were not all taught exclusively in English, unless later graduate program was exclusively English; citizenship/work experience do not exempt. Minimums: TOEFL 100 before Jan 21 2026 or 5.0 on/after, IELTS 7.0, PTE 68; scores valid two years and test must precede round deadline. Application includes education/transcripts, personal/activities/awards, professional experience and resume, two recommendations (preferably supervisors), essays, optional short answer, fee. Unofficial transcripts at application, official after admission. Application decisions are holistic; calculus/statistics/microeconomics strengthen readiness but are not formal prerequisites.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-mba"
+        ],
+        "procedure_ids": [
+          "gsb_mba_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "2026-27 application cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "gsb_mba",
+        "gsb_mba_essentials",
+        "gsb_mba_english"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "English test exemption depends on all courses in undergraduate or later graduate study having been exclusively English.",
+        "English scores expire after two years and must be valid on round deadline.",
+        "GMAT/GRE scores must be submitted from one sitting and are not superscored."
+      ],
+      "exceptions": [
+        "A joint MBA/MSx application requires valid GMAT, GMAT Focus, or GRE because EA is not accepted for MBA."
+      ]
+    },
+    {
+      "id": "gsb_mba_deadlines",
+      "topic": "application_windows_deadlines",
+      "value": "For Fall 2027 entry, completed application including recommendations and fee is due by 4:00 p.m. Pacific Time: Round 1 2026-09-09; Round 2 2027-01-06; Round 3 2027-04-07. Decision notifications are 2026-12-09, 2027-04-01, and 2027-05-27 respectively. Applicants may apply once per application year in one round.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-mba"
+        ],
+        "procedure_ids": [
+          "gsb_mba_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "gsb_mba_rounds"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Late material may not be reviewed.",
+        "Admitted students are expected to enroll in the admission year; deferral is limited to rare and extraordinary circumstances."
+      ],
+      "exceptions": [
+        "Applicants applying to MBA and MSx together must use Round 2."
+      ]
+    },
+    {
+      "id": "gsb_mba_cost_funding",
+      "topic": "cost_and_funding",
+      "value": "First-year MBA 2026-27 estimated cost of attendance is USD 140,940 for a single student and USD 168,825 for a married student; tuition is USD 89,187 per year in this annual budget. Living expenses, housing, medical insurance and health fee are separately estimated; global-experience costs of USD 4,000-6,000 are excluded. Financial aid is a separate assessment; budget adjustments can increase loan eligibility and do not typically increase fellowship awards.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-mba"
+        ],
+        "procedure_ids": [
+          "gsb_mba_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": "2026-27 academic year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "gsb_mba_cost"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Amounts are first-year annual estimates and vary by household, insurance, and allowable budget adjustments."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "gsb_msx_duration_route",
+      "topic": "eligibility_tests_application_and_dates",
+      "value": "MSx is a 12-month full-time in-person Stanford GSB MS in Management. Applicants require a U.S. bachelor’s degree or equivalent (international three-year degrees included); only rare exceptions are considered. At least eight years of post-graduate professional work experience is required; managerial experience is valued but not required. No minimum GPA; application requires education history/transcripts, test score, professional history/resume (maximum two pages), two recommendations, essays and fee. GMAT, GRE or Executive Assessment is required before application with no test waivers; LSAT/MCAT are not substitutes. TOEFL/PTE/IELTS is required if English was not the primary language of instruction or any classes used another language; online PTE not accepted. Applicants report only one testing session if repeated; online GMAT/GRE/EA/TOEFL/IELTS accepted. 2026-27 rounds: Oct 8 2026, Jan 6 2027 (MBA/MSx joint), and Feb 11 2027, all 4 p.m. Pacific; decisions Dec 9 2026 or Apr 1 2027. Nonrefundable fee USD 275. A 12-month 2026-27 cost estimate is USD 221,190 single / USD 258,342 married, including tuition USD 154,828. Need-based fellowships and loans are available to admitted students regardless of citizenship; admissions decisions precede aid application.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-msx"
+        ],
+        "procedure_ids": [
+          "gsb_msx_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "2026-27 admissions cycle and 2026-27 cost year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "gsb_msx_admission",
+        "gsb_msx_requirements",
+        "gsb_msx_tests",
+        "gsb_msx_experience",
+        "gsb_msx_dates",
+        "gsb_msx_cost",
+        "gsb_msx_aid",
+        "gsb_mba_essentials"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "MSx has no test waivers. Valid test score is required to receive an interview invitation.",
+        "English test is required under either language-of-instruction condition; no general nationality-based exemption is stated in the reviewed page.",
+        "Cost is for the 12-month period July 2026 to June 2027 and includes insurance even if alternative coverage exists."
+      ],
+      "exceptions": [
+        "Joint applicants need GMAT or GRE because the MBA does not accept EA.",
+        "Applicants may apply once per application year. Deferral is considered only in rare extraordinary circumstances.",
+        "Need-based funding is decided only for admitted students and is available regardless of citizenship."
+      ]
+    },
+    {
+      "id": "gsb_phd_eligibility_application",
+      "topic": "eligibility_tests_documents",
+      "value": "GSB PhD applicants must hold, or expect before enrollment, a U.S. bachelor's degree or recognized international equivalent. A complete application includes a statement of purpose, CV, three references, GRE, TOEFL iBT or IELTS Academic if applicable, uploaded official transcripts, online submission, and a USD 125 application fee. No minimum GPA, GRE score, particular prior field, work experience, or MBA/graduate degree is required. Applicants may also apply to another Stanford program. All applicants must submit GRE scores, including every administration from Dec 1, 2021 through Dec 1, 2026 for Fall 2027; GRE At Home is accepted. Self-reported and official GRE scores are required, but self-reported scores suffice for initial review while official results are pending; do not superscore. Official GRE scores go to ETS code 4704. Applicants without an English-test exemption must submit TOEFL iBT or IELTS Academic; minimums are TOEFL 100 for tests before Jan 21, 2026, TOEFL 5 for tests on/after that date, or IELTS 7. For Autumn 2027, English test dates must fall from Dec 1, 2024 through Dec 1, 2026. TOEFL MyBest scores are accepted; IELTS superscores are not. Official English scores are required, with self-reporting sufficient for initial review while official scores are pending.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-phd"
+        ],
+        "procedure_ids": [
+          "gsb_phd_admission"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "international_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "gsb_phd",
+        "gsb_phd_materials",
+        "gsb_phd_fields",
+        "gsb_phd_gre",
+        "gsb_phd_english"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "International degree equivalence may be checked with WES; this is a recommendation, not a Stanford credential evaluation.",
+        "Field choice determines research area and related preparation.",
+        "English-test exemption may require supporting documentation as a condition of admission.",
+        "Admitted students accepting an offer must take the Stanford English Placement Test if their application TOEFL was below 109 or IELTS below 8."
+      ],
+      "exceptions": [
+        "English scores are not required at application if the applicant is a U.S. citizen or permanent resident, has English as a first language, earned a U.S. bachelor, master, or doctoral degree (or international equivalent) at a university where all instruction was in English, or has at least two consecutive years of professional or educational experience in English within the past 10 years."
+      ]
+    },
+    {
+      "id": "gsb_phd_duration_funding",
+      "topic": "duration_funding",
+      "value": "GSB PhD is one Business Administration PhD award with seven fields of study: Accounting; Economic Analysis & Policy; Finance; Marketing; Operations, Information & Technology; Organizational Behavior; and Political Economics. The program is five to six years full time in Stanford, California. Incoming doctoral students receive a financial fellowship covering tuition, living stipend, and health fees for five years, conditional on satisfactory academic progress and program milestones, with a possible sixth-year extension. Incoming students in 2026-27 receive a living stipend of USD 59,500 annually. Research and course assistantships are typically included in the support package; professional development grants cover eligible conference travel, publication submissions, and professional organization fees.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-phd"
+        ],
+        "procedure_ids": [
+          "gsb_phd_admission"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "gsb_phd",
+        "gsb_phd_fields",
+        "gsb_phd_aid",
+        "bulletin_inventory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The USD 59,500 stipend is an annual 2026-27 incoming-student amount, not a Fall 2027 award quote.",
+        "Five-year support depends on satisfactory academic progress and program milestones; a sixth year is possible rather than automatic.",
+        "The reviewed financial-aid page does not specify a separate summer stipend amount or payment schedule."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "law_jd_dates_tests_docs",
+      "topic": "application_eligibility_documents_tests_decisions",
+      "value": "For Fall 2027, a bachelor degree or equivalent must be completed or expected by Summer 2027; all offers are conditional on graduation. LSAC application opens Sep 15, 2026 and is due Feb 15, 2027 11:59 p.m. PT; KHS files must be complete Dec 1, 2026. Required: 1-2 page resume, roughly two-page personal statement, required viewpoint essay (1-2 pages), 250-word answer to one of three prompts, 2-4 LSAC letters, CAS transcript report, LSAT or GRE. Valid LSAT scores must all be reported; score dates before June 2021 invalid, Argumentative Writing required, latest LSAT Jan 2027. GRE-only route permitted; GRE scores before June 2021 invalid, all valid scores submitted, suggested test by Feb 1 2027. Fee USD 85; SLS fee waiver must be requested before application, with 5-7 business days processing. No admissions interviews. Rolling decisions (accept/reject/waitlist), first response target Apr 30. Deposit secures enrollment; limited one-year deferral requires nonrefundable tuition deposit; waitlist admits cannot defer. SLS may withdraw offers for significant performance decline, misrepresentation, serious integrity concerns, or another law-school enrollment commitment/deposit.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-jd"
+        ],
+        "procedure_ids": [
+          "law_jd_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "Knight-Hennessy-applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "law_jd_process",
+        "law_jd_fee_waiver"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "All application items are applicant responsibility; file is complete only when required records arrive.",
+        "Fee waiver request must precede LSAC submission; current fee-waiver instruction page gives 5-7 business day processing."
+      ],
+      "exceptions": [
+        "If an applicant has any valid LSAT, it must be reported; GRE-only applicants may omit LSAT.",
+        "Admissions Committee does not interview applicants.",
+        "Waitlist admits cannot defer."
+      ]
+    },
+    {
+      "id": "law_advanced_options_eligibility",
+      "topic": "degree_routes_and_eligibility",
+      "value": "Four LLM specializations: Corporate Governance & Practice, Environmental Law & Policy, International Economic Law, Business and Policy, and Law, Science & Technology; primary law degree must be earned outside U.S. SPILS is a research-oriented route for foreign-law-degree holders; the JSM is awarded through SPILS and requires JD/equivalent plus participation. LLM and SPILS have separate admissions decisions. JSD applicants have two routes: Stanford SPILS graduates and students from Stanford/other U.S. law schools who complete an LLM before JSD; LLM-route applicants submit serious independent original research. Neither SPILS nor Stanford LLM admission guarantees JSD. MLS is a nonprofessional degree for a small number of advanced graduate students/scholars without legal training; Bulletin inventory confirms it is not coterm.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-llm-corporate-governance-practice",
+          "stanford-option-law-llm-environmental-law-policy",
+          "stanford-option-law-llm-international-economic-law-business-policy",
+          "stanford-option-law-llm-law-science-technology",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd",
+          "stanford-option-law-mls"
+        ],
+        "procedure_ids": [
+          "law_advanced_admission",
+          "law_jsd_admission",
+          "law_mls_admission"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "international_law_degree_holder",
+          "advanced_graduate_student",
+          "scholar_without_legal_training"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin",
+        "law_jsm_bulletin",
+        "law_mls_bulletin",
+        "law_jsd_program",
+        "law_advanced_programs",
+        "bulletin_inventory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "LLM and SPILS admit small cohorts; MLS admits very few if any.",
+        "JSD antecedent route must be complete before starting the JSD; application is a separate selection decision."
+      ],
+      "exceptions": [
+        "Current JSD program page resolves the initial ambiguity: U.S.-based law-school LLM applicants are also a stated route, alongside SPILS completers.",
+        "MLS is not a coterm degree."
+      ]
+    },
+    {
+      "id": "law_advanced_requirements_dates",
+      "topic": "application_process_requirements",
+      "value": "LLM/SPILS Fall 2027 applications open Sep 15, 2026 and are due Dec 1, 2026 at 11:59 p.m. PT; KHS file-complete deadline is same date. JSD application opens Feb 2027 and deadline is Apr 2027, both officially TBA. Advanced app fee USD 85 per program; separate fee for each program. Shared LSAC application materials: 1-2 page resume, 2-3 page personal statement, two recommendation letters, official transcripts, TOEFL; SPILS/JSD add research proposal and third letter; JSD also requires 1-2 examples of English scholarly writing. LSAC CAS and recommendation service required; direct submissions rejected. TOEFL iBT minimum is 100 before Jan 21, 2026; for tests on/after that date, overall 5.5 with reading/listening at least 5.5 and writing/speaking at least 5.0. Scores to LSAC institution code 8395. Native-English applicants still request TOEFL waiver; full-time study/work in English for at least two years may qualify with formal request/evidence. LLM normally expects two years legal practice; waiver explanation possible. Decisions expected by mid-April 2027.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-llm-corporate-governance-practice",
+          "stanford-option-law-llm-environmental-law-policy",
+          "stanford-option-law-llm-international-economic-law-business-policy",
+          "stanford-option-law-llm-law-science-technology",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd"
+        ],
+        "procedure_ids": [
+          "law_advanced_admission",
+          "law_jsd_admission"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "advanced_degree_applicant",
+          "Knight-Hennessy-applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "law_advanced_process"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "All required documents must arrive through LSAC services.",
+        "Applicants under two years legal practice need an unusual-circumstances waiver explanation for LLM.",
+        "English proficiency required; eligible waiver must be formally requested with proof."
+      ],
+      "exceptions": [
+        "JSD application dates are TBA, and its KHS application must be submitted in a prior masters-application year."
+      ]
+    },
+    {
+      "id": "law_cost_aid",
+      "topic": "cost_and_funding",
+      "value": "2026-27 JD standard cost-of-attendance estimate is USD 125,124 on-campus or USD 126,216 off-campus for a single student; tuition is USD 79,779. Need-based aid uses FAFSA and CSS Profile and combines tuition fellowships, government/private loans; it is re-evaluated annually and level is not guaranteed for all three years. Stanford reports approximately 75-80% of students receive aid, with average fellowship portion USD 25,000-28,000 annually. Age-based parental contribution rules apply to CSS resource assessment. Yellow Ribbon is additional for eligible 100% Chapter 33 benefit recipients; LRAP is a post-JD loan assistance program for qualifying public-service employment.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-jd"
+        ],
+        "procedure_ids": [
+          "law_jd_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "admitted_student",
+          "need_based_aid_applicant",
+          "eligible_veteran"
+        ],
+        "cycle": "2026-27 academic year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "law_cost",
+        "law_aid"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Cost figures are standard single-student budget estimates; medical insurance is waivable and shown separately.",
+        "Need-based award depends on demonstrated need and annual review."
+      ],
+      "exceptions": [
+        "Yellow Ribbon requires 100% Post-9/11 GI Bill eligibility; veteran benefits are not universal grants.",
+        "LRAP is post-graduation loan support, not tuition reduction at admission."
+      ]
+    },
+    {
+      "id": "med_md_cycle_process",
+      "topic": "eligibility_application_and_timeline",
+      "value": "For Fall 2027 MD admission, applicants need a recognized U.S. bachelor degree or equivalent; foreign bachelor degree holders may need WES equivalency and one in-person academic year at an accredited institution in the U.S., Canada, or U.K. Eligible groups include citizens, permanent residents, DACA, undocumented and visa-eligible international applicants; undocumented admits need legal status by matriculation. No required undergraduate courses; coursework areas are recommended. At least one MCAT after Jan 2023 and by Aug 22, 2026 is required. AMCAS due Oct 1, 2026 11:59 p.m. ET; invited applicants submit Stanford supplemental materials by Oct 9, 2026 11:59 p.m. PT. Three to six AMCAS letters, with at least three received by supplemental deadline; invitations to interview roll from August; decisions Jan-Mar; accept one offer by Apr 30. Fee is required but amount is not exposed; only AAMC Fee Assistance Program waiver approved before primary application is accepted. No Early Decision.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md"
+        ],
+        "procedure_ids": [
+          "med_md_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_md_apply",
+        "med_md_requirements",
+        "med_md_timeline"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Timeline page does not identify its applicable entering class/cycle on the reviewed content; confirm before applying.",
+        "The 2026-entry how-to-apply page is historical and has not been used to set current MCAT dates."
+      ],
+      "exceptions": [
+        "Supplemental application is by invitation after AMCAS receipt."
+      ]
+    },
+    {
+      "id": "med_md_award_cost",
+      "topic": "study_and_tuition",
+      "value": "Stanford MD Discovery Curriculum can be completed at different paces: pre-clerkship phase in two years or, after applying for the option, spread over three years. Students must pass USMLE Step 1 and Step 2 CK. 2026-27 regular MD tuition is USD 24,034 per quarter for Autumn, Winter, Spring, and Summer; research rate USD 3,993 per quarter applies under specified 100%-research/after-residency conditions. Insurance and mandatory fees may be additional.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md",
+          "stanford-option-med-md-phd"
+        ],
+        "procedure_ids": [
+          "med_md_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "enrolled_student"
+        ],
+        "cycle": "2026-27 academic year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_md_bulletin",
+        "med_md_cost"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Research tuition is conditional and not a general student rate.",
+        "Required tuition is quarter-based; annual total depends on enrollment status and additional fees."
+      ],
+      "exceptions": [
+        "MD students enrolled in other Stanford degrees may be charged under separate rules."
+      ]
+    },
+    {
+      "id": "med_mstp_internal_restrictions",
+      "topic": "internal_route_funding",
+      "value": "Current Stanford MD students may apply internally to MSTP, commonly during M2/M2B, with later-stage cases discussed individually; students outside Stanford MD and people matriculated in another institution's PhD are ineligible for this internal MSTP funding route. Current Stanford PhD students may seek MSTP funding only after qualifying conditions including good standing, passed qualifying exam, and MD application/admission; MD admission is independent. Internal application requires a dual-degree authorization process and research proposal/support materials, followed by an oral presentation. 2026-27 internal deadline shown as January 20, 2026, already elapsed as checked.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md-phd"
+        ],
+        "procedure_ids": [
+          "med_mstp_external_admission"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "current_stanford_md_student",
+          "current_stanford_phd_student"
+        ],
+        "cycle": "Autumn 2026-27 internal funding intake",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_mstp_internal"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The page's listed January 20, 2026 deadline has passed; this does not establish a future cycle deadline.",
+        "MSTP funding is restricted to U.S. citizens and permanent residents according to the internal admissions page."
+      ],
+      "exceptions": [
+        "The internal application pathway is distinct from initial external MSTP/MD application.",
+        "Current Stanford PhD students have an eligibility path, but MD admission remains a separate decision."
+      ]
+    },
+    {
+      "id": "med_mspa_eligibility_process",
+      "topic": "eligibility_tests_documents_and_dates",
+      "value": "For the MSPA 2026-27 application timeline leading to August 2027 entry, CASPA opened Apr 30, 2026; the application had to be in Complete status in CASPA by Jul 15, 2026 at 11:59 p.m. Eastern Time (deadline passed); interviews Autumn 2026 and orientation/classes begin Aug 2027. Only CASPA application status establishes deadline compliance; no other proof or evidence is accepted. Failure to maintain Complete status moving forward jeopardizes admission consideration. The only minimum admission requirement is a qualifying in-person U.S./Canada bachelor's degree or qualifying U.S. graduate degree by Jul 1; no specific major. Foreign-degree-only applicants are ineligible, WES equivalency is not accepted, and no waiver applies. Recommended: GRE/MCAT/PA-CAT (PA-CAT preferred), preparatory coursework, 500+ clinical hours and three references. No minimum GPA or test score; one CASPA personal statement up to 5,000 characters. Three references recommended, max five; friends/family/healthcare providers excluded. About 10% interview. USD 1,000 nonrefundable seat deposit credited to first-quarter tuition; no advanced placement. Stanford undergraduate applicants may also apply as internal applicants through the same CASPA route; Stanford identifies no coterm degree or advanced placement for this program.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "international_applicant",
+          "stanford_undergraduate_applicant"
+        ],
+        "cycle": "2026-27 application timeline; August 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_mspa_timeline",
+        "med_mspa_requirements",
+        "med_mspa_apply",
+        "med_mspa_faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "CASPA Complete status must be attained by the published deadline and maintained afterward; no other proof or evidence of completion is accepted, and processing extensions are not granted.",
+        "Test scores must be verified by the deadline to count; admitted applicants without PA-CAT may be required to complete it before enrollment, without affecting admission status."
+      ],
+      "exceptions": [
+        "Tests, recommendations and preparatory coursework/experience are recommendations, not minimum admission conditions.",
+        "International applicants qualify only with the specified qualifying U.S./Canada degree; no degree waiver.",
+        "Internal Stanford undergraduate eligibility uses the same qualifying degree requirement and external CASPA application; no coterm route exists."
+      ]
+    },
+    {
+      "id": "med_mspa_cost_route",
+      "topic": "cost_and_funding",
+      "value": "For 2026-27 MSPA, standard tuition is USD 21,815 per quarter for nine quarters. Mandatory quarterly fees/books subtotal USD 850; disability insurance USD 40 annually. Cardinal Care is optional at USD 2,936 per quarter; private qualifying insurance may be used. Living estimates: USD 12,960 per quarter on campus, USD 14,435 off campus. Published total-program on-campus budget without Cardinal Care is USD 326,145 for AY 2026-27 matriculants, with future incremental tuition increases likely.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": "2026-27 academic year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_mspa_coa_pdf"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "partially_published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Standard progress assumes nine quarters; extra terms incur further charges.",
+        "Health insurance is mandatory but Cardinal Care is optional if qualifying private insurance is maintained."
+      ],
+      "exceptions": [
+        "Housing and insurance choices change total attendance costs."
+      ]
+    },
+    {
+      "id": "med_ms_berg_internal",
+      "topic": "internal_award_application",
+      "value": "MS in Medicine without subplan is reserved for MED-MD students. Berg Scholars Biomedical Investigation MS application is restricted to Stanford MD students approved for a split curriculum and at the end of the second year; approved off-cycle applications may be considered, but funding is not retroactive. Applicants should contact the program director early. Materials include a research proposal (maximum five pages), permission to access the AMCAS application, proposed mentor recommendation, brief career/coursework/committee/Gantt-chart statement, and oral presentation with Q&A. Application submission, review, interview, presentation and selection occur around the end of Summer Quarter after M2; decisions precede the next quarter. MS requires at least 45 unduplicated units (33 research and 12 coursework), completed within three years of the first graduate quarter while pursuing MD.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-ms"
+        ],
+        "procedure_ids": [
+          "med_berg_internal_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "current_stanford_md_student_approved_split_curriculum"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_ms_bulletin",
+        "med_ms_admissions",
+        "bulletin_inventory"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Applicants must be approved for split curriculum and be at end of M2.",
+        "Degree requirements must be completed within three years of first graduate quarter; MS and MD units cannot be duplicated toward residency."
+      ],
+      "exceptions": [
+        "This is an internal additional award, not an open external MS admission route.",
+        "An approved off-cycle applicant may apply, but acceptance does not provide retroactive funding."
+      ]
+    },
+    {
+      "id": "gsb_msx_cost",
+      "topic": "cost_and_funding",
+      "value": "The 12-month MSx program cost of attendance for July 2026-June 2027 is USD 221,190 for a single student and USD 258,342 for a married student; tuition is USD 154,828. Budget includes housing, living expenses, USD 250 documentation fee, medical insurance, health fee. Eligible child allowances are separately estimated. Need-based gap between attendance cost and expected student contribution is covered by a mix of fellowship and loans; fellowship is gift aid, based solely on demonstrated need, and is available regardless of citizenship.",
+      "scope": {
+        "applicant_categories": [
+          "admitted_student",
+          "need_based_aid_applicant"
+        ],
+        "cycle": "2026-27 academic year",
+        "procedure_ids": [
+          "gsb_msx_admission"
+        ],
+        "fee_status": [],
+        "option_ids": [
+          "stanford-option-gsb-msx"
+        ],
+        "levels": [
+          "professional"
+        ]
+      },
+      "source_ids": [
+        "gsb_msx_cost",
+        "gsb_msx_aid"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Cost figures cover 12 months from July 2026 to June 2027; household costs differ.",
+        "Financial aid reviewed for admitted students after admission; need-based award is not an admission consideration."
+      ],
+      "exceptions": [
+        "Applicants may receive fellowship and loan package regardless of citizenship."
+      ]
+    },
+    {
+      "id": "gsb_phd_decisions_deferral",
+      "topic": "application_timing_and_decision",
+      "value": "For Fall 2027 GSB PhD entry, the application portal sets the deadline at Dec 1, 2026, 5:00 p.m. Pacific Time, including recommendation letters and other materials. Applications opened in early September 2026. Only applications complete by the deadline are guaranteed review. Admission decisions are typically available by mid-March and are sent by email. Admitted students are expected to enroll in September 2027; ordinarily they must reapply rather than defer.",
+      "scope": {
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "procedure_ids": [
+          "gsb_phd_admission"
+        ],
+        "fee_status": [],
+        "option_ids": [
+          "stanford-option-gsb-phd"
+        ],
+        "levels": [
+          "doctoral"
+        ]
+      },
+      "source_ids": [
+        "gsb_phd_portal",
+        "gsb_phd_deadlines",
+        "gsb_phd_english"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The portal deadline applies to the GSB PhD application, not other Stanford graduate routes."
+      ],
+      "exceptions": [
+        "GSB may consider deferral only for rare and extraordinary circumstances, such as compulsory military service."
+      ]
+    },
+    {
+      "id": "med_md_aid",
+      "topic": "funding_eligibility_and_application",
+      "value": "MD financial aid requires an application each academic year after admission offer; no application is reviewed before acceptance. U.S. citizens/permanent residents are considered for need-based Stanford grants and loans and federal loans; international students cannot receive Direct Loans but may apply for Stanford need-based grants/loans. All applicants complete CSS Profile, Stanford supplemental aid application and parent tax records; U.S. citizens/permanent residents also complete FAFSA. Parent finances are generally considered regardless of age; absolute estrangement waiver requires third-party evidence. Institutional aid is need-based, not merit-based. Outside scholarships, MedScholars and RA/TA have separate applications. MSTP and KHS students typically do not apply for regular aid.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "admitted_student",
+          "international_applicant",
+          "need_based_aid_applicant"
+        ],
+        "procedure_ids": [
+          "med_md_admission"
+        ],
+        "cycle": "2026-27 aid year",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_md_aid"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Aid application is annual; required parent information and tax documents apply with limited documented exceptions."
+      ],
+      "exceptions": [
+        "International students are ineligible for Direct Loans but can be considered for Stanford institutional need-based aid."
+      ]
+    },
+    {
+      "id": "med_mstp_external",
+      "topic": "external_combined_application_eligibility_and_funding",
+      "value": "External MSTP uses the same AMCAS, Stanford supplemental application and policies as MD. Applicants are first reviewed for MSTP; applicants not selected for MSTP interview are routed to MD Admissions. MSTP admission requires MD acceptance. Research experience is central, with three to six AMCAS letters and research mentor letters desired. Applicants matriculated in another institution MD or PhD program cannot apply; Stanford does not accept transfer applicants. All prospective students may apply, but MSTP stipend and tuition support are limited to U.S. citizens and permanent residents. International students may apply to MSTP only with Knight-Hennessy; otherwise MD and departmental PhD admissions are separate, and any PhD department funding is independently determined.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md-phd"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "international_applicant"
+        ],
+        "procedure_ids": [
+          "med_mstp_external_admission",
+          "med_md_admission"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_mstp_external",
+        "med_md_apply"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Combined degree admission is contingent on MD acceptance.",
+        "MSTP-funded places are citizenship-restricted."
+      ],
+      "exceptions": [
+        "International applicants may pursue separate MD and department PhD paths; this is not MSTP-funded admission."
+      ]
+    },
+    {
+      "id": "med_mspa_aid",
+      "topic": "funding_eligibility_and_application",
+      "value": "U.S. citizens and permanent residents admitted to MSPA may be eligible for financial aid. Federal applicants meeting requirements are considered for Stafford and/or Grad PLUS loans; program funds are limited. NHSC and California underserved-area programs offer eligible loan repayment or scholarships. Yellow Ribbon contribution listed for MSPA is USD 13,500 in 2025-26 only. Financial aid is separate from admissions and full-time study strongly discourages employment.",
+      "scope": {
+        "applicant_categories": [
+          "admitted_student",
+          "eligible_veteran",
+          "us_citizen",
+          "permanent_resident"
+        ],
+        "fee_status": [],
+        "cycle": "2025-26 Yellow Ribbon amount; aid eligibility page checked 2026-10-02",
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "professional"
+        ]
+      },
+      "source_ids": [
+        "med_mspa_aid"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Program support is limited; federal aid requires meeting Stanford deadlines/requirements."
+      ],
+      "exceptions": [
+        "Yellow Ribbon figure is historical 2025-26, not confirmed for 2026-27."
+      ]
+    },
+    {
+      "id": "law_advanced_aid",
+      "topic": "funding",
+      "value": "Stanford Law says it provides no scholarship or stipend funding to LLM students. SPILS funding exists only to an extremely limited degree. Admitted JSD students may receive some need-based aid and research/conference funding; no coverage amount or renewal terms are published. KHS is separately applied for; up to three years of funding may be available, with separate timing and eligibility. MLS program funding was not stated on reviewed official pages.",
+      "scope": {
+        "cycle": "current policy checked 2026-10-02",
+        "procedure_ids": [
+          "law_advanced_admission",
+          "law_jsd_admission",
+          "law_mls_admission"
+        ],
+        "fee_status": [],
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd",
+          "stanford-option-law-mls"
+        ],
+        "applicant_categories": [
+          "advanced_degree_applicant",
+          "admitted_student",
+          "KHS-applicant"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ]
+      },
+      "source_ids": [
+        "law_advanced_aid",
+        "law_jsd_program",
+        "law_advanced_programs"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "KHS requires separate application and does not automatically follow degree admission.",
+        "JSD support is described as some need-based aid and research/conference funds, with details unpublished."
+      ],
+      "exceptions": [
+        "No SLS scholarship/stipend for LLM; extremely limited SPILS support; no amount identified."
+      ]
+    },
+    {
+      "id": "law_advanced_cost_status",
+      "topic": "advanced_law_tuition_and_cost_scope",
+      "value": "Stanford's official 2026-27 Law School tuition category is USD 26,593 per quarter; the published rate is by Law School classification and not limited to JD. LLM programs are nine months/three quarters, so the listed tuition rate establishes the applicable quarterly rate, while the standard single-student cost-of-attendance page separately estimates USD 125,124 on-campus or USD 126,216 off-campus. The COA page does not identify which advanced degree cases its living/loan budget covers. MLS requires at least three residency quarters and full Law School tuition; program-specific non-tuition fees or special registration changes should be confirmed.",
+      "scope": {
+        "cycle": "2026-27 academic year",
+        "procedure_ids": [
+          "law_advanced_admission",
+          "law_jsd_admission",
+          "law_mls_admission"
+        ],
+        "fee_status": [],
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd",
+          "stanford-option-law-mls"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ]
+      },
+      "source_ids": [
+        "tuition_rates_2026_27",
+        "law_cost",
+        "law_mls",
+        "non_tuition_fees_2026_27"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "partially_published",
+      "review_status": "reviewed",
+      "conditions": [
+        "USD 26,593 is per quarter and Law School classified; special registration or multiple-career tuition rules can change billing.",
+        "Standard COA totals are published school-wide but are not explicitly assigned to LLM/JSM/JSD/MLS budgets.",
+        "Non-tuition fees, insurance and household costs are separate from tuition."
+      ],
+      "exceptions": [
+        "Do not report the standard single-student COA as a verified complete advanced-degree budget.",
+        "MLS residency requirement is at least three quarters; JSD students may enter TGR status under separate academic rules."
+      ]
+    },
+    {
+      "id": "gsb_mba_interview_decision",
+      "topic": "interview_and_selection",
+      "value": "All candidates must complete an interview before an offer. Interviews are invitation-only, behavioral and may be remote or in-person; an invitation is not an offer. A valid standardized test score must be on file before an interview invitation. Interview window: Round 1 mid-Sep-mid-Nov; Round 2 mid-Jan-mid-Mar; Round 3 mid-Apr-mid-May. Two to three candidates are generally interviewed per available seat. Admission is need-blind; admission decisions precede financial aid review.",
+      "scope": {
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "procedure_ids": [
+          "gsb_mba_admission"
+        ],
+        "fee_status": [],
+        "option_ids": [
+          "stanford-option-gsb-mba"
+        ],
+        "cycle": "2026-27 application cycle",
+        "levels": [
+          "professional"
+        ]
+      },
+      "source_ids": [
+        "gsb_mba_interviews",
+        "gsb_mba_rounds",
+        "gsb_mba_aid_process"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Interview by invitation only and valid test score must be received; all admitted candidates are interviewed."
+      ],
+      "exceptions": [
+        "Interview invitation does not guarantee admission."
+      ]
+    },
+    {
+      "id": "gsb_mba_aid_process",
+      "topic": "funding_eligibility_and_application",
+      "value": "MBA aid is need-based and available to students of any citizenship who demonstrate need. After admission, students complete the Stanford GSB institutional application annually while enrolled. U.S. citizens/permanent residents submit FAFSA, institutional application, two prior years federal returns and most recent pay stub; international students submit institutional application and two years of tax statements from all countries of work. The gap between cost of attendance and expected contribution is covered by fellowships and loans; average class of 2026 fellowship was about USD 50,000/year or USD 100,000 total. Fellowships are need-based gifts. Financial aid application is separate and admissions is need-blind.",
+      "scope": {
+        "applicant_categories": [
+          "admitted_student",
+          "need_based_aid_applicant",
+          "international_applicant"
+        ],
+        "procedure_ids": [
+          "gsb_mba_admission"
+        ],
+        "fee_status": [],
+        "option_ids": [
+          "stanford-option-gsb-mba"
+        ],
+        "cycle": "2026-27 admissions / annual aid process",
+        "levels": [
+          "professional"
+        ]
+      },
+      "source_ids": [
+        "gsb_mba_aid_process",
+        "gsb_mba_cost",
+        "gsb_mba_interviews"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Need analysis expects student/spouse contribution; consumer debt is excluded.",
+        "Aid application and supporting tax materials are renewed annually."
+      ],
+      "exceptions": [
+        "Need-based funding applies regardless of citizenship; federal loan eligibility differs by status."
+      ]
+    },
+    {
+      "id": "law_degree_duration_and_completion",
+      "topic": "duration_curriculum_and_residency",
+      "value": "JD requires 111 units over no less than three academic years. LLM requires 35-45 approved quarter units, three quarters in residence, at least 26 Law units and full tuition; residence is at least 9 enrolled units and 8 passed units each quarter, with work limited to 20 hours weekly; LLM is a full nine-month academic year. JSM requires 35 units, with thesis and public presentation, and is expected to finish in one academic year (two consecutive years maximum). MLS requires 37 units, three residency quarters, and is expected to finish in one academic year (two consecutive years maximum). JSD requires 44 residency units, including one academic year in residence, and independent dissertation research; award duration beyond minimum residency is not specified.",
+      "scope": {
+        "procedure_ids": [
+          "law_jd_admission",
+          "law_advanced_admission",
+          "law_jsd_admission",
+          "law_mls_admission"
+        ],
+        "fee_status": [],
+        "cycle": "2026-27 Bulletin requirements",
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "enrolled_student"
+        ],
+        "option_ids": [
+          "stanford-option-law-jd",
+          "stanford-option-law-llm",
+          "stanford-option-law-llm-corporate-governance-practice",
+          "stanford-option-law-llm-environmental-law-policy",
+          "stanford-option-law-llm-international-economic-law-business-policy",
+          "stanford-option-law-llm-law-science-technology",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd",
+          "stanford-option-law-mls"
+        ]
+      },
+      "source_ids": [
+        "law_jd_bulletin",
+        "law_llm_bulletin",
+        "law_jsm_bulletin",
+        "law_mls_bulletin",
+        "stanford_grad_residency",
+        "stanford_doctoral_requirements"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "These are academic completion requirements, not minimum duration guarantees except where stated.",
+        "Law residency requires full tuition and unit completion each quarter."
+      ],
+      "exceptions": [
+        "JSD requires 44 residency units but only one academic year in residence under University minimum; actual completion time depends on dissertation/candidacy."
+      ]
+    },
+    {
+      "id": "med_md_and_mstp_duration",
+      "topic": "program_duration_and_structure",
+      "value": "Traditional Stanford MD is a four-year clinical degree. The Discovery Curriculum permits students to take pre-clerkship curriculum at full pace over two years or request to spread it over three years, which can extend the MD path to five years. Combined MD-PhD MSTP averages 7.5 years; students generally take six or eight years depending on research and commonly finish PhD requirements one or two years before final clinical rotations. The PA MS is nine quarters (captured separately).",
+      "scope": {
+        "procedure_ids": [
+          "med_md_admission",
+          "med_mstp_external_admission"
+        ],
+        "fee_status": [],
+        "cycle": "2026-27 curriculum",
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "enrolled_student"
+        ],
+        "option_ids": [
+          "stanford-option-med-md",
+          "stanford-option-med-md-phd"
+        ]
+      },
+      "source_ids": [
+        "med_md_bulletin",
+        "med_mstp_faq",
+        "stanford_doctoral_requirements"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "MSTP completion length varies with individual research; MD pre-clerkship split option is an approved pathway."
+      ],
+      "exceptions": []
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "mstp_external_route_funding",
+      "topic": "MSTP external funding amount and renewal",
+      "reason": "Official MSTP admissions page confirms funding support is restricted to U.S. citizens and permanent residents and excludes international students, but it publishes no current stipend/tuition amount or renewal schedule. Internal funding page says support follows a standard structure based on MD entry year but gives no amount/term details.",
+      "source_ids": [
+        "med_mstp_external",
+        "med_mstp_internal"
+      ],
+      "official_next_step": "Ask MSTP Admissions for the current award schedule and renewal milestones for externally admitted Fall 2027 students; distinguish MSTP from independent departmental PhD support.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [],
+        "applicant_categories": [
+          "Applicable programme applicant; source-specific eligibility remains in linked facts"
+        ],
+        "cycle": "Fall 2027 application or 2026-27 dated cost reference, as the unknown reason specifies",
+        "fee_status": []
+      }
+    },
+    {
+      "id": "law_mls_application_route",
+      "topic": "MLS current application mechanics and entry cycle",
+      "reason": "Official Law pages confirm MLS is a highly restricted, nonprofessional degree and provide degree requirements, but the reviewed advanced-degree application page does not list an MLS submission route, dated application window, required application documents, fee, interviews, or offer conditions. The general route must not be inferred from the other advanced degrees.",
+      "source_ids": [
+        "law_mls",
+        "law_mls_bulletin",
+        "law_routes",
+        "law_advanced_process"
+      ],
+      "official_next_step": "Contact Stanford Law Graduate Admissions for MLS-specific application process and current entry-cycle dates, then update route and fact scope from their official instructions.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-mls"
+        ],
+        "procedure_ids": [],
+        "levels": [],
+        "applicant_categories": [
+          "Applicable programme applicant; source-specific eligibility remains in linked facts"
+        ],
+        "cycle": "Fall 2027 application or 2026-27 dated cost reference, as the unknown reason specifies",
+        "fee_status": []
+      }
+    },
+    {
+      "id": "gsb_phd_fee_waiver_cycle",
+      "topic": "GSB PhD Fall 2027 fee waiver instructions",
+      "reason": "Official fee-waiver page currently provides two waiver types but labels its requested application information for the Fall 2026 class, while the PhD admissions site is open for Fall 2027. It also gives Nov 18, 2026 request deadline; its applicability to Fall 2027 is ambiguous.",
+      "source_ids": [
+        "gsb_phd_fee_waiver",
+        "gsb_phd"
+      ],
+      "official_next_step": "Confirm with Stanford GSB PhD Admissions whether the posted Fall 2026-labelled waiver form and Nov 18, 2026 deadline apply to Fall 2027 applicants before assigning the waiver to that cycle.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gsb-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [],
+        "applicant_categories": [
+          "Applicable programme applicant; source-specific eligibility remains in linked facts"
+        ],
+        "cycle": "Fall 2027 application or 2026-27 dated cost reference, as the unknown reason specifies",
+        "fee_status": []
+      }
+    },
+    {
+      "id": "law_advanced_total_cost_of_attendance_scope",
+      "topic": "Full COA components and aid budget by advanced Law degree",
+      "reason": "Official 2026-27 table establishes Law School tuition at USD 26,593 per quarter and other fee schedules, but the standard single-student COA does not identify whether its living/loan allowance applies to every LLM/SPILS-JSM/JSD/MLS context or which special registrations apply.",
+      "source_ids": [
+        "tuition_rates_2026_27",
+        "law_cost",
+        "law_mls",
+        "non_tuition_fees_2026_27"
+      ],
+      "official_next_step": "Confirm with Stanford Law Graduate Admissions/Registrar which COA and non-tuition fee assumptions apply to each advanced degree and JSD registration phase.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd",
+          "stanford-option-law-mls"
+        ],
+        "procedure_ids": [],
+        "levels": [],
+        "applicant_categories": [
+          "Applicable programme applicant; source-specific eligibility remains in linked facts"
+        ],
+        "cycle": "Fall 2027 application or 2026-27 dated cost reference, as the unknown reason specifies",
+        "fee_status": []
+      }
+    }
+  ],
+  "collection_tasks": []
+}

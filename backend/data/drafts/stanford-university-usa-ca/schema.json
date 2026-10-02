@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stanford linked Stage 1 research index",
+  "description": "Fact values, conditions and exceptions resolve by evidence_file and original_id in the authoritative dossiers. This schema is outside runtime; it does not establish collection acceptance.",
+  "type": "object",
+  "required": ["schema_version", "institution", "snapshot", "inventory_file", "source_file", "evidence_fingerprints", "option_aliases", "study_options", "application_procedures", "facts", "unresolved", "collection_tasks"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "institution": {
+      "type": "object",
+      "required": ["id", "official_name"],
+      "properties": {"id": {"const": "stanford-university-usa-ca"}, "official_name": {"const": "Stanford University"}}
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["checked_at", "catalog_period", "completion_status"],
+      "properties": {"checked_at": {"type": "string", "format": "date"}, "catalog_period": {"type": "string"}, "completion_status": {"enum": ["in_progress", "reviewed"]}}
+    },
+    "inventory_file": {"const": "inventory-snapshot.json"},
+    "source_file": {"const": "sources.json"},
+    "evidence_fingerprints": {"type": "object", "additionalProperties": {"type": "string"}},
+    "option_aliases": {"type": "object", "additionalProperties": {"type": "string"}},
+    "study_options": {"type": "array", "items": {"$ref": "#/$defs/option"}},
+    "application_procedures": {"type": "array", "items": {"$ref": "#/$defs/procedure"}},
+    "facts": {"type": "array", "items": {"$ref": "#/$defs/fact_index"}},
+    "unresolved": {"type": "array", "items": {"type": "object", "required": ["id", "original_id", "evidence_file", "source_ids"]}},
+    "collection_tasks": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {
+    "strings": {"type": "array", "items": {"type": "string"}},
+    "evidence_reference": {"type": "object", "required": ["evidence_file", "id"], "properties": {"evidence_file": {"type": "string"}, "id": {"type": "string"}}},
+    "option": {
+      "type": "object",
+      "required": ["id", "title", "award", "level", "inventory_origin", "checked_at", "procedure_ids", "evidence_profiles", "application_classifications"],
+      "properties": {
+        "id": {"type": "string"}, "title": {"type": "string"}, "award": {"type": "string"}, "level": {"type": "string"},
+        "inventory_origin": {"type": "string"}, "checked_at": {"type": "string", "format": "date"},
+        "procedure_ids": {"$ref": "#/$defs/strings"}, "evidence_profiles": {"type": "array", "items": {"$ref": "#/$defs/evidence_reference"}},
+        "application_classifications": {"type": "array", "items": {"type": "object", "required": ["classification", "evidence_file", "id"]}}
+      }
+    },
+    "procedure": {
+      "type": "object",
+      "required": ["id", "original_id", "evidence_file", "option_ids", "source_ids"],
+      "properties": {"id": {"type": "string"}, "original_id": {"type": "string"}, "evidence_file": {"type": "string"}, "option_ids": {"$ref": "#/$defs/strings"}, "source_ids": {"$ref": "#/$defs/strings"}}
+    },
+    "fact_index": {
+      "type": "object",
+      "required": ["id", "original_id", "evidence_file", "topic", "scope", "original_scope", "source_ids", "checked_at", "publication_status", "review_status"],
+      "properties": {
+        "id": {"type": "string"}, "original_id": {"type": "string"}, "evidence_file": {"type": "string"}, "topic": {"type": "string"},
+        "scope": {"type": "object"}, "original_scope": {"type": "object"}, "source_ids": {"$ref": "#/$defs/strings"},
+        "checked_at": {"type": "string", "format": "date"}, "publication_status": {"type": "string"}, "review_status": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-10-02",
+  "scope": "Independently published degree configurations missing as separate Bulletin programme-list rows; no combinatorial expansion of major pairs.",
+  "sources": [
+    {
+      "id": "stanford-baccalaureate-policy",
+      "url": "https://bulletin.stanford.edu/academic-polices/degree-requirements/baccalaureate-degree-requirements",
+      "title": "Baccalaureate Degree Requirements | Stanford Bulletin",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_BAS_concurrent_degrees_and_second_degree_restrictions"
+    },
+    {
+      "id": "stanford-change-undergraduate-degree",
+      "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/undergraduate-degree-progress/undergraduate-majors-and-minors/how-do-i",
+      "title": "How do I make changes to my undergraduate program? | Stanford Student Services",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_internal_declaration_process"
+    }
+  ],
+  "study_options": [
+    {
+      "id": "stanford-option-bas",
+      "title": "Bachelor of Arts and Science",
+      "award": "BAS",
+      "level": "undergraduate",
+      "source_ids": [
+        "stanford-baccalaureate-policy",
+        "stanford-change-undergraduate-degree"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "stanford-internal-bas"
+      ],
+      "application_classification": "internal_combined_degree_declaration",
+      "description": "Post-admission combination of one BA and one BS major; not an independent institutional first-year application."
+    },
+    {
+      "id": "stanford-option-concurrent-ba-bs",
+      "title": "Concurrent Bachelor of Arts and Bachelor of Science",
+      "award": "BA + BS",
+      "level": "undergraduate",
+      "source_ids": [
+        "stanford-baccalaureate-policy",
+        "stanford-change-undergraduate-degree"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "stanford-internal-concurrent-ba-bs"
+      ],
+      "application_classification": "internal_combined_degree_declaration",
+      "description": "Post-admission combination of one BA and one BS major; not an independent institutional first-year application."
+    }
+  ],
+  "application_procedures": [
+    {
+      "id": "stanford-internal-bas",
+      "option_ids": [
+        "stanford-option-bas"
+      ],
+      "classification": "internal_combined_degree_declaration",
+      "destination": "Declare the second major in Axess and choose concurrent degrees or BAS; academic department approval and graduation application are required.",
+      "source_ids": [
+        "stanford-baccalaureate-policy",
+        "stanford-change-undergraduate-degree"
+      ]
+    },
+    {
+      "id": "stanford-internal-concurrent-ba-bs",
+      "option_ids": [
+        "stanford-option-concurrent-ba-bs"
+      ],
+      "classification": "internal_combined_degree_declaration",
+      "destination": "Declare the second major in Axess and choose concurrent degrees or BAS; academic department approval and graduation application are required.",
+      "source_ids": [
+        "stanford-baccalaureate-policy",
+        "stanford-change-undergraduate-degree"
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "stanford-bas-degree-structure",
+      "topic": "internal_degree_structure",
+      "value": {
+        "majors": "One BA and one BS major, with no course overlap; BA and BS in the same discipline cannot be combined.",
+        "minimum_units": 180,
+        "award_count": 1,
+        "general_education_required": true,
+        "declaration": "After a first approved major, add the second and select concurrent degrees; declining concurrent degrees selects BAS.",
+        "residency_units": {
+          "admitted_as_first_year": 180,
+          "admitted_as_transfer": 135
+        },
+        "last_quarter_in_residence": "Required; an approved petition can waive the final-quarter requirement under the published policy."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-bas"
+        ],
+        "procedure_ids": [
+          "stanford-internal-bas"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "enrolled_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 Bulletin standing degree policy",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-baccalaureate-policy",
+        "stanford-change-undergraduate-degree"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-concurrent-ba-bs-degree-structure",
+      "topic": "internal_degree_structure",
+      "value": {
+        "majors": "One BA and one BS major, with no course overlap; BA and BS in the same discipline cannot be combined.",
+        "minimum_units": 225,
+        "award_count": 2,
+        "general_education_required": true,
+        "declaration": "After a first approved major, add the second and select concurrent degrees; declining concurrent degrees selects BAS."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-concurrent-ba-bs"
+        ],
+        "procedure_ids": [
+          "stanford-internal-concurrent-ba-bs"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "enrolled_stanford_undergraduate"
+        ],
+        "cycle": "2026-27 Bulletin standing degree policy",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-baccalaureate-policy",
+        "stanford-change-undergraduate-degree"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-second-bachelor-restrictions",
+      "topic": "internal_second_degree_eligibility",
+      "value": {
+        "restriction": "Stanford does not grant another BA to a BA holder, another BS to a BS holder, or ordinarily BAS after BA/BS.",
+        "restricted_exception": "Stanford BA graduates may request candidacy for BS, and Stanford BS graduates for BA; departmental recommendation and C-USP academic-progress approval determine conditions.",
+        "boundary": "This is a restricted internal Stanford graduate petition; it does not create ordinary external first-year or transfer admission for an existing bachelor holder."
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "Stanford_bachelor_degree_holder"
+        ],
+        "cycle": "2026-27 Bulletin standing policy",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-baccalaureate-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    }
+  ],
+  "unresolved": [],
+  "collection_tasks": []
+}

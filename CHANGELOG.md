@@ -20,6 +20,15 @@ All notable project changes should be recorded here.
 - Review MIT graduate and professional route policies against official sources, retain exceptions and conflicting or yearless facts explicitly, and extend the shared transfer mapping to all undergraduate study options.
 
 
+## 7.2.2 (2026-10-03) - Imperial and Stanford Research Drafts
+
+### Added
+- Add reviewed Stage 1 admissions research drafts for Imperial College London and Stanford University, retaining institution-specific study options, application contexts, official-source evidence, and scoped unknowns outside active runtime data.
+
+### Fixed
+- Restore thirteen omitted Imperial Overseas fee amounts and record Stanford's MSPA deadline with its 2026-27 application-cycle scope, published time zone, and CASPA status requirement.
+- Use a patch increment because the research drafts and fee corrections do not add a runtime capability.
+
 ## 7.2.1 (2026-09-30) - Operations and Telemetry Hardening
 
 ### Fixed

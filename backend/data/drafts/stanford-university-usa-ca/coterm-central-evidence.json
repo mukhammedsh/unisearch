@@ -1,0 +1,318 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-10-02",
+  "sources": [
+    {
+      "id": "stanford-coterm-central-eligibility",
+      "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/degree-requirements/coterminal-degree-programs/coterm-eligibility",
+      "title": "Stanford coterm eligibility",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_rules"
+    },
+    {
+      "id": "stanford-coterm-central-application",
+      "url": "https://studentservices.stanford.edu/apply-coterm",
+      "title": "Stanford coterm application",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_rules"
+    },
+    {
+      "id": "stanford-coterm-central-tuition",
+      "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/coterminal-degree-programs/coterm-tuition-assessment",
+      "title": "Stanford coterm tuition",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_rules"
+    },
+    {
+      "id": "stanford-coterm-central-transfer",
+      "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/coterminal-degree-programs/coterm-course-transfer",
+      "title": "Stanford coterm transfer",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_rules"
+    },
+    {
+      "id": "stanford-coterm-central-progress",
+      "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/coterminal-degree-programs/coterminal-academic-progress",
+      "title": "Stanford coterm progress",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_linked_rules"
+    }
+  ],
+  "study_options": [],
+  "application_procedures": [],
+  "facts": [
+    {
+      "id": "stanford-coterm-central-eligibility",
+      "topic": "eligibility",
+      "value": {
+        "applicant": "Current Stanford undergraduate",
+        "units_required_by_intended_entry": 120,
+        "units_include": [
+          "transfer",
+          "AP",
+          "external test credit"
+        ],
+        "non_summer_stanford_quarters": 6,
+        "major_declaration_required": true,
+        "overlap": "At least one quarter with active undergraduate and graduate careers",
+        "application_limit": "One coterm application at a time through final response to an offer"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-eligibility"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": [
+        {
+          "when": "Undergraduate transfer student",
+          "effect": "Two non-Summer Stanford quarters required instead of six"
+        },
+        {
+          "when": "Cannot retain one quarter overlap",
+          "effect": "Postpone bachelor conferral or apply through external graduate admission; coterm course transfer policies do not apply and additional external application materials may be required"
+        },
+        {
+          "when": "Department has more restrictive local policy",
+          "effect": "Department restriction also applies"
+        }
+      ]
+    },
+    {
+      "id": "stanford-coterm-central-documents",
+      "topic": "application_process",
+      "value": {
+        "documents": [
+          "Unofficial Stanford transcript",
+          "Unofficial transcripts from prior postsecondary degree institutions",
+          "Statement of purpose; recommended maximum 1000 words unless programme differs",
+          "Two or three Stanford faculty recommendations as exact programme directory states"
+        ],
+        "optional": [
+          "CV unless programme requires it",
+          "Learning community statement at most 500 words",
+          "Supplemental document"
+        ],
+        "programme_specific": [
+          "Supplemental questions/samples",
+          "Required or optional/not-considered preliminary programme proposal",
+          "GRE required, optional or not considered; exact programme table governs"
+        ],
+        "GRE_delivery": "Institution 4704; self-reported scores support initial review; required scores sent officially by ETS"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-coterm-central-deadline",
+      "topic": "deadlines",
+      "value": {
+        "type": "application_completion",
+        "time": "23:59",
+        "timezone": "America/Los_Angeles",
+        "date": "Programme-specific directory entry term; no institution-wide date",
+        "available_terms_as_published": [
+          "Winter 2026-2027",
+          "Spring 2026-2027",
+          "Autumn 2027-2028"
+        ]
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-coterm-central-application-fee",
+      "topic": "costs",
+      "value": {
+        "charge_type": "coterm_application_fee",
+        "amount": 125,
+        "currency": "USD",
+        "period": "one-time",
+        "billing": "First graduate quarter, only after admission and acceptance"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-application"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": [
+        {
+          "when": "Student meets Stanford full-tuition financial-aid policy",
+          "effect": "Need-based waiver applies automatically without a special request"
+        }
+      ]
+    },
+    {
+      "id": "stanford-coterm-central-billing",
+      "topic": "costs",
+      "value": {
+        "undergraduate_billing": "Undergraduate tuition; 12-20 total units per quarter",
+        "graduate_billing": "Graduate or graduate Engineering tuition according to programme; 8-24 total units",
+        "automatic_change": [
+          "Undergraduate degree conferred",
+          "12 quarters of undergraduate billing, or 15 for concurrent bachelor degrees; credit adjustments apply"
+        ],
+        "irreversible": "After graduate billing starts, student cannot return to undergraduate billing",
+        "requested_change": "Active graduate career and 180 bachelor units, or 225 for concurrent BA+BS; request no later than Final Study List deadline",
+        "transfer_credit": "Each 15 external transfer units reduces eligible undergraduate billing quarters by one; AP/test credit is not transfer credit for this calculation"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-tuition"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": [
+        {
+          "when": "2020-21 flex quarter",
+          "effect": "Does not count toward undergraduate billing quarter limit"
+        }
+      ]
+    },
+    {
+      "id": "stanford-coterm-central-course-transfer",
+      "topic": "study_structure",
+      "value": {
+        "request": "After acceptance, submit Coterminal Course Transfer eForm to move eligible Stanford courses between careers",
+        "earliest_course": "Department can restrict further, but courses before autumn of sophomore year cannot count",
+        "graduate_minimum": "Courses below 100 cannot count toward minimum master units",
+        "deadline": "eForm normally closes shortly after Late Application to Graduate deadline and reopens after conferral; graduating students request exceptions from Enrollment Services"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-transfer"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-coterm-central-degree-progress",
+      "topic": "study_structure",
+      "value": {
+        "programme_proposal": "Submit department-approved master programme proposal by end of first graduate quarter; admissions preliminary proposal does not satisfy this requirement",
+        "degree_minimum": "45 Stanford units, all at least 100 level, at least half primarily graduate-level; programme can require more",
+        "completion_limit": "Three calendar years from first graduate quarter; extension requires departmental performance review",
+        "grades": "Undergraduate and graduate GPA progress standards separately apply"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Undated standing policy checked 2026-10-02; source separately lists available 2026-27 and 2027-28 application terms",
+        "fee_status": [],
+        "policy_family": "coterminal_masters_only"
+      },
+      "source_ids": [
+        "stanford-coterm-central-progress"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    }
+  ],
+  "unresolved": [],
+  "collection_tasks": []
+}

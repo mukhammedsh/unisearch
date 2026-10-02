@@ -1,0 +1,39 @@
+# Imperial Stage 1 coverage
+
+Snapshot: 2026-10-01. This is a data-only draft outside runtime. The linked inventory and scoped corrections were reviewed for the Stage 1 handoff; this does not authorize runtime integration.
+
+## Inventory reconciliation
+
+- Official search: 239 rows, 73 undergraduate and 166 postgraduate taught. Research degrees are absent from this search and inventoried independently.
+- Engineering/Natural Sciences: 171 reviewed base pages (66 undergraduate, 105 postgraduate taught), 44 named same-page variants. All 27 multi-option pages have separately reconciled Default/base and selector key-facts panels. Published UCAS codes establish the choice; shared-code year-abroad/industry variants do not create another application.
+- Medicine/Business: 68 search pages (23 Business, 45 Medicine), including one internal intercalated PhD. There are 67 external search options plus the separately sourced external intercalated BSc. Twenty-three additional award/mode options retain independent entry, progression, exit-award or unresolved classification as the course states. External iBSc occurs once, outside search.
+- Research: departmental PhD and applicable MD(Res), integrated research programmes, higher-doctorate submission and partner/scheme recruitment are separately classified. MPhil and EngD current external entry remain researched unresolved; their award existence does not establish a current application. DSc is a higher-doctorate submission, not an ordinary doctoral admission.
+- Business MRes is the master's phase of the integrated doctoral application. The phase and programme link to the same procedure and scoped admission/funding facts. A shared application portal is never evidence of shared eligibility.
+
+The assembled option and application-context totals are machine-reported by `validate.py`; neither is a count of independent degree programmes or independent applications. Legacy provenance reconciles all 25 runtime records without activating drafts. The old Biomedical Engineering BEng/MEng combined row maps to currently listed MEng; no current independent BEng was established.
+
+## Applicant evidence
+
+The dossiers retain study structure, academic/qualification requirements and alternatives, language editions/thresholds/exemptions, tests, documents and selection, process/windows/deadlines, tuition and payment, living/housing/support, funding and published offer/enrolment terms. Significant exceptions remain with their facts. Curriculum is separate from eligibility. Fee status is separately evidenced and not inferred from nationality.
+
+Shared English evidence contains 39 labelled panels with all 40 published tables, accompanying narrative and footnotes. Postgraduate qualification guidance retains 157 country/region panels; Kazakhstan-specific undergraduate absence is a qualification-assessment question, not a nationality rejection. Course-specific qualification selectors were reconciled across all 239 reviewed pages: 71 pages contain 142 labelled UK/international groups and 4,970 labelled rules; 168 contain no such selector. Each label remains joined to its own rule in course-qualification-panels.json.
+
+Supplemental Medicine award review used all 14 affected live official pages (HTTP 200) after a web-fetch 403; duration/mode/minimum panels and award-labelled fees were inspected. Nineteen previously incomplete award detail records were resolved. Four genuine source ambiguities remain: disputed Experimental Biomolecular Sciences MSc, Genes/Drugs/Stem Cells PGCert, and Genomic Medicine PGCert/PGDip. These have scoped reasons, actual review attempts and official next steps; they are not labelled unpublished solely because a capture was incomplete.
+
+Research fees are explicitly 2026/27 entrants, not 2027 prices. Current schemes, closed MultiSci/BioDesign/SSCP or other predecessor content, and not-yet-established future recruitment remain distinct. HealthBRIDGE retains its initial scheme form, subsequent My Imperial requirement, Home-only grant coverage and conditional Overseas difference. Imperial Inspires retains Overseas/full-time/participating-course restrictions, invitation, renewal and exclusions; pending PGT course participation is not assumed universal.
+
+## Open source questions and collection boundary
+
+`researched_unknowns` records the official source, reviewed finding, applicable scope and next step. It includes 28 Engineering fee-status gaps (18 prior-cycle panels, eight Not set, two partner-set), postgraduate/offer future-cycle uncertainties, source conflicts and the research recruitment questions. No missing value becomes zero, no silent page becomes a test waiver, and no funding possibility becomes an awarded scholarship.
+
+The four original assembly tasks were reconciled against actual evidence: school/research work is present; PGCert/PGDip entry/exit/progression classifications are recorded; concrete course-linked scholarship facts were added; shared and course-specific offer terms are preserved with unpublished 2027 details separately unknown. Nine Medicine follow-ups were duplicates of investigated uncertainty; their evidence mapping is retained in `collection_reconciliation`. A new unsearched group or incomplete capture remains `uncompleted_collection` until researched, regardless of an earlier zero queue.
+
+`README.md` defines the draft contract and `example.json` demonstrates a filled option-to-procedure-to-fact traversal. `validate.py` checks freshness, every fact, source provenance, study variants, reverse relationships and contrasts. The runtime data audit checks active data only. No backend/browser verification or user UX approval is required in Stage 1.
+
+## Verification checkpoint
+
+On 2026-10-03, a bounded fee-panel reconciliation inspected the 31 Medicine/Business course profiles lacking a separately labelled Overseas panel against their original official HTML captures. Thirteen published Overseas amounts had been omitted and were restored independently of Home prices: AI Applications and Innovation (£48,300), Responsible Mining and Metals Finance (£51,350), and eleven Medicine course/stream panels (£49,650). The remaining 18 use joint Home and overseas labels, Home-only eligibility, integrated research funding, or separate/reference-only fee evidence; no Home price was copied to fill a gap. The dossier retains each original 2026-10-01 source review date and separately records the 2026-10-03 panel reconciliation. Medical Ultrasound retains its Full-time label and does not invent a fee period or a panel-specific entry year. This correction is a bounded capture review, not a fresh review of every institutional fact. Focused validation now checks contrasting Home/Overseas prices and equal-price panels explicitly.
+
+Final checks passed: focused validator reports 359 study options, 310 application contexts, 950 indexed facts, 445 source records, 66 researched unknowns, no unfinished collection and no errors. `npm run audit:data` reports zero errors/warnings in active runtime; `check:version` confirms unchanged 7.2.1; `check:encoding`, `check:tokens` and `check:i18n` passed. The documentation-only results update was followed by another encoding/diff check, without repeating unaffected domains.
+
+Source checks were bounded: 14 affected Medicine award pages were live-reviewed successfully via HTTP 200; three research-scheme pages received targeted live review; shared English/country pages were live-reviewed; course-selector reconciliation reused the original reviewed official captures. No wholesale HTTP sweep was repeated. `course-metadata.json` retains its original 238-page capture and Science Media Production timeout as acquisition history; Engineering evidence separately records the successful direct recovery of that page. HTTP success alone is not completeness. No commit, push, tag, release, version bump, runtime changes or next-university work is part of this handoff.

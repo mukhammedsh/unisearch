@@ -1,0 +1,1730 @@
+{
+  "runtime_head": "e87b5ce7906dd2c9700ce8c42dbd00f51e7c90a8",
+  "runtime_version": "7.2.1",
+  "programs": [
+    {
+      "runtime_id": "imperial-computing-beng",
+      "runtime_name": "Computing (BEng)",
+      "draft_option_ids": [
+        "imperial-option-computing-beng"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24",
+        "verified_at": "2026-09-29"
+      },
+      "original_provenance": {
+        "url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-beng/",
+        "source_url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-beng/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Test of Mathematics for University Admission (TMUA) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-computing-beng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-computing-beng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page",
+        "entry_requirements": "2027 entry. A-level: A*A*A or A*AAA, including A* in Mathematics; then A*A in two further subjects or AAA in three further subjects. International Baccalaureate: 41 points overall, including 7 in Mathematics at Higher Level and 7 in another relevant subject at Higher Level. All applicants to Department of Computing undergraduate courses must sit the TMUA as part of the application process."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-computing-meng",
+      "runtime_name": "Computing (MEng, undergraduate entry)",
+      "draft_option_ids": [
+        "imperial-option-computing-meng"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24",
+        "verified_at": "2026-09-29"
+      },
+      "original_provenance": {
+        "url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/",
+        "source_url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Test of Mathematics for University Admission (TMUA) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-computing-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-computing-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page",
+        "entry_requirements": "2027 entry. A-level: A*A*A or A*AAA, including A* in Mathematics; then A*A in two further subjects or AAA in three further subjects. International Baccalaureate: 41 points overall, including 7 in Mathematics at Higher Level and 7 in another relevant subject at Higher Level. All applicants to Department of Computing undergraduate courses must sit the TMUA as part of the application process."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-efds-bsc",
+      "runtime_name": "Economics, Finance and Data Science",
+      "draft_option_ids": [
+        "imperial-option-economics-finance-data-science"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Test of Mathematics for University Admission (TMUA) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-efds-bsc",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_ug_efds_business",
+            "program_ids": [
+              "imperial-efds-bsc"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-aeronautical-engineering-meng",
+      "runtime_name": "Aeronautical Engineering",
+      "draft_option_ids": [
+        "imperial-option-aeronautical-engineering"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Engineering and Science Admissions Test (ESAT) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-aeronautical-engineering-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-aeronautical-engineering-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-mechanical-engineering-meng",
+      "runtime_name": "Mechanical Engineering",
+      "draft_option_ids": [
+        "imperial-option-mechanical-engineering"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Engineering and Science Admissions Test (ESAT) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-mechanical-engineering-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-mechanical-engineering-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-electrical-electronic-engineering-beng-meng",
+      "runtime_name": "Electrical and Electronic Engineering",
+      "draft_option_ids": [
+        "imperial-option-electrical-electronic-engineering-beng",
+        "imperial-option-electrical-electronic-engineering-meng"
+      ],
+      "relationship": "Legacy combined award row expands to separate course choices where listed",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Engineering and Science Admissions Test (ESAT) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-electrical-electronic-engineering-beng-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-electrical-electronic-engineering-beng-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-chemical-engineering-meng",
+      "runtime_name": "Chemical Engineering",
+      "draft_option_ids": [
+        "imperial-option-chemical-engineering"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Engineering and Science Admissions Test (ESAT) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-chemical-engineering-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-chemical-engineering-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-civil-engineering-meng",
+      "runtime_name": "Civil Engineering",
+      "draft_option_ids": [
+        "imperial-option-civil-engineering"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Engineering and Science Admissions Test (ESAT) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-civil-engineering-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-civil-engineering-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-biomedical-engineering-beng-meng",
+      "runtime_name": "Biomedical Engineering",
+      "draft_option_ids": [
+        "imperial-option-biomedical-engineering"
+      ],
+      "relationship": "Legacy BEng/MEng combined row maps to the currently listed MEng; no current BEng entry is established by the reviewed inventory",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Shortlisted applicants are invited to an online interview and admissions assessment.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-biomedical-engineering-beng-meng",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_eng",
+            "program_ids": [
+              "imperial-biomedical-engineering-beng-meng"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-mathematics-bsc-msci",
+      "runtime_name": "Mathematics",
+      "draft_option_ids": [
+        "imperial-option-mathematics-bsc",
+        "imperial-option-mathematics-msci"
+      ],
+      "relationship": "Legacy combined award row expands to separate course choices where listed",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Offers typically include conditional grades on STEP (Sixth Term Examination Paper) Paper 2 or 3 (Grade 2), or strong TMUA performance.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-mathematics-bsc-msci",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_ug_natural_sciences",
+            "program_ids": [
+              "imperial-mathematics-bsc-msci"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-physics-bsc-msci",
+      "runtime_name": "Physics",
+      "draft_option_ids": [
+        "imperial-option-physics-bsc",
+        "imperial-option-physics-msci"
+      ],
+      "relationship": "Legacy combined award row expands to separate course choices where listed",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Engineering and Science Admissions Test (ESAT) via Pearson VUE is compulsory.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-physics-bsc-msci",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_ug_natural_sciences",
+            "program_ids": [
+              "imperial-physics-bsc-msci"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-chemistry-bsc-msci",
+      "runtime_name": "Chemistry",
+      "draft_option_ids": [
+        "imperial-option-chemistry-bsc",
+        "imperial-option-chemistry-msci"
+      ],
+      "relationship": "Legacy combined award row expands to separate course choices where listed",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Admissions interview conducted where required.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-chemistry-bsc-msci",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_ug_natural_sciences",
+            "program_ids": [
+              "imperial-chemistry-bsc-msci"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-biological-sciences-bsc",
+      "runtime_name": "Biological Sciences",
+      "draft_option_ids": [
+        "imperial-option-biological-sciences"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Selection based on UCAS application, academic profile, and reference.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-biological-sciences-bsc",
+            "deadline_type": "equal_consideration",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_ug_natural_sciences",
+            "program_ids": [
+              "imperial-biological-sciences-bsc"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-13",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "UCAS equal-consideration deadline for undergraduate courses other than Medicine."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page"
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-medicine-mbbs-bsc",
+      "runtime_name": "Medicine",
+      "draft_option_ids": [
+        "imperial-option-medicine"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-23",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/tuition-fees/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "University Clinical Aptitude Test (UCAT) is compulsory; must be taken in the summer preceding the application deadline. Overseas places are subject to a strict UK government quota.",
+        "application_fee": {
+          "amount_gbp": 34.5,
+          "system": "UCAS",
+          "source_url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-medicine-mbbs-bsc",
+            "deadline_type": "early_deadline",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_ug_medicine",
+            "program_ids": [
+              "imperial-medicine-mbbs-bsc"
+            ],
+            "study_levels": [
+              "Bachelor"
+            ],
+            "cycle": "2027 entry",
+            "date": "2026-10-15",
+            "time": "18:00",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine/",
+            "verified_at": "2026-09-24",
+            "system": "UCAS",
+            "notes": "Medicine deadline; separate from the 13 January deadline for other undergraduate courses."
+          }
+        ],
+        "tuition_status": "For 2027 entry, the Home fee is expected to be GBP 10,050 per year, subject to parliamentary approval; the 2027 Overseas fee is not set. Imperial determines Home or Overseas fee status individually after application; nationality alone does not decide it. The Medicine page gives a 2026-27 Overseas guide of GBP 58,600; that is not the 2027-28 fee.",
+        "tuition_cycle": "2027-28 entry; Home expectation and Overseas rate as published on the official 2027 course page",
+        "entry_requirements": "2027 A-level standard A*AA including Biology and Chemistry, with the A* in one of these two subjects. UCAT is required; the selection threshold varies by year."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-msc-advanced-computing",
+      "runtime_name": "MSc Advanced Computing",
+      "draft_option_ids": [
+        "imperial-option-advanced-computing"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+        "application_fee_source_url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "UK First Class Honours degree in Computing/Computer Science required.",
+        "application_fee": {
+          "amount_gbp": 80,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-msc-advanced-computing-round_2-2027-01-06",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-advanced-computing"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-06",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-03-03",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-advanced-computing-round_3-2027-03-10",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-advanced-computing"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-03-10",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-05-05",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-advanced-computing-round_4-2027-04-28",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-advanced-computing"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-04-28",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/advanced-computing/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-07-01",
+            "notes": "Apply by 23:59 UK time."
+          }
+        ],
+        "tuition_status": "The official course fee panel for 2027 entry says the 2027-28 tuition fee is not set. Prior-year fee guides are not a 2027 price. Imperial determines fee status after application; check this course page for the Home/Overseas or same-rate fee once published.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "First-class honours degree with a substantial Computing component. Higher English-language requirement applies; check Imperial accepted international qualifications for country-specific equivalency."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-msc-artificial-intelligence",
+      "runtime_name": "MSc Artificial Intelligence",
+      "draft_option_ids": [
+        "imperial-option-artificial-intelligence"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+        "application_fee_source_url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Conversion/specialist program. UK First Class degree in a highly quantitative discipline required.",
+        "application_fee": {
+          "amount_gbp": 80,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-msc-artificial-intelligence-round_2-2027-01-06",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-artificial-intelligence"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-06",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-03-03",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-artificial-intelligence-round_3-2027-03-10",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-artificial-intelligence"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-03-10",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-05-05",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-artificial-intelligence-round_4-2027-04-28",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-artificial-intelligence"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-04-28",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/artificial-intelligence/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-07-01",
+            "notes": "Apply by 23:59 UK time."
+          }
+        ],
+        "tuition_status": "The official course fee panel for 2027 entry says the 2027-28 tuition fee is not set. Prior-year fee guides are not a 2027 price. Imperial determines fee status after application; check this course page for the Home/Overseas or same-rate fee once published.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "First-class degree in Mathematics, Physics, Engineering, Economics or another subject with substantial mathematics; preparation should include linear algebra, calculus, probability and statistics. Higher English-language requirement applies."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-msc-financial-technology",
+      "runtime_name": "MSc Financial Technology",
+      "draft_option_ids": [
+        "imperial-option-financial-technology"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/business-school/masters/financial-technology/admissions/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/financial-technology/",
+        "application_fee_source_url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/financial-technology/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/financial-technology/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/financial-technology/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "GMAT Focus / GRE strongly recommended for competitive applicants.",
+        "application_fee": {
+          "amount_gbp": 100,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-msc-financial-technology-round_1-2026-09-29",
+            "deadline_type": "round_1",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-financial-technology"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2026-09-29",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/financial-technology/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 1,
+            "decision_date": "2026-11-25",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-financial-technology-round_2-2027-01-06",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-financial-technology"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-06",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/financial-technology/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-03-03",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-financial-technology-round_3-2027-03-10",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-financial-technology"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-03-10",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/financial-technology/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-05-05",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-financial-technology-round_4-2027-04-28",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-financial-technology"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-04-28",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/financial-technology/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-06-16",
+            "notes": "Apply by 23:59 UK time."
+          }
+        ],
+        "tuition_status": "The official course fee panel for 2027 entry says the 2027-28 tuition fee is not set. Prior-year fee guides are not a 2027 price. Imperial determines fee status after application; check this course page for the Home/Overseas or same-rate fee once published.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "At least Upper Second Class (2:1) in a highly quantitative subject (e.g. Computer Science, Economics, Engineering, Finance, Mathematics or Science). Applicants should be proficient in probability, calculus, matrix algebra and real analysis. GMAT/GRE is not required but may strengthen the application; quantitative 159 GRE or GMAT thresholds are guidance, not a mandatory cutoff. Higher English-language requirement applies."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-msc-finance",
+      "runtime_name": "MSc Finance",
+      "draft_option_ids": [
+        "imperial-option-finance"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+        "deadline_source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+        "application_fee_source_url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "tuition_source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Strong GMAT (650+ / GMAT Focus 595+) or GRE quantitative score required.",
+        "application_fee": {
+          "amount_gbp": 100,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-msc-finance-round_1-2026-09-29",
+            "deadline_type": "round_1",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-finance"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2026-09-29",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 1,
+            "decision_date": "2026-11-25",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-finance-round_2-2027-01-06",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-finance"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-06",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-03-03",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-finance-round_3-2027-03-10",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-finance"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-03-10",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-05-05",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-finance-round_4-2027-04-28",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-msc-finance"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-04-28",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/business-school/masters/finance/admissions/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-06-16",
+            "notes": "Apply by 23:59 UK time."
+          }
+        ],
+        "tuition_status": "The official course fee panel for 2027 entry says the 2027-28 tuition fee is not set. Prior-year fee guides are not a 2027 price. Imperial determines fee status after application; check this course page for the Home/Overseas or same-rate fee once published.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "Preferably First Class, with Upper Second Class or international equivalent also considered, in a highly quantitative subject. Applicants should be proficient in probability, calculus, matrix algebra and real analysis. GMAT/GRE is not required; a strong result may add weight. IELTS 7.0 overall/6.5 each element or an accepted equivalent is listed."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-full-time-mba",
+      "runtime_name": "Full-Time MBA",
+      "draft_option_ids": [
+        "imperial-option-full-time-mba"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+        "application_fee_source_url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Minimum 3 years professional work experience plus GMAT/GRE and Kira video interview.",
+        "application_fee": {
+          "amount_gbp": 150,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-full-time-mba-round_1-2026-09-22",
+            "deadline_type": "round_1",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-full-time-mba"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2026-09-22",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+            "verified_at": "2026-09-24",
+            "round": 1,
+            "decision_date": "2026-11-13",
+            "notes": "Submit by midnight UK time on the selected round deadline."
+          },
+          {
+            "id": "imperial-full-time-mba-round_2-2027-01-12",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-full-time-mba"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-12",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-03-12",
+            "notes": "Submit by midnight UK time on the selected round deadline."
+          },
+          {
+            "id": "imperial-full-time-mba-round_3-2027-03-16",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-full-time-mba"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-03-16",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-04-30",
+            "notes": "Submit by midnight UK time on the selected round deadline."
+          },
+          {
+            "id": "imperial-full-time-mba-round_4-2027-05-11",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_business_msc_mba",
+            "program_ids": [
+              "imperial-full-time-mba"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-05-11",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-06-25",
+            "notes": "Submit by midnight UK time on the selected round deadline."
+          }
+        ],
+        "tuition_status": "The official 2027-28 course-fee panel says Not set; the 2026-27 guide is GBP 78,000. A separate Imperial Business School marketing page displays GBP 78,000 beside September 2027, so the current-cycle price is conflicting and needs confirmation before budgeting.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "Minimum 2:2 degree or approved professional qualification, plus three years of continuous relevant full-time work experience. A valid GMAT or GRE score is required. English-language requirement applies; confirm the current course page for accepted evidence."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-msc-biomedical-engineering",
+      "runtime_name": "MSc Engineering for Biomedicine",
+      "draft_option_ids": [
+        "imperial-option-engineering-biomedicine"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+        "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+        "deadline_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+        "application_fee_source_url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "UK First or high 2:1 honours in engineering, physics, or mathematics.",
+        "application_fee": {
+          "amount_gbp": 80,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-msc-biomedical-engineering-round_2-2027-01-06",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-biomedical-engineering"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-01-06",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-03-03",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-biomedical-engineering-round_3-2027-03-10",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-biomedical-engineering"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-03-10",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-05-05",
+            "notes": "Apply by 23:59 UK time."
+          },
+          {
+            "id": "imperial-msc-biomedical-engineering-round_4-2027-04-28",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgt_stem_msc",
+            "program_ids": [
+              "imperial-msc-biomedical-engineering"
+            ],
+            "study_levels": [
+              "Master"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-04-28",
+            "time": "23:59",
+            "timezone": "Europe/London",
+            "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/engineering-biomedicine/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-07-01",
+            "notes": "Apply by 23:59 UK time."
+          }
+        ],
+        "tuition_status": "The official course fee panel for 2027 entry says the 2027-28 tuition fee is not set. Prior-year fee guides are not a 2027 price. Imperial determines fee status after application; check this course page for the Home/Overseas or same-rate fee once published.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "At least a 2:1 in Clinical Science, Life Science or Physical Science with significant human-biology content. Unclassified clinical-degree holders are expected to show good academic standing (typically top 50%); where a graded intercalated degree exists, at least a 2:1 is expected. A-level Mathematics (or equivalent) is desirable. Higher English-language requirement applies."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-phd-computing",
+      "runtime_name": "PhD in Computing",
+      "draft_option_ids": [
+        "imperial-computing-phd"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/postgraduate-doctoral/tuition-fees/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/phd/phd-application-guidelines/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/phd/phd-application-guidelines/",
+        "deadline_source_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/phd/phd-application-guidelines/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "General PhD applications are separate from President's PhD Scholarship rounds. Confirm programme availability and any admissions timing with the Department of Computing.",
+        "application_fee": {
+          "amount_gbp": 0,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-phd-computing-round_1-2026-10-01",
+            "deadline_type": "round_1",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-computing"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "date": "2026-10-01",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+            "verified_at": "2026-09-24",
+            "round": 1,
+            "decision_date": "2027-02-15",
+            "notes": "Departmental application review cutoff; later applications may be considered in a subsequent review round, subject to available places."
+          },
+          {
+            "id": "imperial-phd-computing-round_2-2026-12-01",
+            "deadline_type": "round_2",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-computing"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "date": "2026-12-01",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+            "verified_at": "2026-09-24",
+            "round": 2,
+            "decision_date": "2027-04-15",
+            "notes": "Departmental application review cutoff; later applications may be considered in a subsequent review round, subject to available places."
+          },
+          {
+            "id": "imperial-phd-computing-round_3-2027-02-01",
+            "deadline_type": "round_3",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-computing"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-02-01",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+            "verified_at": "2026-09-24",
+            "round": 3,
+            "decision_date": "2027-06-15",
+            "notes": "Departmental application review cutoff; later applications may be considered in a subsequent review round, subject to available places."
+          },
+          {
+            "id": "imperial-phd-computing-round_4-2027-04-01",
+            "deadline_type": "round_4",
+            "publication_status": "published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-computing"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "date": "2027-04-01",
+            "time": null,
+            "timezone": null,
+            "source_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+            "verified_at": "2026-09-24",
+            "round": 4,
+            "decision_date": "2027-07-15",
+            "notes": "Departmental application review cutoff; later applications may be considered in a subsequent review round, subject to available places."
+          }
+        ],
+        "tuition_status": "2027-28 doctoral tuition is not published for this program. Imperial doctoral fees vary by department and Home/Overseas fee status; check the official doctoral fee page when the 2027-28 table is released.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "Normally a First-Class or Distinction-level Master’s (or equivalent) in a relevant scientific/technical discipline such as Computing or Mathematics. Applicants with only a Bachelor’s are not normally considered. Main PhD applicants select “Computing Research”; “AI and Machine Learning” is only for AI4Health CDT."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-phd-bioengineering",
+      "runtime_name": "PhD in Bioengineering",
+      "draft_option_ids": [
+        "imperial-bioengineering-phd"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/doctoral/apply/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/postgraduate-doctoral/tuition-fees/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/doctoral/apply/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/doctoral/apply/",
+        "deadline_source_url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/doctoral/apply/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Research proposal and prospective supervisor confirmation required. Eligible for President's PhD Scholarships and Wellcome Trust.",
+        "application_fee": {
+          "amount_gbp": 0,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-phd-bioengineering-application-date-2027-status",
+            "deadline_type": "course_application",
+            "publication_status": "not_applicable",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-bioengineering"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "source_url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/doctoral/apply/",
+            "verified_at": "2026-09-24",
+            "notes": "Applications are accepted year-round; starts are on the first working Monday in October, January, April or July. No common department deadline is published; check the selected project for its application date."
+          }
+        ],
+        "tuition_status": "2027-28 doctoral tuition is not published for this program. Imperial doctoral fees vary by department and Home/Overseas fee status; check the official doctoral fee page when the 2027-28 table is released.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "First-class undergraduate degree or 2:1 integrated Master’s; a 2:1 Bachelor’s plus standalone Master’s may also be considered. Project/supervisor fit and any studentship have their own criteria."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-phd-physics",
+      "runtime_name": "PhD in Physics",
+      "draft_option_ids": [
+        "imperial-physics-phd"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/postgraduate-doctoral/tuition-fees/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+        "deadline_source_url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Research proposal and supervisor matching required. Funded via STFC, EPSRC, and President's PhD Scholarships.",
+        "application_fee": {
+          "amount_gbp": 0,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-phd-physics-application-date-2027-status",
+            "deadline_type": "project_application",
+            "publication_status": "not_yet_published",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-physics"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "source_url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+            "verified_at": "2026-09-24",
+            "notes": "No single department deadline; project-specific dates apply. October 2027 project listings are not yet published; check the selected research community/project."
+          }
+        ],
+        "tuition_status": "2027-28 doctoral tuition is not published for this program. Imperial doctoral fees vary by department and Home/Overseas fee status; check the official doctoral fee page when the 2027-28 table is released.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "Requirements depend on the advertised Physics project/research community; October 2027 project list and corresponding specific requirements are not yet published."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-phd-mathematics",
+      "runtime_name": "PhD in Mathematics",
+      "draft_option_ids": [
+        "imperial-mathematics-phd"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/information-for-an-application-to-mathematics-research-phd/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/postgraduate-doctoral/tuition-fees/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/information-for-an-application-to-mathematics-research-phd/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/information-for-an-application-to-mathematics-research-phd/",
+        "deadline_source_url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/information-for-an-application-to-mathematics-research-phd/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Research proposal and supervisor agreement required. Eligible for CDT in Mathematics of Random Systems and President's PhD Scholarships.",
+        "application_fee": {
+          "amount_gbp": 0,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-phd-mathematics-application-date-2027-status",
+            "deadline_type": "course_application",
+            "publication_status": "unknown",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-mathematics"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "source_url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/information-for-an-application-to-mathematics-research-phd/",
+            "verified_at": "2026-09-24",
+            "notes": "No fixed 2027 course application date is published. Applicants who need financial support are advised to apply early from October through March; confirm any project-specific cutoff."
+          }
+        ],
+        "tuition_status": "2027-28 doctoral tuition is not published for this program. Imperial doctoral fees vary by department and Home/Overseas fee status; check the official doctoral fee page when the 2027-28 table is released.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "Normally relevant First/Upper Second undergraduate degree plus a relevant Master’s, or equivalent integrated Master’s. Departmental fit and any studentship have separate requirements."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    },
+    {
+      "runtime_id": "imperial-phd-mechanical-engineering",
+      "runtime_name": "PhD in Mechanical Engineering",
+      "draft_option_ids": [
+        "imperial-mechanical-engineering-phd"
+      ],
+      "relationship": "Retained identity mapped to dated draft record",
+      "original_review_dates": {
+        "tuition_verified_at": "2026-09-24",
+        "verified_at": "2026-09-23",
+        "entry_requirements_verified_at": "2026-09-24",
+        "required_documents_verified_at": "2026-09-24",
+        "deadline_verified_at": "2026-09-24"
+      },
+      "original_provenance": {
+        "source_url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/how-to-apply/",
+        "tuition_source_url": "https://www.imperial.ac.uk/study/fees-and-funding/postgraduate-doctoral/tuition-fees/",
+        "entry_requirements_source_url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/how-to-apply/",
+        "required_documents_source_url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/how-to-apply/",
+        "deadline_source_url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/how-to-apply/"
+      },
+      "previous_facts": {
+        "admissions_test_notes": "Research statement and supervisor match required. Funded via EPSRC, industrial CASE partnerships, and President's PhD Scholarships.",
+        "application_fee": {
+          "amount_gbp": 0,
+          "system": "Imperial Gateway"
+        },
+        "deadlines": [
+          {
+            "id": "imperial-phd-mechanical-engineering-application-date-2027-status",
+            "deadline_type": "course_application",
+            "publication_status": "not_applicable",
+            "applicability": "program_specific",
+            "admission_route_id": "imperial_pgr_phd_doctoral",
+            "program_ids": [
+              "imperial-phd-mechanical-engineering"
+            ],
+            "study_levels": [
+              "PhD"
+            ],
+            "cycle": "2027 entry",
+            "source_url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/how-to-apply/",
+            "verified_at": "2026-09-24",
+            "notes": "Applications are accepted year-round. End of June is advised for October-entry processing, not a hard course deadline; advertised project cutoffs may be earlier."
+          }
+        ],
+        "tuition_status": "2027-28 doctoral tuition is not published for this program. Imperial doctoral fees vary by department and Home/Overseas fee status; check the official doctoral fee page when the 2027-28 table is released.",
+        "tuition_cycle": "2027-28 entry",
+        "entry_requirements": "Usually First or Upper Second undergraduate degree plus a relevant Engineering/Science Master’s; supervisor/project-specific suitability applies."
+      },
+      "status": "historical_runtime_review; current draft may supersede individual facts without changing original review dates"
+    }
+  ]
+}

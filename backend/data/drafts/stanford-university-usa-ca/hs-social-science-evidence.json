@@ -1,0 +1,3062 @@
+{
+  "sources": [
+    {
+      "id": "graduate-directory",
+      "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=grad-program-list",
+      "title": "Explore Graduate Programs — external degree application directory",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_assigned_2027_28_HS_programs_deadlines_testing_and_external_directory_classification"
+    },
+    {
+      "id": "anthropology-admission",
+      "url": "https://anthropology.stanford.edu/academics/graduate-program/doctoral-degree-program/admission",
+      "title": "Anthropology Graduate Admission",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2026_27_application_requirements_and_deadline"
+    },
+    {
+      "id": "anthropology-ma",
+      "url": "https://anthropology.stanford.edu/masters-degree-program",
+      "title": "Anthropology Master's Degree Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_external_eligibility_and_internal_routes; displayed_deadline_is_stale"
+    },
+    {
+      "id": "applied-physics-admission",
+      "url": "https://appliedphysics.stanford.edu/admissions/overview",
+      "title": "Applied Physics Admissions Overview",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_degree_routes_requirements_and_current_portal_crosscheck; page_body_retains_prior_cycle_deadline"
+    },
+    {
+      "id": "chemistry-admission",
+      "url": "https://chemistry.stanford.edu/academics/phd-program/admissions",
+      "title": "Chemistry PhD Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_departmental_requirements; deadline_crosschecked_to_current_directory"
+    },
+    {
+      "id": "communication-phd",
+      "url": "https://comm.stanford.edu/phd/applications",
+      "title": "Communication PhD Applications and Financial Support",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_cycle_requirements_deadline_and_five_year_funding"
+    },
+    {
+      "id": "communication-ma-bulletin",
+      "url": "https://bulletin.stanford.edu/programs/COMMU-MA/admissions-declaration-information-h0Lr4",
+      "title": "Communication MA Admissions and Declaration Information",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_terminal_and_coterm_subplans_and_current_spring_deadline"
+    },
+    {
+      "id": "economics-admission",
+      "url": "https://economics.stanford.edu/graduate/applying-stanford",
+      "title": "Applying to Stanford Economics Graduate Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_program_specific_requirements_and_degree_path; current_deadline_from_directory"
+    },
+    {
+      "id": "economics-faq",
+      "url": "https://economics.stanford.edu/graduate/applying-stanford/frequently-asked-questions",
+      "title": "Economics Graduate Admissions FAQ",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_prior_preparation_GRE_writing_sample_interview_and_MA_route"
+    },
+    {
+      "id": "economics-funding",
+      "url": "https://economics.stanford.edu/graduate/financial-support",
+      "title": "Economics Graduate Financial Support",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_fellowship_RA_TA_coverage_and_fifth_year_condition"
+    },
+    {
+      "id": "international-policy-admission",
+      "url": "https://fsi.stanford.edu/masters-degree/admissions/how-to-apply",
+      "title": "Master's in International Policy — How to Apply",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2027_entry_requirements_windows_and_decision_timing"
+    },
+    {
+      "id": "linguistics-admission",
+      "url": "https://linguistics.stanford.edu/degree-programs/graduate-admissions/application-requirements",
+      "title": "Linguistics Graduate Application Requirements",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2027_28_requirements_and_deadline"
+    },
+    {
+      "id": "mathematics-admission",
+      "url": "https://mathematics.stanford.edu/academics/graduate-admissions",
+      "title": "Mathematics Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_external_vs_coterm_eligibility_tests_funding_and_2027_deadline"
+    },
+    {
+      "id": "philosophy-admission",
+      "url": "https://philosophy.stanford.edu/graduate-admissions",
+      "title": "Philosophy Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_directory_deadlines_and_program_requirements; MA funding_checked_separately"
+    },
+    {
+      "id": "philosophy-ma",
+      "url": "https://philosophy.stanford.edu/academics/graduate-program-philosophy/masters-program",
+      "title": "Philosophy Master's Program",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_external_master_route_and_funding"
+    },
+    {
+      "id": "philosophy-funding",
+      "url": "https://philosophy.stanford.edu/academics/graduate-program-philosophy/doctoral-program/phd-financial-support",
+      "title": "Philosophy PhD Financial Support",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_five_year_package_teaching_and_summer_coverage"
+    },
+    {
+      "id": "physics-admission",
+      "url": "https://physics.stanford.edu/graduate-admissions",
+      "title": "Physics Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_directory_route_and_degree_specific_admission_facts; funding_checked_separately"
+    },
+    {
+      "id": "physics-funding",
+      "url": "https://physics.stanford.edu/prospective-students/graduate-admissions/financial-support",
+      "title": "Physics PhD Financial Support",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_incoming_PhD_support_and_teaching_condition"
+    },
+    {
+      "id": "political-science-admission",
+      "url": "https://politicalscience.stanford.edu/graduate-program/phd-admissions/application-requirements",
+      "title": "Political Science PhD Application Requirements",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2027_28_requirements_GRE_and_deadline"
+    },
+    {
+      "id": "political-science-funding",
+      "url": "https://politicalscience.stanford.edu/graduate-program/doctoral-program/graduate-program-funding",
+      "title": "Political Science Graduate Program Funding",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_five_year_terms_and_summer_limits"
+    },
+    {
+      "id": "psychology-admission",
+      "url": "https://psychology.stanford.edu/admissions/phd-admissions",
+      "title": "Psychology PhD Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2027_28_requirements_interviews_and_deadline"
+    },
+    {
+      "id": "psychology-funding",
+      "url": "https://psychology.stanford.edu/academics/phd-program/funding",
+      "title": "Psychology PhD Funding",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_support_duration_progress_conditions_and_summer_internship_exception"
+    },
+    {
+      "id": "public-policy-admission",
+      "url": "https://publicpolicy.stanford.edu/graduate/graduate-admissions/application-process-stanford-alumni",
+      "title": "Public Policy MA and MPP Application Process for Stanford Alumni",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_alumni_eligibility_requirements_cost_aid_and_offer_timing"
+    },
+    {
+      "id": "public-policy-coterm",
+      "url": "https://publicpolicy.stanford.edu/coterminal/coterminal-admissions",
+      "title": "Public Policy Coterminal Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_internal_MA_route_and_MPP_progression"
+    },
+    {
+      "id": "sociology-admission",
+      "url": "https://sociology.stanford.edu/doctoral/phd-program/admissions-and-program-faq",
+      "title": "Sociology PhD Admissions and Program FAQ",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_deadline_GRE_and_recommendation_late_material_rules"
+    },
+    {
+      "id": "statistics-admission",
+      "url": "https://statistics.stanford.edu/admissions/prospective-graduate-students",
+      "title": "Statistics Prospective Graduate Students",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_external_deadlines_and_aid_status"
+    },
+    {
+      "id": "statistics-ms",
+      "url": "https://statistics.stanford.edu/admissions/ms-admissions",
+      "title": "Statistics MS Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_terminal_degree_prerequisites_and_funding"
+    },
+    {
+      "id": "statistics-phd",
+      "url": "https://statistics.stanford.edu/admissions/statistics-phd-admissions",
+      "title": "Statistics PhD Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_deadline_and_Knight-Hennessy_exception"
+    },
+    {
+      "id": "symbolic-systems-admission",
+      "url": "https://symsys.stanford.edu/graduates/ms-admissions/external-admissions",
+      "title": "Symbolic Systems MS External Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_external_requirements_and_deadline"
+    },
+    {
+      "id": "symbolic-systems-faq",
+      "url": "https://symsys.stanford.edu/graduates/ms-admissions/admissions-faqs-and-contact-us",
+      "title": "Symbolic Systems MS Admissions FAQs",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_research_basis_expected_duration_and_financing"
+    },
+    {
+      "id": "graduate-shared-policies",
+      "url": "https://gradadmissions.stanford.edu/apply/test-scores",
+      "title": "Graduate Admissions Test Scores",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_university_English-test_minima_and_exemptions; facts_not_repeated_here"
+    },
+    {
+      "id": "coterm-policy",
+      "url": "https://bulletin.stanford.edu/academic-polices/admissions/coterminal",
+      "title": "Coterminal Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_university_undergraduate_eligibility_and_common_application_package; facts_not_repeated_here"
+    },
+    {
+      "id": "coterm-directory",
+      "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=coterm-program-list",
+      "title": "Explore Coterm Programs — current Stanford undergraduate application directory",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_AEPHY_and_Symbolic_Systems_2026_27_deadlines_tests_and_required_materials"
+    },
+    {
+      "id": "aephy-coterm",
+      "url": "https://appliedphysics.stanford.edu/academic-programs/coterminal-ms-degree-applied-and-engineering-physics",
+      "title": "Coterminal MS in Applied and Engineering Physics",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_coterm_award_identity_and_current_route; detailed page has older dates, current date taken from official coterm directory"
+    },
+    {
+      "id": "symsys-coterm",
+      "url": "https://symsys.stanford.edu/graduatesms-admissions/coterminal-admissions",
+      "title": "Symbolic Systems MS Coterminal Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_against_current_official_coterm_directory"
+    },
+    {
+      "id": "anthropology-coterm",
+      "url": "https://anthropology.stanford.edu/academics/graduate-program/coterminal-ma-degree-anthropology",
+      "title": "Anthropology Coterminal MA",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_undergraduate_eligibility_and_official_deadline_directory"
+    },
+    {
+      "id": "statistics-coterm",
+      "url": "https://statistics.stanford.edu/msadmissions/statistics-coterm-eligibility",
+      "title": "Statistics MS Coterm Eligibility",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_coterm_eligibility_and_distinction_from_external_terminal_MS"
+    },
+    {
+      "id": "physics-admission-current",
+      "url": "https://physics.stanford.edu/graduate/graduate-admissions",
+      "title": "Physics Graduate Admissions",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2027_28_phd_and_nonseparate_ms_award"
+    },
+    {
+      "id": "statistics-phd-procedures",
+      "url": "https://statistics.stanford.edu/admissions/statistics-phd-admissions/phd-admissions-requirements-and-procedures",
+      "title": "Statistics PhD Admissions Requirements and Procedures",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_2027_28_documents_tests_decisions_and_funding"
+    },
+    {
+      "id": "statistics-internal",
+      "url": "https://statistics.stanford.edu/msadmissions/internal-application-deadline",
+      "title": "Statistics MS Internal Application Deadline",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_current_doctoral_only_internal_eligibility_and_unpublished_2027_28_dates"
+    },
+    {
+      "id": "physics-current-faq",
+      "url": "https://physics.stanford.edu/graduate/graduate-admissions/application-faqs",
+      "title": "Physics Application FAQs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "stats-graduate-admissions-current",
+      "url": "https://statistics.stanford.edu/admissions/graduate-admissions",
+      "title": "Statistics Graduate Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "philosophy-current-admissions",
+      "url": "https://philosophy.stanford.edu/academics/graduate-program-philosophy/graduate-admissions",
+      "title": "Philosophy Graduate Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "chemistry-current-apply",
+      "url": "https://chemistry.stanford.edu/academics/about-phd-program/admissions/how-apply",
+      "title": "Chemistry How to Apply",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "linguistics-decisions",
+      "url": "https://linguistics.stanford.edu/degree-programs/graduate-admissions/application-status-decisions",
+      "title": "Linguistics Application Status and Decisions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "linguistics-doctoral",
+      "url": "https://linguistics.stanford.edu/degree-programs/graduate-programs/doctoral-program",
+      "title": "Linguistics Doctoral Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "mip-application-faq",
+      "url": "https://fsi.stanford.edu/masters-degree/faq/app-and-admissions",
+      "title": "MIP Application FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "mip-tuition-faq",
+      "url": "https://fsi.stanford.edu/masters-degree/faq/tuition-financial-aid",
+      "title": "MIP Tuition and Financial Aid FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_route_specific_dates_materials_decisions_funding"
+    },
+    {
+      "id": "math-coterm-current",
+      "url": "https://mathematics.stanford.edu/academics/coterminal-masters-degree",
+      "title": "Mathematics Coterminal Masters Degree",
+      "checked_at": "2026-10-03",
+      "content_review_status": "reviewed_for_current_undergraduate_prerequisites_application_deadlines_and_offer"
+    }
+  ],
+  "study_options": [
+    {
+      "id": "stanford-option-anthr-phd",
+      "title": "Anthropology",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "anthropology-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "anthr-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External applicants apply to the PhD for autumn entry. The Anthropology MA is not an external terminal master's; it is restricted to current Stanford graduate students or earned en route by Anthropology PhD students.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/ANTHR-PHD"
+    },
+    {
+      "id": "stanford-option-anthr-ma",
+      "title": "Anthropology",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "anthropology-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "anthr-ma-internal",
+        "anthr-ma-coterm"
+      ],
+      "application_classification": "coterm_and_current_stanford_graduate_or_phd_en_route",
+      "description": "Not open to external applicants. Current Stanford graduate students in another program may seek this MA; Anthropology PhD students may earn it en route.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/ANTHR-MA"
+    },
+    {
+      "id": "stanford-option-aplph-ms",
+      "title": "Applied Physics",
+      "award": "MS",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "aplph-ms-external"
+      ],
+      "application_classification": "external_degree",
+      "description": "Full-time MS application is listed separately from the coterm MS; Applied Physics admits students to the department rather than directly to a research group.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/APLPH-MS"
+    },
+    {
+      "id": "stanford-option-aplph-phd",
+      "title": "Applied Physics",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "aplph-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "Full-time PhD route; the department states it admits to the department as a whole, with research-group rotations after enrollment.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/APLPH-PHD"
+    },
+    {
+      "id": "stanford-option-chem-phd",
+      "title": "Chemistry",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "chemistry-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "chem-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External full-time PhD route. Coterminal Chemistry master's admission is a distinct current-undergraduate route and is not this external application.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/CHEM-PHD"
+    },
+    {
+      "id": "stanford-option-commu-phd",
+      "title": "Communication",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "communication-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "commu-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD in Communication Theory and Research.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/COMMU-PHD"
+    },
+    {
+      "id": "stanford-option-commu-ma-journalism",
+      "title": "Communication — Journalism subplan",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "communication-ma-bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "commu-ma-journalism-external",
+        "commu-ma-journalism-coterm"
+      ],
+      "application_classification": "external_terminal_masters_and_coterm",
+      "description": "The terminal Journalism MA is externally available; a separate coterm route is available to eligible Stanford undergraduates. The application-directory MA entry is not the coterm Media Studies route.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/COMMU-MA"
+    },
+    {
+      "id": "stanford-option-commu-ma-media-studies",
+      "title": "Communication — Media Studies subplan",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "communication-ma-bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "commu-ma-media-coterm"
+      ],
+      "application_classification": "coterm_only",
+      "description": "Current Stanford undergraduate coterm program; not an external terminal-master route.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/COMMU-MA"
+    },
+    {
+      "id": "stanford-option-econ-phd",
+      "title": "Economics",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "economics-admission",
+        "economics-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "econ-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD application. The department says applicants can apply only to the PhD; the Economics MA may be added only after enrollment in the PhD program.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/ECON-PHD"
+    },
+    {
+      "id": "stanford-option-econ-ma",
+      "title": "Economics",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "economics-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "econ-ma-en-route"
+      ],
+      "application_classification": "phd_en_route_only",
+      "description": "The MA is an additional degree for students already enrolled in the Economics PhD, not an external terminal-master application.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/ECON-MA"
+    },
+    {
+      "id": "stanford-option-inpol-ma",
+      "title": "International Policy",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "international-policy-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "inpol-ma-external"
+      ],
+      "application_classification": "external_professional_masters",
+      "description": "Master's in International Policy (MIP), a distinct externally accessible professional policy degree; applicants may matriculate only in Autumn.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/INPOL-MA"
+    },
+    {
+      "id": "stanford-option-ling-phd",
+      "title": "Linguistics",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "linguistics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "ling-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD route; the department says most students have Linguistics BA/MA, while applicants from related fields need substantial Linguistics coursework or research evidence.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/LING-PHD"
+    },
+    {
+      "id": "stanford-option-math-phd",
+      "title": "Mathematics",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "mathematics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "math-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "For non-Stanford applicants the department offers PhD admission only; Mathematics master's admission is restricted to current Stanford undergraduates through coterm.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/MATH-PHD"
+    },
+    {
+      "id": "stanford-option-math-ms",
+      "title": "Mathematics",
+      "award": "MS",
+      "level": "masters",
+      "source_ids": [
+        "mathematics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "math-ms-coterm"
+      ],
+      "application_classification": "coterm_only",
+      "description": "Available only to current Stanford undergraduate students; the department does not admit external applicants or current Stanford graduate students to its master's program.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/MATH-MS"
+    },
+    {
+      "id": "stanford-option-philo-ma",
+      "title": "Philosophy",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "philosophy-admission",
+        "philosophy-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "philo-ma-external",
+        "philo-ma-coterm"
+      ],
+      "application_classification": "external_terminal_masters_and_coterm",
+      "description": "A standalone MA application is open to external applicants and Stanford students. The department says the MA and PhD are separate programs, not a stepping-stone sequence; it provides no MA fellowships.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PHILO-MA"
+    },
+    {
+      "id": "stanford-option-philo-phd",
+      "title": "Philosophy",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "philosophy-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "philo-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD application; the department describes the MA and PhD as separate programs.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PHILO-PHD"
+    },
+    {
+      "id": "stanford-option-phys-phd",
+      "title": "Physics",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "physics-admission",
+        "physics-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "phys-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD route. Physics lists an MS award in the Bulletin, but the reviewed admissions directory lists PhD only; external MS entry status requires department confirmation.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PHYS-PHD"
+    },
+    {
+      "id": "stanford-option-phys-ms",
+      "title": "Physics",
+      "award": "MS",
+      "level": "masters",
+      "source_ids": [
+        "physics-admission",
+        "physics-admission-current"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "phys-ms-en-route"
+      ],
+      "application_classification": "phd_en_route_only",
+      "description": "The Physics Department offers no separate MS program or external MS application. With departmental approval, an MS may be awarded for a portion of Physics PhD degree work.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PHYS-MS"
+    },
+    {
+      "id": "stanford-option-polsc-phd",
+      "title": "Political Science",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "political-science-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "polsc-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD application. The department also awards an MA for current Stanford doctoral or professional-school students; that MA is not a separate external route.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/POLSC-PHD"
+    },
+    {
+      "id": "stanford-option-polsc-ma",
+      "title": "Political Science",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "political-science-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "polsc-ma-internal"
+      ],
+      "application_classification": "current_stanford_doctoral_or_professional_student",
+      "description": "MA is available only to current Stanford doctoral or professional-school students; no direct external terminal-master route was identified.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/POLSC-MA"
+    },
+    {
+      "id": "stanford-option-psych-phd",
+      "title": "Psychology",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "psychology-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "psych-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD route; undergraduate Psychology major is not required. Faculty interview finalists before final decisions.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PSYCH-PHD"
+    },
+    {
+      "id": "stanford-option-pubpo-ma",
+      "title": "Public Policy",
+      "award": "MA",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "public-policy-admission",
+        "public-policy-coterm"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "pubpo-ma-alumni",
+        "pubpo-ma-coterm"
+      ],
+      "application_classification": "external_restricted_to_stanford_alumni_within_five_years_and_coterm",
+      "description": "External MA applications are restricted to Stanford alumni within five years of graduation; a distinct coterm route is available to current undergraduates.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PUBPO-MA"
+    },
+    {
+      "id": "stanford-option-pubpo-mpp",
+      "title": "Public Policy",
+      "award": "MPP",
+      "level": "professional",
+      "source_ids": [
+        "graduate-directory",
+        "public-policy-admission",
+        "public-policy-coterm"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "pubpo-mpp-alumni",
+        "pubpo-mpp-coterm-progression",
+        "pubpo-mpp-joint-degree"
+      ],
+      "application_classification": "external_restricted_alumni_and_joint_degree_progression",
+      "description": "External MPP applications are restricted to Stanford alumni within five years of graduation. Stanford undergraduates first apply to the coterm MA and may apply to the MPP after one quarter in the MA program.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/PUBPO-MPP"
+    },
+    {
+      "id": "stanford-option-socio-phd",
+      "title": "Sociology",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "sociology-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "socio-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "External PhD route; a separate coterm Sociology MA exists for Stanford undergraduates and is not an external terminal-master application.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/SOCIO-PHD"
+    },
+    {
+      "id": "stanford-option-stats-ms",
+      "title": "Statistics",
+      "award": "MS",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "statistics-admission",
+        "statistics-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "stats-ms-external",
+        "stats-ms-coterm",
+        "stats-ms-internal-doctoral"
+      ],
+      "application_classification": "external_terminal_masters_and_coterm",
+      "description": "Terminal, full-time MS; the department explicitly says it does not lead to the Statistics PhD and includes no thesis/research component. MS applicants receive no department financial aid or assistantships and must secure funding for the degree.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/STATS-MS"
+    },
+    {
+      "id": "stanford-option-stats-phd",
+      "title": "Statistics",
+      "award": "PhD",
+      "level": "doctoral",
+      "source_ids": [
+        "graduate-directory",
+        "statistics-admission",
+        "statistics-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "stats-phd-external"
+      ],
+      "application_classification": "external_doctoral_degree",
+      "description": "Separate external PhD application; departmental financial aid package is available. Knight-Hennessy applicants must submit the Statistics PhD application one day before the general department deadline.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/STATS-PHD"
+    },
+    {
+      "id": "stanford-option-symsys-ms",
+      "title": "Symbolic Systems",
+      "award": "MS",
+      "level": "masters",
+      "source_ids": [
+        "graduate-directory",
+        "symbolic-systems-admission",
+        "symbolic-systems-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "symsys-ms-external",
+        "symsys-ms-coterm"
+      ],
+      "application_classification": "external_terminal_masters_and_coterm",
+      "description": "Research-based MS with a thesis; separate external and Stanford internal/coterm applicant routes. Program reports no regular financial aid; assistantships are occasional and quarter-by-quarter.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/SYMBO-MS"
+    },
+    {
+      "id": "stanford-option-aephy-ms",
+      "title": "Applied and Engineering Physics",
+      "award": "MS",
+      "level": "masters",
+      "source_ids": [
+        "coterm-directory",
+        "aephy-coterm"
+      ],
+      "checked_at": "2026-10-02",
+      "procedure_ids": [
+        "aephy-ms-coterm"
+      ],
+      "application_classification": "coterm_only",
+      "description": "Distinct coterminal MS for current Stanford undergraduates, focused on applied physics and engineering; separate from the external APLPH-MS.",
+      "source_program_url": "https://bulletin.stanford.edu/programs/AEPHY-MS"
+    }
+  ],
+  "application_procedures": [
+    {
+      "id": "anthr-phd-external",
+      "option_ids": [
+        "stanford-option-anthr-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Anthropology PhD",
+      "source_ids": [
+        "graduate-directory",
+        "anthropology-admission",
+        "anthropology-ma"
+      ]
+    },
+    {
+      "id": "anthr-ma-internal",
+      "option_ids": [
+        "stanford-option-anthr-ma"
+      ],
+      "classification": "internal_stanford_graduate_authorization",
+      "destination": "Anthropology department form and Stanford Graduate Authorization Petition in Axess",
+      "source_ids": [
+        "anthropology-ma"
+      ]
+    },
+    {
+      "id": "aplph-ms-external",
+      "option_ids": [
+        "stanford-option-aplph-ms"
+      ],
+      "classification": "external_masters",
+      "destination": "Stanford Graduate Admissions — Applied Physics MS",
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission"
+      ]
+    },
+    {
+      "id": "aplph-phd-external",
+      "option_ids": [
+        "stanford-option-aplph-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Applied Physics PhD",
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission"
+      ]
+    },
+    {
+      "id": "chem-phd-external",
+      "option_ids": [
+        "stanford-option-chem-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Chemistry PhD",
+      "source_ids": [
+        "graduate-directory",
+        "chemistry-admission"
+      ]
+    },
+    {
+      "id": "commu-phd-external",
+      "option_ids": [
+        "stanford-option-commu-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Communication PhD",
+      "source_ids": [
+        "graduate-directory",
+        "communication-phd"
+      ]
+    },
+    {
+      "id": "commu-ma-journalism-external",
+      "option_ids": [
+        "stanford-option-commu-ma-journalism"
+      ],
+      "classification": "external_terminal_masters",
+      "destination": "Stanford Graduate Admissions — Communication MA, Journalism subplan",
+      "source_ids": [
+        "graduate-directory",
+        "communication-ma-bulletin"
+      ]
+    },
+    {
+      "id": "commu-ma-journalism-coterm",
+      "option_ids": [
+        "stanford-option-commu-ma-journalism"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Coterminal Communication MA application — Journalism subplan",
+      "source_ids": [
+        "communication-ma-bulletin",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "commu-ma-media-coterm",
+      "option_ids": [
+        "stanford-option-commu-ma-media-studies"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Coterminal Communication MA application — Media Studies subplan",
+      "source_ids": [
+        "communication-ma-bulletin",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "econ-phd-external",
+      "option_ids": [
+        "stanford-option-econ-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Economics PhD",
+      "source_ids": [
+        "graduate-directory",
+        "economics-admission",
+        "economics-faq"
+      ]
+    },
+    {
+      "id": "econ-ma-en-route",
+      "option_ids": [
+        "stanford-option-econ-ma"
+      ],
+      "classification": "phd_en_route_authorization",
+      "destination": "Economics Graduate Program Authorization Petition after PhD enrollment",
+      "source_ids": [
+        "economics-faq"
+      ]
+    },
+    {
+      "id": "inpol-ma-external",
+      "option_ids": [
+        "stanford-option-inpol-ma"
+      ],
+      "classification": "external_professional_masters",
+      "destination": "Stanford Graduate Admissions — Master's in International Policy",
+      "source_ids": [
+        "graduate-directory",
+        "international-policy-admission"
+      ]
+    },
+    {
+      "id": "ling-phd-external",
+      "option_ids": [
+        "stanford-option-ling-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Linguistics PhD",
+      "source_ids": [
+        "graduate-directory",
+        "linguistics-admission"
+      ]
+    },
+    {
+      "id": "math-phd-external",
+      "option_ids": [
+        "stanford-option-math-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Mathematics PhD",
+      "source_ids": [
+        "graduate-directory",
+        "mathematics-admission"
+      ]
+    },
+    {
+      "id": "math-ms-coterm",
+      "option_ids": [
+        "stanford-option-math-ms"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Mathematics coterm application through Graduate Admissions",
+      "source_ids": [
+        "mathematics-admission",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "philo-ma-external",
+      "option_ids": [
+        "stanford-option-philo-ma"
+      ],
+      "classification": "external_terminal_masters",
+      "destination": "Stanford Graduate Admissions — Philosophy MA",
+      "source_ids": [
+        "graduate-directory",
+        "philosophy-admission",
+        "philosophy-ma"
+      ]
+    },
+    {
+      "id": "philo-ma-coterm",
+      "option_ids": [
+        "stanford-option-philo-ma"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Philosophy coterm application through Graduate Admissions",
+      "source_ids": [
+        "philosophy-admission",
+        "philosophy-ma",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "philo-phd-external",
+      "option_ids": [
+        "stanford-option-philo-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Philosophy PhD",
+      "source_ids": [
+        "graduate-directory",
+        "philosophy-admission"
+      ]
+    },
+    {
+      "id": "phys-phd-external",
+      "option_ids": [
+        "stanford-option-phys-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Physics PhD",
+      "source_ids": [
+        "graduate-directory",
+        "physics-admission",
+        "physics-funding"
+      ]
+    },
+    {
+      "id": "phys-ms-en-route",
+      "option_ids": [
+        "stanford-option-phys-ms"
+      ],
+      "classification": "phd_en_route_intermediate_award",
+      "destination": "Physics PhD enrollment; departmental approval for MS award",
+      "source_ids": [
+        "graduate-directory",
+        "physics-admission",
+        "physics-admission-current"
+      ]
+    },
+    {
+      "id": "polsc-phd-external",
+      "option_ids": [
+        "stanford-option-polsc-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Political Science PhD",
+      "source_ids": [
+        "graduate-directory",
+        "political-science-admission"
+      ]
+    },
+    {
+      "id": "polsc-ma-internal",
+      "option_ids": [
+        "stanford-option-polsc-ma"
+      ],
+      "classification": "current_stanford_doctoral_or_professional_student",
+      "destination": "Political Science department MA route for current Stanford doctoral/professional students",
+      "source_ids": [
+        "political-science-admission"
+      ]
+    },
+    {
+      "id": "psych-phd-external",
+      "option_ids": [
+        "stanford-option-psych-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Psychology PhD",
+      "source_ids": [
+        "graduate-directory",
+        "psychology-admission"
+      ]
+    },
+    {
+      "id": "pubpo-ma-alumni",
+      "option_ids": [
+        "stanford-option-pubpo-ma"
+      ],
+      "classification": "external_restricted_alumni",
+      "destination": "Stanford Graduate Admissions — Public Policy MA; Stanford alumni within five years of graduation",
+      "source_ids": [
+        "graduate-directory",
+        "public-policy-admission"
+      ]
+    },
+    {
+      "id": "pubpo-ma-coterm",
+      "option_ids": [
+        "stanford-option-pubpo-ma"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Public Policy coterm MA application",
+      "source_ids": [
+        "public-policy-coterm",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "pubpo-mpp-alumni",
+      "option_ids": [
+        "stanford-option-pubpo-mpp"
+      ],
+      "classification": "external_restricted_alumni",
+      "destination": "Stanford Graduate Admissions — Public Policy MPP for Stanford alumni within five years of graduation",
+      "source_ids": [
+        "graduate-directory",
+        "public-policy-admission"
+      ]
+    },
+    {
+      "id": "pubpo-mpp-coterm-progression",
+      "option_ids": [
+        "stanford-option-pubpo-mpp"
+      ],
+      "classification": "internal_progression_from_coterm_ma",
+      "destination": "After one quarter in the Public Policy coterm MA, current students may apply to the MPP with transcript and statement of purpose",
+      "source_ids": [
+        "public-policy-coterm"
+      ]
+    },
+    {
+      "id": "socio-phd-external",
+      "option_ids": [
+        "stanford-option-socio-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Sociology PhD",
+      "source_ids": [
+        "graduate-directory",
+        "sociology-admission"
+      ]
+    },
+    {
+      "id": "stats-ms-external",
+      "option_ids": [
+        "stanford-option-stats-ms"
+      ],
+      "classification": "external_terminal_masters",
+      "destination": "Stanford Graduate Admissions — Statistics MS",
+      "source_ids": [
+        "graduate-directory",
+        "statistics-admission",
+        "statistics-ms"
+      ]
+    },
+    {
+      "id": "stats-phd-external",
+      "option_ids": [
+        "stanford-option-stats-phd"
+      ],
+      "classification": "external_doctoral",
+      "destination": "Stanford Graduate Admissions — Statistics PhD",
+      "source_ids": [
+        "graduate-directory",
+        "statistics-admission",
+        "statistics-phd"
+      ]
+    },
+    {
+      "id": "symsys-ms-external",
+      "option_ids": [
+        "stanford-option-symsys-ms"
+      ],
+      "classification": "external_terminal_masters",
+      "destination": "Stanford Graduate Admissions — Symbolic Systems MS external applicant route",
+      "source_ids": [
+        "graduate-directory",
+        "symbolic-systems-admission",
+        "symbolic-systems-faq"
+      ]
+    },
+    {
+      "id": "symsys-ms-coterm",
+      "option_ids": [
+        "stanford-option-symsys-ms"
+      ],
+      "classification": "coterm_or_internal_stanford_student",
+      "destination": "Symbolic Systems MS internal application; distinct from external applicant route",
+      "source_ids": [
+        "symbolic-systems-admission",
+        "symbolic-systems-faq",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "aephy-ms-coterm",
+      "option_ids": [
+        "stanford-option-aephy-ms"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Coterminal MS in Applied and Engineering Physics application",
+      "source_ids": [
+        "coterm-directory",
+        "aephy-coterm",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "anthr-ma-coterm",
+      "option_ids": [
+        "stanford-option-anthr-ma"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Coterminal Anthropology MA application",
+      "source_ids": [
+        "coterm-directory",
+        "anthropology-coterm",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "stats-ms-coterm",
+      "option_ids": [
+        "stanford-option-stats-ms"
+      ],
+      "classification": "coterm_current_stanford_undergraduate",
+      "destination": "Coterminal Statistics MS application",
+      "source_ids": [
+        "coterm-directory",
+        "statistics-coterm",
+        "coterm-policy"
+      ]
+    },
+    {
+      "id": "pubpo-mpp-joint-degree",
+      "option_ids": [
+        "stanford-option-pubpo-mpp"
+      ],
+      "classification": "joint_degree_applicant_to_another_stanford_program",
+      "destination": "Apply to the partner Stanford graduate degree and indicate interest in the MPP; Public Policy evaluates applicants admitted to the partner degree",
+      "source_ids": [
+        "public-policy-admission"
+      ]
+    },
+    {
+      "id": "stats-ms-internal-doctoral",
+      "option_ids": [
+        "stanford-option-stats-ms"
+      ],
+      "classification": "internal_current_doctoral_only",
+      "destination": "Statistics Student Services internal review before Graduate Authorization Petition",
+      "source_ids": [
+        "statistics-internal"
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "anthr-phd-deadline-2027-28",
+      "topic": "application_deadline",
+      "value": "December 2, 2026, for Autumn 2027–28 entry; the department gives 11:59 p.m. Pacific Standard Time.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-anthr-phd"
+        ],
+        "procedure_ids": [
+          "anthr-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "anthropology-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "anthr-phd-requirements",
+      "topic": "application_requirements",
+      "value": "Online graduate application, statement of purpose (recommended maximum 1,000 words), three recommendation letters, transcripts for postsecondary institutions attended at least one year, and a writing sample of no more than 10 pages. GRE is not required. The department describes social-science theory and analysis foundation as expected preparation, while an Anthropology degree is not required. English-test rules are subject to Stanford's published exemptions; Anthropology's page describes TOEFL for applicants whose first language is not English.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-anthr-phd"
+        ],
+        "procedure_ids": [
+          "anthr-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "anthropology-admission",
+        "anthropology-ma",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Unofficial scanned transcript copies are used for application review; official transcripts are required after accepting an offer."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "anthr-phd-funding",
+      "topic": "funding",
+      "value": "The PhD application includes consideration for departmental funding; a separate department funding application is not required. Current pages describe support for admitted PhD students, but the reviewed current-cycle source does not establish a guaranteed package duration or renewal terms.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-anthr-phd"
+        ],
+        "procedure_ids": [
+          "anthr-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "anthropology-admission",
+        "anthropology-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "partially_reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "anthr-ma-eligibility",
+      "topic": "eligibility",
+      "value": "Anthropology states that its MA is not open to non-Stanford graduate applicants; eligible routes are current Stanford graduate students admitted to the terminal MA and Stanford Anthropology PhD students earning the MA en route. A page still displays a December 2022 application date, so no current application window is asserted.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-anthr-ma"
+        ],
+        "procedure_ids": [
+          "anthr-ma-internal"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate",
+          "stanford_anthropology_phd_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "anthropology-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Non-Stanford external applicants are ineligible."
+      ],
+      "exceptions": [
+        "The source's example deadline is stale (2022); confirm the current deadline with the department."
+      ]
+    },
+    {
+      "id": "aplph-ms-deadline-tests-2027-28",
+      "topic": "deadline_and_tests",
+      "value": "External full-time MS: Autumn 2027–28; December 14, 2026 deadline in the current Graduate Admissions directory. Directory lists GRE General and Physics Subject tests as required. The department page's displayed deadline is for Fall 2026 entry and must not replace the current directory date.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-aplph-ms"
+        ],
+        "procedure_ids": [
+          "aplph-ms-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": [
+        "The Applied Physics page says test waivers may be explained in the application for genuinely inaccessible tests; confirm whether this exception applies to each of GRE General and Physics Subject before assessing a specific applicant."
+      ]
+    },
+    {
+      "id": "aplph-phd-deadline-tests-2027-28",
+      "topic": "deadline_and_tests",
+      "value": "External full-time PhD: Autumn 2027–28; December 14, 2026 deadline in the current Graduate Admissions directory. Directory lists GRE General and Physics Subject tests as required. The department page's displayed deadline is for Fall 2026 entry and must not replace the current directory date.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-aplph-phd"
+        ],
+        "procedure_ids": [
+          "aplph-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": [
+        "The department says admitted students enter the department as a whole and rotate among research groups after arrival; the application is not to a specific group."
+      ]
+    },
+    {
+      "id": "applied-physics-requirements",
+      "topic": "application_requirements",
+      "value": "Department lists an online application, fee, transcripts for all postsecondary degree-program institutions, three online recommendations, statement of purpose, both GRE tests, and TOEFL when applicable. Students apply to the department, not a named research group. Its page describes a possible test exception when the tests truly cannot be taken, with explanation and supporting documents.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-aplph-ms",
+          "stanford-option-aplph-phd"
+        ],
+        "procedure_ids": [
+          "aplph-ms-external",
+          "aplph-phd-external"
+        ],
+        "levels": [
+          "masters",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "applied-physics-admission",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Official transcripts/degree-conferral documents are required after an accepted offer."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "chem-phd-deadline-tests-2027-28",
+      "topic": "deadline_and_tests",
+      "value": "External PhD, Autumn 2027–28: November 30, 2026 deadline; GRE General is optional and GRE Subject is not considered in the current directory.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-chem-phd"
+        ],
+        "procedure_ids": [
+          "chem-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "chemistry-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "chem-phd-prerequisites-language",
+      "topic": "preparation_and_english_tests",
+      "value": "No minimum GPA or GRE score is published. Applicants are expected to show strong chemistry research interest and preparation; the department recommends describing research experience and labs of interest. Department English minimums exceed university floors: TOEFL 108 before 2026-01-21 or 5.5 on/after that date; IELTS 8. University exemption criteria apply, with supporting documentation potentially required after offer acceptance.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-chem-phd"
+        ],
+        "procedure_ids": [
+          "chem-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "chemistry-admission",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "A request for an English-instruction waiver must include an official institutional statement or official website evidence; program review is routed after application submission."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "commu-phd-deadline-requirements-funding-2027-28",
+      "topic": "application_requirements_deadline_and_funding",
+      "value": "Deadline December 1, 2026 at 11:59 p.m. for Autumn 2027 entry. Application includes statement of purpose (maximum recommended 1,000 words), unofficial transcripts, 1–3 page resume, three recommendations, supplemental research-fit questions, and optional 3,000–12,000-word writing sample. GRE is optional. Department states full funding through fellowship and teaching/research assistantship salary plus tuition for the first five years, for all 12 months; decisions usually by March 1.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-commu-phd"
+        ],
+        "procedure_ids": [
+          "commu-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "communication-phd",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Official transcript/degree-conferral documents are required after accepting an offer."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "commu-ma-journalism-external-route-2027-28",
+      "topic": "route_eligibility_and_deadlines",
+      "value": "Terminal Journalism MA is externally available. Graduate directory lists Autumn 2027–28 deadline December 1, 2026. Bulletin requires application, purpose statement, three journalistic samples, transcripts, resume, three recommendation letters and English test when applicable; GRE is not required. Interview and funding terms were not established in this review.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-commu-ma-journalism",
+          "stanford-option-commu-ma-media-studies"
+        ],
+        "procedure_ids": [
+          "commu-ma-journalism-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "communication-ma-bulletin"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "econ-phd-deadline-tests-2027-28",
+      "topic": "deadline_and_tests",
+      "value": "External PhD, Autumn 2027–28: December 2, 2026 deadline; GRE General required, GRE Subject not considered. Writing sample is required for eligibility. No specific formal prerequisite course list is published, but applicants are expected to have strong college Economics, mathematics and statistics preparation, ordinarily including intermediate microeconomics, multivariable calculus, linear algebra, probability and statistics.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-econ-phd"
+        ],
+        "procedure_ids": [
+          "econ-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "economics-admission",
+        "economics-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "econ-ma-path",
+      "topic": "award_and_application_path",
+      "value": "The Economics FAQ says external applicants can apply only to the PhD; the department MA is added after enrollment in the PhD program through a Graduate Program Authorization Petition. It is not a terminal external master's application.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-econ-ma"
+        ],
+        "procedure_ids": [
+          "econ-ma-en-route"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "enrolled_economics_phd_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "economics-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "inpol-ma-deadline-requirements-funding-2027-28",
+      "topic": "application_requirements_deadline_and_tests",
+      "value": "MIP external master's: general deadline January 7, 2027 at 11:59 p.m. Pacific for Autumn 2027; Knight-Hennessy applicants must apply to MIP by December 1, 2026. Fee $125. Requirements include purpose statement (up to two single-spaced pages), three references, transcripts, resume, English writing sample (7–15 double-spaced pages), one-page quantitative/AI skills summary, relevant prerequisite coursework and applicable English test. GRE is waived and scores will not be considered. Decisions are sent mid-March; enrollment response date is April 15–21. TOEFL minimum is 100 total/25 per section when required. Page describes KHS as separate funding application; MIP funding/aid package and renewal coverage require further review.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-inpol-ma"
+        ],
+        "procedure_ids": [
+          "inpol-ma-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant",
+          "knight_hennessy_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "international-policy-admission",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "partially_reviewed",
+      "conditions": [
+        "KHS applicants must submit a separate KHS application and an earlier MIP application."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "ling-phd-deadline-requirements-2027-28",
+      "topic": "application_requirements_and_deadline",
+      "value": "Deadline November 18, 2026 for 2027–28 entry. Requires online application and $125 fee, purpose statement, three online recommendation letters, transcripts, and one writing sample (typically 10–15 pages; committee focus capped at 25 pages). GRE General is not required and applicants are asked not to self-report it. Department's English-test rule says TOEFL for applicants whose first language is not English, with university exemptions/waivers linked. Preparation: most students have Linguistics BA/MA; other backgrounds need evidence of substantial Linguistics coursework/research. Admissions decisions generally by mid-March.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-ling-phd"
+        ],
+        "procedure_ids": [
+          "ling-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "linguistics-admission",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "math-phd-deadline-tests-funding-2027-28",
+      "topic": "deadline_tests_and_funding",
+      "value": "Deadline December 1, 2026 at 11:59 p.m. Pacific for Autumn 2027. Mathematics GRE Subject is expected; a waiver form is available when taking it is impractical. GRE General is neither required nor accepted. No external MA admission; the MS is coterm-only for Stanford undergraduates. The department expects mathematical preparation comparable to a mathematics undergraduate degree, though it does not formally require that major. Satisfactory-progress PhD students are fully funded for five years.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-math-phd"
+        ],
+        "procedure_ids": [
+          "math-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "mathematics-admission",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Applicants to the coterm MS must satisfy department preparation requirements; this is a separate route from external PhD admission."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "philo-ma-deadline-and-funding-2027-28",
+      "topic": "deadline_and_funding",
+      "value": "External MA deadline March 16, 2027 for Autumn 2027–28; GRE optional in directory. All prospective MA students must apply; MA and PhD are separate programs, and no department fellowships are available for MA students. External materials, other funding and renewal terms were not established in this review.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-philo-ma"
+        ],
+        "procedure_ids": [
+          "philo-ma-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "philosophy-admission",
+        "philosophy-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "partially_reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "philo-phd-deadline-tests-2027-28",
+      "topic": "deadline_and_tests",
+      "value": "External PhD deadline December 8, 2026 for Autumn 2027–28. Graduate directory marks GRE General optional and GRE Subject not considered. Department distinguishes PhD and MA as separate routes.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-philo-phd"
+        ],
+        "procedure_ids": [
+          "philo-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "philosophy-admission",
+        "philosophy-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "phys-phd-deadline-tests-funding-2027-28",
+      "topic": "deadline_tests_and_funding",
+      "value": "External PhD deadline December 14, 2026 for Autumn 2027–28; GRE General and Physics Subject tests required in directory. Incoming Physics PhD students receive research/teaching assistantship support with salary and tuition allowance for 10 units per quarter during the academic year. Students must teach at least three quarters to complete the PhD.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-phys-phd"
+        ],
+        "procedure_ids": [
+          "phys-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "physics-admission",
+        "physics-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The published financial support statement is specific to incoming PhD students and academic-year coverage; summer support, duration and renewal are not established by this page."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "phys-ms-external-classification",
+      "topic": "external_application_availability",
+      "value": "The Physics Department explicitly offers no separate MS program. With departmental approval, an MS may be awarded for a portion of PhD degree work; an external applicant applies to the Physics PhD.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-phys-ms"
+        ],
+        "procedure_ids": [
+          "phys-ms-en-route"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant",
+          "enrolled_physics_phd_student"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "physics-admission",
+        "physics-admission-current"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "polsc-phd-deadline-requirements-2027-28",
+      "topic": "application_requirements_and_deadline",
+      "value": "Deadline December 1, 2026 at 11:59 p.m. Pacific Standard Time for 2027–28. Requires online application, at least three recommendation letters, unofficial transcripts, GRE General, English test when required, English writing sample of 20–35 double-spaced pages (or shorter samples), CV/resume, and $125 fee. GRE is required for every applicant with no waiver or substitute; decisions are expected in late February. Department funding consideration generally requires no separate application.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-polsc-phd"
+        ],
+        "procedure_ids": [
+          "polsc-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "political-science-admission",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": [
+        "The department's FAQ states deferrals are rare and one-year only in serious/unforeseen circumstances; a JD/PhD joint-program exception is described."
+      ]
+    },
+    {
+      "id": "psych-phd-deadline-requirements-interview-2027-28",
+      "topic": "application_requirements_and_interview",
+      "value": "Application and recommendation deadline November 20, 2026 for Autumn 2027 entry. Requires online application, statement of purpose, three recommendation letters (maximum six accepted), unofficial transcripts, and applicable TOEFL/IELTS. GRE is not considered in the external directory. Undergraduate Psychology major is not required. Faculty interview candidates before final decisions; interviews generally occur in February after finalists are notified in January. Department does not provide fee waivers; university waivers may apply. The page reviewed states the 2027–28 cycle opens September 15, 2026, despite an adjacent stale next-cycle notice.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-psych-phd"
+        ],
+        "procedure_ids": [
+          "psych-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "psychology-admission",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": [
+        "Psychology interviews are part of selection; no universal interview guarantee or format is published."
+      ]
+    },
+    {
+      "id": "pubpo-ma-mpp-external-alumni-route-2027-28",
+      "topic": "eligibility_cost_and_funding",
+      "value": "External MA/MPP applications are limited to Stanford alumni within five years of graduation. Deadline January 28, 2027 for Autumn 2027 entry; fee $125. Requirements: official transcripts, GRE, three references (one from Stanford faculty), statement up to two pages, resume, and completion statement for calculus and economics prerequisites. Program currently provides no funding; some second-year TA/RA work may be available and limited MPP summer fellowships support qualifying internships. Decisions by April 1; respond by May 15.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pubpo-ma",
+          "stanford-option-pubpo-mpp"
+        ],
+        "procedure_ids": [
+          "pubpo-ma-alumni",
+          "pubpo-mpp-alumni"
+        ],
+        "levels": [
+          "masters",
+          "professional"
+        ],
+        "applicant_categories": [
+          "stanford_alumni_within_five_years"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "public-policy-admission",
+        "public-policy-coterm"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Department page labels entry Autumn 2026 while current portal directory records Autumn 2027–28; confirm stale year label before displaying."
+      ],
+      "exceptions": [
+        "External route applies only to Stanford alumni within five years."
+      ]
+    },
+    {
+      "id": "socio-phd-deadline-gre-2027-28",
+      "topic": "deadline_and_tests",
+      "value": "Sociology FAQ gives December 3, 2026 at 11:59 p.m. PST for the 2026–27 academic-year application label, while the current Graduate Admissions directory lists Autumn 2027–28 and the same December 3, 2026 date. GRE General is required. Official recommendation letters and transcripts may arrive after the deadline only within the department's stated early-December allowance; late material after the review window is not guaranteed review.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-socio-phd"
+        ],
+        "procedure_ids": [
+          "socio-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "sociology-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "needs_cycle_label_confirmation",
+      "conditions": [],
+      "exceptions": [
+        "The department FAQ's cycle label and portal cycle label conflict; preserve the date but confirm which intake label Sociology intends before displaying it."
+      ]
+    },
+    {
+      "id": "stats-ms-deadline-tests-prerequisites-funding-2027-28",
+      "topic": "application_requirements_and_funding",
+      "value": "External terminal MS deadline January 7, 2027 for Autumn 2027–28; General GRE required. Program is full-time, typically 5–6 quarters, and has no thesis or research component and does not lead to the Statistics PhD. Preparation prerequisites include linear algebra, multivariable calculus, introductory statistics/probability and programming proficiency. No departmental financial aid or assistantships; applicants must secure funding for the whole degree.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-ms"
+        ],
+        "procedure_ids": [
+          "stats-ms-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "statistics-admission",
+        "statistics-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stats-phd-deadline-tests-funding-2027-28",
+      "topic": "deadline_tests_and_funding",
+      "value": "External PhD deadline December 2, 2026 for Autumn 2027–28; GRE General required and GRE Mathematics Subject optional in directory. Department lists PhD financial-aid package as available. Applicants for Knight-Hennessy must submit their Statistics application by December 1, one day before the general deadline; KHS itself is separate.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-phd"
+        ],
+        "procedure_ids": [
+          "stats-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant",
+          "knight_hennessy_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "statistics-admission",
+        "statistics-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "partially_reviewed",
+      "conditions": [
+        "Specific PhD funding coverage, duration and renewal conditions require review of the current offer/funding terms."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "symsys-ms-deadline-requirements-funding-2027-28",
+      "topic": "application_requirements_deadline_and_funding",
+      "value": "External MS deadline January 15, 2027 for Autumn 2027–28. Requires online application and fee, statement of purpose, three recommendations, official transcripts and English test where applicable. GRE General is optional; original research paper is encouraged but not required. The research-based MS requires a thesis; external students normally need 4–6 quarters. Program provides no regular financial aid; RA/TA positions may be available by quarter, but are not assured for the full degree. Decisions mid- to late-March.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-symsys-ms"
+        ],
+        "procedure_ids": [
+          "symsys-ms-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "graduate-directory",
+        "symbolic-systems-admission",
+        "symbolic-systems-faq",
+        "graduate-shared-policies"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "aephy-ms-coterm-window-and-requirements-2026-27",
+      "topic": "application_deadlines_and_requirements",
+      "value": "The coterm directory lists Spring 2026–27 entry deadline January 25, 2027 and Autumn 2027–28 deadline April 26, 2027. GRE General is not considered; two recommendations and a program proposal are required.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-aephy-ms"
+        ],
+        "procedure_ids": [
+          "aephy-ms-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "spring-2026-2027; autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory",
+        "aephy-coterm",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "symsys-ms-coterm-window-and-requirements-2026-27",
+      "topic": "application_deadlines_and_requirements",
+      "value": "Current coterm directory lists Spring 2026–27 deadline January 15, 2027 and Autumn 2027–28 deadline May 3, 2027. GRE General is optional; two recommendations and a program proposal are required. This current-student route has distinct requirements from the external route, which requires three recommendations.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-symsys-ms"
+        ],
+        "procedure_ids": [
+          "symsys-ms-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate",
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "spring-2026-2027; autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory",
+        "symsys-coterm",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "pubpo-ma-coterm-window-and-mpp-progression-2026-27",
+      "topic": "coterm_deadlines_and_progression",
+      "value": "Coterm directory lists Public Policy MA deadlines October 22, 2026 for Winter and January 21, 2027 for Spring 2026–27; GRE is not considered, and two recommendations plus a program proposal are required. Stanford undergraduates may apply for the coterm MA, then after one quarter in the MA apply to the MPP with an unofficial transcript and statement. The program says it provides no coterm financial assistance.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pubpo-ma",
+          "stanford-option-pubpo-mpp"
+        ],
+        "procedure_ids": [
+          "pubpo-ma-coterm",
+          "pubpo-mpp-coterm-progression"
+        ],
+        "levels": [
+          "masters",
+          "professional"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate_coterm"
+        ],
+        "cycle": "winter-2026-2027; spring-2026-2027",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory",
+        "public-policy-coterm",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "commu-ma-coterm-routes-and-window-2026-27",
+      "topic": "coterm_eligibility_and_deadline",
+      "value": "Media Studies and Journalism are separate coterm routes for current Stanford undergraduates. Deadline for Spring 2026–27 entry is January 20, 2027. Both require coterm application, preliminary program proposal, purpose statement and Stanford transcript. Media Studies requires project-advisor confirmation and two Stanford faculty references other than the advisor; Journalism requires three Stanford faculty references and three journalistic samples. GRE is not required.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-commu-ma-journalism",
+          "stanford-option-commu-ma-media-studies"
+        ],
+        "procedure_ids": [
+          "commu-ma-journalism-coterm",
+          "commu-ma-media-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "spring-2026-2027",
+        "fee_status": []
+      },
+      "source_ids": [
+        "communication-ma-bulletin",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "philo-ma-coterm-window-2026-27",
+      "topic": "coterm_application_deadline",
+      "value": "Coterm applications are accepted in Winter Quarter only for Spring entry; the department gives January 15, 2027 as the 2027 deadline. Current Stanford undergraduates use this coterm route, separate from external terminal MA admission.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-philo-ma"
+        ],
+        "procedure_ids": [
+          "philo-ma-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "spring-2026-2027",
+        "fee_status": []
+      },
+      "source_ids": [
+        "philosophy-admission",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "anthr-ma-coterm-deadline-requirements-2026-27",
+      "topic": "coterm_deadline_and_requirements",
+      "value": "Official coterm directory lists Spring 2026–27 application deadline December 2, 2026. GRE General is not considered; three recommendations and a program proposal are required. Anthropology FAQ says coterm applicants need at least 3.5 GPA in the major, 3.0 overall, and no more than one Incomplete at application; current undergraduates may apply after 120 units and no later than the quarter before completing the bachelor’s degree.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-anthr-ma"
+        ],
+        "procedure_ids": [
+          "anthr-ma-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "spring-2026-2027",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory",
+        "anthropology-coterm",
+        "anthropology-ma",
+        "coterm-policy"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stats-ms-coterm-deadlines-2026-27",
+      "topic": "coterm_deadlines_and_requirements",
+      "value": "Official coterm directory lists Statistics MS deadlines October 22, 2026 for Winter 2026–27, January 14, 2027 for Spring 2026–27, and June 14, 2027 for Autumn 2027–28. GRE General is not considered; two recommendations and a program proposal are required. This route is distinct from the external terminal MS, for which GRE General is required and department aid is unavailable.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-ms"
+        ],
+        "procedure_ids": [
+          "stats-ms-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "winter-2026-2027; spring-2026-2027; autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "coterm-directory",
+        "statistics-coterm",
+        "coterm-policy",
+        "statistics-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "pubpo-mpp-joint-degree-route",
+      "topic": "joint_degree_application_route",
+      "value": "External applicants seeking an MPP joint degree with another Stanford graduate degree apply to the department or school offering the other degree and indicate interest in the joint MPP; applicants admitted to the other degree are then evaluated for the MPP. This is distinct from the alumni application and current-undergraduate coterm MA progression.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pubpo-mpp"
+        ],
+        "procedure_ids": [
+          "pubpo-mpp-joint-degree"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [
+          "applicant_to_other_stanford_graduate_degree"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "public-policy-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "econ-phd-funding-terms",
+      "topic": "funding",
+      "value": "Most first-year students receive a department fellowship unless funded from outside. Later support may combine fellowships, research assistantships and teaching assistantships; RA/TA appointments include salary, a 10-unit tuition allowance each autumn/winter/spring quarter, and health-insurance subsidy. Fellowship includes stipend and tuition, with insurance subsidy for university fellowships. The department describes a fifth-year funding guarantee only for students eligible after reaching TGR as soon as eligible; it does not state a universal five-year package guarantee in the reviewed admissions material.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-econ-phd"
+        ],
+        "procedure_ids": [
+          "econ-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "economics-funding",
+        "economics-faq"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "First-year fellowship is described as most, not all; fifth-year guarantee has a TGR eligibility condition."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "psych-phd-funding-terms",
+      "topic": "funding",
+      "value": "Department reports a history of providing living stipend, tuition and health insurance through summer quarter of year five. Funding source is assigned at the start of each academic year and continuation depends on satisfactory academic progress. Assistantships cover salary, tuition and health insurance. A student who takes an off-campus internship during a summer in years 1–4 forfeits that summer package; only one quarter may be banked, for the fifth summer.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-psych-phd"
+        ],
+        "procedure_ids": [
+          "psych-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "psychology-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "The source says the department has been successful to date in providing this support; it does not state an unconditional offer guarantee."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "philo-phd-funding-terms",
+      "topic": "funding",
+      "value": "Admitted PhD students are offered five years of full funding subject to satisfactory progress: tuition, fellowship or salary, and five summers of support. Teaching assistantship quarters are part of the package; outside awards count within, rather than extend, the five funding years. Additional department funds support books, equipment, conferences, travel, relocation and incidental expenses during the first five years. Sixth-year aid may be available but is not guaranteed.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-philo-phd"
+        ],
+        "procedure_ids": [
+          "philo-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "philosophy-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Sixth-year support is not guaranteed."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "polsc-phd-funding-terms",
+      "topic": "funding",
+      "value": "The department's standard package covers tuition and living expenses for five years for students making sufficient progress. It uses a first-year stipend and teaching/research assistantships in years 2–5, and includes annual professional-development funds, health-insurance fees and a living stipend for the first two summers.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-polsc-phd"
+        ],
+        "procedure_ids": [
+          "polsc-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "political-science-funding"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Five-year support depends on sufficient progress; the page specifies first-two-summer support only."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "socio-phd-funding-terms",
+      "topic": "funding",
+      "value": "Department offers five years of 12-month funding to all PhD students in good academic standing through a combination of fellowship, research assistantships and teaching assistantships. It also describes an additional stipend for professional development, faculty-guided research and fieldwork.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-socio-phd"
+        ],
+        "procedure_ids": [
+          "socio-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "sociology-admission"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Continued support requires good academic standing."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stats-phd-documents-english-and-offer-2027-28",
+      "topic": "application_documents_decision_and_english",
+      "value": "For Autumn 2027 Statistics PhD, submit a single-spaced statement of purpose no longer than two pages naming the program, CV, transcripts, and three recommendations by December 2, 2026 at 11:59 p.m. PST. GRE General is required; Math Subject is optional but recommended. The department says TOEFL below 5.5 (old scale 109) or IELTS below 8.0 triggers English placement testing before enrollment, distinct from its published minimum eligibility. Decisions are expected by mid-February.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-phd"
+        ],
+        "procedure_ids": [
+          "stats-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "statistics-phd-procedures",
+        "statistics-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stats-phd-five-year-funding",
+      "topic": "funding",
+      "value": "Every admitted Statistics PhD student is guaranteed five years of 12-month funding through spring of year five, including tuition, Cardinal Care health insurance, and salary or stipend, normally through teaching/research assistantships. This does not apply to terminal Statistics MS admission.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-phd"
+        ],
+        "procedure_ids": [
+          "stats-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_phd_student"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "statistics-phd-procedures"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "stats-ms-internal-doctoral-eligibility",
+      "topic": "internal_route_eligibility_and_documents",
+      "value": "Current Stanford doctoral students may seek the Statistics MS internally after passing the qualifying exam, with advisor support and stated Statistics preparation. The internal file includes purpose statement, two recommendations (current advisor and Statistics faculty), transcripts and an approved program proposal. GRE is not required. Current Stanford MA/MS students and anyone seeking the Data Science track apply externally; 2027-28 internal deadlines are not yet announced. Do not file the paid Graduate Authorization Petition until internal review is complete.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-ms"
+        ],
+        "procedure_ids": [
+          "stats-ms-internal-doctoral"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_doctoral_student"
+        ],
+        "cycle": "2027-2028 deadline unpublished",
+        "fee_status": []
+      },
+      "source_ids": [
+        "statistics-internal"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published_with_current_cycle_deadline_unknown",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "physics-phd-2027-cutoff-decisions",
+      "topic": "deadline_decision_and_documents",
+      "value": "For Autumn 2027 Physics PhD, the application closes December 14, 2026 at 11:59 p.m. Pacific; the department calls it a hard cutoff. KHS applicants submit the Physics application by December 1. The department aims to notify all applicants by March 1. Three recommendations are requested, preferably including a research supervisor; late recommendations can attach after submission but may miss review. Applicants unable to take required GRE tests may explain extenuating circumstances for case-by-case review.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-phys-phd"
+        ],
+        "procedure_ids": [
+          "phys-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "physics-admission-current",
+        "physics-current-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "statistics-external-2027-decisions",
+      "topic": "application_deadline_decision_and_funding",
+      "value": "External Statistics MS application deadline January 7, 2027 at 11:59 p.m. PST; decisions expected late March. There is no department financial-aid package for MS applicants. Statistics external applicants choose either MS or PhD, not both in the same cycle.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-ms"
+        ],
+        "procedure_ids": [
+          "stats-ms-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stats-graduate-admissions-current"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "philosophy-2027-route-cutoffs",
+      "topic": "application_deadlines_and_documents",
+      "value": "Philosophy PhD deadline is December 8, 2026 and external MA deadline March 16, 2027; current Stanford coterm MA deadline is January 15, 2027. KHS applicants to Philosophy have an earlier December 1 department deadline. Official transcripts are requested after initial review, not with the initial submission; fee waivers are administered centrally.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-philo-ma"
+        ],
+        "procedure_ids": [
+          "philo-ma-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "philosophy-current-admissions"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "chemistry-phd-2027-decision-offer",
+      "topic": "application_deadline_decision_and_english",
+      "value": "Chemistry PhD application deadline is November 30, 2026 for Autumn 2027; supporting materials may arrive later, though early completion is recommended. Departmental English minimum is TOEFL 108 on the old scale or 5.5 on the new scale, or IELTS 8, for applicants without an applicable exemption. A Visit Day interview may occur and is not an offer. Decisions are typically sent by end of March; admitted applicants respond by April 15.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-chem-phd"
+        ],
+        "procedure_ids": [
+          "chem-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "chemistry-current-apply"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "statistics-phd-2027-decision",
+      "topic": "application_deadline_decision_and_funding",
+      "value": "Statistics PhD deadline December 2, 2026 at 11:59 p.m. PST, with decisions expected late February. This is separate from external terminal MS admission.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stats-phd"
+        ],
+        "procedure_ids": [
+          "stats-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": "autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stats-graduate-admissions-current"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "linguistics-phd-decisions-funding",
+      "topic": "admission_decision_and_funding",
+      "value": "Linguistics PhD decisions generally arrive by mid-March; applicant responses are requested by mid-April. One-year deferrals are rare and require strong educational or personal reasons. Every admitted PhD offer includes five years of tuition and stipend support regardless of citizenship; this does not imply funding for the internally available MA.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-ling-phd"
+        ],
+        "procedure_ids": [
+          "ling-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "linguistics-decisions",
+        "linguistics-doctoral"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "mip-interview-decisions-and-aid",
+      "topic": "admission_decision_and_funding",
+      "value": "MIP does not interview applicants; it expects notification letters in early to mid-March after February review. Relevant work experience should be supported by at least one employer recommendation and one academic recommendation from the most recent full-time school unless the applicant has been away for more than five years. Limited fellowships require checking aid interest in the application; offers of aid and admission are communicated together. TA/RA opportunities start no earlier than the third quarter and are limited, not guaranteed.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-inpol-ma"
+        ],
+        "procedure_ids": [
+          "inpol-ma-external"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "mip-application-faq",
+        "mip-tuition-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "economics-phd-preparation-deferral",
+      "topic": "eligibility_decision_and_deferral",
+      "value": "Economics PhD has no fixed required prior coursework list, but admitted students are expected to have strong college economics, mathematics and statistics; successful applicants commonly studied mathematics through linear algebra. A writing sample is required. The department considers deferral proposals case by case; its FAQ gives a stale 2025 decision expectation, so no 2027 decision date is inferred from it.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-econ-phd"
+        ],
+        "procedure_ids": [
+          "econ-phd-external"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "economics-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "math-ms-coterm-2026-27",
+      "topic": "coterm_eligibility_documents_deadlines",
+      "value": "Only matriculated Stanford undergraduates may apply to the Mathematics coterm MS. Before applying, they must meet the Director of Graduate Studies and earn A- or better in four Stanford Math courses numbered 101+ and one introductory graduate Math series course. Application requires two Stanford faculty references, purpose statement and unofficial Stanford transcript; GRE is not required. Deadlines are October 13, 2026 for Winter, January 12, 2027 for Spring, and May 11, 2027 for Autumn 2027-28; decisions are expected about two weeks later.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-math-ms"
+        ],
+        "procedure_ids": [
+          "math-ms-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "winter-2026-2027; spring-2026-2027; autumn-2027-2028",
+        "fee_status": []
+      },
+      "source_ids": [
+        "math-coterm-current"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "sociology-deadline-cycle-label",
+      "question": "Does Sociology's December 3, 2026 deadline apply to Autumn 2027–28 despite the departmental FAQ labeling it 2026–27?",
+      "reason": "Official department FAQ and current official portal use inconsistent cycle labels.",
+      "next_step": "Confirm cycle label with Sociology Graduate Admissions before presenting the year-specific deadline.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-socio-phd"
+        ],
+        "procedure_ids": [
+          "socio-phd-external"
+        ],
+        "levels": [
+          "graduate"
+        ],
+        "applicant_categories": [
+          "external_degree_applicant"
+        ],
+        "cycle": "autumn-2027-2028 portal; department labels 2026-2027 academic year",
+        "fee_status": []
+      },
+      "reviewed_source_ids": [
+        "graduate-directory",
+        "sociology-admission"
+      ]
+    },
+    {
+      "id": "public-policy-cycle-label",
+      "question": "Does the Public Policy Alumni page's January 28, 2027 deadline specifically apply to Autumn 2027 entry?",
+      "reason": "The same page labels the deadline Autumn 2026 while the current portal directory records Autumn 2027–28.",
+      "next_step": "Confirm the page's entry-year label with Public Policy admissions; retain directory date and cycle separately.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pubpo-ma",
+          "stanford-option-pubpo-mpp"
+        ],
+        "procedure_ids": [
+          "pubpo-ma-alumni",
+          "pubpo-mpp-alumni"
+        ],
+        "levels": [
+          "graduate"
+        ],
+        "applicant_categories": [
+          "stanford_alumni_within_five_years"
+        ],
+        "cycle": "autumn-2027-2028 portal; department labels autumn-2026",
+        "fee_status": []
+      },
+      "reviewed_source_ids": [
+        "graduate-directory",
+        "public-policy-admission"
+      ]
+    }
+  ],
+  "collection_tasks": [
+    {
+      "id": "complete-social-program-deadline-crosscheck",
+      "description": "Crosscheck program-specific deadline time zones and cycle labels against each current department page, especially Applied Physics, Sociology, Public Policy, Philosophy, Chemistry, and Statistics. Retain directory values only as dated portal evidence until reconciled.",
+      "source_ids": [
+        "graduate-directory",
+        "applied-physics-admission",
+        "sociology-admission",
+        "public-policy-admission",
+        "philosophy-admission",
+        "chemistry-admission",
+        "statistics-admission"
+      ],
+      "status": "superseded_by_reviewed_evidence",
+      "reviewed_fact_ids": [
+        "physics-phd-2027-cutoff-decisions",
+        "statistics-external-2027-decisions",
+        "statistics-phd-2027-decision",
+        "philosophy-2027-route-cutoffs",
+        "chemistry-phd-2027-decision-offer",
+        "socio-phd-deadline-gre-2027-28",
+        "pubpo-ma-mpp-external-alumni-route-2027-28"
+      ],
+      "researched_unknown_ids": [
+        "sociology-deadline-cycle-label",
+        "public-policy-cycle-label"
+      ]
+    },
+    {
+      "id": "social-program-detail-audit",
+      "description": "Review complete current-cycle materials, language/prerequisite rules, interviews, offer response/deferral terms, application fee waivers, and funding duration/renewal for Economics, Philosophy, Linguistics, Sociology, Statistics PhD, Physics, Chemistry, and International Policy; do not fill missing values from Stanford-wide or adjacent-program rules.",
+      "source_ids": [
+        "economics-admission",
+        "philosophy-admission",
+        "linguistics-admission",
+        "sociology-admission",
+        "statistics-admission",
+        "physics-admission",
+        "chemistry-admission",
+        "international-policy-admission"
+      ],
+      "status": "superseded_by_reviewed_evidence",
+      "reviewed_fact_ids": [
+        "econ-phd-deadline-tests-2027-28",
+        "econ-phd-funding-terms",
+        "economics-phd-preparation-deferral",
+        "philo-phd-funding-terms",
+        "ling-phd-deadline-requirements-2027-28",
+        "linguistics-phd-decisions-funding",
+        "socio-phd-funding-terms",
+        "stats-phd-documents-english-and-offer-2027-28",
+        "stats-phd-five-year-funding",
+        "physics-phd-2027-cutoff-decisions",
+        "chemistry-phd-2027-decision-offer",
+        "mip-interview-decisions-and-aid"
+      ],
+      "researched_unknown_ids": []
+    },
+    {
+      "id": "coterm-scope-reconciliation",
+      "description": "Reconcile these departments' coterm and current-graduate-only degrees to the official 48-row coterm snapshot and Bulletin options, retaining each department's own eligibility, deadline, prerequisites, and required offer response.",
+      "source_ids": [
+        "coterm-policy",
+        "anthropology-ma",
+        "communication-ma-bulletin",
+        "mathematics-admission",
+        "philosophy-admission",
+        "public-policy-coterm",
+        "graduate-directory"
+      ],
+      "status": "superseded_by_reviewed_evidence",
+      "reviewed_fact_ids": [
+        "anthr-ma-coterm-deadline-requirements-2026-27",
+        "commu-ma-coterm-routes-and-window-2026-27",
+        "math-ms-coterm-2026-27",
+        "philo-ma-coterm-window-2026-27",
+        "pubpo-ma-coterm-window-and-mpp-progression-2026-27",
+        "stats-ms-coterm-deadlines-2026-27",
+        "stats-ms-internal-doctoral-eligibility",
+        "symsys-ms-coterm-window-and-requirements-2026-27",
+        "aephy-ms-coterm-window-and-requirements-2026-27"
+      ],
+      "researched_unknown_ids": []
+    },
+    {
+      "id": "bio-bph-dossier-handoff",
+      "description": "Coordinate Biology (PhD) and Biophysics (PhD) shared Biosciences ownership with the designated worker, then link its reviewed dossier; do not duplicate its route policy.",
+      "source_ids": [
+        "graduate-directory"
+      ],
+      "status": "superseded_by_reviewed_evidence",
+      "reviewed_fact_ids": [],
+      "researched_unknown_ids": [],
+      "cross_dossier_evidence": {
+        "file": "humanities-education-medicine-evidence.json",
+        "fact_id": "hs-biology-biophysics-biosciences-route",
+        "scope": "BIO-PHD and BIOPH-PHD are H&S awards using the shared Biosciences PhD application; the 12 Medicine home options remain in medicine-graduate-evidence.json."
+      }
+    }
+  ]
+}

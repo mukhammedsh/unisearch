@@ -1,0 +1,3922 @@
+{
+  "preserved_at": "2026-10-02",
+  "origin_file": "backend/data/universities.json",
+  "note": "Exact pre-existing runtime record, not fresh research. Original nested source dates remain authoritative. IDs/award suffixes do not establish offered awards.",
+  "record": {
+    "id": "stanford-university-usa-ca",
+    "name": "Stanford University",
+    "legal_name": "Leland Stanford Junior University",
+    "rank": 3,
+    "location": {
+      "country": "USA",
+      "city": "Stanford",
+      "state": "CA",
+      "metro_area": "San Francisco Bay Area / Silicon Valley",
+      "county": "Santa Clara County & San Mateo County"
+    },
+    "coordinates": {
+      "lat": 37.4275,
+      "lon": -122.17
+    },
+    "website": "https://www.stanford.edu/",
+    "admission_portals": {
+      "undergraduate": "https://admission.stanford.edu/",
+      "graduate": "https://gradadmissions.stanford.edu/",
+      "business_gsb": "https://www.gsb.stanford.edu/",
+      "law": "https://law.stanford.edu/",
+      "medicine": "https://med.stanford.edu/",
+      "financial_aid": "https://financialaid.stanford.edu/",
+      "knight_hennessy": "https://knight-hennessy.stanford.edu/"
+    },
+    "enrollment": {
+      "undergraduate": 7841,
+      "graduate": 9688,
+      "total": 17529,
+      "faculty_count": 2300,
+      "nobel_laureates": 20,
+      "census_period": "Fall 2024 / Stanford Facts",
+      "source_url": "https://facts.stanford.edu/",
+      "verified_at": "2026-09-22"
+    },
+    "student_count": 17552,
+    "student_life": {
+      "size": "large",
+      "campus_area_m2": 33104376,
+      "campus_area_acres": 8180,
+      "housing_guarantee_years": 4,
+      "undergrads_living_on_campus_percent": 97,
+      "residential_system": "Neighborhoods system across ~80 undergraduate residences, theme dorms, co-ops, and residential colleges",
+      "size_source_url": "https://facts.stanford.edu/campuslife/campus/",
+      "size_note": "Official Stanford campus land: 8,180 contiguous acres in Silicon Valley."
+    },
+    "qualification_guidance": {
+      "schema_version": 1,
+      "verified_at": "2026-09-23",
+      "scope_note": "Qualification status is not an admission decision. Check grades, required subjects, programme rules, and the exact entry cycle on the official course page.",
+      "rules": [
+        {
+          "id": "stanford-university-usa-ca-us-high-school-context",
+          "study_level": "Bachelor",
+          "applicant_routes": [
+            "first_year"
+          ],
+          "education_country": "US",
+          "education_credential": "us_high_school_diploma",
+          "status": "needs_review",
+          "reason": "Stanford says it considers international applications in the context of the school and country. This source does not publish a country-level acceptance decision for this credential.",
+          "scope": "Contextual admissions guidance only; no country-level qualification acceptance or rejection is inferred.",
+          "cycle_scope": "Current published guidance; the source does not name a specific entry year.",
+          "source_url": "https://admission.stanford.edu/apply/international/",
+          "verified_at": "2026-09-23"
+        }
+      ],
+      "fallbacks": [
+        {
+          "study_level": "Bachelor",
+          "applicant_routes": [
+            "first_year",
+            "transfer"
+          ],
+          "status": "needs_review",
+          "reason": "No verified qualification decision for this exact country, credential, route, and cycle is catalogued.",
+          "scope": "Stanford says it considers international applications in the context of the school and country. This source does not publish a country-level acceptance decision for this credential.",
+          "cycle_scope": "Current published guidance; verify applicability to the intended entry year.",
+          "source_url": "https://admission.stanford.edu/apply/international/",
+          "verified_at": "2026-09-23"
+        },
+        {
+          "study_level": "graduate",
+          "applicant_routes": [
+            "graduate"
+          ],
+          "status": "needs_review",
+          "reason": "Graduate entry requirements depend on the exact programme and prior degree. UniSearch has no verified qualification decision for this combination.",
+          "scope": "Open the selected official programme page to review its current requirements.",
+          "cycle_scope": "Use the selected programme's named entry cycle and current course page.",
+          "source_url": "https://gradadmissions.stanford.edu/",
+          "verified_at": "2026-09-23",
+          "requires_program_page": true
+        }
+      ]
+    },
+    "academics": {
+      "majors": [
+        "Computer Science",
+        "Symbolic Systems",
+        "Management Science and Engineering",
+        "Mechanical Engineering",
+        "Electrical Engineering",
+        "Bioengineering",
+        "Economics",
+        "Human Biology",
+        "Political Science",
+        "International Relations",
+        "Mathematics",
+        "Physics",
+        "Business Administration",
+        "Law",
+        "Medicine",
+        "Biosciences"
+      ],
+      "study_levels": [
+        "Bachelor",
+        "Master",
+        "PhD",
+        "Professional"
+      ],
+      "formats": [
+        "On-campus"
+      ],
+      "acceptance_rate_percent": 3.61,
+      "acceptance_rate_percent_meta": {
+        "source": "Stanford Common Data Set 2024-2025",
+        "source_url": "https://ucomm.stanford.edu/cds/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+        "basis": {
+          "cycle": "Fall 2024 first-time first-year admission",
+          "applicants": 57326,
+          "admitted": 2067,
+          "enrolled": 1693
+        }
+      },
+      "undergraduate_admissions": {
+        "application_platform": "Common Application",
+        "application_fee_usd": 100,
+        "fee_waiver_available": true,
+        "fee_waiver_options": [
+          "Common Application fee waiver",
+          "NACAC fee waiver form"
+        ],
+        "testing_policy": {
+          "status": "Required",
+          "description": "Standardized testing (SAT or ACT) has been officially reinstated for undergraduate admission. Self-reporting is accepted on the application; official test scores are required upon enrollment. Stanford super-scores both the SAT and ACT.",
+          "source_url": "https://admission.stanford.edu/apply/first-year/testing.html"
+        },
+        "class_profile_testing": {
+          "sat_composite_middle_50": "1510-1570",
+          "sat_math_middle_50": "760-800",
+          "sat_erw_middle_50": "730-780",
+          "sat_average": 1540,
+          "act_composite_middle_50": "33-35",
+          "act_average": 34
+        },
+        "admission_rounds": [
+          {
+            "round_id": "rea",
+            "name": "Restrictive Early Action (REA)",
+            "type": "non_binding_single_choice_early_action",
+            "arts_portfolio_deadline": "2026-10-15",
+            "application_deadline": "2026-11-01",
+            "financial_aid_deadline": "2026-11-15",
+            "decision_notification": "Mid-December 2026",
+            "reply_date": "2027-05-01",
+            "restriction_note": "Applicants may not apply to any other private university under an Early Action, Restrictive Early Action, or Early Decision plan.",
+            "source_url": "https://admission.stanford.edu/apply/first-year/deadlines.html"
+          },
+          {
+            "round_id": "rd",
+            "name": "Regular Decision (RD)",
+            "type": "regular_decision",
+            "arts_portfolio_deadline": "2026-12-05",
+            "application_deadline": "2027-01-05",
+            "financial_aid_deadline": "2027-02-15",
+            "decision_notification": "Early April 2027",
+            "reply_date": "2027-05-01",
+            "restriction_note": "Standard non-binding regular decision timeline.",
+            "source_url": "https://admission.stanford.edu/apply/first-year/deadlines.html"
+          }
+        ]
+      },
+      "programs": [
+        {
+          "name": "Computer Science",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "department": "Department of Computer Science",
+          "school": "School of Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "engineering"
+          ],
+          "duration": "4 years",
+          "description": "Comprehensive program covering foundational theory, systems, algorithms, artificial intelligence, and software engineering.",
+          "id": "stanford-bs-computer-science"
+        },
+        {
+          "name": "Symbolic Systems",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS) / Bachelor of Arts (BA)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "psychology",
+            "humanities",
+            "philosophy",
+            "linguistics"
+          ],
+          "duration": "4 years",
+          "description": "Unique interdisciplinary program integrating computer science, linguistics, philosophy, psychology, and cognitive science.",
+          "id": "stanford-bs-symbolic-systems"
+        },
+        {
+          "name": "Management Science and Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "school": "School of Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "business",
+            "economics",
+            "operations research"
+          ],
+          "duration": "4 years",
+          "description": "Focuses on engineering economic systems, operations management, organizational science, and technology policy.",
+          "id": "stanford-bs-msande"
+        },
+        {
+          "name": "Mechanical Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "school": "School of Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "robotics",
+            "design"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-mechanical-engineering"
+        },
+        {
+          "name": "Electrical Engineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "school": "School of Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "computer science",
+            "semiconductors"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-electrical-engineering"
+        },
+        {
+          "name": "Bioengineering",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "school": "School of Engineering & School of Medicine",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "life sciences",
+            "biomedical"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-bioengineering"
+        },
+        {
+          "name": "Economics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Arts (BA)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "economics",
+            "social sciences",
+            "finance"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-economics"
+        },
+        {
+          "name": "Human Biology",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Arts (BA) / Bachelor of Science (BS)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "life sciences",
+            "social sciences",
+            "public health"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-human-biology"
+        },
+        {
+          "name": "Political Science",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Arts (BA)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "social sciences",
+            "policy"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-political-science"
+        },
+        {
+          "name": "International Relations",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Arts (BA)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "social sciences",
+            "international relations"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-international-relations"
+        },
+        {
+          "name": "Mathematics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "mathematics",
+            "natural sciences"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-mathematics"
+        },
+        {
+          "name": "Physics",
+          "study_levels": [
+            "Bachelor"
+          ],
+          "degree_awarded": "Bachelor of Science (BS)",
+          "school": "School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "physics",
+            "natural sciences"
+          ],
+          "duration": "4 years",
+          "id": "stanford-bs-physics"
+        },
+        {
+          "name": "Master of Business Administration (MBA)",
+          "study_levels": [
+            "Master",
+            "Professional"
+          ],
+          "degree_awarded": "MBA",
+          "school": "Stanford Graduate School of Business (GSB)",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business",
+            "management",
+            "entrepreneurship",
+            "finance"
+          ],
+          "duration": "2 years (6 quarters)",
+          "application_fee_usd": 275,
+          "testing_requirements": "GMAT or GRE required (no minimum; median GMAT ~738)",
+          "outcomes": {
+            "median_base_salary_usd": 185000,
+            "median_signing_bonus_usd": 30000,
+            "median_total_compensation_usd": 215000,
+            "top_industries": [
+              "Technology",
+              "Finance / Private Equity / VC",
+              "Consulting",
+              "Healthcare"
+            ]
+          },
+          "deadlines": [
+            {
+              "round": "Round 1",
+              "deadline": "2026-09-09",
+              "decision": "2026-12-09"
+            },
+            {
+              "round": "Round 2",
+              "deadline": "2027-01-06",
+              "decision": "2027-04-01"
+            },
+            {
+              "round": "Round 3",
+              "deadline": "2027-04-07",
+              "decision": "2027-05-27"
+            }
+          ],
+          "financial_support": "Need-based MBA fellowships and loans are assessed after admission; Stanford reports an average fellowship of about $50,000 per year for the Class of 2026. Knight-Hennessy requires a separate competitive application.",
+          "source_url": "https://www.gsb.stanford.edu/programs/mba/admission/application-process",
+          "tuition_year_usd": 89187,
+          "currency": "USD",
+          "cycle": "Fall 2027 entry",
+          "tuition_source_url": "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/cost-attendance",
+          "tuition_cycle": "2026-27 official quarterly tuition: first-year rate USD 29,729/quarter; second-year rate USD 28,585/quarter. Legacy tuition_year_usd retains the published first-year three-quarter total. No 2027-28 tuition rate is confirmed.",
+          "tuition_rate_per_quarter_usd": {
+            "first_year": 29729,
+            "second_year": 28585
+          },
+          "mandatory_fee_context": {
+            "health_service_fee_per_quarter_usd": 281,
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "source_url": "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/cost-attendance",
+            "verified_at": "2026-09-23"
+          },
+          "id": "stanford-mba",
+          "price_facts": [
+            {
+              "id": "stanford-mba-tuition-2026-27-first_year-quarter",
+              "kind": "tuition",
+              "amount": 29729,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master",
+                "Professional"
+              ],
+              "admission_route_id": "stanford_gsb_mba_track",
+              "quantity_basis": "first_year",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "note": "Published quarterly tuition; the rate is not a full-year total."
+            },
+            {
+              "id": "stanford-mba-tuition-2026-27-second_year-quarter",
+              "kind": "tuition",
+              "amount": 28585,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master",
+                "Professional"
+              ],
+              "admission_route_id": "stanford_gsb_mba_track",
+              "quantity_basis": "second_year",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "note": "Published quarterly tuition; the rate is not a full-year total."
+            }
+          ]
+        },
+        {
+          "name": "MS in Management for Experienced Leaders (Stanford MSx)",
+          "study_levels": [
+            "Master",
+            "Professional"
+          ],
+          "degree_awarded": "Master of Science in Management",
+          "school": "Stanford Graduate School of Business (GSB)",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business",
+            "executive management",
+            "leadership"
+          ],
+          "duration": "1 year (full-time intensive)",
+          "source_url": "https://www.gsb.stanford.edu/programs/msx/admission/deadlines",
+          "entry_requirements": "A U.S. bachelor’s degree or international equivalent, at least eight years of post-graduate professional experience, and a valid GMAT, GRE, or Executive Assessment score; no minimum GPA is set. English proficiency testing applies when prior education does not meet the program’s stated exemption criteria.",
+          "required_documents": [
+            "Online application and $275 application fee",
+            "Education history and uploaded transcripts",
+            "Professional resume or CV (maximum two pages)",
+            "Two letters of recommendation, including one from the current direct supervisor or an appropriate alternative",
+            "Required essays and career-goal short answer",
+            "Valid GMAT, GRE, or Executive Assessment score",
+            "English proficiency test when required by the program"
+          ],
+          "tuition_year_usd": 154828,
+          "currency": "USD",
+          "tuition_cycle": "2026-27 published tuition for the 12-month program (July 2026-June 2027); 2027-28 rate not confirmed.",
+          "tuition_source_url": "https://www.gsb.stanford.edu/programs/msx/financial-aid/cost-attendance",
+          "cycle": "2026-27 admissions rounds; 2027 entry",
+          "verified_at": "2026-09-23",
+          "deadlines": [
+            {
+              "round": "Round 1",
+              "deadline": "2026-10-08 16:00 US Pacific Time"
+            },
+            {
+              "round": "Round 2",
+              "deadline": "2027-01-06 16:00 US Pacific Time"
+            },
+            {
+              "round": "Round 3",
+              "deadline": "2027-02-11 16:00 US Pacific Time"
+            }
+          ],
+          "id": "stanford-msx",
+          "price_facts": [
+            {
+              "id": "stanford-msx-tuition-2026-27-program",
+              "kind": "tuition",
+              "amount": 154828,
+              "currency": "USD",
+              "period": "academic_year",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master",
+                "Professional"
+              ],
+              "admission_route_id": "stanford_msx_track",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://www.gsb.stanford.edu/programs/msx/financial-aid/cost-attendance",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_year_usd",
+              "note": "Published tuition for the full 12-month MSx program; separate from the cost-of-attendance estimate."
+            }
+          ]
+        },
+        {
+          "name": "Master of Science in Computer Science (MS CS)",
+          "study_levels": [
+            "Master"
+          ],
+          "degree_awarded": "Master of Science (MS)",
+          "school": "School of Engineering",
+          "department": "Department of Computer Science",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "artificial intelligence",
+            "software engineering"
+          ],
+          "duration": "1.5 - 2 years (45 units)",
+          "specializations": [
+            "Artificial Intelligence",
+            "Information Management and Analytics",
+            "Human-Computer Interaction (HCI)",
+            "Systems",
+            "Biocomputation",
+            "Theoretical Computer Science",
+            "Real-World Computing"
+          ],
+          "application_fee_usd": 125,
+          "application_deadline": "2026-12-08 23:59 US Pacific Time",
+          "funding": "Eligible for Course Assistant (CA) and Research Assistant (RA) positions after 1st quarter; Knight-Hennessy Scholars eligible.",
+          "source_url": "https://www.cs.stanford.edu/admissions-graduate-application-deadlines",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "entry_requirements": "A U.S. bachelor’s degree or international equivalent and strong quantitative and analytical skills; an undergraduate Computer Science degree is not required. GRE scores are not required.",
+          "required_documents": [
+            "Online application and $125 application fee",
+            "Statement of purpose (maximum two pages, single-spaced)",
+            "Three online recommendation letters",
+            "Resume or CV, including publications",
+            "Unofficial transcripts for institutions attended full-time for at least one year",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency exemptions"
+          ],
+          "requirements_source_url": "https://www.cs.stanford.edu/admissions/graduate-application-checklists",
+          "tuition_cycle": "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "id": "stanford-ms-cs",
+          "tuition_per_quarter_8_10_units_usd": 15100,
+          "tuition_per_quarter_11_18_units_usd": 23239,
+          "tuition_per_quarter_above_18_units_usd": 1549,
+          "tuition_per_summer_unit_1_7_usd": 1510,
+          "price_facts": [
+            {
+              "id": "stanford-ms-cs-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 15100,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-cs-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 23239,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-cs-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1549,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-cs-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1510,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "Master of Science in Electrical Engineering (MS EE)",
+          "study_levels": [
+            "Master"
+          ],
+          "degree_awarded": "Master of Science (MS)",
+          "school": "School of Engineering",
+          "department": "Department of Electrical Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "semiconductors",
+            "hardware",
+            "quantum"
+          ],
+          "duration": "1.5 - 2 years (45 units)",
+          "application_fee_usd": 125,
+          "application_deadline": "2026-12-01 23:59 US Pacific Time",
+          "source_url": "https://ee.stanford.edu/admissions/ms",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "entry_requirements": "Applicants need a bachelor’s degree or equivalent and strong technical preparation in engineering, physical sciences, or mathematics; an Electrical Engineering major and specific prerequisite courses are not required. GRE is not required.",
+          "required_documents": [
+            "Online application and application fee",
+            "Statement of purpose",
+            "Three recommendation letters",
+            "Transcripts",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency exemptions"
+          ],
+          "requirements_source_url": "https://ee.stanford.edu/admissions/required-materials",
+          "tuition_cycle": "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 15100,
+          "tuition_per_quarter_11_18_units_usd": 23239,
+          "tuition_per_quarter_above_18_units_usd": 1549,
+          "tuition_per_summer_unit_1_7_usd": 1510,
+          "id": "stanford-ms-ee",
+          "price_facts": [
+            {
+              "id": "stanford-ms-ee-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 15100,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-ee-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 23239,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-ee-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1549,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-ee-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1510,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "Master of Science in Management Science and Engineering (MS MS&E)",
+          "study_levels": [
+            "Master"
+          ],
+          "degree_awarded": "Master of Science (MS)",
+          "school": "School of Engineering",
+          "department": "Department of Management Science and Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "business analytics",
+            "operations research",
+            "finance"
+          ],
+          "duration": "1.5 - 2 years",
+          "application_fee_usd": 125,
+          "application_deadline": "2026-12-01 23:59 US Pacific Time",
+          "source_url": "https://msande.stanford.edu/academics-admissions/graduate/admission/ms-admission",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "entry_requirements": "An engineering degree or related quantitative degree (major or minor) including multivariable differential calculus and linear algebra; before study, applicants are expected to have completed equivalent coursework to Stanford MATH 51 and CS 106A. Additional programming, statistics, and economics coursework is preferred.",
+          "required_documents": [
+            "Online application and $125 application fee",
+            "Statement of purpose (maximum two pages, single-spaced)",
+            "Three recommendation letters",
+            "Scanned transcripts and degree certificate if degree conferral is not shown",
+            "Resume or CV",
+            "Official GRE score; a hardship exemption may be requested",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency rules"
+          ],
+          "requirements_source_url": "https://msande.stanford.edu/academics-admissions/graduate/admission",
+          "tuition_cycle": "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 15100,
+          "tuition_per_quarter_11_18_units_usd": 23239,
+          "tuition_per_quarter_above_18_units_usd": 1549,
+          "tuition_per_summer_unit_1_7_usd": 1510,
+          "id": "stanford-ms-msande",
+          "price_facts": [
+            {
+              "id": "stanford-ms-msande-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 15100,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-msande-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 23239,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-msande-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1549,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-ms-msande-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1510,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "PhD in Management Science and Engineering",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "School of Engineering",
+          "department": "Department of Management Science and Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "management science",
+            "operations research",
+            "research"
+          ],
+          "duration": "Typically four to five years",
+          "application_deadline": "2026-12-01 23:59 US Pacific Time",
+          "required_documents": [
+            "Online application and $125 application fee",
+            "Statement of purpose (maximum two pages, single-spaced)",
+            "Three recommendation letters",
+            "Scanned transcripts and degree certificate if degree conferral is not shown",
+            "Resume or CV",
+            "Official GRE score (hardship exemption may be requested)",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency rules"
+          ],
+          "entry_requirements": "A bachelor’s degree or equivalent; the department requires quantitative preparation relevant to research in Management Science and Engineering.",
+          "source_url": "https://msande.stanford.edu/academics-admissions/graduate/admission/phd-admission",
+          "requirements_source_url": "https://msande.stanford.edu/academics-admissions/graduate/admission",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "tuition_cycle": "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 15100,
+          "tuition_per_quarter_11_18_units_usd": 23239,
+          "tuition_per_quarter_above_18_units_usd": 1549,
+          "tuition_per_summer_unit_1_7_usd": 1510,
+          "id": "stanford-phd-msande",
+          "price_facts": [
+            {
+              "id": "stanford-phd-msande-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 15100,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-msande-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 23239,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-msande-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1549,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-msande-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1510,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "Juris Doctor (JD)",
+          "study_levels": [
+            "Professional"
+          ],
+          "degree_awarded": "JD",
+          "school": "Stanford Law School (SLS)",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "law",
+            "legal studies",
+            "policy"
+          ],
+          "duration": "3 years",
+          "application_fee_usd": 85,
+          "testing_requirements": "LSAT or GRE required (median LSAT 173, median GPA 3.93)",
+          "deadlines": [
+            {
+              "round": "Knight-Hennessy Scholars applicants: complete JD application by this date",
+              "deadline": "2026-12-01"
+            },
+            {
+              "round": "General JD application deadline",
+              "deadline": "2027-02-15"
+            }
+          ],
+          "financial_support": "Need-based tuition grants + Miles and Muriel Levin Loan Repayment Assistance Program (LRAP) for public service graduates; Knight-Hennessy Scholars eligible.",
+          "source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+          "cycle": "Fall 2027 entry",
+          "tuition_year_usd": 79779,
+          "currency": "USD",
+          "tuition_cycle": "2026-27 published tuition; three tuition quarters total USD 79,779, before separate mandatory school fees. Cardinal Care may be waived. 2027-28 rates are unknown.",
+          "tuition_source_url": "https://law.stanford.edu/apply/tuition-financial-aid/cost-of-attendance/",
+          "entry_requirements": "Applicants must have or expect to complete a bachelor’s degree or equivalent by summer 2027. Submit either the LSAT or GRE General Test; valid LSAT scores must be reported if taken. LSAT applicants must submit an LSAT Argumentative Writing sample.",
+          "required_documents": [
+            "LSAC electronic application and $85 fee",
+            "One-to-two-page resume",
+            "Personal statement (approximately two pages)",
+            "Required essay on engaging with a challenging viewpoint",
+            "Additional required 250-word essay",
+            "Two to four recommendation letters through LSAC",
+            "LSAT or GRE score",
+            "LSAC Credential Assembly Service report with transcripts"
+          ],
+          "application_deadline": "2027-02-15 23:59 US Pacific Time",
+          "verified_at": "2026-09-23",
+          "tuition_rate_per_quarter_usd": 26593,
+          "mandatory_fee_context": {
+            "student_services_fee_year_usd": 1500,
+            "health_services_fee_year_usd": 843,
+            "cardinal_care_year_usd": 8808,
+            "cardinal_care_condition": "Optional/waivable when eligible comparable coverage is approved",
+            "source_url": "https://law.stanford.edu/apply/tuition-financial-aid/cost-of-attendance/",
+            "verified_at": "2026-09-23"
+          },
+          "id": "stanford-jd",
+          "admission_route_id": "stanford_jd_track",
+          "application_system": "LSAC",
+          "admission_route_source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+          "admission_route_name": "Stanford Law School JD Admission",
+          "price_facts": [
+            {
+              "id": "stanford-jd-tuition-2026-27",
+              "kind": "tuition",
+              "amount": 79779,
+              "currency": "USD",
+              "period": "academic_year",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "program_ids": [
+                "stanford-jd"
+              ],
+              "cycle": "2026-27 academic year",
+              "publication_status": "published",
+              "source_url": "https://law.stanford.edu/apply/tuition-financial-aid/cost-of-attendance/",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_year_usd"
+            },
+            {
+              "id": "stanford-jd-application-fee-fall-2027",
+              "kind": "application_fee",
+              "amount": 85,
+              "currency": "USD",
+              "period": "one_time",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "program_ids": [
+                "stanford-jd"
+              ],
+              "cycle": "Fall 2027 entry",
+              "publication_status": "published",
+              "source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+              "verified_at": "2026-09-24",
+              "legacy_field": "application_fee_usd"
+            }
+          ]
+        },
+        {
+          "name": "Master of Laws (LLM)",
+          "study_levels": [
+            "Master",
+            "Professional"
+          ],
+          "degree_awarded": "LLM",
+          "school": "Stanford Law School (SLS)",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "law",
+            "international law",
+            "corporate governance",
+            "intellectual property"
+          ],
+          "duration": "1 year",
+          "specializations": [
+            "Corporate Law & Business",
+            "Environmental Law & Policy",
+            "International Economic Law, Business & Policy",
+            "Law, Science & Technology"
+          ],
+          "application_fee_usd": 85,
+          "application_deadline": "2026-12-01 23:59 US Pacific Time",
+          "source_url": "https://law.stanford.edu/apply/how-to-apply/advanced-degree-application-process/",
+          "entry_requirements": "A first law degree (JD or equivalent) is required. Except under unusual circumstances, candidates ordinarily need at least two years of professional legal experience before commencing the LLM; applicants may request a waiver and explain the circumstances. Stanford Law School requires valid TOEFL scores submitted through LSAC; tests taken before January 21, 2026 require TOEFL iBT 100, while tests taken after that date require overall 5.5, with at least 5.5 in Reading and Listening and 5.0 in Writing and Speaking. Native English speakers must still request a TOEFL waiver; waivers may be granted based on at least two years of full-time study or work in English, with a formal request and evidence.",
+          "required_documents": [
+            "Online application through LSAC and application fee",
+            "Resume or CV",
+            "Personal statement",
+            "Recommendation letters as specified by the application",
+            "Transcripts through the LSAC LLM Credential Assembly Service",
+            "Valid TOEFL score report submitted through LSAC (TOEFL iBT 100 for tests before 2026-01-21; new overall score 5.5 with Reading/Listening 5.5 and Writing/Speaking 5.0 for later tests), or a formally requested waiver with supporting evidence."
+          ],
+          "cycle": "Fall 2027 entry",
+          "requirements_source_url": "https://law.stanford.edu/office-of-student-affairs/the-master-of-laws-llm-degree/",
+          "verified_at": "2026-09-24",
+          "tuition_cycle": "The Registrar publishes Stanford Law School tuition of USD 26,593 per quarter for 2026-27. The checked official pages do not establish an LLM-specific billed total or number of quarters; 2027-28 rates are unknown.",
+          "admission_route_id": "stanford_llm_track",
+          "application_system": "LSAC",
+          "admission_route_name": "Stanford Law School LLM Admission",
+          "id": "stanford-llm",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "price_facts": [
+            {
+              "id": "stanford-llm-sls-tuition-2026-27-quarter",
+              "kind": "tuition",
+              "amount": 26593,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "Master",
+                "Professional"
+              ],
+              "admission_route_id": "stanford_llm_track",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "note": "Published Stanford Law School per-quarter rate; no LLM-specific full-program total or quarter count inferred."
+            }
+          ]
+        },
+        {
+          "name": "Doctor of Medicine (MD)",
+          "study_levels": [
+            "Professional"
+          ],
+          "degree_awarded": "MD",
+          "school": "Stanford School of Medicine",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "medicine",
+            "clinical training",
+            "biomedical",
+            "health sciences"
+          ],
+          "duration": "4 - 5 years (Discovery Curriculum)",
+          "application_fee_usd": null,
+          "testing_requirements": "MCAT required (median MCAT ~518)",
+          "deadlines": [
+            {
+              "round": "AMCAS primary application",
+              "deadline": "2026-10-01 23:59 US Eastern Time"
+            },
+            {
+              "round": "Stanford supplemental application and all materials",
+              "deadline": "2026-10-09 23:59 US Pacific Time"
+            }
+          ],
+          "financial_support": "Substantial need-based institutional scholarships covering tuition and fees; Knight-Hennessy Scholars eligible.",
+          "source_url": "https://med.stanford.edu/md-admissions/how-to-apply.html",
+          "entry_requirements": "For the entering class of 2027, submit an MCAT taken after January 2023 and by August 22, 2026. International applicants must meet Stanford’s degree-equivalency and education eligibility rules.",
+          "required_documents": [
+            "AMCAS primary application",
+            "Stanford supplemental application",
+            "Three to six recommendation letters through AMCAS",
+            "MCAT result within the entering-class validity window",
+            "Application fee"
+          ],
+          "cycle": "Entering class of 2027",
+          "tuition_rate_per_quarter_usd": 24034,
+          "currency": "USD",
+          "tuition_cycle": "2026-27 academic year; regular MD tuition payable in Autumn, Winter, Spring, and Summer quarters; 2027-28 rate not confirmed",
+          "tuition_source_url": "https://med.stanford.edu/md/mdhandbook/section-7-tuition-and-financial-aid/tuition---fees.html",
+          "verified_at": "2026-09-23",
+          "tuition_four_quarter_total_usd": 96136,
+          "id": "stanford-md",
+          "admission_route_id": "stanford_md_track",
+          "application_system": "AMCAS primary application followed by the Stanford supplemental application",
+          "admission_route_source_url": "https://med.stanford.edu/md-admissions/how-to-apply.html",
+          "admission_route_name": "Stanford School of Medicine MD Admission",
+          "price_facts": [
+            {
+              "id": "stanford-md-tuition-2026-27-quarter",
+              "kind": "tuition",
+              "amount": 24034,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "program_ids": [
+                "stanford-md"
+              ],
+              "cycle": "2026-27 academic year",
+              "publication_status": "published",
+              "source_url": "https://med.stanford.edu/md/mdhandbook/section-7-tuition-and-financial-aid/tuition---fees.html",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_rate_per_quarter_usd"
+            }
+          ]
+        },
+        {
+          "name": "PhD in Computer Science",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "School of Engineering",
+          "department": "Department of Computer Science",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "computer science",
+            "artificial intelligence",
+            "research"
+          ],
+          "duration": "Typically 5-6 years",
+          "guaranteed_funding": true,
+          "funding_details": "All CS PhD students are guaranteed funding while making satisfactory academic progress.",
+          "application_deadline": "2026-12-08 23:59 US Pacific Time",
+          "source_url": "https://www.cs.stanford.edu/admissions-graduate-application-deadlines",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "required_documents": [
+            "Online application and $125 application fee",
+            "Statement of purpose (maximum two pages, single-spaced)",
+            "Three recommendation letters",
+            "Resume or CV and publications list",
+            "Unofficial transcripts",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency exemptions"
+          ],
+          "requirements_source_url": "https://www.cs.stanford.edu/admissions/graduate-application-checklists",
+          "tuition_cycle": "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "id": "stanford-phd-cs",
+          "tuition_per_quarter_8_10_units_usd": 15100,
+          "tuition_per_quarter_11_18_units_usd": 23239,
+          "tuition_per_quarter_above_18_units_usd": 1549,
+          "tuition_per_summer_unit_1_7_usd": 1510,
+          "price_facts": [
+            {
+              "id": "stanford-phd-cs-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 15100,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-cs-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 23239,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-cs-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1549,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-cs-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1510,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "PhD in Electrical Engineering",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "School of Engineering",
+          "department": "Department of Electrical Engineering",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "engineering",
+            "semiconductors",
+            "quantum",
+            "research"
+          ],
+          "duration": "Typically 5-7 years",
+          "guaranteed_funding": true,
+          "funding_details": "All PhD students who maintain satisfactory academic progress receive full financial support for the duration of the program.",
+          "application_deadline": "2026-12-01 23:59 US Pacific Time",
+          "source_url": "https://ee.stanford.edu/admissions/phd",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "entry_requirements": "A bachelor’s degree is the minimum degree level; a master’s degree and prior Electrical Engineering major are not required. Strong technical background in engineering, physical sciences, or mathematics is accepted.",
+          "required_documents": [
+            "Online application",
+            "Statement of purpose",
+            "Three recommendation letters",
+            "Transcripts",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency exemptions"
+          ],
+          "requirements_source_url": "https://ee.stanford.edu/admissions/required-materials",
+          "tuition_cycle": "2026-27 published Engineering graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 15100,
+          "tuition_per_quarter_11_18_units_usd": 23239,
+          "tuition_per_quarter_above_18_units_usd": 1549,
+          "tuition_per_summer_unit_1_7_usd": 1510,
+          "id": "stanford-phd-ee",
+          "price_facts": [
+            {
+              "id": "stanford-phd-ee-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 15100,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-ee-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 23239,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-ee-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1549,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            },
+            {
+              "id": "stanford-phd-ee-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1510,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar rate depends on enrollment unit load; amount is not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "PhD in Biosciences",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "School of Medicine & School of Humanities and Sciences",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "life sciences",
+            "genetics",
+            "immunology",
+            "neuroscience",
+            "cancer biology"
+          ],
+          "duration": "Not specified on the current admissions page",
+          "guaranteed_funding": true,
+          "application_deadline": "2026-12-01 23:59:59 US Pacific Time",
+          "source_url": "https://biosciences.stanford.edu/how-to-apply/",
+          "cycle": "Autumn 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "entry_requirements": "A U.S. bachelor’s degree or international equivalent; program-level prerequisite coursework varies across the 14 Biosciences home programs. Four home programs list specific background requirements. Research experience is not formally required, though committees expect relevant preparation.",
+          "required_documents": [
+            "Online application",
+            "Academic transcripts",
+            "Letters of recommendation",
+            "Admissions essays",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency rules",
+            "GRE requirements vary by Biosciences home program"
+          ],
+          "tuition_cycle": "2026-27 published standard graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 14180,
+          "tuition_per_quarter_11_18_units_usd": 21815,
+          "tuition_per_quarter_above_18_units_usd": 1454,
+          "tuition_per_summer_unit_1_7_usd": 1418,
+          "id": "stanford-phd-biosciences",
+          "price_facts": [
+            {
+              "id": "stanford-phd-biosciences-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 14180,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-biosciences-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 21815,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-biosciences-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1454,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-biosciences-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1418,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "PhD in Economics",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "School of Humanities and Sciences",
+          "department": "Department of Economics",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "economics",
+            "econometrics",
+            "research"
+          ],
+          "duration": "5 years",
+          "application_deadline": "2026-12-02 23:59 US Pacific Time",
+          "source_url": "https://economics.stanford.edu/graduate/applying-stanford",
+          "required_documents": [
+            "Online application and $125 fee",
+            "Official GRE scores",
+            "Statement of purpose (maximum 250 words)",
+            "Three recommendation letters",
+            "Unofficial transcripts from institutions attended full-time for at least one year",
+            "Coursework spreadsheet",
+            "TOEFL iBT when required under Stanford’s English-proficiency exceptions",
+            "Optional writing sample up to 10 pages"
+          ],
+          "cycle": "Academic Year 2027-28 entry",
+          "verified_at": "2026-09-23",
+          "tuition_cycle": "2026-27 published standard graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 14180,
+          "tuition_per_quarter_11_18_units_usd": 21815,
+          "tuition_per_quarter_above_18_units_usd": 1454,
+          "tuition_per_summer_unit_1_7_usd": 1418,
+          "id": "stanford-phd-economics",
+          "price_facts": [
+            {
+              "id": "stanford-phd-economics-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 14180,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-economics-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 21815,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-economics-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1454,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-economics-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1418,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "PhD in Physics",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "School of Humanities and Sciences",
+          "department": "Department of Physics",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "physics",
+            "quantum",
+            "astrophysics",
+            "research"
+          ],
+          "duration": "5 years",
+          "guaranteed_funding": true,
+          "funding_details": "Stanford commits five years of doctoral-program funding for admitted students in good academic standing.",
+          "application_deadline": "2026-12-14 23:59 US Pacific Time",
+          "source_url": "https://physics.stanford.edu/graduate/graduate-admissions",
+          "cycle": "2027-28 admissions cycle",
+          "verified_at": "2026-09-23",
+          "testing_requirements": "Current 2027-28 Physics PhD admissions page requires GRE General and Physics GRE Subject scores.",
+          "required_documents": [
+            "Online application",
+            "Three recommendation letters (preferably including one from a research group)",
+            "Transcripts for postsecondary institutions attended full-time for at least one year",
+            "Statement of purpose and admissions essays",
+            "GRE General and Physics GRE Subject Test scores; exceptions are reviewed case by case",
+            "TOEFL when required under the department’s stated exemptions"
+          ],
+          "tuition_cycle": "2026-27 published standard graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 14180,
+          "tuition_per_quarter_11_18_units_usd": 21815,
+          "tuition_per_quarter_above_18_units_usd": 1454,
+          "tuition_per_summer_unit_1_7_usd": 1418,
+          "id": "stanford-phd-physics",
+          "price_facts": [
+            {
+              "id": "stanford-phd-physics-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 14180,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-physics-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 21815,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-physics-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1454,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-physics-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1418,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            }
+          ]
+        },
+        {
+          "name": "PhD in Business",
+          "study_levels": [
+            "PhD",
+            "Doctorate"
+          ],
+          "degree_awarded": "Doctor of Philosophy (PhD)",
+          "school": "Stanford Graduate School of Business (GSB)",
+          "language": [
+            "English"
+          ],
+          "study_mode": "On-campus",
+          "major_tags": [
+            "business",
+            "economics",
+            "finance",
+            "organizational behavior",
+            "marketing",
+            "operations"
+          ],
+          "duration": "5 years",
+          "guaranteed_funding": true,
+          "funding_details": "Full financial fellowship includes tuition and health fee coverage plus a living stipend for five years, with a possible sixth-year extension, conditional on satisfactory academic progress. Published 2026-27 stipend is $59,500; the 2027-28 stipend is not yet stated.",
+          "source_url": "https://www.gsb.stanford.edu/programs/phd/admission",
+          "required_documents": [
+            "Online application",
+            "GRE scores for Fall 2027 applicants",
+            "Education history and CV",
+            "Statement of purpose",
+            "Letters of recommendation",
+            "TOEFL or IELTS Academic when required under Stanford’s English-proficiency rules"
+          ],
+          "tuition_covered": true,
+          "tuition_cycle": "2026-27 published standard graduate tuition; billed quarterly by unit load. Student-specific annual total depends on units and enrolled quarters; 2027-28 rates are unknown.",
+          "funding_source_url": "https://www.gsb.stanford.edu/programs/phd/financial-aid",
+          "cycle": "Fall 2027 entry; official program deadline not yet published",
+          "verified_at": "2026-09-24",
+          "tuition_source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+          "mandatory_fee_context": {
+            "tech_fee_per_quarter_usd": 95,
+            "campus_health_service_fee_per_quarter_usd": 281,
+            "campus_health_service_condition": "Charged to students living in the nine-county Bay Area",
+            "cardinal_care_per_quarter_usd": 2936,
+            "cardinal_care_condition": "Required unless eligible comparable coverage is approved; waiver rules apply",
+            "student_association_fee_per_quarter_usd": 69,
+            "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-other-charges",
+            "verified_at": "2026-09-23"
+          },
+          "tuition_per_quarter_8_10_units_usd": 14180,
+          "tuition_per_quarter_11_18_units_usd": 21815,
+          "tuition_per_quarter_above_18_units_usd": 1454,
+          "tuition_per_summer_unit_1_7_usd": 1418,
+          "application_deadline": "Not yet published for Fall 2027 entry; check Stanford GSB official deadline page.",
+          "application_deadline_source_url": "https://www.gsb.stanford.edu/programs/phd/admission/deadline-decisions",
+          "application_deadline_cycle": "Fall 2027 entry",
+          "deadline_source_url": "https://www.gsb.stanford.edu/programs/phd/admission/deadline-decisions",
+          "deadline_cycle": "Fall 2027 entry",
+          "id": "stanford-phd-business",
+          "price_facts": [
+            {
+              "id": "stanford-phd-business-tuition-2026-27-quarterly-8-10-units",
+              "kind": "tuition",
+              "amount": 14180,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "8_10_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_8_10_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-business-tuition-2026-27-quarterly-11-18-units",
+              "kind": "tuition",
+              "amount": 21815,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "11_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_11_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-business-tuition-2026-27-per-unit-above-18",
+              "kind": "tuition",
+              "amount": 1454,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "above_18_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_quarter_above_18_units_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            },
+            {
+              "id": "stanford-phd-business-tuition-2026-27-summer-per-unit-1-7",
+              "kind": "tuition",
+              "amount": 1418,
+              "currency": "USD",
+              "period": "credit",
+              "fee_status": "same_all_statuses",
+              "applicability": "program_specific",
+              "study_levels": [
+                "PhD",
+                "Doctorate"
+              ],
+              "quantity_basis": "summer_1_7_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+              "verified_at": "2026-09-24",
+              "legacy_field": "tuition_per_summer_unit_1_7_usd",
+              "note": "Registrar standard graduate rate; amount depends on enrollment units and quarter, not an annual total."
+            }
+          ]
+        }
+      ],
+      "admissions": {
+        "schema_version": 1,
+        "status_date": "2026-04-04",
+        "university_wide": {
+          "status": "official_counts",
+          "kind": "undergraduate_institution_wide",
+          "acceptance_rate_percent": 3.61,
+          "counts": {
+            "cycle": "Fall 2024 first-time first-year admission",
+            "applicants": 57326,
+            "admitted": 2067,
+            "enrolled": 1693
+          },
+          "semantics": "Stanford IRDS reports applicant, admit, and matriculant trends for first-time first-year admission. The Common Data Set page publishes applicants, admitted, and enrolled counts for first-year admission.",
+          "sources": [
+            {
+              "url": "https://ucomm.stanford.edu/cds/",
+              "label": "Stanford Common Data Set 2024-2025"
+            },
+            {
+              "url": "https://irds.stanford.edu/data-findings/undergraduate-admission",
+              "label": "Stanford IRDS publishes undergraduate admission trends."
+            },
+            {
+              "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+              "label": "Stanford explains that first-year applicants apply to the university as a whole."
+            }
+          ],
+          "provenance": {
+            "source": "Stanford Common Data Set 2024-2025",
+            "source_url": "https://ucomm.stanford.edu/cds/",
+            "verified_at": "2026-03-12",
+            "status": "official",
+            "confidence": "high",
+            "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+            "basis": {
+              "cycle": "Fall 2024 first-time first-year admission",
+              "applicants": 57326,
+              "admitted": 2067,
+              "enrolled": 1693
+            }
+          }
+        },
+        "program_level": {
+          "status": "verified_null_only",
+          "kind": "institution_wide_only",
+          "acceptance_rate_percent": null,
+          "counts": null,
+          "notes": "Official undergraduate admission is reported institution-wide rather than by major, so UniSearch stores verified-null rows for the current programs instead of inventing major-level acceptance rates.",
+          "sources": [
+            {
+              "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+              "label": "Stanford undergrad admission is university-wide rather than major-specific."
+            },
+            {
+              "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+              "label": "Stanford first-year application overview"
+            }
+          ]
+        },
+        "programs": [
+          {
+            "program_name": "Computer Science",
+            "source_scope": "program_verified_null",
+            "data_type": "verified-null",
+            "scope": "program",
+            "metric_value": null,
+            "metric_unit": null,
+            "acceptance_rate_percent": null,
+            "counts": null,
+            "semantics": "Stanford says first-year applicants apply to the university as a whole, not to an undergraduate major, so no public major-specific admit totals are published for Computer Science.",
+            "notes": "Stored as verified-null because Stanford does not publish a separate undergraduate Computer Science admission rate.",
+            "sources": [
+              {
+                "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+                "label": "Stanford first-year application overview"
+              }
+            ],
+            "provenance": {
+              "source": "Stanford first-year application overview",
+              "source_url": "https://admission.stanford.edu/apply/first-year/apply.html",
+              "verified_at": "2026-03-25",
+              "status": "official",
+              "confidence": "high",
+              "method": "Verified-null: official Stanford admissions materials describe university-wide undergraduate admission rather than major-specific selection.",
+              "basis": {
+                "summary": "Stanford says first-year applicants apply to the university as a whole, not to an undergraduate major, so no public major-specific admit totals are published for Computer Science."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "finance": {
+      "total_cost_year_usd": 97545,
+      "currency": "USD",
+      "costs_breakdown_year_usd": {
+        "Tuition": 67731,
+        "Housing_and_Food": 22944,
+        "Student_Fees_Allowance": 2610,
+        "Books_and_Supplies_Allowance": 855,
+        "Personal_Expenses_Allowance": 3405
+      },
+      "costs_breakdown_source_urls": [
+        "https://financialaid.stanford.edu/undergrad/budget/index.html"
+      ],
+      "costs_breakdown_note": "Official 2026-27 undergraduate standard student budget for Autumn, Winter, and Spring: tuition USD 67,731; housing/food and other living figures are estimates/allowances, not a program price or net price. New students pay one-time orientation USD 525 and document fee USD 250. Cardinal Care is separately charged unless eligible comparable coverage is approved; international students are budgeted for this insurance.",
+      "costs_breakdown_status": "official_mandatory_breakdown",
+      "financial_aid": {
+        "merit_based": false,
+        "need_based": true,
+        "merit_based_note": "Undergraduate financial aid is 100% need-based. Stanford does not award academic or athletic merit scholarships for general undergraduate admission. (NCAA Division I athletic grants-in-aid are awarded independently).",
+        "need_blind_citizens": true,
+        "need_blind_international": false,
+        "need_policy_international_note": "CRITICAL: Stanford is NEED-AWARE for international undergraduate applicants. Financial need is factored into the admissions decision. International applicants must apply for financial aid concurrently with their application; students who do not apply for aid upon admission are ineligible to receive institutional aid in subsequent years.",
+        "meets_full_demonstrated_need": true,
+        "no_loans_policy": true,
+        "no_loans_note": "Standard financial aid packages contain Stanford scholarships, federal/state grants, and work-study. No student loans are required.",
+        "income_thresholds": {
+          "under_100k": {
+            "income_range": "Family income < $100,000 USD (with typical assets)",
+            "benefit": "For families with typical assets and income below $100,000, Stanford expects no parent contribution toward educational costs. Students remain responsible for their own contribution from savings and employment."
+          },
+          "under_150k": {
+            "income_range": "Family income < $150,000 USD (with typical assets)",
+            "benefit": "For families with typical assets and income below $150,000, Stanford states that the expected parent contribution is low enough for need-based aid and grants to cover tuition for students living on campus."
+          },
+          "above_150k": {
+            "income_range": "Family income $150,000+ USD",
+            "benefit": "Need-based scholarship aid scaled to family size, number of children in college, and demonstrated financial circumstances."
+          }
+        },
+        "application_forms": [
+          "CSS Profile (School Code: 4704)",
+          "FAFSA (US Citizens and Eligible Non-Citizens; School Code: 001305)",
+          "International Student Application for Financial Assistance (ISAFA) for eligible international students"
+        ],
+        "source_url": "https://financialaid.stanford.edu/undergrad/how/parent.html",
+        "income_thresholds_note": "These income guidelines assume typical assets and US cost-of-living assumptions; Stanford says they may not apply to families living outside the United States."
+      },
+      "graduate_funding": {
+        "phd_funding_guarantee": {
+          "duration_years": 5,
+          "commitment": "Stanford provides continuous 12-month funding to all enrolled PhD and DMA students in good academic standing for up to the first five years. The funding combination is tailored to the degree program.",
+          "components": [
+            "Funding is provided through a combination of external fellowships, Stanford fellowships, research assistantships, and teaching assistantships; programs tailor the combination.",
+            "The commitment is funded at Stanford’s 20-hour-per-week Research Assistantship minimum; degree programs and faculty advisors arrange the support.",
+            "The university-wide policy does not prescribe one tuition unit load or a universal Cardinal Care subsidy; exact tuition and insurance treatment depends on the program and funding source."
+          ],
+          "source_url": "https://gap.stanford.edu/handbooks/gap-handbook/chapter-7/subchapter-1/page-7-1-1",
+          "verified_at": "2026-09-24"
+        }
+      },
+      "academic_year": "2026-27",
+      "fee_status": "Standard undergraduate budget; typical full-time student; travel varies.",
+      "scope": "Undergraduate student budget for Autumn, Winter, and Spring quarters",
+      "source_url": "https://financialaid.stanford.edu/undergrad/budget/index.html",
+      "verified_at": "2026-09-23",
+      "one_time_costs": [
+        {
+          "type": "New Student Orientation Fee",
+          "amount": 525,
+          "currency": "USD",
+          "timing": "First year only",
+          "source_urls": [
+            "https://financialaid.stanford.edu/undergrad/budget/index.html"
+          ]
+        },
+        {
+          "type": "Document Fee",
+          "amount": 250,
+          "currency": "USD",
+          "timing": "First year only",
+          "source_urls": [
+            "https://financialaid.stanford.edu/undergrad/budget/index.html"
+          ]
+        }
+      ],
+      "scholarships_and_funding": [
+        {
+          "id": "stanford-international-undergraduate-need-based-aid",
+          "name": "Stanford Undergraduate Need-Based Financial Aid (International)",
+          "study_level": "Bachelor",
+          "program_scope": "Stanford undergraduate first-year admission",
+          "applicant_scope": "International applicants; citizenship and aid request are assessed under Stanford’s international policy",
+          "academic_year": "2027 entry",
+          "basis": "need",
+          "application_process": "separate",
+          "eligibility": "International applicants must request aid in the admission application. Stanford says aid request is a factor in the admission evaluation for international citizens; applicants admitted with aid requested are considered for full demonstrated need. Applicants who state they will not request aid and are admitted are generally ineligible to apply later during their four undergraduate years.",
+          "coverage": "Need-based Stanford scholarship and aid package based on demonstrated family need; individual amount determined after review.",
+          "renewal": "Institutional aid requires annual reapplication; check current-year rules.",
+          "competition": "Limited institutional resources; aid request makes international admission more selective. Award rate not stated on the cited page.",
+          "course_application_deadline": {
+            "restrictive_early_action": "2026-11-01",
+            "regular_decision": "2027-01-05"
+          },
+          "award_application_deadline": {
+            "restrictive_early_action": "2026-11-15",
+            "regular_decision": "2027-02-15"
+          },
+          "deadline_timezone": "US Pacific Time; exact hour not published",
+          "steps": [
+            "Indicate on the Stanford first-year admission application that you are requesting financial aid; this request affects admission review for international citizens.",
+            "Separately submit the CSS Profile (school code 4704) and the International Student Supplement through Stanford Financial Aid document upload; Stanford identifies limited circumstances for the International Student Application for Financial Assistance as an alternative.",
+            "Submit any additional tax or supporting documents requested by the Financial Aid Office."
+          ],
+          "documents": [
+            "CSS Profile",
+            "International Student Supplement",
+            "Parent income and tax documentation if requested",
+            "Noncustodial Parent Waiver Request and supporting evidence only if applicable"
+          ],
+          "source_url": "https://admission.stanford.edu/apply/international/",
+          "verified_at": "2026-09-23",
+          "application_process_note": "International applicants must indicate on the admission application that they are requesting aid. Then submit the separate CSS Profile and International Student Supplement (or the approved alternative) and supporting financial documents; “separate” refers to these aid forms, not to the initial aid request.",
+          "source_urls": [
+            "https://admission.stanford.edu/apply/international/",
+            "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html"
+          ],
+          "applicant_routes": [
+            "first_year"
+          ]
+        },
+        {
+          "id": "stanford-knight-hennessy-scholars-2027",
+          "name": "Knight-Hennessy Scholars",
+          "study_level": "Master / Doctorate",
+          "program_scope": "All full-time Stanford graduate degree programs, including the LLM, subject to current cohort eligibility and stated exceptions. KHS is a separate competitive award; it is not Stanford Law School funding.",
+          "applicant_scope": "Applicants from all countries; first bachelor’s degree earned January 2020 or later (military service exception); must separately apply to and enroll in an eligible Stanford graduate degree",
+          "academic_year": "2027 cohort",
+          "basis": "merit",
+          "application_process": "separate",
+          "eligibility": "For the 2027 cohort, applicants must apply to KHS and be admitted to and enroll in a full-time Stanford graduate degree starting in the same year, and meet the first-bachelor’s-date rule (January 2020 or later, with the military exception). KHS says there are no restrictions by field of study and lists eligible degrees including JD, MA, MBA, MD, MS, and PhD; its explicit exclusions do not include LLM. Selection is highly competitive and not guaranteed. For Stanford MBA applicants to the 2027 cohort, KHS eligibility requires submitting the MBA application by GSB Round 1 (2026-09-09); that date has passed as of 2026-09-24. Applicants who submitted by the deadline may continue their KHS application before the October 6 KHS deadline; this does not disqualify timely submitters.",
+          "coverage": "Up to three years of tuition and associated fees, living and academic expenses, and annual travel stipend for selected KHS Scholars, subject to program eligibility and actual degree duration; not an automatic award or a net-price estimate.",
+          "renewal": "Up to three years; not a general renewable award beyond the scholar’s eligible degree period.",
+          "competition": "Highly selective; KHS publishes no formula or guaranteed qualifying score.",
+          "course_application_deadline": "Stanford graduate program deadline; varies by program and may be earlier than 2026-12-01",
+          "award_application_deadline": "2026-10-06 13:00",
+          "deadline_timezone": "US Pacific Time",
+          "steps": [
+            "Check the 2027 cohort eligibility rules.",
+            "Submit the KHS application by October 6, 2026 at 1:00 p.m. Pacific Time.",
+            "Submit a separate Stanford graduate degree application by the earlier of the program deadline for KHS applicants or December 1, 2026.",
+            "For Stanford MBA applicants, submit the MBA application by GSB Round 1 (2026-09-09) to meet KHS eligibility; timely applicants may submit their KHS application by October 6, 2026."
+          ],
+          "documents": [
+            "KHS application materials listed in the live KHS application, including application essays, transcript, resume, and recommendations",
+            "Separate Stanford graduate degree application and program-specific materials"
+          ],
+          "source_url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/application-deadlines",
+          "verified_at": "2026-09-24",
+          "source_urls": [
+            "https://knight-hennessy.stanford.edu/admission/before-you-apply/eligibility",
+            "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/application-deadlines",
+            "https://knight-hennessy.stanford.edu/program-overview/funding",
+            "https://law.stanford.edu/apply/how-to-apply/advanced-degree-application-process/",
+            "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+            "https://www.gsb.stanford.edu/programs/mba/admission/application-process"
+          ],
+          "study_levels": [
+            "Master",
+            "Doctorate",
+            "Professional"
+          ],
+          "program_names": [
+            "Master of Business Administration (MBA)",
+            "MS in Management for Experienced Leaders (Stanford MSx)",
+            "Master of Science in Computer Science (MS CS)",
+            "Master of Science in Electrical Engineering (MS EE)",
+            "Master of Science in Management Science and Engineering (MS MS&E)",
+            "PhD in Management Science and Engineering",
+            "Juris Doctor (JD)",
+            "Master of Laws (LLM)",
+            "Doctor of Medicine (MD)",
+            "PhD in Computer Science",
+            "PhD in Electrical Engineering",
+            "PhD in Biosciences",
+            "PhD in Economics",
+            "PhD in Physics",
+            "PhD in Business"
+          ]
+        },
+        {
+          "id": "stanford-gsb-need-based-mba-fellowship",
+          "name": "Stanford GSB Need-Based Fellowships",
+          "study_level": "Master",
+          "program_scope": "Stanford GSB full-time two-year MBA only; assessed after admission.",
+          "applicant_scope": "Admitted Stanford MBA students with demonstrated financial need, regardless of citizenship",
+          "academic_year": "Fall 2027 entry; fellowship amount determined after admission",
+          "basis": "need",
+          "application_process": "post_offer",
+          "eligibility": "MBA admission is need-blind. After admission, applicants with demonstrated financial need may apply for a Stanford GSB fellowship; expected student contribution and aid are determined from their financial documents.",
+          "coverage": "Non-repayable fellowship based on individual need; Stanford may combine fellowships with loans. No applicant-specific amount is known before the aid decision.",
+          "renewal": "Financial aid application must be renewed each year of the two-year MBA.",
+          "competition": "Stanford reports that approximately half of MBA students receive fellowship funds; demonstrated need does not establish an award amount before review.",
+          "course_application_deadline": "Stanford MBA admission Round 1: 2026-09-09; Round 2: 2027-01-06; Round 3: 2027-04-07",
+          "award_application_deadline": "Provided to admitted students by GSB Financial Aid; no Fall 2027 aid deadline published on the cited page",
+          "deadline_timezone": "Check the admission round page for its time zone; the post-admission aid deadline is not yet published",
+          "steps": [
+            "Apply to the Stanford MBA by a published admission round.",
+            "If admitted, request the GSB financial aid instructions and submit the institutional application.",
+            "Submit tax and wage documentation for the required years; US citizens and permanent residents also submit FAFSA.",
+            "Review the individual fellowship and loan offer and renew the application in the second year."
+          ],
+          "documents": [
+            "GSB institutional financial aid application",
+            "For international students: tax statements and wage statements for the last two years from all countries of employment",
+            "For US citizens or permanent residents: FAFSA, federal tax returns for two prior years with schedules and W-2s, and most recent pay stub",
+            "Spouse financial documents if applicable"
+          ],
+          "source_url": "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/application-process",
+          "source_urls": [
+            "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid",
+            "https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/types-aid"
+          ],
+          "verified_at": "2026-09-23",
+          "program_names": [
+            "Master of Business Administration (MBA)"
+          ],
+          "study_levels": [
+            "Master",
+            "Professional"
+          ]
+        }
+      ],
+      "costs_breakdown_academic_year": "2026-27; Fall 2027-28 cost not published"
+    },
+    "fellowships_and_grants": [
+      {
+        "id": "knight-hennessy-scholars",
+        "name": "Knight-Hennessy Scholars Program",
+        "type": "fellowship",
+        "scope": "university_wide_graduate",
+        "award_coverage": "Full tuition and mandatory fees for up to 3 years, comprehensive living/academic stipend, annual economy round-trip airfare, King Global Leadership Program (KGLP) leadership development.",
+        "duration_years": 3,
+        "eligible_degrees": [
+          "JD",
+          "MA",
+          "MBA",
+          "MD",
+          "MFA",
+          "MS",
+          "DMA",
+          "PhD"
+        ],
+        "eligibility_criteria": "Open to citizens of all countries. Candidates must submit a separate Knight-Hennessy Scholars application and concurrently apply to a full-time Stanford graduate degree program.",
+        "annual_deadline": "October 6, 2026, 1:00 PM Pacific Time",
+        "source_url": "https://knight-hennessy.stanford.edu/"
+      },
+      {
+        "id": "stanford-phd-5year-guarantee",
+        "name": "Provost's 5-Year Doctoral Funding Guarantee",
+        "type": "guaranteed_funding",
+        "scope": "all_doctoral_candidates",
+        "award_coverage": "5 years of 12-month full tuition, living stipend/salary, and Cardinal Care health insurance subsidy.",
+        "duration_years": 5,
+        "eligible_degrees": [
+          "PhD",
+          "DMA"
+        ],
+        "eligibility_criteria": "All admitted doctoral students maintaining satisfactory academic progress.",
+        "source_url": "https://vpge.stanford.edu/fellowships-funding/funding-overview"
+      },
+      {
+        "id": "stanford-undergraduate-need-grant",
+        "name": "Stanford Need-Based Undergraduate Scholarship",
+        "type": "grant",
+        "scope": "undergraduate",
+        "award_coverage": "100% of demonstrated financial need with no required student loans. For families with typical assets, income below $100,000 means Stanford expects no parent contribution toward educational costs; students still have a student contribution. Income below $150,000 may qualify for need-based aid covering tuition for on-campus students. These thresholds may not apply to families living outside the United States.",
+        "duration_years": 4,
+        "eligible_degrees": [
+          "Bachelor"
+        ],
+        "eligibility_criteria": "Admitted undergraduate students who apply for financial aid and demonstrate financial need.",
+        "source_url": "https://financialaid.stanford.edu/undergrad/how/parent.html"
+      }
+    ],
+    "outcomes": {},
+    "description": "Stanford University is a world-leading private research university located in California's Silicon Valley. Renowned for its entrepreneurial culture, academic excellence across undergraduate and graduate disciplines, groundbreaking research, and transformative financial aid, Stanford encompasses seven world-class schools: Humanities and Sciences, Engineering, Doerr School of Sustainability, Business (GSB), Law, Medicine, and Education.",
+    "description_source": "https://www.stanford.edu/about/",
+    "tags": [
+      "humanities",
+      "social_sciences",
+      "natural_sciences",
+      "engineering",
+      "medicine",
+      "law",
+      "education",
+      "business",
+      "research",
+      "private_university",
+      "computer_science"
+    ],
+    "factors": {
+      "practice_vs_science": 0.9753,
+      "social_vs_hardcore": 0.9872,
+      "budget_vs_prestige": 0.9901,
+      "city_vs_campus": 1
+    },
+    "factors_meta": {
+      "version": "internet_v1",
+      "computed_at": "2026-05-23T22:07:21Z",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "source_urls": {
+        "openalex_query": "https://api.openalex.org/institutions?search=Stanford+University&per-page=8",
+        "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Stanford&count=10&language=en&format=json&countryCode=US",
+        "wikidata_population_query": ""
+      },
+      "raw_metrics": {
+        "openalex": {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "country_code": "US",
+          "works_count": 520403,
+          "cited_by_count": 85163760,
+          "h_index": 2461
+        },
+        "city": {
+          "name": "Stanford",
+          "country_code": "US",
+          "admin1": "California",
+          "population": 13809,
+          "population_wikidata_fallback": null
+        },
+        "rank": {
+          "position": 3,
+          "status": "official"
+        },
+        "total_cost_year_usd": 97545,
+        "derived_signals": {
+          "research_signal_raw": 14.90817892567731,
+          "hardcore_signal_0_1": 0.987152,
+          "research_norm_0_1": 0.975347,
+          "official_rank_norm_0_1": 0.00319,
+          "tuition_norm_0_1": 1,
+          "city_population_norm_0_1": 0
+        }
+      }
+    },
+    "major_focus": [
+      "computer science",
+      "engineering",
+      "business",
+      "law",
+      "medicine"
+    ],
+    "fact_provenance": {
+      "schema_version": 2,
+      "facts": {
+        "rank": {
+          "value": 3,
+          "unit": "position",
+          "source": "QS World University Rankings 2026",
+          "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+          "external_reference": "QS World University Rankings 2026",
+          "is_official_external_rank": true,
+          "verified_at": "2026-04-09",
+          "confidence": "high",
+          "status": "official",
+          "method": "Official QS WUR 2026 rank value."
+        },
+        "tuition_total_cost_year_usd": {
+          "value": 97545,
+          "unit": "usd_per_year",
+          "source": "Stanford Financial Aid Undergraduate Budget",
+          "source_url": "https://financialaid.stanford.edu/undergrad/budget/index.html",
+          "verified_at": "2026-05-24",
+          "confidence": "high",
+          "status": "official"
+        },
+        "student_count": {
+          "value": 17552,
+          "unit": "students",
+          "source": "Stanford Facts",
+          "source_url": "https://facts.stanford.edu/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Direct student headcount published on Stanford Facts."
+        },
+        "acceptance_rate_percent": {
+          "value": 3.61,
+          "unit": "percent",
+          "source": "Stanford Common Data Set 2024-2025",
+          "source_url": "https://ucomm.stanford.edu/cds/",
+          "verified_at": "2026-03-12",
+          "confidence": "high",
+          "status": "official",
+          "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+          "basis": {
+            "cycle": "Fall 2024 first-time first-year admission",
+            "applicants": 57326,
+            "admitted": 2067,
+            "enrolled": 1693
+          }
+        },
+        "campus_size_acres": {
+          "value": 8180,
+          "unit": "acres",
+          "source": "Stanford Facts",
+          "source_url": "https://facts.stanford.edu/campuslife/campus/",
+          "verified_at": "2026-09-22",
+          "confidence": "high",
+          "status": "official"
+        },
+        "mba_median_salary_usd": {
+          "value": 185000,
+          "unit": "usd_per_year",
+          "source": "Stanford GSB Employment Report",
+          "source_url": "https://www.gsb.stanford.edu/recruiters/employment-reports",
+          "verified_at": "2026-09-22",
+          "confidence": "high",
+          "status": "official"
+        },
+        "tags": {
+          "value": [
+            "humanities",
+            "social_sciences",
+            "natural_sciences",
+            "engineering",
+            "medicine",
+            "law",
+            "education",
+            "business",
+            "research",
+            "private_university",
+            "computer_science"
+          ],
+          "unit": "tags",
+          "source": "Stanford About",
+          "source_url": "https://www.stanford.edu/about/",
+          "verified_at": "2026-09-17",
+          "confidence": "medium",
+          "status": "official_derived",
+          "method": "Derived from the official Stanford University overview of schools (Humanities and Sciences, Engineering, Medicine, Law, Education, Business) and private research university status."
+        }
+      }
+    },
+    "rank_meta": {
+      "source": "QS World University Rankings 2026",
+      "source_url": "https://www.topuniversities.com/qs-top-uni-wur",
+      "external_reference": "QS World University Rankings 2026",
+      "is_official_external_rank": true,
+      "status": "official",
+      "verified_at": "2026-04-09",
+      "note": "Official QS WUR 2026 rank value."
+    },
+    "admission_categories": [
+      {
+        "id": "stanford_standard",
+        "label": "Undergraduate First-Year Admission",
+        "description": "One university-wide first-year application through the Common Application; applicants apply to Stanford, not to a selected major. SAT or ACT is required. Need-blind for US applicants; international applicants are need-aware if requesting aid.",
+        "scope": "undergraduate_general",
+        "study_levels": [
+          "Bachelor"
+        ],
+        "study_mode": "On-campus",
+        "language_requirements": [],
+        "language_requirements_mode": "none",
+        "extra_requirements": [
+          "Common Application with Stanford Member Questions (3 short essays + 5 short answers)",
+          "$100 nonrefundable application fee or approved fee waiver",
+          "Official high school transcript covering grades 9-11 and mid-year senior grades",
+          "School Report and Counselor Recommendation letter",
+          "Two Teacher Evaluations strictly from core academic disciplines",
+          "SAT or ACT standardized test scores (official or self-reported for admission)"
+        ],
+        "scholarships": [],
+        "requirement_profiles": [
+          {
+            "id": "stanford_standard_applicant",
+            "label": "Program applicant",
+            "description": "One university-wide first-year application through the Common Application; applicants apply to Stanford, not to a selected major. SAT or ACT is required. Need-blind for US applicants; international applicants are need-aware if requesting aid.",
+            "requirements": {},
+            "requirements_note": "Stanford requires the SAT or ACT but publishes no minimum score and no score guarantees admission. Its published Class of 2029 middle-50 SAT range describes score submitters in that historical cohort, not a requirement.",
+            "requirements_source_url": "https://admission.stanford.edu/apply/first-year/testing.html"
+          }
+        ],
+        "application_fee": {
+          "amount": 100,
+          "currency": "USD",
+          "waiver_available": true,
+          "source_url": "https://admission.stanford.edu/apply/first-year/fee.html"
+        },
+        "deadlines": [
+          {
+            "round": "Restrictive Early Action (REA)",
+            "portfolio_deadline": "October 15",
+            "application_deadline": "November 1",
+            "financial_aid_deadline": "November 15",
+            "decision_notification": "Mid-December",
+            "reply_deadline": "May 1"
+          },
+          {
+            "round": "Regular Decision (RD)",
+            "portfolio_deadline": "December 5",
+            "application_deadline": "January 5",
+            "financial_aid_deadline": "February 15",
+            "decision_notification": "Early April",
+            "reply_deadline": "May 1"
+          }
+        ],
+        "cycle": "Annual first-year cycle; official page lists recurring dates without naming an entry year.",
+        "source_url": "https://admission.stanford.edu/apply/first-year/index.html",
+        "deadline_status": "Official first-year page lists month and day without an entry year; confirm the application cycle before relying on a date.",
+        "verified_at": "2026-09-23",
+        "program_names": [
+          "Computer Science",
+          "Symbolic Systems",
+          "Management Science and Engineering",
+          "Mechanical Engineering",
+          "Electrical Engineering",
+          "Bioengineering",
+          "Economics",
+          "Human Biology",
+          "Political Science",
+          "International Relations",
+          "Mathematics",
+          "Physics"
+        ],
+        "program_ids": [
+          "stanford-bs-computer-science",
+          "stanford-bs-symbolic-systems",
+          "stanford-bs-msande",
+          "stanford-bs-mechanical-engineering",
+          "stanford-bs-electrical-engineering",
+          "stanford-bs-bioengineering",
+          "stanford-bs-economics",
+          "stanford-bs-human-biology",
+          "stanford-bs-political-science",
+          "stanford-bs-international-relations",
+          "stanford-bs-mathematics",
+          "stanford-bs-physics"
+        ],
+        "finance_override": {
+          "currency": "USD",
+          "academic_year": "2026-27",
+          "scope": "undergraduate first-year admission; full-time enrollment",
+          "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-undergraduate-tuition-rates",
+          "verified_at": "2026-09-24",
+          "note": "Published full-time tuition is USD 22,577 per quarter for 12-20 units. Annual tuition and living cost are retained separately in university-level budget data.",
+          "price_facts": [
+            {
+              "id": "stanford-undergraduate-tuition-2026-27-quarter-12-20",
+              "kind": "tuition",
+              "amount": 22577,
+              "currency": "USD",
+              "period": "quarter",
+              "fee_status": "same_all_statuses",
+              "applicability": "route_wide",
+              "program_ids": [
+                "stanford-bs-computer-science",
+                "stanford-bs-symbolic-systems",
+                "stanford-bs-msande",
+                "stanford-bs-mechanical-engineering",
+                "stanford-bs-electrical-engineering",
+                "stanford-bs-bioengineering",
+                "stanford-bs-economics",
+                "stanford-bs-human-biology",
+                "stanford-bs-political-science",
+                "stanford-bs-international-relations",
+                "stanford-bs-mathematics",
+                "stanford-bs-physics"
+              ],
+              "study_levels": [
+                "Bachelor"
+              ],
+              "admission_route_id": "stanford_standard",
+              "quantity_basis": "12_20_units",
+              "cycle": "2026-27",
+              "publication_status": "published",
+              "source_url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-undergraduate-tuition-rates",
+              "verified_at": "2026-09-24"
+            }
+          ]
+        },
+        "applicant_route": "first_year",
+        "study_level": "Bachelor",
+        "application_scope": "university_wide",
+        "target": "Stanford undergraduate admission",
+        "major_selection": "non_binding_interest"
+      },
+      {
+        "id": "stanford_gsb_mba_track",
+        "label": "Stanford GSB MBA Admission",
+        "description": "Admissions track for the full-time two-year Master of Business Administration at Stanford Graduate School of Business.",
+        "scope": "graduate_business",
+        "study_levels": [
+          "Master",
+          "Professional"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 275,
+          "currency": "USD",
+          "waiver_available": true
+        },
+        "deadlines": [
+          {
+            "round": "Round 1",
+            "application_deadline": "2026-09-09",
+            "decision_notification": "2026-12-09"
+          },
+          {
+            "round": "Round 2",
+            "application_deadline": "2027-01-06",
+            "decision_notification": "2027-04-01"
+          },
+          {
+            "round": "Round 3",
+            "application_deadline": "2027-04-07",
+            "decision_notification": "2027-05-27"
+          }
+        ],
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL": 100,
+              "IELTS": 7
+            }
+          }
+        ],
+        "extra_requirements": [
+          "Online application including professional resume and work history",
+          "Two letters of recommendation (one supervisory)",
+          "Two personal essays: 'What matters most to you, and why?' and 'Why Stanford?'",
+          "GMAT or GRE score",
+          "Evaluative interview (by invitation)"
+        ],
+        "scholarships": [
+          "Stanford GSB Need-Based Fellowship",
+          "Knight-Hennessy Scholars Program (concurrent application)"
+        ],
+        "requirement_profiles": [
+          {
+            "id": "stanford_gsb_mba_track_applicant",
+            "label": "Program applicant",
+            "description": "Admissions track for the full-time two-year Master of Business Administration at Stanford Graduate School of Business.",
+            "requirements": {}
+          }
+        ],
+        "program_ids": [
+          "stanford-mba"
+        ],
+        "program_names": [
+          "Master of Business Administration (MBA)"
+        ],
+        "cycle": "2026-27 application cycle; Fall 2027 entry",
+        "source_url": "https://www.gsb.stanford.edu/programs/mba/admission",
+        "verified_at": "2026-09-23",
+        "deadline_timezone": "US Pacific Time; applications due at 4:00 p.m.",
+        "applicant_route": "graduate",
+        "study_level": "Master",
+        "application_scope": "course_specific",
+        "target": "Stanford Graduate School of Business MBA application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_phd_doctoral_track",
+        "label": "Stanford Doctoral (PhD) Admission",
+        "description": "Doctoral requirements, deadlines, and funding are set by each Stanford graduate program. Verify the specific program and individual offer.",
+        "scope": "doctoral_research",
+        "study_levels": [
+          "Doctorate",
+          "PhD"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 125,
+          "currency": "USD",
+          "waiver_available": true,
+          "waiver_policy": "Fee waiver request must be submitted 10+ business days prior to departmental deadline."
+        },
+        "deadlines": [
+          {
+            "round": "Program-specific doctoral deadlines",
+            "application_deadline": "Set by the intended graduate program; check its official program page.",
+            "decision_notification": "Program-specific; check the intended graduate program page.",
+            "reply_deadline": "Set by the program; follow the offer instructions.",
+            "source_urls": [
+              "https://gradadmissions.stanford.edu/apply",
+              "https://www.cs.stanford.edu/admissions-graduate-application-deadlines",
+              "https://biosciences.stanford.edu/how-to-apply/"
+            ],
+            "notes": "Stanford graduate departments set their own dates. For example, Computer Science is due December 8, 2026, and Biosciences December 1, 2026; neither is a university-wide PhD deadline."
+          },
+          {
+            "round": "PhD in Computer Science",
+            "application_deadline": "2026-12-08 23:59",
+            "source_url": "https://www.cs.stanford.edu/admissions-graduate-application-deadlines",
+            "id": "stanford-phd-cs-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-phd-cs"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-08",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "PhD in Electrical Engineering",
+            "application_deadline": "2026-12-01 23:59",
+            "source_url": "https://ee.stanford.edu/admissions/phd",
+            "id": "stanford-phd-ee-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-phd-ee"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-01",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "PhD in Biosciences",
+            "application_deadline": "2026-12-01 23:59:59",
+            "source_url": "https://biosciences.stanford.edu/how-to-apply/",
+            "id": "stanford-phd-biosciences-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-phd-biosciences"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-01",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "PhD in Economics",
+            "application_deadline": "2026-12-02 23:59",
+            "source_url": "https://economics.stanford.edu/graduate/applying-stanford",
+            "id": "stanford-phd-economics-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-phd-economics"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-02",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "PhD in Physics",
+            "application_deadline": "2026-12-14 23:59",
+            "source_url": "https://physics.stanford.edu/graduate/graduate-admissions",
+            "id": "stanford-phd-physics-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-phd-physics"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-14",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "PhD in Management Science and Engineering",
+            "application_deadline": "2026-12-01 23:59",
+            "source_url": "https://msande.stanford.edu/academics-admissions/graduate/admission/phd-admission",
+            "id": "stanford-phd-msande-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-phd-msande"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-01",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "PhD in Business",
+            "application_deadline": "Not yet published for Fall 2027 entry",
+            "source_url": "https://www.gsb.stanford.edu/programs/phd/admission/deadline-decisions",
+            "id": "stanford-phd-business-deadline-fall-2027",
+            "deadline_type": "program_application",
+            "publication_status": "not_yet_published",
+            "program_ids": [
+              "stanford-phd-business"
+            ],
+            "applicability": "program_specific",
+            "cycle": "Fall 2027 entry",
+            "verified_at": "2026-09-24"
+          }
+        ],
+        "language_requirements": [
+          {
+            "code": "en",
+            "accept_native": true,
+            "requirements": {
+              "TOEFL": 90,
+              "IELTS": 7
+            }
+          }
+        ],
+        "extra_requirements": [
+          "Statement of Purpose detailing research interests and prospective faculty advisors",
+          "Three letters of recommendation from academic/research mentors",
+          "Official academic transcripts",
+          "Curriculum Vitae (CV) with research publications or projects"
+        ],
+        "scholarships": [
+          "Knight-Hennessy Scholars Fellowship (separate application)",
+          "Program-specific doctoral funding and fellowships; terms vary"
+        ],
+        "requirement_profiles": [
+          {
+            "id": "stanford_phd_doctoral_track_applicant",
+            "label": "Program applicant",
+            "description": "Doctoral requirements, deadlines, and funding are set by each Stanford graduate program. Verify the specific program and individual offer.",
+            "requirements": {}
+          }
+        ],
+        "program_ids": [
+          "stanford-phd-cs",
+          "stanford-phd-ee",
+          "stanford-phd-biosciences",
+          "stanford-phd-economics",
+          "stanford-phd-physics",
+          "stanford-phd-business",
+          "stanford-phd-msande"
+        ],
+        "program_names": [
+          "PhD in Computer Science",
+          "PhD in Electrical Engineering",
+          "PhD in Biosciences",
+          "PhD in Economics",
+          "PhD in Physics",
+          "PhD in Business",
+          "PhD in Management Science and Engineering"
+        ],
+        "cycle": "Autumn 2027-28 entry; dates are department-specific.",
+        "source_url": "https://gradadmissions.stanford.edu/apply",
+        "verified_at": "2026-09-23",
+        "applicant_route": "graduate",
+        "study_level": "Doctorate",
+        "application_scope": "course_specific",
+        "target": "Department-specific Stanford PhD application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_msx_track",
+        "label": "Stanford MSx Admission",
+        "description": "GSB full-time one-year MSx application route; distinct from the two-year MBA.",
+        "scope": "graduate_business",
+        "study_levels": [
+          "Master",
+          "Professional"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 275,
+          "currency": "USD",
+          "waiver_available": true
+        },
+        "deadlines": [
+          {
+            "round": "Round 1",
+            "application_deadline": "2026-10-08 16:00"
+          },
+          {
+            "round": "Round 2",
+            "application_deadline": "2027-01-06 16:00"
+          },
+          {
+            "round": "Round 3",
+            "application_deadline": "2027-02-11 16:00"
+          }
+        ],
+        "language_requirements": [],
+        "extra_requirements": [
+          "Online application and $275 application fee",
+          "Education history and uploaded transcripts",
+          "Professional resume or CV (maximum two pages)",
+          "Two letters of recommendation, including one from the current direct supervisor or an appropriate alternative",
+          "Required essays and career-goal short answer",
+          "Valid GMAT, GRE, or Executive Assessment score",
+          "English proficiency test when required by the program"
+        ],
+        "program_names": [
+          "MS in Management for Experienced Leaders (Stanford MSx)"
+        ],
+        "program_ids": [
+          "stanford-msx"
+        ],
+        "cycle": "Fall 2027 entry; 2026-27 application rounds",
+        "source_url": "https://www.gsb.stanford.edu/programs/msx/admission/deadlines",
+        "verified_at": "2026-09-23",
+        "deadline_timezone": "US Pacific Time",
+        "admission_cost_source_url": "https://www.gsb.stanford.edu/programs/msx/financial-aid/cost-attendance",
+        "requirement_profiles": [
+          {
+            "id": "stanford_msx_track_applicant",
+            "label": "Program applicant",
+            "description": "GSB full-time one-year MSx application route; distinct from the two-year MBA.",
+            "requirements": {}
+          }
+        ],
+        "applicant_route": "graduate",
+        "study_level": "Master",
+        "application_scope": "course_specific",
+        "target": "Stanford MSx application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_ms_cs_track",
+        "label": "Stanford MS in Computer Science Admission",
+        "description": "Departmental terminal master’s route; doctoral funding conditions do not apply to this MS.",
+        "scope": "postgraduate_taught",
+        "study_levels": [
+          "Master"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 125,
+          "currency": "USD",
+          "waiver_available": true
+        },
+        "deadlines": [
+          {
+            "round": "Autumn 2027 entry",
+            "application_deadline": "2026-12-08 23:59"
+          }
+        ],
+        "language_requirements": [],
+        "extra_requirements": [
+          "Online application and $125 application fee",
+          "Statement of purpose (maximum two pages, single-spaced)",
+          "Three online recommendation letters",
+          "Resume or CV, including publications",
+          "Unofficial transcripts for institutions attended full-time for at least one year",
+          "TOEFL or IELTS Academic when required under Stanford’s English-proficiency exemptions"
+        ],
+        "program_names": [
+          "Master of Science in Computer Science (MS CS)"
+        ],
+        "program_ids": [
+          "stanford-ms-cs"
+        ],
+        "cycle": "Autumn 2027 entry",
+        "source_url": "https://www.cs.stanford.edu/admissions-graduate-application-deadlines",
+        "verified_at": "2026-09-23",
+        "deadline_timezone": "US Pacific Time",
+        "funding_note": "The department states that it does not provide financial support for MS students; limited US federal loans are available through the central aid office. Assistantships are not guaranteed.",
+        "funding_source_url": "https://www.cs.stanford.edu/admissions/masters-admissions-frequently-asked-questions",
+        "requirement_profiles": [
+          {
+            "id": "stanford_ms_cs_track_applicant",
+            "label": "Program applicant",
+            "description": "Departmental terminal master’s route; doctoral funding conditions do not apply to this MS.",
+            "requirements": {}
+          }
+        ],
+        "applicant_route": "graduate",
+        "study_level": "Master",
+        "application_scope": "course_specific",
+        "target": "Stanford MS CS application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_ms_ee_track",
+        "label": "Stanford MS in Electrical Engineering Admission",
+        "description": "Departmental Master of Science route with program-specific requirements and funding; doctoral support does not apply automatically.",
+        "scope": "postgraduate_taught",
+        "study_levels": [
+          "Master"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 125,
+          "currency": "USD",
+          "waiver_available": true
+        },
+        "deadlines": [
+          {
+            "round": "Autumn 2027 entry",
+            "application_deadline": "2026-12-01 23:59"
+          }
+        ],
+        "language_requirements": [],
+        "extra_requirements": [
+          "Online application and application fee",
+          "Statement of purpose",
+          "Three recommendation letters",
+          "Transcripts",
+          "TOEFL or IELTS Academic when required under Stanford’s English-proficiency exemptions"
+        ],
+        "program_names": [
+          "Master of Science in Electrical Engineering (MS EE)"
+        ],
+        "program_ids": [
+          "stanford-ms-ee"
+        ],
+        "cycle": "Autumn 2027 entry",
+        "source_url": "https://ee.stanford.edu/admissions/ms",
+        "verified_at": "2026-09-23",
+        "deadline_timezone": "US Pacific Time",
+        "funding_note": "The MS program page describes limited fee-waiver assistance; no general MS stipend or tuition award is verified.",
+        "funding_source_url": "https://ee.stanford.edu/admissions/graduate",
+        "requirement_profiles": [
+          {
+            "id": "stanford_ms_ee_track_applicant",
+            "label": "Program applicant",
+            "description": "Departmental Master of Science route with program-specific requirements and funding; doctoral support does not apply automatically.",
+            "requirements": {}
+          }
+        ],
+        "applicant_route": "graduate",
+        "study_level": "Master",
+        "application_scope": "course_specific",
+        "target": "Stanford MS EE application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_ms_msande_track",
+        "label": "Stanford MS in Management Science and Engineering Admission",
+        "description": "Departmental MS route; MS&E doctoral fellowships are not available to MS students.",
+        "scope": "postgraduate_taught",
+        "study_levels": [
+          "Master"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 125,
+          "currency": "USD",
+          "waiver_available": true
+        },
+        "deadlines": [
+          {
+            "round": "Autumn 2027 entry",
+            "application_deadline": "2026-12-01 23:59"
+          }
+        ],
+        "language_requirements": [],
+        "extra_requirements": [
+          "Online application and $125 application fee",
+          "Statement of purpose (maximum two pages, single-spaced)",
+          "Three recommendation letters",
+          "Scanned transcripts and degree certificate if degree conferral is not shown",
+          "Resume or CV",
+          "Official GRE score; a hardship exemption may be requested",
+          "TOEFL or IELTS Academic when required under Stanford’s English-proficiency rules"
+        ],
+        "program_names": [
+          "Master of Science in Management Science and Engineering (MS MS&E)"
+        ],
+        "program_ids": [
+          "stanford-ms-msande"
+        ],
+        "cycle": "Autumn 2027 entry",
+        "source_url": "https://msande.stanford.edu/academics-admissions/graduate/admission/ms-admission",
+        "verified_at": "2026-09-23",
+        "deadline_timezone": "US Pacific Time",
+        "funding_note": "MS&E doctoral fellowships are explicitly unavailable to MS students. Limited assistantships exist and prioritize continuing doctoral students.",
+        "funding_source_url": "https://msande.stanford.edu/academics-admissions/financial-aid/graduate-financial-aid",
+        "requirement_profiles": [
+          {
+            "id": "stanford_ms_msande_track_applicant",
+            "label": "Program applicant",
+            "description": "Departmental MS route; MS&E doctoral fellowships are not available to MS students.",
+            "requirements": {}
+          }
+        ],
+        "applicant_route": "graduate",
+        "study_level": "Master",
+        "application_scope": "course_specific",
+        "target": "Stanford MS MS&E application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_llm_track",
+        "label": "Stanford Law School LLM Admission",
+        "description": "Advanced law degree route through LSAC; Stanford Law states it provides no funding for LLM programs.",
+        "scope": "postgraduate_taught",
+        "study_levels": [
+          "Master",
+          "Professional"
+        ],
+        "study_mode": "On-campus",
+        "application_fee": {
+          "amount": 85,
+          "currency": "USD",
+          "waiver_available": true
+        },
+        "deadlines": [
+          {
+            "round": "Fall 2027 entry",
+            "application_deadline": "2026-12-01 23:59"
+          }
+        ],
+        "language_requirements": [],
+        "extra_requirements": [
+          "Online application through LSAC and application fee",
+          "Resume or CV",
+          "Personal statement",
+          "Recommendation letters as specified by the application",
+          "Transcripts through the LSAC LLM Credential Assembly Service",
+          "TOEFL when required under the program’s English-proficiency rules"
+        ],
+        "program_names": [
+          "Master of Laws (LLM)"
+        ],
+        "program_ids": [
+          "stanford-llm"
+        ],
+        "cycle": "Fall 2027 entry",
+        "source_url": "https://law.stanford.edu/apply/how-to-apply/advanced-degree-application-process/",
+        "verified_at": "2026-09-23",
+        "deadline_timezone": "US Pacific Time",
+        "funding_note": "Stanford Law provides no funding for any LLM program. Knight-Hennessy eligibility for this specific LLM is not confirmed, so no Stanford award is associated here.",
+        "funding_source_url": "https://law.stanford.edu/apply/tuition-financial-aid/advanced-degree-financial-support/",
+        "finance_note": "The published SLS general cost page does not separately itemize an LLM bill. Exact LLM tuition/mandatory charges for 2026-27 have not been confirmed; 2027-28 rates are unknown. No numeric LLM cost is shown.",
+        "cost_source_url": "https://law.stanford.edu/office-of-student-affairs/the-master-of-laws-llm-degree/",
+        "requirement_profiles": [
+          {
+            "id": "stanford_llm_track_applicant",
+            "label": "Program applicant",
+            "description": "Advanced law degree route through LSAC; Stanford Law states it provides no funding for LLM programs.",
+            "requirements": {}
+          }
+        ],
+        "applicant_route": "graduate",
+        "study_level": "Master",
+        "application_scope": "course_specific",
+        "target": "Stanford Law LLM application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_jd_track",
+        "label": "Stanford Law School JD Admission",
+        "description": "Three-year Juris Doctor admission for Fall 2027 entry. Applicants submit through LSAC. The KHS-applicant completion cutoff is earlier than the regular JD deadline.",
+        "scope": "program",
+        "study_levels": [
+          "Professional"
+        ],
+        "study_mode": "On-campus",
+        "program_ids": [
+          "stanford-jd"
+        ],
+        "program_names": [
+          "Juris Doctor (JD)"
+        ],
+        "application_fee": {
+          "amount": 85,
+          "currency": "USD",
+          "waiver_available": true,
+          "source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/"
+        },
+        "extra_requirements": [
+          "Submit the JD application electronically through LSAC.",
+          "Pay the nonrefundable USD 85 Stanford Law application fee or request the Stanford Law fee waiver before submitting the application; allow 5–7 business days for a decision.",
+          "Submit a one-to-two-page resume and a personal statement of approximately two pages.",
+          "Complete Stanford Law’s required essay selection on the LSAC Letter of Recommendation form.",
+          "Submit valid LSAT or GRE General Test scores; LSAT applicants must also submit LSAT Argumentative Writing.",
+          "Arrange for required transcripts and recommendation letters through LSAC Credential Assembly Service."
+        ],
+        "deadlines": [
+          {
+            "round": "Knight-Hennessy applicants: JD file complete",
+            "application_deadline": "2026-12-01 23:59",
+            "source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+            "id": "stanford-jd-deadline-khs-fall-2027",
+            "deadline_type": "knight_hennessy_jd_complete",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-jd"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-12-01",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "verified_at": "2026-09-24",
+            "cycle": "Fall 2027 entry"
+          },
+          {
+            "round": "Regular JD application deadline",
+            "application_deadline": "2027-02-15 23:59",
+            "source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+            "id": "stanford-jd-deadline-regular-fall-2027",
+            "deadline_type": "regular_application",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-jd"
+            ],
+            "applicability": "program_specific",
+            "date": "2027-02-15",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "verified_at": "2026-09-24",
+            "cycle": "Fall 2027 entry"
+          }
+        ],
+        "deadline_timezone": "US Pacific Time",
+        "cycle": "Fall 2027 entry; application opens September 15, 2026",
+        "deadline_status": "Official current-cycle dates published by Stanford Law School.",
+        "requirement_profiles": [
+          {
+            "id": "stanford_jd_applicant",
+            "label": "JD applicant",
+            "description": "Submit a complete JD application through LSAC for Fall 2027 entry.",
+            "requirements": {},
+            "requirements_note": "Stanford requires a bachelor’s degree by enrollment and either LSAT or GRE. It publishes no minimum GPA or score guaranteeing admission.",
+            "requirements_source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/"
+          }
+        ],
+        "source_url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+        "verified_at": "2026-09-24",
+        "applicant_route": "graduate",
+        "study_level": "Professional",
+        "application_scope": "course_specific",
+        "target": "Stanford Law JD application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_md_track",
+        "label": "Stanford School of Medicine MD Admission",
+        "description": "MD admission uses the AMCAS primary application followed by an invitation-only Stanford Supplemental Application. The current official timeline lists recurring month-and-day dates but does not name an entry cycle; verify the dates against the intended AMCAS cycle.",
+        "scope": "program",
+        "study_levels": [
+          "Professional"
+        ],
+        "study_mode": "On-campus",
+        "program_ids": [
+          "stanford-md"
+        ],
+        "program_names": [
+          "Doctor of Medicine (MD)"
+        ],
+        "application_fee_note": "Stanford requires a nonrefundable supplemental application fee, but the current official page does not state its amount. The AAMC Fee Assistance Program waiver is available only to applicants approved before the primary application.",
+        "extra_requirements": [
+          "Apply through the American Medical College Application Service (AMCAS).",
+          "Submit MCAT scores through the AMCAS process; check the current cycle page for the eligible test-date window.",
+          "Submit three to six letters of recommendation through AMCAS Letters Service.",
+          "After invitation, submit Stanford’s supplemental application, required essays, fee or applicable AAMC Fee Assistance Program waiver, and all required materials through the Stanford MD portal.",
+          "Do not send transcripts or letters directly to Stanford unless requested."
+        ],
+        "deadlines": [
+          {
+            "round": "AMCAS primary application",
+            "application_deadline": "October 1 annually; confirm the date for the intended entry cycle.",
+            "source_url": "https://med.stanford.edu/md-admissions/timeline.html",
+            "id": "stanford-md-deadline-amcas-2027",
+            "deadline_type": "amcas_primary",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-md"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-10-01",
+            "time": "23:59",
+            "timezone": "America/New_York",
+            "cycle": "Entering class of 2027",
+            "verified_at": "2026-09-24"
+          },
+          {
+            "round": "Stanford supplemental application and all materials",
+            "application_deadline": "October 9 annually; confirm the date for the intended entry cycle.",
+            "source_url": "https://med.stanford.edu/md-admissions/timeline.html",
+            "id": "stanford-md-deadline-supplemental-2027",
+            "deadline_type": "stanford_supplemental",
+            "publication_status": "published",
+            "program_ids": [
+              "stanford-md"
+            ],
+            "applicability": "program_specific",
+            "date": "2026-10-09",
+            "time": "23:59",
+            "timezone": "America/Los_Angeles",
+            "cycle": "Entering class of 2027",
+            "verified_at": "2026-09-24"
+          }
+        ],
+        "cycle": "Entering class of 2027",
+        "deadline_status": "Official 2027 cycle dates",
+        "requirement_profiles": [
+          {
+            "id": "stanford_md_applicant",
+            "label": "MD applicant",
+            "description": "Apply through AMCAS, then complete Stanford’s supplemental application if invited.",
+            "requirements": {},
+            "requirements_note": "Stanford’s current official admissions timeline lists the application sequence and deadlines. Review the current AMCAS cycle for MCAT validity dates and current application instructions.",
+            "requirements_source_url": "https://med.stanford.edu/md-admissions/how-to-apply"
+          }
+        ],
+        "source_url": "https://med.stanford.edu/md-admissions/how-to-apply",
+        "verified_at": "2026-09-24",
+        "applicant_route": "graduate",
+        "study_level": "Professional",
+        "application_scope": "course_specific",
+        "target": "Stanford MD application",
+        "major_selection": "not_applicable"
+      },
+      {
+        "id": "stanford_undergraduate_transfer",
+        "label": "Stanford Undergraduate Transfer Admission",
+        "description": "Transfer applicants apply through the Common Application to begin in the Fall quarter. Stanford’s official page lists recurring March 15 timing but does not name the entry cycle; confirm all dates and the application fee for the intended year.",
+        "scope": "undergraduate_general",
+        "study_levels": [
+          "Bachelor"
+        ],
+        "study_mode": "On-campus",
+        "applicant_routes": [
+          "transfer"
+        ],
+        "program_names": [
+          "Computer Science",
+          "Symbolic Systems",
+          "Management Science and Engineering",
+          "Mechanical Engineering",
+          "Electrical Engineering",
+          "Bioengineering",
+          "Economics",
+          "Human Biology",
+          "Political Science",
+          "International Relations",
+          "Mathematics",
+          "Physics"
+        ],
+        "application_fee": {
+          "amount": 100,
+          "currency": "USD",
+          "waiver_available": true,
+          "source_url": "https://admission.stanford.edu/apply/transfer/"
+        },
+        "application_fee_note": "Stanford lists a USD 100 nonrefundable application fee and a fee-waiver request. The official page does not name an entry year for its recurring transfer dates.",
+        "extra_requirements": [
+          "Submit the Common Application.",
+          "Submit ACT or SAT scores; Stanford reinstated the testing requirement beginning with the 2025–26 application cycle.",
+          "Submit the official high school transcript including graduation date and official transcripts from every college or university attended.",
+          "Submit the College Report completed by a school official at the current or most recent institution.",
+          "Submit letters of recommendation from two academic instructors.",
+          "Submit the USD 100 nonrefundable application fee or request a fee waiver."
+        ],
+        "deadlines": [
+          {
+            "round": "Transfer admission",
+            "application_deadline": "March 15 annually; confirm the date for the intended entry cycle.",
+            "decision_notification": "By mid-May (annual page; verify current cycle)",
+            "reply_deadline": "June 2 (annual page; verify current cycle)",
+            "source_url": "https://admission.stanford.edu/apply/transfer/",
+            "cycle": "Annual transfer cycle; entry year not stated on official page",
+            "verified_at": "2026-09-29"
+          }
+        ],
+        "cycle": "Annual transfer cycle; current official page lists recurring dates without an entry year. All transfer entrants begin in Fall quarter.",
+        "deadline_status": "Recurring dates published without a named entry cycle; verify before relying on them.",
+        "requirement_profiles": [
+          {
+            "id": "stanford_transfer_applicant",
+            "label": "Transfer applicant",
+            "description": "External transfer applicants apply to Stanford as a whole; undergraduate majors are not separate admission routes.",
+            "requirements": {},
+            "requirements_note": "Stanford requires the listed application materials but publishes no guaranteed admission score.",
+            "requirements_source_url": "https://admission.stanford.edu/apply/transfer/"
+          }
+        ],
+        "source_url": "https://admission.stanford.edu/apply/transfer/",
+        "verified_at": "2026-09-29",
+        "program_ids": [
+          "stanford-bs-computer-science",
+          "stanford-bs-symbolic-systems",
+          "stanford-bs-msande",
+          "stanford-bs-mechanical-engineering",
+          "stanford-bs-electrical-engineering",
+          "stanford-bs-bioengineering",
+          "stanford-bs-economics",
+          "stanford-bs-human-biology",
+          "stanford-bs-political-science",
+          "stanford-bs-international-relations",
+          "stanford-bs-mathematics",
+          "stanford-bs-physics"
+        ],
+        "price_facts": [
+          {
+            "id": "stanford-transfer-application-fee-current-guidance",
+            "kind": "application_fee",
+            "amount": 100,
+            "currency": "USD",
+            "period": "one_time",
+            "fee_status": "same_all_statuses",
+            "applicability": "route_wide",
+            "program_ids": [
+              "stanford-bs-computer-science",
+              "stanford-bs-symbolic-systems",
+              "stanford-bs-msande",
+              "stanford-bs-mechanical-engineering",
+              "stanford-bs-electrical-engineering",
+              "stanford-bs-bioengineering",
+              "stanford-bs-economics",
+              "stanford-bs-human-biology",
+              "stanford-bs-political-science",
+              "stanford-bs-international-relations",
+              "stanford-bs-mathematics",
+              "stanford-bs-physics"
+            ],
+            "cycle": "Current transfer application guidance; entry year not stated",
+            "publication_status": "published",
+            "source_url": "https://admission.stanford.edu/apply/transfer/",
+            "verified_at": "2026-09-29"
+          }
+        ],
+        "applicant_route": "transfer",
+        "study_level": "Bachelor",
+        "application_scope": "university_wide",
+        "target": "Stanford undergraduate transfer admission",
+        "major_selection": "non_binding_interest",
+        "funding_source_url": "https://financialaid.stanford.edu/undergrad/apply/"
+      }
+    ],
+    "verified_sources": [
+      {
+        "topic": "undergraduate_deadlines",
+        "url": "https://admission.stanford.edu/apply/first-year/deadlines.html"
+      },
+      {
+        "topic": "undergraduate_fees_and_waivers",
+        "url": "https://admission.stanford.edu/apply/first-year/fee.html"
+      },
+      {
+        "topic": "undergraduate_testing_policy",
+        "url": "https://admission.stanford.edu/apply/first-year/testing.html"
+      },
+      {
+        "topic": "undergraduate_class_profile",
+        "url": "https://admission.stanford.edu/apply/selection/profile.html"
+      },
+      {
+        "topic": "international_financial_aid_need_aware",
+        "url": "https://financialaid.stanford.edu/undergrad/how/international.html"
+      },
+      {
+        "topic": "undergraduate_financial_aid_budget",
+        "url": "https://financialaid.stanford.edu/undergrad/budget/index.html"
+      },
+      {
+        "topic": "undergraduate_affordability_thresholds",
+        "url": "https://financialaid.stanford.edu/undergrad/how/index.html"
+      },
+      {
+        "topic": "campus_size_and_housing",
+        "url": "https://facts.stanford.edu/campuslife/campus/"
+      },
+      {
+        "topic": "student_enrollment_headcount",
+        "url": "https://facts.stanford.edu/"
+      },
+      {
+        "topic": "gsb_mba_deadlines",
+        "url": "https://www.gsb.stanford.edu/programs/mba/admission/deadlines"
+      },
+      {
+        "topic": "gsb_employment_report_salaries",
+        "url": "https://www.gsb.stanford.edu/recruiters/employment-reports"
+      },
+      {
+        "topic": "graduate_computer_science",
+        "url": "https://cs.stanford.edu/admissions"
+      },
+      {
+        "topic": "knight_hennessy_scholars",
+        "url": "https://knight-hennessy.stanford.edu/"
+      },
+      {
+        "topic": "doctoral_5year_funding_guarantee",
+        "url": "https://vpge.stanford.edu/fellowships-funding/funding-overview"
+      },
+      {
+        "topic": "law_school_admissions",
+        "url": "https://law.stanford.edu/apply/"
+      },
+      {
+        "topic": "school_of_medicine_admissions",
+        "url": "https://med.stanford.edu/md-admissions.html"
+      },
+      {
+        "topic": "acceptance_rate_cds",
+        "url": "https://ucomm.stanford.edu/cds/"
+      },
+      {
+        "topic": "about_stanford",
+        "url": "https://www.stanford.edu/about/"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://facts.stanford.edu/"
+      },
+      {
+        "topic": "acceptance_rate",
+        "url": "https://ucomm.stanford.edu/cds/"
+      },
+      {
+        "topic": "tags",
+        "url": "https://www.stanford.edu/about/"
+      }
+    ],
+    "career_outcomes": {
+      "undergraduate": {
+        "graduation_rate_6year_percent": 96,
+        "retention_rate_first_year_percent": 98,
+        "top_employment_destinations": [
+          "Silicon Valley Technology",
+          "Finance & Consulting",
+          "Startups & Venture Capital",
+          "Graduate / Professional Schools"
+        ]
+      },
+      "graduate_mba": {
+        "median_base_salary_usd": 185000,
+        "median_signing_bonus_usd": 30000,
+        "median_total_compensation_usd": 215000,
+        "employment_rate_3months_percent": 90,
+        "source_url": "https://www.gsb.stanford.edu/recruiters/employment-reports"
+      }
+    }
+  },
+  "official_admissions_record": {
+    "university_name": "Stanford University",
+    "university_wide": {
+      "status": "official_counts",
+      "kind": "undergraduate_institution_wide",
+      "acceptance_rate_percent": 3.61,
+      "counts": {
+        "cycle": "Fall 2024 first-time first-year admission",
+        "applicants": 57326,
+        "admitted": 2067,
+        "enrolled": 1693
+      },
+      "semantics": "Stanford IRDS reports applicant, admit, and matriculant trends for first-time first-year admission. The Common Data Set page publishes applicants, admitted, and enrolled counts for first-year admission.",
+      "sources": [
+        {
+          "url": "https://ucomm.stanford.edu/cds/",
+          "label": "Stanford Common Data Set 2024-2025"
+        },
+        {
+          "url": "https://irds.stanford.edu/data-findings/undergraduate-admission",
+          "label": "Stanford IRDS publishes undergraduate admission trends."
+        },
+        {
+          "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+          "label": "Stanford explains that first-year applicants apply to the university as a whole."
+        }
+      ],
+      "provenance": {
+        "source": "Stanford Common Data Set 2024-2025",
+        "source_url": "https://ucomm.stanford.edu/cds/",
+        "verified_at": "2026-03-12",
+        "status": "official",
+        "confidence": "high",
+        "method": "Calculated from official CDS counts for Fall 2024 first-time first-year admission (2,067 admitted / 57,326 applicants).",
+        "basis": {
+          "cycle": "Fall 2024 first-time first-year admission",
+          "applicants": 57326,
+          "admitted": 2067,
+          "enrolled": 1693
+        }
+      }
+    },
+    "program_level": {
+      "status": "verified_null_only",
+      "kind": "institution_wide_only",
+      "acceptance_rate_percent": null,
+      "counts": null,
+      "notes": "Official undergraduate admission is reported institution-wide rather than by major, so UniSearch stores verified-null rows for the current programs instead of inventing major-level acceptance rates.",
+      "sources": [
+        {
+          "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+          "label": "Stanford undergrad admission is university-wide rather than major-specific."
+        },
+        {
+          "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+          "label": "Stanford first-year application overview"
+        }
+      ]
+    },
+    "programs": [
+      {
+        "program_name": "Computer Science",
+        "source_scope": "program_verified_null",
+        "data_type": "verified-null",
+        "scope": "program",
+        "metric_value": null,
+        "metric_unit": null,
+        "acceptance_rate_percent": null,
+        "counts": null,
+        "semantics": "Stanford says first-year applicants apply to the university as a whole, not to an undergraduate major, so no public major-specific admit totals are published for Computer Science.",
+        "notes": "Stored as verified-null because Stanford does not publish a separate undergraduate Computer Science admission rate.",
+        "sources": [
+          {
+            "url": "https://admission.stanford.edu/apply/first-year/apply.html",
+            "label": "Stanford first-year application overview"
+          }
+        ],
+        "provenance": {
+          "source": "Stanford first-year application overview",
+          "source_url": "https://admission.stanford.edu/apply/first-year/apply.html",
+          "verified_at": "2026-03-25",
+          "status": "official",
+          "confidence": "high",
+          "method": "Verified-null: official Stanford admissions materials describe university-wide undergraduate admission rather than major-specific selection.",
+          "basis": {
+            "summary": "Stanford says first-year applicants apply to the university as a whole, not to an undergraduate major, so no public major-specific admit totals are published for Computer Science."
+          }
+        }
+      }
+    ]
+  },
+  "official_admissions_verified_at": "2026-04-04"
+}
