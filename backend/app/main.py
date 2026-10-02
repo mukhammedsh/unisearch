@@ -165,9 +165,11 @@ def _security_headers() -> dict[str, str]:
     return {
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "0",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
         "Cross-Origin-Opener-Policy": "same-origin",
+        "Cross-Origin-Resource-Policy": "same-origin",
         "X-Permitted-Cross-Domain-Policies": "none",
         "Content-Security-Policy": (
             "default-src 'self'; "
