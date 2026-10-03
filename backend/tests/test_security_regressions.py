@@ -53,6 +53,18 @@ class SecurityRegressionTests(unittest.TestCase):
             self.assertEqual(client.get("/api/health").status_code, 200)
             self.assertEqual(client.get("/apix/health?warmup=true").status_code, 404)
 
+    def test_ops_authorization_handles_bearer_and_ops_header_formats(self):
+        client = TestClient(app)
+        with patch("app.routers.root.warmup_runtime", return_value={"ok": True}):
+            res_header = client.get("/health?warmup=t", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+            self.assertEqual(res_header.status_code, 200)
+
+            res_bearer = client.get("/health?warmup=t", headers={"Authorization": "Bearer test-ops-token"})
+            self.assertEqual(res_bearer.status_code, 200)
+
+            res_invalid = client.get("/health?warmup=t", headers={"Authorization": "Bearer wrong-token"})
+            self.assertEqual(res_invalid.status_code, 401)
+
     def test_profile_payload_rejects_overly_large_nested_choice_maps(self):
         payload = {
             "profile": {

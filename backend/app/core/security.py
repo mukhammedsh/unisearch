@@ -293,15 +293,19 @@ def ops_request_is_authorized(request: Request) -> bool:
     if not token:
         return False
 
-    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip()
+    token_bytes = token.encode("utf-8")
+    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip().encode("utf-8")
     auth_value = str(request.headers.get("authorization", "")).strip()
+
     bearer_prefix = "bearer "
     bearer_value = auth_value[len(bearer_prefix):].strip() if auth_value.lower().startswith(bearer_prefix) else ""
-    
-    return (
-        hmac.compare_digest(header_value, token) or 
-        hmac.compare_digest(bearer_value, token)
-    )
+    bearer_bytes = bearer_value.encode("utf-8")
+
+    # Evaluate both digests to prevent timing side-channel leaks from short-circuiting
+    match_header = hmac.compare_digest(header_value, token_bytes)
+    match_bearer = hmac.compare_digest(bearer_bytes, token_bytes)
+
+    return match_header or match_bearer
 
 
 def protected_ops_response() -> JSONResponse:
