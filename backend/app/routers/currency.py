@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Response
+from typing import Optional
+
+from fastapi import APIRouter, HTTPException, Query, Response
 
 from app.services import currency as currency_service
 
@@ -11,11 +13,20 @@ router = APIRouter(tags=["currency"])
     summary="Currency exchange rates and filter limits",
     description="Returns current exchange rates relative to USD, date, data source, and filter limits per currency.",
 )
-def get_currency_rates(response: Response = None):
+def get_currency_rates(
+    base: Optional[str] = Query(None, max_length=16),
+    response: Response = None,
+):
+    base_code = "USD"
+    if base is not None:
+        base_code = base.strip().upper()
+        if not currency_service._CURRENCY_CODE_RE.match(base_code):
+            raise HTTPException(status_code=400, detail="Invalid base currency code")
+
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=3600"
 
-    rates_info = currency_service.get_rates()
+    rates_info = currency_service.get_rates(base=base_code)
     filter_limits = currency_service.load_filter_limits_config()
 
     return {

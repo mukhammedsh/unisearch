@@ -319,6 +319,21 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
         self.assertIn("default", data["filter_limits"])
         self.assertEqual(data["filter_limits"]["default"]["max"], 100000)
 
+    def test_get_currency_rates_invalid_base_code_returns_error(self):
+        invalid_bases = [
+            "INVALID_BASE_CODE_TOO_LONG",
+            "<script>alert(1)</script>",
+            "123",
+            "US!",
+            "'; DROP TABLE users;--",
+        ]
+        for invalid_base in invalid_bases:
+            with self.subTest(base=invalid_base):
+                resp = self.client.get("/currency/rates", params={"base": invalid_base})
+                self.assertIn(resp.status_code, (400, 422))
+                data = resp.json()
+                self.assertIn("detail", data)
+
     def test_get_currency_status_endpoint(self):
         resp = self.client.get("/currency/status")
         self.assertEqual(resp.status_code, 200)
