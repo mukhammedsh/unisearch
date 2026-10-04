@@ -1,0 +1,2229 @@
+{
+  "review_status": "reviewed",
+  "review_date": "2026-10-03",
+  "boundary": "Stanford Stage 1 official-source and applicability recheck accepted; final orchestrator review is documented in coverage.md. No runtime or next-university integration.",
+  "confirmed_repairs": [
+    {
+      "fact_id": "msande-ms-eligibility-and-study",
+      "field": "exceptions",
+      "restored_text": "Programming timing differs across department pages; treat it as a preparation/conditional completion issue, not automatic rejection."
+    },
+    {
+      "fact_id": "bioe-2027-decisions",
+      "field": "conditions",
+      "restored_text": "Apply 2027 directory deadline, not the older 2025 date still shown on department site."
+    },
+    {
+      "fact_id": "bioe-phd-study-and-funding",
+      "field": "conditions",
+      "restored_text": "Specific fellowship nomination and grant availability govern an individual award."
+    },
+    {
+      "fact_id": "cheme-hcp-ms-route",
+      "field": "exceptions",
+      "restored_text": "Non-traditional major is not automatically disqualifying."
+    },
+    {
+      "fact_id": "cheme-phd-funding",
+      "field": "conditions",
+      "restored_text": "Continued funding depends on program good standing."
+    },
+    {
+      "fact_id": "mse-2027-application",
+      "field": "conditions",
+      "restored_text": "Late applications are refused and late supporting materials may not be reviewed."
+    },
+    {
+      "fact_id": "me-phd-application",
+      "field": "exceptions",
+      "restored_text": "Winter/spring PhD start is conditional on prior department contact, not an open general entry route."
+    },
+    {
+      "fact_id": "me-funding-and-study",
+      "field": "conditions",
+      "restored_text": "Actual award and continuation depend on the offer, faculty funds and appointment terms."
+    },
+    {
+      "fact_id": "me-engineer-external-and-internal",
+      "field": "conditions",
+      "restored_text": "Faculty thesis supervision and financial aid arrangement must exist before admission."
+    }
+  ],
+  "route_domain_reviews": [
+    {
+      "group": "Engineering actual coterm routes",
+      "review_outcome": "Department content reviewed; added own prerequisites/materials/funding/progression, not copied from external rules",
+      "option_ids": [
+        "stanford-aa-ms",
+        "stanford-bioe-ms",
+        "stanford-cheme-ms",
+        "stanford-cee-ms",
+        "stanford-cs-ms",
+        "stanford-cme-ms",
+        "stanford-ee-ms",
+        "stanford-matsc-ms",
+        "stanford-me-ms",
+        "stanford-mgtsc-ms"
+      ],
+      "fact_ids": [
+        "cs-coterm-eligibility-and-application",
+        "engineering-coterm-2027-directory-details",
+        "aa-coterm-specific-materials-fee-and-continuation",
+        "bioe-coterm-preparation-and-funding",
+        "bioe-coterm-materials-and-cycle-lag",
+        "icme-coterm-materials-and-course-transfer",
+        "mse-coterm-materials-and-opening-windows",
+        "me-coterm-specific-preparation-materials-and-continuation",
+        "cheme-coterm-specific-materials-and-progress",
+        "msande-coterm-preparation-and-private-details",
+        "cee-coterm-materials-progress-and-funding",
+        "ee-coterm-eligibility-materials-and-support"
+      ]
+    },
+    {
+      "group": "Engineering actual internal/combined contexts",
+      "review_outcome": "Specific petitions/form destination, populations and progression preserved; does not create external route",
+      "fact_ids": [
+        "icme-internal-ms-restrictions-and-fee",
+        "msande-current-graduate-procedure",
+        "ee-added-ms-eligibility-windows-and-materials",
+        "mse-phd-enroute-ms-requirement",
+        "msande-joint-law-and-mpp-procedures",
+        "bioe-dual-joint-requirements-and-billing",
+        "cheme-phd-added-ms-conditions",
+        "me-phd-added-ms-conditions",
+        "aa-ms-to-phd-specific-conditions"
+      ]
+    },
+    {
+      "group": "Engineering degree completion content all27 Bulletin awards",
+      "review_outcome": "Reread original catalog internal progression/credit/grading/GPA/advising; all known fields preserved separate from admission minima",
+      "fact_ids": [
+        "recheck-aa-eng-degree-completion-context",
+        "recheck-aa-ms-degree-completion-context",
+        "recheck-aa-phd-degree-completion-context",
+        "recheck-bioe-ms-degree-completion-context",
+        "recheck-bioe-phd-degree-completion-context",
+        "recheck-cee-eng-degree-completion-context",
+        "recheck-cee-phd-degree-completion-context",
+        "recheck-cheme-eng-degree-completion-context",
+        "recheck-cheme-ms-degree-completion-context",
+        "recheck-cheme-phd-degree-completion-context",
+        "recheck-cme-ms-degree-completion-context",
+        "recheck-cme-phd-degree-completion-context",
+        "recheck-cs-phd-degree-completion-context",
+        "recheck-cee-ms-degree-completion-context",
+        "recheck-cs-ms-degree-completion-context",
+        "recheck-design-ms-degree-completion-context",
+        "recheck-ee-ms-degree-completion-context",
+        "recheck-ee-phd-degree-completion-context",
+        "recheck-engr-ms-degree-completion-context",
+        "recheck-matsc-eng-degree-completion-context",
+        "recheck-matsc-ms-degree-completion-context",
+        "recheck-matsc-phd-degree-completion-context",
+        "recheck-me-eng-degree-completion-context",
+        "recheck-me-ms-degree-completion-context",
+        "recheck-mgtsc-phd-degree-completion-context",
+        "recheck-me-phd-degree-completion-context",
+        "recheck-mgtsc-ms-degree-completion-context"
+      ]
+    },
+    {
+      "group": "Undergraduate linked declaration review",
+      "review_outcome": "Program-specific approval/prerequisite gates now source-backed; shared firstyear/transfer admission remains institutional",
+      "fact_ids": [
+        "ug-ccsre-linked-declaration",
+        "ug-chem-linked-declaration",
+        "ug-econ-linked-declaration",
+        "ug-datsc-linked-declaration",
+        "ug-math-linked-declaration",
+        "ug-ling-linked-declaration",
+        "ug-mse-linked-declaration",
+        "ug-psych-linked-declaration",
+        "ug-engl-linked-declaration",
+        "ug-idmen-linked-approval",
+        "ug-art-linked-declaration",
+        "ug-classics-linked-declaration",
+        "ug-amstu-linked-declaration",
+        "ug-urban-linked-declaration",
+        "ug-bio-linked-declaration",
+        "ug-physics-linked-declaration",
+        "ug-cs-linked-declaration",
+        "ug-ee-linked-declaration",
+        "ug-sts-linked-declaration",
+        "ug-music-linked-declaration"
+      ],
+      "remaining": []
+    },
+    {
+      "group": "HCP specific configurations",
+      "review_outcome": "CS/MSE/ME/EE/MS&E/ICME/CEE/ChemE/AA source content reviewed or existing route detail reused; direct CGOE pages access challenge; fee not substituted",
+      "fact_ids": [
+        "cs-hcp-load-location-and-support",
+        "mse-hcp-load-campus-and-status",
+        "me-hcp-local-study-and-application-conditions",
+        "ee-hcp-study-funding-and-status-transfer",
+        "cee-hcp-campus-and-support-restrictions",
+        "cee-hybrid-ses-eligibility-mode-cost-and-support"
+      ],
+      "remaining": []
+    },
+    {
+      "group": "Central undergraduate/graduate conditional fee schedules and concurrent policy",
+      "review_outcome": "Full published fee panels and REA concurrent restrictions reviewed, retained separate cycle/category/period",
+      "fact_ids": [
+        "stanford-firstyear-rea-concurrent-application-restrictions",
+        "stanford-additional-residential-and-incidental-charges-2026-27",
+        "stanford-graduate-special-and-excess-unit-tuition-2026-27"
+      ],
+      "remaining": []
+    }
+  ],
+  "open_review_groups": [],
+  "last_structure_check": {
+    "command": "validate.py --acceptance",
+    "result": "254 options; 1394 facts; zero errors; acceptance collection gate passed",
+    "institutional_acceptance": "accepted; repository global checks coordinated by orchestrator"
+  },
+  "critical_additions": [
+    "CEE HybridSES configuration hasdistinctadmission/curriculum/visa/funding/housing phases",
+    "EEHCPstatusswitch2quarters15unitsGPA3.5 isprogresscondition",
+    "MathB- andDataScienceBSgateway arepostadmissiondeclarationgates",
+    "IDMEN4quarters58unitsremaining/twoadviserapproval",
+    "StanfordgraduatecredentialWESpostoffercost220timing/checklist",
+    "Graduatehousing8units/TGR/approvedOAE exception excludesHCP/MLA"
+  ],
+  "engineering_real_application_families": [
+    {
+      "family": "AA",
+      "option_ids": [
+        "stanford-aa-ms",
+        "stanford-aa-phd",
+        "stanford-aa-eng"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-ms-admission"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-phd-admission-progression"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-phd-materials-support"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-ms-gre-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-english-score-discrepancy"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-coterm-specific-materials-fee-and-continuation"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-ms-to-phd-specific-conditions"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "aa-engineer-internal-route"
+        }
+      ],
+      "source_ids": [
+        "aa-coterm-full",
+        "aa-doctoral-study",
+        "aa-engineer-admission",
+        "aa-grad-faq",
+        "aa-ms-admissions",
+        "aa-phd-admissions",
+        "engineering-bulletin",
+        "recheck-bulletin-aa-phd",
+        "test-scores"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "MS external excludes related priorMS; HCP requires campus access; coterm twofaculty letters; PhD internal twoletters+fundingcommitment; Engineer internal only. Department old TOEFL scale remains unresolved.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "BioE",
+      "option_ids": [
+        "stanford-bioe-ms",
+        "stanford-bioe-phd"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-eligibility-and-documents"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-2027-decisions"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-ms-study"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-phd-study-and-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-coterm-preparation-and-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-coterm-materials-and-cycle-lag"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "bioe-dual-joint-requirements-and-billing"
+        }
+      ],
+      "source_ids": [
+        "bioe-admission",
+        "bioe-coterm-admission",
+        "bioe-coterm-program",
+        "bioe-funding",
+        "bioe-how-apply",
+        "bioe-joint-full",
+        "bioe-ms-study",
+        "bioe-phd-study",
+        "bioe-timeline",
+        "coterm-directory",
+        "graduate-dir-api"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "External noGPA/subjectmin is separate from coterm coursepreparation/GPAexpectation; coterm no departmentfunding; joinedMD/PhD engineeringMScondition separate. Department old2026interview/deferral timing not2027promise.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "ChemE",
+      "option_ids": [
+        "stanford-cheme-ms",
+        "stanford-cheme-phd",
+        "stanford-cheme-eng"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-admission-preparation"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-hcp-ms-route"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-phd-2027-admission"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-phd-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-coterm-specific-materials-and-progress"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-phd-added-ms-conditions"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cheme-engineer-internal-route"
+        }
+      ],
+      "source_ids": [
+        "cheme-admissions",
+        "cheme-coterm-full",
+        "cheme-coterm-study",
+        "cheme-engineer-admission",
+        "cheme-hcp-admissions",
+        "cheme-phd-admissions",
+        "cheme-phd-funding",
+        "graduate-dir-api",
+        "recheck-bulletin-cheme-ms"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ExternalMS HCPonly; noGRE,noKHS/nodepartmentMSaid; cotermMS andsamePhDaddedMS aredistinct; EngineeractiveChemEMS/PhDonly; degreeGPA3 notinitialminimum.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "CEE",
+      "option_ids": [
+        "stanford-cee-ms",
+        "stanford-cee-phd",
+        "stanford-cee-eng",
+        "stanford-option-cee-ms-hybrid-ses"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-application-materials"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-2027-deadline-offer"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-english-conflict"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-ms-study-and-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-phd-study-and-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-eng-study-and-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-coterm-materials-progress-and-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-hcp-campus-and-support-restrictions"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cee-hybrid-ses-eligibility-mode-cost-and-support"
+        }
+      ],
+      "source_ids": [
+        "cee-coterm-full",
+        "cee-coterm-program",
+        "cee-degrees",
+        "cee-faq",
+        "cee-funding",
+        "cee-hcp-full",
+        "cee-how-apply",
+        "cee-hybrid-ses-faq",
+        "cee-hybrid-ses-requirements",
+        "cee-timeline",
+        "graduate-dir-api",
+        "test-scores"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ExternalEngineer listed2027; currentMS/EngineerPhD is newregularapplication; cotermSpringactivation differsgeneralAutumnheading. HybridSES distinctmode/admission/cost/visa/KHS; regularHCP studentvisa rule nothybridoverseasphase.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "CS",
+      "option_ids": [
+        "stanford-cs-ms",
+        "stanford-cs-phd"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-ms-entry-and-hcp"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-ms-tests-and-english-policy"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-phd-application-scope"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-phd-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-coterm-eligibility-and-application"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-hcp-load-location-and-support"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-current-application-and-enroute-exception"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-phd-intermediate-ms-petition"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "cs-joint-mba-law-entry-restrictions"
+        }
+      ],
+      "source_ids": [
+        "coterm-directory",
+        "cs-checklist",
+        "cs-coterm",
+        "cs-coterm-faq",
+        "cs-current-add-degree",
+        "cs-deadlines",
+        "cs-funding",
+        "cs-hcp-full",
+        "cs-joint-law-ms",
+        "cs-joint-law-phd",
+        "cs-joint-mba",
+        "cs-ms",
+        "cs-ms-faq",
+        "cs-phd",
+        "cs-phd-enroute-ms",
+        "cs-phd-faq",
+        "cs-ra",
+        "graduate-dir-api",
+        "test-scores"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "InstitutionalUG unrelatedtoCSgraduateforms; coterm120units/threeletters/recommended3.5notmin; currentgradregularadmission noGAP exceptsameCSPhDprogression; HCPUS/visa wording needsconfirmation; MBAyear2excluded; JDMS specificwindow.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "Design",
+      "option_ids": [
+        "stanford-design-ms"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "design-ms-admission"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "design-ms-structure-and-funding"
+        }
+      ],
+      "source_ids": [
+        "design-admissions",
+        "design-degree",
+        "design-faq",
+        "graduate-dir-api"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ScienceengineeringBS/equivalentletter andoneyearwork isactualadmissionqualification; digitalportfoliorequirednofixedcount; deadlineallmaterials; noPhD; sixquarterfulltimeprojectprogram,acceptanceCAtermsofferyear-specific.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "ICME",
+      "option_ids": [
+        "stanford-cme-ms",
+        "stanford-cme-phd"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "icme-route-documents"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "icme-2027-route"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "icme-coterm-materials-and-course-transfer"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "icme-internal-ms-restrictions-and-fee"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "icme-specific-fellowship-and-assistantship-components"
+        }
+      ],
+      "source_ids": [
+        "graduate-dir-api",
+        "icme-application",
+        "icme-deadlines-full",
+        "icme-faq",
+        "icme-funding-full",
+        "icme-ms-full"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ExternalMSPhDchooseone,noPhD-toMSdenialreconsideration; threeadvancedmathcoursesinsupplement; coterm3letters,Jan8; internalotherPhDcandidacyonlyfee150; degreeGPA3.5PhDvs3MS; course-lookbackconflict retained.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "EE",
+      "option_ids": [
+        "stanford-ee-ms",
+        "stanford-ee-phd"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-ms-study-and-deadline"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-phd-timeline-support"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-program-tests-materials"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-ms-coterm-windows"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-coterm-eligibility-materials-and-support"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-added-ms-eligibility-windows-and-materials"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "ee-hcp-study-funding-and-status-transfer"
+        }
+      ],
+      "source_ids": [
+        "ee-adding-ms",
+        "ee-application-faq",
+        "ee-application-instructions",
+        "ee-coterm",
+        "ee-coterm-eligibility",
+        "ee-coterm-faq-full",
+        "ee-coterm-materials",
+        "ee-grad-auth-faq",
+        "ee-grad-auth-materials",
+        "ee-hcp-faq-full",
+        "ee-ms-admissions",
+        "ee-phd-admissions",
+        "ee-phd-funding",
+        "engineering-coterm"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ExternalMS no priorEE-MS exclusion unlikeAA/ME; cotermexactly3letters/nominGPA/nodeferral; internalrelatedPhD2quarters,ownwindows125quotedfee; HCPswitch3.5GPA after2quarters15unitsnotadmissionmin.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "MSE",
+      "option_ids": [
+        "stanford-matsc-ms",
+        "stanford-matsc-phd",
+        "stanford-matsc-eng"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-2027-application"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-eligibility-and-route"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-funding-conflict"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-coterm-materials-and-opening-windows"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-phd-enroute-ms-requirement"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-engineer-internal-route"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "mse-hcp-load-campus-and-status"
+        }
+      ],
+      "source_ids": [
+        "matsc-eng",
+        "mse-coterm-full",
+        "mse-engineer",
+        "mse-faq",
+        "mse-funding",
+        "mse-hcp-full",
+        "mse-how-apply",
+        "mse-phd-study-full",
+        "mse-timeline"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "Engineerinternalonly; PhD optinMSreconsideration discretionary; cotermtwoletters oneMSE; HCPcampusUS/H1B; compulsoryenrouteMSbyyear3; contradictoryMSfellowships remainexplicit.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "ME",
+      "option_ids": [
+        "stanford-me-ms",
+        "stanford-me-phd",
+        "stanford-me-eng"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-ms-eligibility-documents"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-phd-application"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-funding-and-study"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-engineer-external-and-internal"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-coterm-specific-preparation-materials-and-continuation"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-hcp-local-study-and-application-conditions"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "me-phd-added-ms-conditions"
+        }
+      ],
+      "source_ids": [
+        "graduate-dir-api",
+        "me-coterm-full",
+        "me-eng",
+        "me-faq-full",
+        "me-funding",
+        "me-graduate-programs",
+        "me-ms-admissions",
+        "me-phd-admissions",
+        "recheck-bulletin-me-ms"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ExternalMS existing/enrolledrelatedMS excluded; offcyclePhDcontactfirst; cotermtwoStanfordletters/preparation/Aaverageexpected; internalMEPhDaddedMS distinctotherdeptregularadmission; Engineerexternallypossiblebutwindowunknown.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "MS&E",
+      "option_ids": [
+        "stanford-mgtsc-ms",
+        "stanford-mgtsc-phd"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-ms-eligibility-and-study"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-application-and-decisions"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-funding"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-coterm-preparation-and-private-details"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-current-graduate-procedure"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-test-threshold-waiver-and-reference-timing"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-hcp-mode-credit-and-billing"
+        },
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "msande-joint-law-and-mpp-procedures"
+        }
+      ],
+      "source_ids": [
+        "coterm-directory",
+        "graduate-dir-api",
+        "msande-admission-full",
+        "msande-coterm-overview",
+        "msande-current-apply",
+        "msande-faq",
+        "msande-hcp-full",
+        "msande-joint-full",
+        "msande-ms-admission",
+        "test-scores"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "ExternalGRErequiredhardshipwaiver; departmentIELTS7.5oldTOEFL100 abovecentral; programmingtimingconflict; currentgradnormalapplicationnotGAP; cotermdetailedprivateform; MPPbillingEngineeringfirstyearthenGeneral.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    },
+    {
+      "family": "InterdisciplinaryEngineering",
+      "option_ids": [
+        "stanford-engr-ms"
+      ],
+      "outcome": "reviewed_with_scoped_conditions_and_evidenced_limits",
+      "reviewed_fact_references": [
+        {
+          "evidence_file": "engineering-doerr-evidence.json",
+          "fact_id": "engr-ms-internal-route"
+        }
+      ],
+      "source_ids": [
+        "engr-ms-admission"
+      ],
+      "domains_reviewed": [
+        "catalog/applicationdestination",
+        "credentials/subjectpreparation/tests/waivers",
+        "documents/referencecounts/portfolio/interview",
+        "entrywindows/deadline/offerresponse",
+        "publishedperiodfees/costbilling",
+        "fundingeligibility/components/continuation/application",
+        "studystructure/degreeprogress",
+        "enrolment/support/route-specificlimits"
+      ],
+      "content_review_conclusion": "OnlyexistingEngineeringgraduate transfer before18proposedunits withcoherentproposal/adviser; notexternalornewcotermapplication.",
+      "shared_evidence_boundary": "Centralexternal policyonlyactualregulargraduateapplication; cotermcentralonlycurrentundergradcoterm; internaldegreeprogressdoesnotinheritexternalapplicationfee/documents; currentbilling/loan/housingapplyonlyactualstudentstatus."
+    }
+  ],
+  "undergraduate_inventory_review": {
+    "scope": "All73datedBulletinaward/subplanrows plus independentlyevidencedBAS; majorispostinstitutionaladmission.",
+    "reviewed_options": [
+      {
+        "option_id": "stanford-option-aa-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-aa-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-aa-bs-a3i6e",
+          "stanford-option-aa-bs-declaringthemajor",
+          "stanford-option-aa-bs-z8ch4",
+          "stanford-option-aa-bs-programadditionalpolicies",
+          "stanford-option-aa-bs-programgradingpolicies",
+          "stanford-option-aa-bs-programgparequirement",
+          "stanford-option-aa-bs-wozxr",
+          "stanford-option-aa-bs-itcsb",
+          "stanford-option-aa-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-asam-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-asam-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-asam-ba-a3i6e",
+          "stanford-option-asam-ba-declaringthemajor",
+          "stanford-option-asam-ba-z8ch4",
+          "stanford-option-asam-ba-programadditionalpolicies",
+          "stanford-option-asam-ba-programgradingpolicies",
+          "stanford-option-asam-ba-wozxr",
+          "stanford-option-asam-ba-itcsb",
+          "stanford-option-asam-ba-published-length-and-units",
+          "ug-ccsre-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-afram-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-afram-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-afram-ba-a3i6e",
+          "stanford-option-afram-ba-declaringthemajor",
+          "stanford-option-afram-ba-z8ch4",
+          "stanford-option-afram-ba-programgradingpolicies",
+          "stanford-option-afram-ba-wozxr",
+          "stanford-option-afram-ba-itcsb",
+          "stanford-option-afram-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-amstu-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-amstu-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-amstu-ba-a3i6e",
+          "stanford-option-amstu-ba-declaringthemajor",
+          "stanford-option-amstu-ba-programadditionalpolicies",
+          "stanford-option-amstu-ba-programgradingpolicies",
+          "stanford-option-amstu-ba-wozxr",
+          "stanford-option-amstu-ba-itcsb",
+          "stanford-option-amstu-ba-published-length-and-units",
+          "ug-amstu-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-anthr-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-anthr-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-anthr-ba-a3i6e",
+          "stanford-option-anthr-ba-declaringthemajor",
+          "stanford-option-anthr-ba-z8ch4",
+          "stanford-option-anthr-ba-programgradingpolicies",
+          "stanford-option-anthr-ba-programgparequirement",
+          "stanford-option-anthr-ba-wozxr",
+          "stanford-option-anthr-ba-itcsb",
+          "stanford-option-anthr-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-archa-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-archa-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-archa-ba-a3i6e",
+          "stanford-option-archa-ba-declaringthemajor",
+          "stanford-option-archa-ba-z8ch4",
+          "stanford-option-archa-ba-programgradingpolicies",
+          "stanford-option-archa-ba-wozxr",
+          "stanford-option-archa-ba-itcsb",
+          "stanford-option-archa-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-arths-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-arths-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-arths-ba-a3i6e",
+          "stanford-option-arths-ba-declaringthemajor",
+          "stanford-option-arths-ba-z8ch4",
+          "stanford-option-arths-ba-programadditionalpolicies",
+          "stanford-option-arths-ba-programgradingpolicies",
+          "stanford-option-arths-ba-wozxr",
+          "stanford-option-arths-ba-itcsb",
+          "stanford-option-arths-ba-published-length-and-units",
+          "ug-art-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-artp-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-artp-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-artp-ba-a3i6e",
+          "stanford-option-artp-ba-declaringthemajor",
+          "stanford-option-artp-ba-z8ch4",
+          "stanford-option-artp-ba-programadditionalpolicies",
+          "stanford-option-artp-ba-programgradingpolicies",
+          "stanford-option-artp-ba-wozxr",
+          "stanford-option-artp-ba-itcsb",
+          "stanford-option-artp-ba-published-length-and-units",
+          "ug-art-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-bioe-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-bioe-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-bioe-bs-a3i6e",
+          "stanford-option-bioe-bs-declaringthemajor",
+          "stanford-option-bioe-bs-programgradingpolicies",
+          "stanford-option-bioe-bs-programgparequirement",
+          "stanford-option-bioe-bs-wozxr",
+          "stanford-option-bioe-bs-itcsb",
+          "stanford-option-bioe-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-bio-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-bio-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-bio-bs-a3i6e",
+          "stanford-option-bio-bs-declaringthemajor",
+          "stanford-option-bio-bs-z8ch4",
+          "stanford-option-bio-bs-programadditionalpolicies",
+          "stanford-option-bio-bs-programgradingpolicies",
+          "stanford-option-bio-bs-programgparequirement",
+          "stanford-option-bio-bs-wozxr",
+          "stanford-option-bio-bs-itcsb",
+          "stanford-option-bio-bs-published-length-and-units",
+          "ug-bio-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-cplit-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-cplit-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-cplit-ba-a3i6e",
+          "stanford-option-cplit-ba-declaringthemajor",
+          "stanford-option-cplit-ba-z8ch4",
+          "stanford-option-cplit-ba-programgradingpolicies",
+          "stanford-option-cplit-ba-programgparequirement",
+          "stanford-option-cplit-ba-wozxr",
+          "stanford-option-cplit-ba-itcsb",
+          "stanford-option-cplit-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-cheme-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-cheme-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-cheme-bs-a3i6e",
+          "stanford-option-cheme-bs-declaringthemajor",
+          "stanford-option-cheme-bs-programadditionalpolicies",
+          "stanford-option-cheme-bs-programgradingpolicies",
+          "stanford-option-cheme-bs-programgparequirement",
+          "stanford-option-cheme-bs-wozxr",
+          "stanford-option-cheme-bs-itcsb",
+          "stanford-option-cheme-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-chem-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-chem-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-chem-bs-a3i6e",
+          "stanford-option-chem-bs-declaringthemajor",
+          "stanford-option-chem-bs-z8ch4",
+          "stanford-option-chem-bs-programgradingpolicies",
+          "stanford-option-chem-bs-wozxr",
+          "stanford-option-chem-bs-itcsb",
+          "stanford-option-chem-bs-published-length-and-units",
+          "ug-chem-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-chilt-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-chilt-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-chilt-ba-a3i6e",
+          "stanford-option-chilt-ba-declaringthemajor",
+          "stanford-option-chilt-ba-z8ch4",
+          "stanford-option-chilt-ba-programadditionalpolicies",
+          "stanford-option-chilt-ba-programgradingpolicies",
+          "stanford-option-chilt-ba-wozxr",
+          "stanford-option-chilt-ba-itcsb",
+          "stanford-option-chilt-ba-published-length-and-units",
+          "ug-ccsre-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-ce-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-ce-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-ce-bs-a3i6e",
+          "stanford-option-ce-bs-declaringthemajor",
+          "stanford-option-ce-bs-z8ch4",
+          "stanford-option-ce-bs-programgradingpolicies",
+          "stanford-option-ce-bs-wozxr",
+          "stanford-option-ce-bs-itcsb",
+          "stanford-option-ce-bs-published-length-and-units",
+          "ug-cee-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-class-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-class-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-class-ba-a3i6e",
+          "stanford-option-class-ba-declaringthemajor",
+          "stanford-option-class-ba-z8ch4",
+          "stanford-option-class-ba-programadditionalpolicies",
+          "stanford-option-class-ba-programgradingpolicies",
+          "stanford-option-class-ba-wozxr",
+          "stanford-option-class-ba-itcsb",
+          "stanford-option-class-ba-published-length-and-units",
+          "ug-classics-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-commu-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-commu-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-commu-ba-a3i6e",
+          "stanford-option-commu-ba-declaringthemajor",
+          "stanford-option-commu-ba-programadditionalpolicies",
+          "stanford-option-commu-ba-programgradingpolicies",
+          "stanford-option-commu-ba-programgparequirement",
+          "stanford-option-commu-ba-wozxr",
+          "stanford-option-commu-ba-itcsb",
+          "stanford-option-commu-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-csre-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-csre-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-csre-ba-a3i6e",
+          "stanford-option-csre-ba-declaringthemajor",
+          "stanford-option-csre-ba-z8ch4",
+          "stanford-option-csre-ba-programadditionalpolicies",
+          "stanford-option-csre-ba-programgradingpolicies",
+          "stanford-option-csre-ba-wozxr",
+          "stanford-option-csre-ba-itcsb",
+          "stanford-option-csre-ba-published-length-and-units",
+          "ug-ccsre-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-cs-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-cs-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-cs-bs-a3i6e",
+          "stanford-option-cs-bs-declaringthemajor",
+          "stanford-option-cs-bs-z8ch4",
+          "stanford-option-cs-bs-programadditionalpolicies",
+          "stanford-option-cs-bs-programgradingpolicies",
+          "stanford-option-cs-bs-programgparequirement",
+          "stanford-option-cs-bs-wozxr",
+          "stanford-option-cs-bs-itcsb",
+          "stanford-option-cs-bs-published-length-and-units",
+          "ug-cs-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-design-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-design-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-design-bs-a3i6e",
+          "stanford-option-design-bs-declaringthemajor",
+          "stanford-option-design-bs-z8ch4",
+          "stanford-option-design-bs-programadditionalpolicies",
+          "stanford-option-design-bs-programgradingpolicies",
+          "stanford-option-design-bs-programgparequirement",
+          "stanford-option-design-bs-wozxr",
+          "stanford-option-design-bs-itcsb",
+          "stanford-option-design-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-datsc-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-datsc-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-datsc-bs-a3i6e",
+          "stanford-option-datsc-bs-declaringthemajor",
+          "stanford-option-datsc-bs-z8ch4",
+          "stanford-option-datsc-bs-programadditionalpolicies",
+          "stanford-option-datsc-bs-programgradingpolicies",
+          "stanford-option-datsc-bs-wozxr",
+          "stanford-option-datsc-bs-itcsb",
+          "stanford-option-datsc-bs-published-length-and-units",
+          "ug-datsc-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-datsc-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-datsc-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-datsc-ba-a3i6e",
+          "stanford-option-datsc-ba-declaringthemajor",
+          "stanford-option-datsc-ba-z8ch4",
+          "stanford-option-datsc-ba-programadditionalpolicies",
+          "stanford-option-datsc-ba-programgradingpolicies",
+          "stanford-option-datsc-ba-wozxr",
+          "stanford-option-datsc-ba-itcsb",
+          "stanford-option-datsc-ba-published-length-and-units",
+          "ug-datsc-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-econ-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-econ-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-econ-bs-a3i6e",
+          "stanford-option-econ-bs-declaringthemajor",
+          "stanford-option-econ-bs-z8ch4",
+          "stanford-option-econ-bs-programgparequirement",
+          "stanford-option-econ-bs-wozxr",
+          "stanford-option-econ-bs-itcsb",
+          "stanford-option-econ-bs-published-length-and-units",
+          "ug-econ-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engrbs21",
+        "catalog_source_ids": [
+          "stanford-bulletin-engrbs21"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engrbs21-a3i6e",
+          "stanford-option-engrbs21-itcsb",
+          "stanford-option-engrbs21-published-length-and-units",
+          "ug-cee-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-eps-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-eps-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-eps-bs-a3i6e",
+          "stanford-option-eps-bs-declaringthemajor",
+          "stanford-option-eps-bs-z8ch4",
+          "stanford-option-eps-bs-programgradingpolicies",
+          "stanford-option-eps-bs-programgparequirement",
+          "stanford-option-eps-bs-wozxr",
+          "stanford-option-eps-bs-itcsb",
+          "stanford-option-eps-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-easys-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-easys-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-easys-bs-a3i6e",
+          "stanford-option-easys-bs-declaringthemajor",
+          "stanford-option-easys-bs-z8ch4",
+          "stanford-option-easys-bs-programadditionalpolicies",
+          "stanford-option-easys-bs-programgradingpolicies",
+          "stanford-option-easys-bs-programgparequirement",
+          "stanford-option-easys-bs-wozxr",
+          "stanford-option-easys-bs-itcsb",
+          "stanford-option-easys-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-easst-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-easst-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-easst-ba-a3i6e",
+          "stanford-option-easst-ba-declaringthemajor",
+          "stanford-option-easst-ba-z8ch4",
+          "stanford-option-easst-ba-programadditionalpolicies",
+          "stanford-option-easst-ba-programgradingpolicies",
+          "stanford-option-easst-ba-programgparequirement",
+          "stanford-option-easst-ba-wozxr",
+          "stanford-option-easst-ba-itcsb",
+          "stanford-option-easst-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-econ-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-econ-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-econ-ba-a3i6e",
+          "stanford-option-econ-ba-declaringthemajor",
+          "stanford-option-econ-ba-z8ch4",
+          "stanford-option-econ-ba-programgparequirement",
+          "stanford-option-econ-ba-wozxr",
+          "stanford-option-econ-ba-itcsb",
+          "stanford-option-econ-ba-published-length-and-units",
+          "ug-econ-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-ee-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-ee-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-ee-bs-a3i6e",
+          "stanford-option-ee-bs-declaringthemajor",
+          "stanford-option-ee-bs-z8ch4",
+          "stanford-option-ee-bs-programadditionalpolicies",
+          "stanford-option-ee-bs-programgradingpolicies",
+          "stanford-option-ee-bs-programgparequirement",
+          "stanford-option-ee-bs-wozxr",
+          "stanford-option-ee-bs-itcsb",
+          "stanford-option-ee-bs-published-length-and-units",
+          "ug-ee-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-energy-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-energy-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-energy-bs-a3i6e",
+          "stanford-option-energy-bs-declaringthemajor",
+          "stanford-option-energy-bs-z8ch4",
+          "stanford-option-energy-bs-programgradingpolicies",
+          "stanford-option-energy-bs-programgparequirement",
+          "stanford-option-energy-bs-wozxr",
+          "stanford-option-energy-bs-itcsb",
+          "stanford-option-energy-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engr-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-engr-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engr-bs-a3i6e",
+          "stanford-option-engr-bs-declaringthemajor",
+          "stanford-option-engr-bs-z8ch4",
+          "stanford-option-engr-bs-wozxr",
+          "stanford-option-engr-bs-itcsb",
+          "stanford-option-engr-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engrbs17",
+        "catalog_source_ids": [
+          "stanford-bulletin-engrbs17",
+          "stanford-ughb-architectural-design"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engrbs17-a3i6e",
+          "stanford-architectural-design-legacy-restriction",
+          "stanford-option-engrbs17-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engrbs19",
+        "catalog_source_ids": [
+          "stanford-bulletin-engrbs19"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engrbs19-a3i6e",
+          "stanford-option-engrbs19-published-length-and-units",
+          "ug-cee-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engrbs4",
+        "catalog_source_ids": [
+          "stanford-bulletin-engrbs4"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engrbs4-a3i6e",
+          "stanford-option-engrbs4-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engrbs16",
+        "catalog_source_ids": [
+          "stanford-bulletin-engrbs16"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engrbs16-a3i6e",
+          "stanford-option-engrbs16-published-length-and-units",
+          "ug-bmc-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engrbs18",
+        "catalog_source_ids": [
+          "stanford-bulletin-engrbs18"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engrbs18-a3i6e",
+          "stanford-option-engrbs18-published-length-and-units",
+          "ug-engphysics-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-engl-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-engl-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-engl-ba-a3i6e",
+          "stanford-option-engl-ba-declaringthemajor",
+          "stanford-option-engl-ba-z8ch4",
+          "stanford-option-engl-ba-programadditionalpolicies",
+          "stanford-option-engl-ba-programgradingpolicies",
+          "stanford-option-engl-ba-wozxr",
+          "stanford-option-engl-ba-itcsb",
+          "stanford-option-engl-ba-published-length-and-units",
+          "ug-engl-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-envse-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-envse-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-envse-bs-a3i6e",
+          "stanford-option-envse-bs-declaringthemajor",
+          "stanford-option-envse-bs-z8ch4",
+          "stanford-option-envse-bs-programadditionalpolicies",
+          "stanford-option-envse-bs-programgradingpolicies",
+          "stanford-option-envse-bs-programgparequirement",
+          "stanford-option-envse-bs-wozxr",
+          "stanford-option-envse-bs-itcsb",
+          "stanford-option-envse-bs-published-length-and-units",
+          "ug-cee-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-fgss-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-fgss-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-fgss-ba-a3i6e",
+          "stanford-option-fgss-ba-declaringthemajor",
+          "stanford-option-fgss-ba-programadditionalpolicies",
+          "stanford-option-fgss-ba-programgradingpolicies",
+          "stanford-option-fgss-ba-wozxr",
+          "stanford-option-fgss-ba-itcsb",
+          "stanford-option-fgss-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-film-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-film-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-film-ba-a3i6e",
+          "stanford-option-film-ba-declaringthemajor",
+          "stanford-option-film-ba-z8ch4",
+          "stanford-option-film-ba-programadditionalpolicies",
+          "stanford-option-film-ba-programgradingpolicies",
+          "stanford-option-film-ba-wozxr",
+          "stanford-option-film-ba-itcsb",
+          "stanford-option-film-ba-published-length-and-units",
+          "ug-art-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-frenc-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-frenc-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-frenc-ba-a3i6e",
+          "stanford-option-frenc-ba-declaringthemajor",
+          "stanford-option-frenc-ba-z8ch4",
+          "stanford-option-frenc-ba-programadditionalpolicies",
+          "stanford-option-frenc-ba-programgradingpolicies",
+          "stanford-option-frenc-ba-programgparequirement",
+          "stanford-option-frenc-ba-wozxr",
+          "stanford-option-frenc-ba-itcsb",
+          "stanford-option-frenc-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-geoph-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-geoph-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-geoph-bs-a3i6e",
+          "stanford-option-geoph-bs-declaringthemajor",
+          "stanford-option-geoph-bs-programgradingpolicies",
+          "stanford-option-geoph-bs-programgparequirement",
+          "stanford-option-geoph-bs-wozxr",
+          "stanford-option-geoph-bs-itcsb",
+          "stanford-option-geoph-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-gerst-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-gerst-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-gerst-ba-a3i6e",
+          "stanford-option-gerst-ba-declaringthemajor",
+          "stanford-option-gerst-ba-z8ch4",
+          "stanford-option-gerst-ba-programgradingpolicies",
+          "stanford-option-gerst-ba-wozxr",
+          "stanford-option-gerst-ba-itcsb",
+          "stanford-option-gerst-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-hstry-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-hstry-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-hstry-ba-a3i6e",
+          "stanford-option-hstry-ba-declaringthemajor",
+          "stanford-option-hstry-ba-z8ch4",
+          "stanford-option-hstry-ba-programadditionalpolicies",
+          "stanford-option-hstry-ba-programgradingpolicies",
+          "stanford-option-hstry-ba-programgparequirement",
+          "stanford-option-hstry-ba-wozxr",
+          "stanford-option-hstry-ba-itcsb",
+          "stanford-option-hstry-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-humbi-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-humbi-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-humbi-ba-a3i6e",
+          "stanford-option-humbi-ba-declaringthemajor",
+          "stanford-option-humbi-ba-z8ch4",
+          "stanford-option-humbi-ba-programgradingpolicies",
+          "stanford-option-humbi-ba-wozxr",
+          "stanford-option-humbi-ba-itcsb",
+          "stanford-option-humbi-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-humbi-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-humbi-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-humbi-bs-a3i6e",
+          "stanford-option-humbi-bs-declaringthemajor",
+          "stanford-option-humbi-bs-z8ch4",
+          "stanford-option-humbi-bs-programgradingpolicies",
+          "stanford-option-humbi-bs-wozxr",
+          "stanford-option-humbi-bs-itcsb",
+          "stanford-option-humbi-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-idmen-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-idmen-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-idmen-bs-a3i6e",
+          "stanford-option-idmen-bs-declaringthemajor",
+          "stanford-option-idmen-bs-z8ch4",
+          "stanford-option-idmen-bs-wozxr",
+          "stanford-option-idmen-bs-itcsb",
+          "stanford-option-idmen-bs-published-length-and-units",
+          "ug-idmen-linked-approval"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-ilac-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-ilac-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-ilac-ba-a3i6e",
+          "stanford-option-ilac-ba-declaringthemajor",
+          "stanford-option-ilac-ba-z8ch4",
+          "stanford-option-ilac-ba-programadditionalpolicies",
+          "stanford-option-ilac-ba-programgradingpolicies",
+          "stanford-option-ilac-ba-wozxr",
+          "stanford-option-ilac-ba-itcsb",
+          "stanford-option-ilac-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-intlr-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-intlr-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-intlr-ba-a3i6e",
+          "stanford-option-intlr-ba-declaringthemajor",
+          "stanford-option-intlr-ba-z8ch4",
+          "stanford-option-intlr-ba-programadditionalpolicies",
+          "stanford-option-intlr-ba-programgradingpolicies",
+          "stanford-option-intlr-ba-wozxr",
+          "stanford-option-intlr-ba-itcsb",
+          "stanford-option-intlr-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-ital-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-ital-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-ital-ba-a3i6e",
+          "stanford-option-ital-ba-declaringthemajor",
+          "stanford-option-ital-ba-z8ch4",
+          "stanford-option-ital-ba-programadditionalpolicies",
+          "stanford-option-ital-ba-programgradingpolicies",
+          "stanford-option-ital-ba-programgparequirement",
+          "stanford-option-ital-ba-wozxr",
+          "stanford-option-ital-ba-itcsb",
+          "stanford-option-ital-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-jewsh-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-jewsh-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-jewsh-ba-a3i6e",
+          "stanford-option-jewsh-ba-declaringthemajor",
+          "stanford-option-jewsh-ba-z8ch4",
+          "stanford-option-jewsh-ba-programadditionalpolicies",
+          "stanford-option-jewsh-ba-programgradingpolicies",
+          "stanford-option-jewsh-ba-wozxr",
+          "stanford-option-jewsh-ba-itcsb",
+          "stanford-option-jewsh-ba-published-length-and-units",
+          "ug-ccsre-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-ling-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-ling-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-ling-ba-a3i6e",
+          "stanford-option-ling-ba-declaringthemajor",
+          "stanford-option-ling-ba-z8ch4",
+          "stanford-option-ling-ba-programadditionalpolicies",
+          "stanford-option-ling-ba-programgradingpolicies",
+          "stanford-option-ling-ba-programgparequirement",
+          "stanford-option-ling-ba-wozxr",
+          "stanford-option-ling-ba-itcsb",
+          "stanford-option-ling-ba-published-length-and-units",
+          "ug-ling-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-matsc-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-matsc-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-matsc-bs-a3i6e",
+          "stanford-option-matsc-bs-declaringthemajor",
+          "stanford-option-matsc-bs-z8ch4",
+          "stanford-option-matsc-bs-programgradingpolicies",
+          "stanford-option-matsc-bs-programgparequirement",
+          "stanford-option-matsc-bs-wozxr",
+          "stanford-option-matsc-bs-itcsb",
+          "stanford-option-matsc-bs-published-length-and-units",
+          "ug-mse-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-mgtsc-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-mgtsc-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-mgtsc-bs-a3i6e",
+          "stanford-option-mgtsc-bs-declaringthemajor",
+          "stanford-option-mgtsc-bs-z8ch4",
+          "stanford-option-mgtsc-bs-programgradingpolicies",
+          "stanford-option-mgtsc-bs-programgparequirement",
+          "stanford-option-mgtsc-bs-wozxr",
+          "stanford-option-mgtsc-bs-itcsb",
+          "stanford-option-mgtsc-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-math-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-math-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-math-bs-a3i6e",
+          "stanford-option-math-bs-declaringthemajor",
+          "stanford-option-math-bs-z8ch4",
+          "stanford-option-math-bs-programgradingpolicies",
+          "stanford-option-math-bs-wozxr",
+          "stanford-option-math-bs-itcsb",
+          "stanford-option-math-bs-published-length-and-units",
+          "ug-math-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-me-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-me-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-me-bs-a3i6e",
+          "stanford-option-me-bs-declaringthemajor",
+          "stanford-option-me-bs-z8ch4",
+          "stanford-option-me-bs-programadditionalpolicies",
+          "stanford-option-me-bs-programgradingpolicies",
+          "stanford-option-me-bs-programgparequirement",
+          "stanford-option-me-bs-wozxr",
+          "stanford-option-me-bs-itcsb",
+          "stanford-option-me-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-music-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-music-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-music-ba-a3i6e",
+          "stanford-option-music-ba-declaringthemajor",
+          "stanford-option-music-ba-z8ch4",
+          "stanford-option-music-ba-programadditionalpolicies",
+          "stanford-option-music-ba-programgradingpolicies",
+          "stanford-option-music-ba-programgparequirement",
+          "stanford-option-music-ba-wozxr",
+          "stanford-option-music-ba-itcsb",
+          "stanford-option-music-ba-published-length-and-units",
+          "ug-music-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-natam-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-natam-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-natam-ba-a3i6e",
+          "stanford-option-natam-ba-declaringthemajor",
+          "stanford-option-natam-ba-z8ch4",
+          "stanford-option-natam-ba-programadditionalpolicies",
+          "stanford-option-natam-ba-programgradingpolicies",
+          "stanford-option-natam-ba-wozxr",
+          "stanford-option-natam-ba-itcsb",
+          "stanford-option-natam-ba-published-length-and-units",
+          "ug-ccsre-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-phrel-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-phrel-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-phrel-ba-a3i6e",
+          "stanford-option-phrel-ba-declaringthemajor",
+          "stanford-option-phrel-ba-z8ch4",
+          "stanford-option-phrel-ba-programgradingpolicies",
+          "stanford-option-phrel-ba-wozxr",
+          "stanford-option-phrel-ba-itcsb",
+          "stanford-option-phrel-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-phys-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-phys-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-phys-bs-a3i6e",
+          "stanford-option-phys-bs-declaringthemajor",
+          "stanford-option-phys-bs-z8ch4",
+          "stanford-option-phys-bs-programadditionalpolicies",
+          "stanford-option-phys-bs-programgradingpolicies",
+          "stanford-option-phys-bs-wozxr",
+          "stanford-option-phys-bs-itcsb",
+          "stanford-option-phys-bs-published-length-and-units",
+          "ug-physics-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-philo-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-philo-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-philo-ba-a3i6e",
+          "stanford-option-philo-ba-declaringthemajor",
+          "stanford-option-philo-ba-z8ch4",
+          "stanford-option-philo-ba-programgradingpolicies",
+          "stanford-option-philo-ba-wozxr",
+          "stanford-option-philo-ba-itcsb",
+          "stanford-option-philo-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-polsc-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-polsc-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-polsc-ba-a3i6e",
+          "stanford-option-polsc-ba-declaringthemajor",
+          "stanford-option-polsc-ba-programadditionalpolicies",
+          "stanford-option-polsc-ba-programgradingpolicies",
+          "stanford-option-polsc-ba-wozxr",
+          "stanford-option-polsc-ba-itcsb",
+          "stanford-option-polsc-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-psych-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-psych-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-psych-ba-a3i6e",
+          "stanford-option-psych-ba-declaringthemajor",
+          "stanford-option-psych-ba-programadditionalpolicies",
+          "stanford-option-psych-ba-programgradingpolicies",
+          "stanford-option-psych-ba-wozxr",
+          "stanford-option-psych-ba-itcsb",
+          "stanford-option-psych-ba-published-length-and-units",
+          "ug-psych-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-pubpo-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-pubpo-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-pubpo-ba-a3i6e",
+          "stanford-option-pubpo-ba-declaringthemajor",
+          "stanford-option-pubpo-ba-z8ch4",
+          "stanford-option-pubpo-ba-programgradingpolicies",
+          "stanford-option-pubpo-ba-wozxr",
+          "stanford-option-pubpo-ba-itcsb",
+          "stanford-option-pubpo-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-relst-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-relst-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-relst-ba-a3i6e",
+          "stanford-option-relst-ba-declaringthemajor",
+          "stanford-option-relst-ba-z8ch4",
+          "stanford-option-relst-ba-programadditionalpolicies",
+          "stanford-option-relst-ba-programgradingpolicies",
+          "stanford-option-relst-ba-wozxr",
+          "stanford-option-relst-ba-itcsb",
+          "stanford-option-relst-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-span-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-span-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-span-ba-a3i6e",
+          "stanford-option-span-ba-declaringthemajor",
+          "stanford-option-span-ba-z8ch4",
+          "stanford-option-span-ba-programadditionalpolicies",
+          "stanford-option-span-ba-programgradingpolicies",
+          "stanford-option-span-ba-wozxr",
+          "stanford-option-span-ba-itcsb",
+          "stanford-option-span-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-sts-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-sts-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-sts-ba-a3i6e",
+          "stanford-option-sts-ba-declaringthemajor",
+          "stanford-option-sts-ba-z8ch4",
+          "stanford-option-sts-ba-programgradingpolicies",
+          "stanford-option-sts-ba-wozxr",
+          "stanford-option-sts-ba-itcsb",
+          "stanford-option-sts-ba-published-length-and-units",
+          "ug-sts-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-sts-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-sts-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-sts-bs-a3i6e",
+          "stanford-option-sts-bs-declaringthemajor",
+          "stanford-option-sts-bs-z8ch4",
+          "stanford-option-sts-bs-programadditionalpolicies",
+          "stanford-option-sts-bs-programgradingpolicies",
+          "stanford-option-sts-bs-wozxr",
+          "stanford-option-sts-bs-itcsb",
+          "stanford-option-sts-bs-published-length-and-units",
+          "ug-sts-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-slav-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-slav-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-slav-ba-a3i6e",
+          "stanford-option-slav-ba-declaringthemajor",
+          "stanford-option-slav-ba-z8ch4",
+          "stanford-option-slav-ba-programadditionalpolicies",
+          "stanford-option-slav-ba-programgradingpolicies",
+          "stanford-option-slav-ba-programgparequirement",
+          "stanford-option-slav-ba-wozxr",
+          "stanford-option-slav-ba-itcsb",
+          "stanford-option-slav-ba-published-length-and-units",
+          "ug-dlcl-common-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-socio-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-socio-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-socio-ba-a3i6e",
+          "stanford-option-socio-ba-declaringthemajor",
+          "stanford-option-socio-ba-programadditionalpolicies",
+          "stanford-option-socio-ba-programgradingpolicies",
+          "stanford-option-socio-ba-wozxr",
+          "stanford-option-socio-ba-itcsb",
+          "stanford-option-socio-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-symbo-bs",
+        "catalog_source_ids": [
+          "stanford-bulletin-symbo-bs"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-symbo-bs-a3i6e",
+          "stanford-option-symbo-bs-declaringthemajor",
+          "stanford-option-symbo-bs-programadditionalpolicies",
+          "stanford-option-symbo-bs-programgradingpolicies",
+          "stanford-option-symbo-bs-wozxr",
+          "stanford-option-symbo-bs-itcsb",
+          "stanford-option-symbo-bs-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-thpst-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-thpst-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-thpst-ba-a3i6e",
+          "stanford-option-thpst-ba-declaringthemajor",
+          "stanford-option-thpst-ba-z8ch4",
+          "stanford-option-thpst-ba-wozxr",
+          "stanford-option-thpst-ba-itcsb",
+          "stanford-option-thpst-ba-published-length-and-units"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      },
+      {
+        "option_id": "stanford-option-urbst-ba",
+        "catalog_source_ids": [
+          "stanford-bulletin-urbst-ba"
+        ],
+        "reviewed_fact_ids": [
+          "stanford-option-urbst-ba-a3i6e",
+          "stanford-option-urbst-ba-declaringthemajor",
+          "stanford-option-urbst-ba-programadditionalpolicies",
+          "stanford-option-urbst-ba-programgradingpolicies",
+          "stanford-option-urbst-ba-wozxr",
+          "stanford-option-urbst-ba-itcsb",
+          "stanford-option-urbst-ba-published-length-and-units",
+          "ug-urban-linked-declaration"
+        ],
+        "outcome": "Originalstudy/declaration/credit/grading/degreeprogresscontent reread; significant linkeddeclarationgates captured separately; private/conflictingpages remainexplicit."
+      }
+    ],
+    "shared_external_application_domains": "Firstyear andtransfer actualinstitutionalforms handlecredentials/tests/documents/dates/fees/aid; declarationcourse/GPA gates are notapplicantminimums. Noindependentmajor-specific externalapplicationcreated."
+  },
+  "doerr_review_checkpoint": {
+    "option_ids": [
+      "stanford-eps-ms",
+      "stanford-eps-phd",
+      "stanford-easys-ms",
+      "stanford-easys-ma",
+      "stanford-ess-ms",
+      "stanford-ess-phd",
+      "stanford-energy-ms",
+      "stanford-energy-phd",
+      "stanford-envss-phd",
+      "stanford-envss-ma",
+      "stanford-geoph-ms",
+      "stanford-geoph-phd",
+      "stanford-oceans-phd",
+      "stanford-oceans-ms",
+      "stanford-envres-phd",
+      "stanford-envres-ms",
+      "stanford-sustsci-ms",
+      "stanford-sustsci-ma"
+    ],
+    "reviewed_domains": "Rereadall18original profiles,92source-backedfacts,17unresolvedand45faculty/advising/completionfields; newEPS/GeophsamePhDMSroutes nowretained.",
+    "unresolved_limits": "Future2027-28tuition,individualpackageamount/renewal,privateinternaldetails,officialEnglish/cyclelabel/dualMSconflicts stayresearchedunknown; Oceanssharedschoolfundingstatementkeptnotblanketunsupported guarantee.",
+    "new_fact_ids": [
+      "recheck-easys-ms-degree-completion-context",
+      "recheck-envres-ms-degree-completion-context",
+      "recheck-eps-ms-degree-completion-context",
+      "recheck-ess-ms-degree-completion-context",
+      "recheck-ess-phd-degree-completion-context",
+      "recheck-eps-phd-degree-completion-context",
+      "recheck-easys-ma-degree-completion-context",
+      "recheck-energy-ms-degree-completion-context",
+      "recheck-energy-phd-degree-completion-context",
+      "recheck-envres-phd-degree-completion-context",
+      "recheck-envss-ma-degree-completion-context",
+      "recheck-envss-phd-degree-completion-context",
+      "recheck-geoph-ms-degree-completion-context",
+      "recheck-geoph-phd-degree-completion-context",
+      "recheck-oceans-phd-degree-completion-context",
+      "recheck-oceans-ms-degree-completion-context",
+      "recheck-sustsci-ma-degree-completion-context",
+      "recheck-sustsci-ms-degree-completion-context",
+      "eps-phd-added-ms-conditions",
+      "geoph-phd-added-ms-conditions"
+    ]
+  },
+  "owner_review_status": "Engineering application families, undergraduate admission/declaration, Doerr awards, central policies and the two manually reviewed school ledgers are collected. Researched source conflicts, private instructions and future publications remain explicit unknowns.",
+  "merged_worker_batches": {
+    "hs_gse": "23 GSE findings and 5 coterm additions merged with exact original scopes; Classics current-PhD intermediate route reconciled; GSE Math 20 source conflict retained. Manual programme-family ledger replaces the obsolete generated domain map.",
+    "medicine_professional": "11 exact additions merged; MSPA matriculation cycle, four BMDS routes, advanced Law English testing and internal MSTP scope reconciled. Seventeen degree-specific medical MS Bulletin completion facts supplement the shared PhD policy."
+  },
+  "central_source_review": {
+    "firstyear_and_transfer": "Original shared institutional facts reread; explicit REA concurrent policy, new/past aidyear scopes, testeditions, exactrequired records, portfolio dates and transferlimits retained. No declaration-course threshold becomes external minimum.",
+    "graduate": "Credential eligibility, WES, English scale/exemptions/proof, tests, documents and fee/waiver remain route-specific; post-offer verification/deferral and priorStanforddocumentexception captured.",
+    "costs": "Full2026-27StudentServicestuition/fees andGraduateFinancialAidbudget reread; conditional excessunits/specialregistration/residencefees retained; no numerical HCP/subsequent-year forecast.",
+    "housing_and_support": "RDE2026-27category/enrollment/hold/mealplan/cancellation limits andprogrammeHCP/hybridexceptions reviewed.",
+    "KHS": "Full2027eligibility/deadline/application/funding source records reread; added no-deferral/fellowship-stacking/authorship exceptions; coterm/HCP/samePhDintermediate awards excluded."
+  },
+  "final_dataset_checkpoint": {
+    "study_options": 254,
+    "procedure_views": 465,
+    "facts": 1394,
+    "source_records": 750,
+    "distinct_source_urls": 665,
+    "current_researched_unknowns": 88,
+    "superseded_unknown_history": 7,
+    "collection_task_records": 47,
+    "counts_are_not_independent_forms_or_proof_of_completeness": true
+  },
+  "limits": [
+    "Current-cycle statements and older cost reference years remain separate.",
+    "Private internal instructions, unpublished future figures and individual award/offer terms are not inferred.",
+    "Official source conflicts retain both statements and an official next step.",
+    "Source dates are preserved; snapshot content reread is distinguished from a new live acquisition."
+  ],
+  "institutional_acceptance": "accepted by orchestrator after final scoped content review and exact ledger alignment on 2026-10-03"
+}

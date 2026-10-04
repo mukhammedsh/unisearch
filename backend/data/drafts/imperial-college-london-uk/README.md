@@ -40,3 +40,12 @@ IDs are stable dossier identifiers, not names to be regenerated from titles. The
 ## Verification
 
 Run `python backend/data/drafts/imperial-college-london-uk/assemble.py` after dossier changes, then `python backend/data/drafts/imperial-college-london-uk/validate.py` from the repository root using the existing virtual environment. Assembly reads runtime only to preserve historical provenance and writes this directory only. It does not refresh source reviews. The validator checks inventory relationships, references, complete fact indexing, original scope/provenance, evidence freshness and meaningful contrast cases. Follow with the repository data/encoding checks for the changed draft; runtime audit alone is not draft acceptance. See `coverage.md` for research limits and outstanding collection.
+
+
+## Recheck content contract
+
+The October 2026 recheck retains study content in option-scoped `curriculum_structure` facts. Structure selectors, core/optional/pre-study roles, year/stage labels, project and progression instructions are preserved separately. `published_component_groups[].heading` can name an individual module even when its `components` list is empty; consumers must retain that source label. Different award selectors do not inherit parent degree projects or required modules. A shared curriculum applies only when the source explicitly describes the same award across the selected durations.
+
+Research facts may carry `programme_phase` and funding-scheme applicability in the original scope. Registered PhD research rules do not apply to a preceding MRes/MSc/foundation stage, and President scholarship terms do not shorten a separately funded four-year CDT grant. The source's effective cycle remains separate from the recheck date. Linked official joint-centre sources are accepted only for the exact named programme and verified institutional relationship; an old university link alone does not establish that an external page is a valid current admissions source.
+
+After final semantic acceptance, `python backend/data/drafts/imperial-college-london-uk/assemble.py --reviewed` records `stage1_reviewed` only when the merged source rechecks cover every research context and contain no unfinished collection. Run the focused validator afterwards. The accepted recheck date is 2026-10-03; original source dates remain unchanged.

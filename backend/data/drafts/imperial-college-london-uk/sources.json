@@ -2977,6 +2977,62 @@
       ]
     },
     {
+      "id": "source-ac85dfc2aca0130a",
+      "url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/",
+      "title": "Accommodation guarantee | Current students | Imperial College London",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "ac85dfc2aca0130a.txt",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-ac85dfc2aca0130a",
+          "url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/",
+          "title": "Accommodation guarantee | Current students | Imperial College London",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "ac85dfc2aca0130a.txt",
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-119396cfa9a1a07f",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf",
+      "title": "Funding terms and conditions 2026-27",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "119396cfa9a1a07f.txt",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-119396cfa9a1a07f",
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf",
+          "title": "Funding terms and conditions 2026-27",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "119396cfa9a1a07f.txt",
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
       "id": "imperial-course-search-snapshot-2027",
       "url": "https://www.imperial.ac.uk/study/courses/",
       "title": "Imperial College London course search, 2027 entry",
@@ -9781,6 +9837,458 @@
             "direct_http_status": "HTTPError; does not invalidate separately read publication"
           },
           "content_review_status": "reviewed"
+        }
+      ]
+    },
+    {
+      "id": "source-f2b376f8c2199f1d",
+      "url": "https://statml.io/admissions/applying-to-statml/",
+      "title": "Applying to StatML | StatML",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://statml.io/admissions/applying-to-statml/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "f2b376f8c2199f1d.txt",
+      "institution_relationship": "Imperial and University of Oxford joint StatML CDT",
+      "relationship_evidence_source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "accepted_option_ids": [
+        "imperial-math-statml"
+      ],
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-f2b376f8c2199f1d",
+          "url": "https://statml.io/admissions/applying-to-statml/",
+          "title": "Applying to StatML | StatML",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://statml.io/admissions/applying-to-statml/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "f2b376f8c2199f1d.txt",
+          "institution_relationship": "Imperial and University of Oxford joint StatML CDT",
+          "relationship_evidence_source_ids": [
+            "source-7e7361227d1c5363"
+          ],
+          "accepted_option_ids": [
+            "imperial-math-statml"
+          ],
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-9029a8d0791ccc9c",
+      "url": "https://www.randomsystems-cdt.ac.uk/applying-oxford",
+      "title": "Applying to the CDT | Mathematics of Random Systems: Analysis, Modelling and Algorithms",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.randomsystems-cdt.ac.uk/applying-oxford"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "9029a8d0791ccc9c.txt",
+      "institution_relationship": "University of Oxford-hosted Imperial and Oxford joint Random Systems CDT",
+      "relationship_evidence_source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "accepted_option_ids": [
+        "imperial-math-random-systems"
+      ],
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-9029a8d0791ccc9c",
+          "url": "https://www.randomsystems-cdt.ac.uk/applying-oxford",
+          "title": "Applying to the CDT | Mathematics of Random Systems: Analysis, Modelling and Algorithms",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.randomsystems-cdt.ac.uk/applying-oxford"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "9029a8d0791ccc9c.txt",
+          "institution_relationship": "University of Oxford-hosted Imperial and Oxford joint Random Systems CDT",
+          "relationship_evidence_source_ids": [
+            "source-7e7361227d1c5363"
+          ],
+          "accepted_option_ids": [
+            "imperial-math-random-systems"
+          ],
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-5cfc900764598487",
+      "url": "https://ccmi-cdt.org/",
+      "title": "Doctoral Training in Collaborative Computational Modelling at the Interface (CCMI) – CCMI",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://ccmi-cdt.org/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "5cfc900764598487.txt",
+      "institution_relationship": "Imperial and University College London joint CCMI CDT",
+      "relationship_evidence_source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "accepted_option_ids": [
+        "imperial-math-ccmi"
+      ],
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-5cfc900764598487",
+          "url": "https://ccmi-cdt.org/",
+          "title": "Doctoral Training in Collaborative Computational Modelling at the Interface (CCMI) – CCMI",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://ccmi-cdt.org/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "5cfc900764598487.txt",
+          "institution_relationship": "Imperial and University College London joint CCMI CDT",
+          "relationship_evidence_source_ids": [
+            "source-7e7361227d1c5363"
+          ],
+          "accepted_option_ids": [
+            "imperial-math-ccmi"
+          ],
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-ef36b4a0c7c51884",
+      "url": "https://www.mfccdt.ac.uk/how-to-apply/",
+      "title": "How To Apply - MFC CDT | EPSRC Mathematics for our Future Climate CDT",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.mfccdt.ac.uk/how-to-apply/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "ef36b4a0c7c51884.txt",
+      "institution_relationship": "Imperial, Reading and Southampton joint Mathematics for our Future Climate CDT",
+      "relationship_evidence_source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "accepted_option_ids": [
+        "imperial-math-future-climate"
+      ],
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-ef36b4a0c7c51884",
+          "url": "https://www.mfccdt.ac.uk/how-to-apply/",
+          "title": "How To Apply - MFC CDT | EPSRC Mathematics for our Future Climate CDT",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.mfccdt.ac.uk/how-to-apply/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "ef36b4a0c7c51884.txt",
+          "institution_relationship": "Imperial, Reading and Southampton joint Mathematics for our Future Climate CDT",
+          "relationship_evidence_source_ids": [
+            "source-7e7361227d1c5363"
+          ],
+          "accepted_option_ids": [
+            "imperial-math-future-climate"
+          ],
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-833651dcf1f97bf6",
+      "url": "https://www.mfccdt.ac.uk/programme/prospective-students/",
+      "title": "Prospective Students - MFC CDT | EPSRC Mathematics for our Future Climate CDT",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.mfccdt.ac.uk/programme/prospective-students/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "833651dcf1f97bf6.txt",
+      "institution_relationship": "Imperial, Reading and Southampton joint Mathematics for our Future Climate CDT",
+      "relationship_evidence_source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "accepted_option_ids": [
+        "imperial-math-future-climate"
+      ],
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-833651dcf1f97bf6",
+          "url": "https://www.mfccdt.ac.uk/programme/prospective-students/",
+          "title": "Prospective Students - MFC CDT | EPSRC Mathematics for our Future Climate CDT",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.mfccdt.ac.uk/programme/prospective-students/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "833651dcf1f97bf6.txt",
+          "institution_relationship": "Imperial, Reading and Southampton joint Mathematics for our Future Climate CDT",
+          "relationship_evidence_source_ids": [
+            "source-7e7361227d1c5363"
+          ],
+          "accepted_option_ids": [
+            "imperial-math-future-climate"
+          ],
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-cb7e5f53984db24f",
+      "url": "https://www.imperial.ac.uk/a-z-research/high-energy-physics/opportunities/postgraduate-opportunities/",
+      "title": "Postgraduate Opportunities | Research groups | Imperial College London",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/high-energy-physics/opportunities/postgraduate-opportunities/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "cb7e5f53984db24f.txt",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-cb7e5f53984db24f",
+          "url": "https://www.imperial.ac.uk/a-z-research/high-energy-physics/opportunities/postgraduate-opportunities/",
+          "title": "Postgraduate Opportunities | Research groups | Imperial College London",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/high-energy-physics/opportunities/postgraduate-opportunities/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "cb7e5f53984db24f.txt",
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-2b4b194cc3b386e8",
+      "url": "https://www.imperial.ac.uk/theory-and-simulation-of-materials/",
+      "title": "Theory and Simulation of Materials | Imperial College London",
+      "checked_at": "2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "method": "web content",
+        "status": "readable official content"
+      },
+      "evidence_records": [
+        {
+          "id": "source-2b4b194cc3b386e8",
+          "url": "https://www.imperial.ac.uk/theory-and-simulation-of-materials/",
+          "title": "Theory and Simulation of Materials | Imperial College London",
+          "checked_at": "2026-10-03",
+          "content_reviewed_at": "2026-10-03",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "method": "web content",
+            "status": "readable official content"
+          }
+        }
+      ]
+    },
+    {
+      "id": "source-59090003d068b945",
+      "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/apply/",
+      "title": "How to apply | Research groups | Imperial College London",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/apply/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "59090003d068b945.txt",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-59090003d068b945",
+          "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/apply/",
+          "title": "How to apply | Research groups | Imperial College London",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/apply/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "59090003d068b945.txt",
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-5f79fa2821b98244",
+      "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/programme/phd-research-projects/",
+      "title": "PhD Research Projects | Research groups | Imperial College London",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/programme/phd-research-projects/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "5f79fa2821b98244.txt",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-5f79fa2821b98244",
+          "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/programme/phd-research-projects/",
+          "title": "PhD Research Projects | Research groups | Imperial College London",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/programme/phd-research-projects/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "5f79fa2821b98244.txt",
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-2cc3e2e5b540d416",
+      "url": "https://www.imperial.ac.uk/research-and-innovation/education-research/about/phd-studentship-vacancies/",
+      "title": "PhD studentship vacancies | Research | Imperial College London",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/education-research/about/phd-studentship-vacancies/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "2cc3e2e5b540d416.txt",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-2cc3e2e5b540d416",
+          "url": "https://www.imperial.ac.uk/research-and-innovation/education-research/about/phd-studentship-vacancies/",
+          "title": "PhD studentship vacancies | Research | Imperial College London",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/education-research/about/phd-studentship-vacancies/"
+          },
+          "content_review_status": "reviewed_for_linked_facts",
+          "capture_file": "2cc3e2e5b540d416.txt",
+          "content_reviewed_at": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "id": "source-9235bb2a1867d7b9",
+      "url": "https://www.imagingcdt.com/applications/",
+      "title": "Smart Medical Imaging CDT applications",
+      "checked_at": "2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "method": "web full content read"
+      },
+      "institution_relationship": "Imperial and Kings College London joint Smart Medical Imaging CDT",
+      "relationship_evidence_source_ids": [
+        "source-1e206d093548d31a"
+      ],
+      "accepted_option_ids": [
+        "imperial-medical-imaging-integrated"
+      ],
+      "evidence_records": [
+        {
+          "id": "source-9235bb2a1867d7b9",
+          "url": "https://www.imagingcdt.com/applications/",
+          "title": "Smart Medical Imaging CDT applications",
+          "checked_at": "2026-10-03",
+          "content_reviewed_at": "2026-10-03",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "method": "web full content read"
+          },
+          "institution_relationship": "Imperial and Kings College London joint Smart Medical Imaging CDT",
+          "relationship_evidence_source_ids": [
+            "source-1e206d093548d31a"
+          ],
+          "accepted_option_ids": [
+            "imperial-medical-imaging-integrated"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "source-eebc4fd881232fac",
+      "url": "https://www.imagingcdt.com/phd-programme/",
+      "title": "Smart Medical Imaging CDT programme structure",
+      "checked_at": "2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "method": "web full content read"
+      },
+      "institution_relationship": "Imperial and Kings College London joint Smart Medical Imaging CDT",
+      "relationship_evidence_source_ids": [
+        "source-1e206d093548d31a"
+      ],
+      "accepted_option_ids": [
+        "imperial-medical-imaging-integrated"
+      ],
+      "evidence_records": [
+        {
+          "id": "source-eebc4fd881232fac",
+          "url": "https://www.imagingcdt.com/phd-programme/",
+          "title": "Smart Medical Imaging CDT programme structure",
+          "checked_at": "2026-10-03",
+          "content_reviewed_at": "2026-10-03",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "method": "web full content read"
+          },
+          "institution_relationship": "Imperial and Kings College London joint Smart Medical Imaging CDT",
+          "relationship_evidence_source_ids": [
+            "source-1e206d093548d31a"
+          ],
+          "accepted_option_ids": [
+            "imperial-medical-imaging-integrated"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "source-e81426de703d229a",
+      "url": "https://www.imperial.ac.uk/engineering/departments/aeronautics/study/phd/phd-opportunities-and-funding/",
+      "title": "Aeronautics PhD opportunities and funding",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/aeronautics/study/phd/phd-opportunities-and-funding/"
+      },
+      "capture_file": "e81426de703d229a.txt",
+      "content_review_status": "reviewed_for_linked_facts",
+      "content_reviewed_at": "2026-10-03",
+      "evidence_records": [
+        {
+          "id": "source-e81426de703d229a",
+          "url": "https://www.imperial.ac.uk/engineering/departments/aeronautics/study/phd/phd-opportunities-and-funding/",
+          "title": "Aeronautics PhD opportunities and funding",
+          "checked_at": "2026-10-03",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/aeronautics/study/phd/phd-opportunities-and-funding/"
+          },
+          "capture_file": "e81426de703d229a.txt",
+          "content_review_status": "reviewed_for_linked_facts",
+          "content_reviewed_at": "2026-10-03"
         }
       ]
     }

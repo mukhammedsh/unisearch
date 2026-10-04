@@ -1,0 +1,1075 @@
+{
+  "institution_id": "imperial-college-london-uk",
+  "scope": "Stage 1 readability recheck of current doctoral evidence; exact value-field proposals only, canonical dossier untouched.",
+  "rechecked_at": "2026-10-03",
+  "historical_checked_at_preserved": "2026-10-01",
+  "current_fact_count_at_review": 76,
+  "replacements": [
+    {
+      "fact_id": "imperial-earth-science-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-921b7ca52e9cc9a0",
+        "source-b7564f76b452c295"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Contact a potential supervisor before applying. For an advertised project, enquire about it first. Interviews are with a committee or supervisor, and remote interviews are available. Decisions often arrive within three weeks. Department scholarship shortlisting is usually in late January or early February. Green Industrial Futures and TARGET have separate processes. The published deadline of 12 January 2026 is historical, not a 2027 deadline. Central qualification equivalencies and project-specific requirements still apply."
+    },
+    {
+      "fact_id": "imperial-electrical-electronic-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-56f60ddee7c65ecc"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Entry: UK MEng in electrical engineering or related subject at 2:1/first, or BEng at 2:1/first plus Master’s at Merit or higher. International applicants normally need the equivalent of a UK 2:1 Bachelor’s and Master’s at Merit. Higher English is required. Contact a supervisor; submit CV 1–2 pages, personal statement 1–2 pages, research statement 2–3 pages, and two references. Applications are normally reviewed after both references arrive. Shortlisted applicants interview on Teams with the proposed supervisor and a colleague. Decisions typically take eight weeks. Intakes are October, early January, 1 April, and 1 July. Applications are accepted year-round, subject to funding deadlines."
+    },
+    {
+      "fact_id": "imperial-materials-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-08b2e8b31560114d",
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Discuss research interests with a supervisor first. Scholarship applicants are interviewed and may be nominated by the committee; self-funded and project-funded applicants are interviewed and need PGR Admissions Tutor/Coordinator approval. Nuclear and Advanced Materials CDTs are separate routes. The course hub contains conflicting years and stricter President’s PhD eligibility wording than the central page; confirm with the Coordinator. Current departmental DLA guidance describes 3.5 years of funding, Home fees, and limited Overseas-fee availability outside DLA awards. The stated 2026/27 stipend is £23,805; the 2027/28 rate is unpublished."
+    },
+    {
+      "fact_id": "imperial-surgery-cancer-application",
+      "field_path": [
+        "process"
+      ],
+      "source_ids": [
+        "source-395d3020bacd1a2d"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "A named supervisor must agree to support the application; applications without one are not considered. Provide two references from professional email accounts and do not use the proposed supervisor as a referee. The supervisor, Division Head, and Director of Postgraduate Studies approve before a formal offer. Apply 2–3 calendar months before the intended start; backdating is not permitted. Full-time, part-time, Imperial staff, and NHS staff have distinct application categories and may have conditional employment-related fee discounts."
+    },
+    {
+      "fact_id": "imperial-public-health-application",
+      "field_path": [],
+      "source_ids": [
+        "source-d6c32b2c0ecb1664"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Applicants normally need an MBBS or relevant UK 2:1 degree plus a Master’s-level qualification. Higher English applies; MD(Res) applicants must also meet central medical/GMC rules. Agree a supervisor and complete the departmental interview before applying through My Imperial. The department advertises PhD/MPhil routes lasting 4 years full-time or 8 years part-time. Minimum research registration is 24 months full-time or 48 months part-time; generic PhD duration of 3–4 years full-time or 5–6 part-time is not imposed. Six research areas are within the departmental degree, not separate admissions programmes. Applications are accepted year-round, with most starts in September/October. Admission is not a scholarship application; check funding separately."
+    },
+    {
+      "fact_id": "imperial-environmental-policy-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-294c9e51404a91c0",
+        "source-e3663b2671d750f0"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Applicants need a first-class or upper-second Bachelor’s degree, or recognised international equivalent. An environmental degree is not required; backgrounds may range from philosophy and politics to engineering and zoology. Many funders require a relevant Master’s. Contact a potential supervisor with a two-page proposal and CV before the formal online application. Applicants must be self-funded or secure a competitive award. Study normally takes three years full-time and occasionally four. Departmental training and research-review panels are separate from admissions. Bachelor-only guidance differs from central normal-entry expectations; confirm approval as an entry exception before integration."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-entry",
+      "field_path": [
+        "tests"
+      ],
+      "source_ids": [
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "A GMAT or GRE score is compulsory before consideration; no offer is conditional on a later test score. Strong scores are described as approximately the 90th percentile, not guaranteed admission minima. Preferred classic GMAT: 700+ overall, quantitative 50/60, verbal 39/60, writing 6/6, integrated reasoning 8/8. Preferred GMAT Focus: 655+ and component scores around the 90th percentile; valid five years. Preferred GRE: quantitative 165/170, verbal 163/170, analytical writing 5/6. Finance, Economics and Public Policy, and Analytics and Operations prefer GRE; either test is accepted for every pathway."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-entry",
+      "field_path": [
+        "english"
+      ],
+      "source_ids": [
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Higher English: IELTS Academic 7.0 overall with at least 6.5 in each element; TOEFL 100 overall and at least 22 in each element for tests before 21 January 2026, or the new scale at 5.0 overall and 5.0 in each element after transition; or Duolingo 125 overall and at least 115 in each integrated subscore. Validity is two years at course start. Degree exemption requires the degree to have been studied entirely and awarded in a listed country. The Business School list omits Malta, unlike central policy, so do not assume automatic Malta exemption. English may be met after application. Business School wording says “after 21 January” while central guidance says “on or after”; preserve this conflict for a test on the transition date."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-entry",
+      "field_path": [
+        "documents"
+      ],
+      "source_ids": [
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Submit a CV, statement of purpose, full transcripts, two academic references, the required GMAT/GRE, and English proof. The statement is normally 1–2 A4 pages and should describe research interests and faculty fit. Economics and Public Policy applicants must describe a specific research idea in greater detail. Prior agreement from a willing supervisor is not required."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-entry",
+      "field_path": [
+        "deadline",
+        "required"
+      ],
+      "source_ids": [
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "All supporting documents, references, and the test score are required by the deadline. Incomplete applications are not processed."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-entry",
+      "field_path": [
+        "selection"
+      ],
+      "source_ids": [
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The Academic Selection Committee shortlists applicants for a faculty panel interview; overseas interviews are online. After the School recommendation, final Registry checks can take up to three weeks."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-entry",
+      "field_path": [
+        "qualification_verification_conflict"
+      ],
+      "source_ids": [
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The School FAQ requests physical originals for some English qualifications, while the current central offer page says to email accepted qualification proof. Preserve the conflict and follow the actual offer/Registry instruction; do not add an unsupported general postal requirement."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-profile-funding",
+      "field_path": [],
+      "source_ids": [
+        "source-e2f34734a0651582",
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The programme begins with a two-year MRes, then a 3–4-year PhD subject to satisfactory progress. Study is full-time with September starts only. Its header says 5–6 years while the FAQ says 4–6; preserve the discrepancy. Part-time/distance study is unavailable and transfers are usually unavailable. Funding includes a Home/Overseas tuition waiver and Graduate Teaching Assistant stipend for up to five years. The published 2026/27 stipend is £29,580 annually, tax-free; a 2027/28 increase is expected but the amount is unpublished. Sixth-year funding may be considered case by case through teaching/research assistant work but is not guaranteed. Continuation depends on satisfactory progress; eligible external awards must be applied for. A President’s PhD award during the MRes may add consumables. No deposit is required. The separate Visiting PhD Scholarship for Black Heritage students supports external PhD students for an initial three-month visit and grants no degree or credits. A supervisor and study plan are agreed and the Director assists admission. No fixed visit deadline is published; 4–6 months’ lead time is recommended, especially for visa applicants. This is an explicit exception to the general FAQ saying visiting applications are not accepted; keep both statements."
+    },
+    {
+      "fact_id": "imperial-engd-qnde-regulations",
+      "field_path": [],
+      "source_ids": [
+        "source-820d135453f0481c"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Normal entry requires one of: an integrated Master’s, at least second class and at least four years; a Bachelor’s, at least second class and at least three years; a taught postgraduate qualification of at least one year; or an approved professional written-examination qualification. Equivalencies, special cases, and qualifying tests may apply. The four-year EngD combines mainly industry-based research, academic/industrial supervisors, and taught/professional components. The year-one report is at most 10,000 words with an oral assessment. One reassessment is allowed; an MPhil in Quantitative Non-Destructive Evaluation may be an exit award if requirements are met. A PhD registrant may transfer to EngD within 12 months, subject to conditions, and complete taught elements within 36 rather than 24 months. Research reports recur every six months. All required modules must be completed, normally with only one reassessment per failed module; two technical optional courses and professional-skills courses are required. Year-one assessment may require remedial action or withdrawal. The final thesis is normally due by the four-year programme end or within one additional calendar year, and must demonstrate industrial context. Regulations alone establish no current recruitment target, date, or fee amount."
+    },
+    {
+      "fact_id": "imperial-dsc-submission",
+      "field_path": [],
+      "source_ids": [
+        "source-9065495810539d6f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The DSc is a higher doctorate for published work showing exceptional original research and sustained international distinction. Eligible applicants hold an Imperial/merged-institution degree (including University of London degrees awarded through Imperial) or are Imperial academic staff with at least two years’ service. Submit the Registry Assessment Records form, prescribed fee, CV, numbered chronological publication list, a 10–12 A4-page contribution statement, and electronic copies of the work (normally the 20 most significant items). Work should normally be in English; an approved translation may be accepted by exception. Verify contributions to joint work and identify work previously used for a degree. Concurrent application elsewhere for a comparable award is barred. The committee conducts faculty vetting and then obtains three external referees. Part of the fee may be refunded if the application cannot proceed. One further submission after failure is normally permitted; further resubmission needs Senate discretion and uses the regulations then in force. Appeals are limited to procedural irregularity. Successful work is deposited in Spiral. The regulations publish no fee amount or annual deadline. This is not a taught course or ordinary PhD intake."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "closed",
+        0
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "BioDesign Engineering recruitment is complete."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "closed",
+        1
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The final SSCP cohort began in October 2024; the source has not been updated since."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "closed",
+        2
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "MultiSci’s final 1+3.5 recruitment cohort is complete."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "current_changes",
+        0
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "For October 2027, HealthBRIDGE replaces MultiSci with a 1+3-year foundation-plus-PhD route."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "current_changes",
+        1
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The old Nuclear CDT URL redirects to the DRIVERS Doctoral Focal Award. DRIVERS describes a four-year direct-research PhD; do not assume an MRes stage."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "current_changes",
+        2
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The Chemical Biology CDT has been renewed for a fifth iteration as Empowering UK BioTech Innovation."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "other_reviewed_networks",
+        0
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Reviewed Mathematics networks: CCMI; Geometry and Number Theory at the Interface; Mathematics for our Future Climate; Mathematics of Random Systems; and Statistics and Machine Learning (StatML)."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "other_reviewed_networks",
+        1
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Reviewed Chemistry networks and centres: Chemical Biology; Medical Imaging; Plastic Electronics; ACM; Theory and Simulation of Materials; rEaCt; and Leverhulme Cellular Bionics. A centre listing alone does not establish open recruitment."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "other_reviewed_networks",
+        2
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Computing’s Medical Imaging route is an MRes followed by a PhD. The 2026 intake is closed; the source says October 2027 recruitment is opening, not that a place is guaranteed."
+    },
+    {
+      "fact_id": "imperial-doctoral-training-status-reconciliation",
+      "field_path": [
+        "boundary"
+      ],
+      "source_ids": [
+        "source-a027f6eeb1e56487",
+        "source-2c250c893ad6975b",
+        "source-00f383784df68976",
+        "source-5ad10856b578c92d",
+        "source-f019fcc886708d96",
+        "source-7e7361227d1c5363",
+        "source-2cb3e7872cf66d7b",
+        "source-1e206d093548d31a",
+        "source-cd0e4c6706b4ba42",
+        "source-7d96f3a13ffdae61"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Training centres, research themes, projects, and global institutes are not automatically separate degree options and do not inherit one another’s admissions policies. Partner-hosted admissions need separate review. Unavailable university links remain documented uncertainty. Energy Futures Lab explicitly does not offer a PhD; other global institutes facilitate departmental research. The page linked as a Technical University of Munich joint doctoral route is instead the European Talent Academy, so it does not verify current JADS admissions."
+    },
+    {
+      "fact_id": "imperial-healthbridge-entry-process",
+      "field_path": [],
+      "source_ids": [
+        "source-13c663bcd4658fbc",
+        "source-6f0c9e0934f79efd"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "For October 2027 entry, HealthBRIDGE has one foundation year followed by three PhD years. Applicants normally need a first-class or good upper-second Bachelor’s/integrated Master’s in a relevant field. A lower-second Bachelor’s may qualify with a Master’s completed before entry. A strong biological/biomedical component is typical, though relevant work can support other backgrounds. Predicted results are conditional; applicants who have already begun their studies are excluded. The initial scheme form is expected to open 14 October 2026 and close at 12:00 GMT on 11 November 2026; the form/template was unavailable at the original review. The initial form requires no separate CV, personal statement, transcript, or nationality upload. Provide two referees, at least one familiar with educational history; references are requested from shortlisted interviewees. Incorrect information may cause an offer to be withdrawn. Shortlisting is expected in late January 2027, online interviews in mid/late February, and offers in early March. Studentship offer-holders then apply through My Imperial for qualification, English, and fee-status checks. The stray MultiSci form label is a source copy error, not another route."
+    },
+    {
+      "fact_id": "imperial-healthbridge-funding-progression",
+      "field_path": [],
+      "source_ids": [
+        "source-28a9576ee3aa7534",
+        "source-6f0c9e0934f79efd",
+        "source-a43a5d0b16919c98"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The successful four-year award covers UKRI Home tuition. The quoted foundation-year stipend is GBP 21,805 plus GBP 2,000 London weighting for 2026/27; years two to four add GBP 26,500 per year. During PhD years, the supervisor receives GBP 5,000 annually for research training; conference support is GBP 300 per year and supplementary activities are conditional. Applicants of any nationality may apply, but international places are restricted to exceptional candidates. The grant covers Home-level tuition only: the registering PhD department must cover the Overseas-fee difference or the applicant must secure it, which may limit department choice. Separate foundation and PhD visa applications are required and their costs are not covered. Foundation pathways are Biomedical Research MRes, Innovation/Entrepreneurship PGCert, or Computational Biomedicine PGCert; each includes two rotations. PhD registration in year two is separate. Formal English and fee-status checks remain required after the scheme award."
+    },
+    {
+      "fact_id": "imperial-computing-funding-exceptions",
+      "field_path": [],
+      "source_ids": [
+        "source-f8beae4c36965770"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "For October 2027, five EPSRC Doctoral Landscape Awards are listed for applicants meeting UK residency criteria. They cover Home fees, the stated current £23,805 annual stipend, and £1,000 travel/equipment over 3.5 years. Expected preparation is a first-class MEng or first-class Bachelor’s plus a distinction-level Master’s. Eligible applicants are ranked after acceptance by the relevant department/College round; no separate scholarship form is used, and an earlier departmental deadline overrides the central nomination deadline. Up to four Doctoral Teaching Scholarships are listed for 2027/28, covering full Home/Overseas fees and about £31,380 annually for 4.5 years, with annual review; at least one is for an Overseas applicant. Teaching totals about 15 full-time-equivalent months across the award. Applicants first need a PhD offer naming a supervisor, then contact the coordinator, submit a teaching statement, and interview. Suggested 15 February/15 April dates have no stated year. QRT Labs lists more than 20 fully funded awards across Computing, Mathematics, and Business; these are not automatic for every applicant. AI4Health is normally Home-fee-only and may require conference approval; do not assume Overseas fees are funded. Direct CSC applications outside Imperial’s scheme have no guaranteed departmental fee contribution."
+    },
+    {
+      "fact_id": "imperial-eee-funding-exceptions",
+      "field_path": [],
+      "source_ids": [
+        "source-c2fead65fb0e188e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The Awards Panel meets four times a year. A potential supervisor nominates candidates only after a PhD offer. Awards normally support new applicants; current students are excluded except for CSC. General EEE scholarships may cover Home/Overseas fees for three years, a UKRI-rate stipend for 3.5 years, and travel; partial/top-up awards may also be possible. The Maria Petrou Scholarship is for cis and trans women of any nationality and offers full fees, UKRI stipend, and £500 annually for 3.5 years; nomination and offer are due by 1 March for September entry, with year unstated. The Alex Fortescue award funds Human or Artificial Intelligence research for any nationality, with full fees, UKRI stipend, and travel; nomination is due 1 March, year unstated. Supervisors allocate project funding outside the panel; one application may be considered for different projects after a revised statement. Visa/IHS is not covered. EEE does not support direct CSC applications, unlike Computing."
+    },
+    {
+      "fact_id": "imperial-earth-funding-exceptions",
+      "field_path": [],
+      "source_ids": [
+        "source-71596bbbe4abd1cd"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "One application can be considered for multiple departmental and College awards. The panel assesses eligibility and suitability and may match shortlisted candidates to schemes; funding is competitive. Janet Watson normally covers Home tuition for three years, a UKRI-rate bursary for 3.5 years, and a small research/training budget. If funding permits, one or two awards may cover Overseas tuition for three years. Ada Lovelace supports women with a Master’s (or equivalent) in computational modelling, ML, data science, or AI; it is open to Home/Overseas applicants subject to project and fee availability. The 12 January 2026 deadline is historical. DTP project lists are indicative, not guaranteed funding. EPSRC/STFC 2026 deadlines and Green Industrial Futures/TARGET are separate. Prior 2025/26 President’s dates do not establish 2027 deadlines."
+    },
+    {
+      "fact_id": "imperial-staff-discount-current-terms",
+      "field_path": [],
+      "source_ids": [
+        "source-4d3e8168b047c007"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Two central staff-fee schemes apply. Tuition Fee Remission is for substantive Imperial/wholly-owned-company staff; Honorary staff, directly externally funded staff, NHS employees, and relatives are excluded. It covers postgraduate degrees, including certificates/diplomas but not CPD, and requires 12 months’ service before study, an employment contract covering the entire expected degree, approved business case, and a normal competitive course offer with all conditions met. The discount is two-thirds of the Home fee, prorated to employment FTE; the balance remains payable and excess awards reduce remission. Staff-student fees apply to full-time project Research Assistants/Clinical Research Fellows undertaking doctoral programmes, including integrated routes. There is no 12-month service requirement, but the employment must start by the degree and cover its full duration, and grant-administration conditions must be met. The fee is one-third of the Home rate regardless of fee status. If employment ends, fees are recalculated. Resignation during study or within 12 months after completion requires full repayment; resignation 12–24 months after completion requires 50%. Redundancy, involuntary termination, and scheduled end of fixed-term contract are exceptions. Older departmental three-year rules do not override the current whole-duration contract rule."
+    },
+    {
+      "fact_id": "imperial-chemical-biology-current-process",
+      "field_path": [],
+      "source_ids": [
+        "source-a568dbee895747b1",
+        "source-3fa8204fb28ae821",
+        "source-593f2812402e3689"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Empowering UK BioTech Innovation is the current Chemical Biology CDT. It normally requires a 2:1/equivalent in physical science. Biological/medical degrees are normally excluded unless at least 50% of study is physical science or the applicant has relevant lab experience. Recruitment is project-specific: use one My Imperial postgraduate MRes application to list all projects, then send the required notification email to icbadmin@imperial.ac.uk; a second form is returned. MSci/MSc/MChem applicants still follow the 1+3 route. Existing MRes students may discuss direct Chemistry Research PhD only after consultation. Supervisors and CDT management interview applicants. The four-year funded programme is one MRes year plus three PhD years; PhD progression depends on passing the MRes. ELEVATE offers a possible additional year, not automatic degree/funding. October 2026 places are filled; October 2027 applications are expected to open in late 2026, but exact deadline/projects are unpublished. The 30 January deadline applied to most 2026 projects and must not be reused for 2027. The 2026 Home TechExpert pilot offered up to £10,000 extra stipend, without outreach/network/industry duties; do not assume it continues in 2027. Overseas Home-fee funding is limited; fee-difference scholarships or self/external funding are competitive. Older 2023 Innovation CDT pages do not replace current terms. The MRes (October–January) covers Chemical Biology fundamentals, FutureLab physical/life-science/Industry 4.0 Hackspace education, Biz-Catalyst bioentrepreneurship, and industry innovation workshops. The PhD builds on the MRes project and includes BBC science communication, responsible research, human-centred design, policy, hackathons, EVOLVE placements, and optional InnovaLAB start-ups. The source gives no numeric consumables, conference-travel, or EVOLVE support amount; ELEVATE funding is not automatic."
+    },
+    {
+      "fact_id": "imperial-chemical-biology-closed-predecessors",
+      "field_path": [],
+      "source_ids": [
+        "source-d01ee98be4c81964",
+        "source-fd9f0b26270fb793"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The Physical Sciences Innovation CDT and Leverhulme Cellular Bionics are closed to new project recruitment. Existing student/training pages are historical information, not evidence of open applications. For current recruitment, use the successor programme’s Empowering UK BioTech Innovation pages."
+    },
+    {
+      "fact_id": "imperial-civil-full-admissions-detail",
+      "field_path": [],
+      "source_ids": [
+        "source-a2aa0864112c2063"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Applicants need a good upper-second or first-class degree in engineering or another numerate discipline, plus a Master’s, good mathematics, and Standard English. Submit transcripts showing all modules/marks, English translations and grading scheme, CV, brief statement/proposal (preferably discussed with a supervisor), and two referees using professional emails. Apply through My Imperial to full-time or part-time Civil and Environmental Engineering Research. Occasional research is a visiting non-degree route. Applications remain incomplete until required files and both references arrive. Shortlisted applicants interview with the supervisor and another staff member. Processing takes at least 12 weeks. Supervisor consultation is recommended; the department says applications without it are unlikely to succeed. Admission does not automatically apply for scholarship funding. Career destinations are published examples (academia, engineering, utilities, government, finance), not promises."
+    },
+    {
+      "fact_id": "imperial-other-training-inventory-boundaries",
+      "field_path": [],
+      "source_ids": [
+        "source-aa1ddf6743f055c0",
+        "source-94ea739080f9d1fd",
+        "source-eea688ac605d370f",
+        "source-c67c4899cfe97db8"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The Neurotechnology CDT completed in June 2023 and no longer admits students; a standalone MRes remains separately available. The university AI4Health scholarship listing is for 2025/26: Home tuition, £22,780 annual UKRI stipend, conference support, and a 30 April 2026 deadline (now closed). It describes applicants with a first-class four-year degree and distinction-level Master’s in a relevant scientific/technical/medical field, quantitative/coding/statistics skills, ATAS where required, and new-student status. Confirm any 2027 funded recruitment with AI4Health admissions rather than reusing the historical listing. DRIVERS offers four-year direct-research PhDs across Imperial, Bangor, Bristol, Manchester, and Swansea; it does not require an MRes. University pages describe Home-fee funding and an enhanced bursary but do not state the current project deadline or exact stipend. The official contact is drivers-dfa@imperial.ac.uk."
+    },
+    {
+      "fact_id": "imperial-research-regulations-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The 2026/27 Research Regulations cover PhD (including an intercalated MBBS PhD), MD(Res), and MPhil. MPhil is FHEQ level 7; PhD and MD(Res) are level 8. The regulations exclude MRes/taught integrated years and EngD, which has separate regulations. Study is conducted in English. MPhil may be a directly registered award or a transfer/exit outcome; it should not be presented as an independent taught course."
+    },
+    {
+      "fact_id": "imperial-research-normal-entry",
+      "field_path": [],
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Normal PhD/MPhil entry includes a UK upper-second honours degree plus a Master’s; an upper-second MSci/MEng; an appropriate registrable medical qualification or Master’s at FHEQ level 7; or an approved professional written-examination qualification. Recognised overseas equivalents and English requirements apply. Individual courses may set higher requirements. Lower qualifications require an approved department exception; do not treat generic equivalency as automatic entry."
+    },
+    {
+      "fact_id": "imperial-mbbs-intercalated-phd-entry",
+      "field_path": [],
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "An intercalated PhD during the MBBS requires satisfactory completion of earlier MBBS years without examination resits and a BSc at upper-second level or higher. This is an internal eligibility route, not direct PhD admission from school."
+    },
+    {
+      "fact_id": "imperial-research-completion",
+      "field_path": [],
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "PhD/MD(Res) require research, thesis/viva, departmental training, and at least four ECRI skills credits: two by ESA and two more by LSR. They also require plagiarism training and, for entrants from 1 September 2026, Trusted Research e-learning. DACR diagnostic training applies to registrations from 1 September 2025 and is due by ESA. Milestones: ESA by 12 months full-time/24 part-time; LSR by 24/48; progress review by 36/72. A failed progress review may lead to withdrawal or transfer from PhD to MPhil. MPhil requires at least two skills credits and plagiarism training before examination, plus departmental reviews. These are completion/progression requirements, not entry tests. If an academic assessment is passed but skills, plagiarism, or DACR training is incomplete, conditional progression may be allowed subject to a completion deadline agreed with the department, ECRI, or Academic English; missing training does not automatically mean failure. Normal thesis-submission limits: PhD/MD(Res) within 48 months full-time/96 part-time; MPhil within 24/48; internal MBBS intercalated PhD normally within 36/72. Examination-entry forms are due at 44/88 months for PhD/MD(Res) and 20/40 for MPhil. UKRI CDT/DFA handbooks may set their own milestone/submission deadlines. Approved extensions can alter dates. These limits are completion limits, not advertised course durations."
+    },
+    {
+      "fact_id": "imperial-research-attendance",
+      "field_path": [],
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Most research is normally conducted at Imperial. Approved external research requires minimum university attendance of 12 months for PhD/MD(Res) or six months for MPhil. Split PhD requires 12 months of active Imperial attendance, excluding interruption/writing-up. PRI requires two months each academic year, excluding writing-up. Advanced-standing active study is at least 12 months full-time or 24 months part-time. Writing-up needs approval, normally after 36 months full-time or 72 part-time; earlier entry may be allowed after 24/48 months except approved advanced-standing/transfer cases. Writing-up normally lasts up to 12 months full-time or 24 months part-time. These location/registration conditions do not create automatic remote study."
+    },
+    {
+      "fact_id": "imperial-bioengineering-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-baf1d30880524928",
+        "source-62cfec425e715f3f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Entry: first-class undergraduate degree, upper-second integrated Master’s, or upper-second Bachelor’s plus standalone Master’s; discuss special cases with admissions. Research backgrounds include engineering, physical, mathematical, biological, and medical sciences. PhD duration is four years full-time. Intake dates are the first working Monday of October, January, April, and July. Two academic referees are required, excluding the proposed supervisor; complete documents are needed before a decision. The online English interview is at least 30 minutes with two staff. Normal processing takes 10–12 weeks. The two-page statement plus research proposal is specifically scholarship documentation, not stated as a universal admission requirement. Published scholarship rounds—3 November 2025, 12 January 2026, and 2 March 2026, all at 23:59 UK time—apply to 2026/27 and must not be silently carried into 2027."
+    },
+    {
+      "fact_id": "imperial-bioengineering-mdres-profile",
+      "field_path": [],
+      "source_ids": [
+        "source-baf1d30880524928",
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "MD(Res) is a two-year, full-time research route for medically qualified applicants. Central MD(Res) medical/GMC requirements and any documented waiver still apply. Do not substitute the engineering PhD qualification route for the medical requirements."
+    },
+    {
+      "fact_id": "imperial-computing-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-59264ed92f6cb70f",
+        "source-fcfd905e0321795e"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The general Computing PhD target is normally a first-class or distinction Master’s in a relevant scientific/technical subject; an undergraduate degree is normally equivalent to UK 2:1. Bachelor-only applicants are normally not considered, but outstanding applicants or those with extensive relevant industry/research experience may formally apply with evidence of compensating factors; the department will not pre-assess exceptions by email. Standard English is required. Submit a CV with linked publications, all Bachelor’s/Master’s transcripts, two references, a 1–2-page personal statement, and an original 3–4-page research statement with literature references. The statements must be written by the applicant without generative AI. Suggest 3–4 supervisors. Normal review starts only after a formal application. An interview may ask the applicant to present a past project or discuss assigned papers. This general target differs from the AI4Health target. For April/October 2027 entry, rounds open 1 October 2026, 1 December 2026, 1 February 2027, and 1 April 2027; decisions are due 15 February, 15 April, 15 June, and 15 July 2027 respectively. The source does not publish an exact deadline time."
+    },
+    {
+      "fact_id": "imperial-nhli-application",
+      "field_path": [
+        "process"
+      ],
+      "source_ids": [
+        "source-ea4c7c1e7828b1a7"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Target route codes are PhD A3Z1DH and MD(Res) A3P1DH. Agree a supervisor first. Registration must be full-time (80–100%) or part-time (50–79%); below 50% is ineligible. Provide two references, excluding the proposed supervisor, using a professional email or accepted signed headed-PDF alternative. Complete the independent interview and NHLI01/department approval. Document secured funding or a funding plan/scholarship; studentship selection precedes the formal application. A research proposal may be completed within six weeks after the start, unlike Computing’s requirement to submit a proposal with the application. Employment alone is not degree admission. For the Imperial staff scheme, the contract must cover the degree; honorary and directly externally funded staff are ineligible. NHS staff discounts are separate. Apply 2–3 months ahead; backdating is not permitted."
+    },
+    {
+      "fact_id": "imperial-physics-phd-admission",
+      "field_path": [],
+      "source_ids": [
+        "source-b3d7107359d68ae7"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "In the application, select the Physics research community: Light, Matter, Particles, Universe–Astrophysics, Universe–Theory, or Space–Climate–Plasma. These communities/projects are research and application variants, not necessarily separate degrees. Contact a supervisor/group as directed for the selected project. Entry, tests, proposal, and funding requirements can differ by community; do not transfer one group’s instructions or deadlines to another."
+    },
+    {
+      "fact_id": "imperial-research-fees-publication",
+      "field_path": [],
+      "source_ids": [
+        "source-592b6b8853f78016",
+        "source-a676cbfb0c153fac",
+        "source-8f283491774c5959"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The central postgraduate fee index publishes 2026/27 and 2025/26 tables. Research fees are annual, based on the entrant year, and vary by department/degree and Home/Overseas status; published inflation uplifts may apply. The index does not establish 2027/28 research fees. Taught-course 2027 fees must not be substituted for research fees. Link exact published research-table values separately; an unpublished future tariff is unknown, not zero. Students entering on/after 1 September 2022 pay the full first-year fee regardless of actual start date; later billing is around the anniversary of the closest first day of the month to initial entry. Continuing/resuming rates are capped at the new-entrant fee for the relevant session, in addition to applicable inflation. Medicine Home premium follows the UKRI GDP deflator; other relevant continuing rates use April-to-March CPI. These describe annual fee liability, not scholarship renewal."
+    },
+    {
+      "fact_id": "imperial-photonics-integrated-exception",
+      "field_path": [],
+      "source_ids": [
+        "source-bfbf96c80339fb94"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Applicants without a relevant optics/photonics MSc or MRes normally complete a one-year Photonics MRes followed by three PhD years. Passing the MRes is required, but PhD progression is expected rather than automatic. The MRes includes initial optics/photonics lectures, specialist courses, and a nine-month January–September research project with prospective supervisors. Usual entry is a first/upper-second physical-science or engineering degree; a Master’s or relevant work experience with strong references may support an exception. MRes starts are in October; PhD starts may be year-round depending on project/funding. The published portal labels are F3U6B (Photonics MRes+PhD) and F3ZP (Physics Research with Photonics group); confirm the live target because the undated publication retains 2022 slides and historical funding. Its GBP 15,000 living-cost estimate and old nationality restrictions must not replace current costs or fee-status assessment. Self/external-funded students without a qualifying prior Master’s must budget for four years."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Theory"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Apply to Physics Research, choose the Universe stream and Theory group, and suggest a general topic or multiple supervisors. Prior contact is not required. More than two research interests may be explained in the supervisor field and statement. Applicants typically have a strong first-class or upper-second four-year Physics/Applied Mathematics degree; a theory MSc/Part III is useful but not required. A short research-interest description is sufficient; shortlisted applicants interview. The 1 February 2026 degree deadline and 6 November President’s deadline are historical; 2027 dates are unpublished. Group guidance defers a detailed President’s proposal until nomination, unlike central application guidance; confirm timing if nominated."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Astrophysics"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Apply to Physics Research and identify Astrophysics. Recruitment for 2026 is closed. The source says 2027 recruitment starts in October 2026, with projects around December, interviews in late February, and decisions in March; exact 2027 dates are pending. The listed 5 February 2026 STFC and 12 January 2026 President’s dates are prior-cycle guides only. The source mentions up to one Overseas STFC place, not universal funding. Use a research-interest/project description rather than a detailed proposal. No standalone Astrophysics Master’s is offered."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Space/Climate/Plasma"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Apply through My Imperial to Physics Research and identify the community; contact is project-specific. Listed projects, starts, and deadlines are for 2026 and some are filled. All Plasma 2025/26 positions are filled. Older Plasma 2023 pages, 2020 COVID guidance, EU-fee-only funding statements, and MPhil-to-DPhil descriptions conflict with current general regulations and eligibility; retain these as historical and do not apply them automatically. Experimental research may use Rutherford Appleton Laboratory and involve travel. Completion training is separate from entry requirements."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Particles",
+        "process"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Submit the formal university application, then email hep.admissions when requested. STFC-funded or self-funded applicants do not initially need a named supervisor/project; allocation occurs after approximately one term of graduate lectures. Student preferences are considered but a first choice is not guaranteed. Scholarship-funded programmes may define a different supervisor/project process."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Particles",
+        "historical_deadline"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The initial STFC deadline was 21 January 2026; later applications were accepted until positions filled. No 2027 deadline is established."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Particles",
+        "historical_funding"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The source quotes 2025/26 Home funding of GBP 22,750 annual tax-free maintenance and Home fees for all. The webpage’s three-year UK undergraduate-residency claim for EU applicants does not independently determine Home-fee status; verify status through central assessment and the current STFC award."
+    },
+    {
+      "fact_id": "imperial-physics-community-admission-exceptions",
+      "field_path": [
+        "Particles",
+        "study"
+      ],
+      "source_ids": [
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Research includes experimental particle physics, detectors, signal processing, GRID, and AI computing. Live project adverts do not guarantee that those projects will be available in 2027."
+    },
+    {
+      "fact_id": "imperial-math-ccmi-scheme-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Collaborative Computational Modelling at the Interface (CCMI) is listed among current EPSRC CDTs. The UCL/Imperial collaboration offers PhD training in computational modelling, data science, and research software engineering, with research groups at both institutions and bespoke software training. The shared overview is inventory context; check current CCMI recruitment, host institution, application route, and funding terms for the target cycle."
+    },
+    {
+      "fact_id": "imperial-math-lsgnt-scheme-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Geometry and Number Theory at the Interface is a joint UCL/Imperial/King’s College London CDT. Training covers geometry/number theory, research, communication, coding, and teamwork. The published September 2026 intake offered nine fully funded PhD studentships for UK and Overseas students; applications opened 30 November 2025 and closed 31 December 2025 at midnight. Apply through the named LSGNT portal, separate from a generic Imperial departmental application. These dates and places are historical and do not establish September 2027 recruitment."
+    },
+    {
+      "fact_id": "imperial-math-statml-scheme-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Statistics and Machine Learning (StatML), based at Imperial and Oxford, researches statistical theory/methods and statistical machine-learning foundations and applications across government, medicine, industry, and science. Imperial’s overview lists it as a current EPSRC CDT but does not give a current intake date or guarantee a place. Imperial and Oxford require separate applications."
+    },
+    {
+      "fact_id": "imperial-medical-imaging-integrated-scheme-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-1e206d093548d31a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Medical Imaging Sciences is an EPSRC CDT run by King’s College London and Imperial: one year of MRes Medical Imaging Sciences followed by a three-year PhD. Applications for September 2026 are explicitly closed. The Computing page says September 2027 recruitment opens in October, but gives no day or deadline. Check the current joint programme page and host-specific application route."
+    },
+    {
+      "fact_id": "imperial-react-integrated-scheme-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-5cb5f4c6bd0e6cc6"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Next Generation Synthesis and Reaction Technology (CDT rEaCt) combines chemistry, engineering, and data science with automated/high-throughput reaction platforms and quantitative/statistical analysis. Imperial’s reviewed homepage says BASF/EPSRC studentships are periodically available through IConIC. “Periodically available” does not establish current open recruitment, eligibility, or a deadline; check current project advertisements."
+    },
+    {
+      "fact_id": "imperial-random-systems-closed-recruitment",
+      "field_path": [],
+      "source_ids": [
+        "source-9029a8d0791ccc9c"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "The Oxford-hosted joint programme page says new admissions are permanently closed and will not reopen. Imperial’s overview still lists the centre. This is a source-status conflict, not an open 2027 intake. Existing doctoral study and the underlying Mathematics PhD remain separate from recruitment to this joint programme."
+    },
+    {
+      "fact_id": "imperial-mfc-current-application-process",
+      "field_path": [
+        "conflicts"
+      ],
+      "source_ids": [
+        "source-ef36b4a0c7c51884"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "Older instructions refer to a Southampton portal, 2026/27, and earlier 2026 intake material. They are not the Imperial route for 2027/28. Follow the current Imperial application process and retain the older material only as a source conflict."
+    },
+    {
+      "fact_id": "imperial-ccmi-current-training-status",
+      "field_path": [],
+      "source_ids": [
+        "source-5cfc900764598487"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "The UCL/Imperial joint centre offers a fully funded four-year PhD at either university, covering computational mathematics, scientific algorithms, HPC, research software engineering, and data-science topics. Training includes block workshops, software weeks, and summer schools. The homepage offers a 2027 information sign-up, not a current formal application deadline; verify recruitment and the host-university route."
+    },
+    {
+      "fact_id": "imperial-materials-departmental-commonwealth-funding",
+      "field_path": [
+        "commonwealth",
+        "deadline",
+        "conflict"
+      ],
+      "source_ids": [
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The page publishes a UK deadline of 20 October 2026 at both 16:00 BST and 15:00 GMT. That date falls before UK daylight-saving time ends. Preserve both published time labels as a source conflict; do not invent a corrected time."
+    },
+    {
+      "fact_id": "imperial-materials-departmental-commonwealth-funding",
+      "field_path": [
+        "commonwealth",
+        "coverage"
+      ],
+      "source_ids": [
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The award is described as fully funded for three years, with tuition covered under the Imperial/Commission agreement. Detailed financial terms are in a separate Commission source and are not established here."
+    },
+    {
+      "fact_id": "imperial-materials-departmental-commonwealth-funding",
+      "field_path": [
+        "source_conflicts"
+      ],
+      "source_ids": [
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The President’s table lists Round 1 student submission on 2 November 2026, but a department deadline for academics of 16 November 2025; it also lists a Round 3 decision in May 2025. These source years conflict. Department eligibility wording is stricter than central wording. Do not invent corrected years or treat central requirements as a department waiver."
+    },
+    {
+      "fact_id": "imperial-healthbridge-foundation-curriculum-milestones",
+      "field_path": [
+        "foundation"
+      ],
+      "source_ids": [
+        "source-a43a5d0b16919c98"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "HealthBRIDGE has a one-year foundation phase with two structured research rotations in each track. Successful completion yields the relevant MRes or PGCert, followed by a separate PhD registration."
+    },
+    {
+      "fact_id": "imperial-healthbridge-foundation-curriculum-milestones",
+      "field_path": [
+        "tracks",
+        0,
+        "structure"
+      ],
+      "source_ids": [
+        "source-a43a5d0b16919c98"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The chosen stream determines lectures, seminars, and workshops. The MRes includes poster presentations and grant writing; research rotations are part of its curriculum."
+    },
+    {
+      "fact_id": "imperial-healthbridge-foundation-curriculum-milestones",
+      "field_path": [
+        "transition"
+      ],
+      "source_ids": [
+        "source-a43a5d0b16919c98"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Near the end of the foundation year, develop a PhD proposal with prospective supervisors. It should align with the MRC remit; interdisciplinary work on diagnosis, treatment, or prevention is welcome."
+    },
+    {
+      "fact_id": "imperial-healthbridge-foundation-curriculum-milestones",
+      "field_path": [
+        "phd"
+      ],
+      "source_ids": [
+        "source-a43a5d0b16919c98"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The PhD project lasts three years and includes ECRI, faculty, and HealthBRIDGE training. Early-stage review is typically within nine months; late-stage review is at 18–24 months of the PhD project, followed by thesis/viva."
+    },
+    {
+      "fact_id": "imperial-healthbridge-foundation-curriculum-milestones",
+      "field_path": [
+        "support"
+      ],
+      "source_ids": [
+        "source-a43a5d0b16919c98"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Students receive six-monthly development reviews and a wellbeing action plan, along with cohort workshops/retreats. The source describes a charity-related project partnership, optional collaborative work placement, and conditional MRC supplement/training support; placements and supplements are not guaranteed."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-curriculum-progression",
+      "field_path": [
+        "structure"
+      ],
+      "source_ids": [
+        "source-e2f34734a0651582"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The programme starts with a two-year MRes; successful completion controls progression to the PhD. Year one provides compulsory/recommended theory and research-methods training by pathway. Year two selects field modules and completes a research project. Published module lists are examples and may change."
+    },
+    {
+      "fact_id": "imperial-business-doctoral-curriculum-progression",
+      "field_path": [
+        "phd"
+      ],
+      "source_ids": [
+        "source-e2f34734a0651582"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Students choose primary and secondary supervisors and complete supervisor-guided specialist training and research seminars. The Early Stage Assessment in PhD year one is a written paper and presentation; Late Stage Review occurs in year two. Thesis research, conferences, and academic job-market support follow. The final Continuing Research Stage ends with a viva; dates/requirements follow the programme’s current handbook."
+    },
+    {
+      "fact_id": "imperial-statml-admissions-funding-context",
+      "field_path": [
+        "target"
+      ],
+      "source_ids": [
+        "source-f2b376f8c2199f1d"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "Apply to Imperial’s PhD route through My Imperial using code G1703.1 (four years full-time). Imperial and Oxford require separate applications."
+    },
+    {
+      "fact_id": "imperial-statml-admissions-funding-context",
+      "field_path": [
+        "funding"
+      ],
+      "source_ids": [
+        "source-f2b376f8c2199f1d"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "Only fully funded applicants are considered; self-funded applicants are excluded, while applicants holding external awards may apply. Funding includes tuition, inter-university travel, and GBP 12,500 total Research Training Support Grant (RTSG), prorated for part-time study. Most awards cover Home fees; only a limited number cover Overseas fees. Annual stipend is the UKRI rate plus GBP 2,000. The page quotes GBP 22,780 from October 2025. The TechExpert pilot’s approximately GBP 31,000 estimate applies only to Home-fee students in the 2026 cohort, not a 2027 guarantee."
+    },
+    {
+      "fact_id": "imperial-statml-admissions-funding-context",
+      "field_path": [
+        "historical_2026_admission",
+        "selection"
+      ],
+      "source_ids": [
+        "source-f2b376f8c2199f1d"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "Applicants selected two preferred research areas and completed management/nontechnical and technical interviews. Management interviews were on 30 January 2026; technical interviews ran 9–13 February 2026. Offers followed in late February, then the waitlist."
+    },
+    {
+      "fact_id": "imperial-materials-departmental-commonwealth-funding",
+      "field_path": [
+        "departmental",
+        "stipend"
+      ],
+      "source_ids": [
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The published stipend is GBP 23,805/year for 2026/27. The 2027/28 rate is not yet known and is reviewed annually."
+    },
+    {
+      "fact_id": "imperial-materials-departmental-commonwealth-funding",
+      "field_path": [
+        "commonwealth",
+        "eligibility"
+      ],
+      "source_ids": [
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "By September 2027, applicants need a UK 2:1 degree or a 2:2 plus relevant postgraduate qualification. Eligibility-country criteria must be checked against the Commonwealth Commission’s official source; do not infer that every nationality qualifies."
+    },
+    {
+      "fact_id": "imperial-materials-departmental-commonwealth-funding",
+      "field_path": [
+        "commonwealth",
+        "application"
+      ],
+      "source_ids": [
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Apply directly to the scheme; the department does not shortlist Commonwealth applicants. The Commission shortlists and Imperial placement is expected in June/July 2027, with final letters around July. Imperial admission is a separate requirement."
+    },
+    {
+      "fact_id": "imperial-research-registration-transfer-restrictions",
+      "field_path": [],
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Under the 2026/27 PhD/MPhil/MD(Res) regulations, Imperial normally bars readmission in the same or closely related field after prior research withdrawal, including advanced standing. Concurrent degree registration normally needs Senate approval. An MPhil student may transfer to PhD after at least 12 months full-time or 24 months part-time via written report and oral examination; one further attempt is permitted within six months. Transfer between PhD and MD(Res) depends on degree-specific eligibility and is barred after examination entry. Changing full-time/part-time status requires supervisor and departmental approval. These are registration/progression rules; no direct MPhil application availability is inferred."
+    },
+    {
+      "fact_id": "imperial-materials-training-status-boundaries",
+      "field_path": [],
+      "source_ids": [
+        "source-2b4b194cc3b386e8",
+        "source-2cb3e7872cf66d7b",
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "The official Imperial Theory and Simulation of Materials centre page says it is closed to new admissions. This is current closure, not evidence of permanent closure or closure of the ordinary Materials PhD. The older Chemistry index also links Plastic Electronics and Advanced Characterisation of Materials. The retained Materials hub points to CiDT Advanced Materials Science via an old third-party ACM site. Current ACM pages conflict between October 2025 and 2026 and contain unrelated injected advertising; that content is not accepted as university admissions policy or proof of an opening. Confirm CiDT’s degree application, eligibility, and current recruitment with Imperial Materials admissions; do not create a separate open degree from a historical linked centre."
+    },
+    {
+      "fact_id": "imperial-environmental-policy-research-training",
+      "field_path": [],
+      "source_ids": [
+        "source-294c9e51404a91c0"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "The Environmental Policy PhD normally takes three years, occasionally four, and consists of self-directed interdisciplinary research supervised by one or two academics with an academic review panel. Topics connect social and natural sciences, economics, law, and management. Monthly informal research seminars and a required halfway formal review are part of study. These are programme/training details, not additional admission criteria or funding guarantees."
+    },
+    {
+      "fact_id": "imperial-materials-cidt-ams-inventory-scope",
+      "field_path": [],
+      "source_ids": [
+        "source-08b2e8b31560114d",
+        "source-68b01fb67af7cb5a"
+      ],
+      "original_checked_at": "2026-10-01",
+      "proposed_value": "Imperial Materials lists the Centre for Industry-Partnered Doctoral Training in Advanced Materials Science as a doctoral-training programme with subject modules, professional development, and cohort activities. Materials CDTs are described as four-year fully funded PhD training, but the exact CiDT award duration, fee coverage, eligibility, and current recruitment conditions remain unverified. Do not apply general Materials PhD or other CDT terms to CiDT without its current award page."
+    },
+    {
+      "fact_id": "imperial-educational-development-current-recruitment",
+      "field_path": [],
+      "source_ids": [
+        "source-2cc3e2e5b540d416"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "The Centre for Higher Education Research and Scholarship vacancy page directs applicants to Imperial Gateway but currently lists no vacancies. This means no studentship is advertised on the checked page; it does not establish that all self-proposed PhD applications are unavailable or that the award/programme has permanently closed. Check the page again for the intended cycle."
+    },
+    {
+      "fact_id": "imperial-medical-imaging-partner-route-conflict",
+      "field_path": [
+        "structure"
+      ],
+      "source_ids": [
+        "source-9235bb2a1867d7b9",
+        "source-eebc4fd881232fac"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "The joint programme site describes a four-year 1+3 pathway: a Healthcare Technology MRes, taught mainly at King’s with Imperial contributions, followed by research at the lead supervisor’s university. The first year includes common research/innovation training and student-selected research rotations; the PhD route follows successful progression. This partner programme’s structure should not be substituted with Imperial-only course titles without resolving the naming discrepancy."
+    },
+    {
+      "fact_id": "imperial-medical-imaging-partner-route-conflict",
+      "field_path": [
+        "award_conflict"
+      ],
+      "source_ids": [
+        "source-9235bb2a1867d7b9",
+        "source-eebc4fd881232fac"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "Imperial Computing still labels the initial award “Medical Imaging Sciences MRes” and retains a stray HiPEDS description, while the joint programme site calls it “Healthcare Technology MRes.” Preserve this award/version conflict until the specific intake and lead university are confirmed."
+    },
+    {
+      "fact_id": "imperial-medical-imaging-partner-route-conflict",
+      "field_path": [
+        "next_intake"
+      ],
+      "source_ids": [
+        "source-9235bb2a1867d7b9",
+        "source-eebc4fd881232fac"
+      ],
+      "original_checked_at": "2026-10-03",
+      "proposed_value": "The joint site says a further call for October 2027 will follow and may use different recruitment guidelines. Imperial’s page says 2027 admissions open in October but gives no day/deadline. No complete current Imperial-target funding checklist is established by these statements."
+    }
+  ],
+  "status": "complete_readability_reviewed_and_merged",
+  "completion": {
+    "proposed_value_field_count": 86,
+    "distinct_fact_count": 52,
+    "reviewed_by_parent": true,
+    "parent_merge_status": "71 field paths merged; one research-attendance field was corrected to retain writing-up at 36/72 months and earlier entry at 24/48 months before finalization.",
+    "preservation": "Proposals target exact nested value paths, retain source IDs/original checked dates, and leave fact scope, cycles, numbers, conditions, and surrounding object structure intact. No canonical source dossier was edited by this readability subtask."
+  },
+  "coverage_note": "All current doctoral fact values were scanned for collapsed English words and phrases. Every detected value field now has an exact-path readable proposal or was covered by the parent merge review; no collapsed value fields remain in the final scan. Newly added facts were incorporated during the review. Source facts remain dated to their original checked cycle; the readability review date is 2026-10-03."
+}

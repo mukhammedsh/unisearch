@@ -352,6 +352,159 @@
       "title": "2026-27 Immunology MS Bulletin program page",
       "checked_at": "2026-10-03",
       "content_review_status": "reviewed_2026_27_bulletin_program_page"
+    },
+    {
+      "id": "recheck-degree-bioc-ms",
+      "url": "https://bulletin.stanford.edu/programs/BIOC-MS",
+      "title": "Biochemistry (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-bmds-ms",
+      "url": "https://bulletin.stanford.edu/programs/BMDS-MS",
+      "title": "Biomedical Data Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-cimgt-ms",
+      "url": "https://bulletin.stanford.edu/programs/CIMGT-MS",
+      "title": "Clinical Informatics Mgmt (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-csb-ms",
+      "url": "https://bulletin.stanford.edu/programs/CSB-MS",
+      "title": "Chemical & Systems Biology-MS",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-canbi-ms",
+      "url": "https://bulletin.stanford.edu/programs/CANBI-MS",
+      "title": "Cancer Biology (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-chpr-ms",
+      "url": "https://bulletin.stanford.edu/programs/CHPR-MS",
+      "title": "Community Health/Prev Res (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-dbio-ms",
+      "url": "https://bulletin.stanford.edu/programs/DBIO-MS",
+      "title": "Developmental Biology (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-epidm-ms",
+      "url": "https://bulletin.stanford.edu/programs/EPIDM-MS",
+      "title": "Epidemiology & Clin Rsrch (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-gene-ms",
+      "url": "https://bulletin.stanford.edu/programs/GENE-MS",
+      "title": "Genetics (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-hrp-ms",
+      "url": "https://bulletin.stanford.edu/programs/HRP-MS",
+      "title": "Health Policy (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-immun-ms",
+      "url": "https://bulletin.stanford.edu/programs/IMMUN-MS",
+      "title": "Immunology (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-mcp-ms",
+      "url": "https://bulletin.stanford.edu/programs/MCP-MS",
+      "title": "Molecular & Cell Phys (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-mi-ms",
+      "url": "https://bulletin.stanford.edu/programs/MI-MS",
+      "title": "Microbiology & Immunol (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-mlasc-ms",
+      "url": "https://bulletin.stanford.edu/programs/MLASC-MS",
+      "title": "Laboratory Animal Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-neurs-ms",
+      "url": "https://bulletin.stanford.edu/programs/NEURS-MS",
+      "title": "Neurosciences (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-stmrm-ms",
+      "url": "https://bulletin.stanford.edu/programs/STMRM-MS",
+      "title": "Stem Cell Bio and Regen Med",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-tram-ms",
+      "url": "https://bulletin.stanford.edu/programs/TRAM-MS",
+      "title": "Translational Res and App Med",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
     }
   ],
   "study_options": [
@@ -2975,7 +3128,8 @@
       "review_status": "verified_on_official_source",
       "conditions": [],
       "exceptions": [
-        "Current Stanford postdoctoral scholars are excluded from this internal route and apply externally."
+        "Current Stanford postdoctoral scholars are excluded from this internal route and apply externally.",
+        "The actual 2026-27 Bulletin internal-admissions field specifies May 1, while the department page says the first Tuesday in May. The selected entry-year priority date requires programme confirmation; neither statement silently replaces the other."
       ]
     },
     {
@@ -4123,6 +4277,1396 @@
       "review_status": "verified_on_official_source",
       "conditions": [],
       "exceptions": []
+    },
+    {
+      "id": "gc-admissions-match-2027",
+      "topic": "admissions_match_and_fee",
+      "value": "For Fall 2027 Genetic Counseling MS admission, applicants must register with National Matching Services before applying. After interviews, applicants and programs submit ranked preferences and binding results are released simultaneously in late April. NMS match registration fee is USD 100. A limited fee waiver requires demonstrated financial need and cumulative GPA >=3.0; waiver request deadline Oct 2, 2026 and must precede registration/payment.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-hmn-gen-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-external-hmn-gen-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "genetic-counseling-admissions"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "mcim-application-ai-policy",
+      "topic": "application_authorship_policy",
+      "value": "Limited AI use may support brainstorming, organizing the applicant’s own ideas, identifying unclear writing, and light edits preserving voice. AI may not create substantive responses/outlines, rewrite or substantially refine essays, generate reflections/goals, or determine how experiences relate to program/career goals.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-cimgt-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-external-cimgt-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "2027-28 cohort",
+        "fee_status": []
+      },
+      "source_ids": [
+        "mcim-application"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "bmds-academic-ms-preparation-and-deadline",
+      "topic": "admission_prerequisites_and_route_window",
+      "value": "DBDS expects strong quantitative/computational preparation (at least one year calculus, probability/statistics, linear algebra and one year computer science, preferably data structures/algorithms); page calls these expected preparation, with minimum requirements and many applicants exceeding them. Academic MS applications are Autumn only and due Dec 1, 2026 for Autumn 2027.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-external-bmds-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Autumn 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "dbds-prospective",
+        "dbds-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Expected quantitative preparation must not be interpreted as a guaranteed-admission GPA/test threshold; exact selected-route requirements and current-cycle instructions govern."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "bmds-hcp-MS-deadlines-and-finance",
+      "topic": "admission_prerequisites_and_route_window",
+      "value": "HCP MS applications are accepted each quarter except Summer; current listed deadlines: Winter Oct 16, 2026; Spring Jan 15, 2027; Autumn Apr 30, 2027. CGOE sets HCP tuition, with three-unit minimum enrollment per quarter; DBDS does not provide HCP financial aid.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-hcp-bmds-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "working_professional"
+        ],
+        "cycle": "Winter/Spring2026-27 and Autumn2027-28 entry terms",
+        "fee_status": []
+      },
+      "source_ids": [
+        "dbds-prospective",
+        "dbds-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Expected quantitative preparation must not be interpreted as a guaranteed-admission GPA/test threshold; exact selected-route requirements and current-cycle instructions govern."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "bmds-coterm-ms-deadlines",
+      "topic": "admission_prerequisites_and_route_window",
+      "value": "Current Stanford undergraduate coterm deadlines: Autumn Apr 30, 2027; Winter Oct 16, 2026; Spring Jan 15, 2027. Coterm applicants use a separate Coterm application, transcript, personal statement, CV, two recommendations, and preliminary program proposal/flow sheet; prerequisites may be completed before enrollment and are reviewed case by case.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-coterm-bmds-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "stanford_undergraduate_applicant"
+        ],
+        "cycle": "Winter/Spring2026-27 and Autumn2027-28 entry terms",
+        "fee_status": []
+      },
+      "source_ids": [
+        "dbds-prospective",
+        "dbds-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Expected quantitative preparation must not be interpreted as a guaranteed-admission GPA/test threshold; exact selected-route requirements and current-cycle instructions govern."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "bmds-internal-graduate-ms-terms",
+      "topic": "admission_prerequisites_and_route_window",
+      "value": "Current Stanford graduate students use a Graduate Authorization Petition and separate departmental application; DBDS accepts internal applications throughout the year, with term windows keyed to Autumn/August, Winter/November, Spring/February, and Summer/May. Exact dates and application fee were not published on current DBDS page; confirm with DBDS/Registrar.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-internal-bmds-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "term-dependent",
+        "fee_status": []
+      },
+      "source_ids": [
+        "dbds-prospective",
+        "dbds-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Expected quantitative preparation must not be interpreted as a guaranteed-admission GPA/test threshold; exact selected-route requirements and current-cycle instructions govern."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-degree-bioc-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "Biochemistry is a department within the School of Medicine, with offices and labs in the Beckman Center for Molecular and Genetic Medicine at the Stanford Medical Center, the Shriram Center for Bioengineering and Chemical Engineering, and the Stanford Genome Technology Center. The Department of Biochemistry focuses on the molecular basis of life by studying the structures and functions of proteins and nucleic acids, the control of development, molecular motors and the cytoskeleton, trafficking of proteins between organelles, regulation of gene expression, protein homeostasis, structure and design, genetic and epigenetic control of chromosome function, and the application of genomics, all toward the understanding of health and disease.",
+        "ItCSB": "The program of study is designed to prepare students for productive careers in biochemistry; its emphasis is training in research, and each student works closely with faculty members.",
+        "advisingExpectations": "The Department of Biochemistry is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Graduate Advising for a statement of university policy on graduate advising.",
+        "WOZxr": "Transfer credit not accepted.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "The BIOC-MS program is only open to existing students in the BIOC-PHD program. Requirements vary by student."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-bioc-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-bioc-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-bmds-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Biomedical Data Science Program is interdepartmental and offers instruction and research opportunities leading to MS and PhD degrees in Biomedical Data Science. All students must complete the core curriculum requirements and additional coursework that fulfills degree requirements and pursues their technical interests and goals as specified for each degree program. The program can provide flexibility and complement Stanford’s other applied medical research opportunities. Special arrangements may be made for those with unique needs or those simultaneously enrolled in other degree programs within the university. Similarly, students with prior relevant training may have the curriculum adjusted to eliminate requirements met as part of prior training. The GRE is not required for admission. See Graduate Degrees for university requirements for the MS degree. Advising Upon entering the program, each student is assigned an academic advisor to help with course selection and monitor progress toward program milestones and degree requirements. Each research-track (academic) MS and PhD student conducts research under the primary mentorship of a faculty supervisor, who guides their scholarly and professional development. Further details about the advisor roles and responsibilities are found in DBDS Student Handbook . Master of Science in Biomedical Data Science (Academic) This degree is designed for individuals who wish to undertake an in-depth study of biomedical data science with research on a full-time basis. Typically, a student spends two years in the program and implements and documents a substantial project by the end of the second year. The first year involves acquiring the fundamental concepts and tools through coursework and research project involvement. Academic MS students are expected to devote 50 percent or more of their time to participating in research projects. Research rotations are not required but can be done with the approval of the academic advisor or training program director. Graduates of this program are prepared to contribute creatively to basic or applied projects in biomedical data science. This degree requires a written research paper to be approved by two faculty members. Master of Science in Biomedical Data Science (Professional/Honors Cooperative Program) This degree is designed primarily for the working professional with advanced training in one discipline who wishes to acquire interdisciplinary skills. Although many classes necessary for the degree are available online, some requirements may be fulfilled by implementing an alternative plan to be approved by the program. The professional MS is offered with the Stanford Engineering Center for Global & Online Education (CGOE), which establishes tuition and fee rates. The program uses the honors cooperative program (HCP) model, which assumes that the student works full time and is enrolled in the MS part-time. Students who live locally may attend their courses on campus. Students have up to five years to complete the program. Research projects are optional; the student must make arrangements with program faculty if interested. Graduates of this program are prepared to contribute creatively to basic or applied projects in biomedical data science. Master of Science in Biomedical Data Science (Coterminal) The coterminal degree program allows Stanford University undergraduates to study for a master’s degree while completing their bachelor’s degree(s) in the same or a different department. See Coterminal Master's Degrees for additional information. The coterminal Master of Science program follows the same program requirements as the Master of Science (Professional), except for the requirement to be employed full-time. The coterminal degree is available only to current Stanford undergraduates. Coterminal students are enrolled full time, and courses are taken on campus. Research projects are optional; the student must make arrangements with program faculty if interested. Graduates of this program are prepared to contribute creatively to basic or applied projects in biomedical data science.",
+        "WOZxr": "Per Stanford Graduate Academic Policy , all courses for the Biomedical Data Science MS must be completed at Stanford.",
+        "ItCSB": "The program in Biomedical Data Science emphasizes research to develop novel computational methods that can advance biomedicine. Students receive training in investigating new approaches to conceptual modeling and developing new algorithms that address challenging problems in the biological sciences and clinical medicine. Students primarily interested in developing new informatics methods and knowledge are best suited for this program. Students with a primary interest in the biological or medical application of existing informatics techniques may be better suited for training in the application areas.",
+        "advisingExpectations": "The Program in Biomedical Data Science is committed to providing academic and research advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. The program’s student services staff is also essential to the student advising team. They inform students and advisors about university and department requirements, procedures, and opportunities and maintain the official records of advising assignments and approvals. Academic Adviser —Each new student in the Program in Biomedical Data Science is assigned an academic advisor (a member of the core or advising faculty or Executive Committee of the program). Academic advisors guide students in critical areas such as selecting courses, discussing research rotations, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Usually, the academic advisor serves for the duration of the student’s study; the DBDS Student Handbook describes a process for formal advisor changes. In addition, the program director is available during the academic year by email and during office hours. The program director and student services staff monitor academic progress and student completion of program requirements and milestones. They are discussed by faculty during periodic meetings devoted to assessing graduate student progress. A detailed description of the program’s requirements, milestones, and advising expectations are listed in the Biomedical Data Science Training Program Student Handbook, on the program website , and in the section on the Biomedical Data Science Program. Research Adviser —Each student in the academic MS degree program must also have a research advisor chosen by mutual agreement at the end of their research rotations (typically by the end of their first year in the program). This research advisor is a core or advising faculty member for the DBDS program. The research advisor may not be the same person as the academic advisor. Research advisors and the students should have a clear, shared understanding of the scientific objectives of the student’s work and how it fits into a research program that will lead to an MS degree. They should focus on developing novel, generally applicable, and well-grounded methods in the informatics literature. In select cases, the research advisor may be a member of the collaborating faculty, in which case the student must have a co-adviser from the DBDS core or advising faculty. When there is a secondary or co-adviser, the primary advisor and co-adviser should clearly understand their mentorship roles. Additionally, the program adheres to the university policies, guidelines, and responsibilities that apply to all faculty-student advising relationships. See Graduate Advising for a statement of university policy on graduate advising.",
+        "cotermTransferPolicy": "In this master’s program, courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career; the timing of the first graduate quarter is not a factor. No courses taken prior to the first quarter of the sophomore year may be used to meet master’s degree requirements.",
+        "cotermQuartersBack": "3 quarters",
+        "programGPARequirement": "An overall GPA of 3.0 or higher is required for graduation.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Core Courses (12 units for Academic + Co-term MS; 9 units for Honors Coop)",
+            "text": "Core courses must all be taken for a letter grade. All core courses are required for HCP except BMDS 212, which is highly recommended if possible. BMDS 212 requires special arrangements with the instructor, so we can include you in the class remotely if possible. Students are expected to participate regularly in the Biomedical Data Science Student Seminar and a research colloquium which is listed as BMDS 201A, B and C in fall/winter/spring quarters. Regardless of their enrollment, they should attend all meetings throughout their graduate training and a research colloquium appropriate to their interests. This course can be taken up to three times for one unit credit each time."
+          },
+          {
+            "heading": "CS/Stats/Math/Eng Electives",
+            "text": "CS 106A and 106B do not count toward this Electives category. Crosslisted offerings for any of the courses listed above are accepted in place of the offering listed."
+          },
+          {
+            "heading": "Computer Science, Statistics, Mathematics & Engineering (18 Units)",
+            "text": "Students are expected to create a program of study with graduate-level courses in computer science, statistics, and other technical informatics-related disciplines to achieve in-depth mastery. The program of study may focus on aspects of these disciplines, including machine learning, statistical modeling, artificial intelligence, data mining, image analysis, human-computer interaction, and data visualization. Please note: Up to eight CS/Stats/Math/Eng units can be taken pass/fail. No more than nine units can be courses below the 200-level. course Programming Methodology and course Programming Abstractions cannot be counted for this requirement."
+          },
+          {
+            "heading": "Social and Ethical Issues (4 units)",
+            "text": "Students are expected to be familiar with issues regarding responsible conduct of research, reproducibility of research, and ethical, legal, social, organizational, and behavioral aspects of the impact of biomedical data science technologies on society. Note: MED 255 is required only for Academic MS and PhD students. These courses may be taken on a Satisfactory/No credit basis."
+          },
+          {
+            "heading": "Unrestricted Electives ",
+            "text": "Unrestricted Units: 11 units for Academic + Coterm MS students; 14 units for Honors Coop. These can be any graduate-level courses at Stanford at or above the 100 level (subject to degree-specific limits)."
+          },
+          {
+            "heading": "Academic MS Research Requirement",
+            "text": "All students in the Academic MS program must engage in biomedical data-science-related research under the supervision of a Faculty member. Labs are arranged by mutual agreement between the student and the research supervisor. Before graduating from the Academic MS program, students must write a research paper reviewed and approved by two faculty members, including the Research Advisor."
+          },
+          {
+            "heading": "Master's Requirements (45 units of coursework required to graduate; scroll down for HCP and Coterminal info)",
+            "text": "Additional Requirements and Information: Completing the Department of Biomedical Data Science (DBDS) MS program with an overall GPA of 3.0 or higher is required for graduation. No one is required to take courses in an area in which they have already been adequately trained; under such circumstances, students are permitted to skip those courses and substitute more advanced work using a formal annual waiver process administered by the DBDS executive committee. At least 24 units of formal letter-graded coursework are expected for all MS and PhD candidates. Unrestricted Electives needed to complete 45 units. Students may fulfill this requirement with any Stanford graduate courses, including courses taken to satisfy program prerequisites. At least 23 units of courses must be at level 200 or above. Students are expected to participate regularly in BMDS 201 Biomedical Data Science Student Seminar and a research colloquium. An Academic MS student funded by the program must be a teaching assistant for one course; those students may register for 1-3 BMDS 295 Biomedical Informatics Teaching Methods units. HCP professional master’s students who are local are encouraged to participate in on-campus coursework and seminars. Masters students should sign up for BMDS 801 TGR Master’s Project for their project units after completing their 45-unit residency requirement. Students design appropriate programs for their interests with the assistance and approval of their Biomedical Data Science academic advisor."
+          },
+          {
+            "heading": "Core Courses",
+            "text": "Nine units for HCP students. (See Core Courses above for a list of required classes) Although many classes necessary for the degree are available online, some requirements may be fulfilled by implementing an alternative plan to be approved by the program. BIOMEDIN 212 requires special arrangements with the instructor, so we can include you in the class remotely if possible. Note that core courses should be taken for a grade, not pass/no credit"
+          },
+          {
+            "heading": "Computer Science, Statistics, Mathematics &  Engineering (HCP Specific)",
+            "text": "Complete at least 18 units of Computer science, statistics, mathematics, and engineering electives. Courses that can count for CS/Stats/Math/Eng are listed above. Up to eight CS/Stats/Math/Eng units can be taken pass/fail. CS 161 and STATS 200 are required, along with either STATS 315A or CS 229. These three courses, or some of their prerequisites, may not be available through SCPD. You should submit a course plan with the next best alternatives: these may include similar courses at Stanford or other institutions (note that outside courses would not count towards the required 45 units)."
+          },
+          {
+            "heading": "Computer Science, Statistics, Mathematics &  Engineering (HCP Specific)",
+            "text": "HCP Variation If Stats 200 is not offered remotely, then you can consider taking: MS&E 226 or EPI 259 and EPI 261 (both)."
+          },
+          {
+            "heading": "Social & Ethical Issues (HCP Specific)",
+            "text": "See the complete list of courses above in Social & Ethical Issues. Note that although MED 255 is listed as required, it is required only for MS and PhD students engaged in NIH-funded research at Stanford. This typically does not apply to HCP students."
+          },
+          {
+            "heading": "Honors Cooperative Program  ",
+            "text": "Additional Requirements and Information How to put the courses in order. Use one of the course flowsheets . First, check ExploreCourses and the SCPD website for which quarter the courses are offered. Also, check the listed prerequisites for each class and also the course websites for additional information about what’s expected so you can estimate how difficult each class will be for you. Typically, SCPD students take one course per quarter. Note that SCPD imposes an upper limit of three courses per quarter. Also, use the DBDS Student Wiki for advice on courses. 45 units are required for the MS. All courses counted towards the MS must be at or above the 100 level. You can include up to 18 units that you took Non-Degree Option before entering the MS program. At least 23 units must be courses at or above the 200 level. At least 24 units must be taken for a grade."
+          },
+          {
+            "heading": "Coterminal Master's Additional Information",
+            "text": "The coterminal degree program allows Stanford university undergraduates to study for a master’s degree while completing their bachelor’s degree(s) in the same or a different department. See Coterminal Master's Degree section for additional information. The coterminal Master of Science program follows the same program requirements as the Honors Cooperative, except for the requirement to be employed full-time. The coterminal degree is available only to current Stanford undergraduates. Coterminal students are enrolled full time and courses are taken on campus. Research projects are optional; the student must make arrangements with program faculty if interested. Graduates of this program are prepared to contribute creatively to basic or applied projects in biomedical data science. Application to the Coterminal Program For complete information, see the program’s Coterminal Master's Degree page. Submit the university Coterminal Online Application . Submit your academic resume or curriculum vitae. Submit a one-page Statement of Purpose describing how and why the DBDS program is well matched to your interests. University Coterminal Requirements Coterminal master’s degree candidates are expected to complete all master’s degree requirements as described in the Degrees section. Graduate Degrees lists university requirements for the master’s degree. After accepting admission to this coterminal master’s degree program, students may request a transfer of courses from the undergraduate to the graduate career to satisfy the requirements for the master’s degree. Transferring courses to the graduate career requires review and approval of both the undergraduate and graduate programs on a case-by-case basis. In this master’s program, courses taken three quarters before the first graduate quarter or later are eligible for consideration for transfer to the graduate career. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. Course transfers are not possible after the bachelor’s degree has been conferred. The university requires that the graduate advisor be assigned in the student’s first graduate quarter even though the undergraduate career may still be open. The university also requires that the Master’s Degree Program Proposal be completed by the student and approved by the department by the end of the student’s first graduate quarter. DBDS Coterminal Requirements You are required to have at least 180 units (undergraduate) and 45 units (graduate). No units may be counted toward both undergraduate and DBDS MS degrees. 45 units are required for the MS. All courses counted towards the MS must be DBDS -related courses at or above the 100 level (as approved by the advisor and DBDS program). At least 23 units must be courses at or above the 200 level. At least 24 units must be taken for a grade. DBDS core courses may not be taken pass/fail. Exceptions: BMDS 201, BMDS 205, BMDS 295, BMDS 801, and MED 255, or BMDS courses that are offered only on an S/NC basis . A complete list of elective courses that can count for CS/Stats/Math/Eng is listed above. Up to eight CS/Stats/Math/Eng units can be taken pass/fail. You can apply to DBDS upon completion of 120 units but no later than the quarter before the expected completion of the undergraduate degree. Coterminal students are permitted to count coursework taken in the three quarters immediately before their first graduate quarter toward their graduate degree (summer quarter is not included in the count). The Coterminal Course Transfer eForm is used to transfer courses from the undergraduate to the graduate career and vice versa. This must be done before the undergraduate degree is conferred. You may take any course you want at Stanford while in the program, including electives not at all related to DBDS , as long as you also have an approved DBDS -related 45-unit program of study that satisfies the requirements for the DBDS degree."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-bmds-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-cimgt-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Master of Science in Clinical Informatics Management program (MCiM) is an intensive, one-year professional master’s degree combining business and technology constructs directed toward our migration to value in health care. MCiM is housed within the Clinical Excellence Research Center in the School of Medicine. The program offers students a unique experience of both remote and weekend onsite sessions to fit the needs of working professionals. Master of Science in Clinical Informatics Management courses provide rich learning experiences for students through a collaborative environment and dynamic course content. Through the coursework, students gain a deep understanding of health informatics and the business insights to accurately leverage technology to succeed in the real world. COVID-19 has reinforced the longstanding need for leaders who can expertly navigate business, technology, and medicine to manage and drive the digital transformation of a $4.0 trillion health care system. Diverse applications such as telemedicine for routine clinical care and digital radiology for the rapid diagnosis of COVID pneumonia are among some of the opportunities the crisis has highlighted. Others include greater capabilities for remote health monitoring, wearable sensors for monitoring patients, the health of populations on college campuses and in the workforce, and interactive voice-response tools such as Alexa, Siri, or Hey Google to provide new patient care services. Behind the scenes, machine learning has been rapidly adopted in applications as diverse as screening potential therapies for application to COVID and profiling symptoms that might indicate infection. Failures of the existing health care infrastructure have also been glaringly illustrated by the lack of interoperable data between hospitals and between the public and private sectors, as well as the lack of access to real-time data and reports as the COVID situation rapidly unfolded. Together, these scenarios call for leadership that brings together technology and clinical business units in entirely new ways. MCiM develops managers and senior leaders who have a keen understanding of the strategic business concepts and data science principles fundamental to raising the quality and efficiency of care delivery, in the COVID era and beyond. The founder of MCiM, Kevin Schulman, Professor of Medicine (Hospital Medicine) and, by courtesy, of Operations, Information and Technology at the Graduate School of Business, built the country’s first clinical informatics management program at Duke University in 2011. Graduates from that program have moved into management and senior leadership roles such as CEO, CIO, CMIO, CHIO, and Health Care IT Director.",
+        "WOZxr": "The Master of Science in Clinical Informatics Management (MCiM) program does not allow students to transfer in credits. The MCiM program maintains a set curriculum for graduate students. MCiM students are required to enroll in the required courses set by the program. Prior to each quarter's enrollment period, MCiM students will receive enrollment instructions with details of the courses required for minimum degree progress.",
+        "ItCSB": "Develop and apply business models, clinical informatics tools, and ethics insights to a variety of scenarios and settings in organizations ranging from health care-focused technology start-ups to large, established health systems. Acquire the knowledge and tools to successfully design, implement, and manage digital innovations to improve the cost-effectiveness and the quality of patient care. Deploy new management skills to lead multidisciplinary teams in data analytics and data science, medicine, and business in your own organization and across institutions.",
+        "advisingExpectations": "Students in the program will be assigned a program advisor, and will be expected to meet with them on a quarterly basis.",
+        "programGradingPolicies": "MCiM students must enroll in the required courses for a letter grade, and must enroll for the number of units detailed in the instructions.",
+        "programAdditionalPolicies": "Attendance Policy MCiM is a one-year, full-time program designed to be completed across four quarters, with onsite class weekends held generally every other Friday and Saturday. Attendance is central to the learning model. An \"onsite session\" refers to one day of an onsite class weekend. All missed sessions count toward a student's quarterly absence limit, including absences due to illness. Students are not able to join onsite classes remotely, and classes are not recorded for absent students. Students must submit the MCiM Attendance Form at least one hour before the start of an on-campus class day to receive credit for advance notice. Advance notice should also be reported directly to instructors, except in emergencies. If the form is not submitted, the absence is treated as without advance notice. Per quarter, the following limits apply: With advance notice: 3 absences: warning 4 absences: academic probation and a required meeting with the MCiM Director of Graduate Studies 5 or more absences: dismissal from the program Without advance notice: 2 absences: warning 3 absences: academic probation and a required meeting with the MCiM Director of Graduate Studies 4 or more absences: dismissal from the program Students who anticipate difficulty maintaining good standing under this policy should contact the MCiM Admin Team before the start of the onsite weekend to discuss options.",
+        "minimum_program_units": 48,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Course Requirements",
+            "text": "CIM 202 will be taken over the course of four consecutive quarters, for a total of four units. CIM 200 will be taken over the course of three consecutive quarters, for a total of six units. CIM 215 must be taken over the course of two consecutive quarters, for a total of two units."
+          },
+          {
+            "heading": "Course Requirements",
+            "text": "Students take a set of required courses during each of the four academic quarters. These courses reflect the overall set curriculum of the program and cannot be taken at alternative quarters. The required curriculum consists of six business courses, six information technology courses, an ethics course, and a practicum course. Currently, there are no elective courses offered through the program. The complete schedule of courses is listed. All courses are required. No substitutions are permitted. To complete the Master's in Clinical Informatics Management, students must complete a minimum of 48 units. During quarters two, three, and four, students complete a practicum course, with the bulk of the effort for this course occurring in quarter four. MCiM courses must be taken for a letter grade."
+          },
+          {
+            "heading": "MCiM Program Proposal",
+            "text": "MCiM students are required to submit a program proposal at least two weeks before the final study list due date of their first quarter of enrollment. Due to MCiM’s set curriculum, a pre-filled proposal is available for MCiM students on the MCiM Resource Hub. Students must sign and submit the proposal to the MCiM administration; failure to do so is grounds for dismissal from the program. As there are no shifts in curriculum or electives allowed, there should be no need to revise the program proposal after submission."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-cimgt-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-cimgt-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-csb-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Department of Chemical and Systems Biology offers interdisciplinary training to prepare students for independent careers in biomedical science. The program’s primary focus is cell signaling, chemical biology, and systems biology.",
+        "ItCSB": "The department emphasizes individualized training at the interface of physical science and biomedical science. The program encourages students to draw upon various modern scientific techniques, ranging from recent advances in molecular biology and protein biochemistry to synthetic organic chemistry and single-cell imaging. Graduate students in the department take courses in signal transduction networks, chemical biology, and other areas of importance to their research goals.",
+        "advisingExpectations": "The Department of Chemical and Systems Biology is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Graduate Advising for a statement of university policy on graduate advising. What is the overall purpose of faculty advising in this program? The Department of Chemical and Systems Biology is committed to providing advising to ensure graduate students’ personal, academic, and professional development. The advisor and advisee are key players in sustaining a collaborative relationship with integrity and professionalism. How are advisors initially assigned to or selected by incoming graduate students? Graduate students select a thesis advisor generally at the end of spring quarter of their first year. Before choosing an advisor, students rotate in one lab per quarter during autumn through spring quarters of their first academic year. Students may opt for a fourth lab rotation and select an advisor in summer quarter before their second year. After each rotation, students meet with the CSB Advisory Committee to discuss how the rotation went and whether the next rotation matches the student’s educational and professional goals. With the guidance of the CSB Advisory Committee and assistance from the student services staff, if needed, the student and thesis advisor mutually agree to work together. What is the process by which students can change advisors, and when should this happen? The student should approach the CSB student services office and the CSB Advisory Committee to discuss the reasoning and proposal to change advisors. The student should work with the student services office and CSB Advisory Committee to find a suitable advisor. This process should happen as soon as issues arise and/or as soon as the student wants to change advisors. How frequently should students meet with their advisors, and how are those meetings set up? How does meeting frequency change as the student progresses? As mentioned above, first-year students meet with the CSB Advisory Committee at the end of each quarter to discuss potential issues with the program, host laboratories, classes, the qualifying exam, and career planning. The topics discussed include ideas about student activities and additions or changes to the program. Students are also encouraged to meet individually with the CSB Advisory Committee members or the Department Chair if any issues arise throughout the year. Committee meetings are held once a year after the qualifying exam. When a student is in their fifth year, the committee meetings should be held twice a year. From the sixth year on, the meetings should be held every quarter. What topics might be discussed at advising or committee meetings? Committee meetings are the best opportunity for the student to get feedback about the progress and to get second opinions about which types of experiments should be pursued to help answer the questions being addressed in the student’s thesis. The committee should include four faculty members counting the thesis advisor (faculty on the committee do not need to be tenure track). At least one of the four faculty members must be a primary faculty in the CSB department, but the composition can differ from that in the qualifying exam. It can also change during the student’s thesis work as they may need to pursue other directions. The structure and format of the meetings are listed below. The committee should provide advice on future directions, attendance of conferences, career plans, and more personal laboratory issues. Each meeting should include a time plan to ensure the thesis project can be completed within five-and-a-half years. At the beginning of each meeting, the student exits the room to allow for a discussion between the advisor and the rest of the committee. A few minutes before the end of the meeting, the advisor is asked to leave the room to allow for the student and the rest of the committee to discuss issues about the lab, personal potential problems, training opportunities, and to discuss possible differences in research goals or matters relating to authorship. If a committee meeting is not completed by the end of summer quarter, an enrollment hold is placed on the student’s account and may delay graduate funding. Are there any forms to complete or deliverables associated with any of those meetings? Following the committee meeting, the student must summarize the discussion and formulate a revised plan for subsequent work. This summary should be discussed with the advisor and sent to the committee members within one week for comment. A final copy of the report must be submitted to the CSB Student Services Manager. How and when does a student select and convene their dissertation reading or thesis committee? What is the purpose of the committee? And how often should the committee meet? Students select their reading committee when they go TGR, usually toward the end of their fourth year in spring quarter. The committee’s purpose is to discuss the student’s thesis further and provide feedback. As mentioned above, committee meetings are held once a year after the qualifying exam. When a student is in their fifth year, the committee meetings should be held twice a year. From the sixth year on, the meetings should be held every quarter. How do the department or program, advisor, and student decide when a student is ready to graduate? The decision to schedule an oral defense requires the support of each committee member, including the thesis advisor. The department also expects that each student complete for the thesis at least one peer-reviewed, first-author paper accepted for publication by the time the oral thesis exam is scheduled. Who else might a student consult for help or guidance, e.g., department chair, DGS, student services staff? Students may consult with CSB student services staff, the Director of Graduate Studies, and the Department Chair at any time. Students may email any of these parties to set up a meeting and/or stop by the student services office.",
+        "internalAdmissionsInformation": "With review of our Department Chair and DGS.",
+        "programGradingPolicies": "Normally, if a course has the option to be taken as a letter grade, the student must take the course as a letter grade and receive a B- or better to have the course count towards the CSB PhD requirements.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "Students in the PhD program may apply for an MS degree after satisfactorily completing the course and laboratory requirements of the first two years. The degree also requires a written thesis based on literature or laboratory research. Postdoctoral research training is available to graduates having a PhD or MD degree. Coursework: Normally, if a course has the option to be taken as a letter grade, the student must take the course as a letter grade and receive a B- or better to have the course count towards the CSB PhD requirements."
+          },
+          {
+            "heading": "Subsequent Quarters",
+            "text": "BIOS 263: Applied Grant-Writing Skills for Fellowships (Spring) To be taken once, after selecting a thesis advisor. Students use their Qualifying Exam Proposal and/or skills obtained in this course to apply for fellowships and grants during their time in CSB ( e.g., NIH F31, NSF, etc.). Choose another scientific writing course if you have already secured a fellowship. CSB 270: Research Seminar (Fall, Winter, and Spring) To be taken fall, winter, and spring of years one and two CSB 399: Graduate Research (Fall, Winter, Spring, and Summer) To be taken every quarter MED 255: The Responsible Conduct of Research (Fall, Winter, or Spring) To be taken once"
+          },
+          {
+            "heading": "One Chemical Biology Course",
+            "text": "If CSB 260 and Chem 281 are both offered within the same year, you should take CSB 260 for this requirement."
+          },
+          {
+            "heading": "One Additional Elective",
+            "text": "Other electives are possible with approval from the Student Advisory Committee."
+          },
+          {
+            "heading": "Qualifying Exam and Thesis",
+            "text": "The degree requires students to pass a qualifying exam and produce a written thesis based on literature or laboratory research. Postdoctoral research training is available to graduates having a PhD or MD degree."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-csb-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-csb-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-canbi-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Cancer Biology PhD program was established in 1978 at Stanford University. During the past four decades, our understanding of cancer has increased dramatically with the discovery of oncogenes, tumor suppressor genes, pathways of DNA damage and repair, cell cycle regulation, angiogenesis and responses to hypoxia, and the molecular basis of metastasis among others. In addition, methods of parallel analysis including gene expression arrays, and tissue arrays have begun to refine and redefine the taxonomy of cancer diagnosis. This explosion of basic and clinical science has in turn resulted in the first successful cancer chemotherapies and immunotherapies based on knowledge of specific molecular targets. Stanford presents a unique environment to pursue interdisciplinary cancer research because the School of Medicine, the School of Humanities and Sciences, and the School of Engineering are located on a single campus, all within walking distance of one another. Our students are not limited to a single department in choosing their research advisor. The Cancer Biology Ph.D. Program currently has approximately 65 graduate students located in a variety of basic science and clinical departments throughout the School of Medicine and School of Humanities and Sciences. Many of our students are supported by a training grant from the National Cancer Institute, a branch of the United States government.",
+        "ItCSB": "The goal of the Cancer Biology Ph.D. Program is to provide our students with education and training that will enable them to make significant contributions to this remarkable field. Coursework during the first year is designed to provide a broad understanding of the molecular, genetic, cell biological, and pathobiological aspects of cancer. Students will also learn about the current state of clinical diagnosis and treatment of human cancers. Equally important during the first year is a series of three rotations in research laboratories chosen by each student. By the beginning of the second year, each student will have chosen his/her research advisor and will have begun work on his/her dissertation project. A qualifying examination must be completed by the end of the second year. An annual Cancer Biology Conference provides our students with an opportunity to present their research to one another and to the faculty. The expected time to degree is four to five years.",
+        "advisingExpectations": "The mission of the Cancer Biology PhD program is to train graduate students so that they may ultimately launch careers related to the study and treatment of cancer. A major goal of program is to assist students in their growth and development by constructing meaningful educational plans. We believe that students will become outstanding cancer researchers through frequent and collegial personal contacts with their primary research advisors, members of their thesis committees, and other faculty in the program. Scientific interactions between students and faculty foster the development of motivated students who are independent thinkers and responsible decision-makers. We expect faculty thesis advisors to have an active role in the advising process, including by monitoring progress frequently and by helping define and develop realistic educational career plans through regular interactions with the advisees. Faculty thesis advisors should refer students to other institutional resources as needed. We expect students to clarify their academic and career goals with their advisors and to be equal partners in the advising process, including by scheduling regular meetings with their advisors and by adhering to institutional policies, procedures, and requirements. These expectations, which are detailed in the program handbook, will ensure the successful completion of degree requirements and timely graduation. For a statement of University policy or graduate advising, see the Graduate Advising , the Stanford Graduate Academic Policies and Procedures. Additional guidance and resources are available from T he Office of the Vice Provost for Graduate Education.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "The Department of Cancer Biology only offers an MS to students already enrolled in the PhD program. Students should contact the Graduate Studies advisor for more details."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-canbi-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-canbi-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-chpr-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Stanford Prevention Research Center within the Department of Medicine offers a Master of Science (MS) in Community Health and Prevention Research (CHPR). The MS in CHPR is available to external applicants, current undergraduates via the coterminal master’s program, and graduate students at Stanford. In the MS in CHPR, students: Study patterns of chronic diseases in diverse communities and settings and examine how prevention can optimize health and promote health equity at the individual, family, community, and population level Critically interpret and evaluate research on community health and prevention Become involved in research teams that encourage health equity promotion and social responsibility Gain and hone methodological skills, including research study design, study implementation, and data analysis related to community health and prevention research Use coursework and implementation science in a community-based research internship with the expectation that they design, implement, and assess health and wellness solutions addressing preventable community health challenges Complete a master’s thesis",
+        "WOZxr": "CHPR does not accept transfer, test, or residency credits from other institutions.",
+        "ItCSB": "Engage students from various backgrounds in didactic and experiential learning opportunities to gain an in-depth understanding of community health and prevention research applications in diverse practice settings. Prepare future public health professionals to responsibly and effectively address health challenges faced by diverse communities across the life course.",
+        "advisingExpectations": "See Graduate Advising for a statement of university policy on graduate advising. All CHPR students are required to complete a program planning meeting with the CHPR Office by the end of the first week of their first quarter and submit a program plan demonstrating the student’s plan to complete all program requirements must be submitted by the stated deadline. The program plan will be reviewed by the CHPR Office and must be approved in order for this requirement to be considered completed. Failure to submit and have a program plan approved by the stated deadline may result in an enrollment hold, preventing the student from registering for courses for the following quarter until an approved program plan is submitted to the CHPR Office. Students must submit updated program plans when making changes to the previously-approved program plan. The CHPR Office will continue to review program plans on a quarterly basis and CHPR students must submit updated program plans as requested by the CHPR Office. Failure to do so may result in an enrollment hold, preventing the student from registering for courses for the following quarter until an approved program plan is submitted to the CHPR Office.",
+        "cotermTransferPolicy": "After accepting admission to this coterminal master’s degree program, students may request the transfer of courses from the undergraduate to the graduate career to satisfy the requirements for the master’s degree. Transferring courses to the graduate career requires review and approval of both the undergraduate and graduate programs on a case-by-case basis. Only courses with CHPR subject code, pre-approved non-CHPR electives, and pre-approved biostatistics and methods courses are eligible for transfer to your graduate career. While Coterms may petition for elective approval of courses not on these lists for their MS degree, petitions for courses previously taken as an undergraduate will be denied. All courses must have been taken for a letter grade if that was an option. Coterminal master’s degree candidates must complete all university master’s degree requirements described in this Bulletin. In this master’s program, courses taken three quarters before the first graduate quarter or later are eligible for consideration for transfer to the graduate career. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. Course transfers are not possible after the bachelor’s degree has been conferred. The university requires that the graduate advisor be assigned in the student’s first graduate quarter even though the undergraduate career may still be open. The university also requires that the Master’s Degree Program Proposal be completed by the student and approved by the department by the end of the student’s first graduate quarter.",
+        "cotermQuartersBack": "3 quarters",
+        "programGradingPolicies": "All courses must be taken for a letter grade if that is offered.",
+        "programGPARequirement": "CHPR students must maintain a 3.0 (B) grade point average overall in courses applicable to the degree.",
+        "programAdditionalPolicies": "Students must obtain permission from the CHPR Program Office if they wish to enroll in more than 18 units (i.e. in 19 or more units) in a given quarter.",
+        "internalAdmissionsInformation": "Admission for Current Students in Other Stanford Graduate Programs and Professional Schools Prospective Dual Degree applicants must be graduate students including masterʼs, doctoral, and medical students currently enrolled in a graduate degree program at Stanford. Current Stanford postdoctoral scholars must apply as external applicants. The priority deadline for applications is May 1 for the upcoming autumn quarter start. Applications received after this date will be considered on a case-by-case basis. Required Application Materials: Instructions on how to submit these application materials can be found on the CHPR website . Completed Current Graduate Student Online Application Form Resume/CV Transcript (unofficial transcripts are acceptable) Optional: GRE, MCAT, or GMAT scores (i.e., the test scores students submitted to their original graduate program at Stanford) Statement of Purpose The Statement of Purpose should describe succinctly the reasons for applying to the proposed program at Stanford, preparation for this field of study, research interests, future career plans, and other aspects of the applicant’s background and interests which may aid the admissions committee in evaluating aptitude and motivation for graduate study. Two letters of recommendation from Stanford professors $125 application fee (assessed by the Registrar’s Office only if accepted and enrolled into the program).",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "To complete the MS in CHPR, students must complete a minimum of 45 units, conduct a two-quarter community-based research internship, and write a master’s thesis. 30 of 45 units must be from CHPR subject code courses. All courses must be taken for a letter grade if that is offered. All students in the MS in CHPR must also fulfill the course requirements below. Students are advised to check the prerequisites for all CHPR courses, especially the Biostatistics and Research Methods courses."
+          },
+          {
+            "heading": "Biostatistics and Research Methods\t",
+            "text": "A minimum of nine units from this section are required; additional units above nine will count towards the 45 unit residency total. At least three units must have a quantitative focus, as approved by the CHPR Office. CHPR subject code courses on this list will also count towards the 30 CHPR subject code courses unit requirement. Students may take any combination of the courses listed here, except for the following: students may take either course or course but not both, and students may take either course or course but not both. Courses are subject to change without notice. Please check Explore Courses for up to date course availability and scheduling information."
+          },
+          {
+            "heading": "Curricular Practical Training and Research Internship\t",
+            "text": "Take for at least two quarters; six total units."
+          },
+          {
+            "heading": "Master's Thesis",
+            "text": "Take for at least two quarters; four total units."
+          },
+          {
+            "heading": "Pre-approved Electives",
+            "text": ""
+          },
+          {
+            "heading": "Pre-approved Electives",
+            "text": "Students may count the courses below to count towards the 45-unit residency total. CHPR subject code courses on this list will also count towards the 30 CHPR subject code courses unit requirement. Students may petition for elective approval of courses they would like to take for their MS degree which are not on the pre-approved elective list or the Biostats and Research Methods list. However, petitions by coterms for courses previously taken as an undergraduate will be denied. Courses are subject to change without notice. Please check Explore Courses for up to date course availability and scheduling information."
+          },
+          {
+            "heading": "Petitioning for Elective Approval",
+            "text": "If a course is not pre-approved as an elective, a student may petition the CHPR Office for approval. To be eligible for consideration as an elective: the course must have a course number of 100 or greater the course must be a minimum of 3 units (2 units may be considered) the course must be taken for a letter grade AND the course must be approved by the CHPR Office Coterms: petitions for elective approval of courses already taken in your undergraduate career are not allowed. Only CHPR subject code courses and courses on the pre-approved electives and approved Biostats and Research Methods lists are eligible for course transfer to your graduate career. Students are required to take a minimum of 30 CHPR units. CHPR units can come from any course with a CHPR subject code (e.g., CHPR 232). Approved electives with other subject codes (e.g., EPI 259) do not count towards the 30 unit CHPR minimum, but may count towards other requirements such as the 45 program units, and/or the biostats and research methods requirement."
+          },
+          {
+            "heading": "Curricular Practical Training and Research Internship",
+            "text": "Students must complete a consecutive two-quarter-long community-based research internship under the supervision of a mentor approved by the CHPR Office. Students will receive six total units for their internships, which are all unpaid positions, per University policy. The primary learning goal of these internships is for students to apply their coursework and implementation science in a community or lab setting by engaging community members and faculty to create innovative, research-based chronic disease prevention solutions addressing community health challenges. Students must fulfill the following requirements to enroll in course Curricular Practical Training and Internship: Complete or be enrolled in: course Research in the Community course Theoretical Foundations and Design of Behavioral Intervention Trials and at least one approved Biostatistics and Research Methods course. Students may begin their community-based research internships upon completion of the CHPR Foundations courses."
+          },
+          {
+            "heading": "Master’s Thesis",
+            "text": "Students are required to complete a master’s thesis. Students may begin their master’s thesis upon completion of the CHPR Foundations courses. The master’s thesis allows students to demonstrate knowledge, application, and thoughtful, scholarly communication of theoretical principles central to community health interventions, study design, research, and analytic methods, as well as depth in a substantive area of community health and prevention research. The thesis is intended to be 30 pages in length (i.e., article-length), double-spaced, including supporting tables, figures, and references. The thesis can take one of the following forms: Analysis of original data collected via a student’s internship Comprehensive literature review with meta-analysis of data or critical reanalysis of data Evaluation of a methodological problem using data Comprehensive literature review with a grant proposal (NIH-style format) for a new study to bridge a gap in existing knowledge Organizational health improvement and evaluation plan written for a student’s internship organization CHPR mentor approved, independently designed thesis The program encourages students to use extant data sets for their projects. Students are not limited to quantitative data sets; many School of Medicine faculty possess qualitative data sets that may be analyzed for an MS thesis project. Students can also collect original data, for example, through surveys. Students are encouraged to develop their thesis into a manuscript for publication or a credible research grant application, and mentorship is provided."
+          },
+          {
+            "heading": "Overview",
+            "text": "The optional subplan in Contemplation by Design: Applied Contemplative Science offers the opportunity to develop deep knowledge of contemplative science as well as skills for applying it in community health and prevention programs and research projects. The subplan requires 12 units of coursework that count towards the 45 unit minimum for the CHPR MS, 9 of which must have a CHPR course code. Completion of the subplan results in a notation that appears on the transcript and diploma. Students declare the subplan by submitting eform \"Field of Study (Subplan) Declaration or Change for Graduate Students\" in Axess. Courses listed for the sub-plan are specifically approved for the sub-plan, and are not automatically approved for CHPR students who do not declare the subplan. At this time, we will not be approving any other electives for this subplan."
+          },
+          {
+            "heading": "Electives",
+            "text": "Complete any combination of the approved elective courses below to reach the minimum 12 unit requirement for the subplan."
+          },
+          {
+            "heading": "Electives",
+            "text": "CHPR 233: 2 units are required, and if taken for 3 units, 1 unit will count as an elective unit. PSYC 233: Course may be taken once for the subplan."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-chpr-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-chpr-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-dbio-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "A fundamental problem in biology is how the complex set of multicellular structures that characterize an adult animal is generated from the fertilized egg. Recent advances at the molecular level, particularly concerning the genetic control of development, have been explosive. These advances represent the beginning of a significant movement in the biological sciences toward understanding the molecular mechanisms underlying developmental decisions and the resulting morphogenetic processes. This new thrust in developmental biology derives from the extraordinary methodological advances of the past decade in molecular genetics, immunology, and biochemistry. However, it also derives from groundwork from classical developmental studies, the rapid advances in cell biology and animal virology, and models borrowed from prokaryotic systems. The work is increasingly related to human diseases, including oncogene function and inherited genetic disease.",
+        "ItCSB": "The Department of Developmental Biology includes a critical mass of scientists who are leading the thrust in developmental biology and who can train new leaders in the attack on the fundamental problems of development. Department labs work on various organisms, from microbes to worms, flies, and mice. The dramatic evolutionary conservation of genes that regulate development makes the comparative approach of the research particularly effective. Scientists in the department labs have a very high level of interaction and collaboration. The discipline of developmental biology draws on biochemistry, cell biology, genetics, molecular biology, and genomics. People in the department are very interested in regenerative medicine and stem cell biology.",
+        "advisingExpectations": "The Department of Developmental Biology is committed to academic advising in support of graduate students’ scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Graduate Advising for a statement of university policy on graduate advising.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "Graduate Degrees describes university requirements for the master’s degree. Students in the PhD program in Developmental Biology may apply for an MS degree, assuming completion of their course requirements and preparation of a written proposal. The master’s degree awarded by the Department of Developmental Biology does not include the possibility of minors for graduate students enrolled in other departments or programs."
+          },
+          {
+            "heading": "Course Requirements",
+            "text": "Students must satisfactorily complete at least three lecture courses the department offers, including course Developmental Biology. In addition, students are required to take three courses outside the department. Students are also expected to attend Developmental Biology seminars and journal clubs."
+          },
+          {
+            "heading": "Graduate Research",
+            "text": "Students are required to complete a minimum of 45 units to graduate. Students can adjust the units of their graduate research course (DBIO 399 or GENE 399) to 10 units per quarter (before reaching TGR) or 3 units per quarter (after advancing to TGR) to reach 45 units."
+          },
+          {
+            "heading": "Research Paper",
+            "text": "Each candidate must complete a research paper proposing a specific experimental approach and background in an area of science relative to developmental biology."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-dbio-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-dbio-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-epidm-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Master’s Degree in Epidemiology and Clinical Research provides students with the skills essential to population-based study and patient-oriented clinical research, including epidemiologic methods and statistical analysis. Many students are clinical investigators with an MD or comparable clinical degree, often in the fellowship stages of their training or are already junior faculty members. The program also considers applicants from doctoral programs in the social, behavioral, or biological sciences who are interested in a concurrent master’s degree and wish to apply epidemiologic techniques in their areas of research interest. The program also serves as a rigorous introduction to epidemiology and clinical research for students with baccalaureate degrees or Stanford co-term students (below) who anticipate careers in clinical epidemiology or medicine. Many go on to PhD and MD degrees or pursue careers in public health and other disciplines. See Epidemiology & Population Health for additional information on the MS Epidemiology & Clinical Research program. Mentors MS students in the Graduate Program in Epidemiology and Clinical Research have two mentors. Upon entering the program, each student is assigned an academic program advisor, usually a core faculty member. In addition, the student will choose a research mentor. Research mentors are typically members of the Stanford University professoriate but need not be designated as faculty in EPH. For physicians in our graduate programs, this mentor is usually from the discipline of the student’s clinical affiliation. For example, physicians who maintain an affiliation with another university can often arrange to include a research mentor from the other university if the student’s research takes place, in part, at that university. If the research mentor is from EPH, then the same faculty member may serve as both academic program advisor and research mentor with permission of the program director. The academic program advisor also serves as the student’s methodology mentor and is responsible for advising in the selection of courses, approving a thesis research topic, monitoring the student’s progress through the program, and helping with other program-related issues that may arise. If a student’s thesis research requires additional expertise not covered by those of the methodology or research mentors (e.g., outcomes research or advanced statistical methods), a third mentor may be appointed with the approval of the methodology mentor. Coterminal Master’s Program The Department of Epidemiology and Population Health also offers a coterminal Master’s program in Epidemiology and Clinical Research for current Stanford undergraduates. Students who desire to concentrate in a specific area can participate in one of the track areas (Infectious Diseases, Health Equity and Community-Engaged Research, Global Health ). Coterminal students are enrolled full-time, and courses are ordinarily taken on campus. Graduates of this program are prepared to contribute creatively to basic or applied projects in epidemiology and clinical research. Many go on to PhD and MD degrees or pursue careers in public health and other disciplines.",
+        "ItCSB": "The Epidemiology Masters (MS) aims to provide students with the skills to apply epidemiologic methods to real-world population health problems. The MS program provides a strong foundation in epidemiologic methods and their application. By the end of their training, all students should be able to: Interpret and critically evaluate published epidemiologic studies. Select the most appropriate study design to address specific epidemiologic research questions and understand the strengths and limitations of various study designs. Identify suitable statistical analyses for epidemiologic research questions and datasets, describe the strengths and limitations of these analyses, and accurately interpret research findings considering all potential sources of random and systematic error.",
+        "advisingExpectations": "For a statement of University policy on graduate advising, see Graduate Advising section of this bulletin.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programAdditionalPolicies": "All candidates must satisfactorily complete 45 units of graduate course work with a minimum 3.0 cumulative grade point average (GPA) or better (university requirement), as well as a Master’s thesis, usually based on original research related to epidemiology.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Epidemiologic Methods",
+            "text": "course is recommended but not required for students in designated tracks. course and course must be taken for a letter grade and completed with B- or better. A grade lower than B- will require remedial work, or the student may need to retake the course. Core courses in epidemiologic methods and biostatistics are ordinarily taken during the first year of study."
+          },
+          {
+            "heading": "Biostatistics",
+            "text": "All courses must be taken for a letter grade and completed with B- or better. A grade lower than B- will require remedial work, or the student may need to retake the course"
+          },
+          {
+            "heading": "Research Seminar (3 quarters)",
+            "text": "course is not offered in summer."
+          },
+          {
+            "heading": "Research Conduct",
+            "text": "Research Conduct requirement may be waived for students who are listed as principal investigator for a Stanford IRB-approved research protocol. Students can upload their IRB via MAP to request the waiver."
+          },
+          {
+            "heading": "Electives",
+            "text": "*Any graduate-level EPI course with a primary focus on epidemiology, clinical, or population health or methods can be taken as an elective if approved by the student's epidemiology advisor. *Please note that course , Essentials of Clinical Research at Stanford, is for the broader research community and not intended for for matriculated students. Concentrations Concentrations are not required. If students would like to take courses in a concentration, please select suggested courses below. Global Health Concentration In addition to completing the core courses required for an MS in Epidemiology and Clinical Research, students focusing on Global Health Concentration must complete the following requirements: Required Course: EPI 237 : Practical Approaches to Global Health Research (INTLPOL 290, MED 226) Electives: Take at least six units from the list below · course : Epidemiology of Infectious Diseases · course : Global Change and Emerging Infectious Disease (EARTHSYS 114, ESS 213, HUMBIO 114) · course : Outcomes Analysis (BIOMEDIN 251, MED 252) · course : Theories of Change in Global Health (INTLPOL 291, PUBLPOL 291) Health Equity and Community-Engaged Research Concentration Health Equity and Community-Engaged Research (THE CeR) is ideal for students with different health equity research interests across the fields of epidemiology, health policy, environmental health, health services research, bioinformatics, and other related fields. Students focusing on Health Equity and Community-Engaged Research must complete the following requirements: Required Courses: 1. course : The Science of Community Engagement in Health Research (CHPR 227) 2. course : Community-Based Participatory Research for Health 3. course : Directed Reading in Epidemiology (taken for 1 unit with Dr. Rosas, Dr. Rodriguez-Espinosa, or Dr. Thomas) 4. One methods course from the list below: • course : Developing Measurement Tools for Health Research • course : Big Data Methods for Behavioral, Social, and Population Health Research • course : Methods for Health Care Delivery Innovation, Implementation and Evaluation (HRP 218, MED 212) • course : Theoretical Foundations and Design of Behavioral Intervention Trials • course : Methods in Community Assessment, Evaluation, and Research (MED 247) • course : Practical Applications for Qualitative Data Analysis • course : Qualitative Research Methods and Study Design Note: Additional electives may be approved by the student’s advisor. Infectious Disease Concentration The Adult and Pediatric Divisions of Infectious Diseases coordinate an interdisciplinary program in Infectious Diseases for students. In addition to completing the core courses required for an MS degree in Epidemiology and Clinical Research, students focusing on the Infectious Disease Concentration must complete the following requirements: Required Course: course : Epidemiology of Infectious Diseases · NOT required to take EPI 251: Design and Conduct of Clinical Trials ( encouraged, yet not required ) · Encouraged to attend ID seminars in the Division of Infectious Diseases Electives: Take at least 6 units from the list below · EPI 237 : Practical Approaches to Global Health Research (INTLPOL 290, MED 226) · EPI 247 : Epidemic Intelligence (HUMBIO 57) · course : Cellular and Molecular Immunology: An Introductory Course (IMMUNOL 200, MI 200) · course : BioSecurity and Pandemic Resilience (EMED 122, EMED 222, PUBLPOL 122, PUBLPOL 222) · course : Environmental Microbiology I (BIO 273A, CHEMENG 174, CHEMENG 274) · course : Pathogens and Disinfection · course : Environmental Health Microbiology Lab (offered various years) · course : SARS-CoV-2 in the Environment · course : Global Change and Emerging Infectious Disease (EARTHSYS 214, ESS 213, HUMBIO 114) · course : Pathogens and Populations: Representing Infectious Disease · course : Gut Microbiota in Health and Disease (BIOE 221G, MI 221) · course : Emerging Diseases, Past and Present · course : The Vaccine Revolution · course : Advanced Pathogenesis of Bacteria, Viruses, and Eukaryotic Parasites · course : Gut Microbiota in Health and Disease (BIOE 221G, GENE 208) · course : Health Policy Modeling Note: Additional Infectious Disease electives may be approved by the student's advisor."
+          },
+          {
+            "heading": "Master's Thesis",
+            "text": "Students must take 12 units total over at least two quarters. Only 12 units are counted towards the 45-unit degree requirement."
+          },
+          {
+            "heading": "Master's Thesis",
+            "text": "The completion of a master’s thesis is an essential component of the MS degree, allowing students a chance to integrate epidemiologic principles learned in courses. A thesis should demonstrate the following: • Familiarity with epidemiologic terms, reasoning, and issues. • Ability to communicate scientific reasoning and argue analytically. • Awareness of technical, methodological, and other issues relevant to traditional and clinical epidemiologic research. • Comprehension of statistical techniques, their proper use, and limitations. • Knowledge in a substantive area. The thesis is ordinarily 30 to 60 pages long, double-spaced, including tables, figures and references. Each thesis must include a summary abstract of approximately 400 to 800 words. The thesis can take one of the four following forms: • Original analysis of data, whether collected primarily for the thesis or as secondary data analysis. (This thesis form is most commonly selected by students.) • A comprehensive literature review with a meta-analysis of data or a critical reanalysis of data. • Evaluation of a methodologic problem using real or hypothetical data. • A comprehensive literature review with a grant proposal (NIH-style format) for a new study to bridge a gap in the existing knowledge. The proposal should highlight methodologic principles. The quality of the master's thesis should be such that it can be converted into a manuscript for publication or a credible research grant application, and students are strongly encouraged to do so. Students must present their research findings during a session of EPI 236: Epidemiology Research Seminar. Please visit Stanford Library for previously approved Epidemiology and Clinical Research master's theses. Each student’s thesis committee comprises at least two faculty members, an epidemiology core reader, and a co-reader. The epidemiology core reader, typically the student’s methodology mentor, is the principal thesis advisor. The co-reader is typically the research mentor. The epidemiology core reader is generally a member of the Stanford Academic Council and should be listed as the instructor for at least 9 of the required 12 master’s thesis (research) units (EPI 399). Registration for master's thesis units must be approved by the core reader. If the student’s thesis research requires expertise beyond that covered by the mentoring team described above, a third faculty mentor may be appointed as a thesis reader. This appointment must be requested by the student and approved by the core reader. Primary supervision during thesis research and writing is shared by the core reader and the co-reader. Completion of the master's thesis involves registration for at least 12 units of master’s thesis research over a period of two or more quarters. During the first quarter of research, a proposal for the thesis must be submitted to thesis readers when the project is in the early conceptual stages. The purpose is for the student to obtain guidance from the Thesis Committee about specific aims, study design features, and analytic methods before commencing the project. The Master’s Thesis Committee will notify the student of its decision within two weeks of receipt of the proposal. Rejected proposals can be resubmitted before the end of the quarter. Registration for the second quarter of master’s thesis units can take place only after the successful completion of the first quarter thesis requirements. In the quarter the student expects to graduate, the master’s thesis should be completed and submitted to the readers, allowing sufficient time for readers’ comments and revisions that might be required. A student should expect readers’ comments within two weeks of submission. The final version should be submitted at least two weeks before the end of the quarter. Students must send the PDF, including the signature page, to the Student Services Officer before the thesis submission deadline."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-epidm-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-epidm-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-gene-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "An underlying theme in the department is that genetics is not merely a set of tools but a coherent and fruitful way of thinking about biology and medicine. To this end, the department emphasizes a spectrum of approaches based on molecules, organisms, populations, and genomes. It provides training through laboratory rotations, dissertation research, seminar series, didactic and interactive coursework, and an annual three-day retreat of nearly 200 students, faculty, postdoctoral fellows, and research staff.",
+        "ItCSB": "The department’s mission includes education, teaching, and research. Graduates from our program pursue careers in many different venues, including research in academic or industrial settings, healthcare, health policy, and education. The department is especially committed to increasing diversity within the program and training individuals from traditionally underrepresented minority groups.",
+        "advisingExpectations": "The Department of Genetics is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Graduate Advising for a statement of university policy on graduate advising.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "The program is only open to existing students in the Genetics PhD Program. Requirements vary by student based on their progress in the PhD Program."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-gene-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-gene-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-hrp-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "Health Policy investigates how social factors, financing systems, organizational structures and processes, health technologies, and personal behaviors affect the accessibility, quality, and cost of health care and, ultimately, our health and well-being. The Master’s Degree in Health Policy gives students the skills to conduct and interpret research in health policy and clinical decision-making. The MS program is typically completed in two years. All candidates must satisfactorily complete 45 units of graduate coursework. Students must maintain an overall 3.0 (B) grade average or higher in graded courses, as well as a master’s thesis representing original health policy research. In addition to satisfying the core course requirements, students must take additional courses in one of three concentration areas - clinical decision-making, health economics, or implementation science. The Health Policy Master's Program’s core faculty interests include outcomes research, health economics, health care organization, health care access, implementation science, quality of care, decision analysis, clinical guidelines, and patient preferences and quality of life assessment. See the program website for additional program information, including (but not limited to) faculty lists, admissions information, and deadlines. Please address admission inquiries to the Health Policy Admissions Team at hrpadmissions@stanford.edu . Graduate Degrees summarizes university requirements for the Master of Science (MS) degree.",
+        "WOZxr": "Transfer credit is not accepted for the master's degree.",
+        "ItCSB": "Stanford Health Policy (SHP) conducts rigorous research that lays the foundation for better domestic and international health policy and health care. Drawing upon our multidisciplinary research, the MS program provides advanced students with the skills to conduct independent research in health policy.",
+        "advisingExpectations": "Stanford Health Policy (SHP) is committed to delivering academic advising to support graduate students’ scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. SHP programs adhere to the advising guidelines and responsibilities listed by the Office of the Vice Provost for Graduate Education and in the Graduate Academic Policies and Procedures manual. See the Graduate Advising for a statement of university policy on graduate advising.",
+        "internalAdmissionsInformation": "Applications to the program must be submitted through the Stanford Graduate Admissions website by clicking \"Apply Now\".",
+        "programGPARequirement": "Students must maintain an overall 3.0 (B) grade average or higher in graded courses.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "To receive the MS degree, students are expected to demonstrate knowledge of issues in health policy and the quantitative skills necessary for research in this area. List of MS Requirements: Submission of Course Plan (also known as Master's Program Proposal), approved by the primary advisor and program director, by the end of the autumn quarter of the first year Submission of Thesis Proposal , approved by the primary advisor and program director, by the end of the spring quarter of the first year Submission of Collaborative Master's Plan , after consultation with and approval of primary advisor, by November of the second year Successful completion of all course requirements , with 45 units of health-policy-related coursework (minimum) Successful completion of Master's Thesis , with approval of the student’s thesis committee Note: If a required course is not offered during a student’s time in the program, alternate plans for replacement courses can be made with the student’s advisor(s) and program director(s)."
+          },
+          {
+            "heading": "Required Courses",
+            "text": "NOTE: All courses must be taken for a letter grade."
+          },
+          {
+            "heading": "NIH Requirement",
+            "text": "Required only for students funded by NIH (or similar) training grants."
+          },
+          {
+            "heading": "Concentration Requirements",
+            "text": "Complete 1 course from 1 of the following concentrations."
+          },
+          {
+            "heading": "Health Economics",
+            "text": "HRP 249 can be used for this concentration, but only if approved by an advisor."
+          },
+          {
+            "heading": "Thesis Units",
+            "text": "A minimum of 12 units of thesis /research units."
+          },
+          {
+            "heading": "Pre-approved Electives",
+            "text": "Other electives, consistent with the student’s development plan, may be approved by the student’s faculty advisor and the program director."
+          },
+          {
+            "heading": "Proposal / Plan Requirements",
+            "text": "Master's Program Proposal : Students must submit a Course Plan (Master's Program Proposal), approved by the primary advisor and program director, by the end of the autumn quarter of the first year. Thesis Proposal: Each student will submit a thesis proposal by the end of the first year in the program. The proposal should describe the research project which will fulfill the requirement for the master’s thesis, including identifying the research question and describing the data sources and methods which will be used, and list a second reader. In the proposal, the student should identify the members of their thesis committee. The primary advisor, the second reader, and the program director must approve the proposal. Collaborative Master's Plan : Each student will submit a Collaborative Master's Plan by November 1st of their second year. This plan will require an initial independent assessment of the student’s goals for the program, their career plans and their readiness to complete the thesis. The student will then meet with their advisor to review the assessment, allowing them to add and adjust steps required to meet the goals and satisfy the requirements for completion of the program."
+          },
+          {
+            "heading": "Master's Thesis Requirements",
+            "text": "Thesis: The thesis may take one of several forms, such as: Original analysis of data, whether collected primarily for the thesis or as secondary data analysis A decision model or cost-effectiveness analysis A quantitative policy analysis The quality of the master’s thesis should be such that it can be converted into a manuscript for publication. Thesis Committee: Each student will propose a thesis committee, to be approved by the Program Director, comprised of at least two faculty members associated with the master’s degree program, one of whom must be a core faculty member, and the second must be either core or affiliated faculty. All committee members must read and approve the final thesis. Depending on the project topic, additional faculty members may serve as mentors either as committee members or in a less formal arrangement."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-hrp-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-hrp-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-immun-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "Stanford Immunology is home to faculty, students, postdocs, and staff who work together to carry out internationally recognized research in immunology. The long tradition of collaboration among the immunology laboratories at Stanford fosters productive interdisciplinary research, with an emphasis on the application of molecular approaches to problems in cellular, translational, and clinical immunology. Faculty research interests include both basic science research and bench-to-bedside approaches, as well as computational and systems immunology. Graduate students and postdoctoral scholars receive high caliber, state-of-the art training through their participation in research, teaching, seminars, journal clubs, and the annual Stanford Immunology Scientific Conference.",
+        "ItCSB": "The MS in Immunology aims to develop investigators with a strong foundation in immunology and related sciences to carry out innovative research: Acquire a fundamental, broad, and comprehensive body of knowledge and skills through an extensive curriculum Identify critical scientific questions, design, and conduct experiments using the most appropriate methods Read and critically analyze current literature in immunology and other relevant fields Present research findings and communicate ideas effectively to a variety of audiences Prepare manuscripts that will be published in leading journals Learn to teach effectively",
+        "advisingExpectations": "The Immunology Program is committed to providing academic advising in support of graduate student scholarly and professional development. This includes first-year advising by the program director and ongoing advising with the research mentor in subsequent years. When most effective, this advising relationship entails collaborative and sustained engagement by the advisor and the advisee. The Individual Development Plan (IDP) must be completed by the advisor and advisee annually and entails an extensive interactive written and personal assessment of trainee goals, accomplishments, coursework, and areas for development. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. In addition, the advising process includes guidelines and expectations for graduate student professional conduct, which prepares the student to be responsible members of professional communities. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Graduate Advising for a statement of university policy on graduate advising.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "All students must complete at least 45 units of academic work must be in courses at or above the 100 level, 36 units of which must be at or above the 200 level. Students should choose one of two paths: Computational and Systems Immunology Molecular, Cellular and Translational Immunology The specific requirements for each path are outlined below."
+          },
+          {
+            "heading": "Graduate Research",
+            "text": "Three quarters of graduate research (IMMUNOL 399 Graduate Research) consisting of rotations in the labs of three faculty members."
+          },
+          {
+            "heading": "Journal Club and Seminar Series",
+            "text": "Participation in the Immunology journal club (IMMUNOL 305 Immunology Journal Club) and attendance at the Immunology seminar series (IMMUNOL 311 Seminar in Immunology) and the annual Stanford Immunology Scientific Conference."
+          },
+          {
+            "heading": "First Year Rotations",
+            "text": "First Year Rotations Presentations and General Advising Sessions, June. Students present on one of three lab rotations."
+          },
+          {
+            "heading": "Master's Thesis",
+            "text": "Students must submit a master’s thesis paper on one of their rotations. This requirement may be waived under special circumstances."
+          },
+          {
+            "heading": "Graduate Research",
+            "text": "Three quarters of graduate research (IMMUNOL 399 Graduate Research) consisting of rotations in the labs of three faculty members."
+          },
+          {
+            "heading": "Journal Club and Seminar Series",
+            "text": "Participation in the Immunology journal club (IMMUNOL 305 Immunology Journal Club) and attendance at the Immunology seminar series (IMMUNOL 311 Seminar in Immunology) and the annual Stanford Immunology Scientific Conference."
+          },
+          {
+            "heading": "First Year Rotations",
+            "text": "First Year Rotations Presentations and General Advising Sessions, June. Students present on one of three lab rotations."
+          },
+          {
+            "heading": "Master's Thesis",
+            "text": "Students must submit a master’s thesis paper on one of their rotations. This requirement may be waived under special circumstances."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-immun-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-immun-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-mcp-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Department of Molecular and Cellular Physiology is located in the Beckman Center for Molecular and Genetic Medicine. The MCP-MS degree is only open to students in the MCP-PHD program, and it only offered in the unusual circumstance where a student completes specified portions of the PhD requirements (outlined below), but is unable to complete the full PhD requirements.",
+        "ItCSB": "The Department of Molecular and Cellular Physiology (MCP) strives to reveal how proteins and cells work and how they interact and to leverage this knowledge to help resolve both complex and common diseases. MCP scientists tackle open problems in cell and tissue biology, immunology, and neuroscience. Drawing on concepts, techniques and principles from multiple fields, such as biophysics, computational biology, synthetic biology, genetics, and structural biology, we develop a next generation of scientists skilled in interdisciplinary research, working in teams, mentoring, and communication.",
+        "advisingExpectations": "The Department of Molecular and Cellular Physiology is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the adviser and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the adviser and the advisee are expected to maintain professionalism and integrity. Faculty advisers guide students in key areas such as selecting courses, designing and conducting research, developing of teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. For a statement of University policy on graduate advising, see the \" Graduate Advising \" section of this bulletin.",
+        "WOZxr": "External credit is not accepted for this degree.",
+        "programGradingPolicies": "Courses taken to meet program requirements must be taken for a letter grade and students must earn a minimum grade of at least a 'B' in every individual course.",
+        "programGPARequirement": "Students must maintain a minimum GPA of 3.0 by University policy.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "Candidates for M.S. degrees at Stanford must satisfactorily complete a program of study that includes 45 units of graduate course work and research. Courses taken to meet program requirements must be taken for a letter grade and students must earn a minimum grade of at least a 'B' in every individual course. Students must also maintain a minimum GPA of 3.0 by University policy. Failure to maintain the required grades and grade point average is taken as evidence of unsatisfactory progress in the program. Students should complete their required courses within the first two years of study. Exceptions may be made in cases where it was impossible to schedule courses because they were not offered within a student’s first two years. Students may petition the MCP graduate committee for variances in the specific courses required, and such petitions may be granted in special circumstances, in cases where a student’s progress is otherwise exemplary."
+          },
+          {
+            "heading": "Molecular Biology",
+            "text": "Students should have basic competency in molecular biology. This requirement can be met based on undergrad curriculum/research. If not met, then the Stanford undergrad course BIO 83 can be taken to meet the requirement, but the units will not be applied toward the 45-unit minimum for the MS."
+          },
+          {
+            "heading": "Electives",
+            "text": "Students should complete the equivalent of 2 elective courses. Of the elective course options listed below, BIOC 241 and MCP 222 are considered 'full-value' courses, where each counts as 1 course. The other elective course options ( BIOS 202, BIOS 294, NEPR 201, and NEPR 204) are considered 'mini-courses,' and each counts as half (½) a course. 2 minicourses count as 1 'full-value' course. Student can choose from one of the three sets of options below to complete the Electives requirement."
+          },
+          {
+            "heading": "Advanced Graduate Courses or Minicourses",
+            "text": "Advanced graduate courses or minicourses for a minimum of 6 units total. These courses do not need to be MCP courses but must be in a relevant scientific topic and approved by the Director of Graduate Studies."
+          },
+          {
+            "heading": "Laboratory Rotations",
+            "text": "In addition to the course requirements detailed above, a student is expected to complete laboratory rotations during the first year - completing MCP 299, or an equivalent course. While students typically explore three rotations, a student may opt to do a greater number of shorter rotations, as long as the rotation process is completed by May 15 of the first academic year of study. The first two of these rotations must be in a laboratory within the Department, while subsequent rotations may be in any laboratory within the Stanford Biosciences Program. The first rotation should last 8 to 10 weeks and each subsequent rotation shall last no longer than 8 weeks. Shorter rotations are encouraged, as long as the total length of the rotations is between 20 and 26 weeks. MCP requires a lab rotation evaluation to be completed by faculty member and student at the end of the rotation. Continuation of rotations beyond May 15 will require the approval of the Director of Graduate Studies. Additional rotations and/or time for rotations will be considered in special circumstances, but in all cases, students should plan to join a dissertation lab no later than the beginning of Fall Quarter of the second year."
+          },
+          {
+            "heading": "Written Portion of the Qualifying Exam",
+            "text": "All students in the program must pass a qualifying examination to advance to candidacy for the Ph.D., or to earn the M.S. degree, if unable to complete the PhD. Students earning the M.S. degree instead of the PhD are required to complete the written section of the Qualifying Exam. It is expected that students take the qualifying examination by the end of the Autumn Quarter in the second year of study. Failure to take the qualifying exam by the end of Autumn Quarter of the second year of study is taken as evidence of unsatisfactory progress in the program. In any case, where a student thinks they need additional time to schedule and take their exam, a request must be submitted in writing to the Director of Graduate Studies (DGS) by November 15 of Autumn Quarter. The DGS may opt to grant additional time in compelling circumstances that do not indicate poor progress or may refer the matter to the graduate committee for further action. Students are given two chances to unconditionally pass the qualifying examination. Failure to achieve an unconditional pass of the qualifying examination by the end of the Spring Quarter of the second year is grounds for dismissal from the program. Students form a qualifying examination committee consisting of at least 3 faculty members (members of the academic council, including the dissertation advisor), at least one of whom must be a member of MCP. This committee should be formed by the end of Spring Quarter of the first year of study. The composition of this committee should be approved by the Director of Graduate Studies. Students should also check with the department's student services office to make sure to file all required paperwork by the end of Spring Quarter. The University maintains certain deadlines for filing for candidacy, and it is the student’s responsibility to be aware of these deadlines."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-mcp-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-mcp-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-mi-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "There is no direct admission to the MS in Microbiology & Immunology. The program is only open, under special circumstances, to students in the Microbiology & Immunology PhD program.",
+        "ItCSB": "Research interests focus on two broad areas: host-microbe interactions and the function of the immune system. Laboratories investigate mechanisms of pathogenesis and commensalism and the physiology of viruses, bacteria, and protozoan parasites, as well as the lymphocyte function in antigen recognition, immune response, and autoimmunity.",
+        "advisingExpectations": "The Department of Microbiology and Immunology is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the adviser and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the adviser and the advisee are expected to maintain professionalism and integrity. Faculty advisers guide students in key areas such as selecting courses, designing and conducting research, development of teaching and mentoring skills, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. Additional information about the department's policy on graduate advising can be found on the Microbiology and Immunology website. For a statement of University policy on graduate advising, see the \" Graduate Advising \" section of this bulletin.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "The MI-MS program is only open to existing students in the MI-PHD program. Requirements vary by student."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-mi-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-mi-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-mlasc-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Master of Science (MS) in Laboratory Animal Science (MLAS) program in the Department of Comparative Medicine is a two-year graduate degree designed to prepare students for advanced careers in laboratory animal science, biomedical research, and related scientific fields. The curriculum provides comprehensive training in animal modeling and biomethodology, laboratory animal science, regulatory compliance, animal husbandry and welfare, organizational management, and research facility design. Students gain a strong academic foundation through interdisciplinary coursework while developing the technical, analytical, and professional skills needed to contribute to the advancement of biomedical research. Graduates are well prepared for careers in academia, biotechnology, pharmaceutical and biomedical industries, and research institutions, or for continued education in medical, veterinary, or other advanced graduate programs. Advanced Hands-On Learning in Biomedical Research The MLAS program emphasizes experiential learning by integrating classroom instruction with practical hands-on experiences. Students work alongside leading faculty, researchers, and senior staff, applying scientific principles in real-world laboratory settings while developing critical thinking, problem-solving, and research skills. NEW FOR 2027: Two Program Pathways Beginning with the 2027 cohort, the MLAS program offers two distinct academic pathways: a thesis track and a non-thesis track. This allows students to select the experience that best aligns with their career goals and professional interests. Thesis Track The traditional Thesis Track is designed for students seeking an in-depth research experience. Students are matched with a faculty mentor at the beginning of the program and remain in that laboratory throughout their degree. Working closely with their mentor, students develop and execute an independent research project that culminates in the completion and defense of a master's thesis. This pathway is ideal for students interested in research-intensive careers or pursuing advanced graduate degrees. Non-Thesis Track The Non-Thesis Track provides a broader experiential learning model for students interested in exploring multiple areas of laboratory animal science and biomedical research. Rather than completing a single, long-term research project, students participate in a series of quarter-long applied projects across a variety of disciplines and settings. Projects may be completed within Stanford laboratories as well as with partnering organizations, providing exposure to diverse research environments, technologies, and professional opportunities. This pathway emphasizes practical experience, professional development, and workforce readiness for careers across academia, industry, and research support organizations. It is ideal for students interested in pursuing advanced professional degrees (including veterinary and medical education and training) or who are exploring careers in research support areas such as regulatory compliance, biomedical research facility operations and management, animal husbandry and welfare, and investigator education and training. Applicants must indicate their preferred pathway—Thesis Track or Non-Thesis Track—at the time of application.",
+        "ItCSB": "The Master of Science in Laboratory Animal Science (MLAS) program equips students with the scientific knowledge, technical expertise, and professional competencies needed to excel in laboratory animal science and biomedical research. Through rigorous coursework, hands-on learning, and individualized training, students develop a strong foundation in animal modeling and biomethodology, laboratory animal science, regulatory compliance, animal welfare, and research methodologies. Graduates are prepared to: Apply scientific principles and best practices in laboratory animal science and biomedical research. Design, conduct, and evaluate research using ethical and scientifically rigorous methodologies. Demonstrate knowledge of animal welfare, regulatory compliance, and responsible research practices. Communicate scientific findings effectively through written, oral, and professional presentations. Collaborate effectively in interdisciplinary research and laboratory environments. Apply critical thinking and problem-solving skills to address complex challenges in biomedical research. Students may tailor their educational experience by selecting either the Thesis Track , which emphasizes independent research under the guidance of a faculty mentor, or the Non-Thesis Track , which provides hands-on experience through a series of applied projects across diverse research settings. Both pathways prepare graduates for careers in academia, biotechnology, pharmaceutical and biomedical industries, and research institutions, as well as for advanced study in medical, veterinary, or graduate programs.",
+        "advisingExpectations": "Academic Advising The MLAS program is committed to providing a collaborative and supportive advising experience that fosters academic achievement, professional growth, and career development. Upon admission, students are paired with advisors based on their selected program pathway. Thesis Track : Students are matched with a faculty advisor whose research interests align with their academic and professional goals. This faculty mentor serves as the student's primary research advisor throughout the program, providing guidance on research design, thesis development, academic planning, and career preparation. Non-Thesis Track : Students are advised by the Student Services Officer, Program Director, and designated program faculty, who provide guidance on academic planning, professional development, and the successful completion of quarter-long applied projects. Students may also work with project supervisors at Stanford or partnering organizations during individual project rotations. All students are required to meet with Faculty advisors and Student Services Officer at least once each quarter to review academic progress, discuss professional goals, and support the development of the student's Individual Development Plan (IDP). Students and advisors are encouraged to meet regularly throughout the year to discuss coursework, research or project experiences, career exploration, and professional development opportunities. Successful advising is a shared responsibility. Students are expected to actively engage in the advising relationship by seeking guidance, communicating regularly with their advisor or mentor, and maintaining familiarity with program policies, degree requirements, and academic milestones. To foster a productive mentoring relationship, students and advisors should periodically review expectations and maintain open, respectful, and professional communication. The Student Services Officer monitors each student's academic progress and the completion of program requirements. Detailed information regarding degree requirements, academic milestones, and advising expectations is available throughout the program website and MLAS Handbook In addition to faculty mentorship, students are encouraged to work closely with the department's Student Services Officer, who can connect them with Stanford resources that support academic success, career planning, health and wellness, and professional development. Additionally, the program adheres to the advising guidelines and responsibilities listed by the Office of the Vice Provost for Graduate Education (VPGE), at Graduate Academic Policies (GAP), and at Graduate Advising . For more information regarding Graduate Student Advising and Postdoctoral/Resident Mentoring, contact the following people: Graduate Student Advising: Venessa Juarez (Student Services Officer), venessaj@stanford.edu Program Director: Megan Albertelli (Comparative Medicine Chair), megan.albertelli@stanford.edu Program Co-Director: Jose Vilches-Moure, jvilches@stanford.edu Postdoctoral Student/Residents: David Bentzel (Laboratory Animal Medicine Residency Director), dbentzel@stanford.edu Postdoctoral/Resident: Katherine Gates (Resident and Trainee Wellness Advisor), kvgates@stanford.edu",
+        "WOZxr": "External credit is not accepted for this program.",
+        "cotermQuartersBack": "3 quarters",
+        "internalAdmissionsInformation": "Review the information and instructions on the Laboratory Animal Science webpage.",
+        "programGradingPolicies": "All graded courses must achieve a grade of C or higher CompMed 205, 210, 211, 290, and 291 MUST be taken for a letter grade",
+        "programGPARequirement": "3.0 GPA or higher",
+        "programAdditionalPolicies": "All courses must be taken at the 100 level or above 36 of 45 units must be 200-level or above",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "Requirements for all students: All courses must be taken at the 100 level or above 36 of 45 units must be 200-level or above All graded courses must achieve a grade of C or higher Adhere to the university minimum for an overall GPA (3.0) CompMed 205, 210, 211, 290, and 291 MUST be taken for a letter grade Students must complete at least 45 units of academic work. All required courses must be completed and will count toward the 45-unit minimum. Thesis Track: The remaining units needed to meet the 45-unit minimum can be fulfilled with research credit (COMPMED 399 - Graduate research) or electives, as approved by each student’s research mentor. Non Thesis Track: In addition to the required courses (listed below), students should enroll in COMPMED 260 for rotation credit. Out-of-department electives should be approved by the department's Student Services Officer before enrolling. Students will also participate in 3-4 quarters of hands-on rotations, for credit. Hands-on rotations will be done both within and outside of Stanford University. Instead of a final thesis, trainees in the non-thesis track will produce deliverables for each rotation, including (but not limited to) generation of standard operating procedures (SOP), reports on findings, recommendations and implementation guidelines, educational modules, etc. The type of deliverable for each rotation will be determined by each rotation mentor(s)."
+          },
+          {
+            "heading": "Completion Timeline",
+            "text": "Per university policy, the master’s degree must be completed within three years."
+          },
+          {
+            "heading": "Core Courses",
+            "text": "COMPMED 200 must be taken twice."
+          },
+          {
+            "heading": "Thesis",
+            "text": "Students must complete a master’s thesis, which may take the following form: Original analysis of original data A comprehensive literature review with a meta-analysis of data or a critical reanalysis of data Evaluation of a methodological problem using actual data A comprehensive literature review with a grant proposal (NIH style format) for a new study to bridge a gap in the existing knowledge. Students must present their research to the department. While not required, students are encouraged to publish a research paper that would meet the thesis requirement. Non Thesis Option: Hands-on rotations will be done both within and outside of Stanford University. Instead of a final thesis, trainees in the non-thesis track will produce deliverables for each rotation, including (but not limited to) generation of standard operating procedures (SOP), reports on findings, recommendations and implementation guidelines, educational modules, etc."
+          },
+          {
+            "heading": "Research Courses",
+            "text": "Thesis Track: In addition to the required coursework, enroll in research units with your PI. Students should enroll in COMPMED 399 quarterly with their PI. Students interested in taking COMPMED 299 or 399 should speak with their PI before enrolling. Non-Thesis Track: Students should enroll in COMPMED 260 for rotations"
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-mlasc-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-mlasc-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-neurs-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "The Neurosciences Interdepartmental Program does not offer a terminal or coterminal MS degree. A MS degree may only be pursued in combination with a doctoral degree from another department within the University or one of the University's professional schools.",
+        "ItCSB": "The interdepartmental Neurosciences Program offers instruction and research opportunities leading to a MS in Neurosciences. Since students enter with differing backgrounds and the labs in which they work cover different disciplines, the specific program for each student is developed individually with an advisory committee and is tailored to fit the background and interests of the student.",
+        "advisingExpectations": "The Neurosciences Program is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the adviser and the advisee. Graduate students are active contributors to the advising relationship. They should proactively seek academic and professional guidance and take responsibility for informing themselves of policies and degree requirements for the Neurosciences MS program. Academic progress and student completion of program requirements and milestones are monitored by the program co-directors and staff, and may be discussed by faculty at meetings devoted to assessing graduate student progress. For a statement of University policy on graduate advising, see the \" Graduate Advising \" section of this bulletin, the Stanford Graduate Academic Policies and Procedures (GAP) handbook. Additional guidance and resources are available from The Office of the Vice Provost for Graduate Education .",
+        "internalAdmissionsInformation": "Students interested in pursuing the MS must submit an unofficial Stanford transcript and a written scientific justification for adding the MS degree to the Neurosciences Student Services Officer by February 1, prior to the autumn quarter they would like to begin. Application will include (1) approval of their current PI and PhD program, and (2) confirmation of a lab project and PI to mentor work.",
+        "programGradingPolicies": "All courses used for the Neurosciences M.S. must be taken for a letter grade and passed with a 3.0 (B) or better.",
+        "programAdditionalPolicies": "Completion of a minimum of 45 unduplicated units of course work, including the Neuroscience courses listed in the requirements section or approved substitutes. Courses used for the Neurosciences M.S. may not be double-counted to meet the requirements of a Ph.D. degree. Course requirements must be completed before the student applies for terminal graduate registration (TGR) Status. A Master’s thesis proposal by the end of the first year and completion of the proposed project by the end of the second year.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Core Courses ",
+            "text": "All courses used for the Neurosciences M.S. must be taken for a letter grade and passed with a 3.0 (B) or better. Students must also complete the Stanford Immersive Neurosciences (SIN) Boot Camp. Students must complete special sessions in neuroanatomy. 3 quarters of NEPR 280 (Journal Club) are required."
+          },
+          {
+            "heading": "Statistics and Reproducible Research ",
+            "text": "Required courses must be taken for a letter grade and passed with a 3.0 (B) or better"
+          },
+          {
+            "heading": "Statistics and Reproducible Research ",
+            "text": "Students must complete course as well as one (1) graduate statistics course from the list below; pre-approval is required."
+          },
+          {
+            "heading": "Advanced Courses",
+            "text": "​​Our program embraces the highly interdisciplinary nature of neuroscience research by allowing students to create an individualized curriculum of advanced topic courses best suited to their research agenda and scientific development needs. This approach has empowered students to take advantage of the breadth of expertise across the university. A minimum of six credits of Advanced Topics coursework is required of each student. Students select the courses while meeting the following criteria: (1) at least one course must be taken with a minimum of three units, (2) the course must have a clear means of evaluation (i.e., problem sets, paper writing, class presentations), and (3) the student must detail how the course relates to the student’s project or domain of neuroscience. This information is submitted in writing along with the course syllabus and examples of problem sets to the co-directors/curriculum committee co-chairs for approval. Six units of advanced neuroscience coursework are required. To complete the six units, at least one course must be three units or more; the remaining units can be completed with a combination of smaller-unit courses (e.g., 3+2+1, 3+2+2, 4+2). Pre-approval for advanced courses is required. Required courses must be taken for a letter grade and passed with a 3.0 (B) or better."
+          },
+          {
+            "heading": "Master's Thesis Defense",
+            "text": "MS Students will write a proposal in the style of an NIH NRSA proposal and a written rigor document which outlines how the proposed research has addressed NIH's four key areas of rigor as well as a plan for dissemination for research outcomes and products. The student will defend the proposal and rigor document by oral presentation to the Master's thesis committee. The student will complete the proposed Master's thesis project and defend the project through an oral presentation to the Master's thesis committee. The student must defend the thesis project through oral presentation to the Master's thesis committee by the end of the 2nd year."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-neurs-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-neurs-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-stmrm-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "This program is only open to existing students in the STMRM-PHD Program.",
+        "ItCSB": "The SCBRM program encourages students to complete all Ph.D. requirements by their 5th or 6th year. In some cases, it may be necessary and/or advised for a student to graduate with an M.Sc . (Master of Science) instead of a Ph.D. Students who fail to advance to candidacy, or Ph.D. candidates who have displayed insufficient progress for more than two quarters (e.g., received two N- grades), may graduate with an M.Sc . degree. Students wishing to do so must have completed 45 academic units of study and submit a scholarly 20-page research report (standard NIH format). This report must meet a sufficient scholarly standard as judged by the Director of Graduate Studies. A SCBRM Ph.D. student who has passed the qualifying exam and is in good standing will generally not pursue an M.Sc . degree. However, if extenuating circumstances arise, and are approved by the SCBRM Director of Graduate Studies, a Ph.D. candidate may exit the program with an M.Sc . by completing the same requirements.",
+        "advisingExpectations": "The Program in Stem Cell Biology and Regenerative Medicine is committed to providing academic advising to support graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Graduate Advising for a statement of university policy on graduate advising.",
+        "programGradingPolicies": "All required courses, including those counting toward the 10 units of elective credit, must be taken for a letter grade if offered and must be passed with a B grade or better. The course must be repeated if a student does not earn a B grade or better.",
+        "minimum_program_units": 45,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Requirements Overview",
+            "text": "Students in the PhD program may apply for an MS degree after satisfactorily completing the course and laboratory requirements of the first two years, including the qualifying exam. Postdoctoral research training is available to graduates having a PhD or MD degree. To meet theses requirements, each student must complete three one-quarter laboratory rotations during the first year. All rotations must be approved by the DGS, Executive Director and SSO prior to the start of the rotation. Two rotations (including the first rotation) must be done with ISCBRM faculty. Students may complete one of the rotations with a faculty member who is Academic Council (AC) outside the program with program approval (by DGS and Executive Director). Students must choose a dissertation advisor before the end of summer quarter of the first year. SCBRM graduate students must be registered in all quarters. All required courses, including those counting toward the 10 units of elective credit, must be taken for a letter grade if offered and must be passed with a B grade or better. The course must be repeated if a student does not earn a B grade or better."
+          },
+          {
+            "heading": "Electives",
+            "text": "Complete 10 units from the following areas."
+          },
+          {
+            "heading": "Program Requirements",
+            "text": "Students must take upper-division elective units relevant to the dissertation and career goals, totaling at least ten units. Minimum required grade (e.g., B or better ) and required grading basis. (e.g., letter grade only)."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-stmrm-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-stmrm-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-tram-ms-completion-context",
+      "topic": "degree_specific_study_and_completion",
+      "value": {
+        "A3i6E": "Master’s in Translational Medicine (M-TRAM) is a professional degree program that trains students to advance promising biomedical solutions from early-stage research to full regulatory approval. Technology focus areas include immunotherapy, gene therapy, vaccines, biomarkers, single-cell omics, and medical devices. M-TRAM combines flexible classroom learning with hands-on, team-based medical research, one-on-one mentoring by renowned Stanford faculty and investigators, and on-site biotechnology training. M-TRAM focuses on three integrated areas representing key stages of translational medicine. Rather than specializing in only one area, students develop strong working knowledge across all three domains throughout the program: Early Translation: Basic Science to Preclinical Clinical Translation: Clinical Investigation Late Translation: Medical Adoption and Commercialization There are two complementary M-TRAM Tracks based on the type of capstone project students pursue: TRIP (Translational Research Individual Project) : track requiring a faculty-mentored individual capstone research project . TEAM (Translation, Entrepreneurship, and Applied Medicine Project) : track requiring a collaborative team-based capstone project , organized by therapeutic or focus area. TRIP and TEAM track students have overlapping but separate coursework requirements, as indicated here: https://med.stanford.edu/m-tram/academics/schedules.html",
+        "WOZxr": "Transfer credit is not accepted for the master's program.",
+        "ItCSB": "By the end of the one-year program, students will have gained the problem-solving skills, competencies, and strategies: Expand professional networks and career opportunities Develop a complete product development plan encompassing pre-clinical, clinical, manufacturing, and regulatory modules Identify unmet medical needs Develop scientific hypotheses Design clinical studies Apply clinical specimens to emerging technologies Understand research design, methodology, data analysis, data reporting",
+        "advisingExpectations": "See the Graduate Advising page within the Bulletin.",
+        "internalAdmissionsInformation": "Candidate applications must meet Stanford University and program-specific requirements. In summary, requirements include: Minimum of a Bachelor degree from an accredited university Minimum GPA of at least 3.0, but GPAs of at least 3.5 are strongly recommended CV/resume outlining previous clinical and/or basic research experience Official transcripts Three letters of reference Statement of purpose Supplemental questions",
+        "minimum_program_units": 52,
+        "minimum_university_units": 45,
+        "published_requirement_narratives": [
+          {
+            "heading": "Required Courses",
+            "text": "Complete 3 quarters of TRAM 221. Total of 6 units."
+          },
+          {
+            "heading": "Track Option 1: Translational Research Individual Project (TRIP)",
+            "text": "The TRIP track requires a faculty-mentored individual capstone research project. Summer quarter enrollment is required."
+          },
+          {
+            "heading": "Track Option 1: Translational Research Individual Project (TRIP)",
+            "text": "Complete 3 units in TRAM 212B, 3 units in TRAM 250, 14 units in TRAM 299M, and 6 units in TRAM 299P. Students pursuing an MD may substitute MED 370 for TRAM 299M."
+          },
+          {
+            "heading": null,
+            "text": "Complete 2 units in CSB 245, 2 units in GSBGEN 551, and 12 units in TRAM 299P. The CSB and GSBGEN classes can be substituted with electives upon program approval."
+          },
+          {
+            "heading": "10 Units in TEAM Electives",
+            "text": "Complete 10 units in pre-approved MTRAM electives for a total of 26 units in the TEAM Project Track."
+          },
+          {
+            "heading": "Track Option 2: Translation, Entrepreneurship, and Applied Medicine (TEAM) ",
+            "text": "The TEAM track requires a total of 26 units including a collaborative team-based capstone project, organized by therapeutic or focus area. Summer quarter enrollment is optional."
+          },
+          {
+            "heading": "Track Selection",
+            "text": "Complete one of the following tracks."
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-tram-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-tram-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-neurs-ms-internal-process",
+      "topic": "internal_application_process_and_required_documents",
+      "value": "Students interested in pursuing the MS must submit an unofficial Stanford transcript and a written scientific justification for adding the MS degree to the Neurosciences Student Services Officer by February 1, prior to the autumn quarter they would like to begin. Application will include (1) approval of their current PI and PhD program, and (2) confirmation of a lab project and PI to mentor work.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-neurs-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-neurs-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-neurs-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-chpr-ms-internal-process",
+      "topic": "internal_application_process_and_required_documents",
+      "value": "Admission for Current Students in Other Stanford Graduate Programs and Professional Schools Prospective Dual Degree applicants must be graduate students including masterʼs, doctoral, and medical students currently enrolled in a graduate degree program at Stanford. Current Stanford postdoctoral scholars must apply as external applicants. The priority deadline for applications is May 1 for the upcoming autumn quarter start. Applications received after this date will be considered on a case-by-case basis. Required Application Materials: Instructions on how to submit these application materials can be found on the CHPR website . Completed Current Graduate Student Online Application Form Resume/CV Transcript (unofficial transcripts are acceptable) Optional: GRE, MCAT, or GMAT scores (i.e., the test scores students submitted to their original graduate program at Stanford) Statement of Purpose The Statement of Purpose should describe succinctly the reasons for applying to the proposed program at Stanford, preparation for this field of study, research interests, future career plans, and other aspects of the applicant’s background and interests which may aid the admissions committee in evaluating aptitude and motivation for graduate study. Two letters of recommendation from Stanford professors $125 application fee (assessed by the Registrar’s Office only if accepted and enrolled into the program).",
+      "scope": {
+        "option_ids": [
+          "stanford-option-chpr-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-internal-chpr-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-chpr-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-csb-ms-internal-process",
+      "topic": "internal_application_process_and_required_documents",
+      "value": "With review of our Department Chair and DGS.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-csb-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-csb-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-csb-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "conditions": [
+        "Admission classification and exact eligible population remain owned by the separately scoped route facts. In-program grades, course obligations and thesis milestones are not initial external admission minima.",
+        "For Immunology, current internal eligibility remains unresolved; Neurosciences MS serves the separately evidenced combined-degree population, not a presumed same-program PhD enroute award."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
     }
   ],
   "unresolved": [
@@ -4522,7 +6066,7 @@
     {
       "id": "internal-hrp-ms-eligibility",
       "topic": "Current Stanford student admission to Health Policy MS",
-      "reason": "The 2026-27 Bulletin inventory indicates an internal-admission flag, but reviewed public program admissions pages do not define an additional-degree applicant category, internal application packet or timetable distinct from the ordinary external route.",
+      "reason": "The actual HRP-MS Bulletin internal-admissions field directs applicants to the ordinary Graduate Admissions Apply Now portal. It does not identify a separate current-student applicant category, alternative packet or internal timetable. The generic portal instruction is preserved; a distinct additional-degree route is not inferred.",
       "scope": {
         "option_ids": [
           "stanford-option-hrp-ms"
@@ -4542,7 +6086,8 @@
       "source_ids": [
         "health-policy-ms-app",
         "health-policy-ms-faq",
-        "bulletin-2026-27"
+        "bulletin-2026-27",
+        "recheck-degree-hrp-ms"
       ],
       "checked_at": "2026-10-03",
       "publication_status": "not_found_in_reviewed_official_sources",
@@ -4582,7 +6127,7 @@
     {
       "id": "internal-tram-ms-eligibility",
       "topic": "Current Stanford student admission to M-TRAM MS",
-      "reason": "The 2026-27 Bulletin inventory indicates an internal-admission flag, but reviewed public program admissions pages do not define an additional-degree applicant category, internal application packet or timetable distinct from the ordinary external route.",
+      "reason": "The actual TRAM-MS Bulletin internal-admissions field publishes the general bachelor-degree, GPA, CV, transcripts, three references, statement and supplemental-question requirements. It does not identify a separate current-student applicant population or timetable. Those published requirements are retained without claiming a distinct internal packet or deadline.",
       "scope": {
         "option_ids": [
           "stanford-option-tram-ms"
@@ -4602,7 +6147,8 @@
       "source_ids": [
         "mtram-requirements",
         "mtram-cost",
-        "bulletin-2026-27"
+        "bulletin-2026-27",
+        "recheck-degree-tram-ms"
       ],
       "checked_at": "2026-10-03",
       "publication_status": "not_found_in_reviewed_official_sources",
@@ -4641,7 +6187,7 @@
     {
       "id": "neurs-ms-internal-application",
       "topic": "Neurosciences combined MS internal application steps",
-      "reason": "The 2026-27 Bulletin establishes eligibility only in combination with another Stanford doctoral or professional degree, but the public program page does not publish the required internal petition, approval process or application deadline.",
+      "reason": "The actual NEURS-MS Bulletin internal-admissions field publishes the recurring February 1 deadline, unofficial Stanford transcript, scientific justification, current PI and PhD-program approval, and confirmed laboratory project/mentoring PI. The earlier missing-process note is superseded by recheck-degree-neurs-ms-internal-process.",
       "scope": {
         "option_ids": [
           "stanford-option-neurs-ms"
@@ -4660,12 +6206,113 @@
         "fee_status": []
       },
       "source_ids": [
-        "neurs-ms-bulletin"
+        "recheck-degree-neurs-ms"
       ],
       "checked_at": "2026-10-03",
       "publication_status": "not_specified_in_reviewed_program_text",
-      "review_status": "reviewed_source_gap",
-      "next_step": "Ask Neurosciences graduate staff for the internal combined-degree application and approval requirements."
+      "review_status": "superseded_by_completed_research",
+      "next_step": "Ask Neurosciences graduate staff for the internal combined-degree application and approval requirements.",
+      "resolved_by_fact_ids": [
+        "recheck-degree-neurs-ms-internal-process"
+      ],
+      "official_next_step": "Follow the published process through Neurosciences Student Services; confirm the selected autumn entry year."
+    },
+    {
+      "id": "recheck-degree-bioc-ms-individual-plan",
+      "reason": "The actual MS degree requirement text restricts the award to existing students in the corresponding PhD programme and says requirements vary by student. Published 45-unit metadata, advising and credit rules are preserved; an individual course or thesis plan is not a universal requirement.",
+      "source_ids": [
+        "recheck-degree-bioc-ms"
+      ],
+      "official_next_step": "ExistingcorrespondingPhDstudent shouldconfirmtheirindividualMSdegreeplanandpetitionwiththeprogramadviser/StudentServices.",
+      "review_status": "researched_individual_degree_plan_unknown",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bioc-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-bioc-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "existing_corresponding_PhD_student"
+        ],
+        "cycle": "2026-27degreeprogress"
+      }
+    },
+    {
+      "id": "recheck-degree-gene-ms-individual-plan",
+      "reason": "The actual MS degree requirement text restricts the award to existing students in the corresponding PhD programme and says requirements vary by student. Published 45-unit metadata, advising and credit rules are preserved; an individual course or thesis plan is not a universal requirement.",
+      "source_ids": [
+        "recheck-degree-gene-ms"
+      ],
+      "official_next_step": "ExistingcorrespondingPhDstudent shouldconfirmtheirindividualMSdegreeplanandpetitionwiththeprogramadviser/StudentServices.",
+      "review_status": "researched_individual_degree_plan_unknown",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gene-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-gene-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "existing_corresponding_PhD_student"
+        ],
+        "cycle": "2026-27degreeprogress"
+      }
+    },
+    {
+      "id": "recheck-degree-mi-ms-individual-plan",
+      "reason": "The actual MS degree requirement text restricts the award to existing students in the corresponding PhD programme and says requirements vary by student. Published 45-unit metadata, advising and credit rules are preserved; an individual course or thesis plan is not a universal requirement.",
+      "source_ids": [
+        "recheck-degree-mi-ms"
+      ],
+      "official_next_step": "ExistingcorrespondingPhDstudent shouldconfirmtheirindividualMSdegreeplanandpetitionwiththeprogramadviser/StudentServices.",
+      "review_status": "researched_individual_degree_plan_unknown",
+      "scope": {
+        "option_ids": [
+          "stanford-option-mi-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-mi-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "existing_corresponding_PhD_student"
+        ],
+        "cycle": "2026-27degreeprogress"
+      }
+    },
+    {
+      "id": "chpr-internal-priority-date-conflict",
+      "reason": "The reviewed CHPR departmental current-student instructions use the first Tuesday in May, while the actual 2026-27 Bulletin CHPR-MS internal-admissions field says May 1 for the upcoming autumn. Both dated source statements are retained; neither identifies a reconciled priority date for a selected future entry year.",
+      "source_ids": [
+        "chpr-current-graduate",
+        "recheck-degree-chpr-ms"
+      ],
+      "review_status": "researched_source_conflict_or_private_materials",
+      "official_next_step": "Ask CHPR admissions to confirm the priority deadline for the selected autumn start.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-chpr-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-internal-chpr-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "selected autumn internal entry; published recurring dates conflict"
+      }
     }
   ],
   "collection_tasks": [

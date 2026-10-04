@@ -24,8 +24,10 @@
     "fact_ids": [
       "fact_business_mres_course_profile",
       "fact_imperial_business_mres_course_admission_dates_fees_awards",
+      "fact_business_mres_study_structure",
       "imperial-business-doctoral-entry",
-      "imperial-business-doctoral-profile-funding"
+      "imperial-business-doctoral-profile-funding",
+      "imperial-business-doctoral-curriculum-progression"
     ],
     "researched_unknown_ids": [
       "unknown_course_specific_degree_equivalency",
@@ -104,14 +106,27 @@
     "id": "imperial-business-doctoral-entry",
     "topic": "academic_application",
     "value": {
-      "cycle": "September2027",
-      "normal_entry": "UK2:1Bachelor plus MasterMerit/Distinction andstrongdissertation; exceptionalstrongFirstBachelorwithoutMastermayqualifywithoutstandingreferences/CV/statement. Strongquantitativemethods:calculus,linearmatrixalgebra,statistics,dataprogramming; qualitativeManagementEntrepreneurshipmayjoinwithoutquantbackgroundcasebycasebutmusttraininMRes.",
-      "test": "GMATorGRE compulsory beforeconsideration, no conditionaltestoffer.90thpercentilepreferrednotguaranteedminimumadmission:classicGMAT700+ (quant50/60verbal39/60writing6/6integrated8/8),Focus655+90thcomponents5yrvalidity;GREquant165/170verbal163/170writing5/6. GREpreferredFinance/EconomicsPublicPolicy/AnalyticsOperations;eitheracceptedall.",
-      "english": "Higherlevel:IELTS7/6.5,TOEFLlegacy100/22,newscale5/5,Duolingo125/115;2yratstart;degreewhollystudied/awardedinlistedcountriesaccepted;sourcecountrylistomitsMalta unlikecentral exemption, do notassumeBusinessMalta automatic. Englishmaybesuppliedafterapplication.",
-      "documents": "CV,statementofpurpose,fulltranscripts,twoacademicreferees,GMAT/GRE,Englishevidence. Outlineinterestsandfaculty;EconomicsPublicPolicyrequiresmorespecificresearchidea. Willingsupervisornotrequiredbeforeapply.",
-      "deadline": "2December2026 beforemidnightUK; allsupportingdocumentsreferencesandtestsneeded, incompleteapplicationsnotprocessed.",
-      "selection": "AcademicSelectionCommittee shortlistthenfaculty-panelinterview,overseasonline;Registrychecksconditionsbeforeofficialoffer.",
-      "variants": "AnalyticsOperations,EconomicsPublicPolicy,Finance,ManagementEntrepreneurship,Marketing; Management application separately selectsInnovationEntrepreneurshiporOrganisationalBehaviourStrategy."
+      "cycle": "September 2027",
+      "application_target": "Business (MRes 2YFT), selecting the actual research pathway; Management and Entrepreneurship selects Innovation/Entrepreneurship or Organisational Behaviour/Strategy. This is integrated doctoral entry, not a no-test standalone master.",
+      "normal_entry": "UK upper-second bachelor plus master with Merit/Distinction and a strong dissertation. Exceptionally a strong first-class bachelor without a master may qualify with outstanding references, CV and statement. Quantitative prerequisites include calculus, linear algebra, statistics and data programming. Qualitative Management/Entrepreneurship applicants may join without this background case by case, but still undertake MRes quantitative training.",
+      "tests": "A GMAT or GRE score is compulsory before consideration; no offer is conditional on a later test score. Strong scores are described as approximately the 90th percentile, not guaranteed admission minima. Preferred classic GMAT: 700+ overall, quantitative 50/60, verbal 39/60, writing 6/6, integrated reasoning 8/8. Preferred GMAT Focus: 655+ and component scores around the 90th percentile; valid five years. Preferred GRE: quantitative 165/170, verbal 163/170, analytical writing 5/6. Finance, Economics and Public Policy, and Analytics and Operations prefer GRE; either test is accepted for every pathway.",
+      "english": "Higher English: IELTS Academic 7.0 overall with at least 6.5 in each element; TOEFL 100 overall and at least 22 in each element for tests before 21 January 2026, or the new scale at 5.0 overall and 5.0 in each element after transition; or Duolingo 125 overall and at least 115 in each integrated subscore. Validity is two years at course start. Degree exemption requires the degree to have been studied entirely and awarded in a listed country. The Business School list omits Malta, unlike central policy, so do not assume automatic Malta exemption. English may be met after application. Business School wording says “after 21 January” while central guidance says “on or after”; preserve this conflict for a test on the transition date.",
+      "documents": "Submit a CV, statement of purpose, full transcripts, two academic references, the required GMAT/GRE, and English proof. The statement is normally 1–2 A4 pages and should describe research interests and faculty fit. Economics and Public Policy applicants must describe a specific research idea in greater detail. Prior agreement from a willing supervisor is not required.",
+      "deadline": {
+        "date": "2026-12-02",
+        "time": "before midnight",
+        "timezone": "Europe/London",
+        "required": "All supporting documents, references, and the test score are required by the deadline. Incomplete applications are not processed."
+      },
+      "selection": "The Academic Selection Committee shortlists applicants for a faculty panel interview; overseas interviews are online. After the School recommendation, final Registry checks can take up to three weeks.",
+      "qualification_verification_conflict": "The School FAQ requests physical originals for some English qualifications, while the current central offer page says to email accepted qualification proof. Preserve the conflict and follow the actual offer/Registry instruction; do not add an unsupported general postal requirement.",
+      "pathways": [
+        "Analytics and Operations",
+        "Economics and Public Policy",
+        "Finance",
+        "Management and Entrepreneurship",
+        "Marketing"
+      ]
     },
     "scope": {
       "study_levels": [
@@ -139,7 +154,8 @@
     "publication_status": "published",
     "review_status": "verified",
     "checked_at": "2026-10-01",
-    "conditions": []
+    "conditions": [],
+    "rechecked_at": "2026-10-03"
   },
   "sources": [
     {

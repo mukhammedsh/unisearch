@@ -437,6 +437,41 @@
       "title": "Stanford GSB Application Portal",
       "checked_at": "2026-10-03",
       "content_review_status": "reviewed"
+    },
+    {
+      "id": "mspa-federal-loan-2027-entry-limit-source-1",
+      "url": "https://financialaid.stanford.edu/loans/obbba/",
+      "title": "Mspa Federal Loan 2027 Entry Limit",
+      "checked_at": "2026-10-03",
+      "content_review_status": "content_reviewed_by_Medicine_professional_recheck"
+    },
+    {
+      "id": "md-application-ai-policy-source-1",
+      "url": "https://med.stanford.edu/md-admissions/how-to-apply.html",
+      "title": "Md Application Ai Policy",
+      "checked_at": "2026-10-03",
+      "content_review_status": "content_reviewed_by_Medicine_professional_recheck"
+    },
+    {
+      "id": "law-advanced-toefl-requirement-and-waiver-source-2",
+      "url": "https://gradadmissions.stanford.edu/apply/test-scores",
+      "title": "Law Advanced Toefl Requirement And Waiver",
+      "checked_at": "2026-10-03",
+      "content_review_status": "specificLaw_orMSPA_source_content_reviewed"
+    },
+    {
+      "id": "mspa-individual-offer-response-and-program-structure-source-1",
+      "url": "https://med.stanford.edu/pa/program-overview.html",
+      "title": "Mspa Individual Offer Response And Program Structure",
+      "checked_at": "2026-10-03",
+      "content_review_status": "specificLaw_orMSPA_source_content_reviewed"
+    },
+    {
+      "id": "mspa-individual-offer-response-and-program-structure-source-2",
+      "url": "https://med.stanford.edu/pa/admissions/how-to-apply.html",
+      "title": "Mspa Individual Offer Response And Program Structure",
+      "checked_at": "2026-10-03",
+      "content_review_status": "specificLaw_orMSPA_source_content_reviewed"
     }
   ],
   "study_options": [
@@ -644,7 +679,8 @@
       ],
       "checked_at": "2026-10-02",
       "procedure_ids": [
-        "med_mstp_external_admission"
+        "med_mstp_external_admission",
+        "med_mstp_internal_admission"
       ],
       "application_classification": "combined_external",
       "description": "Combined MD and PhD training. Applicant applies through the medical-school process and MSTP selection; research commitment and sustained productive research experience are central. Current Stanford students have a separate internal application.",
@@ -876,6 +912,18 @@
         "law_jsd_program",
         "law_advanced_process"
       ]
+    },
+    {
+      "id": "med_mstp_internal_admission",
+      "option_ids": [
+        "stanford-option-med-md-phd"
+      ],
+      "classification": "current_Stanford_MD_or_PhD_internal_MSTP_funding_application",
+      "destination": "MSTP internal application and research presentation; separately approved MD and PhD degrees",
+      "source_ids": [
+        "med_mstp_internal"
+      ],
+      "checked_at": "2026-10-03"
     }
   ],
   "facts": [
@@ -1350,13 +1398,13 @@
     {
       "id": "med_mstp_internal_restrictions",
       "topic": "internal_route_funding",
-      "value": "Current Stanford MD students may apply internally to MSTP, commonly during M2/M2B, with later-stage cases discussed individually; students outside Stanford MD and people matriculated in another institution's PhD are ineligible for this internal MSTP funding route. Current Stanford PhD students may seek MSTP funding only after qualifying conditions including good standing, passed qualifying exam, and MD application/admission; MD admission is independent. Internal application requires a dual-degree authorization process and research proposal/support materials, followed by an oral presentation. 2026-27 internal deadline shown as January 20, 2026, already elapsed as checked.",
+      "value": "Current Stanford MD students may apply internally to MSTP, commonly after M1 or during M2/M2B, with later-stage cases discussed individually. They need good standing, a defined thesis and a committed adviser. Students outside Stanford MD and students enrolled in another institution's PhD are ineligible for this internal funding route. Current Stanford PhD students must be in good standing, have passed the qualifying exam, and apply to MD by fall of G3; MD admission is a separate decision. The published Autumn2026-27 funding deadline was January20,2026 at5p.m.Pacific and has passed. Materials include a cover page, statement of at most250words, mentor letter, access to the MD application, NIH biosketch, dual-degree form and research proposal. An oral presentation lasts10minutes followed by10minutes of questions. Funding start depends on availability, degree approvals and full-time thesis research.",
       "scope": {
         "option_ids": [
           "stanford-option-med-md-phd"
         ],
         "procedure_ids": [
-          "med_mstp_external_admission"
+          "med_mstp_internal_admission"
         ],
         "levels": [
           "professional",
@@ -1372,12 +1420,12 @@
       "source_ids": [
         "med_mstp_internal"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "publication_status": "published",
       "review_status": "reviewed",
       "conditions": [
-        "The page's listed January 20, 2026 deadline has passed; this does not establish a future cycle deadline.",
-        "MSTP funding is restricted to U.S. citizens and permanent residents according to the internal admissions page."
+        "The January20,2026 deadline does not establish the next internal funding cycle.",
+        "The internal admissions page restricts MSTP funding to US citizens and permanent residents."
       ],
       "exceptions": [
         "The internal application pathway is distinct from initial external MSTP/MD application.",
@@ -1387,7 +1435,7 @@
     {
       "id": "med_mspa_eligibility_process",
       "topic": "eligibility_tests_documents_and_dates",
-      "value": "For the MSPA 2026-27 application timeline leading to August 2027 entry, CASPA opened Apr 30, 2026; the application had to be in Complete status in CASPA by Jul 15, 2026 at 11:59 p.m. Eastern Time (deadline passed); interviews Autumn 2026 and orientation/classes begin Aug 2027. Only CASPA application status establishes deadline compliance; no other proof or evidence is accepted. Failure to maintain Complete status moving forward jeopardizes admission consideration. The only minimum admission requirement is a qualifying in-person U.S./Canada bachelor's degree or qualifying U.S. graduate degree by Jul 1; no specific major. Foreign-degree-only applicants are ineligible, WES equivalency is not accepted, and no waiver applies. Recommended: GRE/MCAT/PA-CAT (PA-CAT preferred), preparatory coursework, 500+ clinical hours and three references. No minimum GPA or test score; one CASPA personal statement up to 5,000 characters. Three references recommended, max five; friends/family/healthcare providers excluded. About 10% interview. USD 1,000 nonrefundable seat deposit credited to first-quarter tuition; no advanced placement. Stanford undergraduate applicants may also apply as internal applicants through the same CASPA route; Stanford identifies no coterm degree or advanced placement for this program.",
+      "value": "For the MSPA 2026-27 application timeline leading to August 2027 entry, CASPA opened Apr 30, 2026; the application had to be in Complete status in CASPA by Jul 15, 2026 at 11:59 p.m. Eastern Time (deadline passed); interviews Autumn 2026 and orientation/classes begin Aug 2027. Only CASPA application status establishes deadline compliance; no other proof or evidence is accepted. Failure to maintain Complete status moving forward jeopardizes admission consideration. The only minimum admission requirement is a qualifying in-person U.S./Canada bachelor's degree or qualifying U.S. graduate degree by Jul 1 of the matriculation year (July 1, 2027 for August 2027 entry); no specific major. Foreign-degree-only applicants are ineligible, WES equivalency is not accepted, and no waiver applies. Recommended: GRE/MCAT/PA-CAT (PA-CAT preferred), preparatory coursework, 500+ clinical hours and three references. No minimum GPA or test score; one CASPA personal statement up to 5,000 characters. Three references recommended, max five; friends/family/healthcare providers excluded. About 10% interview. USD 1,000 nonrefundable seat deposit credited to first-quarter tuition; no advanced placement. Stanford undergraduate applicants may also apply as internal applicants through the same CASPA route; Stanford identifies no coterm degree or advanced placement for this program.",
       "scope": {
         "option_ids": [
           "stanford-option-pas-ms"
@@ -1396,7 +1444,7 @@
           "med_mspa_admission"
         ],
         "levels": [
-          "professional"
+          "masters"
         ],
         "applicant_categories": [
           "external_applicant",
@@ -1437,7 +1485,7 @@
           "med_mspa_admission"
         ],
         "levels": [
-          "professional"
+          "masters"
         ],
         "applicant_categories": [
           "admitted_student"
@@ -1471,7 +1519,7 @@
           "med_berg_internal_admission"
         ],
         "levels": [
-          "professional"
+          "masters"
         ],
         "applicant_categories": [
           "current_stanford_md_student_approved_split_curriculum"
@@ -1660,7 +1708,7 @@
           "med_mspa_admission"
         ],
         "levels": [
-          "professional"
+          "masters"
         ]
       },
       "source_ids": [
@@ -1924,6 +1972,172 @@
         "MSTP completion length varies with individual research; MD pre-clerkship split option is an approved pathway."
       ],
       "exceptions": []
+    },
+    {
+      "id": "mspa-degree-completion-cutoff-2027-entry",
+      "topic": "minimum_qualification",
+      "value": "A qualifying bachelor degree must be completed by July 1 of the year of matriculation. Accepted: a bachelor from a regionally accredited US or Canadian institution (three-year Quebec; four-year other Canadian provinces), or a US graduate degree plus the equivalent undergraduate degree. Online bachelor programs, foreign-only degrees, WES substitution, and waivers are not accepted.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "external_applicant",
+          "international_applicant"
+        ],
+        "cycle": "August 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "med_mspa_requirements"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "mspa-federal-loan-2027-entry-limit",
+      "topic": "funding_eligibility_and_application",
+      "value": "Current Stanford central loan policy says graduate students who have not borrowed for the current degree program before July 1, 2026 are not eligible for new Grad PLUS loans. The MSPA program page checked 2026-10-03 still lists Stafford and/or Grad PLUS; for new August 2027 entrants the two official pages conflict, so Grad PLUS availability must not be represented as generally available.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "new_admitted_student",
+          "US_citizen",
+          "permanent_resident"
+        ],
+        "cycle": "August 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "mspa-federal-loan-2027-entry-limit-source-1",
+        "med_mspa_aid"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_source_conflict",
+      "review_status": "needs_resolution",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "md-application-ai-policy",
+      "topic": "application_authorship_policy",
+      "value": "MD applicants may use AI for brainstorming, organizing their own ideas, identifying clarity issues, and light grammar/spelling edits preserving their voice. AI may not generate substantive responses or frameworks, substantially rewrite/paraphrase essays, or generate reflections, motivations, lessons or conclusions.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md",
+          "stanford-option-med-md-phd"
+        ],
+        "procedure_ids": [
+          "med_md_admission",
+          "med_mstp_external_admission"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "external_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "md-application-ai-policy-source-1"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "law-advanced-toefl-requirement-and-waiver",
+      "topic": "english_test_minimum_and_waiver",
+      "value": "Stanford Law advanced applicants must submit TOEFL iBT (not IELTS under the current Law advanced process). Minimum: 100 for tests before Jan 21, 2026; for tests on/after, overall 5.5 with reading/listening >=5.5 and writing/speaking >=5.0. Native English does not automatically waive; applicants must request a waiver with evidence. Waivers may be granted for >=2 years full-time study or work in English. Law page does not specify a validity period; confirm with admissions if score age matters.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-llm-corporate-governance-practice",
+          "stanford-option-law-llm-environmental-law-policy",
+          "stanford-option-law-llm-international-economic-law-business-policy",
+          "stanford-option-law-llm-law-science-technology",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd"
+        ],
+        "procedure_ids": [
+          "law_advanced_admission",
+          "law_jsd_admission"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "advanced_degree_applicant"
+        ],
+        "cycle": "Fall 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "law_advanced_process",
+        "law-advanced-toefl-requirement-and-waiver-source-2"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_bounded_unknown",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Law advanced-program English requirements are distinct from central nonprofessional thresholds; the common portal policy does not replace them."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "mspa-individual-offer-response-and-program-structure",
+      "topic": "offer_response_and_study_structure",
+      "value": "MSPA is a nine-quarter program with a summer break, clinical rotations, selected California clinical sites, leadership-track choice, and required thesis. Graduates are prepared for PANCE. Accepted/waitlisted candidates receive email; a nonrefundable $1,000 deposit is due by the response date in the individual offer letter and credited to first-quarter tuition. The official pages do not publish a common 2027 cohort response date or placement rate.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "admitted_student"
+        ],
+        "cycle": "August 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "mspa-individual-offer-response-and-program-structure-source-1",
+        "mspa-individual-offer-response-and-program-structure-source-2"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_bounded_unknown",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "An individual offer deadline is not a universal response date for every admitted MSPA applicant."
+      ],
+      "exceptions": []
     }
   ],
   "unresolved": [
@@ -2021,6 +2235,192 @@
         "cycle": "Fall 2027 application or 2026-27 dated cost reference, as the unknown reason specifies",
         "fee_status": []
       }
+    },
+    {
+      "id": "mspa-federal-loan-2027-entry-limit-confirmation",
+      "reason": "Current Stanford central loan policy says graduate students who have not borrowed for the current degree program before July 1, 2026 are not eligible for new Grad PLUS loans. The MSPA program page checked 2026-10-03 still lists Stafford and/or Grad PLUS; for new August 2027 entrants the two official pages conflict, so Grad PLUS availability must not be represented as generally available.",
+      "source_ids": [
+        "mspa-federal-loan-2027-entry-limit-source-1",
+        "med_mspa_aid"
+      ],
+      "official_next_step": "Ask Stanford MSPA financial aid to confirm loan options for the August2027 entering class and current federal eligibility. Do not use older generic GradPLUS availability.",
+      "review_status": "needs_official_confirmation",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "new_admitted_student",
+          "US_citizen",
+          "permanent_resident"
+        ],
+        "cycle": "August 2027 entry",
+        "fee_status": []
+      }
+    },
+    {
+      "id": "mstp-next-internal-deadline",
+      "reason": "The reviewed internal MSTP page publishes January20,2026 at5p.m.Pacific for Autumn2026-27 funding. That deadline has passed and does not establish the next internal intake window. An individual funding start or renewal depends on approval and available support.",
+      "source_ids": [
+        "med_mstp_internal"
+      ],
+      "official_next_step": "Recheck the official MSTP internal-admission page or ask MSTP directors or Student Services for the current internal deadline and funding start.",
+      "review_status": "researched_unknown_after_internal_route_review",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md-phd"
+        ],
+        "procedure_ids": [
+          "med_mstp_internal_admission"
+        ],
+        "levels": [
+          "professional",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "current_stanford_md_student",
+          "current_stanford_phd_student"
+        ],
+        "cycle": "nextinternalfundingintake"
+      }
+    },
+    {
+      "id": "med-mspa-next-cost-year",
+      "reason": "Official MSPA PDF checked on 2026-10-03 only publishes the 2026-27 budget and warns future year cost increases may occur; this does not establish a 2027-28 rate.",
+      "source_ids": [
+        "med_mspa_timeline",
+        "med_mspa_requirements",
+        "med_mspa_apply",
+        "med_mspa_faq",
+        "med_mspa_coa_pdf",
+        "med_mspa_aid",
+        "mspa-federal-loan-2027-entry-limit-source-1",
+        "mspa-individual-offer-response-and-program-structure-source-1",
+        "mspa-individual-offer-response-and-program-structure-source-2"
+      ],
+      "official_next_step": "Recheck https://med.stanford.edu/pa/tuition.html and linked accessible PDF after publication of the 2027-28 schedule, or ask MSPA admissions for applicant-specific cost timing.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "August 2027 entering cohort"
+        ],
+        "fee_status": []
+      },
+      "review_status": "researched_unknown_after_specific_source_review"
+    },
+    {
+      "id": "med-md-full-2027-coa",
+      "reason": "Official MD tuition handbook lists 2026-27 quarterly tuition but its linked/embedded complete COA is labeled 2025-26; no 2026-27 full cost is inferred.",
+      "source_ids": [
+        "med_md_apply",
+        "med_md_requirements",
+        "med_md_timeline",
+        "med_md_bulletin",
+        "med_md_cost",
+        "med_md_aid",
+        "med_mstp_faq",
+        "stanford_doctoral_requirements",
+        "md-application-ai-policy-source-1"
+      ],
+      "official_next_step": "Check current official School of Medicine cost-of-attendance page or Student Services cost/budget page for the entering aid year; ask MD Financial Aid if no cycle amount is posted.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md"
+        ],
+        "procedure_ids": [
+          "med_md_admission"
+        ],
+        "cycle": "Fall 2027 entry",
+        "levels": [
+          "professional"
+        ],
+        "applicant_categories": [],
+        "fee_status": []
+      },
+      "review_status": "researched_unknown_after_specific_source_review"
+    },
+    {
+      "id": "law-advanced-toefl-score-validity",
+      "reason": "Advanced Law page gives required TOEFL type/minimum and waiver but does not state a score validity period.",
+      "source_ids": [
+        "law_routes",
+        "law_llm_bulletin",
+        "law_jsm_bulletin",
+        "law_mls_bulletin",
+        "law_jsd_program",
+        "law_advanced_programs",
+        "bulletin_inventory",
+        "law_advanced_process",
+        "law_advanced_aid",
+        "tuition_rates_2026_27",
+        "law_cost",
+        "law_mls",
+        "non_tuition_fees_2026_27",
+        "law_jd_bulletin",
+        "stanford_grad_residency",
+        "stanford_doctoral_requirements",
+        "law-advanced-toefl-requirement-and-waiver-source-2"
+      ],
+      "official_next_step": "Ask Stanford Law Graduate Admissions whether a TOEFL taken more than two years before the Fall 2027 deadline is valid; do not borrow the general graduate policy without confirmation.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-llm",
+          "stanford-option-law-jsm",
+          "stanford-option-law-jsd"
+        ],
+        "procedure_ids": [
+          "law_advanced_admission",
+          "law_jsd_admission"
+        ],
+        "cycle": "Fall 2027",
+        "levels": [],
+        "applicant_categories": [],
+        "fee_status": []
+      },
+      "review_status": "researched_unknown_after_specific_source_review"
+    },
+    {
+      "id": "mspa-2027-offer-date-and-placement-rate",
+      "reason": "MSPA page makes deposit response date individual to each offer and does not publish a program placement rate on the pages reviewed.",
+      "source_ids": [
+        "med_mspa_timeline",
+        "med_mspa_requirements",
+        "med_mspa_apply",
+        "med_mspa_faq",
+        "med_mspa_coa_pdf",
+        "med_mspa_aid",
+        "mspa-federal-loan-2027-entry-limit-source-1",
+        "mspa-individual-offer-response-and-program-structure-source-1",
+        "mspa-individual-offer-response-and-program-structure-source-2"
+      ],
+      "official_next_step": "Use the applicant-specific offer letter for response date; ask MSPA admissions for the current graduating-cohort PANCE/placement outcomes if needed.",
+      "scope": {
+        "option_ids": [
+          "stanford-option-pas-ms"
+        ],
+        "procedure_ids": [
+          "med_mspa_admission"
+        ],
+        "cycle": "August 2027 entry",
+        "levels": [],
+        "applicant_categories": [],
+        "fee_status": []
+      },
+      "review_status": "researched_unknown_after_specific_source_review"
     }
   ],
   "collection_tasks": []

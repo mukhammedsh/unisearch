@@ -2,11 +2,15 @@
 import json
 import re
 import hashlib
+import argparse
 from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parents[3]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--reviewed', action='store_true', help='Record the completed Stage 1 review after the source rechecks are accepted.')
+args = parser.parse_args()
 EVIDENCE = ['shared-evidence.json', 'engineering-sciences-evidence.json', 'medicine-business-evidence.json', 'doctoral-evidence.json', 'course-qualification-panels.json']
 
 def read(name):
@@ -30,6 +34,8 @@ for r in bundles[EVIDENCE[2]].get('inventory_reconciliation', []):
         if o.get('course_url'):
             med_entries.append(o)
             med.setdefault(o['course_url'], o)
+    for o in r.get('internal_course_search_items', []):
+        med[o['url']] = o
 sources = {}
 for bundle in bundles.values():
     for s in bundle['sources']:
@@ -47,7 +53,7 @@ for row in snapshot['rows']:
     old = original.get('option_id', original.get('id'))
     if old: idmap[old] = oid
     level = 'undergraduate' if row['type'] == 'Undergraduate' else 'masters'
-    internal = 'intercalated' in row['name'].lower() and row['award'] == 'PhD'
+    internal = original.get('classification') == 'internal to currently enrolled medical students; not external entry'
     if internal: level = 'doctoral'
     classification = 'internal_progression' if internal else 'ucas_course_choice' if level == 'undergraduate' else 'postgraduate_course_choice'
     if 'digital-health-leadership' in row['url']:
@@ -64,7 +70,7 @@ for row in snapshot['rows']:
     options.append(option)
     procedures.append({'id': option['procedure_ids'][0], 'option_ids': [oid], 'classification': classification,
                        'destination': 'Department-approved internal progression' if internal else 'UCAS Hub; institution I50, stated course code' if level == 'undergraduate' else 'My Imperial, with course/school/scheme-specific category and conditions',
-                       'shared_form_family': 'UCAS' if level == 'undergraduate' else 'My Imperial',
+                       'shared_form_family': 'Department internal progression' if internal else 'UCAS' if level == 'undergraduate' else 'My Imperial',
                        'source_ids': ids, 'policy_boundary': 'Shared form is not policy inheritance; intersect all fact scopes.'})
     option['inventory_origin'] = 'official_course_search'
     option['application_relationship'] = original.get('application_relationship', 'Course-specific choice; see scoped application evidence')
@@ -194,10 +200,19 @@ for gap in gaps:
 for option in options:
     option['researched_unknown_ids'] = [g['id'] for g in gaps if option['id'] in g['option_ids']]
 unfinished = [dict(evidence_file=name, task=t) for name,b in bundles.items() for t in b.get('uncompleted_collection', [])]
+if args.reviewed:
+    assert not unfinished, 'A reviewed draft cannot contain unfinished collection.'
+    for name in ['recheck-engineering-sciences.json', 'recheck-medicine-business.json', 'recheck-shared.json']:
+        assert read(name).get('canonical_merge'), 'Source recheck has not been merged: ' + name
+    research_review = read('recheck-doctoral.json')
+    assert not research_review['uncompleted_collection'] and len(research_review['contexts']) == len(doctoral['options']), 'Research recheck must cover each actual context.'
 catalog = {'schema_version':'imperial-stage1-1.0','status':'draft_pending_review','institution':{'id':'imperial-college-london-uk','name':'Imperial College London','runtime_rank':2,'ranking':'QS World University Rankings2026'},
            'checked_at':'2026-10-01','sources_file':'sources.json','evidence_files':EVIDENCE,'historical_provenance_file':'runtime-provenance.json',
-           'evidence_fingerprints': {name: hashlib.sha256(ROOT.joinpath(name).read_bytes()).hexdigest() for name in EVIDENCE},
+           'evidence_fingerprints': {name: hashlib.sha256(ROOT.joinpath(name).read_text(encoding='utf-8').encode('utf-8')).hexdigest() for name in EVIDENCE},
            'inventory':{'official_search_rows':239,'undergraduate_search_rows':73,'postgraduate_taught_search_rows':166,'rule':'Search rows, award variants, departmental degrees and scheme applications are distinct entities. MEng/MSci undergraduate entry remains undergraduate.'},
            'study_options':options,'application_procedures':procedures,'facts':fact_index,'researched_unknowns':gaps,'uncompleted_collection':unfinished}
+if args.reviewed:
+    catalog['status'] = 'stage1_reviewed'
+    catalog['reviewed_at'] = '2026-10-03'
 write('catalog.json', catalog)
 print(len(options), 'linked options;',len(procedures),'procedures;',len(fact_index),'fact indexes;',len(sources),'source records;',len(unfinished),'unfinished tasks')

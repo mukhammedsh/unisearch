@@ -1,0 +1,1520 @@
+{
+  "institution_id": "imperial-college-london-uk",
+  "scope": "Stage 1 bounded recheck of all 65 shared-evidence facts against their mapped retained official captures, plus targeted linked-term checks for housing and funding. No canonical source or runtime changes.",
+  "rechecked_at": "2026-10-03",
+  "status": "shared_content_recheck_complete_with_version_bounded_uncertainty",
+  "historical_checked_at_preserved": "2026-10-01",
+  "coverage": {
+    "shared_fact_count": 65,
+    "distinct_mapped_official_capture_count": 47,
+    "mapped_capture_files_present": 47,
+    "actual_capture_directory": ".tmp_test/imperial/shared/",
+    "coverage_note": "Every shared fact is retained below with its original source ID(s) and capture path. Capture presence and declared scope were checked across the complete mapping. Exact values were inspected against the relevant source paragraphs for test editions/thresholds, UCAS and admissions-test dates, qualification recognition, application fees/waivers, tuition/deposit terms, living-cost figures, bursary conditions/bands, doctoral application/document/interview rules, scholarship conditions, accommodation, student support, and careers. Long country/qualification and language tables remain preserved as source data; do not infer course offers from table ranges.",
+    "fact_reviews": [
+      {
+        "fact_id": "imperial-fee-status",
+        "source_ids": [
+          "source-916a99a7f73e66a3"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/916a99a7f73e66a3.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-language-alternatives",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-duolingo",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-ielts-academic",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-languagecert-academic",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-oet",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-oxford-advanced",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-pte-academic",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-toefl-legacy",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-toefl-2026",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-trinity-ise-iii",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-english-trinity-ise-iv",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-language-exemptions",
+        "source_ids": [
+          "source-c7379da564e3dc7c"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/c7379da564e3dc7c.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ug-qualification-boundary",
+        "source_ids": [
+          "source-3bca25cf0a89e8d6"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/3bca25cf0a89e8d6.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ug-kazakhstan-unlisted",
+        "source_ids": [
+          "source-3bca25cf0a89e8d6"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/3bca25cf0a89e8d6.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-recognition",
+        "source_ids": [
+          "source-01369aa9230a4818"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/01369aa9230a4818.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ucas-process",
+        "source_ids": [
+          "source-9ba58160f611af06"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/9ba58160f611af06.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ucas-2027-window",
+        "source_ids": [
+          "source-4e157c9609cfc765"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/4e157c9609cfc765.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-test-window-2027",
+        "source_ids": [
+          "source-4e157c9609cfc765"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/4e157c9609cfc765.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ucas-statement",
+        "source_ids": [
+          "source-f37b2d6e072e7101"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/f37b2d6e072e7101.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ug-2026-offer-evidence",
+        "source_ids": [
+          "source-ed907e91a3a22cd2"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/ed907e91a3a22cd2.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ug-2027-offer-deadlines-unknown",
+        "source_ids": [
+          "source-ed907e91a3a22cd2"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/ed907e91a3a22cd2.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-choices",
+        "source_ids": [
+          "source-a457e2bbf7add730"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/a457e2bbf7add730.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-rounds",
+        "source_ids": [
+          "source-452b633186d2fabc"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/452b633186d2fabc.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-application-fees",
+        "source_ids": [
+          "source-8ea1bccba22cab00"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/8ea1bccba22cab00.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-fee-waiver",
+        "source_ids": [
+          "source-9a465fa30c0de457"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/9a465fa30c0de457.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-references",
+        "source_ids": [
+          "source-de412dbad1cb718f"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/de412dbad1cb718f.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-statement",
+        "source_ids": [
+          "source-6ab8e4068034888b"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/6ab8e4068034888b.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-interview-common",
+        "source_ids": [
+          "source-c36ffcb8eab0fff9"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/c36ffcb8eab0fff9.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-deferral",
+        "source_ids": [
+          "source-8900117960530b60"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/8900117960530b60.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ug-deferral",
+        "source_ids": [
+          "source-9cd9e032d1848be1"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/9cd9e032d1848be1.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-tuition-period-increases",
+        "source_ids": [
+          "source-7b28ab17ea3fdd17"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/7b28ab17ea3fdd17.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-masters-deposit",
+        "source_ids": [
+          "source-36e8edf8f5e0a3a7"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/36e8edf8f5e0a3a7.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-london-living-2026",
+        "source_ids": [
+          "source-fffc36c69df28b09"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/fffc36c69df28b09.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-bursary-conditions",
+        "source_ids": [
+          "source-c01259490371c864"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/c01259490371c864.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-bursary-award-bands",
+        "source_ids": [
+          "source-c01259490371c864"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/c01259490371c864.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-accommodation",
+        "source_ids": [
+          "source-73f59d09d65bc5b2"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/73f59d09d65bc5b2.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-support",
+        "source_ids": [
+          "source-d3b85805ed047e39"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/d3b85805ed047e39.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-career-support",
+        "source_ids": [
+          "source-66f0d4c3a3d51097"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/66f0d4c3a3d51097.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-doctoral-structure",
+        "source_ids": [
+          "source-cd0e4c6706b4ba42"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/cd0e4c6706b4ba42.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-doctoral-process",
+        "source_ids": [
+          "source-a767c8c13f7d60e4"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/a767c8c13f7d60e4.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-doctoral-documents",
+        "source_ids": [
+          "source-adc6c07b16b47a96"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/adc6c07b16b47a96.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-doctoral-proposal",
+        "source_ids": [
+          "source-e5e516c67726f44a"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/e5e516c67726f44a.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-doctoral-interview",
+        "source_ids": [
+          "source-9bb77a9f4e2641a0"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/9bb77a9f4e2641a0.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-split-phd",
+        "source_ids": [
+          "source-2e1fb034b80fc9d9"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/2e1fb034b80fc9d9.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pri-phd",
+        "source_ids": [
+          "source-f78b97e83b2fe02c"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/f78b97e83b2fe02c.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-advanced-standing",
+        "source_ids": [
+          "source-0fdb805d05bee385"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/0fdb805d05bee385.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-mdres-offerings",
+        "source_ids": [
+          "source-bdd1549d596e4da4"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/bdd1549d596e4da4.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-integrated-training",
+        "source_ids": [
+          "source-6d5f9b50c2835f0f"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/6d5f9b50c2835f0f.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-president-phd-funding",
+        "source_ids": [
+          "source-18197230481cd350"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/18197230481cd350.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-doctoral-offer-conditions",
+        "source_ids": [
+          "source-b48fda6daf09eaf6"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/b48fda6daf09eaf6.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-published-language-qualification-tables",
+        "source_ids": [
+          "source-50976d4c7a1c3633"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/50976d4c7a1c3633.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-published-ug-equivalency-table",
+        "source_ids": [
+          "source-3bca25cf0a89e8d6"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/3bca25cf0a89e8d6.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-kazakhstan-postgraduate-equivalence",
+        "source_ids": [
+          "source-01369aa9230a4818"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/01369aa9230a4818.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-pg-offer-verification",
+        "source_ids": [
+          "source-d8c102f6dffb3302"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/d8c102f6dffb3302.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-payment-instalments",
+        "source_ids": [
+          "source-2d34e8d622741d77"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/2d34e8d622741d77.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-sponsorship-confirmation",
+        "source_ids": [
+          "source-b03f9bfcc5e04672"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/b03f9bfcc5e04672.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-refund-liability",
+        "source_ids": [
+          "source-31eda4ede93d3ad2"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/31eda4ede93d3ad2.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-cas-financial-evidence",
+        "source_ids": [
+          "source-37c3deb6af48055f"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/37c3deb6af48055f.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-presessional-scope",
+        "source_ids": [
+          "source-1c465bed2a54c6aa"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/1c465bed2a54c6aa.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ug-mode-transfer",
+        "source_ids": [
+          "source-e9686edbc669694b"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/e9686edbc669694b.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-ucas-fee-2027",
+        "source_ids": [
+          "source-1c8c3760b5672722"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/1c8c3760b5672722.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-contextual-2027",
+        "source_ids": [
+          "source-27930955f3cc0119"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/27930955f3cc0119.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-inspires-2027-contract",
+        "source_ids": [
+          "source-422317aba5a39e29"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/422317aba5a39e29.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      },
+      {
+        "fact_id": "imperial-published-pg-country-qualification-panels",
+        "source_ids": [
+          "source-01369aa9230a4818"
+        ],
+        "capture_files": [
+          ".tmp_test/imperial/shared/01369aa9230a4818.txt"
+        ],
+        "result": "source_capture_present_scope_checked",
+        "original_checked_at": "2026-10-01"
+      }
+    ],
+    "source_reviews": [
+      {
+        "source_id": "source-01369aa9230a4818",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/entry-requirements/accepted-qualifications/",
+        "capture_file": ".tmp_test/imperial/shared/01369aa9230a4818.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-recognition",
+          "imperial-kazakhstan-postgraduate-equivalence",
+          "imperial-published-pg-country-qualification-panels"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-0fdb805d05bee385",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/advanced-standing/",
+        "capture_file": ".tmp_test/imperial/shared/0fdb805d05bee385.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-advanced-standing"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-18197230481cd350",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/postgraduate-doctoral/grants-scholarships/presidents-phd/",
+        "capture_file": ".tmp_test/imperial/shared/18197230481cd350.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-president-phd-funding"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-1c465bed2a54c6aa",
+        "url": "https://www.imperial.ac.uk/admin-services/centre-for-academic-english/presessional/3-week/",
+        "capture_file": ".tmp_test/imperial/shared/1c465bed2a54c6aa.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-presessional-scope"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-1c8c3760b5672722",
+        "url": "https://www.imperial.ac.uk/study/help-centre/undergraduate-admissions/how-do-i-apply-for-undergraduate-study.php",
+        "capture_file": ".tmp_test/imperial/shared/1c8c3760b5672722.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ucas-fee-2027"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-27930955f3cc0119",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/admissions-schemes/",
+        "capture_file": ".tmp_test/imperial/shared/27930955f3cc0119.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-contextual-2027"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-2d34e8d622741d77",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/payment-terms/instalments/",
+        "capture_file": ".tmp_test/imperial/shared/2d34e8d622741d77.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-payment-instalments"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-2e1fb034b80fc9d9",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/split-phd/",
+        "capture_file": ".tmp_test/imperial/shared/2e1fb034b80fc9d9.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-split-phd"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-31eda4ede93d3ad2",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/payment-terms/tuition-fee-refunds/",
+        "capture_file": ".tmp_test/imperial/shared/31eda4ede93d3ad2.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-refund-liability"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-36e8edf8f5e0a3a7",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/payment-terms/postgraduate-application-deposits/",
+        "capture_file": ".tmp_test/imperial/shared/36e8edf8f5e0a3a7.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-masters-deposit"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-37c3deb6af48055f",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/student-visa-money/",
+        "capture_file": ".tmp_test/imperial/shared/37c3deb6af48055f.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-cas-financial-evidence"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-3bca25cf0a89e8d6",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+        "capture_file": ".tmp_test/imperial/shared/3bca25cf0a89e8d6.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ug-qualification-boundary",
+          "imperial-ug-kazakhstan-unlisted",
+          "imperial-published-ug-equivalency-table"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-422317aba5a39e29",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+        "capture_file": ".tmp_test/imperial/shared/422317aba5a39e29.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-inspires-2027-contract"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-452b633186d2fabc",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/deadlines/",
+        "capture_file": ".tmp_test/imperial/shared/452b633186d2fabc.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-rounds"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-4e157c9609cfc765",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/",
+        "capture_file": ".tmp_test/imperial/shared/4e157c9609cfc765.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ucas-2027-window",
+          "imperial-test-window-2027"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-50976d4c7a1c3633",
+        "url": "https://www.imperial.ac.uk/study/apply/english-language/",
+        "capture_file": ".tmp_test/imperial/shared/50976d4c7a1c3633.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-language-alternatives",
+          "imperial-english-duolingo",
+          "imperial-english-ielts-academic",
+          "imperial-english-languagecert-academic",
+          "imperial-english-oet",
+          "imperial-english-oxford-advanced",
+          "imperial-english-pte-academic",
+          "imperial-english-toefl-legacy",
+          "imperial-english-toefl-2026",
+          "imperial-english-trinity-ise-iii",
+          "imperial-english-trinity-ise-iv",
+          "imperial-published-language-qualification-tables"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-66f0d4c3a3d51097",
+        "url": "https://www.imperial.ac.uk/study/student-life/careers/",
+        "capture_file": ".tmp_test/imperial/shared/66f0d4c3a3d51097.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-career-support"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-6ab8e4068034888b",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/personal-statement/",
+        "capture_file": ".tmp_test/imperial/shared/6ab8e4068034888b.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-statement"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-6d5f9b50c2835f0f",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/integrated-phd/",
+        "capture_file": ".tmp_test/imperial/shared/6d5f9b50c2835f0f.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-integrated-training"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-73f59d09d65bc5b2",
+        "url": "https://www.imperial.ac.uk/study/student-life/accommodation/",
+        "capture_file": ".tmp_test/imperial/shared/73f59d09d65bc5b2.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-accommodation"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-7b28ab17ea3fdd17",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/payment-terms/",
+        "capture_file": ".tmp_test/imperial/shared/7b28ab17ea3fdd17.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-tuition-period-increases"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-8900117960530b60",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/offer-holders/next-steps/deferred-entry/",
+        "capture_file": ".tmp_test/imperial/shared/8900117960530b60.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-deferral"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-8ea1bccba22cab00",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/",
+        "capture_file": ".tmp_test/imperial/shared/8ea1bccba22cab00.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-application-fees"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-916a99a7f73e66a3",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/fee-status/",
+        "capture_file": ".tmp_test/imperial/shared/916a99a7f73e66a3.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-fee-status"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-9a465fa30c0de457",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/application-fee/application-fee-waiver/",
+        "capture_file": ".tmp_test/imperial/shared/9a465fa30c0de457.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-fee-waiver"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-9ba58160f611af06",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/",
+        "capture_file": ".tmp_test/imperial/shared/9ba58160f611af06.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ucas-process"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-9bb77a9f4e2641a0",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/interview/",
+        "capture_file": ".tmp_test/imperial/shared/9bb77a9f4e2641a0.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-doctoral-interview"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-9cd9e032d1848be1",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/deferred-entry/",
+        "capture_file": ".tmp_test/imperial/shared/9cd9e032d1848be1.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ug-deferral"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-a457e2bbf7add730",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/",
+        "capture_file": ".tmp_test/imperial/shared/a457e2bbf7add730.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-choices"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-a767c8c13f7d60e4",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/",
+        "capture_file": ".tmp_test/imperial/shared/a767c8c13f7d60e4.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-doctoral-process"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-adc6c07b16b47a96",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/reference/",
+        "capture_file": ".tmp_test/imperial/shared/adc6c07b16b47a96.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-doctoral-documents"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-b03f9bfcc5e04672",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/payment-terms/sponsored-students/",
+        "capture_file": ".tmp_test/imperial/shared/b03f9bfcc5e04672.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-sponsorship-confirmation"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-b48fda6daf09eaf6",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/offer-holders/next-steps/submit-offer-conditions/",
+        "capture_file": ".tmp_test/imperial/shared/b48fda6daf09eaf6.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-doctoral-offer-conditions"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-bdd1549d596e4da4",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+        "capture_file": ".tmp_test/imperial/shared/bdd1549d596e4da4.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-mdres-offerings"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-c01259490371c864",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/undergraduate/bursaries-grants-scholarships/imperial-bursary/",
+        "capture_file": ".tmp_test/imperial/shared/c01259490371c864.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-bursary-conditions",
+          "imperial-bursary-award-bands"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-c36ffcb8eab0fff9",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/interviews/",
+        "capture_file": ".tmp_test/imperial/shared/c36ffcb8eab0fff9.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-interview-common"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-c7379da564e3dc7c",
+        "url": "https://www.imperial.ac.uk/study/apply/english-language/english-language-exemption/",
+        "capture_file": ".tmp_test/imperial/shared/c7379da564e3dc7c.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-language-exemptions"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-cd0e4c6706b4ba42",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+        "capture_file": ".tmp_test/imperial/shared/cd0e4c6706b4ba42.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-doctoral-structure"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-d3b85805ed047e39",
+        "url": "https://www.imperial.ac.uk/study/student-life/support/",
+        "capture_file": ".tmp_test/imperial/shared/d3b85805ed047e39.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-support"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-d8c102f6dffb3302",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/offer-holders/next-steps/submit-offer-conditions/",
+        "capture_file": ".tmp_test/imperial/shared/d8c102f6dffb3302.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-offer-verification"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-de412dbad1cb718f",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-taught/application-process/reference/",
+        "capture_file": ".tmp_test/imperial/shared/de412dbad1cb718f.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pg-references"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-e5e516c67726f44a",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/research-proposal/",
+        "capture_file": ".tmp_test/imperial/shared/e5e516c67726f44a.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-doctoral-proposal"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-e9686edbc669694b",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/",
+        "capture_file": ".tmp_test/imperial/shared/e9686edbc669694b.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ug-mode-transfer"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-ed907e91a3a22cd2",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+        "capture_file": ".tmp_test/imperial/shared/ed907e91a3a22cd2.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ug-2026-offer-evidence",
+          "imperial-ug-2027-offer-deadlines-unknown"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-f37b2d6e072e7101",
+        "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/personal-statement/",
+        "capture_file": ".tmp_test/imperial/shared/f37b2d6e072e7101.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-ucas-statement"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-f78b97e83b2fe02c",
+        "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/pri-scheme/",
+        "capture_file": ".tmp_test/imperial/shared/f78b97e83b2fe02c.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-pri-phd"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      },
+      {
+        "source_id": "source-fffc36c69df28b09",
+        "url": "https://www.imperial.ac.uk/study/fees-and-funding/living-costs/",
+        "capture_file": ".tmp_test/imperial/shared/fffc36c69df28b09.txt",
+        "capture_present": true,
+        "fact_ids": [
+          "imperial-london-living-2026"
+        ],
+        "original_checked_at": "2026-10-01",
+        "original_content_review_status": "reviewed_for_linked_facts"
+      }
+    ],
+    "readability_recheck": {
+      "obviously_collapsed_value_count": 11,
+      "proposed_replacements": 12,
+      "method": "Each replacement was drafted from its retained official source capture. President-specific terms were added after review of the full linked February 2026 Funding T&Cs capture. Replacements preserve published numbers, dates, conditions, source-version boundaries, and uncertainty. These are proposals only; canonical shared-evidence.json was not edited."
+    }
+  },
+  "confirmed_repairs": [
+    {
+      "fact_id": "imperial-accommodation",
+      "source_ids": [
+        "source-73f59d09d65bc5b2"
+      ],
+      "linked_official_source": {
+        "url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/",
+        "checked_at": "2026-10-03",
+        "capture_status": "full official HTML capture reviewed",
+        "capture_file": ".tmp_test/imperial/recheck/ac85dfc2aca0130a.txt",
+        "capture_id": "ac85dfc2aca0130a"
+      },
+      "field": "value/scope/conditions",
+      "finding": "The canonical summary is materially abbreviated if interpreted as a general first-year guarantee. The 2026-27 guarantee requires a firm Imperial choice (conditional or unconditional, not insurance), an accommodation application by 17 July 2026, unconditional academic offer by 23 August 2026, full-time study for the full academic year, and attendance alone (no partner/dependants/children). A bed space is guaranteed, not a preferred hall. Graduate Entry Medicine and intercalated BSc Medicine are explicitly excluded; postgraduate places including Silwood are not guaranteed. The page also mentions full-year official-exchange/Oxbridge-medic categories. These are 2026-27 terms; the reviewed page does not establish 2027-28 cutoffs. The same source further requires under-18 applicants (age at 26 September 2026) to receive a single room, so they cannot rank twin rooms, and requires a parent/guardian Accommodation Under 18 Consent Form.",
+      "recommended_canonical_action": "Expand the fact with the 2026-27 conditions and explicit exclusions; scope those dates to 2026-27. Record 2027-28 guarantee/deadlines as unknown until the next cycle is published. Do not state that all undergraduate, graduate-entry medicine, intercalated, or postgraduate applicants have guaranteed rooms. Include the under-18 single-room and parental-consent conditions.",
+      "evidence": "Official guarantee page current-index text states the five eligibility conditions, preference caveat, and separate exclusion headings for intercalated BSc Medicine, Graduate Entry Medicine, under-18 applicants, and postgraduate applicants."
+    },
+    {
+      "fact_id": "imperial-president-phd-funding",
+      "source_ids": [
+        "source-18197230481cd350"
+      ],
+      "linked_official_source": {
+        "url": "https://www.imperial.ac.uk/students/terms-and-conditions/scholarships-and-bursaries/",
+        "linked_document": "Funding T&Cs 2026-27 PDF",
+        "document_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf",
+        "checked_at": "2026-10-03",
+        "capture_status": "not_in_retained_shared_capture_set; current page and PDF indexed by official-site search; direct page/PDF fetch returned 403",
+        "capture_file": ".tmp_test/imperial/recheck/119396cfa9a1a07f.txt",
+        "capture_id": "119396cfa9a1a07f",
+        "document_reviewed": "Student Financial Support Terms and Conditions, reviewed by Imperial Scholarships Manager February 2026"
+      },
+      "field": "value.renewal",
+      "finding": "The linked official February 2026 terms include specific President’s PhD conditions, not just generic satisfactory-progress review. The award has eligibility conditions separate from PhD admission: first-class/equivalent undergraduate or integrated Master’s, or distinction in a standalone Master’s; the award can be revoked even when PhD admission criteria are met. For 1+3 MRes/MSc–PhD routes, the President’s award begins at the PhD element only after an MRes/MSc distinction; the student must fund the Master’s year separately. For Research Council-funded CDT routes, the award lasts 3.5 years from the CDT start, leaving the final six PhD months unfunded. Consumables are £2,000 per annum for three years, paid to the supervisor’s Imperial account and limited to project costs; unused funds may carry forward, with final balances used or returned within six months. A full-time paid internship may suspend stipend payments, which resume after the internship while preserving the full 3.5-year stipend entitlement. General terms also require satisfactory academic progression and annual review for awards longer than 11 months; donor-funded scholars may owe updates/events, with travel potentially unreimbursed; multiple awards are restricted/capped and overpayments recoverable. The 2027–28 scholarship page gives a 2027–28 stipend rate, but these linked specific terms were reviewed February 2026 and do not themselves establish whether every clause will remain unchanged for 2027–28; retain their date and require the actual award letter/updated terms.",
+      "recommended_canonical_action": "Replace the vague renewal sentence with readable, cycle-labelled conditions from the captured February 2026 terms, including the degree-classification eligibility, uncovered MRes year, CDT final six-month gap, consumables restrictions, internship suspension, satisfactory-progress/annual review, and actual award-letter boundary. Do not silently represent the 2026 terms as a guaranteed 2027–28 contract.",
+      "evidence": "Official linked terms clauses 2–14 cover generic progression/review/donor/stacking and President-specific eligibility, confirmation, 1+3 and CDT payment periods, consumables, and internship treatment. Clauses 28–34 give research-writing-up, stacking caps, employment, and stipend restrictions. The scholarship page itself remains the source for the 2027–28 published £27,036/year stipend."
+    },
+    {
+      "fact_id": "imperial-bursary-conditions",
+      "source_ids": [
+        "source-c01259490371c864",
+        "linked-official-capture-119396cfa9a1a07f"
+      ],
+      "field": "value",
+      "finding": "The current shared summary says partial repeats are excluded and industry years are assessed case by case. The official February 2026 Funding T&Cs clauses 19–21 say an eligible first repeat year may receive the bursary when the student qualifies for tuition-fee funding; a part-year repeat may receive a prorated award by the share of tuition charged. A paid placement or paid industry year receives 15% of the eligible bursary (not case-by-case). Year abroad also receives 15%. The official bursary page remains the source for other cohort/clinical rates and categories.",
+      "recommended_canonical_action": "Replace the repeated-year and industry-year wording with the dated February 2026 terms: eligible first repeat, possible part-year proration, and 15% for paid placements/industry. Preserve the award-page cycle and clinical-year rates separately; do not imply these clauses apply beyond the terms version/cycle.",
+      "evidence": "Official Student Financial Support Terms and Conditions, February 2026 review, clauses 19–21; full text at .tmp_test/imperial/recheck/119396cfa9a1a07f.txt."
+    }
+  ],
+  "bounded_open_groups": [
+    {
+      "group": "2027-28 undergraduate accommodation guarantee",
+      "known": "The official accommodation page specifies 2026-27 cutoffs and category exceptions.",
+      "unknown": "2027-28 dates and any changed categories/conditions.",
+      "why_unknown": "No reviewed source in the retained capture set establishes the next cycle.",
+      "next_step": "Recheck the official Accommodation Guarantee and How to Apply pages when the 2027-28 applicant cycle is published."
+    },
+    {
+      "group": "President’s PhD 2027-28 continuation terms",
+      "known": "The scholarship-specific page publishes eligibility, amount, duration, deadlines, and selection process; linked generic 2026-27 Imperial terms state academic progression and annual review rules.",
+      "unknown": "Whether the 2026-27 general rules or any changed President-specific rules govern awards beginning in 2027-28.",
+      "why_unknown": "No 2027-28 President-specific award contract/terms were captured; linked live PDF fetch was blocked (403).",
+      "next_step": "Capture the 2027-28 award terms/offer contract when published and verify continuation, review, donor, interruption, repeat, and recovery clauses."
+    },
+    {
+      "group": "course-specific applicability of shared facts",
+      "known": "Shared institutional rules identify explicit level, category, fee-status, cycle, and course exceptions where retained.",
+      "unknown": "Which English level/test, qualification threshold, interview/test, round deadline, fee, funding award, or supporting document applies to each individual course unless the fact explicitly scopes that option.",
+      "why_unknown": "Imperial pages direct applicants to course, department, project, scholarship-search, or offer-specific instructions; a shared fact cannot determine those choices.",
+      "next_step": "Keep explicit course/option identifiers or show conditional applicability and point to the current course/department/offer source."
+    },
+    {
+      "group": "professional-doctorate applicability",
+      "known": "The captured institutional doctoral application process generally describes My Imperial applications, up to two courses, department-specific supervisor checks, references, proposals, and interviews.",
+      "unknown": "Whether every procedural limit or doctoral academic rule applies identically to each professional doctorate/EngD course.",
+      "why_unknown": "The shared process page is a general doctoral guide; specific departments/programmes can impose their own route and exceptions.",
+      "next_step": "Keep professional-doctorate mappings conditional and verify individual EngD/professional-doctorate course instructions before asserting a universal rule."
+    },
+    {
+      "group": "President’s PhD 2027–28 contract applicability",
+      "known": "The linked Student Financial Support terms reviewed February 2026 state President-specific degree-classification, 1+3 MRes/MSc, CDT funding-duration, consumables, internship, progress/review, and stacking conditions.",
+      "unknown": "Whether the February 2026 terms remain the controlling contract for 2027–28 awards or are superseded before award acceptance.",
+      "why_unknown": "The 2027–28 scholarship web page has a published stipend/selection cycle but does not reproduce all linked terms; the captured terms carry a February 2026 review date.",
+      "next_step": "Check the version linked in the candidate’s 2027–28 award letter or the current Funding T&Cs before labeling these clauses as that cycle’s final contract."
+    }
+  ],
+  "rechecked_shared_domains": [
+    {
+      "domain": "English tests, editions, validity, exemptions, pre-sessional boundaries",
+      "result": "source values checked; retain course-selected Standard/Higher and named exceptions; not a universal threshold"
+    },
+    {
+      "domain": "Qualification tables and unlisted credentials",
+      "result": "published country rows/footnotes are preserved; course requirements may be higher; table presence is not an offer; do not infer acceptance from absence or citizenship"
+    },
+    {
+      "domain": "UCAS route, 2027 dates, ESAT/TMUA/UCAT sitting windows",
+      "result": "retained source dates and specified regions/times checked; course test mapping remains option-specific; offer-condition dates stay cycle-bounded"
+    },
+    {
+      "domain": "PGT application choices, rounds, fees and waivers",
+      "result": "fees are per application, not course choice; explicit Business School and no-fee course exceptions retained; dates and decisions are course/round specific"
+    },
+    {
+      "domain": "Tuition escalation, deposits, payment and living-cost estimates",
+      "result": "first-year entrant fee is not whole-course guaranteed price; deposits apply to taught/research master offers only with published exceptions; living budget is a 2026 estimate with stated exclusions"
+    },
+    {
+      "domain": "Imperial Bursary and Imperial Inspires",
+      "result": "retain income, Home/Overseas, level, ELQ, repeat, clinical-year, cycle and renewal/payment conditions; awards are not automatic admission or guaranteed funding"
+    },
+    {
+      "domain": "Doctoral structure, applications, documents, supervisor and interview",
+      "result": "general guidance is conditional on department/project/course; proposal not always required; interview rule is from doctoral policy; no shared academic threshold inferred"
+    },
+    {
+      "domain": "Offer verification, visa/CAS, sponsorship, fees, deferral, refund",
+      "result": "conditional-offer terms and exact cycles are retained; actual offer controls; visa evidence does not create fee or admission waiver"
+    },
+    {
+      "domain": "Housing, student support and careers",
+      "result": "institutional support/service claims checked; only conditional 2026-27 UG housing guarantee verified; do not promise a room, funding, job, salary, or course-specific support outcome"
+    }
+  ],
+  "unsearched_or_unverified": "No targeted fetch of all 359 Imperial course pages was performed in this shared-rule recheck. Course-level test mapping, course fees, exact application rounds, programme documents and individual departmental exceptions remain outside the shared capture sample unless an option-scoped fact names them. Linked 2027-28 President’s PhD contract and 2027-28 accommodation guarantee remain unverified.",
+  "proposed_readability_changes": [
+    {
+      "fact_id": "imperial-kazakhstan-postgraduate-equivalence",
+      "source_ids": [
+        "source-01369aa9230a4818"
+      ],
+      "field": "value",
+      "new_value": "Postgraduate taught: Applicants may be considered with either a five-year Specialist Diploma or a four-year Bachelor’s degree. Both routes require an overall average of at least 4.5/5, or 3.6/4 on a four-point scale. Doctoral study: Applicants should hold a Master’s degree with at least 4/5; 4.5/5 is normally preferred. Institutional recognition does not replace higher course-specific grades, relevant-field requirements, or other qualifications, and does not guarantee admission.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-pg-offer-verification",
+      "source_ids": [
+        "source-d8c102f6dffb3302"
+      ],
+      "field": "value",
+      "new_value": "Applicants must satisfy every condition in their offer before registration. Imperial verifies academic qualifications through the specific Qualification Check link in the offer; applicants should use that link rather than opening the platform separately. English test results are verified online using the appropriate test reference or referral. Email results for other accepted English qualifications to the Admissions team. If the offer requires ATAS, obtain the certificate before applying for a visa; it is valid for six months. The offer-holder page still lists IELTS Indicator verification instructions, but this historical verification list does not add IELTS Indicator to the current accepted-test list.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-payment-instalments",
+      "source_ids": [
+        "source-2d34e8d622741d77"
+      ],
+      "field": "value",
+      "new_value": "For academic year 2026–27, self-paying undergraduate and postgraduate students with Unconditional Firm status may request payment in two instalments if they have no overdue balance and their course lasts at least eight months. Fully sponsored students are ineligible. Requests go through ASK Student Hub Online. Undergraduate and September-start postgraduate fees are due 50% on 1 August 2026 and 50% on 4 January 2027. October-start postgraduate fees are due 50% on 1 September 2026 and 50% on 4 January 2027. January-start postgraduate fees are due 50% on 4 January 2027 and 50% on 1 April 2027. Postgraduate research students pay 50% by the start of study and 50% in programme month four. Students who need a visa may use instalments but must still show evidence of funds for tuition and living costs.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-sponsorship-confirmation",
+      "source_ids": [
+        "source-b03f9bfcc5e04672"
+      ],
+      "field": "value",
+      "new_value": "Until a sponsoring organisation’s award is formally confirmed and accepted by Imperial, tuition fees remain the applicant’s responsibility. Any amount not covered by an accepted sponsorship must be paid by the applicable deadline. Scholarship money paid directly to an individual is not formal sponsorship to Imperial; personal sponsors are also not treated as formal sponsors. Applicants awaiting sponsorship should declare self-funding until Imperial confirms it. Fully sponsored students cannot enrol until proof is accepted; partially sponsored students declare self-funding and may use the self-funding instalment terms. Evidence is usually an original, dated, authorised letter on headed paper giving the student name and CID, course, covered fee amount, invoice address, any purchase-order number, and confirmation of direct payment to Imperial.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-refund-liability",
+      "source_ids": [
+        "source-31eda4ede93d3ad2"
+      ],
+      "field": "value",
+      "new_value": "If an undergraduate withdraws or interrupts during a session, tuition is charged pro rata by each week or part-week studied, normally using a 31-week academic session (longer courses may use a longer session). Postgraduate withdrawal/interruption and postgraduate research writing-up charges use each week or part-week in a 52-week session. Any excess payment is refunded; on interruption it may instead be held for the student’s return. Sponsor-funded fees are charged/refunded on the same pro-rata basis. Tuition refunds are separate from postgraduate deposit refunds. Application fees become non-refundable after the initial 14-day cancellation period.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-cas-financial-evidence",
+      "source_ids": [
+        "source-37c3deb6af48055f"
+      ],
+      "field": "value",
+      "new_value": "Applicants applying for a UK student visa from overseas, or in the UK without at least 12 months’ permission, must show funds for one academic year of tuition (up to nine months) and up to nine months of UKVI maintenance. Unless relying on an official loan or sponsorship, funds must be held for 28 consecutive days, with the period ending within 31 days of the visa application. Exempt nationalities may not need to submit evidence but still need sufficient funds. Imperial does not require an advance tuition payment to issue a CAS, and payment does not guarantee a visa. A CAS requires an accepted unconditional offer and passport details uploaded to My Imperial. Payments can take up to five working days to process; a CAS update after receipt takes about 3–5 working days. Sponsor payments are not uploaded to the CAS; provide UKVI with an official sponsor letter.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-presessional-scope",
+      "source_ids": [
+        "source-1c465bed2a54c6aa"
+      ],
+      "field": "value",
+      "new_value": "The three-week pre-sessional is a full-time, in-person orientation course for prospective undergraduate and postgraduate students who have already met the English requirement for their Imperial degree and hold an unconditional degree offer by the course start. It does not waive the degree’s English requirement. Imperial Business School applicants are excluded. The 2026 course ran 1–18 September at South Kensington and cost £2,580; applications are closed. Applications for 2027 courses are due to open in March 2027, but dates and prices were not yet published in the checked source. Applicants who do not meet the three-week eligibility rules may be eligible for the distinct six-week course. Places depend on capacity. Offers usually need acceptance within 28 days and at least five weeks before the start; fees are normally due in full within 14 days of invoice, unless the start date is close. Applicants must meet all conditions, including visa and enrolment requirements, by the course start.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-ug-mode-transfer",
+      "source_ids": [
+        "source-e9686edbc669694b"
+      ],
+      "field": "value",
+      "new_value": "Imperial undergraduate degree courses are full-time; the university does not currently offer part-time or online-only undergraduate degrees. Applicants may apply using predicted school grades, but final results are required only after an offer is made and accepted. Transfer applications are accepted by Life Sciences, Mathematics, and Physics; Faculty of Engineering departments do not accept transfers. Applicants already enrolled elsewhere may instead contact Admissions about visiting-student study, which is separate from degree admission.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-ucas-fee-2027",
+      "source_ids": [
+        "source-1c8c3760b5672722"
+      ],
+      "field": "value",
+      "new_value": "For 2027–28 entry, undergraduate applications use UCAS, Imperial institution code I50. UCAS charges £34.50 per application regardless of the number of choices. Applicants may select up to five courses, with no preference order; applications in medicine, dentistry, veterinary medicine, or veterinary science are limited to four courses in any one of those subjects. Applicants may submit once per cycle; a previous-cycle applicant must submit a new application. Imperial does not require an undergraduate deposit.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-contextual-2027",
+      "source_ids": [
+        "source-27930955f3cc0119"
+      ],
+      "field": "value",
+      "new_value": "For undergraduate applicants to 2027–28 entry, contextual consideration requires Home fee status or an appropriate UK residential status plus at least one listed criterion: care experience; a permanent home postcode in England’s IMD quintile 1; current or recent free-school-meal eligibility within the last six years; or a permanent postcode in POLAR4 quintile 1 or 2 plus first-generation higher-education status, attendance at an English school below Imperial’s key-stage-5 performance threshold (20th percentile), or attendance at a school in the UK with free-school-meal rate above Imperial’s 80th-percentile threshold. The permanent home address counts, not the school address. Assessment uses UCAS information available by the applicable deadline; later changes are not considered. Other medical, personal, or family circumstances are not this scheme’s eligibility criteria and should be reported through the referee and, where relevant, the test provider. Contextual status may provide a guaranteed interview only when Imperial flags the application, predicted grades meet AAA or equivalent, and any applicable departmental contextual test threshold is met. A guaranteed minimum offer has its own AAA, motivation, and department test/interview criteria; Medical Biosciences additionally requires first-sitting qualifications for a guaranteed offer, though resit applicants may still receive holistic contextual consideration. Reconsideration is limited to eligible applicants notified in their rejection letter, for the same course, who achieved that course’s minimum and completed required test/interview, and only where places remain. The 2027 reconsideration form is scheduled for 12 August 2027 from 09:00 to 13:00 UK time; the applicant needs their UCAS Personal ID. The page labels one section “2026 entry support” while publishing the criteria and dates for 2027 entry, so preserve this source conflict.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-inspires-2027-contract",
+      "source_ids": [
+        "source-422317aba5a39e29"
+      ],
+      "field": "value",
+      "new_value": "For 2027–28, Imperial expects to award at least 300 competitive Imperial Inspires scholarships to full-time Overseas-fee-paying undergraduate and selected postgraduate taught students. Eligibility is limited to courses/departments confirmed through the course or scholarship search; it does not cover every course. Each award is at least £15,000 per year for the full course duration, excluding repeat years and pausing during interruption. The faculty decides the tuition/maintenance split, stated in the award letter. Eligible applicants who meet the course minimums are invited to submit a separate application through i360 after applying for admission; scholarship assessment does not change the admission decision. Undergraduate awards are due by mid-April 2027; postgraduate taught outcomes follow the relevant admissions-round decision. Admission and award conditions must be met before registration. The scholarship requires satisfactory academic progression and annual review when it lasts more than 11 months; donor thank-you/update activities may be required and travel may not be reimbursed. Awards cannot be deferred: a deferred applicant must reapply in the new cycle. A student cannot hold this alongside a full tuition-and-maintenance scholarship or exceed the London maintenance cap; multiple partial awards are considered case by case and must be reported. A fee-status change ends eligibility. Non-registration or withdrawal stops payments; interruption pauses them and repeat years postpone them. Tuition is paid to Imperial and maintenance to a UK bank account on My Imperial. Students need funds for initial expenses while opening that account. Payments are normally made on the seventh of each month, with bank details required by midnight on the 20th of the previous month; initial payment requires registration. Imperial may recover overpayments or withdraw an award for breach. The contract does not state the exact eligible-course list or invited-application deadline; check the scholarship search and invitation rather than infer them.",
+      "review_basis": "Paraphrased from the retained official capture; preserves source scope, thresholds, dates, conditions, and stated uncertainty."
+    },
+    {
+      "fact_id": "imperial-president-phd-funding",
+      "source_ids": [
+        "source-18197230481cd350",
+        "linked-official-capture-119396cfa9a1a07f"
+      ],
+      "field": "value",
+      "new_value": "For the 2027–28 President’s PhD scheme, 50 awards are offered for 3.5 years, covering tuition, a £27,036 annual stipend, and £2,000 per year for consumables during the first three years, with ECRI opportunities. The scholarship-page eligibility/application rules remain as separately recorded: new PhD applicant, required academic record, agreed supervisor, scholarship selection in the admissions form, two-page personal statement/research proposal, and the listed cycle rounds. Linked Student Financial Support terms reviewed February 2026 add these conditions for the terms version reviewed: award eligibility is separate from PhD admission and requires a first-class/equivalent undergraduate or integrated Master’s, or a distinction in a standalone Master’s; failing the award requirement can revoke funding even if admitted. For a 1+3 MRes/MSc then PhD route, the award starts at the PhD stage only after distinction in the MRes/MSc, leaving the Master’s year to be funded separately. For a Research Council-funded CDT, award support starts at the CDT start and lasts 3.5 years, leaving the last six months of the PhD without this scholarship. The £2,000 annual consumables budget is paid to the supervisor’s Imperial account, limited to direct PhD project expenses, and applies for three years; carry-forward and final balance rules apply. A full-time paid internship may suspend stipend payments, which resume after the internship while preserving the 3.5-year stipend entitlement. General terms require satisfactory academic progression and annual review for scholarships longer than 11 months; donor updates/events may be required and travel may not be reimbursed. Full scholarships cannot be stacked; partial awards are assessed case by case and maintenance is capped. Overpayments can be recovered. The linked terms were reviewed in February 2026; confirm the conditions in the actual 2027–28 award letter or updated terms before treating them as the 2027–28 contract.",
+      "review_basis": "Read the official President’s PhD capture and full linked February 2026 Funding T&Cs capture, including clauses 2–14 and 28–34. The 2027–28 public scholarship page supports the award amount/rate; the linked T&Cs are explicitly date-bounded."
+    }
+  ],
+  "canonical_merge": {
+    "merged_at": "2026-10-03",
+    "evidence_file": "shared-evidence.json",
+    "preservation": "Readable values merged without replacing the structured President eligibility, award amounts or rounds. New President2026-contract andbursary2026-contract facts preserve exactversion/award-holder scope; housing2026conditions/under18exclusions restored.",
+    "source_ids_added": [
+      "source-ac85dfc2aca0130a",
+      "source-119396cfa9a1a07f"
+    ],
+    "bounded_remaining": "Future2027housingcutoffs andupdatedPresidentawardcontract unavailable in reviewedofficialsources; actualoffer/awardterms control. Programme applicability is resolvedin per-course/doctoral ledgers orspecific unknowns, not genericinheritance."
+  }
+}

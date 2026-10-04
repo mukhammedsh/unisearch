@@ -10,6 +10,15 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parent
 
 
+def valid_prose_items(value):
+    """Keep whole prose or explicit when/effect conditions; reject list(text)."""
+    return (isinstance(value, list) and all(
+        (isinstance(item, str) and item.strip()) or
+        (isinstance(item, dict) and all(isinstance(item.get(k), str) and item[k].strip()
+                                      for k in ['when', 'effect'])) for item in value)
+        and not (len(value) > 5 and all(isinstance(item, str) and len(item) == 1 for item in value)))
+
+
 def read(name):
     return json.loads(ROOT.joinpath(name).read_text(encoding='utf-8'))
 
@@ -93,6 +102,8 @@ def errors(catalog, sources, bundles):
         label = fact['id']
         original = next(f for f in bundles[fact['evidence_file']]['facts'] if f['id'] == fact['original_id'])
         check('value' in original and original['value'] is not None, label + ': missing original value')
+        for field in ['conditions', 'exceptions']:
+            check(valid_prose_items(original.get(field, [])), label + ': invalid or fragmented ' + field)
         for field in ['checked_at', 'publication_status', 'review_status']:
             check(fact[field] == original[field], label + ': changed original ' + field)
         check(fact['original_scope'] == original['scope'], label + ': original scope changed')
@@ -101,6 +112,11 @@ def errors(catalog, sources, bundles):
             check(sid in source_by_id, label + ': missing source ' + sid)
         for oid in fact['scope'].get('option_ids', []):
             check(oid in options, label + ': missing scoped option ' + oid)
+            if oid in options and fact['scope'].get('levels'):
+                check(options[oid]['level'] in fact['scope']['levels'], label + ': level scope excludes option ' + oid)
+            if oid in options and fact['scope'].get('procedure_ids'):
+                check(bool(set(options[oid]['procedure_ids']).intersection(fact['scope']['procedure_ids'])),
+                      label + ': procedure scope excludes option ' + oid)
         for pid in fact['scope'].get('procedure_ids', []):
             check(pid in procedures, label + ': missing scoped procedure ' + pid)
         check(any(fact['scope'].get(k) for k in ['option_ids', 'procedure_ids', 'levels', 'policy_family']), label + ': unbounded scope')
@@ -172,9 +188,12 @@ def main():
     schema = read('schema.json')
     failures = shape(catalog, schema, schema) + errors(catalog, read('sources.json'), bundles)
     for name, digest in catalog['evidence_fingerprints'].items():
-        if hashlib.sha256(ROOT.joinpath(name).read_bytes()).hexdigest() != digest:
+        if hashlib.sha256(ROOT.joinpath(name).read_text(encoding='utf-8').encode('utf-8')).hexdigest() != digest:
             failures.append(name + ': canonical index is older than its source dossier; assemble again')
     if '--acceptance' in sys.argv:
+        checkpoint = ROOT / 'recheck-owner.json'
+        if checkpoint.exists() and read(checkpoint.name).get('review_status') != 'reviewed':
+            failures.append('Comprehensive source recheck is not accepted; structural checks cannot close unfinished content review')
         open_tasks = [t for t in catalog['collection_tasks'] if t.get('status') not in ['completed', 'complete', 'closed', 'superseded_by_reviewed_evidence']]
         if open_tasks:
             failures.append(str(len(open_tasks)) + ' unresolved collection tasks; researched unknowns do not close unsearched groups')

@@ -382,6 +382,132 @@
       "title": "Environmental Social Sciences Admissions Timeline",
       "checked_at": "2026-10-03",
       "content_review_status": "Reviewed current 2027-28 application details"
+    },
+    {
+      "id": "recheck-bulletin-easys-ms",
+      "url": "https://bulletin.stanford.edu/programs/EASYS-MS",
+      "title": "Earth Systems (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-envres-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENVRES-MS",
+      "title": "Environment and Resources (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-eps-ms",
+      "url": "https://bulletin.stanford.edu/programs/EPS-MS",
+      "title": "Earth Planetary Sciences (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-ess-ms",
+      "url": "https://bulletin.stanford.edu/programs/ESS-MS",
+      "title": "Earth System Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-ess-phd",
+      "url": "https://bulletin.stanford.edu/programs/ESS-PHD",
+      "title": "Earth System Science (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-eps-phd",
+      "url": "https://bulletin.stanford.edu/programs/EPS-PHD",
+      "title": "Earth Planetary Sciences (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-easys-ma",
+      "url": "https://bulletin.stanford.edu/programs/EASYS-MA",
+      "title": "Earth Systems (MA)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-energy-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENERGY-MS",
+      "title": "Energy Science and Eng (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-energy-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENERGY-PHD",
+      "title": "Energy Science and Eng (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-envres-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENVRES-PHD",
+      "title": "Environment and Resource (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-envss-ma",
+      "url": "https://bulletin.stanford.edu/programs/ENVSS-MA",
+      "title": "Environmental Social Sci (MA)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-envss-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENVSS-PHD",
+      "title": "Environmental Social Sci (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-geoph-ms",
+      "url": "https://bulletin.stanford.edu/programs/GEOPH-MS",
+      "title": "Geophysics (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-geoph-phd",
+      "url": "https://bulletin.stanford.edu/programs/GEOPH-PHD",
+      "title": "Geophysics (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-oceans-phd",
+      "url": "https://bulletin.stanford.edu/programs/OCEANS-PHD",
+      "title": "Oceans (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-oceans-ms",
+      "url": "https://bulletin.stanford.edu/programs/OCEANS-MS",
+      "title": "Oceans (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-sustsci-ma",
+      "url": "https://bulletin.stanford.edu/programs/SUSTSCI-MA",
+      "title": "Sustainability Sci & Prac (MA)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
+    },
+    {
+      "id": "recheck-bulletin-sustsci-ms",
+      "url": "https://bulletin.stanford.edu/programs/SUSTSCI-MS",
+      "title": "Sustainability Sci & Prac (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03"
     }
   ],
   "study_options": [
@@ -400,7 +526,8 @@
       "procedure_ids": [
         "eps-external",
         "eps-coterm",
-        "eps-other-grad-ms"
+        "eps-other-grad-ms",
+        "eps-phd-added-ms"
       ],
       "fact_ids": [
         "bulletin-eps-ms-degree",
@@ -746,7 +873,8 @@
       "procedure_ids": [
         "geoph-external",
         "geoph-coterm",
-        "geoph-other-grad-ms"
+        "geoph-other-grad-ms",
+        "geoph-phd-added-ms"
       ],
       "fact_ids": [
         "bulletin-geoph-ms-degree",
@@ -1310,6 +1438,28 @@
         "bulletin-eps-phd"
       ],
       "checked_at": "2026-10-02"
+    },
+    {
+      "id": "eps-phd-added-ms",
+      "option_ids": [
+        "stanford-eps-ms"
+      ],
+      "classification": "existing same-program PhD intermediate MS",
+      "destination": "GraduateAuthorizationPetition plus departmentadviser/StudentServices",
+      "source_ids": [
+        "recheck-bulletin-eps-phd"
+      ]
+    },
+    {
+      "id": "geoph-phd-added-ms",
+      "option_ids": [
+        "stanford-geoph-ms"
+      ],
+      "classification": "existing same-program PhD intermediate MS",
+      "destination": "GraduateAuthorizationPetition plus departmentadviser/StudentServices",
+      "source_ids": [
+        "recheck-bulletin-geoph-phd"
+      ]
     }
   ],
   "facts": [
@@ -4122,6 +4272,834 @@
       "review_status": "verified_official",
       "conditions": [],
       "exceptions": []
+    },
+    {
+      "id": "recheck-easys-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The Earth Systems Program offers current Stanford University undergraduates the opportunity to apply for a one-year coterminal master’s program. The Earth Systems Program is interdisciplinary. Students may select the topic area where they’d like to advance their knowledge in consultation with their master’s advisor. Students learn about and investigate complex environmental problems caused by human activities in conjunction with natural changes in the Earth system. Earth Systems Coterm students gain advanced knowledge to tackle the world’s most pressing social-environmental problems and sustainability challenges.",
+        "WOZxr": "Pre-requisite courses may be fulfilled through approved AP credit , Stanford placement tests , or transfer credit , where applicable. Students can submit a petition for such credit to be counted. Transfer courses from other institutions may not be counted toward the required 45 units.",
+        "ItCSB": "The coterminal master’s degree in Earth Systems provides the student with enhanced analytical tools to evaluate the disciplines most closely associated with the student’s focus area. Specialization is gained through coursework and independent research work supervised by the master’s faculty advisor.",
+        "advisingExpectations": "Purpose of Advising The primary purpose of the faculty advisor in the Earth Systems coterminal MS and MA programs is to help guide the academic development of their advisees. Faculty advisors help advisees design comprehensive, rigorous, interdisciplinary curricula that enable each student to acquire mastery of their chosen field(s). MS coterm students may choose to conduct research and write a master’s thesis under the guidance of their coterm advisor or another pre-approved advisor on academic council. Earth Systems staff members can provide additional guidance on selecting courses, navigating policies and degree requirements, preparing for future employment, and exploring professional pathways. Expectations All candidates for coterminal master’s programs in Earth Systems (MS and MA) must secure an academic advisor before applying to the coterm program. Coterm advisors must be members of the Academic Council. Each student is expected to meet with their advisor at least once per quarter to discuss degree progress and new course selections. Students must obtain their advisor’s signed approval on their course plan each quarter, as courses taken may differ from the original course plan submitted with the coterm application. The final curriculum must stay true to the scope and rigor of the initially approved curriculum, even if some of the individual courses change. Because Earth Systems is an interdisciplinary program with no faculty, the program relies upon faculty in related departments to advise its students. This is particularly important for coterm students who are embarking on advanced studies and need the expertise of their advisors for curriculum planning and academic development. The program greatly appreciates this advising support, and the Earth Systems staff is available for any questions and to help however we can. Review: Coterm Advisor Guidelines. See the Graduate Advising for a statement of university policy on graduate advising.",
+        "cotermTransferPolicy": "After accepting admission to this coterminal master’s degree program, students may request a transfer of courses from the undergraduate to the graduate career to satisfy the requirements for the master’s degree. Transferring courses to the graduate career requires review and approval of both the undergraduate and graduate programs on a case-by-case basis. In this master’s program, courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career; the timing of the first graduate quarter is not a factor. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. Course transfers are not possible after the bachelor’s degree has been conferred.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "All courses for the master’s program must be taken for a letter grade; courses not taken for a letter grade must be approved by the master’s advisor and Director of Earth Systems.",
+        "programGPARequirement": "A minimum overall GPA of 3.4 must be maintained.",
+        "programAdditionalPolicies": "Prerequisite courses may not be counted toward the 45 required MS units. Completion of prerequisite courses is not required prior to applying to the coterm program; however, all prerequisite courses must be completed prior to graduation. Students may petition to have alternative courses satisfy pre-requisite courses listed in the \"Pre-requisite Coursework\" section below.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-easys-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-envres-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The Emmett Interdisciplinary Program in Environment and Resources develops the knowledge, skills, perspectives, and ways of thinking to understand and help solve the world’s most significant environmental and resource sustainability challenges. E-IPER strives to be a model for interdisciplinary graduate education. E-IPER offers the following degrees: a PhD in Environment and Resources; a Joint MS for MBA students in Stanford’s Graduate School of Business or JD students in the Stanford Law School; and a Dual MS for master’s students across Stanford’s seven schools, MD students in the School of Medicine, or for PhD students in another department. E-IPER’s home is the Stanford Doerr School of Sustainability, and affiliated faculty come from all seven Stanford schools.",
+        "WOZxr": "The E-IPER Joint and Dual MS program does not accept external credit (transfer credit or otherwise) toward degree completion. All coursework must be met and completed through the university’s offerings, including the university’s professional schools.",
+        "ItCSB": "Completing the PhD and MS degrees in Environment and Resources provides students with the knowledge, skills, perspectives, and ways of thinking to understand and help solve the world’s most significant environmental and resource sustainability challenges.",
+        "advisingExpectations": "The Emmett Interdisciplinary Program in Environment and Resources is committed to providing academic advising to support graduate students’ scholarly and professional development. Through the open discussions of scholarly ideas during regular interactions with their advisors, graduate students identify focus areas and develop their creative and intellectual potential more generally. Faculty advisors guide students in designing and conducting research, selecting courses, exploring academic opportunities and professional pathways, developing teaching skills, and navigating policies and degree requirements. At the same time, they are aware and respectful of work-life balance and wellness considerations. Graduate students proactively seek academic and professional guidance and take responsibility for learning about their program’s policies and degree requirements. Students should also take advantage of the more extensive advising network, consulting such resources as the E-IPER program staff, Stanford’s institutional resources (VPGE, Office of Graduate Life, CAPS, etc.), and individuals and networks in the broader community of scholars. While student academic progress is reviewed annually, students are expected to actively track their progress and raise concerns promptly. If students have a formal concern or complaint about their advising experience, they are encouraged to contact the E-IPER Associate Directors or the E-IPER Faculty Director. See Graduate Advising for a statement of university policy on graduate advising.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-envres-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-envres-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-eps-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The purpose of the master’s program in Earth and Planetary Sciences is to continue a student’s training in a broad range of earth science disciplines and prepare students for either a professional career or doctoral studies.",
+        "WOZxr": "Master’s degree students are not eligible for transfer residency credit. Students enrolled at Stanford who plan to study elsewhere during their degree program should, before their departure, obtain prior approval for any transfer residency they seek.",
+        "ItCSB": "The MS is conferred upon candidates who have demonstrated substantial scholarship, high attainment in a particular field of knowledge, and the ability to conduct independent research. To this end, the program’s objectives are to enable students to develop the skills needed to conduct original investigations in a particular discipline or set of disciplines in the Earth and Planetary Sciences, to interpret the results, and to present the data and conclusions in a publishable manner. Inclusivity and Diversity The Department of Earth and Planetary Sciences strives to ensure that graduate students feel safe, secure, and supported during their graduate experience. It does not tolerate harassment targeting race, gender identity and expression, sexual orientation, physical and mental ability, physical appearance, age, and/or religion. Any experience of discrimination, harassment, or inequity in the department will not be tolerated and will be met with appropriate consequences by Stanford University’s Harassment and Discrimination policy. Students can seek support from the Director of Access/Belonging, Erik Sperling , or the Assistant Director of Student Services, Anjani Varma . Mental Health Members of the Earth and Planetary Sciences department recognize that mental health challenges are real and can arise from both within and beyond the academic setting. We support and encourage each other to seek mental health and well-being resources. If any event during the graduate experience places a student under undue stress that inhibits their performance to their potential, the department encourages the student to seek support from the Director of Graduate Studies, Jane Willenbring , Assistant Director of Student Services Anjani Varma , or university services such as Counseling and Psychological Services (CAPS) or Graduate Life Office (GLO). Academic Accommodations The Office of Accessible Education (OAE) is the campus office designated to work with Stanford students with disabilities. To comply with Stanford’s academic accommodations process, faculty should not attempt to arrange accommodations with the student. Students with questions about accommodations should contact OAE to initiate a disability-related request for accommodations. When a student presents an OAE Accommodation Letter, that letter should be followed, or the faculty member should work with the student and OAE to implement and/or modify the recommended accommodations. Students are expected to initiate accommodation requests promptly and provide timely notification of changes to approved accommodations. Faculty are responsible for maintaining student confidentiality and treating all disability-related information as confidential.",
+        "advisingExpectations": "The Department of Earth and Planetary Sciences is committed to providing academic advising to support graduate students’ scholarly and professional development. The department strives to ensure everyone has a fulfilling experience by creating an inclusive culture. The Stanford Doerr School of Sustainability shares this commitment as reflected in the Doerr School Policy on Respectful and Inclusive Behavior. The advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. Both the advisor and the advisee are expected to maintain professionalism and integrity. Establishing Advisor-Advisee Expectations Both advisor and advisee are expected to take responsibility for actively discussing the nature of the graduate experience. For first-year students, the discussion results on the nature of the graduate experience and each party's expectations are summarized in a document that both the advisor and the advisee sign. The relationship and expectations evolve as the student progresses through their graduate experience. Regularly scheduled advisor-advisee interactions are an essential component of this relationship. Advisors are expected to check in with their students every quarter to discuss how expectations are being met and whether any need updating. Students are encouraged to revisit these conversations when the advisor-advisee relationship is not meeting their needs or expectations. Additionally, a written review in the spring quarter covers the student’s academic progress with their advisor(s) and committee members. Graduate students are expected to proactively seek academic and professional guidance and take responsibility for informing themselves of policies and degree requirements for their graduate program. In addition to the primary advisor, students are highly encouraged to seek advice from other faculty in the department and other faculty and researchers (Stanford or external) who align with their research interests. See Graduate Advising for a statement of university policy on graduate advising. Students can seek support and assistance from the Assistant Director of Student Services Anjani Varma when needed. Guidelines for advisor-advisee interactions The advisor-advisee relationship is mutual. Graduate students and faculty can expect mutual respect, high professional standards, and the sharing of ideas and research. Advisors should strive continuously to improve their mentoring abilities. Group dynamics can be complex; advisors should strive to treat students equitably, including the distribution of opportunities in a group, classroom, field, and laboratory settings. Further information regarding guidelines and best practices for advising and mentoring is available from the Office of the Vice Provost for Graduate Education. Graduate students are expected to exercise high professional standards in their academic work, research, and mentoring partnerships and to be proactive in seeking advice and keeping the advisor informed about academic and research progress. Students and advisors must be responsible for meeting timelines, policies, and milestones impacting degree progress. We expect respect and equity in our department at all levels, from one-on-one interactions to department-wide events. Students in need of assistance should contact the Assistant Director of Student Services, Anjani Varma , or the Assistant Dean of Student Services, Alyssa Ferree , to be informed of a clearly articulated path for contacting them with questions, concerns, and challenges related to advising. Students may also contact any school representatives listed below to discuss issues regarding advisor-advisee interactions: Jane Willenbring , Director of Graduate Studies in Earth and Planetary Sciences C. Kevin Boyce , Department Chair of Earth and Planetary Sciences Kabir Peay , Senior Associate Dean for Education for Stanford Doerr School of Sustainability Sue Crutcher , Associate Dean for Human Resources and Faculty Affairs for Stanford Doerr School of Sustainability (GSAC) Graduate Student Advisory Council Representatives in Earth and Planetary Sciences See Stanford University policy on Graduate Advising for further information.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "Students must earn letter grades in all graduate-level courses that count toward program requirements (not including EPS 400 Graduate Research). General University Grading System: https://studentservices.stanford.edu/my-academics/evaluations-exams-grades/grades/general-university-grading-system Students are responsible for checking their final grades at the end of each quarter. If incomplete grades (I), Grade Not Reported (GNR), or No Credit (NC) appear on the end-of-quarter grade report, students should immediately check with their instructor. The Assistant Director of Student Services can assist students and instructors in clearing missing and incomplete grades by forwarding the appropriate instructions and/or university forms.",
+        "programGPARequirement": "University grade point average (GPA) of 3.0 (B) or higher",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-eps-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-ess-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The master's degree in Earth System Science at Stanford University prepares the next generation of scientists to tackle the world's most pressing environmental challenges through rigorous interdisciplinary training and cutting-edge research. Earth System Science is the study of the world's air, water, land, and life as an integrated system. Our program unites basic and purpose-driven research to understand how the Earth functions, the many ways it is changing, and what the consequences of these changes will be for people and other species. We train students to understand, predict, and respond to human-caused and natural environmental change at local to global scales. Master's degree students engage with fundamental Earth system science, from ocean circulation and biogeochemical cycles to climate dynamics, while also addressing critical sustainability challenges related to food, water, energy, biodiversity, climate change, and environmental justice. Our students study the food we eat, the water we drink, the air we breathe, and the plants and animals with which we share the planet, all while developing as independent researchers capable of making significant scientific contributions.",
+        "ItCSB": "Graduates of the master's program in Earth System Science will be able to: Apply advanced knowledge and methods in their chosen Earth science discipline Conduct supervised research in environmental or Earth system sciences Communicate scientific findings through written reports and oral presentations Pursue professional careers in environmental fields or continue to doctoral studies",
+        "advisingExpectations": "The Department of Earth System Science is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Purpose of Advising Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. Advising and Credentials provides a statement of university policy on graduate advising. Expectations Students are paired with a primary advisor at the time of admission to the Earth System Science graduate program. A secondary advisor may also be designated at the time of admission. A shared expectations conversation occurs beginning with the first quarter and at least annually after that. This clarifies educational philosophies and individual responsibilities and generates a written record for students, advisors, and departments. As part of this process, advisors clearly state their expectations, discuss them with the student, and articulate which areas may be open to amendment based on student input. Broad areas in which to align expectations include: Course selection and other academic development Navigating policies and degree requirements Financial support Identifying research opportunities and level of independence Research milestones, publications, co-authorship, outside collaborations, and timeline Frequency of individual and group meetings, expectations for campus and departmental presence, vacations Frequency of and funding for off-campus research and professional development activities (such as conferences, workshops, short courses, and fieldwork) Preparation for future employment and exploration of professional pathways Students can expect advisors to: Exercise high professional standards in their academic work, research, and mentoring partnerships Serve as intellectual and professional mentors Understand university and department policies regarding graduate students Provide timely, regular, and constructive feedback on progress Provide insights into career options and pathways and/or point students toward relevant career and professional development resources Advisors can expect students to: Exercise high professional standards in their academic work, research, and mentoring partnerships Be proactive in seeking advice and keeping the advisor informed about academic and research progress Consult with the advisor and others as necessary to resolve problems Take primary responsibility for meeting timelines, policies, and milestones that impact degree progress Additional Resources and Pathways As part of their advising network, students are encouraged to consult departmental resources (such as department and school student services staff, the thesis committee, the department Director of Graduate Studies, and the Department Chair), Stanford institutional resources (such as VPGE, the Office of Graduate Life, CAPS, and the campus Ombuds), as well as individuals and networks in the broader scientific community. If students have a formal concern or complaint about their advising experience, they are encouraged to contact the department Director of Graduate Studies, the department chair, the school Associate Dean for Educational Affairs, and/or the school Associate Dean for Human Resources and Faculty Affairs. If the student or advisor feels that the advising relationship is ineffective, the school process for formally evaluating student/advisor assignments may be activated.",
+        "programGradingPolicies": "Required courses must be taken for a letter grade if offered",
+        "programGPARequirement": "Students must maintain at least a 3.0 grade point average",
+        "programAdditionalPolicies": "Students registered for ten units must pass at least six units per quarter. Students must complete a minimum of four graduate-level, letter-grade courses of at least three units each from four different faculty members",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-ess-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-ess-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-ess-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The doctoral program in Earth System Science at Stanford University prepares the next generation of scientists to tackle the world's most pressing environmental challenges through rigorous interdisciplinary training and cutting-edge research. Earth System Science is the study of the world's air, water, land, and life as an integrated system. Our program unites basic and purpose-driven research to understand how the Earth functions, the many ways it is changing, and what the consequences of these changes will be for people and other species. We train students to understand, predict, and respond to human-caused and natural environmental change at local to global scales. Doctoral students engage with fundamental Earth system science, from ocean circulation and biogeochemical cycles to climate dynamics, while also addressing critical sustainability challenges related to food, water, energy, biodiversity, climate change, and environmental justice. Our students study the food we eat, the water we drink, the air we breathe, and the plants and animals with which we share the planet, all while developing as independent researchers capable of making significant scientific contributions.",
+        "WOZxr": "Graduate transfer credit allowed for residency requirement.",
+        "ItCSB": "Graduates of the doctoral program in Earth System Science will be able to: Design and conduct original, independent research in Earth System Sciences Analyze and interpret complex environmental data using appropriate methods and tools Communicate research findings effectively through publications, presentations, and teaching Engage diverse audiences—from scientific peers to the general public—about environmental science and sustainability challenges",
+        "advisingExpectations": "The Department of Earth System Science is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Purpose of Advising Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Advising and Credentials for a university policy statement on graduate advising. Students are paired with a primary advisor at the time of admission to the Earth System Science graduate program. A secondary advisor may also be designated at the time of admission. A shared expectations conversation occurs beginning with the first quarter and at least annually after that. This clarifies educational philosophies and individual responsibilities, and generates a written record for the student, advisor, and department. As part of this process, advisors clearly state their expectations, discuss them with the student, and articulate which areas may be open to amendment based on student input. Broad areas in which to align expectations include: Course selection and other academic development Navigating policies and degree requirements Financial support Identifying research opportunities and level of independence Research milestones, publications, co-authorship, outside collaborations, and timeline Frequency of individual and group meetings, expectations for campus and departmental presence, vacations Frequency of and funding for off-campus research and professional development activities (such as conferences, workshops, short courses, and fieldwork) Preparation for future employment and exploration of professional pathways Students can expect advisors to: Exercise high professional standards in their academic work, research, and mentoring partnerships Serve as intellectual and professional mentors Understand university and department policies regarding graduate students Provide timely, regular, and constructive feedback on progress Provide insights into career options and pathways and/or point students toward relevant career and professional development resources Advisors can expect students to: Exercise high professional standards in their academic work, research, and mentoring partnerships Be proactive in seeking advice and keeping the advisor informed about academic and research progress Consult with the advisor and others as necessary to resolve problems Take primary responsibility for meeting timelines, policies, and milestones that impact degree progress Additional Resources and Pathways The thesis committee is convened by the student’s second year. Once convened, the thesis committee: Meets annually with the student to discuss research progress, research plans, coursework, and professional/career goals and to provide verbal and written feedback on degree progress Conducts the qualifying exam and the oral exam (i.e., dissertation defense) and approves the written dissertation In some cases, members of the thesis committee may be research collaborators and may also serve as mentors and/or letter writers for applications As part of their advising network, students are encouraged to consult departmental resources (such as department and school student services staff, the thesis committee, the department Director of Graduate Studies, and the department chair), Stanford institutional resources (such as VPGE, the Office of Graduate Life, CAPS, and the campus Ombuds), as well as individuals and networks in the broader scientific community. Students concerned about their advising experience are encouraged to contact the department Director of Graduate Studies, the department chair, the school Associate Dean for Educational Affairs, and/or the school Associate Dean for Human Resources and Faculty Affairs. If the student or advisor feels that the advising relationship is ineffective, the school process for formally evaluating student/advisor assignments may be activated.",
+        "programGradingPolicies": "Required courses must be taken for a letter grade if offered",
+        "programGPARequirement": "Students must maintain at least a 3.0-grade point average.",
+        "programAdditionalPolicies": "PhD students registered for ten units must pass at least six units per quarter. PhD students must complete a minimum of four graduate-level, letter-grade courses of at least three units each from four different faculty members. By the end of the spring quarter of their first year in residence, students must complete at least three graduate-level courses taught by a minimum of two ESS faculty members.",
+        "minimum_program_units_metadata": 135,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-ess-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-ess-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-eps-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "Graduate Studies in the Department of Earth and Planetary Sciences involve academic coursework and independent research. Students are prepared for careers as professional scientists in research, education, or the application of the Earth and planetary sciences to mineral, energy, water, and space resources. Course programs in the areas of faculty interest are tailored to the students’ needs and interests with the aid of their research advisor. Students are encouraged to include courses offered in other departments at the Stanford Doerr School of Sustainability and other departments across the university in their program. PhD students are encouraged to broaden and deepen their knowledge by taking formal coursework in earth sciences, chemistry, physics, mathematics, biology, and engineering. Students must consult with their research advisor(s) regarding course selection. Some specific programs in EPS have additional courses and examination requirements that must be fulfilled before advancing to PhD candidacy. Students should consult with their advisor(s) about any additional requirements beyond the general EPS requirements",
+        "WOZxr": "An incoming student with a relevant master of science degree may apply for a departmental petition to transfer graduate-level courses, subject to approval by their faculty advisor and the Director of Graduate Studies. Transfer credits cannot be used to fulfill the first-year requirement. Students enrolled at Stanford who plan to study elsewhere during their degree program should obtain prior approval for any transfer residency they seek before their departure.",
+        "ItCSB": "The PhD is conferred upon candidates who have demonstrated substantial scholarship, high attainment in a particular field of knowledge, and the ability to conduct independent research. To this end, the objectives of the doctoral program are to enable students to develop the skills needed to conduct original investigations in a particular discipline or set of disciplines in the earth sciences, to interpret the results, and to present the data and conclusions in a publishable manner.",
+        "advisingExpectations": "The Department of Earth and Planetary Sciences is committed to providing academic advising to support graduate students’ scholarly and professional development. The department strives to ensure everyone has a fulfilling experience by creating an inclusive culture. The Stanford Doerr School of Sustainability shares this commitment as reflected in the Doerr School Policy on Respectful and Inclusive Behavior. The advising relationship entails collaborative and sustained engagement by both the advisor and the advisee. Both the advisor and the advisee are expected to maintain professionalism and integrity. Inclusivity and Diversity The Department of Earth and Planetary Sciences strives to ensure that graduate students feel safe, secure, and supported during their graduate experience. It does not tolerate harassment targeting race, gender identity and expression, sexual orientation, physical and mental ability, physical appearance, age, and/or religion. Any experience of discrimination, harassment, or inequity in the department will not be tolerated and will be met with appropriate consequences by Stanford University’s Harassment and Discrimination policy. Students can seek support from the Director of Access/Belonging, Erik Sperling , or the Assistant Director of Student Services, Anjani Varma . Mental Health Members of the Earth and Planetary Sciences department recognize that mental health challenges are real and can arise from both within and beyond the academic setting. We support and encourage each other to seek mental health and well-being resources. If any event during the graduate experience places a student under undue stress that inhibits their performance to their potential, the department encourages the student to seek support from the Director of Graduate Studies, Jane Willenbring , Assistant Director of Student Services Anjani Varma , or university services such as Counseling and Psychological Services (CAPS) or Graduate Life Office (GLO). Academic Accommodations The Office of Accessible Education (OAE) is the campus office designated to work with Stanford students with disabilities. To comply with Stanford’s academic accommodations process, faculty should not attempt to arrange accommodations with the student. Students with questions about accommodations should contact OAE to initiate a disability-related request for accommodations. When a student presents an OAE Accommodation Letter, that letter should be followed, or the faculty member should work with the student and OAE to implement and/or modify the recommended accommodations. Students are expected to initiate accommodation requests promptly and provide timely notification of changes to approved accommodations. Faculty are responsible for maintaining student confidentiality and treating all disability-related information as confidential. Establishing Advisor-Advisee Expectations Both advisor and advisee are expected to take responsibility for actively discussing the nature of the graduate experience. For first-year students, the discussion results on the nature of the graduate experience and each party's expectations are summarized in a document that both the advisor and the advisee sign. The relationship and expectations evolve as the student progresses through their graduate experience. Regularly scheduled advisor-advisee interactions are an essential component of this relationship. Advisors are expected to check in with their students every quarter to discuss how expectations are being met and whether any need updating. Students are encouraged to revisit these conversations when the advisor-advisee relationship is not meeting their needs or expectations. Additionally, a written review in the spring quarter covers the student’s academic progress with their advisor(s) and committee members. Graduate students are expected to proactively seek academic and professional guidance and take responsibility for informing themselves of policies and degree requirements for their graduate program. In addition to the primary advisor, students are highly encouraged to seek advice from other faculty in the department and other faculty and researchers (Stanford or external) who align with their research interests. See Graduate Advising for a statement of university policy on graduate advising. Students can seek support and assistance from the Assistant Director of Student Services Anjani Varma when needed. Guidelines for advisor-advisee interactions The advisor-advisee relationship is mutual. Graduate students and faculty can expect mutual respect, high professional standards, and the sharing of ideas and research. Advisors should strive continuously to improve their mentoring abilities. Group dynamics can be complex; advisors should strive to treat students equitably, including the distribution of opportunities in a group, classroom, field, and laboratory settings. Further information regarding guidelines and best practices for advising and mentoring is available from the Office of the Vice Provost for Graduate Education. Graduate students are expected to exercise high professional standards in their academic work, research, and mentoring partnerships and to be proactive in seeking advice and keeping the advisor informed about academic and research progress. Students and advisors must be responsible for meeting timelines, policies, and milestones impacting degree progress. We expect respect and equity in our department at all levels, from one-on-one interactions to department-wide events. Students in need of assistance should contact the Assistant Director of Student Services, Anjani Varma , or the Assistant Dean of Student Services, Alyssa Ferree , to be informed of a clearly articulated path for contacting them with questions, concerns, and challenges related to advising. Students may also contact any school representatives listed below to discuss issues regarding advisor-advisee interactions: Jane Willenbring , Director of Graduate Studies in Earth and Planetary Sciences C. Kevin Boyce , Department Chair of Earth and Planetary Sciences Kabir Peay , Senior Associate Dean for Education for Stanford Doerr School of Sustainability Sue Crutcher , Associate Dean for Human Resources and Faculty Affairs for Stanford Doerr School of Sustainability (GSAC) Graduate Student Advisory Council Representatives in Earth and Planetary Sciences See Graduate Advising for a statement of university policy on graduate advising.",
+        "programGradingPolicies": "Students must earn letter grades in all graduate-level courses that count toward program requirements (not including EPS 400 Graduate Research). General University Grading System: https://studentservices.stanford.edu/my-academics/evaluations-exams-grades/grades/general-university-grading-system Students are responsible for checking their final grades at the end of each quarter. If incomplete grades (I), Grade Not Reported (GNR), or No Credit (NC) appear on the end-of-quarter grade report, students should immediately check with their instructor. The Assistant Director of Student Services can assist students and instructors in clearing missing and incomplete grades by forwarding the appropriate instructions and/or university forms.",
+        "programGPARequirement": "University grade point average (GPA) of 3.0 (B) or higher",
+        "programAdditionalPolicies": "Ph.D. students may obtain a Master of Science (M.S.) degree en route to the Ph.D. Once students have completed 45 units, passed the Qualifying Exam, and submitted a Master’s thesis. The thesis is typically the first chapter of the Ph.D. dissertation and must be reviewed by two readers: the primary advisor, who must be an Academic Council member, and a second faculty member of the student’s choice. Title and signature pages must be submitted to the Assistant Director of Student Services. Students pursuing the M.S. en route must continue to satisfy all requirements of the Ph.D. program. Students may add the M.S. degree via the Graduate Authorization Petition in Axess.",
+        "minimum_program_units_metadata": 22,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-eps-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-easys-ma-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The coterminal master’s degree in Earth Systems, Environmental Communication provides the student with enhanced theoretical frameworks, analytical tools, and applied skills in various domains of environmental communication. Specialization is gained through courses, independent project work, and a professional practicum placement supervised by the Earth Systems MA director and an academic co-advisor.",
+        "WOZxr": "Transfer courses from other institutions are not permitted to count towards the master’s degree.",
+        "ItCSB": "The coterminal master’s degree in Earth Systems, Environmental Communication provides the student with enhanced theoretical frameworks, analytical tools, and applied skills in various domains of environmental communication. Specialization is gained through courses, independent project work, and a professional practicum placement supervised by the Earth Systems MA director and an academic co-advisor.",
+        "advisingExpectations": "Purpose of Advising Each student in the Earth Systems Master of Arts, Environmental Communication program has two academic advisors: the director of the MA program and an academic co-advisor. The co-advisor can be an Academic Council member or any full-time Stanford employee with a teaching appointment selected by the student in consultation with the MA director. The primary purpose of the advisor in the Earth Systems coterminal MA programs is to help guide the academic development of advisees. Advisors help advisees design comprehensive, rigorous, interdisciplinary curricula that enable each student to acquire mastery of their chosen field(s). A few coterms may also choose to conduct research and write a master’s thesis under the guidance of their advisor. Earth Systems staff members can provide additional guidance on selecting courses, navigating policies and degree requirements, preparing for future employment, and exploring professional pathways. Expectations Candidates for the coterminal master’s programs in Earth Systems Environmental Communication must see with the MA program director before applying to the coterm program. Students may choose their academic co-advisor while applying or during their first quarter as master’s students. Students are expected to meet with their advisors at least once per quarter to discuss degree progress and new course selections. Students must obtain the MA director’s signed approval on their course plan each quarter as courses taken may differ from the original course plan submitted with the coterm application. The final curriculum must stay true to the scope and rigor of the initially approved curriculum, even if some of the individual courses change. Because Earth Systems is an interdisciplinary program with no faculty; the program relies upon faculty and staff in related departments to advise its students. This is particularly important for coterm students who are embarking on advanced studies and need the expertise of their advisors for curriculum planning and academic development. The program greatly appreciates this advising support, and the Earth Systems staff is available for any questions and to help however we can. See Graduate Advising for a statement of university policy on graduate advising.",
+        "cotermTransferPolicy": "After accepting admission to this coterminal master’s degree program, students may request a transfer of courses from the undergraduate to the graduate career to satisfy the requirements for the master’s degree. Transferring courses to the graduate career requires review and approval of both the undergraduate and graduate programs on a case-by-case basis. In this master’s program, courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career; the timing of the first graduate quarter is not a factor. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. Course transfers are not possible after the bachelor’s degree has been conferred.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "All courses for the M.A. degree must be taken for a letter grade when that option exists; courses not taken for a letter grade must be approved by the M.A. Director and Director of Earth Systems.",
+        "programGPARequirement": "A minimum overall GPA of 3.4 must be maintained.",
+        "programAdditionalPolicies": "All students in the EASYS-MA program are enrolled in the subplan.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-easys-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-easys-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-energy-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The MS in Energy Science and Engineering prepares students for professional careers in the energy and engineering sectors, as well as in related technical fields. The program develops a broad set of skills, including a strong foundation in physical principles, data analysis, computational methods, and system-level understanding of complex energy systems. It may also serve as a pathway to a PhD for those interested in research or academic careers. The MS program is offered both as a standalone degree and as a coterminal option for Stanford undergraduates. The coterminal program allows students to begin graduate-level coursework while completing their BS. Standalone MS Program in Energy Science and Engineering The MS program in Energy Science and Engineering offers two degree options: a research-based degree, and a coursework-only degree. The requirements for each option, including required coursework, are described below. The program can take up to two years to complete. Coterminal MS Program in Energy Science and Engineering The coterminal BS/MS program allows Stanford undergraduates to pursue a master’s degree in Energy Science and Engineering while completing a BS in a related field. Students commonly enter the program from backgrounds such as chemical, civil, or mechanical engineering, earth sciences, physics, or chemistry. Coterminal students must meet all master’s degree requirements described in this bulletin, as well as university policies outlined in the Coterminal Master’s Program and Graduate Degrees sections. After admission to the coterminal program, students may request to transfer eligible undergraduate coursework to their graduate record to fulfill MS degree requirements. These requests are reviewed and approved on a case-by-case basis by both the undergraduate and graduate programs. The university requires that a graduate advisor be assigned in the student’s first graduate quarter, even if the undergraduate career remains active. In addition, the student must complete and obtain departmental approval of the Master’s Degree Program Proposal by the end of that same quarter.",
+        "ItCSB": "The MS program in Energy Science and Engineering prepares students to become technical leaders in the energy sector, academia, and research organizations. Through a combination of foundational coursework and, where applicable, independent research, students develop the analytical, technical, and communication skills needed to address complex energy challenges. Graduates of the program are expected to: Apply fundamental principles from engineering and related sciences to analyze and solve energy-related problems Formulate, analyze, and synthesize solutions to contemporary and emerging challenges in energy systems Work effectively both independently and collaboratively to develop and improve engineering solutions Communicate technical concepts and results clearly through written, visual, and oral formats Demonstrate an advanced and integrated understanding of energy systems and technologies Students pursuing the research-based MS degree are additionally expected to: Conduct a rigorous and original scientific investigation that addresses a significant and well-defined research problem",
+        "advisingExpectations": "The Department of Energy Science and Engineering is committed to providing high-quality academic advising to support MS students in their educational and professional development. Effective advising is a collaborative process that relies on active engagement from both advisor and student. Expectations should be discussed early and revisited periodically to ensure mutual understanding, and both parties are expected to maintain professionalism, accountability, and integrity in the relationship. At or before the start of graduate study (generally at the beginning of autumn quarter) each student is assigned an advisor: a member of our faculty who provides research guidance and advice on course selection, academic opportunities, and professional pathways. A key early milestone is the MS Program Proposal, which each student completes at the end of their first quarter. Research-track MS students meet regularly with their advisor, both one-on-one and as part of their research group. When meetings are not feasible, students are expected to stay in touch through other means, such as emailing brief progress updates. Students are also expected to meet with their advisor during or before the first week of each quarter to agree on the courses they plan to take. Advisors formally approve the study list in person or by email. The Director of Graduate Studies (DGS) meets with all MS students at the start of their first year and is available throughout the academic year by email and during office hours. The department's student services office is also an integral part of the advising framework: it informs students and advisors about university and departmental requirements, procedures, and opportunities, and maintains official records of advising assignments and approvals. Students are encouraged to consult both the DGS and the student services office for guidance in working with their advisor. See Graduate Advising for a statement of university policy on graduate advising. Change of Advisor The same faculty member is typically expected to serve as the primary advisor throughout the PhD, but students may request a change. Requests must be submitted to the Director of Graduate Studies (DGS) and are subject to review and approval by the Graduate Standing Committee. Students who are not in good academic standing are not eligible to request a change. For students in good standing, approval depends on alignment with program requirements and faculty availability.",
+        "cotermTransferPolicy": "Courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career. Course transfers are not possible after the bachelor’s degree has been conferred.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "All required courses must be taken for a letter grade.",
+        "programGPARequirement": "A cumulative grade point average (GPA) of 3.0.",
+        "minimum_program_units_metadata": 49,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-energy-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-energy-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-energy-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The Energy Science and Engineering PhD program addresses critical energy challenges across renewable energy, climate change, carbon capture and sequestration, energy storage, and integrated energy systems. The curriculum provides a strong foundation in the basic sciences and their application to real-world problems, addressing the complex and evolving nature of the energy field. The program spans scales from subsurface processes, such as fluid flow and energy transport in geologic formations, to surface systems involving energy conversion, storage, transmission, and utilization. These foundations support applications including geothermal and hydrocarbon energy recovery, CO₂ sequestration, battery and hydrogen energy storage, and groundwater remediation. Graduates are prepared to develop innovative, system-level solutions for a sustainable and resilient energy future.",
+        "WOZxr": "Transfer credit may be applied to technical graduate-level coursework. Final approval by the Director of Graduate Studies and student services. Refer to University policy on Transfer Work .",
+        "ItCSB": "The PhD program prepares students to become leaders in energy research through rigorous coursework and independent research in their major field and related sciences. Students are expected to: Apply foundational knowledge from core coursework to solve complex engineering problems; Conduct independent research to analyze, synthesize, and address original and contemporary energy challenges; Work effectively both independently and collaboratively to develop and advance energy solutions; Communicate scientific and technical knowledge clearly through written, visual, and oral formats; Demonstrate in-depth, advanced technical understanding of energy systems and related challenges; Complete a significant, original, and rigorous scientific investigation that contributes to the field.",
+        "advisingExpectations": "The Department of Energy Science and Engineering is committed to providing academic advising that supports doctoral students’ scholarly and professional development. Effective advising is built on sustained, collaborative engagement between advisor and advisee. As a best practice, advising expectations should be discussed and periodically reviewed to ensure mutual understanding. Both advisor and advisee are expected to uphold professionalism and integrity. Faculty advisors mentor students in key areas, including course selection, research design and execution, development of teaching skills, navigation of program requirements, and exploration of academic and professional pathways. PhD students are assigned a primary research advisor in their admission letter. The primary advisor guides the student’s research direction, helps identify doctoral research opportunities, and ultimately oversees the student’s dissertation and overall research progress. PhD students are expected to meet regularly with their advisor(s), typically on a weekly basis, either individually and/or in group meetings, as determined by the advisor. When regular meetings are not possible, students are expected to provide brief updates summarizing their ongoing activities and progress. At least once per year, students and advisors are expected to review the student’s progress toward completing their research and degree, either formally or informally. These discussions may include other members of the student’s research committee, either collectively or individually. A formal meeting of the full committee—particularly if the student and advisor differ in their assessment of research progress and goals—may be convened by either the student or the advisor. Most students are advised by a member of the department’s primary faculty. In some cases, the research advisor may be a faculty member from another Stanford department with experience supervising doctoral students and the ability to provide both advising and funding for the duration of the program. When the research advisor is external to the department, the student must also identify a program advisor from the department’s primary faculty to provide guidance on departmental requirements and opportunities. Students are responsible for consulting with their advisor before or during the first week of each quarter to agree on their planned course selection. Advisors formally approve the study list via email. The DGS meets with all doctoral students at the start of their first year and remains available by email throughout the academic year. The department’s student services office is also an integral part of the doctoral advising framework: it informs students and advisors about university and departmental requirements, procedures, and opportunities, and maintains official records of advising assignments and approvals. Students are encouraged to consult the DGS and the student services office for guidance in working with their advisor(s). Doctoral students are active participants in the advising relationship, proactively seeking academic and professional guidance and taking responsibility for understanding program policies and degree requirements. See Graduate Advising for a statement of university policy on graduate advising. Change of Advisor While the same faculty member is typically expected to serve as the primary advisor throughout the PhD, PhD students may request a change of primary research advisor. Such requests must be submitted to the Director of Graduate Studies (DGS) and are subject to review and approval by the Graduate Standing Committee. Requests will not be considered for students who are not in good academic standing. For students in good standing, approval remains contingent on alignment with program requirements and faculty availability.",
+        "programGradingPolicies": "All required courses must be taken for a letter grade. Have no more than one Incomplete (I) grade outstanding at any time.",
+        "programGPARequirement": "Maintain a cumulative grade point average (GPA) of at least 3.25 Maintain a quarterly GPA of at least 2.7",
+        "programAdditionalPolicies": "PhD Minor in Another Department The student must propose the possibility of pursuing a PhD minor, clearly and explicitly, in the written PhD proposal. The committee will then discuss and decide upon this during the oral portion of the PhD proposal defense. Students can “double-count” a maximum of four courses toward both their ESE course requirements (18 units, typically six courses) and their minor requirements (e.g., 20 units in CS). Note that the minor department may not allow double-counting within their requirements. This means that two of the six courses required by ESE cannot also be applied for the minor. The course requirements for the ESE PhD degree must be approved in advance by the advisor as part of the Application for Candidacy. Any substitutions of courses to meet minor requirements cannot be made without the advisor’s signed approval. We reiterate that students must review their course selections with their advisor at the start of every quarter, and these need to be approved by the advisor.",
+        "minimum_program_units_metadata": 101,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-energy-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-energy-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-envres-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The Emmett Interdisciplinary Program in Environment and Resources (E-IPER) develops the knowledge, skills, perspectives, and ways of thinking needed to understand and help solve the world’s most significant environmental and resource sustainability challenges. E-IPER strives to be a model for interdisciplinary graduate education. E-IPER offers a PhD in Environment and Resources, a Joint MS exclusively for students in Stanford's Graduate School of Business or Stanford Law School, and a Dual MS for students in other departments across the university. E-IPER's home is the Doerr School of Sustainability; affiliated faculty come from all seven Stanford schools.",
+        "WOZxr": "Students may have a maximum of 45 units of transfer credit, or credit earned for a Stanford master's degree, count toward the residency minimum for their degree. Any PhD, DMA, or Engineering student who transfers credit and receives a Stanford master's degree will have their residency requirement for the PhD, DMA, or Engineering degree increased by 45 units, regardless of the number of units awarded for transfer credit. (See GAP 3.2.5 Graduate Residency Transfer Credit for more details .)",
+        "ItCSB": "Completing the PhD degree in Environment and Resources provides students with the knowledge, skills, perspectives, and ways of thinking needed to understand and help solve the world's most significant environmental and resource sustainability challenges.",
+        "advisingExpectations": "The Emmett Interdisciplinary Program in Environment and Resources is committed to providing academic advising to support graduate students’ scholarly and professional development. Through open discussions of scholarly ideas in regular interactions with their co-advisors, graduate students identify focus areas and, more generally, develop their creative and intellectual potential. Co-advisors guide students in designing and conducting research, selecting courses, exploring academic opportunities and professional pathways, developing teaching skills, and navigating policies and degree requirements. At the same time, they are aware of and respectful of work-life balance and wellness considerations. Graduate students are responsible for proactively seeking academic and professional guidance and for learning about and being accountable to their program’s policies and degree requirements. Students should also take advantage of the more extensive advising network, consulting resources such as the E-IPER program staff, Stanford’s institutional resources (VPGE, Office of Graduate Life, CAPS, etc.), and individuals and networks in the broader scholarly community. While student academic progress is reviewed annually, students are expected to actively track their progress and promptly raise concerns. If students have a formal concern or complaint about their co-advising experience, they are encouraged to contact the E-IPER Associate Director, the E-IPER Faculty Director, the School Assistant Dean of Student and Postdoctoral Affairs, or the School Associate Dean for Human Resources and Faculty Affairs.",
+        "programGPARequirement": "Students must maintain at least a 3.0 grade point average (GPA) in all courses taken for the PhD degree.",
+        "minimum_program_units_metadata": 135,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-envres-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-envres-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-envss-ma-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The department is not admitting students directly to the master's degree at this time. Currently the ENVSS-MA is only open to existing ENVSS-PHD students.",
+        "ItCSB": "Graduates will be able to demonstrate competence in qualitative and quantitative methodologies in the behavioral and social sciences by applying them to original research in environmental topics. They will develop data science skills to be able to work with complex workflows, large data, or spatial data science. In addition, graduates in the EBS subplan will demonstrate theoretical competence in social science, ecology, and environmental science expertise. The GEP subplan graduates will use and evaluate methodologies and approaches from multiple quantitative social sciences. They will apply knowledge of the policies and institutions that shape environmental outcomes to evaluate and/or address complex sustainability problems. Quantitative learning objectives will be achieved largely through methods coursework, and the topical and institutional knowledge objectives will be achieved through the GEP or EBS workshop as well as the topical depth requirements.",
+        "advisingExpectations": "For PhD students, the professor serving as an academic advisor is expected to mentor each graduate student both intellectually and professionally. This mentorship is meant to help prepare each student for employment post-graduation.",
+        "programGradingPolicies": "All courses must be taken for a letter grade, if letter grades are offered.",
+        "programGPARequirement": "3.0 grade point average is required.",
+        "minimum_program_units_metadata": 46,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-envss-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "intermediate graduate"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-envss-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-envss-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "Environmental Social Sciences (ESoS) is a new department within the Stanford Doerr School of Sustainability. The following program guidelines provide a starting point for the new department. Iterations on this foundation will be forthcoming. The PhD is a research degree. Teaching students to conduct high-quality independent research is thus a primary objective of the ESoS graduate program. Carrying out and publishing such research as a graduate student, in addition to its central pedagogical role, has also become a prerequisite for obtaining professional positions. As such, our graduate program is structured to encourage research, and the development of research skills, to the maximum extent possible. The ESoS PhD program follows a cohort model, admitting students to the department and not tying student funding to a specific faculty member. This approach allows students and faculty to find advisor matches that work for both and to transfer advisors if necessary. The ESoS department includes two faculty groups: Environmental Behavioral Sciences (EBS) and Global Environmental Policy (GEP). The ESoS PhD program runs with independent EBS and GEP subplans. Students apply and are admitted to a specific subplan. EBS and GEP subplans have different advisors and subplan-specific expectations, including course requirements.",
+        "WOZxr": "Students may receive credit for previous courses subject to approval by the DGS in their subplan.",
+        "ItCSB": "ESoS PhD graduates will be able to demonstrate competence in qualitative and quantitative methodologies in the behavioral and social sciences by applying them to original research in environmental topics. They will develop data science skills to be able to work with complex workflows, large data, and/or spatial data science. Students in both subplans will be trained to design and execute rigorous research that advances scientific understanding and impacts policy. We expect that the quantitative learning objectives will be achieved largely through methods coursework and that the topical and institutional knowledge objectives will be achieved through topical depth requirements. EBS subplan graduates will demonstrate competence in natural and social scientific theories. They will demonstrate epistemological fluency across a range of environmental social sciences theories and methodological approaches, and they will be able to critically evaluate and deploy these frameworks in context-appropriate ways that maintain coherence between the underlying ontological assumptions and epistemological commitments. GEP subplan graduates will use and evaluate methodologies and approaches from multiple quantitative social sciences, natural science, and computer science. They will apply knowledge of the policies and institutions that shape environmental outcomes to evaluate and/or address complex sustainability problems.",
+        "advisingExpectations": "EBS Subplan: Upon admission to the Environmental Behavioral Sciences (EBS) subplan in the Environmental Social Sciences PhD program, students initially will be supported by the DGS and the Graduate Studies Committee (GSC). In a matching process completed by the end of Winter Quarter first year, students will work with the DGS and GSC to identify their advising team: an advisor or co-advisors and one or two additional EBS faculty members. At that point, the advisory relationship is passed from the DGS/GSC to the advisor(s) and committee member(s) who will work with the student to develop the Graduate Research Plan, as well as provide ongoing guidance in course selection and research. Mentored research should begin in June, after completion of the first year of coursework. Throughout the PhD program, students will receive ongoing support from the DGS and the GSC, including participating in an annual meeting to review programmatic progress. Additionally, students will be encouraged to develop mentoring and working relationships across the EBS faculty through formal and informal pathways including, but not limited to, courses, WEBS, the EBS seminar, and participation in lab/faculty groups. GEP Subplan: Throughout the Global Environmental Policy (GEP) subplan in the Environmental Social Sciences PhD program, students will receive advising from: a primary academic advisor within GEP an optional secondary academic advisor within GEP or other appropriate department a non-academic mentor within GEP (not a committee member) students are encouraged to obtain a committee member from outside GEP in natural sciences, engineering, or related non-social-science field Students will develop their academic and research plans in coordination with their academic advisors and the Director of Graduate Studies (DGS). The non-academic mentor is not involved with the student’s research and is designated to support a student’s career development as well as their mental, physical, and emotional well-being. Students will meet with the DGS annually to review their progress in the program. Advisor assignment and selection: After students are admitted to the GEP subplan but before beginning the program in fall quarter, they will be assigned two initial advisors by the DGS. Students will select a primary and possible secondary academic advisor within GEP during their first year. Students will inform the DGS when they have identified a permanent GEP advisor(s) and will transition to developing a research plan with their permanent advisor(s). Mentored research should begin in June, after completion of their first year of coursework. Handling Concerns/Conflicts: As part of their advising network, students are encouraged to consult departmental resources (such as department and school student services staff, the thesis committee, the EBS/GEP Directors of Graduate Studies, and the department Chair), Stanford institutional resources (such as the VPGE, the Office of Graduate Life, CAPS, and the campus Ombuds), as well as individuals and networks in the broader scientific community. In the event that a student has a formal concern or complaint about their advising experience, they are encouraged to contact the EBS/GEP Directors of Graduate Studies, the department Chair, the SDSS Assistant Dean for Student and Postdoctoral Affairs, and/or the SDSS Associate Dean for Human Resources and Faculty Affairs. In the event that either the student or advisor feels that the advising relationship is not effective, the school process for formally evaluating student/advisor assignments may be activated. This typically begins with speaking with the Director of Graduate Studies, who can then inform the student/advisor about appropriate next steps.",
+        "programGradingPolicies": "All courses taken for the program must be completed with a letter grade, if the course is offered for a letter grade.",
+        "programGPARequirement": "Students must maintain at least a 3.0 grade point average.",
+        "programAdditionalPolicies": "ESoS PhD students must register for 8-10 units per quarter and 3 units during the summer quarter, unless otherwise required by the program. Students must pass at least 6 units per quarter. Time to Completion of Degree: The departmental PhD should be accomplished within five years. To achieve this, students, together with their advisor(s) and committee members, need to set realistic milestones throughout a student’s graduate program. Extension to a sixth year will be considered, but only due to extenuating circumstances. Residency Requirements: Per university regulations, graduate students are expected to maintain a significant physical presence on the campus where their main advisor(s) is based, unless the degree program has granted an exception (for example, to conduct field work). This applies to each quarter a student is enrolled. Funding: PhD students in good standing will be funded for five academic years, consistent with the funding policies of the Stanford Doerr School of Sustainability (SDSS). Funding past five years is not guaranteed. Professional Development: Environmental Social Sciences students will be offered occasional seminars and workshops to help navigate their time in graduate school and prepare for careers beyond it. Topics of these seminars will include, but not be limited to: orientation to Stanford and departmental resources, professionalism, scholarship, scientific ethics, well-being and mental health, service, career paths, navigating interpersonal relationships in academia and other professional environments, working in teams, open science, leadership, and effective practices for mentor-mentee relationships. Departmental/School Service: Graduate students in the Department of Environmental Social Sciences are expected to be active community members. This includes, but is not limited to, serving on ESoS, SDSS, and university committees as well as dedicating time to department, SDSS, and university-wide events. Graduate students are, first and foremost, students and thus expected to prioritize their scholarship and academics; thus, they should discuss with their advisor(s) the appropriate amount of time and effort dedicated to service-related engagements.",
+        "minimum_program_units_metadata": 46,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-envss-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-envss-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-geoph-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "Geophysics is a hybrid discipline uniquely devoted to applying physical principles and methods to studying Earth’s and other planets’ complex systems (processes and properties). The undergraduate and graduate programs are designed to provide a background of fundamentals in science and courses to coordinate these fundamentals with the principles of geophysics. Graduate programs offer specialized training for professional work in resource exploration, research, and education and lead to the degrees of Master of Science and Doctor of Philosophy. Graduate Degrees describes university requirements for the MS and PhD. The MS program is available either as a standalone MS degree or as a coterminal degree.",
+        "ItCSB": "The graduate program in Geophysics aims to prepare students to be leaders in the geophysics industry, academia, and research organizations through the completion of fundamental courses in their major field and related sciences and through independent research. Students are expected to: Apply skills developed in fundamental courses to geophysical problems Research, analyze, and synthesize solutions to an original and contemporary geophysics problem Work independently and as part of a team to develop and improve geophysics solutions Apply written, visual, and oral presentation skills to communicate scientific knowledge An in-depth technical understanding of geophysics problems at an advanced level (master’s students) Complete a scientific investigation that is significant, challenging, and original (doctoral students)",
+        "advisingExpectations": "The Department of Geophysics is committed to providing academic advising in support of graduate student scholarly and professional development. See Graduate Advising for a statement of university policy on graduate advising. Minimum Advising Expectations for the Department of Geophysics Each advisor meets with each advisee annually in autumn quarter to develop/update the Geophysics Graduate Advising Expectations Agreement that records the agreed-upon approach to the following for each advisee: Courses: the process and responsibility for selecting courses Thesis topic: the process and responsibility for choosing the topic Members of advising committee: the process and responsibility for the selection Meetings of advisor and advisee: structure and frequency Conducting the research: the level of independence and progress expected, the involvement of the advisor (level of participation, nature of oversight), involvement of other collaborators (both inside and outside of the research group) Thesis content, including expectations concerning publications Writing of publications: style of interaction, policy on co-authorship, publication costs Conference travel/presentations: who attends/presents, frequency, financial support Funding (stipend, tuition, research costs): source, responsibilities, requirements for ongoing support In-the-office hours Vacations and other absences Expectations for summer quarter Preparing for career interests, and plans after Stanford The document, signed by the advisor and advisee, is submitted to the assistant director of student services. If the advisor-advisee discussion would benefit from the involvement of an additional person, either the advisor or advisee can request the presence of a faculty or staff member of the school. The expectations agreement is reviewed by the assistant director of student services and the director of graduate studies, with follow-up as needed. If there is a change in advisor, the expectations agreement must be completed with the new advisor within the first quarter after the change. 2. A one-hour annual review focused on academic progress is held every year; in the first year, this is deferred to autumn of the second year. This meeting includes the advisee and the advising committee [see below details on committee composition]. At any time, a student with questions or concerns can approach any one of the following individuals in the school: Other faculty members of the advisory committee Assistant director of student services Director of graduate studies Director of diversity and inclusion Department chair Alyssa Ferree, Assistant Dean of Student and Postdoctoral Affairs Jenny Saltzman, Assistant Dean for Professional Development and Community Sue Crutcher, Associate Dean for Human Resources and Faculty Affairs Faculty Advisor Students admitted to the Geophysics MS program are assigned a faculty advisor. This faculty advisor carries out the responsibilities described in the Graduate Academic Policy and Procedures (GAP) handbook. The faculty advisor is also responsible for other aspects of mentoring students during their time at Stanford, including monitoring academic progress. This faculty advisor is a member of the Academic Council with a primary or joint appointment in the Geophysics Department; this does not include courtesy or adjunct faculty. Faculty who have recently become emeritus and have been recalled to active duty may serve as Faculty Advisor, even though they are no longer current members of the Academic Council. More information about the role of the faculty advisor and the university academic advising policies can be found in the GAP handbook . In the exceptional case where permission is granted by the chair for a student to have a faculty advisor outside the Geophysics department, it is recommended (but not required) that the student have a co-advisor within the Geophysics department. Advising Committee The Geophysics department requires each MS student to have an advising committee formed by the student and advisor before the student’s first annual review (typically autumn quarter of the second year). The advising committee provides additional support and expertise for the MS student as they conduct their research. The advising committee includes the faculty advisor and (if relevant) the co-advisor, plus at least one other Stanford faculty member (members of the Stanford Academic Council or emeriti faculty). The advising committee can also include a committee member (from inside or outside of Stanford) that contributes to an area of expertise that is not readily available from the faculty and holds a PhD or equivalent foreign degree. If a faculty member on an advising committee is on sabbatical or leave, they will have either agreed to continue serving in an advisory capacity or will have made an alternate arrangement. Students should discuss this with the faculty member and can consult with their faculty advisor or the director of graduate studies. Process for Addressing Concerns Related to Advisor/Advisee Relationship: Faculty members with academic concerns about their advisees can contact the assistant director of student services(ADSS) to discuss options. Dismissal of graduate students is addressed in separate guidelines (see GAP 5.6 Dismissal For Academic and Professional Reasons ). The following are examples of options to address academic and/or wellbeing concerns of graduate students: Consultation with members of the advising committee, director of graduate studies (DGS), director of diversity and inclusion (DDI) or department chair Consultation with university support offices including the dean’s office, the Graduate Life Office (GLO), Bechtel International Center , the Office of Accessible Education (OAE), Counseling and Psychological Services (CAPS), and the Ombuds office. Students with concerns about the advisee/advisor relationship should meet with the ADSS to discuss options. The ADSS will provide resources as well as recommend that the student meet with a faculty member (such as a member of their advisory committee, the DGS, the DDI, department chair or any faculty member to whom they feel comfortable speaking). In cases where the advisor/advisee relationship does not improve, the student will be supported in developing and implementing a formal, agreed-upon plan to correct the situation. The steps for doing so are as follows: The student meets with the ADSS again to review concerns and clearly document examples of the concerns as well as attempts made to mediate the concerns. The student meets with the DGS and/or the department chair and if appropriate the ADSS will join the meetings. The student may consult with Graduate Life Office for additional support. Following the series of meetings with appropriate support staff and faculty, and assessment of concerns, the student, in consultation with the support staff and any faculty, creates a draft advising plan with goals, concerns, ideas for solutions, timelines, any other pertinent information (such as increased 1:1 advising, team advising, a timeline for check-ins, etc.). The draft advising plan must also include a schedule for check-in meetings with the ADSS, DGS, or other relevant people, no less than once per quarter, to ensure that the plan has been successful. The draft advising plan, along with the student’s Advising Expectations document, is shared in advance of the meeting that is detailed next. A meeting is organized with the DGS, advisor, student, ADSS, and any other faculty (such as the chair of the department where the advisor has their primary appointment) or support staff (such as a GLO dean or the university ombuds) that the DGS or student would like to have in attendance. The meeting is chaired by the DGS. The student presents the advising plan and all members of the meeting discuss the plan. At the conclusion of the meeting, the advising plan is updated to reflect any changes agreed upon during the meeting. The updated advising plan is approved by the student, advisor, and the DGS, and placed in the student’s file by the ADSS. Following the meeting, the student follows the check-in process described in the advising plan. Should students request more information about changing advisors, they should read the school policy as well as speak to both the ADSS and DGS or appropriate faculty members. SDSS Intranet Login",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "Lecture courses (component LEC) must be taken for a letter grade unless S/NC is the only option offered.",
+        "programGPARequirement": "Students must maintain a GPA of 3.0 (B) grade point average overall in courses applicable to the degree.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-geoph-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-geoph-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "Geophysics is a hybrid discipline uniquely devoted to applying physical principles and methods to studying Earth’s and other planets’ complex systems (processes and properties). The undergraduate and graduate programs are designed to provide a background of fundamentals in science and courses to coordinate these fundamentals with the principles of geophysics. Graduate programs offer specialized training for professional work in resource exploration, research, and education and lead to the degrees of Master of Science and Doctor of Philosophy.",
+        "WOZxr": "An incoming student with a relevant Master of Science degree may apply for up to 12 units of residency credit that will count toward the 135 units of graduate study. The transfer credit cannot be used to waive course requirements or the breadth requirement. The director of graduate studies must review and approve all transfer credit requests. The following policy governs Graduate Residency Transfer Credit for graduate students who follow their faculty advisor from another institution to the Stanford Geophysics department when that faculty member joins the Geophysics department. Up to 45 course credit units can be transferred following the Graduate Residency Transfer Credit policy . With approval from the director of graduate studies, courses with Stanford equivalents can be used to fulfill degree requirements, including, but not limited to, the “How we study” and “What we study” requirements.",
+        "ItCSB": "The graduate program in Geophysics aims to prepare students to be leaders in the geophysics industry, academia, and research organizations by completing fundamental courses in their major field and related sciences and through independent research. Students are expected to: Apply skills developed in fundamental courses to geophysical problems Research, analyze, and synthesize solutions to an original and contemporary geophysics problem Work independently and as part of a team to develop and improve geophysics solutions Apply written, visual, and oral presentation skills to communicate scientific knowledge An in-depth technical understanding of geophysics problems at an advanced level (master’s students) Complete a scientific investigation that is significant, challenging, and original (doctoral students)",
+        "advisingExpectations": "The Department of Geophysics is committed to providing academic advising in support of graduate student scholarly and professional development. See Graduate Advising for a statement of university policy on graduate advising. Minimum Advising Expectations for the Department of Geophysics Each advisor meets with each advisee annually in autumn quarter to develop/update the Geophysics Graduate Advising Expectations Agreement that records the agreed-upon approach to the following for each advisee: Courses: The process and responsibility for selecting courses Thesis topic: The process and responsibility for choosing the topic Members of advising committee: the process and responsibility for the selection Meetings of advisor and advisee: structure and frequency Conducting the research: the level of independence and progress expected, the involvement of the advisor (level of participation, nature of oversight), involvement of other collaborators (both inside and outside of the research group) Thesis content, including expectations concerning publications Writing of publications: style of interaction, policy on co-authorship, publication costs Conference travel/presentations: who attends/presents, frequency, financial support Funding (stipend, tuition, research costs): source, responsibilities, requirements for ongoing support In-the-office hours Vacations and other absences Expectations for summer quarter Preparing for career interests and plans after Stanford The document, signed by the advisor and advisee, is submitted to the assistant director of student services. If the advisor-advisee discussion would benefit from the involvement of an additional person, either the advisor or advisee can request the presence of a faculty or staff member of the school. The expectations agreement is reviewed by the assistant director of student services and the director of graduate studies, with follow-up as needed. If there is a change in advisor, the expectations agreement must be completed with the new advisor within the first quarter after the change. 2. A one-hour annual review focused on academic progress is held every year; in the first year, this is deferred to autumn of the second year. During the student’s final year in the PhD program, an annual review is held if either the student or advisor believes it would be beneficial; otherwise, the annual review is not required. The annual review meeting includes the advisee and the Advising Committee [see below details on committee composition]. At any time, a student with questions or concerns can approach any one of the following individuals in the school: Other faculty members of the Advisory Committee Assistant director of student services Director of graduate studies Director of diversity and inclusion Department chair Alyssa Ferree, Assistant Dean of Student and Postdoctoral Affairs Jenny Saltzman, Assistant Dean for Professional Development and Community Building Sue Crutcher, Associate Dean for Human Resources and Faculty Affairs Advising of PhD Students Faculty Advisor Students admitted to the Geophysics PhD program are assigned a faculty advisor. This faculty advisor carries out the responsibilities described in the Graduate Academic Policy and Procedures (GAP) handbook. The faculty advisor is also responsible for mentoring students during their time at Stanford, including monitoring academic progress. This faculty advisor is a member of the Academic Council with a primary or joint appointment in the Geophysics Department; this does not include courtesy or adjunct faculty. Faculty who have recently become emeritus and have been recalled to active duty may serve as faculty advisor, even though they are no longer current members of the Academic Council. More information about the role of the faculty advisor and the university academic advising policies can be found in the GAP handbook . In the exceptional case where permission is granted by the Chair for a student to have a faculty advisor outside the Geophysics department, it is recommended (but not required) that the student have a co-advisor within the Geophysics department. If a student wishes to change faculty advisors at any time in their program, they should speak to the assistant director of student services and director of graduate studies. Advising Committee The Geophysics department requires each PhD student to have an Advising Committee formed by the student and advisor before the student’s first annual review (typically autumn quarter of the second year). The Advising Committee provides additional support and expertise for the PhD students as they conduct their research. The advising committee includes the faculty advisor and (if relevant) the co-advisor and at least two other Stanford faculty members (members of the Stanford Academic Council or emeriti faculty). The advising committee can also include a committee member (from inside or outside of Stanford) who contributes to an area of expertise that is not readily available from the faculty and holds a PhD or equivalent foreign degree. The majority on the advising committee must be Geophysics faculty (i.e., two Geophysics faculty on a committee of three, three Geophysics faculty on a committee of four or five, etc.). “Geophysics faculty” are members of the Academic Council with a primary or joint appointment in the Geophysics Department or emeriti Geophysics faculty. This does not include courtesy or adjunct faculty. If a faculty member on an advising committee is on sabbatical or leave, they will have either agreed to continue serving in an advisory capacity or will have made an alternate arrangement. Students should discuss this with the faculty member and can consult with their faculty advisor or the director of graduate studies. The advising committee meets with the student during annual reviews and oversees the Qualifying Exam. University Oral Exam and Doctoral Dissertation Reading Committee Policies regarding the composition of these committees can be found in sections 4.7 and 4.8 of the GAP. Process for Addressing Concerns Related to Advisor/Advisee Relationship: Faculty members with academic concerns about their advisees can contact the assistant director of student services (ADSS) to discuss options. Dismissal of graduate students is addressed in separate guidelines (see GAP 5.6 Dismissal For Academic and Professional Reasons ). The following are examples of options to address academic and/or wellbeing concerns of graduate students: Consultation with members of the advising committee, director of graduate studies (DGS), Director of diversity and inclusion (DDI) or department chair. Consultation with university support offices including the dean’s office, the Graduate Life Office (GLO), Bechtel International Center , the Office of Accessible Education (OAE), Counseling and Psychological Services (CAPS), and the Ombuds office. Students with concerns about the advisee/advisor relationship should meet with the ADSS to discuss options. The ADSS will provide resources as well as recommend that the student meet with a faculty member (such as a member of their advisory committee, the DGS, the DDI, department chair or any faculty member to whom they feel comfortable speaking). In cases where the advisor/advisee relationship does not improve, the student will be supported in developing and implementing a formal, agreed-upon plan to correct the situation. The steps for doing so are as follows: The student meets with the ADSS again to review concerns and clearly document examples of the concerns as well as attempts made to mediate the concerns. The student meets with the DGS and/or the department chair and if appropriate the ADSS will join the meetings. The student may consult with Graduate Life Office for additional support. Following the series of meetings with appropriate support staff and faculty, and assessment of concerns, the student, in consultation with the support staff and any faculty, creates a draft advising plan with goals, concerns, ideas for solutions, timelines, any other pertinent information (such as increased 1:1 advising, team advising, a timeline for check-ins, etc.). The draft advising plan must also include a schedule for check-in meetings with the ADSS, DGS, or other relevant people, no less than once per quarter, to ensure that the plan has been successful. The draft advising plan, along with the student’s Advising Expectations document, is shared in advance of the meeting that is detailed next. A meeting is organized with the DGS, advisor, student, ADSS, and any other faculty (such as the Chair of the department where the advisor has their primary appointment) or support staff (such as a GLO dean or the university ombuds) that the DGS or student would like to have in attendance. The meeting is chaired by the DGS. The student presents the advising plan and all members of the meeting discuss the plan. At the conclusion of the meeting, the advising plan is updated to reflect any changes agreed upon during the meeting. The updated advising plan is approved by the student, advisor, and the DGS, and placed in the student’s file by the ADSS. Following the meeting, the student follows the check-in process described in the advising plan. Should students request more information about changing advisors, they should read the school policy as well as speak to both the ADSS and DGS or appropriate faculty members. https://insidesdss.stanford.edu/news/when-students-change-advisors-resources-and-guidance Minimum Degree Progress: The academic requirements for graduate students include timely completion of university and degree program requirements, such as admission to candidacy, successful completion of qualifying exams, and so on within the established time limits. Students are expected to show evidence of productive and sustained research progress with no conflict of interest or conflict of commitment. The university and department require graduate students to maintain at least a 3.0 (B) grade point average overall in courses applicable to their degree program. The record of a student identified during a quarter as not meeting the requirements for minimum progress set by the University is reviewed by the assistant director of student services (ADSS) and the director of graduate studies (DGS) to determine whether the problem lies with administrative matters such as reporting of grades or with academic performance. The student is notified by the DGS (with a cc to the ADSS and Advisor) that their academic performance has not met the requirement for minimum progress set by the university, and they are invited to explain any special circumstances. If it is determined that there is a problem with academic performance, approval for continuation in the degree program is contingent on having a plan to maintain appropriate progress in subsequent quarters. The terms of this plan are developed by the student in consultation with their advisor. The plan sets specific and measurable objectives that must be met over a reasonable time period determined by the Advisor. The time period is at least one quarter but no more than one academic year. The plan is designed to bring the student’s academic standing in line with the requirements for minimum progress. This plan is captured in a document that is signed off by the student, the student’s Advisor, and the DGS. If in any quarter the set objectives are not achieved, a committee will be formed as described in the GAP handbook, section 5.6 to decide if the student should be dismissed. The committee members will be the DGS, Director of Diversity and Inclusion (DDI), and another faculty member (excluding the Advisor) selected by the DGS in consultation with the department chair. If the Advisor is either the DGS or DDI, a replacement member will be chosen by the non-advisor DGS or DDI member in consultation with the department chair. The committee will follow the GAP 5.6.2 procedure , reviewing the case with input from the Advisor and student, and decide if the student will be dismissed from the program. Student appeals are handled using the Student Academic Grievance Procedure . If the Advisor disagrees with a committee decision to dismiss the student, the case will be reviewed by the faculty of the department, with the final decision regarding dismissal obtained by majority vote of the faculty.",
+        "programAdditionalPolicies": "Adding the Geophysics MS Degree Geophysics PhD students can add the Geophysics MS after speaking to their faculty advisor and the Assistant Director of Student Services. The process is explained in GAP 5.1 Changes and Additions of Degree Programs . This can be done any quarter and does not require review by the admissions committee. The Geophysics MS requirements are purposefully designed as a subset of the PhD requirements, and up to 45 units can be double counted for both MS and PhD degree requirements, as explained in GAP 4.9.1 : “Up to 45 units completed at Stanford toward a master’s or Engineer degree may be used toward the 135 required for the doctoral degree (Ph.D. or D.M.A.).” Students must complete all MS degree requirements, listed here . This includes the “Research presentation and report” requirement, and this research can be the same as the student’s PhD research; it does not have to be a separate project.",
+        "minimum_program_units_metadata": 135,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-geoph-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-oceans-phd-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "Graduate studies in the Department of Oceans involve academic coursework and independent research. The PhD is conferred upon candidates who have demonstrated substantial scholarship, high attainment in a particular field of knowledge, and the ability to conduct independent research.",
+        "ItCSB": "The objectives of the doctoral program in Oceans are to enable students to develop the skills needed to conduct interdisciplinary, collaborative and original investigations into oceans-related research to advance exploration and knowledge of our blue planet and tackle the most pressing challenges in climate and sustainability. Graduates must also be able to interpret research results and present the data and conclusions in a publishable manner while developing strong teaching and effective public-facing communication skills. We anticipate that our students will pursue various careers in academia, public and private sectors, including government labs, NGOs, and state and local governments.",
+        "advisingExpectations": "Upon entering the program, students along with their Primary Advisor will choose a First Year Advisory Committee, consisting of the student’s primary advisor and 1-2 other faculty members who align with the student’s scientific interests. Advisory committee support will include recommendations for first-year courses, navigating policies, plans for teaching assistantships, guidance on fellowship applications, discussion of general research interests, and designing and conducting research. Students will be encouraged to meet with members of this committee throughout the first year to request further guidance on these topics. Graduate students are active contributors to the advising relationship. They should proactively seek academic and professional guidance and take responsibility for informing themselves of policies and degree requirements for the Oceans PhD program. In addition, the Oceans program adheres to the advising guidelines and responsibilities listed by the Office of the Vice Provost for Graduate Education and in the Graduate Academic Policies . See Graduate Advising for a statement of university policy on graduate advising.",
+        "programGradingPolicies": "If offered, any course that satisfies the PhD degree requirements must be taken for a letter grade.",
+        "programGPARequirement": "A minimum cumulative GPA of 3.0 or above is required for all courses. An overall grade point average (GPA) of at least 3.0 must be maintained.",
+        "programAdditionalPolicies": "All students in the PhD program are required to register autumn, winter, spring and summer quarters. All students must register for exactly 10 units in autumn, winter and spring quarters and exactly 3 units in summer quarter until they advance to Terminal Graduate Registration (TGR ) status (135 units), unless otherwise instructed by the department; for instance, those with specific fellowships, will need to be enrolled in 10 units all four quarters. Completing each year’s general requirements listed below is required for satisfactory progress toward the degree. Students not making satisfactory degree progress are subject to departmental academic review and/or dismissal. The university requires all PhD students to complete at least three units of work with each of four Stanford faculty. These units of work can include lectures, labs, seminars, teaching, research, directed readings and independent study. In order to advance to candidacy, coursework must be completed by the end of the second year of graduate study. The Oceans Department Graduate Handbook contains further information on PhD requirements and policies.",
+        "minimum_program_units_metadata": 135,
+        "expected_length_metadata": {
+          "value": 6,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-oceans-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-oceans-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "Graduate studies in the Department of Oceans involve academic coursework and independent research. The OCEANS-MS program is only open to existing students in the OCEANS-PHD Program.",
+        "ItCSB": "The objectives of the program in Oceans are to enable students to develop the skills needed to conduct interdisciplinary, collaborative and original investigations into oceans-related research to advance exploration and knowledge of our blue planet and tackle the most pressing challenges in climate and sustainability. Graduates must also be able to interpret research results and present the data and conclusions in a publishable manner while developing strong teaching and effective public-facing communication skills.",
+        "advisingExpectations": "See Graduate Advising for a statement of university policy on graduate advising.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-oceans-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-oceans-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-sustsci-ma-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The Sustainability Science and Practice program (SUST) is an interdisciplinary coterminal master’s program hosted by the Stanford Doerr School of Sustainability. The program prepares leaders to radically accelerate the transition to a sustainable and just society. As the global human population climbs toward 10 billion, consumption demands increase, and disparities in wealth and opportunity persist, humanity must learn to equitably meet existing needs in ways that do not forgo possibilities for future generations. Sustainability challenges are marked by extreme complexity, urgency, conflicting demands, and often a lack of resources or political will to address them. Transforming these challenges into powerful opportunities requires a new type of leader who can envision a prosperous future for all and design practices and cultivate partnerships essential to building that future. The SUST program equips students with the theoretical and conceptual knowledge, mindsets, and practical skills needed to advance sustainability, securing human well-being worldwide and across generations. Given the inherent interdisciplinary nature of sustainability challenges, SUST draws on diverse disciplines and pedagogical methods to prepare students as sustainability leaders. The curriculum encompasses and integrates: a) natural sciences, social sciences, and arts; b) theory and practice; and c) quantitative and qualitative methods. Through this integration, the program prepares students with a technical understanding of planetary functions, human-environment interactions, and global change, as well as the capacity to strategize and lead change in support of human and planetary well-being. Courses in the natural sciences enable students to understand Earth and the planetary changes occurring, while courses in the social sciences and arts develop students’ understanding of the social, economic, and policy factors that influence human capacity to drive transformative change. Theoretical frameworks prepare students to analyze complex social-environmental systems and conceptualize the nature of human-environment interactions. To learn how sustainability works (or does not work) in practice, students examine case studies, hear from expert practitioners, and apply tools and frameworks to real-world projects. Students learn quantitative methods to evaluate the status of social-ecological systems, monitor changes and impacts happening within them, track progress toward sustainability goals, and inform policy or intervention decisions with evidence. They learn qualitative methods to prepare them to understand human behavior, decision-making processes, cultural context, the values of diverse interest-holders, and system dynamics that cannot be fully captured with quantitative data. Together these approaches develop students’ identity, agency, capabilities and perspectives as sustainability leaders. The SUST curriculum covers three main elements: Element 1: Understanding Complex Social-Environmental Systems Students develop a “systems perspective,” deepening their awareness of the dynamic and interrelated nature of social-environmental systems. They explore frameworks and tools to understand, measure, and map complex social-environmental systems and their interactions to recognize potential feedbacks, thresholds, and unintended consequences, as well as to identify leverage points and opportunities for interventions that advance sustainability. Element 2: Understanding Decision-Making and Developing Strategies for Change Students examine the roles of diverse actors influencing change in social-environmental systems and explore strategies to align decision-making and behavior with sustainability. They explore the mindsets and approaches of transformative leaders and examine effective strategies for advancing sustainability across sectors. Students develop decision-making skills in complex and uncertain contexts, use metrics and evaluation approaches aligned with sustainability goals, cultivate leadership orientations, and practice effective communications and storytelling approaches. Element 3: Designing Innovations with Impact at Scale Students develop an understanding of how to intervene in complex systems for transformative impact by exploring frameworks and tools from systems thinking, design thinking, social cognitive theory, behavioral economics, and partnership strategies. They develop practical skills to understand complexity, analyze root causes, and design high-leverage intervention pathways that realign systems with the goal of intergenerational well-being. Sustainability Leadership Practicum To integrate and internalize core lessons from the SUST curriculum, each student completes a 120-hour practicum project of their design, collaborating on a complex sustainability challenge with an outside partner and working through the constraints often faced by decision-makers and leaders. Students apply the curriculum’s leadership mindsets, knowledge, and skills to this practical experience and present their final analysis and reflections to faculty and peers.",
+        "WOZxr": "Transfer credit may not be counted toward the MA in Sustainability Science and Practice.",
+        "ItCSB": "The Sustainability Science and Practice program integrates theoretical and conceptual knowledge, mindsets, and practical skills to enable students to understand and manage complex systems, understand decision-making and develop strategies for change, and cultivate partnerships and design innovations with potential for impact at scale. The program prepares students to become effective participants and agents of change as individuals and within organizations across all sectors of society, contributing to the advancement of sustainability, i.e., the well-being of people around the world and across generations. Program learning outcomes are organized around three core curricular elements: Element 1: Understanding Complex Social-Environmental Systems Students develop a “systems perspective,” deepening their awareness of the dynamic and interrelated nature of social-environmental systems. They explore frameworks and tools to understand, measure, and map complex social-environmental systems and their interactions to recognize potential feedbacks, thresholds, and unintended consequences, as well as to identify leverage points and opportunities for interventions that advance sustainability. Learning outcomes: Understand and evaluate sustainability challenges using frameworks that build holistic understanding of the complex social-environmental systems in which sustainability challenges play out. Analyze the characteristics of complex systems that make interventions for sustainability challenging. For example, students will examine the importance of cross-scale issues, feedback mechanisms, non-linearities, and resilience and vulnerability in social-environmental systems in influencing success or failure in a range of sustainability efforts (including corporate and civil society). Appreciate and understand diverse perspectives and voices – including, but not limited to, nonprofit, government, and corporate partners, as well as community and indigenous voices–in addressing sustainability challenges. Element 2: Understanding Decision-Making and Developing Strategies for Change Students examine the roles of diverse actors influencing change in social-environmental systems and explore strategies to align decision-making and behavior with sustainability. They explore the mindsets and approaches of transformative leaders and examine effective strategies for advancing sustainability across sectors. Students develop decision-making skills in complex and uncertain contexts, use metrics and evaluation approaches aligned with sustainability goals, cultivate leadership orientations, and practice effective communications and storytelling approaches. Learning outcomes: Understand and develop orientations and competencies required to lead transformative change in a VUCA world (volatility, uncertainty, complexity and ambiguity). Understand and describe strategies, approaches and models for advancing sustainability in organizations and society. Understand behavioral and systemic barriers to sustainability and strategies for overcoming them. Element 3: Designing Innovations with Impact at Scale Students develop an understanding of how to intervene in complex systems for transformative impact by exploring frameworks and tools from systems thinking, design thinking, social cognitive theory, behavioral economics, and partnership strategies. They develop practical skills to understand complexity, analyze root causes, and design high-leverage intervention pathways that realign systems with the goal of intergenerational well-being. Learning outcomes: Develop an introductory understanding of and ability to apply systems transformation theory, methodology, and philosophy. Develop skills to innovate at the system level and design high-level system transformation interventions. Articulate a transformation strategy, underpinned by systems theory and a robust theory of change.",
+        "advisingExpectations": "The primary purpose of the master’s advisor in the Sustainability Science and Practice (SUST) program is to serve as a mentor, helping to guide students in their academic development and supporting them as they prepare for their careers. As an interdisciplinary program, SUST relies upon faculty from a wide range of relevant departments to advise students as they pursue their degree. The program greatly appreciates the essential advising provided by faculty, and our staff are readily available to answer questions and assist as needed. Faculty advisors are not expected to know the details of program policies or degree requirements; SUST program staff take the lead on communicating and advising students on these matters and are also available to support students with course selection, practicum guidance, and more. Confirming an Advisor Before applying to the Sustainability Science and Practice coterminal master’s program, all candidates must identify a faculty member who will serve as their master’s advisor. The master’s advisor must be an Academic Council member. Faculty on Academic Council typically hold a title of Professor, Associate Professor, or Assistant Professor, whereas instructors with the title of Lecturer, Adjunct Professor, or Professor of the Practice are generally not on Academic Council. The SUST Program Director is also eligible to advise a limited number of SUST students. If unsure whether a faculty member is on Academic Council, students may contact the SUST Student Services Officer to verify. In seeking out potential advisors, students are encouraged to research faculty backgrounds to identify those with shared interests and academic focus areas they would like to emphasize in their studies. Candidates are welcome to seek out an advisor from any part of the university. As a starting point, students may consult the SUST program website , which includes a list of faculty members affiliated with the SUST program (note that not all listed are on the Academic Council). Once a candidate has developed a short list of carefully considered ideas, the student should contact the faculty member to discuss whether an advising relationship could be a good ﬁt for both parties. Advising Expectations A prospective faculty advisor meets with a student before application submission to: Discuss the student’s interests and motivation for applying to the program Discuss what the advisor/advisee relationship will look like Review, discuss, and sign the student’s SUST Master's Program Proposal The advisor’s signature on the completed Program Proposal is required at the time of application. It serves as a confirmation of the faculty member’s willingness to serve in the advising role. The student must also review their Program Proposal with a SUST Student Services Officer to ensure alignment with program requirements. Once admitted, the student is responsible for scheduling quarterly advising meetings to discuss the following: Proposed courses for the upcoming quarter Career goals and practicum ideas Opportunities to connect with sustainability networks outside of Stanford in support of the practicum and/or career The student’s practicum proposal (Students are required to seek their advisor’s feedback and signature of approval on their Practicum proposal before proceeding with their Practicum project. Students additionally meet with the SUST Practicum Manager throughout the year to receive support and guidance on each stage of their practicum work.) The advisor’s availability to attend the student’s practicum presentation in their final quarter in the program Engagement in relevant research opportunities and projects The student's well-being and any support they may need. Addressing Mental Health Pursuing a master’s degree at Stanford University is among the many exciting but challenging endeavors students may undertake. The pressures of academic work, external projects, and family affairs can sometimes cause students mental, physical, and emotional stress. The program encourages academic advisors to provide resources to students who may show signs of struggling with mental health, including extreme levels of anxiety and depression, or battling issues such as grief. Resources: Counseling and Psychological Services (CAPS) offers crisis counseling. Walk-in appointments are available, and clinicians are always on call at (650) 723-3785. The Graduate Life Office is available during office hours at (650) 736-7078 or 24/7 at (650) 723-8222, pager ID number 25085. The Bridge Peer Counseling Center offers counseling by trained students 24/7 at (650) 723-3392 The Office for Religious Life offers spiritual guidance for students. Call (650) 723-1762 or visit the Round Room at Memorial Church. The Faculty and Staff Help Center in Kingscote Gardens offers confidential help for Stanford faculty and staff. If you know someone in distress, contact CAPS, the Department of Public Safety, or the Office of the Dean of Students. See Graduate Advising for a statement of university policy on graduate advising.",
+        "cotermTransferPolicy": "In this master’s program, courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career; the timing of the first graduate quarter is not a factor. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. SUST students must take most (and ideally all) of their elective courses during their time in the SUST coterm. At the program’s discretion, a limited number of elective units may be considered for transfer from the undergraduate career to the SUST graduate career. Any course transferred from a student’s undergraduate career to their SUST graduate career must have a grade of B+ or higher.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "All courses must be taken for a letter grade if a letter grade is offered.",
+        "programGPARequirement": "A cumulative GPA of 3.4 or higher must be maintained throughout the program. A minimum GPA of 3.4 is required to graduate.",
+        "programAdditionalPolicies": "A minimum of 45 units of coursework. At least 34 units of coursework must be at the 200 level or above. All coursework must be at the 100 level or above. At least 25 of the 45 units must be designated as “arts” units. At least three elective courses must be taken for three or more units.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ma"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-sustsci-ma"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "recheck-sustsci-ms-degree-completion-context",
+      "topic": "study_structure_and_degree_completion",
+      "value": {
+        "A3i6E": "The Sustainability Science and Practice program (SUST) is an interdisciplinary coterminal master’s program hosted by the Stanford Doerr School of Sustainability. The program prepares leaders to radically accelerate the transition to a sustainable and just society. As the global human population climbs toward 10 billion, consumption demands increase, and disparities in wealth and opportunity persist, humanity must learn to equitably meet existing needs in ways that do not forgo possibilities for future generations. Sustainability challenges are marked by extreme complexity, urgency, conflicting demands, and often a lack of resources or political will to address them. Transforming these challenges into powerful opportunities requires a new type of leader who can envision a prosperous future for all and design practices and cultivate partnerships essential to building that future. The SUST program equips students with the theoretical and conceptual knowledge, mindsets, and practical skills needed to advance sustainability, securing human well-being worldwide and across generations. Given the inherent interdisciplinary nature of sustainability challenges, SUST draws on diverse disciplines and pedagogical methods to prepare students as sustainability leaders. The curriculum encompasses and integrates: a) natural sciences, social sciences, and arts; b) theory and practice; and c) quantitative and qualitative methods. Through this integration, the program prepares students with a technical understanding of planetary functions, human-environment interactions, and global change, as well as the capacity to strategize and lead change in support of human and planetary well-being. Courses in the natural sciences enable students to understand Earth and the planetary changes occurring, while courses in the social sciences and arts develop students’ understanding of the social, economic, and policy factors that influence human capacity to drive transformative change. Theoretical frameworks prepare students to analyze complex social-environmental systems and conceptualize the nature of human-environment interactions. To learn how sustainability works (or does not work) in practice, students examine case studies, hear from expert practitioners, and apply tools and frameworks to real-world projects. Students learn quantitative methods to evaluate the status of social-ecological systems, monitor changes and impacts happening within them, track progress toward sustainability goals, and inform policy or intervention decisions with evidence. They learn qualitative methods to prepare them to understand human behavior, decision-making processes, cultural context, the values of diverse interest-holders, and system dynamics that cannot be fully captured with quantitative data. Together these approaches develop students’ identity, agency, capabilities and perspectives as sustainability leaders. The SUST curriculum covers three main elements: Element 1: Understanding Complex Social-Environmental Systems Students develop a “systems perspective,” deepening their awareness of the dynamic and interrelated nature of social-environmental systems. They explore frameworks and tools to understand, measure, and map complex social-environmental systems and their interactions to recognize potential feedbacks, thresholds, and unintended consequences, as well as to identify leverage points and opportunities for interventions that advance sustainability. Element 2: Understanding Decision-Making and Developing Strategies for Change Students examine the roles of diverse actors influencing change in social-environmental systems and explore strategies to align decision-making and behavior with sustainability. They explore the mindsets and approaches of transformative leaders and examine effective strategies for advancing sustainability across sectors. Students develop decision-making skills in complex and uncertain contexts, use metrics and evaluation approaches aligned with sustainability goals, cultivate leadership orientations, and practice effective communications and storytelling approaches. Element 3: Designing Innovations with Impact at Scale Students develop an understanding of how to intervene in complex systems for transformative impact by exploring frameworks and tools from systems thinking, design thinking, social cognitive theory, behavioral economics, and partnership strategies. They develop practical skills to understand complexity, analyze root causes, and design high-leverage intervention pathways that realign systems with the goal of intergenerational well-being. Sustainability Leadership Practicum To integrate and internalize core lessons from the SUST curriculum, each student completes a 120-hour practicum project of their design, collaborating on a complex sustainability challenge with an outside partner and working through the constraints often faced by decision-makers and leaders. Students apply the curriculum’s leadership mindsets, knowledge, and skills to this practical experience and present their final analysis and reflections to faculty and peers.",
+        "WOZxr": "Transfer credit may not be counted toward the MS in Sustainability Science and Practice.",
+        "ItCSB": "The Sustainability Science and Practice program integrates theoretical and conceptual knowledge, mindsets, and practical skills to enable students to understand and manage complex systems, understand decision-making and develop strategies for change, and cultivate partnerships and design innovations with potential for impact at scale. The program prepares students to become effective participants and agents of change as individuals and within organizations across all sectors of society, contributing to the advancement of sustainability, i.e., the well-being of people around the world and across generations. Program learning outcomes are organized around three core curricular elements: Element 1: Understanding Complex Social-Environmental Systems Students develop a “systems perspective,” deepening their awareness of the dynamic and interrelated nature of social-environmental systems. They explore frameworks and tools to understand, measure, and map complex social-environmental systems and their interactions to recognize potential feedbacks, thresholds, and unintended consequences, as well as to identify leverage points and opportunities for interventions that advance sustainability. Learning outcomes: Understand and evaluate sustainability challenges using frameworks that build holistic understanding of the complex social-environmental systems in which sustainability challenges play out. Analyze the characteristics of complex systems that make interventions for sustainability challenging. For example, students will examine the importance of cross-scale issues, feedback mechanisms, non-linearities, and resilience and vulnerability in social-environmental systems in influencing success or failure in a range of sustainability efforts (including corporate and civil society). Appreciate and understand diverse perspectives and voices – including, but not limited to, nonprofit, government, and corporate partners, as well as community and indigenous voices–in addressing sustainability challenges. Element 2: Understanding Decision-Making and Developing Strategies for Change Students examine the roles of diverse actors influencing change in social-environmental systems and explore strategies to align decision-making and behavior with sustainability. They explore the mindsets and approaches of transformative leaders and examine effective strategies for advancing sustainability across sectors. Students develop decision-making skills in complex and uncertain contexts, use metrics and evaluation approaches aligned with sustainability goals, cultivate leadership orientations, and practice effective communications and storytelling approaches. Learning outcomes: Understand and develop orientations and competencies required to lead transformative change in a VUCA world (volatility, uncertainty, complexity and ambiguity). Understand and describe strategies, approaches and models for advancing sustainability in organizations and society. Understand behavioral and systemic barriers to sustainability and strategies for overcoming them. Element 3: Designing Innovations with Impact at Scale Students develop an understanding of how to intervene in complex systems for transformative impact by exploring frameworks and tools from systems thinking, design thinking, social cognitive theory, behavioral economics, and partnership strategies. They develop practical skills to understand complexity, analyze root causes, and design high-leverage intervention pathways that realign systems with the goal of intergenerational well-being. Learning outcomes: Develop an introductory understanding of and ability to apply systems transformation theory, methodology, and philosophy. Develop skills to innovate at the system level and design high-level system transformation interventions. Articulate a transformation strategy, underpinned by systems theory and a robust theory of change.",
+        "advisingExpectations": "The primary purpose of the master’s advisor in the Sustainability Science and Practice (SUST) program is to serve as a mentor, helping to guide students in their academic development and supporting them as they prepare for their careers. As an interdisciplinary program, SUST relies upon faculty from a wide range of relevant departments to advise students as they pursue their degree. The program greatly appreciates the essential advising provided by faculty, and our staff are readily available to answer questions and assist as needed. Faculty advisors are not expected to know the details of program policies or degree requirements; SUST program staff take the lead on communicating and advising students on these matters and are also available to support students with course selection, practicum guidance, and more. Confirming an Advisor Before applying to the Sustainability Science and Practice coterminal master’s program, all candidates must identify a faculty member who will serve as their master’s advisor. The master’s advisor must be an Academic Council member. Faculty on Academic Council typically hold a title of Professor, Associate Professor, or Assistant Professor, whereas instructors with the title of Lecturer, Adjunct Professor, or Professor of the Practice are generally not on Academic Council. The SUST Program Director is also eligible to advise a limited number of SUST students. If unsure whether a faculty member is on Academic Council, students may contact the SUST Student Services Officer to verify. In seeking out potential advisors, students are encouraged to research faculty backgrounds to identify those with shared interests and academic focus areas they would like to emphasize in their studies. Candidates are welcome to seek out an advisor from any part of the university. As a starting point, students may consult the SUST program website , which includes a list of faculty members affiliated with the SUST program (note that not all listed are on the Academic Council). Once a candidate has developed a short list of carefully considered ideas, the student should contact the faculty member to discuss whether an advising relationship could be a good ﬁt for both parties. Advising Expectations A prospective faculty advisor meets with a student before application submission to: Discuss the student’s interests and motivation for applying to the program Discuss what the advisor/advisee relationship will look like Review, discuss, and sign the student’s SUST Master's Program Proposal The advisor’s signature on the completed Program Proposal is required at the time of application. It serves as a confirmation of the faculty member’s willingness to serve in the advising role. The student must also review their Program Proposal with a SUST Student Services Officer to ensure alignment with program requirements. Once admitted, the student is responsible for scheduling quarterly advising meetings to discuss the following: Proposed courses for the upcoming quarter Career goals and practicum ideas Opportunities to connect with sustainability networks outside of Stanford in support of the practicum and/or career The student’s practicum proposal (Students are required to seek their advisor’s feedback and signature of approval on their Practicum proposal before proceeding with their Practicum project. Students additionally meet with the SUST Practicum Manager throughout the year to receive support and guidance on each stage of their practicum work.) The advisor’s availability to attend the student’s practicum presentation in their final quarter in the program Engagement in relevant research opportunities and projects The student's well-being and any support they may need. Addressing Mental Health Pursuing a master’s degree at Stanford University is among the many exciting but challenging endeavors students may undertake. The pressures of academic work, external projects, and family affairs can sometimes cause students mental, physical, and emotional stress. The program encourages academic advisors to provide resources to students who may show signs of struggling with mental health, including extreme levels of anxiety and depression, or battling issues such as grief. Resources: Counseling and Psychological Services (CAPS) offers crisis counseling. Walk-in appointments are available, and clinicians are always on call at (650) 723-3785. The Graduate Life Office is available during office hours at (650) 736-7078 or 24/7 at (650) 723-8222, pager ID number 25085. The Bridge Peer Counseling Center offers counseling by trained students 24/7 at (650) 723-3392 The Office for Religious Life offers spiritual guidance for students. Call (650) 723-1762 or visit the Round Room at Memorial Church. The Faculty and Staff Help Center in Kingscote Gardens offers confidential help for Stanford faculty and staff. If you know someone in distress, contact CAPS, the Department of Public Safety, or the Office of the Dean of Students. See Graduate Advising for a statement of university policy on graduate advising.",
+        "cotermTransferPolicy": "In this master’s program, courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career; the timing of the first graduate quarter is not a factor. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. SUST students must take most (and ideally all) of their elective courses during their time in the SUST coterm. At the program’s discretion, a limited number of elective units may be considered for transfer from the undergraduate career to the SUST graduate career. Any course transferred from a student’s undergraduate career to their SUST graduate career must have a grade of B+ or higher.",
+        "cotermQuartersBack": "Autumn quarter of Sophomore year",
+        "programGradingPolicies": "All courses must be taken for a letter grade if a letter grade is offered.",
+        "programGPARequirement": "A cumulative GPA of 3.4 or higher must be maintained throughout the program. A minimum GPA of 3.4 is required to graduate.",
+        "programAdditionalPolicies": "A minimum of 45 units of coursework. At least 34 units of coursework must be at the 200 level or above. All coursework must be at the 100 level or above. At least 25 of the 45 units must be designated as “science” units. At least three elective courses must be taken for three or more units.",
+        "minimum_program_units_metadata": 45,
+        "expected_length_metadata": {
+          "value": 2,
+          "unit": "Years"
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-sustsci-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "prospective_program_student",
+          "enrolled_program_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-sustsci-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "Program metadata units may describe formal program coursework separately from University graduate residency units. Completion GPA and progress obligations are not initial admission thresholds. Specific actual routes remain separately scoped."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "eps-phd-added-ms-conditions",
+      "topic": "internal_intermediate_degree_progression",
+      "value": "EPS PhD students may add the enroute MS via GAP after45units, qualifying exam andmaster thesis reviewed byAcademicCouncil primaryadviser andsecond facultyreader. Thesis may befirst dissertationchapter; title/signaturepages goStudentServices; allPhDrequirementsremain.",
+      "scope": {
+        "option_ids": [
+          "stanford-eps-ms"
+        ],
+        "procedure_ids": [
+          "eps-phd-added-ms"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "existing_corresponding_PhD_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-eps-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "This is not an additional external application; eligibility is the corresponding existing PhD programme."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "geoph-phd-added-ms-conditions",
+      "topic": "internal_intermediate_degree_progression",
+      "value": "Existing Geophysics PhD students may add Geophysics MS anyquarter after adviser/StudentServices consultation withoutadmissionscommittee review. CompleteMSrequirements includingresearchpresentation/report, whichmayusethePhDproject; upto45StanfordunitscanfulfillMSandPhDresidencyrequirements.",
+      "scope": {
+        "option_ids": [
+          "stanford-geoph-ms"
+        ],
+        "procedure_ids": [
+          "geoph-phd-added-ms"
+        ],
+        "levels": [
+          "master's"
+        ],
+        "applicant_categories": [
+          "existing_corresponding_PhD_student"
+        ],
+        "cycle": "2026-27 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-bulletin-geoph-phd"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "original_catalog_content_rechecked_2026_10_03",
+      "conditions": [
+        "This is not an additional external application; eligibility is the corresponding existing PhD programme."
+      ],
+      "exceptions": []
     }
   ],
   "unresolved": [
@@ -4294,7 +5272,7 @@
         "funding_coverage",
         "funding_renewal"
       ],
-      "reason": "Reviewed Oceans admission, application-resource and PhD program pages describe KHS as a separate scholarship but do not state Oceans departmental PhD support guarantee or how internal PhD-only MS affects funding.",
+      "reason": "Oceans department pages do not specify exact individual doctoral package duration, renewal, summer amount or how internal PhD-only MS affects it. Doerr school explicitly states full PhD support through fellowship/TA/RA; that shared sourced commitment is retained in engineering-doerr-evidence:doerr-phd-support, while individual programme terms remain unknown.",
       "source_ids": [
         "oceans-admissions",
         "oceans-resources",

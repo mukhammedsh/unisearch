@@ -54,7 +54,10 @@
             "directory-evidence:stanford-coterm-cs-ms",
             "engineering-doerr-evidence:external-graduate",
             "engineering-doerr-evidence:engineering-coterm",
-            "engineering-doerr-evidence:cs-coterm"
+            "engineering-doerr-evidence:cs-coterm",
+            "engineering-doerr-evidence:cs-current-regular-admission",
+            "engineering-doerr-evidence:cs-corresponding-phd-added-ms",
+            "engineering-doerr-evidence:cs-joint-professional-degrees"
           ],
           "evidence_profiles": [
             {
@@ -75,7 +78,10 @@
               "directory-evidence:stanford-coterm-cs-ms",
               "engineering-doerr-evidence:external-graduate",
               "engineering-doerr-evidence:engineering-coterm",
-              "engineering-doerr-evidence:cs-coterm"
+              "engineering-doerr-evidence:cs-coterm",
+              "engineering-doerr-evidence:cs-current-regular-admission",
+              "engineering-doerr-evidence:cs-corresponding-phd-added-ms",
+              "engineering-doerr-evidence:cs-joint-professional-degrees"
             ],
             "reason": "All sourced external, coterm, internal, intermediate and combined contexts remain separate; a classification label is not an additional degree or a policy override."
           }
@@ -413,6 +419,53 @@
           ],
           "evidence_file": "engineering-doerr-evidence.json",
           "original_id": "cs-coterm"
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-current-regular-admission",
+          "option_ids": [
+            "stanford-option-cs-ms",
+            "stanford-option-cs-phd"
+          ],
+          "classification": "current Stanford student regular external-style degree application",
+          "destination": "current Stanford student regular external-style degree application",
+          "source_ids": [
+            "engineering-doerr-evidence:cs-current-add-degree"
+          ],
+          "shared_policy_context_ids": [
+            "engineering-doerr-evidence:external-graduate"
+          ],
+          "shared_policy_boundary": "Department explicitly uses the same regular degree application for current graduate students. Apply only facts for the selected degree and current-student circumstances; previous official documents need not be resent where the department says so. Coterm and internal intermediate petitions remain excluded.",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "original_id": "cs-current-regular-admission"
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-corresponding-phd-added-ms",
+          "option_ids": [
+            "stanford-option-cs-ms"
+          ],
+          "classification": "same-program CS PhD intermediate MS petition",
+          "destination": "same-program CS PhD intermediate MS petition",
+          "source_ids": [
+            "engineering-doerr-evidence:cs-phd-enroute-ms"
+          ],
+          "evidence_file": "engineering-doerr-evidence.json",
+          "original_id": "cs-corresponding-phd-added-ms"
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-joint-professional-degrees",
+          "option_ids": [
+            "stanford-option-cs-ms",
+            "stanford-option-cs-phd"
+          ],
+          "classification": "separate CS and professional-school applications with joint consent",
+          "destination": "separate CS and professional-school applications with joint consent",
+          "source_ids": [
+            "engineering-doerr-evidence:cs-joint-mba",
+            "engineering-doerr-evidence:cs-joint-law-ms",
+            "engineering-doerr-evidence:cs-joint-law-phd"
+          ],
+          "evidence_file": "engineering-doerr-evidence.json",
+          "original_id": "cs-joint-professional-degrees"
         }
       ],
       "conditional_shared_fact_ids": [
@@ -431,7 +484,24 @@
         "undergraduate-shared-evidence:stanford-grad-budget-2026-27-reference",
         "undergraduate-shared-evidence:stanford-kazakhstan-graduate-credential-verification",
         "undergraduate-shared-evidence:stanford-international-visa-and-enrollment-steps",
-        "undergraduate-shared-evidence:stanford-incoming-student-health-requirements"
+        "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-graduate-special-and-excess-unit-tuition-2026-27",
+        "undergraduate-shared-evidence:stanford-grad-offer-response-and-deferral",
+        "undergraduate-shared-evidence:stanford-grad-post-offer-english-proof",
+        "undergraduate-shared-evidence:stanford-grad-wes-timing-and-cost",
+        "undergraduate-shared-evidence:stanford-grad-loan-application-window",
+        "engineering-doerr-evidence:application-fee",
+        "engineering-doerr-evidence:application-materials",
+        "engineering-doerr-evidence:cs-ms-entry-and-hcp",
+        "engineering-doerr-evidence:cs-ms-tests-and-english-policy",
+        "engineering-doerr-evidence:english-proficiency",
+        "engineering-doerr-evidence:graduate-application-limit",
+        "engineering-doerr-evidence:graduate-entry-eligibility",
+        "engineering-doerr-evidence:gre-policy",
+        "engineering-doerr-evidence:program-deadline-gre-2027",
+        "engineering-doerr-evidence:engineering-2026-27-historical-tuition",
+        "engineering-doerr-evidence:cs-hcp-load-location-and-support"
       ],
       "facts": [
         {
@@ -521,7 +591,13 @@
           "review_status": "verified",
           "value": {
             "source_content": "Declaring the major is a straightforward process, and there are no specific course or major requirements you need to complete beforehand. Please note that processing can take up to two weeks, and we’re unable to expedite requests. We encourage students to plan ahead, especially if you have a target date for declaring. Additionally, keep in mind that we do not process declarations during finals week, academic breaks, or the Summer quarter. To get started, please follow the how to declare steps outlined on the CS website.",
-            "interpretation_boundary": "Degree study/completion or major declaration for enrolled undergraduates; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Degree study/completion or major declaration for enrolled undergraduates; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "https://www.cs.stanford.edu/bachelors/how-to-declare",
+                "label": "how to declare"
+              }
+            ]
           }
         },
         {
@@ -567,7 +643,141 @@
           "review_status": "verified",
           "value": {
             "source_content": "Guide to Choosing Introductory Courses Students arriving at Stanford have widely differing backgrounds and goals, but most find that using computers effectively benefits their education. The department offers many introductory courses to meet the needs of these students. For students whose principal interest is exposure to the fundamental ideas behind computer science and programming, course or course are the most appropriate courses. They are intended for students in nontechnical disciplines who expect to make some use of computers but do not expect to go on to more advanced courses. course and course meet the Ways of Thinking Ways of Doing breadth requirements in Formal Reasoning and include an introduction to programming and the use of modern Internet-based technologies. Students interested in computer use should consider course , Introduction to Computing at Stanford. Students who intend to pursue a serious course of study in computer science may enter the program at various levels, depending on their background. Students with little prior experience or those who wish to take more time to study the fundamentals of programming should take course , followed by course . Students in course need not have prior programming experience. Students with significant previous exposure to programming or those who want an intensive introduction to the field may start directly in course . course uses Python as its programming language; course uses C++. No prior knowledge of these languages is assumed, and the previous programming experience required for course may be in any language. In all cases, students are encouraged to discuss their background with the instructors responsible for these courses. After the introductory sequence, Computer Science majors and those needing a significant computer science background for related engineering majors should take course , course , and course or course . course offers an introduction to the mathematical and theoretical foundations of computer science. course exposes students to various programming concepts that illustrate critical strategies used in systems development; course and course build on this material, focusing on the development of larger-scale software, using systems and networking abstractions. In summary: For Exposure: CS1C : Introduction to Computing at Stanford For nontechnical use: CS101: Introduction to Computing Principles OR CS105: Introduction to Computers For scientific use and a technical introduction: CS106A: Programming Methodology For significant use: CS106A: Programming Methodology & course : Programming Abstractions CS103: Mathematical Foundations of Computing CS107: Computer Organization and Systems course : Principles of Computer Systems OR CS111: Operating Systems Principles Overseas Studies Courses in Computer Science See the listings in ExploreCourses or the Bing Overseas Studies website for course descriptions and additional offerings. Students should consult their department or program’s student services office for the applicability of Overseas Studies courses to a major or minor program. See the Handbook for Undergraduate Engineering Programs (UGHB) for additional information and sample programs,",
-            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "/courses/2116461",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056411",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2116461",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056411",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056041",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056441",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056451",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056441",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056451",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056441",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056451",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056451",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2085321",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056491",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2085411",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2228601",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2085321",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1056491",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2085411",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2228601",
+                "label": "course"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/1056041-2023-08-01",
+                "label": "CS1C"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/2116461-2023-08-01",
+                "label": "CS101:"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/1056411-2023-08-01",
+                "label": "CS105:"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/1056441-2023-08-01",
+                "label": "CS106A:"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/1056441-2023-08-01",
+                "label": "CS106A:"
+              },
+              {
+                "href": "/courses/1056451",
+                "label": "course"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/2085321-2024-08-01",
+                "label": "CS103:"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/1056491-2026-01-01",
+                "label": "CS107:"
+              },
+              {
+                "href": "/courses/2085411",
+                "label": "course"
+              },
+              {
+                "href": "https://stanford.coursedog.com/#/cm/course/2228601-2026-08-01",
+                "label": "CS111:"
+              },
+              {
+                "href": "http://explorecourses.stanford.edu/",
+                "label": "ExploreCourses"
+              },
+              {
+                "href": "http://bosp.stanford.edu/",
+                "label": "Bing Overseas Studies website"
+              },
+              {
+                "href": "https://ughb.stanford.edu/",
+                "label": "Handbook for Undergraduate Engineering Programs (UGHB)"
+              }
+            ]
           }
         },
         {
@@ -659,7 +869,13 @@
           "review_status": "verified",
           "value": {
             "source_content": "All courses on the program sheet must be taken for a letter grade (unless approved exceptions apply). D- or better https://www.cs.stanford.edu/bachelors/degree-requirements",
-            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima."
+            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima.",
+            "source_links": [
+              {
+                "href": "https://www.cs.stanford.edu/bachelors/degree-requirements",
+                "label": "https://www.cs.stanford.edu/bachelors/degree-requirements"
+              }
+            ]
           }
         },
         {
@@ -751,7 +967,17 @@
           "review_status": "verified",
           "value": {
             "source_content": "https://www.cs.stanford.edu/bs-requirements-petitions-deviations-and-transfer-credits Transfer and AP credits in Math, Science, Fundamentals, and the Technology in Society course must be confirmed for the major by the School of Engineering Dean’s office; see the UGHB page on petitions for more information.",
-            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima."
+            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima.",
+            "source_links": [
+              {
+                "href": "https://www.cs.stanford.edu/bs-requirements-petitions-deviations-and-transfer-credits",
+                "label": "https://www.cs.stanford.edu/bs-requirements-petitions-deviations-and-transfer-credits"
+              },
+              {
+                "href": "https://ughb.stanford.edu/transfers-ap-exceptions",
+                "label": "UGHB page on petitions"
+              }
+            ]
           }
         },
         {
@@ -850,6 +1076,50 @@
             "minimum_major_units": 93,
             "minimum_institution_degree_units": 180,
             "boundary": "Degree completion, not admission; department-defined alternatives and curriculum control. Null means absent metadata, not zero."
+          }
+        },
+        {
+          "id": "undergraduate-study-evidence:ug-cs-linked-declaration",
+          "original_id": "ug-cs-linked-declaration",
+          "evidence_file": "undergraduate-study-evidence.json",
+          "topic": "post_admission_major_declaration",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cs-bs"
+            ],
+            "procedure_ids": [],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "enrolled_stanford_undergraduate"
+            ],
+            "cycle": "Autumn2026 sessions only where explicitly stated; otherwise published recurring declaration process",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-option-cs-bs"
+            ],
+            "procedure_ids": [],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "enrolled_stanford_undergraduate"
+            ],
+            "cycle": "Autumn2026 sessions only where explicitly stated; otherwise published recurring declaration process",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-study-evidence:ug-cs-linked-declaration-source"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified",
+          "value": {
+            "source_paraphrase": "No course or major-entry prerequisites. Choose adviser optionally or have peer adviser assign one, submit declaration form and Axess request, meet peer adviser. Processing up to two weeks; none during finals, breaks or summer. Confirm Axess/adviser after approval.",
+            "interpretation_boundary": "Enrolled major declaration; no separate external undergraduate application or admission threshold."
           }
         },
         {
@@ -2448,6 +2718,116 @@
           "value": "Stanford's published 2026–27 first-year aid checklists distinguish Restrictive Early Action from Regular Decision and domestic/eligible-noncitizen/undocumented from international applicants. For US citizens and eligible noncitizens, CSS Profile (school code 4704), FAFSA (001305), and IDOC parent 2024 federal tax returns/forms are due Nov 15 for REA (mid-December notice) or Feb 15 for RD (April notice). If parents are divorced, separated or never married, each completes a CSS Profile and both submit tax documents; FAFSA parent is the parent providing more support. A noncustodial-parent waiver requires signed request and supporting documentation through IDOC. CSS Profile, FAFSA and IDOC are needed for institutional scholarship; CSS is not required if seeking only federal/state aid. Undocumented students follow domestic dates and submit CSS Profile/tax documents but do not file FAFSA. International aid applicants must request aid on the admission application and submit CSS Profile plus the International Student Supplement; Canadian citizens submit 2024 Canadian tax statements through IDOC and do not submit the supplement. If an international applicant cannot pay the CSS fee or College Board payments are unavailable in their country, the current checklist permits ISAFA instead. For international REA, priority date is Nov 15/mid-December notification; RD is Feb 15/April notification. Divorced/separated/never-married parents each complete CSS; a noncustodial-parent waiver requires evidence through Document Upload."
         },
         {
+          "id": "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
+          "original_id": "stanford-firstyear-rea-concurrent-application-restrictions",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "application_restrictions",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "first-year REA"
+            ],
+            "cycle": "2027-entry",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "first-year REA"
+            ],
+            "cycle": "2027-entry",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-firstyear-rounds"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified",
+          "value": "REA applicants cannot also apply to a private US university under EA, REA, ED or Early Notification, or to a public university under binding early admission. Other RD applications are allowed; after Stanford denial or deferral, EDII elsewhere is allowed. Concurrent exceptions include nonbinding public early admission, nonbinding rolling admission, nonbinding non-US admission, military academies, and nonbinding early submission required for scholarship or special-program consideration. MIT EA is explicitly excluded. Deferred applicants send the provided update form rather than reapply."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+          "original_id": "stanford-additional-residential-and-incidental-charges-2026-27",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "conditional_non_tuition_charges",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year",
+              "undergraduate-shared-evidence:stanford-transfer",
+              "undergraduate-shared-evidence:stanford-nonprofessional-graduate"
+            ],
+            "levels": [
+              "undergraduate",
+              "masters",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "enrolled_student"
+            ],
+            "cycle": "2026-27 charges",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year",
+              "stanford-transfer",
+              "stanford-nonprofessional-graduate"
+            ],
+            "levels": [
+              "undergraduate",
+              "master",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "enrolled_student"
+            ],
+            "cycle": "2026-27 charges",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-fees-full-2026-27"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified",
+          "value": {
+            "currency": "USD",
+            "period": "2026-27 academic year",
+            "technology_quarterly": 95,
+            "campus_housing_mail_quarterly": 44,
+            "campus_housing_mail_summer": 30,
+            "undergraduate_activities_quarterly": 247,
+            "graduate_activities_quarterly": 69,
+            "late_study_list_per_incident": 200,
+            "late_graduation_application_per_incident": 50,
+            "variable_charges": [
+              "housing assignment and housing dues",
+              "meal plan",
+              "enrolled courses with course fees",
+              "professional-school-specific fees",
+              "printing and StanfordCard purchases",
+              "late-payment penalties",
+              "room damage and other services"
+            ],
+            "fellowship_withholding": "International fellowship recipients may have quarterly federal tax withholding, with tax-treaty exemption where eligible."
+          }
+        },
+        {
           "id": "directory-evidence:stanford-graduate-cs-ms-directory-table",
           "original_id": "stanford-graduate-cs-ms-directory-table",
           "evidence_file": "directory-evidence.json",
@@ -2685,10 +3065,10 @@
             "engineering-doerr-evidence:aa-grad-faq",
             "engineering-doerr-evidence:aa-ms-admissions"
           ],
-          "checked_at": "2026-10-02",
+          "checked_at": "2026-10-03",
           "publication_status": "published",
           "review_status": "verified_department_level",
-          "value": "GRE is not required and not considered. The department says MS students are typically self-funded; assistantships may be possible and outside fellowships/loans are potential options. Federal student loans require U.S. citizenship or permanent residence."
+          "value": "GRE is not required and not considered. The department says MS students are typically self-funded; assistantships may be possible and outside fellowships/loans are potential options. Federal student loans require U.S. citizenship or permanent residence. The AA part-time working-professional MS cannot be completed entirely online; some campus coursework is required and the route best suits locally employed students."
         },
         {
           "id": "engineering-doerr-evidence:aa-phd-admission-progression",
@@ -3174,12 +3554,13 @@
           "source_ids": [
             "engineering-doerr-evidence:engineering-coterm",
             "engineering-doerr-evidence:doerr-admissions",
-            "engineering-doerr-evidence:current-students"
+            "engineering-doerr-evidence:current-students",
+            "engineering-doerr-evidence:bioe-coterm-program"
           ],
-          "checked_at": "2026-10-02",
+          "checked_at": "2026-10-03",
           "publication_status": "published",
           "review_status": "general_eligibility_verified; program-specific terms pending",
-          "value": "Engineering coterm applicants must be current Stanford undergraduates with at least six non-summer quarters and 120 units toward graduation, including applicable AP/transfer units. Admission and offer acceptance must be completed at least one quarter before bachelor's conferral. Department deadlines and criteria vary."
+          "value": "Engineering coterm applicants must be current Stanford undergraduates with a declared major,120 units toward graduation (including applicable AP/transfer units), and six non-summer Stanford quarters by intended entry; undergraduate transfer entrants need only two non-summer Stanford quarters. At least one quarter must overlap active undergraduate and graduate careers. Admission/acceptance must precede bachelor conferral. Department deadlines and criteria vary."
         },
         {
           "id": "engineering-doerr-evidence:cs-coterm-eligibility-and-application",
@@ -5448,15 +5829,14 @@
           "scope": {
             "option_ids": [
               "stanford-option-matsc-ms",
-              "stanford-option-matsc-phd",
-              "stanford-option-matsc-eng"
+              "stanford-option-matsc-phd"
             ],
             "procedure_ids": [
               "engineering-doerr-evidence:external-graduate"
             ],
             "levels": [
-              "doctoral",
-              "masters"
+              "masters",
+              "doctoral"
             ],
             "applicant_categories": [
               "external_applicant"
@@ -5467,16 +5847,14 @@
           "original_scope": {
             "option_ids": [
               "stanford-matsc-ms",
-              "stanford-matsc-phd",
-              "stanford-matsc-eng"
+              "stanford-matsc-phd"
             ],
             "procedure_ids": [
               "external-graduate"
             ],
             "levels": [
-              "doctoral",
               "master's",
-              "professional graduate"
+              "doctoral"
             ],
             "applicant_categories": [
               "external_applicant"
@@ -6003,6 +6381,1041 @@
             "document_fee_once": 250,
             "applicability_note": "Actual school billing classification and unit load govern; coterm billing and HCP part-time rates have separate rules. These 2026-27 prices are historical context only, not published 2027-28 tuition."
           }
+        },
+        {
+          "id": "engineering-doerr-evidence:aa-coterm-specific-materials-fee-and-continuation",
+          "original_id": "aa-coterm-specific-materials-fee-and-continuation",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_eligibility_documents_cost_and_progression",
+          "scope": {
+            "option_ids": [
+              "stanford-option-aa-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-aa-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:aa-coterm-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "AA coterm needs a declared undergraduate major and 120 units; any major can apply. Submit SOP up to two single-spaced pages, two Stanford-faculty letters, unofficial transcript and proposed MS program. USD 125 is billed only on accepted matriculation; need-based waiver is automatic for qualifying families below USD 125000 with typical assets. Decisions usually take four weeks. Accepted students respond to Student Services and submit an advisor-signed new MS proposal by their first coterm Final Study List deadline. Courses from sophomore first quarter onward may transfer with both programs approval, never after bachelor conferral. Standard fellowships generally exclude coterms; incoming RAs are rare. Engineering coterm fellowships require post-admission application; CAs are assigned quarterly after spring applications."
+        },
+        {
+          "id": "engineering-doerr-evidence:bioe-coterm-preparation-and-funding",
+          "original_id": "bioe-coterm-preparation-and-funding",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_eligibility_documents_cost_and_progression",
+          "scope": {
+            "option_ids": [
+              "stanford-option-bioe-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-bioe-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:bioe-coterm-program"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "BioE major is not required. Coterm applicants should have completed or plan to complete MATH 51/53 or CME 100/102; BIO 82 or 83 and 84; PHYSICS 41/43; CHEM 31/33; CS 106A; and ENGR 14/15/40/50 or 80 before starting. Typically GPA 3.5 in these courses is expected, not stated as an automatic minimum. Department provides no coterm funding. Engineering coterm fellowship requires admission; BioE TA opportunities require graduate-tuition status and 180 units."
+        },
+        {
+          "id": "engineering-doerr-evidence:bioe-coterm-materials-and-cycle-lag",
+          "original_id": "bioe-coterm-materials-and-cycle-lag",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_eligibility_documents_cost_and_progression",
+          "scope": {
+            "option_ids": [
+              "stanford-option-bioe-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Spring2026 department instructions; Spring2027 directory window",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-bioe-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Spring2026 department instructions; Spring2027 directory window",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:bioe-coterm-admission",
+            "engineering-doerr-evidence:coterm-directory"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "BioE coterm accepts Spring entry only. Submit current unofficial Stanford transcript, previous-institution transcripts for transfers, SOP maximum three single-spaced pages (two recommended), two Stanford-faculty letters and CV. USD 125 is assessed after accepting and matriculating. Faculty committee decisions normally arrive mid-February; admitted applicants respond by email for the offered quarter. The department still publishes December 1, 2025 for Spring 2026; the current directory separately lists December 1, 2026 for Spring 2027."
+        },
+        {
+          "id": "engineering-doerr-evidence:icme-coterm-materials-and-course-transfer",
+          "original_id": "icme-coterm-materials-and-course-transfer",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_eligibility_documents_cost_and_progression",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cme-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Spring2027 and Autumn2027 coterm",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cme-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Spring2027 and Autumn2027 coterm",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:icme-ms-full",
+            "engineering-doerr-evidence:icme-deadlines-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "ICME coterm needs SOP, three letters (Stanford faculty preferred), current unofficial Stanford transcript including units/GPA, and outside-course transcripts. GRE not required; reapplication after denial is discouraged and changed decisions are rare. Eligible course transfer starts three quarters before the first graduate quarter, never before sophomore first quarter. Both Spring 2027 and Autumn 2027 applications close January 8, 2027 at 11:59 PM PST; decisions can roll after that date through first week April."
+        },
+        {
+          "id": "engineering-doerr-evidence:mse-coterm-materials-and-opening-windows",
+          "original_id": "mse-coterm-materials-and-opening-windows",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-matsc-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Winter/Spring2026-27 and Autumn2027-28",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-matsc-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Winter/Spring2026-27 and Autumn2027-28",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:mse-coterm-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "MSE coterm welcomes science/engineering majors. Submit transcripts, CV, SOP and two letters; one must be MSE faculty. GRE not required. Winter 2027 applications open September 15, 2026 and close October 15; Spring 2027 December 15 to January 14, 2027; Autumn 2027 March 15 to April 20. Letters are due at the application deadline; committee decisions take about one month."
+        },
+        {
+          "id": "engineering-doerr-evidence:me-coterm-specific-preparation-materials-and-continuation",
+          "original_id": "me-coterm-specific-preparation-materials-and-continuation",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-me-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "2026-27 and Autumn2027-28",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-me-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "2026-27 and Autumn2027-28",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:me-coterm-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "ME coterm expects differential-equations mathematics, programming and advanced engineering; unrelated majors should take at least two 100-level ME core/concentration courses. Typical A-average performance is expected, not a published numerical minimum. Submit transcript, SOP up to two single-spaced pages, CV, two Stanford-professor letters (up to three), areas of interest, short statements and preliminary proposal without adviser signature. GRE is not accepted through March 2027. Decisions take 4-6 weeks; accepted students supply adviser-signed new proposal by third week of first coterm quarter. Standard fellowships generally exclude coterms; Engineering fellowship application follows admission, RAs require faculty arrangement."
+        },
+        {
+          "id": "engineering-doerr-evidence:cheme-coterm-specific-materials-and-progress",
+          "original_id": "cheme-coterm-specific-materials-and-progress",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cheme-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cheme-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cheme-coterm-full",
+            "engineering-doerr-evidence:cheme-coterm-study"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "ChemE coterm needs 120 units, application by quarter before bachelor completion, unofficial Stanford/transfer transcripts, SOP maximum two single-spaced pages, two academic/professional letters and USD 125 after admission acceptance. GRE not required; no summer applications. Adviser-approved MS proposal is due by second graduate quarter or 9 graduate units, whichever first; review at 30 MS units and final approval by seventh week of preceding conferral quarter.45 MS units need letter grades where offered and GPA 3.0. Research needs adviser agreement and approved written report, and cannot replace four required 300-level core lectures."
+        },
+        {
+          "id": "engineering-doerr-evidence:msande-coterm-preparation-and-private-details",
+          "original_id": "msande-coterm-preparation-and-private-details",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-mgtsc-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-mgtsc-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:msande-coterm-overview",
+            "engineering-doerr-evidence:coterm-directory"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "Successful MS&E coterm candidates typically have quantitative degrees or linear algebra, multivariable calculus, programming, economics and statistics preparation. Detailed application instructions are on the current-student intranet; public directory supplies term windows, two references, optional GRE and no proposal consideration."
+        },
+        {
+          "id": "engineering-doerr-evidence:msande-test-threshold-waiver-and-reference-timing",
+          "original_id": "msande-test-threshold-waiver-and-reference-timing",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-mgtsc-ms",
+              "stanford-option-mgtsc-phd"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate",
+              "engineering-doerr-evidence:msande-current-graduate-online"
+            ],
+            "levels": [
+              "masters",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "external_or_current_stanford_graduate_applicant"
+            ],
+            "cycle": "2027-28 application",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-mgtsc-ms",
+              "stanford-mgtsc-phd"
+            ],
+            "procedure_ids": [
+              "external-graduate",
+              "msande-current-graduate-online"
+            ],
+            "levels": [
+              "master's",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "external_or_current_stanford_graduate_applicant"
+            ],
+            "cycle": "2027-28 application",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:msande-admission-full",
+            "engineering-doerr-evidence:test-scores"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "MS&E requires official GRE but permits hardship exemption requests; lack of quantitative degree or recent academics may make a score important competitively. Department expected English scores are old-scale TOEFL 100 or IELTS 7.5, above central minima. Tests must be taken by application deadline, not necessarily received. Three letters should be uploaded within one week; page later warns review beyond two weeks is not guaranteed. Optional paper abstract maximum two single-spaced pages."
+        },
+        {
+          "id": "engineering-doerr-evidence:cee-coterm-materials-progress-and-funding",
+          "original_id": "cee-coterm-materials-progress-and-funding",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cee-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Spring2027 coterm",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cee-ms"
+            ],
+            "procedure_ids": [
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": "Spring2027 coterm",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cee-coterm-full",
+            "engineering-doerr-evidence:cee-coterm-program"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "CEE coterm application December 1, 2026 is for following Spring 2027, with no reviews May-November. Select intended CEE MS program; submit proposal, unofficial Stanford/transfer transcripts, SOP maximum three single-spaced pages (two recommended), supplement, CV and two Stanford-faculty letters. GRE not required. Late materials may not be reviewed; decisions by March 1 and response per offer. USD 125 follows accepted matriculation. CEE generally provides no coterm funding; Engineering fellowship requires admission. Eligible course transfer starts sophomore first quarter;180 bachelor plus 45 unduplicated MS units."
+        },
+        {
+          "id": "engineering-doerr-evidence:ee-coterm-eligibility-materials-and-support",
+          "original_id": "ee-coterm-eligibility-materials-and-support",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "route_specific_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-ee-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:ee-coterm",
+              "engineering-doerr-evidence:engineering-coterm"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-ee-ms"
+            ],
+            "procedure_ids": [
+              "ee-coterm",
+              "engineering-coterm"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:ee-coterm-eligibility",
+            "engineering-doerr-evidence:ee-coterm-materials",
+            "engineering-doerr-evidence:ee-coterm-faq-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "EE coterm does not require EE major, specific admission coursework or minimum GPA; strong engineering/physics/math preparation and high relative GPA are encouraged. No offer deferral. Submit SOP up to two single-spaced pages, exactly three letters, unofficial Stanford transcript plus transfer transcripts. EE letters are preferred; all three Stanford faculty recommended, but other references remain reviewable. USD 125 follows accepted matriculation. Coterms completing 180 units may qualify for CA/RA; funds are not guaranteed. Course transfer uses approvals from EE and home department by Final Study List deadline of final bachelor quarter, never after conferral."
+        },
+        {
+          "id": "engineering-doerr-evidence:msande-hcp-mode-credit-and-billing",
+          "original_id": "msande-hcp-mode-credit-and-billing",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "application_progression_and_study_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-mgtsc-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "HCP applicant"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-mgtsc-ms"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "HCP applicant"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:msande-hcp-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "MS&E HCP may be part-time on campus/remotely or full-time remotely, with limited hybrid course availability. Same degree and admission criteria; students can switch full/part-time and local/remote modes. Up to 18 NDO graduate units may count; include Stanford NDO transcript.45 units must be completed within five years. Tuition/fees go to CGOE and are slightly above Graduate Engineering rate."
+        },
+        {
+          "id": "engineering-doerr-evidence:recheck-cs-ms-degree-completion-context",
+          "original_id": "recheck-cs-ms-degree-completion-context",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "study_structure_and_degree_completion",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cs-ms"
+            ],
+            "procedure_ids": [],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "prospective_program_student",
+              "enrolled_program_student"
+            ],
+            "cycle": "2026-27 Bulletin",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cs-ms"
+            ],
+            "procedure_ids": [],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "prospective_program_student",
+              "enrolled_program_student"
+            ],
+            "cycle": "2026-27 Bulletin",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:recheck-bulletin-cs-ms"
+          ],
+          "checked_at": "2026-10-02",
+          "publication_status": "published",
+          "review_status": "original_catalog_content_rechecked_2026_10_03",
+          "value": {
+            "A3i6E": "The MS in Computer Science is intended as a terminal professional degree and does not lead to the PhD. Most students planning to obtain a PhD degree should apply directly for admission to the PhD program. Some students, however, may wish to complete the master’s program before deciding whether to pursue a PhD. To give such students a more significant opportunity to become familiar with research, the department has a program leading to a master’s degree with distinction in research. This program is described in more detail below.",
+            "WOZxr": "All 45 units for the CS MS degree must be completed at Stanford.",
+            "ItCSB": "The purpose of the master’s program is to provide students with the knowledge and skills necessary for a professional career or doctoral studies. This is done through coursework in the foundational elements of the field and at least one graduate specialization. Areas of specialization include artificial intelligence, biocomputation, computer and network security, human-computer interaction, information management and analytics, real-world computing, software theory, systems, and theoretical computer science.",
+            "advisingExpectations": "The Department of Computer Science is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by the advisor and the advisee. As a best practice, advising expectations should be periodically discussed and reviewed to ensure mutual understanding. Both the advisor and the advisee are expected to maintain professionalism and integrity. Faculty advisors guide students in critical areas such as selecting courses, designing and conducting research, developing teaching pedagogy, navigating policies and degree requirements, and exploring academic opportunities and professional pathways. Graduate students are active contributors to the advising relationship, proactively seeking academic and professional guidance and taking responsibility for informing themselves of policies and degree requirements for their graduate program. See Computer Science Graduate Advising for a statement of Computer Science policy on graduate advising. See Graduate Advising for a statement of university policy on graduate advising.",
+            "cotermTransferPolicy": "In this master’s program, courses taken during or after the first quarter of the sophomore year are eligible for consideration for transfer to the graduate career; the timing of the first graduate quarter is not a factor. No courses taken before the first quarter of the sophomore year may be used to meet master’s degree requirements. Course transfers are not possible after the bachelor’s degree has been conferred. The university requires that the graduate advisor be assigned in the student’s first graduate quarter even though the undergraduate career may still be open. The university also requires that the Master’s Degree Program Proposal be completed by the student and approved by the department by the end of the student’s first graduate quarter.",
+            "cotermQuartersBack": "Autumn quarter of Sophomore year",
+            "minimum_program_units": 45,
+            "expected_length": {
+              "value": 2,
+              "unit": "Years",
+              "status": "catalog_metadata_not_fixed_individual_duration"
+            }
+          }
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-hcp-load-location-and-support",
+          "original_id": "cs-hcp-load-location-and-support",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "HCP_mode_eligibility_billing_and_support",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cs-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cs-ms"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cs-hcp-full",
+            "engineering-doerr-evidence:cs-ms"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "CS HCP students enroll in 3-7 units each autumn, winter and spring; summer is optional. The 45-unit degree must be completed within five years, usually in 3-5 years. US residence is required. The dedicated HCP page specifies HB1 (as written) for international students, whereas the general MS page says they must be employed and located in the US. AI, Information Management and Analytics, and Systems specializations can be completed online; others require campus courses. Tuition is per unit. Campus housing and campus employment are unavailable. Request a status change at least three weeks before the quarter; at most two changes (one round trip) are allowed."
+        },
+        {
+          "id": "engineering-doerr-evidence:mse-hcp-load-campus-and-status",
+          "original_id": "mse-hcp-load-campus-and-status",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "HCP_mode_eligibility_billing_and_support",
+          "scope": {
+            "option_ids": [
+              "stanford-option-matsc-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-matsc-ms"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:mse-hcp-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "MSE HCP requires US residence; its page specifies an H1B visa for international students. Complete 45 units within five years. Enroll in 3-7 units each autumn, winter and spring, including at least three units applicable to the degree; summer is optional. MSE courses are in person; only approved electives in other departments may be online. Campus housing and employment are unavailable. A full-time-to-HCP transfer is discretionary and must be requested at least three weeks before the quarter. Coterm students can transfer only after bachelor degree conferral. At most two enrollment-status changes are allowed. The degree and admission criteria match the full-time MS."
+        },
+        {
+          "id": "engineering-doerr-evidence:me-hcp-local-study-and-application-conditions",
+          "original_id": "me-hcp-local-study-and-application-conditions",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "HCP_mode_eligibility_billing_and_support",
+          "scope": {
+            "option_ids": [
+              "stanford-option-me-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-me-ms"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:me-faq-full",
+            "engineering-doerr-evidence:me-ms-admissions"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "ME HCP serves local working professionals and cannot be completed entirely online. Its application uses the regular process. All three recommendations and required materials must arrive by the deadline; extensions and changes to submitted materials are not allowed. A completed or enrolled related MS excludes another ME MS application; an unrelated MS may be acceptable. PhD applicants without an MS may receive rare automatic MS consideration after a PhD denial. Admission deferral is reviewed only for exceptional circumstances, such as military service or medical issues."
+        },
+        {
+          "id": "engineering-doerr-evidence:ee-hcp-study-funding-and-status-transfer",
+          "original_id": "ee-hcp-study-funding-and-status-transfer",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "HCP_mode_eligibility_billing_and_support",
+          "scope": {
+            "option_ids": [
+              "stanford-option-ee-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-ee-ms"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:ee-hcp-faq-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "EE HCP students typically take 3-6 units per quarter and finish 45 units in 3-5 years. Online completion depends on the program plan and available courses. Admission is autumn only. Part-time students working full-time receive no departmental aid; employer reimbursement may be available. Up to 18 NDO units may count, but credits from another institution cannot transfer. Applicants already holding an EE MS may apply if they explain their reasons. Industry recommendations are accepted, although academic letters are preferred. Transfer from part-time to full-time requires at least two completed non-summer quarters and 15 letter-graded lecture or lab units. A GPA of at least 3.5 is expected for that request. Transfer in the final degree quarter is not permitted; at most two changes are allowed and approval is discretionary."
+        },
+        {
+          "id": "engineering-doerr-evidence:cee-hcp-campus-and-support-restrictions",
+          "original_id": "cee-hcp-campus-and-support-restrictions",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "HCP_mode_eligibility_billing_and_support",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cee-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cee-ms"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "HCP applicant_or_student"
+            ],
+            "cycle": "Current route rules; exact applicationterms separately dated",
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cee-hcp-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "CEE regular MS students may request HCP status for part-time work or internships. Online course availability depends on the subplan; no regular CEE MS can be completed entirely online, and Atmosphere/Energy courses are in person. PhD students and international students holding a student visa are ineligible for this regular HCP status. HCP students cannot receive university assistantships or fellowships and cannot live in student housing. A return to full-time status restores eligibility to apply for housing. At most two status changes are allowed. Up to 18 qualifying NDO units may count after the first graduate quarter."
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-current-application-and-enroute-exception",
+          "original_id": "cs-current-application-and-enroute-exception",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "internal_or_joint_application_and_funding_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cs-ms",
+              "stanford-option-cs-phd"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:cs-current-regular-admission"
+            ],
+            "levels": [
+              "masters",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "current_stanford_student"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cs-ms",
+              "stanford-cs-phd"
+            ],
+            "procedure_ids": [
+              "cs-current-regular-admission"
+            ],
+            "levels": [
+              "master's",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "current_stanford_student"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cs-current-add-degree"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "Current Stanford students applying to a new CS MS or PhD use the ordinary application and external applicant requirements; CS does not accept general added-degree GAP petitions. The separately documented same-program CS PhD-to-MS progression is an exception and must not be mistaken for an open other-department MS petition."
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-phd-intermediate-ms-petition",
+          "original_id": "cs-phd-intermediate-ms-petition",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "internal_or_joint_application_and_funding_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cs-ms"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:cs-corresponding-phd-added-ms"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_CS_PhD_student"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cs-ms"
+            ],
+            "procedure_ids": [
+              "cs-corresponding-phd-added-ms"
+            ],
+            "levels": [
+              "master's"
+            ],
+            "applicant_categories": [
+              "current_CS_PhD_student"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cs-phd-enroute-ms"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "Existing CS PhD students without an MSCS may petition after faculty alignment, foundation/breadth and candidacy. Existing coterm must be withdrawn first. GAP fee is USD 125; petition before application-to-graduate deadline and at least one quarter before MS conferral. Conferral additionally requires qualifying exam, 45 units and GPA 3.0. Up to 45 units from Stanford MS or external graduate study count to PhD residence; combining Stanford MS with any external transfer raises PhD residency from 135 to 180 units."
+        },
+        {
+          "id": "engineering-doerr-evidence:cs-joint-mba-law-entry-restrictions",
+          "original_id": "cs-joint-mba-law-entry-restrictions",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "internal_or_joint_application_and_funding_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cs-ms",
+              "stanford-option-cs-phd"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:cs-joint-professional-degrees"
+            ],
+            "levels": [
+              "masters",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "joint_degree_applicant"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cs-ms",
+              "stanford-cs-phd"
+            ],
+            "procedure_ids": [
+              "cs-joint-professional-degrees"
+            ],
+            "levels": [
+              "master's",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "joint_degree_applicant"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:cs-joint-mba",
+            "engineering-doerr-evidence:cs-joint-law-ms",
+            "engineering-doerr-evidence:cs-joint-law-phd"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "CS MS/MBA requires separate CS and GSB admission; apply concurrently or during first year of either. Second-year CS or MBA students may not join. CS JD/MS requires separate admission and both-unit consent; Law entrants apply concurrently or no later than earlier of end of Law year 2 and following-year CS deadline. First Law year is full-time Law; cross-counted courses need both schools approval. CS JD/PhD requires separate admission, supervising faculty contact and both-unit permission; enrolled students may apply to other program after starting."
+        },
+        {
+          "id": "engineering-doerr-evidence:icme-specific-fellowship-and-assistantship-components",
+          "original_id": "icme-specific-fellowship-and-assistantship-components",
+          "evidence_file": "engineering-doerr-evidence.json",
+          "topic": "internal_or_joint_application_and_funding_conditions",
+          "scope": {
+            "option_ids": [
+              "stanford-option-cme-ms",
+              "stanford-option-cme-phd"
+            ],
+            "procedure_ids": [
+              "engineering-doerr-evidence:external-graduate"
+            ],
+            "levels": [
+              "masters",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "external_applicant",
+              "admitted_student"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-cme-ms",
+              "stanford-cme-phd"
+            ],
+            "procedure_ids": [
+              "external-graduate"
+            ],
+            "levels": [
+              "master's",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "external_applicant",
+              "admitted_student"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "engineering-doerr-evidence:icme-funding-full"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "value": "ICME PhD good-standing support lasts the program under department standard; individual package arrives with admission. Selective SGF auto-consideration gives quarterly stipend and 8-10 unit tuition for 12 quarters(three years); Engineering/department fellowships give some entrants stipend+8-10 units up to 4 first-yearquarters. MS has no funding guarantee.50 percent RA/TA typically covers 8-10 units plus salary for 20 hours/week; lesser appointments adjust benefits. RA is faculty-arranged; CA application is on ICME intranet and TA orientation required. Funding page has old 2024 KHS date; use current separately sourced 2027 KHS timing."
         }
       ],
       "applicability_boundary": "Intersect programme, actual procedure, applicant category and labelled entry term. The presence of several procedures never applies every fact to every route."
@@ -6433,7 +7846,13 @@
           "review_status": "verified",
           "value": {
             "source_content": "Information about how to declare the major can be found on the department's website .",
-            "interpretation_boundary": "Degree study/completion or major declaration for enrolled undergraduates; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Degree study/completion or major declaration for enrolled undergraduates; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "https://economics.stanford.edu/undergraduate/major/how-declare",
+                "label": "website"
+              }
+            ]
           }
         },
         {
@@ -6479,7 +7898,13 @@
           "review_status": "verified",
           "value": {
             "source_content": "Before taking Math 51, students will need to complete Math 19, 20, and 21 or AP Calculus. This may require up to 10 units of coursework in addition to the Econ BS requirements. Review the Why Study Economics? page for more information.",
-            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "https://economics.stanford.edu/undergraduate/why-study-economics",
+                "label": "Why Study Economics?"
+              }
+            ]
           }
         },
         {
@@ -6569,7 +7994,13 @@
           "review_status": "verified",
           "value": {
             "source_content": "Please see the department website for more information.",
-            "interpretation_boundary": "Degree study/completion or major declaration for enrolled undergraduates; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Degree study/completion or major declaration for enrolled undergraduates; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "https://economics.stanford.edu/undergraduate/major/how-declare",
+                "label": "department website"
+              }
+            ]
           }
         },
         {
@@ -6615,7 +8046,17 @@
           "review_status": "verified",
           "value": {
             "source_content": "Students will be required to complete course (or equivalent) to be eligible to enroll in the ECON 50 series (a core major requirement). Before taking Math 20, it is recommended that students complete Math 19, which may require an additional 3 units of coursework. Some higher level ECON Field and Elective courses may also require more advanced MATH courses, such as course . Before taking Math 51, students will need to complete Math 21 or AP Calculus, which may require an additional 4 units of coursework. AP credit is acceptable for MATH 19 and MATH 20.",
-            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "/courses/1172291",
+                "label": "course"
+              },
+              {
+                "href": "/courses/1172571",
+                "label": "course"
+              }
+            ]
           }
         },
         {
@@ -6661,7 +8102,13 @@
           "review_status": "verified",
           "value": {
             "source_content": "The mission of the undergraduate program in Architectural Design aims to develop students’ ability to integrate engineering and architecture in ways that blend innovative architectural design with cutting-edge engineering technologies. Courses in the program combine hands-on architectural design studios with a wide variety of other courses. Students can choose from a broad mix of elective courses concerning energy conservation, sustainability, building systems, and structures, as well as design foundation and fine arts courses. In addition to preparing students for advanced studies in architecture and construction management, the program’s math and science requirements prepare students well for graduate work in other fields, such as civil and environmental engineering, law, and business. The Architectural Design program is a subplan under the program program. Please take a look at this program for complete degree requirements.",
-            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites."
+            "interpretation_boundary": "Information for prospective and enrolled students about degree study/completion; not first-year or transfer admission prerequisites.",
+            "source_links": [
+              {
+                "href": "/programs/ENGR-BS",
+                "label": "program"
+              }
+            ]
           }
         },
         {
@@ -6798,7 +8245,21 @@
           "review_status": "verified",
           "value": {
             "source_content": "All courses must be taken at Stanford in California. Students may petition the director of undergraduate studies for exceptions, but under no circumstances can more than 10 units of credits for courses taken elsewhere, in total, count toward the Economics BS degree. The department does not give credit for internships. Students scoring a five on the advanced placement microeconomics and advanced placement macroeconomics exams may petition the director of undergraduate studies to waive the course Principles of Economics course requirement. Students do not receive unit credit for placing out of course Principles of Economics. More information about the transfer credit process can be found on the department's website .",
-            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima."
+            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima.",
+            "source_links": [
+              {
+                "href": "/courses/2144841",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2144841",
+                "label": "course"
+              },
+              {
+                "href": "https://economics.stanford.edu/undergraduate/major/transfer-credit",
+                "label": "website"
+              }
+            ]
           }
         },
         {
@@ -6988,7 +8449,25 @@
           "review_status": "verified",
           "value": {
             "source_content": "Students scoring a five on the advanced placement microeconomics and advanced placement macroeconomics exams may petition the Director of Undergraduate Studies to waive the course Principles of Economics course requirement. Students do not receive unit credit for placing out of course Principles of Economics. To use transfer credit in partial satisfaction of the requirements, the student must obtain written consent from the department’s Director of Undergraduate Study, who establishes the amount of credit to be granted toward the department requirements (see the Information Book for Undergraduate Economics Majors ). Students must have completed all Stanford prerequisites for approved transfer credit courses to use those courses toward the Economics major. See the department’s Transfer Credit website for additional information. Course prerequisites are enforced. Students taking courses to satisfy prerequisites in another department or institution must petition for Stanford course substitution or transfer credit approval.",
-            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima."
+            "interpretation_boundary": "Degree completion/study information only. GPA and course-grade values in this field are not institutional first-year or transfer admission minima.",
+            "source_links": [
+              {
+                "href": "/courses/2144841",
+                "label": "course"
+              },
+              {
+                "href": "/courses/2144841",
+                "label": "course"
+              },
+              {
+                "href": "https://economics.stanford.edu/undergraduate/major",
+                "label": "Information Book for Undergraduate Economics Majors"
+              },
+              {
+                "href": "https://economics.stanford.edu/undergraduatemajor/transfer-credit",
+                "label": "Transfer Credit website"
+              }
+            ]
           }
         },
         {
@@ -7139,6 +8618,52 @@
             "minimum_major_units": null,
             "minimum_institution_degree_units": 180,
             "boundary": "Degree completion, not admission; department-defined alternatives and curriculum control. Null means absent metadata, not zero."
+          }
+        },
+        {
+          "id": "undergraduate-study-evidence:ug-econ-linked-declaration",
+          "original_id": "ug-econ-linked-declaration",
+          "evidence_file": "undergraduate-study-evidence.json",
+          "topic": "post_admission_major_declaration",
+          "scope": {
+            "option_ids": [
+              "stanford-option-econ-ba",
+              "stanford-option-econ-bs"
+            ],
+            "procedure_ids": [],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "enrolled_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-option-econ-ba",
+              "stanford-option-econ-bs"
+            ],
+            "procedure_ids": [],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "enrolled_stanford_undergraduate"
+            ],
+            "cycle": null,
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-study-evidence:ug-econ-linked-declaration-source"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified",
+          "value": {
+            "source_paraphrase": "Submit online declaration form; await adviser assignment, meet adviser for plan approval, declare Axess and meet SSO to finalize. Processing batches occur every few weeks, never summer. Sophomore spring is recommended; hard cutoff is end of quarter before graduation quarter. No declarations summer, final fall/winter week or after spring week 5.",
+            "interpretation_boundary": "Enrolled Stanford undergraduate major declaration and study choice, never an external institutional admission prerequisite."
           }
         },
         {
@@ -8737,6 +10262,116 @@
           "value": "Stanford's published 2026–27 first-year aid checklists distinguish Restrictive Early Action from Regular Decision and domestic/eligible-noncitizen/undocumented from international applicants. For US citizens and eligible noncitizens, CSS Profile (school code 4704), FAFSA (001305), and IDOC parent 2024 federal tax returns/forms are due Nov 15 for REA (mid-December notice) or Feb 15 for RD (April notice). If parents are divorced, separated or never married, each completes a CSS Profile and both submit tax documents; FAFSA parent is the parent providing more support. A noncustodial-parent waiver requires signed request and supporting documentation through IDOC. CSS Profile, FAFSA and IDOC are needed for institutional scholarship; CSS is not required if seeking only federal/state aid. Undocumented students follow domestic dates and submit CSS Profile/tax documents but do not file FAFSA. International aid applicants must request aid on the admission application and submit CSS Profile plus the International Student Supplement; Canadian citizens submit 2024 Canadian tax statements through IDOC and do not submit the supplement. If an international applicant cannot pay the CSS fee or College Board payments are unavailable in their country, the current checklist permits ISAFA instead. For international REA, priority date is Nov 15/mid-December notification; RD is Feb 15/April notification. Divorced/separated/never-married parents each complete CSS; a noncustodial-parent waiver requires evidence through Document Upload."
         },
         {
+          "id": "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
+          "original_id": "stanford-firstyear-rea-concurrent-application-restrictions",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "application_restrictions",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "first-year REA"
+            ],
+            "cycle": "2027-entry",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "first-year REA"
+            ],
+            "cycle": "2027-entry",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-firstyear-rounds"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified",
+          "value": "REA applicants cannot also apply to a private US university under EA, REA, ED or Early Notification, or to a public university under binding early admission. Other RD applications are allowed; after Stanford denial or deferral, EDII elsewhere is allowed. Concurrent exceptions include nonbinding public early admission, nonbinding rolling admission, nonbinding non-US admission, military academies, and nonbinding early submission required for scholarship or special-program consideration. MIT EA is explicitly excluded. Deferred applicants send the provided update form rather than reapply."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+          "original_id": "stanford-additional-residential-and-incidental-charges-2026-27",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "conditional_non_tuition_charges",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year",
+              "undergraduate-shared-evidence:stanford-transfer",
+              "undergraduate-shared-evidence:stanford-nonprofessional-graduate"
+            ],
+            "levels": [
+              "undergraduate",
+              "masters",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "enrolled_student"
+            ],
+            "cycle": "2026-27 charges",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year",
+              "stanford-transfer",
+              "stanford-nonprofessional-graduate"
+            ],
+            "levels": [
+              "undergraduate",
+              "master",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "enrolled_student"
+            ],
+            "cycle": "2026-27 charges",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-fees-full-2026-27"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published",
+          "review_status": "verified",
+          "value": {
+            "currency": "USD",
+            "period": "2026-27 academic year",
+            "technology_quarterly": 95,
+            "campus_housing_mail_quarterly": 44,
+            "campus_housing_mail_summer": 30,
+            "undergraduate_activities_quarterly": 247,
+            "graduate_activities_quarterly": 69,
+            "late_study_list_per_incident": 200,
+            "late_graduation_application_per_incident": 50,
+            "variable_charges": [
+              "housing assignment and housing dues",
+              "meal plan",
+              "enrolled courses with course fees",
+              "professional-school-specific fees",
+              "printing and StanfordCard purchases",
+              "late-payment penalties",
+              "room damage and other services"
+            ],
+            "fellowship_withholding": "International fellowship recipients may have quarterly federal tax withholding, with tax-treaty exemption where eligible."
+          }
+        },
+        {
           "id": "supplementary-degree-evidence:stanford-bas-degree-structure",
           "original_id": "stanford-bas-degree-structure",
           "evidence_file": "supplementary-degree-evidence.json",
@@ -9475,6 +11110,68 @@
           "publication_status": "published",
           "review_status": "reviewed",
           "value": "JD requires 111 units over no less than three academic years. LLM requires 35-45 approved quarter units, three quarters in residence, at least 26 Law units and full tuition; residence is at least 9 enrolled units and 8 passed units each quarter, with work limited to 20 hours weekly; LLM is a full nine-month academic year. JSM requires 35 units, with thesis and public presentation, and is expected to finish in one academic year (two consecutive years maximum). MLS requires 37 units, three residency quarters, and is expected to finish in one academic year (two consecutive years maximum). JSD requires 44 residency units, including one academic year in residence, and independent dissertation research; award duration beyond minimum residency is not specified."
+        },
+        {
+          "id": "professional-evidence:law-advanced-toefl-requirement-and-waiver",
+          "original_id": "law-advanced-toefl-requirement-and-waiver",
+          "evidence_file": "professional-evidence.json",
+          "topic": "english_test_minimum_and_waiver",
+          "scope": {
+            "option_ids": [
+              "stanford-option-law-llm",
+              "stanford-option-law-llm-corporate-governance-practice",
+              "stanford-option-law-llm-environmental-law-policy",
+              "stanford-option-law-llm-international-economic-law-business-policy",
+              "stanford-option-law-llm-law-science-technology",
+              "stanford-option-law-jsm",
+              "stanford-option-law-jsd"
+            ],
+            "procedure_ids": [
+              "professional-evidence:law_advanced_admission",
+              "professional-evidence:law_jsd_admission"
+            ],
+            "levels": [
+              "professional",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "advanced_degree_applicant"
+            ],
+            "cycle": "Fall 2027 entry",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [
+              "stanford-option-law-llm",
+              "stanford-option-law-llm-corporate-governance-practice",
+              "stanford-option-law-llm-environmental-law-policy",
+              "stanford-option-law-llm-international-economic-law-business-policy",
+              "stanford-option-law-llm-law-science-technology",
+              "stanford-option-law-jsm",
+              "stanford-option-law-jsd"
+            ],
+            "procedure_ids": [
+              "law_advanced_admission",
+              "law_jsd_admission"
+            ],
+            "levels": [
+              "professional",
+              "doctoral"
+            ],
+            "applicant_categories": [
+              "advanced_degree_applicant"
+            ],
+            "cycle": "Fall 2027 entry",
+            "fee_status": []
+          },
+          "source_ids": [
+            "professional-evidence:law_advanced_process",
+            "professional-evidence:law-advanced-toefl-requirement-and-waiver-source-2"
+          ],
+          "checked_at": "2026-10-03",
+          "publication_status": "published_with_bounded_unknown",
+          "review_status": "reviewed_source_content",
+          "value": "Stanford Law advanced applicants must submit TOEFL iBT (not IELTS under the current Law advanced process). Minimum: 100 for tests before Jan 21, 2026; for tests on/after, overall 5.5 with reading/listening >=5.5 and writing/speaking >=5.0. Native English does not automatically waive; applicants must request a waiver with evidence. Waivers may be granted for >=2 years full-time study or work in English. Law page does not specify a validity period; confirm with admissions if score age matters."
         }
       ],
       "applicability_boundary": "Intersect programme, actual procedure, applicant category and labelled entry term. The presence of several procedures never applies every fact to every route."
@@ -9690,7 +11387,13 @@
         "undergraduate-shared-evidence:stanford-grad-budget-2026-27-reference",
         "undergraduate-shared-evidence:stanford-kazakhstan-graduate-credential-verification",
         "undergraduate-shared-evidence:stanford-international-visa-and-enrollment-steps",
-        "undergraduate-shared-evidence:stanford-incoming-student-health-requirements"
+        "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-graduate-special-and-excess-unit-tuition-2026-27",
+        "undergraduate-shared-evidence:stanford-grad-offer-response-and-deferral",
+        "undergraduate-shared-evidence:stanford-grad-post-offer-english-proof",
+        "undergraduate-shared-evidence:stanford-grad-wes-timing-and-cost",
+        "undergraduate-shared-evidence:stanford-grad-loan-application-window"
       ],
       "facts": [
         {

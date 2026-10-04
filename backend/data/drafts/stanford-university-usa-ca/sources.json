@@ -740,6 +740,267 @@
       "evidence_file": "undergraduate-study-evidence.json"
     },
     {
+      "id": "undergraduate-study-evidence:ug-ccsre-linked-declaration-source",
+      "url": "https://ccsre.stanford.edu/undergraduate-resources/how-declare-undergraduates",
+      "title": "CCSRE How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-ccsre-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-chem-linked-declaration-source",
+      "url": "https://chemistry.stanford.edu/academics/undergraduate-program/how-declare",
+      "title": "Chemistry How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-chem-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-econ-linked-declaration-source",
+      "url": "https://economics.stanford.edu/undergraduate/major/how-declare",
+      "title": "Economics How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-econ-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-datsc-linked-declaration-source",
+      "url": "https://datasciencemajor.stanford.edu/academics/how-declare",
+      "title": "Data Science How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-datsc-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-math-linked-declaration-source",
+      "url": "https://mathematics.stanford.edu/academics/undergraduate-students/math-major/how-declare",
+      "title": "Mathematics How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-math-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-ling-linked-declaration-source",
+      "url": "https://linguistics.stanford.edu/degree-programs/undergraduate-programs/major-linguistics/how-declare",
+      "title": "Linguistics How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-ling-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-mse-linked-declaration-source",
+      "url": "https://mse.stanford.edu/academics-admissions/UG-declare",
+      "title": "MSE How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-mse-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-psych-linked-declaration-source",
+      "url": "https://psychology.stanford.edu/academics/undergraduate-program/how-declare",
+      "title": "Psychology How to Declare",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-psych-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-engl-linked-declaration-source",
+      "url": "https://english.stanford.edu/academics/undergraduate-programs/english-major",
+      "title": "English Major Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-engl-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-idmen-linked-approval-source",
+      "url": "https://ughb.stanford.edu/majors-minors/individually-designed-major-engineering",
+      "title": "IDMEN Proposal and Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-idmen-linked-approval-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-art-linked-declaration-source",
+      "url": "https://art.stanford.edu/academics/undergraduate-programs/how-declare-majorminor",
+      "title": "Art and Art History Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-art-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-classics-linked-declaration-source",
+      "url": "https://classics.stanford.edu/academics/undergraduate-program/how-to-declare",
+      "title": "Classics Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-classics-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-amstu-linked-declaration-source",
+      "url": "https://amstudies.stanford.edu/degree-programs/how-declare",
+      "title": "American Studies Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-amstu-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-urban-linked-declaration-source",
+      "url": "https://urbanstudies.stanford.edu/academics/how-declare",
+      "title": "Urban Studies Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-urban-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-bio-linked-declaration-source",
+      "url": "https://biology.stanford.edu/academics/undergraduate-program/how-declare",
+      "title": "Biology Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-bio-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-physics-linked-declaration-source",
+      "url": "https://physics.stanford.edu/undergraduate/how-declare",
+      "title": "Physics Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-physics-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-cs-linked-declaration-source",
+      "url": "https://www.cs.stanford.edu/bachelors/how-to-declare",
+      "title": "Computer Science Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-cs-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-ee-linked-declaration-source",
+      "url": "https://ee.stanford.edu/academics/undergrad-degree-progress",
+      "title": "Electrical Engineering Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-ee-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-sts-linked-declaration-source",
+      "url": "https://sts.stanford.edu/academics/how-declare",
+      "title": "Science Technology and Society Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-sts-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-music-linked-declaration-source",
+      "url": "https://music.stanford.edu/academics/undergraduate-studies/undergraduate-major/how-declare-music-major",
+      "title": "Music Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_linked_declaration_content_reviewed",
+      "original_id": "ug-music-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-cee-linked-declaration-source",
+      "url": "https://cee.stanford.edu/academics-admissions/undergraduate-degrees/how-declare-cee-your-major",
+      "title": "CEE Undergraduate Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_application_or_declaration_content_reviewed",
+      "original_id": "ug-cee-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-engphysics-linked-declaration-source",
+      "url": "https://ughb.stanford.edu/majors-minors/engineering-physics-program",
+      "title": "Engineering Physics Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_application_or_declaration_content_reviewed",
+      "original_id": "ug-engphysics-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-bmc-linked-declaration-source",
+      "url": "https://ughb.stanford.edu/majors-minors/biomedical-computation-major-program",
+      "title": "Biomedical Computation Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_application_or_declaration_content_reviewed",
+      "original_id": "ug-bmc-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-dlcl-common-linked-declaration-source",
+      "url": "https://dlcl.stanford.edu/departments/comparative-literature/comparative-literature-undergraduate-program",
+      "title": "DLCL Degree Declaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_application_or_declaration_content_reviewed",
+      "original_id": "ug-dlcl-common-linked-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-dlcl-frenc-declaration-source",
+      "url": "https://dlcl.stanford.edu/departments/french-and-italian/french-and-italian-undergraduate-program/french-undergraduate",
+      "title": "frencundergraduateprogramanddeclaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevantdepartmentdeclarationworkflowreviewed",
+      "original_id": "ug-dlcl-frenc-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-dlcl-ital-declaration-source",
+      "url": "https://dlcl.stanford.edu/departments/french-and-italian/french-and-italian-undergraduate-program/italian-undergraduate",
+      "title": "italundergraduateprogramanddeclaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevantdepartmentdeclarationworkflowreviewed",
+      "original_id": "ug-dlcl-ital-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-dlcl-gerst-declaration-source",
+      "url": "https://dlcl.stanford.edu/departments/german-studies/german-studies-undergraduate-program",
+      "title": "gerstundergraduateprogramanddeclaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevantdepartmentdeclarationworkflowreviewed",
+      "original_id": "ug-dlcl-gerst-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-dlcl-ilac-declaration-source",
+      "url": "https://dlcl.stanford.edu/departments/iberian-and-latin-american-cultures/iberian-and-latin-american-cultures-undergraduate",
+      "title": "ilacundergraduateprogramanddeclaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevantdepartmentdeclarationworkflowreviewed",
+      "original_id": "ug-dlcl-ilac-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
+      "id": "undergraduate-study-evidence:ug-dlcl-slav-declaration-source",
+      "url": "https://dlcl.stanford.edu/departments/slavic-languages-and-literatures/slavic-languages-and-literatures-undergraduate-program",
+      "title": "slavundergraduateprogramanddeclaration",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevantdepartmentdeclarationworkflowreviewed",
+      "original_id": "ug-dlcl-slav-declaration-source",
+      "evidence_file": "undergraduate-study-evidence.json"
+    },
+    {
       "id": "undergraduate-shared-evidence:stanford-ug-firstyear-requirements",
       "url": "https://admission.stanford.edu/apply/first-year/index.html",
       "title": "First-Year Applicants — Requirements and Deadlines | Stanford Undergraduate Admission",
@@ -1085,7 +1346,7 @@
       "id": "undergraduate-shared-evidence:stanford-grad-budget",
       "url": "https://financialaid.stanford.edu/grad/budget/index.html",
       "title": "The Student Budget | Stanford Graduate Financial Aid",
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "content_review_status": "reviewed_for_linked_facts",
       "original_id": "stanford-grad-budget",
       "evidence_file": "undergraduate-shared-evidence.json"
@@ -1166,7 +1427,7 @@
       "id": "undergraduate-shared-evidence:stanford-khs-eligibility",
       "url": "https://knight-hennessy.stanford.edu/admission/before-you-apply/eligibility",
       "title": "Eligibility | Knight-Hennessy Scholars at Stanford",
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "content_review_status": "reviewed_for_linked_facts",
       "original_id": "stanford-khs-eligibility",
       "evidence_file": "undergraduate-shared-evidence.json"
@@ -1289,6 +1550,78 @@
       "evidence_file": "undergraduate-shared-evidence.json"
     },
     {
+      "id": "undergraduate-shared-evidence:stanford-fees-full-2026-27",
+      "url": "https://studentservices.stanford.edu/my-finances/tuition-fees/non-tuition-charges-fees/2026-2027-non-tuition-charges-fees",
+      "title": "2026-2027 Non-Tuition Charges & Fees",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_published_schedule_content_reviewed",
+      "original_id": "stanford-fees-full-2026-27",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-graduate-tuition-full-2026-27",
+      "url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+      "title": "2026-2027 Graduate and Professional Tuition Rates",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_published_schedule_content_reviewed",
+      "original_id": "stanford-graduate-tuition-full-2026-27",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-grad-response-full",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/respond-offer-admission",
+      "title": "Graduate Offer Response",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed",
+      "original_id": "stanford-grad-response-full",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-grad-condition-faq",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/conditions-admission/faq",
+      "title": "Incoming Graduate Credential/English FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed",
+      "original_id": "stanford-grad-condition-faq",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-grad-english-verification",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/conditions-admission/english-proficiency",
+      "title": "Incoming Graduate English Verification",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed",
+      "original_id": "stanford-grad-english-verification",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-grad-loan-apply-2026",
+      "url": "https://financialaid.stanford.edu/grad/apply/index.html",
+      "title": "Graduate Aid Requirements and Deadlines",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed",
+      "original_id": "stanford-grad-loan-apply-2026",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-residence-agreement-2026-27",
+      "url": "https://rde.stanford.edu/studenthousing/residence-agreement-2026-27",
+      "title": "Stanford Residence Agreement2026-27",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_student_category_eligibility_and_contract_conditions_reviewed",
+      "original_id": "stanford-residence-agreement-2026-27",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-khs-ai-policy",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/policy-ai-use",
+      "title": "Knight-Hennessy Policy on AI Use",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_application_authorship_content_reviewed",
+      "original_id": "stanford-khs-ai-policy",
+      "evidence_file": "undergraduate-shared-evidence.json"
+    },
+    {
       "id": "directory-evidence:stanford-graduate-directory",
       "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=grad-program-list",
       "title": "Stanford graduate programme application directory",
@@ -1312,8 +1645,8 @@
       "id": "coterm-central-evidence:stanford-coterm-central-eligibility",
       "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/degree-requirements/coterminal-degree-programs/coterm-eligibility",
       "title": "Stanford coterm eligibility",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_rules",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_eligibility_or_course_transfer_content_rechecked",
       "original_id": "stanford-coterm-central-eligibility",
       "evidence_file": "coterm-central-evidence.json"
     },
@@ -1339,8 +1672,8 @@
       "id": "coterm-central-evidence:stanford-coterm-central-transfer",
       "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/coterminal-degree-programs/coterm-course-transfer",
       "title": "Stanford coterm transfer",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_rules",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_eligibility_or_course_transfer_content_rechecked",
       "original_id": "stanford-coterm-central-transfer",
       "evidence_file": "coterm-central-evidence.json"
     },
@@ -2098,6 +2431,592 @@
       "checked_at": "2026-10-03",
       "content_review_status": "Reviewed official department page for route-specific policy.",
       "original_id": "fees-2026-27",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:aa-coterm-full",
+      "url": "https://aa.stanford.edu/academics-admissions/coterminal-masters/coterm-admissions",
+      "title": "AA Coterm Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "aa-coterm-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:bioe-coterm-program",
+      "url": "https://bioengineering.stanford.edu/academics-admission/coterminal-program",
+      "title": "Bioengineering Coterminal Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "bioe-coterm-program",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:bioe-coterm-admission",
+      "url": "https://bioengineering.stanford.edu/academics-admission/coterminal-admission",
+      "title": "Bioengineering Coterminal Admission",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "bioe-coterm-admission",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:icme-ms-full",
+      "url": "https://icme.stanford.edu/academics-admission/icme-master-science",
+      "title": "ICME Master of Science",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "icme-ms-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:icme-deadlines-full",
+      "url": "https://icme.stanford.edu/academics-admission/icme-application-deadlines",
+      "title": "ICME Application Deadlines",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "icme-deadlines-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:mse-coterm-full",
+      "url": "https://mse.stanford.edu/academics-admissions/coterminal-program",
+      "title": "MSE Coterminal Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "mse-coterm-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:me-coterm-full",
+      "url": "https://me.stanford.edu/academics-admissions/coterminal-masters/coterm-admissions",
+      "title": "ME Coterm Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "me-coterm-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cheme-coterm-full",
+      "url": "https://cheme.stanford.edu/academics/undergraduate-programs/coterm/co-terminal-bachelors-and-masters-degrees",
+      "title": "ChemE Coterm Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "cheme-coterm-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cheme-coterm-study",
+      "url": "https://cheme.stanford.edu/academics/undergraduate-programs/coterm",
+      "title": "ChemE Coterm Study",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "cheme-coterm-study",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:msande-coterm-overview",
+      "url": "https://msande.stanford.edu/academics-admissions/graduate/ms-program/coterm-overview",
+      "title": "MS&E Coterm Overview",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "msande-coterm-overview",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:msande-current-apply",
+      "url": "https://msande.stanford.edu/academics-admissions/graduate/admission/how-apply-current-stanford-students",
+      "title": "MS&E Current Stanford Application",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "msande-current-apply",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:msande-admission-full",
+      "url": "https://msande.stanford.edu/academics-admissions/graduate/admission",
+      "title": "MS&E Admission",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "msande-admission-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cee-coterm-full",
+      "url": "https://cee.stanford.edu/academics-admissions/coterminal-admissions",
+      "title": "CEE Coterminal Admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "cee-coterm-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cee-coterm-program",
+      "url": "https://cee.stanford.edu/academics-admissions/coterminal-program",
+      "title": "CEE Coterminal Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "cee-coterm-program",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:ee-coterm-eligibility",
+      "url": "https://ee.stanford.edu/admissions/coterm/eligibility",
+      "title": "EE Coterm Eligibility",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "ee-coterm-eligibility",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:ee-coterm-materials",
+      "url": "https://ee.stanford.edu/admissions/coterm/required-materials",
+      "title": "EE Coterm Materials",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "ee-coterm-materials",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:ee-coterm-faq-full",
+      "url": "https://ee.stanford.edu/admissions/coterm/faq",
+      "title": "EE Coterm FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_department_content_reviewed",
+      "original_id": "ee-coterm-faq-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:ee-grad-auth-materials",
+      "url": "https://ee.stanford.edu/admissions/grad-auth/how-to-apply",
+      "title": "EE Added MS Instructions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_route_content_reviewed",
+      "original_id": "ee-grad-auth-materials",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:ee-grad-auth-faq",
+      "url": "https://ee.stanford.edu/admissions/grad-auth/faq",
+      "title": "EE Added MS FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_route_content_reviewed",
+      "original_id": "ee-grad-auth-faq",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:mse-phd-study-full",
+      "url": "https://mse.stanford.edu/academics-admissions/doctoral-program",
+      "title": "MSE Doctoral Program",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_route_content_reviewed",
+      "original_id": "mse-phd-study-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:msande-hcp-full",
+      "url": "https://msande.stanford.edu/academics-admissions/graduate/ms-program/part-timeremote-ms-overview",
+      "title": "MS&E Part-Time/Remote MS",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_route_content_reviewed",
+      "original_id": "msande-hcp-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:msande-joint-full",
+      "url": "https://msande.stanford.edu/academics-admissions/graduate/ms-program/dual-and-joint-ms-overview",
+      "title": "MS&E Dual and Joint MS",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_route_content_reviewed",
+      "original_id": "msande-joint-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:bioe-joint-full",
+      "url": "https://bioengineering.stanford.edu/academics-admission/graduate-programs/dual-and-joint-programs",
+      "title": "BioE Dual and Joint Programs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_route_content_reviewed",
+      "original_id": "bioe-joint-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-aa-eng",
+      "url": "https://bulletin.stanford.edu/programs/AA-ENG",
+      "title": "Aeronautics & Astro (Eng)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-aa-eng",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-aa-ms",
+      "url": "https://bulletin.stanford.edu/programs/AA-MS",
+      "title": "Aeronautics & Astro (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-aa-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-aa-phd",
+      "url": "https://bulletin.stanford.edu/programs/AA-PHD",
+      "title": "Aeronautics & Astro (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-aa-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-bioe-ms",
+      "url": "https://bulletin.stanford.edu/programs/BIOE-MS",
+      "title": "Bioengineering (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-bioe-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-bioe-phd",
+      "url": "https://bulletin.stanford.edu/programs/BIOE-PHD",
+      "title": "Bioengineering (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-bioe-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cee-eng",
+      "url": "https://bulletin.stanford.edu/programs/CEE-ENG",
+      "title": "Civil & Envir Engr (Eng)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cee-eng",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cee-phd",
+      "url": "https://bulletin.stanford.edu/programs/CEE-PHD",
+      "title": "Civil & Envir Engr (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cee-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cheme-eng",
+      "url": "https://bulletin.stanford.edu/programs/CHEME-ENG",
+      "title": "Chemical Engineering (Eng)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cheme-eng",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cheme-ms",
+      "url": "https://bulletin.stanford.edu/programs/CHEME-MS",
+      "title": "Chemical Engineering (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cheme-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cheme-phd",
+      "url": "https://bulletin.stanford.edu/programs/CHEME-PHD",
+      "title": "Chemical Engineering (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cheme-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cme-ms",
+      "url": "https://bulletin.stanford.edu/programs/CME-MS",
+      "title": "Comput & Math Engr (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cme-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cme-phd",
+      "url": "https://bulletin.stanford.edu/programs/CME-PHD",
+      "title": "Comput & Math Engr (PHD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cme-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cs-phd",
+      "url": "https://bulletin.stanford.edu/programs/CS-PHD",
+      "title": "Computer Science (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cs-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cee-ms",
+      "url": "https://bulletin.stanford.edu/programs/CEE-MS",
+      "title": "Civil & Envir Engr (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cee-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-cs-ms",
+      "url": "https://bulletin.stanford.edu/programs/CS-MS",
+      "title": "Computer Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-cs-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-design-ms",
+      "url": "https://bulletin.stanford.edu/programs/DESIGN-MS",
+      "title": "Design (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-design-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-ee-ms",
+      "url": "https://bulletin.stanford.edu/programs/EE-MS",
+      "title": "Electrical Engineering (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-ee-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-ee-phd",
+      "url": "https://bulletin.stanford.edu/programs/EE-PHD",
+      "title": "Electrical Engineering (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-ee-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-engr-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENGR-MS",
+      "title": "Engineering (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-engr-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-matsc-eng",
+      "url": "https://bulletin.stanford.edu/programs/MATSC-ENG",
+      "title": "Materials Science & Engr (Eng)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-matsc-eng",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-matsc-ms",
+      "url": "https://bulletin.stanford.edu/programs/MATSC-MS",
+      "title": "Materials Science & Engr (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-matsc-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-matsc-phd",
+      "url": "https://bulletin.stanford.edu/programs/MATSC-PHD",
+      "title": "Materials Science & Engr (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-matsc-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-me-eng",
+      "url": "https://bulletin.stanford.edu/programs/ME-ENG",
+      "title": "Mechanical Engineer (Eng)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-me-eng",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-me-ms",
+      "url": "https://bulletin.stanford.edu/programs/ME-MS",
+      "title": "Mechanical Engineer (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-me-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-mgtsc-phd",
+      "url": "https://bulletin.stanford.edu/programs/MGTSC-PHD",
+      "title": "Mgmt Sci & Engineering (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-mgtsc-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-me-phd",
+      "url": "https://bulletin.stanford.edu/programs/ME-PHD",
+      "title": "Mechanical Engineer (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-me-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:recheck-bulletin-mgtsc-ms",
+      "url": "https://bulletin.stanford.edu/programs/MGTSC-MS",
+      "title": "Mgmt Sci & Engineering (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread 2026-10-03",
+      "original_id": "recheck-bulletin-mgtsc-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cs-hcp-full",
+      "url": "https://www.cs.stanford.edu/masters-honors-cooperative-program",
+      "title": "CS HCP",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "cs-hcp-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:mse-hcp-full",
+      "url": "https://mse.stanford.edu/academics-admissions/hcp-program",
+      "title": "MSE HCP",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "mse-hcp-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:me-faq-full",
+      "url": "https://me.stanford.edu/academics-admissions/admissions-frequently-asked-questions",
+      "title": "ME Admissions FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "me-faq-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:ee-hcp-faq-full",
+      "url": "https://ee.stanford.edu/admissions/hcp/faq",
+      "title": "EE HCP FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "ee-hcp-faq-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cee-hcp-full",
+      "url": "https://cee.stanford.edu/academics-admissions/online-and-professional-education",
+      "title": "CEE HCP Overview",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "cee-hcp-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cee-hybrid-ses-faq",
+      "url": "https://cee.stanford.edu/academics-admission/graduate-degrees/ms-programs/sustainable-engineered-systems-ses-master-1",
+      "title": "CEE Hybrid SES MS FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "cee-hybrid-ses-faq",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cee-hybrid-ses-requirements",
+      "url": "https://cee.stanford.edu/hybrid-ses-masters-cee-program-requirements",
+      "title": "CEE Hybrid SES Degree Requirements",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "cee-hybrid-ses-requirements",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cee-hybrid-ses-admission-faq",
+      "url": "https://cee.stanford.edu/hybrid-ses-masters-cee-admissions-frequently-asked-questions-faqs",
+      "title": "CEE Hybrid SES Admission FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "official_full_HCP_route_content_reviewed",
+      "original_id": "cee-hybrid-ses-admission-faq",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cs-current-add-degree",
+      "url": "https://www.cs.stanford.edu/admissions/current-stanford-students/additional-change-degree",
+      "title": "CS Additional/Change of Degree",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_full_admission_progression_and_funding_content_reviewed",
+      "original_id": "cs-current-add-degree",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cs-phd-enroute-ms",
+      "url": "https://www.cs.stanford.edu/phd-program-petition-for-ms-degree",
+      "title": "CS PhD Petition for MS",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_full_admission_progression_and_funding_content_reviewed",
+      "original_id": "cs-phd-enroute-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cs-joint-mba",
+      "url": "https://www.cs.stanford.edu/admissions/joint-degree-programs/joint-cs-msmba-degree",
+      "title": "CS MS/MBA Admission",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_full_admission_progression_and_funding_content_reviewed",
+      "original_id": "cs-joint-mba",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cs-joint-law-ms",
+      "url": "https://www.cs.stanford.edu/admissions/joint-degree-admissions-cs-ms-law",
+      "title": "CS MS/Law Admission",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_full_admission_progression_and_funding_content_reviewed",
+      "original_id": "cs-joint-law-ms",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:cs-joint-law-phd",
+      "url": "https://www.cs.stanford.edu/admissions/joint-degree-admissions-overview/joint-degree-admissions",
+      "title": "CS PhD/Law Admission",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_full_admission_progression_and_funding_content_reviewed",
+      "original_id": "cs-joint-law-phd",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:icme-funding-full",
+      "url": "https://icme.stanford.edu/academics-admission/graduate-funding",
+      "title": "ICME Graduate Funding",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_full_admission_progression_and_funding_content_reviewed",
+      "original_id": "icme-funding-full",
+      "evidence_file": "engineering-doerr-evidence.json"
+    },
+    {
+      "id": "engineering-doerr-evidence:hcp-tuition-access-limit",
+      "url": "https://online.stanford.edu/masters-degrees/tuition-fees",
+      "title": "Stanford Online Masters Tuition and Fees",
+      "checked_at": "2026-10-03",
+      "access_status": "403_or_javascript_challenge",
+      "content_review_status": "not_reviewed_due_to_access_challenge",
+      "original_id": "hcp-tuition-access-limit",
       "evidence_file": "engineering-doerr-evidence.json"
     },
     {
@@ -3388,6 +4307,213 @@
       "evidence_file": "humanities-education-medicine-evidence.json"
     },
     {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-joint-mba",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/joint-ma/mba",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Joint Mba",
+      "original_id": "full-recheck-gse-joint-mba",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gsb-joint-ma",
+      "url": "https://www.gsb.stanford.edu/programs/mba/academic-experience/joint-dual-degrees/ma-ed",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Joint Ma",
+      "original_id": "full-recheck-gsb-joint-ma",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gsb-education",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/education",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Education",
+      "original_id": "full-recheck-gsb-education",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gsb-app",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb App",
+      "original_id": "full-recheck-gsb-app",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gsb-deadlines",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/deadlines",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Deadlines",
+      "original_id": "full-recheck-gsb-deadlines",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gsb-fee",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/fee",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Fee",
+      "original_id": "full-recheck-gsb-fee",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-ma-bulletin",
+      "url": "https://bulletin.stanford.edu/programs/ED-MA/general-aoYks",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Ma Bulletin",
+      "original_id": "full-recheck-gse-ma-bulletin",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-joint-jd",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/jd-ma",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Joint Jd",
+      "original_id": "full-recheck-gse-joint-jd",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-sls-jd",
+      "url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Sls Jd",
+      "original_id": "full-recheck-sls-jd",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-joint-mpp",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/joint-ma/mpp",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Joint Mpp",
+      "original_id": "full-recheck-gse-joint-mpp",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-reqs",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/programs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Reqs",
+      "original_id": "full-recheck-gse-reqs",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-apply",
+      "url": "https://ed.stanford.edu/admissions/apply",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Apply",
+      "original_id": "full-recheck-gse-apply",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-mpp-current",
+      "url": "https://publicpolicy.stanford.edu/graduate/graduate-admissions/application-process-current-stanford-graduate-students",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Mpp Current",
+      "original_id": "full-recheck-mpp-current",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-gse-step",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/step",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Step",
+      "original_id": "full-recheck-gse-step",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-math20-description",
+      "url": "https://mathematics.stanford.edu/academics/introductory-math-courses",
+      "title": "Stanford Introductory Math Course Descriptions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "MATH20_vs_multivariable_course_description_reviewed",
+      "original_id": "full-recheck-math20-description",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-aephy-bulletin-coterm",
+      "url": "https://bulletin.stanford.edu/programs/AEPHY-MS/admissions-declaration-information-h0Lr4",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Aephy Bulletin Coterm",
+      "original_id": "full-recheck-aephy-bulletin-coterm",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-aephy-department",
+      "url": "https://appliedphysics.stanford.edu/admissions/overview",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Aephy Department",
+      "original_id": "full-recheck-aephy-department",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-biology-coterm",
+      "url": "https://biology.stanford.edu/academics/coterminal-masters-program/admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Biology Coterm",
+      "original_id": "full-recheck-biology-coterm",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-biology-coterm-overview",
+      "url": "https://biology.stanford.edu/academics/coterminal-masters-program/program-overview",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Biology Coterm Overview",
+      "original_id": "full-recheck-biology-coterm-overview",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:coterm-directory",
+      "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=coterm-program-list",
+      "title": "Explore Coterm Programs — current Stanford undergraduate application directory",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_AEPHY_and_Symbolic_Systems_2026_27_deadlines_tests_and_required_materials",
+      "original_id": "coterm-directory",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-chemistry-coterm",
+      "url": "https://chemistry.stanford.edu/academics/coterminal-masters-program/admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Chemistry Coterm",
+      "original_id": "full-recheck-chemistry-coterm",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-english-ma",
+      "url": "https://english.stanford.edu/academics/english-master-arts",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck English Ma",
+      "original_id": "full-recheck-english-ma",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
+      "id": "humanities-education-medicine-evidence:full-recheck-inpol-bulletin",
+      "url": "https://bulletin.stanford.edu/programs/INPOL-MA/admissions-declaration-information-h0Lr4",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Inpol Bulletin",
+      "original_id": "full-recheck-inpol-bulletin",
+      "evidence_file": "humanities-education-medicine-evidence.json"
+    },
+    {
       "id": "hs-social-science-evidence:graduate-directory",
       "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=grad-program-list",
       "title": "Explore Graduate Programs — external degree application directory",
@@ -4279,6 +5405,193 @@
       "evidence_file": "medicine-graduate-evidence.json"
     },
     {
+      "id": "medicine-graduate-evidence:recheck-degree-bioc-ms",
+      "url": "https://bulletin.stanford.edu/programs/BIOC-MS",
+      "title": "Biochemistry (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-bioc-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-bmds-ms",
+      "url": "https://bulletin.stanford.edu/programs/BMDS-MS",
+      "title": "Biomedical Data Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-bmds-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-cimgt-ms",
+      "url": "https://bulletin.stanford.edu/programs/CIMGT-MS",
+      "title": "Clinical Informatics Mgmt (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-cimgt-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-csb-ms",
+      "url": "https://bulletin.stanford.edu/programs/CSB-MS",
+      "title": "Chemical & Systems Biology-MS",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-csb-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-canbi-ms",
+      "url": "https://bulletin.stanford.edu/programs/CANBI-MS",
+      "title": "Cancer Biology (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-canbi-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-chpr-ms",
+      "url": "https://bulletin.stanford.edu/programs/CHPR-MS",
+      "title": "Community Health/Prev Res (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-chpr-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-dbio-ms",
+      "url": "https://bulletin.stanford.edu/programs/DBIO-MS",
+      "title": "Developmental Biology (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-dbio-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-epidm-ms",
+      "url": "https://bulletin.stanford.edu/programs/EPIDM-MS",
+      "title": "Epidemiology & Clin Rsrch (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-epidm-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-gene-ms",
+      "url": "https://bulletin.stanford.edu/programs/GENE-MS",
+      "title": "Genetics (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-gene-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-hrp-ms",
+      "url": "https://bulletin.stanford.edu/programs/HRP-MS",
+      "title": "Health Policy (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-hrp-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-immun-ms",
+      "url": "https://bulletin.stanford.edu/programs/IMMUN-MS",
+      "title": "Immunology (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-immun-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-mcp-ms",
+      "url": "https://bulletin.stanford.edu/programs/MCP-MS",
+      "title": "Molecular & Cell Phys (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-mcp-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-mi-ms",
+      "url": "https://bulletin.stanford.edu/programs/MI-MS",
+      "title": "Microbiology & Immunol (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-mi-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-mlasc-ms",
+      "url": "https://bulletin.stanford.edu/programs/MLASC-MS",
+      "title": "Laboratory Animal Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-mlasc-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-neurs-ms",
+      "url": "https://bulletin.stanford.edu/programs/NEURS-MS",
+      "title": "Neurosciences (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-neurs-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-stmrm-ms",
+      "url": "https://bulletin.stanford.edu/programs/STMRM-MS",
+      "title": "Stem Cell Bio and Regen Med",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-stmrm-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-tram-ms",
+      "url": "https://bulletin.stanford.edu/programs/TRAM-MS",
+      "title": "Translational Res and App Med",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
+      "content_reviewed_at": "2026-10-03",
+      "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03.",
+      "original_id": "recheck-degree-tram-ms",
+      "evidence_file": "medicine-graduate-evidence.json"
+    },
+    {
       "id": "professional-evidence:gsb_mba",
       "url": "https://www.gsb.stanford.edu/programs/mba/admission/application",
       "title": "Applying to the MBA Program",
@@ -4838,6 +6151,51 @@
       "evidence_file": "professional-evidence.json"
     },
     {
+      "id": "professional-evidence:mspa-federal-loan-2027-entry-limit-source-1",
+      "url": "https://financialaid.stanford.edu/loans/obbba/",
+      "title": "Mspa Federal Loan 2027 Entry Limit",
+      "checked_at": "2026-10-03",
+      "content_review_status": "content_reviewed_by_Medicine_professional_recheck",
+      "original_id": "mspa-federal-loan-2027-entry-limit-source-1",
+      "evidence_file": "professional-evidence.json"
+    },
+    {
+      "id": "professional-evidence:md-application-ai-policy-source-1",
+      "url": "https://med.stanford.edu/md-admissions/how-to-apply.html",
+      "title": "Md Application Ai Policy",
+      "checked_at": "2026-10-03",
+      "content_review_status": "content_reviewed_by_Medicine_professional_recheck",
+      "original_id": "md-application-ai-policy-source-1",
+      "evidence_file": "professional-evidence.json"
+    },
+    {
+      "id": "professional-evidence:law-advanced-toefl-requirement-and-waiver-source-2",
+      "url": "https://gradadmissions.stanford.edu/apply/test-scores",
+      "title": "Law Advanced Toefl Requirement And Waiver",
+      "checked_at": "2026-10-03",
+      "content_review_status": "specificLaw_orMSPA_source_content_reviewed",
+      "original_id": "law-advanced-toefl-requirement-and-waiver-source-2",
+      "evidence_file": "professional-evidence.json"
+    },
+    {
+      "id": "professional-evidence:mspa-individual-offer-response-and-program-structure-source-1",
+      "url": "https://med.stanford.edu/pa/program-overview.html",
+      "title": "Mspa Individual Offer Response And Program Structure",
+      "checked_at": "2026-10-03",
+      "content_review_status": "specificLaw_orMSPA_source_content_reviewed",
+      "original_id": "mspa-individual-offer-response-and-program-structure-source-1",
+      "evidence_file": "professional-evidence.json"
+    },
+    {
+      "id": "professional-evidence:mspa-individual-offer-response-and-program-structure-source-2",
+      "url": "https://med.stanford.edu/pa/admissions/how-to-apply.html",
+      "title": "Mspa Individual Offer Response And Program Structure",
+      "checked_at": "2026-10-03",
+      "content_review_status": "specificLaw_orMSPA_source_content_reviewed",
+      "original_id": "mspa-individual-offer-response-and-program-structure-source-2",
+      "evidence_file": "professional-evidence.json"
+    },
+    {
       "id": "supplementary-degree-evidence:stanford-baccalaureate-policy",
       "url": "https://bulletin.stanford.edu/academic-polices/degree-requirements/baccalaureate-degree-requirements",
       "title": "Baccalaureate Degree Requirements | Stanford Bulletin",
@@ -5339,6 +6697,168 @@
       "checked_at": "2026-10-03",
       "content_review_status": "Reviewed current 2027-28 application details",
       "original_id": "esos-timeline",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-easys-ms",
+      "url": "https://bulletin.stanford.edu/programs/EASYS-MS",
+      "title": "Earth Systems (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-easys-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-envres-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENVRES-MS",
+      "title": "Environment and Resources (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-envres-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-eps-ms",
+      "url": "https://bulletin.stanford.edu/programs/EPS-MS",
+      "title": "Earth Planetary Sciences (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-eps-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-ess-ms",
+      "url": "https://bulletin.stanford.edu/programs/ESS-MS",
+      "title": "Earth System Science (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-ess-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-ess-phd",
+      "url": "https://bulletin.stanford.edu/programs/ESS-PHD",
+      "title": "Earth System Science (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-ess-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-eps-phd",
+      "url": "https://bulletin.stanford.edu/programs/EPS-PHD",
+      "title": "Earth Planetary Sciences (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-eps-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-easys-ma",
+      "url": "https://bulletin.stanford.edu/programs/EASYS-MA",
+      "title": "Earth Systems (MA)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-easys-ma",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-energy-ms",
+      "url": "https://bulletin.stanford.edu/programs/ENERGY-MS",
+      "title": "Energy Science and Eng (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-energy-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-energy-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENERGY-PHD",
+      "title": "Energy Science and Eng (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-energy-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-envres-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENVRES-PHD",
+      "title": "Environment and Resource (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-envres-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-envss-ma",
+      "url": "https://bulletin.stanford.edu/programs/ENVSS-MA",
+      "title": "Environmental Social Sci (MA)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-envss-ma",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-envss-phd",
+      "url": "https://bulletin.stanford.edu/programs/ENVSS-PHD",
+      "title": "Environmental Social Sci (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-envss-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-geoph-ms",
+      "url": "https://bulletin.stanford.edu/programs/GEOPH-MS",
+      "title": "Geophysics (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-geoph-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-geoph-phd",
+      "url": "https://bulletin.stanford.edu/programs/GEOPH-PHD",
+      "title": "Geophysics (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-geoph-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-oceans-phd",
+      "url": "https://bulletin.stanford.edu/programs/OCEANS-PHD",
+      "title": "Oceans (PhD)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-oceans-phd",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-oceans-ms",
+      "url": "https://bulletin.stanford.edu/programs/OCEANS-MS",
+      "title": "Oceans (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-oceans-ms",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-sustsci-ma",
+      "url": "https://bulletin.stanford.edu/programs/SUSTSCI-MA",
+      "title": "Sustainability Sci & Prac (MA)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-sustsci-ma",
+      "evidence_file": "doerr-completion-evidence.json"
+    },
+    {
+      "id": "doerr-completion-evidence:recheck-bulletin-sustsci-ms",
+      "url": "https://bulletin.stanford.edu/programs/SUSTSCI-MS",
+      "title": "Sustainability Sci & Prac (MS)",
+      "checked_at": "2026-10-02",
+      "content_review_status": "original_2026_27_catalog_payload; relevant study/progression fields reread2026-10-03",
+      "original_id": "recheck-bulletin-sustsci-ms",
       "evidence_file": "doerr-completion-evidence.json"
     }
   ]

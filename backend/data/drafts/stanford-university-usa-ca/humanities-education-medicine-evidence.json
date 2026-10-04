@@ -1000,6 +1000,167 @@
       "title": "Linguistics Coterminal MA Program",
       "checked_at": "2026-10-03",
       "content_review_status": "reviewed_for_2026_27_current_undergraduate_only_deadline_and_documents"
+    },
+    {
+      "id": "full-recheck-gse-joint-mba",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/joint-ma/mba",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Joint Mba"
+    },
+    {
+      "id": "full-recheck-gsb-joint-ma",
+      "url": "https://www.gsb.stanford.edu/programs/mba/academic-experience/joint-dual-degrees/ma-ed",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Joint Ma"
+    },
+    {
+      "id": "full-recheck-gsb-education",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/education",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Education"
+    },
+    {
+      "id": "full-recheck-gsb-app",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb App"
+    },
+    {
+      "id": "full-recheck-gsb-deadlines",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/deadlines",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Deadlines"
+    },
+    {
+      "id": "full-recheck-gsb-fee",
+      "url": "https://www.gsb.stanford.edu/programs/mba/admission/application/fee",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gsb Fee"
+    },
+    {
+      "id": "full-recheck-gse-ma-bulletin",
+      "url": "https://bulletin.stanford.edu/programs/ED-MA/general-aoYks",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Ma Bulletin"
+    },
+    {
+      "id": "full-recheck-gse-joint-jd",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/jd-ma",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Joint Jd"
+    },
+    {
+      "id": "full-recheck-sls-jd",
+      "url": "https://law.stanford.edu/apply/how-to-apply/jd-application-process/",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Sls Jd"
+    },
+    {
+      "id": "full-recheck-gse-joint-mpp",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/joint-ma/mpp",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Joint Mpp"
+    },
+    {
+      "id": "full-recheck-gse-reqs",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/programs",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Reqs"
+    },
+    {
+      "id": "full-recheck-gse-apply",
+      "url": "https://ed.stanford.edu/admissions/apply",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Apply"
+    },
+    {
+      "id": "full-recheck-mpp-current",
+      "url": "https://publicpolicy.stanford.edu/graduate/graduate-admissions/application-process-current-stanford-graduate-students",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Mpp Current"
+    },
+    {
+      "id": "full-recheck-gse-step",
+      "url": "https://ed.stanford.edu/admissions/application-reqs/step",
+      "checked_at": "2026-10-03",
+      "content_review_status": "source_content_reviewed_in_bounded_GSE_recheck",
+      "title": "Gse Step"
+    },
+    {
+      "id": "full-recheck-math20-description",
+      "url": "https://mathematics.stanford.edu/academics/introductory-math-courses",
+      "title": "Stanford Introductory Math Course Descriptions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "MATH20_vs_multivariable_course_description_reviewed"
+    },
+    {
+      "id": "full-recheck-aephy-bulletin-coterm",
+      "url": "https://bulletin.stanford.edu/programs/AEPHY-MS/admissions-declaration-information-h0Lr4",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Aephy Bulletin Coterm"
+    },
+    {
+      "id": "full-recheck-aephy-department",
+      "url": "https://appliedphysics.stanford.edu/admissions/overview",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Aephy Department"
+    },
+    {
+      "id": "full-recheck-biology-coterm",
+      "url": "https://biology.stanford.edu/academics/coterminal-masters-program/admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Biology Coterm"
+    },
+    {
+      "id": "full-recheck-biology-coterm-overview",
+      "url": "https://biology.stanford.edu/academics/coterminal-masters-program/program-overview",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Biology Coterm Overview"
+    },
+    {
+      "id": "coterm-directory",
+      "url": "https://applygrad.stanford.edu/portal/explore-programs?cmd=coterm-program-list",
+      "title": "Explore Coterm Programs — current Stanford undergraduate application directory",
+      "checked_at": "2026-10-02",
+      "content_review_status": "reviewed_for_AEPHY_and_Symbolic_Systems_2026_27_deadlines_tests_and_required_materials"
+    },
+    {
+      "id": "full-recheck-chemistry-coterm",
+      "url": "https://chemistry.stanford.edu/academics/coterminal-masters-program/admissions",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Chemistry Coterm"
+    },
+    {
+      "id": "full-recheck-english-ma",
+      "url": "https://english.stanford.edu/academics/english-master-arts",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck English Ma"
+    },
+    {
+      "id": "full-recheck-inpol-bulletin",
+      "url": "https://bulletin.stanford.edu/programs/INPOL-MA/admissions-declaration-information-h0Lr4",
+      "checked_at": "2026-10-03",
+      "content_review_status": "current official page reviewed",
+      "title": "Full Recheck Inpol Bulletin"
     }
   ],
   "study_options": [
@@ -1015,11 +1176,10 @@
       ],
       "checked_at": "2026-10-02",
       "procedure_ids": [
-        "aephy-ms-internal",
         "aephy-ms-coterm",
         "aephy-ms-directory-coterm"
       ],
-      "application_classification": "internal_intermediate_admission",
+      "application_classification": "coterm_only_currently_evidenced",
       "description": "Through coursework and independent study, this coterminal advanced degree program develops your knowledge and skills at the intersection of applied physics and engineering while preparing you for a professional career or doctoral studies."
     },
     {
@@ -1194,7 +1354,8 @@
       ],
       "checked_at": "2026-10-02",
       "procedure_ids": [
-        "bioph-phd-external"
+        "bioph-phd-external",
+        "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_terminal_admission",
       "description": "Immerse yourself in two overlapping branches of Biophysics: applying physical and chemical principles and methods to solving biological problems and developing new methods. You’ll train in quantitative approaches to biological problems and perform independent research and analysis in biophysics."
@@ -1211,7 +1372,8 @@
       ],
       "checked_at": "2026-10-02",
       "procedure_ids": [
-        "bio-phd-external"
+        "bio-phd-external",
+        "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_terminal_admission",
       "description": "Learn from and work with world-renowned faculty involved in research on ecology, neurobiology, population biology, plant and animal physiology, biochemistry, immunology, cell and developmental biology, genetics, and molecular biology. You’ll learn how to ask important questions and devise and carry out experiments to answer those questions, make professional presentations, write manuscripts for publication, and become an effective teacher."
@@ -1316,10 +1478,10 @@
       ],
       "checked_at": "2026-10-02",
       "procedure_ids": [
-        "class-ma-classification-unresolved"
+        "class-ma-current-phd"
       ],
-      "application_classification": "researched_unresolved",
-      "description": "Continue cultivating your knowledge of Greek and Latin language, literature, philosophy, history, art, and archaeology, and explore specialized fields such as ancient economics, law, papyrology, and science."
+      "application_classification": "current_Classics_PhD_only_intermediate_award",
+      "description": "Classics MA retains three subplans for existing Classics PhD students; no new independent students are accepted, last admission Spring2024."
     },
     {
       "id": "COMMU-MA",
@@ -2363,9 +2525,10 @@
       "procedure_ids": [
         "ed-ma-cte-admission"
       ],
-      "application_classification": "external_terminal_admission",
-      "description": "Curriculum and Teacher Education MA: graduate study in curriculum and teacher education; this specialization will not admit in 2027-28.",
-      "parent_option_id": "ED-MA"
+      "application_classification": "external_MA_specialization_with_no_2027_28_intake",
+      "description": "Curriculum and Teacher Education MA is retained as a study specialization, but GSE publishes no admission intake for2027-28. Do not present the normal2027MA deadline as an open CTE route.",
+      "parent_option_id": "ED-MA",
+      "new_applicant_availability": "not_open_for_2027_28_entry"
     },
     {
       "id": "ED-MA-GCE",
@@ -2449,7 +2612,7 @@
         "ed-ma-mba-admission"
       ],
       "application_classification": "external_joint_entry_via_gsb_mba_application",
-      "description": "Joint Education MA/MBA: two-year full-time program combining GSE education coursework and GSB MBA study for educational management.",
+      "description": "Joint Education MA/MBA combines45GSEMA units and84MBAunits, with129total and7-8quarters(about2.5years) under current GSB guidance; named-degree overlap and school approval apply.",
       "parent_option_id": "ED-MA",
       "joint_degree_components": [
         "ED-MA",
@@ -2536,15 +2699,14 @@
   "application_procedures": [
     {
       "id": "aephy-ms-internal",
-      "option_ids": [
-        "AEPHY-MS"
-      ],
-      "classification": "internal_intermediate_admission",
+      "option_ids": [],
+      "classification": "historical duplicate of coterm, no independent internal form verified",
       "destination": "http://appliedphysics.stanford.edu/",
       "source_ids": [
         "bulletin-aephy-ms",
         "bulletin-degree-catalog"
-      ]
+      ],
+      "review_status": "superseded_duplicate_coterm_context"
     },
     {
       "id": "aephy-ms-coterm",
@@ -2848,15 +3010,14 @@
     },
     {
       "id": "class-ma-classification-unresolved",
-      "option_ids": [
-        "CLASS-MA"
-      ],
-      "classification": "researched_unresolved",
+      "option_ids": [],
+      "classification": "historical unresolved award context",
       "destination": "https://bulletin.stanford.edu/programs/CLASS-MA",
       "source_ids": [
         "bulletin-class-ma",
         "grad-admissions-explore"
-      ]
+      ],
+      "review_status": "superseded_by_current_Bulletin_restriction"
     },
     {
       "id": "commu-ma-external",
@@ -4477,6 +4638,18 @@
         "bulletin-arths-ma",
         "art-history-phd-program"
       ]
+    },
+    {
+      "id": "class-ma-current-phd",
+      "option_ids": [
+        "CLASS-MA"
+      ],
+      "classification": "existing_Classics_PhD_intermediate_MA",
+      "destination": "Existing ClassicsPhD student consultsStudentServices fordepartment recommendation andMA requirements",
+      "source_ids": [
+        "bulletin-class-ma"
+      ],
+      "checked_at": "2026-10-03"
     }
   ],
   "facts": [
@@ -4501,7 +4674,6 @@
           "AEPHY-MS"
         ],
         "procedure_ids": [
-          "aephy-ms-internal",
           "aephy-ms-coterm"
         ],
         "levels": [
@@ -5192,7 +5364,7 @@
           "CLASS-MA"
         ],
         "procedure_ids": [
-          "class-ma-classification-unresolved"
+          "class-ma-current-phd"
         ],
         "levels": [
           "graduate"
@@ -8633,11 +8805,9 @@
           "ED-MA",
           "ED-MS",
           "ED-PHD",
-          "ED-MA-CTE",
           "ED-MA-GCE",
           "ED-MA-IEPA",
           "ED-MA-POLS",
-          "ED-MA-MPP",
           "ED-MS-EDS",
           "ED-MS-LDT"
         ],
@@ -8655,7 +8825,9 @@
       "checked_at": "2026-10-02",
       "publication_status": "published",
       "review_status": "reviewed",
-      "conditions": [],
+      "conditions": [
+        "The general Education MA option represents shared ordinary GSE MA guidance only. STEP, individually designed MA, closed CTE intake and joint GSB/Law/POLS-forwarded routes use their own application instructions. Selecting a named variant must not inherit this checklist by parent degree alone."
+      ],
       "exceptions": []
     },
     {
@@ -10235,6 +10407,996 @@
       "review_status": "reviewed",
       "conditions": [],
       "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-application-target-and-route-1",
+      "topic": "application_target_and_route",
+      "value": "GSB MBA form: select MA Education/MBA and complete joint essay; GSB forwards application and statement to GSE, no separate GSE form. MBA1 may apply in year one. Without MBA admission applicant cannot enroll in MA alone; GSE decision accompanies MBA decision.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-mba",
+        "full-recheck-gsb-joint-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-eligibility-and-prerequisites-2",
+      "topic": "eligibility_and_prerequisites",
+      "value": "GSB requires US bachelor degree or equivalent; no minimum GPA or work experience. GMAT or GRE required; GSE accepts either for this joint route.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-education",
+        "full-recheck-gsb-app",
+        "full-recheck-gsb-joint-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-documents-and-selection-3",
+      "topic": "documents_and_selection",
+      "value": "GSB application requires two recommendations, resume, essays, education and test information. Applicant marks joint interest and submits extra joint essay; no separate GSE application.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-app",
+        "full-recheck-gse-joint-mba"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-application-windows-and-deadlines-4",
+      "topic": "application_windows_and_deadlines",
+      "value": "2026-27 rounds Sep 9 2026, Jan 6 2027, Apr 7 2027; each due 4 p.m. Pacific, notifications Dec 9, Apr 1, May 27. GSE directs applicants to GSB rounds.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-deadlines",
+        "full-recheck-gse-joint-mba"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-application-fees-and-total-cost-5",
+      "topic": "application_fees_and_total_cost",
+      "value": "GSB application fee USD 275; USD 100 only for defer-eligible categories; military and need-based waivers have conditions. Joint pages do not publish combined tuition/mandatory-charge total.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-fee",
+        "full-recheck-gsb-joint-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_evidenced_limit",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-funding-eligibility-and-terms-6",
+      "topic": "funding_eligibility_and_terms",
+      "value": "GSB admitted students file institutional aid application for fellowship/loans and renew yearly; category documents differ. Reviewed pages do not establish aid coverage for the GSE MA portion.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-joint-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_evidenced_limit",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-study-content-and-mode-7",
+      "topic": "study_content_and_mode",
+      "value": "GSB lists 84 MBA + 45 GSE MA units, up to 10 cross-listed; 129 total, 7-8 quarters (2.5 years), mostly MBA year one. Bulletin requires 35/45 MA units in EDUC and bars STEP. Current page detail replaces old two-year summary.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-joint-ma",
+        "full-recheck-gse-ma-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-offers-enrollment-and-conditions-8",
+      "topic": "offers_enrollment_and_conditions",
+      "value": "GSE decision accompanies MBA decision; no standalone MA if MBA denied. GSB expects matriculation in admitted year unless deferral criteria apply; exact joint response date is offer-specific.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gsb-joint-ma",
+        "full-recheck-gsb-deadlines"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-application-target-and-route-1",
+      "topic": "application_target_and_route",
+      "value": "Apply to JD and indicate MA/JD interest, or after JD admission apply by earlier of end of JD year two or GSE deadline for intended MA start. Both schools approve; JD study starts at SLS.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-jd",
+        "full-recheck-gse-ma-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-eligibility-and-prerequisites-2",
+      "topic": "eligibility_and_prerequisites",
+      "value": "Initial route requires JD admission; later route is for current JD students within the published timing window. Both schools approve. Full-time SLS required in JD year one; afterward maintain full-time status.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-jd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-tests-exemptions-and-validity-3",
+      "topic": "tests_exemptions_and_validity",
+      "value": "SLS accepts LSAT or GRE General. LSAT by Jan 2027 for Feb deadline; all valid LSAT scores and Argumentative Writing required; pre-June 2021 LSAT invalid. GRE should be taken by Feb 1 for receipt.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-sls-jd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-application-windows-and-deadlines-4",
+      "topic": "application_windows_and_deadlines",
+      "value": "Fall 2027 JD application opens Sep 15 2026 and closes Feb 15 2027, 11:59 p.m. Pacific; KHS deadline Dec 1 2026. Internal route deadline is earlier of JD year-two end or intended GSE MA deadline.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-sls-jd",
+        "full-recheck-gse-joint-jd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-application-fees-and-total-cost-5",
+      "topic": "application_fees_and_total_cost",
+      "value": "SLS application fee USD 85; waiver request precedes application and requires 5-7 business days. Joint JD/MA tuition and mandatory charge treatment are not established by reviewed pages.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-sls-jd",
+        "full-recheck-gse-joint-jd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_evidenced_limit",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-study-content-and-mode-6",
+      "topic": "study_content_and_mode",
+      "value": "MA portion requires 45 Stanford units; up to 40 overlap: 9 SLS units toward MA and 31 GSE units toward JD. First year full-time SLS; later either/both schools while full-time. Joint calendar length not published on reviewed page.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-ma-bulletin",
+        "full-recheck-gse-joint-jd"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-funding-eligibility-and-terms-7",
+      "topic": "funding_eligibility_and_terms",
+      "value": "Reviewed GSE/SLS joint pages do not establish aid package, cross-degree charge coverage, award duration/renewal or separate timing. Do not import nonprofessional graduate funding policy into this Law route.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-jd",
+        "full-recheck-gse-ma-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_evidenced_limit",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-eligibility-and-prerequisites-1",
+      "topic": "eligibility_and_prerequisites",
+      "value": "The GSE MA/MPP page requires microeconomics and multivariable calculus before matriculation, not necessarily before applying. It labels the Stanford equivalents ECON1 and MATH20. Stanford Mathematics describes MATH20 as single-variable integral calculus, so the subject/code equivalence is an official-source inconsistency. POLS admission is required; MPP admission is separately reviewed.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-mpp",
+        "full-recheck-math20-description"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_course_equivalence_conflict",
+      "review_status": "needs_resolution",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law.",
+        "Do not assess MATH20 or an applicant equivalency as multivariable calculus without Public Policy confirmation."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-documents-and-selection-2",
+      "topic": "documents_and_selection",
+      "value": "Apply through POLS MA, indicate MA/MPP and provide joint statement. POLS requires <=10-page writing sample and two supplemental essays <=1000 characters each; interview not required. MPP reviews after POLS admission.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-mpp",
+        "full-recheck-gse-reqs"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-application-windows-and-deadlines-3",
+      "topic": "application_windows_and_deadlines",
+      "value": "GSE 2027 MA deadline Jan 7 2027; response due Apr 15 2027 11:59 p.m. Pacific. Joint decisions are concurrent when possible but not guaranteed; final before Apr 15.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-apply",
+        "full-recheck-gse-joint-mpp"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-funding-eligibility-and-terms-4",
+      "topic": "funding_eligibility_and_terms",
+      "value": "Public Policy cannot provide funding; students usually use loans. Some second-year RA/TA and limited summer fellowship opportunities may exist. GSE MA aid for joint applicants is not stated.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-mpp-current",
+        "full-recheck-gse-joint-mpp"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_evidenced_limit",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-study-content-and-mode-5",
+      "topic": "study_content_and_mode",
+      "value": "Two years/six quarters, about 95 Stanford units. Year one combines GSE/POLS and MPP core plus POLS project; year two focuses on MPP practicum. Bulletin permits up to 40 overlapping units for this route.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-mpp",
+        "full-recheck-gse-ma-bulletin"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-offers-enrollment-and-conditions-6",
+      "topic": "offers_enrollment_and_conditions",
+      "value": "POLS rejection prevents enrollment through the joint route; POLS admission can occur without MPP admission. Decisions may differ in timing but must be finalized before Apr 15.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-joint-mpp"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-cte-study-content-and-mode-1",
+      "topic": "study_content_and_mode",
+      "value": "CTE is an individualized, research-intensive, non-credential MA; Bulletin requires 45 units, including 27 GSE units, 3.0 GPA, methods/breadth requirements and project. GSE says it will not admit for 2027-28; no current external or coterm application that cycle.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-CTE"
+        ],
+        "procedure_ids": [
+          "ed-ma-cte-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-ma-bulletin",
+        "full-recheck-gse-apply"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-option-ed-ma-step-documents-and-selection-1",
+      "topic": "documents_and_selection",
+      "value": "STEP applicants choose Elementary or one Secondary subject; submit a 750-1,250-word (max 3-page) STEP essay, resume, three online recommendations, and PDF transcript for every institution attended at least one year. STEP-specific essay may be combined with central SOP; learning-community statement encouraged. The 2026-27 STEP page still directs 2027 cohort to select Summer 2025-26, while current GSE Apply page says program starts June 21, 2027. Materials were reviewed; form start-term remains unresolved.",
+      "scope": {
+        "option_ids": [
+          "ED-MA-STEP"
+        ],
+        "procedure_ids": [
+          "ed-ma-step-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "applicant_for_named_GSE_route",
+          "admitted_student_where_value_identifies_post_offer_rule"
+        ],
+        "cycle": "2027-28 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-gse-step",
+        "full-recheck-gse-apply"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Joint professional-school application, fee, tests and funding apply only to the named combination and relevant stage; a GSE MA component does not import central external-portal rules into GSB or Law."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "AEPHY-MS-coterm-route-2027",
+      "topic": "application_route_and_requirements",
+      "value": "Current Bulletin describes AEPHY-MS as a coterm program for Stanford undergraduates: submit the coterm application, statement of purpose, unofficial transcript and two Stanford faculty recommendations directly to Applied Physics. Applicant must begin graduate standing for at least one quarter before BS conferral. After admission, course transfer requires both-program approval; only coursework from three quarters before first graduate quarter onward can be considered and transfer is barred after BS conferral. Department overview lists the AEPHY master as coterm, alongside separate externally admitted Applied Physics APLPH-MS. Bulletin Internal Admissions redirects to coterm FAQ/site; no separate non-coterm internal application was identified.",
+      "scope": {
+        "option_ids": [
+          "AEPHY-MS"
+        ],
+        "procedure_ids": [
+          "aephy-ms-coterm",
+          "aephy-ms-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "standing Bulletin; quarter dates per directory",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-aephy-bulletin-coterm",
+        "full-recheck-aephy-department"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Coterm preparation, billing, documents and progression are separate from external graduate application policies. Department-specific conflicts stay visible."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "BIO-MS-coterm-admissions-2027",
+      "topic": "coterm_eligibility_documents_deadline_and_decision",
+      "value": "Biology faculty review readiness for graduate coursework; undergraduate GPA 3.0+ expected. Submit 1-2 page purpose statement, two Stanford Academic Council faculty recommendations (Biology preferred), unofficial Stanford transcript showing introductory/foundational/lab/breadth Biology coursework or related curriculum, and preliminary program proposal. Decisions usually 3-4 weeks after deadline; offer response in same quarter. Department page labels Oct 22 2026 deadline “Winter or Spring 2025-26” and Apr 22 2027 “Summer or Autumn 2026-27”; preserve those dates and stale labels separately pending cycle reconciliation.",
+      "scope": {
+        "option_ids": [
+          "BIO-MS"
+        ],
+        "procedure_ids": [
+          "bio-ms-coterm",
+          "bio-ms-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "page labels retained exactly as published",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-biology-coterm",
+        "full-recheck-biology-coterm-overview",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_cycle_conflict",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Coterm preparation, billing, documents and progression are separate from external graduate application policies. Department-specific conflicts stay visible."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "CHEM-MS-coterm-admissions-current",
+      "topic": "coterm_eligibility_documents_tests_deadline_and_decision",
+      "value": "Enrolled Stanford Chemistry or related-discipline undergraduates may apply quarterly; file by week seven for next-quarter entry. Submit coterm application, 1-2 page statement on goals/interests/research, two Stanford faculty recommendations (Chemistry/related science preferred), unofficial transcript, preliminary program proposal and coterm course-approval form. GRE not required. Decision typically 3-4 weeks later; accepted applicants respond in same quarter. Department page dates: Oct 26 2026 “Winter 2025-26”; Jan 26 2026 “Spring 2025-26”; no Summer 2026; Jun 21 2027 “Autumn 2025-26.” Retain source text; date/term labels conflict and must be reconciled against coterm directory before applicant-facing use.",
+      "scope": {
+        "option_ids": [
+          "CHEM-MS"
+        ],
+        "procedure_ids": [
+          "chem-ms-coterm",
+          "chem-ms-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "page labels retained exactly as published",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-chemistry-coterm",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_cycle_conflict",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Coterm preparation, billing, documents and progression are separate from external graduate application policies. Department-specific conflicts stay visible."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "ENGL-MA-coterm-2027",
+      "topic": "coterm_eligibility_documents_deadline_and_decision",
+      "value": "Current Stanford undergraduates in English or listed related majors may apply; minimum GPA 3.7 in English courses. Submit SOP ideally 500-600, max 1000 words, double-spaced; critical writing sample 12-25 pages; current official Stanford transcript; three recommendations, two from English graduate-course faculty. Deadline Jan 8, 2027, 11:59 p.m. PST. Students conferring BA/BS Spring/Summer 2026-27 select Spring entry to preserve one-quarter overlap; others active in 2027-28 select Autumn. Requires 180 undergraduate plus 45 additional MA units, no double-counting. Decisions early March; response goes to Assistant Director but deadline not stated. Coterm funding not described on reviewed page.",
+      "scope": {
+        "option_ids": [
+          "ENGL-MA"
+        ],
+        "procedure_ids": [
+          "engl-ma-coterm",
+          "engl-ma-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Spring 2026-27 or Autumn 2027-28 by bachelor conferral",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-english-ma",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Coterm preparation, billing, documents and progression are separate from external graduate application policies. Department-specific conflicts stay visible."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "INPOL-MA-coterm-2027",
+      "topic": "coterm_eligibility_documents_deadline_and_decision",
+      "value": "Stanford undergraduates may apply after 120 units and no later than the quarter before bachelor completion; MIP coterm admits Autumn only. For Autumn 2027, apply by Jan 7, 2027, 11:59 p.m. PST through coterm online application in same annual cycle as external applicants. Submit ~1,000-word single-spaced SOP, Stanford transcript, two Stanford faculty/university-instructor recommendations, English academic sample 7-15 double-spaced pages, one-page quantitative experience/AI skills summary, and resume/CV. Bulletin lists separate central English exemptions; absent an exemption TOEFL 100 with 25 per section or IELTS 7. Funding and offer response date are not specified on reviewed Bulletin page.",
+      "scope": {
+        "option_ids": [
+          "INPOL-MA"
+        ],
+        "procedure_ids": [
+          "inpol-ma-coterm",
+          "inpol-ma-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_undergraduate"
+        ],
+        "cycle": "Autumn 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "full-recheck-inpol-bulletin",
+        "coterm-directory"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Coterm preparation, billing, documents and progression are separate from external graduate application policies. Department-specific conflicts stay visible."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "classics-ma-current-student-restriction",
+      "topic": "intermediate_award_eligibility_and_study",
+      "value": "The current Bulletin says Classics MA no longer accepts new students, with last admit Spring2024, and is available only to existing Classics PhD students. It retains Language/Literature, ClassicalArchaeology andAncientHistory subplans with45units, adviser by first-quarterweek2 andapprovedproposal at leastfive days beforefirst-quarter FinalStudyList. Legacy subplan text also mentions possible other-department graduate admission, contradicting the current headline restriction; that text does not establish a new open route.",
+      "scope": {
+        "option_ids": [
+          "CLASS-MA"
+        ],
+        "procedure_ids": [
+          "class-ma-current-phd"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_Classics_PhD_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-class-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published_with_legacy_text_conflict",
+      "review_status": "reviewed_source_content",
+      "conditions": [
+        "Current headline restriction controls the represented route; confirm any claimed other-department entry directly with Classics."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "classics-ma-restricted-degree-completion",
+      "topic": "restricted_degree_study_and_completion",
+      "value": {
+        "A3i6E": "The study of Classics has traditionally centered on the literature and material culture of ancient Greece and Rome, including Greek and Latin language, literature, philosophy, history, art, and archaeology. At Stanford, Classics also explores connections with other ancient cultures and the modern world, as well as specialized fields such as ancient economics, law, papyrology, and science. The department’s faculty approaches Classics from an interdisciplinary perspective that crosses geographical, temporal, and thematic territories. Studying ancient epic poetry can lead to looking at modern cinema afresh; ancient Athenian politics opens new perspectives on contemporary politics; and the study of Rome presents parallels with other empires just as Latin illuminates the history of English and the Romance languages. In short, Classics at Stanford is an interdisciplinary subject concerned not only with Greek and Roman civilization but also with the interaction of cultures and societies that influenced the ancient Mediterranean basin and continue to influence human society across the globe. The MA in Classics is no longer accepting new students. The last admit date for this program was Spring 2024. This program is only available for current Classics-PhD students. Please see the Student Services Officer for further information.",
+        "advisingExpectations": "The Department of Classics is committed to providing academic advising in support of graduate student scholarly and professional development. When most effective, this advising relationship entails collaborative and sustained engagement by the advisor and the advisee. The goal of advising in the graduate program is to help students select courses that best suit their intellectual pursuits, design and conduct research, navigate degree requirements, explore academic and professional opportunities, and prepare for their postgraduate careers. Graduate students are expected to be active collaborators in the advising relationship. They are responsible for seeking academic and professional guidance and informing themselves of the MA program’s policies and degree requirements. An essential part of the advisee-advisor relationship is for students to discuss their expectations for the adviser-advisee relationship with the advisor and revisit these expectations periodically. Director of Graduate Studies (DGS) A Department faculty member is the Director of Graduate Studies (DGS). The DGS monitors the degree progress of all MA and PhD students, offers advice on meeting department and university requirements, coordinates departmental advising and Teaching Assistant (TA) assignments, and approves petitions for funding or other needs before submission to the Graduate Committee (see below). Track Advisor MA students are admitted to one of four tracks within the Classics Department, each with its own requirements (Archaeology, History, Literature, and Philosophy). Each track also has an individual advisor in the pre-dissertation stage, advising on track-specific coursework, training in research methodologies, and professional development. Entering students should meet routinely (at least once per quarter) with both the DGS and the track advisor, who approve a course of study, monitor progress, and provide advice about funding opportunities, strategies for scheduling general and other exams required for degree progress, and to provide support if difficulties arise. Student Services Officer (SSO) In addition, the Department’s Student Services Officer serves as the student’s primary contact regarding department and university procedures and can provide information, assistance, and the appropriate forms and procedures for academic and financial matters. The SSO monitors academic progress and student completion of program requirements and milestones, which is reviewed as necessary by the DGS and discussed by faculty at an annual meeting devoted to assessing graduate student progress. Students who have made satisfactory academic progress are typically advanced to candidacy at the end of their second year in residency by faculty vote at this annual review meeting. Graduate Studies Committee The DGS, the track advisors (the DGS typically serves as track advisor for their track), and the SSO constitute the Graduate Studies Committee. All requests for funding that fall outside of allowed discretionary spending, extraordinary travel away from campus, petitions for leave of absence, and any disciplinary issues that may arise must be reviewed and, as necessary, approved by the Graduate Studies Committee. Expectations MA students are expected to meet regularly with their advisors and to keep them informed about their academic progress. To facilitate this, each student must meet with the DGS and the Track Advisor at the beginning of autumn quarter, again in winter quarter, and early in spring quarter during their first two years in the program. DGS and Track Advisors are available for these meetings at the beginning of each quarter. Additional Resources A detailed description of the program’s requirements, milestones, and advising expectations is found on the Classics website . Additionally, the program adheres to the advising guidelines and responsibilities listed by the Office of the Vice Provost for Graduate Education (VPGE) and the Graduate Academic Policies (GAP). See Graduate Advising for a statement of university policy on graduate advising.",
+        "minimum_units": 45,
+        "subplan_requirements": "Language/Literature and ClassicalArchaeology require at least25graduate-level of45units; AncientHistory at least30. Greek/Latintranslationexam andapprovedthesis/exam/writtenequivalentapply; existingPhDstudents mayreceive stated thesis/equivalent waivers withadditionalwork. Modernlanguage exam(German/French/Italian, approvedalternativespossible) requiresB-; onlyone retakeallowed andsecondfailuretriggersdismissal.Three acceptable seminarpapers typicallyneedB+each."
+      },
+      "scope": {
+        "option_ids": [
+          "CLASS-MA"
+        ],
+        "procedure_ids": [
+          "class-ma-current-phd"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_Classics_PhD_student"
+        ],
+        "cycle": "2026-27Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "bulletin-class-ma"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "restricted_population_source_content_reviewed",
+      "conditions": [
+        "These completion and examination conditions are for the restricted existing-student award; they do not reopen external admission. Exact subplan exceptions follow the retained Bulletin."
+      ],
+      "exceptions": []
     }
   ],
   "unresolved": [
@@ -10271,7 +11433,9 @@
         "option_ids": [
           "CLASS-MA"
         ],
-        "procedure_ids": [],
+        "procedure_ids": [
+          "class-ma-current-phd"
+        ],
         "levels": [
           "graduate"
         ],
@@ -10279,13 +11443,14 @@
         "cycle": "2027-2028 entry",
         "fee_status": []
       },
-      "reason": "The 2026-27 Bulletin retains a Classics MA award entry but the department says its MA has been discontinued; the current nonprofessional graduate directory does not list a Classics MA application target. This leaves award status and any current internal route unresolved.",
+      "reason": "Current Bulletin establishes no new independent entry and current ClassicsPhD-onlyMA. Legacy subplan paragraphs still mentionother-departmentgraduates; whether thatlegacywording permitsanycurrentexception remainsunresolved.",
       "reviewed_source_ids": [
         "bulletin-class-ma",
         "classics-grad-admissions",
         "grad-admissions-explore"
       ],
-      "next_official_step": "Ask Classics graduate admissions or the Registrar to confirm whether the Bulletin MA row is retired/preserved for legacy students and whether any internal-only path remains."
+      "next_official_step": "Ask ClassicsStudentServices about any claimedother-departmentexception and specificcurrentPhDintermediateMAprocedure.",
+      "review_status": "researched_legacy_source_conflict"
     },
     {
       "id": "art-history-phd-submission-cutoff",
@@ -10309,6 +11474,318 @@
         "grad-admissions-apply-now"
       ],
       "next_official_step": "Follow the deadline displayed on the live Art History application page or ask the department to confirm which cutoff governs."
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-application-fees-and-total-cost-5-remaining-detail",
+      "reason": "GSB application fee USD 275; USD 100 only for defer-eligible categories; military and need-based waivers have conditions. Joint pages do not publish combined tuition/mandatory-charge total.",
+      "source_ids": [
+        "full-recheck-gsb-fee",
+        "full-recheck-gsb-joint-ma"
+      ],
+      "official_next_step": "For the named GSE joint route, request current combined tuition/billing and award terms from the GSE and primary professional-school financial aid/student-services offices; use the actual offer. For STEP, confirm current entry term in GSE application instructions.",
+      "review_status": "researched_unknown_after_named_route_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_GSE_route_applicant"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified"
+      }
+    },
+    {
+      "id": "stanford-option-ed-ma-mba-funding-eligibility-and-terms-6-remaining-detail",
+      "reason": "GSB admitted students file institutional aid application for fellowship/loans and renew yearly; category documents differ. Reviewed pages do not establish aid coverage for the GSE MA portion.",
+      "source_ids": [
+        "full-recheck-gsb-joint-ma"
+      ],
+      "official_next_step": "For the named GSE joint route, request current combined tuition/billing and award terms from the GSE and primary professional-school financial aid/student-services offices; use the actual offer. For STEP, confirm current entry term in GSE application instructions.",
+      "review_status": "researched_unknown_after_named_route_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA"
+        ],
+        "procedure_ids": [
+          "ed-ma-mba-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_GSE_route_applicant"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified"
+      }
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-application-fees-and-total-cost-5-remaining-detail",
+      "reason": "SLS application fee USD 85; waiver request precedes application and requires 5-7 business days. Joint JD/MA tuition and mandatory charge treatment are not established by reviewed pages.",
+      "source_ids": [
+        "full-recheck-sls-jd",
+        "full-recheck-gse-joint-jd"
+      ],
+      "official_next_step": "For the named GSE joint route, request current combined tuition/billing and award terms from the GSE and primary professional-school financial aid/student-services offices; use the actual offer. For STEP, confirm current entry term in GSE application instructions.",
+      "review_status": "researched_unknown_after_named_route_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_GSE_route_applicant"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified"
+      }
+    },
+    {
+      "id": "stanford-option-ed-ma-jd-funding-eligibility-and-terms-7-remaining-detail",
+      "reason": "Reviewed GSE/SLS joint pages do not establish aid package, cross-degree charge coverage, award duration/renewal or separate timing. Do not import nonprofessional graduate funding policy into this Law route.",
+      "source_ids": [
+        "full-recheck-gse-joint-jd",
+        "full-recheck-gse-ma-bulletin"
+      ],
+      "official_next_step": "For the named GSE joint route, request current combined tuition/billing and award terms from the GSE and primary professional-school financial aid/student-services offices; use the actual offer. For STEP, confirm current entry term in GSE application instructions.",
+      "review_status": "researched_unknown_after_named_route_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-JD"
+        ],
+        "procedure_ids": [
+          "ed-ma-jd-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_GSE_route_applicant"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified"
+      }
+    },
+    {
+      "id": "stanford-option-ed-ma-mpp-funding-eligibility-and-terms-4-remaining-detail",
+      "reason": "Public Policy cannot provide funding; students usually use loans. Some second-year RA/TA and limited summer fellowship opportunities may exist. GSE MA aid for joint applicants is not stated.",
+      "source_ids": [
+        "full-recheck-mpp-current",
+        "full-recheck-gse-joint-mpp"
+      ],
+      "official_next_step": "For the named GSE joint route, request current combined tuition/billing and award terms from the GSE and primary professional-school financial aid/student-services offices; use the actual offer. For STEP, confirm current entry term in GSE application instructions.",
+      "review_status": "researched_unknown_after_named_route_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_GSE_route_applicant"
+        ],
+        "cycle": "Published route conditions; dates and historical price year only where explicitly specified"
+      }
+    },
+    {
+      "id": "gse-mpp-math20-equivalence-conflict",
+      "reason": "The GSE MA/MPP page requires microeconomics and multivariable calculus before matriculation, not necessarily before applying. It labels the Stanford equivalents ECON1 and MATH20. Stanford Mathematics describes MATH20 as single-variable integral calculus, so the subject/code equivalence is an official-source inconsistency. POLS admission is required; MPP admission is separately reviewed.",
+      "source_ids": [
+        "full-recheck-gse-joint-mpp",
+        "full-recheck-math20-description"
+      ],
+      "official_next_step": "Ask Public Policy graduate admissions which multivariable calculus preparation or Stanford course actually satisfies the MA/MPP requirement; preserve the published subject and conflicting code.",
+      "review_status": "needs_official_confirmation",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [
+          "ed-ma-mpp-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "MA_MPP_applicant"
+        ],
+        "cycle": null
+      }
+    },
+    {
+      "id": "step-2027-application-selector-conflict",
+      "reason": "Current GSEApplypage says STEPstartsJune21,2027 whileSTEPspecificapplicationrequirements instruct selectingSummer2025-26; credential/testingdatesmixedyearlabels. The outdatedselectorcannotestablish2027formchoice.",
+      "source_ids": [
+        "full-recheck-gse-step",
+        "full-recheck-gse-apply"
+      ],
+      "official_next_step": "ConfirmcurrentSTEPentrytermselectorandcredentialexamdeadlineswithSTEP/GSEadmissionsusingcurrentcohortguidebeforeapplication.",
+      "review_status": "researched_source_cycle_conflict",
+      "scope": {
+        "option_ids": [
+          "ED-MA-STEP"
+        ],
+        "procedure_ids": [
+          "ed-ma-step-admission"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "STEP_applicant"
+        ],
+        "cycle": "Summer2027entry"
+      }
+    },
+    {
+      "id": "full-recheck-step-credential-calendar",
+      "reason": "Current Apply page confirms 2027 start; STEP-specific form text still selects old cohort and mixes credential exam dates.",
+      "source_ids": [
+        "gse-apply-current",
+        "gse-step-requirements"
+      ],
+      "official_next_step": "Confirm 2027 start-term and CSET/subject-competency dates from live form/current cohort guide.",
+      "review_status": "researched_unknown_after_specific_source_content_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-STEP"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_programme_route_applicant"
+        ],
+        "cycle": "selected entry/declaration context; historical dates retained"
+      }
+    },
+    {
+      "id": "full-recheck-gse-joint-total-cost",
+      "reason": "Reviewed GSE and home-school joint admissions pages do not provide one combined, fee-status-specific tuition and mandatory-charge table.",
+      "source_ids": [
+        "full-recheck-gse-joint-mba",
+        "full-recheck-gse-joint-jd",
+        "full-recheck-gse-joint-mpp",
+        "full-recheck-gsb-joint-ma",
+        "full-recheck-sls-jd"
+      ],
+      "official_next_step": "Use each component school’s current budget/tuition pages and confirm cross-registration billing/fee treatment from the offer or registrar.",
+      "review_status": "researched_unknown_after_specific_source_content_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA",
+          "ED-MA-JD",
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_programme_route_applicant"
+        ],
+        "cycle": "selected entry/declaration context; historical dates retained"
+      }
+    },
+    {
+      "id": "full-recheck-joint-aid-coverage",
+      "reason": "GSE/GSB/SLS pages reviewed do not state combined award coverage for both degrees; Public Policy states no program funding, with limited/conditional RA/TA and summer awards.",
+      "source_ids": [
+        "full-recheck-gse-joint-mba",
+        "full-recheck-gse-joint-jd",
+        "full-recheck-gse-joint-mpp",
+        "full-recheck-gsb-joint-ma",
+        "full-recheck-mpp-current"
+      ],
+      "official_next_step": "Check component financial-aid pages for the admitted joint route and retain school/degree-specific conditions.",
+      "review_status": "researched_unknown_after_specific_source_content_review",
+      "scope": {
+        "option_ids": [
+          "ED-MA-MBA",
+          "ED-MA-JD",
+          "ED-MA-MPP"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_programme_route_applicant"
+        ],
+        "cycle": "selected entry/declaration context; historical dates retained"
+      }
+    },
+    {
+      "id": "full-recheck-coterm-cycle-date-conflicts",
+      "reason": "Current Biology/Chemistry pages publish detailed requirements but carry stale/contradictory cycle labels around upcoming dates.",
+      "source_ids": [
+        "full-recheck-biology-coterm",
+        "full-recheck-chemistry-coterm",
+        "coterm-directory"
+      ],
+      "official_next_step": "Reconcile exact admit term and deadline against current coterm directory row before presenting cycle-specific date.",
+      "review_status": "researched_unknown_after_specific_source_content_review",
+      "scope": {
+        "option_ids": [
+          "BIO-MS",
+          "CHEM-MS"
+        ],
+        "procedure_ids": [
+          "bio-ms-coterm",
+          "bio-ms-directory-coterm",
+          "chem-ms-coterm",
+          "chem-ms-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_programme_route_applicant"
+        ],
+        "cycle": "selected entry/declaration context; historical dates retained"
+      }
+    },
+    {
+      "id": "full-recheck-coterm-funding-response-unknowns",
+      "reason": "Current route pages reviewed do not state coterm-specific funding terms or offer-response dates.",
+      "source_ids": [
+        "full-recheck-english-ma",
+        "full-recheck-inpol-bulletin"
+      ],
+      "official_next_step": "Review official department aid and active offer instructions; preserve unknown if no coterm support is published.",
+      "review_status": "researched_unknown_after_specific_source_content_review",
+      "scope": {
+        "option_ids": [
+          "ENGL-MA",
+          "INPOL-MA"
+        ],
+        "procedure_ids": [
+          "engl-ma-coterm",
+          "engl-ma-directory-coterm",
+          "inpol-ma-coterm",
+          "inpol-ma-directory-coterm"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "named_programme_route_applicant"
+        ],
+        "cycle": "selected entry/declaration context; historical dates retained"
+      }
     }
   ],
   "collection_tasks": []

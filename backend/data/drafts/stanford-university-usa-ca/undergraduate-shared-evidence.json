@@ -274,7 +274,7 @@
       "id": "stanford-grad-budget",
       "url": "https://financialaid.stanford.edu/grad/budget/index.html",
       "title": "The Student Budget | Stanford Graduate Financial Aid",
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "content_review_status": "reviewed_for_linked_facts"
     },
     {
@@ -337,7 +337,7 @@
       "id": "stanford-khs-eligibility",
       "url": "https://knight-hennessy.stanford.edu/admission/before-you-apply/eligibility",
       "title": "Eligibility | Knight-Hennessy Scholars at Stanford",
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "content_review_status": "reviewed_for_linked_facts"
     },
     {
@@ -430,6 +430,62 @@
       "title": "Undocumented Students | Stanford Financial Aid",
       "checked_at": "2026-10-02",
       "content_review_status": "reviewed_for_linked_facts"
+    },
+    {
+      "id": "stanford-fees-full-2026-27",
+      "url": "https://studentservices.stanford.edu/my-finances/tuition-fees/non-tuition-charges-fees/2026-2027-non-tuition-charges-fees",
+      "title": "2026-2027 Non-Tuition Charges & Fees",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_published_schedule_content_reviewed"
+    },
+    {
+      "id": "stanford-graduate-tuition-full-2026-27",
+      "url": "https://studentservices.stanford.edu/tuition-rates/2026-2027-graduate-and-professional-tuition-rates",
+      "title": "2026-2027 Graduate and Professional Tuition Rates",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_published_schedule_content_reviewed"
+    },
+    {
+      "id": "stanford-grad-response-full",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/respond-offer-admission",
+      "title": "Graduate Offer Response",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed"
+    },
+    {
+      "id": "stanford-grad-condition-faq",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/conditions-admission/faq",
+      "title": "Incoming Graduate Credential/English FAQ",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed"
+    },
+    {
+      "id": "stanford-grad-english-verification",
+      "url": "https://gradadmissions.stanford.edu/admitted-students/conditions-admission/english-proficiency",
+      "title": "Incoming Graduate English Verification",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed"
+    },
+    {
+      "id": "stanford-grad-loan-apply-2026",
+      "url": "https://financialaid.stanford.edu/grad/apply/index.html",
+      "title": "Graduate Aid Requirements and Deadlines",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_applicable_source_content_reviewed"
+    },
+    {
+      "id": "stanford-residence-agreement-2026-27",
+      "url": "https://rde.stanford.edu/studenthousing/residence-agreement-2026-27",
+      "title": "Stanford Residence Agreement2026-27",
+      "checked_at": "2026-10-03",
+      "content_review_status": "relevant_student_category_eligibility_and_contract_conditions_reviewed"
+    },
+    {
+      "id": "stanford-khs-ai-policy",
+      "url": "https://knight-hennessy.stanford.edu/admission/preparing-your-applications/policy-ai-use",
+      "title": "Knight-Hennessy Policy on AI Use",
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_application_authorship_content_reviewed"
     }
   ],
   "study_options": [],
@@ -1855,7 +1911,26 @@
     {
       "id": "stanford-grad-budget-2026-27-reference",
       "topic": "cost_of_attendance",
-      "value": "The 2026–27 graduate standard budget is explicitly for a single graduate student living on campus with no dependents. Three-quarter academic-year non-tuition total USD 49,116; summer-quarter non-tuition budget USD 12,026; 12-month non-tuition total USD 61,142. The table itemizes rent, food, personal expenses, transportation, books/supplies, campus health fee, and Cardinal Care. Tuition is additional and varies by program/units; off-campus living expenses may be 10–40% higher. This is an institution-wide reference, not a program tuition quote.",
+      "value": {
+        "currency": "USD",
+        "year": "2026-27",
+        "profile": "singlegraduate livingoncampus,nodependents",
+        "academic_quarter": {
+          "rent": 6685,
+          "food": 2570,
+          "personal": 3045,
+          "transportation": 660,
+          "books": 195,
+          "healthservice": 281,
+          "insurance": 2936,
+          "non_tuition_total": 16372
+        },
+        "three_quarter_non_tuition_total": 49116,
+        "summer_non_tuition_total": 12026,
+        "twelve_month_non_tuition_total": 61142,
+        "summer_insurance_budget": 0,
+        "boundary": "Tuition additional; insuranceannualcost capturedAW/S, notextra summerinsurance. Rent/food/personal/transport/books areplanningallowances; actualhousingassignmentdiffers. Offcampus estimate10-40percenthigher. Firstyearmoving/technology costsanddependentcarecan vary; documentedexpensesmayadjustloanbudget. STEPfourquarterbudgetisdistinct."
+      },
       "scope": {
         "option_ids": [],
         "procedure_ids": [
@@ -1875,7 +1950,7 @@
       "source_ids": [
         "stanford-grad-budget"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "publication_status": "published",
       "review_status": "reviewed",
       "conditions": [
@@ -1886,7 +1961,7 @@
     {
       "id": "stanford-khs-2027-eligibility",
       "topic": "scholarship_eligibility",
-      "value": "Knight-Hennessy Scholars (KHS) is a separate competitive scholarship/program, not a degree or direct route into Stanford. For 2027 cohort, applicant must separately be admitted to and enroll in an eligible full-time Stanford graduate degree and hold first bachelor's degree earned January 2020 or later (January 2018 or later for military-service extension); current students may qualify if completing first degree by September 2027 under page criteria. Any nationality may apply. Exclusions include Honors Cooperative Program, Master of Liberal Arts, JSD/MLS, current PhD students adding same-discipline MA/MS, and coterminal degrees except current coterminal students applying externally to a new full-time degree beginning with KHS in same year.",
+      "value": "Knight-Hennessy Scholars (KHS) is a separate competitive scholarship/program, not a degree or direct route into Stanford. For 2027 cohort, applicant must separately be admitted to and enroll in an eligible full-time Stanford graduate degree and hold first bachelor's degree earned January 2020 or later (January 2018 or later for military-service extension); current students may qualify if completing first degree by September 2027 under page criteria. Any nationality may apply. Exclusions include Honors Cooperative Program, Master of Liberal Arts, JSD/MLS, current PhD students adding same-discipline MA/MS, and coterminal degrees except current coterminal students applying externally to a new full-time degree beginning with KHS in same year. KHS offers cannot be deferred: a selected scholar unable to enroll must apply again for the intended year. First-year Stanford PhD candidates may combine eligible ARCS, dissertation-completion, Lieberman, RAISE, SGF or SIGF fellowships with KHS under the page criteria, but not CCSRE graduate fellowships or Shoucheng Zhang fellowship; those excluded awards cannot be discontinued to apply for KHS.",
       "scope": {
         "option_ids": [],
         "procedure_ids": [
@@ -1907,7 +1982,7 @@
         "stanford-khs-eligibility",
         "stanford-khs-deadlines"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "publication_status": "published",
       "review_status": "reviewed",
       "conditions": [
@@ -2235,6 +2310,321 @@
       "exceptions": [
         "Undocumented students do not file FAFSA. Only Canadian citizens use the specified Canadian tax-IDOC substitution and omit the International Student Supplement. ISAFA is an alternative only when CSS payment is unaffordable or unavailable, not a general replacement."
       ]
+    },
+    {
+      "id": "stanford-firstyear-rea-concurrent-application-restrictions",
+      "topic": "application_restrictions",
+      "value": "REA applicants cannot also apply to a private US university under EA, REA, ED or Early Notification, or to a public university under binding early admission. Other RD applications are allowed; after Stanford denial or deferral, EDII elsewhere is allowed. Concurrent exceptions include nonbinding public early admission, nonbinding rolling admission, nonbinding non-US admission, military academies, and nonbinding early submission required for scholarship or special-program consideration. MIT EA is explicitly excluded. Deferred applicants send the provided update form rather than reapply.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year REA"
+        ],
+        "cycle": "2027-entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-rounds"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "These restrictions apply to REA, not Stanford Regular Decision or transfer."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-additional-residential-and-incidental-charges-2026-27",
+      "topic": "conditional_non_tuition_charges",
+      "value": {
+        "currency": "USD",
+        "period": "2026-27 academic year",
+        "technology_quarterly": 95,
+        "campus_housing_mail_quarterly": 44,
+        "campus_housing_mail_summer": 30,
+        "undergraduate_activities_quarterly": 247,
+        "graduate_activities_quarterly": 69,
+        "late_study_list_per_incident": 200,
+        "late_graduation_application_per_incident": 50,
+        "variable_charges": [
+          "housing assignment and housing dues",
+          "meal plan",
+          "enrolled courses with course fees",
+          "professional-school-specific fees",
+          "printing and StanfordCard purchases",
+          "late-payment penalties",
+          "room damage and other services"
+        ],
+        "fellowship_withholding": "International fellowship recipients may have quarterly federal tax withholding, with tax-treaty exemption where eligible."
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year",
+          "stanford-transfer",
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "undergraduate",
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "enrolled_student"
+        ],
+        "cycle": "2026-27 charges",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-fees-full-2026-27"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Mail fee is mandatory only for campus-housing residents; technology/housing/meal applicability follows the actual assignment and billing.",
+        "Incidental penalties apply only if triggered. This is not a universal additive charge total; avoid double-counting undergraduate budget allowances.",
+        "Professional-specific amounts are separately owned by their school."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-graduate-special-and-excess-unit-tuition-2026-27",
+      "topic": "conditional_tuition_rates",
+      "value": {
+        "currency": "USD",
+        "period": "quarter in 2026-27",
+        "general_graduate_above_18_per_unit": 1454,
+        "engineering_above_18_per_unit": 1549,
+        "summer_1_to_7_per_unit": {
+          "general_graduate": 1418,
+          "engineering": 1510
+        },
+        "approved_3_to_7_unit_registration": {
+          "general_graduate_per_unit": 1418,
+          "engineering_per_unit": 1510
+        },
+        "graduation_quarter": 150,
+        "TGR_or_TGR_final_0_to_3_units": 4254
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "enrolled_graduate_student"
+        ],
+        "cycle": "2026-27 tuition",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-graduate-tuition-full-2026-27"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Reduced 3-7-unit autumn/winter/spring status requires approved degree-completion/TGR eligibility or OAE accommodation; it is not an elective part-time rate.",
+        "TGR requires completed residence and degree requirements with thesis/project/dissertation remaining; graduation quarter requires all requirements completed.",
+        "HCP is separately billed through Stanford Online. Special registration changes tuition only, not other required fees."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-grad-offer-response-and-deferral",
+      "topic": "post_offer_verification_and_support",
+      "value": "Reply via application status-page form. Offer is degree/entry-term-specific; deferral requires written department request and department approval. If denied and original entry impossible, reapply; some departments accept no deferrals.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_nonprofessional_graduate"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-response-full"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Professional-school and current-student petition routes do not inherit this policy without explicit application. Department-specific instructions may be additional."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-grad-post-offer-english-proof",
+      "topic": "post_offer_verification_and_support",
+      "value": "An English-instruction degree/educational-experience exemption may require official institution certification and current transcript after accepting. A professional-experience exemption requires direct supervisor/authorized-company verification through portal request. Placement test uses highest valid score at application; a later improved score cannot waive it. The placement page still prints old 109/IELTS 8, while current testpage also specifies revised TOEFL 5.5.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_nonprofessional_graduate"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-condition-faq",
+        "stanford-grad-english-verification",
+        "stanford-grad-test-scores"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Professional-school and current-student petition routes do not inherit this policy without explicit application. Department-specific instructions may be additional."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-grad-wes-timing-and-cost",
+      "topic": "post_offer_verification_and_support",
+      "value": "January 2026 published WES minimum USD 220: ICAPdocument-by-document 171, delivery 14, duplicate 35; future fees may change. No central WES aid, although a program may offer international-transition stipend. Request by July 1; laterdegree conferral can permit autumnmatriculation with timely request and latest official transcript, winter hold until completed WES. Conferralafter Oct 1 requires Graduate Admissions consultation. Current or former Stanford graduate students need notresend pre-official Stanford documents.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_nonprofessional_graduate"
+        ],
+        "cycle": "January2026 WES cost reference; published recurring verification timing",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-condition-faq"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Professional-school and current-student petition routes do not inherit this policy without explicit application. Department-specific instructions may be additional."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-grad-loan-application-window",
+      "topic": "post_offer_verification_and_support",
+      "value": "Published AW/S 2026-27 loanprocess uses 2026-27 FAFSA(code 001305) plus Stanford Graduate Loan Application; prioritysixweeks before firstborrowedquarter, notifications 6-8 weeks aftercompleteapplication.2027-28 instructions willpublish March 2027, summer 2027 April 2027. STEP uses a separate special application; professional-school offices haveownprocedures.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-nonprofessional-graduate"
+        ],
+        "levels": [
+          "master",
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "admitted_nonprofessional_graduate"
+        ],
+        "cycle": "2026-27 aid application; future2027-28 publication dates",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-grad-loan-apply-2026"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Professional-school and current-student petition routes do not inherit this policy without explicit application. Department-specific instructions may be additional."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-graduate-housing-eligibility-and-conditions-2026-27",
+      "topic": "housing_and_student_support",
+      "value": "Graduate housing normally requires 8 units or TGR, good academic and financial standing andno holds. Approved graduationquarter or OAEreducedload(min 3 units) maycontinuehousing. HCP andpart-time MLA students areineligible; leave/withdrawal endsordinaryeligibility unless a specific petition is approved. Newgraduates refusinganassignment forfeit guaranteedyear, butretain highpriority within firstenrolledyear. Couples requireactualpartnerco-occupancy; children have family-housing categories. Residence in undergraduate housing requiresmealplan(except Mirrielees), while a graduate-housing meal plan is optional. Contractcancellation feesdependonpublished dates; eligibility does not guarantee specificroom.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [],
+        "levels": [
+          "masters",
+          "doctoral",
+          "professional"
+        ],
+        "policy_family": "Stanford_RDE_residential_housing",
+        "applicant_categories": [
+          "matriculated_graduate_housing_applicant_or_resident"
+        ],
+        "cycle": "2026-27 ResidenceAgreement",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-residence-agreement-2026-27"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "Department-specific HCP/hybrid phase status governs; 2026-27 contract timings are not 2027-28 guarantees.",
+        "Approved parenting/vacation/postgraduation petitions have separate conditions and availability restrictions."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-khs-application-authorship-policy",
+      "topic": "application_authorship_conditions",
+      "value": "KHS permits limited brainstorming, organizing the applicant's own ideas, identifying unclear passages, and light grammar/spelling edits preserving meaning and voice. It prohibits generated draft responses, substantive outlines or narrative frameworks, significant rewriting/paraphrasing, generated experience reflections or conclusions, and material not primarily the applicant's own writing. The applicant remains responsible for authenticity.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-knight-hennessy"
+        ],
+        "levels": [
+          "masters",
+          "doctoral",
+          "professional"
+        ],
+        "applicant_categories": [
+          "KHS_applicant"
+        ],
+        "cycle": "2027 KHS cohort",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-khs-ai-policy"
+      ],
+      "checked_at": "2026-10-03",
+      "publication_status": "published",
+      "review_status": "verified",
+      "conditions": [
+        "This is KHS application policy; each degree program may state a different policy."
+      ],
+      "exceptions": []
     }
   ],
   "unresolved": [

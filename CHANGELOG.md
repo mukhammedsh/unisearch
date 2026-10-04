@@ -20,6 +20,17 @@ All notable project changes should be recorded here.
 - Review MIT graduate and professional route policies against official sources, retain exceptions and conflicting or yearless facts explicitly, and extend the shared transfer mapping to all undergraduate study options.
 
 
+## 7.2.3 (2026-10-04) - Imperial and Stanford Research Recheck
+
+### Changed
+- Record comprehensive official-source content and applicability rechecks for the Imperial College London and Stanford University Stage 1 drafts, with dated evidence ledgers and reviewed coverage outside active runtime data.
+- Normalize draft evidence fingerprints so Windows and Unix line-ending conversion does not invalidate unchanged source files.
+
+### Fixed
+- Restore Imperial award-specific curriculum selectors, classify internal Medicine PhD progression correctly, and scope research phases, joint-program sources, costs, and funding terms to their actual contexts.
+- Restore complete Stanford applicant-condition prose and preserve route-specific rules across external, coterm, internal, hybrid, joint, and professional study contexts.
+- Use a patch increment because this research recheck changes draft evidence only and adds no runtime capability.
+
 ## 7.2.2 (2026-10-03) - Imperial and Stanford Research Drafts
 
 ### Added

@@ -100,6 +100,8 @@ def main():
             p = {**procedure, 'id': procedure_id(name, procedure['id']), 'evidence_file': name, 'original_id': procedure['id']}
             p['option_ids'] = [aliases.get(oid, oid) for oid in procedure.get('option_ids', [])]
             p['source_ids'] = [source_map[sid] for sid in procedure.get('source_ids', [])]
+            if p.get('shared_policy_context_ids'):
+                p['shared_policy_context_ids'] = [procedure_id(name, shared) for shared in p['shared_policy_context_ids']]
             if name == 'directory-evidence.json' and procedure['classification'] == 'external_nonprofessional_programme':
                 p['shared_policy_context_ids'] = [procedure_id('undergraduate-shared-evidence.json', 'stanford-nonprofessional-graduate')]
                 p['shared_policy_boundary'] = 'The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy.'
@@ -189,7 +191,7 @@ def main():
                            'snapshot': {'checked_at': inventory['checked_at'], 'catalog_period': '2026-27',
                                         'completion_status': 'reviewed' if '--reviewed' in sys.argv else 'in_progress'},
                            'inventory_file': 'inventory-snapshot.json', 'source_file': 'sources.json',
-                           'evidence_fingerprints': {name: hashlib.sha256(ROOT.joinpath(name).read_bytes()).hexdigest() for name in bundles},
+                           'evidence_fingerprints': {name: hashlib.sha256(ROOT.joinpath(name).read_text(encoding='utf-8').encode('utf-8')).hexdigest() for name in bundles},
                            'option_aliases': aliases, 'study_options': list(options.values()), 'application_procedures': procedures,
                            'facts': facts, 'unresolved': unresolved, 'collection_tasks': tasks})
     examples = []

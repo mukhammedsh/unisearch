@@ -1214,6 +1214,32 @@
       },
       "content_review_status": "reviewed_for_linked_facts",
       "content_reviewed_at": "2026-10-01"
+    },
+    {
+      "id": "source-ac85dfc2aca0130a",
+      "url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/",
+      "title": "Accommodation guarantee | Current students | Imperial College London",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/students/accommodation/prospective/ug/how-to-apply/accommodation-guarantee/"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "ac85dfc2aca0130a.txt",
+      "content_reviewed_at": "2026-10-03"
+    },
+    {
+      "id": "source-119396cfa9a1a07f",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf",
+      "title": "Funding terms and conditions 2026-27",
+      "checked_at": "2026-10-03",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/terms-and-conditions/Funding-TCs-2026-27-.pdf"
+      },
+      "content_review_status": "reviewed_for_linked_facts",
+      "capture_file": "119396cfa9a1a07f.txt",
+      "content_reviewed_at": "2026-10-03"
     }
   ],
   "facts": [
@@ -1841,7 +1867,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -1928,7 +1953,8 @@
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-ucas-2027-window",
@@ -2003,7 +2029,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -2090,7 +2115,8 @@
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-test-window-2027",
@@ -2223,7 +2249,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -2310,7 +2335,8 @@
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-ug-2026-offer-evidence",
@@ -2382,7 +2408,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -2469,7 +2494,8 @@
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-ug-2027-offer-deadlines-unknown",
@@ -2525,7 +2551,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -2614,7 +2639,8 @@
       "conditions": [
         "Do not increment historical dates to invent a future deadline."
       ],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-pg-choices",
@@ -2897,7 +2923,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -2984,7 +3009,8 @@
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-tuition-period-increases",
@@ -3127,13 +3153,17 @@
         ]
       },
       "source_ids": [
-        "source-c01259490371c864"
+        "source-c01259490371c864",
+        "source-119396cfa9a1a07f"
       ],
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "conditions": [
+        "Source conflict: the February2026 Funding T&Cs clause19 permits eligible part-year repeat prorating, whereas the bursary overview says partial repeats excluded; clause21 explicitly sets paid placement/industry at15% rather than genericcase-by-case. Preserve both sourceversions; confirm applicablecohort/award terms beforebudgeting."
+      ],
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-bursary-award-bands",
@@ -3285,7 +3315,7 @@
     {
       "id": "imperial-accommodation",
       "topic": "housing",
-      "value": "Eligible first-year undergraduates accepting Imperial firmly are guaranteed halls subject to published eligibility, not every applicant. Rent includes utilities/internet/basic contents insurance/maintenance/communal cleaning. Postgraduates can use private GradPad halls inBattersea/WhiteCity or Silwood halls for courses based there; no university-wide PG housing guarantee established. Private-housing team provides search, contract-check and possible guarantor support.",
+      "value": "For 2026/27, eligible first-year undergraduates, Oxbridge medics and official full-year exchange students receive a bed-space guarantee only after firm Imperial conditional/unconditional acceptance, a housing application by 17 July 2026 and unconditional academic acceptance by 23 August 2026, while attending alone full-time for the full 26 September 2026–26 June 2027 year. A preferred hall is not guaranteed; preferences have equal rank. Insurance/clearing applicants, part-year exchange, non-exchange occasional study, intercalated BSc Medicine and Graduate Entry Medicine are excluded; the latter is undergraduate academically but treated as postgraduate for housing. Under-18 students must use a single room, not a twin, and provide parent/guardian consent. Postgraduate and Silwood rooms are not guaranteed. Utilities, internet, basic contents insurance, maintenance and communal cleaning remain included as stated by the original overview. Private-housing advice, contract checks and conditional guarantor support are separate resources. The 2027/28 cutoffs and terms remain unverified.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -3302,13 +3332,15 @@
         "fee_status": []
       },
       "source_ids": [
-        "source-73f59d09d65bc5b2"
+        "source-73f59d09d65bc5b2",
+        "source-ac85dfc2aca0130a"
       ],
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-support",
@@ -3741,7 +3773,7 @@
         ],
         "deadline_time": "23:59",
         "timezone": "Europe/London",
-        "renewal": "Scholarship terms linked; predicted qualification conditions remain on offer; no personal award inferred."
+        "renewal": "The linked February2026 Funding T&Cs include President-specific award, progression, route-start and continuation conditions, recorded separately in imperial-president-phd-2026-contract. Their applicability to2027/28 awards must be checked against the actual award letter or updated contract; not assumed."
       },
       "scope": {
         "study_levels": [
@@ -3791,7 +3823,8 @@
       "review_status": "verified",
       "checked_at": "2026-10-01",
       "conditions": [],
-      "assessment": "Not an executable eligibility rule"
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-doctoral-offer-conditions",
@@ -4902,11 +4935,7 @@
     {
       "id": "imperial-kazakhstan-postgraduate-equivalence",
       "topic": "qualification_recognition",
-      "value": {
-        "masters": "Five-year Specialist Diploma ORfour-yearBachelor;overall4.5/5or3.6/4.",
-        "doctoral": "Master4/5orbetter,4.5/5normallypreferred.",
-        "boundary": "Institution-levelrecognitiondoesnotreplacecoursehighergrades,relevantfieldorqualifications;notanadmissionguarantee."
-      },
+      "value": "Postgraduate taught: Applicants may be considered with either a five-year Specialist Diploma or a four-year Bachelor’s degree. Both routes require an overall average of at least 4.5/5, or 3.6/4 on a four-point scale. Doctoral study: Applicants should hold a Master’s degree with at least 4/5; 4.5/5 is normally preferred. Institutional recognition does not replace higher course-specific grades, relevant-field requirements, or other qualifications, and does not guarantee admission.",
       "scope": {
         "study_levels": [
           "masters",
@@ -4927,12 +4956,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-pg-offer-verification",
       "topic": "offer_enrolment",
-      "value": "Allofferconditionsmustbesatisfiedbefore registration;qualificationevidenceverifiedthroughspecificImperialQualificationChecklinkinoffer(notgenericplatform).EnglishverifiedonlineusingappropriateTRF/registration/referral;otheracceptedqualificationemailresults. ATASifofferrequires,beforevisa,validsixmonths. Page stilllistsIELTSIndicator:historicalverificationinstructiondoesnotaddIndicator tocurrentacceptedtestlist.",
+      "value": "Applicants must satisfy every condition in their offer before registration. Imperial verifies academic qualifications through the specific Qualification Check link in the offer; applicants should use that link rather than opening the platform separately. English test results are verified online using the appropriate test reference or referral. Email results for other accepted English qualifications to the Admissions team. If the offer requires ATAS, obtain the certificate before applying for a visa; it is valid for six months. The offer-holder page still lists IELTS Indicator verification instructions, but this historical verification list does not add IELTS Indicator to the current accepted-test list.",
       "scope": {
         "study_levels": [
           "masters",
@@ -4952,12 +4982,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-payment-instalments",
       "topic": "payment",
-      "value": "UnconditionalFirmself-payingstudentswithnotoverduebalanceandcourse>=8monthsmayrequesttwoinstalmentsviaASK;fullysponsoredineligible.2026/27UG50%1August2026+50%4January2027;PGSeptsame,PGOct1September2026+4January2027;PGJan4January2027+1April2027. Research50%bystart+50%month4. Visaapplicantstillmustproveentirefinancialrequirement;instalmentsnotvisaexemption.",
+      "value": "For academic year 2026–27, self-paying undergraduate and postgraduate students with Unconditional Firm status may request payment in two instalments if they have no overdue balance and their course lasts at least eight months. Fully sponsored students are ineligible. Requests go through ASK Student Hub Online. Undergraduate and September-start postgraduate fees are due 50% on 1 August 2026 and 50% on 4 January 2027. October-start postgraduate fees are due 50% on 1 September 2026 and 50% on 4 January 2027. January-start postgraduate fees are due 50% on 4 January 2027 and 50% on 1 April 2027. Postgraduate research students pay 50% by the start of study and 50% in programme month four. Students who need a visa may use instalments but must still show evidence of funds for tuition and living costs.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -4979,12 +5010,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-sponsorship-confirmation",
       "topic": "payment",
-      "value": "FeesremainapplicantresponsibilityuntilorganisationawardconfirmedandImperialaccepts;balancenotcoveredpaybydeadline. Moneygrantpaiddirectlytoindividual/privatepersonsponsornotImperialformal sponsorship. Fullsponsorshipmustbeacceptedbeforeenrol;partialsponsoredacceptself-fundingandmayuseeligibleinstalments. HeadeddatedauthorisedletterwithnameCIDcoursefeeamountinvoiceaddressPOifneededanddirectpaymentconfirmationviaofficialform.",
+      "value": "Until a sponsoring organisation’s award is formally confirmed and accepted by Imperial, tuition fees remain the applicant’s responsibility. Any amount not covered by an accepted sponsorship must be paid by the applicable deadline. Scholarship money paid directly to an individual is not formal sponsorship to Imperial; personal sponsors are also not treated as formal sponsors. Applicants awaiting sponsorship should declare self-funding until Imperial confirms it. Fully sponsored students cannot enrol until proof is accepted; partially sponsored students declare self-funding and may use the self-funding instalment terms. Evidence is usually an original, dated, authorised letter on headed paper giving the student name and CID, course, covered fee amount, invoice address, any purchase-order number, and confirmation of direct payment to Imperial.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -5006,12 +5038,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-refund-liability",
       "topic": "payment",
-      "value": "Withdrawal/interruptionfeespro-rataweekorpartweek;UGnormally31weeksession(adjustlongercourses),PG/research52weeksincludingresearchenteringwriting-up. Excesspaidrefundedortemporarilyheldoninterruption;sponsorrefundanalogous. Tuitionrefunddiffersfromdepositrefund. Applicationfeesnonrefundableafter14daycancellation.",
+      "value": "If an undergraduate withdraws or interrupts during a session, tuition is charged pro rata by each week or part-week studied, normally using a 31-week academic session (longer courses may use a longer session). Postgraduate withdrawal/interruption and postgraduate research writing-up charges use each week or part-week in a 52-week session. Any excess payment is refunded; on interruption it may instead be held for the student’s return. Sponsor-funded fees are charged/refunded on the same pro-rata basis. Tuition refunds are separate from postgraduate deposit refunds. Application fees become non-refundable after the initial 14-day cancellation period.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -5033,12 +5066,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-cas-financial-evidence",
       "topic": "offer_enrolment",
-      "value": "UnconditionalofferacceptedandpassportuploadedMyImperialneededforCAS;feeadvancepaymentnotrequiredandpaymentdoesnotguaranteevisa. Financialevidenceoneacademicyeartuition(upto9months)+UKVImaintenance,28consecutivedaysendingwithin31daysapplicationexceptofficialloan/sponsorship;exemptnationalitiesstillneedfunds. SponsorpaidfundsnotaddedCAS,officialsponsorletterneeded. Tuitionpaymentsmaytakefiveworkingdays;CASupdate3–5workingdaysafterreceipt. Publisheduniversityguidance,nospeculativefuturemaintenanceamount.",
+      "value": "Applicants applying for a UK student visa from overseas, or in the UK without at least 12 months’ permission, must show funds for one academic year of tuition (up to nine months) and up to nine months of UKVI maintenance. Unless relying on an official loan or sponsorship, funds must be held for 28 consecutive days, with the period ending within 31 days of the visa application. Exempt nationalities may not need to submit evidence but still need sufficient funds. Imperial does not require an advance tuition payment to issue a CAS, and payment does not guarantee a visa. A CAS requires an accepted unconditional offer and passport details uploaded to My Imperial. Payments can take up to five working days to process; a CAS update after receipt takes about 3–5 working days. Sponsor payments are not uploaded to the CAS; provide UKVI with an official sponsor letter.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -5062,12 +5096,13 @@
       "checked_at": "2026-10-01",
       "conditions": [
         "Visa category and applicant circumstances remain relevant; university guidance is not an executable immigration decision."
-      ]
+      ],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-presessional-scope",
       "topic": "language_preparation",
-      "value": "Three-weekcourseorientationonlyforUG/PGalreadymeetingEnglishwithunconditionaldegreeofferbystart,notEnglishwaiver;BusinessSchoolexcluded.2026course1–18SeptemberSouthKensington£2580closed.2027applicationsopenMarch(no2027dates/pricesyet);six-weekqualificationroutehasdifferenteligibility. Placesconditionalcapacity,offeracceptnormally28daysbutatleastfiveweeksbeforestart,invoicepay14daysunlessclosetostart,allconditions/visa/enrolmentbystart.",
+      "value": "The three-week pre-sessional is a full-time, in-person orientation course for prospective undergraduate and postgraduate students who have already met the English requirement for their Imperial degree and hold an unconditional degree offer by the course start. It does not waive the degree’s English requirement. Imperial Business School applicants are excluded. The 2026 course ran 1–18 September at South Kensington and cost £2,580; applications are closed. Applications for 2027 courses are due to open in March 2027, but dates and prices were not yet published in the checked source. Applicants who do not meet the three-week eligibility rules may be eligible for the distinct six-week course. Places depend on capacity. Offers usually need acceptance within 28 days and at least five weeks before the start; fees are normally due in full within 14 days of invoice, unless the start date is close. Applicants must meet all conditions, including visa and enrolment requirements, by the course start.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -5089,12 +5124,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-ug-mode-transfer",
       "topic": "application_routes",
-      "value": "AllUGcoursesfulltime,nopart-time/online-onlyUGdegrees. Predictedschoolgradesmayapply;finalresultsonlyforofferaccepted. TransferpossibleonlyLifeSciences/Mathematics/Physicswithdepartmentconfirmation;Engineeringnotaccepttransfers. Visitingstudentstudyseparatefromdegreeadmission.",
+      "value": "Imperial undergraduate degree courses are full-time; the university does not currently offer part-time or online-only undergraduate degrees. Applicants may apply using predicted school grades, but final results are required only after an offer is made and accepted. Transfer applications are accepted by Life Sciences, Mathematics, and Physics; Faculty of Engineering departments do not accept transfers. Applicants already enrolled elsewhere may instead contact Admissions about visiting-student study, which is separate from degree admission.",
       "scope": {
         "study_levels": [
           "undergraduate"
@@ -5113,19 +5149,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-ucas-fee-2027",
       "topic": "application_fee",
-      "value": {
-        "amount": 34.5,
-        "currency": "GBP",
-        "period": "oneapplicationperadmissionscycle,uptofivechoices",
-        "cycle": "2027/28entry",
-        "deposit": "NoUGdeposit",
-        "conditions": "UCASI50;multipleImperialchoicescountindividually,maximumfourmedicine/dentistry/veterinarycourses. Oneapplicationpercycle;previouscycleapplicantmustapplyagain."
-      },
+      "value": "For 2027–28 entry, undergraduate applications use UCAS, Imperial institution code I50. UCAS charges £34.50 per application regardless of the number of choices. Applicants may select up to five courses, with no preference order; applications in medicine, dentistry, veterinary medicine, or veterinary science are limited to four courses in any one of those subjects. Applicants may submit once per cycle; a previous-cycle applicant must submit a new application. Imperial does not require an undergraduate deposit.",
       "scope": {
         "study_levels": [
           "undergraduate"
@@ -5176,7 +5206,6 @@
           "imperial-option-geology-msci",
           "imperial-option-geophysics-bsc",
           "imperial-option-geophysics-msci",
-          "imperial-option-medicine-phd",
           "imperial-option-materials-science-engineering-meng",
           "imperial-option-materials-science-engineering-beng",
           "imperial-option-materials-nuclear-engineering",
@@ -5262,12 +5291,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-contextual-2027",
       "topic": "applicant_category",
-      "value": "HomefeeorappropriateUKresidentialstatuspluscareexperience,EnglishIMDquintile1,FSMcurrent/pastsixyears,ORPOLAR4quintile1/2plusfirstfamilyHE/lowperformingschoolKS5below20percentile/highFSMschoolabove80percentile. Permanenthomepostcode,notschool;UCASinformationbydeadline,latechangesnotconsidered. Othermedical/personal/familialmitigationviarefereeandtestprovider,notschemeautomaticeligibility. Guaranteedinterviewrequirescontextualflag,predictedAAAequivalentanddepartmentcontextualtestthreshold;guaranteedminimumofferrequiresAAA,clearmotivationanddepartmenttest/interviewminimum. MedicalBiosciencesfirstsittingrequirementforguaranteedoffer;resitsstillholisticallycontextualpossible. Reconsiderationonlyeligiblepriorrejectedapplicantsnotifiedinletter,samecourse,achievedminimumandrequiredtest/interview,specificavailableplaces;12August2027form9–13UKtimewithUCASID. Page heading2026supportcontradictsdetailed2027dates;preservedconflict,notuniversalunconditionaloffer.",
+      "value": "For undergraduate applicants to 2027–28 entry, contextual consideration requires Home fee status or an appropriate UK residential status plus at least one listed criterion: care experience; a permanent home postcode in England’s IMD quintile 1; current or recent free-school-meal eligibility within the last six years; or a permanent postcode in POLAR4 quintile 1 or 2 plus first-generation higher-education status, attendance at an English school below Imperial’s key-stage-5 performance threshold (20th percentile), or attendance at a school in the UK with free-school-meal rate above Imperial’s 80th-percentile threshold. The permanent home address counts, not the school address. Assessment uses UCAS information available by the applicable deadline; later changes are not considered. Other medical, personal, or family circumstances are not this scheme’s eligibility criteria and should be reported through the referee and, where relevant, the test provider. Contextual status may provide a guaranteed interview only when Imperial flags the application, predicted grades meet AAA or equivalent, and any applicable departmental contextual test threshold is met. A guaranteed minimum offer has its own AAA, motivation, and department test/interview criteria; Medical Biosciences additionally requires first-sitting qualifications for a guaranteed offer, though resit applicants may still receive holistic contextual consideration. Reconsideration is limited to eligible applicants notified in their rejection letter, for the same course, who achieved that course’s minimum and completed required test/interview, and only where places remain. The 2027 reconsideration form is scheduled for 12 August 2027 from 09:00 to 13:00 UK time; the applicant needs their UCAS Personal ID. The page labels one section “2026 entry support” while publishing the criteria and dates for 2027 entry, so preserve this source conflict.",
       "scope": {
         "study_levels": [
           "undergraduate"
@@ -5286,12 +5316,13 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-inspires-2027-contract",
       "topic": "funding",
-      "value": "Atleast300competitiveImperialInspiresawardsforfulltimeOverseasfee-payingUG/selectedPGT2027/28;eligibledepartmentsmustbeconfirmedbyscholarshipsearch/course,noteverycourse. Atleast£15000annualfullcourseduration,repeatsnotpaid,interruptionpaused;facultyawardletterallocatesfeesvsmaintenance. Separateinvitedi360applicationafteradmissionapplication,minimumentryrequirements;scholarshipdoesnotchangeadmissiondecision. UGawardbymidApril2027;PGTwithapplicableadmissionsrounddecision. Admission/awardconditionsrequired,annualreviewifsupport>11months,satisfactoryprogress,mayrequestdonorthanks/events(travelnotalwaysreimbursed). Cannotdeferaward:reapplynewcycle. No stackingwithfulltuition+maintenanceawardoraboveLondonmaintenancecap;partialcombinationcasebycaseandreportotherawards. Feestatuschange=>ineligible;nonregistration/withdrawalstops,repeatpostpones. TuitiondirecttoImperial,maintenanceUKbankaccountMyImperial;needsinitialfundsbeforebanksetup. Paymentsnormally7thmonthlybankdetailcutoff20thpreviousmonth,initialregistrationrequired;recoveroverpayments/breach. Exacteligiblecoursecoverage/invitedsubmissiondeadlineisnotincontractandcannotbeassumed.",
+      "value": "For 2027–28, Imperial expects to award at least 300 competitive Imperial Inspires scholarships to full-time Overseas-fee-paying undergraduate and selected postgraduate taught students. Eligibility is limited to courses/departments confirmed through the course or scholarship search; it does not cover every course. Each award is at least £15,000 per year for the full course duration, excluding repeat years and pausing during interruption. The faculty decides the tuition/maintenance split, stated in the award letter. Eligible applicants who meet the course minimums are invited to submit a separate application through i360 after applying for admission; scholarship assessment does not change the admission decision. Undergraduate awards are due by mid-April 2027; postgraduate taught outcomes follow the relevant admissions-round decision. Admission and award conditions must be met before registration. The scholarship requires satisfactory academic progression and annual review when it lasts more than 11 months; donor thank-you/update activities may be required and travel may not be reimbursed. Awards cannot be deferred: a deferred applicant must reapply in the new cycle. A student cannot hold this alongside a full tuition-and-maintenance scholarship or exceed the London maintenance cap; multiple partial awards are considered case by case and must be reported. A fee-status change ends eligibility. Non-registration or withdrawal stops payments; interruption pauses them and repeat years postpone them. Tuition is paid to Imperial and maintenance to a UK bank account on My Imperial. Students need funds for initial expenses while opening that account. Payments are normally made on the seventh of each month, with bank details required by midnight on the 20th of the previous month; initial payment requires registration. Imperial may recover overpayments or withdraw an award for breach. The contract does not state the exact eligible-course list or invited-application deadline; check the scholarship search and invitation rather than infer them.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -5314,7 +5345,8 @@
       "publication_status": "published",
       "review_status": "verified",
       "checked_at": "2026-10-01",
-      "conditions": []
+      "conditions": [],
+      "rechecked_at": "2026-10-03"
     },
     {
       "id": "imperial-published-pg-country-qualification-panels",
@@ -6176,6 +6208,99 @@
       "checked_at": "2026-10-01",
       "conditions": [],
       "assessment": "Not an executable eligibility rule"
+    },
+    {
+      "id": "imperial-president-phd-2026-contract",
+      "topic": "funding_conditions",
+      "value": {
+        "academic": "Award requirements are separate from PhD admission: a first-class/equivalent undergraduate or integrated master, or standalone-master distinction. Failure can revoke funding despite admission; final award confirmation requires both sets of conditions.",
+        "route_start": "For a President PhD award holder on a 1+3 MRes/MSc then PhD route, the award starts at the PhD stage after MRes/MSc distinction; the initial master's fees and maintenance require separate funding. For a President PhD award holder undertaking a Research Council-funded CDT, that President scholarship starts at CDT entry for 3.5 years only, leaving the final six months' costs to the student and department. This does not shorten a separate four-year HealthBRIDGE or other CDT grant.",
+        "consumables": "GBP2,000 annually for the first three years is paid into the supervisor account for direct PhD expenses including conference travel and specialist resources, not standard-specification laptops or laboratory enhancement. Unspent balances carry forward; a final-year balance must be spent or returned within six months.",
+        "continuation": "Satisfactory academic progress is required, with annual eligibility review for awards longer than 11 months. Donor updates/events may be required; travel is not necessarily reimbursed. A paid full-time internship may suspend the stipend, which resumes preserving the full 3.5-year entitlement.",
+        "research_students": "Writing-up funding may continue for up to12 months only while solely writing the thesis and subject to the award letter. Full-time employment is ineligible; part-time employment may qualify for a half award. Contractual Imperial employees cannot receive stipends except casual contracts subject to Student Financial Support advice.",
+        "payment_and_changes": "Registration and UK bank details are needed; monthly payment is normally on the7th, with the20th of the prior month as cutoff. Initial personal funds are needed before payments start. Notify other awards and overpayments. Full awards cannot be stacked; partial combinations are assessed case by case with a2026/27 research maintenance cap ofGBP26,500. Interruption or repeat may postpone or stop funding; withdrawal stops it and excess payments are recoverable. Awards are non-transferable and cannot be deferred: reapply in the next cycle. Named Parental Leave, Support Fund and UROP exceptions remain award-specific."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-aeronautics-phd",
+          "imperial-bioengineering-phd",
+          "imperial-chemical-engineering-phd",
+          "imperial-civil-environmental-phd",
+          "imperial-computing-phd",
+          "imperial-design-engineering-phd",
+          "imperial-earth-science-phd",
+          "imperial-electrical-electronic-phd",
+          "imperial-materials-phd",
+          "imperial-mechanical-engineering-phd",
+          "imperial-brain-sciences-phd",
+          "imperial-immunology-inflammation-phd",
+          "imperial-infectious-disease-phd",
+          "imperial-metabolism-digestion-reproduction-phd",
+          "imperial-surgery-cancer-phd",
+          "imperial-nhli-phd",
+          "imperial-public-health-phd",
+          "imperial-chemistry-phd",
+          "imperial-life-sciences-phd",
+          "imperial-mathematics-phd",
+          "imperial-physics-phd",
+          "imperial-environmental-policy-phd",
+          "imperial-language-studies-phd",
+          "imperial-science-communication-phd",
+          "imperial-educational-development-phd",
+          "imperial-crick-phd",
+          "imperial-qrt-computing-pathway",
+          "imperial-business-doctoral"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Recipient of a President PhD Scholarship governed by the linked 2026/27 terms; route-specific clauses apply only to recipients on the named 1+3 or Research Council-funded CDT route."
+        ],
+        "cycle": "Funding T&Cs2026/27, reviewedFebruary2026; not an automatically verified2027/28contract",
+        "fee_status": [],
+        "funding_scheme": "President PhD Scholarship only; the Research Council-funded CDT is the recipient's study route, not a generic UKRI grant rule."
+      },
+      "source_ids": [
+        "source-119396cfa9a1a07f"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-03",
+      "conditions": [],
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
+    },
+    {
+      "id": "imperial-bursary-2026-contract-repeat-placement",
+      "topic": "funding_conditions",
+      "value": "The 2026/27 terms permit a first repeat-year bursary when eligible for tuition funding; a part-year repeat may receive a pro-rated award, and NHS-funded repeat students must supply their entitlement letter. A year abroad and paid placement/industry receive 15% of the eligible bursary. Household income assessment and consent are required annually, with income data received by 31 May after the entry-year start. Previous graduates from undergraduate study are excluded except Cumbria Graduate Medicine students. Different overview wording is explicitly retained as a conflict; confirm the applicable cohort/award terms before budgeting.",
+      "scope": {
+        "study_levels": [
+          "undergraduate"
+        ],
+        "option_ids": [],
+        "route_ids": [],
+        "applicant_categories": [
+          "Applicants to the specified level; course and category conditions still apply"
+        ],
+        "cycle": "February2026 FundingT&Cs2026/27; sourceconflictwithbursaryoverview",
+        "fee_status": [
+          "Home"
+        ]
+      },
+      "source_ids": [
+        "source-119396cfa9a1a07f"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-03",
+      "conditions": [
+        "Source conflict: the February2026 Funding T&Cs clause19 permits eligible part-year repeat prorating, whereas the bursary overview says partial repeats excluded; clause21 explicitly sets paid placement/industry at15% rather than genericcase-by-case. Preserve both sourceversions; confirm applicablecohort/award terms beforebudgeting."
+      ],
+      "assessment": "Not an executable eligibility rule",
+      "rechecked_at": "2026-10-03"
     }
   ],
   "researched_unknowns": [

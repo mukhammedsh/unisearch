@@ -6,8 +6,8 @@
       "id": "stanford-coterm-central-eligibility",
       "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/degree-requirements/coterminal-degree-programs/coterm-eligibility",
       "title": "Stanford coterm eligibility",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_rules"
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_eligibility_or_course_transfer_content_rechecked"
     },
     {
       "id": "stanford-coterm-central-application",
@@ -27,8 +27,8 @@
       "id": "stanford-coterm-central-transfer",
       "url": "https://studentservices.stanford.edu/my-academics/earn-my-degree/coterminal-degree-programs/coterm-course-transfer",
       "title": "Stanford coterm transfer",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_rules"
+      "checked_at": "2026-10-03",
+      "content_review_status": "full_eligibility_or_course_transfer_content_rechecked"
     },
     {
       "id": "stanford-coterm-central-progress",
@@ -55,7 +55,8 @@
         "non_summer_stanford_quarters": 6,
         "major_declaration_required": true,
         "overlap": "At least one quarter with active undergraduate and graduate careers",
-        "application_limit": "One coterm application at a time through final response to an offer"
+        "application_limit": "One coterm application at a time through final response to an offer",
+        "transfer_student_non_summer_stanford_quarters": 2
       },
       "scope": {
         "option_ids": [],
@@ -73,7 +74,7 @@
       "source_ids": [
         "stanford-coterm-central-eligibility"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "publication_status": "published",
       "review_status": "verified",
       "conditions": [],
@@ -257,7 +258,10 @@
         "request": "After acceptance, submit Coterminal Course Transfer eForm to move eligible Stanford courses between careers",
         "earliest_course": "Department can restrict further, but courses before autumn of sophomore year cannot count",
         "graduate_minimum": "Courses below 100 cannot count toward minimum master units",
-        "deadline": "eForm normally closes shortly after Late Application to Graduate deadline and reopens after conferral; graduating students request exceptions from Enrollment Services"
+        "deadline": "No later than Late Application to Graduate deadline in intended bachelor conferral quarter; absolutely no request after bachelor conferral. Exceptions require Enrollment Services before conferral.",
+        "autumn_2026_form_closure": "December7,2026–January7,2027",
+        "credit_boundaries": "No double-count between degrees; no noncredit/incomplete/in-progress transfer unless conferral application enables in-progress processing. Repeated nonrepeatable attempts must remain together and satisfy lookback; duplicates across careers cannot be combined into double credit.",
+        "frosh_leave_rule": "For sophomore-autumn lookback programs, a frosh leave moves earliest term to fourth enrolled non-summer quarter."
       },
       "scope": {
         "option_ids": [],
@@ -275,7 +279,7 @@
       "source_ids": [
         "stanford-coterm-central-transfer"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-03",
       "publication_status": "published",
       "review_status": "verified",
       "conditions": [],
