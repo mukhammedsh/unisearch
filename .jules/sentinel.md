@@ -1,0 +1,4 @@
+## 2026-10-05 - Multi-Header Client IP Spoofing in Starlette Request Headers
+**Vulnerability:** In Starlette/FastAPI, `request.headers.get("x-forwarded-for")` returns only the first header entry when duplicate `X-Forwarded-For` header lines are present in an HTTP request. An attacker sending a spoofed `X-Forwarded-For: 1.1.1.1` header line before a downstream proxy appends `X-Forwarded-For: <real-ip>` causes `.get()` to return the attacker's spoofed header line instead of the proxy-appended line.
+**Learning:** `request.headers.getlist("x-forwarded-for")` must be used to collect all header lines and concatenate them with `, ` before traversing the proxy chain right-to-left.
+**Prevention:** Always use `request.headers.getlist()` when parsing potentially duplicated proxy headers (`X-Forwarded-For`, `CF-Connecting-IP`) to prevent header-splitting or duplicate header IP spoofing.

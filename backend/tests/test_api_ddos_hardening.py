@@ -185,6 +185,39 @@ class ApiDdosHardeningTests(unittest.TestCase):
             resolved = request_client_ip(req)
             self.assertEqual(resolved, "2001:db8::1")
 
+    def test_client_ip_handles_multi_header_and_ports(self):
+        from starlette.datastructures import Headers
+
+        # 1. Multi-line X-Forwarded-For header (attacker injected 1.1.1.1, proxy appended 203.0.113.88)
+        req1 = MagicMock()
+        req1.client.host = "127.0.0.1"
+        req1.headers = Headers(raw=[
+            (b"x-forwarded-for", b"1.1.1.1"),
+            (b"x-forwarded-for", b"203.0.113.88:44300"),
+        ])
+        with patch("app.core.security.TRUSTED_PROXY_IPS", ["127.0.0.1"]), \
+             patch("app.core.security.TRUST_X_FORWARDED_FOR", True):
+            self.assertEqual(request_client_ip(req1), "203.0.113.88")
+
+        # 2. Multi-line CF-Connecting-IP header (attacker spoofed 1.1.1.1, CDN appended 198.51.100.22)
+        req2 = MagicMock()
+        req2.client.host = "127.0.0.1"
+        req2.headers = Headers(raw=[
+            (b"cf-connecting-ip", b"1.1.1.1"),
+            (b"cf-connecting-ip", b"198.51.100.22"),
+        ])
+        with patch("app.core.security.TRUSTED_PROXY_IPS", ["127.0.0.1"]), \
+             patch("app.core.security.TRUST_CF_CONNECTING_IP", True):
+            self.assertEqual(request_client_ip(req2), "198.51.100.22")
+
+        # 3. IPv6 with port suffix [2001:db8::1]:8080
+        req3 = MagicMock()
+        req3.client.host = "127.0.0.1"
+        req3.headers = {"x-forwarded-for": "[2001:db8::1]:8080"}
+        with patch("app.core.security.TRUSTED_PROXY_IPS", ["127.0.0.1"]), \
+             patch("app.core.security.TRUST_X_FORWARDED_FOR", True):
+            self.assertEqual(request_client_ip(req3), "2001:db8::1")
+
     def test_client_ip_none_and_missing_client(self):
         self.assertEqual(request_client_ip(None), "unknown")
         req = MagicMock()

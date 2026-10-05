@@ -151,10 +151,26 @@ def _validate_and_normalize_ip(value: Optional[str]) -> Optional[str]:
     raw = str(value).strip()
     if not raw:
         return None
+    # Strip optional port suffix (e.g. 1.2.3.4:8080 or [2001:db8::1]:8080)
+    if raw.startswith("[") and "]" in raw:
+        raw = raw[1 : raw.find("]")]
+    elif ":" in raw and raw.count(":") == 1:
+        raw = raw.split(":")[0]
     try:
         return str(ipaddress.ip_address(raw))
     except ValueError:
         return None
+
+
+def _get_header_list(request: Request, name: str) -> list[str]:
+    """Extract all header values for the given name, accounting for Starlette Headers or dict mocks."""
+    headers = getattr(request, "headers", None)
+    if headers is None:
+        return []
+    if hasattr(headers, "getlist"):
+        return [str(v) for v in headers.getlist(name) if str(v).strip()]
+    val = headers.get(name) if hasattr(headers, "get") else None
+    return [str(val).strip()] if val else []
 
 
 def _parse_trusted_proxy_entry(entry: str) -> Optional[Any]:
@@ -239,14 +255,16 @@ def request_client_ip(request: Optional[Request]) -> str:
         return normalized_direct
 
     if TRUST_CF_CONNECTING_IP:
-        cf_raw = str(request.headers.get("cf-connecting-ip", "")).strip()
-        normalized_cf = _validate_and_normalize_ip(cf_raw)
-        if normalized_cf:
-            return normalized_cf
+        cf_headers = _get_header_list(request, "cf-connecting-ip")
+        for cf_raw in reversed(cf_headers):
+            normalized_cf = _validate_and_normalize_ip(cf_raw)
+            if normalized_cf:
+                return normalized_cf
 
     if TRUST_X_FORWARDED_FOR:
-        xff_raw = str(request.headers.get("x-forwarded-for", "")).strip()
-        if xff_raw:
+        xff_headers = _get_header_list(request, "x-forwarded-for")
+        if xff_headers:
+            xff_raw = ", ".join(xff_headers)
             raw_hops = [part.strip() for part in xff_raw.split(",") if part.strip()]
             client_candidate = normalized_direct
             for raw_hop in reversed(raw_hops):
