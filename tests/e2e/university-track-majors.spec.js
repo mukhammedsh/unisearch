@@ -777,7 +777,10 @@ test("MIT admission context fits a narrow dark-theme screen", async ({ page }) =
   const context = page.locator("#tab-admission .mit-admission-context");
   await expect(context).toBeVisible();
   await expect(context.locator("[data-mit-open-programs]")).toBeVisible();
-  const bounds = await context.boundingBox();
+  const bounds = await context.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return { x: r.x, y: r.y, width: r.width, height: r.height };
+  });
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
 
