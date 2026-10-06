@@ -4,6 +4,7 @@ import math
 import re
 import threading
 import time
+import urllib.parse
 from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any, Dict, Optional
@@ -241,6 +242,41 @@ def _in_backoff() -> bool:
         return False
 
 
+def _sanitize_url_for_logging(url: str) -> str:
+    """Redacts API keys and sensitive tokens from currency API URLs before logging."""
+    if not url or not isinstance(url, str):
+        return ""
+    try:
+        parsed = urllib.parse.urlsplit(url)
+    except Exception:
+        return "[REDACTED_URL]"
+
+    query = ""
+    if parsed.query:
+        pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+        sanitized_pairs = []
+        for k, v in pairs:
+            k_lower = str(k or "").lower()
+            if any(s in k_lower for s in ("key", "token", "secret", "auth", "password")):
+                sanitized_pairs.append((k, "[REDACTED]"))
+            else:
+                sanitized_pairs.append((k, v))
+        query = urllib.parse.urlencode(sanitized_pairs)
+
+    path = parsed.path
+    if path:
+        parts = path.split("/")
+        sanitized_parts = []
+        for part in parts:
+            if part and len(part) >= 12 and re.match(r"^[A-Za-z0-9_-]+$", part) and not part.isupper() and part.lower() not in ("latest", "historical"):
+                sanitized_parts.append("[REDACTED]")
+            else:
+                sanitized_parts.append(part)
+        path = "/".join(sanitized_parts)
+
+    return urllib.parse.urlunsplit(parsed._replace(query=query, path=path))
+
+
 def _clear_cache_for_testing() -> None:
     global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
     global _LAST_FETCH_TIME
@@ -398,7 +434,7 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
             }
         except Exception as e:
             _record_failure(str(e))
-            _LOGGER.warning("Failed to fetch rates from API (%s): %s", CURRENCY_RATES_API_URL, e)
+            _LOGGER.warning("Failed to fetch rates from API (%s): %s", _sanitize_url_for_logging(CURRENCY_RATES_API_URL), e)
 
     # Fallback to in-memory cache even if slightly stale, before falling back to static
     with _CACHE_LOCK:

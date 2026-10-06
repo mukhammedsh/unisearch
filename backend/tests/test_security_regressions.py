@@ -11,6 +11,7 @@ from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.services.currency import _sanitize_url_for_logging
 from scripts import audit_universities_data
 
 
@@ -121,6 +122,20 @@ class SecurityRegressionTests(unittest.TestCase):
         diagnostic_text = "\n".join(errors)
         for value in private_values:
             self.assertNotIn(value, diagnostic_text)
+
+    def test_currency_url_sanitization_redacts_query_params_and_path_keys(self):
+        url_query = "https://api.currencylayer.com/live?access_key=secret_12345&format=1"
+        sanitized_query = _sanitize_url_for_logging(url_query)
+        self.assertNotIn("secret_12345", sanitized_query)
+        self.assertIn("access_key=%5BREDACTED%5D", sanitized_query)
+
+        url_path = "https://v6.exchangerate-api.com/v6/1234567890abcdef12345/latest/USD"
+        sanitized_path = _sanitize_url_for_logging(url_path)
+        self.assertNotIn("1234567890abcdef12345", sanitized_path)
+        self.assertIn("/v6/[REDACTED]/latest/USD", sanitized_path)
+
+        clean_url = "https://open.er-api.com/v6/latest/USD"
+        self.assertEqual(_sanitize_url_for_logging(clean_url), clean_url)
 
 
 class RequestBodyLimitRegressionTests(unittest.IsolatedAsyncioTestCase):
