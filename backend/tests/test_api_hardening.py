@@ -30,6 +30,7 @@ class ApiHardeningTests(unittest.TestCase):
         self.assertIn("X-Request-Id", response.headers)
         self.assertEqual("nosniff", response.headers.get("X-Content-Type-Options"))
         self.assertEqual("DENY", response.headers.get("X-Frame-Options"))
+        self.assertEqual("0", response.headers.get("X-XSS-Protection"))
         self.assertEqual("same-origin", response.headers.get("Cross-Origin-Opener-Policy"))
         self.assertEqual("none", response.headers.get("X-Permitted-Cross-Domain-Policies"))
 
@@ -39,6 +40,7 @@ class ApiHardeningTests(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual("nosniff", response.headers.get("X-Content-Type-Options"))
         self.assertEqual("DENY", response.headers.get("X-Frame-Options"))
+        self.assertEqual("0", response.headers.get("X-XSS-Protection"))
         self.assertEqual("same-origin", response.headers.get("Cross-Origin-Opener-Policy"))
         self.assertEqual("none", response.headers.get("X-Permitted-Cross-Domain-Policies"))
 
