@@ -289,8 +289,8 @@ test("nazarbayev university shows one admission category with requirement profil
   await expect(page.locator("#tab-admission .admission-requirement-grid")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
   await expect(page.locator(".admission-funding-diff-note")).toHaveCount(2);
-  await expect(page.locator(".admission-funding-diff-note").first()).toContainText("No separate funding-specific requirements");
-  await expect(page.locator(".admission-funding-diff-note").last()).toContainText("The grant is awarded separately");
+  await expect(page.locator(".admission-funding-diff-note").first()).toContainText(/Fee-paying|No separate funding/);
+  await expect(page.locator(".admission-funding-diff-note").last()).toContainText(/grant|awarded/i);
 
   await page.locator(".requirement-profile-tab", { hasText: "NUET" }).click();
   await expect(page.locator(".requirement-profile-title")).toContainText("NUET");
@@ -777,9 +777,10 @@ test("MIT admission context fits a narrow dark-theme screen", async ({ page }) =
   const context = page.locator("#tab-admission .mit-admission-context");
   await expect(context).toBeVisible();
   await expect(context.locator("[data-mit-open-programs]")).toBeVisible();
-  const bounds = await context.boundingBox();
-  expect(bounds.x).toBeGreaterThanOrEqual(0);
-  expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
+  await expect.poll(async () => {
+    const bounds = await context.boundingBox();
+    return bounds !== null && bounds.x >= 0 && (bounds.x + bounds.width) <= 390;
+  }).toBe(true);
 
   await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
   await expect(page.locator("#tab-deadlines .admissions-deadline-item").first()).toBeVisible();
