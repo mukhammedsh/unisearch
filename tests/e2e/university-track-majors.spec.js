@@ -785,16 +785,23 @@ test("MIT admission context fits a narrow dark-theme screen", async ({ page }) =
   await page.goto("/university.html?id=mit-usa-cambridge");
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
+  const programsTab = page.locator(".d-tab-btn[data-tab='tab-programs']");
+  await expect(programsTab).toBeVisible();
+  await programsTab.click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
+  await expect(program).toBeVisible();
+  await expect(program.locator("[data-program-toggle]")).toBeVisible();
   await program.locator("[data-program-toggle]").click();
   await program.locator("[data-program-admission]").click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const context = page.locator("#tab-admission .mit-admission-context");
   await expect(context).toBeVisible();
   await expect(context.locator("[data-mit-open-programs]")).toBeVisible();
-  const bounds = await context.boundingBox();
-  expect(bounds.x).toBeGreaterThanOrEqual(0);
-  expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
+  await expect.poll(async () => {
+    const bounds = await context.boundingBox();
+    return bounds !== null && bounds.x >= 0 && bounds.x + bounds.width <= 390;
+  }).toBe(true);
 
   await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
   await expect(page.locator("#tab-deadlines .admissions-deadline-item").first()).toBeVisible();
