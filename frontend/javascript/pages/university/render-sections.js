@@ -1598,9 +1598,9 @@ function isPlainObject(value) {
 }
 
 function normalizeProgramToken(value) {
-  return String(value || "").trim().toLowerCase().replaceAll("&", " and ")
-    .replace(/[^\p{L}\p{N}]+/gu, "_")
-    .replace(/^_+/, "").replace(/_+$/, "");
+  const token = String(value || "").trim().toLowerCase().replaceAll("&", " and ")
+    .replace(/[^\p{L}\p{N}]+/gu, "_");
+  return token.replace(/^_|_$/g, "");
 }
 
 function uniqueNonEmpty(values) {

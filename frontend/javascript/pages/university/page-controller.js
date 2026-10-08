@@ -443,7 +443,7 @@ export async function initUniversityPage(options = {}) {
         coverageProgram,
         onProgramAdmissionSelected: (program) => {
           selectAdmissionProgram(university, program);
-          refreshAdmissionContext();
+          void refreshAdmissionContext();
           document.querySelector('.d-tab-btn[data-tab="tab-admission"]')?.click();
           document.querySelector(".d-tabs")?.scrollIntoView({ block: "start" });
         },

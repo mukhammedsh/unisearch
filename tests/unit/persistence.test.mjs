@@ -75,8 +75,8 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       });
 
       const normalizedAmount = normalized.familyIncomeAmount;
-      if (typeof normalizedAmount !== 'number') assert.fail('Normalized family income amount should be numeric');
-      assert.strictEqual(normalizedAmount, 85000);
+      assert.strictEqual(typeof normalizedAmount, 'number');
+      assert.strictEqual(Number(normalizedAmount), 85000);
       assert.strictEqual(normalized.familyIncomeCurrency, 'EUR');
       assert.strictEqual(normalized.familyIncome, 'under_85k');
       assert.strictEqual(normalizeProfileData({ familyIncomeAmount: -1 }).familyIncomeAmount, '');
@@ -88,8 +88,8 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       saveProfile(normalized);
       const loaded = loadProfile();
       const loadedAmount = loaded.familyIncomeAmount;
-      if (typeof loadedAmount !== 'number') assert.fail('Loaded family income amount should be numeric');
-      assert.strictEqual(loadedAmount, 85000);
+      assert.strictEqual(typeof loadedAmount, 'number');
+      assert.strictEqual(Number(loadedAmount), 85000);
       assert.strictEqual(loaded.familyIncomeCurrency, 'EUR');
       assert.strictEqual(loaded.familyIncome, 'under_85k');
       const apiPayload = loadProfileForApi();

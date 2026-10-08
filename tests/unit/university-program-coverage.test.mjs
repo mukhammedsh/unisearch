@@ -73,7 +73,7 @@ function row(overrides = {}) {
 test("program matching preserves nested parenthetical labels", () => {
   const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
   renderProgramsSection({
-    admissionsData: { programs: [row({ program_name: "Data Engineering (Artificial Intelligence (ML))" })] },
+    admissionsData: { programs: [row({ program_name: "-- Data Engineering (Artificial Intelligence (ML)) --" })] },
     container,
     university: {
       id: "test-university",
