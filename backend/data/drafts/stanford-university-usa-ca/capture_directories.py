@@ -14,7 +14,7 @@ def rows(raw):
     result = []
     for part in re.split(r'<div class="su-card program"', raw)[1:]:
         head, body = part.split('>', 1)
-        body = re.sub(r'<script\b.*?</script>', '', body, flags=re.S)
+        body = re.sub(r'<script\b.*?</script>', '', body, flags=re.S | re.I)
         text = re.sub(r'\s+', ' ', html.unescape(re.sub('<[^>]+>', ' ', body))).strip()
         links = [{'label': html.unescape(re.sub('<[^>]*>', '', label)), 'url': html.unescape(url)}
                  for url, label in re.findall(r'<a[^>]+href="([^"]+)"[^>]*>(.*?)</a>', body, re.S)]

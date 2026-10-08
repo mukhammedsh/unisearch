@@ -70,6 +70,21 @@ function row(overrides = {}) {
   };
 }
 
+test("program matching preserves nested parenthetical labels", () => {
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderProgramsSection({
+    admissionsData: { programs: [row({ program_name: "Data Engineering (Artificial Intelligence (ML))" })] },
+    container,
+    university: {
+      id: "test-university",
+      academics: { programs: [{ id: "computer-science", name: "Computer Science (Artificial Intelligence (ML))", study_levels: ["Bachelor"] }] },
+    },
+  });
+
+  assert.notEqual(container.innerHTML.indexOf('class="program-signal__row"'), -1);
+  assert.doesNotMatch(container.innerHTML, /program-signal--residual/);
+});
+
 test("MIT undergraduate coverage labels general route and university cost guidance without claiming program price", () => {
   const mit = row({
     program_id: "Course 6-3",

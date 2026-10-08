@@ -1,8 +1,10 @@
 import unittest
 
 from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 from app.main import app
+from app.schemas.payloads import ExamValidateRequest, ProfileExamInput
 
 
 class ExamsApiTests(unittest.TestCase):
@@ -68,6 +70,23 @@ class ExamsApiTests(unittest.TestCase):
         self.assertTrue(bool(data.get("ok")))
         self.assertEqual("SAT_MATH", data.get("exam"))
         self.assertEqual(750, int(data.get("score")))
+
+    def test_exam_score_bounds_match_profile_input(self):
+        for score in (0, 10000):
+            with self.subTest(score=score):
+                self.assertEqual(ExamValidateRequest(exam="SAT_MATH", score=score).score, score)
+                self.assertEqual(ProfileExamInput(id="SAT_MATH", score=score).score, score)
+
+        for score in (-1, 10001, float("nan"), 10**1000):
+            with self.subTest(score=score):
+                with self.assertRaises(ValidationError):
+                    ExamValidateRequest(exam="SAT_MATH", score=score)
+
+    def test_validate_exam_rejects_numeric_scores_outside_profile_bounds(self):
+        for score in (-1, 10001):
+            with self.subTest(score=score):
+                response = self.client.post("/exams/validate", json={"exam": "SAT_MATH", "score": score})
+                self.assertEqual(response.status_code, 422)
 
     def test_gre_preserves_sections_without_inventing_a_total(self):
         components = [

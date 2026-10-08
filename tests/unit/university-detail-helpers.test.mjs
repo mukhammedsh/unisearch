@@ -1023,6 +1023,11 @@ test("published requirement checks show exam alternatives and avoid inventing a 
   ] } });
   assert.match(gre, /Your profile: GRE General Test/);
 
+  const flexibleWhitespace = renderRequirementChecks({ details: { checks: [
+    { exam: "SAT   or\tACT", minimum: null, provided: null, status: "missing" },
+  ] } });
+  assert.match(flexibleWhitespace, /SAT or ACT/);
+
   const unassessed = renderRequirementChecks({ details: { checks: [
     { exam: "IELTS Academic band", examId: "IELTS", minimum: 7, provided: 7.5, status: "unassessed", condition: "International applicants unless exempt" },
     { exam: "Technical GPA", minimum: 4.25, provided: null, status: "unassessed", condition: "MIT 5.0 scale" },

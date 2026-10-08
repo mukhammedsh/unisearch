@@ -691,11 +691,35 @@ export function renderProgramsSection({
 
   const normalizeSignalKey = (value) => tokenizeName(value).join(" ");
 
-  const stripParenthetical = (value) => String(value || "").replace(/\([^)]*\)/g, " ");
+  const parentheticalRanges = (text) => {
+    const ranges = [];
+    let cursor = 0;
+    while (cursor < text.length) {
+      const start = text.indexOf("(", cursor);
+      if (start < 0) break;
+      const close = text.indexOf(")", start + 1);
+      if (close < 0) break;
+      ranges.push([start, close + 1]);
+      cursor = close + 1;
+    }
+    return ranges;
+  };
+
+  const stripParenthetical = (value) => {
+    const text = String(value || "");
+    const parts = [];
+    let cursor = 0;
+    for (const [start, end] of parentheticalRanges(text)) {
+      parts.push(text.slice(cursor, start), " ");
+      cursor = end;
+    }
+    parts.push(text.slice(cursor));
+    return parts.join("");
+  };
 
   const parenTokenSet = (value) => {
-    const groups = String(value || "").match(/\([^)]*\)/g) || [];
-    return new Set(groups.flatMap((group) => tokenizeName(group)));
+    const text = String(value || "");
+    return new Set(parentheticalRanges(text).flatMap(([start, end]) => tokenizeName(text.slice(start, end))));
   };
 
   const formatProgramValue = (key, value) => {

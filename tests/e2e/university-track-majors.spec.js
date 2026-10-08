@@ -280,7 +280,11 @@ test("nazarbayev university shows one admission category with requirement profil
   await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
 
   await expect(page.locator("#detailCard")).toBeVisible();
-  await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await expect(page.locator("#detailName")).not.toHaveText("University Name");
+  const admissionTab = page.locator(".d-tab-btn[data-tab='tab-admission']");
+  await expect(admissionTab).toBeVisible();
+  await admissionTab.click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
 
   await expect(page.locator(".admission-category-card")).toHaveCount(1);
   await expect(page.locator(".requirement-profile-tab")).toHaveCount(3);
@@ -288,15 +292,26 @@ test("nazarbayev university shows one admission category with requirement profil
   await expect(page.locator(".admission-funding-option")).toHaveCount(2);
   await expect(page.locator("#tab-admission .admission-requirement-grid")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
-  await expect(page.locator(".admission-funding-diff-note")).toHaveCount(2);
-  await expect(page.locator(".admission-funding-diff-note").first()).toContainText("No separate funding-specific requirements");
-  await expect(page.locator(".admission-funding-diff-note").last()).toContainText("The grant is awarded separately");
+  const satProfile = page.locator(".requirement-profile-tab[data-requirement-profile='nu_sat_applicants']");
+  await satProfile.click();
+  await expect(satProfile).toHaveAttribute("aria-selected", "true");
+  const fundingNotes = page.locator(".admission-funding-diff-note");
+  await expect(fundingNotes).toHaveCount(2);
+  await expect(fundingNotes.nth(0)).toContainText("Fee-paying undergraduate offer in NU's SAT/ACT applicants category for applicants submitting SAT.");
+  await expect(fundingNotes.nth(1)).toContainText("Abay Kunanbayev scholarship consideration for recommended international applicants submitting SAT.");
+  await expect(fundingNotes.nth(1)).not.toContainText(/guaranteed|will receive|awarded/i);
 
-  await page.locator(".requirement-profile-tab", { hasText: "NUET" }).click();
+  const nuetProfile = page.locator(".requirement-profile-tab[data-requirement-profile='nu_nuet_undergraduate']");
+  await nuetProfile.click();
+  await expect(nuetProfile).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".requirement-profile-title")).toContainText("NUET");
+  await expect(page.locator(".admission-category-card")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option")).toHaveCount(2);
   await expect(page.locator("#tab-admission .admission-requirement-grid")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
+  await expect(fundingNotes.nth(0)).toContainText("Fee-paying undergraduate outcome within NU's NUET-based regular admissions flow.");
+  await expect(fundingNotes.nth(1)).toContainText("Grant-funded undergraduate outcome within NU's NUET-based regular admissions flow.");
+  await expect(fundingNotes.nth(1)).not.toContainText(/guaranteed|will receive|awarded/i);
 });
 
 test("tsinghua admission tab keeps paid and grant options visible when profile prefers grant", async ({ page }) => {

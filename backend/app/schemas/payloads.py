@@ -1,3 +1,4 @@
+import math
 import re
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -334,7 +335,7 @@ class ExamValidateRequest(BaseModel):
                 raise ValueError("score text exceeds maximum allowed length (128 chars)")
             return val
         if isinstance(value, (int, float)):
-            if value < -10000 or value > 100000:
+            if value < 0 or value > 10000 or (isinstance(value, float) and not math.isfinite(value)):
                 raise ValueError("numeric score is out of range")
             return value
         raise ValueError("score must be a number or string")

@@ -6,15 +6,29 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
+from starlette.requests import Request
 
 from app.main import app
-from app.core.security import RedisSlidingWindowRateLimiter
+from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
 
 
 class SecurityRegressionTests(unittest.TestCase):
+    def test_ops_authorization_handles_non_ascii_credentials(self):
+        cases = (
+            (b"x-unisearch-ops-token", b"test-ops-token", True),
+            (b"authorization", b"Bearer test-ops-token", True),
+            (b"x-unisearch-ops-token", b"test-\xff-token", False),
+            (b"authorization", b"Bearer test-\xff-token", False),
+        )
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
+            for name, value, expected in cases:
+                with self.subTest(name=name, value=value):
+                    request = Request({"type": "http", "headers": [(name, value)]})
+                    self.assertEqual(ops_request_is_authorized(request), expected)
+
     def test_ops_guard_uses_scope_path_not_host_confused_url_path(self):
         client = TestClient(app)
 

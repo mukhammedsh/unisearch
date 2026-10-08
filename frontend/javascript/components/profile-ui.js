@@ -426,7 +426,7 @@ export function initProfileUI() {
     const populateFamilyIncomeCurrencyOptions = () => {
         if (!familyIncomeCurrencySelect || familyIncomeCurrencySelect.options.length) return;
         const fragment = document.createDocumentFragment();
-        Object.keys(CURRENCY_FORMAT_MAP).sort().forEach((code) => {
+        Object.keys(CURRENCY_FORMAT_MAP).sort((left, right) => left.localeCompare(right)).forEach((code) => {
             const option = document.createElement("option");
             option.value = code;
             option.dataset.i18n = `currency.opt.${code.toLowerCase()}`;

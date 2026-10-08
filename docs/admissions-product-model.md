@@ -14,7 +14,7 @@ The primary outcome is a useful shortlist that an applicant can explain: what th
 
 The intended journey is optional profile or manual context → relevant study options and a reasoned shortlist → actual application target and applicable route → scoped requirements, dates, costs, and funding. A university dossier supports that decision. Catalog size and coverage badges alone do not establish that the journey works.
 
-Reuse verified facts and useful implementation already present in the checkout. During data collection, describe how each institution connects discovery, study options, and applications; review contrasting structures with draft records rather than implementing a new UI for every field. Backend/frontend integration and real journey verification follow collection for all 50 universities. A full codebase rewrite is not a prerequisite.
+Reuse verified facts and useful implementation already present in the checkout. During data collection, describe how each institution connects discovery, study options, and applications; review contrasting structures with draft records rather than implementing a new UI for every field. Backend/frontend integration and real journey verification follow acceptance of the active delivery batch: the first ten for the presentation milestone, then the remaining forty later. A full codebase rewrite is not a prerequisite.
 
 The applicant moves through four connected concepts:
 
@@ -227,22 +227,22 @@ Follow the established Calm Academic Workspace and localization rules in `AGENTS
 
 This sequence replaces the previous journey-first/top-five integration gates. Existing implementation and research are inputs to reuse, not work to repeat. Complete the agreed task's stage and report its handoff; do not automatically start the next stage.
 
-### Stage 1 — data and schema for all 50 universities
+### Stage 1 — data and schema for the first-ten milestone
 
 **1.1 MIT:** reconcile existing research, drafts, and runtime facts, then complete the dated official degree-level inventory and applicant-relevant fact groups. Include institutional information, study descriptions/structure, real application targets, applicant categories, qualifications, tests, exemptions, prerequisites, documents, process, dates/windows, costs, funding, and published decision/enrollment conditions. Capture all significant found conditions and exceptions with their scope and provenance. Revise the draft schema and MIT example as needed; keep them outside active runtime data. No backend/frontend integration or browser/user UX gate belongs in this task.
 
 Completion means the official catalog snapshot is reconciled, each option has a verified application classification or an evidenced unresolved classification, and each applicable fact group has researched facts or a documented gap/status and official next step. Unsupported fields in the current runtime must not limit collection. The scope is information needed to understand the university, choose a degree, and apply; it is not every class, news item, or page on the institution's website. Missing future-cycle publications or contradictory official sources can remain explicit unknowns after documented research. Unsearched groups remain collection tasks.
 
-**1.2 Other 49:** research each institution independently to the same evidence and coverage standard. Imperial College London, Stanford, Harvard, and Oxford can be the first collection batch, followed by the other 45; both batches remain within Stage 1. Review each institution's own catalog, applications, conditions, exceptions, costs, and funding. Change its draft structure and the shared conventions where real differences require it; do not force an MIT schema or copy MIT policies. Record coverage and unresolved facts per institution. All 50 datasets must pass the Stage 1 evidence/structure review before Stage 2 starts.
+**1.2 Other institutions:** research each institution independently to the same evidence and coverage standard. Complete the first ten universities in the project's local catalog ordering, regardless of gaps in published rank numbers, before their Stage 2 integration and Stage 3 presentation milestone. Research the remaining forty in a later delivery cycle. Review each institution's own catalog, applications, conditions, exceptions, costs, and funding. Change its draft structure and the shared conventions where real differences require it; do not force an MIT schema or copy MIT policies. Record coverage and unresolved facts per institution. All ten datasets in the presentation batch must pass the Stage 1 evidence/structure review before its Stage 2 starts.
 
 During Stage 1, design the relationships and intended applicant answers alongside the data. Use concrete draft examples to check that shared applications, course-specific targets, internal degrees, integrated master's entry, and program-specific exceptions can be represented. This is data/model review, not implementation. Lightweight draft validation may check IDs, references, status/scope, and schema consistency; the runtime audit alone does not validate draft files it does not read. Keep authoritative research in durable draft files rather than only temporary local notes.
 
 ### Stage 2 — coordinated backend and frontend integration
 
-1. Establish the reviewed storage/API contract from all 50 draft datasets. Update loaders, schemas, projections, search, profile evidence, scoring, and frontend consumers together; reuse working components wherever they fulfill the contract.
+1. Establish the reviewed storage/API contract from the first ten draft datasets. Update loaders, schemas, projections, search, profile evidence, scoring, and frontend consumers together; reuse working components wherever they fulfill the contract. Extend the contract for verified institutional differences when integrating the remaining forty later.
 2. Support required exams across selection, input validation, persistence, API, assessment, and explanations. Represent sourced alternatives, waivers, and other conditions explicitly. Collecting a difficult rule in Stage 1 does not require inventing a numeric automated check: when evidence cannot establish it, show the rule and the unresolved assessment with missing evidence and the official next step.
 3. Use one selected program/target/route/applicant/cycle context across facts, recommendations, deadlines, costs, and funding. Every applied ranking or restriction condition must be explainable from that context and the applicant's evidence. Keep non-numeric conditions visible alongside the limited UniChance minimum-check percentage.
-4. Switch all 50 universities to the new runtime format in one coordinated cutover after its readers and consumers are ready. Do not leave the other 49 unreadable when activating MIT. Remove obsolete format readers and unnecessary institution-specific branches; no permanent dual-format support is required. Handle retained profile/selection state deliberately.
+4. Switch the reviewed first-ten batch to the new runtime format in one coordinated cutover after its readers and consumers are ready. Do not claim reviewed new-format coverage for the remaining forty; determine and verify their interim presentation before cutover. Remove obsolete format readers and unnecessary institution-specific branches when their consumers are retired; no permanent dual-format support is required. Handle retained profile/selection state deliberately.
 5. Verify the integrated contracts and representative journeys, including MIT first-year/transfer/internal MEng/professional/doctoral routes, Imperial Computing undergraduate-entry UCAS, and Stanford CS institutional admission. Include unknown, incompatible, incomplete-profile, and source-conflict cases. Fix contract failures before handing the product to Stage 3.
 
 ### Stage 3 — complete UI/UX and final verification
@@ -251,11 +251,11 @@ Make the integrated information understandable and usable across discovery, prog
 
 Exercise real guest, populated-profile, and incomplete-profile journeys; context changes, profile updates, reload/back navigation, and saved selection; English/Russian, desktop/mobile, light/dark. Include representative institutions beyond the first five and institution-specific exception cases. Review concrete usability findings with the user, complete applicable checks, and report factual unknowns separately from unfinished implementation. User UX review happens here and does not block Stage 1 research.
 
-Track acceptance, progress, and the one-week planning target in [todo.md](../todo.md). [orchestrator.md](../orchestrator.md) defines task boundaries and handoffs. A future feature, new scoring name, probability model, authentication, or database-engine migration is not a prerequisite for this work.
+Track acceptance, progress, and the first-ten presentation milestone in [todo.md](../todo.md). [orchestrator.md](../orchestrator.md) defines task boundaries and handoffs. The remaining forty follow in a later delivery cycle with the same quality standard. A future feature, new scoring name, probability model, authentication, or database-engine migration is not a prerequisite for this work.
 
 ## Acceptance criteria
 
-The completed product must meet these criteria:
+The first-ten presentation milestone applies these criteria to its reviewed batch; the eventual fifty-university product must meet them across the full catalog:
 
 - a user can understand that subject search is for discovery and can lead to more than one actual study option or application route;
 - all 50 institutions have dated official degree-level inventories across their offered study levels, with researched coverage and remaining factual gaps explicitly identified;
@@ -267,7 +267,7 @@ The completed product must meet these criteria:
 - every verified fact can be traced to an official source and checked date, while not-published and needs-review states remain explicit;
 - cycle-specific values cannot silently appear as current for a different cycle, and amounts are not detached from currency, period, or applicable fee status;
 - each institution's actual structure is preserved within documented storage conventions; MIT's structure is not imposed on other institutions;
-- all 50 draft datasets are reviewed outside active runtime data before coordinated integration, without backend/frontend work for every collected field;
+- each delivery batch is reviewed outside active runtime data before its coordinated integration, without backend/frontend work for every collected field;
 - the coordinated backend/frontend cutover supports all 50 institutions and removes obsolete runtime readers without requiring permanent legacy compatibility;
 - representative real journeys verify usable, localized explanations and consistent context, rather than relying on catalog counts or test totals as proof of completeness.
 

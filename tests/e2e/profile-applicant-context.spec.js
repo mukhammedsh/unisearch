@@ -11,11 +11,19 @@ test.describe("World applicant profile context", () => {
     await expect(page.locator(selectors.profileModal)).toBeVisible();
     await page.waitForFunction(() => document.querySelectorAll("#countryOfEducationSelect option[data-country-code]").length > 100);
 
+    await setNativeSelect(page, "citizenshipCountrySelect", "OTHER");
+    await expect(page.locator("#citizenshipOtherInput")).toHaveAccessibleName("Enter country name...");
+    await setNativeSelect(page, "citizenshipCountrySelect", "");
+    await setNativeSelect(page, "countryOfEducationSelect", "OTHER");
+    await expect(page.locator("#countryOfEducationOtherInput")).toHaveAccessibleName("Enter country");
     await setNativeSelect(page, "countryOfEducationSelect", "KZ");
     await setNativeSelect(page, "educationCredentialSelect", "other");
+    await expect(page.locator("#educationCredentialOtherInput")).toHaveAccessibleName("Describe your credential or curriculum");
     await page.fill("#educationCredentialOtherInput", "NIS Grade 12 certificate");
     await setNativeSelect(page, "applicantRouteSelect", "first_year");
     await page.fill("#intendedEntryCycleInput", "2027 Fall");
+    await setNativeSelect(page, "currentResidenceCountrySelect", "OTHER");
+    await expect(page.locator("#currentResidenceOtherInput")).toHaveAccessibleName("Enter country");
     await setNativeSelect(page, "currentResidenceCountrySelect", "US");
     await setNativeSelect(page, "feeStatusContextSelect", "self_reported_international_overseas");
 

@@ -63,6 +63,19 @@ class CurrencyServiceTests(unittest.TestCase):
             self.assertEqual(rates_data["rates"]["USD"], 1.0)
             self.assertEqual(rates_data["rates"]["KZT"], 450.0)
 
+    def test_api_failure_does_not_log_configured_url_credentials(self):
+        configured_url = "https://rates.example.invalid/v1/UpperCaseTestKey?api_key=lowercase-test-key"
+        with patch.object(currency_service, "CURRENCY_RATES_API_URL", configured_url), \
+             patch("app.services.currency.fetch_rates", side_effect=RuntimeError("API down")):
+            with self.assertLogs("unisearch.currency", level="WARNING") as captured:
+                rates = currency_service.get_rates(force_refresh=True)
+
+        self.assertEqual(rates["source"], "fallback")
+        self.assertTrue(captured.output)
+        self.assertNotIn("UpperCaseTestKey", "\n".join(captured.output))
+        self.assertNotIn("lowercase-test-key", "\n".join(captured.output))
+        self.assertNotIn("rates.example.invalid", "\n".join(captured.output))
+
     def test_conversion_usd_kzt_chf_cross_rates(self):
         mock_rates = {
             "USD": 1.0,

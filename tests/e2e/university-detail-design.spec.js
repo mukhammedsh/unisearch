@@ -27,6 +27,7 @@ for (const scenario of cases) {
       const scrolling = document.scrollingElement || doc;
       const card = document.querySelector(".d-card");
       const cover = document.querySelector(".d-cover");
+      const logo = document.querySelector("#detailLogo");
       const activeTab = document.querySelector(".d-tab-btn.active");
       const back = document.querySelector(".d-cover-back");
       const visibleLinks = Array.from(document.querySelectorAll(".d-site-link")).filter(
@@ -35,6 +36,7 @@ for (const scenario of cases) {
 
       const cardStyle = card ? getComputedStyle(card) : null;
       const coverStyle = cover ? getComputedStyle(cover) : null;
+      const logoStyle = logo ? getComputedStyle(logo) : null;
       const activeTabStyle = activeTab ? getComputedStyle(activeTab) : null;
       const backStyle = back ? getComputedStyle(back) : null;
       const linkStyles = visibleLinks.map((el) => getComputedStyle(el));
@@ -44,6 +46,7 @@ for (const scenario of cases) {
         clientWidth: scrolling ? scrolling.clientWidth : 0,
         cardRadius: cardStyle ? parseFloat(cardStyle.borderTopLeftRadius) : 0,
         coverRadius: coverStyle ? parseFloat(coverStyle.borderTopLeftRadius) : 0,
+        logoOverflow: logoStyle ? logoStyle.overflow : "",
         activeTabBackground: activeTabStyle ? activeTabStyle.backgroundColor : "",
         activeTabRadius: activeTabStyle ? parseFloat(activeTabStyle.borderTopLeftRadius) : -1,
         backBackground: backStyle ? backStyle.backgroundColor : "",
@@ -55,6 +58,7 @@ for (const scenario of cases) {
     expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
     expect(metrics.cardRadius).toBeGreaterThanOrEqual(scenario.width <= 380 ? 18 : 20);
     expect(metrics.coverRadius).toBeGreaterThanOrEqual(scenario.width <= 380 ? 18 : 20);
+    expect(metrics.logoOverflow).toBe("hidden");
     expect(metrics.activeTabBackground).toBe("rgba(0, 0, 0, 0)");
     expect(metrics.activeTabRadius).toBe(0);
     expect(metrics.backBackground).not.toBe("rgba(0, 0, 0, 0)");

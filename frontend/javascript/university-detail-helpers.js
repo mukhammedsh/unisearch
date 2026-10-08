@@ -591,7 +591,7 @@ export function renderRequirementChecks(trackChance) {
         ${checks.map((check) => {
           const exam = String(check?.examId || check?.exam || "").trim();
           if (!exam) return "";
-          const examIds = exam.split(/\s+or\s+/i).map((value) => value.trim()).filter(Boolean);
+          const examIds = exam.split(/\sor\s/i).map((value) => value.trim()).filter(Boolean);
           const label = examIds.map((id) => getExamDisplayName(id, { locale: getCurrentLanguage() }) || id).join(` ${examAlternatives} `);
           const minimum = check.minimum == null ? "" : formatExamValue(exam, check.minimum, { context: "requirement", locale: getCurrentLanguage() });
           const provided = check.provided == null ? "" : (typeof check.provided === "string" && examIds.includes(check.provided)

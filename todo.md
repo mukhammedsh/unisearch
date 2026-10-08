@@ -1,23 +1,23 @@
 # UniSearch Admissions TODO
 
-Active plan agreed on 2026-09-30. Follow [the admissions product model](docs/admissions-product-model.md) and [the task runbook](orchestrator.md). This plan replaces the former Phase 0 journey-review gate and repeated data-to-runtime integration per university. Earlier research and implementation remain useful inputs; do not restart them without a concrete gap or failure.
+Active plan agreed on 2026-09-30; delivery scope revised on 2026-10-08 to complete the first ten universities through all three stages before expanding to the remaining forty. Follow [the admissions product model](docs/admissions-product-model.md) and [the task runbook](orchestrator.md). This plan replaces the former Phase 0 journey-review gate and repeated data-to-runtime integration per university. Earlier research and implementation remain useful inputs; do not restart them without a concrete gap or failure.
 
 ## Delivery and boundaries
 
-1. **Data and schema for all 50:** **1.1 MIT**, then **1.2 the other 49**. Research and organize significant official information, conditions, exceptions, and institutional relationships in durable drafts. MIT demonstrates completeness and quality; adapt structure to every university's own reality.
-2. **Global backend/frontend integration:** after all 50 drafts are reviewed, support their data and applicant context throughout the application, activate all 50 together, and remove obsolete readers.
-3. **UI/UX and final verification:** make the integrated journey clear and usable, exercise real scenarios, and incorporate concrete feedback.
+1. **Data and schema for the first ten:** **1.1 MIT**, then **1.2 the other nine in local catalog order**. Gaps in published rank numbers do not change batch membership. Research and organize significant official information, conditions, exceptions, and institutional relationships in durable drafts. MIT demonstrates completeness and quality; adapt structure to every university's own reality.
+2. **Backend/frontend integration for the reviewed ten:** after these ten drafts are reviewed, support their data and applicant context throughout the application and activate them together. Keep the remaining forty distinguishable from accepted new-format datasets.
+3. **UI/UX and presentation verification:** make the integrated first-ten journey clear and usable, exercise real scenarios, and incorporate concrete feedback. Expand to the remaining forty in a later delivery cycle.
 
 During Stage 1, design the data relationships and intended applicant answers, but do not implement each field in backend/frontend or require browser/user UX approval. Never drop significant facts because the schema or runtime does not support them. Breaking draft formats stay outside active runtime data; permanent backward compatibility is not a requirement. Stop at the assigned task boundary.
 
-## One-week target
+## Presentation milestone and later expansion
 
-Provisional budget: day 1 for MIT (1.1), days 2-4 for the other 49 (1.2), days 5-6 for integration (2), and day 7 for UI/UX and final verification (3). This is a target to reassess after 1.1 from actual research depth and pace, not a guarantee that all 50 official catalogs can be reviewed in four days.
+The immediate milestone is a verified applicant journey for the first ten universities through Stages 1, 2 and 3. Estimate its schedule from actual research depth, integration work and browser verification; a proposed short schedule is not a guaranteed delivery date. The remaining forty follow in a later delivery cycle with the same evidence and usability criteria.
 
 - Reuse reviewed facts and working code. Collect shared official rules once, link their true scope, and reserve individual research for program-specific differences.
 - Use bounded university batches and parallel research only when authorized; serialize shared-schema edits. Report completed institutions and specific gaps rather than test counts as progress.
 - Do not add a new database, authentication, probability model, ingestion platform, full visual redesign, or speculative compatibility layer to this task.
-- If the week target is at risk, report the concrete remaining scope and revised estimate. Do not silently omit exceptions, turn unsearched data into unknowns, or lower source standards to meet the date.
+- If the presentation schedule is at risk, report the concrete remaining scope and revised estimate. Do not silently omit exceptions, turn unsearched data into unknowns, or lower source standards to meet the date.
 
 ## Stage 1 — data and schema
 
@@ -40,22 +40,24 @@ Current status (2026-10-01): the durable [MIT draft](backend/data/drafts/mit/cat
 
 **Handoff:** report completion and gaps, then stop. Task 1.2 starts separately; finishing MIT data does not authorize global integration.
 
-### 1.2 Other 49 — after MIT data review
+### 1.2 Other institutions — first-ten batch after MIT data review
 
 These are collection batches within Stage 1, not separate integration stages.
 
 - [x] Imperial College London: Comprehensive Stage 1 source recheck accepted on 2026-10-03 outside runtime. Original 2026-10-01 source dates retained; exact course/award selectors, internal Medicine PhD, research-phase scopes, costs, funding conditions and source conflicts reconciled. Current draft: 360 study options, 311 application/progression contexts, 1,271 facts, 460 sources, 73 researched unknowns, no unfinished collection or structural errors. Focused validator passed; catalog status is stage1_reviewed. Contract, examples and dated recheck ledgers are in `backend/data/drafts/imperial-college-london-uk/`. Final repository checks passed on 2026-10-03 under version 7.2.2: UTF-8 encoding, tokens, localization and active-runtime data audit (zero errors/warnings). The runtime audit is separate from draft completeness; no Stage 1 browser verification was required. This recheck is recorded in UniSearch 7.2.3; runtime integration remains part of Stage 2.
 - [x] Stanford University: comprehensive Stage 1 source and applicability recheck accepted 2026-10-03, outside runtime. Reconciled the 2026-27 Bulletin, 113 external and 48 coterm directory entries, undergraduate declaration, actual external/coterm/internal/joint/professional routes and sourced degree configurations. Reviewed index: 254 study options, 465 procedure views, 1,394 facts, 750 source records; 88 researched unknowns and seven superseded historical notes. No unsearched collection remains. Original capture dates are preserved with separate field-content review dates. Direct acceptance validation and scoped owner/orchestrator content review passed; final repository checks passed on 2026-10-03 under version 7.2.2: UTF-8 encoding, tokens, localization and active-runtime data audit (zero errors/warnings). The runtime audit is separate from draft completeness; no Stage 1 browser verification was required. This recheck is recorded in UniSearch 7.2.3; runtime integration remains part of Stage 2.
-- [ ] Harvard University: official inventory and its own school/program/professional applications and windows.
-- [ ] University of Oxford: official inventory and its own course-specific undergraduate/graduate applications and conditions.
-- [ ] Remaining 45: inventory and independently research each institution to the same standard. Track per-institution draft path, source snapshot, coverage, distinctive structures, and evidenced unresolved facts in durable coverage notes linked here as work proceeds.
+- [ ] University of Oxford (rank 4): Stage 1 research in progress; reconcile the official inventory and course-specific undergraduate/graduate applications and conditions in `backend/data/drafts/university-of-oxford-uk-oxford/`. Collection and semantic acceptance remain open.
+- [ ] Harvard University (rank 5): Stage 1 research in progress; reconcile the official inventory and school/program/professional applications and windows in `backend/data/drafts/harvard-usa-cambridge/`. Collection and semantic acceptance remain open.
+- [ ] University of Cambridge (rank 6): Stage 1 research in progress; reconcile the official undergraduate/postgraduate inventories, College/course contexts and professional applications in `backend/data/drafts/university-of-cambridge-uk-cambridge/`. Collection and semantic acceptance remain open.
+- [ ] Next four in local catalog order: inventory and independently research Swiss Federal Institute of Technology Zurich, National University of Singapore, California Institute of Technology and University of Chicago to complete the first-ten batch. Track per-institution draft path, source snapshot, coverage, distinctive structures, and evidenced unresolved facts in durable coverage notes linked here as work proceeds. Start this batch after Oxford, Harvard and Cambridge acceptance and its bounded handoff.
+- [ ] Remaining forty: research and integrate them in the later delivery cycle after the first-ten presentation milestone, using the same Stage 1 evidence and acceptance criteria.
 - [ ] Reconcile shared storage conventions and institution-specific structures using real findings. Common concepts may share a representation; MIT policies, nesting, or application organization must not become universal defaults.
-- [ ] Review all 50 drafts for completeness of the declared catalog scope and researched fact groups, reference consistency, provenance/status/cycle, and retained exceptions. Record any unavailable facts with source evidence and next steps.
+- [ ] Review the first ten drafts for completeness of the declared catalog scope and researched fact groups, reference consistency, provenance/status/cycle, and retained exceptions. Record any unavailable facts with source evidence and next steps; repeat this acceptance for the remaining forty later.
 - [ ] Produce the Stage 2 handoff: accepted draft paths, agreed storage conventions, actual differing institutional structures, required profile/exam/API/UI support, checks, and factual unknowns.
 
-**Stage 1 complete when:** all 50 institutions meet the same research/evidence criteria as 1.1, with their own structures preserved. Collection gaps cannot be disguised as unpublished facts. No active-runtime switch or per-university frontend integration has occurred.
+**Stage 1 complete for the presentation batch when:** the first ten institutions meet the same research/evidence criteria as 1.1, with their own structures preserved. Collection gaps cannot be disguised as unpublished facts. No active-runtime switch or per-university frontend integration has occurred. The remaining forty are a later delivery cycle, not a gate for first-ten integration.
 
-## Stage 2 — backend/frontend integration for all 50
+## Stage 2 — backend/frontend integration for the first ten
 
 - [ ] Review accepted data against existing loaders, API schemas/projections, search, profile/persistence, scoring, frontend, and localization; reuse working code and document the coordinated contract changes.
 - [ ] Support the reviewed new structures and fields end to end. Expose institution/program descriptions, linked application targets, route-scoped requirements/process, dates, costs, funding, exceptions, statuses, and sources without losing accepted facts.
@@ -63,11 +65,11 @@ These are collection batches within Stage 1, not separate integration stages.
 - [ ] Use one selected program/target/level/route/applicant/cycle context across recommendations, requirements, qualification guidance, deadlines, costs, and funding. Reuse existing profile fields and permit guest/manual context without a duplicate questionnaire.
 - [ ] For every applied recommendation or restriction condition, show the exact official rule or disclosed preference/budget criterion, applicable program/applicant/cycle, submitted evidence, missing evidence, and assessment status. Keep computed criteria distinct from official facts. Preserve unassessed rules visibly; never silently fail a user or interpret missing evidence as ineligibility.
 - [ ] Preserve the defined UniFit/UniChance meaning, unknown-versus-zero distinction, budget/cost scope, and separation of admission from funding. Published score distributions remain facts, not cutoffs or admission probabilities.
-- [ ] Prepare and verify one coordinated cutover of all 50 institutions after readers/consumers are ready. Remove obsolete format readers and unnecessary MIT-only behavior. Deliberately migrate or visibly reset affected retained profile/selection state; no permanent dual-schema support.
+- [ ] Prepare and verify one coordinated cutover of the reviewed ten institutions after readers/consumers are ready. Decide and verify the interim presentation of the remaining forty without implying reviewed new-format coverage. Remove obsolete format readers when their consumers are retired and unnecessary MIT-only behavior. Deliberately migrate or visibly reset affected retained profile/selection state; no permanent dual-schema support.
 - [ ] Verify focused contract/regression tests and representative MIT, Imperial Computing, Stanford CS, and additional institutional structures. Cover incompatible cycles, missing evidence, exemptions, source conflicts, real failures, and unknown prices/funding.
 - [ ] Complete the required backend/frontend/data checks from `AGENTS.md`; review the integrated diff and record the Stage 3 handoff.
 
-**Stage 2 complete when:** all 50 datasets run on the new contract; accepted facts reach their intended user-facing consumers; applied conditions are explained; representative contract journeys pass; old readers are removed. Clearly documented factual unknowns may remain, but unsupported accepted data or broken institutions may not.
+**Stage 2 complete for the presentation batch when:** all ten reviewed datasets run on the new contract; accepted facts reach their intended user-facing consumers; applied conditions are explained; representative contract journeys pass; remaining catalog coverage is honest and retained state is handled deliberately. Clearly documented factual unknowns may remain, but unsupported accepted data or broken institutions may not. Retire obsolete readers as their remaining consumers are replaced.
 
 ## Stage 3 — UI/UX and final user scenarios
 
@@ -78,7 +80,7 @@ These are collection batches within Stage 1, not separate integration stages.
 - [ ] Review concrete usability findings with the user and fix evidenced issues. A final UniChance rename or future probability model is optional separate work, not a completion blocker.
 - [ ] Complete relevant checks once after the final changes, review the diff and docs, remove temporary artifacts, and stop only agent-owned services. Report real outcomes and unavailable checks without borrowing historical test totals.
 
-**Project complete when:** all 50 researched datasets are integrated, the connected applicant journey presents significant facts and exceptions clearly, recommendations/restrictions explain their conditions and missing evidence, applicable checks and real scenarios pass, and remaining factual unknowns are disclosed. Commit/push/version/release operations require separate explicit permission.
+**Presentation milestone complete when:** the first ten researched datasets are integrated, the connected applicant journey presents significant facts and exceptions clearly, recommendations/restrictions explain their conditions and missing evidence, applicable checks and real scenarios pass, and remaining factual unknowns are disclosed. **Full catalog complete when:** the remaining forty meet the same three-stage criteria. Commit/push/version/release operations require separate explicit permission.
 
 ## Historical checkpoints — reusable inputs, not active stage gates
 

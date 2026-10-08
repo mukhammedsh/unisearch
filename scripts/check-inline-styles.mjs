@@ -77,7 +77,7 @@ function run() {
   const files = [
     ...walkFiles(frontendDir, (_, name) => name.endsWith(".html")),
     ...walkFiles(path.join(frontendDir, "javascript"), (_, name) => name.endsWith(".js")),
-  ].sort();
+  ].sort((left, right) => left.localeCompare(right));
 
   const scanResults = files.map(scanFile);
   const baseline = loadBaseline();

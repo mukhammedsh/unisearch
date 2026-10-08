@@ -398,7 +398,7 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
             }
         except Exception as e:
             _record_failure(str(e))
-            _LOGGER.warning("Failed to fetch rates from API (%s): %s", CURRENCY_RATES_API_URL, e)
+            _LOGGER.warning("Failed to fetch currency rates from the configured API")
 
     # Fallback to in-memory cache even if slightly stale, before falling back to static
     with _CACHE_LOCK:

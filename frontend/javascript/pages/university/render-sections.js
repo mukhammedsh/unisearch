@@ -1,5 +1,4 @@
 import {
-  aiName,
   escapeHtml,
   escapeHtmlAttr,
   getSelectedAdmissionChoice,
@@ -29,7 +28,7 @@ import {
   renderUniChanceSummary,
   splitExamEntries,
 } from "../../university-detail-helpers.js";
-import { translateAdmissionText, translateFundingAwardField, translateTemplate, translateWord } from "../../university-translations.js";
+import { translateAdmissionText, translateFundingAwardField, translateWord } from "../../university-translations.js";
 import { getCalendarCells, parseExactDeadlineDate } from "./deadline-calendar.js";
 import { createDeadlineIcs } from "./deadline-calendar.js";
 import {
@@ -1226,7 +1225,8 @@ export function renderDeadlinesTabSection({ container, university, onContextChan
       const current = deadlineCalendarMonthByUniversity.get(universityId)
         || container.querySelector(".deadline-calendar__grid")?.getAttribute("data-calendar-month-key");
       const visibleMonth = /^\d{4}-\d{2}$/.test(current || "") ? current : null;
-      const dated = filteredDeadlines.map((item) => parseExactDeadlineDate(item.deadline)).filter(Boolean).sort();
+      const dated = filteredDeadlines.map((item) => parseExactDeadlineDate(item.deadline)).filter(Boolean)
+        .sort((left, right) => left.localeCompare(right));
       const defaultMonth = dated.find((date) => date >= new Date().toISOString().slice(0, 10))?.slice(0, 7) || dated[0]?.slice(0, 7);
       const [year, month] = (visibleMonth || defaultMonth).split("-").map(Number);
       const offset = button.getAttribute("data-calendar-month") === "next" ? 1 : -1;
@@ -1485,8 +1485,8 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
         ? doc
         : (doc.coverage || doc.commitment || doc.notes || (Array.isArray(doc.components) ? doc.components.join("; ") : ""));
       const duration = typeof doc === "object" && doc.duration_years ? `${doc.duration_years}-year ` : "";
-      const stipendMin = typeof doc === "object" ? Number(doc.stipend_annual_usd_min) : NaN;
-      const stipendMax = typeof doc === "object" ? Number(doc.stipend_annual_usd_max) : NaN;
+      const stipendMin = typeof doc === "object" ? Number(doc.stipend_annual_usd_min) : Number.NaN;
+      const stipendMax = typeof doc === "object" ? Number(doc.stipend_annual_usd_max) : Number.NaN;
       const stipendDetails = !details && Number.isFinite(stipendMin) && Number.isFinite(stipendMax)
         ? ` Annual stipend: $${stipendMin.toLocaleString("en-US")}–$${stipendMax.toLocaleString("en-US")} USD.`
         : "";
@@ -1600,7 +1600,7 @@ function isPlainObject(value) {
 function normalizeProgramToken(value) {
   return String(value || "").trim().toLowerCase().replaceAll("&", " and ")
     .replace(/[^\p{L}\p{N}]+/gu, "_")
-    .replace(/^_+|_+$/g, "");
+    .replace(/^_+/, "").replace(/_+$/, "");
 }
 
 function uniqueNonEmpty(values) {

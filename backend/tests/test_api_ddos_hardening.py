@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
+from starlette.datastructures import Headers
 
 from app.main import app, _is_expensive_request
 from app.core.security import SlidingWindowRateLimiter, request_client_ip
@@ -184,6 +185,42 @@ class ApiDdosHardeningTests(unittest.TestCase):
              patch("app.core.security.TRUST_X_FORWARDED_FOR", True):
             resolved = request_client_ip(req)
             self.assertEqual(resolved, "2001:db8::1")
+
+    def test_client_ip_handles_duplicate_proxy_headers_and_validates_ports(self):
+        req = MagicMock()
+        req.client.host = "127.0.0.1"
+        req.headers = Headers(raw=[
+            (b"x-forwarded-for", b"192.0.2.123"),
+            (b"x-forwarded-for", b"203.0.113.88, 127.0.0.2"),
+        ])
+        with patch("app.core.security.TRUSTED_PROXY_IPS", ["127.0.0.0/8"]), \
+             patch("app.core.security.TRUST_X_FORWARDED_FOR", True):
+            self.assertEqual(request_client_ip(req), "203.0.113.88")
+
+        req.headers = Headers(raw=[
+            (b"cf-connecting-ip", b"192.0.2.123"),
+            (b"cf-connecting-ip", b"198.51.100.22"),
+        ])
+        with patch("app.core.security.TRUSTED_PROXY_IPS", ["127.0.0.0/8"]), \
+             patch("app.core.security.TRUST_CF_CONNECTING_IP", True), \
+             patch("app.core.security.TRUST_X_FORWARDED_FOR", False):
+            self.assertEqual(request_client_ip(req), "198.51.100.22")
+
+        for forwarded, expected in (
+            ("203.0.113.88:44300", "203.0.113.88"),
+            ("[2001:db8::88]:44300", "2001:db8::88"),
+            ("203.0.113.88:70000", "127.0.0.1"),
+            ("203.0.113.88:443x", "127.0.0.1"),
+            ("[2001:db8::88]:70000", "127.0.0.1"),
+            ("[2001:db8::88]extra", "127.0.0.1"),
+            ("[192.0.2.1]:443", "127.0.0.1"),
+        ):
+            with self.subTest(forwarded=forwarded):
+                req.headers = {"x-forwarded-for": forwarded}
+                with patch("app.core.security.TRUSTED_PROXY_IPS", ["127.0.0.1"]), \
+                     patch("app.core.security.TRUST_X_FORWARDED_FOR", True), \
+                     patch("app.core.security.TRUST_CF_CONNECTING_IP", False):
+                    self.assertEqual(request_client_ip(req), expected)
 
     def test_client_ip_none_and_missing_client(self):
         self.assertEqual(request_client_ip(None), "unknown")

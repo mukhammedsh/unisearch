@@ -4,9 +4,6 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
-### Changed
-- Plan the admissions overhaul in three global stages: institution-specific data/schema research for MIT and the other 49 universities, coordinated backend/frontend integration, and final applicant UI/UX verification. Use MIT as a quality example without imposing its institutional structure or requiring UX approval before data collection.
-
 ### Added
 - Support GRE General Test section scores without inventing a total, alongside distinct current and legacy GMAT scales, throughout profile validation, persistence, and admissions evidence checks.
 - Add Cambridge C2 Proficiency as a distinct language certificate and validate the reported C1/C2 score ranges.
@@ -19,6 +16,20 @@ All notable project changes should be recorded here.
 - Display published funding coverage instead of replacing every grant with a generic competitive-award claim.
 - Review MIT graduate and professional route policies against official sources, retain exceptions and conflicting or yearless facts explicitly, and extend the shared transfer mapping to all undergraduate study options.
 
+
+## 7.2.4 (2026-10-08) - Validation and Reliability Fixes
+
+### Changed
+- Set the first ten universities in local catalog order as the admissions presentation batch and defer the remaining forty to a later delivery cycle.
+
+### Fixed
+- Reject exam submission scores outside the same 0–10,000 range used by saved profiles before exam-specific validation.
+- Resolve client IPs through duplicate trusted proxy headers while rejecting malformed IP port and bracket syntax.
+- Handle non-ASCII operations credentials as unauthorized input without raising a server error.
+- Keep configured currency API URLs out of fetch-failure logs so embedded credentials are not exposed.
+- Remove mixed-case script blocks from Stanford program-directory captures.
+- Stabilize JavaScript sorting and normalization, preserve nested parenthetical program labels and flexible exam-alternative whitespace, add screen-reader labels to optional profile fields, and clip university logos to their frame.
+- Use a patch increment because these validation, reliability, and accessibility fixes add no new user capability.
 
 ## 7.2.3 (2026-10-04) - Imperial and Stanford Research Recheck
 

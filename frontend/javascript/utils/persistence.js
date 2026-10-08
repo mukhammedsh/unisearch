@@ -221,7 +221,7 @@ export function normalizeProfileData(profile) {
   } else if (typeof incomeAmountRaw === "string" && incomeAmountRaw.trim()) {
     incomeAmountValue = Number(incomeAmountRaw.trim());
   } else if (incomeAmountRaw !== "" && incomeAmountRaw !== null && incomeAmountRaw !== undefined) {
-    incomeAmountValue = NaN;
+    incomeAmountValue = Number.NaN;
   }
   const familyIncomeAmount = Number.isFinite(incomeAmountValue) && incomeAmountValue >= 0 && incomeAmountValue <= 1_000_000_000_000
     ? incomeAmountValue

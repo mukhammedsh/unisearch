@@ -457,7 +457,7 @@ export async function initUniversityPage(options = {}) {
     };
     renderProgramsTab();
 
-    let refreshAdmissionContext = () => {};
+    let refreshAdmissionContext = async () => {};
     const renderAdmissionTab = () => {
       renderAdmissionSection({
         annualCostForTrack,

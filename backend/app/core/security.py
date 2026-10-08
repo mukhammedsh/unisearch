@@ -151,6 +151,29 @@ def _validate_and_normalize_ip(value: Optional[str]) -> Optional[str]:
     raw = str(value).strip()
     if not raw:
         return None
+    if raw.startswith("["):
+        closing = raw.find("]")
+        if closing <= 1:
+            return None
+        suffix = raw[closing + 1:]
+        if suffix:
+            port = suffix[1:] if suffix.startswith(":") else ""
+            if (
+                not suffix.startswith(":")
+                or not port.isascii()
+                or not port.isdigit()
+                or len(port) > 5
+                or int(port) > 65535
+            ):
+                return None
+        raw = raw[1:closing]
+        if ":" not in raw:
+            return None
+    elif raw.count(":") == 1 and "." in raw:
+        host, _, port = raw.rpartition(":")
+        if not port.isascii() or not port.isdigit() or len(port) > 5 or int(port) > 65535:
+            return None
+        raw = host
     try:
         return str(ipaddress.ip_address(raw))
     except ValueError:
@@ -239,13 +262,23 @@ def request_client_ip(request: Optional[Request]) -> str:
         return normalized_direct
 
     if TRUST_CF_CONNECTING_IP:
-        cf_raw = str(request.headers.get("cf-connecting-ip", "")).strip()
+        cf_headers = (
+            request.headers.getlist("cf-connecting-ip")
+            if hasattr(request.headers, "getlist")
+            else [request.headers.get("cf-connecting-ip", "")]
+        )
+        cf_raw = str(cf_headers[-1] or "").strip() if cf_headers else ""
         normalized_cf = _validate_and_normalize_ip(cf_raw)
         if normalized_cf:
             return normalized_cf
 
     if TRUST_X_FORWARDED_FOR:
-        xff_raw = str(request.headers.get("x-forwarded-for", "")).strip()
+        xff_headers = (
+            request.headers.getlist("x-forwarded-for")
+            if hasattr(request.headers, "getlist")
+            else [request.headers.get("x-forwarded-for", "")]
+        )
+        xff_raw = ", ".join(str(value) for value in xff_headers if str(value).strip()).strip()
         if xff_raw:
             raw_hops = [part.strip() for part in xff_raw.split(",") if part.strip()]
             client_candidate = normalized_direct
@@ -293,14 +326,15 @@ def ops_request_is_authorized(request: Request) -> bool:
     if not token:
         return False
 
-    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip()
+    token_bytes = token.encode("utf-8")
+    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip().encode("utf-8")
     auth_value = str(request.headers.get("authorization", "")).strip()
     bearer_prefix = "bearer "
     bearer_value = auth_value[len(bearer_prefix):].strip() if auth_value.lower().startswith(bearer_prefix) else ""
-    
+
     return (
-        hmac.compare_digest(header_value, token) or 
-        hmac.compare_digest(bearer_value, token)
+        hmac.compare_digest(header_value, token_bytes)
+        or hmac.compare_digest(bearer_value.encode("utf-8"), token_bytes)
     )
 
 
