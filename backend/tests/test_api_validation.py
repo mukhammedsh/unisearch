@@ -155,6 +155,11 @@ class ApiValidationTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("Null bytes", response.json().get("detail", ""))
 
+    def test_request_guard_rejects_double_encoded_null_byte_in_query(self):
+        response = self.client.get("/universities?q=mit%2500exploit")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Null bytes", response.json().get("detail", ""))
+
     def test_request_guard_rejects_overly_long_uri_path(self):
         response = self.client.get(f"/universities/{'a' * 2100}")
         self.assertEqual(response.status_code, 414)

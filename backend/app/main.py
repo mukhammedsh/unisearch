@@ -5,6 +5,8 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 
+from urllib.parse import unquote
+
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -211,6 +213,20 @@ def _content_length(request: Request) -> int:
         return 0
 
 
+def _has_null_bytes(text: str) -> bool:
+    if not text:
+        return False
+    curr = text
+    for _ in range(3):
+        if "\x00" in curr or "%00" in curr.lower():
+            return True
+        unquoted = unquote(curr)
+        if unquoted == curr:
+            break
+        curr = unquoted
+    return False
+
+
 def _request_guard_response(request: Request) -> Response | None:
     if is_protected_ops_request(request) and not ops_request_is_authorized(request):
         return protected_ops_response()
@@ -221,7 +237,7 @@ def _request_guard_response(request: Request) -> Response | None:
         return _apply_security_headers(JSONResponse({"detail": "URI path too long"}, status_code=414))
     if len(query) > 4096:
         return _apply_security_headers(JSONResponse({"detail": "Query string too long"}, status_code=414))
-    if "\x00" in path or "%00" in path.lower() or "\x00" in query or "%00" in query.lower():
+    if _has_null_bytes(path) or _has_null_bytes(query):
         return _apply_security_headers(JSONResponse({"detail": "Null bytes in URI are not permitted"}, status_code=400))
     if REQUEST_BODY_MAX_BYTES <= 0:
         return None
