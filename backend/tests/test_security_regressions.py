@@ -11,7 +11,7 @@ from starlette.requests import Request
 from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
-from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
 
 
@@ -135,6 +135,15 @@ class SecurityRegressionTests(unittest.TestCase):
         diagnostic_text = "\n".join(errors)
         for value in private_values:
             self.assertNotIn(value, diagnostic_text)
+
+    def test_language_validate_request_rejects_non_finite_float_scores(self):
+        with self.assertRaises(ValueError):
+            LanguageValidateRequest(
+                code="en",
+                kind="exam",
+                exam="IELTS",
+                score=float("nan"),
+            )
 
 
 class RequestBodyLimitRegressionTests(unittest.IsolatedAsyncioTestCase):
