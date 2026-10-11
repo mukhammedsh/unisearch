@@ -11,7 +11,7 @@ from starlette.requests import Request
 from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
-from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
 
 
@@ -96,6 +96,16 @@ class SecurityRegressionTests(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             UniversitiesAiSortRequest.model_validate(payload)
+
+    def test_language_validate_request_rejects_nan_score(self):
+        payload = {
+            "code": "en",
+            "kind": "exam",
+            "exam": "IELTS",
+            "score": float("nan"),
+        }
+        with self.assertRaises(ValueError):
+            LanguageValidateRequest.model_validate(payload)
 
     def test_data_http_audit_blocks_internal_urls_before_fetch(self):
         self.assertIn(
