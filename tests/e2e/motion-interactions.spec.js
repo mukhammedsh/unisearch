@@ -297,6 +297,8 @@ test("map results rail renders status badges in vertical column without overlapp
   const count = await triggers.count();
   expect(count).toBeGreaterThanOrEqual(2);
 
+  await triggers.nth(0).scrollIntoViewIfNeeded();
+  await triggers.nth(1).scrollIntoViewIfNeeded();
   const box0 = await triggers.nth(0).boundingBox();
   const box1 = await triggers.nth(1).boundingBox();
   expect(box0 && box1).toBeTruthy();
