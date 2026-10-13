@@ -366,13 +366,14 @@ export function compareAdmissionChoiceOptionLabel(entry, u) {
 
   const lang = typeof getCurrentLanguage === "function" ? getCurrentLanguage() : "eng";
   const isRu = lang === "ru" || lang === "rus";
+  const isKaz = lang === "kaz";
 
   // Clean UNT / general redundancy (e.g. "UNT Admission" and "UNT")
   if (/^UNT Admission$/i.test(catRaw) || /поступление по ент/i.test(cat)) {
-    cat = isRu ? "ЕНТ" : "UNT";
+    cat = isRu ? "ЕНТ" : isKaz ? "ҰБТ" : "UNT";
   }
   if (/^UNT$/i.test(profRaw)) {
-    prof = isRu ? "ЕНТ" : "UNT";
+    prof = isRu ? "ЕНТ" : isKaz ? "ҰБТ" : "UNT";
   }
 
   const parts = [];
@@ -396,25 +397,25 @@ export function compareAdmissionChoiceOptionLabel(entry, u) {
   } else if (fType === "grant") {
     let grantName = "";
     if (/State Educational Grant|State Grant/i.test(fProg) || /State Grant/i.test(fLabel)) {
-      grantName = isRu ? "Государственный грант" : "State Grant";
+      grantName = isRu ? "Государственный грант" : isKaz ? "Мемлекеттік грант" : "State Grant";
     } else if (/Rector/i.test(fProg) || /Rector/i.test(fLabel)) {
-      grantName = isRu ? "Грант ректора" : "Rector Grant";
+      grantName = isRu ? "Грант ректора" : isKaz ? "Ректор гранты" : "Rector Grant";
     } else if (/Abai/i.test(fProg) || /Abai/i.test(fLabel)) {
-      grantName = isRu ? "Стипендия им. Абая" : "Abai Scholarship";
+      grantName = isRu ? "Стипендия им. Абая" : isKaz ? "Абай атындағы стипендия" : "Abai Scholarship";
     } else if (/Al-Farabi Olympiad/i.test(fProg)) {
-      grantName = isRu ? "Олимпиадный грант" : "Al-Farabi Olympiad Grant";
+      grantName = isRu ? "Олимпиадный грант" : isKaz ? "Әл-Фараби олимпиадасының гранты" : "Al-Farabi Olympiad Grant";
     } else if (fProg) {
-      grantName = isRu ? (trTrackDescription(u?.id, opt.id, fProg) || fProg) : fProg;
+      grantName = isRu || isKaz ? (trTrackDescription(u?.id, opt.id, fProg) || fProg) : fProg;
     } else if (fDesc && fDesc.length < 35) {
       grantName = fDesc;
     } else if (fLabel && !/^profile/i.test(fLabel)) {
-      grantName = isRu ? (trTrackLabel(fLabel) || translateTrackLabel(fLabel, fLabel)) : fLabel;
+      grantName = isRu || isKaz ? (trTrackLabel(fLabel) || translateTrackLabel(fLabel, fLabel)) : fLabel;
     } else {
-      grantName = translateWord("filter_grant", isRu ? "Грант" : "Grant");
+      grantName = translateWord("filter_grant", isRu || isKaz ? "Грант" : "Grant");
     }
 
     if (grantName && !/грант|стипенди|grant|scholarship|aid/i.test(grantName)) {
-      grantName += isRu ? " (Грант)" : " (Grant)";
+      grantName += isRu || isKaz ? " (Грант)" : " (Grant)";
     }
     fundText = grantName;
   }

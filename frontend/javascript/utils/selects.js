@@ -280,7 +280,7 @@ export function initCustomSelect(selectId) {
     if (!selectedOption) return;
     const flag = showFlags ? getFlagImg(selectedOption.value) : "";
     if (isLanguageSelect) {
-      const shortLabel = ({ eng: "EN", rus: "RU" }[String(selectedOption.value || "").toLowerCase()] || String(selectedOption.value || "").toUpperCase() || selectedOption.text);
+      const shortLabel = ({ eng: "EN", rus: "RU", kaz: "KZ" }[String(selectedOption.value || "").toLowerCase()] || String(selectedOption.value || "").toUpperCase() || selectedOption.text);
       trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
       return;
     }

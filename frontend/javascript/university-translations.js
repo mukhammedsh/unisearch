@@ -10,6 +10,7 @@ const CACHE = {
 function normalizeLang(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (raw.startsWith("ru") || raw === "rus") return "rus";
+  if (raw.startsWith("kk") || raw.startsWith("kaz")) return "kaz";
   return "eng";
 }
 
@@ -28,7 +29,20 @@ function getGroup(group, lang = getCurrentLanguage()) {
 function replaceInsensitive(text, search, replacement) {
   const escaped = String(search || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   if (!escaped) return String(text || "");
-  return String(text || "").replace(new RegExp(escaped, "gi"), String(replacement || ""));
+  const pattern = new RegExp(`(^|[^A-Za-z])(${escaped})(?=$|[^A-Za-z])`, "gi");
+  return String(text || "").replace(pattern, (_, prefix) => `${prefix}${String(replacement || "")}`);
+}
+
+async function loadLocalKazakhTranslations() {
+  const url = new URL("../Localization/universities-kaz.json", import.meta.url);
+  const response = await fetch(url, { cache: "no-cache" });
+  if (!response.ok) throw new Error(`Kazakh translation bundle http ${response.status}`);
+  const data = await response.json();
+  if (!data || typeof data !== "object" || !Object.keys(data.university_names || {}).length) {
+    throw new Error("Kazakh translation bundle is empty");
+  }
+  CACHE.byLang.set("kaz", data);
+  return data;
 }
 
 export function humanizeMachineLabel(value, fallback = "") {
@@ -53,7 +67,7 @@ export async function loadUniversityTranslationsForLanguage(language, force = fa
   }
 
   const qs = new URLSearchParams({ lang }).toString();
-  const inFlight = fetch(`${API_BASE}/universities/translations?${qs}`)
+  const inFlight = fetch(`${API_BASE}/universities/translations?${qs}`, { cache: "no-cache" })
     .then((res) => {
       if (!res.ok) throw new Error(`universities/translations http ${res.status}`);
       return res.json();
@@ -61,10 +75,21 @@ export async function loadUniversityTranslationsForLanguage(language, force = fa
     .then((payload) => {
       const payloadLang = normalizeLang(payload?.lang || lang);
       const data = payload?.data && typeof payload.data === "object" ? payload.data : {};
+      if (payloadLang !== lang || (lang === "kaz" && !Object.keys(data.university_names || {}).length)) {
+        throw new Error(`universities/translations returned ${payloadLang} for ${lang}`);
+      }
       CACHE.byLang.set(payloadLang, data);
       return data;
     })
-    .catch(() => null)
+    .catch(async () => {
+      if (lang !== "kaz") return null;
+      try {
+        return await loadLocalKazakhTranslations();
+      } catch (error) {
+        console.warn("Kazakh translation data is unavailable", error);
+        return null;
+      }
+    })
     .finally(() => {
       CACHE.inFlightByLang.delete(lang);
     });
@@ -140,6 +165,9 @@ export function translateUniversityDescription(university, fallback = "") {
 
   const uniId = String(university?.id || "").trim();
   if (uniId) {
+    const descriptions = getPack(lang)?.university_descriptions;
+    const fromPack = String(descriptions?.[uniId] || "").trim();
+    if (fromPack) return fromPack;
     const key = `university.description.${uniId}`;
     const localized = String(t(key, "") || "").trim();
     if (localized) return localized;

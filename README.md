@@ -23,7 +23,7 @@ UniSearch helps applicants discover and compare universities across study levels
 - **ROI:** an approximate ratio of annual graduate salary to annual study cost, using major-specific data where available.
 - **Guide:** a structured reference explaining admission requirements, exams, UniFit, UniChance, and comparison workflows, with section-to-section navigation.
 
-The interface supports English and Russian, multi-currency conversion (60+ currencies), and system, light, and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
+The interface supports English, Russian, and Kazakh, multi-currency conversion (60+ currencies), and system, light, and dark themes. Profiles and favorites are stored in the browser; account login and cross-device synchronization are not currently available. Profile data is sent to the API for personalized calculations.
 
 ### Understanding the estimates
 

@@ -422,7 +422,6 @@ export function initUniversitiesPage() {
     };
 
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
-    setupSlidingIndicator(".catalog-level-segmented", ".catalog-level-btn", "is-active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -3879,11 +3878,11 @@ export function initUniversitiesPage() {
             : "";
         const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
         const rankAriaLabel = sourceTooltip
-            ? `${rankLabel} ${rankValueText}: ${sourceTooltip}`
-            : `${rankLabel} ${rankValueText}`;
+            ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
+            : `${rankLabel}: ${rankValueText}`;
         const rankInnerHtml = `
                     <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
-                    <span class="uni-metric-label">${rankLabel}</span>
+                    <span class="uni-metric-label">${rankLabel}:</span>
                     <span class="uni-metric-value">${rankValueText}</span>
         `;
         const metricsHtml = `

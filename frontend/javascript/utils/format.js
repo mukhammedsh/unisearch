@@ -124,6 +124,7 @@ function pluralRus(n, forms) {
 export function formatPlural(n, forms, lang = "eng") {
   const num = Number(n);
   if (lang === "rus" && Array.isArray(forms) && forms.length >= 3) return pluralRus(num, forms);
+  if (lang === "kaz" && Array.isArray(forms)) return forms[0] || "";
   if (Array.isArray(forms)) return num === 1 ? forms[0] : (forms[1] || forms[0]);
   return String(forms || "");
 }
@@ -195,6 +196,7 @@ const COUNTRY_FLAG_ALIASES = {
 const LANGUAGE_FLAG_CODES = {
   eng: "us",
   rus: "ru",
+  kaz: "kz",
 };
 
 const flagImgHtmlCache = new Map();

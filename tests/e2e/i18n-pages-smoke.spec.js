@@ -133,7 +133,7 @@ test("client-side navigation with Russian language renders destination page dire
           const aboutTitle = node.matches?.("[data-i18n='about.title']")
             ? node
             : node.querySelector?.("[data-i18n='about.title']");
-          if (aboutTitle && aboutTitle.textContent.includes("We are the abiturient team")) {
+          if (aboutTitle && aboutTitle.textContent.includes("UniSearch is a service created by applicants")) {
             window.__sawEnglishFlash = true;
           }
         }
@@ -149,8 +149,45 @@ test("client-side navigation with Russian language renders destination page dire
 
   const aboutHeading = page.locator("[data-i18n='about.title']");
   await expect(aboutHeading).toBeVisible();
-  await expect(aboutHeading).toContainText("Мы — команда абитуриентов, создавшая UniSearch.");
+  await expect(aboutHeading).toContainText("UniSearch — сервис, созданный абитуриентами для абитуриентов.");
+  await expect(page.locator("[data-i18n='about.origin']")).toContainText("9 февраля 2026 года");
+  await expect(page.locator("[data-i18n='about.origin']")).toContainText("нас — абитуриентов");
+  await expect(page.locator("[data-i18n='about.evolution']")).toContainText("Спустя восемь месяцев");
+  await expect(page.locator("[data-i18n='about.evolution']")).toContainText("сделали фокус на UniSearch");
+  await expect(page.locator(".about-team-member")).toHaveCount(2);
+  await expect(page.locator("[data-i18n='about.bio.lead']")).toContainText("серверную часть, базу данных");
+  await expect(page.locator("[data-i18n='about.role.planning']")).toHaveText("Сооснователь и ведущий разработчик интерфейса");
+  await expect(page.locator("[data-i18n='about.bio.planning']")).toContainText("основное тестирование");
+  await expect(page.locator("#about-contact-title")).toHaveText("Свяжитесь с нами");
+  await expect(page.locator(".about-contact-item")).toHaveCount(3);
+  await expect(page.locator(".about-contact-item a[href='mailto:unisearch.sup@gmail.com']")).toBeVisible();
+  await expect(page.locator(".about-contact-item a[href='https://github.com/mukhammedsh/unisearch']")).toBeVisible();
+  await expect(page.locator(".about-contact-item a[href='https://t.me/unisearch_kz']")).toHaveText("@unisearch_kz");
+  await expect(page.locator(".about-contact-icon")).toHaveCount(3);
+  await expect(page.locator(".about-contact-icon[data-heroicon='envelope'] svg")).toBeVisible();
 
   const sawEnglish = await page.evaluate(() => window.__sawEnglishFlash);
   expect(sawEnglish).toBe(false);
+
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const theme of ["light", "dark"]) {
+      await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
+      await expect(page.locator(".about-team-member")).toHaveCount(2);
+      const layout = await page.locator(".about-page").evaluate((element) => {
+        const box = element.getBoundingClientRect();
+        const canvas = document.body.getBoundingClientRect();
+        return {
+          left: box.left - canvas.left,
+          right: canvas.right - box.right,
+          panelColor: getComputedStyle(element).backgroundColor,
+          canvasColor: getComputedStyle(document.body).backgroundColor,
+          hasHorizontalOverflow: element.scrollWidth > element.clientWidth + 1,
+        };
+      });
+      expect(Math.abs(layout.left - layout.right)).toBeLessThanOrEqual(1);
+      expect(layout.panelColor).not.toBe(layout.canvasColor);
+      expect(layout.hasHorizontalOverflow).toBe(false);
+    }
+  }
 });

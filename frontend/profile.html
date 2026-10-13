@@ -43,23 +43,25 @@
   <main class="profile-page" id="profilePage">
     <section class="profile-shell" id="profileModal" role="region" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
       
-      <!-- Top Center Completion Banner & Progress -->
-      <section class="profile-progress-card" aria-label="Profile progress" data-i18n-aria-label="profile.progress.title">
-        <div class="profile-progress-info">
-          <div class="profile-progress-badge">
-            <span data-heroicon="chart-bar" data-icon-size="16"></span>
-            <span class="profile-progress-label" data-i18n="profile.progress.title">Profile Completion</span>
+      <div class="profile-page-header">
+        <h1 class="profile-page-title" data-i18n="profile.title">Profile</h1>
+        <section class="profile-progress-card" aria-label="Profile progress" data-i18n-aria-label="profile.progress.title">
+          <div class="profile-progress-info">
+            <div class="profile-progress-badge">
+              <span data-heroicon="chart-bar" data-icon-size="16"></span>
+              <span class="profile-progress-label" data-i18n="profile.progress.title">Profile Completion</span>
+            </div>
+            <span class="profile-progress-text sr-only" id="profileProgressText" data-i18n="profile.progress.empty">
+              Complete your profile for better matches.
+            </span>
           </div>
-          <span class="profile-progress-text sr-only" id="profileProgressText" data-i18n="profile.progress.empty">
-            Complete your profile for better matches.
-          </span>
-        </div>
-        <div class="profile-progress-meter" aria-hidden="true">
-          <div class="profile-progress-track">
-            <div class="profile-progress-fill" id="profileProgressFill" style="width: 0%;"></div>
+          <div class="profile-progress-meter" aria-hidden="true">
+            <div class="profile-progress-track">
+              <div class="profile-progress-fill" id="profileProgressFill" style="width: 0%;"></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <!-- 2-Column Workspace Layout -->
       <div class="profile-workspace-layout">

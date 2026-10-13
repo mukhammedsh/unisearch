@@ -15,28 +15,20 @@ base_cost_before_grant: Base Cost (before grant)
 admission.track.funding_options: Funding options
 admission.track.options_count: {count} funding options
 extra_requirements: Extra requirements
-about.bio.lead: Leads core development and turns the product vision into reliable, maintainable software.
-about.bio.planning: Leads the product's UI/UX direction and keeps the experience clear, focused, and practical.
+about.bio.lead: Oversees the backend, database, and internal systems, and sets the project's direction.
+about.bio.planning: Develops the entire user interface and leads testing for the service.
 about.contact.email: Email
 about.contact.github: GitHub
-about.contact_kicker: Contact
-about.contact_title: Contact us
-about.email_note: Main contact for project questions.
-about.eyebrow: About Us
-about.github_note: Code, commits, and project updates.
-about.lead: Our goal is to make university discovery clearer, easier, and more practical for real application planning.
+about.contact.telegram: Telegram
+about.contact.title: Contact us
+about.evolution: After the project did not pass the selection at an olympiad, we reconsidered its direction. Instead of an assistant with unreliable advice, we focused on UniSearch as a tool that makes information easy to access and suggests suitable options. Eight months later, we continue to actively maintain UniSearch.
 about.name.lead: Mukhammed Shabdaluly
 about.name.planning: Yerbolat Rashidov
-about.proof.product.body: Less decorative noise, more useful comparison: what it costs, how to apply, and what looks realistic for your profile.
-about.proof.product.title: Product goal
-about.proof.scope.body: University programs across study levels, with admissions, costs, and funding in one place.
-about.proof.scope.title: Current scope
-about.proof.sources.body: We prefer official published requirements and clearly mark when a metric is not separately published.
-about.proof.sources.title: Data standard
+about.origin: UniSearch began on February 9, 2026, in Kazakhstan as a school project and student research work. We took on a problem that affects us too–as applicants.
 about.role.lead: Co-founder & Lead Developer
-about.role.planning: Co-founder & UI/UX Lead
+about.role.planning: Co-founder & Lead Frontend Developer
 about.team_kicker: Our Team
-about.title: We are the abiturient team behind UniSearch.
+about.title: UniSearch is a service created by applicants for applicants.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
 guide.admission.p1: Admissions requirements are assessed for an applicant route and requirement profile. Funding options are listed separately; an award does not create a separate admission assessment, and displayed annual costs are before any award. Check the applicant route, study cycle, and profile that apply to you.
@@ -125,12 +117,15 @@ nav.close_menu: Close menu
 nav.guide: Guide
 nav.lang.eng: English (US)
 nav.lang.rus: Русский
+nav.lang.kaz: Қазақша
 nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
 nav.rankings: Ranking
 nav.settings: Settings
 settings.section.appearance: Appearance
+settings.section.regional: Language & region
+settings.option.language.title: Site language
 settings.option.theme.title: Theme
 theme.opt.system: System
 theme.opt.light: Light
@@ -329,6 +324,7 @@ profile.unit.currency_year: {currency} / year
 profile.progress.empty: Complete your profile for better matches.
 profile.progress.count: {completed}/{total} profile areas complete
 profile.sections.aria: Profile sections
+profile.title: Profile
 profile.section.basics: General
 profile.section.scores: Academic Data
 profile.section.languages: Languages

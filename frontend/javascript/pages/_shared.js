@@ -519,13 +519,25 @@ export function localizeDuration(rawValue) {
       .replace(/\b(\d+)\s*semesters?\b/gi, (_, n) => `${n} ${ruPlural(Number(n), "семестр", "семестра", "семестров")}`);
   }
 
+  if (lang === "kaz") {
+    return raw
+      .replace(/\bor\b/gi, "немесе")
+      .replace(/\bregular terms\b/gi, "қалыпты оқу мерзімі")
+      .replace(/\b(\d+)\s*(years?|yrs?)\b/gi, "$1 жыл")
+      .replace(/\b(\d+)\s*months?\b/gi, "$1 ай")
+      .replace(/\b(\d+)\s*weeks?\b/gi, "$1 апта")
+      .replace(/\b(\d+)\s*days?\b/gi, "$1 күн")
+      .replace(/\b(\d+)\s*semesters?\b/gi, "$1 семестр");
+  }
+
   return raw;
 }
 
 export function formatUiNumber(value, options = {}) {
   const n = Number(value);
   if (!Number.isFinite(n)) return String(value ?? "").trim();
-  const lang = getCurrentLanguage() === "rus" ? "ru-RU" : "en-US";
+  const currentLanguage = getCurrentLanguage();
+  const lang = currentLanguage === "rus" ? "ru-RU" : currentLanguage === "kaz" ? "kk-KZ" : "en-US";
   try {
     return new Intl.NumberFormat(lang, options).format(n);
   } catch (e) {
@@ -545,6 +557,14 @@ export function formatFundingOptionsCount(count) {
       "варианта финансирования",
       "вариантов финансирования"
     )}`;
+  }
+
+  if (getCurrentLanguage() === "kaz") {
+    return tFormat(
+      "admission.track.options_count",
+      { count: formattedCount },
+      `${formattedCount} қаржыландыру нұсқасы`
+    );
   }
 
   return `${formattedCount} ${safeCount === 1 ? "funding option" : "funding options"}`;

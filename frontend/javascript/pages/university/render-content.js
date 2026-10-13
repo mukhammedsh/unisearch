@@ -123,7 +123,7 @@ export function renderOverviewSection({
   container.innerHTML = `
     <div class="d-kv">
       <span class="d-kv-label">
-        ${escapeHtml(translateWord("global_rank", "Global Rank"))}
+        ${escapeHtml(translateWord("global_rank", "Global Rank"))}:
         ${rankTooltip}
       </span>
       ${rankHtml}

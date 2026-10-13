@@ -41,8 +41,24 @@ body[data-page="profile"] {
 }
 
 /* --------------------------------------------------------------------------
-   Top Completion Progress Bar (Centered at Top)
+   Profile Page Header
    -------------------------------------------------------------------------- */
+.profile-page-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.profile-page-title {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
+  grid-column: 1;
+}
+
 .profile-progress-card {
   background: transparent;
   border: none;
@@ -53,6 +69,9 @@ body[data-page="profile"] {
   justify-content: center;
   gap: var(--space-1);
   margin-bottom: 0;
+  grid-column: 2;
+  justify-self: center;
+  width: 240px;
 }
 
 .profile-progress-info {
@@ -1356,6 +1375,20 @@ textarea.profile-input,
 }
 
 @media (max-width: 480px) {
+  .profile-page-header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .profile-page-title {
+    grid-column: 1;
+  }
+
+  .profile-progress-card {
+    grid-column: 1;
+    justify-self: center;
+  }
+
   .profile-section-tabs {
     gap: var(--space-3);
   }

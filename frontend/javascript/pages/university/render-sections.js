@@ -467,18 +467,36 @@ function renderSelectedProgramContext(university, selectedProgram) {
 
 function localizeDeadlineDate(value) {
   const raw = String(value || "").trim();
-  if (getCurrentLanguage() !== "rus") return raw;
+  const language = getCurrentLanguage();
+  if (language !== "rus" && language !== "kaz") return raw;
+  const locale = language === "kaz" ? "kk-KZ" : "ru-RU";
   const exact = parseExactDeadlineDate(raw);
-  if (exact) return new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${exact}T00:00:00Z`));
+  if (exact) {
+    const date = new Date(`${exact}T00:00:00Z`);
+    return language === "kaz" ? formatKazakhDate(date) : new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(date);
+  }
   const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const partial = raw.match(/^([A-Za-z]+)\s+(\d{1,2})$/);
   const monthIndex = partial ? month.findIndex((name) => name.toLowerCase() === partial[1].toLowerCase()) : -1;
-  return monthIndex >= 0 ? new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(2028, monthIndex, Number(partial[2])))) : translateAdmissionText(raw, raw);
+  if (monthIndex >= 0) {
+    const date = new Date(Date.UTC(2028, monthIndex, Number(partial[2])));
+    return language === "kaz" ? formatKazakhDate(date, false) : new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "UTC" }).format(date);
+  }
+  return translateAdmissionText(raw, raw);
+}
+
+const KAZAKH_MONTHS = ["қаңтар", "ақпан", "наурыз", "сәуір", "мамыр", "маусым", "шілде", "тамыз", "қыркүйек", "қазан", "қараша", "желтоқсан"];
+const KAZAKH_WEEKDAYS = ["Дс", "Сс", "Ср", "Бс", "Жм", "Сб", "Жс"];
+
+function formatKazakhDate(date, includeYear = true) {
+  const day = date.getUTCDate();
+  const month = KAZAKH_MONTHS[date.getUTCMonth()];
+  return includeYear ? `${date.getUTCFullYear()} жылғы ${day} ${month}` : `${day} ${month}`;
 }
 
 function localizeMitDeadlineText(value) {
   const raw = String(value || "");
-  if (getCurrentLanguage() !== "rus") return raw;
+  if (getCurrentLanguage() !== "rus" && getCurrentLanguage() !== "kaz") return raw;
   return translateAdmissionText(raw, raw)
     .replace(/\b(Fall|Spring) (\d{4}) entry\b/g, (_, season, year) =>
       `${t(season === "Fall" ? "university.deadlines.season.fall" : "university.deadlines.season.spring", season)} ${year}`)
@@ -887,7 +905,7 @@ function extractUniversityDeadlines(university, categories) {
 
   if (Array.isArray(categories)) {
     categories.forEach((cat) => {
-      const catLabel = cat.label || cat.name || "";
+      const catLabel = trTrackLabel(cat.label || cat.name || "");
       const levels = getCategoryLevelsList(cat);
       const levelDisplay = categoryIsMba(cat) ? "MBA" : (levels[0] || "General");
       const levelKey = normalizeLevelKey(levelDisplay);
@@ -989,7 +1007,8 @@ function extractUniversityDeadlines(university, categories) {
 }
 
 function renderDeadlineCalendar(universityId, deadlines) {
-  const locale = getCurrentLanguage() === "rus" ? "ru-RU" : "en-US";
+  const language = getCurrentLanguage();
+  const locale = language === "rus" ? "ru-RU" : language === "kaz" ? "kk-KZ" : "en-US";
   const dated = deadlines.map((item, index) => ({ item, index, date: item.approximate || item.is_approximate ? null : parseExactDeadlineDate(item.deadline) }))
     .filter((entry) => entry.date);
   const undatedCount = deadlines.length - dated.length;
@@ -1003,14 +1022,14 @@ function renderDeadlineCalendar(universityId, deadlines) {
   const monthKey = deadlineCalendarMonthByUniversity.get(universityId) || firstRelevant.date.slice(0, 7);
   const [year, month] = monthKey.split("-").map(Number);
   const monthStart = new Date(Date.UTC(year, month - 1, 1));
-  const monthTitle = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(monthStart);
+  const monthTitle = language === "kaz" ? `${year} жылғы ${KAZAKH_MONTHS[month - 1]}` : new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(monthStart);
   const weekFormatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
-  const weekdays = Array.from({ length: 7 }, (_, index) => weekFormatter.format(new Date(Date.UTC(2026, 0, 5 + index))));
+  const weekdays = language === "kaz" ? KAZAKH_WEEKDAYS : Array.from({ length: 7 }, (_, index) => weekFormatter.format(new Date(Date.UTC(2026, 0, 5 + index))));
   const monthEvents = dated.filter((entry) => entry.date.startsWith(monthKey));
   const selectedDay = deadlineCalendarDayByUniversity.get(universityId);
   const activeDay = selectedDay?.startsWith(monthKey) ? selectedDay : (monthEvents[0]?.date || "");
   const activeEvents = monthEvents.filter((entry) => entry.date === activeDay);
-  const dateFormatter = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  const dateFormatter = language === "kaz" ? { format: formatKazakhDate } : new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
   const cells = getCalendarCells(year, month - 1).map((day) => {
     if (day === null) return '<span class="deadline-calendar__blank" aria-hidden="true"></span>';
@@ -1439,7 +1458,7 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
   if (zeroParentContributionUsd) {
     thresholds.push({
       label: t("university.finance.zero_parent_contribution_threshold", "Zero Parent Contribution Threshold"),
-      value: `< $${Number(zeroParentContributionUsd).toLocaleString("en-US")} / yr`,
+      value: `< $${Number(zeroParentContributionUsd).toLocaleString("en-US")} ${t("universities.card.per_year", "/ year")}`,
       comparison: incomeComparisonFor(zeroParentContributionUsd),
       note: t("university.finance.zero_parent_contrib", "The policy sets the expected parent contribution to zero; this does not establish total net price."),
     });
@@ -1447,7 +1466,7 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
   if (fullRideUsd) {
     thresholds.push({
       label: t("university.finance.full_ride_threshold", "Full-Ride Income Threshold"),
-      value: `< $${Number(fullRideUsd).toLocaleString("en-US")} / yr`,
+      value: `< $${Number(fullRideUsd).toLocaleString("en-US")} ${t("universities.card.per_year", "/ year")}`,
       comparison: incomeComparisonFor(fullRideUsd),
       note: t("university.finance.full_ride_threshold_note", "Eligibility for a full funding package depends on the university's full policy and applicant circumstances."),
     });
@@ -1455,7 +1474,7 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
   if (freeTuitionUsd) {
     thresholds.push({
       label: t("university.finance.free_tuition_threshold", "Free Tuition Threshold"),
-      value: `< $${Number(freeTuitionUsd).toLocaleString("en-US")} / yr`,
+      value: `< $${Number(freeTuitionUsd).toLocaleString("en-US")} ${t("universities.card.per_year", "/ year")}`,
       comparison: incomeComparisonFor(freeTuitionUsd),
       note: t("university.finance.free_tuition_note", "100% tuition coverage for qualifying families"),
     });

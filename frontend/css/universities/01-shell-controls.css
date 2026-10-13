@@ -144,14 +144,18 @@ body[data-page="universities"] {
 .catalog-level-segmented {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  background: var(--surface-soft);
-  border-radius: var(--radius-md);
-  padding: 2px;
-  box-shadow: none;
+  justify-content: flex-start;
+  gap: var(--space-1);
+  background: color-mix(in srgb, var(--text) 8%, var(--surface-soft));
+  border-radius: var(--radius-base);
+  padding: var(--space-1);
+  box-shadow: var(--shadow-xs);
 }
 
 .catalog-level-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: transparent;
   color: var(--text-muted);
@@ -168,7 +172,8 @@ body[data-page="universities"] {
 }
 
 .catalog-level-btn:hover {
-  color: var(--text);
+  color: var(--interaction-hover-text);
+  background: var(--interaction-hover-surface);
 }
 
 .catalog-level-btn.is-active {
@@ -176,6 +181,11 @@ body[data-page="universities"] {
   color: var(--text);
   box-shadow: var(--shadow-xs);
   font-weight: 600;
+}
+
+.catalog-level-btn.is-active:hover {
+  background: var(--surface-solid);
+  color: var(--text);
 }
 
 .catalog-level-btn:focus-visible {
@@ -195,7 +205,7 @@ body[data-page="universities"] {
   }
 
   .catalog-level-btn {
-    padding: var(--space-1) var(--space-2);
+    padding: var(--space-1);
     font-size: 12px;
   }
 }

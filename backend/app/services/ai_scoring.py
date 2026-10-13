@@ -976,6 +976,8 @@ def _chance_level(chance_pct: float) -> Dict[str, str]:
 
 def _chance_locale(profile: Dict[str, Any]) -> str:
     raw = str((profile or {}).get("locale") or "").strip().lower()
+    if raw.startswith("kk") or raw == "kaz":
+        return "kaz"
     return "rus" if raw.startswith("ru") else "eng"
 
 
@@ -1003,17 +1005,30 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
             "requirements_not_reviewed": "Опубликованные минимумы для этого маршрута ещё не проверены",
             "applicability_unknown": "Применимость этого маршрута к выбранному типу заявителя, программе или циклу не подтверждена",
         },
+        "kaz": {
+            "missing_evidence": "Емтихан нәтижесін немесе тіл деңгейін қосыңыз",
+            "requirements_not_met": "Міндетті ең төменгі талапқа сай емессіз",
+            "missing_exam_score": "Осы түсу жолын бағалау үшін емтихан нәтижесі керек",
+            "unsupported_exam_normalization": "Бұл емтихан нәтижесін әзірге осы түсу жолымен салыстыру мүмкін емес",
+            "no_score_profile": "Оқуға қабылданғандар ұпайы туралы дерек жоқ",
+            "no_published_requirements": "Бұл түсу жолы бойынша өлшенетін жарияланған ең төменгі талап жоқ",
+            "unassessed_minimums": "Профильдегі дерекпен жарияланған ең төменгі талаптарды бағалау мүмкін емес",
+            "requirements_not_reviewed": "Бұл түсу жолының жарияланған ең төменгі талаптары әлі тексерілмеген",
+            "applicability_unknown": "Бұл жолдың таңдалған талапкерге, бағдарламаға не қабылдау цикліне сай екені расталмаған",
+        },
     }
     locale = _chance_locale(profile)
     if locale == "rus" and reason == "missing_exam_score":
         return "Нужны данные по экзаменам, чтобы оценить шанс по этому варианту поступления"
+    if locale == "kaz" and reason == "missing_exam_score":
+        return "Осы түсу жолын бағалау үшін емтихан нәтижелері керек"
     return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
 
 
 def _no_data_chance_level(profile: Dict[str, Any]) -> Dict[str, str]:
     return {
         "id": "no_data",
-        "label": "Нет данных" if _chance_locale(profile) == "rus" else "No data",
+        "label": {"rus": "Нет данных", "kaz": "Дерек жоқ"}.get(_chance_locale(profile), "No data"),
     }
 
 

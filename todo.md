@@ -10,6 +10,11 @@ Active plan agreed on 2026-09-30; delivery scope revised on 2026-10-08 to comple
 
 During Stage 1, design the data relationships and intended applicant answers, but do not implement each field in backend/frontend or require browser/user UX approval. Never drop significant facts because the schema or runtime does not support them. Breaking draft formats stay outside active runtime data; permanent backward compatibility is not a requirement. Stop at the assigned task boundary.
 
+### Cross-cutting localization
+
+- [x] Add Kazakh UI strings, locale formatting, search handling, and current catalog/admissions translation maps.
+- [ ] Have a fluent Kazakh reviewer verify admissions terminology and policy nuance before release.
+
 ## Presentation milestone and later expansion
 
 The immediate milestone is a verified applicant journey for the first ten universities through Stages 1, 2 and 3. Estimate its schedule from actual research depth, integration work and browser verification; a proposed short schedule is not a guaranteed delivery date. The remaining forty follow in a later delivery cycle with the same evidence and usability criteria.
@@ -115,7 +120,7 @@ The observations below record the migration baseline, including historical imple
 | S3 | UniFit substitutes an internal neutral 50% when an admission estimate is missing. This can influence ordering without matching evidence. See `sort_universities_ai`. | Define and test a missing-evidence ranking policy. Preserve no-data/confidence; do not present the neutral input as a calculated chance or award evidence-poor options unexplained advantages. |
 | S4 | Admission choices combine category, exam/requirement profile, and paid/grant outcome. MIT UI states that aid is separate from admission while backend choices can repeat admission evidence for funding outcomes. | Separate admissions applicability/assessment from funding eligibility and affordability. Funding creates another admission route only when an official separate process exists. |
 | S5 | Semantic interest matching and major penalties currently operate at university granularity, while the journey selects actual courses and application targets. | Describe the current granularity honestly and define course-aware relevance where explicitly selected. No unverified claim of a course-specific probability or recommendation. |
-| U1 | The original first screens prioritized catalog coverage and estimates before applicable answers, with mixed Russian/English text. The representative UX checkpoint below addresses those findings. | Keep the selected context and official requirements first, with accessible sources, costs, deadlines and optional history. User review of the decision summary and wider catalog localization remain open. |
+| U1 | The original first screens prioritized catalog coverage and estimates before applicable answers, with mixed Russian/English text. The representative UX checkpoint below addresses those findings. | Keep the selected context and official requirements first, with accessible sources, costs, deadlines and optional history. User review of the decision summary and independent Kazakh terminology review remain open. |
 | C1 | MIT inventory and route mapping are incomplete, especially graduate/professional drafts and undergraduate transfer links. Coverage marked catalogued can rely on a shared category and does not prove a complete program-specific answer. See the dated checkpoint above and remaining tasks below. | Preserve explicit gaps and official next actions. Distinguish catalog presence, reviewed applicability, and factual completeness. Do not claim complete MIT or top-five coverage from counts/badges. |
 
 #### Foundations to preserve

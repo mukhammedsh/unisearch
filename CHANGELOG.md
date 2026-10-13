@@ -5,11 +5,13 @@ All notable project changes should be recorded here.
 ## Unreleased
 
 ### Added
+- Add Kazakh UI localization and localized university, program, and admissions data, including catalog search support.
 - Support GRE General Test section scores without inventing a total, alongside distinct current and legacy GMAT scales, throughout profile validation, persistence, and admissions evidence checks.
 - Add Cambridge C2 Proficiency as a distinct language certificate and validate the reported C1/C2 score ranges.
 - Show published requirement checks with the applicant's evidence, missing information, and assessment status in admission routes and UniFit card explanations.
 
 ### Fixed
+- Keep Kazakh university details localized when an older API instance returns English, and render Kazakh application dates with readable month names.
 - Preserve unknown program, route, and cycle applicability instead of applying unrelated minimums or cost defaults; keep unsupported language checks and unassessed source conditions visible.
 - Preserve explicit empty program mappings during catalog loading so unlinked routes do not borrow other programs or their score data.
 - Distinguish unknown academic fit from a verified failure, scope funding badges to the selected route, and explain the actual annual cost, budget, and preference indicators used by recommendations.
