@@ -22,6 +22,8 @@ class SecurityRegressionTests(unittest.TestCase):
             (b"authorization", b"Bearer test-ops-token", True),
             (b"x-unisearch-ops-token", b"test-\xff-token", False),
             (b"authorization", b"Bearer test-\xff-token", False),
+            (b"x-unisearch-ops-token", b"test-\xed\xa0\x80-token", False),
+            (b"authorization", b"Bearer test-\xed\xa0\x80-token", False),
         )
         with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
             for name, value, expected in cases:

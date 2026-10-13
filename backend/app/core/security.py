@@ -326,15 +326,15 @@ def ops_request_is_authorized(request: Request) -> bool:
     if not token:
         return False
 
-    token_bytes = token.encode("utf-8")
-    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip().encode("utf-8")
+    token_bytes = token.encode("utf-8", errors="replace")
+    header_value = str(request.headers.get(OPS_ADMIN_HEADER, "")).strip().encode("utf-8", errors="replace")
     auth_value = str(request.headers.get("authorization", "")).strip()
     bearer_prefix = "bearer "
     bearer_value = auth_value[len(bearer_prefix):].strip() if auth_value.lower().startswith(bearer_prefix) else ""
 
     return (
         hmac.compare_digest(header_value, token_bytes)
-        or hmac.compare_digest(bearer_value.encode("utf-8"), token_bytes)
+        or hmac.compare_digest(bearer_value.encode("utf-8", errors="replace"), token_bytes)
     )
 
 
