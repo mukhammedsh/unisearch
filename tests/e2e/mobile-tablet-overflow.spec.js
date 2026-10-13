@@ -1,6 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
+const { setNativeSelect } = require("./helpers/selectors");
 
 const viewports = [
   { name: "narrow", width: 320, height: 568 },
@@ -147,15 +148,22 @@ for (const viewport of viewports) {
     await expect(page.locator("#compareResultsPane")).toBeVisible();
     const compareColumns = page.locator(".compare-config-column");
     await expect(compareColumns).toHaveCount(2);
-    for (let index = 0; index < 2; index += 1) {
-      const column = compareColumns.nth(index);
-      const activeChoice = column.locator(".track-select-btn.is-active");
-      if (await activeChoice.count() === 0) {
-        const availableChoice = column.locator(".track-select-btn:not(.is-active)").first();
-        await expect(availableChoice).toBeVisible();
-        await availableChoice.click();
-      }
-      await expect(column.locator(".track-select-btn.is-active")).toHaveCount(1);
+    for (const choice of [
+      { id: "mit-usa-cambridge", option: "mit-course-6-3-bachelor", route: "mit-first-year", query: "Computer Science and Engineering" },
+      { id: "imperial-college-london-uk", option: "imperial-option-computing-meng", route: "procedure-computing-meng", query: "Computing" },
+    ]) {
+      const chooser = page.locator(`#compare-options-${choice.id}`);
+      await expect(chooser.locator("[data-compare-search-form]")).toBeVisible();
+      await chooser.locator('input[type="search"]').fill(choice.query);
+      await setNativeSelect(page, `compare-filter_level-${choice.id}`, "undergraduate");
+      await chooser.locator('[data-compare-search-form] button[type="submit"]').click();
+      await chooser.locator(`[data-study-option="${choice.option}"]`).click();
+      await expect(chooser.locator(`select[data-context-field="application_route_id"] option[value="${choice.route}"]`)).toHaveCount(1);
+      await setNativeSelect(page, `compare-application_route_id-${choice.id}`, choice.route);
+      await setNativeSelect(page, `compare-study_level-${choice.id}`, "undergraduate");
+      await setNativeSelect(page, `compare-applicant_route-${choice.id}`, "first_year");
+      await chooser.locator('[data-compare-context-form] button[type="submit"]').click();
+      await expect.poll(() => page.evaluate((id) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[id]?.applicationRouteId, choice.id)).toBe(choice.route);
     }
     const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
     await expect(continueCompareButton).toBeEnabled();

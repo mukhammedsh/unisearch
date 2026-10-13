@@ -166,6 +166,37 @@ test("detail fetch returns fresh cache without a request", async () => {
   }
 });
 
+test("reviewed detail data revalidates even inside its cache TTL", async () => {
+  cache.setDetailCacheEntry("reviewed", { admissions_catalog: { availability: "reviewed", revision: "old" } }, "old-etag", "eng");
+  const originalFetch = global.fetch;
+  const replacement = { admissions_catalog: { availability: "reviewed", revision: "new" } };
+  global.fetch = async (_url, options) => {
+    assert.equal(options.headers["If-None-Match"], "old-etag");
+    return response({ body: replacement, etag: "new-etag" });
+  };
+  try {
+    assert.deepEqual(await cache.fetchUniversityDetailCached("reviewed"), replacement);
+    assert.equal(cache.getDetailCacheEntry("reviewed", "eng").etag, "new-etag");
+  } finally { global.fetch = originalFetch; }
+});
+
+test("unavailable reviewed catalog does not silently return stale detail data", async () => {
+  cache.setDetailCacheEntry("reviewed", { admissions_catalog: { availability: "reviewed", revision: "old" } }, "old-etag", "eng");
+  const originalFetch = global.fetch;
+  global.fetch = async () => response({ ok: false, status: 503 });
+  try { await assert.rejects(cache.fetchUniversityDetailCached("reviewed"), /Backend error/); }
+  finally { global.fetch = originalFetch; }
+});
+
+test("the pre-cutover detail cache cannot supply retired admissions fields", async () => {
+  localValues.unisearch_detail_cache_v3 = JSON.stringify({ "mit-usa-cambridge::eng": { ts: Date.now(), data: { finance: { total_cost_year_usd: 100 } } } });
+  const originalFetch = global.fetch;
+  const replacement = { id: "mit-usa-cambridge", admissions_catalog: { availability: "reviewed", revision: "active" } };
+  global.fetch = async () => response({ body: replacement });
+  try { assert.deepEqual(await cache.fetchUniversityDetailCached("mit-usa-cambridge"), replacement); }
+  finally { global.fetch = originalFetch; }
+});
+
 test("detail fetch revalidates stale cache with ETag and handles 304", async () => {
   const originalNow = Date.now;
   Date.now = () => 1;

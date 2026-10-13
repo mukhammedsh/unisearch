@@ -4,6 +4,7 @@ import unittest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.services import admissions_catalog
 from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program
 from app.services.universities import get_university_by_id
 
@@ -13,108 +14,68 @@ class UniversityCoverageTests(unittest.TestCase):
     def setUpClass(cls):
         cls.client = TestClient(app)
 
+    def resolve(self, institution_id, option_id, route_id, level):
+        return admissions_catalog.resolve_context(institution_id, context={
+            "study_option_id": option_id,
+            "application_route_id": route_id,
+            "study_level": level,
+        })
+
+    def fact(self, result, fact_id):
+        rows = result["facts"] + result["unknowns"] + result["history"]["facts"] + result["history"]["unknowns"]
+        return next(row for row in rows if row["id"] == fact_id)
+
+    def source_urls(self, result, fact):
+        return {row["id"]: row["url"] for row in result["sources"] if row["id"] in fact["source_ids"]}
+
     def test_mit_graduate_routes_keep_awards_and_eligibility_scoped(self):
-        university = get_university_by_id("mit-usa-cambridge")
-        programs = {row["id"]: row for row in university["academics"]["programs"]}
-        routes = {row["id"]: row for row in university["admission_categories"]}
+        result = self.resolve("mit-usa-cambridge", "mit-linguistics-sm-mit-grad-linguistics", "mit_mitili_sm_admissions", "masters")
+        funding = self.fact(result, "mit_mitili_sm_admissions-funding-0-0")
+        tests = self.fact(result, "mitili-academic-tests-unestablished")
+        self.assertEqual(result["selected_route"]["id"], "mit_mitili_sm_admissions")
+        self.assertEqual(result["selected_option"]["id"], "mit-linguistics-sm-mit-grad-linguistics")
+        self.assertEqual(funding["topic"], "funding")
+        self.assertEqual(funding["scope"]["route_ids"], ["mit_mitili_sm_admissions"])
+        self.assertEqual(tests["publication_status"], "unknown")
+        self.assertIn("https://linguistics.mit.edu/mitili/", self.source_urls(result, funding).values())
+        self.assertIn("https://linguistics.mit.edu/mitili/", self.source_urls(result, tests).values())
 
-        self.assertNotIn("mit-city-planning-sm-mit-grad-urban-studies-and-planning", programs)
-        mst = programs["mit-transportation-sm-mit-grad-transportation"]
-        self.assertEqual(mst["name"], "Master of Science in Transportation (MST)")
-        route = routes[mst["admission_route_id"]]
-        self.assertEqual(route["program_ids"], [mst["id"]])
-        mst_profile = route["requirement_profiles"][0]
-        self.assertEqual(mst_profile["requirements_review_status"], "reviewed")
-        self.assertEqual(mst_profile["requirements"], {})
-        self.assertEqual(mst_profile["required_exam_alternatives"], [["GRE"]])
-        self.assertEqual(mst_profile["unassessed_published_minimums"][0]["exam_id"], "IELTS")
-        self.assertIn("international applicants", mst_profile["unassessed_published_minimums"][0]["scale"])
-        self.assertNotIn("funding", mst_profile["requirements_note"].lower())
-        self.assertTrue(any("funding" in note.lower() for note in route["scholarships"]))
-        self.assertNotIn("mit_grad_eecs_engineer_admissions", routes)
-        for id in ("mit-engineer-electrical", "mit-engineer-computer-science"):
-            self.assertNotIn("admission_route_id", programs[id])
-        self.assertIn(
-            "before applying",
-            programs["mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy"]["entry_requirements"],
-        )
-        mitili = programs["mit-linguistics-sm-mit-grad-linguistics"]
-        self.assertEqual(mitili["admission_route_id"], "mit_mitili_sm_admissions")
-        mitili_route = routes[mitili["admission_route_id"]]
-        self.assertEqual(mitili_route["study_levels"], ["Master"])
-        self.assertEqual(mitili_route["program_ids"], [mitili["id"]])
-        self.assertEqual(mitili_route["source_url"], "https://linguistics.mit.edu/mitili/")
-        self.assertEqual(mitili_route["requirements_source_url"], "https://linguistics.mit.edu/mitili/")
-        self.assertIn("MITILI", mitili_route["description"])
-        self.assertEqual(
-            mitili_route["requirement_profiles"][0]["funding_options"][0]["funding_type"],
-            "grant",
-        )
-        self.assertEqual(routes["mit_linguistics_doctoral_admissions"]["program_ids"], ["mit-linguistics-phd"])
-        russian = get_university_by_id("mit-usa-cambridge", search_lang="rus", localized=True)
-        russian_mitili = next(row for row in russian["academics"]["programs"] if row["id"] == mitili["id"])
-        self.assertIn("MITILI", russian_mitili["description"])
-        russian_route = next(row for row in russian["admission_categories"] if row["id"] == mitili_route["id"])
-        self.assertEqual(russian_route["label"], "Поступление в магистратуру MITILI по лингвистике (SM)")
-
-        math_sm = programs["mit-mathematics-of-data-sm-mit-grad-mathematics"]
-        self.assertEqual(math_sm["admission_route_id"], "mit_mathematics_of_data_sm_admissions")
-        math_route = routes[math_sm["admission_route_id"]]
-        self.assertEqual(math_route["program_ids"], [math_sm["id"]])
-        self.assertEqual(math_route["deadlines"][0]["date"], "2026-12-01")
-        self.assertEqual(math_route["requirement_profiles"][0]["requirements"], {})
-        self.assertEqual(math_route["requirement_profiles"][0]["unassessed_published_minimums"][0]["minimum"], 4.8)
-        russian_math_route = next(row for row in russian["admission_categories"] if row["id"] == math_route["id"])
-        self.assertEqual(russian_math_route["label"], "Внутренняя заявка на Mathematics of Data SM")
-
-    def test_pilot_detail_api_reports_level_scoped_coverage(self):
+    def test_reviewed_detail_api_reports_admissions_catalog_metadata(self):
         response = self.client.get("/universities/mit-usa-cambridge")
         self.assertEqual(response.status_code, 200)
-        coverage = response.json().get("coverage_by_level")
-        program_coverage = response.json().get("coverage_by_program")
-        self.assertEqual(set(coverage), {"bachelor", "master", "doctorate", "professional", "mba"})
-        self.assertTrue(program_coverage)
-        self.assertEqual(coverage["professional"]["programs"], "available")
+        contract = response.json()["admissions_catalog"]
+        self.assertEqual(contract["availability"], "reviewed")
+        self.assertEqual(contract["study_option_count"], len(admissions_catalog.get_institution("mit-usa-cambridge")["study_options"]))
+        self.assertIn("undergraduate", contract["study_levels"])
+        self.assertIn("doctoral", contract["study_levels"])
+        self.assertNotIn("coverage_by_level", response.json())
+        self.assertNotIn("coverage_by_program", response.json())
 
-        self.assertEqual(coverage["bachelor"]["programs"], "available")
-        self.assertEqual(
-            coverage["bachelor"]["deadlines"],
-            {"exact_dated": "available", "approximate_or_yearless": "available"},
-        )
-        self.assertEqual(coverage["bachelor"]["costs"]["undergraduate_root_finance"], "available")
+    def test_imperial_computing_course_facts_stay_with_selected_options(self):
+        undergraduate = self.resolve("imperial-college-london-uk", "imperial-option-computing-meng", "procedure-computing-meng", "undergraduate")
+        masters = self.resolve("imperial-college-london-uk", "imperial-option-computing", "procedure-computing", "masters")
+        ug_profile = self.fact(undergraduate, "imperial-computing-meng-course-profile")
+        masters_profile = self.fact(masters, "imperial-computing-course-profile")
+        self.assertEqual(ug_profile["scope"]["option_ids"], ["imperial-option-computing-meng"])
+        self.assertEqual(masters_profile["scope"]["option_ids"], ["imperial-option-computing"])
+        self.assertEqual(ug_profile["scope"]["cycle"], "2027 entry")
+        self.assertEqual(masters_profile["scope"]["cycle"], "2027 entry")
+        self.assertEqual(ug_profile["value"]["course_page_tuition_fees"]["Home fee"][0]["amounts_and_periods"], ["£10,050 per year"])
+        self.assertEqual(masters_profile["value"]["course_page_tuition_fees"]["Overseas fee"][0]["amounts_and_periods"], ["£48,300"])
+        self.assertIn("https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/", self.source_urls(undergraduate, ug_profile).values())
+        self.assertIn("https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/computing/", self.source_urls(masters, masters_profile).values())
+        self.assertFalse(any(row["id"] == "imperial-computing-meng-course-profile" for row in masters["facts"]))
+        self.assertFalse(any(row["id"] == "imperial-computing-course-profile" for row in undergraduate["facts"]))
 
-        self.assertEqual(coverage["master"]["costs"]["program_specific"], "available")
-        self.assertEqual(coverage["master"]["costs"]["undergraduate_root_finance"], "not_catalogued")
-        self.assertEqual(coverage["mba"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(coverage["mba"]["aid_funding"], "available")
-
-    def test_top_five_exact_dates_and_program_costs_are_level_scoped(self):
-        coverage = get_university_by_id("imperial-college-london-uk", localized=True)["coverage_by_level"]
-        self.assertEqual(coverage["bachelor"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(coverage["master"]["deadlines"]["exact_dated"], "available")
-        # Computing PhD publishes four 2027 department review cutoffs.
-        self.assertEqual(coverage["doctorate"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(coverage["mba"]["costs"]["program_specific"], "not_catalogued")
-        self.assertEqual(coverage["mba"]["costs"]["undergraduate_root_finance"], "not_catalogued")
-
-        program_coverage = get_university_by_id("imperial-college-london-uk", localized=True)["coverage_by_program"]
-        computing = next(row for row in program_coverage if row["program_name"] == "Computing (BEng)")
-        self.assertEqual(computing["tuition_mandatory_fees"]["scope"], "university_guidance")
-        self.assertEqual(computing["tuition_mandatory_fees"]["values"]["undergraduate_home_expected_tuition_gbp"], 10050)
-        self.assertIn("subject to parliamentary approval", computing["tuition_mandatory_fees"]["cycle"])
-        msc = next(row for row in program_coverage if row["program_name"] == "MSc Advanced Computing")
-        self.assertEqual(msc["tuition_mandatory_fees"]["status"], "not_catalogued")
-
-    def test_harvard_round_deadlines_and_oxford_root_deadlines_are_included(self):
-        harvard = get_university_by_id("harvard-usa-cambridge", localized=True)["coverage_by_level"]
-        self.assertEqual(harvard["bachelor"]["deadlines"]["approximate_or_yearless"], "available")
-        self.assertEqual(harvard["mba"]["deadlines"]["approximate_or_yearless"], "available")
-
-        oxford = get_university_by_id("university-of-oxford-uk-oxford", localized=True)["coverage_by_level"]
-        self.assertEqual(oxford["bachelor"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(oxford["mba"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(oxford["master"]["deadlines"]["exact_dated"], "available")
-        self.assertEqual(oxford["bachelor"]["costs"]["program_specific"], "available")
+    def test_paused_harvard_oxford_and_cambridge_catalogs_remain_legacy_unreviewed(self):
+        for university_id in ("harvard-usa-cambridge", "university-of-oxford-uk-oxford", "university-of-cambridge-uk-cambridge"):
+            with self.subTest(university_id=university_id):
+                contract = admissions_catalog.get_public_contract(university_id)
+                self.assertEqual(contract["availability"], "legacy_unreviewed")
+                self.assertIsNone(contract["study_option_count"])
+                self.assertEqual(contract["study_levels"], [])
+                with self.assertRaises(admissions_catalog.InstitutionNotFoundError):
+                    admissions_catalog.resolve_context(university_id)
 
     def test_mixed_msc_and_mba_category_covers_both_master_tracks(self):
         coverage = build_coverage_by_level(
@@ -204,236 +165,131 @@ class UniversityCoverageTests(unittest.TestCase):
         )
         self.assertEqual(coverage, {})
 
-    def test_mit_bachelor_programs_include_first_year_and_transfer_routes_with_root_cost_guidance(self):
-        university = get_university_by_id("mit-usa-cambridge", localized=True)
-        program = next(
-            row for row in university["coverage_by_program"]
-            if row["program_name"] == "Computer Science and Engineering (Course 6-3)"
-        )
+    def test_mit_bachelor_routes_target_the_institution_and_share_only_explicit_budget_guidance(self):
+        first_year = self.resolve("mit-usa-cambridge", "mit-course-6-3-bachelor", "mit-first-year", "undergraduate")
+        transfer = self.resolve("mit-usa-cambridge", "mit-course-6-3-bachelor", "mit-transfer", "undergraduate")
+        first_route, transfer_route = first_year["selected_route"], transfer["selected_route"]
+        self.assertEqual(first_route["target"], "MIT undergraduate admission")
+        self.assertEqual(transfer_route["target"], "MIT undergraduate transfer admission")
+        self.assertIn("mit-course-6-3-bachelor", first_route["option_ids"])
+        self.assertIn("mit-course-6-3-bachelor", transfer_route["option_ids"])
+        first_deadline = self.fact(first_year, "mit-first-year-application-deadline")
+        transfer_deadline = self.fact(transfer, "mit-transfer-application-deadline")
+        self.assertEqual(first_deadline["scope"]["route_ids"], ["mit-first-year"])
+        self.assertEqual(transfer_deadline["scope"]["route_ids"], ["mit-transfer"])
+        self.assertIn("January 4", first_deadline["value"])
+        self.assertIn("March 1, 2027", transfer_deadline["value"])
+        self.assertIn("October 15, 2026", transfer_deadline["value"])
+        self.assertIn("https://mitadmissions.org/apply/firstyear/deadlines-requirements/", self.source_urls(first_year, first_deadline).values())
+        self.assertIn("https://mitadmissions.org/apply/transfer/deadlines/", self.source_urls(transfer, transfer_deadline).values())
+        budget = self.fact(first_year, "undergraduate-budget-2026-27")
+        self.assertEqual(budget["scope"]["route_ids"], ["mit-first-year", "mit-transfer"])
+        self.assertEqual(budget["scope"]["option_ids"], [])
+        self.assertEqual(budget["value"]["tuition"], 66720)
+        self.assertIn("https://sfs.mit.edu/cost-of-attendance-class-of-2030/", self.source_urls(first_year, budget).values())
+        self.assertEqual(admissions_catalog.resolve_context("mit-usa-cambridge")["facts"], [])
 
-        self.assertEqual(program["program_id"], "mit-course-6-3-bachelor")
-        self.assertEqual(program["requirements"]["status"], "available")
-        referenced_program_ids = {
-            str(program_id)
-            for category in university["admission_categories"]
-            for program_id in category.get("program_ids", [])
-        }
-        self.assertIn(program["program_id"], referenced_program_ids)
-        self.assertEqual(program["deadline"]["scope"], "shared_admission_route")
-        self.assertEqual(program["deadline"]["status"], "exact_dated")
-        self.assertEqual(program["deadline"]["cycle"], "Spring 2027 entry")
-        self.assertIn("January 4", program["deadline"]["values"])
-        first_year_values = [value for value in program["deadline"]["values"] if isinstance(value, str)]
-        self.assertTrue(any("Fall 2027 entry: March 1, 2027" in value for value in first_year_values))
-        transfer_deadlines = [
-            value for value in program["deadline"]["values"]
-            if isinstance(value, dict) and value.get("admission_route_id") == "mit_undergrad_transfer"
-        ]
-        self.assertTrue(any(value.get("applicant_category") == "transfer_applicant" for value in transfer_deadlines))
-        self.assertIn(("2026-10-15", "Spring 2027 entry"), {
-            (value.get("date"), value.get("cycle")) for value in transfer_deadlines
-        })
-        self.assertIn(("2027-03-01", "Fall 2027 entry"), {
-            (value.get("date"), value.get("cycle")) for value in transfer_deadlines
-        })
-        self.assertEqual(program["tuition_mandatory_fees"]["scope"], "university_guidance")
-        self.assertNotIn("tuition_free_income_threshold_usd", program["tuition_mandatory_fees"]["values"])
-        award = program["awards"]["items"][0]
-        self.assertEqual(award["source_url"], "https://sfs.mit.edu/undergraduate-students/apply-for-aid/international/")
-        self.assertEqual(award["cycle"], "2027 entry")
-        self.assertEqual(award["verified_at"], "2026-09-23")
+    def test_oxford_draft_data_is_not_exposed_as_reviewed_admissions(self):
+        contract = admissions_catalog.get_public_contract("university-of-oxford-uk-oxford")
+        self.assertEqual(contract["availability"], "legacy_unreviewed")
+        self.assertIsNone(contract["revision"])
+        with self.assertRaises(admissions_catalog.InstitutionNotFoundError):
+            admissions_catalog.resolve_context("university-of-oxford-uk-oxford", context={
+                "study_option_id": "msc_advanced_computer_science_pgt",
+                "application_route_id": "graduate_taught",
+                "study_level": "masters",
+            })
 
-    def test_oxford_graduate_deadline_and_clarendon_have_course_provenance(self):
-        university = get_university_by_id("university-of-oxford-uk-oxford", localized=True)
-        for program_id in ("computer_science_ug", "engineering_science_ug"):
-            undergraduate = next(
-                row for row in university["coverage_by_program"]
-                if row["program_id"] == program_id
-            )
-            self.assertEqual(undergraduate["study_levels"], ["bachelor"])
-            self.assertFalse(
-                any(award["id"] == "oxford-clarendon-fund-2027" for award in undergraduate["awards"]["items"]),
-                program_id,
-            )
-        ppe = next(
-            row for row in university["coverage_by_program"]
-            if row["program_name"] == "Philosophy, Politics and Economics (PPE)"
-        )
-        self.assertEqual(ppe["deadline"]["status"], "exact_dated")
-        self.assertEqual(ppe["deadline"]["scope"], "university_guidance")
-        self.assertEqual(ppe["deadline"]["cycle"], "2027 entry")
-        self.assertEqual(
-            ppe["deadline"]["source_url"],
-            "https://www.ox.ac.uk/admissions/undergraduate/applying/admissions-timeline",
-        )
-        self.assertEqual(ppe["deadline"]["verified_at"], "2026-09-24")
-        self.assertEqual(
-            [(item["deadline_type"], item["date"]) for item in ppe["deadline"]["values"]],
-            [("course_application", "2026-10-15")],
-        )
-        cs = next(
-            row for row in university["coverage_by_program"]
-            if row["program_id"] == "computer_science_ug"
-        )
-        cs_deadlines = cs["deadline"]["values"]
-        self.assertEqual(
-            [(item["deadline_type"], item["date"]) for item in cs_deadlines],
-            [("course_application", "2026-10-15")],
-        )
-        self.assertNotIn("2026-09-28", [item.get("date") for item in cs_deadlines])
-        non_tested = next(
-            row for row in university["coverage_by_program"]
-            if row["program_id"] == "economics_and_management_ug"
-        )
-        self.assertEqual(
-            [(item["deadline_type"], item["date"]) for item in non_tested["deadline"]["values"]],
-            [("course_application", "2026-10-15")],
-        )
-        program = next(
-            row for row in university["coverage_by_program"]
-            if row["program_name"] == "MSc in Advanced Computer Science"
-        )
-
-        self.assertEqual(program["deadline"]["status"], "exact_dated")
-        self.assertEqual(program["deadline"]["scope"], "program_specific")
-        self.assertEqual(program["deadline"]["cycle"], "2027-28 entry")
-        self.assertIn("6 January 2027", program["deadline"]["values"][0])
-        self.assertEqual(program["requirements"]["scope"], "program_specific")
-        clarendon = next(award for award in program["awards"]["items"] if award["id"] == "oxford-clarendon-fund-2027")
-        self.assertEqual(clarendon["cycle"], "2027-2028")
-        self.assertTrue(clarendon["source_url"].startswith("https://www.ox.ac.uk/"))
-        self.assertEqual(clarendon["verified_at"], "2026-09-23")
-
-    def test_imperial_computing_phd_department_rounds_are_course_deadlines(self):
-        university = get_university_by_id("imperial-college-london-uk", localized=True)
-        phd = next(
-            row for row in university["coverage_by_program"]
-            if row["program_name"] == "PhD in Computing"
-        )
-        taught = next(
-            row for row in university["coverage_by_program"]
-            if row["program_name"] == "MSc Advanced Computing"
-        )
-
-        self.assertEqual(phd["deadline"]["status"], "exact_dated")
-        self.assertEqual(phd["deadline"]["scope"], "program_specific")
-        self.assertEqual(phd["deadline"]["cycle"], "2027 entry")
-        self.assertEqual(phd["deadline"]["source_url"], "https://www.imperial.ac.uk/computing/prospective-students/phd/")
-        self.assertEqual(
-            [row["date"] for row in phd["deadline"]["values"] if isinstance(row, dict)],
-            ["2026-10-01", "2026-12-01", "2027-02-01", "2027-04-01"],
-        )
-        self.assertTrue(all("scholarship" not in str(value).lower() for value in phd["deadline"]["values"]))
-        self.assertEqual(taught["deadline"]["status"], "exact_dated")
-        self.assertEqual(taught["deadline"]["cycle"], "2027 entry")
-        self.assertTrue(taught["deadline"]["values"])
+    def test_imperial_computing_phd_does_not_inherit_taught_course_rounds(self):
+        phd = self.resolve("imperial-college-london-uk", "imperial-computing-phd", "procedure-computing-phd", "doctoral")
+        phd_admission = self.fact(phd, "imperial-computing-phd-admission")
+        taught = self.resolve("imperial-college-london-uk", "imperial-option-computing", "procedure-computing", "masters")
+        taught_application = self.fact(taught, "imperial-computing-application-details")
+        self.assertEqual(phd_admission["scope"]["option_ids"], ["imperial-computing-phd"])
+        self.assertEqual(phd_admission["scope"]["route_ids"], [])
+        self.assertIn("https://www.imperial.ac.uk/engineering/departments/computing/prospective-students/phd/", self.source_urls(phd, phd_admission).values())
+        self.assertEqual(taught_application["scope"]["option_ids"], ["imperial-option-computing"])
+        self.assertIn("rounds", str(taught_application["value"]).lower())
+        self.assertFalse(any(row["id"] == taught_application["id"] for row in phd["facts"]))
+        self.assertFalse(any("deadline" in row["topic"] for row in phd["facts"]))
 
     def test_imperial_course_limited_awards_do_not_attach_to_every_degree_at_the_same_level(self):
-        university = get_university_by_id("imperial-college-london-uk", localized=True)
-        programs = {
-            row["program_name"]: {award["id"] for award in row["awards"]["items"]}
-            for row in university["coverage_by_program"]
-        }
-        self.assertIn("imperial-inspires-2027", programs["Computing (BEng)"])
-        self.assertNotIn("imperial-inspires-2027", programs["MSc Advanced Computing"])
-        self.assertNotIn("deans-impact-scholarship", programs["MSc Advanced Computing"])
-        self.assertIn("deans-impact-scholarship", programs["MSc Finance"])
-        self.assertNotIn("epsrc-ukri-cdt-studentships", programs["PhD in Computing"])
+        institution = admissions_catalog.get_institution("imperial-college-london-uk")
+        scholarship = next(row for row in institution["facts"] if row["id"] == "fact_imperial_inspires_2027_scoped")
+        option_ids = set(scholarship["scope"]["option_ids"])
+        self.assertIn("imperial-option-finance", option_ids)
+        self.assertNotIn("imperial-option-computing", option_ids)
+        self.assertNotIn("imperial-computing-phd", option_ids)
+        source_urls = {row["id"]: row["url"] for row in institution["sources"]}
+        self.assertIn("https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/", [source_urls[x] for x in scholarship["source_ids"]])
+        finance = self.resolve("imperial-college-london-uk", "imperial-option-finance", "procedure-finance", "masters")
+        computing = self.resolve("imperial-college-london-uk", "imperial-option-computing", "procedure-computing", "masters")
+        self.assertIn(scholarship["id"], {row["id"] for row in finance["facts"]})
+        self.assertNotIn(scholarship["id"], {row["id"] for row in computing["facts"]})
 
-    def test_hks_award_coverage_keeps_applicant_checklist(self):
-        harvard = get_university_by_id("harvard-usa-cambridge", localized=True)
-        mpp = next(row for row in harvard["coverage_by_program"] if row["program_name"] == "Public Policy (MPP)")
-        award = next(item for item in mpp["awards"]["items"] if item["id"] == "hks-public-service-fellowships-mpp-mpa")
-        self.assertTrue(award["steps"])
-        self.assertTrue(award["documents"])
-        self.assertIn("2027-01-15", award["award_application_deadline"])
+    def test_harvard_draft_data_is_not_exposed_as_reviewed_admissions(self):
+        contract = admissions_catalog.get_public_contract("harvard-usa-cambridge")
+        self.assertEqual(contract["availability"], "legacy_unreviewed")
+        self.assertIsNone(contract["revision"])
+        with self.assertRaises(admissions_catalog.InstitutionNotFoundError):
+            admissions_catalog.resolve_context("harvard-usa-cambridge")
 
-    def test_mit_sloan_and_hbs_mba_programs_inherit_only_their_business_route_deadlines(self):
-        mit = get_university_by_id("mit-usa-cambridge", localized=True)
-        mit_mba = next(
-            row for row in mit["coverage_by_program"]
-            if row["program_name"] == "Full-Time MBA (Master in Business Administration)"
-        )
-        self.assertEqual(mit_mba["deadline"]["status"], "exact_dated")
-        self.assertEqual(mit_mba["deadline"]["scope"], "program_specific")
-        self.assertEqual(mit_mba["deadline"]["source_url"], "https://mitsloan.mit.edu/mba/admissions/how-to-apply")
-        self.assertEqual(mit_mba["deadline"]["cycle"], "2027 entry")
-        self.assertEqual(mit_mba["deadline"]["verified_at"], "2026-09-24")
-        round_one = next(
-            row for row in mit_mba["deadline"]["values"]
-            if isinstance(row, dict) and row.get("deadline_type") == "round_1"
-        )
-        self.assertEqual((round_one["date"], round_one["time"], round_one["timezone"]),
+    def test_mit_sloan_rounds_are_route_scoped_and_hbs_remains_unreviewed(self):
+        mba = self.resolve("mit-usa-cambridge", "mit-sloan-mba-full-time", "mit_sloan_mba_admissions", "masters")
+        deadlines = self.fact(mba, "mit_sloan_mba_admissions-deadlines")
+        rounds = {row["deadline_type"]: row for row in deadlines["value"]}
+        self.assertEqual(set(rounds), {"round_1", "round_2"})
+        self.assertEqual((rounds["round_1"]["date"], rounds["round_1"]["time"], rounds["round_1"]["timezone"]),
                          ("2026-09-29", "15:00", "America/New_York"))
-        self.assertIn("mit-sloan-mba-full-time", round_one["program_ids"])
+        self.assertEqual((rounds["round_2"]["date"], rounds["round_2"]["time"], rounds["round_2"]["timezone"]),
+                         ("2027-01-12", "15:00", "America/New_York"))
+        self.assertEqual(deadlines["scope"]["route_ids"], ["mit_sloan_mba_admissions"])
+        self.assertIn("https://mitsloan.mit.edu/mba/admissions/how-to-apply", self.source_urls(mba, deadlines).values())
+        self.assertEqual(admissions_catalog.get_public_contract("harvard-usa-cambridge")["availability"], "legacy_unreviewed")
 
-        harvard = get_university_by_id("harvard-usa-cambridge", localized=True)
-        hbs_mba = next(
-            row for row in harvard["coverage_by_program"]
-            if row["program_name"] == "Business Administration (MBA)"
-        )
-        self.assertEqual(hbs_mba["deadline"]["status"], "exact_dated")
-        self.assertEqual(hbs_mba["deadline"]["scope"], "program_specific")
-        self.assertEqual(hbs_mba["deadline"]["source_url"], "https://www.hbs.edu/mba/admissions/application-dates")
-        self.assertEqual(hbs_mba["deadline"]["cycle"], "MBA Class of 2029; matriculating Fall 2027")
-        self.assertEqual(hbs_mba["deadline"]["verified_at"], "2026-09-23")
-        self.assertEqual(len(hbs_mba["deadline"]["values"]), 2)
-
-    def test_oxford_program_overseas_annual_fee_is_reported_with_program_provenance(self):
-        oxford = get_university_by_id("university-of-oxford-uk-oxford", localized=True)
-        program = next(
-            row for row in oxford["coverage_by_program"]
-            if row["program_name"] == "MSc in Advanced Computer Science"
-        )
-        fees = program["tuition_mandatory_fees"]
-        self.assertEqual(fees["status"], "available")
-        self.assertEqual(fees["scope"], "program_specific")
-        self.assertEqual(fees["source_url"], "https://www.ox.ac.uk/admissions/graduate/courses/msc-advanced-computer-science")
-        self.assertEqual(fees["cycle"], "2027-28 entry")
-        self.assertEqual(fees["values"]["home_annual_fee_gbp"], 20100)
-        self.assertEqual(fees["values"]["overseas_annual_fee_gbp"], 46350)
+    def test_oxford_program_fees_remain_outside_reviewed_runtime(self):
+        contract = admissions_catalog.get_public_contract("university-of-oxford-uk-oxford")
+        self.assertEqual(contract["availability"], "legacy_unreviewed")
+        self.assertIsNone(contract["study_option_count"])
+        self.assertEqual(contract["study_levels"], [])
 
     def test_mit_eecs_phd_funding_does_not_attach_to_other_doctorates(self):
-        mit = get_university_by_id("mit-usa-cambridge", localized=True)
-        eecs = next(row for row in mit["coverage_by_program"] if row["program_id"] == "mit-eecs-phd-course-6")
-        mechanical = next(row for row in mit["coverage_by_program"] if row["program_id"] == "mit-meche-phd-course-2")
-        self.assertEqual(eecs["requirements"]["scope"], "program_specific")
-        self.assertEqual(eecs["deadline"]["status"], "not_catalogued")
-        self.assertEqual(eecs["deadline"]["scope"], "not_catalogued")
-        self.assertEqual(eecs["deadline"]["publication_status"], "conflicting")
-        self.assertEqual(eecs["deadline"]["values"], [])
-        self.assertEqual(eecs["deadline"]["source_url"], "https://www.eecs.mit.edu/academics/graduate-programs/admission-process/")
-        self.assertEqual(eecs["tuition_mandatory_fees"]["status"], "available")
-        self.assertEqual(eecs["tuition_mandatory_fees"]["cycle"].split(";")[0], "2026-27 standard graduate full tuition per fall/spring term")
-        self.assertEqual([award["id"] for award in eecs["awards"]["items"]], ["mit-eecs-phd-funding"])
-        self.assertFalse(any(award["id"] == "mit-eecs-phd-funding" for award in mechanical["awards"]["items"]))
+        eecs = self.resolve("mit-usa-cambridge", "mit-eecs-phd-course-6", "mit_eecs_doctoral_admissions", "doctoral")
+        transportation = self.resolve("mit-usa-cambridge", "mit-transportation-phd", "mit_transportation_doctoral_admissions", "doctoral")
+        funding = self.fact(eecs, "reviewed-mit_eecs_doctoral_admissions-funding")
+        funding_unknown = self.fact(transportation, "transportation-doctoral-funding-unestablished")
+        self.assertEqual(funding["scope"]["option_ids"], ["mit-eecs-phd-course-6", "mit-eecs-scd"])
+        self.assertEqual(funding["scope"]["route_ids"], ["mit_eecs_doctoral_admissions"])
+        self.assertIn("https://www.eecs.mit.edu/academics/graduate-programs/admission-process/", self.source_urls(eecs, funding).values())
+        self.assertEqual(funding_unknown["publication_status"], "unknown")
+        self.assertNotIn("reviewed-mit_eecs_doctoral_admissions-funding", {row["id"] for row in transportation["facts"]})
+        self.assertIn("https://catalog.mit.edu/interdisciplinary/graduate-programs/transportation/", self.source_urls(transportation, funding_unknown).values())
 
     def test_mit_msms_keeps_current_cost_unknown_and_older_fee_as_reference(self):
-        mit = get_university_by_id("mit-usa-cambridge", localized=True)
-        msms = next(row for row in mit["coverage_by_program"] if row["program_id"] == "mit-sloan-msms")
-        self.assertEqual("2027-02-18", msms["deadline"]["values"][0]["date"])
-        fees = msms["tuition_mandatory_fees"]
-        self.assertEqual("not_catalogued", fees["status"])
-        self.assertEqual("unknown", fees["publication_status"])
-        self.assertEqual({}, fees["values"])
-        self.assertEqual(91892, fees["historical_price_facts"][0]["amount"])
-        self.assertEqual("tuition_and_mandatory_fee", fees["historical_price_facts"][0]["kind"])
+        msms = self.resolve("mit-usa-cambridge", "mit-sloan-msms", "mit_sloan_msms_admissions", "masters")
+        current = self.fact(msms, "mit-sloan-msms-price-1")
+        prior = self.fact(msms, "mit-sloan-msms-price-0")
+        self.assertEqual(current["publication_status"], "not_published")
+        self.assertEqual(current["value"]["publication_status"], "unknown")
+        self.assertIsNone(current["value"]["amount"])
+        self.assertEqual(prior["publication_status"], "published")
+        self.assertEqual(prior["review_status"], "superseded")
+        self.assertEqual(prior["value"]["amount"], 91892)
+        self.assertIn("2026-27", str(prior["value"]))
+        self.assertIn(prior["id"], msms["history"]["fact_ids"])
+        self.assertIn("https://mitsloan.mit.edu/msms/how-to-finance-your-mit-sloan-master-science-management-studies", self.source_urls(msms, current).values())
+        self.assertIn("https://mitsloan.mit.edu/msms/how-to-finance-your-mit-sloan-master-science-management-studies", self.source_urls(msms, prior).values())
 
-    def test_stanford_mba_fellowship_and_oxford_course_award_are_scoped(self):
-        stanford = get_university_by_id("stanford-university-usa-ca", localized=True)["coverage_by_program"]
-        mba = next(row for row in stanford if row["program_name"] == "Master of Business Administration (MBA)")
-        jd = next(row for row in stanford if row["program_name"] == "Juris Doctor (JD)")
-        fellowship = "stanford-gsb-need-based-mba-fellowship"
-        self.assertIn(fellowship, [award["id"] for award in mba["awards"]["items"]])
-        self.assertNotIn(fellowship, [award["id"] for award in jd["awards"]["items"]])
-
-        oxford = get_university_by_id("university-of-oxford-uk-oxford", localized=True)["coverage_by_program"]
-        award_id = "oxford-weidenfeld-hoffmann-2027"
-        for program_id in ("msc_advanced_computer_science_pgt", "mba_said_business_school_pgt", "bcl_bachelor_of_civil_law_pgt"):
-            program = next(row for row in oxford if row["program_id"] == program_id)
-            self.assertIn(award_id, [award["id"] for award in program["awards"]["items"]])
-        mcf = next(row for row in oxford if row["program_id"] == "msc_mathematical_and_computational_finance_pgt")
-        self.assertNotIn(award_id, [award["id"] for award in mcf["awards"]["items"]])
+    def test_stanford_mba_aid_is_option_scoped_and_oxford_remains_unreviewed(self):
+        mba = self.resolve("stanford-university-usa-ca", "stanford-option-gsb-mba", "professional-evidence:gsb_mba_admission", "professional")
+        jd = self.resolve("stanford-university-usa-ca", "stanford-option-law-jd", "professional-evidence:law_jd_admission", "professional")
+        aid = self.fact(mba, "professional-evidence:gsb_mba_aid_process")
+        self.assertEqual(aid["scope"]["option_ids"], ["stanford-option-gsb-mba"])
+        self.assertEqual(aid["scope"]["route_ids"], ["professional-evidence:gsb_mba_admission"])
+        self.assertIn("https://www.gsb.stanford.edu/programs/mba/tuition-financial-aid/application-process", self.source_urls(mba, aid).values())
+        self.assertNotIn(aid["id"], {row["id"] for row in jd["facts"]})
+        oxford = admissions_catalog.get_public_contract("university-of-oxford-uk-oxford")
+        self.assertEqual(oxford["availability"], "legacy_unreviewed")
 
     def test_scoped_route_deadlines_only_reach_the_named_program_and_keep_unpublished_status(self):
         university = {

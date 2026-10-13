@@ -64,7 +64,7 @@ export async function fetchCompareProfiles(ids, options = {}) {
 
     return { chances, rois };
   } catch (error) {
-    return fetchCompareProfilesIndividually(cleanIds, { apiBase, fetchImpl, profile });
+    return fetchCompareProfilesIndividually(cleanIds.filter(id => !REVIEWED_ADMISSIONS_IDS.has(id)), { apiBase, fetchImpl, profile });
   }
 }
 
@@ -186,6 +186,7 @@ import { formatPrice } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 
+  saveProfile,
   getExamDisplayName,
   formatExamValue,
 } from "../../utils.js";
@@ -223,6 +224,28 @@ import {
   renderTrackFundingBadge, 
 } from "../../university-detail-helpers.js";
 import { getFinanceForChoice } from "../university/render-sections.js";
+import { admissionsRequest, REVIEWED_ADMISSIONS_IDS } from "../university/admissions-controller.js";
+
+export function hasReviewedAdmissions(u) {
+  return u?.admissions_catalog?.availability === "reviewed" || REVIEWED_ADMISSIONS_IDS.has(String(u?.id || ""));
+}
+
+export async function fetchCompareStudyOptions(id, query = {}, options = {}) {
+  const params = new URLSearchParams({ search: query.search || "", page: query.page || 1, limit: 24 });
+  if (query.study_level) params.set("study_level", query.study_level);
+  const response = await (options.fetchImpl || fetch)(`${options.apiBase || ""}/universities/${encodeURIComponent(id)}/study-options?${params}`, { signal: options.signal });
+  if (!response.ok) throw new Error(`Study options HTTP ${response.status}`);
+  return response.json();
+}
+
+export async function fetchCompareAdmissionContext(id, context, profile, options = {}) {
+  const response = await (options.fetchImpl || fetch)(`${options.apiBase || ""}/universities/${encodeURIComponent(id)}/admissions-context`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, signal: options.signal,
+    body: JSON.stringify(admissionsRequest(profile, context, id)),
+  });
+  if (!response.ok) throw new Error(`Admissions context HTTP ${response.status}`);
+  return response.json();
+}
 
 export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
@@ -251,6 +274,7 @@ function firstObject(...values) {
 }
 
 export function comparePublishedAdmission(u, compareAdmissionChoices = null) {
+  if (hasReviewedAdmissions(u)) return { value: null, scope: "", audience: "", cycle: "", source: "", sourceUrl: "", verifiedAt: "" };
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   const universityWide = firstObject(u?.academics?.admissions?.university_wide);
   const fallbackMeta = firstObject(u?.academics?.acceptance_rate_percent_meta);
@@ -282,6 +306,7 @@ export function compareAcceptanceText(u, compareAdmissionChoices = null) {
 }
 
 export function compareAidText(u) {
+  if (hasReviewedAdmissions(u)) return t("common.na", "N/A");
   const grants = getGrantsFromCategories(u?.admission_categories);
   if (Array.isArray(grants) && grants.length > 0) {
     const names = Array.from(
@@ -302,6 +327,7 @@ function isBachelorStudyLevel(level) {
 }
 
 export function compareBachelorPrograms(u) {
+  if (hasReviewedAdmissions(u)) return [];
   const programs = Array.isArray(u?.academics?.programs) ? u.academics.programs : [];
   return programs.filter((program) => {
     const levels = Array.isArray(program?.study_levels) ? program.study_levels : [];
@@ -348,6 +374,7 @@ export function compareStudyModeText(u) {
 }
 
 export function compareAdmissionOptionEntries(u) {
+  if (hasReviewedAdmissions(u)) return [];
   const choices = getAdmissionChoicesFromCategories(u?.admission_categories);
   return choices.map((option, choiceIdx) => ({
     option,
@@ -461,7 +488,15 @@ export function readCompareAdmissionChoices() {
   try {
     const raw = JSON.parse(localStorage.getItem(COMPARE_ADMISSION_CHOICES_KEY) || "{}");
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return new Map();
-    return new Map(Object.entries(raw)
+    const retained = Object.fromEntries(Object.entries(raw).filter(([id]) => !REVIEWED_ADMISSIONS_IDS.has(id)));
+    const resetIds = Object.keys(raw).filter(id => REVIEWED_ADMISSIONS_IDS.has(id));
+    if (resetIds.length) {
+      try { localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(retained)); }
+      catch (error) { console.warn("Failed to persist the comparison selection reset; obsolete choices are ignored for this session."); }
+      const profile = loadProfile();
+      saveProfile({ ...profile, admissionChoiceResetNotices: Array.from(new Set([...(profile.admissionChoiceResetNotices || []), ...resetIds])) });
+    }
+    return new Map(Object.entries(retained)
       .map(([id, selection]) => [String(id || "").trim(), normalizeCompareAdmissionSelection(selection)])
       .filter(([id, selection]) => id && selection));
   } catch (e) {
@@ -506,6 +541,7 @@ export function compareSelectedAdmissionOption(u, compareAdmissionChoices = null
 }
 
 export function compareSelectedFinance(u, compareAdmissionChoices = null) {
+  if (hasReviewedAdmissions(u)) return {};
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   return getFinanceForChoice(option, u?.finance) || {};
 }
@@ -517,6 +553,7 @@ export function compareSelectedAnnualCost(u, compareAdmissionChoices = null) {
 }
 
 export function compareSelectedCostContext(u, compareAdmissionChoices = null) {
+  if (hasReviewedAdmissions(u)) return { min: null, max: null, currency: "", academicYear: "", feeStatus: "", scope: "", source: "", sourceUrl: "", verifiedAt: "" };
   const finance = compareSelectedFinance(u, compareAdmissionChoices);
   const fallbackFact = firstObject(u?.fact_provenance?.facts?.tuition_total_cost_year_usd);
   const total = compareSelectedAnnualCost(u, compareAdmissionChoices);
@@ -566,6 +603,7 @@ export function compareCostContextText(context) {
 }
 
 export function compareAidPolicyText(u) {
+  if (hasReviewedAdmissions(u)) return t("common.na", "N/A");
   const aid = firstObject(u?.finance?.financial_aid);
   if (!Object.keys(aid).length) return t("common.na", "N/A");
   const parts = [];
@@ -583,6 +621,7 @@ export function compareAidPolicyText(u) {
 }
 
 export function compareUndergraduateStructureText(u) {
+  if (hasReviewedAdmissions(u)) return t("common.na", "N/A");
   const structure = firstObject(u?.academics?.undergraduate_structure);
   const model = String(structure?.model || "").trim().toLowerCase();
   const modelLabel = model === "liberal_arts_then_concentration"
@@ -738,10 +777,12 @@ export function compareCampusAreaText(value) {
 }
 
 export function compareBachelorProgramCount(u) {
+  if (hasReviewedAdmissions(u)) return null;
   return compareBachelorPrograms(u).length;
 }
 
 export function compareLanguageCount(u) {
+  if (hasReviewedAdmissions(u)) return null;
   const langs = new Set();
   compareBachelorPrograms(u).forEach((program) => {
     const raw = program?.language;
@@ -781,6 +822,7 @@ export function compareMajorTagCount(u) {
 }
 
 export function compareAidScore(u) {
+  if (hasReviewedAdmissions(u)) return null;
   const grants = getGrantsFromCategories(u?.admission_categories);
   return Array.isArray(grants) ? grants.length : 0;
 }

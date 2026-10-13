@@ -340,6 +340,7 @@
                   </select>
                 </div>
               </div>
+              <div id="admissionEvidenceFields"></div>
             </article>
 
           </div>
@@ -439,6 +440,11 @@
                   />
                 </div>
 
+                <div class="profile-field">
+                  <label for="examTakenOnInput" data-i18n="profile.evidence.test_date">Test date (optional)</label>
+                  <input id="examTakenOnInput" class="profile-input" type="date" />
+                </div>
+
                 <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
               </div>
 
@@ -504,6 +510,11 @@
                   placeholder="Score (e.g. 7.5)"
                   data-i18n-placeholder="profile.placeholder.lang_score"
                 />
+              </div>
+
+              <div id="langExamTakenOnContainer" class="profile-lang-conditional lang-control-item" hidden>
+                <label class="mini-label" for="langExamTakenOn" data-i18n="profile.evidence.test_date">Test date (optional)</label>
+                <input id="langExamTakenOn" class="profile-input" type="date" />
               </div>
 
               <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>

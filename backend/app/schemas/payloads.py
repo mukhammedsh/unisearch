@@ -4,6 +4,12 @@ from typing import Any, Dict, List, Literal, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator, model_validator
 
+from app.schemas.admission_evidence import (
+    InstitutionalEvidenceInput,
+    LanguageEvidence,
+    validate_admission_date,
+)
+
 
 MAX_LIST_ITEMS = 50
 MAX_DETAILS_KEYS = 32
@@ -65,6 +71,7 @@ class ProfileExamInput(BaseModel):
     raw_value: Optional[str] = Field(default=None, max_length=128)
     display_value: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
+    taken_on: Optional[str] = Field(default=None, max_length=10)
 
     @field_validator("id", "exam", "raw_value", "display_value", mode="before")
     @classmethod
@@ -75,6 +82,11 @@ class ProfileExamInput(BaseModel):
     @classmethod
     def _validate_details(cls, value: Any) -> Dict[str, Any]:
         return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
+
+    @field_validator("taken_on", mode="before")
+    @classmethod
+    def _validate_taken_on(cls, value: Any) -> Optional[str]:
+        return validate_admission_date(value)
 
     @model_validator(mode="after")
     def _ensure_exam_id(self) -> "ProfileExamInput":
@@ -96,6 +108,7 @@ class ProfileLanguageInput(BaseModel):
     raw_value: Optional[str] = Field(default=None, max_length=128)
     display_value: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
+    taken_on: Optional[str] = Field(default=None, max_length=10)
 
     @field_validator("code", "exam", "raw_value", "display_value", mode="before")
     @classmethod
@@ -107,8 +120,15 @@ class ProfileLanguageInput(BaseModel):
     def _validate_details(cls, value: Any) -> Dict[str, Any]:
         return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
 
+    @field_validator("taken_on", mode="before")
+    @classmethod
+    def _validate_taken_on(cls, value: Any) -> Optional[str]:
+        return validate_admission_date(value)
+
     @model_validator(mode="after")
     def _ensure_language_shape(self) -> "ProfileLanguageInput":
+        if self.kind != "exam" and self.taken_on is not None:
+            raise ValueError("taken_on is only valid for language exam entries")
         if not self.code:
             raise ValueError("Each language entry must include 'code'")
         if self.kind == "cefr" and self.level is None:
@@ -149,6 +169,8 @@ class ProfilePayload(BaseModel):
     selectedAdmissionChoices: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     exams: List[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: List[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
+    language_evidence: List[LanguageEvidence] = Field(default_factory=list, max_length=10)
+    institutional_evidence: List[InstitutionalEvidenceInput] = Field(default_factory=list, max_length=20)
 
     @field_validator("major", "studyMode", "fundingType", mode="before")
     @classmethod
@@ -225,6 +247,8 @@ class ProfilePayload(BaseModel):
                 raise ValueError("selectedAdmissionChoices entry has too many keys")
             fields = {
                 "programId": (128, _strip_or_empty(selection.get("programId"))),
+                "studyOptionId": (128, _strip_or_empty(selection.get("studyOptionId"))),
+                "applicationRouteId": (256, _strip_or_empty(selection.get("applicationRouteId"))),
                 "programName": (200, _strip_or_empty(selection.get("programName"))),
                 "categoryId": (128, _strip_or_empty(selection.get("categoryId"))),
                 "requirementProfileId": (128, _strip_or_empty(selection.get("requirementProfileId"))),
@@ -235,7 +259,23 @@ class ProfilePayload(BaseModel):
                 if len(text) > max_length:
                     raise ValueError(f"{field} exceeds maximum allowed length ({max_length} chars)")
             normalized = {field: text for field, (_limit, text) in fields.items() if text}
-            if normalized.get("choiceKey") or normalized.get("programId"):
+            for field, allowed in (
+                ("studyLevel", {"", "undergraduate", "masters", "doctoral", "professional"}),
+                ("applicantRoute", {"", "first_year", "transfer", "graduate"}),
+                ("feeStatusContext", {"unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"}),
+            ):
+                if field not in selection:
+                    continue
+                text = selection[field]
+                if not isinstance(text, str) or text.strip() not in allowed:
+                    raise ValueError(f"Invalid {field} in selectedAdmissionChoices")
+                normalized[field] = text.strip()
+            if "intendedEntryCycle" in selection:
+                cycle = selection["intendedEntryCycle"]
+                if not isinstance(cycle, str) or len(cycle.strip()) > 40:
+                    raise ValueError("intendedEntryCycle must be a string of at most 40 characters")
+                normalized["intendedEntryCycle"] = cycle.strip()
+            if any(normalized.get(key) for key in ("choiceKey", "programId", "studyOptionId", "applicationRouteId")):
                 out[uni] = normalized
         return out
 
@@ -323,6 +363,7 @@ class ExamValidateRequest(BaseModel):
     score: Optional[Union[float, int, str]] = None
     raw_value: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
+    taken_on: Optional[str] = Field(default=None, max_length=10)
 
     @field_validator("score", mode="before")
     @classmethod
@@ -355,6 +396,11 @@ class ExamValidateRequest(BaseModel):
     def _validate_details(cls, value: Any) -> Dict[str, Any]:
         return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
 
+    @field_validator("taken_on", mode="before")
+    @classmethod
+    def _validate_taken_on(cls, value: Any) -> Optional[str]:
+        return validate_admission_date(value)
+
     @model_validator(mode="after")
     def _ensure_exam_validate_shape(self) -> "ExamValidateRequest":
         if not self.exam:
@@ -375,6 +421,7 @@ class LanguageValidateRequest(BaseModel):
     score: Optional[Union[float, int, str]] = None
     raw_value: Optional[str] = Field(default=None, max_length=128)
     details: Optional[Dict[str, Any]] = None
+    taken_on: Optional[str] = Field(default=None, max_length=10)
 
     @field_validator("score", mode="before")
     @classmethod
@@ -402,8 +449,15 @@ class LanguageValidateRequest(BaseModel):
     def _validate_details(cls, value: Any) -> Dict[str, Any]:
         return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
 
+    @field_validator("taken_on", mode="before")
+    @classmethod
+    def _validate_taken_on(cls, value: Any) -> Optional[str]:
+        return validate_admission_date(value)
+
     @model_validator(mode="after")
     def _ensure_language_validation_shape(self) -> "LanguageValidateRequest":
+        if self.kind != "exam" and self.taken_on is not None:
+            raise ValueError("taken_on is only valid for language exam entries")
         if self.kind == "cefr" and self.level is None and not self.label:
             raise ValueError("kind='cefr' requires level or label")
         if self.kind == "exam":

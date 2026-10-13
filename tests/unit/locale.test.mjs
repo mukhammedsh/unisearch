@@ -34,8 +34,10 @@ describe("locale.js", () => {
     it("returns supported language codes unchanged", () => {
       assert.equal(normalizeUiLanguageForApi("eng"), "eng");
       assert.equal(normalizeUiLanguageForApi("rus"), "rus");
+      assert.equal(normalizeUiLanguageForApi("kaz"), "kaz");
       assert.equal(normalizeUiLanguageForApi("  ENG  "), "eng");
       assert.equal(normalizeUiLanguageForApi("RUS"), "rus");
+      assert.equal(normalizeUiLanguageForApi("KAZ"), "kaz");
     });
 
     it("normalizes locale codes with prefix matching", () => {
@@ -43,6 +45,8 @@ describe("locale.js", () => {
       assert.equal(normalizeUiLanguageForApi("en-GB"), "eng");
       assert.equal(normalizeUiLanguageForApi("ru-RU"), "rus");
       assert.equal(normalizeUiLanguageForApi("ru-KZ"), "rus");
+      assert.equal(normalizeUiLanguageForApi("kk-KZ"), "kaz");
+      assert.equal(normalizeUiLanguageForApi("kaz-KZ"), "kaz");
     });
 
     it("returns empty string for unsupported or empty input", () => {

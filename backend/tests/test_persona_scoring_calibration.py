@@ -1,7 +1,7 @@
 import unittest
 
 from app.services import universities as uni_service
-from app.services.ai_scoring import estimate_uni_chance
+from app.services.ai_scoring import estimate_uni_chance, sort_universities_ai
 
 
 class TestPersonaScoringCalibration(unittest.TestCase):
@@ -26,11 +26,27 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             self.assertTrue(result.get("chanceAvailable"))
             self.assertTrue(0 <= float(score) <= 100)
 
+    def _assert_unselected_reviewed_fit(self, result, profile):
+        self.assertEqual(result["scoreMeaning"], "published_requirements_met_percent")
+        self.assertEqual(result["reason"], "applicability_unknown")
+        self.assertIsNone(result["overallChance"])
+        self.assertFalse(result["chanceAvailable"])
+        self.assertIsNone(result["context"]["study_option_id"])
+        self.assertIsNone(result["context"]["application_route_id"])
+        self.assertEqual(result["choices"][0]["details"]["checks"], [])
+        self.assertTrue(result["catalogRevision"])
+        match = sort_universities_ai([self.mit], profile)[0]["matchData"]
+        self.assertIsNone(match["requirementsGap"])
+        self.assertIsNone(match["affordabilityGap"])
+        self.assertIsNone(match["finalPriceUSD"])
+        self.assertFalse(match["selectedByUser"])
+        self.assertAlmostEqual(match["finalScore"], match["preferenceMismatch"])
+
     def test_alexey_german_budget_persona(self):
         """
         Alexey: GPA 3.40, no SAT, IELTS 6.5, budget $10,000.
-        Should qualify for TUM (Germany) with medium chance,
-        but be filtered out at MIT and NU due to missing SAT.
+        TUM and NU retain their published-check behavior.
+        MIT requires a reviewed selection before assessing the applicant.
         """
         profile = {
             "locale": "eng",
@@ -44,20 +60,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {}
         }
 
-        # 1. MIT (requires SAT)
+        # 1. MIT has no selected option or route.
         res_mit = estimate_uni_chance(self.mit, profile)
-        self._assert_fit_contract(res_mit)
+        self._assert_unselected_reviewed_fit(res_mit, profile)
         self.assertIsNone(res_mit.get("overallChance"))
-        self.assertEqual("missing_evidence", res_mit.get("reason"))
-        first_year = next(choice for choice in res_mit["choices"] if choice["categoryId"] == "mit_regular")
-        self.assertEqual(
-            [{"type": "required_exam_alternative", "ids": ["SAT", "ACT"]}],
-            first_year["missingEvidence"],
-        )
-        self.assertEqual(
-            {"exam": "SAT or ACT", "minimum": None, "provided": None, "status": "missing"},
-            {key: first_year["details"]["checks"][0][key] for key in ("exam", "minimum", "provided", "status")},
-        )
 
         # 2. TUM (meets requirements)
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -89,7 +95,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         # 1. MIT
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
-        self._assert_fit_contract(res_mit)
+        self._assert_unselected_reviewed_fit(res_mit, profile)
         self.assertIsNone(chance_mit)
 
         # 2. TUM
@@ -103,8 +109,8 @@ class TestPersonaScoringCalibration(unittest.TestCase):
     def test_dias_average_kazakh_persona(self):
         """
         Dias: GPA 3.28, SAT 1350, IELTS 6.0, budget $15,000.
-        Does not meet strict language or score thresholds for MIT and TUM.
-        At NU, fails published minimum requirements.
+        MIT remains unresolved without a selected route.
+        NU can compare the provided language score against its published minimum.
         """
         profile = {
             "locale": "eng",
@@ -122,7 +128,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 1. MIT
         res_mit = estimate_uni_chance(self.mit, profile)
-        self._assert_fit_contract(res_mit)
+        self._assert_unselected_reviewed_fit(res_mit, profile)
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -158,14 +164,14 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         # 1. MIT has admitted-score distributions but no published first-year minimum thresholds.
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
-        self._assert_fit_contract(res_mit)
+        self._assert_unselected_reviewed_fit(res_mit, profile)
         self.assertIsNone(chance_mit)
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
         self._assert_fit_contract(res_tum)
 
-        # 3. NU (Abay Kunanbayev grant enables studying with $0 budget)
+        # 3. NU does not infer an awarded grant from a zero budget.
         res_nu = estimate_uni_chance(self.nu, profile)
         self._assert_fit_contract(res_nu)
 
@@ -191,10 +197,10 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             "selectedAdmissionChoices": {}
         }
 
-        # 1. MIT provides no published minimum checks for this first-year route.
+        # 1. MIT does not apply first-year policies without the selected context.
         res_mit = estimate_uni_chance(self.mit, profile)
         chance_mit = res_mit.get("overallChance")
-        self._assert_fit_contract(res_mit)
+        self._assert_unselected_reviewed_fit(res_mit, profile)
         self.assertIsNone(chance_mit)
 
         # 2. TUM
@@ -222,15 +228,8 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 1. MIT
         res_mit = estimate_uni_chance(self.mit, profile)
-        self._assert_fit_contract(res_mit)
+        self._assert_unselected_reviewed_fit(res_mit, profile)
         self.assertIsNone(res_mit.get("overallChance"))
-        self.assertEqual("missing_evidence", res_mit.get("reason"))
-        first_year = next(choice for choice in res_mit["choices"] if choice["categoryId"] == "mit_regular")
-        self.assertEqual(
-            [{"type": "required_exam_alternative", "ids": ["SAT", "ACT"]}],
-            first_year["missingEvidence"],
-        )
-        self.assertEqual("missing", first_year["details"]["checks"][0]["status"])
 
         # 2. TUM
         res_tum = estimate_uni_chance(self.tum, profile)
@@ -239,6 +238,41 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
         self._assert_fit_contract(res_nu)
+
+    def test_mit_internal_bcs_verified_failures_are_zero_and_missing_evidence_is_unknown(self):
+        profile = {
+            "selectedAdmissionChoices": {self.mit["id"]: {
+                "studyOptionId": "mit-course-6-9p-meng",
+                "applicationRouteId": "mit_bcs_meng_admissions",
+                "studyLevel": "masters",
+                "applicantRoute": "graduate",
+                "intendedEntryCycle": "2027 entry",
+                "feeStatusContext": "unknown",
+            }},
+            "institutional_evidence": [
+                {"kind": "enrollment", "university_id": self.mit["id"], "program_id": "mit-bs-6-9",
+                 "status": "enrolled", "major_units": 101, "completed_major_subjects": 8},
+                {"kind": "gpa", "university_id": self.mit["id"], "program_id": "mit-bs-6-9",
+                 "metric": "technical", "value": 4.24, "scale": 5},
+                {"kind": "gpa", "university_id": self.mit["id"], "program_id": "mit-bs-6-9",
+                 "metric": "overall", "value": 3.99, "scale": 5},
+            ],
+        }
+        result = estimate_uni_chance(self.mit, profile)
+        self.assertEqual(result["overallChance"], 0)
+        self.assertTrue(result["chanceAvailable"])
+        self.assertEqual(result["reason"], "requirements_not_met")
+        measurable = [row for row in result["choices"][0]["details"]["checks"] if row.get("measurable")]
+        self.assertEqual({row["checkId"] for row in measurable}, {"technical-gpa", "overall-gpa", "major-subject-units"})
+        self.assertTrue(all(row["status"] == "unmet" and row["sourceIds"] for row in measurable))
+        self.assertTrue(all(row["sourceRule"]["value"] for row in measurable))
+        profile["institutional_evidence"].pop()
+        incomplete = estimate_uni_chance(self.mit, profile)
+        self.assertIsNone(incomplete["overallChance"])
+        self.assertFalse(incomplete["chanceAvailable"])
+        self.assertEqual(incomplete["reason"], "missing_evidence")
+        self.assertTrue(any(row.get("checkId") == "overall-gpa"
+                            for row in incomplete["choices"][0]["missingEvidence"]))
 
 
 if __name__ == "__main__":

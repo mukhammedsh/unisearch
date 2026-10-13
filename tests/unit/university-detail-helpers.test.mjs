@@ -26,6 +26,7 @@ global.fetch = async (url) => {
 
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { loadProfile, saveProfile } = await import("../../frontend/javascript/utils/persistence.js");
+const { renderAdmissionsContext } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 const { EXAM_CONFIG } = await import("../../frontend/javascript/utils/config.js");
 const {
   admissionChoiceKey,
@@ -288,34 +289,34 @@ test("a single scoped published range keeps its currency in the summary and fina
   assert.match(container.innerHTML, /Estimated cost before aid/);
 });
 
-test("published MBAn tuition is shown as gross tuition for paid and fellowship options", () => {
+test("published program tuition is shown as gross tuition for paid and fellowship options", () => {
   setLanguage("eng", { persist: false, emit: false });
   const profileKey = "unisearch_profile";
   const previousProfile = localStorage.getItem(profileKey);
   localStorage.setItem(profileKey, JSON.stringify({ studyLevel: "Master" }));
-  window.location.search = "?admission_program=sloan-mban";
+  window.location.search = "?admission_program=analytics-mban";
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const priceEl = { innerHTML: "", textContent: "" };
   const university = {
-    id: "mit-usa-cambridge",
+    id: "sample-university",
     finance: { currency: "USD", scholarships_and_funding: [] },
     academics: { programs: [{
-      course_number: "Sloan MBAn",
-      id: "sloan-mban",
+      course_number: "Analytics MBAn",
+      id: "analytics-mban",
       name: "Master of Business Analytics (MBAn)",
       tuition_year_usd: 96884,
       currency: "USD",
       tuition_cycle: "2026-27 published annual tuition, excluding summer tuition subsidy; 2027 entry rate not yet stated",
-      tuition_source_url: "https://mitsloan.mit.edu/master-of-business-analytics/admissions/tuition-and-financial-aid",
+      tuition_source_url: "https://www.example.edu/analytics/tuition-and-aid",
     }] },
     admission_categories: [{
-      id: "mit_sloan_mban_admissions",
-      label: "MIT Sloan Master of Business Analytics (MBAn)",
+      id: "analytics-mban-admissions",
+      label: "Master of Business Analytics (MBAn)",
       scope: "program",
       study_level: "Master",
-      program_ids: ["Sloan MBAn"],
+      program_ids: ["analytics-mban"],
       requirement_profiles: [{
-        id: "mit_sloan_mban_profile",
+        id: "analytics-mban-profile",
         label: "MBAn Applicant Profile",
         funding_options: [
           { id: "paid", label: "Self-funded", funding_type: "paid" },
@@ -332,7 +333,7 @@ test("published MBAn tuition is shown as gross tuition for paid and fellowship o
     assert.match(container.innerHTML, /potential awards are not deducted/);
     assert.equal((container.innerHTML.match(/Published tuition \/ year/g) || []).length, 2);
     assert.doesNotMatch(container.innerHTML, /Estimated cost before aid|Total \/ year/);
-    assert.match(container.innerHTML, /master-of-business-analytics\/admissions\/tuition-and-financial-aid/);
+    assert.match(container.innerHTML, /analytics\/tuition-and-aid/);
     assert.doesNotMatch(container.innerHTML, /\$74,884/);
     assert.doesNotMatch(priceEl.innerHTML, /\$96,884/);
 
@@ -369,38 +370,51 @@ test("overview scopes acceptance-rate label to undergraduate metadata", () => {
   assert.doesNotMatch(render("eng", "graduate_institution_wide"), /Undergraduate acceptance rate/);
 });
 
-test("MIT guest finance uses the selected graduate program and keeps unrelated tuition and aid unknown", () => {
+test("reviewed overview shows institution facts without a university-wide admission rate", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "" };
+  renderOverviewSection({
+    container, includeAdmissionRate: false, officialRank: true, rankStatus: "official",
+    acceptanceRate: 4.56, acceptanceMeta: {},
+    university: { rank: 1, student_count: 12000, academics: { formats: ["Full-time"] } },
+  });
+  assert.match(container.innerHTML, /#1/);
+  assert.match(container.innerHTML, /12,000/);
+  assert.doesNotMatch(container.innerHTML, /Acceptance Rate|Undergraduate acceptance rate|4\.56%|NaN/);
+});
+
+test("legacy finance uses the selected graduate program and keeps unrelated tuition and aid unknown", () => {
   setLanguage("eng", { persist: false, emit: false });
   const profileKey = "unisearch_profile";
   const previousProfile = localStorage.getItem(profileKey);
   localStorage.removeItem(profileKey);
-  const program = { id: "mit-mfin", name: "Master of Finance", study_levels: ["Master"] };
+  const program = { id: "sample-mfin", name: "Master of Finance", study_levels: ["Master"] };
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const scholarshipContainer = { innerHTML: "" };
   const priceEl = { innerHTML: "", textContent: "" };
   const university = {
-    id: "mit-usa-cambridge",
+    id: "sample-university",
     location: { country: "USA" },
     finance: {
       currency: "USD",
       total_cost_year_usd: 100000,
-      scope: "MIT undergraduate cost of attendance",
+      scope: "Undergraduate cost of attendance",
       undergraduate_aid_policy: { need_blind_domestic: true, need_blind_international: true, meets_full_demonstrated_need: true },
       doctorate_funding_guarantee: { notes: "Doctoral funding information" },
       scholarships_and_funding: [
-        { id: "undergraduate-award", name: "Undergraduate award", study_level: "Bachelor", program_ids: ["mit-bachelor"] },
-        { id: "mfin-award", name: "MFin fellowship", study_level: "Master", program_ids: ["mit-mfin"] },
+        { id: "undergraduate-award", name: "Undergraduate award", study_level: "Bachelor", program_ids: ["sample-bachelor"] },
+        { id: "mfin-award", name: "MFin fellowship", study_level: "Master", program_ids: ["sample-mfin"] },
       ],
     },
     academics: { programs: [program] },
     admission_categories: [
-      { id: "mit-undergraduate", label: "MIT Undergraduate", scope: "program", study_levels: ["Bachelor"], program_ids: ["mit-bachelor"] },
+      { id: "undergraduate", label: "Undergraduate", scope: "program", study_levels: ["Bachelor"], program_ids: ["sample-bachelor"] },
       {
-        id: "mit-mfin-route",
-        label: "MIT Sloan Master of Finance",
+        id: "sample-mfin-route",
+        label: "Master of Finance",
         scope: "program",
         study_levels: ["Master"],
-        program_ids: ["mit-mfin"],
+        program_ids: ["sample-mfin"],
         requirement_profiles: [{ id: "mfin-profile", label: "Applicant", funding_options: [{ id: "paid", label: "Self-funded", funding_type: "paid" }] }],
       },
     ],
@@ -408,12 +422,12 @@ test("MIT guest finance uses the selected graduate program and keeps unrelated t
 
   try {
     selectAdmissionProgram(university, program);
-    window.location.search = "?admission_program=mit-mfin";
+    window.location.search = "?admission_program=sample-mfin";
     renderFinanceSection({ annualCostForTrack: () => null, container, priceEl, scholarshipContainer, university });
 
-    assert.match(container.innerHTML, /MIT Sloan Master of Finance/);
+    assert.match(container.innerHTML, /Master of Finance/);
     assert.match(container.innerHTML, /Total cost unknown/);
-    assert.doesNotMatch(container.innerHTML, /MIT Undergraduate|\$100,000|Need-Blind|Doctoral funding information/);
+    assert.doesNotMatch(container.innerHTML, /Undergraduate|\$100,000|Need-Blind|Doctoral funding information/);
     assert.doesNotMatch(scholarshipContainer.innerHTML, /Undergraduate award/);
     assert.match(scholarshipContainer.innerHTML, /MFin fellowship/);
     assert.doesNotMatch(priceEl.innerHTML, /\$100,000/);
@@ -424,43 +438,44 @@ test("MIT guest finance uses the selected graduate program and keeps unrelated t
   }
 });
 
-test("MIT deadlines follow the selected program", () => {
+test("legacy deadlines follow the selected program", () => {
   setLanguage("eng", { persist: false, emit: false });
-  const mfin = { id: "mit-mfin", name: "Master of Finance", study_levels: ["Master", "Doctorate"] };
-  const physics = { id: "mit-physics", name: "Physics PhD", study_levels: ["Doctorate"] };
-  const unreviewedProgram = { id: "mit-management", name: "Management Program", study_levels: ["Master"] };
+  const mfin = { id: "sample-mfin", name: "Master of Finance", study_levels: ["Master", "Doctorate"] };
+  const physics = { id: "sample-physics", name: "Physics PhD", study_levels: ["Doctorate"] };
+  const unreviewedProgram = { id: "sample-management", name: "Management Program", study_levels: ["Master"] };
   const university = {
-    id: "mit-usa-cambridge",
+    id: "sample-university",
     academics: { programs: [mfin, physics, unreviewedProgram] },
     admission_categories: [
-      { id: "mfin-route", label: "MIT Sloan MFin", scope: "program", study_levels: ["Master", "Doctorate"], program_ids: ["mit-mfin"], application_deadline: "January 5, 2027" },
-      { id: "physics-route", label: "MIT Physics PhD", scope: "program", study_levels: ["Doctorate"], program_ids: ["mit-physics"], application_deadline: "December 15, 2026" },
+      { id: "mfin-route", label: "MFin route", scope: "program", study_levels: ["Master", "Doctorate"], program_ids: ["sample-mfin"], application_deadline: "January 5, 2027" },
+      { id: "physics-route", label: "Physics PhD route", scope: "program", study_levels: ["Doctorate"], program_ids: ["sample-physics"], application_deadline: "December 15, 2026" },
+      { id: "general-route", label: "General route", scope: "general", study_levels: ["Master"], application_deadline: "February 1, 2027" },
     ],
   };
   const container = { innerHTML: "", querySelectorAll: () => [] };
 
   selectAdmissionProgram(university, mfin);
-  window.location.search = "?admission_program=mit-mfin";
+  window.location.search = "?admission_program=sample-mfin";
   renderDeadlinesTabSection({ container, university });
-  assert.match(container.innerHTML, /MIT Sloan MFin/);
-  assert.doesNotMatch(container.innerHTML, /MIT Physics PhD/);
+  assert.match(container.innerHTML, /MFin route/);
+  assert.doesNotMatch(container.innerHTML, /Physics PhD route/);
   assert.doesNotMatch(container.innerHTML, /data-deadlines-level/);
 
   selectAdmissionProgram(university, physics);
-  window.location.search = "?admission_program=mit-physics";
+  window.location.search = "?admission_program=sample-physics";
   renderDeadlinesTabSection({ container, university });
-  assert.match(container.innerHTML, /MIT Physics PhD/);
-  assert.doesNotMatch(container.innerHTML, /MIT Sloan MFin/);
+  assert.match(container.innerHTML, /Physics PhD route/);
+  assert.doesNotMatch(container.innerHTML, /MFin route/);
 
   selectAdmissionProgram(university, unreviewedProgram);
-  window.location.search = "?admission_program=mit-management";
+  window.location.search = "?admission_program=sample-management";
   renderDeadlinesTabSection({ container, university });
-  assert.match(container.innerHTML, /Deadline details have not been reviewed for this program\./);
-  assert.doesNotMatch(container.innerHTML, /No deadlines published\./);
+  assert.match(container.innerHTML, /General route/);
+  assert.doesNotMatch(container.innerHTML, /MFin route|Physics PhD route|Deadline details have not been reviewed/);
   window.location.search = "";
 });
 
-test("undergraduate Finance compares profile income in its saved currency without implying eligibility", () => {
+test("archived legacy finance fixture compares profile income without implying eligibility", () => {
   setLanguage("eng", { persist: false, emit: false });
   const previousProfile = loadProfile();
   const previousWindowStorage = window.localStorage;
@@ -472,7 +487,7 @@ test("undergraduate Finance compares profile income in its saved currency withou
   };
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const university = {
-    id: "harvard-usa-cambridge",
+    id: "sample-legacy-finance",
     finance: {
       currency: "USD",
       financial_aid: {
@@ -481,7 +496,7 @@ test("undergraduate Finance compares profile income in its saved currency withou
       },
       scholarships_and_funding: [],
     },
-    admission_categories: [{ id: "harvard-college", label: "Harvard College", study_level: "Bachelor", funding_options: [{ id: "paid", funding_type: "paid" }] }],
+    admission_categories: [{ id: "sample-undergraduate", label: "Undergraduate", study_level: "Bachelor", funding_options: [{ id: "paid", funding_type: "paid" }] }],
   };
   const render = () => renderFinanceSection({ annualCostForTrack: () => null, container, university });
 
@@ -529,36 +544,31 @@ test("undergraduate Finance compares profile income in its saved currency withou
   }
 });
 
-test("Stanford undergraduate Finance shows the published outside-US income note", async () => {
+test("accepted Stanford aid source remains scoped to its shared route and does not promise an award", async () => {
   setLanguage("eng", { persist: false, emit: false });
-  const previousProfile = loadProfile();
-  const previousWindowStorage = window.localStorage;
-  const profileStorage = new Map();
-  window.localStorage = {
-    getItem: (key) => profileStorage.get(key) ?? null,
-    setItem: (key, value) => profileStorage.set(key, String(value)),
-    removeItem: (key) => profileStorage.delete(key),
+  const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+  const stanford = catalog.institutions.find((row) => row.institution.id === "stanford-university-usa-ca");
+  const selected_option = stanford.study_options.find((row) => row.id === "stanford-option-cs-bs");
+  const selected_route = stanford.application_routes.find((row) => row.id === "undergraduate-shared-evidence:stanford-first-year");
+  const fact = stanford.facts.find((row) => row.id === "undergraduate-shared-evidence:stanford-ug-aid-need-and-scholarship");
+  const sourceIds = new Set([...selected_option.source_ids, ...selected_route.source_ids, ...fact.source_ids]);
+  const context = {
+    selected_option,
+    selected_route,
+    facts: [fact],
+    fact_groups: { funding: [fact.id] },
+    sources: stanford.sources.filter((source) => sourceIds.has(source.id)),
+    reference_labels: Object.fromEntries(stanford.study_options.map((row) => [row.id, row.title])),
   };
-  saveProfile({ studyLevel: "Bachelor", familyIncomeAmount: 85000, familyIncomeCurrency: "USD" });
-  const container = { innerHTML: "", querySelectorAll: () => [] };
-  const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
-  const stanford = rows.find((row) => row.id === "stanford-university-usa-ca");
+  const html = renderAdmissionsContext(context, { domains: ["funding"], includeAssessment: false });
 
-  try {
-    renderFinanceSection({ annualCostForTrack: () => null, container, university: stanford });
-    assert.match(container.innerHTML, /may not apply to families living outside the United States/);
-    assert.match(container.innerHTML, /This comparison is context only/);
-
-    setLanguage("ru", { persist: false, emit: false });
-    container.innerHTML = "";
-    renderFinanceSection({ annualCostForTrack: () => null, container, university: stanford });
-    assert.match(container.innerHTML, /могут не подходить для семей, живущих за пределами США/);
-    assert.match(container.innerHTML, /Это сравнение даёт только общий контекст/);
-  } finally {
-    saveProfile(previousProfile);
-    window.localStorage = previousWindowStorage;
-    setLanguage("eng", { persist: false, emit: false });
-  }
+  assert.ok(selected_route.option_ids.includes(selected_option.id));
+  assert.match(html, /meets demonstrated need for admitted applicants, including international citizens/);
+  assert.match(html, /aid is not a guaranteed reduction until assessed and awarded/);
+  assert.match(html, /University-wide first-year undergraduate admission/);
+  assert.match(html, /href="https:\/\/admission\.stanford\.edu\/apply\/international\/"/);
+  assert.doesNotMatch(html, /income eligibility|net award amount/);
+  setLanguage("eng", { persist: false, emit: false });
 });
 
 test("a multi-program route requires every ID to match and tuition to agree", () => {
@@ -1279,7 +1289,7 @@ test("selected admission context puts course conditions first and keeps history 
   const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
   const fit = { scoreMeaning: "published_requirements_met_percent", chancePercent: 100, factors: [] };
   renderAdmissionSection({ container, university, annualCostForTrack: () => null, uniChanceByChoiceKey: new Map([["route::a-level",fit]]) });
-  assert.match(container.innerHTML, /Selected program/);
+  assert.match(container.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="computing"/);
   assert.equal((container.innerHTML.match(/Shared application description/g) || []).length, 1);
   assert.match(container.innerHTML, /A\*A\*A including Mathematics/);
   assert.match(container.innerHTML, /percentage covers numeric minimums only/);

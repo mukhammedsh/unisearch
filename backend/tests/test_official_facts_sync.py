@@ -119,6 +119,48 @@ class OfficialFactsSyncTests(unittest.TestCase):
         self.assertEqual(["https://example.edu/programs"], self._topic_urls(row, "formats"))
         self.assertEqual([], self._topic_urls(row, "obsolete_topic"))
 
+    def test_apply_official_facts_keeps_neutral_updates_but_skips_acceptance_for_catalog_owned_rows(self):
+        universities = [
+            {"id": "owned", "admissions_catalog_id": "owned"},
+            {"id": "legacy"},
+        ]
+        payload = {
+            "student_count": {
+                "value": 12345,
+                "source": "Example official facts",
+                "source_url": "https://example.edu/stats",
+            },
+            "acceptance_rate_percent": {
+                "value": 8.4,
+                "source": "Example admissions",
+                "source_url": "https://example.edu/admissions",
+            },
+            "description": {
+                "value": "Example University is an official demo institution for synchronization tests.",
+                "source_url": "https://example.edu/about",
+            },
+        }
+
+        apply_official_facts(
+            universities,
+            {"universities": {"owned": payload, "legacy": payload}},
+            "2026-10-13",
+        )
+        second = apply_official_facts(
+            universities,
+            {"universities": {"owned": payload, "legacy": payload}},
+            "2026-10-13",
+        )
+
+        owned, legacy = universities
+        self.assertEqual(0, second)
+        self.assertNotIn("academics", owned)
+        self.assertEqual(12345, owned["student_count"])
+        self.assertEqual("Example official facts", owned["fact_provenance"]["facts"]["student_count"]["source"])
+        self.assertEqual(payload["description"]["value"], owned["description"])
+        self.assertEqual("https://example.edu/stats", self._topic_urls(owned, "student_count")[0])
+        self.assertEqual(8.4, legacy["academics"]["acceptance_rate_percent"])
+
     def test_catalog_and_dataset_stay_in_sync(self):
         catalog = self._load_catalog()
         universities = self._load_universities()
@@ -146,16 +188,18 @@ class OfficialFactsSyncTests(unittest.TestCase):
             acceptance_payload = payload.get("acceptance_rate_percent")
             if isinstance(acceptance_payload, dict):
                 expected_rate = round(float(acceptance_payload["value"]), 2)
-                self.assertEqual(expected_rate, academics.get("acceptance_rate_percent"), uid)
                 self.assertEqual(expected_rate, round(float((facts.get("acceptance_rate_percent") or {}).get("value")), 2), uid)
+                if not row.get("admissions_catalog_id"):
+                    self.assertEqual(expected_rate, academics.get("acceptance_rate_percent"), uid)
                 meta = academics.get("acceptance_rate_percent_meta") or {}
-                self.assertEqual(acceptance_payload.get("source"), meta.get("source"), uid)
-                self.assertEqual(acceptance_payload.get("source_url"), meta.get("source_url"), uid)
-                self.assertEqual(acceptance_payload.get("verified_at"), meta.get("verified_at"), uid)
-                self.assertEqual(acceptance_payload.get("status"), meta.get("status"), uid)
-                self.assertEqual(acceptance_payload.get("confidence"), meta.get("confidence"), uid)
-                self.assertEqual(acceptance_payload.get("method"), meta.get("method"), uid)
-                self.assertEqual(acceptance_payload.get("basis"), meta.get("basis"), uid)
+                if not row.get("admissions_catalog_id"):
+                    self.assertEqual(acceptance_payload.get("source"), meta.get("source"), uid)
+                    self.assertEqual(acceptance_payload.get("source_url"), meta.get("source_url"), uid)
+                    self.assertEqual(acceptance_payload.get("verified_at"), meta.get("verified_at"), uid)
+                    self.assertEqual(acceptance_payload.get("status"), meta.get("status"), uid)
+                    self.assertEqual(acceptance_payload.get("confidence"), meta.get("confidence"), uid)
+                    self.assertEqual(acceptance_payload.get("method"), meta.get("method"), uid)
+                    self.assertEqual(acceptance_payload.get("basis"), meta.get("basis"), uid)
 
             early_salary_payload = payload.get("early_career_salary")
             if isinstance(early_salary_payload, dict):
@@ -317,11 +361,14 @@ class OfficialFactsSyncTests(unittest.TestCase):
         # 2. Re-running apply_official_facts must NOT reintroduce deprecated fields
         import copy
         copied_unis = copy.deepcopy(universities)
-        changed = apply_official_facts(copied_unis, catalog, verified_at="2026-03-31")
-        self.assertEqual(0, changed)
+        apply_official_facts(copied_unis, catalog, verified_at="2026-03-31")
+        second = apply_official_facts(copied_unis, catalog, verified_at="2026-03-31")
+        self.assertEqual(0, second)
 
         for row in copied_unis:
             uid = str(row.get("id") or "").strip()
+            if row.get("admissions_catalog_id"):
+                self.assertNotIn("academics", row, uid)
             outcomes = row.get("outcomes") or {}
             facts = ((row.get("fact_provenance") or {}).get("facts") or {})
             self.assertNotIn("average_early_career_salary_usd", outcomes, uid)

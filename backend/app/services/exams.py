@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Any, Dict, List, Optional, Union
 
 from app.services import exam_support
@@ -204,6 +205,8 @@ def _coerce_subject_breakdown_submission(
     component_scores = [_to_float(row.get("score")) for row in parsed_components]
     numeric_component_scores = [float(row) for row in component_scores if row is not None]
     if total_strategy == "components_only":
+        if not numeric_component_scores:
+            raise ValueError(f"{exam_key} requires at least one component score")
         total_score = None
     elif total_strategy == "use_parent_score":
         total_score = _validate_numeric_score(exam_key, cfg, score_raw if score_raw not in (None, "") else raw_value)
@@ -290,6 +293,8 @@ def coerce_exam_submission(
     score_raw: Any = None,
     raw_value: Any = None,
     details: Any = None,
+    taken_on: Any = None,
+    allow_total_only_sat: bool = False,
 ) -> Dict[str, Any]:
     """
     Coerce a raw exam submission into a canonical payload that scoring can use.
@@ -309,18 +314,39 @@ def coerce_exam_submission(
         raise ValueError(f"Unknown exam: {key}")
 
     cfg = EXAMS_CONFIG[key]
+    normalized_taken_on = None
+    if taken_on is not None:
+        taken_text = taken_on.isoformat() if isinstance(taken_on, date) else str(taken_on)
+        if len(taken_text) != 10 or taken_text[4:5] != "-" or taken_text[7:8] != "-":
+            raise ValueError("taken_on must be an ISO date (YYYY-MM-DD)")
+        try:
+            taken_date = date.fromisoformat(taken_text)
+        except ValueError as error:
+            raise ValueError("taken_on must be an ISO date (YYYY-MM-DD)") from error
+        normalized_taken_on = taken_date.isoformat()
+        valid_from = cfg.get("valid_from")
+        if valid_from and taken_date < date.fromisoformat(valid_from):
+            raise ValueError(f"{key} results before {valid_from} use an unsupported test format")
+
     mode = _input_mode(cfg)
 
     if mode == "grade_combo":
-        return _coerce_grade_combo_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
-    if mode == "band_select":
-        return _coerce_band_select_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
-    if mode == "subject_breakdown":
-        return _coerce_subject_breakdown_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
-    if mode == "flag" or str(cfg.get("type", "")).strip().lower() == "bool":
-        return {"exam": key, "score": _coerce_flag_score(key, score_raw if score_raw not in (None, "") else raw_value)}
-
-    return {"exam": key, "score": _validate_numeric_score(key, cfg, score_raw if score_raw not in (None, "") else raw_value)}
+        result = _coerce_grade_combo_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
+    elif mode == "band_select":
+        result = _coerce_band_select_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
+    elif mode == "subject_breakdown":
+        # Saved SAT totals can prove reported presence without reconstructing section scores.
+        if key == "SAT" and allow_total_only_sat and (details is None or details == {}):
+            result = {"exam": key, "score": _validate_numeric_score(key, cfg, score_raw if score_raw not in (None, "") else raw_value)}
+        else:
+            result = _coerce_subject_breakdown_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
+    elif mode == "flag" or str(cfg.get("type", "")).strip().lower() == "bool":
+        result = {"exam": key, "score": _coerce_flag_score(key, score_raw if score_raw not in (None, "") else raw_value)}
+    else:
+        result = {"exam": key, "score": _validate_numeric_score(key, cfg, score_raw if score_raw not in (None, "") else raw_value)}
+    if normalized_taken_on:
+        result["taken_on"] = normalized_taken_on
+    return result
 
 
 def normalize_exam_score(exam_key: Any, score_raw: Any) -> Optional[float]:

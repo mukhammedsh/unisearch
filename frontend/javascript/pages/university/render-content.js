@@ -33,6 +33,7 @@ export function renderOverviewSection({
   acceptanceMeta,
   acceptanceRate,
   container,
+  includeAdmissionRate = true,
   officialRank,
   rankStatus,
   university,
@@ -128,7 +129,7 @@ export function renderOverviewSection({
       </span>
       ${rankHtml}
     </div>
-    ${acceptanceRow}
+    ${includeAdmissionRate ? acceptanceRow : ""}
     <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
     <div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(t("common.no_data", "No data"))}</span></div>
     <div class="d-kv d-kv--last">
@@ -995,8 +996,6 @@ export function renderProgramsSection({
           const description = formatProgramValue("description", program.description);
           const sourceUrl = safeUrl(program.url || program.source_url);
           const catalogUrl = safeUrl(program.source_url);
-          const isMitUndergraduate = university?.id === "mit-usa-cambridge"
-            && programMatchesStudyLevel(program, "bachelor");
           const bodyId = `program-body-${displayIdx}`;
           const isOpen = item.key === storedOpenKey;
           const rows = [
@@ -1068,7 +1067,7 @@ export function renderProgramsSection({
               >
                 <span class="program-card__text">
                   <span class="program-card__kicker-row">
-                    ${university?.id === "mit-usa-cambridge" ? "" : `<span class="program-card__kicker">${escapeHtml(translateWord("program", "Program"))} ${displayIdx + 1}</span>`}
+                    <span class="program-card__kicker">${escapeHtml(translateWord("program", "Program"))} ${displayIdx + 1}</span>
                     ${item.isMajorMatch ? `<span class="program-card__major-badge">${escapeHtml(t("university.programs.major_badge", "Your major"))}</span>` : ""}
                   </span>
                   <span class="program-card__title">${escapeHtml(title)}</span>
@@ -1088,7 +1087,6 @@ export function renderProgramsSection({
                     `).join("")}
                   </div>` : ""}
                   ${renderSignalRows(matchedSignals)}
-                  ${isMitUndergraduate ? `<p class="program-card__route-note">${escapeHtml(t("admission.mit.undergraduate_target", "MIT first-year applicants apply to MIT as a whole and choose a major after the first year. This program is a study interest, not a separate admission target."))}</p>` : ""}
                   <div class="program-card__actions">
                     ${program.id ? `
                       <button type="button" class="program-card__admission-action" data-program-admission="${escapeHtmlAttr(String(program.id || ""))}">
@@ -1127,7 +1125,7 @@ export function renderProgramsSection({
           </div>
         `;
       })()}
-      ${university?.id === "mit-usa-cambridge" ? "" : `<div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, displayedCoverageProgram)}</div>`}
+      <div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, displayedCoverageProgram)}</div>
     `;
 
     const pendingCloseByCard = new WeakMap();
@@ -1305,7 +1303,6 @@ const QUALIFICATION_SCOPE_KEYS = new Map([
   ["All undergraduate courses at qualification-type level; course-specific grades and subjects are not checked here.", "university.qualification_guidance.scope.oxford_ib"],
   ["Qualification-type level only; course-specific thresholds are not checked here.", "university.qualification_guidance.scope.imperial_ib"],
   ["Contextual admissions guidance only; no country-level qualification acceptance or rejection is inferred.", "university.qualification_guidance.scope.contextual_review"],
-  ["MIT reviews international academic records in the context of the school and country. Its published guidance does not set a country-level acceptance decision for this credential.", "university.qualification_guidance.scope.mit_review"],
   ["Stanford says it considers international applications in the context of the school and country. This source does not publish a country-level acceptance decision for this credential.", "university.qualification_guidance.scope.stanford_review"],
   ["Harvard states that application requirements are the same for students attending high school inside or outside the United States; it does not publish a country-level diploma acceptance decision here.", "university.qualification_guidance.scope.harvard_review"],
   ["Oxford publishes country-specific school-leaving qualification decisions for undergraduate first-year entry. Course subject and grade requirements still apply.", "university.qualification_guidance.scope.oxford_review"],

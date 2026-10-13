@@ -1866,50 +1866,6 @@
   }
 }
 
-.mit-admission-context {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
-}
-
-.mit-admission-context > div {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
-
-.mit-admission-context__label {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.mit-admission-context h2,
-.mit-admission-context p {
-  margin: 0;
-}
-
-.mit-admission-context h2 {
-  color: var(--text);
-  font-size: var(--text-lg);
-  line-height: 1.35;
-}
-
-.mit-admission-context p {
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-.mit-admission-context a {
-  align-self: flex-start;
-  color: var(--accent);
-}
-
 .mit-admission-context__action,
 .program-card__admission-action {
   flex: 0 0 auto;
@@ -1931,17 +1887,9 @@
 }
 
 .mit-admission-context__action:focus-visible,
-.program-card__admission-action:focus-visible,
-.mit-admission-context a:focus-visible {
+.program-card__admission-action:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-}
-
-@media (max-width: 480px) {
-  .mit-admission-context {
-    flex-direction: column;
-    padding: 16px;
-  }
 }
 
 .admission-category-list {
@@ -7688,107 +7636,13 @@ body[data-page="university"],
   }
 }
 
-/* MIT pilot: keep the chosen course and its next action ahead of supporting data. */
-.university--mit #tab-programs .program-card__title {
-  font-size: var(--text-md);
-  font-weight: var(--font-weight-semibold);
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.university--mit #tab-programs .program-card__text {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: var(--space-3);
-}
-
-.university--mit #tab-programs .program-card__kicker-row {
-  display: contents;
-}
-
-.university--mit #tab-programs .program-card__major-badge {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
-}
-
-.university--mit #tab-programs .program-card__toggle {
-  min-height: 64px;
-}
-
-.university--mit #tab-programs .program-card__kicker-row:empty {
-  display: none;
-}
-
-.university--mit #tab-programs .program-card__summary {
-  white-space: normal;
-  grid-column: 1 / -1;
-  grid-row: 2;
-}
-
-@media (max-width: 768px) {
-  .university--mit #tab-programs .program-card__text {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .university--mit #tab-programs .program-card__major-badge {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: start;
-  }
-
-  .university--mit #tab-programs .program-card__summary {
-    grid-row: 3;
-  }
-}
-
-.university--mit #tab-admission .admission-category-list {
-  margin-top: var(--space-4);
-}
-
-.university--mit #tab-admission .admission-category-card {
-  display: block;
-  background: var(--surface-soft);
-}
-
-.university--mit #tab-admission details.admission-category-card > summary {
-  list-style: none;
-  cursor: pointer;
-}
-
-.university--mit #tab-admission details.admission-category-card > summary::-webkit-details-marker {
-  display: none;
-}
-
-.university--mit #tab-admission details.admission-category-card > summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.university--mit #tab-admission details.admission-category-card > :not(summary) {
-  margin-top: var(--space-4);
-}
-
-.university--mit #tab-admission .mit-route-chevron {
-  flex: none;
-  color: var(--text-muted);
-  transition: transform var(--motion-fast);
-}
-
-.university--mit #tab-admission details[open] .mit-route-chevron {
-  transform: rotate(180deg);
-}
-
-.mit-admission-analysis,
-.mit-deadline-calendar {
+.mit-admission-analysis {
   margin-top: var(--space-5);
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
 }
 
-.mit-admission-analysis > summary,
-.mit-deadline-calendar > summary {
+.mit-admission-analysis > summary {
   padding: var(--space-4);
   color: var(--text);
   font-size: var(--text-base);
@@ -7796,25 +7650,13 @@ body[data-page="university"],
   cursor: pointer;
 }
 
-.mit-admission-analysis > summary:focus-visible,
-.mit-deadline-calendar > summary:focus-visible {
+.mit-admission-analysis > summary:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.mit-admission-analysis > :not(summary),
-.mit-deadline-calendar > :not(summary) {
+.mit-admission-analysis > :not(summary) {
   margin: 0 var(--space-4) var(--space-4);
-}
-
-.mit-section-context {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-base);
-  background: var(--surface-soft);
 }
 
 .admission-decision-actions {
@@ -7822,173 +7664,4 @@ body[data-page="university"],
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-3);
-}
-
-.mit-section-context span {
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-}
-
-.mit-section-context strong {
-  color: var(--text);
-  font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
-}
-
-.university--mit #tab-deadlines .admissions-deadline-item {
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
-  box-shadow: none;
-}
-
-.university--mit #tab-deadlines .admissions-deadlines-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.university--mit #tab-deadlines .admissions-deadline-portal {
-  display: none;
-}
-
-.university--mit #tab-deadlines .admissions-deadline-name {
-  font-size: var(--text-md);
-  line-height: var(--leading-normal);
-}
-
-.university--mit #tab-deadlines .admissions-deadline-date {
-  font-size: var(--text-lg);
-  font-variant-numeric: tabular-nums;
-}
-
-.university--mit #tab-deadlines .deadline-calendar__day,
-.university--mit #tab-deadlines .deadline-calendar__blank {
-  min-height: 44px;
-}
-
-.university--mit #tab-finance .finance-summary-container {
-  align-items: start;
-  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
-}
-
-.university--mit #tab-finance .finance-summary-right {
-  margin-top: 0;
-}
-
-.university--mit #tab-finance .total-price-card,
-.university--mit #tab-finance .scholarship-card {
-  justify-content: flex-start;
-  min-height: 0;
-}
-
-.mit-aid-details > summary {
-  color: var(--accent);
-  cursor: pointer;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.mit-aid-details > summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.mit-aid-details > :not(summary) {
-  margin-top: var(--space-4);
-}
-
-.mit-annual-budget {
-  display: grid;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
-}
-
-.mit-finance-hint {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  margin: 0;
-}
-
-.mit-finance-hint button {
-  flex: none;
-  border: 0;
-  border-radius: var(--radius-base);
-  padding: var(--space-2) var(--space-3);
-  background: var(--surface-soft);
-  color: var(--accent);
-  cursor: pointer;
-}
-
-.mit-finance-hint button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.mit-annual-budget__head,
-.mit-annual-budget dl > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-4);
-}
-
-.mit-annual-budget h3,
-.mit-annual-budget dl,
-.mit-annual-budget dd {
-  margin: 0;
-}
-
-.mit-annual-budget h3 {
-  color: var(--text);
-  font-size: var(--text-md);
-  font-weight: var(--font-weight-semibold);
-}
-
-.mit-annual-budget__head span,
-.mit-annual-budget dt {
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-}
-
-.mit-annual-budget dl {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.mit-annual-budget dd {
-  color: var(--text);
-  font-size: var(--text-base);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.mit-annual-budget a {
-  justify-self: start;
-  color: var(--accent);
-  font-size: var(--text-sm);
-}
-
-.mit-annual-budget a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-@media (max-width: 768px) {
-  .university--mit #tab-deadlines .admissions-deadlines-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .university--mit #tab-finance .finance-summary-container {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .university--mit #tab-finance .finance-summary-left,
-  .university--mit #tab-finance .finance-summary-right {
-    margin: 0;
-  }
 }

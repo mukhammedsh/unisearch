@@ -314,6 +314,37 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.equal(select.value, 'USD');
   });
 
+  it('releases language listeners and observers when a dynamic select is removed', () => {
+    const originalAdd = window.addEventListener;
+    const originalRemove = window.removeEventListener;
+    const originalObserver = global.MutationObserver;
+    const listeners = new Set();
+    let disconnects = 0;
+    window.addEventListener = (type, handler) => { if (type === 'languageChanged') listeners.add(handler); };
+    window.removeEventListener = (type, handler) => { if (type === 'languageChanged') listeners.delete(handler); };
+    global.MutationObserver = class { observe() {} disconnect() { disconnects += 1; } };
+    try {
+      const { select } = createSelectWithOptgroups();
+      docElements.set(select.id, select);
+      const dispose = initCustomSelect(select.id);
+      initCustomSelect(select.id);
+      assert.equal(listeners.size, 1);
+      dispose();
+      dispose();
+      assert.equal(listeners.size, 0);
+      assert.equal(disconnects, 1);
+      const disposeAgain = initCustomSelect(select.id);
+      assert.equal(listeners.size, 1);
+      disposeAgain();
+      assert.equal(listeners.size, 0);
+      assert.equal(disconnects, 2);
+    } finally {
+      window.addEventListener = originalAdd;
+      window.removeEventListener = originalRemove;
+      global.MutationObserver = originalObserver;
+    }
+  });
+
   it('navigates with single character typeahead when closed and updates select.value', async () => {
     const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);

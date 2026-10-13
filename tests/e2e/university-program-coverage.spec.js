@@ -1,72 +1,42 @@
 const { test, expect } = require("@playwright/test");
-const fs = require("node:fs");
-const path = require("node:path");
+const { setNativeSelect } = require("./helpers/selectors");
 
-const universities = JSON.parse(fs.readFileSync(path.join(__dirname, "../../backend/data/universities.json"), "utf8"));
-const universityById = Object.fromEntries(universities.map((university) => [university.id, university]));
-
-function selectedProgram(universityId, programId) {
-  const university = universityById[universityId];
-  return university.academics.programs.find((program) => [program.id, program.program_id, program.course_number, program.legacy_id, ...(Array.isArray(program.legacy_ids) ? program.legacy_ids : [])].includes(programId));
+function contextUrl({ university, option, route, level, applicant, cycle }) {
+  const params = new URLSearchParams({
+    id: university,
+    admission_option: option,
+    admission_application_route: route,
+    admission_level: level,
+    admission_fee: "unknown",
+    admission_route: applicant,
+    admission_cycle: cycle,
+  });
+  return `/university.html?${params.toString()}`;
 }
 
-function awardContract(universityId, awardId) {
-  const award = universityById[universityId].finance.scholarships_and_funding.find((item) => item.id === awardId);
-  return {
-    id: award.id,
-    name: award.name,
-    program_scope: award.program_scope,
-    applicant_scope: award.applicant_scope,
-    eligibility: award.eligibility,
-    basis: award.basis,
-    application_process: award.application_process,
-    coverage: award.coverage,
-    course_application_deadline: award.course_application_deadline,
-    award_application_deadline: award.award_application_deadline || award.deadlines,
-    deadline_timezone: award.deadline_timezone,
-    source_url: award.source_url,
-    cycle: award.academic_year || award.cycle,
-    verified_at: award.verified_at,
-  };
+async function openContext(page, context) {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_theme", "light");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+  });
+  const responsePromise = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return url.pathname === `/universities/${context.university}/admissions-context` && response.request().method() === "POST";
+  });
+  await page.goto(contextUrl(context));
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  const response = await responsePromise;
+  expect(response.status()).toBe(200);
+  return response.json();
 }
 
-const coverageRows = {
-  "mit-usa-cambridge": [{
-    program_id: "Course 6-3",
-    program_name: selectedProgram("mit-usa-cambridge", "Course 6-3").name,
-    study_levels: ["bachelor"],
-    requirements: { status: "available", scope: "institution_wide_route", source_url: "https://mitadmissions.org/apply/firstyear/deadlines-requirements/", cycle: "Annual first-year cycle; official page does not identify an entry year.", verified_at: "2026-09-23" },
-    deadline: { status: "approximate_or_yearless", scope: "institution_wide_route", source_url: "https://mitadmissions.org/apply/firstyear/deadlines-requirements/", cycle: "Annual first-year cycle; official page does not identify an entry year.", values: ["January 4", "November 1"] },
-    tuition_mandatory_fees: { status: "available", scope: "university_guidance", source_url: "https://sfs.mit.edu/cost-of-attendance-class-of-2030/", cycle: "2026-27", values: { Tuition: 66720, currency: "USD" } },
-    awards: { status: "available", scope: "award_program_scope", items: [awardContract("mit-usa-cambridge", "mit-undergraduate-need-based-scholarship")] },
-  }],
-  "university-of-oxford-uk-oxford": [{
-    program_id: "philosophy_politics_and_economics_ppe_ug",
-    program_name: selectedProgram("university-of-oxford-uk-oxford", "philosophy_politics_and_economics_ppe_ug").name,
-    study_levels: ["bachelor"],
-    requirements: { status: "available", scope: "program_specific", source_url: "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/philosophy-politics-and-economics" },
-    deadline: { status: "exact_dated", scope: "university_guidance", source_url: "https://www.ox.ac.uk/admissions/undergraduate/applying/admissions-timeline", cycle: "2027 entry", verified_at: "2026-09-23", values: ["15 October 2026 at 18:00 UK time (strict deadline)"] },
-    tuition_mandatory_fees: { status: "not_catalogued", scope: "not_catalogued", values: {} },
-    awards: { status: "not_catalogued", scope: "not_catalogued", items: [] },
-  }, {
-    program_id: "msc_advanced_computer_science_pgt",
-    program_name: selectedProgram("university-of-oxford-uk-oxford", "msc_advanced_computer_science_pgt").name,
-    study_levels: ["master"],
-    requirements: { status: "available", scope: "program_specific", source_url: "https://www.ox.ac.uk/admissions/graduate/courses/msc-advanced-computer-science" },
-    deadline: { status: "not_catalogued", scope: "not_catalogued", values: [] },
-    tuition_mandatory_fees: { status: "not_catalogued", scope: "not_catalogued", values: {} },
-    awards: { status: "available", scope: "award_program_scope", items: [awardContract("university-of-oxford-uk-oxford", "oxford-clarendon-fund-2027")] },
-  }],
-  "imperial-college-london-uk": [{
-    program_id: "imperial-phd-computing",
-    program_name: selectedProgram("imperial-college-london-uk", "imperial-phd-computing").name,
-    study_levels: ["doctorate"],
-    requirements: { status: "available", scope: "program_specific" },
-    deadline: { status: "not_catalogued", scope: "not_catalogued", values: [] },
-    tuition_mandatory_fees: { status: "available", scope: "program_specific", values: { tuition_international_native: 31500, tuition_international_usd: 40825, currency: "GBP" } },
-    awards: { status: "available", scope: "award_program_scope", items: [awardContract("imperial-college-london-uk", "presidents-phd-scholarships")] },
-  }],
-};
+async function openTab(page, tab) {
+  await page.locator(`.d-tab-btn[data-tab="tab-${tab}"]`).click();
+  await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
+}
 
 async function setProgramSelection(page, universityId, studyLevel, programId, programName) {
   await page.evaluate(({ universityId: id, studyLevel: level, programId: selectedId, programName: selectedName }) => {
@@ -79,100 +49,132 @@ async function setProgramSelection(page, universityId, studyLevel, programId, pr
   }, { universityId, studyLevel, programId, programName });
 }
 
-async function openPrograms(page, universityId) {
-  await page.goto(`/university.html?id=${universityId}`);
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  if (universityId !== "mit-usa-cambridge") {
-    await expect(page.locator("#detailPrograms .program-coverage")).toBeVisible();
-  }
-}
-
-test("MIT program level filters fit a 390px viewport", async ({ page }) => {
+test("MIT study-level filters remain usable at a 390px viewport", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await openPrograms(page, "mit-usa-cambridge");
-  const filter = page.locator("#detailPrograms .programs-level-filter");
-  await expect(filter).toBeVisible();
-  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-  await expect(filter.locator(".programs-level-tab").last()).toBeVisible();
-});
-
-test("Stanford professional MD and graduate unit-load tuition stay program-scoped", async ({ page }) => {
-  await page.goto("/university.html?id=stanford-university-usa-ca");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await setProgramSelection(page, "stanford-university-usa-ca", "Professional", "stanford-md", "Doctor of Medicine (MD)");
-  await openPrograms(page, "stanford-university-usa-ca");
-
-  const coverage = page.locator("#detailPrograms .program-coverage");
-  await expect(coverage.locator(".program-coverage__program")).toContainText("Doctor of Medicine (MD)");
-  const deadline = coverage.locator('[data-coverage-kind="deadline"]');
-  await expect(deadline).toContainText("Entering class of 2027");
-  await expect(deadline).toContainText(/2026[-‐‑‒–—−]10[-‐‑‒–—−]09/);
-  const tuition = coverage.locator('[data-coverage-kind="cost"]');
-  await expect(tuition).toContainText("per quarter");
-  await expect(tuition).toContainText("USD 24,034");
-
-  await setProgramSelection(page, "stanford-university-usa-ca", "Master", "stanford-ms-cs", "Master of Science in Computer Science (MS CS)");
-  await openPrograms(page, "stanford-university-usa-ca");
-  const graduateTuition = page.locator('#detailPrograms .program-coverage [data-coverage-kind="cost"]');
-  await expect(graduateTuition).toContainText("per quarter · 8–10 units: USD 15,100");
-  await expect(graduateTuition).toContainText("per quarter · 11–18 units: USD 23,239");
-});
-
-test("selected top-five program coverage keeps routes, course dates, and award deadlines in their own scopes", async ({ page }) => {
-  for (const universityId of Object.keys(coverageRows)) {
-    await page.route(`**/universities/${universityId}*`, async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({ ...universityById[universityId], coverage_by_program: coverageRows[universityId] }),
-      });
-    });
-  }
   await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await setProgramSelection(page, "mit-usa-cambridge", "Bachelor", "Course 6-3", "Computer Science and Engineering (Course 6-3)");
-  await page.reload();
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#detailPrograms .program-coverage")).toHaveCount(0);
-  const mitProgram = page.locator("#detailPrograms .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await mitProgram.locator("[data-program-toggle]").click();
-  await expect(mitProgram.locator(".program-card__route-note")).toContainText("first-year");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  await openTab(page, "programs");
 
-  await page.evaluate(() => localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, studyLevel: "Bachelor", major: "" })));
-  await page.goto("/university.html?id=university-of-oxford-uk-oxford");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  const oxfordPpeToggle = page.locator('#detailPrograms [data-program-key="philosophy politics and economics ppe"] [data-program-toggle]');
-  await expect(oxfordPpeToggle).toBeVisible();
-  await oxfordPpeToggle.click();
-  const ppeCoverage = page.locator("#detailPrograms .program-coverage");
-  await expect(ppeCoverage).toContainText("Philosophy, Politics and Economics (PPE)");
-  await expect(ppeCoverage.locator('[data-coverage-kind="deadline"]')).toContainText("15 October 2026 at 18:00 UK time");
-  await expect(ppeCoverage.locator('[data-coverage-kind="deadline"] a')).toHaveAttribute("href", "https://www.ox.ac.uk/admissions/undergraduate/applying/admissions-timeline");
+  const level = page.locator("#admissionsStudyLevel");
+  await expect(level.locator("xpath=..").locator(".custom-select-trigger")).toBeVisible();
+  await setNativeSelect(page, "admissionsStudyLevel", "undergraduate");
+  await page.locator("#admissionsSearch").fill("Computer Science and Engineering");
+  const responsePromise = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return url.pathname === "/universities/mit-usa-cambridge/study-options"
+      && url.searchParams.get("study_level") === "undergraduate"
+      && url.searchParams.get("search") === "Computer Science and Engineering";
+  });
+  await page.locator("#admissionsSearchSubmit").click();
+  const response = await responsePromise;
+  expect(response.status()).toBe(200);
+  const results = await response.json();
+  expect(results.items.map((item) => item.id)).toContain("mit-course-6-3-bachelor");
+  await expect(page.locator('#admissionsProgramList [data-study-option="mit-course-6-3-bachelor"]')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
 
-  await setProgramSelection(page, "university-of-oxford-uk-oxford", "Master", "msc_advanced_computer_science_pgt", "MSc in Advanced Computer Science");
-  await openPrograms(page, "university-of-oxford-uk-oxford");
-  const oxfordDeadline = page.locator('#detailPrograms .program-coverage [data-coverage-kind="deadline"]');
-  await expect(oxfordDeadline).toContainText("Not catalogued");
-  await expect(oxfordDeadline).not.toContainText("December or January");
+test("Stanford MD and Computer Science tuition retain their actual route and published periods", async ({ page }) => {
+  const md = await openContext(page, {
+    university: "stanford-university-usa-ca",
+    option: "stanford-option-med-md",
+    route: "professional-evidence:med_md_admission",
+    level: "professional",
+    applicant: "graduate",
+    cycle: "Fall 2027 entry",
+  });
+  expect(md.selected_option.id).toBe("stanford-option-med-md");
+  expect(md.selected_route.id).toBe("professional-evidence:med_md_admission");
+  const mdTuition = md.facts.find((fact) => fact.id === "professional-evidence:med_md_award_cost");
+  expect(mdTuition.scope.option_ids).toContain("stanford-option-med-md");
+  expect(mdTuition.scope.route_ids).toContain("professional-evidence:med_md_admission");
+  expect(mdTuition.scope.cycle).toBe("2026-27 academic year");
+  await openTab(page, "finance");
+  const mdCost = page.locator('#tab-finance [data-admissions-fact="professional-evidence:med_md_award_cost"]');
+  await expect(mdCost).toBeVisible();
+  await expect(mdCost).toContainText(/2026[-\u2011]27/);
+  await expect(mdCost).toContainText("USD 24,034 per quarter");
 
-  await setProgramSelection(page, "imperial-college-london-uk", "Doctorate", "imperial-phd-computing", "PhD in Computing");
-  await openPrograms(page, "imperial-college-london-uk");
-  const imperialDeadline = page.locator('#detailPrograms .program-coverage [data-coverage-kind="deadline"]');
-  const imperialAwards = page.locator('#detailPrograms .program-coverage [data-coverage-kind="awards"]');
-  await expect(imperialDeadline).toContainText("Not catalogued");
-  await expect(imperialDeadline).not.toContainText("2026-11-02");
-  await expect(imperialAwards).toContainText("President's PhD Scholarships");
-  await expect(imperialAwards).toContainText("Award application deadline");
-  await expect(imperialAwards).toContainText(/2026[-‐‑‒–—−]11[-‐‑‒–—−]02/);
-  await expect(imperialAwards).toContainText("not confirmed funding");
+  const cs = await openContext(page, {
+    university: "stanford-university-usa-ca",
+    option: "stanford-option-cs-ms",
+    route: "engineering-doerr-evidence:external-graduate",
+    level: "masters",
+    applicant: "graduate",
+    cycle: "2027-28 entry",
+  });
+  expect(cs.selected_option.id).toBe("stanford-option-cs-ms");
+  expect(cs.selected_route.id).toBe("engineering-doerr-evidence:external-graduate");
+  const publishedTuition = cs.facts.find((fact) => fact.id === "engineering-doerr-evidence:engineering-2026-27-historical-tuition");
+  expect(publishedTuition.scope.option_ids).toContain("stanford-option-cs-ms");
+  expect(publishedTuition.scope.cycle).toBe("2026-27 tuition year");
+  expect(publishedTuition.value.currency).toBe("USD");
+  expect(publishedTuition.value.graduate_engineering_quarterly_tuition).toEqual({ "8-10_units": 15100, "11-18_units": 23239 });
+  const currentCostUnknown = cs.unknowns.find((fact) => fact.id === "engineering-doerr-evidence:engineering-2027-cost-unpublished");
+  expect(currentCostUnknown.reason).toContain("2027-28 Engineering prices are not published");
+  expect(cs.history.unknown_ids).toContain("engineering-doerr-evidence:tuition-and-funding-details");
+
+  await openTab(page, "finance");
+  const csCost = page.locator('#tab-finance [data-admissions-fact="engineering-doerr-evidence:engineering-2026-27-historical-tuition"]');
+  await expect(csCost).toBeVisible();
+  await expect(csCost).toContainText(/2026[-\u2011]27/);
+  await expect(csCost).toContainText(/15,?100/);
+  await expect(csCost).toContainText(/23,?239/);
+  await expect(csCost).toContainText(/historical context only, not published 2027[-\u2011]28 tuition/);
+  await openTab(page, "admission");
+  const unknowns = page.locator("#detailRequirements details.admissions-catalog__unknowns");
+  await expect(unknowns).toBeVisible();
+  await unknowns.locator(":scope > summary").click();
+  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011]28 Engineering prices are not published/ })).toHaveCount(1);
+  await openTab(page, "general");
+  const history = page.locator("#admissionsUniversityInfo .admissions-catalog > details").filter({ hasText: /Historical records/ });
+  await expect(history).toBeVisible();
+  await history.locator(":scope > summary").click();
+  await expect(history.locator(".admissions-catalog__unknown")).not.toHaveCount(0);
+  await expect(history).toContainText(/2027[-\u2011]28 tuition and individual future offer amounts remain unavailable/);
+});
+
+test("MIT application dates and Imperial award deadlines stay in their own source scopes", async ({ page }) => {
+  const mit = await openContext(page, {
+    university: "mit-usa-cambridge",
+    option: "mit-course-6-3-bachelor",
+    route: "mit-first-year",
+    level: "undergraduate",
+    applicant: "first_year",
+    cycle: "Fall 2027 entry",
+  });
+  expect(mit.selected_option.id).toBe("mit-course-6-3-bachelor");
+  expect(mit.selected_route.id).toBe("mit-first-year");
+  const applicationDate = mit.facts.find((fact) => fact.id === "mit-first-year-application-deadline");
+  expect(applicationDate).toBeTruthy();
+  expect(applicationDate.value).toContain("January 4");
+  await openTab(page, "deadlines");
+  await expect(page.locator('#tab-deadlines [data-admissions-fact="mit-first-year-application-deadline"]')).toContainText("January 4");
+
+  const imperial = await openContext(page, {
+    university: "imperial-college-london-uk",
+    option: "imperial-civil-environmental-phd",
+    route: "procedure-civil-environmental-phd",
+    level: "doctoral",
+    applicant: "graduate",
+    cycle: "2027 entry",
+  });
+  expect(imperial.selected_option.id).toBe("imperial-civil-environmental-phd");
+  expect(imperial.selected_route.id).toBe("procedure-civil-environmental-phd");
+  const courseProcess = imperial.facts.find((fact) => fact.id === "imperial-doctoral-process");
+  expect(courseProcess).toBeTruthy();
+  const awardTerms = imperial.facts.find((fact) => fact.id === "imperial-civil-scholarship-scheme-conditions");
+  expect(awardTerms.scope.option_ids).toContain("imperial-civil-environmental-phd");
+  expect(awardTerms.value.deadlines_by_round["1"]).toBe("2026-11-02");
+  expect(imperial.fact_groups.deadlines || []).not.toContain("imperial-civil-scholarship-scheme-conditions");
+
+  await openTab(page, "deadlines");
+  await expect(page.locator("#detailDeadlines")).toContainText("No source records are catalogued");
+  await expect(page.locator("#detailDeadlines")).not.toContainText("2026-11-02");
+  await openTab(page, "finance");
+  const funding = page.locator('#tab-finance [data-admissions-fact="imperial-civil-scholarship-scheme-conditions"]');
+  await expect(funding).toBeVisible();
+  await expect(funding).toContainText(/2026[-\u2011]11[-\u2011]02/);
 });
 
 test("Harvard saved program names resolve unique concentrations but leave split legacy routes unselected", async ({ page }) => {

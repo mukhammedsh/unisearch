@@ -180,6 +180,8 @@ function normalizeLangEntry(entry) {
     const score = Number(entry.score);
     if (!examId || (Number.isNaN(score) && !rawValue && !details)) return null;
     const out = { code, kind, exam: examId };
+    const takenOn = String(entry.taken_on || "").trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(takenOn) && takenOn <= new Date().toISOString().slice(0, 10)) out.taken_on = takenOn;
     if (!Number.isNaN(score)) out.score = score;
     if (rawValue) out.raw_value = rawValue;
     if (displayValue) out.display_value = displayValue;
@@ -337,11 +339,11 @@ function validateExamScore(examObj, code, rawInput, { required = true } = {}) {
   return { score, raw: normalizedRaw };
 }
 
-function findExistingExamEntry(profile, code, examId) {
+function findExistingExamEntry(profile, code, examId, takenOn = "") {
   const rows = (Array.isArray(profile?.languages) ? profile.languages : [])
     .map(normalizeLangEntry)
     .filter(Boolean);
-  return rows.find((row) => row.code === code && row.kind === KIND_EXAM && row.exam === examId) || null;
+  return rows.find((row) => row.code === code && row.kind === KIND_EXAM && row.exam === examId && String(row.taken_on || "") === takenOn) || null;
 }
 
 export function initLanguagesPanel() {
@@ -354,6 +356,9 @@ export function initLanguagesPanel() {
     const langCefr = document.getElementById("langCefr");
     const langExam = document.getElementById("langExam");
     const langExamScore = document.getElementById("langExamScore");
+    const langExamTakenOn = document.getElementById("langExamTakenOn");
+    const langExamTakenOnContainer = document.getElementById("langExamTakenOnContainer");
+    if (langExamTakenOn) langExamTakenOn.max = new Date().toISOString().slice(0, 10);
     const cefrContainer = document.getElementById("cefrContainer");
     const examContainer = document.getElementById("examContainer");
     const scoreContainer = document.getElementById("scoreContainer");
@@ -376,7 +381,7 @@ export function initLanguagesPanel() {
       if (item.kind === KIND_EXAM) {
         if (!item.exam) return -1;
         return list.findIndex((x) =>
-          x.code === item.code && x.kind === item.kind && x.exam === item.exam
+          x.code === item.code && x.kind === item.kind && x.exam === item.exam && String(x.taken_on || "") === String(item.taken_on || "")
         );
       }
       return list.findIndex((x) => x.code === item.code && x.kind === item.kind);
@@ -385,11 +390,12 @@ export function initLanguagesPanel() {
     function getDraftEntryFromUI() {
       const code = String(langCode.value || "").trim().toLowerCase();
       const kind = normalizeKind(langKind.value);
+      const takenOn = kind === KIND_EXAM ? String(langExamTakenOn?.value || "").trim() : "";
       if (!code || !kind) return null;
       if (kind === KIND_EXAM) {
         const exam = String(langExam.value || "").trim();
         if (!exam) return null;
-        return { code, kind, exam };
+        return { code, kind, exam, ...(takenOn ? { taken_on: takenOn } : {}) };
       }
       return { code, kind };
     }
@@ -495,7 +501,8 @@ export function initLanguagesPanel() {
         if (entry.kind === KIND_EXAM) {
           const exLabel = escapeHtml(getExamDisplayName(entry.exam, { langCode: entry.code, locale: getCurrentLanguage() }));
           const valueLabel = escapeHtml(formatLanguageExamValue(cfg, entry));
-          meta = valueLabel ? ` — ${exLabel}: ${valueLabel}` : ` — ${exLabel}`;
+          const dateLabel = entry.taken_on ? ` · ${escapeHtml(entry.taken_on)}` : "";
+          meta = `${valueLabel ? ` — ${exLabel}: ${valueLabel}` : ` — ${exLabel}`}${dateLabel}`;
         }
 
         return `
@@ -504,6 +511,7 @@ export function initLanguagesPanel() {
               <strong>${langName}</strong>
               <small>${kindName}${meta}</small>
             </div>
+            <button class="profile-button-subtle" data-edit-idx="${idx}" type="button">${escapeHtml(t("profile.edit", "Edit"))}</button>
             <button class="profile-delete" data-idx="${idx}" type="button">${escapeHtml(t("profile.delete", "Delete"))}</button>
           </div>
         `;
@@ -540,7 +548,8 @@ export function initLanguagesPanel() {
       const existing = findExistingExamEntry(
         profile,
         String(langCode.value || "").trim().toLowerCase(),
-        String(examObj.id || "").trim()
+        String(examObj.id || "").trim(),
+        String(langExamTakenOn?.value || "").trim()
       );
       const existingComponents = new Map(
         (Array.isArray(existing?.details?.components) ? existing.details.components : [])
@@ -601,6 +610,11 @@ export function initLanguagesPanel() {
       if (scoreContainer) {
         scoreContainer.style.display = kind === KIND_EXAM && !!examObj && usesParentScore ? "block" : "none";
       }
+      if (langExamTakenOnContainer) {
+        langExamTakenOnContainer.hidden = kind !== KIND_EXAM;
+        langExamTakenOnContainer.style.display = kind === KIND_EXAM ? "block" : "none";
+        if (kind !== KIND_EXAM && langExamTakenOn) langExamTakenOn.value = "";
+      }
 
       if (kind === KIND_EXAM && examObj && usesParentScore) {
         setNumericInputLimits(langExamScore, examObj);
@@ -637,6 +651,7 @@ export function initLanguagesPanel() {
     function resetExamInputs() {
       langExam.value = "";
       langExamScore.value = "";
+      if (langExamTakenOn) langExamTakenOn.value = "";
       if (langExamSpecialContainer) {
         langExamSpecialContainer.innerHTML = "";
         langExamSpecialContainer.hidden = true;
@@ -690,6 +705,9 @@ export function initLanguagesPanel() {
         langExamScore.value = langExamScore.value.replaceAll(",", ".");
       }
     });
+    langExamTakenOn?.addEventListener("change", () => {
+      refreshLangActionButton();
+    });
 
     langExamSpecialContainer?.addEventListener("input", (event) => {
       const target = event?.target;
@@ -718,7 +736,7 @@ export function initLanguagesPanel() {
       addLanguage();
     };
 
-    [langCode, langKind, langCefr, langExam, langExamScore].forEach((control) => {
+    [langCode, langKind, langCefr, langExam, langExamScore, langExamTakenOn].filter(Boolean).forEach((control) => {
       control.addEventListener("keydown", submitLanguageOnEnter);
     });
     languagesBlock.addEventListener("keydown", submitLanguageOnEnter);
@@ -741,6 +759,12 @@ export function initLanguagesPanel() {
         showToast(t("languages.error.choose_language_type", "Choose language and type"), "error");
         return;
       }
+      const takenOn = kind === KIND_EXAM ? String(langExamTakenOn?.value || "").trim() : "";
+      if (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn))) {
+        langExamTakenOn?.focus();
+        showToast(t("profile.evidence.error.dates", "Check the dates for this evidence."), "error");
+        return;
+      }
 
       let payload = { code, kind };
 
@@ -761,7 +785,7 @@ export function initLanguagesPanel() {
           return;
         }
 
-        payload = { ...payload, exam: examId };
+        payload = { ...payload, exam: examId, ...(takenOn ? { taken_on: takenOn } : {}) };
         const examMode = getExamInputMode(examObj);
         const usesParentScore = examMode === "number";
 
@@ -825,7 +849,7 @@ export function initLanguagesPanel() {
         const existsIdx = prof.languages.findIndex((row) =>
           row.code === entry.code
           && row.kind === entry.kind
-          && (entry.kind !== KIND_EXAM || row.exam === entry.exam)
+          && (entry.kind !== KIND_EXAM || (row.exam === entry.exam && String(row.taken_on || "") === String(entry.taken_on || "")))
         );
 
         const isUpdate = existsIdx >= 0;
@@ -871,6 +895,31 @@ export function initLanguagesPanel() {
     }
 
     langList.addEventListener("click", (event) => {
+      const editBtn = event.target.closest("button[data-edit-idx]");
+      if (editBtn) {
+        motionPress(editBtn);
+        const idx = Number(editBtn.dataset.editIdx);
+        const prof = loadEditableProfile();
+        const entry = (Array.isArray(prof.languages) ? prof.languages : []).map(normalizeLangEntry).filter(Boolean)[idx];
+        if (!entry) return;
+        langCode.value = entry.code;
+        langKind.value = entry.kind;
+        if (entry.kind === KIND_CEFR) langCefr.value = String(entry.level);
+        if (entry.kind === KIND_EXAM) {
+          langExam.value = entry.exam;
+          if (langExamTakenOn) langExamTakenOn.value = entry.taken_on || "";
+          if (Number.isFinite(Number(entry.score))) langExamScore.value = String(entry.score);
+          else langExamScore.value = "";
+        }
+        initCustomSelect("langCode");
+        initCustomSelect("langKind");
+        initCustomSelect("langCefr");
+        initCustomSelect("langExam");
+        syncExamUi();
+        refreshLangActionButton();
+        (entry.kind === KIND_EXAM ? langExamTakenOn : langCefr)?.focus();
+        return;
+      }
       const btn = event.target.closest("button[data-idx]");
       if (!btn) return;
       motionPress(btn);

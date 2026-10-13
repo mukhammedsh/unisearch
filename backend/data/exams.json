@@ -1433,5 +1433,103 @@
     "type": "bool",
     "step": 1,
     "notes": "Ontario Secondary School Diploma (OSSD) completion (0/1)."
-  }
+  },
+  "TMUA": {
+    "label": "Test of Mathematics for University Admission (TMUA)",
+    "labels": {"eng": "Test of Mathematics for University Admission (TMUA)", "rus": "Тест по математике для поступления в университет (TMUA)"},
+    "input_mode": "number", "min": 1, "max": 9, "type": "float", "step": 0.1,
+    "notes": "One overall score; reported to one decimal place. The two papers are not scored separately. No universal pass mark.",
+    "source_url": "https://esat-tmua.ac.uk/about-the-tests/tmua-test/", "verified_at": "2026-10-12"
+  },
+  "ESAT": {
+    "label": "Engineering and Science Admissions Test (ESAT)",
+    "labels": {"eng": "Engineering and Science Admissions Test (ESAT)", "rus": "Тест для поступления на инженерные и естественные науки (ESAT)"},
+    "input_mode": "subject_breakdown", "type": "float",
+    "notes": "Each selected module has a separate score from 1.0 to 9.0 to one decimal place. There is no combined score or universal pass mark; the course determines required modules.",
+    "breakdown_scheme": {
+      "selectable_components": [
+        {"exam": "ESAT_MATH_1", "label": "Mathematics 1"},
+        {"exam": "ESAT_MATH_2", "label": "Mathematics 2"},
+        {"exam": "ESAT_BIOLOGY", "label": "Biology"},
+        {"exam": "ESAT_CHEMISTRY", "label": "Chemistry"},
+        {"exam": "ESAT_PHYSICS", "label": "Physics"}
+      ],
+      "selectable_count_min": 1, "selectable_count_max": 5, "total_strategy": "components_only"
+    },
+    "source_url": "https://esat-tmua.ac.uk/about-the-tests/esat-test/", "verified_at": "2026-10-12"
+  },
+  "ESAT_MATH_1": {"label": "ESAT Mathematics 1", "labels": {"eng": "ESAT Mathematics 1", "rus": "ESAT: математика 1"}, "hidden": true, "input_mode": "number", "min": 1, "max": 9, "type": "float", "step": 0.1},
+  "ESAT_MATH_2": {"label": "ESAT Mathematics 2", "labels": {"eng": "ESAT Mathematics 2", "rus": "ESAT: математика 2"}, "hidden": true, "input_mode": "number", "min": 1, "max": 9, "type": "float", "step": 0.1},
+  "ESAT_BIOLOGY": {"label": "ESAT Biology", "labels": {"eng": "ESAT Biology", "rus": "ESAT: биология"}, "hidden": true, "input_mode": "number", "min": 1, "max": 9, "type": "float", "step": 0.1},
+  "ESAT_CHEMISTRY": {"label": "ESAT Chemistry", "labels": {"eng": "ESAT Chemistry", "rus": "ESAT: химия"}, "hidden": true, "input_mode": "number", "min": 1, "max": 9, "type": "float", "step": 0.1},
+  "ESAT_PHYSICS": {"label": "ESAT Physics", "labels": {"eng": "ESAT Physics", "rus": "ESAT: физика"}, "hidden": true, "input_mode": "number", "min": 1, "max": 9, "type": "float", "step": 0.1},
+  "UCAT": {
+    "label": "University Clinical Aptitude Test (UCAT)",
+    "labels": {"eng": "University Clinical Aptitude Test (UCAT)", "rus": "Тест на клинические способности для поступления (UCAT)"},
+    "input_mode": "subject_breakdown", "min": 900, "max": 2700, "type": "int",
+    "valid_from": "2025-01-01",
+    "notes": "Current format from 2025 has three scored cognitive subtests; Abstract Reasoning is no longer included. The overall cognitive score is their sum. Situational Judgement is reported separately as a band.",
+    "breakdown_scheme": {
+      "fixed_components": [
+        {"exam": "UCAT_VERBAL_REASONING", "label": "Verbal Reasoning"},
+        {"exam": "UCAT_DECISION_MAKING", "label": "Decision Making"},
+        {"exam": "UCAT_QUANTITATIVE_REASONING", "label": "Quantitative Reasoning"}
+      ],
+      "extra_scores": [{"exam": "UCAT_SJT", "label": "Situational Judgement"}], "total_strategy": "sum"
+    },
+    "source_url": "https://www.ucat.ac.uk/about-ucat/test-format-and-scoring/", "verified_at": "2026-10-12"
+  },
+  "UCAT_VERBAL_REASONING": {"label": "UCAT Verbal Reasoning", "labels": {"eng": "UCAT Verbal Reasoning", "rus": "UCAT: вербальное мышление"}, "hidden": true, "input_mode": "number", "min": 300, "max": 900, "type": "int", "step": 1},
+  "UCAT_DECISION_MAKING": {"label": "UCAT Decision Making", "labels": {"eng": "UCAT Decision Making", "rus": "UCAT: принятие решений"}, "hidden": true, "input_mode": "number", "min": 300, "max": 900, "type": "int", "step": 1},
+  "UCAT_QUANTITATIVE_REASONING": {"label": "UCAT Quantitative Reasoning", "labels": {"eng": "UCAT Quantitative Reasoning", "rus": "UCAT: количественное мышление"}, "hidden": true, "input_mode": "number", "min": 300, "max": 900, "type": "int", "step": 1},
+  "UCAT_SJT": {
+    "label": "UCAT Situational Judgement Test band", "labels": {"eng": "UCAT Situational Judgement Test band", "rus": "UCAT: ситуационное суждение, уровень"},
+    "hidden": true, "input_mode": "band_select", "min": 1, "max": 4, "type": "int", "step": 1,
+    "level_scheme": {"bands": [{"value": 1, "short_label": "Band 1"}, {"value": 2, "short_label": "Band 2"}, {"value": 3, "short_label": "Band 3"}, {"value": 4, "short_label": "Band 4"}]}
+  },
+  "GAMSAT": {
+    "label": "Graduate Medical School Admissions Test (GAMSAT)",
+    "labels": {"eng": "Graduate Medical School Admissions Test (GAMSAT)", "rus": "Тест для поступления в медицинскую школу магистратуры (GAMSAT)"},
+    "input_mode": "subject_breakdown", "min": 0, "max": 100, "type": "float",
+    "notes": "The provider reports an overall score and three section scores from 0 to 100 (not percentage marks). Preserve the provider-reported overall score; it cannot be reproduced from rounded section scores.",
+    "breakdown_scheme": {
+      "selectable_components": [
+        {"exam": "GAMSAT_HUMANITIES_SOCIAL_SCIENCES", "label": "Reasoning in Humanities and Social Sciences"},
+        {"exam": "GAMSAT_WRITTEN_COMMUNICATION", "label": "Written Communication"},
+        {"exam": "GAMSAT_BIOLOGICAL_PHYSICAL_SCIENCES", "label": "Reasoning in Biological and Physical Sciences"}
+      ],
+      "selectable_count_min": 0, "selectable_count_max": 3, "total_strategy": "use_parent_score", "parent_score_label": "Overall score"
+    },
+    "source_url": "https://gamsat.acer.org/results", "verified_at": "2026-10-12"
+  },
+  "GAMSAT_HUMANITIES_SOCIAL_SCIENCES": {"label": "GAMSAT Reasoning in Humanities and Social Sciences", "labels": {"eng": "GAMSAT Reasoning in Humanities and Social Sciences", "rus": "GAMSAT: гуманитарные и социальные науки"}, "hidden": true, "input_mode": "number", "min": 0, "max": 100, "type": "float"},
+  "GAMSAT_WRITTEN_COMMUNICATION": {"label": "GAMSAT Written Communication", "labels": {"eng": "GAMSAT Written Communication", "rus": "GAMSAT: письменная коммуникация"}, "hidden": true, "input_mode": "number", "min": 0, "max": 100, "type": "float"},
+  "GAMSAT_BIOLOGICAL_PHYSICAL_SCIENCES": {"label": "GAMSAT Reasoning in Biological and Physical Sciences", "labels": {"eng": "GAMSAT Reasoning in Biological and Physical Sciences", "rus": "GAMSAT: биологические и физические науки"}, "hidden": true, "input_mode": "number", "min": 0, "max": 100, "type": "float"},
+  "LSAT": {
+    "label": "Law School Admission Test (LSAT)",
+    "labels": {"eng": "Law School Admission Test (LSAT)", "rus": "Тест для поступления в юридическую школу (LSAT)"},
+    "input_mode": "number", "min": 120, "max": 180, "type": "int", "step": 1,
+    "notes": "One reported scaled score. The scored sections are two Logical Reasoning sections and one Reading Comprehension section; the variable section and separate writing sample are not part of the score.",
+    "source_url": "https://www.lsac.org/lsat/lsat-scoring", "verified_at": "2026-10-12"
+  },
+  "MCAT": {
+    "label": "Medical College Admission Test (MCAT)",
+    "labels": {"eng": "Medical College Admission Test (MCAT)", "rus": "Тест для поступления в медицинскую школу (MCAT)"},
+    "input_mode": "subject_breakdown", "min": 472, "max": 528, "type": "int",
+    "notes": "The four section scores are summed for the total. A score date is needed to assess cycle-specific validity separately.",
+    "breakdown_scheme": {
+      "fixed_components": [
+        {"exam": "MCAT_BIOLOGICAL_BIOCHEMICAL", "label": "Biological and Biochemical Foundations of Living Systems"},
+        {"exam": "MCAT_CHEMICAL_PHYSICAL", "label": "Chemical and Physical Foundations of Biological Systems"},
+        {"exam": "MCAT_PSYCHOLOGICAL_SOCIAL", "label": "Psychological, Social, and Biological Foundations of Behavior"},
+        {"exam": "MCAT_CRITICAL_ANALYSIS", "label": "Critical Analysis and Reasoning Skills"}
+      ],
+      "total_strategy": "sum"
+    },
+    "source_url": "https://students-residents.aamc.org/mcat-scores/mcat-exam-score-scale", "verified_at": "2026-10-12"
+  },
+  "MCAT_BIOLOGICAL_BIOCHEMICAL": {"label": "MCAT Biological and Biochemical Foundations of Living Systems", "labels": {"eng": "MCAT Biological and Biochemical Foundations of Living Systems", "rus": "MCAT: биологические и биохимические основы живых систем"}, "hidden": true, "input_mode": "number", "min": 118, "max": 132, "type": "int", "step": 1},
+  "MCAT_CHEMICAL_PHYSICAL": {"label": "MCAT Chemical and Physical Foundations of Biological Systems", "labels": {"eng": "MCAT Chemical and Physical Foundations of Biological Systems", "rus": "MCAT: химические и физические основы биологических систем"}, "hidden": true, "input_mode": "number", "min": 118, "max": 132, "type": "int", "step": 1},
+  "MCAT_PSYCHOLOGICAL_SOCIAL": {"label": "MCAT Psychological, Social, and Biological Foundations of Behavior", "labels": {"eng": "MCAT Psychological, Social, and Biological Foundations of Behavior", "rus": "MCAT: психологические, социальные и биологические основы поведения"}, "hidden": true, "input_mode": "number", "min": 118, "max": 132, "type": "int", "step": 1},
+  "MCAT_CRITICAL_ANALYSIS": {"label": "MCAT Critical Analysis and Reasoning Skills", "labels": {"eng": "MCAT Critical Analysis and Reasoning Skills", "rus": "MCAT: критический анализ и навыки рассуждения"}, "hidden": true, "input_mode": "number", "min": 118, "max": 132, "type": "int", "step": 1}
 }

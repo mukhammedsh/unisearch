@@ -35,6 +35,7 @@ const TEXT_EXTENSIONS = new Set([
 const EXTENSIONLESS_TEXT_FILES = new Set([
   "frontend/Localization/eng",
   "frontend/Localization/ru",
+  "frontend/Localization/kaz",
   "LICENSE",
 ]);
 

@@ -67,6 +67,16 @@ class OfficialAdmissionsSyncTests(unittest.TestCase):
         self.assertEqual("no_official_source", admissions.get("program_level", {}).get("status"))
         self.assertEqual([], admissions.get("programs"))
 
+    def test_apply_official_admissions_skips_catalog_owned_rows(self):
+        university = {"id": "demo", "admissions_catalog_id": "demo"}
+        universities = [university.copy()]
+        catalog = {"universities": {"demo": {"programs": []}}}
+
+        changed = apply_official_admissions(universities, catalog)
+
+        self.assertEqual(0, changed)
+        self.assertEqual([university], universities)
+
     def test_catalog_and_dataset_stay_in_sync(self):
         catalog = self._load_catalog()
         universities = self._load_universities()
@@ -75,6 +85,8 @@ class OfficialAdmissionsSyncTests(unittest.TestCase):
 
         for uid, payload in (catalog.get("universities") or {}).items():
             self.assertIn(uid, by_id, uid)
+            if by_id[uid].get("admissions_catalog_id"):
+                continue
             admissions = (((by_id[uid].get("academics") or {}).get("admissions")) or {})
             self.assertEqual(int(catalog.get("schema_version") or 1), admissions.get("schema_version"), uid)
             self.assertEqual(expected_date, admissions.get("status_date"), uid)
@@ -86,6 +98,8 @@ class OfficialAdmissionsSyncTests(unittest.TestCase):
         universities = self._load_universities()
         for row in universities:
             uid = str(row.get("id") or "").strip()
+            if row.get("admissions_catalog_id"):
+                continue
             academics = row.get("academics") or {}
             admissions = academics.get("admissions") or {}
             university_wide = admissions.get("university_wide") or {}

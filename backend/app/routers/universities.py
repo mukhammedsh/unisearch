@@ -18,6 +18,7 @@ from app.schemas import CompareProfilesRequest, ProfileOnlyRequest, Universities
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
 from app.services import ai_scoring as ai_scoring_service
+from app.services import admissions_catalog, admissions_assessment
 
 
 router = APIRouter()
@@ -83,6 +84,8 @@ def _quantize_slider_value(val: Any) -> Optional[int]:
 
 def _ai_sort_cache_key(payload: UniversitiesAiSortRequest) -> str:
     raw = payload.model_dump(exclude_none=True)
+    raw["admissions_revision"] = admissions_catalog.get_revision()
+    raw["assessment_revision"] = admissions_assessment.get_assessment_revision()
     raw.pop("page", None)
     raw.pop("limit", None)
     for field in (
@@ -186,6 +189,7 @@ def list_universities(
     search_lang = _resolve_search_lang(lang, request)
     cache_payload = {
         "q": q,
+        "admissions_revision": admissions_catalog.get_revision(),
         "country": country,
         "city": city,
         "region": region,
@@ -281,6 +285,7 @@ def list_university_map_points(
     search_lang = _resolve_search_lang(lang, request)
     cache_payload = {
         "west": round(west, 5),
+        "admissions_revision": admissions_catalog.get_revision(),
         "south": round(south, 5),
         "east": round(east, 5),
         "north": round(north, 5),
@@ -491,7 +496,7 @@ def get_university(
     if u is None:
         raise HTTPException(status_code=404, detail="University not found")
 
-    etag = uni_service.get_university_etag(university_id, search_lang=search_lang)
+    etag = uni_service.get_university_etag(university_id, search_lang=search_lang, payload=u)
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=120"
         response.headers["ETag"] = etag
@@ -552,6 +557,8 @@ def compare_universities_profiles(
     cache_payload = {
         "ids": uni_ids,
         "profile": profile,
+        "admissions_revision": admissions_catalog.get_revision(),
+        "assessment_revision": admissions_assessment.get_assessment_revision(),
     }
     redis_cache_key = _cache_key("api:compare-profiles", cache_payload)
     cached = cache_get_json(redis_cache_key)
@@ -606,7 +613,8 @@ def get_locations(response: Response = None):
 
 @router.get("/stats", summary="Catalog statistics", description="Returns aggregate statistics about the university catalog: total count, country breakdown, and program coverage.")
 def get_stats(response: Response = None):
-    cached = cache_get_json("api:stats")
+    cache_key = _cache_key("api:stats", {"admissions_revision": admissions_catalog.get_revision()})
+    cached = cache_get_json(cache_key)
     if isinstance(cached, dict):
         if response is not None:
             response.headers["Cache-Control"] = "public, max-age=120"
@@ -614,7 +622,7 @@ def get_stats(response: Response = None):
         return cached
 
     data = uni_service.get_stats()
-    cache_set_json("api:stats", data if isinstance(data, dict) else {}, ttl_seconds=120)
+    cache_set_json(cache_key, data if isinstance(data, dict) else {}, ttl_seconds=120)
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=120"
         response.headers["X-Redis-Cache"] = "MISS"

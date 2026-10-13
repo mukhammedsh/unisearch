@@ -21,6 +21,8 @@ about.contact.email: Электрондық пошта
 about.contact.github: GitHub
 about.contact.telegram: Telegram
 about.contact.title: Бізбен байланысу
+about.contact.email_value: unisearch.sup@gmail.com
+about.contact.telegram_value: @unisearch_kz
 about.evolution: Жоба олимпиада іріктеуінен өтпеген соң, біз оның бағытын өзгерттік. Сенімсіз кеңес беретін көмекші жасаудың орнына, ақпаратты түсінікті ұсынып, қолайлы нұсқаларды табуға көмектесетін UniSearch құралына назар аудардық. Сегіз ай өтсе де, біз жобаны дамытып, қолдап келеміз.
 about.name.lead: Мұхаммед Шабдалұлы
 about.name.planning: Ерболат Рашидов
@@ -2335,3 +2337,319 @@ admission.mit.program_condition: Бұл бағдарлама үшін шартт
 universities.why.preference_comparison: {label}: сіздің баптауыңыз {requested}/100; университет көрсеткіші {observed}/100.
 admission.requirements_fit.check.profile_unassessed: Профиль қажетті мәліметтерді немесе босатылу құқығын растауға мүмкіндік бермейді.
 admission.requirements_fit.missing_evidence_note: Бағытты тексеру үшін төменде көрсетілген растауларды қосыңыз. Пайыз бағалауға болатын қолданылатын сандық минимумдар болған кезде ғана қолжетімді.
+profile.evidence.title: Таңдалған түсу бағыттарына арналған растаулар
+profile.evidence.description: Өзіңіз көрсететін қосымша мәліметтер жарияланған шарттарды бағалауға көмектеседі. Олар ресми құжаттарды растамайды.
+profile.evidence.test_date: Тест тапсырған күн (міндетті емес)
+profile.evidence.language_title: Тілдік орта
+profile.evidence.institution_title: Оқу орнына тән оқу туралы растаулар
+profile.evidence.institution: Университет
+profile.evidence.institution_unavailable: Бұл таңдау үшін оқу орнына тән курс, GPA немесе біліктілік өрістері қолжетімді емес.
+profile.evidence.kind: Растау түрі
+profile.evidence.language: Тіл коды
+profile.evidence.country: Ел
+profile.evidence.qualification: Білім деңгейі
+profile.evidence.started: Басталған күні
+profile.evidence.completed: Аяқталған күні
+profile.evidence.status: Күйі
+profile.evidence.entirely: Толығымен осы тілде
+profile.evidence.unknown: Көрсетілмеген
+profile.evidence.entirely.yes: Иә, толығымен
+profile.evidence.entirely.no: Жоқ
+profile.evidence.program: Бағдарлама немесе оқу нұсқасы
+profile.evidence.units: Аяқталған оқу бірліктері
+profile.evidence.degree_units: Дәреже бойынша оқу бірліктерінің жалпы саны
+profile.evidence.major_units: Негізгі мамандық талаптарындағы оқу бірліктері
+profile.evidence.major_subjects: Негізгі мамандық талаптары бойынша аяқталған пәндер
+profile.evidence.major_subjects_short: Негізгі мамандық пәндері
+profile.evidence.expected_completion: Күтілетін аяқтау күні
+profile.evidence.metric: GPA көрсеткіші
+profile.evidence.metric.overall: Жалпы GPA
+profile.evidence.metric.technical: Техникалық пәндер бойынша GPA
+profile.evidence.metric.major: Негізгі мамандық бойынша GPA
+profile.evidence.value: GPA мәні
+profile.evidence.scale: GPA шкаласы
+profile.evidence.as_of_term: Көрсетілген кезең
+profile.evidence.credential_id: Біліктілік
+profile.evidence.score_percent: Біліктілік нәтижесі (%)
+profile.evidence.error.percentage: 0 мен 100 пайыз аралығындағы нәтижені енгізіңіз.
+profile.evidence.completed_on: Аяқталған күні
+profile.evidence.add_language: Тіл туралы растау қосу
+profile.evidence.add_institution: Оқу орны туралы растау қосу
+profile.evidence.self_reported: Өзіңіз енгізген растау; ол ресми құжаттарды растамайды.
+profile.evidence.self_reported_short: Өзі енгізген
+profile.evidence.status.unknown: Көрсетілмеген
+profile.evidence.status.in_progress: Орындалып жатыр
+profile.evidence.status.completed: Аяқталған
+profile.evidence.status.enrolled: Тіркелген
+profile.evidence.status.on_leave: Оқудан уақытша босатылған
+profile.evidence.status.not_enrolled: Тіркелмеген
+profile.evidence.status.not_completed: Аяқталмаған
+profile.evidence.language_kind.primary_language: Ана тілі
+profile.evidence.language_kind.education: Білім алу
+profile.evidence.language_kind.employment: Жұмыс тәжірибесі
+profile.evidence.qualification.secondary: Орта білім
+profile.evidence.qualification.bachelor: Бакалавр дәрежесі
+profile.evidence.qualification.master: Магистр дәрежесі
+profile.evidence.qualification.doctorate: Докторлық дәреже
+profile.evidence.qualification.professional: Кәсіби дәреже
+profile.evidence.qualification.other: Өзге біліктілік
+profile.evidence.institution_kind.enrollment: Тіркелу немесе оқу барысы
+profile.evidence.institution_kind.gpa: Бағдарлама бойынша GPA
+profile.evidence.institution_kind.credential: Бағдарлама біліктілігі
+profile.evidence.institution.mit: Massachusetts Institute of Technology
+profile.evidence.institution.imperial: Imperial College London
+profile.evidence.institution.stanford: Stanford University
+profile.evidence.program.mit_course_6_9: MIT Course 6-9 undergraduate major
+profile.evidence.program.mit_scm_residential_masc: Supply Chain Management Residential MASC
+profile.evidence.program.mit_scm_residential_meng: Supply Chain Management Residential MEng
+profile.evidence.program.mit_scm_blended_masc: Supply Chain Management Blended MASC
+profile.evidence.program.mit_scm_blended_meng: Supply Chain Management Blended MEng
+profile.evidence.program.stanford_cs_bs: Computer Science bachelor's degree
+profile.evidence.program.stanford_anthr_ma_coterm: Anthropology coterminal MA
+profile.evidence.credential.mit_dedp: MITx DEDP MicroMasters
+profile.evidence.credential.mit_scm: MITx Supply Chain Management MicroMasters
+profile.evidence.credential.mit_sc0x: SC0x course credential
+profile.evidence.credential_other: Бағдарлама біліктілігі
+profile.evidence.units_short: бірлік
+profile.evidence.error.language: Тіл кодын және растау түрін дұрыс енгізіңіз.
+profile.evidence.error.dates: Осы растаудың күндерін тексеріңіз.
+profile.evidence.error.qualification: Осы растау үшін білім деңгейін таңдаңыз.
+profile.evidence.error.max_language: Ең көбі 10 тілдік растауды сақтауға болады.
+profile.evidence.error.institution: Қолдау көрсетілетін университет пен растау түрін таңдаңыз.
+profile.evidence.error.units: Теріс емес бүтін оқу бірліктерінің санын енгізіңіз.
+profile.evidence.error.gpa: Көрсетілген шкала шегіндегі GPA мәнін енгізіңіз.
+profile.evidence.error.credential: Тізімнен біліктілікті таңдаңыз.
+profile.evidence.error.credential_score: Жарияланған біліктілік нәтижесін пайызбен енгізіңіз.
+profile.evidence.error.max_institution: Ең көбі 20 оқу орны туралы растау сақтауға болады.
+university.admissions.catalog.context_title: Өтініш беру контексті
+university.admissions.catalog.simple_title: Қабылдау талаптары
+university.admissions.catalog.browse_note: Кез келген оқу деңгейіндегі бағдарламаларды шолыңыз. Оқу мазмұны мен түсу бағыттарын көру үшін біреуін таңдаңыз.
+university.admissions.catalog.show_requirements: Талаптарды көрсету
+university.admissions.catalog.advanced_options: Қосымша мәліметтер
+university.admissions.catalog.advanced_note: Бұл мәліметтер белгілі болғанда енгізіп, «Талаптарды көрсету» түймесін таңдаңыз. Оларсыз кейбір шарттарды әлі де тексеру қажет.
+university.admissions.catalog.choose_program_hint: Түсу бағыттарын көру үшін алдымен бағдарламаны таңдаңыз.
+university.admissions.catalog.open_application: Өтініш беру бетін ашу
+university.admissions.catalog.view_requirements: Қабылдау талаптарын көру
+university.admissions.catalog.study_info: Бағдарлама туралы
+university.admissions.catalog.study_info_note: Бұл бағдарлама туралы ресми ақпарат. Ол сіздің талаптарға сай екеніңізді растамайды; толық талаптарды көру үшін өтініш беру бағытын таңдаңыз.
+university.admissions.catalog.source_note_simple: Ресми дереккөз мәтіні түпнұсқа тілінде көрсетіледі.
+university.admissions.catalog.route_class.ucas_course_choice: UCAS арқылы курс таңдау
+university.admissions.catalog.route_class.postgraduate_course_choice: Жоғары оқу орнынан кейінгі бағдарламаға өтініш
+university.admissions.catalog.source_scope_details: Дереккөздің күйі, аясы және күндері
+university.admissions.catalog.check_details: Жекелеген талаптарды тексеру
+university.admissions.catalog.publication: Жариялану күйі
+university.admissions.catalog.topic.eligibility: Талаптарға сәйкестік
+university.admissions.catalog.topic.academic: Академиялық біліктілік
+university.admissions.catalog.topic.tests: Тесттер
+university.admissions.catalog.topic.language: Тіл талаптары
+university.admissions.catalog.topic.documents: Өтініш құжаттары
+university.admissions.catalog.topic.portfolio: Әңгімелесу және портфолио
+university.admissions.catalog.topic.application: Өтініш беру тәртібі
+university.admissions.catalog.topic.deadlines: Мерзімдер мен өтініш беру кезеңдері
+university.admissions.catalog.topic.costs: Оқу құны мен алымдар
+university.admissions.catalog.topic.funding: Қаржыландыру
+university.admissions.catalog.topic.study: Оқу мазмұны мен құрылымы
+university.admissions.catalog.topic.completion: Дәрежені аяқтау талаптары
+university.admissions.catalog.topic.offers: Ұсыныстар мен оқуға қабылдану
+university.admissions.catalog.topic.support: Студенттерге қолдау
+university.admissions.catalog.context_note: Таңдалған контекст талаптарға, мерзімдерге, оқу құнына және қаржыландыруға қолданылады. Қолмен енгізген өзгерістер осы бетте қалады; тексерулерде профильдегі растаулар пайдаланылады.
+university.admissions.catalog.choose_program: Оқу нұсқасын таңдаңыз
+university.admissions.catalog.no_program_selected: Оқу нұсқасы таңдалмаған
+university.admissions.catalog.route_label: Өтініш беру бағыты
+university.admissions.catalog.choose_route: Нақты өтініш беру бағытын таңдаңыз
+university.admissions.catalog.route_required: Өтініш беру бағытын өзіңіз таңдаңыз. Байланыстырылған бағыт сіздің талаптарға сай екеніңізді растамайды.
+university.admissions.catalog.applicant_label: Өтініш беруші санаты
+university.admissions.catalog.unspecified: Көрсетілмеген
+university.admissions.catalog.applicant.first_year: Бірінші курсқа түсуші
+university.admissions.catalog.applicant.transfer: Ауысу арқылы түсуші
+university.admissions.catalog.applicant.graduate: Жоғары оқу орнынан кейінгі бағдарламаға түсуші
+university.admissions.catalog.cycle_label: Жоспарланған қабылдау циклі
+university.admissions.catalog.cycle_example: Мысалы: 2027 жылдың күзінде түсу
+university.admissions.catalog.fee_label: Өзі көрсеткен оқу ақысы мәртебесі
+university.admissions.catalog.fee.unknown: Анықталмаған
+university.admissions.catalog.fee.self_reported_home_domestic: Өз еліндегі / жергілікті (өзі көрсеткен)
+university.admissions.catalog.fee.self_reported_international_overseas: Шетелдік / халықаралық (өзі көрсеткен)
+university.admissions.catalog.fee.other: Басқа / нақтылау қажет
+university.admissions.catalog.apply_context: Контексті қолдану
+university.admissions.catalog.legacy_pending: Бұрын таңдаған бағдарламаңыз осы тексерілген каталогқа сәйкестендірілмеген. Оқу нұсқасын қайта таңдаңыз; сақталған профиліңіз қалады.
+university.admissions.catalog.incompatible_context: Бұл таңдаулар байланыстырылған бағдарламаға, өтініш беру бағытына немесе оқу деңгейіне сәйкес келмейді. Контексті өзгертіңіз; университетке ортақ талаптар олардың орнына қолданылған жоқ.
+university.admissions.catalog.loading: Тексерілген ақпарат жүктелуде
+university.admissions.catalog.load_error: Тексерілген ақпаратты жүктеу мүмкін болмады. Қайталап көріңіз.
+university.admissions.catalog.retry: Қайталау
+university.admissions.catalog.search_label: Оқу нұсқасы немесе пән саласы
+university.admissions.catalog.search: Іздеу
+university.admissions.catalog.level_label: Оқу деңгейі
+university.admissions.catalog.all_levels: Барлық оқу деңгейлері
+university.admissions.catalog.level.undergraduate: Бакалавриат
+university.admissions.catalog.level.masters: Магистратура
+university.admissions.catalog.level.doctoral: Докторантура
+university.admissions.catalog.level.professional: Кәсіби бағдарлама
+university.admissions.catalog.no_options: Бұл сүзгілерге сай оқу нұсқалары табылмады.
+university.admissions.catalog.previous: Алдыңғы
+university.admissions.catalog.next: Келесі
+university.admissions.catalog.results: {from}–{to} / {total} оқу нұсқасы
+university.admissions.catalog.finance_note: Бұл контекст үшін салыстыруға болатын жылдық жалпы сома анықталмаған. Төмендегі сомалар жарияланған кезеңі мен оқу ақысына қатысты шарттарын сақтайды. Қаржыландыру мүмкіндіктері тағайындалған көмек болып саналмайды және сомадан шегерілмеген.
+university.admissions.catalog.study_options_title: Оқу нұсқалары
+university.admissions.catalog.study_options_note: Тексерілген оқу орны каталогын іздеңіз. Диплом алу мен оны аяқтау талаптары оқуға қабылдау талаптарынан бөлек.
+university.admissions.catalog.admission_title: Талаптар және өтініш беру
+university.admissions.catalog.finance_intro: Таңдалған өтініш беру контекстіне арналған оқу құны мен қаржыландыру шарттары.
+university.admissions.catalog.source_text_note: Дереккөз түйіндемелері мен ондағы арнайы атаулар түпнұсқа тілінде сақталады. Олар өтініш берушінің талаптарға сай екенін растамайды.
+university.admissions.catalog.conditional: Шартты — қолданылу аясы әлі тексерілуі керек
+university.admissions.catalog.matched: Таңдалған контекстке сәйкес
+university.admissions.catalog.unknown: Белгісіз
+university.admissions.catalog.published: Жарияланған
+university.admissions.catalog.partly_published: Ішінара жарияланған
+university.admissions.catalog.limited_publication: Шектеулі не толық анықталмаған аясымен жарияланған
+university.admissions.catalog.conflicting: Ресми дереккөздерде қайшылық бар
+university.admissions.catalog.review: Дереккөзді тексеру
+university.admissions.catalog.review.verified: Расталған
+university.admissions.catalog.review.reviewed: Қаралған
+university.admissions.catalog.review.carried_forward_review: Алдыңғы дереккөз тексеруі сақталған
+university.admissions.catalog.review.conflicting: Ресми дереккөздерде қайшылық бар
+university.admissions.catalog.review.superseded: Кейінгі дереккөзбен алмастырылған
+university.admissions.catalog.review.limited: Дереккөз қаралды; кейбір аясы не шарттары әлі тексерілуі керек
+university.admissions.catalog.not_published: Жарияланбаған
+university.admissions.catalog.needs_review: Қарау қажет
+university.admissions.catalog.historical: Тарихи дереккөз жазбасы
+university.admissions.catalog.checked: Ресми бет тексерілген
+university.admissions.catalog.period: Жарияланған кезең
+university.admissions.catalog.scope: Дереккөз аясы
+university.admissions.catalog.conditions: Шарттар мен ерекшеліктер
+university.admissions.catalog.exceptions: Ерекшеліктер
+university.admissions.catalog.source: Ресми дереккөз
+university.admissions.catalog.no_facts: Бұл бөлімде осы таңдауға арналған дереккөз жазбалары каталогқа енгізілмеген. Ресми бағдарлама және өтініш беру беттерін тексеріңіз.
+university.admissions.catalog.no_context: Қолданылу аясы белгіленген дереккөз жазбаларын көру үшін оқу нұсқасы мен оған қатысты өтініш беру бағытын таңдаңыз.
+university.admissions.catalog.unknowns: Нақтылауды қажет ететін дереккөз ақпараты
+university.admissions.catalog.next_step: Ресми келесі қадам
+university.admissions.catalog.history: Тарихи жазбалар
+university.admissions.catalog.history_note: Бұл жазбалар тарихи контекст ретінде сақталған; таңдалған циклдің қолданыстағы талаптары немесе оқу ақысы болып саналмайды.
+university.admissions.catalog.assessment: UniChance — жарияланған минимумдарды тексеру
+university.admissions.catalog.assessment_meaning: Пайыз бағалауға болатын жарияланған академиялық және тілдік минимумдардың қаншасы орындалғанын көрсетеді. Бұл оқуға қабылдану ықтималдығы, барлық талаптардың тексеруі немесе қаржыландыру болжамы емес.
+university.admissions.catalog.assessment_unavailable: Бұл контекст үшін талаптарға сәйкестік пайызы қолжетімді емес.
+university.admissions.catalog.self_reported: Өтініш беруші енгізген растауларды оқу орны растаған жоқ.
+university.admissions.catalog.provided: Енгізілген растау
+university.admissions.catalog.minimum: Жарияланған минимум
+university.admissions.catalog.rule: Тексеріліп жатқан талап
+university.admissions.catalog.source_rule: Бастапқы жарияланған талап
+university.admissions.catalog.met: Орындалды
+university.admissions.catalog.unmet: Орындалмады
+university.admissions.catalog.missing: Растау жетіспейді
+university.admissions.catalog.unassessed: Бағаланбаған
+university.admissions.catalog.yes: Иә
+university.admissions.catalog.no: Жоқ
+university.admissions.catalog.detail: Дереккөз мәліметі
+university.admissions.catalog.domain.institution: Оқу орны туралы ақпарат
+university.admissions.catalog.domain.study: Оқу мазмұны мен құрылымы
+university.admissions.catalog.domain.degree_completion: Дәрежені аяқтау және жариялау
+university.admissions.catalog.domain.requirements: Қабылдау талаптары
+university.admissions.catalog.domain.application: Өтініш беру тәртібі мен құжаттар
+university.admissions.catalog.domain.offer_enrollment: Ұсыныстар мен оқуға қабылдану
+university.admissions.catalog.domain.deadlines: Өтініш пен қаржыландыру мерзімдері
+university.admissions.catalog.domain.costs: Жарияланған шығындар
+university.admissions.catalog.domain.funding: Қаржыландыру және марапат шарттары
+university.admissions.catalog.domain.career: Мансап және нәтижелер
+university.admissions.catalog.domain.student_support: Студенттерге қолдау
+university.admissions.catalog.domain.other: Дереккөздегі өзге ақпарат
+university.admissions.catalog.reason.applicability_unknown: Таңдалған контекст немесе талаптардың өтініш берушіге қолданылуы анықталмаған.
+university.admissions.catalog.reason.missing_evidence: Қажетті растау енгізілмеген.
+university.admissions.catalog.reason.unassessed_minimums: Кейбір жарияланған минимумдар немесе олардың шарттары әзірге бағаланбайды.
+university.admissions.catalog.reason.no_published_requirements: Бұл контекст үшін бағалауға болатын сандық минимум каталогқа енгізілмеген.
+university.admissions.catalog.reason.requirements_not_met: Бағаланған жарияланған минимумдардың кемінде бірі орындалмаған.
+university.admissions.catalog.reason.source_fact_changed: Дереккөз жазбасы өзгерген; бағалауды қайта қарау қажет.
+university.admissions.catalog.reason.source_state_not_verified: Ереже бағалау үшін тексерілмеген.
+university.admissions.catalog.kind.exam_alternatives: Міндетті тест нұсқалары
+university.admissions.catalog.kind.required_exam_presence: Тест тапсырғанын растау
+university.admissions.catalog.kind.scoped_gpa: Қолданылатын GPA
+university.admissions.catalog.kind.enrollment: Тіркелу шарты
+university.admissions.catalog.kind.enrollment_units: Негізгі мамандық курстарын аяқтау
+university.admissions.catalog.kind.credential: Біліктілік шарты
+university.admissions.catalog.kind.language_requirement: Тіл талабы
+university.admissions.catalog.kind.covered_minima: Қамтылған минимум тексерулері
+university.admissions.catalog.kind.remaining_conditions: Дереккөздегі қалған шарттар
+university.admissions.catalog.kind.published_rule: Жарияланған қабылдау ережесі
+university.admissions.catalog.kind.conditional_rule: Шартты қабылдау ережесі
+university.admissions.catalog.kind.unresolved_rule: Анықталмаған қабылдау ережесі
+university.admissions.catalog.kind.stale_annotation: Дереккөз ережесін қайта қарау қажет
+university.admissions.catalog.kind.source_state: Дереккөз күйін қайта қарау қажет
+university.admissions.catalog.field.currency: Валюта
+university.admissions.catalog.field.period: Баға кезеңі
+university.admissions.catalog.field.amount: Сома
+university.admissions.catalog.field.value: Мән
+university.admissions.catalog.field.minimum: Минимум
+university.admissions.catalog.field.scale: Бастапқы шкала
+university.admissions.catalog.field.unit: Бірлік
+university.admissions.catalog.field.units: Дәреже бойынша оқу бірліктерінің жалпы саны
+university.admissions.catalog.field.major_units: Негізгі мамандық бірліктері
+university.admissions.catalog.field.completed_major_subjects: Аяқталған негізгі мамандық пәндері
+university.admissions.catalog.field.metric: Академиялық көрсеткіш
+university.admissions.catalog.field.status: Күйі
+university.admissions.catalog.field.taken_on: Тест тапсырған күн
+university.admissions.catalog.field.as_of_term: Көрсетілген кезең
+university.admissions.catalog.field.levels: Оқу деңгейлері
+university.admissions.catalog.field.applicant_categories: Өтініш беруші санаттары
+university.admissions.catalog.field.cycle: Дереккөз циклі
+university.admissions.catalog.field.fee_status: Оқу ақысы мәртебесіне қатысты шарттар
+university.admissions.catalog.field.additional_dimensions: Қолданылуына әсер ететін қосымша шарттар
+university.admissions.catalog.field.study: Оқу нұсқасы
+university.admissions.catalog.field.application: Өтініш беру бағыты
+university.admissions.catalog.field.A3i6E: Бағдарлама сипаттамасы
+university.admissions.catalog.field.WOZxr: Сыртқы кредиттерді есептеу тәртібі
+university.admissions.catalog.field.ItCSB: Бағдарлама талаптары
+university.admissions.catalog.field.advisingExpectations: Академиялық кеңес алу тәртібі
+university.admissions.catalog.field.cotermQuartersBack: Біріктірілген оқу бағдарламасындағы курстарды есепке алу мерзімі
+university.admissions.catalog.field.cotermTransferPolicy: Біріктірілген оқу бағдарламасындағы курстарды ауыстыру тәртібі
+university.admissions.catalog.field.programGradingPolicies: Бағдарламадағы бағалау саясаты
+university.admissions.catalog.field.programGPARequirement: Бағдарламаны аяқтауға қажетті GPA
+university.admissions.catalog.field.programAdditionalPolicies: Бағдарламаның қосымша ережелері
+university.admissions.catalog.field.exam_id: Емтихан
+university.admissions.catalog.field.credential_id: Біліктілік
+university.admissions.catalog.field.score_percent: Біліктілік нәтижесі (%)
+university.admissions.catalog.field.subjects_minimum: Негізгі мамандық бойынша пәндердің минимумы
+university.admissions.catalog.field.required_modules: Тесттің міндетті бөлімдері
+university.admissions.catalog.field.allowed_windows: Жарияланған тест тапсыру кезеңдері
+university.admissions.catalog.field.alternatives: Жарияланған баламалар
+university.admissions.catalog.field.condition: Шарт
+university.admissions.catalog.study_level.undergraduate: Бакалавриат
+university.admissions.catalog.study_level.masters: Магистратура
+university.admissions.catalog.study_level.doctoral: Докторантура
+university.admissions.catalog.study_level.professional: Кәсіби бағдарлама
+university.admissions.catalog.fee.home: Өз еліндегі / жергілікті мәртебе (өзі көрсеткен)
+university.admissions.catalog.fee.overseas: Шетелдік / халықаралық мәртебе (өзі көрсеткен)
+university.admissions.catalog.enum.required: Міндетті
+university.admissions.catalog.enum.not_required: Міндетті емес
+university.admissions.catalog.enum.recommended: Ұсынылады
+university.admissions.catalog.enum.enrolled: Тіркелген
+university.admissions.catalog.enum.completed: Аяқталған
+university.admissions.catalog.enum.in_progress: Орындалып жатыр
+university.admissions.catalog.enum.not_started: Басталмаған
+university.admissions.catalog.enum.overall: Жалпы
+university.admissions.catalog.enum.technical: Техникалық пәндер бойынша
+university.admissions.catalog.enum.major: Негізгі мамандық бойынша
+university.admissions.catalog.enum.required_coursework: Міндетті курстық жұмыс
+university.admissions.catalog.enum.study_period_or_pathway: Оқу кезеңі немесе бағыты
+university.admissions.catalog.enum.project_or_dissertation: Жоба немесе диссертация
+university.admissions.catalog.enum.student_choice_coursework: Студент таңдайтын курстық жұмыс
+university.admissions.catalog.enum.published_catalog_expected_length: Каталогта жарияланған күтілетін ұзақтығы
+university.admissions.catalog.enum.catalog_metadata_not_fixed_individual_duration: Каталогтағы ұзақтық; әр студенттің нақты оқу мерзімі белгіленбеген
+university.admissions.catalog.enum.required_if_applicable: Қолданылатын жағдайда міндетті
+university.admissions.catalog.enum.not_accepted: Қабылданбайды
+university.admissions.catalog.enum.prior_cycle_only: Тек алдыңғы цикл үшін жарияланған
+university.admissions.catalog.enum.published_current_page_cycle: Тексерілген бетте жарияланған цикл
+university.admissions.catalog.enum.same_all_statuses: Барлық оқу ақысы мәртебесіне бірдей жарияланған сома
+university.admissions.catalog.enum.postgraduate_taught: Оқытылатын жоғары оқу орнынан кейінгі бағдарлама
+university.admissions.catalog.enum.independent_award_entry: Жеке марапат жазбасы
+university.admissions.catalog.enum.course_application: Нақты курсқа өтініш
+university.admissions.catalog.enum.post_admission_major: Оқу орнына түскеннен кейін таңдалатын негізгі мамандық
+university.admissions.catalog.enum.institution_wide: Оқу орнына ортақ қабылдау
+university.admissions.catalog.enum.program_specific: Нақты бағдарламаға тән
+university.admissions.catalog.enum.route_wide: Өтініш беру бағытына ортақ
+university.admissions.catalog.enum.academic_year: Оқу жылы
+university.admissions.catalog.enum.one_time: Бір реттік төлем
+university.admissions.catalog.reset_notice: Бұрынғы қабылдау таңдауыңыз ескі каталогты пайдаланғандықтан тазартылды. Оқу нұсқасы мен өтініш беру бағытын қайта таңдаңыз. Профильдегі басқа мәліметтер сақталған.
+university.admissions.catalog.save_choice: Өтініш таңдауын сақтау
+university.admissions.catalog.choice_saved: Осы университетке арналған өтініш контексті сақталды.
+university.admissions.catalog.choice_session_only: Бұл таңдау тек осы сеансқа қолжетімді. Оны осы құрылғыда сақтау мүмкін болмады.
+university.admissions.catalog.apply_before_save: Таңдауды сақтамас бұрын өзгертілген контексті қолданыңыз.
+universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
+universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
+universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.

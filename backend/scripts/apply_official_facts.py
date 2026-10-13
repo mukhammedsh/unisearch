@@ -450,7 +450,7 @@ def apply_official_facts(
         if isinstance(student_payload, dict):
             _apply_student_count(row, student_payload, verified_at)
         acceptance_payload = payload.get("acceptance_rate_percent")
-        if isinstance(acceptance_payload, dict):
+        if isinstance(acceptance_payload, dict) and not _clean_text(row.get("admissions_catalog_id")):
             _apply_acceptance_rate(row, acceptance_payload, verified_at)
         early_career_salary_payload = payload.get("early_career_salary") or payload.get("average_early_career_salary_usd")
         if isinstance(early_career_salary_payload, dict):

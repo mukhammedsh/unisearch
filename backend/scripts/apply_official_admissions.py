@@ -204,6 +204,8 @@ def apply_official_admissions(
         uid = _clean_text(row.get("id"))
         if not uid:
             continue
+        if _clean_text(row.get("admissions_catalog_id")):
+            continue
         payload = admissions_rows.get(uid)
         if not isinstance(payload, dict):
             continue

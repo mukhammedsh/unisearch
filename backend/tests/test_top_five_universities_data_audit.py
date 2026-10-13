@@ -3,7 +3,13 @@ from __future__ import annotations
 import json
 import unittest
 
-from scripts.audit_universities_data import DEFAULT_DATA_PATH, _audit_top_five_pilot
+from scripts.audit_universities_data import (
+    DEFAULT_ADMISSIONS_HISTORY_PATH,
+    DEFAULT_DATA_PATH,
+    _audit_admissions_cutover,
+    _audit_retired_admissions_fields,
+    _audit_top_five_pilot,
+)
 
 
 class TopFiveUniversityAuditTests(unittest.TestCase):
@@ -52,6 +58,11 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         errors: list[str] = []
         _audit_top_five_pilot(errors, uid, self.university)
         return errors
+
+    def _load_pre_cutover_rows(self) -> dict[str, dict]:
+        current = json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))
+        archive = json.loads(DEFAULT_ADMISSIONS_HISTORY_PATH.read_text(encoding="utf-8"))
+        return {row["id"]: row for row in [*current, *archive["records"]]}
 
     def test_accepts_scoped_deadlines_official_sources_and_finance_breakdown(self) -> None:
         self.assertEqual([], self.audit())
@@ -128,6 +139,29 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.university["admission_categories"][0]["scope"] = "legacy_unknown_scope"
         self.assertEqual([], self.audit("university-outside-pilot"))
 
+    def test_accepted_cutover_rows_match_inactive_history(self) -> None:
+        universities = json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))
+        errors: list[str] = []
+
+        _audit_admissions_cutover(errors, universities)
+
+        self.assertEqual([], errors)
+
+    def test_accepted_cutover_allows_verified_neutral_updates(self) -> None:
+        universities = json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))
+        row = next(item for item in universities if item["id"] == "mit-usa-cambridge")
+        row["description"] = row["description"] + " Updated neutral description."
+        errors: list[str] = []
+
+        _audit_admissions_cutover(errors, universities)
+
+        self.assertEqual([], errors)
+
+    def test_accepted_cutover_rejects_retained_policy_fields(self) -> None:
+        errors: list[str] = []
+        _audit_retired_admissions_fields(errors, "mit-usa-cambridge", {"finance": {}})
+        self.assertTrue(any("retired legacy admissions key 'finance'" in error for error in errors))
+
     def test_scoped_deadline_and_price_facts_validate_and_price_matches_legacy_field(self) -> None:
         self.university["academics"] = {"programs": [{
             "id": "oxford-test-msc", "name": "Test MSc", "study_levels": ["Master"],
@@ -155,7 +189,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertTrue(any("must equal legacy numeric field 'tuition_year_gbp'" in error for error in self.audit()))
 
     def test_mit_current_cycle_and_program_scoped_physics_route(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         mit = rows["mit-usa-cambridge"]
         categories = {category["id"]: category for category in mit["admission_categories"]}
         self.assertEqual("Fall 2027 entry", categories["mit_regular"]["cycle"])
@@ -252,7 +286,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertIn("varies significantly by program", doctoral_funding["notes"])
 
     def test_stanford_and_harvard_first_year_cycles_are_scoped(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         stanford = rows["stanford-university-usa-ca"]
         stanford_first_year = next(
             category for category in stanford["admission_categories"]
@@ -273,7 +307,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertTrue(all("20" not in row["deadline"] for row in harvard_first_year["admission_rounds"]))
 
     def test_contrast_routes_and_imperial_computing_requirements_are_course_scoped(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
 
         mit = rows["mit-usa-cambridge"]
         mit_categories = {row["id"]: row for row in mit["admission_categories"]}
@@ -351,7 +385,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertTrue(any("must sit the Test of Mathematics for University Admission (TMUA)" in value for value in computing["extra_requirements"]))
 
     def test_harvard_budget_and_program_scoped_costs_remain_explicit(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         harvard_finance = rows["harvard-usa-cambridge"]["finance"]
         self.assertEqual("USD", harvard_finance["currency"])
         self.assertEqual("2026-27", harvard_finance["academic_year"])
@@ -376,7 +410,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertEqual(86155, oxford_cs["total_cost_year_max"])
 
     def test_current_graduate_deadlines_are_program_and_cycle_scoped(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         harvard_categories = {
             category["id"]: category
             for category in rows["harvard-usa-cambridge"]["admission_categories"]
@@ -411,7 +445,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertNotIn("December 1 - December 15", gsas["admission_rounds"][0]["deadline"])
 
     def test_stanford_phd_dates_are_not_presented_as_a_university_wide_deadline(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         category = next(
             item for item in rows["stanford-university-usa-ca"]["admission_categories"]
             if item["id"] == "stanford_phd_doctoral_track"
@@ -424,7 +458,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertNotIn("2026-12-01 to 2026-12-15", deadline["application_deadline"])
 
     def test_imperial_presidents_phd_rounds_use_the_current_scholarship_source(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         category = next(
             item for item in rows["imperial-college-london-uk"]["admission_categories"]
             if item["id"] == "imperial_pgr_phd_doctoral"
@@ -435,7 +469,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         self.assertTrue(all("not the general PhD admission deadline" in row["notes"] for row in category["deadlines"]))
 
     def test_imperial_2027_taught_rounds_are_course_scoped(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         programs = {row["id"]: row for row in rows["imperial-college-london-uk"]["academics"]["programs"]}
         expected = {
             "imperial-msc-advanced-computing": ["2027-01-06", "2027-03-10", "2027-04-28"],
@@ -453,7 +487,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
                 self.assertTrue(all(row["source_url"] == program["source_url"] for row in program["deadlines"]))
 
     def test_oxford_route_ids_and_aid_scopes_match_current_course_cards(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         oxford = rows["university-of-oxford-uk-oxford"]
         categories = {row["id"]: row for row in oxford["admission_categories"]}
         programs = {row["id"]: row for row in oxford["academics"]["programs"]}
@@ -497,7 +531,7 @@ class TopFiveUniversityAuditTests(unittest.TestCase):
         )
 
     def test_oxford_2027_undergraduate_fees_keep_course_and_medicine_phase(self) -> None:
-        rows = {row["id"]: row for row in json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))}
+        rows = self._load_pre_cutover_rows()
         programs = {row["id"]: row for row in rows["university-of-oxford-uk-oxford"]["academics"]["programs"]}
         overseas_fees = {
             "computer_science_ug": 66580,

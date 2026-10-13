@@ -149,9 +149,9 @@ test("client-side navigation with Russian language renders destination page dire
 
   const aboutHeading = page.locator("[data-i18n='about.title']");
   await expect(aboutHeading).toBeVisible();
-  await expect(aboutHeading).toContainText("UniSearch — сервис, созданный абитуриентами для абитуриентов.");
+  await expect(aboutHeading).toHaveText(/UniSearch [–—] сервис, созданный абитуриентами для абитуриентов\./);
   await expect(page.locator("[data-i18n='about.origin']")).toContainText("9 февраля 2026 года");
-  await expect(page.locator("[data-i18n='about.origin']")).toContainText("нас — абитуриентов");
+  await expect(page.locator("[data-i18n='about.origin']")).toContainText(/нас [–—] абитуриентов/);
   await expect(page.locator("[data-i18n='about.evolution']")).toContainText("Спустя восемь месяцев");
   await expect(page.locator("[data-i18n='about.evolution']")).toContainText("сделали фокус на UniSearch");
   await expect(page.locator(".about-team-member")).toHaveCount(2);

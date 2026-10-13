@@ -546,6 +546,14 @@ async function loadAppRoute(rawHref, options = {}) {
         module?.disposeUniversitiesPage?.();
       }
     }
+    if (document.body.dataset.page === "university") {
+      const universityModule = routeModulePromises.get("university");
+      if (universityModule) (await universityModule)?.disposeUniversityPage?.();
+    }
+    if (document.body.dataset.page === "compare") {
+      const compareModule = routeModulePromises.get("compare");
+      if (compareModule) (await compareModule)?.disposeComparePage?.();
+    }
 
     await syncDocumentHeadFromRoute(nextDoc, url.href);
 

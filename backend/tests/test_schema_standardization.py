@@ -284,6 +284,11 @@ class SchemaStandardizationTests(unittest.TestCase):
                     "categoryId": "mit_regular",
                     "requirementProfileId": "mit_regular",
                     "fundingOptionId": "mit_regular",
+                    "studyOptionId": "mit-course-6-3-bachelor",
+                    "applicationRouteId": "mit-first-year",
+                    "studyLevel": "undergraduate",
+                    "applicantRoute": "first_year",
+                    "intendedEntryCycle": "Fall 2027",
                 }
             },
         }
@@ -312,7 +317,15 @@ class SchemaStandardizationTests(unittest.TestCase):
         self.assertIn("currency", match_data)
         self.assertIn("admitChance", match_data)
         self.assertIn("hardScore", match_data)
-        self.assertEqual(match_data.get("selectedChoiceKey"), "mit_regular::mit_regular::mit_regular")
+        self.assertEqual(match_data["admissionsContext"]["study_option_id"], "mit-course-6-3-bachelor")
+        self.assertEqual(match_data["admissionsContext"]["application_route_id"], "mit-first-year")
+        self.assertEqual(match_data["selectedChoiceKey"], "mit-first-year::mit-course-6-3-bachelor")
+        self.assertTrue(match_data["selectedByUser"])
+        self.assertTrue(match_data["requirementChecks"])
+        self.assertTrue(all(row["sourceRule"]["source_ids"] for row in match_data["requirementChecks"]))
+        self.assertEqual(mit_item["admissions_catalog"]["availability"], "reviewed")
+        self.assertNotIn("finance", mit_item)
+        self.assertIsNone(match_data["finalPrice"])
 
 
 class ConsumerStandardizationTests(unittest.TestCase):

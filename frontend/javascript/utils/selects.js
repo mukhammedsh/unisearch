@@ -503,9 +503,10 @@ export function initCustomSelect(selectId) {
 
   if (!wrapper.__customSelectLanguageBound && typeof window !== "undefined") {
     wrapper.__customSelectLanguageBound = true;
-    window.addEventListener("languageChanged", () => {
+    wrapper.__customSelectLanguageHandler = () => {
       window.requestAnimationFrame(syncFromNativeSelect);
-    });
+    };
+    window.addEventListener("languageChanged", wrapper.__customSelectLanguageHandler);
   }
 
   if (!wrapper.__customSelectObserver && typeof MutationObserver === "function") {
@@ -521,6 +522,15 @@ export function initCustomSelect(selectId) {
   }
 
   syncFromNativeSelect();
+  return () => {
+    if (wrapper.__customSelectLanguageHandler) {
+      window.removeEventListener("languageChanged", wrapper.__customSelectLanguageHandler);
+      wrapper.__customSelectLanguageHandler = null;
+      wrapper.__customSelectLanguageBound = false;
+    }
+    wrapper.__customSelectObserver?.disconnect();
+    wrapper.__customSelectObserver = null;
+  };
 }
 
 export function setupSlidingIndicator(containerSelector, itemSelector, activeClass = "active") {

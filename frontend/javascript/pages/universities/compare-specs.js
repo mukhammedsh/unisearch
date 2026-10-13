@@ -60,6 +60,7 @@ import {
   compareAidScore,
   compareCostBreakdownText,
   formatCompareCostRange,
+  hasReviewedAdmissions,
 } from "./compare-helpers.js";
 
 export const compareSlotLabel = (index) => tFormat(
@@ -604,6 +605,7 @@ export const buildCompareSpecs = (universities) => {
 };
 
 export const compareSpecRawValue = (spec, u) => {
+    if (hasReviewedAdmissions(u) && ["admissions", "finance", "outcomes"].includes(spec.section)) return null;
     try {
         const value = spec.getter(u);
         if (spec.type === "number") return toFiniteNumber(value);
@@ -795,6 +797,7 @@ const compareDecisionSource = (meta) => {
 const compareDecisionFact = (label, value, source = null) => ({ label, value, source });
 
 const selectedChanceForUniversity = (university, context = {}) => {
+    if (hasReviewedAdmissions(university)) return null;
     const id = String(university?.id || "");
     const universityChance = context?.chances?.get?.(id) || null;
     const selection = context?.choices?.get?.(id) || null;
@@ -852,7 +855,7 @@ const compareAdmissionTheme = (universities, context) => {
                 ? "universities.compare.scope.program"
                 : "universities.compare.scope.institution";
             const scopeFallback = admission.scope === "program" ? "course-specific" : "institution-wide";
-            const publishedValue = Number.isFinite(Number(admission.value))
+            const publishedValue = admission.value !== null && Number.isFinite(Number(admission.value))
                 ? `${comparePercentText(admission.value)} · ${t(scopeKey, scopeFallback)}${admission.cycle ? ` · ${admission.cycle}` : ""}`
                 : t("common.na", "N/A");
             return {
@@ -902,7 +905,7 @@ const compareFinanceTheme = (universities, context) => {
         universities: universities.map((university, index) => {
             const cost = costs[index];
             const contextText = compareCostContextText(cost);
-            const aid = university?.finance?.financial_aid || {};
+            const aid = hasReviewedAdmissions(university) ? {} : university?.finance?.financial_aid || {};
             return {
                 id: String(university?.id || ""),
                 name: compareUniversityName(university),
@@ -921,7 +924,7 @@ const compareFinanceTheme = (universities, context) => {
 };
 
 const compareAcademicsTheme = (universities) => {
-    const structures = universities.map((university) => university?.academics?.undergraduate_structure || {});
+    const structures = universities.map((university) => hasReviewedAdmissions(university) ? {} : university?.academics?.undergraduate_structure || {});
     const hasStructures = structures.some((structure) => Object.keys(structure).length > 0);
     const ranks = universities.map((university) => toFiniteNumber(university?.rank)).filter((value) => value !== null);
     const closeRanks = ranks.length === universities.length && Math.max(...ranks) - Math.min(...ranks) <= 3;
@@ -954,6 +957,7 @@ const compareAcademicsTheme = (universities) => {
 
 const compareOutcomesTheme = (universities) => {
     const rows = universities.map((university) => {
+        if (hasReviewedAdmissions(university)) return { university, earlySalary: null, medianEarnings: null, earlySource: null, medianSource: null };
         const earlySource = compareSourceMeta(university, "early_career_salary");
         const earlySalary = (String(earlySource?.url || "").trim() && String(earlySource?.verifiedAt || "").trim())
             ? toFiniteNumber(university?.outcomes?.early_career_salary_usd)
@@ -1027,7 +1031,8 @@ const compareDecisionSourceHtml = (source) => {
 };
 
 export const buildCompareDecisionSupportHtml = (universities, context = {}) => {
-    const themes = buildCompareDecisionSignals(universities, context);
+    const themes = buildCompareDecisionSignals(universities, context).filter(theme =>
+        !universities.some(hasReviewedAdmissions) || !["admissions", "finance", "outcomes"].includes(theme.key));
     return `
         <section class="compare-analysis-block compare-decision-support" aria-labelledby="compareDecisionTitle">
             <div class="compare-block-head">

@@ -17,7 +17,10 @@ def get_languages_config(response: Response = None):
 @router.post("/languages/validate", summary="Validate language submission", description="Validates a language proficiency entry (native, CEFR level, or exam score) and returns the normalized result.")
 def validate_language(payload: LanguageValidateRequest):
     try:
-        return lang_service.validate_language(payload.model_dump(exclude_none=True))
+        result = lang_service.validate_language(payload.model_dump(exclude_none=True))
+        if payload.kind == "exam" and payload.taken_on is not None:
+            result["language"]["taken_on"] = payload.taken_on
+        return result
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:

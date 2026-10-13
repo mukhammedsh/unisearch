@@ -1,260 +1,543 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile } = require("./helpers/personas");
+const { setNativeSelect } = require("./helpers/selectors");
 
-for (const [programId, width, descriptionText] of [
-  ["mit-bs-6-5", 1280, "программирование"],
-  ["mit-bs-21e", 390, "гуманитар"],
+const MIT = "mit-usa-cambridge";
+const STANFORD = "stanford-university-usa-ca";
+const IMPERIAL = "imperial-college-london-uk";
+
+async function openCatalog(page, university = MIT, { width = 1280, language = "eng", theme = "light", url } = {}) {
+  await page.setViewportSize({ width, height: 900 });
+  await page.addInitScript(({ language, theme }) => {
+    localStorage.setItem("unisearch_ui_language_v1", language);
+    localStorage.setItem("unisearch_theme", theme);
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+  }, { language, theme });
+  await page.goto(url || `/university.html?id=${university}`);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
+  if (!url) await expect(page.locator("#tab-general")).toHaveClass(/active/);
+  if (url && new URL(url, "http://localhost").searchParams.has("admission_application_route")) await openAdmission(page);
+  await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+}
+
+async function openAdmission(page) {
+  const route = new URL(page.url()).searchParams.get("admission_application_route");
+  if (route !== null) await expect(page.locator("#admissionsRoute")).toHaveValue(route);
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await openTab(page, "admission");
+}
+
+async function openAdvanced(page) {
+  const advanced = page.locator("#admissionsAdvanced");
+  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
+}
+
+async function openAssessment(page) {
+  const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
+  if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
+  return page.locator("#detailRequirements .admissions-catalog__assessment");
+}
+
+async function openTab(page, name) {
+  await page.locator(`.d-tab-btn[data-tab="tab-${name}"]`).click();
+  await expect(page.locator(`#tab-${name}`)).toHaveClass(/active/);
+}
+
+async function searchOptions(page, query, level = "") {
+  await openTab(page, "programs");
+  await setNativeSelect(page, "admissionsStudyLevel", level);
+  await page.locator("#admissionsSearch").fill(query);
+  const response = page.waitForResponse((response) => response.url().includes("/study-options?") && response.request().method() === "GET");
+  await page.locator("#admissionsSearchSubmit").click();
+  expect((await response).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
+}
+
+async function chooseOption(page, id, query, level) {
+  await searchOptions(page, query, level);
+  const option = page.locator(`#admissionsProgramList [data-study-option="${id}"]`);
+  await expect(option).toBeVisible();
+  const title = await option.locator(".admissions-programs__option-title").innerText();
+  const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+  await option.click();
+  expect((await response).ok()).toBe(true);
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
+  await expect(page.locator("#admissionsViewRequirements")).toBeEnabled();
+  expect(new URL(page.url()).searchParams.get("admission_option")).toBe(id);
+}
+
+async function applyContext(page, route, applicant = "", cycle = "", fee = "unknown") {
+  await openAdmission(page);
+  await openAdvanced(page);
+  await setNativeSelect(page, "admissionsRoute", route);
+  await setNativeSelect(page, "admissionsApplicant", applicant);
+  await setNativeSelect(page, "admissionsFee", fee);
+  await page.locator("#admissionsCycle").fill(cycle);
+  const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+  await page.locator("#admissionsContextApply").click();
+  expect((await response).ok()).toBe(true);
+  await openAdmission(page);
+  await expect(page.locator("#admissionsRoute")).toHaveValue(route);
+  await expect(page.locator("#admissionsApplicant")).toHaveValue(applicant);
+  await expect(page.locator("#admissionsCycle")).toHaveValue(cycle);
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(route);
+}
+
+async function openFact(page, tab, id) {
+  if (tab === "admission") await openAdmission(page);
+  else await openTab(page, tab);
+  const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  await expect(fact).toBeVisible();
+  await expect(fact).not.toHaveAttribute("open", "");
+  await fact.locator(":scope > summary").click();
+  await expect(fact).toHaveAttribute("open", "");
+  const evidence = fact.locator("details.admissions-catalog__evidence");
+  if (await evidence.count() && !(await evidence.evaluate((node) => node.open))) await evidence.locator(":scope > summary").click();
+  const unknowns = fact.locator("details.admissions-catalog__unknowns");
+  if (await unknowns.count() && !(await unknowns.evaluate((node) => node.open))) await unknowns.locator(":scope > summary").click();
+  return fact;
+}
+
+async function noFitPercentage(page) {
+  await openAdmission(page);
+  const assessment = await openAssessment(page);
+  await expect(assessment).toBeVisible();
+  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
+  await expect(assessment).toContainText(/not.*probability|не вероятность поступления/i);
+}
+
+async function fitsViewport(page, width) {
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+}
+
+for (const [id, width, query, description] of [
+  ["mit-bs-6-5", 1280, "Electrical Engineering with Computing", "programming"],
+  ["mit-bs-21e", 390, "Humanities and Engineering", "humanities"],
 ]) {
-  test(`MIT ${programId} shows a sourced Russian study summary and shared admission route`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-    await page.goto("/university.html?id=mit-usa-cambridge");
-    await expect(page.locator("#detailName")).not.toBeEmpty();
-    await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-    const program = page.locator(".program-card", { has: page.locator(`[data-program-admission='${programId}']`) });
-    await program.locator("[data-program-toggle]").click();
-    await expect(program.locator(".program-card__description")).toContainText(descriptionText);
-    await expect(program.locator(".program-card__source[href*='catalog.mit.edu/degree-charts/']")).toBeVisible();
-    await expect(program.locator(".program-card__route-note")).toContainText("в университет в целом");
-    await program.locator("[data-program-admission]").click();
-    await expect(page).toHaveURL(new RegExp(`admission_program=${programId}`));
-    await expect(page.locator("#tab-admission [data-admission-category='mit_regular']")).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  test(`MIT ${id} retains sourced study content and Russian interface with shared admission`, async ({ page }) => {
+    await openCatalog(page, MIT, { width, language: "rus" });
+    await openAdmission(page);
+    await expect(page.locator("#admissionsContext h2")).toHaveText("Условия поступления");
+    await chooseOption(page, id, query, "undergraduate");
+    await openAdmission(page);
+    await expect(page.locator('#admissionsRoute option[value="mit-first-year"]')).toHaveCount(1);
+    await expect(page.locator('#admissionsRoute option[value="mit-transfer"]')).toHaveCount(1);
+    await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+    const fact = await openFact(page, "programs", `${id}-description`);
+    await expect(fact).toContainText(description);
+    await expect(fact.locator('a[href*="catalog.mit.edu/degree-charts/"]')).toBeVisible();
+    await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке оригинала");
+    await fitsViewport(page, width);
   });
 }
 
-for (const [programId, width, language, descriptionText] of [
-  ["mit-course-6-7p-meng", 1280, "eng", "related MIT Course"],
-  ["mit-course-6-14p-meng", 390, "rus", "бакалаврскую степень MIT по Course"],
+for (const [id, width, language, query] of [
+  ["mit-course-6-7p-meng", 1280, "eng", "Computer Science and Molecular Biology"],
+  ["mit-course-6-14p-meng", 390, "rus", "Computer Science, Economics, and Data Science"],
 ]) {
-  test(`MIT ${programId} opens the internal EECS MEng route`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.addInitScript((selectedLanguage) => localStorage.setItem("unisearch_ui_language_v1", selectedLanguage), language);
-    await page.goto("/university.html?id=mit-usa-cambridge");
-    await expect(page.locator("#detailCard")).toBeVisible();
-    await expect(page.locator("#detailName")).toBeVisible();
-    if (width === 390) {
-      const titleWidth = await page.locator("#detailName").evaluate((node) => node.getBoundingClientRect().width);
-      expect(titleWidth).toBeGreaterThan(width * 0.7);
-    }
-    await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-    await page.locator("#tab-programs [data-program-level='master']").click();
-    const program = page.locator(".program-card", { has: page.locator(`[data-program-admission='${programId}']`) });
-    await program.locator("[data-program-toggle]").click();
-    await expect(program.locator(".program-card__description")).toContainText(descriptionText);
-    if (language === "rus") await expect(program).toContainText("Кафедра электротехники и компьютерных наук");
-    await expect(program.locator(".program-card__source[href*='catalog.mit.edu/degree-charts/']")).toBeVisible();
-    await program.locator("[data-program-admission]").click();
-    await expect(page).toHaveURL(new RegExp(`admission_program=${programId}`));
-    await expect(page.locator("#tab-admission [data-admission-category='mit_eecs_meng_admissions']")).toBeVisible();
-    if (language === "rus") {
-      await expect(page.locator("#tab-admission [data-admission-category='mit_eecs_meng_admissions']")).toContainText("Внутренняя программа MEng");
-    }
-    await expect(page.locator("#tab-admission [data-admission-category='mit_regular']")).toHaveCount(0);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  test(`MIT ${id} opens the internal EECS MEng route`, async ({ page }) => {
+    await openCatalog(page, MIT, { width, language });
+    await chooseOption(page, id, query, "masters");
+    await openAdmission(page);
+    await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(0);
+    await applyContext(page, "mit_eecs_meng_admissions");
+    const description = await openFact(page, "programs", `${id}-description`);
+    await expect(description).toContainText("related MIT Course");
+    await expect(description.locator('a[href*="catalog.mit.edu/degree-charts/"]')).toBeVisible();
+    const preparation = await openFact(page, "admission", "eecs-meng-preparation");
+    await expect(preparation).toContainText("apply before graduation");
+    await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
+    await noFitPercentage(page);
+    await fitsViewport(page, width);
   });
 }
 
-for (const [width, language, theme] of [
-  [1280, "eng", "light"],
-  [390, "rus", "dark"],
-]) {
-  test(`MIT Course 6-9P shows unassessed GPA minimums at ${width}px in ${language} ${theme}`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.addInitScript(({ language, theme }) => {
-      localStorage.setItem("unisearch_ui_language_v1", language);
-      localStorage.setItem("unisearch_theme", theme);
-    }, { language, theme });
-    await page.goto("/university.html?id=mit-usa-cambridge");
-    await expect(page.locator("#detailName")).not.toBeEmpty();
-    await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-    await page.locator("#tab-programs [data-program-level='master']").click();
-    const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-course-6-9p-meng']") });
-    await program.locator("[data-program-toggle]").click();
-    await expect(program.locator(".program-card__description")).toContainText(language === "rus" ? "только для действующих студентов Course 6" : "current MIT Course 6");
-    await program.locator("[data-program-admission]").click();
-    const route = page.locator("#tab-admission [data-admission-category='mit_bcs_meng_admissions']");
-    await expect(route).toBeVisible();
-    await expect(page.locator("#tab-admission [data-admission-category='mit_eecs_meng_admissions']")).toHaveCount(0);
-    const minimumText = language === "rus" ? "4,25/5,0" : "4.25/5.0";
-    await expect(route).toContainText(minimumText);
-    await expect(route).toContainText(language === "rus" ? "4,0/5,0" : "4.0/5.0");
-    await expect(route).toContainText(language === "rus" ? "UniSearch не может оценить" : "UniSearch cannot assess");
-    await expect(route).not.toContainText(language === "rus" ? "нет опубликованных измеримых минимумов" : "no measurable published minimums");
-    expect((await route.locator(".chance-track-chip").allTextContents()).join(" ")).not.toMatch(/\d+%/);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+for (const [width, language, theme] of [[1280, "eng", "light"], [390, "rus", "dark"]]) {
+  test(`MIT Course 6-9P retains distinct internal GPA minimums at ${width}px in ${language} ${theme}`, async ({ page }) => {
+    await openCatalog(page, MIT, { width, language, theme });
+    await chooseOption(page, "mit-course-6-9p-meng", "Computation and Cognition", "masters");
+    await applyContext(page, "mit_bcs_meng_admissions");
+    const fact = await openFact(page, "admission", "bcs-meng-entry-conditions");
+    await expect(fact).toContainText("4.25");
+    await expect(fact).toContainText(/Overall|общий/i);
+    await expect(fact).toContainText("102");
+    await expect(page.locator("#admissionsRoute option[value='mit_eecs_meng_admissions']")).toHaveCount(0);
+    await noFitPercentage(page);
+    await expect(page.locator("#detailRequirements .admissions-catalog__assessment")).toContainText(/Evidence missing|Сведений нет|Не хватает необходимых/i);
+    await fitsViewport(page, width);
   });
 }
 
 test("MIT Sloan MSMS keeps partner-school eligibility and its own deadline", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 900 });
-  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  await page.locator("#tab-programs [data-program-level='master']").click();
-  const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-sloan-msms']") });
-  await expect(program.locator(".program-card__title")).toContainText("управленческим исследованиям");
-  await program.locator("[data-program-toggle]").click();
-  await expect(program.locator(".program-card__description")).toContainText("партнёрских учебных заведений");
-  await expect(program).toContainText("Подать заявку могут только");
-  await program.locator("[data-program-admission]").click();
-  await expect(page).toHaveURL(/admission_program=mit-sloan-msms/);
-  await expect(page.locator("#tab-admission [data-admission-category='mit_sloan_msms_admissions']")).toBeVisible();
-  await expect(page.locator("#tab-admission [data-admission-category='mit_sloan_msms_admissions']")).toContainText("партнёрских вузов");
-  await expect(page.locator("#tab-admission [data-admission-category='mit_sloan_mban_admissions']")).toHaveCount(0);
-  await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
-  await expect(page.locator("#tab-deadlines")).toContainText("18");
-  await page.locator(".d-tab-btn[data-tab='tab-finance']").click();
-  await expect(page.locator("#tab-finance")).not.toContainText("$0");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await openCatalog(page, MIT, { width: 390, language: "rus" });
+  await chooseOption(page, "mit-sloan-msms", "Management Studies", "masters");
+  await applyContext(page, "mit_sloan_msms_admissions", "graduate", "Fall 2027 entry");
+  const eligibility = await openFact(page, "admission", "mit_sloan_msms_admissions-extra-requirements");
+  await expect(eligibility).toContainText("partner or affiliate");
+  await expect(eligibility).toContainText("Only current students or graduates");
+  await expect(page.locator("#admissionsRoute option[value='mit_sloan_mban_admissions']")).toHaveCount(0);
+  const dates = await openFact(page, "deadlines", "mit_sloan_msms_admissions-deadlines");
+  await expect(dates).toContainText(/2027[-\u2011]02[-\u2011]18/);
+  await expect(dates).toContainText("America/New_York");
+  const price = await openFact(page, "finance", "mit-sloan-msms-price-1");
+  await expect(price).toContainText(/Unknown|Неизвестно/);
+  await expect(page.locator("#detailFinance")).toContainText("не установлена");
+  await expect(page.locator("#detailFinance")).not.toContainText(/\$0\b/);
+  await fitsViewport(page, 390);
 });
 
-test("MITILI Linguistics SM opens its own master's application route", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 900 });
-  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  await page.locator("#tab-programs [data-program-level='master']").click();
-  const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-linguistics-sm-mit-grad-linguistics']") });
-  await program.locator("[data-program-toggle]").click();
-  await expect(program).toContainText("MITILI");
-  await program.locator("[data-program-admission]").click();
-  await expect(page).toHaveURL(/admission_program=mit-linguistics-sm-mit-grad-linguistics/);
-  const route = page.locator("#tab-admission [data-admission-category='mit_mitili_sm_admissions']");
-  await expect(route).toBeVisible();
-  await expect(route).toContainText("процедуру приёма на программу PhD по лингвистике");
-  await expect(route).toContainText("Statement of Objectives");
-  await expect(route).toContainText("Полная стипендия MITILI");
-  await expect(route.locator(".admission-funding-option")).toContainText("медицинскую страховку");
-  await expect(route.locator(".admission-funding-option")).not.toContainText("по конкурсу или рейтингу");
-  await expect(page.locator("#tab-admission [data-admission-category='mit_linguistics_doctoral_admissions']")).toHaveCount(0);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+test("MITILI Linguistics SM keeps its shared PhD procedure and separate scholarship scope", async ({ page }) => {
+  await openCatalog(page, MIT, { width: 390, language: "rus" });
+  await chooseOption(page, "mit-linguistics-sm-mit-grad-linguistics", "Linguistics", "masters");
+  await applyContext(page, "mit_mitili_sm_admissions");
+  const procedure = await openFact(page, "admission", "mit_mitili_sm_admissions-extra-requirements");
+  await expect(procedure).toContainText("Linguistics PhD application procedure");
+  await expect(procedure).toContainText("Statement of Objectives");
+  const funding = await openFact(page, "finance", "mit_mitili_sm_admissions-funding-0-0");
+  await expect(funding).toContainText("health insurance");
+  await expect(funding).toContainText("MITILI Full Scholarship");
+  await expect(page.locator("#detailFinance")).toContainText("не считается предоставленной помощью");
+  await expect(page.locator("#admissionsRoute option[value='mit_linguistics_doctoral_admissions']")).toHaveCount(0);
+  await fitsViewport(page, 390);
 });
 
-test("MIT Mathematics of Data SM shows its internal route and unassessed GPA", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 900 });
-  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  await page.locator("#tab-programs [data-program-level='master']").click();
-  const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-mathematics-of-data-sm-mit-grad-mathematics']") });
-  await program.locator("[data-program-toggle]").click();
-  await expect(program).toContainText("действующим студентам бакалавриата MIT");
-  await program.locator("[data-program-admission]").click();
-  const route = page.locator("#tab-admission [data-admission-category='mit_mathematics_of_data_sm_admissions']");
-  await expect(route).toBeVisible();
-  await expect(route).toContainText("4,8/5,0");
-  await expect(route).toContainText("не показывает процент UniChance");
-  expect((await route.locator(".chance-track-chip").allTextContents()).join(" ")).not.toMatch(/\d+%/);
-  await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
-  await expect(page.locator("#tab-deadlines")).toContainText("1 декабря 2026");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+test("MIT Mathematics of Data SM keeps its internal route and unassessed GPA", async ({ page }) => {
+  await openCatalog(page, MIT, { width: 390, language: "rus" });
+  await chooseOption(page, "mit-mathematics-of-data-sm-mit-grad-mathematics", "Mathematics of Data", "masters");
+  await applyContext(page, "mit_mathematics_of_data_sm_admissions");
+  const eligibility = await openFact(page, "admission", "mathematics-of-data-eligibility");
+  await expect(eligibility).toContainText("4.8");
+  await expect(eligibility).toContainText("MIT 5.0");
+  const procedure = await openFact(page, "admission", "mit_mathematics_of_data_sm_admissions-description");
+  await expect(procedure).toContainText("current MIT Mathematics undergraduates");
+  await noFitPercentage(page);
+  const deadline = await openFact(page, "deadlines", "mit_mathematics_of_data_sm_admissions-deadlines");
+  await expect(deadline).toContainText(/2026[-\u2011]12[-\u2011]01/);
+  await fitsViewport(page, 390);
 });
 
-test("MIT matching Business Analytics keeps its title and major badge on one header row", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
+test("MIT Business Analytics profile interest keeps source title readable without selecting a route", async ({ page }) => {
   await seedProfile(page, { major: "Business Analytics (Course 15-2)", studyLevel: "Bachelor" });
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_ui_language_v1", "rus");
-    localStorage.setItem("unisearch_theme", "dark");
-  });
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-bs-15-2']") });
-  await expect(program).toHaveClass(/program-card--major/);
-  await expect(program.locator(".program-card__major-badge")).toBeVisible();
-  const centerDelta = await program.evaluate((card) => {
-    // Sample both elements in one frame while the shared tab entrance animates.
-    const title = card.querySelector(".program-card__title").getBoundingClientRect();
-    const badge = card.querySelector(".program-card__major-badge").getBoundingClientRect();
-    return Math.abs(title.y + title.height / 2 - badge.y - badge.height / 2);
-  });
-  expect(centerDelta).toBeLessThanOrEqual(2);
-  await program.locator("[data-program-toggle]").click();
-  await program.screenshot({ path: "output/playwright/mit-course15-2-matching-major-dark.png" });
+  await openCatalog(page, MIT, { language: "rus", theme: "dark" });
+  await searchOptions(page, "Business Analytics", "undergraduate");
+  const option = page.locator('[data-study-option="mit-bs-15-2"]');
+  await expect(option).toContainText(/Business Analytics \(Course 15[-\u2011]2\)/);
+  await expect(option).toContainText("Бакалавриат");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(program.locator(".program-card__major-badge")).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await expect(option).toBeVisible();
+  await fitsViewport(page, 390);
 });
 
 for (const width of [1280, 390]) {
   for (const theme of ["light", "dark"]) {
     test(`MIT Business Analytics curriculum and admission journey at ${width}px in ${theme}`, async ({ page }) => {
-      await page.setViewportSize({ width, height: 900 });
-      await page.addInitScript((theme) => {
-        localStorage.setItem("unisearch_ui_language_v1", "rus");
-        localStorage.setItem("unisearch_theme", theme);
-      }, theme);
-      await page.goto("/university.html?id=mit-usa-cambridge");
-      await expect(page.locator("#detailName")).not.toBeEmpty();
-      await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-      await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-      await page.locator("[data-program-search]").fill("15-2");
-      const program = page.locator(".program-card", { has: page.locator("[data-program-admission='mit-bs-15-2']") });
-      await program.locator("[data-program-toggle]").click();
-      await expect(program.locator(".program-card__description")).toContainText("моделирован");
-      await expect(program.locator(".program-card__description")).toContainText("а не условия поступления");
-      await expect(program.locator(".program-card__route-note")).toContainText("специальность выбирают после первого курса");
-      await expect(program.locator(".program-card__source")).toHaveCount(2);
-      await expect(program.locator("a[href*='business-analytics-course-15-2']")).toBeVisible();
-      await expect(program.locator("a[href*='updated-fall-2026']")).toBeVisible();
-      const levelSpacing = await program.locator(".program-card-row").first().evaluate((row) => {
-        const label = row.querySelector(".program-card-label").getBoundingClientRect();
-        const value = row.querySelector(".program-card-tags").getBoundingClientRect();
-        return value.x - label.right;
-      });
-      expect(levelSpacing).toBeLessThanOrEqual(16);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      await program.screenshot({ path: `output/playwright/mit-course15-2-${width}-${theme}.png` });
-
-      await program.locator("[data-program-admission]").click();
-      await expect(page).toHaveURL(/admission_program=mit-bs-15-2/);
-      await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
-      const admission = page.locator("#tab-admission");
-      await expect(admission.locator(".mit-admission-context")).toContainText("Бизнес-аналитика");
-      await expect(admission.locator(".mit-admission-context")).toContainText("в университет в целом");
-      await admission.locator("[data-admission-context='route']").selectOption("first_year");
-      await expect(admission.locator("[data-admission-context='route']")).toHaveValue("first_year");
-      await admission.locator("[data-admission-context='cycle']").selectOption({ index: 1 });
-      await expect(page).toHaveURL(/admission_cycle=/);
-      await expect(admission.locator("[data-admission-category='mit_regular']")).toBeVisible();
-      await expect(admission.locator("[data-admission-category='mit_undergrad_transfer']")).toHaveCount(0);
-      await expect(admission.locator(".admission-decision-actions a")).toHaveAttribute("href", /^https:\/\/mitadmissions\.org\//);
-      const route = admission.locator("[data-admission-category='mit_regular']");
-      await expect(route.locator(".chance-track-chip")).toHaveCount(1);
-      await expect(route.locator(".chance-track-chip")).toContainText("Добавьте обязательные экзамены");
-      await expect(route.locator(".admission-check-assessments")).toContainText("SAT или ACT");
-      await expect(route.locator(".admission-check-assessments")).toContainText("Не указано");
-      await expect(route.locator(".chance-track-chip")).not.toContainText(/\d+\s*%/);
-      const history = route.locator(".track-published-score-range");
-      await expect(history).not.toHaveAttribute("open", "");
-      await expect(history.locator("a")).toBeHidden();
-      await history.locator("summary").click();
-      await expect(history.locator("a")).toHaveAttribute("href", "https://ir.mit.edu/projects/2024-25-common-data-set/");
-      await expect(history).toContainText("осенью 2024 года");
-      await history.locator("summary").click();
-      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      await page.evaluate(() => window.scrollTo(0, 0));
-      await page.screenshot({ path: `output/playwright/mit-course15-2-admission-${width}-${theme}.png`, fullPage: true });
-
+      await openCatalog(page, MIT, { width, language: "rus", theme });
+      await chooseOption(page, "mit-bs-15-2", "Business Analytics", "undergraduate");
+      await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+      const curriculum = await openFact(page, "programs", "mit-bs-15-2-description");
+      await expect(curriculum).toContainText("data modeling");
+      await expect(curriculum).toContainText("degree requirements, not admission prerequisites");
+      await expect(curriculum.locator('a[href*="business-analytics-course-15-2"]')).toBeVisible();
+      const exam = await openFact(page, "admission", "ug-sat-act-presence");
+      await expect(exam).toContainText("SAT");
+      await expect(exam).toContainText("ACT");
+      await expect(exam.locator('a[href^="https://mitadmissions.org/"]').first()).toBeVisible();
+      await expect(page.locator("#detailRequirements [data-admissions-fact='mit-transfer-description']")).toHaveCount(0);
+      await noFitPercentage(page);
+      await page.locator("#admissionsSaveChoice").click();
+      await expect(page.locator("#admissionsSaveStatus")).toContainText("сохранён");
+      const saved = await page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices[uid], MIT);
+      expect(saved.studyOptionId).toBe("mit-bs-15-2");
+      expect(saved.applicationRouteId).toBe("mit-first-year");
+      expect(saved.intendedEntryCycle).toBe("Fall 2027");
       await page.reload();
-      await expect(page.locator("#detailName")).not.toBeEmpty();
-      await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-      await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Бизнес-аналитика");
-      await expect(page.locator("#tab-admission [data-admission-context='route']")).toHaveValue("first_year");
-      await expect(page.locator("#tab-admission [data-admission-context='cycle']")).not.toHaveValue("");
+      await openAdmission(page);
+      await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
+      await expect(page.locator("#admissionsApplicant")).toHaveValue("first_year");
+      await expect(page.locator("#admissionsCycle")).toHaveValue("Fall 2027");
+      await fitsViewport(page, width);
     });
   }
 }
+
+test("reviewed MIT program levels use Russian labels while source names remain disclosed", async ({ page }) => {
+  await openCatalog(page, MIT, { language: "rus" });
+  await searchOptions(page, "Computer Science and Engineering", "undergraduate");
+  const program = page.locator('[data-study-option="mit-course-6-3-bachelor"]');
+  await expect(program).toContainText("Бакалавриат");
+  await expect(program).toContainText("Computer Science and Engineering");
+  await expect(page.locator("#tab-programs")).toContainText("Программа или предмет");
+});
+
+test("MIT program requires an explicit admission route and keeps funding separate", async ({ page }) => {
+  await openCatalog(page);
+  await openAdmission(page);
+  await expect(page.locator("#admissionsContext")).toContainText("No study option selected");
+  await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
+  await openAdmission(page);
+  await expect(page.locator("#admissionsContext")).toContainText("Choose an application route explicitly");
+  await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
+  await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
+  await expect(page.locator("#admissionsRoute option")).toHaveCount(3);
+  await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await noFitPercentage(page);
+  const tests = await openFact(page, "deadlines", "first-year-test-windows");
+  await expect(tests).toContainText("December 31");
+  await expect(tests).not.toContainText("Application fee");
+  await openTab(page, "finance");
+  await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
+  await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");
+  await applyContext(page, "mit_physics_phd_admissions", "graduate");
+  await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
+  await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(0);
+});
+
+test("MIT transfer deadlines preserve Spring-cycle applicant restrictions after reload", async ({ page }) => {
+  await openCatalog(page);
+  await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
+  await applyContext(page, "mit-transfer", "transfer", "Spring 2027 entry");
+  await page.reload();
+  await openAdmission(page);
+  await expect(page.locator("#admissionsApplicant")).toHaveValue("transfer");
+  await expect(page.locator("#admissionsCycle")).toHaveValue("Spring 2027 entry");
+  const deadlines = await openFact(page, "deadlines", "transfer-2027-windows");
+  await expect(deadlines).toContainText(/2026[-\u2011]10[-\u2011]15/);
+  await expect(deadlines).toContainText("US citizen");
+  await expect(deadlines).toContainText("US permanent resident");
+  const route = await openFact(page, "admission", "mit-transfer-extra-requirements");
+  await expect(route).toContainText("Spring transfer entry is only open to U.S. citizens and U.S. permanent residents");
+});
+
+test("MIT Course 6-3 first-year publishes no invented minimum or fit percentage and separates history", async ({ page }) => {
+  await seedProfile(page, {
+    studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027",
+    exams: [{ exam: "SAT", score: 1500 }],
+  });
+  await openCatalog(page, MIT, { width: 390, language: "rus", theme: "dark" });
+  await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
+  await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await noFitPercentage(page);
+  const exam = await openFact(page, "admission", "ug-sat-act-presence");
+  await expect(exam).toContainText(/Cutoff|порог/i);
+  await expect(exam).not.toContainText("1500");
+  await expect(page.locator("#detailRequirements .admissions-catalog__check").filter({ hasText: "Допустимые варианты обязательного теста" })).toContainText("Выполнено");
+  await openTab(page, "general");
+  const history = page.locator("#admissionsUniversityInfo .admissions-catalog > details");
+  await expect(history).toBeVisible();
+  await expect(history).not.toHaveAttribute("open", "");
+  await history.locator(":scope > summary").click();
+  await expect(history).toContainText("Исторические");
+  await expect(history.locator('[data-admissions-fact="mit-first-year-profile-0"]')).toHaveCount(1);
+  await expect(page.locator("#detailRequirements [data-admissions-fact='mit-first-year-profile-0']")).toHaveCount(0);
+  await fitsViewport(page, 390);
+});
+
+test("MIT graduate override is request-local and ignores the delayed prior program response", async ({ page }) => {
+  await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027", gpa: 3.82, gpaScale: 4 });
+  let releaseDelayed;
+  let signalFetched;
+  const gate = new Promise((resolve) => { releaseDelayed = resolve; });
+  const fetched = new Promise((resolve) => { signalFetched = resolve; });
+  const requests = [];
+  await page.route("**/admissions-context", async (route) => {
+    const body = route.request().postDataJSON();
+    requests.push(body);
+    if (body.context.study_option_id === "mit-course-6-3-bachelor" && body.context.application_route_id === "mit-first-year") {
+      const response = await route.fetch();
+      signalFetched();
+      await gate;
+      await route.fulfill({ response });
+      return;
+    }
+    await route.continue();
+  });
+  await openCatalog(page);
+  await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
+  await openAdmission(page);
+  await openAdvanced(page);
+  await setNativeSelect(page, "admissionsRoute", "mit-first-year");
+  await page.locator("#admissionsContextApply").click();
+  await fetched;
+  try {
+    await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");
+    await applyContext(page, "mit_physics_phd_admissions", "graduate", "Fall 2027");
+    const current = requests.find((request) => request.context.application_route_id === "mit_physics_phd_admissions");
+    expect(current.context.study_level).toBe("doctoral");
+    expect(current.context.applicant_route).toBe("graduate");
+    expect(current.context.intended_entry_cycle).toBe("Fall 2027");
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
+    expect(saved.studyLevel).toBe("Bachelor");
+    expect(saved.applicantRoute).toBe("first_year");
+    expect(saved.intendedEntryCycle).toBe("Fall 2027");
+    releaseDelayed();
+    await expect(page.locator("#admissionsRoute")).toHaveValue("mit_physics_phd_admissions");
+    await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
+    await page.goBack();
+    await openAdmission(page);
+    await expect(page.locator("#admissionsRoute")).toHaveValue("");
+    await page.goBack();
+    await openAdmission(page);
+    await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
+    expect(new URL(page.url()).searchParams.get("admission_option")).toBe("mit-course-6-3-bachelor");
+  } finally {
+    releaseDelayed();
+  }
+});
+
+test("Stanford Computer Science opens its institutional first-year context without JD facts", async ({ page }) => {
+  await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027", gpa: 3.78, exams: [{ exam: "SAT", score: 1510 }] });
+  await openCatalog(page, STANFORD);
+  await chooseOption(page, "stanford-option-cs-bs", "Computer Science", "undergraduate");
+  await applyContext(page, "undergraduate-shared-evidence:stanford-first-year", "first_year", "Fall 2027");
+  const exam = await openFact(page, "admission", "undergraduate-shared-evidence:stanford-firstyear-standardized-tests");
+  await expect(exam).toContainText(/SAT|ACT/);
+  await expect(page.locator("#detailRequirements [data-admissions-fact='undergraduate-shared-evidence:stanford-transfer-standardized-tests']")).toHaveCount(0);
+  await noFitPercentage(page);
+  await openTab(page, "finance");
+  await expect(page.locator("#detailFinance")).not.toContainText(/Stanford Law School|Juris Doctor|JD Admission/);
+  await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
+});
+
+for (const [id, award] of [["imperial-option-computing-beng", "BEng"], ["imperial-option-computing-meng", "MEng"]]) {
+  test(`Imperial Computing ${award} keeps its 2027 undergraduate course rules and source fee scope`, async ({ page }) => {
+    await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "2027 entry", gpa: 3.8, gpaScale: 4 });
+    await openCatalog(page, IMPERIAL);
+    await chooseOption(page, id, "Computing", "undergraduate");
+    await applyContext(page, `procedure-computing-${award.toLowerCase()}`, "first_year", "2027 entry");
+    const rule = await openFact(page, "admission", `imperial-computing-${award.toLowerCase()}-admission`);
+    await expect(rule).toContainText("TMUA");
+    await expect(rule).toContainText(/A\*A\*A|A\*AAA/);
+    await expect(rule).toContainText("41 points");
+    const deadline = await openFact(page, "deadlines", "imperial-ucas-2027-window");
+    await expect(deadline).toContainText(/2027[-\u2011]01[-\u2011]13/);
+    await expect(deadline).toContainText("18:00");
+    await expect(deadline).toContainText("Europe/London");
+    const profile = await openFact(page, "finance", `imperial-computing-${award.toLowerCase()}-course-profile`);
+    await expect(profile).toContainText(award);
+    await expect(profile).toContainText("Home fee");
+    await expect(profile).toContainText("Overseas fee");
+    await expect(profile).toContainText("£10,050 per year");
+    await expect(page.locator("#detailFinance")).toContainText("comparable annual total is not established");
+    await expect(page.locator("#detailFinance")).not.toContainText(/\$0\b/);
+    await noFitPercentage(page);
+  });
+}
+
+test("Stanford CS transfer keeps its Common Application route separate from first-year and JD", async ({ page }) => {
+  await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "transfer", intendedEntryCycle: "Fall 2027", major: "Computer Science" });
+  await openCatalog(page, STANFORD);
+  await chooseOption(page, "stanford-option-cs-bs", "Computer Science", "undergraduate");
+  await applyContext(page, "undergraduate-shared-evidence:stanford-transfer", "transfer", "Fall 2027");
+  const route = await openFact(page, "admission", "undergraduate-shared-evidence:stanford-transfer-eligibility-route");
+  await expect(route).toContainText("transfer route");
+  const testRule = await openFact(page, "admission", "undergraduate-shared-evidence:stanford-transfer-standardized-tests");
+  await expect(testRule).toContainText("ACT or SAT");
+  const dates = await openFact(page, "deadlines", "undergraduate-shared-evidence:stanford-transfer-deadline");
+  await expect(dates).toContainText("Common Application");
+  await expect(dates).toContainText("autumn/fall");
+  await expect(page.locator("#detailRequirements [data-admissions-fact='undergraduate-shared-evidence:stanford-firstyear-standardized-tests']")).toHaveCount(0);
+  await expect(page.locator("#detailRequirements")).not.toContainText(/Juris Doctor|JD Admission|Stanford Law School/);
+});
+
+test("MIT catalog Architecture shares institutional first-year and transfer routes", async ({ page }) => {
+  await openCatalog(page);
+  await chooseOption(page, "mit-bs-4", "Architecture", "undergraduate");
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("Architecture (Course 4)");
+  await openAdmission(page);
+  await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
+  await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
+  await applyContext(page, "mit-transfer", "transfer", "Fall 2027");
+  const description = await openFact(page, "admission", "mit-transfer-description");
+  await expect(description).toContainText("apply to MIT as a whole");
+});
+
+test("MIT Architecture retains official course number with localized study level", async ({ page }) => {
+  await openCatalog(page, MIT, { language: "rus" });
+  await searchOptions(page, "Architecture", "undergraduate");
+  const architecture = page.locator('[data-study-option="mit-bs-4"]');
+  await expect(architecture).toContainText("Architecture (Course 4)");
+  await expect(architecture).toContainText("Бакалавриат");
+  await expect(page.locator("#tab-programs")).toContainText("Программа или предмет");
+});
+
+test("MIT transfer context localizes interface and preserves the scoped original source rule", async ({ page }) => {
+  await openCatalog(page, MIT, { language: "rus" });
+  await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
+  await applyContext(page, "mit-transfer", "transfer", "Fall 2027");
+  await expect(page.locator("#admissionsApplicant option:checked")).toHaveText("Перевод из другого вуза");
+  const fact = await openFact(page, "admission", "transfer-eligibility");
+  await expect(fact).toContainText("At least two full-time terms");
+  await expect(fact).toContainText("committee review required");
+  await openTab(page, "programs");
+  await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке оригинала");
+});
+
+test("MIT MFin hides raw identifiers and first-year statistics while retaining its own study rules", async ({ page }) => {
+  await openCatalog(page, MIT, { language: "rus" });
+  await chooseOption(page, "mit-sloan-mfin", "Master of Finance", "masters");
+  await applyContext(page, "mit_sloan_mfin_admissions", "graduate", "2027 entry");
+  const description = await openFact(page, "programs", "mit-sloan-mfin-description");
+  await expect(description).toContainText("12- or 18-month");
+  await expect(description).not.toContainText("[object Object]");
+  const admission = await openFact(page, "admission", "mit_sloan_mfin_admissions-extra-requirements");
+  await expect(admission).toContainText("Python proficiency is preferred");
+  await expect(admission).not.toContainText(/source-[a-f0-9]+|ADMISSION ROUTE ID|PRICE FACTS|Class of 2029/);
+  await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
+});
+
+test("MIT admission context and source finance fit a narrow dark-theme screen", async ({ page }) => {
+  await openCatalog(page, MIT, { width: 390, theme: "dark" });
+  await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
+  await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await expect(page.locator("#admissionsContextApply")).toBeVisible();
+  const bounds = await page.locator("#admissionsContext").boundingBox();
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
+  await openTab(page, "deadlines");
+  await expect(page.locator("#detailDeadlines [data-admissions-fact]").first()).toBeVisible();
+  await openTab(page, "finance");
+  await expect(page.locator("#detailFinance [data-admissions-domain='costs']")).toBeVisible();
+  await expect(page.locator("#detailFinance [data-admissions-domain='funding']")).toBeVisible();
+  await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
+  await fitsViewport(page, 390);
+});
+
+test("reviewed programs search filters the full inventory and shows localized empty state", async ({ page }) => {
+  await openCatalog(page, MIT, { language: "rus" });
+  await searchOptions(page, "Physics", "undergraduate");
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(1);
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toContainText("Physics");
+  await searchOptions(page, "", "undergraduate");
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(24);
+  await expect(page.locator("#admissionsNext")).toBeEnabled();
+  await searchOptions(page, "zzz-no-such-program", "undergraduate");
+  await expect(page.locator("#admissionsProgramList .admissions-state")).toHaveText("По этим фильтрам программы не найдены.");
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(0);
+});
+
+test("profile major remains available through explicit catalogue search without choosing eligibility", async ({ page }) => {
+  await seedProfile(page, personas.ruStemGrant.profile);
+  await openCatalog(page);
+  await openAdmission(page);
+  await searchOptions(page, "Computer Science and Engineering", "undergraduate");
+  await expect(page.locator('[data-study-option="mit-course-6-3-bachelor"]')).toBeVisible();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await expect(page.locator("#admissionsContext")).toContainText("No study option selected");
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
+  expect(saved.major).toBe(personas.ruStemGrant.profile.major);
+});
 
 test("admission categories show applicable programs", async ({ page }) => {
   await page.goto("/university.html?id=astana-it-university-kaz-astana");
 
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
   const programs = page.locator(".admission-program-selector .admission-program-option");
@@ -269,6 +552,8 @@ test("admission category major tags are localized in russian", async ({ page }) 
   await page.goto("/university.html?id=astana-it-university-kaz-astana");
 
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
   const programs = page.locator(".admission-program-selector .admission-program-option");
@@ -280,6 +565,8 @@ test("nazarbayev university shows one admission category with requirement profil
   await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
 
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await expect(page.locator("#detailName")).not.toHaveText("University Name");
   const admissionTab = page.locator(".d-tab-btn[data-tab='tab-admission']");
   await expect(admissionTab).toBeVisible();
@@ -319,6 +606,8 @@ test("tsinghua admission tab keeps paid and grant options visible when profile p
   await page.goto("/university.html?id=tsinghua-university-cn-beijing");
 
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
   const optionCards = page.locator(".admission-funding-option");
@@ -330,6 +619,8 @@ test("oxford admission selector narrows program-specific categories without dupl
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
 
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
@@ -352,514 +643,6 @@ test("oxford admission selector narrows program-specific categories without dupl
   await expect(page.locator(".requirement-profile-tab")).toContainText(["A-Level", "IB", "SAT"]);
 });
 
-test("program card major tags are localized in russian", async ({ page }) => {
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_ui_language_v1", "rus");
-  });
-  await page.goto("/university.html?id=mit-usa-cambridge");
-
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await page.click(".d-tab-btn[data-tab='tab-programs']");
-
-  const firstToggle = page.locator("#tab-programs [data-program-toggle]").first();
-  await expect(firstToggle).toBeVisible();
-  await firstToggle.click();
-  await expect(firstToggle).toHaveAttribute("aria-expanded", "true");
-
-  const programTags = page.locator("#tab-programs .program-card .program-tag");
-  await expect(programTags.first()).toBeVisible();
-  await expect(programTags).toContainText(["Компьютерные науки"]);
-});
-
-test("MIT program opens its applicable admission routes without treating aid as a route", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-
-  await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Choose a MIT program first");
-  await page.locator("#tab-admission [data-mit-open-programs]").click();
-
-  const computerScience = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await computerScience.locator("[data-program-toggle]").click();
-  await computerScience.locator("[data-program-admission]").click();
-
-  await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Computer Science and Engineering");
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("apply to MIT as a whole");
-  await expect(page.locator("#tab-admission .admission-category-card")).toHaveCount(3);
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='mit_regular']")).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-category-card[open]")).toHaveCount(1);
-  await expect(page.locator("#tab-admission .admission-funding-option")).toHaveCount(0);
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("separate from admission");
-  await expect(page.locator("#tab-admission .chance-panel")).not.toContainText("Self-Funded");
-  await expect(page).toHaveURL(/admission_program=mit-course-6-3-bachelor/);
-
-  await page.reload();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Computer Science and Engineering");
-  await expect(page.locator("#tab-admission [data-admission-category='mit_regular']")).toBeVisible();
-
-  await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
-  const testScoresDeadline = page.locator("#tab-deadlines .admissions-deadline-item", { hasText: "Test scores" }).first();
-  await expect(testScoresDeadline).toBeVisible();
-  await expect(testScoresDeadline).not.toContainText("Application fee");
-  await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-
-  await page.locator("#tab-admission [data-mit-open-programs]").click();
-  await page.locator("#tab-programs [data-program-level='doctorate']").click();
-  const physicsPhd = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-physics-phd-course-8']") });
-  await physicsPhd.locator("[data-program-toggle]").click();
-  await physicsPhd.locator("[data-program-admission]").click();
-  await expect(page.locator("#tab-admission .admission-category-card")).toHaveCount(1);
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='mit_physics_phd_admissions']")).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='mit_regular']")).toHaveCount(0);
-});
-
-test("MIT transfer deadlines preserve Spring-cycle applicant restrictions", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await program.locator("[data-program-toggle]").click();
-  await program.locator("[data-program-admission]").click();
-
-  const routeControl = page.locator("#tab-admission [data-admission-context='route']");
-  await expect(routeControl).toBeVisible();
-  await routeControl.selectOption("transfer");
-  await expect(page).toHaveURL(/admission_route=transfer/);
-  const cycleControl = page.locator("#tab-admission [data-admission-context='cycle']");
-  await expect(cycleControl).toBeVisible();
-  await cycleControl.selectOption("Spring 2027 entry");
-  await expect(page).toHaveURL(/admission_cycle=Spring\+2027\+entry/);
-  await page.reload();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-  await expect(page.locator("#tab-admission [data-admission-context='route']")).toHaveValue("transfer");
-  await expect(page.locator("#tab-admission [data-admission-context='cycle']")).toHaveValue("Spring 2027 entry");
-  await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
-  const springDeadline = page.locator("#tab-deadlines .admissions-deadline-item", { hasText: "U.S. citizens and U.S. permanent residents only" }).first();
-  await expect(springDeadline).toBeVisible();
-  await expect(springDeadline.locator(".admissions-deadline-date")).toContainText("2026");
-  await expect(springDeadline).toContainText("U.S. citizens and U.S. permanent residents only");
-  await expect(springDeadline).toContainText("Spring entry only");
-});
-
-test("MIT Course 6-3 first-year shows no fit percentage and separates score ranges from minimums", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_ui_language_v1", "rus");
-    localStorage.setItem("unisearch_theme", "dark");
-  });
-  await seedProfile(page, {
-    studyLevel: "Bachelor",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027",
-    citizenship: "KZ",
-    studyMode: "On-campus",
-    exams: [{ exam: "SAT", score: 1500 }],
-  });
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await program.locator("[data-program-toggle]").click();
-  await program.locator("[data-program-admission]").click();
-  await expect(page).toHaveURL(/admission_program=mit-course-6-3-bachelor/);
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText(/Компьютерные науки и инженерия/);
-
-  await page.locator("#tab-admission .mit-admission-analysis > summary").click();
-  const chancePercent = page.locator("#tab-admission .chance-panel .chance-percent");
-  await expect(chancePercent).toHaveCount(1);
-  await expect(chancePercent).toHaveText("?");
-  await expect(chancePercent).not.toContainText(/\\d+\\s*%/);
-  await expect(page.locator("#tab-admission .chance-panel")).toContainText("нет опубликованных измеримых минимумов");
-
-  const regularRoute = page.locator("#tab-admission .admission-category-card[data-admission-category='mit_regular']");
-  await expect(regularRoute).toBeVisible();
-  if (await regularRoute.getAttribute("open") === null) await regularRoute.locator(":scope > summary").click();
-  const profileTabs = regularRoute.locator(".requirement-profile-tab");
-  await expect(profileTabs).toHaveCount(2);
-  const satProfile = regularRoute.locator("[data-requirement-profile='mit_regular']");
-  await satProfile.click();
-  let publishedRange = regularRoute.locator(".track-published-score-range");
-  await publishedRange.locator("summary").click();
-  await expect(publishedRange.locator("a")).toBeVisible();
-  await expect(publishedRange).toContainText("SAT");
-  await expect(publishedRange).toContainText("1520–1570");
-  await expect(publishedRange).toContainText("Первокурсники, зачисленные осенью 2024 года");
-  await expect(publishedRange).toContainText("не обязательный минимум или порог");
-  await expect(publishedRange.locator("a")).toHaveAttribute("href", "https://ir.mit.edu/projects/2024-25-common-data-set/");
-
-  await regularRoute.locator("[data-requirement-profile='mit_act']").click();
-  publishedRange = regularRoute.locator(".track-published-score-range");
-  await publishedRange.locator("summary").click();
-  await expect(publishedRange.locator("a")).toBeVisible();
-  await expect(publishedRange).toContainText("ACT");
-  await expect(publishedRange).toContainText("34–36");
-  await expect(publishedRange).toContainText("Первокурсники, зачисленные осенью 2024 года");
-  await expect(publishedRange.locator("a")).toHaveAttribute("href", "https://ir.mit.edu/projects/2024-25-common-data-set/");
-  await expect(page.locator("#tab-admission .chance-panel .chance-percent")).toHaveText("?");
-  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-});
-
-test("MIT graduate override is request-local and ignores delayed results from the previous program", async ({ page }) => {
-  await seedProfile(page, {
-    studyLevel: "Bachelor",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027",
-    citizenship: "KZ",
-    studyMode: "On-campus",
-    gpa: 3.82,
-    gpaScale: 4,
-    exams: [{ exam: "SAT", score: 1500 }],
-  });
-
-  const requests = [];
-  const delayedEndpoints = new Set();
-  let releaseDelayed;
-  let delayedReady;
-  const delayedGate = new Promise((resolve) => { releaseDelayed = resolve; });
-  const bothDelayed = new Promise((resolve) => { delayedReady = resolve; });
-
-  for (const endpoint of ["uni-chance", "roi"]) {
-    await page.route(`**/universities/mit-usa-cambridge/${endpoint}`, async (route) => {
-      const body = route.request().postDataJSON() || {};
-      const profile = body.profile || {};
-      const selection = profile.selectedAdmissionChoices?.["mit-usa-cambridge"] || {};
-      requests.push({ endpoint, profile, programId: selection.programId || selection.program_id || "" });
-
-      if (selection.programId === "mit-course-6-3-bachelor" && !delayedEndpoints.has(endpoint)) {
-        const response = await route.fetch();
-        delayedEndpoints.add(endpoint);
-        if (delayedEndpoints.size === 2) delayedReady();
-        await delayedGate;
-        await route.fulfill({ response });
-        return;
-      }
-
-      await route.continue();
-    });
-  }
-
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const computerScience = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await computerScience.locator("[data-program-toggle]").click();
-  await computerScience.locator("[data-program-admission]").click();
-  await bothDelayed;
-
-  try {
-    await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-    await page.locator("#tab-programs [data-program-level='doctorate']").click();
-    const physicsPhD = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-physics-phd-course-8']") });
-    await physicsPhD.locator("[data-program-toggle]").click();
-    await physicsPhD.locator("[data-program-admission]").click();
-
-    const phdCategory = page.locator("#tab-admission .admission-category-card[data-admission-category='mit_physics_phd_admissions']");
-    await expect(phdCategory).toBeVisible();
-    await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Physics (Course 8 PhD)");
-
-    for (const endpoint of ["uni-chance", "roi"]) {
-      await expect.poll(() => requests.some((request) => request.endpoint === endpoint && request.programId === "mit-physics-phd-course-8")).toBeTruthy();
-      const current = requests.find((request) => request.endpoint === endpoint && request.programId === "mit-physics-phd-course-8");
-      expect(current.profile.study_level || current.profile.studyLevel).toBe("Doctorate");
-      expect(current.profile.applicant_route || current.profile.applicantRoute).toBe("graduate");
-      expect(current.profile.intended_entry_cycle || current.profile.intendedEntryCycle).toBe("Fall 2027");
-    }
-
-    const savedProfile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}"));
-    expect(savedProfile.studyLevel).toBe("Bachelor");
-    expect(savedProfile.applicantRoute).toBe("first_year");
-    expect(savedProfile.intendedEntryCycle).toBe("Fall 2027");
-
-    releaseDelayed();
-    await expect(phdCategory).toBeVisible();
-    await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='mit_regular']")).toHaveCount(0);
-
-    await page.goBack();
-    await expect(page).toHaveURL(/admission_program=mit-course-6-3-bachelor/);
-    await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-    await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Computer Science and Engineering");
-    await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='mit_regular']")).toBeVisible();
-  } finally {
-    releaseDelayed();
-  }
-});
-
-test("Stanford Computer Science opens its applicable admission context", async ({ page }) => {
-  await seedProfile(page, {
-    studyLevel: "Bachelor",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027",
-    citizenship: "KZ",
-    studyMode: "On-campus",
-    gpa: 3.78,
-    gpaScale: 4,
-    exams: [{ exam: "SAT", score: 1510 }],
-  });
-  await page.goto("/university.html?id=stanford-university-usa-ca");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='stanford-bs-computer-science']") });
-  await program.locator("[data-program-toggle]").click();
-  await expect(program.locator("[data-program-admission='stanford-bs-computer-science']")).toBeVisible();
-  await program.locator("[data-program-admission='stanford-bs-computer-science']").click();
-  await expect(page).toHaveURL(/admission_program=stanford-bs-computer-science/);
-  await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
-  await expect(page.locator("#tab-admission .mit-admission-context")).toHaveCount(0);
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='stanford_standard']")).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='stanford_undergraduate_transfer']")).toHaveCount(0);
-  await expect(page.locator("#tab-admission [data-admission-level]")).toHaveCount(0);
-  await page.locator(".d-tab-btn[data-tab='tab-finance']").click();
-  await expect(page.locator("#tab-finance .finance-track-group").first()).toBeVisible();
-  await expect(page.locator("#tab-finance")).not.toContainText(/Stanford Law School|Juris Doctor|JD Admission/);
-});
-
-test("Imperial Computing selects its 2027 course route and leaves unpriced tuition unknown", async ({ page }) => {
-  await seedProfile(page, {
-    studyLevel: "Bachelor",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "2027 entry",
-    citizenship: "KZ",
-    studyMode: "On-campus",
-    gpa: 3.8,
-    gpaScale: 4,
-  });
-  await page.goto("/university.html?id=imperial-college-london-uk");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const computing = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='imperial-computing-beng']") });
-  await computing.locator("[data-program-toggle]").click();
-  await computing.locator("[data-program-admission='imperial-computing-beng']").click();
-
-  await expect(page).toHaveURL(/admission_program=imperial-computing-beng/);
-  await expect(page.locator("#tab-admission .admission-category-card")).toHaveCount(1);
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='imperial_computing_2027']")).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-category-card")).toContainText("TMUA");
-
-  await page.locator(".d-tab-btn[data-tab='tab-finance']").click();
-  await expect(page.locator("#tab-finance .finance-option-total__value").first()).toContainText(/unknown/i);
-  await expect(page.locator("#tab-finance")).not.toContainText("£10,050");
-});
-
-test("Imperial Computing MEng keeps its 2027 undergraduate Computing route and requirements", async ({ page }) => {
-  await seedProfile(page, {
-    studyLevel: "Bachelor",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "2027 entry",
-    citizenship: "KZ",
-    studyMode: "On-campus",
-    gpa: 3.8,
-    gpaScale: 4,
-  });
-  await page.goto("/university.html?id=imperial-college-london-uk");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const meng = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='imperial-computing-meng']") });
-  await expect(meng.locator(".program-card__title")).toContainText("Computing (MEng, undergraduate entry)");
-  await meng.locator("[data-program-toggle]").click();
-  await meng.locator("[data-program-admission='imperial-computing-meng']").click();
-
-  await expect(page).toHaveURL(/admission_program=imperial-computing-meng/);
-  const category = page.locator("#tab-admission .admission-category-card[data-admission-category='imperial_computing_2027']");
-  await expect(category).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-category-card")).toHaveCount(1);
-  await expect(category).toContainText("TMUA");
-  await expect(category).toContainText(/A\\*A\\*A|A\\*AAA/);
-  await expect(category).toContainText("41 points overall");
-  await expect(category).toContainText("13 January 2027 at 18:00 UK time");
-});
-
-test("Stanford CS transfer selection stays separate from first-year and JD", async ({ page }) => {
-  await seedProfile(page, {
-    studyLevel: "Bachelor",
-    applicantRoute: "transfer",
-    intendedEntryCycle: "Fall 2027",
-    citizenship: "KZ",
-    studyMode: "On-campus",
-    major: "Computer Science",
-  });
-  await page.goto("/university.html?id=stanford-university-usa-ca&admission_program=stanford-bs-computer-science&admission_route=transfer");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-admission']").click();
-  await expect(page).toHaveURL(/admission_program=stanford-bs-computer-science.*admission_route=transfer|admission_route=transfer.*admission_program=stanford-bs-computer-science/);
-
-  const route = page.locator("#tab-admission .admission-category-card[data-admission-category='stanford_undergraduate_transfer']");
-  await expect(route).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-category-card")).toHaveCount(1);
-  await expect(page.locator("#tab-admission .admission-category-card[data-admission-category='stanford_standard']")).toHaveCount(0);
-  await expect(route).toContainText("Transfer applicants apply through the Common Application");
-  await expect(route).toContainText("ACT or SAT scores");
-  await expect(route).toContainText("Fall quarter");
-  await expect(page.locator("#tab-admission")).not.toContainText(/Juris Doctor|JD Admission|Stanford Law School/);
-  await expect(page.locator("#tab-admission [data-admission-context='route']")).toHaveValue("transfer");
-});
-
-test("MIT catalog majors share the sourced university-wide transfer route", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  await expect(page.locator("#tab-programs [data-program-admission='mit-course-6-2-bachelor']")).toHaveCount(0);
-  await expect(page.locator("#tab-programs [data-program-admission='mit-bs-6-5']")).toHaveCount(1);
-
-  const architecture = page.locator("#tab-programs .program-card", {
-    has: page.locator("[data-program-admission='mit-bs-4']"),
-  });
-  await architecture.locator("[data-program-toggle]").click();
-  await architecture.locator("[data-program-admission]").click();
-  await expect(page.locator("#tab-admission .mit-admission-context")).toContainText("Architecture (Course 4)");
-  await expect(page.locator("#tab-admission [data-admission-category='mit_regular']")).toBeVisible();
-  await expect(page.locator("#tab-admission [data-admission-category='mit_undergrad_early_action']")).toBeVisible();
-  await expect(page.locator("#tab-admission [data-admission-category='mit_undergrad_transfer']")).toBeVisible();
-});
-
-test("MIT new major has a Russian title and keeps its official course number", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  const architecture = page.locator("#tab-programs .program-card", {
-    has: page.locator("[data-program-admission='mit-bs-4']"),
-  });
-  await expect(architecture.locator(".program-card__title")).toContainText("Архитектура (Course 4)");
-  await architecture.locator("[data-program-toggle]").click();
-  await expect(architecture.locator(".program-card-rows")).toContainText("Бакалавриат");
-  await expect(architecture.locator(".program-card-rows")).not.toContainText("нет данных");
-  await expect(page.locator("#tab-programs .program-coverage")).toHaveCount(0);
-  await expect(architecture.locator("[data-program-admission]")).toBeVisible();
-});
-
-test("MIT admission details are concise and localized for a selected program", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-
-  const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await program.locator("[data-program-toggle]").click();
-  await program.locator("[data-program-admission]").click();
-
-  const transfer = page.locator("[data-admission-category='mit_undergrad_transfer']");
-  await expect(transfer).toBeVisible();
-  await expect(transfer.locator(".admission-category-title")).toHaveText("Поступление переводом на бакалавриат");
-  await expect(transfer.locator(".admission-category-description")).toContainText("Отдельный порядок перевода в MIT");
-  await transfer.locator(":scope > summary").click();
-  await expect(transfer).toHaveAttribute("open", "");
-  await expect(transfer.locator(".track-extra-req-list li").first()).toContainText("К началу обучения в MIT");
-  await expect(page.locator("#tab-admission .admission-applicable-programs")).toHaveCount(0);
-});
-
-test("MIT graduate program hides raw metadata and undergraduate admission statistics", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator(".d-tab-btn[data-tab='tab-programs']").click();
-  await page.locator("[data-program-level='master']").click();
-
-  const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-sloan-mfin']") });
-  await program.locator("[data-program-toggle]").click();
-  await expect(program).toContainText("Магистратура финансов");
-  await expect(program.locator(".program-card__description")).toContainText("Программа магистратуры финансов длится 12 или 18 месяцев");
-  await expect(program).not.toContainText("[object Object]");
-  await expect(program).not.toContainText("ADMISSION ROUTE ID");
-  await expect(program).not.toContainText("PRICE FACTS");
-  await program.locator("[data-program-admission]").click();
-
-  const admission = page.locator("#tab-admission");
-  await expect(admission).toContainText("У программы MFin");
-  await expect(admission).not.toContainText("Class of 2029");
-  await expect(admission.locator(".track-extra-req-list li").first()).toHaveCount(1);
-  await expect(admission.locator(".track-extra-req-list li")).toHaveCount(2);
-});
-
-test("MIT admission context fits a narrow dark-theme screen", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.addInitScript(() => localStorage.setItem("unisearch_theme", "dark"));
-  await page.goto("/university.html?id=mit-usa-cambridge");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  const programsTab = page.locator(".d-tab-btn[data-tab='tab-programs']");
-  await expect(programsTab).toBeVisible();
-  await programsTab.click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  const program = page.locator("#tab-programs .program-card", { has: page.locator("[data-program-admission='mit-course-6-3-bachelor']") });
-  await expect(program).toBeVisible();
-  await expect(program.locator("[data-program-toggle]")).toBeVisible();
-  await program.locator("[data-program-toggle]").click();
-  await program.locator("[data-program-admission]").click();
-  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  const context = page.locator("#tab-admission .mit-admission-context");
-  await expect(context).toBeVisible();
-  await expect(context.locator("[data-mit-open-programs]")).toBeVisible();
-  await expect.poll(async () => {
-    const bounds = await context.boundingBox();
-    return bounds !== null && bounds.x >= 0 && bounds.x + bounds.width <= 390;
-  }).toBe(true);
-
-  await page.locator(".d-tab-btn[data-tab='tab-deadlines']").click();
-  await expect(page.locator("#tab-deadlines .admissions-deadline-item").first()).toBeVisible();
-  await page.locator(".d-tab-btn[data-tab='tab-finance']").click();
-  await expect(page.locator("#tab-finance .mit-annual-budget")).toBeVisible();
-  await expect(page.locator("#tab-finance .mit-aid-details")).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-});
-
-test("programs tab search filters the list and shows empty state", async ({ page }) => {
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_ui_language_v1", "rus");
-  });
-  await page.goto("/university.html?id=mit-usa-cambridge");
-
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await page.click(".d-tab-btn[data-tab='tab-programs']");
-
-  const search = page.locator("#tab-programs [data-program-search]");
-  await expect(search).toBeVisible();
-  await expect(page.locator("#tab-programs [data-program-empty]")).toBeHidden();
-
-  await search.fill("Физика");
-  await expect(page.locator("#tab-programs .program-card:not([hidden])")).toHaveCount(1);
-  await expect(
-    page.locator("#tab-programs .program-card:not([hidden]) .program-card__title").first()
-  ).toContainText("Физика");
-
-  await search.fill("");
-  await expect(page.locator("#tab-programs .program-card:not([hidden])")).toHaveCount(52);
-
-  await search.fill("zzz-no-such-program");
-  await expect(page.locator("#tab-programs [data-program-empty]")).toBeVisible();
-  await expect(page.locator("#tab-programs .program-card:not([hidden])")).toHaveCount(0);
-});
-
-test("profile major pins and highlights matching programs first", async ({ page }) => {
-  await seedProfile(page, personas.ruStemGrant.profile);
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_ui_language_v1", "eng");
-  });
-
-  await page.goto("/university.html?id=mit-usa-cambridge");
-
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await page.click(".d-tab-btn[data-tab='tab-programs']");
-
-  const cards = page.locator("#tab-programs .program-card");
-  await expect(cards.first()).toHaveClass(/program-card--major/);
-  await expect(cards.first().locator(".program-card__title")).toContainText(
-    "Computer Science and Engineering"
-  );
-  await expect(page.locator("#tab-programs .program-card--major")).toHaveCount(6);
-  await expect(
-    page.locator("#tab-programs .program-card--major .program-card__major-badge").first()
-  ).toBeVisible();
-});
-
 test("abai university admission card layout invariants", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "rus");
@@ -867,6 +650,8 @@ test("abai university admission card layout invariants", async ({ page }) => {
   });
   await page.goto("/university.html?id=abai-kazakh-national-pedagogical-university-kaz-almaty");
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
   const programSelector = page.locator(".admission-program-selector").first();
@@ -896,6 +681,8 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   });
   await page.goto("/university.html?id=abai-kazakh-national-pedagogical-university-kaz-almaty");
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailName")).not.toBeEmpty();
 
   const generalTab = page.locator("#tab-general");
   await expect(generalTab).toBeVisible();

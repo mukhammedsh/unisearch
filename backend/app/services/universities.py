@@ -20,6 +20,7 @@ from app.services.finance_modes import (
     normalize_study_mode as _normalize_study_mode,
 )
 from app.services import search as search_service
+from app.services import admissions_catalog
 from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program
 
 
@@ -78,7 +79,7 @@ def _sanitize_public_source_urls(data: Any) -> Any:
 SEARCH_LANG_ENG = "eng"
 SEARCH_LANG_RUS = "rus"
 SEARCH_LANG_KAZ = "kaz"
-UNIVERSITY_DETAIL_REPR_VERSION = 6
+UNIVERSITY_DETAIL_REPR_VERSION = 7
 COLLEGE_SCORECARD_PUBLIC_API_KEY = "DEMO_KEY"
 COLLEGE_SCORECARD_HOST = "api.data.gov"
 COLLEGE_SCORECARD_PATH_PREFIX = "/ed/collegescorecard/"
@@ -781,6 +782,8 @@ def _search_query_candidates(
             ck = _norm_space(str(key).replace("_", " "))
             if lk and ck:
                 alias_map[lk] = ck
+                if lk == norm_query:
+                    candidates.append(ck)
     for localized, canonical in (
         _MAJOR_QUERY_ALIASES_BY_LANG.get(lang, {}) or {}
     ).items():
@@ -943,6 +946,33 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(u, dict):
         return {}
 
+    uid = str(u.get("id") or "")
+    u["admissions_catalog"] = admissions_catalog.get_public_contract(uid)
+    if uid in admissions_catalog.INSTITUTION_IDS:
+        institution = admissions_catalog.get_institution(uid)
+        options = institution["study_options"]
+        for key in ("admission_categories", "finance", "qualification_guidance", "admission_portals", "fellowships_and_grants", "requirements"):
+            u.pop(key, None)
+        provenance = u.get("fact_provenance")
+        if isinstance(provenance, dict) and isinstance(provenance.get("facts"), dict):
+            provenance["facts"] = {key: value for key, value in provenance["facts"].items()
+                                   if key not in {"acceptance_rate_percent", "tuition_total_cost_year_usd"}}
+        formats = []
+        for option in options:
+            declared = option.get("attributes", {}).get("format")
+            if isinstance(declared, dict):
+                declared = declared.get("mode")
+            if isinstance(declared, str):
+                formats.append(declared)
+            elif isinstance(declared, list):
+                formats.extend(value for value in declared if isinstance(value, str))
+        u["academics"] = {
+            "majors": _uniq_non_empty([option["title"] for option in options]),
+            "study_levels": u["admissions_catalog"]["study_levels"],
+            "formats": _uniq_non_empty(formats),
+        }
+        return u
+
     academics = u.get("academics")
     if not isinstance(academics, dict):
         academics = {}
@@ -1046,8 +1076,14 @@ def _build_university_meta(
     formats = _get_list(u, ["academics", "formats"])
 
     program_names = [p.get("name") for p in programs]
+    reviewed = admissions_catalog.get_institution(str(u.get("id") or ""))
+    if reviewed:
+        program_names = [option["title"] for option in reviewed["study_options"]]
+        study_levels = [level for option in reviewed["study_options"] for level in option["levels"]]
+        program_levels = ["MBA" for option in reviewed["study_options"] if "MBA" in option["awards"]]
+    else:
+        program_levels = []
     program_major_tags: List[Any] = []
-    program_levels: List[Any] = []
     for p in programs:
         p_tags = p.get("major_tags")
         if isinstance(p_tags, list):
@@ -1255,6 +1291,8 @@ def _get_university_gpa(u: Dict[str, Any]) -> Optional[float]:
     """
     if not isinstance(u, dict):
         return None
+    if u.get("id") in admissions_catalog.INSTITUTION_IDS:
+        return None
     direct_req = _to_float(_get_nested(u, ["requirements", "GPA"]))
     if direct_req is not None:
         return direct_req
@@ -1398,6 +1436,11 @@ def to_university_card(
         ],
         "aid_any": _has_any_aid(u),
     }
+    if isinstance(u.get("admissions_catalog"), dict):
+        out["admissions_catalog"] = u["admissions_catalog"]
+    if uid in admissions_catalog.INSTITUTION_IDS:
+        out.pop("finance")
+        out.pop("aid_any")
     rank_meta = _rank_meta_from_university(u)
     if rank_meta:
         out["rank_meta"] = rank_meta
@@ -1441,7 +1484,7 @@ def to_university_map_point(
         country_value = _translate_group_value("country", country_value, lang)
         city_value = _translate_group_value("city", city_value, lang)
 
-    return {
+    out = {
         "id": u.get("id"),
         "name": name_value,
         "rank": u.get("rank"),
@@ -1451,6 +1494,9 @@ def to_university_map_point(
         },
         "coordinates": {"lat": lat, "lon": lon},
     }
+    if isinstance(u.get("admissions_catalog"), dict):
+        out["admissions_catalog"] = u["admissions_catalog"]
+    return out
 
 
 def _project_universities(
@@ -1519,12 +1565,11 @@ def _apply_sort(
         )
 
     if sort == "acceptance_asc":
-        return sorted(items, key=lambda u: (_get_university_acceptance_rate(u) or 0.0))
+        return sorted(items, key=lambda u: ((rate := _get_university_acceptance_rate(u)) is None, rate if rate is not None else 0.0))
     if sort == "acceptance_desc":
         return sorted(
             items,
-            key=lambda u: (_get_university_acceptance_rate(u) or 0.0),
-            reverse=True,
+            key=lambda u: ((rate := _get_university_acceptance_rate(u)) is None, -(rate if rate is not None else 0.0)),
         )
 
     if sort == "rank_asc":
@@ -1552,6 +1597,7 @@ _UNI_CACHE: Dict[str, Any] = {"mtime": None, "data": [], "by_id": {}, "meta": []
 
 def _load_universities_cached() -> List[Dict[str, Any]]:
     mtime = file_mtime(DATA_PATH)
+    admissions_revision = admissions_catalog.get_revision()
     if mtime is None:
         _UNI_CACHE["mtime"] = None
         _UNI_CACHE["data"] = []
@@ -1559,7 +1605,7 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
         _UNI_CACHE["meta"] = []
         return []
 
-    if mtime != _UNI_CACHE["mtime"]:
+    if mtime != _UNI_CACHE["mtime"] or admissions_revision != _UNI_CACHE.get("admissions_revision"):
         try:
             with open(DATA_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -1597,6 +1643,7 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
             meta_list.append(meta_row)
 
         _UNI_CACHE["mtime"] = mtime
+        _UNI_CACHE["admissions_revision"] = admissions_revision
         _UNI_CACHE["data"] = out
         _UNI_CACHE["by_id"] = by_id
         _UNI_CACHE["meta"] = meta_list
@@ -1625,26 +1672,21 @@ def get_university_by_id(
     if not localized:
         return item
     payload = _localize_university_payload(item, search_lang)
-    payload["coverage_by_level"] = build_coverage_by_level(item)
-    payload["coverage_by_program"] = build_coverage_by_program(item)
+    if str(item.get("id") or "") not in admissions_catalog.INSTITUTION_IDS:
+        payload["coverage_by_level"] = build_coverage_by_level(item)
+        payload["coverage_by_program"] = build_coverage_by_program(item)
     return payload
 
 
-def get_university_etag(university_id: str, search_lang: Optional[str] = None) -> str:
-    _load_universities_cached()
-    mtime = _UNI_CACHE.get("mtime")
-    mtime_key = "none" if mtime is None else str(mtime)
-    uid = str(university_id or "").strip()
-    lang = _normalize_search_lang(search_lang)
-    tr_mtime = file_mtime(UNIVERSITIES_TRANSLATIONS_PATH)
-    tr_key = "none" if tr_mtime is None else str(tr_mtime)
-    # Include the derived detail representation version so cache invalidation
-    # also happens when backend normalization changes without a data-file mtime bump.
-    digest = hashlib.sha256(
-        f"{mtime_key}:{tr_key}:{uid}:{lang}:{UNIVERSITY_DETAIL_REPR_VERSION}".encode(
-            "utf-8"
-        )
-    ).hexdigest()
+def get_university_etag(
+    university_id: str, search_lang: Optional[str] = None, *, payload: Optional[Dict[str, Any]] = None
+) -> str:
+    if payload is None:
+        payload = get_university_by_id(university_id, search_lang=search_lang, localized=True)
+    # Hash the captured response so a snapshot refresh cannot give an older body a newer ETag.
+    raw = json.dumps([UNIVERSITY_DETAIL_REPR_VERSION, _normalize_search_lang(search_lang), payload],
+                     ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
     return f'"{digest}"'
 
 
@@ -1829,6 +1871,7 @@ def list_universities(
             for (u, meta_row) in pairs
             if any(
                 _safe_lower(x) == sl
+                or (u.get("id") in admissions_catalog.INSTITUTION_IDS and admissions_catalog._normalized_level(sl) == _safe_lower(x))
                 or (sl in ("doctorate", "phd") and _safe_lower(x) in ("doctorate", "phd"))
                 for x in meta_row.get("study_levels", [])
             )
@@ -1854,6 +1897,8 @@ def list_universities(
         filtered = []
         for u, m in pairs:
             cost = m.get(cost_key)
+            if u.get("id") in admissions_catalog.INSTITUTION_IDS:
+                continue
             if cost is None:
                 cost = _effective_university_cost_usd(u, format_preference=mode_pref) or 999999.0
             aid = m.get("has_aid")

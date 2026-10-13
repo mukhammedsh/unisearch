@@ -1,1 +1,1 @@
-export { initUniversityPage } from "./university/page-controller.js";
+export { initUniversityPage, disposeUniversityPage } from "./university/page-controller.js";
