@@ -173,7 +173,7 @@ test("exact Imperial Computing deadline preserves its source, time, course scope
   await expect(exactDeadline).toContainText("Europe/London");
   await expect(exactDeadline).toContainText("2027 entry");
   await expect(exactDeadline.locator("a[href^='https://']").first()).toBeVisible();
-  await expect(exactDeadline.locator("a[href^='https://']").first()).toHaveAttribute("href", /imperial\.ac\.uk\/study\/apply\/undergraduate\/process\/deadlines/);
+  await expect(exactDeadline.locator("a[href^='https://']").first()).toHaveAttribute("href", "https://www.imperial.ac.uk/study/apply/undergraduate/process/deadlines/");
 });
 
 test("yearless Harvard first-year deadlines retain their source and current cycle without calendar export", async ({ page }) => {

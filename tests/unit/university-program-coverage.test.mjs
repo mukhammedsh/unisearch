@@ -59,8 +59,8 @@ test("accepted MIT study facts keep curriculum separate from institution-wide ad
   assert.match(html, /programming, probability and statistics, operations analytics/);
   assert.match(html, /these are degree requirements, not admission prerequisites/);
   assert.match(html, /MIT undergraduate admission/);
-  assert.match(html, /https:\/\/catalog\.mit\.edu\/degree-charts\/business-analytics-course-15-2\//);
-  assert.match(html, /https:\/\/mitadmissions\.org\/apply\/firstyear\/deadlines-requirements\//);
+  assert.ok(html.includes("https://catalog.mit.edu/degree-charts/business-analytics-course-15-2/"));
+  assert.ok(html.includes("https://mitadmissions.org/apply/firstyear/deadlines-requirements/"));
 });
 
 test("accepted sparse study fact shows its published selection condition without an invented program summary", () => {
@@ -68,7 +68,7 @@ test("accepted sparse study fact shows its published selection condition without
   const html = renderAdmissionsContext(context, { domains: ["degree_completion"], includeAssessment: false });
   assert.match(html, /SB in Archaeology and Materials/);
   assert.match(html, /Not external admission prerequisite/);
-  assert.match(html, /https:\/\/catalog\.mit\.edu\/degree-charts\/archaeology-materials-course-3-c\//);
+  assert.ok(html.includes("https://catalog.mit.edu/degree-charts/archaeology-materials-course-3-c/"));
   assert.doesNotMatch(html, /Detailed description not catalogued|specific course description/);
 });
 
@@ -111,7 +111,7 @@ test("accepted undergraduate costs remain scoped to the shared institutional rou
   assert.match(html, /MIT undergraduate admission/);
   assert.match(html, /Academic year/);
   assert.match(html, /USD/);
-  assert.match(html, /https:\/\/sfs\.mit\.edu\/cost-of-attendance-class-of-2030\//);
+  assert.ok(html.includes("https://sfs.mit.edu/cost-of-attendance-class-of-2030/"));
   assert.doesNotMatch(html, /Business Analytics|Course 15-2|program-specific price/i);
 });
 

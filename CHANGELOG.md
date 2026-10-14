@@ -2,6 +2,14 @@
 
 All notable project changes should be recorded here.
 
+## 8.1.5 (2026-10-14) - Code Scanning and Validator Fixes
+
+### Fixed
+- Remove an admissions catalog import cycle while preserving localized study-option search.
+- Replace regex-based script filtering in the Stanford directory snapshot tool with HTML parsing, and use indexed lookups in the Imperial validator.
+- Correct parser bounds, URL assertions and unused test code reported by code scanning.
+- Use a patch version because these internal fixes add no user-facing capability.
+
 ## 8.1.4 (2026-10-14) - Hardened Score Validation and Updated Dependencies
 
 ### Fixed

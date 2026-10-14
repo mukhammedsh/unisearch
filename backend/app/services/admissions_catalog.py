@@ -208,11 +208,9 @@ def _reference_labels(indexed):
     return {alias: next(iter(titles)) for alias, titles in labels.items() if len(titles) == 1}
 
 
-def list_study_options(institution_id, search="", study_level=None, page=1, limit=30, language=None):
-    from app.services.universities import _search_query_candidates
-
+def list_study_options(institution_id, search_candidates=(), study_level=None, page=1, limit=30):
     cached, institution, indexed = _institution(institution_id)
-    queries = [query for candidate in _search_query_candidates(search, language)
+    queries = [query for candidate in search_candidates
                if (query := search_service.prepare_query(candidate))]
     items = []
     for option in institution["study_options"]:

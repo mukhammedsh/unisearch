@@ -57,14 +57,6 @@ async function expectUniversityReady(page) {
   await expect(page.locator("#detailName")).not.toBeEmpty();
 }
 
-async function openAdmission(page) {
-  const viewRequirements = page.locator("#admissionsViewRequirements");
-  if (await viewRequirements.isVisible()) await viewRequirements.click();
-  else if (!(await page.locator("#tab-admission").evaluate((node) => node.classList.contains("active")))) await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
-  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-}
-
 async function openAdvanced(page) {
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();

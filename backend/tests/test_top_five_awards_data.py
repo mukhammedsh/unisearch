@@ -120,7 +120,8 @@ class ActiveFundingDataTests(unittest.TestCase):
         self.assertIn("selected postgraduate taught course", funding["scope"]["applicant_categories"][0])
         self.assertIn("at least £15,000 per year", funding["value"])
         self.assertNotIn("awarded_amount", funding["value"])
-        self.assertTrue(urlparse(self.source(resolved, funding["source_ids"][0])["url"]).hostname.endswith("imperial.ac.uk"))
+        hostname = urlparse(self.source(resolved, funding["source_ids"][0])["url"]).hostname or ""
+        self.assertTrue(hostname == "imperial.ac.uk" or hostname.endswith(".imperial.ac.uk"))
 
     def test_stanford_international_aid_keeps_admission_condition_and_exact_filing_dates(self) -> None:
         resolved = self.resolve(

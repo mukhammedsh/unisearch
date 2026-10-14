@@ -50,12 +50,13 @@ function maskCommentsAndStrings(source, { keepStrings = false } = {}) {
 
 function cssDeclarations(source) {
   const clean = maskCommentsAndStrings(source);
+  const scan = `${clean};`;
   const declarations = [];
   let start = 0;
   let depth = 0;
   let quote = "";
-  for (let i = 0; i <= clean.length; i++) {
-    const char = clean[i] ?? ";";
+  for (let i = 0; i < scan.length; i++) {
+    const char = scan[i];
     if (quote) { if (char === "\\") i++; else if (char === quote) quote = ""; continue; }
     if (char === "'" || char === '"') { quote = char; continue; }
     if (char === "(") depth++;

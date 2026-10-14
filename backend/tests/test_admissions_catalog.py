@@ -197,13 +197,13 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertEqual(service._topic_domains("unclassified_metadata"), ("other",))
 
     def test_search_and_level_filter_are_compact_paginated_and_keep_source_language(self):
-        result = service.list_study_options(MIT, search="Computing", page=1, limit=1, language="rus")
+        result = service.list_study_options(MIT, search_candidates=["Computing"], page=1, limit=1)
         self.assertEqual(result["total"], 1)
         self.assertEqual(result["items"][0]["title"], "Computing")
         self.assertNotIn("attributes", result["items"][0])
         self.assertEqual(service.list_study_options(MIT, study_level="masters")["items"][0]["id"], "physics")
         self.assertEqual(service.list_study_options(MIT, page=3, limit=1)["items"], [])
-        self.assertEqual(service.list_study_options(MIT, search="unrelated nonexistent course")["items"], [])
+        self.assertEqual(service.list_study_options(MIT, search_candidates=["unrelated nonexistent course"])["items"], [])
 
     def test_compact_options_expose_only_declared_application_metadata(self):
         option = self.mit()["study_options"][0]
@@ -283,7 +283,7 @@ class AdmissionsCatalogTests(unittest.TestCase):
             for row in result["history"]["facts"]:
                 self.assertNotIn(row["id"], active_ids)
                 self.assertTrue(set(row["source_ids"]).issubset(source_ids))
-                self.assertFalse(row["scope"]["route_ids"] == ["mit-transfer"])
+                self.assertNotEqual(row["scope"]["route_ids"], ["mit-transfer"])
             for prepared in result["facts"]:
                 original = next(row for row in mit["facts"] if row["id"] == prepared["id"])
                 self.assertEqual({key: value for key, value in prepared.items() if key != "applicability"}, original)

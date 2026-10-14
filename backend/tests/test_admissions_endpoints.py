@@ -4,7 +4,7 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.services import admissions_catalog
+from app.services import admissions_catalog, universities as university_service
 
 
 class AdmissionsEndpointsTests(unittest.TestCase):
@@ -35,8 +35,9 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         self.assertEqual("public, max-age=300, stale-while-revalidate=60", response.headers["Cache-Control"])
         self.assertTrue(response.headers.get("ETag"))
         list_options.assert_called_once_with(
-            "stanford-university-usa-ca", search="computer science", study_level="undergraduate", page=2, limit=10,
-            language="eng",
+            "stanford-university-usa-ca",
+            search_candidates=university_service._search_query_candidates("computer science", search_lang="eng"),
+            study_level="undergraduate", page=2, limit=10,
         )
 
         unchanged = self.client.get(

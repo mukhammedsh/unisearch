@@ -7,7 +7,7 @@ from typing import Literal, Optional
 from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
 
 from app.schemas.admissions import AdmissionsContextRequest
-from app.services import admissions_catalog, admissions_assessment
+from app.services import admissions_catalog, admissions_assessment, universities as university_service
 from app.routers.universities import _resolve_search_lang
 
 
@@ -50,8 +50,9 @@ def list_study_options(
     try:
         language = _resolve_search_lang(lang, request)
         result = admissions_catalog.list_study_options(
-            university_id, search=search.strip(), study_level=study_level, page=page, limit=limit,
-            language=language,
+            university_id,
+            search_candidates=university_service._search_query_candidates(search.strip(), search_lang=language),
+            study_level=study_level, page=page, limit=limit,
         )
         revision = result["revision"]
         etag = '"' + hashlib.sha256(json.dumps(

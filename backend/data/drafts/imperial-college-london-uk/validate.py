@@ -16,8 +16,10 @@ options = catalog['study_options']; contexts = catalog['application_procedures']
 for kind, rows in [('source',sources),('option',options),('context',contexts),('fact',index)]:
     ids = [x['id'] for x in rows]
     require(len(ids)==len(set(ids)),kind+' IDs must be unique')
-source_ids = {x['id'] for x in sources}; option_ids = {x['id'] for x in options}; context_ids = {x['id'] for x in contexts}
+sources_by_id = {source['id']: source for source in sources}
+source_ids = set(sources_by_id); option_ids = {x['id'] for x in options}; context_ids = {x['id'] for x in contexts}
 fact_ids = {x['id'] for x in index}
+index_by_id = {fact['id']: fact for fact in index}
 for s in sources:
     host = urlsplit(s['url']).hostname or ''
     university_host = host=='imperial.ac.uk' or host.endswith('.imperial.ac.uk')
@@ -61,7 +63,7 @@ for f in index:
     require(f['scope'].get('original_scope') == raw, 'Original applicability dimensions must survive: '+f['id'])
     require(f['source_ids'] == original['source_ids'], 'Changed original fact provenance: '+f['id'])
     for sid in f['source_ids']:
-        source = next(s for s in sources if s['id'] == sid)
+        source = sources_by_id[sid]
         if source.get('accepted_option_ids'):
             require(bool(f['scope']['option_ids']) and set(f['scope']['option_ids']) <= set(source['accepted_option_ids']), 'Joint-centre source cannot establish policy outside its verified programme: '+f['id'])
     require(all(k in f['scope'] for k in ['study_levels','option_ids','route_ids','applicant_categories','cycle','fee_status']), 'Incomplete fact scope: '+f['id'])
@@ -70,7 +72,7 @@ for o in options:
     require(set(o['procedure_ids'])<=context_ids, 'Invalid option context: '+o['id'])
     require(set(o['fact_ids'])<=fact_ids, 'Invalid option facts: '+o['id'])
     for fid in o['fact_ids']:
-        linked = next(f for f in index if f['id'] == fid)
+        linked = index_by_id[fid]
         require(o['id'] in linked['scope']['option_ids'], 'Fact link must preserve option ownership: '+o['id'])
 for p in contexts:
     require(set(p['option_ids'])<=option_ids,'Invalid context options: '+p['id'])
