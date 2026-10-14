@@ -67,6 +67,8 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.temporary.cleanup()
 
     def write(self):
+        import time
+        time.sleep(0.01)
         self.path.write_text(json.dumps(self.data), encoding="utf-8")
 
     def mit(self):

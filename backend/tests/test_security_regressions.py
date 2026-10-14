@@ -136,6 +136,17 @@ class SecurityRegressionTests(unittest.TestCase):
         for value in private_values:
             self.assertNotIn(value, diagnostic_text)
 
+    def test_admissions_catalog_error_handler_applies_security_headers(self):
+        from app.main import admissions_catalog_error_handler
+        from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
+
+        for exc in (InstitutionNotFoundError("not found"), AdmissionsCatalogError("unavailable")):
+            with self.subTest(exc=type(exc).__name__):
+                response = asyncio.run(admissions_catalog_error_handler(None, exc))
+                self.assertEqual(response.headers.get("X-Content-Type-Options"), "nosniff")
+                self.assertEqual(response.headers.get("X-Frame-Options"), "DENY")
+                self.assertIn("default-src 'self'", response.headers.get("Content-Security-Policy", ""))
+
 
 class RequestBodyLimitRegressionTests(unittest.IsolatedAsyncioTestCase):
     async def test_chunked_body_without_content_length_is_rejected_by_actual_size(self):

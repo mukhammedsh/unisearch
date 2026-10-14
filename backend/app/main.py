@@ -314,11 +314,14 @@ app.mount(
 
 @app.exception_handler(AdmissionsCatalogError)
 async def admissions_catalog_error_handler(request: Request, exc: AdmissionsCatalogError) -> JSONResponse:
+    # Ensure security headers are attached to custom admissions exception responses (404/503)
     missing = isinstance(exc, InstitutionNotFoundError)
-    return JSONResponse(
+    response = JSONResponse(
         {"detail": "Admissions catalog not found" if missing else "Admissions catalog is unavailable"},
-        status_code=404 if missing else 503, headers={"Cache-Control": "private, no-store"},
+        status_code=404 if missing else 503,
+        headers={"Cache-Control": "private, no-store"},
     )
+    return _apply_security_headers(response)
 
 
 @app.exception_handler(Exception)
