@@ -303,7 +303,7 @@ test("program search requires an explicit route and a manual context stays out o
   await expect(routeTrigger).toBeVisible();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext")).toContainText(/select.*route|choose.*route/i);
+  await expect(page.locator("#admissionsContext .admissions-context__status")).toContainText("Choose one of the published paths above to read its requirements and application details.");
 
   await setNativeSelect(page, "admissionsRoute", "procedure-computing-meng");
   await openAdvanced(page);

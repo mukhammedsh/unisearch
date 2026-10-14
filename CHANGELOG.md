@@ -2,6 +2,24 @@
 
 All notable project changes should be recorded here.
 
+## 8.1.3 (2026-10-14) - Stable Admissions Browser State
+
+### Fixed
+- Wait for the selected program's admissions context to finish before testing action states, and verify summary-action navigation separately from pressed-state contrast.
+- Use a patch version because this corrects E2E synchronization without changing user-visible behavior.
+
+## 8.1.2 (2026-10-14) - Stable University Interaction Checks
+
+### Fixed
+- Exercise reviewed university summary actions as real navigation clicks and wait for hover and pressed styles to paint before measuring contrast.
+- Use a patch version because this stabilizes browser regression checks without changing user-visible behavior.
+
+## 8.1.1 (2026-10-14) - Reference-First Browser Check Alignment
+
+### Fixed
+- Update university admissions browser checks to follow grouped fact disclosures and current localized copy, preventing stale expectations from failing the reviewed catalog journeys.
+- Use a patch version because this corrects regression checks without changing user-visible behavior.
+
 ## 8.1.0 (2026-10-14) - Reference-First University Browsing
 
 ### Added

@@ -121,7 +121,7 @@ for (const [id, width, query, description] of [
   test(`MIT ${id} retains sourced study content and Russian interface with shared admission`, async ({ page }) => {
     await openCatalog(page, MIT, { width, language: "rus" });
     await openAdmission(page);
-    await expect(page.locator("#admissionsContext h2")).toHaveText("Условия поступления");
+    await expect(page.locator("#admissionsContext h2")).toHaveText("Опубликованные пути поступления");
     await chooseOption(page, id, query, "undergraduate");
     await openAdmission(page);
     await expect(page.locator('#admissionsRoute option[value="mit-first-year"]')).toHaveCount(1);
@@ -130,7 +130,7 @@ for (const [id, width, query, description] of [
     const fact = await openFact(page, "programs", `${id}-description`);
     await expect(fact).toContainText(description);
     await expect(fact.locator('a[href*="catalog.mit.edu/degree-charts/"]')).toBeVisible();
-    await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке оригинала");
+    await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке источника");
     await fitsViewport(page, width);
   });
 }
@@ -162,7 +162,7 @@ for (const [width, language, theme] of [[1280, "eng", "light"], [390, "rus", "da
     await chooseOption(page, "mit-course-6-9p-meng", "Computation and Cognition", "masters");
     await applyContext(page, "mit_bcs_meng_admissions");
     const fact = await openFact(page, "admission", "bcs-meng-entry-conditions");
-    await expect(fact).toContainText("4.25");
+    await expect(fact).toContainText(language === "rus" ? "4,25" : "4.25");
     await expect(fact).toContainText(/Overall|общий/i);
     await expect(fact).toContainText("102");
     await expect(page.locator("#admissionsRoute option[value='mit_eecs_meng_admissions']")).toHaveCount(0);
@@ -475,7 +475,7 @@ test("MIT transfer context localizes interface and preserves the scoped original
   await expect(fact).toContainText("At least two full-time terms");
   await expect(fact).toContainText("committee review required");
   await openTab(page, "programs");
-  await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке оригинала");
+  await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке источника");
 });
 
 test("MIT MFin hides raw identifiers and first-year statistics while retaining its own study rules", async ({ page }) => {
@@ -528,7 +528,10 @@ test("profile major remains available through explicit catalogue search without 
   await searchOptions(page, "Computer Science and Engineering", "undergraduate");
   await expect(page.locator('[data-study-option="mit-course-6-3-bachelor"]')).toBeVisible();
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext")).toContainText("No study option selected");
+  await openAdmission(page);
+  await expect(page.locator("#admissionsContext .admissions-context__status")).toContainText("Choose a program in the Programs tab to see its published application paths.");
+  await expect(page.locator("#admissionsRoute")).toBeDisabled();
+  await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.major).toBe(personas.ruStemGrant.profile.major);
 });
