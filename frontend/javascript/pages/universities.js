@@ -61,6 +61,7 @@ import {
   translateWord,
   translateTrackLabel,
   translateAdmissionText,
+  translateFactSource,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 
@@ -1473,9 +1474,9 @@ export function initUniversitiesPage() {
         const pos1 = getThumbPos(r1);
         const pos2 = getThumbPos(r2);
 
-        const styles = getComputedStyle(document.documentElement);
-        const inactive = (styles.getPropertyValue("--slider-track-inactive") || "#d4d8e0").trim();
-        const active = (styles.getPropertyValue("--slider-track-active") || "#5d17ea").trim();
+        const styles = getComputedStyle(el.track);
+        const inactive = styles.getPropertyValue("--slider-track-inactive").trim();
+        const active = styles.getPropertyValue("--slider-track-active").trim();
         el.track.style.background = `linear-gradient(to right, ${inactive} 0%, ${inactive} ${pos1}, ${active} ${pos1}, ${active} ${pos2}, ${inactive} ${pos2}, ${inactive} 100%)`;
     }
     function slideMin() {
@@ -3874,7 +3875,8 @@ export function initUniversitiesPage() {
             ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
             : t("universities.card.view_details", "View details"));
         const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-        const rankSource = String(rankMeta.source || "").trim();
+        const rankSourceValue = String(rankMeta.source || "").trim();
+        const rankSource = rankSourceValue ? translateFactSource(rankSourceValue, rankSourceValue) : "";
         const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
         const statusLabel = rankStatusRaw
             ? rankingStatusLabel(rankStatusRaw)

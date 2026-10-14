@@ -34,6 +34,9 @@ jobs:
       - name: Check design token guard
         run: npm run check:tokens -- --strict
 
+      - name: Check inline styles and CSS custom properties
+        run: npm run check:inline-styles
+
       - name: Check localization parity
         run: npm run check:i18n
 

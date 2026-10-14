@@ -366,11 +366,17 @@ export function compareProgramTitle(u) {
 }
 
 export function compareStudyModeText(u) {
+  const translateMode = (item) => {
+    const raw = String(item || "").trim();
+    return raw.toLowerCase() === "not_stated"
+      ? t("university.admissions.catalog.unspecified", "Not specified")
+      : translateDataValue("study_mode", raw, raw);
+  };
   const formats = Array.isArray(u?.academics?.formats) ? u.academics.formats : [];
-  if (formats.length) return formats.map((item) => translateDataValue("study_mode", item, item)).join(", ");
+  if (formats.length) return formats.map(translateMode).join(", ");
   const programs = compareBachelorPrograms(u);
   const modes = Array.from(new Set(programs.map((program) => String(program?.study_mode || "").trim()).filter(Boolean)));
-  return modes.length ? modes.map((item) => translateDataValue("study_mode", item, item)).join(", ") : t("common.na", "N/A");
+  return modes.length ? modes.map(translateMode).join(", ") : t("common.na", "N/A");
 }
 
 export function compareAdmissionOptionEntries(u) {

@@ -33,7 +33,7 @@
 - **Layout ownership:** Components do not assign their own external margins. Their parent controls spacing with flex/grid and `gap`. `margin-left: auto` and `margin-top: auto` are allowed for explicit alignment.
 - **No double spacing:** Do not combine a parent `gap` with child `margin`. The first and last children of padded containers must not add redundant outer vertical margins.
 - **Single padding layer:** Do not stack padding across a section, inner wrapper, and child card. Apply padding once at the level that owns it.
-- **Spacing scale:** Use only the 4/8 px scale: `4, 8, 12, 16, 20, 24, 32, 48, 64px`. Do not introduce arbitrary spacing values.
+- **Spacing scale:** Use shared spacing variables from `frontend/css/shared/01-foundation.css`: `--space-0-25` (1px, optical alignment only), `--space-0-5` (2px), `--space-1` (4px), `--space-1-5` (6px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-5` (20px), `--space-6` (24px), `--space-8` (32px), `--space-10` (40px), `--space-12` (48px), `--space-16` (64px), `--space-20` (80px), and `--space-24` (96px). Use semantic layout/component aliases for page gutters, section gaps, card padding/gaps, and control gaps. Reserve large values for page-level separation. Raw nonzero pixel values in margin/padding/gap declarations require a same-line `/* spacing-exception: reason */` comment only when no token represents a necessary optical or platform-specific adjustment.
 - **Alignment:** Page headers, toolbars, filters, and content grids must share the same horizontal alignment.
 - **Responsive spacing:** At widths of 768 px and 480 px or below, reduce outer padding to 12–16 px and gaps to 8–12 px.
 - **Screen structure:** Scope/status → toolbar/filter → data.

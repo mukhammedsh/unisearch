@@ -46,9 +46,11 @@ async function openFact(page, tab, id) {
   await page.locator(`.d-tab-btn[data-tab="tab-${tab}"]`).click();
   await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
   const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
-  const summary = fact.locator("summary");
-  if (await summary.count() && !(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
+  const isDetails = await fact.evaluate((node) => node.tagName === "DETAILS");
+  if (isDetails && !(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
   return fact;
 }
 

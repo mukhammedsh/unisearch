@@ -88,7 +88,7 @@ body[data-page="profile"] {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 .profile-progress-text {
@@ -222,7 +222,7 @@ body[data-page="profile"] {
 }
 
 .profile-section-tab:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
 }
@@ -262,7 +262,7 @@ body[data-page="profile"] {
 }
 
 .profile-delete.profile-delete--danger-soft:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -393,7 +393,7 @@ body[data-page="profile"] {
 }
 
 .profile-input:focus {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border: none;
   box-shadow: none;
@@ -442,7 +442,7 @@ body[data-page="profile"] {
 }
 
 .profile-budget--with-unit .profile-input {
-  padding-right: 96px;
+  padding-right: var(--space-24);
   background: transparent;
   box-shadow: none;
 }
@@ -465,7 +465,7 @@ body[data-page="profile"] {
 
 .profile-budget--with-unit:focus-within {
   background: var(--surface-soft);
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -599,7 +599,7 @@ body[data-page="profile"] {
   background: transparent;
   border: none;
   box-shadow: none;
-  padding: 2px var(--space-1);
+  padding: var(--space-0-5) var(--space-1);
   font-family: inherit;
   font-weight: 500;
   color: var(--text-muted);
@@ -688,7 +688,7 @@ body[data-page="profile"] {
 }
 
 .profile-info:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -703,7 +703,7 @@ body[data-page="profile"] {
   background: var(--tooltip-bg);
   color: var(--tooltip-text);
   border-radius: var(--radius-md);
-  padding: 12px 12px;
+  padding: var(--space-3) var(--space-3);
   font-size: 12px;
   line-height: 1.35;
   font-weight: 500;
@@ -843,7 +843,7 @@ textarea.profile-input,
 }
 
 .profile-add:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -851,7 +851,6 @@ textarea.profile-input,
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-2);
-  margin-top: var(--space-1);
   max-height: none;
   overflow: visible;
   scrollbar-width: none;
@@ -910,7 +909,6 @@ textarea.profile-input,
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-2);
-  margin-top: var(--space-3);
   max-height: none;
   overflow: visible;
   scrollbar-width: none;
@@ -992,7 +990,7 @@ textarea.profile-input,
 }
 
 .profile-delete:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -1066,7 +1064,7 @@ textarea.profile-input,
 }
 
 .profile-action-btn:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -1192,7 +1190,7 @@ textarea.profile-input,
 }
 
 .profile-delete--danger:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -1552,7 +1550,7 @@ textarea.profile-input,
 
 .profile-citizenship-chip__badge {
   font-size: var(--text-xs);
-  padding: 2px var(--space-2);
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-xs);
   background: var(--accent);
   color: var(--text-inverse);
@@ -1568,7 +1566,7 @@ textarea.profile-input,
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 2px;
+  padding: var(--space-0-5);
   border-radius: var(--radius-circle);
   line-height: 0;
 }
@@ -1602,7 +1600,7 @@ textarea.profile-input,
 }
 
 #citizenshipCountrySelect + .custom-select-trigger + .custom-options .custom-select-search:focus {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
 

@@ -2,10 +2,8 @@
   <!-- UniSearch Minilogo (Vector) -->
   <style>
     .brand-cap, #skullcap, #mortarboard-tassel, #letter-s { fill: #000000; }
-    #letter-u { fill: #5D17EB; }
     @media (prefers-color-scheme: dark) {
       .brand-cap, #skullcap, #mortarboard-tassel, #letter-s { fill: #FFFFFF; }
-      #letter-u { fill: #7C3AED; }
     }
   </style>
   <g id="cap" fill="#000000">

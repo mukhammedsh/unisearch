@@ -1797,11 +1797,11 @@ function renderChoiceRequirements({ category, funding, profile, university }) {
   const minParts = splitExamEntries(requirements);
   const avgParts = splitExamEntries(statsAvg);
   const minList = [
-    renderExamGroup(translateWord("academic_requirements", "Academic requirements"), minParts.acad, "#2563eb"),
+    renderExamGroup(translateWord("academic_requirements", "Academic requirements"), minParts.acad, "info"),
     renderTrackLanguageExamGroup(languageChoice, "requirements"),
   ].filter(Boolean).join("");
   const avgList = [
-    renderExamGroup(translateWord("academic_average", "Academic average"), avgParts.acad, "#2563eb"),
+    renderExamGroup(translateWord("academic_average", "Academic average"), avgParts.acad, "info"),
     renderTrackLanguageExamGroup(languageChoice, "average"),
   ].filter(Boolean).join("");
   const requirementsNote = profile?.requirements_note || category?.requirements_note;
@@ -1882,7 +1882,7 @@ function renderFundingDifferences({ category, funding, profile, university }) {
   const minParts = splitExamEntries(requirementDiff || {});
   const avgParts = splitExamEntries(statsAvgDiff || {});
   const minList = [
-    renderExamGroup(translateWord("academic_requirements", "Academic requirements"), minParts.acad, "#2563eb"),
+    renderExamGroup(translateWord("academic_requirements", "Academic requirements"), minParts.acad, "info"),
     languageOverride
       ? renderTrackLanguageExamGroup({
         language_requirements: funding?.language_requirements || baselineLanguage,
@@ -1891,7 +1891,7 @@ function renderFundingDifferences({ category, funding, profile, university }) {
       : "",
   ].filter(Boolean).join("");
   const avgList = [
-    renderExamGroup(translateWord("academic_average", "Academic average"), avgParts.acad, "#2563eb"),
+    renderExamGroup(translateWord("academic_average", "Academic average"), avgParts.acad, "info"),
     languageOverride
       ? renderTrackLanguageExamGroup({
         language_requirements: funding?.language_requirements || baselineLanguage,

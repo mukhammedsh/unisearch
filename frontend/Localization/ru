@@ -726,6 +726,7 @@ universities.state.ml_unavailable: Интересы из вашего профи
 universities.state_region: Штат / Регион
 universities.view_list: Список
 universities.view_map: Карта
+universities.view_toggles.aria: Режим отображения
 university.about_campus: О университете и кампусе
 university.action.website: Сайт
 university.action.map: Карта
@@ -811,8 +812,8 @@ university.price_from: от {price} / год
 university.send: Отправить
 university.show_on_map: Показать на карте
 university.tab.admission: Поступление
-university.tab.costs: Стоимость
-university.tab.general: Общее
+university.tab.costs: Стоимость и финансирование
+university.tab.general: Обзор
 university.tab.programs: Программы
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
@@ -1557,7 +1558,7 @@ university.finance.domestic_and_international_policy: Разные правил�
 university.finance.domestic_and_international_policy_desc: Университет публикует разные правила финансовой помощи для местных и иностранных абитуриентов. Вашу категорию и право на помощь нужно проверить по официальным правилам.
 university.finance.uk_aid_general_desc: Право на стипендию и студенческое финансирование зависит от программы и обстоятельств абитуриента. Проверьте официальные правила университета.
 university.finance.zero_parent_contrib_badge: Без взноса родителей
-university.tab.deadlines: Дедлайны
+university.tab.deadlines: Даты и сроки
 university.deadlines.export_ics: Добавить в календарь (.ics)
 university.deadlines.official_source: Официальный источник
 university.deadlines.guidance_title: Информация о поступлении
@@ -2420,21 +2421,21 @@ profile.evidence.error.credential: Выберите сертификат из с
 profile.evidence.error.credential_score: Укажите опубликованный процентный балл сертификата.
 profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
 university.admissions.catalog.context_title: Контекст вашего поступления
-university.admissions.catalog.simple_title: Условия поступления
-university.admissions.catalog.browse_note: Смотрите программы любого уровня обучения. Выберите программу, чтобы узнать о её содержании и вариантах поступления.
-university.admissions.catalog.show_requirements: Показать условия
-university.admissions.catalog.advanced_options: Дополнительные сведения
-university.admissions.catalog.advanced_note: Укажите эти сведения, когда будете их знать, и нажмите «Показать условия». Без них некоторые условия нужно уточнить.
-university.admissions.catalog.choose_program_hint: Сначала выберите программу, чтобы посмотреть варианты поступления.
+university.admissions.catalog.simple_title: Опубликованные пути поступления
+university.admissions.catalog.browse_note: Ищите программы в официальном каталоге по названию, предмету и уровню обучения. Выберите программу, чтобы прочитать о степени и связанных путях поступления.
+university.admissions.catalog.show_requirements: Читать опубликованные сведения
+university.admissions.catalog.advanced_options: Фильтры публикаций (необязательно)
+university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
+university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
 university.admissions.catalog.open_application: Открыть страницу подачи
 university.admissions.catalog.view_requirements: Посмотреть условия поступления
 university.admissions.catalog.study_info: О программе
-university.admissions.catalog.study_info_note: Официальные сведения о программе. Они не подтверждают право на поступление: выберите вариант подачи, чтобы изучить все его требования.
+university.admissions.catalog.study_info_note: Официальные сведения об этом варианте обучения. Описание и требования к завершению программы отделены от условий поступления.
 university.admissions.catalog.source_note_simple: Текст официальных источников показан на языке оригинала.
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
 university.admissions.catalog.source_scope_details: Статус источника, область действия и даты
-university.admissions.catalog.check_details: Проверка отдельных требований
+university.admissions.catalog.check_details: Необязательная сверка профиля с опубликованными минимумами
 university.admissions.catalog.publication: Статус публикации
 university.admissions.catalog.topic.eligibility: Условия для заявителей
 university.admissions.catalog.topic.academic: Академические квалификации
@@ -2453,16 +2454,16 @@ university.admissions.catalog.topic.support: Поддержка студенто
 university.admissions.catalog.context_note: Один выбор применяется к требованиям, датам, стоимости и финансированию. Ручные изменения действуют на этой странице; для проверок используются данные профиля.
 university.admissions.catalog.choose_program: Выбрать программу
 university.admissions.catalog.no_program_selected: Программа ещё не выбрана
-university.admissions.catalog.route_label: Путь подачи заявления
-university.admissions.catalog.choose_route: Выберите конкретный путь подачи
-university.admissions.catalog.route_required: Выберите путь подачи явно. Связанный с программой путь сам по себе не подтверждает ваше право поступать.
+university.admissions.catalog.route_label: Опубликованный путь подачи
+university.admissions.catalog.choose_route: Выберите опубликованный путь
+university.admissions.catalog.route_required: Выберите один из опубликованных путей выше, чтобы прочитать требования и порядок подачи.
 university.admissions.catalog.applicant_label: Категория абитуриента
 university.admissions.catalog.unspecified: Не указана
 university.admissions.catalog.applicant.first_year: Поступление на первый курс
 university.admissions.catalog.applicant.transfer: Перевод из другого вуза
 university.admissions.catalog.applicant.graduate: Поступление после бакалавриата
 university.admissions.catalog.cycle_label: Планируемый набор
-university.admissions.catalog.cycle_example: Например: Fall 2027 entry
+university.admissions.catalog.cycle_example: Например: осенний набор 2027 года
 university.admissions.catalog.fee_label: Статус оплаты со слов абитуриента
 university.admissions.catalog.fee.unknown: Не определён
 university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (со слов абитуриента)
@@ -2486,12 +2487,39 @@ university.admissions.catalog.no_options: По этим фильтрам про�
 university.admissions.catalog.previous: Назад
 university.admissions.catalog.next: Далее
 university.admissions.catalog.results: {from}–{to} из {total} программ
-university.admissions.catalog.finance_note: Сопоставимая годовая сумма для этого контекста не установлена. Ниже сохранены опубликованные периоды оплаты и условия. Возможное финансирование не считается предоставленной помощью и не вычитается из стоимости.
+university.admissions.catalog.finance_note: Сопоставимая годовая сумма не установлена. Сохраняются исходные валюта и период каждой статьи. Возможное финансирование не считается предоставленной помощью и не вычитается; разверните запись, чтобы открыть источник.
 university.admissions.catalog.study_options_title: Программы обучения
-university.admissions.catalog.study_options_note: Поиск по проверенному каталогу вуза. Правила обучения и завершения программы отделены от требований к поступлению.
-university.admissions.catalog.admission_title: Требования и подача заявления
-university.admissions.catalog.finance_intro: Стоимость и условия финансирования из источников для выбранного контекста поступления.
-university.admissions.catalog.source_text_note: Сводки источников и специальные обозначения сохранены на языке оригинала. Они не подтверждают соответствие заявителя условиям поступления.
+university.admissions.catalog.study_options_note: Ищите официальные варианты получения степеней. Уровень обучения и присуждаемая квалификация указаны отдельно.
+university.admissions.catalog.admission_title: Требования и опубликованные пути поступления
+university.admissions.catalog.finance_intro: Опубликованные цены и финансирование для выбранной программы и пути с исходными периодами, валютами и условиями.
+university.admissions.catalog.deadlines_title: Даты и сроки
+university.admissions.catalog.deadlines_intro: Здесь собраны даты подачи, финансирования, ответа и внесения депозита для выбранной программы и пути. У каждой записи сохранены исходный период и официальный источник.
+university.admissions.catalog.route_intro: Выберите опубликованный путь поступления, чтобы прочитать относящиеся к нему требования и порядок подачи. Профиль для этого не нужен.
+university.admissions.catalog.reference_scope: Сейчас открыт раздел
+university.admissions.catalog.route_not_selected: Путь подачи не выбран
+university.admissions.catalog.browse_programs: Смотреть программы
+university.admissions.catalog.change_program: Сменить программу
+university.admissions.catalog.change_route: Сменить путь
+university.admissions.catalog.reference_filters: Сузить по категории, циклу или типу оплаты (необязательно)
+university.admissions.catalog.reference_filter_note: Эти фильтры сужают сведения по опубликованной области применения. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
+university.admissions.catalog.selected_route: Выбранный путь
+university.admissions.catalog.application_shape: Как поступают на программу
+university.admissions.catalog.catalog_code: Код курса
+university.admissions.catalog.official_course_page: Официальная страница курса
+university.admissions.catalog.application_class.post_admission_major: Сначала поступают в университет; основное направление выбирают после зачисления.
+university.admissions.catalog.application_class.direct_program: Заявление подаётся на выбранную программу.
+university.admissions.catalog.application_class.ucas_course_choice: Подача на этот курс через UCAS.
+university.admissions.catalog.application_class.postgraduate_course_choice: Подача на эту магистерскую программу.
+university.admissions.catalog.application_class.institution_wide: Для этой программы действует общий путь поступления в университет.
+university.admissions.catalog.application_class.external_and_coterm: Внешний приём и совмещённый путь coterm указаны отдельно.
+university.admissions.catalog.application_class.department_or_program: Путь подачи через факультет или программу.
+university.admissions.catalog.published_qualification_table: Опубликованные таблицы языковых квалификаций
+university.admissions.catalog.qualification_count: Квалификаций: {count}
+university.admissions.catalog.record_count: Записей: {count}
+university.admissions.catalog.full_source_text: Полный текст источника
+university.admissions.catalog.full_source_record: Полная запись источника
+university.admissions.catalog.source_text_note: Официальные формулировки сохранены на языке источника. У каждой записи свои область применения, период и условия; разверните её, чтобы увидеть подробности и источник.
+university.admissions.catalog.scope_varies: Область применения зависит от условий
 university.admissions.catalog.conditional: Применимость условий ещё требует проверки
 university.admissions.catalog.matched: Соответствует выбранному контексту
 university.admissions.catalog.unknown: Неизвестно

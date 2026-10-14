@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 40px;
+  padding: 0 var(--space-10);
   box-sizing: border-box;
 
   background: var(--surface);
@@ -37,7 +37,7 @@
 .lang-control {
   display: flex;
   align-items: center;
-  margin-right: 8px;
+  margin-right: var(--space-2);
 }
 
 .logo{
@@ -94,7 +94,7 @@
   font-weight: 500;
   font-size: 12px;
   cursor: pointer;
-  padding: 0 12px;
+  padding: 0 var(--space-3);
   margin-right: 0;
 }
 
@@ -113,19 +113,19 @@
 .navbar-right .lang-control .custom-select-trigger {
   width: 80px;
   min-height: 38px;
-  padding: 0 8px;
+  padding: 0 var(--space-2);
   border-radius: 10px;
   font-size: 12px;
   font-weight: 500;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   background: var(--surface-soft);
   line-height: 1;
 }
 
 .settings-trigger-btn {
-  margin-right: 8px;
+  margin-right: var(--space-2);
 }
 
 .navbar-right .lang-control .custom-select-trigger::after {
@@ -191,7 +191,7 @@
 .navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
   align-items: center;
   flex: 0 1 auto;
-  gap: 4px;
+  gap: var(--space-1);
   max-width: none;
 }
 
@@ -224,10 +224,10 @@
 /* Auto-compact navbar layout when one-row navigation does not fit */
 .navbar.is-compact {
   height: auto;
-  padding: 12px 20px;
+  padding: var(--space-3) var(--space-5);
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .navbar.is-compact .navbar-left {
@@ -247,7 +247,7 @@
   flex: 0 0 100%;
   justify-content: center;
   margin-left: 0;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .settings-modal.is-open .settings-backdrop {
@@ -378,7 +378,7 @@
 }
 
 .ui-tooltip-trigger:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -437,7 +437,7 @@
   display: block;
   font-weight: 500;
   color: inherit;
-  margin-bottom: 2px;
+  margin-bottom: var(--space-0-5);
 }
 
 .ui-tooltip-text {
@@ -451,7 +451,7 @@
 .ui-tooltip-text--subtle {
   opacity: 0.75;
   font-size: 11px;
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 /* Elevation of parent containers when an open tooltip is inside */
@@ -494,13 +494,13 @@
 
 .track-exam-entry-group{
   display: grid;
-  gap: 8px;
-  padding: 8px 0;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
 }
 
 .track-exam-entry-group + .track-exam-entry-group{
   border-top: none;
-  margin-top: 6px;
+  margin-top: var(--space-1-5);
 }
 
 .track-exam-entry-group-title{
@@ -509,5 +509,5 @@
 
 .track-exam-entry-group-list{
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }

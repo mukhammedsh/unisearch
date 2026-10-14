@@ -90,10 +90,11 @@ async function openFact(page, tab, id) {
   if (tab === "admission") await openAdmission(page);
   else await openTab(page, tab);
   const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
-  await expect(fact).not.toHaveAttribute("open", "");
-  await fact.locator(":scope > summary").click();
-  await expect(fact).toHaveAttribute("open", "");
+  const isDetails = await fact.evaluate((node) => node.tagName === "DETAILS");
+  if (isDetails && !(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
   const evidence = fact.locator("details.admissions-catalog__evidence");
   if (await evidence.count() && !(await evidence.evaluate((node) => node.open))) await evidence.locator(":scope > summary").click();
   const unknowns = fact.locator("details.admissions-catalog__unknowns");
@@ -209,7 +210,7 @@ test("MIT Mathematics of Data SM keeps its internal route and unassessed GPA", a
   await chooseOption(page, "mit-mathematics-of-data-sm-mit-grad-mathematics", "Mathematics of Data", "masters");
   await applyContext(page, "mit_mathematics_of_data_sm_admissions");
   const eligibility = await openFact(page, "admission", "mathematics-of-data-eligibility");
-  await expect(eligibility).toContainText("4.8");
+  await expect(eligibility).toContainText("4,8");
   await expect(eligibility).toContainText("MIT 5.0");
   const procedure = await openFact(page, "admission", "mit_mathematics_of_data_sm_admissions-description");
   await expect(procedure).toContainText("current MIT Mathematics undergraduates");
@@ -276,10 +277,10 @@ test("reviewed MIT program levels use Russian labels while source names remain d
 test("MIT program requires an explicit admission route and keeps funding separate", async ({ page }) => {
   await openCatalog(page);
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("No study option selected");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose a program in the Programs tab to see its published application paths.");
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("Choose an application route explicitly");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose one of the published paths above to read its requirements and application details.");
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option")).toHaveCount(3);

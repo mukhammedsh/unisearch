@@ -1,10 +1,10 @@
 .u-layout {
-  gap: 28px;
+  gap: var(--space-6);
   grid-template-columns: minmax(296px, 328px) minmax(0, 1fr);
 }
 
 .u-filter-card {
-  padding: 20px;
+  padding: var(--space-5);
   border-radius: var(--radius-xl);
   border: none;
   background: var(--surface-solid);
@@ -13,7 +13,7 @@
 }
 
 .u-filter-title {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   font-size: 20px;
   line-height: 1.2;
   letter-spacing: 0;
@@ -60,7 +60,7 @@
 .u-toolbar,
 .u-top {
   padding: 0;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   border: none;
   border-radius: 0;
   background: transparent;
@@ -83,7 +83,7 @@
 .u-tour-modal {
   align-items: flex-start;
   justify-content: flex-end;
-  padding: 96px 24px 24px;
+  padding: var(--space-24) var(--space-6) var(--space-6);
   pointer-events: none;
 }
 
@@ -94,7 +94,7 @@
 
 .u-tour-card {
   width: min(380px, calc(100vw - 32px));
-  padding: 20px 20px 16px;
+  padding: var(--space-5) var(--space-5) var(--space-4);
   border-radius: var(--radius-xl);
   border: none;
   box-shadow: var(--shadow-md);
@@ -102,7 +102,7 @@
 }
 
 .u-tour-progress {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   padding-right: 0;
 }
 
@@ -138,7 +138,7 @@
 .u-grid,
 .u-skeleton-grid {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .u-grid {
@@ -337,7 +337,7 @@
 }
 
 .uni-status-trigger:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -379,7 +379,7 @@
 }
 
 .uni-status-overflow-trigger:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -415,7 +415,7 @@
   box-shadow: none;
   display: inline-flex;
   align-items: baseline;
-  gap: 4px;
+  gap: var(--space-1);
   line-height: var(--leading-tight);
 }
 
@@ -451,8 +451,8 @@
 }
 
 .uni-body {
-  padding: 16px;
-  gap: 12px;
+  padding: var(--space-4);
+  gap: var(--space-3);
 }
 
 .uni-title {
@@ -470,7 +470,7 @@
 .uni-badge {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 0;
   margin-top: 0;
   border: none;
@@ -487,8 +487,8 @@
 }
 
 .uni-pill {
-  gap: 8px;
-  padding: 8px 8px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
   border: none;
   border-radius: 10px;
   background: var(--surface-soft);
@@ -505,7 +505,7 @@
 
 .uni-why {
   margin-top: auto;
-  padding: 12px 0 0;
+  padding: var(--space-3) 0 0;
   border-top: none;
   border-left: none;
   padding-left: 0;
@@ -516,11 +516,11 @@
 
 .uni-footer {
   margin-top: auto;
-  padding-top: 14px;
+  padding-top: var(--space-3);
   border-top: none;
   display: flex;
   align-items: end;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .uni-price {
@@ -536,7 +536,7 @@
 .uni-price-line {
   display: inline-flex;
   align-items: baseline;
-  gap: 4px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
@@ -555,12 +555,12 @@
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .uni-why + .uni-footer {
   margin-top: 0;
-  padding-top: 8px;
+  padding-top: var(--space-2);
 }
 
 .uni-card.uni-card--compare-selected {
@@ -675,7 +675,7 @@
     transform: translateX(100%);
     transition: transform var(--motion-medium) var(--motion-ease-enter);
     box-shadow: var(--shadow-md);
-    padding-bottom: 80px;
+    padding-bottom: var(--space-20);
   }
 
   .u-filter-close {
@@ -689,8 +689,8 @@
   .u-mobile-filter-btn {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
     background: var(--accent);
     color: var(--text-inverse);
     border: none;
@@ -738,8 +738,8 @@
   .u-top {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
-    padding: 16px;
+    gap: var(--space-4);
+    padding: var(--space-4);
   }
 
   .u-controls {
@@ -749,7 +749,7 @@
 
   .u-grid,
   .u-skeleton-grid {
-    gap: 16px;
+    gap: var(--space-4);
   }
 
   .uni-card {
@@ -773,7 +773,7 @@
 
 @media (max-width: 1024px) {
   .u-section-tabs {
-    gap: 16px;
+    gap: var(--space-4);
   }
 
   .u-section-tab {
@@ -789,7 +789,7 @@
   .compare-results-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--component-control-gap);
     justify-content: stretch;
   }
 
@@ -809,11 +809,11 @@
   }
 
   .compare-config-options {
-    padding: 12px;
+    padding: var(--space-3);
   }
 
   .compare-config-chance {
-    padding: 0 12px;
+    padding: 0 var(--space-3);
   }
 
   .compare-config-chance .chance-head {
@@ -821,9 +821,9 @@
   }
 
   .compare-block-head {
-    padding: 16px;
+    padding: var(--space-4);
     flex-wrap: wrap;
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   .compare-block-tools {
@@ -844,7 +844,7 @@
 
   .compare-table th,
   .compare-table td {
-    padding: 12px 8px;
+    padding: var(--space-3) var(--space-2);
     font-size: 12px;
     overflow-wrap: anywhere;
   }
@@ -886,7 +886,7 @@
   .u-tour-actions-right {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .u-tour-actions .u-tour-btn,
@@ -981,9 +981,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
   border: none;
   border-radius: var(--radius-lg);
   background: color-mix(in srgb, var(--color-warning) 10%, var(--surface-solid));
@@ -999,7 +999,7 @@
 .u-unifit-warning__content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -1042,7 +1042,7 @@
 }
 
 .u-unifit-warning__dismiss:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

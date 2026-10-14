@@ -1,6 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { setNativeSelect } = require("./helpers/selectors");
+const { expectNoStackedGapMargins } = require("./helpers/design");
 
 const MIT_ID = "mit-usa-cambridge";
 const IMPERIAL_ID = "imperial-college-london-uk";
@@ -57,12 +58,99 @@ async function chooseReviewedContext(page, id, search, option, route, cycle) {
   });
 }
 
+test("empty comparison action uses token spacing and stays centered", async ({ page }) => {
+  await clearCompareState(page);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/compare.html");
+
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
+  const emptyState = page.locator(".compare-results-empty");
+  await expect(emptyState).toBeVisible();
+  const spacing = await emptyState.evaluate((element) => {
+    const copy = element.querySelector(".compare-results-empty__copy");
+    const actions = element.querySelector(".compare-results-actions--centered");
+    const root = getComputedStyle(document.documentElement);
+    return {
+      actionAlignment: getComputedStyle(actions).justifyContent,
+      actionMargin: getComputedStyle(actions).marginTop,
+      outerGap: getComputedStyle(element).rowGap,
+      outerGapToken: root.getPropertyValue("--space-8").trim(),
+      copyGap: getComputedStyle(copy).rowGap,
+      copyGapToken: root.getPropertyValue("--space-3").trim(),
+    };
+  });
+
+  expect(spacing.actionAlignment).toBe("center");
+  expect(spacing.actionMargin).toBe("0px");
+  expect(spacing.outerGap).toBe(spacing.outerGapToken);
+  expect(spacing.copyGap).toBe(spacing.copyGapToken);
+});
+
+test("catalog layout has no stacked gap and child margins", async ({ page }) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+  await page.goto("/index.html");
+  await waitForUniversitiesReady(page);
+
+  await expectNoStackedGapMargins(page, "#universitiesCatalogPane");
+});
+
+test("catalog level selector stays clear across themes and desktop/phone layouts", async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
+    for (const viewport of [
+      { name: "desktop", width: 1440, height: 900 },
+      { name: "phone", width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await markTourAsSeen(page);
+      await clearCompareState(page);
+      await page.addInitScript((nextTheme) => localStorage.setItem("unisearch_theme", nextTheme), theme);
+      await page.goto("/index.html");
+      await waitForUniversitiesReady(page);
+
+      const colors = await page.evaluate(() => {
+        const valueForToken = (token) => {
+          const probe = document.createElement("div");
+          probe.style.backgroundColor = `var(${token})`;
+          document.body.append(probe);
+          const value = getComputedStyle(probe).backgroundColor;
+          probe.remove();
+          return value;
+        };
+        return {
+          theme: document.documentElement.dataset.theme,
+          group: getComputedStyle(document.querySelector("#catalogLevelSegmented")).backgroundColor,
+          groupSurface: valueForToken("--surface-soft"),
+          active: getComputedStyle(document.querySelector(".catalog-level-btn.is-active")).backgroundColor,
+          activeSurface: valueForToken("--surface-solid"),
+        };
+      });
+
+      expect(colors.theme).toBe(theme);
+      expect(colors.group).toBe(colors.groupSurface);
+      expect(colors.active).toBe(colors.activeSurface);
+      // shortcut: the checked-in baseline is Windows-only; add an OS capture before enabling Linux comparisons.
+      if (process.platform === "win32") {
+        await expect(page.locator("#catalogLevelSegmented")).toHaveScreenshot(`catalog-level-${theme}-${viewport.name}.png`, {
+          animations: "disabled",
+          caret: "hide",
+        });
+      }
+    }
+  }
+});
+
 test("catalog comparison mode navigates to the dedicated compare page", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
   await page.goto("/index.html");
   await waitForUniversitiesReady(page);
+  const metricsMargins = await page.locator("#universitiesList .uni-metrics").evaluateAll((elements) =>
+    elements.map((element) => getComputedStyle(element).marginTop)
+  );
+  expect(metricsMargins.length).toBeGreaterThan(0);
+  expect(metricsMargins.every((margin) => margin === "0px")).toBe(true);
   await expect(page.locator("[data-universities-tab]")).toHaveCount(0);
   await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
   await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
@@ -108,7 +196,7 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
     await expect(configureColumns.nth(index).locator('select[data-context-field="application_route_id"]')).toHaveValue("");
   }
   await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(0);
-  await expect(page.locator("#compareResultsPane")).toContainText("Choose an application route explicitly");
+  await expect(page.locator(".compare-config-subtitle")).toHaveText("Compare universities now, or choose a study option and application route to view applicable admissions facts.");
   const configureText = await page.locator("#compareResultsPane").textContent();
   expect(configureText).not.toMatch(/(?:Ð|Рќ|вЂ)/);
 
@@ -260,13 +348,22 @@ test("compare configuration requires two explicit reviewed contexts and persists
   await page.goto("/compare.html?lang=eng&stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
+  const optionalContext = "Compare universities now, or choose a study option and application route to view applicable admissions facts.";
+  await expect(page.locator(".compare-config-subtitle")).toHaveText(optionalContext);
+  await expect(page.getByText(optionalContext, { exact: true })).toHaveCount(1);
+  await expect(page.locator(".compare-config-column__status")).toHaveCount(0);
 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
-  await expect(mitColumn).toContainText("Choose an application route explicitly");
+  await expect(mitColumn.locator(".admissions-context__note")).toHaveText("Reviewed study and admissions catalog");
   await expect(mitColumn).not.toContainText("SAT: 1550");
   await chooseReviewedContext(page, MIT_ID, "Computer Science and Engineering", "mit-course-6-3-bachelor", "mit-first-year", "Fall 2027 entry");
   await chooseReviewedContext(page, IMPERIAL_ID, "Computing", "imperial-option-computing-meng", "procedure-computing-meng", "2027 entry");
   await page.locator('[data-action="build-compare-results"]').click();
+  await expect(page.locator(".compare-table")).toBeVisible();
+  const studyModeRow = page.locator(".compare-table tbody tr").filter({ hasText: "Study mode" });
+  await expect(studyModeRow).toHaveCount(1);
+  await expect(studyModeRow).toContainText("Not specified");
+  await expect(studyModeRow).not.toContainText("not_stated");
   await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] [data-admissions-fact="ug-sat-act-presence"]`)).toBeVisible();
   await expect(page.locator(`[data-reviewed-context="${IMPERIAL_ID}"] [data-admissions-fact="imperial-computing-meng-admission"]`)).toBeVisible();
   await page.reload();

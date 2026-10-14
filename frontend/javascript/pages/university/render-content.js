@@ -1,7 +1,7 @@
 import { escapeHtml, escapeHtmlAttr, markMotionEnter, motionPress } from "../../utils.js";
 import { getCurrentLanguage, t } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
-import { translateAdmissionText, translateWord } from "../../university-translations.js";
+import { humanizeMachineLabel, translateAdmissionText, translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import { loadProfile } from "../../utils/persistence.js";
 import {
@@ -16,6 +16,7 @@ import {
   admissionsSignalSummary,
   renderInlineIcon,
   rankingStatusLabel,
+  trFactSource,
   trProgramLanguage,
   trProgramName,
   trTrackDescription,
@@ -44,7 +45,8 @@ export function renderOverviewSection({
     ? t("common.no_data", "No data")
     : `${Math.round(acceptanceRate * 100) / 100}%`;
   const acceptanceSourceUrl = safeUrl(acceptanceMeta?.source_url);
-  const acceptanceSourceLabel = String(acceptanceMeta?.source || "").trim() || t("university.admissions.official_source", "Official source");
+  const acceptanceSource = String(acceptanceMeta?.source || "").trim();
+  const acceptanceSourceLabel = acceptanceSource ? trFactSource(acceptanceSource) : t("university.admissions.official_source", "Official source");
   const acceptanceChecked = String(acceptanceMeta?.verified_at || "").trim();
   const acceptanceBasis = acceptanceMeta?.basis && typeof acceptanceMeta.basis === "object" ? acceptanceMeta.basis : {};
   const acceptanceCycle = String(acceptanceBasis?.cycle || "").trim();
@@ -80,7 +82,8 @@ export function renderOverviewSection({
   `;
 
   const rankMeta = university && typeof university.rank_meta === "object" ? university.rank_meta : {};
-  const rankSource = String(rankMeta.source || "").trim();
+  const rankSourceValue = String(rankMeta.source || "").trim();
+  const rankSource = rankSourceValue ? trFactSource(rankSourceValue) : "";
   const rankVerifiedAt = String(rankMeta.verified_at || "").trim();
   const rankInfoTitle = escapeHtml(translateWord("global_rank", "Global Rank"));
   const rankTooltip = rankSource ? `
@@ -118,7 +121,11 @@ export function renderOverviewSection({
     ? new Intl.NumberFormat("en-US").format(studentCountValue)
     : t("common.no_data", "No data");
   const formats = Array.isArray(university.academics?.formats)
-    ? university.academics.formats.map((value) => escapeHtml(trStudyMode(String(value)))).filter(Boolean).join(", ")
+    ? university.academics.formats
+      .filter((value) => String(value || "").trim().toLowerCase() !== "not_stated")
+      .map((value) => escapeHtml(trStudyMode(String(value))))
+      .filter(Boolean)
+      .join(", ")
     : "";
 
   container.innerHTML = `
@@ -167,7 +174,11 @@ export function renderExtraSection({ container, university }) {
       <div class="uni-tags-wrap">
         <div class="uni-tags-title">${escapeHtml(translateWord("focus_tags", "Focus Tags"))}</div>
         <div class="uni-tags-list">
-          ${tags.map((tag) => `<span class="uni-tag">${escapeHtml(trTag(tag))}</span>`).join("")}
+          ${tags.map((tag) => {
+            const translated = trTag(tag);
+            const display = translated === tag ? humanizeMachineLabel(tag, tag) : translated;
+            return `<span class="uni-tag">${escapeHtml(display)}</span>`;
+          }).join("")}
         </div>
       </div>
     `

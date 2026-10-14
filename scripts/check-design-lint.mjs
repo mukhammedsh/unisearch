@@ -22,6 +22,23 @@ const ALLOWED_RADII = new Set([0, 1, 2, 4, 8, 10, 12, 16, 20]);
 const ALLOWED_Z_INDICES = new Set([-1, 0, 1, 2]);
 // Calm Academic Workspace uses a restrained three-step weight hierarchy.
 const ALLOWED_FONT_WEIGHTS = new Set([400, 500, 600]);
+const SPACING_TOKEN_VALUES = new Map([
+  [1, "--space-0-25"],
+  [2, "--space-0-5"],
+  [4, "--space-1"],
+  [6, "--space-1-5"],
+  [8, "--space-2"],
+  [12, "--space-3"],
+  [16, "--space-4"],
+  [20, "--space-5"],
+  [24, "--space-6"],
+  [32, "--space-8"],
+  [40, "--space-10"],
+  [48, "--space-12"],
+  [64, "--space-16"],
+  [80, "--space-20"],
+  [96, "--space-24"],
+]);
 
 function suggestFontToken(pxVal) {
   if (pxVal <= 11.5) return "var(--text-xs) (11px)";
@@ -34,18 +51,18 @@ function suggestFontToken(pxVal) {
   return "var(--text-3xl) (28px)";
 }
 
-function suggestSpacingToken(pxVal) {
-  const rounded = Math.round(pxVal / 4) * 4;
-  if (rounded === 4) return "var(--space-1) (4px)";
-  if (rounded === 8) return "var(--space-2) (8px)";
-  if (rounded === 12) return "var(--space-3) (12px)";
-  if (rounded === 16) return "var(--space-4) (16px)";
-  if (rounded === 20) return "var(--space-5) (20px)";
-  if (rounded === 24) return "var(--space-6) (24px)";
-  if (rounded === 32) return "var(--space-8) (32px)";
-  if (rounded === 48) return "var(--space-12) (48px)";
-  if (rounded === 64) return "var(--space-16) (64px)";
-  return `${rounded}px`;
+export function spacingTokenFor(pxVal) {
+  const px = Math.abs(Number(pxVal));
+  const [nearestValue, tokenName] = [...SPACING_TOKEN_VALUES.entries()].reduce((nearest, entry) => {
+    const [value] = entry;
+    const currentDistance = Math.abs(value - px);
+    const nearestDistance = Math.abs(nearest[0] - px);
+    if (currentDistance < nearestDistance || (currentDistance === nearestDistance && value < nearest[0])) {
+      return entry;
+    }
+    return nearest;
+  });
+  return `var(${tokenName}) (${nearestValue}px)`;
 }
 
 function suggestRadiusToken(pxVal) {
@@ -68,6 +85,8 @@ function suggestZIndexToken(num) {
 
 function cssDeclarations(line) {
   return String(line || "")
+    .replace(/^[^{]*\{/, "")
+    .replace(/}.*$/, "")
     .split(";")
     .map((part) => {
       const separator = part.indexOf(":");
@@ -82,6 +101,14 @@ function cssDeclarations(line) {
 
 function declarationValue(line, predicate) {
   return cssDeclarations(line).find(({ property }) => predicate(property))?.value || null;
+}
+
+export function isSpacingProperty(property) {
+  const normalized = String(property || "").toLowerCase();
+  return /^(?:margin|padding)(?:-[a-z-]+)?$/.test(normalized)
+    || /^(?:gap|row-gap|column-gap)$/.test(normalized)
+    || /^(?:scroll-margin|scroll-padding)(?:-[a-z-]+)?$/.test(normalized)
+    || (normalized.startsWith("--") && /(?:space|gap|padding|pad|margin|gutter)/i.test(normalized));
 }
 
 function pixelValues(value) {
@@ -107,6 +134,13 @@ function pixelValues(value) {
   return values;
 }
 
+export function spacingValueViolations(property, value) {
+  if (!isSpacingProperty(property)) return [];
+  return pixelValues(value)
+    .filter(({ value: px }) => px !== 0)
+    .map(({ text, value: px }) => ({ text, suggestion: spacingTokenFor(px) }));
+}
+
 function listCssFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const entryPath = path.join(dir, entry.name);
@@ -115,7 +149,7 @@ function listCssFiles(dir) {
   });
 }
 
-function scanCssFile(filePath) {
+export function scanCssFile(filePath) {
   const content = fs.readFileSync(filePath, "utf8");
   const relPath = path.relative(rootDir, filePath).replace(/\\/g, "/");
   const isStyleCss = path.basename(filePath) === "style.css";
@@ -235,7 +269,7 @@ function scanCssFile(filePath) {
     }
 
     // 4. Check !important in margin / padding
-    if (/\b(margin|padding)(-[a-z]+)?\s*:[^;]+!important/i.test(line)) {
+    if (/\b(margin|padding)(-[a-z-]+)?\s*:[^;]+!important/i.test(line)) {
       violations.push({
         line: i + 1,
         type: "spacing-important-hack",
@@ -245,26 +279,30 @@ function scanCssFile(filePath) {
       });
     }
 
-    // 5. Check odd/arbitrary spacing in margin, padding, gap (non 4/8px)
-    const spacingDeclaration = cssDeclarations(line).find(({ property }) => ["margin", "padding", "gap", "row-gap", "column-gap"].includes(property));
-    if (spacingDeclaration) {
-      const prop = spacingDeclaration.property;
-      const valStr = spacingDeclaration.value;
-      if (!valStr.includes("calc(") && !valStr.includes("clamp(") && !valStr.includes("var(")) {
-        // Find all px values in the declaration
-        for (const { text, value: num } of pixelValues(valStr)) {
-          const absNum = Math.abs(num);
-          // Allow 0, 1px, 2px (for fine borders/dividers) and numbers divisible by 4
-          if (absNum > 2 && absNum % 4 !== 0) {
-            violations.push({
-              line: i + 1,
-              type: "spacing-non-4px-grid",
-              message: `Arbitrary ${prop} value "${text}" violates 4/8px grid scale`,
-              code: rawLine.trim(),
-              suggestion: suggestSpacingToken(absNum),
-            });
-          }
-        }
+    // 5. Require spacing tokens for shorthand, physical, and logical properties.
+    const spacingException = /\/\*\s*spacing-exception:\s*[^*]+\*\//i.test(rawLine);
+    const isSliderThumb = rawLines.slice(Math.max(0, i - 20), i + 1).some((l) => l.includes("::-webkit-slider-thumb"));
+    const isVisuallyHidden = rawLines
+      .slice(Math.max(0, i - 5), Math.min(rawLines.length, i + 6))
+      .some((l) => l.includes("clip: rect") || l.includes("clip-path: inset"));
+
+    for (const spacingDeclaration of cssDeclarations(line).filter(({ property }) => isSpacingProperty(property))) {
+      const isCanonicalPrimitive = relPath === "frontend/css/shared/01-foundation.css"
+        && /^--space-\d+(?:-\d+)?$/.test(spacingDeclaration.property);
+      if (isCanonicalPrimitive) continue;
+
+      for (const { text: rawValue, suggestion } of spacingValueViolations(spacingDeclaration.property, spacingDeclaration.value)) {
+        const isKnownUtilityOffset = spacingDeclaration.property.startsWith("margin")
+          && (isSliderThumb || isVisuallyHidden);
+        if (spacingException || isKnownUtilityOffset) continue;
+
+        violations.push({
+          line: i + 1,
+          type: "spacing-hardcoded-value",
+          message: `Spacing value "${rawValue}" must use a shared token`,
+          code: rawLine.trim(),
+          suggestion,
+        });
       }
     }
 
@@ -441,9 +479,9 @@ function run() {
 
   if (regressionDetected) {
     console.error("\n[check:design-lint] REGRESSION DETECTED!");
-    console.error("New design lint violations (font size/weight, negative margins, or non-4/8px spacing) were introduced:");
+    console.error("New design lint violations (font size/weight, negative margins, or hardcoded spacing values) were introduced:");
     console.error(regressionDetails.join("\n"));
-    console.error("\nRule: Use the 400/500/600 weight hierarchy, standardized typography tokens (--text-*), and 4/8px spacing tokens (--space-*).");
+    console.error("\nRule: Use the 400/500/600 weight hierarchy, standardized typography tokens (--text-*), and spacing tokens (--space-* or semantic aliases).");
     console.error("See docs/design-system.md for full specifications.");
     process.exit(1);
   }
@@ -466,4 +504,6 @@ function run() {
   process.exit(0);
 }
 
-run();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  run();
+}

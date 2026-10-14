@@ -723,6 +723,7 @@ universities.state.ml_unavailable: Профильдегі қызығушылық
 universities.state_region: Штат / Аймақ
 universities.view_list: Тізім түрінде көру
 universities.view_map: Картада көру
+universities.view_toggles.aria: Көрініс режимі
 university.about_campus: Университет және кампус туралы
 university.action.website: Веб-сайт
 university.action.map: Карта
@@ -808,8 +809,8 @@ university.price_from: жылына {price}-дан бастап
 university.send: Жіберу
 university.show_on_map: Картадан көрсету
 university.tab.admission: Қабылдау
-university.tab.costs: Шығындар
-university.tab.general: Жалпы ақпарат
+university.tab.costs: Оқу құны және қаржыландыру
+university.tab.general: Қысқаша ақпарат
 university.tab.programs: Бағдарламалар
 university.total_cost_calculator: Жалпы құн калькуляторы
 university.total_estimated_cost: Болжалды жалпы құн
@@ -1559,7 +1560,7 @@ university.finance.domestic_and_international_policy: Талапкерлерді
 university.finance.domestic_and_international_policy_desc: Университет жергілікті және шетелдік талапкерлерге арналған әртүрлі қаржылық көмек ережелерін жариялайды. Сіздің санатыңыз бен көмек алу құқығыңызды ресми ережелер бойынша тексеру керек.
 university.finance.uk_aid_general_desc: Шәкіртақы мен студенттік қаржыландыру құқығы талапкердің бағдарламасы мен жағдайына байланысты. Университеттің ресми ережелерін тексеріңіз.
 university.finance.zero_parent_contrib_badge: Ата-ананың жарнасы жоқ
-university.tab.deadlines: Дедлайндар
+university.tab.deadlines: Күндер мен мерзімдер
 university.deadlines.export_ics: Күнтізбеге қосу (.ics)
 university.deadlines.official_source: Ресми дереккөз
 university.deadlines.guidance_title: Түскені туралы ақпарат
@@ -2422,21 +2423,21 @@ profile.evidence.error.credential: Тізімнен біліктілікті т�
 profile.evidence.error.credential_score: Жарияланған біліктілік нәтижесін пайызбен енгізіңіз.
 profile.evidence.error.max_institution: Ең көбі 20 оқу орны туралы растау сақтауға болады.
 university.admissions.catalog.context_title: Өтініш беру контексті
-university.admissions.catalog.simple_title: Қабылдау талаптары
-university.admissions.catalog.browse_note: Кез келген оқу деңгейіндегі бағдарламаларды шолыңыз. Оқу мазмұны мен түсу бағыттарын көру үшін біреуін таңдаңыз.
-university.admissions.catalog.show_requirements: Талаптарды көрсету
-university.admissions.catalog.advanced_options: Қосымша мәліметтер
-university.admissions.catalog.advanced_note: Бұл мәліметтер белгілі болғанда енгізіп, «Талаптарды көрсету» түймесін таңдаңыз. Оларсыз кейбір шарттарды әлі де тексеру қажет.
-university.admissions.catalog.choose_program_hint: Түсу бағыттарын көру үшін алдымен бағдарламаны таңдаңыз.
+university.admissions.catalog.simple_title: Жарияланған өтініш беру жолдары
+university.admissions.catalog.browse_note: Ресми бағдарлама каталогын атауы, пән саласы және оқу деңгейі бойынша іздеңіз. Дәреже мен оған байланысты өтініш беру жолдарын оқу үшін бағдарламаны таңдаңыз.
+university.admissions.catalog.show_requirements: Жарияланған мәліметтерді оқу
+university.admissions.catalog.advanced_options: Жарияланған мәліметтерді сүзу (міндетті емес)
+university.admissions.catalog.advanced_note: Бұл сүзгілер дереккөз жазбаларын жарияланған өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы санаты бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
+university.admissions.catalog.choose_program_hint: Жарияланған қабылдау жолдарын көру үшін «Бағдарламалар» бөлімінен бағдарламаны таңдаңыз.
 university.admissions.catalog.open_application: Өтініш беру бетін ашу
 university.admissions.catalog.view_requirements: Қабылдау талаптарын көру
 university.admissions.catalog.study_info: Бағдарлама туралы
-university.admissions.catalog.study_info_note: Бұл бағдарлама туралы ресми ақпарат. Ол сіздің талаптарға сай екеніңізді растамайды; толық талаптарды көру үшін өтініш беру бағытын таңдаңыз.
+university.admissions.catalog.study_info_note: Бұл оқу нұсқасы туралы ресми ақпарат. Оқу мазмұны мен дәрежені аяқтау талаптары қабылдау талаптарынан бөлек.
 university.admissions.catalog.source_note_simple: Ресми дереккөз мәтіні түпнұсқа тілінде көрсетіледі.
 university.admissions.catalog.route_class.ucas_course_choice: UCAS арқылы курс таңдау
 university.admissions.catalog.route_class.postgraduate_course_choice: Жоғары оқу орнынан кейінгі бағдарламаға өтініш
 university.admissions.catalog.source_scope_details: Дереккөздің күйі, аясы және күндері
-university.admissions.catalog.check_details: Жекелеген талаптарды тексеру
+university.admissions.catalog.check_details: Жарияланған минимумдарды профильмен салыстыру (міндетті емес)
 university.admissions.catalog.publication: Жариялану күйі
 university.admissions.catalog.topic.eligibility: Талаптарға сәйкестік
 university.admissions.catalog.topic.academic: Академиялық біліктілік
@@ -2455,16 +2456,16 @@ university.admissions.catalog.topic.support: Студенттерге қолда
 university.admissions.catalog.context_note: Таңдалған контекст талаптарға, мерзімдерге, оқу құнына және қаржыландыруға қолданылады. Қолмен енгізген өзгерістер осы бетте қалады; тексерулерде профильдегі растаулар пайдаланылады.
 university.admissions.catalog.choose_program: Оқу нұсқасын таңдаңыз
 university.admissions.catalog.no_program_selected: Оқу нұсқасы таңдалмаған
-university.admissions.catalog.route_label: Өтініш беру бағыты
-university.admissions.catalog.choose_route: Нақты өтініш беру бағытын таңдаңыз
-university.admissions.catalog.route_required: Өтініш беру бағытын өзіңіз таңдаңыз. Байланыстырылған бағыт сіздің талаптарға сай екеніңізді растамайды.
+university.admissions.catalog.route_label: Жарияланған өтініш беру жолы
+university.admissions.catalog.choose_route: Жарияланған жолды таңдаңыз
+university.admissions.catalog.route_required: Қабылдау талаптары мен өтініш тәртібін оқу үшін жоғарыдағы жарияланған жолдардың бірін таңдаңыз.
 university.admissions.catalog.applicant_label: Өтініш беруші санаты
 university.admissions.catalog.unspecified: Көрсетілмеген
 university.admissions.catalog.applicant.first_year: Бірінші курсқа түсуші
 university.admissions.catalog.applicant.transfer: Ауысу арқылы түсуші
 university.admissions.catalog.applicant.graduate: Жоғары оқу орнынан кейінгі бағдарламаға түсуші
 university.admissions.catalog.cycle_label: Жоспарланған қабылдау циклі
-university.admissions.catalog.cycle_example: Мысалы: 2027 жылдың күзінде түсу
+university.admissions.catalog.cycle_example: Мысалы: 2027 жылғы күзгі қабылдау
 university.admissions.catalog.fee_label: Өзі көрсеткен оқу ақысы мәртебесі
 university.admissions.catalog.fee.unknown: Анықталмаған
 university.admissions.catalog.fee.self_reported_home_domestic: Өз еліндегі / жергілікті (өзі көрсеткен)
@@ -2488,12 +2489,39 @@ university.admissions.catalog.no_options: Бұл сүзгілерге сай о�
 university.admissions.catalog.previous: Алдыңғы
 university.admissions.catalog.next: Келесі
 university.admissions.catalog.results: {from}–{to} / {total} оқу нұсқасы
-university.admissions.catalog.finance_note: Бұл контекст үшін салыстыруға болатын жылдық жалпы сома анықталмаған. Төмендегі сомалар жарияланған кезеңі мен оқу ақысына қатысты шарттарын сақтайды. Қаржыландыру мүмкіндіктері тағайындалған көмек болып саналмайды және сомадан шегерілмеген.
+university.admissions.catalog.finance_note: Салыстырмалы жылдық жалпы сома анықталмаған. Әр шығынның бастапқы валютасы мен төлем кезеңі сақталады. Ықтимал қаржыландыру тағайындалған көмек емес және құннан шегерілмейді; дереккөзді ашу үшін жазбаны кеңейтіңіз.
 university.admissions.catalog.study_options_title: Оқу нұсқалары
-university.admissions.catalog.study_options_note: Тексерілген оқу орны каталогын іздеңіз. Диплом алу мен оны аяқтау талаптары оқуға қабылдау талаптарынан бөлек.
-university.admissions.catalog.admission_title: Талаптар және өтініш беру
-university.admissions.catalog.finance_intro: Таңдалған өтініш беру контекстіне арналған оқу құны мен қаржыландыру шарттары.
-university.admissions.catalog.source_text_note: Дереккөз түйіндемелері мен ондағы арнайы атаулар түпнұсқа тілінде сақталады. Олар өтініш берушінің талаптарға сай екенін растамайды.
+university.admissions.catalog.study_options_note: Дәреже бағдарламаларын ресми каталогтан іздеңіз. Оқу деңгейі мен берілетін біліктілік бөлек көрсетіледі.
+university.admissions.catalog.admission_title: Талаптар және жарияланған өтініш жолдары
+university.admissions.catalog.finance_intro: Таңдалған бағдарлама мен жолға арналған жарияланған бағалар мен қаржыландыру; бастапқы кезеңдері, валюталары және шарттары сақталады.
+university.admissions.catalog.deadlines_title: Күндер мен мерзімдер
+university.admissions.catalog.deadlines_intro: Таңдалған бағдарлама мен жолға арналған өтінім, қаржыландыру, жауап және депозит мерзімдерін қараңыз. Әр жазбада бастапқы кезеңі мен ресми дереккөзі сақталған.
+university.admissions.catalog.route_intro: Талаптар мен өтініш тәртібін оқу үшін жарияланған қабылдау жолын таңдаңыз. Бұл ақпаратты профильсіз де көруге болады.
+university.admissions.catalog.reference_scope: Қазір қаралып жатқан ақпарат
+university.admissions.catalog.route_not_selected: Өтініш беру жолы таңдалмаған
+university.admissions.catalog.browse_programs: Бағдарламаларды шолу
+university.admissions.catalog.change_program: Бағдарламаны өзгерту
+university.admissions.catalog.change_route: Жолды өзгерту
+university.admissions.catalog.reference_filters: Өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы бойынша сүзу (міндетті емес)
+university.admissions.catalog.reference_filter_note: Бұл сүзгілер дереккөз жазбаларын жарияланған аясы бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
+university.admissions.catalog.selected_route: Таңдалған жол
+university.admissions.catalog.application_shape: Бағдарламаға қабылдау тәсілі
+university.admissions.catalog.catalog_code: Курс коды
+university.admissions.catalog.official_course_page: Курстың ресми беті
+university.admissions.catalog.application_class.post_admission_major: Алдымен университетке қабылданады; негізгі бағыт оқуға түскеннен кейін таңдалады.
+university.admissions.catalog.application_class.direct_program: Өтініш таңдалған бағдарламаға беріледі.
+university.admissions.catalog.application_class.ucas_course_choice: Бұл курсқа UCAS арқылы өтініш беріледі.
+university.admissions.catalog.application_class.postgraduate_course_choice: Бұл оқытылатын магистратура курсына өтініш беру.
+university.admissions.catalog.application_class.institution_wide: Бұл бағдарламаға университеттің ортақ қабылдау жолы қолданылады.
+university.admissions.catalog.application_class.external_and_coterm: Сырттан түсушілерге және бакалавриатпен қатар өтетін coterm жолдары бөлек көрсетілген.
+university.admissions.catalog.application_class.department_or_program: Факультет немесе бағдарлама арқылы өтініш беру жолы.
+university.admissions.catalog.published_qualification_table: Жарияланған тілдік біліктілік кестелері
+university.admissions.catalog.qualification_count: Біліктілік саны: {count}
+university.admissions.catalog.record_count: Жазба саны: {count}
+university.admissions.catalog.full_source_text: Дереккөздің толық мәтіні
+university.admissions.catalog.full_source_record: Дереккөздің толық жазбасы
+university.admissions.catalog.source_text_note: Ресми мәтін дереккөздің түпнұсқа тілінде сақталады. Әр жазбаның қолданылу аясы, кезеңі және шарттары бөлек; толық ақпарат пен дереккөзді көру үшін ашыңыз.
+university.admissions.catalog.scope_varies: Қолданылу аясы шарттарға байланысты
 university.admissions.catalog.conditional: Шартты — қолданылу аясы әлі тексерілуі керек
 university.admissions.catalog.matched: Таңдалған контекстке сәйкес
 university.admissions.catalog.unknown: Белгісіз

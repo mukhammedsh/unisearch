@@ -254,15 +254,15 @@ export function renderGroupedExamPairRows(pairs, opts = {}) {
     .join("");
 }
 
-function examGroupToneClass(color) {
-  if (color === "#2563eb") return "track-exam-group--info";
-  if (color === "#047857") return "track-exam-group--success";
+function examGroupToneClass(tone) {
+  if (tone === "info") return "track-exam-group--info";
+  if (tone === "success") return "track-exam-group--success";
   return "track-exam-group--neutral";
 }
 
-export function renderExamGroup(title, pairs, color) {
+export function renderExamGroup(title, pairs, tone = "neutral") {
   if (!pairs.length) return "";
-  const toneClass = examGroupToneClass(color);
+  const toneClass = examGroupToneClass(tone);
   return `
       <div class="track-exam-group ${toneClass}">
       <div class="track-exam-group-title">

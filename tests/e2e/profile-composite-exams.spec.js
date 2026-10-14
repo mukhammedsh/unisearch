@@ -1,6 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
+const { expectNoStackedGapMargins } = require("./helpers/design");
 
 async function openScores(page) {
   await markTourAsSeen(page);
@@ -8,6 +9,7 @@ async function openScores(page) {
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
   await openProfileTab(page, "scores");
   await page.waitForFunction(() => document.getElementById("examNameSelect")?.options.length > 1);
+  await expectNoStackedGapMargins(page, ".profile-main-content");
 }
 
 test("profile adds SAT and UNT from their component scores", async ({ page }) => {

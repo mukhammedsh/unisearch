@@ -366,9 +366,11 @@ function renderEmptyState(container) {
   if (!container) return;
   container.innerHTML = `
     <div class="compare-results-empty">
-      <h2>${escapeHtml(t("universities.compare.results.empty_title", "No comparison yet"))}</h2>
-      <p>${escapeHtml(t("universities.compare.results.empty_body", "Select exactly two universities to build a comparison pair."))}</p>
-      <div class="compare-results-actions" style="justify-content: center; margin-top: 20px;">
+      <div class="compare-results-empty__copy">
+        <h2>${escapeHtml(t("universities.compare.results.empty_title", "No comparison yet"))}</h2>
+        <p>${escapeHtml(t("universities.compare.results.empty_body", "Select exactly two universities to build a comparison pair."))}</p>
+      </div>
+      <div class="compare-results-actions compare-results-actions--centered">
         <button class="compare-results-action" type="button" data-action="back-to-catalog">
           ${heroIcon("arrow-left", "ui-icon ui-icon--16")}
           <span>${escapeHtml(t("universities.compare.back_to_catalog", "Back to catalog"))}</span>
@@ -424,7 +426,7 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
               <h2>${escapeHtml(uniName)}</h2>
               ${location ? `<p class="compare-config-column__location">${escapeHtml(location)}</p>` : ""}
               ${hasReviewedAdmissions(u) ? "" : `<p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>`}
-              <p class="compare-config-column__status">${escapeHtml(hasReviewedAdmissions(u) ? t("universities.compare.optional_context") : selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
+              ${hasReviewedAdmissions(u) ? "" : `<p class="compare-config-column__status">${escapeHtml(selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>`}
             </div>
             <div class="compare-config-chance">
               ${hasReviewedAdmissions(u) ? "" : renderUniChanceSummary(compareChancesByUniId.get(id))}

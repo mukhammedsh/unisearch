@@ -52,6 +52,7 @@ class MockElement {
     this._textContent = '';
     this._innerHTML = '';
     this.selectedIndex = 0;
+    this.labels = [];
   }
 
   get value() {
@@ -312,6 +313,22 @@ describe('custom-select-typeahead and optgroups', () => {
     // Clicking an optgroup label does not change selection
     optgroupLabels[0].dispatchEvent({ type: 'click', target: optgroupLabels[0] });
     assert.equal(select.value, 'USD');
+  });
+
+  it('uses an associated label as the custom combobox accessible name', () => {
+    const { select } = createSelectWithOptgroups();
+    const label = new MockElement('label');
+    label.textContent = 'Country';
+    select.labels = [label];
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const trigger = select.parentNode.querySelector('.custom-select-trigger');
+    assert.equal(trigger.getAttribute('aria-label'), 'Country');
+    label.textContent = 'Country name';
+    select.dispatchEvent({ type: 'change' });
+    assert.equal(trigger.getAttribute('aria-label'), 'Country name');
   });
 
   it('releases language listeners and observers when a dynamic select is removed', () => {

@@ -269,7 +269,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext")).toContainText("Choose an application route explicitly");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose one of the published paths above to read its requirements and application details.");
   await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
   await expect(page.locator('#tab-admission [data-admissions-fact]')).toHaveCount(0);
 
@@ -316,7 +316,10 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expectUniversityReady(page);
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  await expect(page.locator('#tab-admission [data-admissions-fact="coterm-central-evidence:stanford-coterm-central-eligibility"]')).toBeVisible();
+  const eligibilityFact = page.locator('#tab-admission [data-admissions-fact="coterm-central-evidence:stanford-coterm-central-eligibility"]').first();
+  const eligibilityGroup = eligibilityFact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await eligibilityGroup.count() && !(await eligibilityGroup.evaluate((node) => node.open))) await eligibilityGroup.locator(":scope > summary").click();
+  await expect(eligibilityFact).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
   await expect(page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]')).toHaveCount(0);

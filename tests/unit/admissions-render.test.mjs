@@ -228,7 +228,7 @@ test("simple source details retain independent statuses, limits, periods and sou
   const summary = html.match(/<summary class="admissions-catalog__heading">([\s\S]*?)<\/summary>/)[1];
   assert.match(summary, /Conflicting official sources/);
   assert.doesNotMatch(summary, />Published</);
-  assert.equal((html.match(/Conditional — applicability still needs verification/g) || []).length, 1);
+  assert.equal((html.match(/Scope varies/g) || []).length, 1);
   assert.match(html, /<details class="admissions-catalog__evidence">/);
   for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Source scope", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.includes(value), value);
   assert.match(html, /2026[‑-]10-12/);
@@ -281,10 +281,10 @@ test("simple sections show a multi-domain source fact once with all topic headin
   assert.match(html, /<span>Tests · Funding<\/span>/);
   assert.equal((html.match(/data-admissions-fact="private-fact-id"/g) || []).length, 1);
   assert.match(html, /Tests apply; funding needs a separate award/);
-  assert.doesNotMatch(html, /data-admissions-domain="funding"|Source summaries and source-specific labels|No source records/);
+  assert.doesNotMatch(html, /data-admissions-domain="funding"|Official wording remains in its original language|No source records/);
   const detailed = renderAdmissionsContext(resolved);
   assert.equal((detailed.match(/data-admissions-fact="private-fact-id"/g) || []).length, 2);
-  assert.match(detailed, /Source summaries and source-specific labels/);
+  assert.match(detailed, /Official wording remains in its original language/);
 });
 
 test("simple exam headings distinguish explicit source names without interpreting IDs or generic rule markers", () => {
@@ -320,6 +320,70 @@ test("simple source titles identify a fact only when its official source is not 
   assert.match(html, /<span>English language exemption<\/span>/);
   assert.doesNotMatch(html, /<span>English language requirements<\/span>/);
   assert.match(html, /Published exemption conditions/);
+});
+
+test("simple anonymous fact groups keep each record, its conditions, scope, period, source, and warnings", () => {
+  const resolved = context();
+  resolved.facts = [
+    fact({ language_band: "Minimum 7.0", grading_note: "No component below 6.5." }, {
+      id: "anonymous-one", topic: "language_tests", source_ids: ["english-policy", "shared-english"],
+      publication_status: "unknown", review_status: "conflicting",
+      conditions: ["Applies to taught master's applicants."], exceptions: ["Some courses require higher scores."],
+      period: { kind: "named", label: "2026–2027 intake" },
+      scope: { option_ids: ["example-option"], route_ids: ["example-route"], levels: ["masters"], cycle: "Fall 2026" },
+      applicability: { status: "conditional" },
+    }),
+    fact({ language_band: "Minimum 6.5", grading_note: "No component below 6.0." }, {
+      id: "anonymous-two", topic: "language_tests", source_ids: ["english-course-page", "shared-english"],
+      publication_status: "published", review_status: "verified_current_page",
+      conditions: ["For undergraduate applicants."],
+      period: { kind: "named", label: "2027–2028 intake" },
+      scope: { option_ids: ["example-option"], route_ids: ["example-route"], levels: ["undergraduate"], cycle: "Fall 2027" },
+      applicability: { status: "matched" },
+    }),
+  ];
+  resolved.fact_groups = { requirements: ["anonymous-one", "anonymous-two"] };
+  resolved.sources = [
+    { id: "english-policy", title: "Official English policy", url: "https://example.edu/english" },
+    { id: "english-course-page", title: "Official course page", url: "https://example.edu/course" },
+    { id: "shared-english", title: "Shared English overview", url: "https://example.edu/english-overview" },
+  ];
+
+  const html = renderAdmissionsContext(resolved, { presentation: "simple" });
+  assert.equal((html.match(/class="admissions-catalog__group-record"/g) || []).length, 2);
+  for (const value of ["Minimum 7.0", "Minimum 6.5", "No component below 6.5", "No component below 6.0", "Applies to taught master&#039;s applicants", "Some courses require higher scores", "For undergraduate applicants", "2026–2027 intake", "2027–2028 intake", "Fall 2026", "Fall 2027", "Official English policy", "Official course page", "Conflicting official sources", "Unknown", "Scope varies"]) {
+    assert.ok(html.includes(value), value);
+  }
+});
+
+test("simple qualification tables retain source wording, extra fields, conditions, and provenance", () => {
+  const resolved = context();
+  resolved.facts = [fact({
+    interpretation: "The university evaluates each qualification in context.",
+    labelled_qualifications: [{
+      qualification_or_country: "International Baccalaureate",
+      tables: [["Subject", "Published minimum"], ["Higher level", "6"], ["Total", "38"]],
+      published_text: "Applicants must present the full diploma and meet the subject minimums.",
+      unclassified_official_note: "The mathematics subject must be taken at higher level.",
+    }],
+  }, {
+    id: "qualification-table", topic: "academic_qualification", source_ids: ["qualification-policy"],
+    publication_status: "published", review_status: "reviewed",
+    conditions: ["Only for first-year applicants."],
+    conditions_and_exceptions: ["Required subjects vary by course."],
+    exceptions: ["A separate test may also apply."],
+    checked_at: "2026-10-13", period: { kind: "named", label: "2027 entry" },
+    scope: { option_ids: ["example-option"], route_ids: ["example-route"], levels: ["undergraduate"], cycle: "Fall 2027", fee_status: ["all applicants"] },
+    applicability: { status: "conditional" },
+  })];
+  resolved.fact_groups = { requirements: ["qualification-table"] };
+  resolved.sources = [{ id: "qualification-policy", title: "Official qualification policy", url: "https://example.edu/qualifications", checked_at: "2026-10-13" }];
+
+  const html = renderAdmissionsContext(resolved, { presentation: "simple" });
+  for (const value of ["International Baccalaureate", "Subject", "Published minimum", "Higher level", "The mathematics subject must be taken at higher level", "full diploma", "The university evaluates each qualification", "Only for first-year applicants", "Required subjects vary by course", "A separate test may also apply", "Evidence review", "Source status, scope and dates", "Published period", "2027 entry", "Fall 2027", "Official qualification policy", "https://example.edu/qualifications", "Scope varies"]) {
+    assert.ok(html.includes(value), value);
+  }
+  assert.match(html, /2026[‑-]10-13/);
 });
 
 test("simple unknown information is closed by default while retaining every next step, scope and source", () => {

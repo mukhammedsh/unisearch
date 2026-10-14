@@ -60,7 +60,13 @@ export function initCustomSelect(selectId) {
 
   const popupId = customOptions.id || `custom-options-${selectId}`;
   customOptions.id = popupId;
-  const selectLabel = select.getAttribute("aria-label") || select.getAttribute("title") || select.name || "";
+  const getSelectLabel = () => {
+    const associatedLabel = Array.from(select.labels || [])
+      .map((label) => label.querySelector("[data-i18n]")?.textContent?.trim() || label.textContent?.trim())
+      .find(Boolean);
+    return select.getAttribute("aria-label") || select.getAttribute("title") || associatedLabel || select.name || "";
+  };
+  const selectLabel = getSelectLabel();
   const searchable = select.dataset.searchable === "true";
   let optionList = searchable ? customOptions.querySelector(".custom-select-option-list") : null;
   if (searchable && !optionList) {
@@ -290,6 +296,12 @@ export function initCustomSelect(selectId) {
   }
 
   const syncFromNativeSelect = () => {
+    const currentLabel = getSelectLabel();
+    if (currentLabel) {
+      trigger.setAttribute("aria-label", currentLabel);
+      (optionList || customOptions).setAttribute("aria-label", currentLabel);
+      if (searchInput) searchInput.setAttribute("aria-label", select.dataset.searchPlaceholder || currentLabel);
+    }
     rebuildCustomOptions();
     updateTrigger();
     syncSelectedOptionState();

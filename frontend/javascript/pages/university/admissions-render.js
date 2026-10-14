@@ -1,13 +1,14 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
-import { t } from "../../i18n.js";
+import { getCurrentLanguage, t } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { getExamDisplayName } from "../../utils/config.js";
 
 const PREFIX = "university.admissions.catalog.";
 
 export const ADMISSIONS_RENDER_LABELS = {
-  source_text_note: "Source summaries and source-specific labels are retained in their original language. They do not confirm applicant eligibility.",
+  source_text_note: "Official wording remains in its original language. Each record has its own scope, period and conditions; expand a row to see its source details.",
   conditional: "Conditional — applicability still needs verification",
+  scope_varies: "Scope varies",
   matched: "Matches selected context",
   unknown: "Unknown",
   published: "Published",
@@ -52,7 +53,12 @@ export const ADMISSIONS_RENDER_LABELS = {
   no: "No",
   detail: "Source detail",
   source_scope_details: "Source status, scope and dates",
-  check_details: "Check individual requirements",
+  full_source_record: "Full source record",
+  full_source_text: "Full published wording",
+  published_qualification_table: "Published qualification tables",
+  qualification_count: "{count} qualifications",
+  record_count: "{count} records",
+  check_details: "Optional profile check of published minimums",
   publication: "Publication status",
   "route_class.ucas_course_choice": "UCAS course choice",
   "route_class.postgraduate_course_choice": "Postgraduate course application",
@@ -249,6 +255,12 @@ function fieldLabel(key, referenceLabels = {}) {
 function scalar(value, referenceLabels = {}) {
   if (value === null || value === undefined) return escapeHtml(label("unknown"));
   if (typeof value === "boolean") return escapeHtml(label(value ? "yes" : "no"));
+  if (typeof value === "number") {
+    const locale = { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()];
+    const [mantissa, exponent = "0"] = String(value).toLowerCase().split("e");
+    const fractionDigits = Math.min(20, (mantissa.split(".")[1] || "").length + Math.max(0, Number(exponent) || 0));
+    return new Intl.NumberFormat(locale, { maximumFractionDigits: fractionDigits }).format(value);
+  }
   const text = String(value);
   if (Object.hasOwn(referenceLabels, text)) return escapeHtml(referenceLabels[text]);
   if (/^(?:source-[a-f0-9]+|[a-f0-9]{32,}|[a-f0-9-]{36})$/i.test(text)) return "";
@@ -333,7 +345,94 @@ function factTitle(row, resolved, domain) {
   if (domain === "degree_completion" && !headings.includes("completion")) headings.push("completion");
   // General application wording adds no distinction when the topic names specific requirements or dates.
   const specific = headings.filter(key => key !== "application");
-  return (specific.length ? specific : headings).map(key => label(`topic.${key}`)).join(" · ") || label(`domain.${domain}`);
+  return ((specific.length ? specific : headings).slice(0, 2)).map(key => label(`topic.${key}`)).join(" · ") || label(`domain.${domain}`);
+}
+
+function hasPublishedIdentity(row, resolved) {
+  const explicit = [row.title, row.label, row.value?.title, row.value?.label, row.value?.heading]
+    .some(value => typeof value === "string" && value.trim());
+  if (explicit) return true;
+  const generic = new Set(["rule", "requirement", "requirements", "test", "exam", "qualification", "required", "not_required", "unknown", "not_published"]);
+  const identity = [row.value?.test, row.value?.exam, row.value?.qualification, row.value?.name]
+    .find(value => typeof value === "string" && value.trim() && !generic.has(value.trim().toLowerCase()));
+  if (identity) return true;
+  const ids = row.source_ids || row.sourceIds || [];
+  return ids.length === 1 && [
+    ...(resolved.facts || []), ...(resolved.history?.facts || []),
+  ].filter(fact => (fact.source_ids || fact.sourceIds || []).includes(ids[0])).length === 1;
+}
+
+function renderPublishedTable(table, title) {
+  if (!Array.isArray(table) || !table.length) return "";
+  const [header, ...rows] = table.filter(Array.isArray);
+  const cells = (values, tag) => `<tr>${values.map(value => `<${tag}>${escapeHtml(String(value ?? ""))}</${tag}>`).join("")}</tr>`;
+  return `<div class="admissions-catalog__table-wrap"><table class="admissions-catalog__table" aria-label="${escapeHtmlAttr(title)}"><thead>${cells(header || [], "th")}</thead><tbody>${rows.map(row => cells(row, "td")).join("")}</tbody></table></div>`;
+}
+
+function factStatusBadges(row) {
+  const publication = publicationLabel(row, false);
+  const review = reviewLabel(row.review_status);
+  const reviewWarning = ![
+    label("review.verified"), label("review.reviewed"), label("review.carried_forward_review"),
+  ].includes(review);
+  return [
+    row.publication_status !== "published" ? publication : "",
+    reviewWarning && review !== publication ? review : "",
+    row.applicability?.status !== "matched" ? label("scope_varies") : "",
+  ].filter(Boolean);
+}
+
+function renderStatusBadges(values) {
+  return [...new Set(values)].map(value => `<span class="admissions-catalog__status">${escapeHtml(value)}</span>`).join("");
+}
+
+function renderQualificationTable(row, resolved) {
+  const entries = row.value?.labelled_qualifications;
+  if (!Array.isArray(entries) || !entries.length) return "";
+  const qualifications = entries.filter(item => item && typeof item.qualification_or_country === "string");
+  if (!qualifications.length) return "";
+  const links = sources(row, resolved);
+  const conditions = [row.conditions, row.conditions_and_exceptions, row.exceptions]
+    .filter(value => value !== null && value !== undefined)
+    .map(value => renderAdmissionsValue(value, resolved.reference_labels)).filter(Boolean).join("");
+  const badges = renderStatusBadges(factStatusBadges(row));
+  const sourceMeta = `<p class="admissions-catalog__meta">${escapeHtml(label("publication"))}: ${escapeHtml(publicationLabel(row, false))}</p>
+    <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row.review_status))}</p>${scope(row, resolved)}
+    ${row.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(row.checked_at)}</p>` : ""}`;
+  const note = typeof row.value.interpretation === "string" ? `<p class="admissions-catalog__note">${escapeHtml(row.value.interpretation)}</p>` : "";
+  return `<details class="admissions-catalog__fact admissions-catalog__qualification-table" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" open>
+    <summary class="admissions-catalog__heading"><span>${escapeHtml(label("published_qualification_table"))}</span><span class="admissions-catalog__status">${escapeHtml(label("qualification_count").replace("{count}", String(qualifications.length)))}</span>${badges}</summary>
+    <div class="admissions-catalog__body">${note}${scope(row, resolved)}${row.period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(typeof row.period === "object" ? row.period.label : row.period)}</p>` : ""}${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}<div class="admissions-catalog__qualification-list">${qualifications.map(item => `<details class="admissions-catalog__qualification"><summary>${escapeHtml(item.qualification_or_country)}</summary>
+      ${(Array.isArray(item.tables) ? item.tables.map(table => renderPublishedTable(table, item.qualification_or_country)).join("") : "")}
+      ${item.published_text ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("full_source_text"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p class="admissions-catalog__source-text">${escapeHtml(item.published_text)}</p></details>` : ""}
+    </details>`).join("")}</div>
+    <details class="admissions-catalog__evidence"><summary>${escapeHtml(label("full_source_record"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${renderAdmissionsValue(row.value, resolved.reference_labels)}${conditions}</div></details>
+    <details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${sourceMeta}${row.period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(typeof row.period === "object" ? row.period.label : row.period)}</p>` : ""}</div></details>
+    ${links ? `<div class="admissions-catalog__sources">${links}</div>` : ""}</div>
+  </details>`;
+}
+
+function renderGroupedFact(row, resolved, domain) {
+  const conditions = [row.conditions, row.conditions_and_exceptions, row.exceptions]
+    .filter(value => value !== null && value !== undefined)
+    .map(value => renderAdmissionsValue(value, resolved.reference_labels)).filter(Boolean).join("");
+  const period = row.period && typeof row.period === "object" ? row.period.label : row.period;
+  const status = label(row.applicability?.status === "matched" ? "matched" : "scope_varies");
+  const inlineScope = ["deadlines", "costs", "funding"].includes(domain) ? scope(row, resolved) : "";
+  const metadata = `<p class="admissions-catalog__meta">${escapeHtml(label("publication"))}: ${escapeHtml(publicationLabel(row, false))}</p>
+    <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row.review_status))}</p>
+    <p class="admissions-catalog__meta">${escapeHtml(status)}</p>${scope(row, resolved)}
+    ${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
+    ${row.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(row.checked_at)}</p>` : ""}`;
+  const links = sources(row, resolved);
+  return `<div class="admissions-catalog__group-record" data-admissions-fact="${escapeHtmlAttr(row.id || "")}">
+    ${renderStatusBadges(factStatusBadges(row))}
+    ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+    ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
+    ${inlineScope}${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
+    <details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${metadata}</div></details>
+    ${links ? `<div class="admissions-catalog__sources">${links}</div>` : ""}
+  </div>`;
 }
 
 function renderFact(row, resolved, domain = "other", historical = false, simple = false) {
@@ -342,20 +441,23 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
   const conditions = [row.conditions, row.conditions_and_exceptions, row.exceptions].filter(value => value !== null && value !== undefined).map(value => renderAdmissionsValue(value, resolved.reference_labels)).filter(Boolean).join("");
   const period = row.period && typeof row.period === "object" ? row.period.label : row.period;
   const links = sources(row, resolved);
+  const inlinePeriod = simple && period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : "";
+  const inlineScope = simple && ["deadlines", "costs", "funding"].includes(domain) ? scope(row, resolved) : "";
   const publication = publicationLabel(row, historical);
   const review = reviewLabel(row.review_status);
   const reviewWarning = ![label("review.verified"), label("review.reviewed"), label("review.carried_forward_review")].includes(review);
-  const applicability = !historical ? label(row.applicability?.status === "matched" ? "matched" : "conditional") : "";
+  const applicability = !historical ? label(row.applicability?.status === "matched" ? "matched" : (simple ? "scope_varies" : "conditional")) : "";
   const metadata = `<p class="admissions-catalog__meta">${escapeHtml(label("publication"))}: ${escapeHtml(publication)}</p>
     <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(review)}</p>
     ${scope(row, resolved)}
     ${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
     ${row.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(row.checked_at)}</p>` : ""}`;
-  if (simple) return `<details class="admissions-catalog__fact" data-admissions-fact="${escapeHtmlAttr(row.id || "")}">
+  if (simple) return `<details class="admissions-catalog__fact" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
     <summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span>${historical || row.publication_status !== "published" ? `<span class="admissions-catalog__status">${escapeHtml(publication)}</span>` : ""}${!historical && reviewWarning && review !== publication ? `<span class="admissions-catalog__status">${escapeHtml(review)}</span>` : ""}${!historical && row.applicability?.status !== "matched" ? `<span class="admissions-catalog__status">${escapeHtml(applicability)}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
       ${renderAdmissionsValue(row.value, resolved.reference_labels)}
       ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
+      ${inlineScope}${inlinePeriod}
       <details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${row.applicability?.status === "matched" && !historical ? `<p class="admissions-catalog__meta">${escapeHtml(applicability)}</p>` : ""}${metadata}</div></details>
       ${links ? `<div class="admissions-catalog__sources">${links}</div>` : ""}
     </div>
@@ -385,7 +487,40 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
       return true;
     });
     if (!rows.length) return "";
-    return `<section class="admissions-catalog__section" data-admissions-domain="${escapeHtmlAttr(domain)}"><h3>${escapeHtml(label(`domain.${domain}`))}</h3><div class="admissions-catalog__list">${rows.map(row => renderFact(row, resolved, domain, false, presentation === "simple")).join("")}</div></section>`;
+    const content = presentation === "simple" ? (() => {
+      const genericGroups = new Map();
+      const groupPositions = new Set();
+      const output = [];
+      for (const row of rows) {
+        if (Array.isArray(row.value?.labelled_qualifications)) {
+          const table = renderQualificationTable(row, resolved);
+          if (table) { output.push(table); continue; }
+        }
+        if (hasPublishedIdentity(row, resolved)) {
+          output.push(renderFact(row, resolved, domain, false, true));
+          continue;
+        }
+        const title = factTitle(row, resolved, domain);
+        if (!genericGroups.has(title)) {
+          genericGroups.set(title, []);
+          groupPositions.add(output.length);
+          output.push(title);
+        }
+        const group = genericGroups.get(title);
+        group.push(row);
+      }
+      return output.map((item, index) => {
+        if (!groupPositions.has(index)) return item;
+        const group = genericGroups.get(item);
+        if (group.length === 1) return renderFact(group[0], resolved, domain, false, true);
+        const warnings = group.flatMap(factStatusBadges);
+        return `<details class="admissions-catalog__fact admissions-catalog__fact-group" data-admissions-group="${escapeHtmlAttr(domain)}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
+          <summary class="admissions-catalog__heading"><span>${escapeHtml(item)}</span><span class="admissions-catalog__status">${escapeHtml(label("record_count").replace("{count}", String(group.length)))}</span>${renderStatusBadges(warnings)}</summary>
+          <div class="admissions-catalog__body"><div class="admissions-catalog__group-list">${group.map(row => renderGroupedFact(row, resolved, domain)).join("")}</div></div>
+        </details>`;
+      }).join("");
+    })() : rows.map(row => renderFact(row, resolved, domain, false, false)).join("");
+    return `<section class="admissions-catalog__section" data-admissions-domain="${escapeHtmlAttr(domain)}"><h3>${escapeHtml(label(`domain.${domain}`))}</h3><div class="admissions-catalog__list">${content}</div></section>`;
   }).filter(Boolean);
   return sections.join("") || `<p class="admissions-catalog__meta">${escapeHtml(label("no_facts"))}</p>`;
 }

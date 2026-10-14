@@ -788,10 +788,10 @@ test("grouped exam rows keep composite components together and format levels", (
 });
 
 test("exam groups expose semantic tones and omit empty sections", () => {
-  assert.equal(renderExamGroup("None", [], "#2563eb"), "");
-  assert.match(renderExamGroup("Academic", [["SAT", 1300]], "#2563eb"), /track-exam-group--info/);
-  assert.match(renderExamGroup("Language", [["IELTS", 6.5]], "#047857"), /track-exam-group--success/);
-  assert.match(renderExamGroup("Other", [["GPA", 3.5]], "#fff"), /track-exam-group--neutral/);
+  assert.equal(renderExamGroup("None", [], "info"), "");
+  assert.match(renderExamGroup("Academic", [["SAT", 1300]], "info"), /track-exam-group--info/);
+  assert.match(renderExamGroup("Language", [["IELTS", 6.5]], "success"), /track-exam-group--success/);
+  assert.match(renderExamGroup("Other", [["GPA", 3.5]], "neutral"), /track-exam-group--neutral/);
 });
 
 test("admission choice keys are stable and omit empty segments", () => {

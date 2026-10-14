@@ -2,7 +2,17 @@
 
 All notable project changes should be recorded here.
 
-## Unreleased
+## 8.1.0 (2026-10-14) - Reference-First University Browsing
+
+### Added
+- Let guests browse reviewed MIT, Imperial College London and Stanford University programs and published application routes before choosing optional applicant context; retain each institution's selected program and route.
+- Show grouped admissions facts with clearer scope, periods, conditions, source labels and qualification tables.
+- Add a CI guard for undefined CSS custom properties and static JavaScript styling writes, plus visual regression coverage for the reviewed university journeys.
+
+### Changed
+- Align interface, accessibility and source-label copy across English, Russian and Kazakh; localize unknown values and raw application-route labels.
+- Refine shared design tokens, responsive layouts, light and dark theme contrast, and the brand preview.
+- Use a minor version because guests gain a browsing capability while existing saved state and API contracts remain compatible.
 
 ## 8.0.0 (2026-10-14) - Reviewed Admissions Catalog and Kazakh Workspace
 

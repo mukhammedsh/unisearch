@@ -723,6 +723,7 @@ universities.state.ml_unavailable: Interests from your profile are temporarily n
 universities.state_region: State / Region
 universities.view_list: List View
 universities.view_map: Map View
+universities.view_toggles.aria: View mode
 university.about_campus: About & Campus
 university.action.website: Website
 university.action.map: Map
@@ -808,8 +809,8 @@ university.price_from: from {price} / year
 university.send: Send
 university.show_on_map: Show on map
 university.tab.admission: Admission
-university.tab.costs: Costs
-university.tab.general: General
+university.tab.costs: Costs & funding
+university.tab.general: Overview
 university.tab.programs: Programs
 university.total_cost_calculator: Total Cost Calculator
 university.total_estimated_cost: Total Estimated Cost
@@ -1559,7 +1560,7 @@ university.finance.domestic_and_international_policy: Different aid rules by app
 university.finance.domestic_and_international_policy_desc: The university publishes different need-based aid rules for domestic and international applicants. Your category and aid eligibility require review under its official rules.
 university.finance.uk_aid_general_desc: Scholarship and student finance eligibility depends on the applicant's course and circumstances. Check the official university rules.
 university.finance.zero_parent_contrib_badge: Zero Parent Contribution
-university.tab.deadlines: Deadlines
+university.tab.deadlines: Dates
 university.deadlines.export_ics: Add to calendar (.ics)
 university.deadlines.official_source: Official source
 university.deadlines.guidance_title: Admissions guidance
@@ -2422,21 +2423,21 @@ profile.evidence.error.credential: Choose a listed credential.
 profile.evidence.error.credential_score: Enter the published credential score percentage.
 profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
 university.admissions.catalog.context_title: Your application context
-university.admissions.catalog.simple_title: Admission requirements
-university.admissions.catalog.browse_note: Browse programs at any study level. Choose one to see its study content and admission options.
-university.admissions.catalog.show_requirements: Show requirements
-university.admissions.catalog.advanced_options: Additional details
-university.admissions.catalog.advanced_note: Add these details when you know them, then select Show requirements. Without them, some conditions still need checking.
-university.admissions.catalog.choose_program_hint: Choose a program first to view its admission options.
+university.admissions.catalog.simple_title: Published application paths
+university.admissions.catalog.browse_note: Search the official program list by name or subject and study level. Select a program to read about its degree and linked application paths.
+university.admissions.catalog.show_requirements: Read published details
+university.admissions.catalog.advanced_options: Filter published records (optional)
+university.admissions.catalog.advanced_note: These optional filters narrow source records by published applicant group, entry cycle or fee category. Leave them unspecified to browse all records for this program and path.
+university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
 university.admissions.catalog.open_application: Open application page
 university.admissions.catalog.view_requirements: View admission requirements
 university.admissions.catalog.study_info: About the program
-university.admissions.catalog.study_info_note: Official information about this program. It does not confirm your eligibility; choose an application route to review its full requirements.
+university.admissions.catalog.study_info_note: Official information about this study option. Study and degree-completion rules are separate from admission requirements.
 university.admissions.catalog.source_note_simple: Official source text is shown in its original language.
 university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
 university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
 university.admissions.catalog.source_scope_details: Source status, scope and dates
-university.admissions.catalog.check_details: Check individual requirements
+university.admissions.catalog.check_details: Optional profile check of published minimums
 university.admissions.catalog.publication: Publication status
 university.admissions.catalog.topic.eligibility: Eligibility
 university.admissions.catalog.topic.academic: Academic qualifications
@@ -2455,9 +2456,9 @@ university.admissions.catalog.topic.support: Student support
 university.admissions.catalog.context_note: One selection applies to requirements, dates, costs and funding. Manual changes stay on this page; profile evidence is reused for checks.
 university.admissions.catalog.choose_program: Choose a study option
 university.admissions.catalog.no_program_selected: No study option selected
-university.admissions.catalog.route_label: Application route
-university.admissions.catalog.choose_route: Choose the actual application route
-university.admissions.catalog.route_required: Choose an application route explicitly. A linked route does not establish your eligibility.
+university.admissions.catalog.route_label: Published application path
+university.admissions.catalog.choose_route: Choose a published path
+university.admissions.catalog.route_required: Choose one of the published paths above to read its requirements and application details.
 university.admissions.catalog.applicant_label: Applicant category
 university.admissions.catalog.unspecified: Not specified
 university.admissions.catalog.applicant.first_year: First-year applicant
@@ -2488,12 +2489,39 @@ university.admissions.catalog.no_options: No study options match these filters.
 university.admissions.catalog.previous: Previous
 university.admissions.catalog.next: Next
 university.admissions.catalog.results: {from}–{to} of {total} study options
-university.admissions.catalog.finance_note: A comparable annual total is not established for this context. Amounts below retain their published period and fee conditions. Funding opportunities are not awarded aid and have not been subtracted.
+university.admissions.catalog.finance_note: A comparable annual total is not established. Amounts keep their source currency and billing period. Potential funding is not awarded aid and is never subtracted; expand a record for its source.
 university.admissions.catalog.study_options_title: Study options
-university.admissions.catalog.study_options_note: Search the reviewed institutional catalog. Degree study and completion rules are separate from admission requirements.
-university.admissions.catalog.admission_title: Requirements and application
-university.admissions.catalog.finance_intro: Source costs and funding conditions for your selected application context.
-university.admissions.catalog.source_text_note: Source summaries and source-specific labels are retained in their original language. They do not confirm applicant eligibility.
+university.admissions.catalog.study_options_note: Search official degree options. The study level describes the entry route; the award names the qualification.
+university.admissions.catalog.admission_title: Requirements and published application paths
+university.admissions.catalog.finance_intro: Published prices and funding for the selected program and path, with their original periods, currencies and conditions.
+university.admissions.catalog.deadlines_title: Dates and deadlines
+university.admissions.catalog.deadlines_intro: Browse application, funding, reply and deposit dates for the selected program and path. Each record keeps its stated period and official source.
+university.admissions.catalog.route_intro: Choose a published application path to browse its requirements and process. You can read this information without a profile.
+university.admissions.catalog.reference_scope: Browsing
+university.admissions.catalog.route_not_selected: Choose a published application path
+university.admissions.catalog.browse_programs: Browse programs
+university.admissions.catalog.change_program: Change program
+university.admissions.catalog.change_route: Change path
+university.admissions.catalog.reference_filters: Filter by applicant group, cycle or fee category (optional)
+university.admissions.catalog.reference_filter_note: These filters narrow source records by their published scope. Leave them unspecified to browse all records for this program and path.
+university.admissions.catalog.selected_route: Selected path
+university.admissions.catalog.application_shape: How this program is entered
+university.admissions.catalog.catalog_code: Course code
+university.admissions.catalog.official_course_page: Official course page
+university.admissions.catalog.application_class.post_admission_major: University admission comes first; the major is selected after enrollment.
+university.admissions.catalog.application_class.direct_program: Apply to the selected program.
+university.admissions.catalog.application_class.ucas_course_choice: Apply to this course through UCAS.
+university.admissions.catalog.application_class.postgraduate_course_choice: Apply to this taught postgraduate course.
+university.admissions.catalog.application_class.institution_wide: A university-wide application route serves this program.
+university.admissions.catalog.application_class.external_and_coterm: Separate external and coterm application paths are listed.
+university.admissions.catalog.application_class.department_or_program: Department or program application path.
+university.admissions.catalog.published_qualification_table: Published English qualification tables
+university.admissions.catalog.qualification_count: {count} qualifications
+university.admissions.catalog.record_count: {count} records
+university.admissions.catalog.full_source_text: Full published wording
+university.admissions.catalog.full_source_record: Full source record
+university.admissions.catalog.source_text_note: Official wording stays in its original language. Each record has its own scope, period and conditions; expand it for details and the official source.
+university.admissions.catalog.scope_varies: Scope varies
 university.admissions.catalog.conditional: Conditional — applicability still needs verification
 university.admissions.catalog.matched: Matches selected context
 university.admissions.catalog.unknown: Unknown

@@ -69,8 +69,11 @@ async function openFact(page, tab, id) {
   await page.locator(`.d-tab-btn[data-tab="tab-${tab}"]`).click();
   await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
   const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
-  if (!(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
+  const isDetails = await fact.evaluate((node) => node.tagName === "DETAILS");
+  if (isDetails && !(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
   const evidence = fact.locator("details.admissions-catalog__evidence");
   if (await evidence.count() && !(await evidence.evaluate((node) => node.open))) await evidence.locator(":scope > summary").click();
   const unknowns = fact.locator("details.admissions-catalog__unknowns");
@@ -119,7 +122,7 @@ test("Kazakhstan secondary-school guest and applicant can distinguish university
 
     const routeLabel = await page.locator("#admissionsRoute option:checked").innerText();
     expect(routeLabel).toMatch(journey.university === MIT ? /MIT undergraduate (?:transfer )?admission/ : /University-wide .* undergraduate admission/);
-    await expect(page.locator("#admissionsContext")).toContainText(journey.search);
+    await expect(page.locator("#admissionsReferenceSummary")).toContainText(journey.search);
     await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
     if (journey.university === MIT && journey.applicant === "first_year") {
       await page.locator("#admissionsContext").scrollIntoViewIfNeeded();

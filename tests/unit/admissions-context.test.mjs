@@ -32,7 +32,10 @@ test("context URL round trip preserves unrelated route state and does not consum
   const url = new URL("https://example.test/university.html?id=mit-usa-cambridge&admission_program=legacy-cs&lang=rus#source");
   const saved = readAdmissionContext(url, profile, uid);
   assert.equal(saved.study_option_id, "saved-option");
-  assert.equal(saved.study_level, "masters");
+  assert.equal(saved.study_level, "");
+  assert.equal(saved.applicant_route, "");
+  assert.equal(saved.intended_entry_cycle, "");
+  assert.equal(saved.fee_status_context, "unknown");
   const next = admissionContextUrl(url, { ...saved, application_route_id: "route:coterm", intended_entry_cycle: "Fall 2027 entry" });
   assert.equal(next.searchParams.get("lang"), "rus");
   assert.equal(next.hash, "#source");
@@ -42,7 +45,7 @@ test("context URL round trip preserves unrelated route state and does not consum
   assert.equal(readAdmissionContext(new URL("https://example.test/?admission_program=legacy-cs"), {}, uid).study_option_id, "");
 });
 
-test("saved per-institution context overrides global defaults while empty fields remain unknown", () => {
+test("only deliberately saved or URL-selected scope filters the public reference", () => {
   const saved = structuredClone(profile);
   Object.assign(saved.selectedAdmissionChoices[uid], {
     studyLevel: "undergraduate", applicantRoute: "", intendedEntryCycle: "", feeStatusContext: "unknown",

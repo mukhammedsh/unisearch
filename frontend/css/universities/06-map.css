@@ -1,7 +1,7 @@
 .u-map-stage {
   display: none;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 336px);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: stretch;
   height: calc(100vh - 300px);
   height: calc(100dvh - 300px);
@@ -49,7 +49,7 @@
 }
 
 .u-map-container .leaflet-control-zoom a:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -119,12 +119,12 @@
   flex: 1 1 auto;
   min-width: 0;
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .u-map-results-empty {
-  margin: 12px;
-  padding: 16px;
+  margin: var(--space-3);
+  padding: var(--space-4);
   border: 1px dashed var(--line);
   border-radius: 16px;
   color: var(--text-muted);
@@ -132,7 +132,7 @@
 }
 
 .u-map-results-list {
-  gap: 12px;
+  gap: var(--space-3);
   overflow-x: hidden;
   overflow-y: auto;
   padding: var(--space-3);
@@ -188,13 +188,13 @@
 
 .u-map-results-list .uni-card.is-active {
   background: var(--accent-panel);
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
 
 .u-map-results-list .uni-card .uni-body {
-  padding: 12px;
-  gap: 8px;
+  padding: var(--space-3);
+  gap: var(--space-2);
 }
 
 .uni-card--no-media .uni-media {
@@ -204,7 +204,7 @@
 .u-map-results-list .uni-head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   min-width: 0;
 }
 
@@ -212,7 +212,7 @@
   flex: 1 1 auto;
   min-width: 0;
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 /* Status badges stack vertically downwards into available vertical space instead of encroaching horizontally on the title */
@@ -252,11 +252,11 @@
 }
 
 .u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head {
-  padding-right: 36px;
+  padding-right: var(--space-8);
 }
 
 .u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-metrics {
-  padding-right: 36px;
+  padding-right: var(--space-8);
 }
 
 .u-map-results-list .uni-logo--inline {
@@ -270,7 +270,7 @@
 }
 
 .u-map-results-list .uni-logo--inline img {
-  padding: 4px;
+  padding: var(--space-1);
 }
 
 .u-map-logo-cue {
@@ -330,7 +330,7 @@
 }
 
 .u-map-results-more:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -485,8 +485,8 @@
   .u-map-results {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 8px 0;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
     max-height: 420px;
   }
 
@@ -508,11 +508,11 @@
   .u-map-results {
     overflow: hidden;
     max-height: 360px;
-    padding: 12px;
+    padding: var(--space-3);
   }
 
   .u-map-results-list {
-    gap: 12px;
+    gap: var(--space-3);
     padding: var(--space-2);
     -webkit-overflow-scrolling: touch;
   }

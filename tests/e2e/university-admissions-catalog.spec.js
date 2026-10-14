@@ -19,7 +19,7 @@ const cases = [
       { id: "ug-sat-act-presence", text: /SAT.*ACT|ACT.*SAT/i },
     ],
     excludedFacts: ["reviewed-mit_eecs_doctoral_admissions-tests"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма .* не установлена/i },
+    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
   },
   {
     name: "MIT EECS doctoral Computer Science",
@@ -40,7 +40,7 @@ const cases = [
       { id: "reviewed-mit_eecs_doctoral_admissions-funding", tab: "finance", text: /automatically considered|full tuition|medical insurance/i },
     ],
     excludedFacts: ["ug-sat-act-presence"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма .* не установлена/i, excluded: /MIT Need-Based Scholarship/i },
+    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i, excluded: /MIT Need-Based Scholarship/i },
   },
   {
     name: "Imperial Computing MEng",
@@ -62,7 +62,7 @@ const cases = [
       { id: "imperial-computing-meng-course-profile", tab: "finance", text: /Home|Overseas/i },
     ],
     excludedFacts: ["imperial-computing-admission"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма .* не установлена/i },
+    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
   },
   {
     name: "Imperial Computing MSc",
@@ -83,7 +83,7 @@ const cases = [
       { id: "imperial-computing-course-profile", tab: "finance", text: /Home|Overseas/i },
     ],
     excludedFacts: ["imperial-computing-meng-admission"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма .* не установлена/i },
+    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
   },
   {
     name: "Stanford external Computer Science MS",
@@ -102,7 +102,7 @@ const cases = [
       { id: "engineering-doerr-evidence:graduate-entry-eligibility", text: /bachelor.*equivalent|recognized international equivalent/i },
       { id: "engineering-doerr-evidence:graduate-application-limit", text: /one.*graduate degree program|one Stanford graduate degree program/i },
     ],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма .* не установлена/i },
+    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
   },
   {
     name: "Stanford current-student Computer Science coterm",
@@ -122,7 +122,7 @@ const cases = [
       { id: "coterm-central-evidence:stanford-coterm-central-application-fee", tab: "finance", text: /125|coterm application fee/i },
     ],
     excludedFacts: ["engineering-doerr-evidence:graduate-application-limit"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма .* не установлена/i },
+    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
   },
 ];
 
@@ -171,12 +171,11 @@ async function openAssessment(page) {
 async function openFact(page, tab, id, pattern) {
   await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
   const fact = page.locator(`.d-tab-pane.active [data-admissions-fact="${id}"]`).first();
+  const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
-  const summary = fact.locator("summary");
-  if (await summary.count()) {
-    const isOpen = await fact.evaluate((node) => node.tagName === "DETAILS" && node.open);
-    if (!isOpen) await fact.locator(":scope > summary").click();
-  }
+  const isDetails = await fact.evaluate((node) => node.tagName === "DETAILS");
+  if (isDetails && !(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
   await expect(fact).toContainText(pattern);
 }
 
@@ -212,9 +211,63 @@ for (const item of cases) {
       await page.screenshot({ path: testInfo.outputPath(`${item.name === "MIT first-year Computer Science" ? "desktop" : "mobile"}-admissions-context.png`), fullPage: true });
     }
 
+    if (item.name === "MIT first-year Computer Science") {
+      const requirements = page.locator('#detailRequirements .admissions-catalog__section[data-admissions-domain="requirements"]');
+      for (const presentation of [
+        { name: "desktop-light", theme: "light", width: 1280, height: 900 },
+        { name: "desktop-dark", theme: "dark", width: 1280, height: 900 },
+        { name: "phone-light", theme: "light", width: 390, height: 844 },
+        { name: "phone-dark", theme: "dark", width: 390, height: 844 },
+      ]) {
+        await page.setViewportSize({ width: presentation.width, height: presentation.height });
+        await page.addInitScript(({ language, theme }) => {
+          localStorage.setItem("unisearch_ui_language_v1", language);
+          localStorage.setItem("unisearch_theme", theme);
+        }, { language: item.language, theme: presentation.theme });
+        await page.goto(contextUrl(item));
+        await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+        await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+        await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+        await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+        await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
+        await expect(page.locator("html")).toHaveAttribute("data-theme", presentation.theme);
+        await openFact(page, "admission", "ug-sat-act-presence", /SAT.*ACT|ACT.*SAT/i);
+        await expect(requirements).toBeVisible();
+        await page.mouse.move(presentation.width - 1, presentation.height - 1);
+        // shortcut: the checked-in baseline is Windows-only; add an OS capture before enabling Linux comparisons.
+        if (process.platform === "win32") {
+          const targetTop = await requirements.evaluate((section) => {
+            const navbar = document.querySelector(".navbar");
+            return section.getBoundingClientRect().top + window.scrollY - (navbar?.getBoundingClientRect().height || 0);
+          });
+          await page.evaluate((top) => window.scrollTo({ top: Math.max(0, top), behavior: "instant" }), targetTop);
+          await expect(page).toHaveScreenshot(`mit-first-year-admission-requirements-${presentation.name}.png`, {
+            animations: "disabled",
+            caret: "hide",
+          });
+        }
+      }
+    }
+
     if (item.viewport.width <= 480) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.viewport.width);
     }
+  });
+}
+
+const imperialMEng = cases.find(({ name }) => name === "Imperial Computing MEng");
+for (const language of ["eng", "rus"]) {
+  test(`Imperial Computing MEng route summary is localized in ${language}`, async ({ page }) => {
+    await openContext(page, {
+      ...imperialMEng,
+      language,
+      theme: language === "rus" ? "dark" : "light",
+    });
+    const summary = page.locator("#admissionsContext .admissions-context__summary");
+    await expect(summary).toContainText(language === "rus" ? "Выбор программы через UCAS" : "UCAS course choice");
+    await expect(summary).not.toContainText("UCAS Hub; institution I50, stated course code");
+
+    await openFact(page, "admission", "imperial-ucas-process", /UCAS.*I50|I50.*UCAS/i);
   });
 }
 
@@ -303,7 +356,10 @@ test("admissions context retry recovers from one request failure using the live 
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  await expect(page.locator('#tab-admission [data-admissions-fact="ug-sat-act-presence"]')).toBeVisible();
+  const examFact = page.locator('#tab-admission [data-admissions-fact="ug-sat-act-presence"]').first();
+  const examGroup = examFact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await examGroup.count() && !(await examGroup.evaluate((node) => node.open))) await examGroup.locator(":scope > summary").click();
+  await expect(examFact).toBeVisible();
   expect(failedFirstContext).toBe(true);
 });
 
@@ -396,9 +452,11 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
 
   const table = page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]').first();
+  const group = table.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(table).toBeVisible();
-  const summary = table.locator(":scope > summary");
-  if (!(await table.evaluate((node) => node.open))) await summary.click();
+  const isDetails = await table.evaluate((node) => node.tagName === "DETAILS");
+  if (isDetails && !(await table.evaluate((node) => node.open))) await table.locator(":scope > summary").click();
   await expect(table).toContainText("Computer Science (MS)");
   await expect(table).toContainText(/2026[-‑]12-08/);
   await expect(table).toContainText("Aeronautics and Astronautics (MS)");

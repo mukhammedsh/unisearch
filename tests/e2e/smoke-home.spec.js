@@ -21,12 +21,61 @@ test("root page opens the university catalog as the main workspace", async ({ pa
   await expect(page.locator("main h1")).toHaveCount(1);
 });
 
+test("browser theme color and slider follow the shared accent token", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  const themeColor = page.locator('meta[name="theme-color"]');
+  const accent = await page.locator("html").evaluate((root) => getComputedStyle(root).getPropertyValue("--accent").trim());
+  await expect(themeColor).toHaveAttribute("content", accent);
+
+  const sliderColors = await page.locator("#sliderTrack").evaluate((track) => {
+    const normalize = (value) => {
+      const probe = document.createElement("span");
+      probe.style.color = value;
+      document.body.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    };
+    const active = normalize(getComputedStyle(track).getPropertyValue("--slider-track-active").trim());
+    const accent = normalize(getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
+    return { active, accent, background: getComputedStyle(track).background };
+  });
+  expect(sliderColors.active).toBe(sliderColors.accent);
+  expect(sliderColors.background).toContain(sliderColors.active);
+
+  await page.locator("html").evaluate((root) => root.setAttribute("data-theme", "dark"));
+  const darkAccent = await page.locator("html").evaluate((root) => getComputedStyle(root).getPropertyValue("--accent").trim());
+  await expect(themeColor).toHaveAttribute("content", darkAccent);
+
+  await page.addStyleTag({ content: ':root[data-theme="dark"] { --accent: #123456; }' });
+  await page.locator("html").evaluate((root) => root.setAttribute("data-theme", "light"));
+  await expect(themeColor).toHaveAttribute("content", accent);
+  await page.locator("html").evaluate((root) => root.setAttribute("data-theme", "dark"));
+  await expect(themeColor).toHaveAttribute("content", "#123456");
+});
+
 test("first-visit tutorial requires completion or an explicit skip", async ({ page }) => {
   await page.goto("/index.html");
 
   const tour = page.locator("#uTourModal");
   await expect(tour).toHaveClass(/is-open/);
   await expect(tour.locator(".u-tour-steps__item")).toHaveCount(6);
+  const inactiveStepContrast = await tour.locator(".u-tour-steps__number").nth(1).evaluate((element) => {
+    const luminance = (color) => {
+      const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map((value) => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      });
+      return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    };
+    const style = getComputedStyle(element);
+    const [lighter, darker] = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => b - a);
+    return (lighter + 0.05) / (darker + 0.05);
+  });
+  expect(inactiveStepContrast).toBeGreaterThanOrEqual(4.5);
   await expect(tour.locator("[data-action='next']")).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(tour.locator("[data-action='skip']")).toBeFocused();
