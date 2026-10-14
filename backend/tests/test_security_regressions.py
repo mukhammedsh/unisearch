@@ -11,7 +11,7 @@ from starlette.requests import Request
 from app.main import app
 from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
-from app.schemas.payloads import ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
 
 
@@ -79,6 +79,14 @@ class SecurityRegressionTests(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             ProfileOnlyRequest.model_validate(payload)
+
+    def test_language_validate_request_rejects_non_finite_scores(self):
+        for score in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(score=score):
+                with self.assertRaises(ValueError):
+                    LanguageValidateRequest.model_validate(
+                        {"code": "en", "kind": "exam", "exam": "IELTS", "score": score}
+                    )
 
     def test_profile_payload_rejects_overly_deep_details(self):
         payload = {
