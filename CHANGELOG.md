@@ -2,6 +2,12 @@
 
 All notable project changes should be recorded here.
 
+## 8.1.3 (2026-10-14) - Stable Admissions Browser State
+
+### Fixed
+- Wait for the selected program's admissions context to finish before testing action states, and verify summary-action navigation separately from pressed-state contrast.
+- Use a patch version because this corrects E2E synchronization without changing user-visible behavior.
+
 ## 8.1.2 (2026-10-14) - Stable University Interaction Checks
 
 ### Fixed

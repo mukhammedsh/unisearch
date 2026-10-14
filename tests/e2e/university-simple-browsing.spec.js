@@ -97,15 +97,23 @@ async function expectAccessibleTextContrast(locator) {
 }
 
 async function expectHoverAndActiveContrast(page, locator) {
-  const tab = await locator.getAttribute("data-admissions-open-tab");
   await locator.hover();
   await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   await expectAccessibleTextContrast(locator);
+  const handle = await locator.elementHandle();
+  await page.evaluate((element) => {
+    const preventAction = (event) => {
+      if (!element.contains(event.target)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      document.removeEventListener("click", preventAction, true);
+    };
+    document.addEventListener("click", preventAction, true);
+  }, handle);
   await page.mouse.down();
   await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   await expectAccessibleTextContrast(locator);
   await page.mouse.up();
-  if (tab) await expect(page.locator(`#${tab}`)).toHaveClass(/active/);
 }
 
 async function openSourceFact(source) {
@@ -131,10 +139,14 @@ async function chooseOption(page, item) {
   await expect(option).toBeVisible();
   await option.click();
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expectAccessibleTextContrast(option);
   const selectionActions = page.locator("#admissionsReferenceSummary .admissions-selection__actions button");
   await expect(selectionActions).toHaveCount(2);
   for (const action of await selectionActions.all()) await expectHoverAndActiveContrast(page, action);
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await selectionActions.nth(1).click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expectProgramFacts(page, item);
