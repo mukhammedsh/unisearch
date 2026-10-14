@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 8.1.4 (2026-10-14) - Hardened Score Validation and Updated Dependencies
+
+### Fixed
+- Reject NaN and positive or negative infinity in language score validation.
+
+### Updated
+- Upgrade Playwright and pinned GitHub Actions dependencies used by tests and CI.
+- Use a patch version for input validation hardening and CI maintenance without adding a user-facing capability.
+
 ## 8.1.3 (2026-10-14) - Stable Admissions Browser State
 
 ### Fixed
