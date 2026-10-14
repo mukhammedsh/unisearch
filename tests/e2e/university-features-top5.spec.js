@@ -1,6 +1,24 @@
 const { test, expect } = require("@playwright/test");
 const { personas, seedProfile, markTourAsSeen } = require("./helpers/personas");
 
+function reviewedContextUrl({ university, option, route, level, applicant, cycle, fee = "unknown" }) {
+  const params = new URLSearchParams({
+    id: university,
+    admission_option: option,
+    admission_application_route: route,
+    admission_level: level,
+    admission_route: applicant,
+    admission_cycle: cycle,
+    admission_fee: fee,
+  });
+  return `/university.html?${params}`;
+}
+
+async function openEvidence(fact) {
+  const evidence = fact.locator("details.admissions-catalog__evidence");
+  if (await evidence.count() && !(await evidence.evaluate((node) => node.open))) await evidence.locator(":scope > summary").click();
+}
+
 test("citizenship picker searches the full list and saves a selected country", async ({ page }) => {
   await page.goto("/profile.html");
   const trigger = page.locator("#citizenshipCountrySelect + .custom-select-trigger");
@@ -56,25 +74,37 @@ test("legacy saved study level can be changed and saved in the canonical profile
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").study_level)).toBeUndefined();
 });
 
-test("legacy Master's profile keeps missing Imperial and Oxford prices unknown", async ({ page }) => {
+test("reviewed Imperial shows fee-scoped course tuition and leaves Oxford legacy prices unknown", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, study_level: "Master" }));
   });
 
-  for (const universityId of ["imperial-college-london-uk", "university-of-oxford-uk-oxford"]) {
-    await page.goto(`/university.html?id=${universityId}`);
-    await expect(page.locator("#detailCard")).toBeVisible();
-    await expect(page.locator("#detailName")).not.toBeEmpty();
-    await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
-    await expect(page.locator("#tab-finance")).toHaveClass(/active/);
+  await page.goto(reviewedContextUrl({
+    university: "imperial-college-london-uk",
+    option: "imperial-option-computing",
+    route: "procedure-computing",
+    level: "masters",
+    applicant: "graduate",
+    cycle: "2027 entry",
+  }));
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
+  const imperialFinance = page.locator("#detailFinance");
+  await expect(imperialFinance).toContainText("Home fee");
+  await expect(imperialFinance).toContainText("£25,850");
+  await expect(imperialFinance).toContainText("Overseas fee");
+  await expect(imperialFinance).toContainText("£48,300");
+  await expect(imperialFinance).toContainText(/comparable annual total is not established/i);
 
-    const annualEstimate = page.locator("#detailPrice");
-    await expect(annualEstimate).toHaveText("Cost unknown");
-    await expect(annualEstimate).not.toContainText(/(?:£|\$|€)\s?0(?:\.00)?\b/);
-  }
+  await page.goto("/university.html?id=university-of-oxford-uk-oxford");
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
+  await expect(page.locator("#detailPrice")).toHaveText("Cost unknown");
+  await expect(page.locator("#detailPrice")).not.toContainText(/(?:£|\$|€)\s?0(?:\.00)?\b/);
 });
 
-test("deadline calendar shows exact dates and supports month navigation", async ({ page }) => {
+test("legacy Oxford calendar navigates and exports its exact sourced deadline", async ({ page }) => {
   if (process.env.PLAYWRIGHT_API_PORT) {
     await page.route("**/env.js", async (route) => {
       const response = await route.fetch();
@@ -82,7 +112,7 @@ test("deadline calendar shows exact dates and supports month navigation", async 
       await route.fulfill({ response, body });
     });
   }
-  await page.goto("/university.html?id=imperial-college-london-uk");
+  await page.goto("/university.html?id=university-of-oxford-uk-oxford");
   await expect(page.locator("#detailCard")).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   const month = page.locator("[data-calendar-month-key]");
@@ -93,25 +123,6 @@ test("deadline calendar shows exact dates and supports month navigation", async 
   const [year, monthNumber] = firstMonth.split("-").map(Number);
   const nextMonth = new Date(Date.UTC(year, monthNumber, 1)).toISOString().slice(0, 7);
   await expect(month).toHaveAttribute("data-calendar-month-key", nextMonth);
-});
-
-test("exact Imperial deadline export preserves its official source and admissions cycle", async ({ page }) => {
-  await page.goto("/university.html?id=imperial-college-london-uk&admission_program=imperial-computing-beng");
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
-  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
-
-  const exactDate = "2027-01-13";
-  const exactDeadline = page.locator("#detailDeadlines .admissions-deadline-item").filter({ hasText: "Computing (BEng/MEng)" }).first();
-  await expect(exactDeadline).toBeVisible();
-  const publishedDate = (await exactDeadline.locator(".admissions-deadline-date").textContent()).replace(/[\u2010-\u2015\u2212]/g, "-");
-  expect(publishedDate).toBe(exactDate);
-  await expect(exactDeadline.locator(".admissions-deadline-time")).toContainText("18:00 Europe/London");
-  const publishedCycle = (await exactDeadline.locator(".admissions-deadline-cycle").textContent()).replace(/[\u2010-\u2015\u2212]/g, "-");
-  expect(publishedCycle).toContain("2027 entry");
-  const sourceUrl = await exactDeadline.locator(".admissions-deadline-source").getAttribute("href");
-  expect(sourceUrl).toBe("https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/");
 
   await page.evaluate(() => {
     const createObjectURL = URL.createObjectURL.bind(URL);
@@ -120,9 +131,8 @@ test("exact Imperial deadline export preserves its official source and admission
       return createObjectURL(blob);
     };
   });
-
+  const exactDate = "2026-10-15";
   const targetMonth = exactDate.slice(0, 7);
-  const month = page.locator("[data-calendar-month-key]");
   for (let attempt = 0; attempt < 24; attempt += 1) {
     const currentMonth = await month.getAttribute("data-calendar-month-key");
     if (currentMonth === targetMonth) break;
@@ -135,11 +145,35 @@ test("exact Imperial deadline export preserves its official source and admission
   const exportButton = page.locator("[data-calendar-export]").first();
   await expect(exportButton).toBeVisible();
   await exportButton.click();
-
   const exportedIcs = await page.evaluate(async () => (await window.__lastCalendarExport).replace(/\r\n[ \t]/g, ""));
-  expect(exportedIcs).toContain("DTSTART;VALUE=DATE:20270113");
+  expect(exportedIcs).toContain("DTSTART;VALUE=DATE:20261015");
   expect(exportedIcs).toContain("Admissions cycle: 2027 entry");
-  expect(exportedIcs).toContain(`Source: ${sourceUrl}`);
+  expect(exportedIcs).toContain("Source: https://www.ox.ac.uk/admissions/undergraduate/applying/admissions-timeline");
+});
+
+test("exact Imperial Computing deadline preserves its source, time, course scope, and cycle", async ({ page }) => {
+  await page.goto(reviewedContextUrl({
+    university: "imperial-college-london-uk",
+    option: "imperial-option-computing-meng",
+    route: "procedure-computing-meng",
+    level: "undergraduate",
+    applicant: "first_year",
+    cycle: "2027 entry",
+  }));
+  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+
+  const exactDeadline = page.locator('#detailDeadlines [data-admissions-fact="imperial-ucas-2027-window"]');
+  await expect(exactDeadline).toBeVisible();
+  await openEvidence(exactDeadline);
+  await expect(exactDeadline).toContainText(/2027[-\u2011]01[-\u2011]13/);
+  await expect(exactDeadline).toContainText("18:00");
+  await expect(exactDeadline).toContainText("Europe/London");
+  await expect(exactDeadline).toContainText("2027 entry");
+  await expect(exactDeadline.locator("a[href^='https://']").first()).toBeVisible();
+  await expect(exactDeadline.locator("a[href^='https://']").first()).toHaveAttribute("href", /imperial\.ac\.uk\/study\/apply\/undergraduate\/process\/deadlines/);
 });
 
 test("yearless Harvard first-year deadlines retain their source and current cycle without calendar export", async ({ page }) => {
@@ -192,52 +226,34 @@ test("catalog study level switcher is interactive and filters degree levels", as
   ]);
 });
 
-test("MIT first-year deadlines stay in context and offer an optional calendar", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor&admission_route=first_year");
+test("MIT first-year deadline facts keep recurring dates separate from the 2027 cycle", async ({ page }) => {
+  await page.goto(reviewedContextUrl({
+    university: "mit-usa-cambridge",
+    option: "mit-course-6-3-bachelor",
+    route: "mit-first-year",
+    level: "undergraduate",
+    applicant: "first_year",
+    cycle: "Fall 2027 entry",
+  }));
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
 
-  // Deadlines tab button should exist and switch to Deadlines pane
   const deadlinesTabBtn = page.locator(".d-tab-btn[data-tab='tab-deadlines']");
   await expect(deadlinesTabBtn).toBeVisible();
   await deadlinesTabBtn.click();
 
-  const deadlinesPane = page.locator("#tab-deadlines");
-  await expect(deadlinesPane).toHaveClass(/active/);
+  const recurring = page.locator('#detailDeadlines [data-admissions-fact="first-year-rounds"]');
+  await expect(recurring).toBeVisible();
+  await expect(recurring).toHaveAttribute("open", "");
+  await expect(recurring).toContainText("Early Action");
+  await expect(recurring).toContainText("November 1");
+  await expect(recurring).toContainText("January 4");
+  await expect(recurring).toContainText("page does not specify entry year");
 
-  const deadlineCards = page.locator(".admissions-deadline-item");
-  const count = await deadlineCards.count();
-  expect(count).toBeGreaterThan(0);
-  for (const deadlineCard of await deadlineCards.all()) {
-    await expect(deadlineCard.locator(".admissions-deadline-date")).not.toBeEmpty();
-  }
-  const cycleLabels = page.locator(".admissions-deadline-cycle");
-  for (const cycleLabel of await cycleLabels.all()) {
-    await expect(cycleLabel).not.toBeEmpty();
-  }
-  await expect(deadlinesPane).not.toContainText("2026–27");
-  await expect(page.locator("#detailDeadlines [data-deadlines-level]")).toHaveCount(0);
-  await expect(deadlineCards).toHaveCount(2);
-  await expect(deadlinesPane).toContainText("Regular Action");
-  await expect(deadlinesPane).toContainText("Early Action");
-  await expect(deadlinesPane).not.toContainText("Transfer");
-  const calendar = page.locator("#detailDeadlines .mit-deadline-calendar");
-  await expect(calendar).not.toHaveAttribute("open", "");
-  await calendar.locator("summary").click();
-  await expect(calendar).toHaveAttribute("open", "");
-  await expect(calendar).toContainText("No deadlines with an exact published date and year");
-
-  await page.evaluate(() => {
-    const language = document.getElementById("languageSelect");
-    language.value = "rus";
-    language.dispatchEvent(new Event("change", { bubbles: true }));
-  });
-  await expect(deadlinesPane).toContainText("Раннее поступление");
-  await page.evaluate(() => {
-    const language = document.getElementById("languageSelect");
-    language.value = "eng";
-    language.dispatchEvent(new Event("change", { bubbles: true }));
-  });
-  await expect(deadlinesPane).toContainText("Early Action");
+  const cycleDeadline = page.locator('#detailDeadlines [data-admissions-fact="mit-first-year-application-deadline"]');
+  await expect(cycleDeadline).toBeVisible();
+  await expect(cycleDeadline).toContainText("January 4");
+  await expect(cycleDeadline).toContainText("Fall 2027 entry");
 });
 
 test("UK citizenship alone does not assign a home fee status", async ({ page }) => {
@@ -256,17 +272,31 @@ test("UK citizenship alone does not assign a home fee status", async ({ page }) 
   await expect(feeStatus).not.toContainText("Overseas Status");
 });
 
-test("admission track collapses secondary requirements and expands upon click", async ({ page }) => {
-  await page.goto("/university.html?id=mit-usa-cambridge&admission_program=mit-course-6-3-bachelor&admission_route=first_year");
+test("MIT requirement groups collapse and expand in the selected first-year context", async ({ page }) => {
+  await page.goto(reviewedContextUrl({
+    university: "mit-usa-cambridge",
+    option: "mit-course-6-3-bachelor",
+    route: "mit-first-year",
+    level: "undergraduate",
+    applicant: "first_year",
+    cycle: "Fall 2027 entry",
+  }));
   await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
 
-  // Switch to admission tab
   await page.click(".d-tab-btn[data-tab='tab-admission']");
-
-  const collapsible = page.locator(".track-collapsible-details").first();
-  expect(await page.locator(".track-collapsible-details").count()).toBeGreaterThan(0);
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  const fact = page.locator('#detailRequirements [data-admissions-domain="requirements"] [data-admissions-fact="first-year-documents"]');
+  const collapsible = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  await expect(collapsible).toBeVisible();
   await expect(collapsible).not.toHaveAttribute("open");
-  const summary = collapsible.locator(".track-collapsible-summary");
+  await expect(fact).not.toBeVisible();
+  const summary = collapsible.locator(":scope > summary");
   await summary.click();
   await expect(collapsible).toHaveAttribute("open", "");
+  await expect(fact).toBeVisible();
+  await expect(fact).toContainText("Two teacher recommendations");
+  await summary.click();
+  await expect(collapsible).not.toHaveAttribute("open");
+  await expect(fact).not.toBeVisible();
 });

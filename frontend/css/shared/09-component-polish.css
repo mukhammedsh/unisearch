@@ -18,11 +18,9 @@ body {
 
 .custom-options {
   background: var(--surface-solid);
-  border: 1px solid var(--line-faint);
 }
 
 .navbar-right .lang-control .custom-options {
-  border: 1px solid var(--line-faint);
   box-shadow: var(--shadow-card);
 }
 
@@ -53,8 +51,8 @@ body {
 }
 
 .custom-select-wrapper.open .custom-select-trigger {
-  background: var(--accent-panel);
-  color: var(--accent);
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
@@ -63,8 +61,8 @@ body {
 }
 
 .custom-option.selected {
-  color: var(--accent);
-  background: var(--accent-panel);
+  color: var(--interaction-active-text);
+  background: var(--interaction-active-surface);
 }
 
 .center-loading-spinner {

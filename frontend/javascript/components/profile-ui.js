@@ -40,6 +40,7 @@ import {
   readSubjectBreakdownDraft as readSubjectBreakdownDraftFromModule,
   renderSpecialExamInput as renderSpecialExamInputFromModule,
 } from "./profile/exam-breakdowns.js";
+import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
@@ -123,6 +124,8 @@ export function initProfileUI() {
     const lowBudgetGrantApplyBtn = document.getElementById("profileLowBudgetGrantApply");
     const lowBudgetGrantDismissBtn = document.getElementById("profileLowBudgetGrantDismiss");
     const examScoreInput = document.getElementById("examScoreInput");
+    const examTakenOnInput = document.getElementById("examTakenOnInput");
+    const admissionEvidenceFields = document.getElementById("admissionEvidenceFields");
     const examSpecialInputContainer = document.getElementById("examSpecialInputContainer");
     const addExamBtn = document.getElementById("addExamBtn");
     const examList = document.getElementById("examList");
@@ -203,6 +206,11 @@ export function initProfileUI() {
         }
     };
 
+    const reportInvalidDate = (input) => {
+        input?.focus();
+        showToast(t("profile.evidence.error.dates", "Check the dates for this evidence."), "error");
+    };
+
     const ensureProfileShape = (raw) => {
         return normalizeProfileData(raw);
     };
@@ -224,6 +232,7 @@ export function initProfileUI() {
                 if (rawValue) out.raw_value = rawValue;
                 if (displayValue) out.display_value = displayValue;
                 if (details) out.details = details;
+                if (row?.taken_on) out.taken_on = String(row.taken_on);
                 return out;
             })
             .filter(Boolean)
@@ -234,17 +243,17 @@ export function initProfileUI() {
                 const code = String(row?.code || row?.lang || "").trim().toLowerCase();
                 const kind = String(row?.kind || "").trim().toLowerCase();
                 if (!code || !kind) return null;
-                if (kind === "native") return { code, kind };
+                if (kind === "native") return { code, kind, taken_on: String(row?.taken_on || "") };
                 if (kind === "cefr") {
                     const level = Number(row?.level);
                     if (!Number.isInteger(level)) return null;
-                    return { code, kind, level };
+                    return { code, kind, level, taken_on: String(row?.taken_on || "") };
                 }
                 if (kind === "exam") {
                     const exam = String(row?.exam || row?.examId || "").trim();
                     const score = Number(row?.score);
                     if (!exam || !Number.isFinite(score)) return null;
-                    return { code, kind, exam, score };
+                    return { code, kind, exam, score, taken_on: String(row?.taken_on || "") };
                 }
                 return null;
             })
@@ -275,6 +284,8 @@ export function initProfileUI() {
             feeStatusContext: String(p.feeStatusContext || "unknown").trim() || "unknown",
             exams,
             languages,
+            languageEvidence: Array.isArray(p.languageEvidence) ? p.languageEvidence : [],
+            institutionalEvidence: Array.isArray(p.institutionalEvidence) ? p.institutionalEvidence : [],
         });
     };
 
@@ -503,6 +514,7 @@ export function initProfileUI() {
         });
 
         if (typeof initCustomSelect === "function") initCustomSelect("examNameSelect");
+        syncExamScoreInputState();
         refreshExamActionButton();
     };
 
@@ -511,8 +523,10 @@ export function initProfileUI() {
 
     const findExistingExamEntry = (examId) => {
         const selected = canonicalizeExamId(examId);
+        const takenOn = String(examTakenOnInput?.value || "").trim();
         if (!selected || !Array.isArray(profile.exams)) return null;
-        return profile.exams.find((row) => canonicalizeExamId(row?.exam ?? row?.id ?? "") === selected) || null;
+        return profile.exams.find((row) => canonicalizeExamId(row?.exam ?? row?.id ?? "") === selected
+            && String(row?.taken_on || "") === takenOn) || null;
     };
 
 
@@ -576,7 +590,7 @@ export function initProfileUI() {
             if (cfg.max !== undefined) examScoreInput.max = String(cfg.max);
             else examScoreInput.removeAttribute("max");
             if (cfg.step !== undefined) examScoreInput.step = String(cfg.step);
-            else examScoreInput.removeAttribute("step");
+            else examScoreInput.step = cfg.type === "float" ? "any" : "1";
             return;
         }
 
@@ -787,13 +801,13 @@ export function initProfileUI() {
     function refreshExamActionButton() {
         if (!addExamBtn || !examNameSelect) return;
         const selected = canonicalizeExamId(examNameSelect.value);
+        const takenOn = String(examTakenOnInput?.value || "").trim();
         const hasExisting = !!selected && Array.isArray(profile.exams)
-            && profile.exams.some((e) => canonicalizeExamId(e.exam ?? e.id ?? "") === selected);
+            && profile.exams.some((e) => canonicalizeExamId(e.exam ?? e.id ?? "") === selected && String(e.taken_on || "") === takenOn);
         const key = hasExisting ? "profile.edit" : "profile.add";
         const fallback = hasExisting ? "Edit" : "Add";
         addExamBtn.setAttribute("data-i18n", key);
         addExamBtn.textContent = t(key, fallback);
-        syncExamScoreInputState();
     }
 
     const retranslateProfileUi = () => {
@@ -978,9 +992,10 @@ export function initProfileUI() {
                 <div class="profile-exam-item">
                     <div class="profile-exam-meta">
                         <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam, { locale: getCurrentLanguage() }))}</span>
-                        <span class="profile-exam-score">${escapeHtml(formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }))}</span>
+                        <span class="profile-exam-score">${escapeHtml([formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }), ex.taken_on].filter(Boolean).join(" · "))}</span>
                     </div>
-                    <button data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
+                    <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
+                    <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
                 </div>
             `).join("");
             markMotionEnter(examList, ".profile-exam-item", { limit: 8, staggerMs: 18 });
@@ -1138,8 +1153,22 @@ export function initProfileUI() {
             citizenshipOtherInput.style.display = "none";
         }
         renderCitizenshipChips();
+        renderAdmissionEvidence(admissionEvidenceFields, profile, (next) => {
+            profile = ensureProfileShape({
+                ...profile,
+                languageEvidence: next.languageEvidence,
+                institutionalEvidence: next.institutionalEvidence,
+            });
+            refreshSaveState();
+        });
+        applyTranslations(admissionEvidenceFields);
         if (examNameSelect) examNameSelect.value = "";
         if (examScoreInput) examScoreInput.value = "";
+        if (examTakenOnInput) examTakenOnInput.value = "";
+        if (examTakenOnInput) {
+            examTakenOnInput.value = "";
+            examTakenOnInput.max = new Date().toISOString().slice(0, 10);
+        }
         if (examSpecialInputContainer) {
             examSpecialInputContainer.innerHTML = "";
             examSpecialInputContainer.style.display = "none";
@@ -1171,8 +1200,14 @@ export function initProfileUI() {
     };
 
     if (examNameSelect) {
-        examNameSelect.addEventListener("change", refreshExamActionButton);
+        examNameSelect.addEventListener("change", () => {
+            syncExamScoreInputState();
+            refreshExamActionButton();
+        });
     }
+    examTakenOnInput?.addEventListener("change", () => {
+        refreshExamActionButton();
+    });
 
     if (examSpecialInputContainer) {
         examSpecialInputContainer.addEventListener("change", (event) => {
@@ -1683,6 +1718,7 @@ export function initProfileUI() {
         addExamBtn.onclick = async () => {
             motionPress(addExamBtn);
             const name = canonicalizeExamId(examNameSelect.value);
+            const takenOn = String(examTakenOnInput?.value || "").trim();
             const mode = examInputModeFor(name);
             const selectedPayload = readSelectedExamPayload(name);
             const score = Number(selectedPayload?.score);
@@ -1747,6 +1783,10 @@ export function initProfileUI() {
                 showToast(t("profile.exam_select_required", "Please select an exam"), "error");
                 return;
             }
+            if (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn))) {
+                reportInvalidDate(examTakenOnInput);
+                return;
+            }
             if (!selectedPayload) {
                 return;
             }
@@ -1760,7 +1800,7 @@ export function initProfileUI() {
                 return;
             }
 
-            if ((mode === "number" || compositeUsesParentScore) && name !== "IELTS" && name !== "HKDSE_WEIGHTED_TOTAL" && !Number.isInteger(score)) {
+            if ((mode === "number" || compositeUsesParentScore) && cfg?.type === "int" && !Number.isInteger(score)) {
                 setFieldInvalid(examScoreInput, true);
                 examScoreInput?.focus();
                 showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
@@ -1780,6 +1820,7 @@ export function initProfileUI() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         exam: name,
+                        ...(takenOn ? { taken_on: takenOn } : {}),
                         ...(selectedPayload.score !== undefined && Number.isFinite(Number(selectedPayload.score)) ? { score: selectedPayload.score } : {}),
                         ...(selectedPayload.raw_value ? { raw_value: selectedPayload.raw_value } : {}),
                         ...(selectedPayload.details ? { details: selectedPayload.details } : {}),
@@ -1813,12 +1854,14 @@ export function initProfileUI() {
                 if (!Array.isArray(profile.exams)) profile.exams = [];
                 const existingIndex = profile.exams.findIndex((e) =>
                     canonicalizeExamId(e.exam ?? e.id ?? "") === examId
+                    && String(e.taken_on || "") === takenOn
                 );
 
                 if (existingIndex !== -1) {
                     profile.exams[existingIndex] = {
                         ...profile.exams[existingIndex],
                         exam: examId,
+                        ...(json.taken_on ? { taken_on: json.taken_on } : {}),
                         score: json.score,
                         ...(json.raw_value ? { raw_value: json.raw_value } : {}),
                         ...(json.display_value ? { display_value: json.display_value } : {}),
@@ -1833,6 +1876,7 @@ export function initProfileUI() {
                 } else {
                     profile.exams.push({
                         exam: examId,
+                        ...(json.taken_on ? { taken_on: json.taken_on } : {}),
                         score: json.score,
                         ...(json.raw_value ? { raw_value: json.raw_value } : {}),
                         ...(json.display_value ? { display_value: json.display_value } : {}),
@@ -1852,8 +1896,10 @@ export function initProfileUI() {
 
                 setFieldInvalid(examScoreInput, false);
                 examScoreInput.value = "";
+                if (examTakenOnInput) examTakenOnInput.value = "";
                 examNameSelect.value = "";
                 syncExamScoreInputState();
+                refreshExamActionButton();
                 if (typeof initCustomSelect === "function") {
                     initCustomSelect("examNameSelect");
                 }
@@ -1867,6 +1913,20 @@ export function initProfileUI() {
 
     if (examList) {
         examList.onclick = (e) => {
+            const editBtn = e.target instanceof Element ? e.target.closest("button[data-edit-idx]") : null;
+            if (editBtn) {
+                motionPress(editBtn);
+                const idx = Number(editBtn.dataset.editIdx);
+                const entry = profile.exams?.[idx];
+                if (!entry) return;
+                examNameSelect.value = canonicalizeExamId(entry.exam ?? entry.id ?? "");
+                if (examTakenOnInput) examTakenOnInput.value = String(entry.taken_on || "");
+                initCustomSelect("examNameSelect");
+                syncExamScoreInputState();
+                refreshExamActionButton();
+                examScoreInput?.focus();
+                return;
+            }
             const btn = e.target instanceof Element ? e.target.closest("button[data-idx]") : null;
             if (!btn) return;
             motionPress(btn);

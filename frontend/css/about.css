@@ -1,340 +1,193 @@
-/* ==========================================================================
-   UniSearch About Page Stylesheet
-   Direction: Calm Academic Workspace / Flat Information Page
-   Pattern: guide.css / legal.css — hero + flat sections, no shell wrapper
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   Page Canvas
-   -------------------------------------------------------------------------- */
 body[data-page="about"] {
   background: var(--bg);
 }
 
 .about-page {
-  max-width: 1080px;
+  width: min(calc(100% - var(--space-12)), 960px);
   margin: var(--space-6) auto var(--space-16);
-  padding: 0 var(--space-8);
+  padding: var(--space-8);
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-12);
+  background: var(--surface-solid);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-micro);
 }
 
-/* --------------------------------------------------------------------------
-   Hero Section — Title with border-bottom separator
-   Follows guide/legal hero pattern with large type scale
-   -------------------------------------------------------------------------- */
-.about-hero {
-  padding: 0 0 var(--space-6);
-  border-bottom: none;
+.about-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
-.about-title {
+.about-header h1 {
+  max-width: 720px;
   margin: 0;
+  color: var(--text);
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.5vw, 40px);
-  line-height: 1.15;
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  color: var(--text);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
 }
 
-/* --------------------------------------------------------------------------
-   Proof Grid — Three repeating cards, no shell wrapper
-   Repeating items use surface contrast without outlines
-   -------------------------------------------------------------------------- */
-.about-proof-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-
-.about-proof-card {
-  border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
-  padding: 16px;
-  transition: background-color var(--motion-fast, 0.15s) ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .about-proof-card:hover {
-    background: var(--interaction-hover-surface);
-  }
-}
-
-.about-proof-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.about-proof-label {
-  margin: 0 0 4px;
-  font-size: 11px;
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.about-proof-value {
+.about-header p {
+  max-width: 720px;
   margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text);
+  color: var(--text-muted);
+  font-size: var(--text-md);
+  line-height: var(--leading-loose);
 }
 
-/* --------------------------------------------------------------------------
-   Content Sections — Flat containers, no border/radius/background
-   Spacing controlled by parent .about-page gap
-   -------------------------------------------------------------------------- */
-.about-section {
+.about-team,
+.about-contact {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
-.about-section-head h2 {
+.about-team h2,
+.about-contact h2 {
   margin: 0;
-  font-size: clamp(22px, 2.4vw, 28px);
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: -0.02em;
   color: var(--text);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
 }
 
-/* --------------------------------------------------------------------------
-   Contact Cards — Repeating items with card treatment
-   -------------------------------------------------------------------------- */
-.about-contact-grid {
+.about-team-list,
+.about-contact-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-contact-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-team-member,
+.about-contact-item {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: var(--space-8);
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--line-faint);
 }
 
-.about-contact-card {
-  border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
-  padding: 16px;
-  transition: background-color var(--motion-fast, 0.15s) ease;
+.about-team-member:first-child,
+.about-contact-item:first-child {
+  border-top: 1px solid var(--line-faint);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .about-contact-card:hover {
-    background: var(--interaction-hover-surface);
-  }
+.about-team-identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
-.contact-label {
-  margin: 0 0 4px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  font-weight: 500;
-  line-height: 1.2;
+.about-team-identity h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
 }
 
-.about-contact-card a {
-  display: block;
+.about-team-identity p,
+.about-team-bio {
+  margin: 0;
   font-size: var(--text-base);
-  font-weight: 500;
-  color: var(--accent);
-  text-decoration: none;
+  line-height: var(--leading-normal);
+}
+
+.about-team-identity p {
+  color: var(--text-muted);
+}
+
+.about-team-bio {
+  color: var(--text);
+}
+
+.about-contact-method {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.about-contact-icon {
+  display: inline-flex;
+  flex: none;
+  width: var(--space-5);
+  height: var(--space-5);
+  color: var(--text-muted);
+}
+
+.about-contact-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.about-contact-icon--github,
+.about-contact-icon--telegram {
+  background: currentColor;
+}
+
+.about-contact-icon--github {
+  -webkit-mask: url("../images/contact/github.svg") center / contain no-repeat;
+  mask: url("../images/contact/github.svg") center / contain no-repeat;
+}
+
+.about-contact-icon--telegram {
+  -webkit-mask: url("../images/contact/telegram.svg") center / contain no-repeat;
+  mask: url("../images/contact/telegram.svg") center / contain no-repeat;
+}
+
+.about-contact-item a {
+  width: fit-content;
+  color: var(--text);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: var(--space-1);
   overflow-wrap: anywhere;
-  transition: color var(--motion-fast, 0.15s) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .about-contact-card a:hover {
-    color: var(--interaction-hover-text);
+  .about-contact-item a:hover {
+    text-decoration-color: var(--text);
   }
 }
 
-.about-contact-card a:focus-visible {
-  outline: 2px solid var(--accent);
+.about-contact-item a:focus-visible {
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: var(--radius-xs);
 }
 
-.contact-note {
-  margin: 4px 0 0;
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.45;
-  letter-spacing: -0.005em;
-}
-
-/* --------------------------------------------------------------------------
-   Team Cards — Repeating items with card treatment
-   -------------------------------------------------------------------------- */
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-
-.team-card {
-  border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
-  padding: var(--space-4);
-  transition: background-color var(--motion-fast, 0.15s) ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .team-card:hover {
-    background: var(--interaction-hover-surface);
-  }
-}
-
-.team-card-body h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.018em;
-  color: var(--text);
-}
-
-.team-role {
-  margin: 4px 0 8px;
-  font-weight: 500;
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.35;
-  letter-spacing: -0.008em;
-}
-
-.team-bio {
-  margin: 0;
-  color: var(--text);
-  line-height: 1.5;
-  font-size: 14px;
-  letter-spacing: -0.01em;
-}
-
-/* --------------------------------------------------------------------------
-   Entry Animations
-   -------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  .about-hero,
-  .about-proof-grid,
-  .about-section {
-    animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
-  }
-
-  .about-proof-grid {
-    animation-delay: var(--motion-instant);
-  }
-
-  .about-section:nth-of-type(2) {
-    animation-delay: calc(var(--motion-instant) * 2);
-  }
-
-  .about-section:nth-of-type(3) {
-    animation-delay: var(--motion-fast);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Responsive: Tablet (≤ 980px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .about-page {
-    margin-top: 16px;
-    padding: 0 var(--mobile-safe-gutter, 16px);
-    gap: 28px;
+    width: calc(100% - var(--space-8));
+    margin: var(--space-4) auto var(--space-12);
+    padding: var(--space-5);
+    gap: var(--space-8);
+    border-radius: var(--radius-lg);
   }
 
-  .about-proof-grid {
+  .about-team-member,
+  .about-contact-item {
     grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .about-contact-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .about-title {
-    font-size: clamp(24px, 5vw, 32px);
+    gap: var(--space-3);
   }
 }
 
-/* --------------------------------------------------------------------------
-   Responsive: Mobile (≤ 640px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 640px) {
-  .about-page {
-    margin-top: 12px;
-    padding: 0 12px;
-    gap: 24px;
-  }
-
-  .about-hero {
-    padding-bottom: 16px;
-  }
-
-  .about-title {
-    font-size: clamp(22px, 5.5vw, 28px);
-  }
-
-  .team-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .team-card {
-    padding: var(--space-4);
-  }
-
-  .team-card-body h3 {
-    font-size: var(--text-md);
-  }
-
-  .team-bio {
-    font-size: var(--text-sm);
-    line-height: 1.45;
-  }
-
-  .about-section-head h2 {
-    font-size: var(--text-xl);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Responsive: Narrow Mobile (≤ 480px)
-   -------------------------------------------------------------------------- */
 @media (max-width: 480px) {
   .about-page {
-    padding: 0 12px;
-    gap: 20px;
-  }
-
-  .about-proof-card,
-  .about-contact-card,
-  .team-card {
-    padding: 12px;
-    border-radius: var(--radius-base);
-  }
-
-  .about-title {
-    font-size: var(--text-xl);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Reduced Motion Fallback
-   -------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  .about-hero,
-  .about-proof-grid,
-  .about-section {
-    animation: none;
+    width: calc(100% - var(--space-6));
+    margin: var(--space-3) auto var(--space-8);
+    padding: var(--space-4);
   }
 }

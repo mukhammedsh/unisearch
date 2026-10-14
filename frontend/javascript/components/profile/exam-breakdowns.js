@@ -149,7 +149,7 @@ export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, val
 
     const min = cfg?.min !== undefined ? `min="${escapeHtml(String(cfg.min))}"` : "";
     const max = cfg?.max !== undefined ? `max="${escapeHtml(String(cfg.max))}"` : "";
-    const step = cfg?.step !== undefined ? `step="${escapeHtml(String(cfg.step))}"` : `step="${isExtra ? "0.01" : "1"}"`;
+    const step = cfg?.step !== undefined ? `step="${escapeHtml(String(cfg.step))}"` : `step="${cfg?.type === "float" ? "any" : "1"}"`;
     const placeholder = t("profile.placeholder.score", "Score");
     return `
         <input

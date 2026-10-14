@@ -13,16 +13,16 @@
   animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 .profile-body{
-  padding: 16px 24px 24px;
+  padding: var(--space-4) var(--space-6) var(--space-6);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   display: grid;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .profile-field{
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .profile-info-wrap{
@@ -108,7 +108,7 @@
 }
 
 .profile-info:focus-visible{
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -121,7 +121,7 @@
   background: var(--tooltip-bg);
   color: var(--tooltip-text);
   border-radius: 10px;
-  padding: 12px 12px;
+  padding: var(--space-3) var(--space-3);
   font-size: 12px;
   line-height: 1.4;
   font-weight: 500;
@@ -138,7 +138,6 @@
 
 .profile-tooltip strong{
   display: block;
-  margin-bottom: 6px;
   font-size: 12px;
   font-weight: 500;
 }
@@ -163,7 +162,7 @@
 .profile-input{
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 12px;
+  padding: var(--space-3) var(--space-3);
   border-radius: 12px;
   border: none;
   outline: none;
@@ -204,7 +203,7 @@
 .profile-budget {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
 }
 
@@ -217,7 +216,7 @@
   color: var(--text-muted);
   background: var(--surface-soft);
   border: none;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   border-radius: 12px;
   white-space: nowrap;
   font-size: 14px;
@@ -234,8 +233,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--line-warning);
   border-radius: var(--radius-md);
   background: var(--color-warning-bg);
@@ -255,7 +254,7 @@
 .profile-budget-grant-hint__actions{
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   flex-shrink: 0;
 }
 
@@ -264,7 +263,7 @@
   background: var(--accent-panel);
   color: var(--accent);
   border-radius: var(--radius-sm);
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
@@ -306,7 +305,7 @@
 .profile-exam-form{
   display: grid;
   grid-template-columns: 1.2fr 0.8fr auto;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: end;
 }
 
@@ -333,13 +332,13 @@
 
 .profile-exam-special-grid{
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .profile-exam-special-grid--grades{
   grid-template-columns: repeat(4, minmax(96px, 1fr));
-  column-gap: 12px;
-  row-gap: 8px;
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
 }
 
 .profile-exam-special-  .guide-layout{
@@ -348,8 +347,8 @@
 
 .profile-exam-special-grid--grades .profile-input{
   min-height: 45px;
-  padding-top: 11px;
-  padding-bottom: 11px;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
 }
 
 .profile-exam-special-grid--grades .mini-label{
@@ -361,7 +360,7 @@
 .profile-exam-special-field{
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -383,7 +382,7 @@
 .profile-exam-breakdown-row{
   display: grid;
   grid-template-columns: minmax(170px, 0.95fr) minmax(180px, 1.05fr);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: end;
 }
 
@@ -396,7 +395,7 @@
   min-height: 45px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 var(--space-4);
   border: none;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
@@ -407,7 +406,7 @@
   min-height: 45px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 var(--space-4);
   border-radius: var(--radius-base);
   border: none;
   color: var(--text-muted);
@@ -434,7 +433,7 @@
   border: none;
   background: var(--accent);
   color: var(--text-inverse);
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   border-radius: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -464,10 +463,10 @@
 }
 
 .profile-section-tabs {
-  margin: 0 24px 12px;
+  margin: 0 var(--space-6) var(--space-3);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
+  gap: var(--space-5);
   padding: 0;
   border: 0;
   border-bottom: none;
@@ -487,7 +486,7 @@
   font-size: 12px;
   line-height: 1.1;
   font-weight: 500;
-  padding: 12px 0 12px;
+  padding: var(--space-3) 0 var(--space-3);
   cursor: pointer;
   transition:
     color var(--motion-fast) var(--motion-ease-standard);
@@ -561,10 +560,10 @@
   background: var(--surface);
   border: none;
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: var(--space-5);
   box-shadow: var(--shadow-md);
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .profile-confirm-card h3{
@@ -583,14 +582,14 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
 .profile-confirm-actions .profile-delete,
 .profile-confirm-actions .profile-add{
   min-height: 44px;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   border-radius: 12px;
   display: inline-flex;
   align-items: center;
@@ -615,17 +614,17 @@
 
 .profile-exam-list{
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .profile-exam-item{
   border: none;
   border-radius: 12px;
-  padding: 12px 12px;
+  padding: var(--space-3) var(--space-3);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
   background: var(--surface);
   box-shadow: var(--shadow-xs);
   transform-origin: center;
@@ -634,7 +633,7 @@
 .profile-exam-meta{
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .profile-exam-name{
@@ -651,7 +650,7 @@
   border: none;
   background: var(--surface-solid);
   color: var(--text-muted);
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
@@ -674,13 +673,13 @@
   font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
 }
 
 .lang-add-grid{
   display: grid;
   grid-template-columns: 1fr 0.9fr 0.9fr 1.2fr auto;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: end;
 }
 
@@ -693,16 +692,15 @@
 }
 
 .lang-list {
-  margin-top: 12px;
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .lang-item {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 12px;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
   border: none;
   border-radius: 12px;
   background: var(--surface);
@@ -724,15 +722,15 @@
 
 /* Extracted from 05-base-responsive.css. */
 @media (max-width: 768px) {
-  .profile-body { padding: 12px 16px 16px; }
+  .profile-body { padding: var(--space-3) var(--space-4) var(--space-4); }
 
   .profile-exam-form{ grid-template-columns: 1fr; }
   .profile-exam-special-grid--grades{ grid-template-columns: 1fr; }
   .profile-exam-breakdown-row{ grid-template-columns: 1fr; }
   .profile-budget{
     grid-template-columns: minmax(0, 1fr);
-    column-gap: 8px;
-    row-gap: 8px;
+    column-gap: var(--space-2);
+    row-gap: var(--space-2);
   }
   .profile-budget--with-unit{
     grid-template-columns: minmax(0, 1fr);
@@ -743,7 +741,7 @@
   .profile-budget--with-unit .profile-unit{
     grid-column: 1 / -1;
     width: fit-content;
-    padding: 12px 12px;
+    padding: var(--space-3) var(--space-3);
   }
   .profile-budget-grant-hint{
     flex-wrap: wrap;
@@ -796,8 +794,8 @@
 @media (max-width: 380px) {
 
   .profile-section-tabs {
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-left: var(--space-3);
+    margin-right: var(--space-3);
   }
 
   .profile-section-tabs {
@@ -805,16 +803,16 @@
   }
 
   .profile-body {
-    padding: 12px 12px 16px;
+    padding: var(--space-3) var(--space-3) var(--space-4);
   }
 }
 
 @media (max-width: 640px) {
 
   .profile-section-tabs {
-    margin: 0 var(--mobile-safe-gutter) 10px;
+    margin: 0 var(--mobile-safe-gutter) var(--space-2);
     display: flex;
-    gap: 8px;
+    gap: var(--space-2);
     overflow-x: auto;
     scrollbar-width: none;
     scroll-snap-type: x proximity;
@@ -829,12 +827,12 @@
     flex: 0 0 auto;
     min-width: max-content;
     min-height: 42px;
-    padding: 0 12px;
+    padding: 0 var(--space-3);
     scroll-snap-align: start;
   }
 
   .profile-body {
-    padding: 12px var(--mobile-safe-gutter) calc(16px + env(safe-area-inset-bottom));
+    padding: var(--space-3) var(--mobile-safe-gutter) calc(var(--space-4) + env(safe-area-inset-bottom));
   }
 
   .profile-input,
@@ -854,38 +852,38 @@
 
 /* Extracted from 09-component-polish.css. */
 .profile-body {
-  padding: 16px 20px 20px;
-  gap: 16px;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  gap: var(--space-4);
 }
 
 .profile-section-tabs {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: var(--space-5);
+  margin-right: var(--space-5);
 }
 
 .profile-section-tabs {
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
 }
 
 .profile-section-tab {
   min-height: 38px;
-  padding-top: 8px;
-  padding-bottom: 10px;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
 }
 
 .profile-field {
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .profile-input {
   min-height: 42px;
-  padding: 12px 12px;
+  padding: var(--space-3) var(--space-3);
 }
 
 .profile-exam-item {
   border-radius: var(--radius-base);
-  padding: 12px;
+  padding: var(--space-3);
 }
 
 .profile-exam-form,
@@ -894,11 +892,11 @@
 .profile-exam-form--with-special.profile-exam-form--breakdown,
 .lang-add-grid,
 .profile-exam-breakdown-row {
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .profile-exam-special-grid {
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .mini-label {
@@ -907,17 +905,17 @@
 
 @media (max-width: 640px) {
   .profile-body {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
   }
 
   .profile-section-tabs {
-    margin-left: 14px;
-    margin-right: 14px;
+    margin-left: var(--space-3);
+    margin-right: var(--space-3);
   }
 
   .profile-section-tabs {
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .profile-exam-form,

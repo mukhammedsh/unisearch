@@ -34,6 +34,11 @@ const {
   comparePublishedAdmission,
   compareSelectedAnnualCost,
   compareSelectedCostContext,
+  hasReviewedAdmissions,
+  fetchCompareStudyOptions,
+  fetchCompareAdmissionContext,
+  compareAdmissionOptionEntries,
+  readCompareAdmissionChoices,
 } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
 
 const {
@@ -64,6 +69,7 @@ const {
   compareSpecValue,
   compareTrackRequirementValues,
 } = await import("../../frontend/javascript/pages/universities/compare-specs.js");
+const { loadProfile, loadProfileForApi, normalizeProfileData, clearProfile } = await import("../../frontend/javascript/utils.js");
 
 function response(body, ok = true, status = ok ? 200 : 500) {
   return {
@@ -136,6 +142,104 @@ test("fetchCompareProfiles falls back to individual endpoints when batch fails",
   ]);
   assert.equal(result.chances.get("u-a").overallChance, 80);
   assert.equal(result.rois.get("u-b").roi_value, 0.7);
+});
+
+test("reviewed comparison does not reuse legacy choices, costs, rates or failed batch scores", async () => {
+  const reviewed = {
+    id: "mit-usa-cambridge", admissions_catalog: { availability: "reviewed" },
+    finance: { total_cost_year_usd: 999 }, academics: { acceptance_rate_percent: 5 },
+    admission_categories: [{ id: "old", requirement_profiles: [{ id: "old", requirements: { SAT: 1200 } }] }],
+  };
+  assert.equal(hasReviewedAdmissions(reviewed), true);
+  assert.deepEqual(compareAdmissionOptionEntries(reviewed), []);
+  assert.equal(compareSelectedAnnualCost(reviewed), null);
+  assert.equal(comparePublishedAdmission(reviewed).value, null);
+  assert.equal(compareSpecRawValue({ type: "number", section: "finance", getter: () => 999 }, reviewed), null);
+  const urls = [];
+  const result = await fetchCompareProfiles([reviewed.id, "legacy"], {
+    apiBase: "/api", loadProfileForApi: () => ({}),
+    fetchImpl: async url => { urls.push(url); return url.endsWith("compare-profiles") ? response({}, false) : response({ overallChance: 12 }); },
+  });
+  assert.deepEqual(urls, ["/api/universities/compare-profiles", "/api/universities/legacy/uni-chance", "/api/universities/legacy/roi"]);
+  assert.equal(result.chances.has(reviewed.id), false);
+  assert.equal(result.chances.get("legacy").overallChance, 12);
+});
+
+test("comparison study options use search, canonical level and pagination without projecting legacy programs", async () => {
+  const catalog = { items: [{ id: "program", title: "Computing" }], total: 805 };
+  const result = await fetchCompareStudyOptions("reviewed", { search: "computing", study_level: "masters", page: 3 }, {
+    apiBase: "/api", fetchImpl: async url => {
+      const query = new URL(url, "https://example.test").searchParams;
+      assert.equal(query.get("search"), "computing");
+      assert.equal(query.get("study_level"), "masters");
+      assert.equal(query.get("page"), "3");
+      assert.equal(query.get("limit"), "24");
+      return response(catalog);
+    },
+  });
+  assert.deepEqual(result, catalog);
+  await assert.rejects(fetchCompareStudyOptions("reviewed", {}, { fetchImpl: async () => response({}, false, 503) }), /HTTP 503/);
+});
+
+test("comparison context keeps explicit empty overrides and reports HTTP failures", async () => {
+  const context = { study_option_id: "cs", application_route_id: "route", study_level: "undergraduate", applicant_route: "", intended_entry_cycle: "", fee_status_context: "unknown" };
+  const profile = { study_level: "masters", intended_entry_cycle: "2027", selectedAdmissionChoices: { reviewed: { studyOptionId: "old", applicationRouteId: "old-route" } }, exams: [{ exam: "SAT", score: 1400 }] };
+  const before = structuredClone(profile);
+  const result = await fetchCompareAdmissionContext("reviewed", context, profile, { apiBase: "/api", fetchImpl: async (url, options) => {
+    assert.equal(url, "/api/universities/reviewed/admissions-context");
+    const body = JSON.parse(options.body);
+    assert.equal(body.profile.study_level, undefined);
+    assert.equal(body.profile.intended_entry_cycle, undefined);
+    assert.equal(body.profile.selectedAdmissionChoices.reviewed, undefined);
+    assert.equal(body.context.intended_entry_cycle, "");
+    assert.equal(body.context.applicant_route, null);
+    assert.deepEqual(body.profile.exams, profile.exams);
+    return response({ assessment: { chancePercent: 0 } });
+  } });
+  assert.equal(result.assessment.chancePercent, 0);
+  assert.deepEqual(profile, before);
+  await assert.rejects(fetchCompareAdmissionContext("reviewed", context, profile, { fetchImpl: async () => response({}, false, 503) }), /HTTP 503/);
+});
+
+test("comparison storage removes old accepted choices including strings while retaining legacy choices", () => {
+  const original = globalThis.localStorage;
+  const originalWindowStorage = window.localStorage;
+  const originalDispatch = window.dispatchEvent;
+  const stored = new Map([["unisearch_compare_admission_choices_v1", JSON.stringify({ "mit-usa-cambridge": "old-key", "stanford-university-usa-ca": { choiceKey: "old-key" }, legacy: { choiceKey: "legacy-key" } })]]);
+  globalThis.localStorage = window.localStorage = { getItem: key => stored.get(key) || null, setItem: (key, value) => stored.set(key, value) };
+  const profile = normalizeProfileData({ budget: 31000, gpa: 3.6, citizenships: ["Kazakhstan"], applicantRoute: "transfer", intendedEntryCycle: "Fall 2028", feeStatusContext: "self_reported_international_overseas", selectedAdmissionChoices: { legacy: { choiceKey: "legacy-key", programId: "legacy-program" } } });
+  stored.set("unisearch_profile", JSON.stringify(profile));
+  window.dispatchEvent = () => { assert.deepEqual(JSON.parse(stored.get("unisearch_compare_admission_choices_v1")), { legacy: { choiceKey: "legacy-key" } }); };
+  try {
+    const choices = readCompareAdmissionChoices();
+    assert.deepEqual(Array.from(choices.keys()), ["legacy"]);
+    assert.equal(choices.get("legacy").choiceKey, "legacy-key");
+    assert.deepEqual(JSON.parse(stored.get("unisearch_compare_admission_choices_v1")), { legacy: { choiceKey: "legacy-key" } });
+    assert.deepEqual(JSON.parse(stored.get("unisearch_profile")).admissionChoiceResetNotices, ["mit-usa-cambridge", "stanford-university-usa-ca"]);
+    assert.deepEqual({ ...JSON.parse(stored.get("unisearch_profile")), admissionChoiceResetNotices: [] }, profile);
+    assert.equal(loadProfileForApi().admissionChoiceResetNotices, undefined);
+  } finally { globalThis.localStorage = original; window.localStorage = originalWindowStorage; window.dispatchEvent = originalDispatch; }
+});
+
+test("blocked comparison reset persistence still discards old choices and exposes the notice for this session", () => {
+  const original = { storage: globalThis.localStorage, windowStorage: window.localStorage, dispatch: window.dispatchEvent, warn: console.warn };
+  const warnings = [];
+  window.dispatchEvent = () => {};
+  console.warn = message => warnings.push(message);
+  globalThis.localStorage = window.localStorage = {
+    getItem: key => key === "unisearch_compare_admission_choices_v1" ? JSON.stringify({ "imperial-college-london-uk": "old-key" }) : null,
+    setItem: () => { throw new Error("Storage unavailable"); }, removeItem: () => {},
+  };
+  try {
+    clearProfile();
+    assert.equal(readCompareAdmissionChoices().size, 0);
+    assert.deepEqual(loadProfile().admissionChoiceResetNotices, ["imperial-college-london-uk"]);
+    assert.ok(warnings.some(message => message.includes("comparison selection reset")));
+    assert.equal(loadProfileForApi().admissionChoiceResetNotices, undefined);
+  } finally {
+    clearProfile();
+    globalThis.localStorage = original.storage; window.localStorage = original.windowStorage; window.dispatchEvent = original.dispatch; console.warn = original.warn;
+  }
 });
 
 test("compareBachelorProgramNames deduplicates and formats program summary", () => {
@@ -424,7 +528,7 @@ test("compareSourceMeta and compareSourceText support early_career_salary and me
   assert.equal(compareSourceText(uni, "median_earnings_10yr"), "U.S. Department of Education College Scorecard - Official");
 });
 
-test("buildCompareDecisionSignals outcomes theme distinguishes early salary from 10yr median earnings", async () => {
+test("outcomes distinguish legacy salary periods and exclude accepted institution-wide aliases", async () => {
   const mit = {
     id: "mit-usa-cambridge",
     name: "MIT",
@@ -462,14 +566,18 @@ test("buildCompareDecisionSignals outcomes theme distinguishes early salary from
     fact_provenance: { facts: {} },
   };
 
-  const signals = buildCompareDecisionSignals([mit, caltech, stanford]);
+  const legacyEarly = { ...mit, id: "legacy-early" };
+  const signals = buildCompareDecisionSignals([mit, caltech, stanford, legacyEarly]);
   const outcomesTheme = signals.find((s) => s.key === "outcomes");
   assert.ok(outcomesTheme);
   assert.equal(outcomesTheme.status, "missing"); // Not all have early salary
 
   const mitFacts = outcomesTheme.universities.find((u) => u.id === "mit-usa-cambridge").facts;
   assert.equal(mitFacts[0].label, "Verified early-career salary");
-  assert.equal(mitFacts[0].value, "$98,741");
+  assert.equal(mitFacts[0].value, "N/A");
+  const legacyEarlyFacts = outcomesTheme.universities.find((u) => u.id === "legacy-early").facts;
+  assert.equal(legacyEarlyFacts[0].label, "Verified early-career salary");
+  assert.equal(legacyEarlyFacts[0].value, "$98,741");
 
   const caltechFacts = outcomesTheme.universities.find((u) => u.id === "caltech-usa-pasadena").facts;
   assert.equal(caltechFacts[0].label, "10-year post-entry median earnings (Scorecard)");

@@ -7,14 +7,14 @@
   z-index: var(--z-tray);
   transform: translateX(-50%);
   width: min(680px, calc(100vw - 32px));
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: none;
   border-radius: 16px;
   background: var(--surface-solid);
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   transform-origin: bottom center;
 }
 
@@ -28,7 +28,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 8px;
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--accent) 12%, var(--surface-solid));
   color: var(--accent);
@@ -43,7 +43,7 @@
 .compare-tray__chips {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   min-width: 0;
   flex: 1;
   flex-wrap: nowrap;
@@ -54,10 +54,10 @@
 .compare-tray__chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   min-width: 0;
   max-width: 240px;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
@@ -70,7 +70,7 @@
   object-fit: contain;
   background: var(--surface-badge);
   border: none;
-  padding: 1px;
+  padding: var(--space-0-25);
   flex-shrink: 0;
 }
 
@@ -114,7 +114,7 @@
 
 .compare-tray__actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-shrink: 0;
   align-items: center;
 }
@@ -122,7 +122,7 @@
 .compare-tray__btn {
   box-sizing: border-box;
   height: 32px;
-  padding: 0 12px;
+  padding: 0 var(--space-3);
   border: none;
   border-radius: var(--radius-sm);
   font-weight: 500;
@@ -170,7 +170,7 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-4);
   padding: 0;
 }
 
@@ -178,9 +178,9 @@
   box-sizing: border-box;
   display: grid;
   align-content: start;
-  gap: 12px;
+  gap: var(--space-3);
   min-width: 0;
-  padding: 20px;
+  padding: var(--space-5);
   border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
@@ -191,7 +191,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .compare-uni-card__slot {
@@ -207,7 +207,7 @@
   min-width: 0;
   display: grid;
   justify-items: start;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .compare-uni-card__logo {
@@ -229,7 +229,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 4px;
+  padding: var(--space-1);
 }
 
 .compare-uni-card h3 {
@@ -256,7 +256,7 @@
 
 .compare-uni-card__metrics span {
   min-width: 0;
-  padding: 12px 8px;
+  padding: var(--space-3) var(--space-2);
   text-align: center;
 }
 
@@ -281,7 +281,7 @@
 }
 
 .compare-uni-card__metrics strong {
-  margin-top: 3px;
+  margin-top: var(--space-0-5);
   color: var(--text);
   font-size: 12px;
   font-weight: 500;
@@ -295,7 +295,7 @@
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   border: none;
   border-radius: 10px;
   background: var(--surface-soft);
@@ -304,7 +304,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 8px;
+  gap: var(--space-2);
   font-size: 11px;
   line-height: 1;
   font-weight: 500;
@@ -337,7 +337,7 @@
 .compare-uni-card__track {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
@@ -353,7 +353,7 @@
   box-sizing: border-box;
   width: 100%;
   min-height: 36px;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: none;
   border-radius: 10px;
   background: var(--surface-soft);
@@ -372,7 +372,7 @@
 }
 
 .compare-track-select:focus {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-color: var(--accent);
 }
@@ -450,7 +450,7 @@
 .compare-table th,
 .compare-table td {
   box-sizing: border-box;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--line);
   text-align: left;
   vertical-align: top;
@@ -506,7 +506,7 @@
 }
 
 .compare-cell small {
-  margin-top: 4px;
+  margin-top: var(--space-1);
   color: var(--text-muted);
   font-size: 11px;
   line-height: 1.35;
@@ -523,19 +523,19 @@
 
 .compare-results {
   display: grid;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .compare-results-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-4);
   padding: 0;
 }
 
 .compare-results-kicker {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.3;
@@ -555,7 +555,7 @@
 .compare-results-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--component-control-gap);
   flex-wrap: wrap;
   justify-content: flex-end;
 }
@@ -567,12 +567,12 @@
 .compare-config-chance .chance-panel {
   box-sizing: border-box;
   min-width: 0;
-  padding: 12px;
+  padding: var(--space-3);
   border: none;
   border-radius: var(--radius-lg);
   background: var(--accent-panel);
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .compare-config-chance .chance-head {
@@ -580,7 +580,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .compare-config-chance .chance-title {
@@ -601,13 +601,13 @@
 }
 
 .compare-config-chance .chance-sub {
-  margin-top: 3px;
+  margin-top: var(--space-0-5);
 }
 
 .compare-config-chance .chance-percent-wrap {
   display: grid;
   justify-items: center;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence {
@@ -617,11 +617,11 @@
   justify-content: center;
   text-align: center;
   box-sizing: border-box;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-radius: 10px;
   border: none;
   background: var(--color-warning-bg);
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent.chance-low-confidence,
@@ -639,7 +639,7 @@
 .compare-config-chance .chance-percent {
   min-width: 50px;
   min-height: 38px;
-  padding: 8px 8px;
+  padding: var(--space-2) var(--space-2);
   border-radius: 12px;
   display: inline-flex;
   align-items: center;
@@ -722,10 +722,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   white-space: nowrap;
   min-height: 40px;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   border: none;
   border-radius: var(--radius-md, 12px);
   background: var(--accent);
@@ -743,7 +743,7 @@
 }
 
 .compare-results-action:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -781,11 +781,11 @@
 
 .compare-block-head {
   box-sizing: border-box;
-  padding: 16px;
+  padding: var(--space-4);
   border-bottom: none;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .compare-block-title-wrap {
@@ -796,7 +796,7 @@
 .compare-block-tools {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   flex-shrink: 0;
   margin-left: auto;
 }
@@ -804,7 +804,7 @@
 .compare-diff-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   cursor: pointer;
   user-select: none;
   font-size: 13px;
@@ -860,7 +860,7 @@
 }
 
 .compare-diff-toggle input:focus-visible + .compare-diff-toggle__track {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -892,7 +892,7 @@
 }
 
 .compare-block-head p {
-  margin: 4px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.45;
@@ -905,15 +905,24 @@
 
 .compare-results-empty {
   box-sizing: border-box;
-  padding: 24px;
+  padding: var(--space-6);
   display: grid;
-  gap: 12px;
+  gap: var(--space-8);
   justify-items: start;
 }
 
-.compare-results-empty h2,
-.compare-results-empty p {
+.compare-results-empty__copy {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.compare-results-empty__copy h2,
+.compare-results-empty__copy p {
   margin: 0;
+}
+
+.compare-results-empty .compare-results-actions--centered {
+  justify-content: center;
 }
 
 .compare-results-empty h2 {
@@ -930,7 +939,7 @@
 
 .compare-config-subtitle {
   max-width: 760px;
-  margin: 8px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.5;
@@ -941,27 +950,27 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .compare-config-column {
   display: grid;
   align-content: start;
-  gap: 16px;
+  gap: var(--space-4);
   min-width: 0;
 }
 
 .compare-config-column__head {
   padding: 0;
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .compare-config-column__identity {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .compare-config-column__slot {
@@ -991,7 +1000,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 4px;
+  padding: var(--space-1);
 }
 
 .compare-config-column__head h2,
@@ -1023,12 +1032,12 @@
 .compare-config-options {
   padding: 0;
   display: grid;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .compare-config-options .admission-program-selector {
   flex-wrap: wrap;
-  column-gap: 16px;
+  column-gap: var(--space-4);
   row-gap: 0;
   margin: 0;
   overflow-x: visible;
@@ -1040,10 +1049,10 @@
 }
 
 .compare-config-options .admission-category-card {
-  padding: 24px;
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   border: none;
   background: var(--surface-solid);
   box-shadow: var(--shadow-card);
@@ -1064,7 +1073,7 @@
 .compare-config-options .admission-applicable-programs {
   align-items: baseline;
   border-top: none;
-  padding-top: 8px;
+  padding-top: var(--space-2);
   color: var(--text-muted);
 }
 
@@ -1077,7 +1086,7 @@
 }
 
 .compare-config-options .requirement-profile-tabs {
-  gap: 8px;
+  gap: var(--space-2);
   scrollbar-width: none;
 }
 
@@ -1089,33 +1098,33 @@
   padding-top: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .compare-config-options .admission-requirement-grid {
-  gap: 20px;
+  gap: var(--space-5);
   border-top: none;
-  padding-top: 8px;
+  padding-top: var(--space-2);
 }
 
 .compare-config-options .track-stats-box {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px;
+  gap: var(--space-2);
+  padding: var(--space-3);
   border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
 }
 
 .compare-config-options .track-stats-box--avg {
-  padding-left: 12px;
+  padding-left: var(--space-3);
   border-left: 0;
 }
 
 .compare-config-options .track-stats-title {
   margin: 0;
-  padding-bottom: 4px;
+  padding-bottom: var(--space-1);
   border-bottom: none;
 }
 
@@ -1128,8 +1137,8 @@
 }
 
 .compare-config-options .track-exam-group + .track-exam-group {
-  margin-top: 12px;
-  padding-top: 12px;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
   border-top: none;
 }
 
@@ -1140,7 +1149,7 @@
 }
 
 .compare-config-options .track-extra-req {
-  padding: 12px 0 0;
+  padding: var(--space-3) 0 0;
   border: 0;
   border-top: none;
   border-radius: 0;
@@ -1151,9 +1160,9 @@
 .compare-config-options .admission-funding-block {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   margin: 0;
-  padding-top: 16px;
+  padding-top: var(--space-4);
   border-top: none;
 }
 
@@ -1165,15 +1174,15 @@
 .compare-config-options .admission-funding-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .compare-config-options .admission-funding-option {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
@@ -1202,12 +1211,12 @@
 
 .compare-config-options .admission-funding-option-header,
 .compare-config-options .admission-funding-option-side {
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .compare-config-options .admission-funding-option-title,
 .compare-config-options .admission-funding-option-main {
-  gap: 8px;
+  gap: var(--space-2);
   min-height: 0;
 }
 
@@ -1234,15 +1243,15 @@
 .compare-config-options .admission-option-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: var(--space-2) var(--space-4);
   margin: 0;
-  padding-top: 8px;
+  padding-top: var(--space-2);
   border-top: none;
 }
 
 .compare-config-options .admission-option-meta .tag {
   display: inline-flex;
-  gap: 4px;
+  gap: var(--space-1);
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -1261,7 +1270,7 @@
   min-height: 0;
   height: auto;
   margin: 0;
-  padding-top: 12px;
+  padding-top: var(--space-3);
   border-top: none;
 }
 
@@ -1272,7 +1281,7 @@
   text-align: center;
   box-sizing: border-box;
   width: fit-content;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   border-radius: 10px;
   border: 1px solid transparent;
   font-size: 11px;
@@ -1300,7 +1309,7 @@
 
 .compare-config-column .track-exam-entry-group {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .compare-config-column .track-exam-entry-group-title {
@@ -1315,9 +1324,9 @@
 }
 
 .compare-results-loading {
-  padding: 20px 0;
+  padding: var(--space-5) 0;
   display: grid;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .uni-pill--warn {
@@ -1339,7 +1348,7 @@
 }
 
 .uni-footer {
-  margin-top: 12px;
+  margin-top: var(--space-3);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -1353,12 +1362,12 @@
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .compare-uni-card__chance > small {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 500;
@@ -1376,8 +1385,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: start;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
   background: var(--surface-soft);
 }
 
@@ -1408,7 +1417,7 @@
 }
 
 .compare-decision-theme__head p {
-  margin-top: 4px;
+  margin-top: var(--space-1);
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.5;
@@ -1418,7 +1427,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 28px;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
   border: none;
   background: var(--surface-solid);
@@ -1454,7 +1463,7 @@
 
 .compare-decision-side {
   min-width: 0;
-  padding: 20px;
+  padding: var(--space-5);
 }
 
 .compare-decision-side + .compare-decision-side {
@@ -1472,22 +1481,22 @@
 }
 
 .compare-decision-side h4 {
-  margin-top: 4px;
+  margin-top: var(--space-1);
   color: var(--text);
   font-size: var(--text-base);
   line-height: 1.3;
 }
 
 .compare-decision-side dl {
-  margin: 16px 0 0;
+  margin: var(--space-4) 0 0;
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .compare-decision-fact {
   display: grid;
   grid-template-columns: minmax(112px, 0.38fr) minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: start;
 }
 
@@ -1507,7 +1516,7 @@
 
 .compare-decision-source {
   display: block;
-  margin-top: 4px;
+  margin-top: var(--space-1);
   color: var(--text-muted);
   font-size: 11px;
   line-height: 1.4;
@@ -1522,7 +1531,7 @@
 
 .compare-decision-source a:focus-visible,
 .compare-source-link:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -1541,12 +1550,12 @@
   }
 
   .compare-config-options .admission-category-card {
-    padding: 16px;
+    padding: var(--space-4);
   }
 
   .compare-config-options .track-stats-box--avg {
-    padding-top: 12px;
-    padding-left: 12px;
+    padding-top: var(--space-3);
+    padding-left: var(--space-3);
     border-top: 0;
     border-left: 0;
   }
@@ -1562,7 +1571,7 @@
 
   .compare-decision-theme__head {
     grid-template-columns: auto minmax(0, 1fr);
-    padding: 12px 16px;
+    padding: var(--space-3) var(--space-4);
   }
 
   .compare-decision-status {
@@ -1575,7 +1584,7 @@
   }
 
   .compare-decision-side {
-    padding: 16px;
+    padding: var(--space-4);
   }
 
   .compare-decision-side + .compare-decision-side {
@@ -1586,7 +1595,7 @@
   .compare-table-scroll-hint {
     display: block;
     margin: 0;
-    padding: 12px 16px;
+    padding: var(--space-3) var(--space-4);
     border-bottom: none;
     background: var(--surface-soft);
     color: var(--text-muted);
@@ -1598,7 +1607,7 @@
 @media (max-width: 480px) {
   .compare-decision-fact {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: var(--space-1);
   }
 
   .compare-uni-card__metrics {

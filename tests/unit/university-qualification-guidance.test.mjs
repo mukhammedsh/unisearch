@@ -12,10 +12,45 @@ global.fetch = async (url) => {
 
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { resolveQualificationGuidance, renderQualificationGuidance } = await import("../../frontend/javascript/pages/university/render-content.js");
+const { renderAdmissionsContext } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
 const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
 const universities = Object.fromEntries(rows.map((row) => [row.id, row]));
+const admissionsCatalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+const acceptedInstitutions = Object.fromEntries(admissionsCatalog.institutions.map(row => [row.institution.id, row]));
+
+function acceptedContext(institutionId, optionId, routeId, factId) {
+  const institution = acceptedInstitutions[institutionId];
+  const selected_option = institution.study_options.find(option => option.id === optionId);
+  const selected_route = institution.application_routes.find(route => route.id === routeId);
+  const fact = institution.facts.find(row => row.id === factId);
+  const sourceIds = new Set([...selected_option.source_ids, ...selected_route.source_ids, ...fact.source_ids]);
+  return {
+    selected_option,
+    selected_route,
+    facts: [fact],
+    fact_groups: { requirements: [fact.id] },
+    sources: institution.sources.filter(source => sourceIds.has(source.id)),
+    reference_labels: Object.fromEntries(institution.study_options.map(option => [option.id, option.title])),
+    assessment: {
+      chancePercent: null,
+      reason: "unassessed_minimums",
+      activeChoice: { details: { checks: [{
+        kind: "credential",
+        status: "unassessed",
+        rule: fact.value,
+        provided: { country_of_education: "KZ", education_credential: "national_secondary" },
+        sourceRule: fact,
+        source_ids: fact.source_ids,
+      }] } },
+      reportedEvidence: {
+        origin: "self_reported",
+        institutional_evidence: [{ kind: "education", country: "KZ", credential: "national_secondary" }],
+      },
+    },
+  };
+}
 
 test("Oxford rejects only the explicitly named Kazakhstan Attestat and accepts an IB diploma at qualification-type level", () => {
   const oxford = universities["university-of-oxford-uk-oxford"];
@@ -86,14 +121,28 @@ test("Oxford KZ rejection requires an exact normalized Attestat title for either
   assert.equal(mixedCredentialText.status, "needs_review");
 });
 
-test("US school context at MIT, Stanford, and Harvard does not create an acceptance or rejection", () => {
-  const profile = { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "US", educationCredential: "us_high_school_diploma" };
-  for (const id of ["mit-usa-cambridge", "stanford-university-usa-ca", "harvard-usa-cambridge"]) {
-    const result = resolveQualificationGuidance({ university: universities[id], profile });
-    assert.equal(result.status, "needs_review", id);
-    assert.match(result.reason, /context|requirements|application/i, id);
-    assert.match(result.sourceUrl, /^https:\/\//, id);
+test("accepted MIT and Stanford qualification context stays source-scoped and unassessed; Harvard legacy guidance stays in review", () => {
+  const cases = [
+    ["mit-usa-cambridge", "mit-course-6-3-bachelor", "mit-first-year", "first-year-foundations-context-not-prescribed-cutoffs", /National\/curricular context assessed/],
+    ["stanford-university-usa-ca", "stanford-option-cs-bs", "undergraduate-shared-evidence:stanford-first-year", "undergraduate-shared-evidence:stanford-ug-international-academic-records", /school\/country/],
+  ];
+
+  for (const [institutionId, optionId, routeId, factId, sourceText] of cases) {
+    const html = renderAdmissionsContext(acceptedContext(institutionId, optionId, routeId, factId), { domains: ["requirements"] });
+    assert.match(html, sourceText, institutionId);
+    assert.match(html, /Not assessed/, institutionId);
+    assert.match(html, /No requirements-match percentage/, institutionId);
+    assert.match(html, /Applicant evidence is self-reported/, institutionId);
+    assert.doesNotMatch(html, /Accepted qualification|Explicitly not accepted/, institutionId);
+    assert.match(html, /href="https:\/\//, institutionId);
   }
+
+  const harvard = resolveQualificationGuidance({
+    university: universities["harvard-usa-cambridge"],
+    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "US", educationCredential: "us_high_school_diploma" },
+  });
+  assert.equal(harvard.status, "needs_review");
+  assert.match(harvard.sourceUrl, /^https:\/\//);
 });
 
 test("graduate qualification guidance requires a selected official programme page", () => {

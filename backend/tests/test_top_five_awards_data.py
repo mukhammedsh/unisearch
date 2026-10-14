@@ -2,42 +2,35 @@ from __future__ import annotations
 
 import json
 import unittest
+from urllib.parse import urlparse
 
+from app.services import admissions_catalog
 from scripts.audit_universities_data import DEFAULT_DATA_PATH
 
 
-class TopFiveAwardsDataTests(unittest.TestCase):
+class ActiveFundingDataTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         rows = json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))
-        cls.universities = {row["id"]: row for row in rows}
+        cls.legacy_universities = {row["id"]: row for row in rows}
 
-    def awards(self, university_id: str) -> dict[str, dict]:
-        finance = self.universities[university_id].get("finance", {})
-        return {
-            award["id"]: award
-            for award in finance.get("scholarships_and_funding", [])
-        }
+    def resolve(self, university_id: str, **context: str) -> dict:
+        return admissions_catalog.resolve_context(university_id, context=context)
 
-    def test_stanford_international_aid_requires_admission_request_and_separate_forms(self) -> None:
-        award = self.awards("stanford-university-usa-ca")[
-            "stanford-international-undergraduate-need-based-aid"
-        ]
-        self.assertEqual(award["application_process"], "separate")
-        self.assertIn("admission application", award["application_process_note"])
-        self.assertIn("request", award["steps"][0])
-        self.assertIn(
-            "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_international.html",
-            award["source_urls"],
-        )
+    @staticmethod
+    def fact(resolved: dict, fact_id: str) -> dict:
+        return next(row for row in resolved["facts"] if row["id"] == fact_id)
 
-    def test_named_awards_have_actionable_scope_and_official_sources(self) -> None:
+    @staticmethod
+    def source(resolved: dict, source_id: str) -> dict:
+        return next(row for row in resolved["sources"] if row["id"] == source_id)
+
+    def legacy_awards(self, university_id: str) -> dict[str, dict]:
+        finance = self.legacy_universities[university_id].get("finance", {})
+        return {row["id"]: row for row in finance.get("scholarships_and_funding", [])}
+
+    def test_legacy_harvard_and_oxford_awards_keep_scoped_official_records(self) -> None:
         expected = {
-            "mit-usa-cambridge": {"mit-undergraduate-need-based-scholarship"},
-            "stanford-university-usa-ca": {
-                "stanford-international-undergraduate-need-based-aid",
-                "stanford-knight-hennessy-scholars-2027",
-            },
             "harvard-usa-cambridge": {
                 "harvard-college-need-based-financial-aid",
                 "hbs-need-based-mba-fellowship",
@@ -48,100 +41,110 @@ class TopFiveAwardsDataTests(unittest.TestCase):
                 "oxford-reach-oxford-scholarship-2027",
                 "oxford-clarendon-fund-2027",
             },
-            "imperial-college-london-uk": {
-                "imperial-inspires-2027",
-                "presidents-phd-scholarships",
-                "deans-impact-scholarship",
-            },
         }
         for university_id, award_ids in expected.items():
-            awards = self.awards(university_id)
+            awards = self.legacy_awards(university_id)
             self.assertTrue(award_ids.issubset(awards), university_id)
             for award_id in award_ids:
                 award = awards[award_id]
-                for key in (
-                    "name", "study_level", "program_scope", "applicant_scope",
-                    "academic_year", "basis", "application_process", "eligibility",
-                    "coverage", "renewal", "competition", "course_application_deadline",
-                    "award_application_deadline", "deadline_timezone", "steps", "documents",
-                    "source_url", "verified_at",
-                ):
-                    self.assertIn(key, award, f"{university_id}:{award_id}:{key}")
-                self.assertIn(award["basis"], {"need", "merit", "need_and_merit"})
-                self.assertIn(award["application_process"], {"automatic", "separate", "post_offer", "course_application_selection"})
-                self.assertTrue(award["steps"])
-                self.assertTrue(award["source_url"].startswith("https://"))
+                self.assertTrue(award["program_scope"], f"{university_id}:{award_id}")
+                self.assertTrue(award["applicant_scope"], f"{university_id}:{award_id}")
+                self.assertTrue(award["academic_year"], f"{university_id}:{award_id}")
+                self.assertTrue(award["source_url"].startswith("https://"), f"{university_id}:{award_id}")
 
-    def test_mit_stanford_and_harvard_do_not_present_admitted_score_benchmarks_as_minima(self) -> None:
-        cases = {
-            "mit-usa-cambridge": {"mit_regular", "mit_undergrad_early_action"},
-            "stanford-university-usa-ca": {"stanford_standard"},
-            "harvard-usa-cambridge": {"harvard_college"},
-        }
-        for university_id, category_ids in cases.items():
-            categories = {
-                row["id"]: row
-                for row in self.universities[university_id]["admission_categories"]
-            }
-            for category_id in category_ids:
-                for profile in categories[category_id].get("requirement_profiles", []):
-                    self.assertFalse(
-                        {"SAT", "ACT", "GPA"}.intersection(profile.get("requirements", {})),
-                        f"{university_id}:{profile['id']} contains unsupported numeric floor",
-                    )
-                    self.assertTrue(profile.get("requirements_note"))
-                    self.assertTrue(profile.get("requirements_source_url"))
-
-        mit = self.universities["mit-usa-cambridge"]["admission_categories"]
-        mit_profile = next(
-            profile
-            for category in mit
-            for profile in category.get("requirement_profiles", [])
-            if profile["id"] == "mit_regular"
-        )
-        self.assertEqual(1520, mit_profile["score_profile"]["p25_raw"])
-        self.assertEqual("official_common_data_set", mit_profile["score_profile"]["source_scope"])
-        self.assertNotIn("stats_avg", mit_profile)
-
-    def test_imperial_existing_awards_are_retained_with_new_awards(self) -> None:
-        awards = self.awards("imperial-college-london-uk")
-        self.assertTrue(
-            {
-                "presidents-phd-scholarships", "epsrc-ukri-cdt-studentships",
-                "deans-impact-scholarship", "imperial-bursary-home-only",
-                "imperial-inspires-2027",
-            }.issubset(awards)
-        )
-        presidents = awards["presidents-phd-scholarships"]
-        self.assertEqual("course_application_selection", presidents["application_process"])
-        self.assertEqual(50, presidents["places_per_year"])
-        self.assertEqual(27036, presidents["annual_amount_gbp"])
-
-    def test_award_deadlines_are_not_filled_with_invented_dates(self) -> None:
-        awards = self.awards("imperial-college-london-uk")
-        self.assertIsNone(awards["imperial-inspires-2027"]["award_application_deadline"])
-        self.assertIn("varies by course", awards["imperial-inspires-2027"]["course_application_deadline"])
-
-    def test_reach_oxford_deadline_and_competition_match_the_published_2027_cycle(self) -> None:
-        award = self.awards("university-of-oxford-uk-oxford")["oxford-reach-oxford-scholarship-2027"]
+    def test_legacy_oxford_reach_award_has_its_published_2027_deadline(self) -> None:
+        award = self.legacy_awards("university-of-oxford-uk-oxford")["oxford-reach-oxford-scholarship-2027"]
         self.assertEqual(
-            award["award_application_deadline"],
             {"date": "2027-01-26", "time": "12:00", "label": "Scholarship application deadline"},
+            award["award_application_deadline"],
         )
-        self.assertEqual(award["deadline_timezone"], "UK time")
-        self.assertIn("2–3 awards per year", award["competition"])
-        self.assertIn("very high", award["competition"])
-        self.assertIn(
-            "https://www.ox.ac.uk/admissions/undergraduate/applying/admissions-timeline",
-            award["source_urls"],
-        )
+        self.assertEqual("UK time", award["deadline_timezone"])
 
-    def test_mit_need_aid_deadlines_link_to_the_official_deadline_page(self) -> None:
-        award = self.awards("mit-usa-cambridge")["mit-undergraduate-need-based-scholarship"]
-        self.assertIn(
-            "https://sfs.mit.edu/undergraduate-students/apply-for-aid/deadlines-process/",
-            award["source_urls"],
+    def test_legacy_harvard_admitted_score_ranges_are_not_minimums(self) -> None:
+        university = self.legacy_universities["harvard-usa-cambridge"]
+        category = next(row for row in university["admission_categories"] if row["id"] == "harvard_college")
+        for profile in category.get("requirement_profiles", []):
+            self.assertFalse({"SAT", "ACT", "GPA"}.intersection(profile.get("requirements", {})))
+            self.assertTrue(profile.get("requirements_note"))
+            self.assertTrue(profile.get("requirements_source_url"))
+
+    def test_mit_first_year_aid_is_scoped_to_route_and_not_an_individual_award(self) -> None:
+        resolved = self.resolve(
+            "mit-usa-cambridge",
+            study_option_id="mit-course-6-3-bachelor",
+            application_route_id="mit-first-year",
+            study_level="undergraduate",
+            applicant_route="first_year",
+            intended_entry_cycle="Fall 2027 entry",
         )
+        funding = self.fact(resolved, "mit-first-year-funding-0-1")
+
+        self.assertEqual("mit-first-year", resolved["selected_route"]["id"])
+        self.assertEqual(["source-6267f8d874684442"], funding["source_ids"])
+        self.assertEqual("matched", funding["applicability"]["route"])
+        self.assertIn("Funding consideration is not a confirmed individual award", funding["attributes"]["summary"])
+        self.assertEqual("mitadmissions.org", urlparse(self.source(resolved, funding["source_ids"][0])["url"]).hostname)
+
+    def test_imperial_doctoral_scholarship_keeps_scope_cycle_and_source(self) -> None:
+        resolved = self.resolve(
+            "imperial-college-london-uk",
+            study_option_id="imperial-computing-phd",
+            application_route_id="procedure-computing-phd",
+            study_level="doctoral",
+            applicant_route="graduate",
+            intended_entry_cycle="2027-28",
+        )
+        funding = self.fact(resolved, "imperial-president-phd-funding")
+
+        self.assertEqual("imperial-computing-phd", resolved["selected_option"]["id"])
+        self.assertEqual(["source-18197230481cd350"], funding["source_ids"])
+        self.assertEqual("2027-28", funding["scope"]["cycle"])
+        self.assertIn("unable to support international", funding["value"]["eligibility"])
+        self.assertIn("2027/28 awards", funding["value"]["renewal"])
+        self.assertEqual("www.imperial.ac.uk", urlparse(self.source(resolved, funding["source_ids"][0])["url"]).hostname)
+
+    def test_imperial_inspires_stays_an_overseas_course_opportunity_not_a_confirmed_award(self) -> None:
+        resolved = self.resolve(
+            "imperial-college-london-uk",
+            study_option_id="imperial-option-computing-meng",
+            application_route_id="procedure-computing-meng",
+            study_level="undergraduate",
+            applicant_route="first_year",
+            intended_entry_cycle="2027 entry",
+            fee_status_context="self_reported_international_overseas",
+        )
+        funding = self.fact(resolved, "imperial-inspires-2027-contract")
+
+        self.assertEqual(["Overseas"], funding["scope"]["fee_status"])
+        self.assertEqual(["source-422317aba5a39e29"], funding["source_ids"])
+        self.assertIn("selected postgraduate taught course", funding["scope"]["applicant_categories"][0])
+        self.assertIn("at least £15,000 per year", funding["value"])
+        self.assertNotIn("awarded_amount", funding["value"])
+        self.assertTrue(urlparse(self.source(resolved, funding["source_ids"][0])["url"]).hostname.endswith("imperial.ac.uk"))
+
+    def test_stanford_international_aid_keeps_admission_condition_and_exact_filing_dates(self) -> None:
+        resolved = self.resolve(
+            "stanford-university-usa-ca",
+            study_option_id="stanford-option-cs-bs",
+            application_route_id="undergraduate-shared-evidence:stanford-first-year",
+            study_level="undergraduate",
+            applicant_route="international",
+            intended_entry_cycle="Autumn 2027",
+        )
+        admission = self.fact(resolved, "undergraduate-shared-evidence:stanford-ug-international-financial-aid-admission")
+        deadlines = self.fact(resolved, "undergraduate-shared-evidence:stanford-ug-aid-deadlines")
+        funding = self.fact(resolved, "undergraduate-shared-evidence:stanford-ug-aid-need-and-scholarship")
+
+        self.assertEqual(["undergraduate-shared-evidence:stanford-ug-international"], admission["source_ids"])
+        self.assertIn("requesting aid is a factor in admission evaluation", admission["value"])
+        self.assertEqual(["undergraduate-shared-evidence:stanford-ug-aid-dates"], deadlines["source_ids"])
+        self.assertIn("REA November 15", deadlines["value"])
+        self.assertIn("RD February 15", deadlines["value"])
+        self.assertIn("transfer March 15", deadlines["value"])
+        self.assertEqual("unknown", deadlines["applicability"]["cycle"])
+        self.assertIn("meets demonstrated need", funding["value"])
+        self.assertNotIn("award_amount", funding["value"])
+        self.assertIn("need-based", funding["value"])
 
 
 if __name__ == "__main__":

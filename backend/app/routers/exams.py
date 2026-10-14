@@ -34,6 +34,7 @@ def validate_exam(payload: ExamValidateRequest):
             score_raw=score_raw,
             raw_value=raw_value,
             details=details,
+            taken_on=payload.taken_on,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

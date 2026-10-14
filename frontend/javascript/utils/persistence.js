@@ -11,6 +11,11 @@ import { CURRENCY_FORMAT_MAP, convert } from "../currency.js";
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const FILTERS_KEY = "unisearch_filters";
+const ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS = new Set([
+  "mit-usa-cambridge",
+  "imperial-college-london-uk",
+  "stanford-university-usa-ca",
+]);
 
 let profileMemoryFallback = null;
 let profileMemoryUnpersisted = false;
@@ -25,6 +30,8 @@ const PROFILE_DEFAULTS = {
   budgetCurrency: "USD",
   familyIncomeAmount: "",
   familyIncomeCurrency: "USD",
+  languageEvidence: [],
+  institutionalEvidence: [],
   gpa: "",
   gpaScale: 4,
   exams: [],
@@ -76,13 +83,105 @@ function canonicalProfileExamKey(examId) {
   return String(examId || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
+function normalizeEvidenceDate(value, allowFuture = false) {
+  const text = String(value || "").trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return "";
+  const date = new Date(`${text}T00:00:00Z`);
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== text) return "";
+  return allowFuture || text <= new Date().toISOString().slice(0, 10) ? text : "";
+}
+
+function normalizeLanguageEvidence(rows) {
+  if (!Array.isArray(rows)) return [];
+  return rows.slice(0, 10).map((row) => {
+    if (!row || typeof row !== "object" || Array.isArray(row)) return null;
+    const kind = String(row.kind || "").trim();
+    const language = String(row.language || "").trim().toLowerCase();
+    if (!["primary_language", "education", "employment"].includes(kind)
+      || !/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/i.test(language)) return null;
+    const next = { kind, language };
+    const country = String(row.country || "").trim().slice(0, 80);
+    const qualification = String(row.qualification_level || "").trim();
+    const startedOn = normalizeEvidenceDate(row.started_on);
+    const completedOn = normalizeEvidenceDate(row.completed_on);
+    if (startedOn && completedOn && startedOn > completedOn) return null;
+    const status = ["completed", "in_progress", "unknown"].includes(row.status) ? row.status : "unknown";
+    if (country) next.country = country;
+    if (["secondary", "bachelor", "master", "doctorate", "professional", "other"].includes(qualification)) next.qualification_level = qualification;
+    if (startedOn) next.started_on = startedOn;
+    if (completedOn) next.completed_on = completedOn;
+    next.status = status;
+    if (typeof row.entirely_in_language === "boolean") next.entirely_in_language = row.entirely_in_language;
+    return next;
+  }).filter(Boolean);
+}
+
+function normalizeInstitutionalEvidence(rows) {
+  if (!Array.isArray(rows)) return [];
+  const institutions = new Set(["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]);
+  return rows.slice(0, 20).map((row) => {
+    if (!row || typeof row !== "object" || Array.isArray(row) || !institutions.has(row.university_id)) return null;
+    const kind = String(row.kind || "").trim();
+    const next = { university_id: row.university_id, kind };
+    const programId = String(row.program_id || "").trim().slice(0, 128);
+    if (programId) next.program_id = programId;
+    if (kind === "enrollment") {
+      next.status = ["enrolled", "on_leave", "completed", "not_enrolled", "unknown"].includes(row.status) ? row.status : "unknown";
+      for (const [field, maximum] of [["units", 10000], ["major_units", 10000], ["completed_major_subjects", 1000]]) {
+        const rawValue = row[field];
+        const value = Number(rawValue);
+        if (rawValue !== null && rawValue !== undefined && String(rawValue).trim() !== ""
+          && typeof rawValue !== "boolean" && Number.isInteger(value) && value >= 0 && value <= maximum) next[field] = value;
+      }
+      const expected = normalizeEvidenceDate(row.expected_completion_on, true);
+      if (expected) next.expected_completion_on = expected;
+      return next;
+    }
+    if (kind === "gpa") {
+      const metric = String(row.metric || "");
+      const value = Number(row.value);
+      const scale = Number(row.scale);
+      if (!["overall", "technical", "major"].includes(metric)
+        || row.value === null || row.value === undefined || String(row.value).trim() === ""
+        || row.scale === null || row.scale === undefined || String(row.scale).trim() === ""
+        || typeof row.value === "boolean" || typeof row.scale === "boolean"
+        || !Number.isFinite(value) || !Number.isFinite(scale) || value < 0 || value > 5 || scale < 1 || scale > 5 || value > scale) return null;
+      next.metric = metric;
+      next.value = value;
+      next.scale = scale;
+      const term = String(row.as_of_term || "").trim().slice(0, 40);
+      if (term) next.as_of_term = term;
+      return next;
+    }
+    if (kind === "credential") {
+      const credential = String(row.credential_id || "").trim().slice(0, 128);
+      if (!credential) return null;
+      next.credential_id = credential;
+      next.status = ["completed", "in_progress", "not_completed", "unknown"].includes(row.status) ? row.status : "unknown";
+      const scorePercent = Number(row.score_percent);
+      if (row.score_percent !== undefined && row.score_percent !== null && typeof row.score_percent !== "boolean"
+        && String(row.score_percent).trim() !== "" && Number.isFinite(scorePercent) && scorePercent >= 0 && scorePercent <= 100) next.score_percent = scorePercent;
+      const completed = normalizeEvidenceDate(row.completed_on);
+      if (completed) next.completed_on = completed;
+      return next;
+    }
+    return null;
+  }).filter(Boolean);
+}
+
 function normalizeAdmissionChoiceSelection(selection) {
   if (!selection || typeof selection !== "object" || Array.isArray(selection)) return null;
   const choiceKey = String(selection.choiceKey || selection.choice_key || "").trim();
-  if (!choiceKey) return null;
+  const studyOptionId = String(selection.studyOptionId || selection.study_option_id || "").trim();
+  const applicationRouteId = String(selection.applicationRouteId || selection.application_route_id || "").trim();
+  const legacyProgramId = String(selection.programId || selection.program_id || "").trim();
+  if (!choiceKey && !studyOptionId && !applicationRouteId && !legacyProgramId) return null;
 
   const knownChoiceKeys = new Set([
     "programId", "program_id",
+    "studyOptionId", "study_option_id", "applicationRouteId", "application_route_id",
+    "studyLevel", "study_level", "applicantRoute", "applicant_route",
+    "intendedEntryCycle", "intended_entry_cycle", "feeStatusContext", "fee_status_context",
     "programName", "program_name",
     "categoryId", "category_id",
     "requirementProfileId", "requirement_profile_id",
@@ -95,9 +194,25 @@ function normalizeAdmissionChoiceSelection(selection) {
       extraChoiceKeys[k] = v;
     }
   }
+  const studyLevelValue = selection.studyLevel ?? selection.study_level;
+  const studyLevel = studyLevelValue === "" ? "" : ["undergraduate", "masters", "doctoral", "professional"].includes(studyLevelValue) ? studyLevelValue : undefined;
+  const applicantRouteValue = selection.applicantRoute ?? selection.applicant_route;
+  const applicantRoute = applicantRouteValue === "" ? "" : ["first_year", "transfer", "graduate"].includes(applicantRouteValue) ? applicantRouteValue : undefined;
+  const cycleValue = selection.intendedEntryCycle ?? selection.intended_entry_cycle;
+  const intendedEntryCycle = typeof cycleValue === "string" ? cycleValue.trim().slice(0, 40) : undefined;
+  const feeStatusValue = selection.feeStatusContext ?? selection.fee_status_context;
+  const feeStatusContext = ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].includes(feeStatusValue)
+    ? feeStatusValue
+    : undefined;
 
   return {
     ...extraChoiceKeys,
+    ...(studyOptionId ? { studyOptionId: studyOptionId.slice(0, 128) } : {}),
+    ...(applicationRouteId ? { applicationRouteId: applicationRouteId.slice(0, 256) } : {}),
+    ...(studyLevel !== undefined ? { studyLevel } : {}),
+    ...(applicantRoute !== undefined ? { applicantRoute } : {}),
+    ...(intendedEntryCycle !== undefined ? { intendedEntryCycle } : {}),
+    ...(feeStatusContext !== undefined ? { feeStatusContext } : {}),
     programId: String(selection.programId || selection.program_id || "").trim(),
     programName: String(selection.programName || selection.program_name || "").trim(),
     categoryId: String(selection.categoryId || selection.category_id || "").trim(),
@@ -178,7 +293,41 @@ export function isLegacyProfile(raw) {
       }
     }
   }
+  const choices = raw.selectedAdmissionChoices && typeof raw.selectedAdmissionChoices === "object" && !Array.isArray(raw.selectedAdmissionChoices)
+    ? raw.selectedAdmissionChoices
+    : raw.selected_admission_choices;
+  if (choices && typeof choices === "object" && !Array.isArray(choices)) {
+    for (const [institutionId, choice] of Object.entries(choices)) {
+      if (ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS.has(institutionId)
+        && (isLegacyAdmissionChoice(choice) || (hasCanonicalAdmissionChoiceId(choice) && hasLegacyAdmissionChoiceFields(choice)))) return true;
+    }
+  }
   return false;
+}
+
+function isLegacyAdmissionChoice(choice) {
+  if (!choice || typeof choice !== "object" || Array.isArray(choice)) return false;
+  return !hasCanonicalAdmissionChoiceId(choice) && Boolean(String(choice.programId || choice.program_id || choice.choiceKey || choice.choice_key || "").trim());
+}
+
+function hasCanonicalAdmissionChoiceId(choice) {
+  return Boolean(String(choice?.studyOptionId || choice?.study_option_id || "").trim()
+    || String(choice?.applicationRouteId || choice?.application_route_id || "").trim());
+}
+
+function hasLegacyAdmissionChoiceFields(choice) {
+  if (!choice || typeof choice !== "object" || Array.isArray(choice)) return false;
+  return ["programId", "program_id", "programName", "program_name", "categoryId", "category_id", "requirementProfileId", "requirement_profile_id", "fundingOptionId", "funding_option_id", "choiceKey", "choice_key"]
+    .some((key) => key in choice);
+}
+
+function normalizeAdmissionChoiceForInstitution(institutionId, selection) {
+  if (ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS.has(institutionId) && !hasCanonicalAdmissionChoiceId(selection)) return null;
+  const normalized = normalizeAdmissionChoiceSelection(selection);
+  if (ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS.has(institutionId) && normalized) {
+    for (const key of ["programId", "programName", "categoryId", "requirementProfileId", "fundingOptionId", "choiceKey"]) delete normalized[key];
+  }
+  return normalized;
 }
 
 export function normalizeProfileData(profile) {
@@ -197,7 +346,9 @@ export function normalizeProfileData(profile) {
     "applicantRoute", "applicant_route", "intendedEntryCycle", "intended_entry_cycle",
     "currentResidenceCountry", "current_residence_country", "currentResidenceOther", "current_residence_other",
     "feeStatusContext", "fee_status_context",
+    "languageEvidence", "language_evidence", "institutionalEvidence", "institutional_evidence",
     "selectedAdmissionChoices", "selected_admission_choices",
+    "admissionChoiceResetNotices",
     "familyIncomeAmount", "familyIncomeCurrency",
   ]);
   const extraFields = {};
@@ -279,6 +430,8 @@ export function normalizeProfileData(profile) {
   const currentResidenceCountry = readOptionalString("currentResidenceCountry", "current_residence_country", 80);
   const currentResidenceOther = readOptionalString("currentResidenceOther", "current_residence_other", 80);
   const feeStatusContext = readOptionalString("feeStatusContext", "fee_status_context", 40) || "unknown";
+  const languageEvidence = normalizeLanguageEvidence(raw.languageEvidence ?? raw.language_evidence);
+  const institutionalEvidence = normalizeInstitutionalEvidence(raw.institutionalEvidence ?? raw.institutional_evidence);
 
   const interests = String(raw.interests ?? "").trim().slice(0, 1200);
 
@@ -292,9 +445,22 @@ export function normalizeProfileData(profile) {
     : (raw.selected_admission_choices && typeof raw.selected_admission_choices === "object" && !Array.isArray(raw.selected_admission_choices))
       ? raw.selected_admission_choices
       : {};
+  const admissionChoiceResetNotices = Array.isArray(raw.admissionChoiceResetNotices)
+    ? raw.admissionChoiceResetNotices.filter((id) => ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS.has(id))
+    : [];
+  const resetNotices = new Set(admissionChoiceResetNotices);
   const selectedAdmissionChoices = Object.fromEntries(
     Object.entries(rawChoices)
-      .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
+      .map(([universityId, selection]) => {
+        const institutionId = String(universityId || "").trim();
+        if (!isFutureProfile(raw) && ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS.has(institutionId) && isLegacyAdmissionChoice(selection)) {
+          resetNotices.add(institutionId);
+          return [institutionId, null];
+        }
+        return [institutionId, ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS.has(institutionId) && isFutureProfile(raw)
+          ? normalizeAdmissionChoiceSelection(selection)
+          : normalizeAdmissionChoiceForInstitution(institutionId, selection)];
+      })
       .filter(([universityId, selection]) => universityId && selection),
   );
 
@@ -327,7 +493,8 @@ export function normalizeProfileData(profile) {
     if (!rawId) return;
     const normalizedId = canonicalizeExamId(rawId);
     if (!normalizedId) return;
-    const key = canonicalProfileExamKey(normalizedId);
+    const takenOn = normalizeEvidenceDate(row.taken_on);
+    const key = `${canonicalProfileExamKey(normalizedId)}::${takenOn}`;
 
     if (String(normalizedId).toUpperCase() === "GPA") {
       if (normalizedGpa === null) normalizedGpa = clampGpa(row?.score);
@@ -349,7 +516,7 @@ export function normalizeProfileData(profile) {
     const score = Number.isFinite(clamped) ? clamped : null;
     if (score === null && !rawValue && !details) return;
 
-    const knownExamKeys = new Set(["id", "exam", "score", "raw_value", "rawValue", "display_value", "displayValue", "details"]);
+    const knownExamKeys = new Set(["id", "exam", "score", "raw_value", "rawValue", "display_value", "displayValue", "details", "taken_on"]);
     const extraExamKeys = {};
     for (const [k, v] of Object.entries(row)) {
       if (!knownExamKeys.has(k)) {
@@ -366,6 +533,7 @@ export function normalizeProfileData(profile) {
     if (rawValue) normalizedExam.raw_value = rawValue;
     if (displayValue) normalizedExam.display_value = displayValue;
     if (details) normalizedExam.details = details;
+    if (takenOn) normalizedExam.taken_on = takenOn;
 
     if (!dedupedExams.has(key)) {
       dedupedExams.set(key, normalizedExam);
@@ -393,7 +561,7 @@ export function normalizeProfileData(profile) {
       const kind = String(row?.kind || "").trim().toLowerCase();
       if (!code || !kind) return null;
 
-      const knownLangKeys = new Set(["code", "lang", "kind", "level", "exam", "examId", "score", "raw_value", "rawValue", "display_value", "displayValue", "details"]);
+      const knownLangKeys = new Set(["code", "lang", "kind", "level", "exam", "examId", "score", "raw_value", "rawValue", "display_value", "displayValue", "details", "taken_on"]);
       const extraLangKeys = {};
       for (const [k, v] of Object.entries(row)) {
         if (!knownLangKeys.has(k)) {
@@ -401,6 +569,7 @@ export function normalizeProfileData(profile) {
         }
       }
 
+      const takenOn = normalizeEvidenceDate(row.taken_on);
       if (kind === "native") return { ...extraLangKeys, code, kind: "native" };
       if (kind === "cefr") {
         const level = Number(row?.level);
@@ -430,6 +599,7 @@ export function normalizeProfileData(profile) {
       if (rawValue) next.raw_value = rawValue;
       if (displayValue) next.display_value = displayValue;
       if (details) next.details = details;
+      if (takenOn) next.taken_on = takenOn;
       return next;
     })
     .filter(Boolean);
@@ -462,6 +632,9 @@ export function normalizeProfileData(profile) {
     feeStatusContext,
     studyLevel: studyLevel || PROFILE_DEFAULTS.studyLevel,
     selectedAdmissionChoices,
+    admissionChoiceResetNotices: [...resetNotices],
+    languageEvidence,
+    institutionalEvidence,
   };
 }
 
@@ -557,6 +730,8 @@ export function loadProfileForApi() {
       if (rawValue) next.raw_value = rawValue;
       if (displayValue) next.display_value = displayValue;
       if (details) next.details = details;
+      const takenOn = normalizeEvidenceDate(row?.taken_on);
+      if (takenOn) next.taken_on = takenOn;
       return next;
     })
     .filter(Boolean);
@@ -566,6 +741,7 @@ export function loadProfileForApi() {
       const code = String(row?.code || row?.lang || "").trim().toLowerCase();
       const kind = String(row?.kind || "").trim().toLowerCase();
       if (!code || !kind) return null;
+      const takenOn = normalizeEvidenceDate(row?.taken_on);
       if (kind === "native") return { code, kind: "native" };
       if (kind === "cefr") {
         const level = Number(row?.level);
@@ -590,14 +766,21 @@ export function loadProfileForApi() {
       if (rawValue) next.raw_value = rawValue;
       if (displayValue) next.display_value = displayValue;
       if (details) next.details = details;
+      if (takenOn) next.taken_on = takenOn;
       return next;
     })
     .filter(Boolean);
 
+  payload.language_evidence = normalizeLanguageEvidence(profile?.languageEvidence ?? profile?.language_evidence);
+  payload.institutional_evidence = normalizeInstitutionalEvidence(profile?.institutionalEvidence ?? profile?.institutional_evidence);
+
   if (profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object" && !Array.isArray(profile.selectedAdmissionChoices)) {
     const choices = Object.fromEntries(
       Object.entries(profile.selectedAdmissionChoices)
-        .map(([universityId, selection]) => [String(universityId || "").trim(), normalizeAdmissionChoiceSelection(selection)])
+        .map(([universityId, selection]) => {
+          const institutionId = String(universityId || "").trim();
+          return [institutionId, normalizeAdmissionChoiceForInstitution(institutionId, selection)];
+        })
         .filter(([universityId, selection]) => universityId && selection),
     );
     if (Object.keys(choices).length) {
@@ -634,6 +817,10 @@ export function loadProfileForApi() {
 
 export function saveProfile(profile) {
   const normalized = normalizeProfileData(profile);
+  normalized.admissionChoiceResetNotices = normalized.admissionChoiceResetNotices.filter((institutionId) => {
+    const choice = normalized.selectedAdmissionChoices[institutionId];
+    return !(choice?.studyOptionId && choice?.applicationRouteId);
+  });
   profileMemoryFallback = normalized;
 
   // Future-version write protection:
@@ -682,7 +869,7 @@ export function getSelectedAdmissionChoice(universityId) {
 
 export function saveSelectedAdmissionChoice(universityId, selection) {
   const universityKey = String(universityId || "").trim();
-  if (!universityKey) return;
+  if (!universityKey) return false;
   const profile = normalizeProfileData(loadProfile());
   const selections = {
     ...(profile.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object" ? profile.selectedAdmissionChoices : {}),
@@ -691,7 +878,7 @@ export function saveSelectedAdmissionChoice(universityId, selection) {
   if (normalizedSelection) selections[universityKey] = normalizedSelection;
   else delete selections[universityKey];
   profile.selectedAdmissionChoices = selections;
-  saveProfile(profile);
+  return saveProfile(profile);
 }
 
 export function calculateProfileCompletion(rawProfile) {

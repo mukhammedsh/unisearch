@@ -60,7 +60,13 @@ export function initCustomSelect(selectId) {
 
   const popupId = customOptions.id || `custom-options-${selectId}`;
   customOptions.id = popupId;
-  const selectLabel = select.getAttribute("aria-label") || select.getAttribute("title") || select.name || "";
+  const getSelectLabel = () => {
+    const associatedLabel = Array.from(select.labels || [])
+      .map((label) => label.querySelector("[data-i18n]")?.textContent?.trim() || label.textContent?.trim())
+      .find(Boolean);
+    return select.getAttribute("aria-label") || select.getAttribute("title") || associatedLabel || select.name || "";
+  };
+  const selectLabel = getSelectLabel();
   const searchable = select.dataset.searchable === "true";
   let optionList = searchable ? customOptions.querySelector(".custom-select-option-list") : null;
   if (searchable && !optionList) {
@@ -280,7 +286,7 @@ export function initCustomSelect(selectId) {
     if (!selectedOption) return;
     const flag = showFlags ? getFlagImg(selectedOption.value) : "";
     if (isLanguageSelect) {
-      const shortLabel = ({ eng: "EN", rus: "RU" }[String(selectedOption.value || "").toLowerCase()] || String(selectedOption.value || "").toUpperCase() || selectedOption.text);
+      const shortLabel = ({ eng: "EN", rus: "RU", kaz: "KZ" }[String(selectedOption.value || "").toLowerCase()] || String(selectedOption.value || "").toUpperCase() || selectedOption.text);
       trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
       return;
     }
@@ -290,6 +296,12 @@ export function initCustomSelect(selectId) {
   }
 
   const syncFromNativeSelect = () => {
+    const currentLabel = getSelectLabel();
+    if (currentLabel) {
+      trigger.setAttribute("aria-label", currentLabel);
+      (optionList || customOptions).setAttribute("aria-label", currentLabel);
+      if (searchInput) searchInput.setAttribute("aria-label", select.dataset.searchPlaceholder || currentLabel);
+    }
     rebuildCustomOptions();
     updateTrigger();
     syncSelectedOptionState();
@@ -503,9 +515,10 @@ export function initCustomSelect(selectId) {
 
   if (!wrapper.__customSelectLanguageBound && typeof window !== "undefined") {
     wrapper.__customSelectLanguageBound = true;
-    window.addEventListener("languageChanged", () => {
+    wrapper.__customSelectLanguageHandler = () => {
       window.requestAnimationFrame(syncFromNativeSelect);
-    });
+    };
+    window.addEventListener("languageChanged", wrapper.__customSelectLanguageHandler);
   }
 
   if (!wrapper.__customSelectObserver && typeof MutationObserver === "function") {
@@ -521,6 +534,15 @@ export function initCustomSelect(selectId) {
   }
 
   syncFromNativeSelect();
+  return () => {
+    if (wrapper.__customSelectLanguageHandler) {
+      window.removeEventListener("languageChanged", wrapper.__customSelectLanguageHandler);
+      wrapper.__customSelectLanguageHandler = null;
+      wrapper.__customSelectLanguageBound = false;
+    }
+    wrapper.__customSelectObserver?.disconnect();
+    wrapper.__customSelectObserver = null;
+  };
 }
 
 export function setupSlidingIndicator(containerSelector, itemSelector, activeClass = "active") {

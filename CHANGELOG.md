@@ -2,20 +2,56 @@
 
 All notable project changes should be recorded here.
 
-## Unreleased
-
-### Added
-- Support GRE General Test section scores without inventing a total, alongside distinct current and legacy GMAT scales, throughout profile validation, persistence, and admissions evidence checks.
-- Add Cambridge C2 Proficiency as a distinct language certificate and validate the reported C1/C2 score ranges.
-- Show published requirement checks with the applicant's evidence, missing information, and assessment status in admission routes and UniFit card explanations.
+## 8.1.3 (2026-10-14) - Stable Admissions Browser State
 
 ### Fixed
-- Preserve unknown program, route, and cycle applicability instead of applying unrelated minimums or cost defaults; keep unsupported language checks and unassessed source conditions visible.
-- Preserve explicit empty program mappings during catalog loading so unlinked routes do not borrow other programs or their score data.
-- Distinguish unknown academic fit from a verified failure, scope funding badges to the selected route, and explain the actual annual cost, budget, and preference indicators used by recommendations.
-- Display published funding coverage instead of replacing every grant with a generic competitive-award claim.
-- Review MIT graduate and professional route policies against official sources, retain exceptions and conflicting or yearless facts explicitly, and extend the shared transfer mapping to all undergraduate study options.
+- Wait for the selected program's admissions context to finish before testing action states, and verify summary-action navigation separately from pressed-state contrast.
+- Use a patch version because this corrects E2E synchronization without changing user-visible behavior.
 
+## 8.1.2 (2026-10-14) - Stable University Interaction Checks
+
+### Fixed
+- Exercise reviewed university summary actions as real navigation clicks and wait for hover and pressed styles to paint before measuring contrast.
+- Use a patch version because this stabilizes browser regression checks without changing user-visible behavior.
+
+## 8.1.1 (2026-10-14) - Reference-First Browser Check Alignment
+
+### Fixed
+- Update university admissions browser checks to follow grouped fact disclosures and current localized copy, preventing stale expectations from failing the reviewed catalog journeys.
+- Use a patch version because this corrects regression checks without changing user-visible behavior.
+
+## 8.1.0 (2026-10-14) - Reference-First University Browsing
+
+### Added
+- Let guests browse reviewed MIT, Imperial College London and Stanford University programs and published application routes before choosing optional applicant context; retain each institution's selected program and route.
+- Show grouped admissions facts with clearer scope, periods, conditions, source labels and qualification tables.
+- Add a CI guard for undefined CSS custom properties and static JavaScript styling writes, plus visual regression coverage for the reviewed university journeys.
+
+### Changed
+- Align interface, accessibility and source-label copy across English, Russian and Kazakh; localize unknown values and raw application-route labels.
+- Refine shared design tokens, responsive layouts, light and dark theme contrast, and the brand preview.
+- Use a minor version because guests gain a browsing capability while existing saved state and API contracts remain compatible.
+
+## 8.0.0 (2026-10-14) - Reviewed Admissions Catalog and Kazakh Workspace
+
+### Added
+- Activate the reviewed MIT, Imperial College London and Stanford University catalog with official study options, actual application routes, scoped source facts, explicit unknowns and separate history.
+- Add paginated study-option search and request-local admissions-context APIs; support Kazakh search aliases while retaining official program names and source prose.
+- Add Kazakh interface and university localization alongside English and Russian, including the reviewed catalog, profile evidence, localized search and readable application dates.
+- Support six additional admissions exams, dated test attempts and typed education, language, enrollment, GPA and credential evidence; assess only reviewed source-bound checks.
+
+### Changed
+- Start the three reviewed university pages with the institution overview and program browsing; move application controls to Admission and make additional applicant settings and detailed checks optional disclosures.
+- Use the activated catalog in discovery, UniFit, saved choices and comparison without borrowing retired thresholds, unrelated costs or funding outcomes; label the other 47 institutions as awaiting review.
+- Refresh the About page, founder/contact layout, profile header and responsive catalog controls.
+- Establish a catalog-first research-before-update workflow for each university; preserve paused research outside runtime.
+- Use a major version because the three institutions replace their previous persisted catalog/API policy fields and reset old application and comparison pointers with a visible explanation. Preserve profile evidence and other institutions' choices.
+
+### Fixed
+- Honor intentionally cleared program, route and cycle fields instead of restoring saved defaults, and prevent superseded context/detail requests from overwriting newer navigation.
+- Accept valid saved SAT totals as self-reported test presence without inventing missing sections; keep unsupported or uncertain minimum checks unassessed.
+- Keep per-institution saved application contexts separate from general profile preferences, distinguish unavailable scores from verified failures, and retain exact source conditions, periods, currencies and links.
+- Preserve all canonical Kazakh subject aliases that share one translation, and align the new interface labels across all three languages.
 
 ## 7.2.4 (2026-10-08) - Validation and Reliability Fixes
 
@@ -1931,3 +1967,17 @@ Status:
 - Improved local LAN development ergonomics:
   - backend local startup now supports `BACKEND_HOST` and `BACKEND_PORT` from `backend/.env` instead of forcing `127.0.0.1`;
   - README and `backend/.env.example` now document how to allow another device on the same local network without committing a real LAN IP to Git.
+
+## Earlier unversioned admissions changes
+
+### Added
+- Support GRE General Test section scores without inventing a total, alongside distinct current and legacy GMAT scales, throughout profile validation, persistence, and admissions evidence checks.
+- Add Cambridge C2 Proficiency as a distinct language certificate and validate the reported C1/C2 score ranges.
+- Show published requirement checks with the applicant's evidence, missing information, and assessment status in admission routes and UniFit card explanations.
+
+### Fixed
+- Preserve unknown program, route, and cycle applicability instead of applying unrelated minimums or cost defaults; keep unsupported language checks and unassessed source conditions visible.
+- Preserve explicit empty program mappings during catalog loading so unlinked routes do not borrow other programs or their score data.
+- Distinguish unknown academic fit from a verified failure, scope funding badges to the selected route, and explain the actual annual cost, budget, and preference indicators used by recommendations.
+- Display published funding coverage instead of replacing every grant with a generic competitive-award claim.
+- Review MIT graduate and professional route policies against official sources, retain exceptions and conflicting or yearless facts explicitly, and extend the shared transfer mapping to all undergraduate study options.

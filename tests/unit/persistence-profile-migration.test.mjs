@@ -9,6 +9,7 @@ import {
   loadProfile,
   loadProfileForApi,
   saveProfile,
+  saveSelectedAdmissionChoice,
   clearProfile,
 } from '../../frontend/javascript/utils/persistence.js';
 
@@ -694,15 +695,15 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     test('fallback rule: legacy selected_admission_choices migrates when canonical is absent', () => {
       const p = normalizeProfileData({
         selected_admission_choices: {
-          'mit-usa-cambridge': {
+          'legacy-university': {
             choice_key: 'cs-grant',
             program_id: 'cs',
           },
         },
       });
 
-      assert.strictEqual(p.selectedAdmissionChoices['mit-usa-cambridge'].choiceKey, 'cs-grant');
-      assert.strictEqual(p.selectedAdmissionChoices['mit-usa-cambridge'].programId, 'cs');
+      assert.strictEqual(p.selectedAdmissionChoices['legacy-university'].choiceKey, 'cs-grant');
+      assert.strictEqual(p.selectedAdmissionChoices['legacy-university'].programId, 'cs');
       assert.strictEqual(p.selected_admission_choices, undefined);
     });
 
@@ -977,6 +978,229 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(choice.category_id, undefined, 'choice.category_id must NOT be present');
       assert.strictEqual(choice.requirement_profile_id, undefined, 'choice.requirement_profile_id must NOT be present');
       assert.strictEqual(choice.funding_option_id, undefined, 'choice.funding_option_id must NOT be present');
+    });
+  });
+
+  describe('accepted admissions evidence persistence', () => {
+    test('keeps major progress distinct from total degree units and never turns missing evidence into zero', () => {
+      const normalized = normalizeProfileData({ institutionalEvidence: [
+        { university_id: 'mit-usa-cambridge', kind: 'enrollment', status: 'enrolled', program_id: 'mit-bs-6-9', units: 200, major_units: 102, completed_major_subjects: 9 },
+        { university_id: 'mit-usa-cambridge', kind: 'enrollment', units: null, major_units: '', completed_major_subjects: 0 },
+        { university_id: 'mit-usa-cambridge', kind: 'gpa', metric: 'technical', value: '', scale: 5 },
+        { university_id: 'mit-usa-cambridge', kind: 'credential', credential_id: 'sc0x-course-credential', score_percent: '' },
+      ] });
+      assert.strictEqual(normalized.institutionalEvidence[0].units, 200);
+      assert.strictEqual(normalized.institutionalEvidence[0].major_units, 102);
+      assert.strictEqual(normalized.institutionalEvidence[0].completed_major_subjects, 9);
+      assert.strictEqual(normalized.institutionalEvidence[1].units, undefined);
+      assert.strictEqual(normalized.institutionalEvidence[1].major_units, undefined);
+      assert.strictEqual(normalized.institutionalEvidence[1].completed_major_subjects, 0);
+      assert.strictEqual(normalized.institutionalEvidence[2].kind, 'credential');
+      assert.strictEqual(normalized.institutionalEvidence[2].score_percent, undefined);
+      saveProfile(normalized);
+      assert.deepStrictEqual(loadProfileForApi().institutional_evidence, normalized.institutionalEvidence);
+    });
+    test('retains dated test attempts while preserving undated legacy best-score deduplication', () => {
+      const profile = normalizeProfileData({
+        exams: [
+          { exam: 'IELTS', score: 6.5, taken_on: '2025-01-10' },
+          { exam: 'IELTS', score: 7.0, taken_on: '2025-08-20' },
+          { exam: 'IELTS', score: 7.5, taken_on: '2025-08-20' },
+          { exam: 'IELTS', score: 6.0 },
+          { exam: 'IELTS', score: 6.5 },
+        ],
+      });
+
+      assert.deepStrictEqual(profile.exams.map((row) => [row.taken_on || '', row.score]), [
+        ['2025-01-10', 6.5],
+        ['2025-08-20', 7.5],
+        ['', 6.5],
+      ]);
+    });
+
+    test('round-trips test dates and bounded evidence records from local profile to API payload', () => {
+      saveProfile({
+        exams: [{ exam: 'TOEFL', score: 4.5, taken_on: '2026-03-01' }],
+        languages: [{ code: 'en', kind: 'exam', exam: 'TOEFL', score: 4.5, taken_on: '2026-03-01' }],
+        languageEvidence: [{
+          kind: 'education', language: 'en', country: 'Canada', qualification_level: 'bachelor',
+          started_on: '2022-09-01', completed_on: '2026-05-20', status: 'completed', entirely_in_language: true,
+        }],
+        institutionalEvidence: [
+          { university_id: 'mit-usa-cambridge', kind: 'gpa', program_id: 'mit-bs-6-9', metric: 'technical', value: 4.25, scale: 5, as_of_term: 'Spring 2026' },
+          { university_id: 'mit-usa-cambridge', kind: 'credential', credential_id: 'mitx-dedp-micromasters', status: 'completed', completed_on: '2026-05-20' },
+          { university_id: 'mit-usa-cambridge', kind: 'credential', credential_id: 'sc0x-course-credential', status: 'completed', score_percent: 86, completed_on: '2026-05-20' },
+        ],
+        selectedAdmissionChoices: {
+          'stanford-university-usa-ca': {
+            choiceKey: 'route::option', studyOptionId: 'stanford-option-cs-ms',
+            applicationRouteId: 'directory-evidence:stanford-graduate-cs-ms',
+          },
+        },
+      });
+
+      const local = loadProfile();
+      const payload = loadProfileForApi();
+      assert.strictEqual(local.exams[0].taken_on, '2026-03-01');
+      assert.strictEqual(local.languages[0].taken_on, '2026-03-01');
+      assert.strictEqual(payload.exams[0].taken_on, '2026-03-01');
+      assert.strictEqual(payload.languages[0].taken_on, '2026-03-01');
+      assert.deepStrictEqual(payload.language_evidence, local.languageEvidence);
+      assert.deepStrictEqual(payload.institutional_evidence, local.institutionalEvidence);
+      assert.strictEqual(payload.institutional_evidence[2].score_percent, 86);
+      assert.strictEqual(payload.selectedAdmissionChoices['stanford-university-usa-ca'].studyOptionId, 'stanford-option-cs-ms');
+      assert.strictEqual(payload.selectedAdmissionChoices['stanford-university-usa-ca'].applicationRouteId, 'directory-evidence:stanford-graduate-cs-ms');
+    });
+
+    test('resets only legacy choices for the accepted institutions and persists visible notices', () => {
+      const rawProfile = {
+        _v: 2,
+        budget: 12500,
+        exams: [{ exam: 'IELTS', score: 7.5, taken_on: '2026-03-01' }],
+        languages: [{ code: 'en', kind: 'exam', exam: 'IELTS', score: 7.5, taken_on: '2026-03-01' }],
+        languageEvidence: [{ kind: 'education', language: 'en', country: 'Canada', status: 'completed' }],
+        institutionalEvidence: [{ university_id: 'mit-usa-cambridge', kind: 'credential', credential_id: 'mitx-dedp-micromasters', status: 'completed' }],
+        selectedAdmissionChoices: {
+          'mit-usa-cambridge': { programId: 'legacy-mit-program', choiceKey: 'legacy-mit-choice' },
+          'imperial-college-london-uk': { program_id: 'legacy-imperial-program', choice_key: 'legacy-imperial-choice' },
+          'stanford-university-usa-ca': { programId: 'legacy-stanford-program', choiceKey: 'legacy-stanford-choice' },
+          'unaccepted-university': { programId: 'keep-this-choice', choiceKey: 'keep-this-choice' },
+          'canonical-university': { study_option_id: 'unknown-option', application_route_id: 'unknown-route', programId: 'old-extra' },
+        },
+      };
+      mockStore.unisearch_profile = JSON.stringify(rawProfile);
+
+      const loaded = loadProfile();
+      assert.deepStrictEqual(loaded.admissionChoiceResetNotices, [
+        'mit-usa-cambridge', 'imperial-college-london-uk', 'stanford-university-usa-ca',
+      ]);
+      assert.deepStrictEqual(Object.keys(loaded.selectedAdmissionChoices), ['unaccepted-university', 'canonical-university']);
+      assert.strictEqual(loaded.selectedAdmissionChoices['canonical-university'].studyOptionId, 'unknown-option');
+      assert.strictEqual(loaded.selectedAdmissionChoices['canonical-university'].applicationRouteId, 'unknown-route');
+      assert.strictEqual(loaded.selectedAdmissionChoices['canonical-university'].programId, 'old-extra');
+      assert.strictEqual(loaded._v, 2);
+      assert.deepStrictEqual(loaded.exams, normalizeProfileData(rawProfile).exams);
+      assert.deepStrictEqual(loaded.languages, normalizeProfileData(rawProfile).languages);
+      assert.deepStrictEqual(loaded.languageEvidence, normalizeProfileData(rawProfile).languageEvidence);
+      assert.deepStrictEqual(loaded.institutionalEvidence, normalizeProfileData(rawProfile).institutionalEvidence);
+      assert.strictEqual(loaded.budget, 12500);
+      assert.strictEqual(isLegacyProfile(JSON.parse(mockStore.unisearch_profile)), false);
+      assert.deepStrictEqual(loadProfile().admissionChoiceResetNotices, loaded.admissionChoiceResetNotices);
+
+      const payload = loadProfileForApi();
+      assert.strictEqual(payload.admissionChoiceResetNotices, undefined);
+      assert.strictEqual(payload.selectedAdmissionChoices['mit-usa-cambridge'], undefined);
+      assert.strictEqual(payload.selectedAdmissionChoices['canonical-university'].studyOptionId, 'unknown-option');
+      assert.strictEqual(payload.selectedAdmissionChoices['canonical-university'].applicationRouteId, 'unknown-route');
+    });
+
+    test('keeps accepted canonical IDs and strips legacy choice fields during the one-time migration', () => {
+      mockStore.unisearch_profile = JSON.stringify({
+        _v: 2,
+        studyLevel: 'masters',
+        applicantRoute: 'graduate',
+        intendedEntryCycle: '2027',
+        feeStatusContext: 'self_reported_international_overseas',
+        selectedAdmissionChoices: {
+          'mit-usa-cambridge': {
+            studyOptionId: 'unknown-option', applicationRouteId: 'unknown-route',
+            programId: 'stale-program', programName: 'Stale title', choiceKey: 'stale-choice',
+            studyLevel: 'undergraduate', applicantRoute: '', intendedEntryCycle: '', feeStatusContext: 'unknown',
+          },
+        },
+      });
+
+      const loaded = loadProfile();
+      const choice = loaded.selectedAdmissionChoices['mit-usa-cambridge'];
+      assert.strictEqual(choice.studyOptionId, 'unknown-option');
+      assert.strictEqual(choice.applicationRouteId, 'unknown-route');
+      assert.strictEqual(choice.programId, undefined);
+      assert.strictEqual(choice.programName, undefined);
+      assert.strictEqual(choice.choiceKey, undefined);
+      assert.strictEqual(choice.studyLevel, 'undergraduate');
+      assert.strictEqual(choice.applicantRoute, '');
+      assert.strictEqual(choice.intendedEntryCycle, '');
+      assert.strictEqual(choice.feeStatusContext, 'unknown');
+      assert.strictEqual(loaded.studyLevel, 'masters');
+      assert.strictEqual(loaded.applicantRoute, 'graduate');
+      assert.deepStrictEqual(loaded.admissionChoiceResetNotices, []);
+      assert.strictEqual(isLegacyProfile(JSON.parse(mockStore.unisearch_profile)), false);
+      const payload = loadProfileForApi();
+      assert.strictEqual(payload.selectedAdmissionChoices['mit-usa-cambridge'].studyLevel, 'undergraduate');
+      assert.strictEqual(payload.selectedAdmissionChoices['mit-usa-cambridge'].applicantRoute, '');
+      assert.strictEqual(payload.selectedAdmissionChoices['mit-usa-cambridge'].intendedEntryCycle, '');
+      assert.strictEqual(payload.selectedAdmissionChoices['mit-usa-cambridge'].feeStatusContext, 'unknown');
+      assert.strictEqual(payload.admissionChoiceResetNotices, undefined);
+    });
+
+    test('normalizes optional per-choice admission context aliases without inheriting global values', () => {
+      saveProfile({
+        studyLevel: 'masters', applicantRoute: 'graduate', intendedEntryCycle: '2028',
+        feeStatusContext: 'self_reported_home_domestic',
+        selectedAdmissionChoices: {
+          'stanford-university-usa-ca': {
+            study_option_id: 'stanford-option', application_route_id: 'stanford-route',
+            study_level: '', applicant_route: 'transfer', intended_entry_cycle: '',
+            fee_status_context: 'other',
+          },
+        },
+      });
+
+      const profile = loadProfile();
+      const choice = profile.selectedAdmissionChoices['stanford-university-usa-ca'];
+      assert.strictEqual(choice.studyLevel, '');
+      assert.strictEqual(choice.applicantRoute, 'transfer');
+      assert.strictEqual(choice.intendedEntryCycle, '');
+      assert.strictEqual(choice.feeStatusContext, 'other');
+      assert.strictEqual(profile.studyLevel, 'masters');
+      assert.strictEqual(profile.applicantRoute, 'graduate');
+      const payloadChoice = loadProfileForApi().selectedAdmissionChoices['stanford-university-usa-ca'];
+      assert.deepStrictEqual(payloadChoice, choice);
+    });
+
+    test('clears a reset notice only after saving a complete canonical choice', () => {
+      saveProfile({
+        admissionChoiceResetNotices: ['mit-usa-cambridge'],
+        selectedAdmissionChoices: {},
+      });
+      saveProfile({
+        ...loadProfile(),
+        selectedAdmissionChoices: {
+          'mit-usa-cambridge': { studyOptionId: 'mit-option', applicationRouteId: 'mit-route' },
+        },
+      });
+
+      assert.deepStrictEqual(loadProfile().admissionChoiceResetNotices, []);
+      assert.deepStrictEqual(loadProfileForApi().admissionChoiceResetNotices, undefined);
+    });
+
+    test('reports selection persistence and keeps per-choice context separate from global profile context', () => {
+      saveProfile({
+        studyLevel: 'masters', applicantRoute: 'graduate', intendedEntryCycle: '2028',
+        feeStatusContext: 'self_reported_international_overseas',
+        admissionChoiceResetNotices: ['mit-usa-cambridge'],
+      });
+      assert.strictEqual(saveSelectedAdmissionChoice('mit-usa-cambridge', {
+        studyOptionId: 'mit-option', applicationRouteId: 'mit-route',
+        studyLevel: 'undergraduate', applicantRoute: 'first_year', intendedEntryCycle: '2027',
+        feeStatusContext: 'unknown',
+      }), true);
+      assert.strictEqual(saveSelectedAdmissionChoice('', {}), false);
+
+      let profile = loadProfile();
+      assert.strictEqual(profile.studyLevel, 'masters');
+      assert.strictEqual(profile.applicantRoute, 'graduate');
+      assert.strictEqual(profile.selectedAdmissionChoices['mit-usa-cambridge'].studyLevel, 'undergraduate');
+      assert.deepStrictEqual(profile.admissionChoiceResetNotices, []);
+
+      global.window.localStorage.setItem = () => { throw new Error('QuotaExceededError'); };
+      assert.strictEqual(saveSelectedAdmissionChoice('mit-usa-cambridge', {
+        studyOptionId: 'mit-option-2', applicationRouteId: 'mit-route-2',
+      }), false);
+      profile = loadProfile();
+      assert.strictEqual(profile.selectedAdmissionChoices['mit-usa-cambridge'].studyOptionId, 'mit-option-2');
+      assert.strictEqual(profile.studyLevel, 'masters');
+      assert.strictEqual(profile.applicantRoute, 'graduate');
     });
   });
 });

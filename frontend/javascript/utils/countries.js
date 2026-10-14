@@ -17,13 +17,13 @@ VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW
 export function getCountryName(code, language = "eng") {
   const normalized = String(code || "").trim().toUpperCase();
   if (!COUNTRY_CODES.includes(normalized)) return String(code || "").trim();
-  const locale = language === "rus" ? "ru-RU" : "en-US";
+  const locale = language === "rus" ? "ru-RU" : language === "kaz" ? "kk-KZ" : "en-US";
   const name = new Intl.DisplayNames([locale], { type: "region" }).of(normalized);
   return name && name !== normalized ? name : normalized;
 }
 
 export function getCountryOptions(language = "eng") {
-  const locale = language === "rus" ? "ru-RU" : "en-US";
+  const locale = language === "rus" ? "ru-RU" : language === "kaz" ? "kk-KZ" : "en-US";
   const collator = new Intl.Collator(locale, { sensitivity: "base" });
   return COUNTRY_CODES.map((code) => ({ code, name: getCountryName(code, language) }))
     .sort((a, b) => collator.compare(a.name, b.name));

@@ -4,13 +4,11 @@ import json
 import unittest
 from urllib.parse import urlparse
 
+from app.services import admissions_catalog
 from scripts.audit_universities_data import DEFAULT_DATA_PATH
 
 
-TOP_FIVE = {
-    "mit-usa-cambridge": {"mit.edu", "mitadmissions.org"},
-    "imperial-college-london-uk": {"imperial.ac.uk"},
-    "stanford-university-usa-ca": {"stanford.edu"},
+LEGACY_GUIDANCE = {
     "harvard-usa-cambridge": {"harvard.edu"},
     "university-of-oxford-uk-oxford": {"ox.ac.uk"},
 }
@@ -22,8 +20,8 @@ class QualificationGuidanceDataTests(unittest.TestCase):
         rows = json.loads(DEFAULT_DATA_PATH.read_text(encoding="utf-8"))
         cls.universities = {row["id"]: row for row in rows}
 
-    def test_top_five_guidance_has_cycle_sources_and_valid_statuses(self) -> None:
-        for university_id, domains in TOP_FIVE.items():
+    def test_legacy_guidance_has_cycle_sources_and_valid_statuses(self) -> None:
+        for university_id, domains in LEGACY_GUIDANCE.items():
             guidance = self.universities[university_id].get("qualification_guidance")
             self.assertIsInstance(guidance, dict, university_id)
             self.assertTrue(guidance.get("verified_at"), university_id)
@@ -54,10 +52,40 @@ class QualificationGuidanceDataTests(unittest.TestCase):
         self.assertEqual(["first_year"], ib["applicant_routes"])
 
     def test_us_context_examples_never_claim_country_level_acceptance(self) -> None:
-        for university_id in ("mit-usa-cambridge", "stanford-university-usa-ca", "harvard-usa-cambridge"):
-            rules = self.universities[university_id]["qualification_guidance"]["rules"]
-            self.assertTrue(rules)
-            self.assertTrue(all(row["status"] == "needs_review" for row in rules), university_id)
+        rules = self.universities["harvard-usa-cambridge"]["qualification_guidance"]["rules"]
+        self.assertTrue(rules)
+        self.assertTrue(all(row["status"] == "needs_review" for row in rules))
+
+    def test_stanford_kazakhstan_qualification_stays_source_bound_and_unassessed(self) -> None:
+        resolved = admissions_catalog.resolve_context(
+            "stanford-university-usa-ca",
+            context={
+                "study_option_id": "stanford-option-cs-bs",
+                "application_route_id": "undergraduate-shared-evidence:stanford-first-year",
+                "study_level": "undergraduate",
+                "applicant_route": "international",
+                "intended_entry_cycle": "Autumn 2027",
+            },
+        )
+        fact = next(
+            row for row in resolved["facts"]
+            if row["id"] == "undergraduate-shared-evidence:stanford-kazakhstan-undergraduate-credential-equivalence"
+        )
+        self.assertEqual("conditional", fact["applicability"]["status"])
+        self.assertEqual(
+            [
+                "undergraduate-shared-evidence:stanford-ug-international",
+                "undergraduate-shared-evidence:stanford-ug-transfer-eligibility",
+                "undergraduate-shared-evidence:stanford-ug-transfer-records",
+            ],
+            fact["source_ids"],
+        )
+        self.assertIn("No Stanford-owned public country-specific admissions equivalency table", fact["value"])
+        self.assertFalse(any(key in fact for key in ("accepted", "not_accepted", "minimum")))
+        sources = {row["id"]: row for row in resolved["sources"]}
+        for source_id in fact["source_ids"]:
+            host = urlparse(sources[source_id]["url"]).hostname or ""
+            self.assertTrue(host == "stanford.edu" or host.endswith(".stanford.edu"), sources[source_id]["url"])
 
 
 if __name__ == "__main__":

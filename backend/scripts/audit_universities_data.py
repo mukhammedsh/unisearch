@@ -27,6 +27,29 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
+DEFAULT_ADMISSIONS_CATALOG_PATH = ROOT / "backend" / "data" / "admissions" / "catalog.json"
+DEFAULT_ADMISSIONS_HISTORY_PATH = ROOT / "backend" / "data" / "history" / "admissions-cutover-2026-10-13.json"
+ACCEPTED_ADMISSIONS_IDS = {
+    "mit-usa-cambridge",
+    "imperial-college-london-uk",
+    "stanford-university-usa-ca",
+}
+RETIRED_ADMISSIONS_KEYS = {
+    "academics",
+    "admission_categories",
+    "finance",
+    "requirements",
+    "qualification_guidance",
+    "admission_portals",
+    "fellowships_and_grants",
+}
+EXPECTED_ADMISSIONS_TOTALS = {
+    "study_options": 805,
+    "application_routes": 849,
+    "facts": 3578,
+    "sources": 1496,
+}
+ADMISSIONS_HISTORY_STATUS = "retired_runtime_history_not_reviewed"
 REQUIRED_TOP_LEVEL_KEYS = (
     "id",
     "name",
@@ -731,6 +754,74 @@ def _audit_top_five_pilot(errors: List[str], uid: str, university: Dict[str, Any
     _audit_scoped_fact_contract(errors, uid, university)
 
 
+def _audit_active_admissions_catalog(errors: List[str]) -> None:
+    """Reuse the runtime loader so active membership and scoped references stay in sync."""
+    backend_path = str(ROOT / "backend")
+    if backend_path not in sys.path:
+        sys.path.insert(0, backend_path)
+    try:
+        from app.services import admissions_catalog
+
+        admissions_catalog.CATALOG_PATH = DEFAULT_ADMISSIONS_CATALOG_PATH
+        admissions_catalog.clear_cache()
+        cached = admissions_catalog._load()
+    except Exception as exc:
+        errors.append(f"Admissions catalog failed runtime validation: {exc}")
+        return
+
+    totals = {
+        key: sum(len(institution[key]) for institution in cached["indexes"].values())
+        for key in EXPECTED_ADMISSIONS_TOTALS
+    }
+    if totals != EXPECTED_ADMISSIONS_TOTALS:
+        errors.append(f"Admissions catalog counts do not match the accepted snapshot: {totals}")
+
+
+def _audit_admissions_cutover(errors: List[str], universities: List[Any]) -> None:
+    current = {
+        row.get("id"): row for row in universities
+        if isinstance(row, dict) and row.get("id") in ACCEPTED_ADMISSIONS_IDS
+    }
+    if set(current) != ACCEPTED_ADMISSIONS_IDS:
+        errors.append("University dataset must contain exactly the three accepted admissions institutions")
+
+    try:
+        archive = json.loads(DEFAULT_ADMISSIONS_HISTORY_PATH.read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"Admissions cutover history failed to read: {exc}")
+        return
+    if not isinstance(archive, dict) or archive.get("runtime_active") is not False or archive.get("status") != ADMISSIONS_HISTORY_STATUS:
+        errors.append("Admissions cutover history must remain inactive and marked not reviewed")
+        return
+    records = archive.get("records")
+    if not isinstance(records, list):
+        errors.append("Admissions cutover history records must be a list")
+        return
+    if len(records) != len(ACCEPTED_ADMISSIONS_IDS):
+        errors.append("Admissions cutover history must contain exactly the three retired records")
+        return
+    archived = {
+        row.get("id"): row for row in records
+        if isinstance(row, dict) and row.get("id") in ACCEPTED_ADMISSIONS_IDS
+    }
+    if set(archived) != ACCEPTED_ADMISSIONS_IDS:
+        errors.append("Admissions cutover history must preserve all three pre-cutover records")
+        return
+
+    for uid in ACCEPTED_ADMISSIONS_IDS:
+        row = current.get(uid)
+        if row is None:
+            continue
+        if row.get("admissions_catalog_id") != uid:
+            errors.append(f"{uid}: admissions_catalog_id must point to its accepted catalog record")
+
+
+def _audit_retired_admissions_fields(errors: List[str], uid: str, row: Dict[str, Any]) -> None:
+    for key in RETIRED_ADMISSIONS_KEYS:
+        if key in row:
+            errors.append(f"{uid}: retired legacy admissions key '{key}' must be absent")
+
+
 VALID_FACT_STATUSES = {
     "official",
     "official_direct",
@@ -946,6 +1037,9 @@ def audit_dataset(
     if not payload:
         return ["Dataset is empty"], warnings
 
+    _audit_active_admissions_catalog(errors)
+    _audit_admissions_cutover(errors, payload)
+
     ids = Counter(str(row.get("id") or "").strip() for row in payload if isinstance(row, dict))
     duplicate_ids = [uid for uid, count in ids.items() if uid and count > 1]
     if duplicate_ids:
@@ -958,7 +1052,12 @@ def audit_dataset(
 
         uid = str(row.get("id") or f"row_{idx}").strip() or f"row_{idx}"
 
-        for key in REQUIRED_TOP_LEVEL_KEYS:
+        required_keys = REQUIRED_TOP_LEVEL_KEYS
+        if uid in ACCEPTED_ADMISSIONS_IDS:
+            required_keys = tuple(key for key in REQUIRED_TOP_LEVEL_KEYS if key not in RETIRED_ADMISSIONS_KEYS)
+            _audit_retired_admissions_fields(errors, uid, row)
+
+        for key in required_keys:
             if key not in row:
                 errors.append(f"{uid}: missing top-level key '{key}'")
 
@@ -1044,7 +1143,9 @@ def audit_dataset(
                 )
 
         academics = row.get("academics")
-        if not isinstance(academics, dict):
+        if uid in ACCEPTED_ADMISSIONS_IDS:
+            academics = None
+        elif not isinstance(academics, dict):
             errors.append(f"{uid}: academics must be object")
         else:
             programs = academics.get("programs")
@@ -1128,7 +1229,9 @@ def audit_dataset(
                 errors.append(f"{uid}: academics.major_tags must be a list when present")
 
         finance = row.get("finance")
-        if not isinstance(finance, dict):
+        if uid in ACCEPTED_ADMISSIONS_IDS:
+            finance = None
+        elif not isinstance(finance, dict):
             errors.append(f"{uid}: finance must be object")
         else:
             total_cost = finance.get("total_cost_year_usd")
@@ -1139,7 +1242,9 @@ def audit_dataset(
             _audit_one_time_costs(errors, uid, finance)
 
         categories = row.get("admission_categories")
-        if not isinstance(categories, list) or not categories:
+        if uid in ACCEPTED_ADMISSIONS_IDS:
+            categories = None
+        elif not isinstance(categories, list) or not categories:
             errors.append(f"{uid}: admission_categories is missing or empty")
         else:
             for c_idx, category in enumerate(categories):
@@ -1237,7 +1342,8 @@ def audit_dataset(
                         if f_type not in ("grant", "paid"):
                             warnings.append(f"{uid}: admission_categories[{c_idx}].requirement_profiles[{p_idx}].funding_options[{f_idx}].funding_type is '{f_type or 'empty'}'")
 
-        _audit_top_five_pilot(errors, uid, row)
+        if uid not in ACCEPTED_ADMISSIONS_IDS:
+            _audit_top_five_pilot(errors, uid, row)
 
         fact_provenance = row.get("fact_provenance")
         if not isinstance(fact_provenance, dict):

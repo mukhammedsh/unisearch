@@ -17,6 +17,7 @@ import { bindInfoTooltips } from "../../tooltip.js";
 import { initUniversityTranslations } from "../../university-translations.js";
 import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
+import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
 import {
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
@@ -44,6 +45,8 @@ let detailLanguageFinishedHandler = null;
 let detailCurrencyChangedHandler = null;
 let detailOnlineReconnectHandler = null;
 let detailPopStateHandler = null;
+let detailAdmissionsCleanup = null;
+let detailPageVersion = 0;
 
 function clearDetailLanguageSkeletons() {
   const card = document.getElementById("detailCard");
@@ -100,6 +103,8 @@ function thumbnailBackgroundImage(universityId) {
 }
 
 function cleanupDetailListeners() {
+  detailAdmissionsCleanup?.();
+  detailAdmissionsCleanup = null;
   if (detailProfileUpdatedHandler) {
     window.removeEventListener("profileUpdated", detailProfileUpdatedHandler);
     detailProfileUpdatedHandler = null;
@@ -248,6 +253,7 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
 }
 
 export async function initUniversityPage(options = {}) {
+  const pageVersion = ++detailPageVersion;
   const preserveVisibleContent = options.preserveVisibleContent === true;
   const id = extractUniversityIdFromLocation(window.location);
   rememberRecentUniversity(id);
@@ -282,9 +288,50 @@ export async function initUniversityPage(options = {}) {
       fetchUniversityDetailCached(id),
       initUniversityTranslations().catch(() => null),
     ]);
+    if (pageVersion !== detailPageVersion) return;
     const universityId = String(university.id || id);
-    document.body.classList.toggle("university--mit", universityId === "mit-usa-cambridge");
+    document.body.classList.toggle("university--reviewed", REVIEWED_ADMISSIONS_IDS.has(universityId));
     rememberRecentUniversity(universityId);
+
+    if (REVIEWED_ADMISSIONS_IDS.has(universityId)) {
+      if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
+      const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
+      const nameEl = document.getElementById("detailName");
+      nameEl.removeAttribute("data-i18n");
+      nameEl.textContent = translatedName;
+      renderDetailLocation(university, trCity(university?.location?.city), trCountry(university?.location?.country));
+      bindDetailActions({ id, minPrice: undefined, translatedName, university, universityId });
+      renderExtraSection({ container: document.getElementById("detailExtra"), university });
+      const rankStatus = String(university.rank_meta?.status || "").trim().toLowerCase();
+      const rankValue = toFiniteNumber(university.rank);
+      renderOverviewSection({
+        container: document.getElementById("detailRecommendations"), university, rankStatus,
+        officialRank: rankValue !== null && rankValue > 0 && rankStatus === "official", includeAdmissionRate: false,
+      });
+      const mounted = mountAdmissionsCatalog(universityId);
+      detailAdmissionsCleanup = mounted.dispose;
+      if (cardEl) {
+        cardEl.style.display = "block";
+        cardEl.classList.add("is-mounted");
+      }
+      setupTabs();
+      const initialUrl = new URL(window.location.href);
+      const initialTab = initialUrl.searchParams.get("admission_application_route") ? "admission"
+        : initialUrl.searchParams.get("admission_option") ? "programs" : "general";
+      if (!preserveVisibleContent) document.querySelector(`[data-tab="tab-${initialTab}"]`).click();
+      bindDetailRefreshLifecycle();
+      await mounted.ready;
+      return;
+    }
+
+    let reviewNotice = document.getElementById("catalogReviewNotice");
+    if (!reviewNotice) {
+      reviewNotice = document.createElement("div");
+      reviewNotice.id = "catalogReviewNotice";
+      reviewNotice.className = "d-head";
+      cardEl.querySelector(".d-tabs").before(reviewNotice);
+    }
+    reviewNotice.innerHTML = `<p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>`;
 
     const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
       ? university.academics.admissions
@@ -518,6 +565,27 @@ export async function initUniversityPage(options = {}) {
     }
     setupTabs();
 
+    bindDetailRefreshLifecycle();
+  } catch (error) {
+    if (pageVersion !== detailPageVersion) return;
+    console.error(error);
+    if (stateEl) {
+      const classified = classifyError(error);
+      renderErrorScreen({
+        type: classified.type,
+        containerId: stateEl.id,
+        onRetry: () => initUniversityPage(),
+      });
+    }
+  } finally {
+    if (pageVersion === detailPageVersion) {
+      setDetailLoading(false);
+      if (preserveVisibleContent) clearDetailLanguageSkeletons();
+    }
+  }
+}
+
+function bindDetailRefreshLifecycle() {
     const onDetailLanguageChanged = (event) => {
       detailLanguageChangedHandler = null;
       const refreshPromise = (async () => {
@@ -548,18 +616,9 @@ export async function initUniversityPage(options = {}) {
     };
     detailOnlineReconnectHandler = onDetailOnlineReconnect;
     window.addEventListener("app:online-reconnect", onDetailOnlineReconnect, { once: true });
-  } catch (error) {
-    console.error(error);
-    if (stateEl) {
-      const classified = classifyError(error);
-      renderErrorScreen({
-        type: classified.type,
-        containerId: stateEl.id,
-        onRetry: () => initUniversityPage(),
-      });
-    }
-  } finally {
-    setDetailLoading(false);
-    if (preserveVisibleContent) clearDetailLanguageSkeletons();
-  }
+}
+
+export function disposeUniversityPage() {
+  detailPageVersion += 1;
+  cleanupDetailListeners();
 }

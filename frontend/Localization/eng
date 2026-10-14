@@ -15,28 +15,22 @@ base_cost_before_grant: Base Cost (before grant)
 admission.track.funding_options: Funding options
 admission.track.options_count: {count} funding options
 extra_requirements: Extra requirements
-about.bio.lead: Leads core development and turns the product vision into reliable, maintainable software.
-about.bio.planning: Leads the product's UI/UX direction and keeps the experience clear, focused, and practical.
+about.bio.lead: Oversees the backend, database, and internal systems, and sets the project's direction.
+about.bio.planning: Develops the entire user interface and leads testing for the service.
 about.contact.email: Email
 about.contact.github: GitHub
-about.contact_kicker: Contact
-about.contact_title: Contact us
-about.email_note: Main contact for project questions.
-about.eyebrow: About Us
-about.github_note: Code, commits, and project updates.
-about.lead: Our goal is to make university discovery clearer, easier, and more practical for real application planning.
+about.contact.telegram: Telegram
+about.contact.title: Contact us
+about.contact.email_value: unisearch.sup@gmail.com
+about.contact.telegram_value: @unisearch_kz
+about.evolution: After the project did not pass the selection at an olympiad, we reconsidered its direction. Instead of an assistant with unreliable advice, we focused on UniSearch as a tool that makes information easy to access and suggests suitable options. Eight months later, we continue to actively maintain UniSearch.
 about.name.lead: Mukhammed Shabdaluly
 about.name.planning: Yerbolat Rashidov
-about.proof.product.body: Less decorative noise, more useful comparison: what it costs, how to apply, and what looks realistic for your profile.
-about.proof.product.title: Product goal
-about.proof.scope.body: University programs across study levels, with admissions, costs, and funding in one place.
-about.proof.scope.title: Current scope
-about.proof.sources.body: We prefer official published requirements and clearly mark when a metric is not separately published.
-about.proof.sources.title: Data standard
+about.origin: UniSearch began on February 9, 2026, in Kazakhstan as a school project and student research work. We took on a problem that affects us too–as applicants.
 about.role.lead: Co-founder & Lead Developer
-about.role.planning: Co-founder & UI/UX Lead
+about.role.planning: Co-founder & Lead Frontend Developer
 about.team_kicker: Our Team
-about.title: We are the abiturient team behind UniSearch.
+about.title: UniSearch is a service created by applicants for applicants.
 footer.copyright: © 2026 UniSearch
 guide.academic_exams.title: Academic Exams
 guide.admission.p1: Admissions requirements are assessed for an applicant route and requirement profile. Funding options are listed separately; an award does not create a separate admission assessment, and displayed annual costs are before any award. Check the applicant route, study cycle, and profile that apply to you.
@@ -125,12 +119,15 @@ nav.close_menu: Close menu
 nav.guide: Guide
 nav.lang.eng: English (US)
 nav.lang.rus: Русский
+nav.lang.kaz: Қазақша
 nav.language: Language
 nav.open_menu: Open menu
 nav.profile: Profile
 nav.rankings: Ranking
 nav.settings: Settings
 settings.section.appearance: Appearance
+settings.section.regional: Language & region
+settings.option.language.title: Site language
 settings.option.theme.title: Theme
 theme.opt.system: System
 theme.opt.light: Light
@@ -329,6 +326,7 @@ profile.unit.currency_year: {currency} / year
 profile.progress.empty: Complete your profile for better matches.
 profile.progress.count: {completed}/{total} profile areas complete
 profile.sections.aria: Profile sections
+profile.title: Profile
 profile.section.basics: General
 profile.section.scores: Academic Data
 profile.section.languages: Languages
@@ -725,6 +723,7 @@ universities.state.ml_unavailable: Interests from your profile are temporarily n
 universities.state_region: State / Region
 universities.view_list: List View
 universities.view_map: Map View
+universities.view_toggles.aria: View mode
 university.about_campus: About & Campus
 university.action.website: Website
 university.action.map: Map
@@ -810,8 +809,8 @@ university.price_from: from {price} / year
 university.send: Send
 university.show_on_map: Show on map
 university.tab.admission: Admission
-university.tab.costs: Costs
-university.tab.general: General
+university.tab.costs: Costs & funding
+university.tab.general: Overview
 university.tab.programs: Programs
 university.total_cost_calculator: Total Cost Calculator
 university.total_estimated_cost: Total Estimated Cost
@@ -1561,7 +1560,7 @@ university.finance.domestic_and_international_policy: Different aid rules by app
 university.finance.domestic_and_international_policy_desc: The university publishes different need-based aid rules for domestic and international applicants. Your category and aid eligibility require review under its official rules.
 university.finance.uk_aid_general_desc: Scholarship and student finance eligibility depends on the applicant's course and circumstances. Check the official university rules.
 university.finance.zero_parent_contrib_badge: Zero Parent Contribution
-university.tab.deadlines: Deadlines
+university.tab.deadlines: Dates
 university.deadlines.export_ics: Add to calendar (.ics)
 university.deadlines.official_source: Official source
 university.deadlines.guidance_title: Admissions guidance
@@ -2339,3 +2338,346 @@ admission.mit.program_condition: Program-specific eligibility:
 universities.why.preference_comparison: {label}: your setting {requested}/100; university indicator {observed}/100.
 admission.requirements_fit.check.profile_unassessed: This profile cannot establish the required evidence or exemption.
 admission.requirements_fit.missing_evidence_note: Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed.
+profile.evidence.title: Evidence for selected admissions routes
+profile.evidence.description: Optional self-reported details help assess published conditions. They do not confirm official records.
+profile.evidence.test_date: Test date (optional)
+profile.evidence.language_title: Language background
+profile.evidence.institution_title: Institution-specific study evidence
+profile.evidence.institution: University
+profile.evidence.institution_unavailable: No institution-specific course, GPA, or credential fields are available for this selection.
+profile.evidence.kind: Evidence type
+profile.evidence.language: Language code
+profile.evidence.country: Country
+profile.evidence.qualification: Qualification level
+profile.evidence.started: Started
+profile.evidence.completed: Completed or ended
+profile.evidence.status: Status
+profile.evidence.entirely: Entirely in this language
+profile.evidence.unknown: Not specified
+profile.evidence.entirely.yes: Yes, entirely
+profile.evidence.entirely.no: No
+profile.evidence.program: Program or study option
+profile.evidence.units: Completed units
+profile.evidence.degree_units: Total degree units
+profile.evidence.major_units: Units in the major requirements
+profile.evidence.major_subjects: Completed subjects in the major requirements
+profile.evidence.major_subjects_short: Major subjects
+profile.evidence.expected_completion: Expected completion
+profile.evidence.metric: GPA measure
+profile.evidence.metric.overall: Overall GPA
+profile.evidence.metric.technical: Technical GPA
+profile.evidence.metric.major: Major GPA
+profile.evidence.value: GPA value
+profile.evidence.scale: GPA scale
+profile.evidence.as_of_term: As of term
+profile.evidence.credential_id: Credential
+profile.evidence.score_percent: Credential score (%)
+profile.evidence.error.percentage: Enter a score between 0 and 100 percent.
+profile.evidence.completed_on: Completed on
+profile.evidence.add_language: Add language evidence
+profile.evidence.add_institution: Add institution evidence
+profile.evidence.self_reported: Self-reported evidence; it does not confirm official records.
+profile.evidence.self_reported_short: Self-reported
+profile.evidence.status.unknown: Not specified
+profile.evidence.status.in_progress: In progress
+profile.evidence.status.completed: Completed
+profile.evidence.status.enrolled: Enrolled
+profile.evidence.status.on_leave: On leave
+profile.evidence.status.not_enrolled: Not enrolled
+profile.evidence.status.not_completed: Not completed
+profile.evidence.language_kind.primary_language: First language
+profile.evidence.language_kind.education: Education
+profile.evidence.language_kind.employment: Work experience
+profile.evidence.qualification.secondary: Secondary
+profile.evidence.qualification.bachelor: Bachelor's degree
+profile.evidence.qualification.master: Master's degree
+profile.evidence.qualification.doctorate: Doctoral degree
+profile.evidence.qualification.professional: Professional degree
+profile.evidence.qualification.other: Other qualification
+profile.evidence.institution_kind.enrollment: Enrollment or course progress
+profile.evidence.institution_kind.gpa: Program GPA
+profile.evidence.institution_kind.credential: Program credential
+profile.evidence.institution.mit: Massachusetts Institute of Technology
+profile.evidence.institution.imperial: Imperial College London
+profile.evidence.institution.stanford: Stanford University
+profile.evidence.program.mit_course_6_9: MIT Course 6-9 undergraduate major
+profile.evidence.program.mit_scm_residential_masc: Supply Chain Management Residential MASC
+profile.evidence.program.mit_scm_residential_meng: Supply Chain Management Residential MEng
+profile.evidence.program.mit_scm_blended_masc: Supply Chain Management Blended MASC
+profile.evidence.program.mit_scm_blended_meng: Supply Chain Management Blended MEng
+profile.evidence.program.stanford_cs_bs: Computer Science bachelor's degree
+profile.evidence.program.stanford_anthr_ma_coterm: Anthropology coterminal MA
+profile.evidence.credential.mit_dedp: MITx DEDP MicroMasters
+profile.evidence.credential.mit_scm: MITx Supply Chain Management MicroMasters
+profile.evidence.credential.mit_sc0x: SC0x course credential
+profile.evidence.credential_other: Program credential
+profile.evidence.units_short: units
+profile.evidence.error.language: Enter a valid language code and evidence type.
+profile.evidence.error.dates: Check the dates for this evidence.
+profile.evidence.error.qualification: Choose the education level for this evidence.
+profile.evidence.error.max_language: You can save up to 10 language evidence records.
+profile.evidence.error.institution: Choose a supported university and evidence type.
+profile.evidence.error.units: Enter a non-negative whole number of units.
+profile.evidence.error.gpa: Enter a GPA within its stated scale.
+profile.evidence.error.credential: Choose a listed credential.
+profile.evidence.error.credential_score: Enter the published credential score percentage.
+profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
+university.admissions.catalog.context_title: Your application context
+university.admissions.catalog.simple_title: Published application paths
+university.admissions.catalog.browse_note: Search the official program list by name or subject and study level. Select a program to read about its degree and linked application paths.
+university.admissions.catalog.show_requirements: Read published details
+university.admissions.catalog.advanced_options: Filter published records (optional)
+university.admissions.catalog.advanced_note: These optional filters narrow source records by published applicant group, entry cycle or fee category. Leave them unspecified to browse all records for this program and path.
+university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
+university.admissions.catalog.open_application: Open application page
+university.admissions.catalog.view_requirements: View admission requirements
+university.admissions.catalog.study_info: About the program
+university.admissions.catalog.study_info_note: Official information about this study option. Study and degree-completion rules are separate from admission requirements.
+university.admissions.catalog.source_note_simple: Official source text is shown in its original language.
+university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
+university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
+university.admissions.catalog.source_scope_details: Source status, scope and dates
+university.admissions.catalog.check_details: Optional profile check of published minimums
+university.admissions.catalog.publication: Publication status
+university.admissions.catalog.topic.eligibility: Eligibility
+university.admissions.catalog.topic.academic: Academic qualifications
+university.admissions.catalog.topic.tests: Tests
+university.admissions.catalog.topic.language: Language requirements
+university.admissions.catalog.topic.documents: Application documents
+university.admissions.catalog.topic.portfolio: Interviews and portfolios
+university.admissions.catalog.topic.application: Application process
+university.admissions.catalog.topic.deadlines: Dates and application windows
+university.admissions.catalog.topic.costs: Costs and fees
+university.admissions.catalog.topic.funding: Funding
+university.admissions.catalog.topic.study: Study content and structure
+university.admissions.catalog.topic.completion: Degree completion
+university.admissions.catalog.topic.offers: Offers and enrollment
+university.admissions.catalog.topic.support: Student support
+university.admissions.catalog.context_note: One selection applies to requirements, dates, costs and funding. Manual changes stay on this page; profile evidence is reused for checks.
+university.admissions.catalog.choose_program: Choose a study option
+university.admissions.catalog.no_program_selected: No study option selected
+university.admissions.catalog.route_label: Published application path
+university.admissions.catalog.choose_route: Choose a published path
+university.admissions.catalog.route_required: Choose one of the published paths above to read its requirements and application details.
+university.admissions.catalog.applicant_label: Applicant category
+university.admissions.catalog.unspecified: Not specified
+university.admissions.catalog.applicant.first_year: First-year applicant
+university.admissions.catalog.applicant.transfer: Transfer applicant
+university.admissions.catalog.applicant.graduate: Graduate applicant
+university.admissions.catalog.cycle_label: Intended entry cycle
+university.admissions.catalog.cycle_example: For example: Fall 2027 entry
+university.admissions.catalog.fee_label: Self-reported fee status
+university.admissions.catalog.fee.unknown: Not determined
+university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (self-reported)
+university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (self-reported)
+university.admissions.catalog.fee.other: Other / requires clarification
+university.admissions.catalog.apply_context: Apply context
+university.admissions.catalog.legacy_pending: Your previous program selection has not been mapped to this reviewed catalog. Choose the study option again; your saved profile is preserved.
+university.admissions.catalog.incompatible_context: These selections do not match a linked program, route or study level. Change the context; no university-wide requirements have been substituted.
+university.admissions.catalog.loading: Loading reviewed information
+university.admissions.catalog.load_error: Reviewed information could not be loaded. Try again.
+university.admissions.catalog.retry: Retry
+university.admissions.catalog.search_label: Study option or subject
+university.admissions.catalog.search: Search
+university.admissions.catalog.level_label: Study level
+university.admissions.catalog.all_levels: All study levels
+university.admissions.catalog.level.undergraduate: Undergraduate
+university.admissions.catalog.level.masters: Master's
+university.admissions.catalog.level.doctoral: Doctoral
+university.admissions.catalog.level.professional: Professional
+university.admissions.catalog.no_options: No study options match these filters.
+university.admissions.catalog.previous: Previous
+university.admissions.catalog.next: Next
+university.admissions.catalog.results: {from}–{to} of {total} study options
+university.admissions.catalog.finance_note: A comparable annual total is not established. Amounts keep their source currency and billing period. Potential funding is not awarded aid and is never subtracted; expand a record for its source.
+university.admissions.catalog.study_options_title: Study options
+university.admissions.catalog.study_options_note: Search official degree options. The study level describes the entry route; the award names the qualification.
+university.admissions.catalog.admission_title: Requirements and published application paths
+university.admissions.catalog.finance_intro: Published prices and funding for the selected program and path, with their original periods, currencies and conditions.
+university.admissions.catalog.deadlines_title: Dates and deadlines
+university.admissions.catalog.deadlines_intro: Browse application, funding, reply and deposit dates for the selected program and path. Each record keeps its stated period and official source.
+university.admissions.catalog.route_intro: Choose a published application path to browse its requirements and process. You can read this information without a profile.
+university.admissions.catalog.reference_scope: Browsing
+university.admissions.catalog.route_not_selected: Choose a published application path
+university.admissions.catalog.browse_programs: Browse programs
+university.admissions.catalog.change_program: Change program
+university.admissions.catalog.change_route: Change path
+university.admissions.catalog.reference_filters: Filter by applicant group, cycle or fee category (optional)
+university.admissions.catalog.reference_filter_note: These filters narrow source records by their published scope. Leave them unspecified to browse all records for this program and path.
+university.admissions.catalog.selected_route: Selected path
+university.admissions.catalog.application_shape: How this program is entered
+university.admissions.catalog.catalog_code: Course code
+university.admissions.catalog.official_course_page: Official course page
+university.admissions.catalog.application_class.post_admission_major: University admission comes first; the major is selected after enrollment.
+university.admissions.catalog.application_class.direct_program: Apply to the selected program.
+university.admissions.catalog.application_class.ucas_course_choice: Apply to this course through UCAS.
+university.admissions.catalog.application_class.postgraduate_course_choice: Apply to this taught postgraduate course.
+university.admissions.catalog.application_class.institution_wide: A university-wide application route serves this program.
+university.admissions.catalog.application_class.external_and_coterm: Separate external and coterm application paths are listed.
+university.admissions.catalog.application_class.department_or_program: Department or program application path.
+university.admissions.catalog.published_qualification_table: Published English qualification tables
+university.admissions.catalog.qualification_count: {count} qualifications
+university.admissions.catalog.record_count: {count} records
+university.admissions.catalog.full_source_text: Full published wording
+university.admissions.catalog.full_source_record: Full source record
+university.admissions.catalog.source_text_note: Official wording stays in its original language. Each record has its own scope, period and conditions; expand it for details and the official source.
+university.admissions.catalog.scope_varies: Scope varies
+university.admissions.catalog.conditional: Conditional — applicability still needs verification
+university.admissions.catalog.matched: Matches selected context
+university.admissions.catalog.unknown: Unknown
+university.admissions.catalog.published: Published
+university.admissions.catalog.partly_published: Partly published
+university.admissions.catalog.limited_publication: Published with a limited or unresolved scope
+university.admissions.catalog.conflicting: Conflicting official sources
+university.admissions.catalog.review: Evidence review
+university.admissions.catalog.review.verified: Verified
+university.admissions.catalog.review.reviewed: Reviewed
+university.admissions.catalog.review.carried_forward_review: Previous source review retained
+university.admissions.catalog.review.conflicting: Conflicting official sources
+university.admissions.catalog.review.superseded: Superseded source review
+university.admissions.catalog.review.limited: Source reviewed; some scope or conditions still need verification
+university.admissions.catalog.not_published: Not published
+university.admissions.catalog.needs_review: Needs review
+university.admissions.catalog.historical: Historical source record
+university.admissions.catalog.checked: Official page checked
+university.admissions.catalog.period: Published period
+university.admissions.catalog.scope: Source scope
+university.admissions.catalog.conditions: Conditions and exceptions
+university.admissions.catalog.exceptions: Exceptions
+university.admissions.catalog.source: Official source
+university.admissions.catalog.no_facts: No source records are catalogued for this selection in this section. Check the official program and application pages.
+university.admissions.catalog.no_context: Select a study option and its application route to view scoped source records.
+university.admissions.catalog.unknowns: Unresolved source information
+university.admissions.catalog.next_step: Official next step
+university.admissions.catalog.history: Historical records
+university.admissions.catalog.history_note: These records are retained as historical context and are not current requirements or prices for the selected cycle.
+university.admissions.catalog.assessment: UniChance · published minimum checks
+university.admissions.catalog.assessment_meaning: The percentage is the share of evaluable published academic and language minimum checks met. It is not an admission probability, a check of all admission criteria, or a funding prediction.
+university.admissions.catalog.assessment_unavailable: No requirements-match percentage is available for this context.
+university.admissions.catalog.self_reported: Applicant evidence is self-reported; it is not institution-confirmed.
+university.admissions.catalog.provided: Reported evidence
+university.admissions.catalog.minimum: Published minimum
+university.admissions.catalog.rule: Rule being checked
+university.admissions.catalog.source_rule: Original published rule
+university.admissions.catalog.met: Met
+university.admissions.catalog.unmet: Not met
+university.admissions.catalog.missing: Evidence missing
+university.admissions.catalog.unassessed: Not assessed
+university.admissions.catalog.yes: Yes
+university.admissions.catalog.no: No
+university.admissions.catalog.detail: Source detail
+university.admissions.catalog.domain.institution: Institution information
+university.admissions.catalog.domain.study: Study content and structure
+university.admissions.catalog.domain.degree_completion: Degree completion and declaration
+university.admissions.catalog.domain.requirements: Admission requirements
+university.admissions.catalog.domain.application: Application process and documents
+university.admissions.catalog.domain.offer_enrollment: Offers and enrollment
+university.admissions.catalog.domain.deadlines: Application and funding dates
+university.admissions.catalog.domain.costs: Published costs
+university.admissions.catalog.domain.funding: Funding and award conditions
+university.admissions.catalog.domain.career: Careers and outcomes
+university.admissions.catalog.domain.student_support: Student support
+university.admissions.catalog.domain.other: Other source information
+university.admissions.catalog.reason.applicability_unknown: The selected context or applicant applicability has not been established.
+university.admissions.catalog.reason.missing_evidence: Required applicant evidence is missing.
+university.admissions.catalog.reason.unassessed_minimums: Some published minima or their conditions cannot yet be assessed.
+university.admissions.catalog.reason.no_published_requirements: No evaluable published numeric minimum is catalogued for this context.
+university.admissions.catalog.reason.requirements_not_met: At least one evaluated published minimum was not met.
+university.admissions.catalog.reason.source_fact_changed: The source record changed and its assessment needs review.
+university.admissions.catalog.reason.source_state_not_verified: The source rule is not verified for assessment.
+university.admissions.catalog.kind.exam_alternatives: Required test alternatives
+university.admissions.catalog.kind.required_exam_presence: Required test evidence
+university.admissions.catalog.kind.scoped_gpa: Scoped academic average
+university.admissions.catalog.kind.enrollment: Enrollment condition
+university.admissions.catalog.kind.enrollment_units: Major-course completion
+university.admissions.catalog.kind.credential: Credential condition
+university.admissions.catalog.kind.language_requirement: Language requirement
+university.admissions.catalog.kind.covered_minima: Related minimum checks
+university.admissions.catalog.kind.remaining_conditions: Remaining source conditions
+university.admissions.catalog.kind.published_rule: Published admission rule
+university.admissions.catalog.kind.conditional_rule: Conditional admission rule
+university.admissions.catalog.kind.unresolved_rule: Unresolved admission rule
+university.admissions.catalog.kind.stale_annotation: Source rule needs review
+university.admissions.catalog.kind.source_state: Source status needs review
+university.admissions.catalog.field.currency: Currency
+university.admissions.catalog.field.period: Price period
+university.admissions.catalog.field.amount: Amount
+university.admissions.catalog.field.value: Value
+university.admissions.catalog.field.minimum: Minimum
+university.admissions.catalog.field.scale: Original scale
+university.admissions.catalog.field.unit: Unit
+university.admissions.catalog.field.units: Total degree units
+university.admissions.catalog.field.major_units: Major units
+university.admissions.catalog.field.completed_major_subjects: Completed major subjects
+university.admissions.catalog.field.metric: Academic metric
+university.admissions.catalog.field.status: Status
+university.admissions.catalog.field.taken_on: Test date
+university.admissions.catalog.field.as_of_term: As of term
+university.admissions.catalog.field.levels: Study levels
+university.admissions.catalog.field.applicant_categories: Applicant categories
+university.admissions.catalog.field.cycle: Source cycle
+university.admissions.catalog.field.fee_status: Fee-status conditions
+university.admissions.catalog.field.additional_dimensions: Additional applicability conditions
+university.admissions.catalog.field.study: Study option
+university.admissions.catalog.field.application: Application route
+university.admissions.catalog.field.A3i6E: Program description
+university.admissions.catalog.field.WOZxr: External-credit policy
+university.admissions.catalog.field.ItCSB: Program requirements
+university.admissions.catalog.field.advisingExpectations: Advising expectations
+university.admissions.catalog.field.cotermQuartersBack: Coterminal course-transfer timing
+university.admissions.catalog.field.cotermTransferPolicy: Coterminal course-transfer policy
+university.admissions.catalog.field.programGradingPolicies: Program grading policies
+university.admissions.catalog.field.programGPARequirement: Program completion GPA requirement
+university.admissions.catalog.field.programAdditionalPolicies: Additional program policies
+university.admissions.catalog.field.exam_id: Exam
+university.admissions.catalog.field.credential_id: Credential
+university.admissions.catalog.field.score_percent: Credential result (%)
+university.admissions.catalog.field.subjects_minimum: Minimum major subjects
+university.admissions.catalog.field.required_modules: Required test modules
+university.admissions.catalog.field.allowed_windows: Published test windows
+university.admissions.catalog.field.alternatives: Published alternatives
+university.admissions.catalog.field.condition: Condition
+university.admissions.catalog.study_level.undergraduate: Undergraduate
+university.admissions.catalog.study_level.masters: Master's
+university.admissions.catalog.study_level.doctoral: Doctoral
+university.admissions.catalog.study_level.professional: Professional
+university.admissions.catalog.fee.home: Self-reported home/domestic status
+university.admissions.catalog.fee.overseas: Self-reported international/overseas status
+university.admissions.catalog.enum.required: Required
+university.admissions.catalog.enum.not_required: Not required
+university.admissions.catalog.enum.recommended: Recommended
+university.admissions.catalog.enum.enrolled: Enrolled
+university.admissions.catalog.enum.completed: Completed
+university.admissions.catalog.enum.in_progress: In progress
+university.admissions.catalog.enum.not_started: Not started
+university.admissions.catalog.enum.overall: Overall
+university.admissions.catalog.enum.technical: Technical
+university.admissions.catalog.enum.major: Major
+university.admissions.catalog.enum.required_coursework: Required coursework
+university.admissions.catalog.enum.study_period_or_pathway: Study period or pathway
+university.admissions.catalog.enum.project_or_dissertation: Project or dissertation
+university.admissions.catalog.enum.student_choice_coursework: Student-choice coursework
+university.admissions.catalog.enum.published_catalog_expected_length: Expected length published in the catalog
+university.admissions.catalog.enum.catalog_metadata_not_fixed_individual_duration: Catalog duration; individual study length is not fixed
+university.admissions.catalog.enum.required_if_applicable: Required when applicable
+university.admissions.catalog.enum.not_accepted: Not accepted
+university.admissions.catalog.enum.prior_cycle_only: Published for a previous cycle only
+university.admissions.catalog.enum.published_current_page_cycle: Published cycle on the reviewed page
+university.admissions.catalog.enum.same_all_statuses: Same published amount for all fee statuses
+university.admissions.catalog.enum.postgraduate_taught: Postgraduate taught study
+university.admissions.catalog.enum.independent_award_entry: Separate award entry
+university.admissions.catalog.enum.course_application: Course-specific application
+university.admissions.catalog.enum.post_admission_major: Major chosen after institutional admission
+university.admissions.catalog.enum.institution_wide: Institutional admission
+university.admissions.catalog.enum.program_specific: Program-specific
+university.admissions.catalog.enum.route_wide: Application-route scope
+university.admissions.catalog.enum.academic_year: Academic year
+university.admissions.catalog.enum.one_time: One-time payment
+university.admissions.catalog.reset_notice: Your previous admission choice used the earlier catalog and has been cleared. Choose a study option and route again. Your other profile information is preserved.
+university.admissions.catalog.save_choice: Save application choice
+university.admissions.catalog.choice_saved: Application context saved for this university.
+university.admissions.catalog.choice_session_only: This choice is available for this session only. It could not be saved on this device.
+university.admissions.catalog.apply_before_save: Apply the changed context before saving this choice.
+universities.compare.reviewed_catalog: Reviewed study and admissions catalog
+universities.compare.optional_context: Compare universities now, or choose a study option and application route to view applicable admissions facts.
+universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.

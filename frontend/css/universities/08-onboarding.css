@@ -107,7 +107,7 @@
   height: 24px;
   border-radius: var(--radius-circle);
   background: var(--surface-soft);
-  color: var(--text-muted);
+  color: var(--text);
   font-size: var(--text-xs);
   font-weight: 500;
 }
@@ -167,7 +167,7 @@
 
 .u-tour-inline-btn:focus-visible,
 .u-tour-btn:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

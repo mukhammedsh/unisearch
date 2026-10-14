@@ -1,13 +1,13 @@
 /* Navbar breakpoints are owned by 08-device-responsive.css. */
 @media (max-width: 1024px) {
   .site-footer {
-    padding: 12px 0;
+    padding: var(--space-3) 0;
   }
 
   .footer-content {
     flex-direction: column;
-    gap: 8px;
-    padding: 0 16px;
+    gap: var(--space-2);
+    padding: 0 var(--space-4);
     text-align: center;
   }
 
@@ -28,7 +28,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     width: 100%;
-    column-gap: 12px;
+    column-gap: var(--space-3);
   }
 
   .footer-legal-links a:first-child {
@@ -65,7 +65,7 @@
     width: 100%;
     min-width: 0;
     max-width: none;
-    padding: 12px 12px;
+    padding: var(--space-3) var(--space-3);
     font-size: 13px;
   }
 }

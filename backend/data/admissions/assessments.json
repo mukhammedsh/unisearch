@@ -1,0 +1,701 @@
+{
+  "schema_version": "admissions-assessments-1.0",
+  "records": [
+    {
+      "id": "ug-sat-act-presence-assessment",
+      "institution_id": "mit-usa-cambridge",
+      "fact_id": "ug-sat-act-presence",
+      "fact_sha256": "d11a55592a4225943e157d7ae937c4d52bf264225f5f3cf4d20b912ce91cf68d",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "mit-first-year",
+          "mit-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year",
+          "transfer"
+        ],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-sat-act",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "SAT"
+            },
+            {
+              "exam_id": "ACT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "bcs-meng-entry-conditions-assessment",
+      "institution_id": "mit-usa-cambridge",
+      "fact_id": "bcs-meng-entry-conditions",
+      "fact_sha256": "9eb92e76ba11e06ff24fc760ff64b7f1f26842b91298df6a76653d80bbb77ab7",
+      "scope": {
+        "option_ids": [
+          "mit-course-6-9p-meng"
+        ],
+        "route_ids": [
+          "mit_bcs_meng_admissions"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "current-course-6-9",
+          "kind": "enrollment",
+          "university_id": "mit-usa-cambridge",
+          "program_id": "mit-bs-6-9",
+          "status": "enrolled"
+        },
+        {
+          "id": "technical-gpa",
+          "kind": "scoped_gpa",
+          "university_id": "mit-usa-cambridge",
+          "program_id": "mit-bs-6-9",
+          "metric": "technical",
+          "scale": 5,
+          "minimum": 4.25
+        },
+        {
+          "id": "overall-gpa",
+          "kind": "scoped_gpa",
+          "university_id": "mit-usa-cambridge",
+          "program_id": "mit-bs-6-9",
+          "metric": "overall",
+          "scale": 5,
+          "minimum": 4
+        },
+        {
+          "id": "major-subject-units",
+          "kind": "enrollment_units",
+          "university_id": "mit-usa-cambridge",
+          "program_id": "mit-bs-6-9",
+          "minimum": 102,
+          "alternative": "Nine major subjects; units below102 alone does not establish failure.",
+          "units_field": "major_units",
+          "subjects_field": "completed_major_subjects",
+          "subjects_minimum": 9
+        }
+      ],
+      "remaining_conditions": [
+        "Nine-subject alternative not recorded when fewer than102 units; UROP/SuperUROP; faculty supervisor and engineering-only thesis restriction remain separate unassessed conditions.",
+        "Reported GPA is self-reported observation; institution verifies technical subject scope and end-of-applying-term outcome."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "dedp-no-prior-degree-and-track-condition-assessment",
+      "institution_id": "mit-usa-cambridge",
+      "fact_id": "dedp-no-prior-degree-and-track-condition",
+      "fact_sha256": "af822b929646e43c426f3b4a7a40df541eefd461f81f1267e27ccd78206c2af8",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "mit_grad_dedp_admissions"
+        ],
+        "levels": [],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "micro-masters",
+          "kind": "credential",
+          "university_id": "mit-usa-cambridge",
+          "credential_id": "mitx-dedp-micromasters",
+          "status": "completed"
+        }
+      ],
+      "remaining_conditions": [
+        "Chosen on-campus track electives must be completed before arrival; credential performance remains selection context. No prior degree is required."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "dedp-elp-validity-waiver-and-scale-assessment",
+      "institution_id": "mit-usa-cambridge",
+      "fact_id": "dedp-elp-validity-waiver-and-scale",
+      "fact_sha256": "c33457eabed4d081ee3d8aea0c3fe2e3efb033675021a9f5f5f637e217109e10",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "mit_grad_dedp_admissions"
+        ],
+        "levels": [],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "primary_english_exemption": true,
+          "possible_exemption_evidence_kinds": ["education"],
+          "max_age_years": 2,
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 7
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "minimum": 100,
+              "date_boundary": [
+                "1900-01-01",
+                "2026-01-16"
+              ]
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "minimum": 5,
+              "date_boundary": [
+                "2026-01-17",
+                "2099-12-31"
+              ]
+            },
+            {
+              "exam_id": "DET",
+              "minimum": 135
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Education-based automatic exemption country/duration/recency and discretionary waiver require source-scoped verification. Submission before expiry requires actual submission date. Department date boundary differs from general undergraduate guidance."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "imperial-computing-meng-admission-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "imperial-computing-meng-admission",
+      "fact_sha256": "af4b11b702695365ea14774c7e29b9c326bb200624e1d48915a7cd8241e9e497",
+      "scope": {
+        "option_ids": [
+          "imperial-option-computing-meng"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year"
+        ],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-tmua",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "TMUA"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Country-specific sitting windows, applicant qualification subjects/grades, English qualification and course selection remain source-scoped conditions. No published admissions-test cutoff inferred."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "imperial-electrical-electronic-engineering-beng-admission-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "imperial-electrical-electronic-engineering-beng-admission",
+      "fact_sha256": "ac8b06f8a7dc8ed42c254eec46013940ad95ed2b13ebc3edb92b30c5825cbb30",
+      "scope": {
+        "option_ids": [
+          "imperial-option-electrical-electronic-engineering-beng"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year"
+        ],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-esat",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ESAT",
+              "modules": [
+                "ESAT_MATH_1",
+                "ESAT_MATH_2",
+                "ESAT_PHYSICS"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Country-specific sitting windows, applicant qualification subjects/grades, English qualification and course selection remain source-scoped conditions. No published admissions-test cutoff inferred."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "imperial-electrical-electronic-engineering-meng-admission-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "imperial-electrical-electronic-engineering-meng-admission",
+      "fact_sha256": "582f245581b5000fbabb4475f5fb9b3a24a6d303c315f56fe75a036786a726bb",
+      "scope": {
+        "option_ids": [
+          "imperial-option-electrical-electronic-engineering-meng",
+          "imperial-option-electrical-electronic-engineering-meng-variant-1"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year"
+        ],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-esat",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ESAT",
+              "modules": [
+                "ESAT_MATH_1",
+                "ESAT_MATH_2",
+                "ESAT_PHYSICS"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Country-specific sitting windows, applicant qualification subjects/grades, English qualification and course selection remain source-scoped conditions. No published admissions-test cutoff inferred."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "imperial-electronic-information-beng-admission-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "imperial-electronic-information-beng-admission",
+      "fact_sha256": "59aa554a39e03a86cd5c1f7a3e912f1581b4738741dc37c1d4324f9833092dba",
+      "scope": {
+        "option_ids": [
+          "imperial-option-electronic-information-beng"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year"
+        ],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-esat",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ESAT",
+              "modules": [
+                "ESAT_MATH_1",
+                "ESAT_MATH_2",
+                "ESAT_PHYSICS"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Country-specific sitting windows, applicant qualification subjects/grades, English qualification and course selection remain source-scoped conditions. No published admissions-test cutoff inferred."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "imperial-electronic-information-meng-admission-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "imperial-electronic-information-meng-admission",
+      "fact_sha256": "2a5d3780e5fcb34dec84e089389983421f20480beee6b1107f7df3f372935534",
+      "scope": {
+        "option_ids": [
+          "imperial-option-electronic-information-meng",
+          "imperial-option-electronic-information-meng-variant-1"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year"
+        ],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-esat",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ESAT",
+              "modules": [
+                "ESAT_MATH_1",
+                "ESAT_MATH_2",
+                "ESAT_PHYSICS"
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Country-specific sitting windows, applicant qualification subjects/grades, English qualification and course selection remain source-scoped conditions. No published admissions-test cutoff inferred."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "fact_pcms_gamsat_ucat_2027-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "fact_pcms_gamsat_ucat_2027",
+      "fact_sha256": "8b60f20cd88e9c9af8b9846d5165a0a4e005e042091ba863cf0893d07818389a",
+      "scope": {
+        "option_ids": [
+          "imperial-option-medicine-graduate-entry"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "test-alternative",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "UCAT"
+            },
+            {
+              "exam_id": "GAMSAT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Home fee eligibility, appropriate degree, test year/age and contextual shortlisting require evidence. 2027 threshold unpublished; 2026 thresholds are historical."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "professional-evidence:law_jd_dates_tests_docs-assessment",
+      "institution_id": "stanford-university-usa-ca",
+      "fact_id": "professional-evidence:law_jd_dates_tests_docs",
+      "fact_sha256": "1dda07a3daf3e2a8192f767c69dc5630e65cfc0219af1cfb18b6654cbda04477",
+      "scope": {
+        "option_ids": [
+          "stanford-option-law-jd"
+        ],
+        "route_ids": [
+          "professional-evidence:law_jd_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "Fall 2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "lsat-gre",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "LSAT",
+              "windows": [
+                [
+                  "2021-06-01",
+                  "2027-01-31"
+                ]
+              ]
+            },
+            {
+              "exam_id": "GRE",
+              "windows": [
+                [
+                  "2021-06-01",
+                  "2099-12-31"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "All valid scores, LSAT Argumentative Writing and official receipt, degree completion, documents and conditional offers require separate verification. GRE Feb1 is suggested, not a hard minimum."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "professional-evidence:med_md_cycle_process-assessment",
+      "institution_id": "stanford-university-usa-ca",
+      "fact_id": "professional-evidence:med_md_cycle_process",
+      "fact_sha256": "ef0e3907386fd8aa9573ddcad6e716317bd15790c196ce66afbb5cf743bf0fc8",
+      "scope": {
+        "option_ids": [
+          "stanford-option-med-md"
+        ],
+        "route_ids": [
+          "professional-evidence:med_md_admission"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "Fall 2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "mcat",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "MCAT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Published Jan2023–Aug22,2026 test window has unresolved source cycle applicability; do not assess that window. Credential equivalency, academic residence, invitation and official receipt remain unassessed."
+      ],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "bcs-profile-duplicate-minima",
+      "institution_id": "mit-usa-cambridge",
+      "fact_id": "mit_bcs_meng_admissions-profile-0",
+      "fact_sha256": "71545d814b0f6583331347adef6e499bfe6977b2ef326e83072c4365cf730fd9",
+      "scope": {
+        "option_ids": [
+          "mit-course-6-9p-meng"
+        ],
+        "route_ids": [
+          "mit_bcs_meng_admissions"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "bcs-gpa-reference",
+          "kind": "covered_minima",
+          "covered_by_fact_id": "bcs-meng-entry-conditions",
+          "covered_check_ids": [
+            "technical-gpa",
+            "overall-gpa"
+          ]
+        }
+      ],
+      "remaining_conditions": [],
+      "mapping_reviewed_at": "2026-10-12"
+    },
+    {
+      "id": "fact_medicine_ucas_ucat_2027-assessment",
+      "institution_id": "imperial-college-london-uk",
+      "fact_id": "fact_medicine_ucas_ucat_2027",
+      "fact_sha256": "2c5e7be3e7839c2abdfe61d62f2195618b957a4d97002519d44150bbb9b9b253",
+      "mapping_reviewed_at": "2026-10-12",
+      "scope": {
+        "option_ids": [
+          "imperial-option-medicine"
+        ],
+        "route_ids": [],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027 entry"
+        ]
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "a100-ucat",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "UCAT",
+              "windows": [
+                [
+                  "2026-01-01",
+                  "2026-12-31"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Single sitting in application year; subject grades/same sitting/practical endorsements, interview and selection remain unassessed. No invented UCAT threshold."
+      ]
+    },
+    {
+      "id": "scm-current-department-preparation-and-language-assessment",
+      "institution_id": "mit-usa-cambridge",
+      "fact_id": "scm-current-department-preparation-and-language",
+      "fact_sha256": "0f911b07e99aef6ca8c2f7b41d3db24f1fc52c80aae3c236d3656d40850bac5e",
+      "mapping_reviewed_at": "2026-10-12",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "mit_grad_scm_residential_admissions"
+        ],
+        "levels": [],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "scmr-alternatives",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "credential_id": "sc0x-course-credential",
+              "university_id": "mit-usa-cambridge",
+              "minimum": 85,
+              "max_age_years": 5
+            },
+            {
+              "exam_id": "GRE"
+            },
+            {
+              "exam_id": "GMAT"
+            },
+            {
+              "exam_id": "GMAT_FOCUS"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "SC0x must be verified and valid at application; no actual submission date is recorded. Published three-year experience condition and department/OGE English-policy differences require separate evidence and verification."
+      ]
+    }
+  ]
+}

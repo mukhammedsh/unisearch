@@ -61,6 +61,7 @@ import {
   translateWord,
   translateTrackLabel,
   translateAdmissionText,
+  translateFactSource,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 
@@ -98,6 +99,13 @@ import {
   resolveUniversityCardPrice,
   rankingStatusLabel,
 } from './_shared.js';
+
+export function universityCardPriceInfo(university) {
+    if (university?.admissions_catalog?.availability === "reviewed") {
+        return { amount: null, currency: "", amountUSD: null };
+    }
+    return resolveUniversityCardPrice(university);
+}
 
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
@@ -422,7 +430,6 @@ export function initUniversitiesPage() {
     };
 
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
-    setupSlidingIndicator(".catalog-level-segmented", ".catalog-level-btn", "is-active");
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -1467,9 +1474,9 @@ export function initUniversitiesPage() {
         const pos1 = getThumbPos(r1);
         const pos2 = getThumbPos(r2);
 
-        const styles = getComputedStyle(document.documentElement);
-        const inactive = (styles.getPropertyValue("--slider-track-inactive") || "#d4d8e0").trim();
-        const active = (styles.getPropertyValue("--slider-track-active") || "#5d17ea").trim();
+        const styles = getComputedStyle(el.track);
+        const inactive = styles.getPropertyValue("--slider-track-inactive").trim();
+        const active = styles.getPropertyValue("--slider-track-active").trim();
         el.track.style.background = `linear-gradient(to right, ${inactive} 0%, ${inactive} ${pos1}, ${active} ${pos1}, ${active} ${pos2}, ${inactive} ${pos2}, ${inactive} 100%)`;
     }
     function slideMin() {
@@ -3705,8 +3712,9 @@ export function initUniversitiesPage() {
             countryClass: "uni-loc-country",
             fallbackClass: "uni-loc-line",
         });
+        const reviewedAdmissions = u?.admissions_catalog?.availability === "reviewed";
         const match = u.matchData || {};
-        const priceInfo = resolveUniversityCardPrice(u);
+        const priceInfo = universityCardPriceInfo(u);
         const cost = priceInfo.amount;
         const uniCurrency = priceInfo.currency;
 
@@ -3730,25 +3738,25 @@ export function initUniversitiesPage() {
         const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
         const preferenceMismatch = Number(match.preferenceMismatch);
         const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
-        const hintedRequirements = String(badgeHints.requirements || "").toLowerCase();
-        const hintedBudgetAid = String(badgeHints.budgetAid || "").toLowerCase();
+        const hintedRequirements = reviewedAdmissions ? "" : String(badgeHints.requirements || "").toLowerCase();
+        const hintedBudgetAid = reviewedAdmissions ? "" : String(badgeHints.budgetAid || "").toLowerCase();
         const conditionalCount = Number(match.conditionalRequirements || 0);
-        const hasConditionalExamWarning = (badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0);
+        const hasConditionalExamWarning = !reviewedAdmissions && ((badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0));
         const hasVeryHighVibeMatch = hintedVibe === "your_vibe" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch <= 0.14);
         const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
-        const meetsMinRequirements = hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning);
-        const hasRequirementsScore = match.requirementsFitPercent !== null && match.requirementsFitPercent !== undefined;
-        const belowRequirements = hintedRequirements === "below_requirements" || (!hintedRequirements && hasRequirementsScore && match.meetMinRequirements === false);
-        const hasGrant = getGrantsFromCategories(u?.admission_categories).length > 0;
-        const aidAny = Object.hasOwn(match, "aidAny") ? match.aidAny === true : hasGrant;
+        const meetsMinRequirements = !reviewedAdmissions && (hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning));
+        const hasRequirementsScore = !reviewedAdmissions && match.requirementsFitPercent !== null && match.requirementsFitPercent !== undefined;
+        const belowRequirements = !reviewedAdmissions && (hintedRequirements === "below_requirements" || (!hintedRequirements && hasRequirementsScore && match.meetMinRequirements === false));
+        const hasGrant = !reviewedAdmissions && getGrantsFromCategories(u?.admission_categories).length > 0;
+        const aidAny = !reviewedAdmissions && (Object.hasOwn(match, "aidAny") ? match.aidAny === true : hasGrant);
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
         const compareCostUSD = priceInfo.amountUSD ?? (cost !== null && uniCurrency ? (uniCurrency === "USD" ? cost : convert(cost, uniCurrency, "USD")) : cost);
         const overBudget = hasUserBudget && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
         const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
         const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
         const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
-        const hasMissingProgram = Boolean(badgeHints.missingProgram || match.missingProgram);
-        const requirementChecks = Array.isArray(match.requirementChecks) ? match.requirementChecks : [];
+        const hasMissingProgram = !reviewedAdmissions && Boolean(badgeHints.missingProgram || match.missingProgram);
+        const requirementChecks = !reviewedAdmissions && Array.isArray(match.requirementChecks) ? match.requirementChecks : [];
         const requirementsDetail = requirementChecks.map((check) => {
             const exam = String(check.examId || check.exam || "");
             const label = exam.split(" or ").map((id) => getExamDisplayName(id, { locale: getCurrentLanguage() })).join(` ${t("admission.requirements_fit.check.or", "or")} `);
@@ -3761,7 +3769,7 @@ export function initUniversitiesPage() {
             const statusKey = check.minimum == null && check.status === "met" ? "evidence_recorded" : check.status;
             return `${label} — ${minimum}${check.condition ? `; ${translateAdmissionText(check.condition, check.condition)}` : ""}; ${t("admission.requirements_fit.check.profile", "Your profile")}: ${provided}; ${t(`admission.requirements_fit.check.${statusKey}`, "Cannot assess")}`;
         }).join(". ");
-        const scopeLabel = translateTrackLabel(match.selectedChoiceLabel || "", match.selectedChoiceLabel || "");
+        const scopeLabel = reviewedAdmissions ? "" : translateTrackLabel(match.selectedChoiceLabel || "", match.selectedChoiceLabel || "");
         const alternativesNote = requirementChecks.some((check) => check.mode === "any")
             ? t("admission.requirements_fit.check.language_any_note", "For language rules that allow alternatives, meeting one listed option satisfies that rule.") : "";
         const academicDetail = [scopeLabel, alternativesNote, requirementsDetail].filter(Boolean).join(". ");
@@ -3810,7 +3818,7 @@ export function initUniversitiesPage() {
             addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), academicDetail);
         } else if (meetsMinRequirements) {
             addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), academicDetail);
-        } else if (match.requirementsReason && !hasConditionalExamWarning) {
+        } else if (!reviewedAdmissions && match.requirementsReason && !hasConditionalExamWarning) {
             addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), [academicDetail, chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning })].filter(Boolean).join(". "));
         }
 
@@ -3867,7 +3875,8 @@ export function initUniversitiesPage() {
             ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
             : t("universities.card.view_details", "View details"));
         const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-        const rankSource = String(rankMeta.source || "").trim();
+        const rankSourceValue = String(rankMeta.source || "").trim();
+        const rankSource = rankSourceValue ? translateFactSource(rankSourceValue, rankSourceValue) : "";
         const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
         const statusLabel = rankStatusRaw
             ? rankingStatusLabel(rankStatusRaw)
@@ -3879,11 +3888,11 @@ export function initUniversitiesPage() {
             : "";
         const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
         const rankAriaLabel = sourceTooltip
-            ? `${rankLabel} ${rankValueText}: ${sourceTooltip}`
-            : `${rankLabel} ${rankValueText}`;
+            ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
+            : `${rankLabel}: ${rankValueText}`;
         const rankInnerHtml = `
                     <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
-                    <span class="uni-metric-label">${rankLabel}</span>
+                    <span class="uni-metric-label">${rankLabel}:</span>
                     <span class="uni-metric-value">${rankValueText}</span>
         `;
         const metricsHtml = `

@@ -1,21 +1,26 @@
 const { test, expect } = require("@playwright/test");
 const { markTourAsSeen } = require("./helpers/personas");
 const { setNativeSelect } = require("./helpers/selectors");
+const { expectNoStackedGapMargins } = require("./helpers/design");
 
 const MIT_ID = "mit-usa-cambridge";
 const IMPERIAL_ID = "imperial-college-london-uk";
 const OXFORD_ID = "university-of-oxford-uk-oxford";
 const HARVARD_ID = "harvard-usa-cambridge";
+let compareSeed = 0;
 
 async function clearCompareState(page, language = "eng") {
-  await page.addInitScript((nextLanguage) => {
+  await page.addInitScript(({ nextLanguage, seed }) => {
+    const key = `unisearch_compare_test_seed_${seed}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
     localStorage.setItem("unisearch_ui_language_v1", nextLanguage);
     localStorage.removeItem("unisearch_compare_university_ids_v1");
     localStorage.removeItem("unisearch_compare_admission_choices_v1");
     localStorage.removeItem("unisearch_filters");
     localStorage.removeItem("unisearch_profile");
     localStorage.removeItem("unisearch_detail_cache_v3");
-  }, language);
+  }, { nextLanguage: language, seed: ++compareSeed });
 }
 
 async function waitForUniversitiesReady(page) {
@@ -23,12 +28,129 @@ async function waitForUniversitiesReady(page) {
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
 }
 
+async function seedReviewedContexts(page) {
+  await page.addInitScript(({ mit, imperial }) => {
+    localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, selectedAdmissionChoices: {
+      [mit]: { studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year", studyLevel: "undergraduate", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027 entry", feeStatusContext: "unknown" },
+      [imperial]: { studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng", studyLevel: "undergraduate", applicantRoute: "first_year", intendedEntryCycle: "2027 entry", feeStatusContext: "unknown" },
+    } }));
+  }, { mit: MIT_ID, imperial: IMPERIAL_ID });
+}
+
+async function chooseReviewedContext(page, id, search, option, route, cycle) {
+  const chooser = page.locator(`#compare-options-${id}`);
+  await expect(chooser.locator("[data-compare-context-form]")).toBeVisible();
+  await chooser.locator("[data-compare-search-form] input[type=search]").fill(search);
+  await setNativeSelect(page, `compare-filter_level-${id}`, "undergraduate");
+  await chooser.locator("[data-compare-search-form] button[type=submit]").click();
+  await chooser.locator(`[data-study-option="${option}"]`).click();
+  const select = chooser.locator('select[data-context-field="application_route_id"]');
+  await expect(select).toBeEnabled();
+  await expect(select).toHaveValue("");
+  const wrapper = select.locator("xpath=..");
+  await wrapper.locator(".custom-select-trigger").click();
+  await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  await setNativeSelect(page, `compare-applicant_route-${id}`, "first_year");
+  await chooser.locator(`#compare-cycle-${id}`).fill(cycle);
+  await chooser.locator("[data-compare-context-form] button[type=submit]").click();
+  await expect.poll(() => page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[uid], id)).toMatchObject({
+    studyOptionId: option, applicationRouteId: route, intendedEntryCycle: cycle,
+  });
+}
+
+test("empty comparison action uses token spacing and stays centered", async ({ page }) => {
+  await clearCompareState(page);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/compare.html");
+
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
+  const emptyState = page.locator(".compare-results-empty");
+  await expect(emptyState).toBeVisible();
+  const spacing = await emptyState.evaluate((element) => {
+    const copy = element.querySelector(".compare-results-empty__copy");
+    const actions = element.querySelector(".compare-results-actions--centered");
+    const root = getComputedStyle(document.documentElement);
+    return {
+      actionAlignment: getComputedStyle(actions).justifyContent,
+      actionMargin: getComputedStyle(actions).marginTop,
+      outerGap: getComputedStyle(element).rowGap,
+      outerGapToken: root.getPropertyValue("--space-8").trim(),
+      copyGap: getComputedStyle(copy).rowGap,
+      copyGapToken: root.getPropertyValue("--space-3").trim(),
+    };
+  });
+
+  expect(spacing.actionAlignment).toBe("center");
+  expect(spacing.actionMargin).toBe("0px");
+  expect(spacing.outerGap).toBe(spacing.outerGapToken);
+  expect(spacing.copyGap).toBe(spacing.copyGapToken);
+});
+
+test("catalog layout has no stacked gap and child margins", async ({ page }) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+  await page.goto("/index.html");
+  await waitForUniversitiesReady(page);
+
+  await expectNoStackedGapMargins(page, "#universitiesCatalogPane");
+});
+
+test("catalog level selector stays clear across themes and desktop/phone layouts", async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
+    for (const viewport of [
+      { name: "desktop", width: 1440, height: 900 },
+      { name: "phone", width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await markTourAsSeen(page);
+      await clearCompareState(page);
+      await page.addInitScript((nextTheme) => localStorage.setItem("unisearch_theme", nextTheme), theme);
+      await page.goto("/index.html");
+      await waitForUniversitiesReady(page);
+
+      const colors = await page.evaluate(() => {
+        const valueForToken = (token) => {
+          const probe = document.createElement("div");
+          probe.style.backgroundColor = `var(${token})`;
+          document.body.append(probe);
+          const value = getComputedStyle(probe).backgroundColor;
+          probe.remove();
+          return value;
+        };
+        return {
+          theme: document.documentElement.dataset.theme,
+          group: getComputedStyle(document.querySelector("#catalogLevelSegmented")).backgroundColor,
+          groupSurface: valueForToken("--surface-soft"),
+          active: getComputedStyle(document.querySelector(".catalog-level-btn.is-active")).backgroundColor,
+          activeSurface: valueForToken("--surface-solid"),
+        };
+      });
+
+      expect(colors.theme).toBe(theme);
+      expect(colors.group).toBe(colors.groupSurface);
+      expect(colors.active).toBe(colors.activeSurface);
+      // shortcut: the checked-in baseline is Windows-only; add an OS capture before enabling Linux comparisons.
+      if (process.platform === "win32") {
+        await expect(page.locator("#catalogLevelSegmented")).toHaveScreenshot(`catalog-level-${theme}-${viewport.name}.png`, {
+          animations: "disabled",
+          caret: "hide",
+        });
+      }
+    }
+  }
+});
+
 test("catalog comparison mode navigates to the dedicated compare page", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
 
   await page.goto("/index.html");
   await waitForUniversitiesReady(page);
+  const metricsMargins = await page.locator("#universitiesList .uni-metrics").evaluateAll((elements) =>
+    elements.map((element) => getComputedStyle(element).marginTop)
+  );
+  expect(metricsMargins.length).toBeGreaterThan(0);
+  expect(metricsMargins.every((margin) => margin === "0px")).toBe(true);
   await expect(page.locator("[data-universities-tab]")).toHaveCount(0);
   await expect(page.locator("#compareModeBtn")).toHaveAttribute("aria-pressed", "false");
   await expect(page.locator("#universitiesList [data-card-action='compare']")).toHaveCount(0);
@@ -70,12 +192,11 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   const configureColumns = page.locator(".compare-config-column");
   for (let index = 0; index < 2; index += 1) {
-    await expect(configureColumns.nth(index).locator(".track-select-btn").first()).toBeVisible();
+    await expect(configureColumns.nth(index).locator("[data-compare-context-form]")).toBeVisible();
+    await expect(configureColumns.nth(index).locator('select[data-context-field="application_route_id"]')).toHaveValue("");
   }
-  await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(2);
-  await expect(page.locator(".chance-track-chip").first()).toBeVisible();
-  await expect(page.locator(".track-stats-title--avg .track-stats-chance")).toHaveCount(0);
-  await expect(page.locator("#compareResultsPane")).toContainText("UniChance");
+  await expect(page.locator(".compare-config-chance .chance-panel")).toHaveCount(0);
+  await expect(page.locator(".compare-config-subtitle")).toHaveText("Compare universities now, or choose a study option and application route to view applicable admissions facts.");
   const configureText = await page.locator("#compareResultsPane").textContent();
   expect(configureText).not.toMatch(/(?:Ð|Рќ|вЂ)/);
 
@@ -86,8 +207,8 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
 
   // Verify results view rendered on compare page
   await expect(page.locator(".compare-decision-support")).toBeVisible();
-  await expect(page.locator(".compare-decision-theme")).toHaveCount(4);
-  await expect(page.locator(".compare-decision-side")).toHaveCount(8);
+  await expect(page.locator(".compare-decision-theme")).toHaveCount(1);
+  await expect(page.locator(".compare-decision-side")).toHaveCount(2);
   await expect(page.locator(".compare-uni-card")).toHaveCount(2);
   await expect(page.locator(".compare-table thead th")).toHaveCount(3);
   await expect(page.locator(".compare-tests")).toBeVisible();
@@ -217,7 +338,7 @@ test("Oxford and Harvard comparison explains scope, aid, and missing personal ev
   }
 });
 
-test("compare configure cards expose admission requirements before continuing", async ({ page }) => {
+test("compare configuration requires two explicit reviewed contexts and persists each independently", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
   await page.addInitScript(() => {
@@ -227,42 +348,58 @@ test("compare configure cards expose admission requirements before continuing", 
   await page.goto("/compare.html?lang=eng&stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
+  const optionalContext = "Compare universities now, or choose a study option and application route to view applicable admissions facts.";
+  await expect(page.locator(".compare-config-subtitle")).toHaveText(optionalContext);
+  await expect(page.getByText(optionalContext, { exact: true })).toHaveCount(1);
+  await expect(page.locator(".compare-config-column__status")).toHaveCount(0);
 
   const mitColumn = page.locator(".compare-config-column", { hasText: "Massachusetts Institute of Technology" });
-  await expect(mitColumn).toContainText("Minimum to apply");
-  await expect(mitColumn).toContainText("Minimum requirements unknown");
-  await expect(mitColumn).toContainText("No verified average admitted data published.");
+  await expect(mitColumn.locator(".admissions-context__note")).toHaveText("Reviewed study and admissions catalog");
   await expect(mitColumn).not.toContainText("SAT: 1550");
-
-  const imperialGrant = page.locator(".compare-config-column", { hasText: "Imperial College London" })
-    .locator(".admission-funding-option--grant");
-  await expect(imperialGrant).toContainText("Funding-specific differences");
-  await expect(imperialGrant).toContainText("Total: 18 pts");
+  await chooseReviewedContext(page, MIT_ID, "Computer Science and Engineering", "mit-course-6-3-bachelor", "mit-first-year", "Fall 2027 entry");
+  await chooseReviewedContext(page, IMPERIAL_ID, "Computing", "imperial-option-computing-meng", "procedure-computing-meng", "2027 entry");
+  await page.locator('[data-action="build-compare-results"]').click();
+  await expect(page.locator(".compare-table")).toBeVisible();
+  const studyModeRow = page.locator(".compare-table tbody tr").filter({ hasText: "Study mode" });
+  await expect(studyModeRow).toHaveCount(1);
+  await expect(studyModeRow).toContainText("Not specified");
+  await expect(studyModeRow).not.toContainText("not_stated");
+  await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] [data-admissions-fact="ug-sat-act-presence"]`)).toBeVisible();
+  await expect(page.locator(`[data-reviewed-context="${IMPERIAL_ID}"] [data-admissions-fact="imperial-computing-meng-admission"]`)).toBeVisible();
+  await page.reload();
+  await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] .admissions-context__summary`)).toContainText("Fall 2027 entry");
+  await expect(page.locator(`[data-reviewed-context="${IMPERIAL_ID}"] .admissions-context__summary`)).toContainText("2027 entry");
 });
 
-test("compare results split admission decision rows", async ({ page }) => {
+test("reviewed comparison keeps MIT institutional tests separate from Imperial course requirements", async ({ page }) => {
   await markTourAsSeen(page);
   await clearCompareState(page);
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
   });
 
-  await page.goto("/compare.html?lang=eng&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat-grant-president-s-scholarship");
-  const table = page.locator(".compare-table");
-  await expect(table).toContainText("Selected route");
-  await expect(table).toContainText("Academic minimums");
-  await expect(table).not.toContainText("Admitted score context");
-  await expect(table).toContainText("Funding-specific requirements");
-  await expect(table).toContainText("Language proof");
-  await expect(table).toContainText("Documents / interview / portfolio");
-  await expect(table).toContainText("IELTS Academic language minimum");
-  await expect(table).toContainText("SAT requirement");
-  await expect(table).toContainText("AP requirement");
-  await expect(table).toContainText("1,450");
-  await expect(table).not.toContainText("1,550");
+  await seedReviewedContexts(page);
+  await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
+  const mit = page.locator(`[data-reviewed-context="${MIT_ID}"]`);
+  const imperial = page.locator(`[data-reviewed-context="${IMPERIAL_ID}"]`);
+  const mitTest = mit.locator('[data-admissions-fact="ug-sat-act-presence"]');
+  await expect(mitTest).toBeVisible();
+  await mitTest.locator("summary").click();
+  await expect(mitTest).toContainText(/SAT.*ACT|ACT.*SAT/i);
+  await expect(mitTest.locator('a[href*="mitadmissions.org"]')).not.toHaveCount(0);
+  const course = imperial.locator('[data-admissions-fact="imperial-computing-meng-admission"]');
+  await expect(course).toBeVisible();
+  await course.locator("summary").click();
+  await expect(course).toContainText("TMUA");
+  await expect(course.locator('a[href*="imperial.ac.uk"]')).not.toHaveCount(0);
+  await expect(mit.locator('[data-admissions-fact="imperial-computing-meng-admission"]')).toHaveCount(0);
+  await expect(imperial.locator('[data-admissions-fact="ug-sat-act-presence"]')).toHaveCount(0);
+  await expect(mit).toContainText("No requirements-match percentage is available");
+  await expect(imperial).toContainText("No requirements-match percentage is available");
+  await expect(page.locator(".compare-table")).not.toContainText(/1,450|1,550/);
 });
 
-test("compare deep link ids and choices override stale localStorage", async ({ page }) => {
+test("compare deep link IDs override stale selection while old reviewed pointers cannot override canonical profile context", async ({ page }) => {
   await markTourAsSeen(page);
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_compare_university_ids_v1", JSON.stringify([
@@ -274,6 +411,7 @@ test("compare deep link ids and choices override stale localStorage", async ({ p
       "al-farabi-kazakh-national-university-kaz-almaty": { choiceKey: "kaznu_unt::kaznu_unt::kaznu_unt_paid" },
     }));
   });
+  await seedReviewedContexts(page);
 
   await page.goto("/compare.html?lang=eng&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
   await expect(page.locator(".compare-table")).toBeVisible();
@@ -282,6 +420,8 @@ test("compare deep link ids and choices override stale localStorage", async ({ p
     "Imperial College London",
   ]);
   await expect(page.locator(".compare-uni-card")).not.toContainText(["Abai"]);
+  await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] .admissions-context__summary`)).toContainText("Computer Science and Engineering");
+  await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] .admissions-context__summary`)).not.toContainText("mit_regular");
 });
 
 test("compare results count localized bachelor programs in Russian", async ({ page }) => {
@@ -304,8 +444,9 @@ test("compare results count localized bachelor programs in Russian", async ({ pa
   await expect(table).toContainText("Официальный источник");
 });
 
-test("compare rework: diff toggle, best cell highlights, and track selector in results", async ({ page }) => {
+test("compare rework: diff toggle, neutral rows, and reviewed context controls", async ({ page }) => {
   await markTourAsSeen(page);
+  await seedReviewedContexts(page);
   await page.goto(`/university.html?id=${MIT_ID}`);
   await page.evaluate(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
@@ -336,18 +477,18 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await expect(page.locator("tr[data-row-section='programs'] .compare-cell--best")).toHaveCount(0);
 
   // 5. Verify programs row does not contain raw university IDs and has human-readable content
-  const programRow = page.locator("tr[data-row-key='programs']");
-  if (await programRow.count() > 0) {
-    const rowText = await programRow.innerText();
-    expect(rowText).not.toContain("mit-usa-cambridge");
-    expect(rowText).not.toContain("imperial-college-london-uk");
-  }
+  const programRow = page.locator("[data-reviewed-context] .admissions-context__summary");
+  await expect(programRow).toHaveCount(2);
+  const rowText = (await programRow.allInnerTexts()).join(" ");
+  expect(rowText).not.toContain("mit-usa-cambridge");
+  expect(rowText).not.toContain("imperial-college-london-uk");
 
   // 6. Verify track switcher
-  const trackSelect = page.locator(".compare-track-select").first();
-  if (await trackSelect.count() > 0) {
-    await expect(trackSelect).toBeVisible();
-  }
+  await expect(page.locator("[data-reviewed-context]")).toHaveCount(2);
+  await page.locator('[data-action="back-to-tracks"]').click();
+  await expect(page.locator(`#compare-options-${MIT_ID} select[data-context-field="application_route_id"]`)).toHaveValue("mit-first-year");
+  await expect(page.locator(`#compare-options-${IMPERIAL_ID} select[data-context-field="application_route_id"]`)).toHaveValue("procedure-computing-meng");
+  await page.locator('[data-action="build-compare-results"]').click();
 
   // 7. Verify diff-only toggle
   const diffToggle = page.locator(".compare-diff-toggle");
@@ -359,8 +500,8 @@ test("compare rework: diff toggle, best cell highlights, and track selector in r
   await expect(page.locator(".compare-table-wrap")).not.toHaveClass(/is-diff-only/);
 
   // 8. Verify neutral decision-support themes and paired evidence
-  await expect(page.locator(".compare-decision-theme")).toHaveCount(4);
-  await expect(page.locator(".compare-decision-theme[data-theme-key='admissions'] .compare-decision-side")).toHaveCount(2);
+  await expect(page.locator(".compare-decision-theme")).toHaveCount(1);
+  await expect(page.locator(".compare-decision-side")).toHaveCount(2);
   await expect(page.locator(".compare-decision-status").first()).toBeVisible();
   await expect(page.locator(".compare-overview, .compare-conclusion, .compare-key-differences")).toHaveCount(0);
 });

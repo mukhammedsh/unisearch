@@ -12,7 +12,33 @@ global.fetch = async (url) => {
 
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { getProgramLevelKeys, renderProgramCoverage, renderProgramsSection, resolveDisplayedCoverageProgram, resolveProgramByIdentifier, resolveProgramByName, resolveProgramCoverage } = await import("../../frontend/javascript/pages/university/render-content.js");
+const { renderAdmissionsContext } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
+
+const admissionsCatalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+const acceptedInstitutions = Object.fromEntries(admissionsCatalog.institutions.map(row => [row.institution.id, row]));
+
+function acceptedContext(institutionId, optionId, routeId, factIds) {
+  const institution = acceptedInstitutions[institutionId];
+  const option = institution.study_options.find(row => row.id === optionId);
+  const route = institution.application_routes.find(row => row.id === routeId);
+  const facts = factIds.map(id => institution.facts.find(row => row.id === id));
+  const domains = { study_content: "study", application_process: "application", costs: "costs", degree_completion: "degree_completion" };
+  const fact_groups = {};
+  for (const fact of facts) {
+    const domain = domains[fact.topic] || "other";
+    (fact_groups[domain] ||= []).push(fact.id);
+  }
+  const sourceIds = new Set([...option.source_ids, ...route.source_ids, ...facts.flatMap(fact => fact.source_ids || [])]);
+  return {
+    selected_option: option,
+    selected_route: route,
+    facts,
+    fact_groups,
+    sources: institution.sources.filter(source => sourceIds.has(source.id)),
+    reference_labels: Object.fromEntries(institution.study_options.map(row => [row.id, row.title])),
+  };
+}
 
 test("MBA level does not depend on the translated program name", () => {
   const base = { study_levels: ["Master"], degree_type: "MBA + SM" };
@@ -20,41 +46,30 @@ test("MBA level does not depend on the translated program name", () => {
   assert.deepEqual(getProgramLevelKeys({ ...base, name: "Двойная степень Leaders for Global Operations (MBA и SM)" }), ["mba"]);
 });
 
-test("MIT study-option details separate curriculum from admission and expose official pages", () => {
-  setLanguage("eng");
-  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
-  renderProgramsSection({
-    container,
-    university: { id: "mit-usa-cambridge", academics: { programs: [{
-      id: "mit-bs-15-2", name: "Business Analytics (Course 15-2)", study_levels: ["Bachelor"],
-      description: "A curriculum focused on data modeling & optimization.",
-      url: "https://mitsloan.mit.edu/programs/undergraduate/",
-      source_url: "https://catalog.mit.edu/degree-charts/business-analytics-course-15-2/",
-    }] } },
-  });
-  assert.match(container.innerHTML, /A curriculum focused on data modeling &amp; optimization/);
-  assert.match(container.innerHTML, /first-year applicants apply to MIT as a whole/);
-  assert.match(container.innerHTML, /data-program-admission="mit-bs-15-2"/);
-  assert.match(container.innerHTML, /href="https:\/\/mitsloan\.mit\.edu\/programs\/undergraduate\/"/);
-  assert.match(container.innerHTML, /href="https:\/\/catalog\.mit\.edu\/degree-charts\/business-analytics-course-15-2\/"/);
-  assert.doesNotMatch(container.innerHTML, /program-card-label">Description/);
+test("accepted MIT study facts keep curriculum separate from institution-wide admission and link official sources", () => {
+  const context = acceptedContext("mit-usa-cambridge", "mit-bs-15-2", "mit-first-year", ["mit-bs-15-2-description", "mit-first-year-description"]);
+  const option = context.selected_option;
+  const route = context.selected_route;
+  assert.equal(option.attributes.application.classification, "post_admission_major");
+  assert.equal(route.classification, "institution_wide");
+  assert.equal(route.target, "MIT undergraduate admission");
+  assert.ok(route.option_ids.includes(option.id));
+
+  const html = renderAdmissionsContext(context, { domains: ["study", "application"], includeAssessment: false });
+  assert.match(html, /programming, probability and statistics, operations analytics/);
+  assert.match(html, /these are degree requirements, not admission prerequisites/);
+  assert.match(html, /MIT undergraduate admission/);
+  assert.match(html, /https:\/\/catalog\.mit\.edu\/degree-charts\/business-analytics-course-15-2\//);
+  assert.match(html, /https:\/\/mitadmissions\.org\/apply\/firstyear\/deadlines-requirements\//);
 });
 
-test("a sparse program points to its curriculum without inventing a summary", () => {
-  setLanguage("rus");
-  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
-  renderProgramsSection({
-    container,
-    university: { id: "mit-usa-cambridge", academics: { programs: [{
-      id: "mit-bs-15-3", name: "Finance (Course 15-3)", study_levels: ["Bachelor"],
-      source_url: "https://catalog.mit.edu/degree-charts/",
-    }] } },
-  });
-  assert.match(container.innerHTML, /Подробное описание пока не добавлено в UniSearch/);
-  assert.match(container.innerHTML, /Официальная страница программы/);
-  assert.match(container.innerHTML, /специальность выбирают после первого курса/);
-  assert.doesNotMatch(container.innerHTML, /нет данных/);
-  setLanguage("eng");
+test("accepted sparse study fact shows its published selection condition without an invented program summary", () => {
+  const context = acceptedContext("mit-usa-cambridge", "mit-bs-3-c", "mit-first-year", ["mit-bs-3-c-selection"]);
+  const html = renderAdmissionsContext(context, { domains: ["degree_completion"], includeAssessment: false });
+  assert.match(html, /SB in Archaeology and Materials/);
+  assert.match(html, /Not external admission prerequisite/);
+  assert.match(html, /https:\/\/catalog\.mit\.edu\/degree-charts\/archaeology-materials-course-3-c\//);
+  assert.doesNotMatch(html, /Detailed description not catalogued|specific course description/);
 });
 
 function row(overrides = {}) {
@@ -85,23 +100,19 @@ test("program matching preserves nested parenthetical labels", () => {
   assert.doesNotMatch(container.innerHTML, /program-signal--residual/);
 });
 
-test("MIT undergraduate coverage labels general route and university cost guidance without claiming program price", () => {
-  const mit = row({
-    program_id: "Course 6-3",
-    program_name: "Computer Science and Engineering (Course 6-3)",
-    study_levels: ["bachelor"],
-    requirements: { status: "available", scope: "institution_wide_route", source_url: "https://mitadmissions.org/apply/firstyear/deadlines-requirements/", cycle: "2027 entry" },
-    deadline: { status: "approximate_or_yearless", scope: "institution_wide_route", values: ["November 1", "January 4"], source_url: "https://mitadmissions.org/apply/firstyear/deadlines-requirements/", cycle: "2027 entry" },
-    tuition_mandatory_fees: { status: "available", scope: "university_guidance", values: { Tuition: 66720, currency: "USD" }, source_url: "https://sfs.mit.edu/cost-of-attendance-class-of-2030/", cycle: "2026-27" },
-  });
-  const html = renderProgramCoverage([mit], { id: "Course 6-3", name: mit.program_name });
+test("accepted undergraduate costs remain scoped to the shared institutional route, not the selected program", () => {
+  const context = acceptedContext("mit-usa-cambridge", "mit-bs-15-2", "mit-first-year", ["undergraduate-budget-2026-27"]);
+  const cost = context.facts[0];
+  assert.deepEqual(cost.scope.option_ids, []);
+  assert.ok(cost.scope.route_ids.includes(context.selected_route.id));
+  assert.equal(context.selected_route.classification, "institution_wide");
 
-  assert.match(html, /University-wide admission route/);
-  assert.match(html, /November 1; January 4/);
-  assert.match(html, /2027 entry/);
-  assert.match(html, /university-level guidance; not a program price/i);
-  assert.doesNotMatch(html, /USD 66,720/);
-  assert.match(html, /href="https:\/\/mitadmissions\.org\/apply\/firstyear\/deadlines-requirements\/"/);
+  const html = renderAdmissionsContext(context, { domains: ["costs"], includeAssessment: false });
+  assert.match(html, /MIT undergraduate admission/);
+  assert.match(html, /Academic year/);
+  assert.match(html, /USD/);
+  assert.match(html, /https:\/\/sfs\.mit\.edu\/cost-of-attendance-class-of-2030\//);
+  assert.doesNotMatch(html, /Business Analytics|Course 15-2|program-specific price/i);
 });
 
 test("route-wide and institution-wide facts have localized scope labels", () => {

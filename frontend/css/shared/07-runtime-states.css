@@ -85,7 +85,7 @@ body.route-loading main {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 20px;
+  padding: var(--space-20) var(--space-5);
   width: 100%;
 }
 
@@ -106,7 +106,7 @@ body.route-loading main {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   box-shadow:
     var(--shadow-sm),
     inset 0 0 0 1px var(--line);
@@ -120,7 +120,7 @@ body.route-loading main {
 .error-title {
   font-size: 32px;
   font-weight: 500;
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
   color: var(--text);
   letter-spacing: 0;
 }
@@ -130,14 +130,14 @@ body.route-loading main {
   color: var(--text-muted);
   max-width: 440px;
   line-height: 1.6;
-  margin: 0 0 36px;
+  margin: 0 0 var(--space-8);
 }
 
 .error-btn {
   background: var(--accent);
   color: var(--text-inverse);
   border: none;
-  padding: 16px 32px;
+  padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-base);
   font-weight: 500;
   font-size: 16px;
@@ -149,7 +149,7 @@ body.route-loading main {
     transform var(--motion-fast) var(--motion-ease-standard);
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -190,11 +190,11 @@ body.route-loading main {
   z-index: var(--z-toast);
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
   background: var(--surface-solid);
   border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
   font-size: var(--text-sm);
   font-weight: 500;
@@ -202,8 +202,8 @@ body.route-loading main {
   opacity: 0;
   pointer-events: none;
   transition:
-    opacity var(--motion-standard) var(--motion-ease-standard),
-    transform var(--motion-standard) var(--motion-ease-standard);
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .network-status-banner.is-visible {
@@ -248,7 +248,7 @@ body.route-loading main {
   .network-status-banner {
     top: 12px;
     max-width: calc(100vw - 24px);
-    padding: 8px 12px;
+    padding: var(--space-2) var(--space-3);
     font-size: var(--text-xs);
   }
 

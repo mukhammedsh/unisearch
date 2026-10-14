@@ -6,16 +6,16 @@
 .guide-page {
   --guide-sidebar-offset: 84px;
   max-width: 1520px;
-  margin: 12px auto 80px;
-  padding: 0 32px;
+  margin: var(--space-3) auto var(--space-20);
+  padding: 0 var(--layout-page-gutter);
 }
 
 /* --------------------------------------------------------------------------
    Hero Section
    -------------------------------------------------------------------------- */
 .guide-hero {
-  padding: 0 0 8px;
-  margin-bottom: 12px;
+  padding: 0 0 var(--space-2);
+  margin-bottom: var(--space-3);
   border-bottom: none;
 }
 
@@ -34,7 +34,7 @@
 .guide-layout {
   display: grid;
   grid-template-columns: 250px minmax(0, 1fr);
-  gap: 28px;
+  gap: var(--space-6);
   align-items: start;
 }
 
@@ -78,12 +78,12 @@
   max-height: calc(100vh - var(--guide-sidebar-offset) - 24px);
   overflow-y: auto;
   padding-bottom: var(--space-2);
-  padding-left: 2px;
+  padding-left: var(--space-0-5);
 }
 
 .guide-nav-group {
   display: grid;
-  gap: 2px;
+  gap: var(--space-0-5);
   min-width: 0;
 }
 
@@ -100,7 +100,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  padding: 2px 0;
+  padding: var(--space-0-5) 0;
   text-decoration: none;
   color: var(--accent-strong);
   font-size: var(--text-sm);
@@ -183,7 +183,7 @@
 }
 
 .guide-section-navigation__button:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -236,7 +236,7 @@
   border-radius: 16px;
   background: var(--surface-solid);
   box-shadow: var(--shadow-xs);
-  scroll-margin-top: 96px;
+  scroll-margin-top: var(--space-24);
 }
 
 .guide-section {
@@ -245,7 +245,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  scroll-margin-top: 96px;
+  scroll-margin-top: var(--space-24);
   min-width: 0;
 }
 
@@ -267,7 +267,7 @@
 
 .guide-section h4[id],
 .guide-subsection {
-  scroll-margin-top: 96px;
+  scroll-margin-top: var(--space-24);
 }
 
 /* --------------------------------------------------------------------------
@@ -318,8 +318,8 @@
 
 /* Lists (tight rhythm without giant gaps between bullets) */
 .guide-list {
-  margin: 8px 0 0;
-  padding-left: 22px;
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
   color: var(--text);
   font-size: var(--text-md);
   line-height: 1.54;
@@ -327,15 +327,15 @@
 }
 
 .guide-list li + li {
-  margin-top: 6px;
+  margin-top: var(--space-1-5);
 }
 
 /* --------------------------------------------------------------------------
    Subsections (Exams / Languages / Tags)
    -------------------------------------------------------------------------- */
 .guide-subsection {
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
   border-top: none;
 }
 
@@ -347,7 +347,7 @@
 
 .guide-subsection h4,
 .guide-tags-group h4 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   font-size: var(--text-lg);
   font-weight: 500;
   line-height: 1.3;
@@ -357,7 +357,7 @@
 
 /* Tags Groups */
 .guide-tags-group + .guide-tags-group {
-  margin-top: 16px;
+  margin-top: var(--space-4);
 }
 
 .guide-tags-note {
@@ -371,7 +371,7 @@
 .guide-tag,
 .guide-doc code {
   display: inline-block;
-  padding: 2px var(--space-2);
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-xs);
   background: var(--surface-soft);
   color: var(--text);
@@ -399,12 +399,12 @@ body[data-page="guide"] {
    -------------------------------------------------------------------------- */
 @media (max-width: 1180px) {
   .guide-page {
-    padding: 0 24px;
+    padding: 0 var(--space-6);
   }
 
   .guide-layout {
     grid-template-columns: 220px minmax(0, 1fr);
-    gap: 20px;
+    gap: var(--space-5);
   }
 
   .guide-doc {
@@ -418,8 +418,8 @@ body[data-page="guide"] {
 
 @media (max-width: 1024px) {
   .guide-page {
-    margin-top: 12px;
-    padding: 0 var(--mobile-safe-gutter, 16px);
+    margin-top: var(--space-3);
+    padding: 0 var(--mobile-safe-gutter, var(--space-4));
   }
 
   .guide-layout {
@@ -464,7 +464,7 @@ body[data-page="guide"] {
   }
 
   .guide-mobile-nav-toggle:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
 
@@ -516,12 +516,12 @@ body[data-page="guide"] {
   }
 
   .guide-section {
-    scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
+    scroll-margin-top: calc(var(--nav-height, var(--space-16)) + var(--space-16));
   }
 
   .guide-section h4[id],
   .guide-subsection {
-    scroll-margin-top: calc(var(--nav-height, 70px) + 68px);
+    scroll-margin-top: calc(var(--nav-height, var(--space-16)) + var(--space-16));
   }
 
   .guide-content {
@@ -536,8 +536,8 @@ body[data-page="guide"] {
 
 @media (max-width: 640px) {
   .guide-page {
-    margin-top: 12px;
-    padding: 0 12px;
+    margin-top: var(--space-3);
+    padding: 0 var(--space-3);
   }
 
   .guide-hero {

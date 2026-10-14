@@ -53,7 +53,7 @@ function setLanguageControlPending(languageSelect, isPending) {
     languageSelect.dataset.loading = isPending ? "1" : "0";
     wrapper?.classList.toggle("is-language-loading", isPending);
     wrapper?.setAttribute("aria-busy", isPending ? "true" : "false");
-    initCustomSelect("languageSelect");
+    if (languageSelect.id) initCustomSelect(languageSelect.id);
 }
 
 // Base HTML layout for navbar and settings dialog
@@ -90,6 +90,7 @@ const LAYOUT_HTML = `
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng">English (US)</option>
         <option value="rus">Русский</option>
+        <option value="kaz" data-i18n="nav.lang.kaz">Қазақша</option>
       </select>
     </div>
     <button
@@ -155,6 +156,18 @@ const LAYOUT_HTML = `
           <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Open universities in a new tab" data-i18n-aria-label="settings.option.open_universities_new_tab.title" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
           <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
         </label>
+      </article>
+
+      <h3 class="settings-section-title" data-i18n="settings.section.regional">Language &amp; region</h3>
+      <article class="settings-row" data-setting-key="site_language">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.language.title">Site language</h3>
+        </div>
+        <select id="settingLanguage" class="settings-select" data-language-input data-flags="off" aria-label="Site language" data-i18n-aria-label="settings.option.language.title">
+          <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
+          <option value="rus" data-i18n="nav.lang.rus">Русский</option>
+          <option value="kaz" data-i18n="nav.lang.kaz">Қазақша</option>
+        </select>
       </article>
 
       <article class="settings-row" data-setting-key="${SETTING_PREFERRED_CURRENCY}">
@@ -436,17 +449,26 @@ function initAdaptiveNavbarLayout() {
 }
 
 function initLanguageSwitcher() {
-    const languageSelect = document.getElementById("languageSelect");
-    if (!languageSelect) return;
-    if (languageSelect.dataset.bound === "1") {
-        languageSelect.value = getCurrentLanguage();
-        initCustomSelect("languageSelect");
-        return;
-    }
-    languageSelect.dataset.bound = "1";
-    languageSelect.value = getCurrentLanguage();
+    const languageSelects = Array.from(document.querySelectorAll("#languageSelect, [data-language-input]"));
+    if (!languageSelects.length) return;
 
-    languageSelect.addEventListener("change", async () => {
+    const syncLanguageSelects = () => {
+        languageSelects.forEach((select) => {
+            select.value = getCurrentLanguage();
+            if (select.id) initCustomSelect(select.id);
+        });
+    };
+
+    languageSelects.forEach((languageSelect) => {
+      if (languageSelect.dataset.bound === "1") {
+          languageSelect.value = getCurrentLanguage();
+          if (languageSelect.id) initCustomSelect(languageSelect.id);
+          return;
+      }
+      languageSelect.dataset.bound = "1";
+      languageSelect.value = getCurrentLanguage();
+
+      languageSelect.addEventListener("change", async () => {
         if (languageSelect.dataset.loading === "1") return;
         const previousLanguage = getCurrentLanguage();
         const next = String(languageSelect.value || "").trim().toLowerCase();
@@ -465,7 +487,7 @@ function initLanguageSwitcher() {
             });
         }, LANGUAGE_TRANSITION_DELAY_MS);
 
-        setLanguageControlPending(languageSelect, true);
+        languageSelects.forEach((select) => setLanguageControlPending(select, true));
         dispatchLanguageTransitionEvent("languageChangeStarted", {
             language: nextLang,
             previousLanguage,
@@ -505,15 +527,13 @@ function initLanguageSwitcher() {
                     previousLanguage,
                     visualPending,
                 });
-                setLanguageControlPending(languageSelect, false);
+                languageSelects.forEach((select) => setLanguageControlPending(select, false));
             }
         }
+      });
     });
 
-    window.addEventListener("languageChanged", () => {
-        languageSelect.value = getCurrentLanguage();
-        initCustomSelect("languageSelect");
-    });
+    window.addEventListener("languageChanged", syncLanguageSelects);
 }
 
 export function addFooterProductLinks() {
@@ -545,7 +565,10 @@ export async function loadGlobalLayout() {
         initLanguageSwitcher();
         addFooterProductLinks();
         applyTranslations(document);
-        if (typeof initCustomSelect === "function") initCustomSelect("languageSelect");
+        if (typeof initCustomSelect === "function") {
+            initCustomSelect("languageSelect");
+            initCustomSelect("settingLanguage");
+        }
         initAdaptiveNavbarLayout();
 
         initSettingsUI();

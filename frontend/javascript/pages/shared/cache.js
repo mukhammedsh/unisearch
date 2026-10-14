@@ -5,7 +5,8 @@ import { shouldOpenUniversitiesInNewTab, shouldStoreRecentUniversities } from ".
 const safeLocalStorage = createSafeStorage("local");
 const safeSessionStorage = createSafeStorage("session");
 
-export const DETAIL_CACHE_KEY = "unisearch_detail_cache_v3";
+export const DETAIL_CACHE_KEY = "unisearch_detail_cache_v4";
+safeLocalStorage.remove("unisearch_detail_cache_v3");
 export const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 export const DETAIL_CACHE_MAX_ITEMS = 24;
 const DETAIL_FETCH_RETRY_DELAY_MS = 120;
@@ -159,8 +160,9 @@ export async function fetchUniversityDetailCached(universityId) {
   if (!key) throw new Error("University ID is required");
 
   const cached = getDetailCacheEntry(key, lang);
+  const reviewed = cached?.data?.admissions_catalog?.availability === "reviewed";
   const age = cached ? Date.now() - cached.ts : Number.POSITIVE_INFINITY;
-  if (cached && age < DETAIL_CACHE_TTL_MS) return cached.data;
+  if (cached && !reviewed && age < DETAIL_CACHE_TTL_MS) return cached.data;
 
   const headers = {};
   if (cached?.etag) headers["If-None-Match"] = cached.etag;
@@ -193,7 +195,7 @@ export async function fetchUniversityDetailCached(universityId) {
 
     throw lastError || new Error("Backend error");
   } catch (error) {
-    if (cached?.data) return cached.data;
+    if (cached?.data && !reviewed) return cached.data;
     throw error;
   }
 }

@@ -43,5 +43,8 @@ test.describe("UniChance Calculator Validation", () => {
     // 6. Ensure the badge has the appropriate tone class
     const toneClass = await chancePercent.getAttribute("class");
     expect(toneClass).toMatch(/chance-high|chance-good|chance-medium/);
+    const chanceFill = page.locator(".chance-fill");
+    await expect(chanceFill).toBeVisible();
+    expect(await chanceFill.evaluate((element) => element.getBoundingClientRect().width)).toBeGreaterThan(0);
   });
 });

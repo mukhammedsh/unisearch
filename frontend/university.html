@@ -7,7 +7,6 @@
   <link rel="icon" href="/images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.university">University | UniSearch</title>
   <meta name="description" content="Explore university programs, admission requirements, deadlines, costs, and funding across study levels." />
-  <meta name="theme-color" content="#5D17EB" />
 
   <!-- Open Graph / Facebook / Telegram -->
   <meta property="og:type" content="website" />
@@ -34,6 +33,7 @@
 
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/university.css" />
+  <link rel="stylesheet" href="/css/university-admissions.css" />
   <link rel="stylesheet" href="/css/university-qualification-guidance.css" />
 
 </head>
@@ -95,7 +95,7 @@
 
         <div class="d-tabs">
           <button class="d-tab-btn active" data-tab="tab-general">
-            <span class="icon" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">General</span>
+            <span class="icon" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">Overview</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-programs">
             <span class="icon" data-heroicon="academic-cap" data-icon-size="18"></span> <span data-i18n="university.tab.programs">Programs</span>
@@ -104,12 +104,14 @@
             <span class="icon" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-deadlines">
-            <span class="icon" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Deadlines</span>
+            <span class="icon" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Dates</span>
           </button>
           <button class="d-tab-btn" data-tab="tab-finance">
-            <span class="icon" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs</span>
+            <span class="icon" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs &amp; funding</span>
           </button>
         </div>
+
+        <div id="admissionsReferenceSummary" class="admissions-selection" hidden aria-live="polite"></div>
 
         <div class="d-tab-content">
           
@@ -145,14 +147,14 @@
 
           <div id="tab-admission" class="d-tab-pane">
             <div class="d-box">
-              <div class="d-box-title" data-i18n="university.entry_requirements">Admission Categories</div>
+              <div class="d-box-title" data-i18n="university.entry_requirements">Published admission routes</div>
               <div id="detailRequirements" class="d-box-text"></div>
             </div>
           </div>
 
           <div id="tab-deadlines" class="d-tab-pane">
             <div class="d-box">
-              <div class="d-box-title" data-i18n="university.deadlines.title">Application Deadlines &amp; Calendar</div>
+              <div class="d-box-title" data-i18n="university.deadlines.title">Dates and deadlines</div>
               <p class="d-box-note" data-i18n="university.deadlines.intro">Published application deadlines, decision dates, and fees. Check the university's official admissions page for the current cycle.</p>
               <div id="detailDeadlines" class="d-box-text"></div>
             </div>
@@ -161,7 +163,7 @@
           <div id="tab-finance" class="d-tab-pane">
              <div class="d-box finance-box">
               <header class="finance-section-header">
-                <h2 class="d-box-title" data-i18n="university.finance.title">Costs &amp; funding</h2>
+                <h2 class="d-box-title" data-i18n="university.finance.title">Costs and funding</h2>
                 <p class="d-box-note" data-i18n="university.finance.intro">Review published annual costs and funding opportunities.</p>
               </header>
 

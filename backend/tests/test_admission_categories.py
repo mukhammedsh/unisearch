@@ -1,6 +1,7 @@
 import copy
 import unittest
 
+from app.services import admissions_catalog
 from app.services import universities as uni_service
 
 
@@ -157,12 +158,22 @@ class AdmissionCategoryTests(unittest.TestCase):
         self.assertEqual(2, len(profiles["nu_nuet_undergraduate"].get("funding_options") or []))
         self.assertNotIn("admission_tracks", university)
 
-    def test_dataset_keeps_score_profile_on_requirement_profile(self):
-        mit = uni_service.get_university_by_id("mit-usa-cambridge")
-        self.assertIsNotNone(mit)
-        mit_profile = (mit.get("admission_categories") or [])[0]["requirement_profiles"][0].get("score_profile") or {}
-        self.assertEqual("SAT", mit_profile.get("exam_id"))
-        self.assertEqual(1520, mit_profile.get("p25_raw"))
+    def test_active_mit_first_year_keeps_test_presence_without_a_score_cutoff(self):
+        resolved = admissions_catalog.resolve_context(
+            "mit-usa-cambridge",
+            context={
+                "study_option_id": "mit-course-6-3-bachelor",
+                "application_route_id": "mit-first-year",
+                "study_level": "undergraduate",
+                "applicant_route": "first_year",
+                "intended_entry_cycle": "Fall 2027 entry",
+            },
+        )
+        requirement = next(row for row in resolved["facts"] if row["id"] == "ug-sat-act-presence")
+        self.assertEqual(["source-600fe783c80073e0"], requirement["source_ids"])
+        self.assertEqual(["SAT", "ACT"], requirement["value"]["alternatives"])
+        self.assertIsNone(requirement["value"]["cutoff"])
+        self.assertFalse(uni_service.get_university_by_id("mit-usa-cambridge").get("admission_categories"))
 
         nu = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
         profiles = {

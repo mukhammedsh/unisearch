@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.routers import universities as universities_router
+from app.services import admissions_catalog
 
 
 class UniversitiesEndpointsContractTests(unittest.TestCase):
@@ -148,7 +149,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                         )
 
     def test_university_detail_localizes_requirement_profile_descriptions_by_lang(self):
-        response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
+        response = self.client.get("/universities/nazarbayev-university-kaz-astana?lang=rus")
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -160,7 +161,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             (
                 row
                 for row in (profile.get("funding_options") or [])
-                if isinstance(row, dict) and str(row.get("id") or "") == "mit_regular"
+                if isinstance(row, dict) and str(row.get("funding_type") or "") == "paid"
             ),
             None,
         )
@@ -210,6 +211,11 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             )
 
             finance = data.get("finance") or {}
+            if university_id in admissions_catalog.INSTITUTION_IDS:
+                self.assertNotIn("finance", data)
+                self.assertEqual(data["admissions_catalog"]["availability"], "reviewed")
+                self.assertNotIn("finance", item)
+                continue
             breakdown = finance.get("costs_breakdown_year_usd") or {}
             raw_total = finance.get("total_cost_year_usd")
             if raw_total is None:
@@ -281,6 +287,13 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             with self.subTest(university_id=university_id):
                 card = cards.get(university_id)
                 self.assertIsNotNone(card)
+                if university_id in admissions_catalog.INSTITUTION_IDS:
+                    self.assertNotIn("finance", card)
+                    detail = self.client.get(f"/universities/{university_id}")
+                    self.assertEqual(detail.status_code, 200)
+                    self.assertNotIn("finance", detail.json())
+                    self.assertEqual(detail.json()["admissions_catalog"]["availability"], "reviewed")
+                    continue
                 card_finance = card.get("finance") or {}
                 self.assertIsNone(card_finance.get("total_cost_year_usd"))
                 self.assertEqual(currency, card_finance.get("currency"))
@@ -354,6 +367,10 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             detail = self.client.get(f"/universities/{university_id}")
             self.assertEqual(detail.status_code, 200, university_id)
             finance = detail.json().get("finance") or {}
+            if university_id in admissions_catalog.INSTITUTION_IDS:
+                self.assertNotIn("finance", detail.json())
+                self.assertEqual(detail.json()["admissions_catalog"]["availability"], "reviewed")
+                continue
             status = str(finance.get("costs_breakdown_status") or "")
             if university_id in {"imperial-college-london-uk", "university-of-oxford-uk-oxford"}:
                 self.assertIsNone(finance.get("total_cost_year_usd"), university_id)
@@ -622,7 +639,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
 
     def test_roi_uses_official_salary_data_for_supported_universities(self):
         supported_ids = [
-            "mit-usa-cambridge",
             "national-university-of-singapore-sg-singapore",
             "cuhk-hk-shatin",
         ]
@@ -661,7 +677,11 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                 )
                 self.assertEqual(response.status_code, 200)
                 data = response.json()
-                self.assertIn(data.get("context_type"), {"no_salary_data", "insufficient_level_data"})
+                if university_id in admissions_catalog.INSTITUTION_IDS:
+                    self.assertEqual(data.get("context_type"), "scoped_cost_and_outcomes_unassessed")
+                    self.assertTrue(data.get("catalogRevision"))
+                else:
+                    self.assertIn(data.get("context_type"), {"no_salary_data", "insufficient_level_data"})
                 self.assertIsNone(data.get("salary_used_usd"))
                 self.assertIsNone(data.get("roi_value"))
                 self.assertEqual("No Data", data.get("roi_label"))

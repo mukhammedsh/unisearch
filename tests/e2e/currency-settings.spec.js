@@ -125,8 +125,9 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     const displayTitleRu = modal.locator('[data-setting-key="currency_display_mode"] .settings-copy h3');
     await expect(displayTitleRu).toHaveText("Отображение цен");
 
-    const appearanceSectionRu = modal.locator(".settings-section-title");
+    const appearanceSectionRu = modal.locator('[data-i18n="settings.section.appearance"]');
     await expect(appearanceSectionRu).toHaveText("Оформление");
+    await expect(modal.locator('[data-i18n="settings.section.regional"]')).toHaveText("Язык и регион");
 
     const themeTitleRu = modal.locator('[data-setting-key="theme_preference"] .settings-copy h3');
     await expect(themeTitleRu).toHaveText("Тема");

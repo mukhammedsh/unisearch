@@ -35,8 +35,9 @@ from app.core.settings import (
     RATE_LIMIT_ENABLED,
     REQUEST_BODY_MAX_BYTES,
 )
-from app.routers import root, universities, exams, languages, currency
+from app.routers import root, universities, exams, languages, currency, admissions
 from app.services.background_tasks import warmup_runtime
+from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
 
 
 logging.basicConfig(
@@ -311,6 +312,15 @@ app.mount(
 )
 
 
+@app.exception_handler(AdmissionsCatalogError)
+async def admissions_catalog_error_handler(request: Request, exc: AdmissionsCatalogError) -> JSONResponse:
+    missing = isinstance(exc, InstitutionNotFoundError)
+    return JSONResponse(
+        {"detail": "Admissions catalog not found" if missing else "Admissions catalog is unavailable"},
+        status_code=404 if missing else 503, headers={"Cache-Control": "private, no-store"},
+    )
+
+
 @app.exception_handler(Exception)
 async def global_unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     logger.exception("unhandled_route_exception path=%s error=%s", request_scope_path(request), exc)
@@ -374,6 +384,7 @@ app.add_middleware(
 
 app.include_router(root.router)
 app.include_router(universities.router)
+app.include_router(admissions.router)
 app.include_router(exams.router)
 app.include_router(languages.router)
 app.include_router(currency.router)

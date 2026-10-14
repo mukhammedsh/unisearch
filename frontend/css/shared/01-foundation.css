@@ -26,6 +26,7 @@
   --interaction-hover-surface: var(--accent-panel);
   --interaction-active-text: var(--accent);
   --interaction-active-surface: var(--accent-soft);
+  --focus-ring: var(--accent);
   --interaction-disabled-opacity: 0.52;
   --bg: #f4f5f7;
   --bg-soft: #edf0f4;
@@ -51,15 +52,26 @@
   --radius-xl: 20px;
   --radius-full: 999px;
   --radius-circle: 50%;
+  --space-0-25: 1px;
+  --space-0-5: 2px;
   --space-1: 4px;
+  --space-1-5: 6px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --layout-page-gutter: var(--space-6);
+  --layout-section-gap: var(--space-8);
+  --component-card-padding: var(--space-5);
+  --component-card-gap: var(--space-4);
+  --component-control-gap: var(--space-2);
   --grant-soft: rgba(16, 185, 129, 0.10);
   --grant-soft-strong: rgba(16, 185, 129, 0.18);
   --color-danger: #dc2626;
@@ -133,8 +145,9 @@
 }
 
 :root[data-theme="dark"] {
-  --accent: #5D17EB;
   --accent-strong: color-mix(in srgb, var(--accent) 80%, #fff);
+  --interaction-active-text: var(--text);
+  --focus-ring: var(--text);
   --accent-soft: color-mix(in srgb, var(--accent) 22%, transparent);
   --accent-faint: color-mix(in srgb, var(--accent) 14%, transparent);
   --accent-panel: color-mix(in srgb, var(--accent) 18%, transparent);
@@ -198,6 +211,22 @@
   --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 65%, transparent);
   --scrollbar-track: transparent;
   color-scheme: dark;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --layout-page-gutter: var(--space-4);
+    --layout-section-gap: var(--space-6);
+    --component-card-padding: var(--space-4);
+    --component-card-gap: var(--space-3);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --layout-page-gutter: var(--space-3);
+    --layout-section-gap: var(--space-5);
+  }
 }
 
 ::selection {
@@ -272,7 +301,7 @@ body {
   font-family: "Noto Sans", "Segoe UI", Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  padding-top: 70px;
+  padding-top: var(--nav-height);
   min-height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
@@ -288,7 +317,7 @@ body {
 .center-loading {
   width: 100%;
   min-height: 140px;
-  padding: 20px 0;
+  padding: var(--space-5) 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -296,7 +325,7 @@ body {
 
 .center-loading--compact {
   min-height: 72px;
-  padding: 8px 0;
+  padding: var(--space-2) 0;
 }
 
 .center-loading-spinner {
@@ -323,7 +352,7 @@ body {
 .inline-loading-note {
   width: 100%;
   min-height: 140px;
-  padding: 20px 0;
+  padding: var(--space-5) 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -335,7 +364,7 @@ body {
 
 .inline-loading-note--compact {
   min-height: 72px;
-  padding: 8px 0;
+  padding: var(--space-2) 0;
   font-size: 13px;
 }
 
@@ -486,7 +515,7 @@ a {
 }
 
 .ui-input-composite:focus-within {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -495,7 +524,7 @@ a {
 }
 
 :where(a[href], button, input, select, textarea, [role="button"], .custom-select-trigger):focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

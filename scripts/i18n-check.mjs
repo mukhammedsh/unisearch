@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { isDeepStrictEqual } from "node:util";
 
 const ROOT = process.cwd();
 const FRONTEND_DIR = path.join(ROOT, "frontend");
@@ -9,8 +10,24 @@ const LOCALIZATION_DIR = path.join(FRONTEND_DIR, "Localization");
 const LANG_FILES = {
   eng: path.join(LOCALIZATION_DIR, "eng"),
   rus: path.join(LOCALIZATION_DIR, "ru"),
+  kaz: path.join(LOCALIZATION_DIR, "kaz"),
 };
 const ALLOWED_EXTRA_KEY_PREFIXES = ["university.description."];
+const KAZ_UNIVERSITY_BUNDLE = path.join(LOCALIZATION_DIR, "universities-kaz.json");
+const BACKEND_UNIVERSITY_BUNDLE = path.join(ROOT, "backend", "data", "universities_translations.json");
+
+function checkKazakhUniversityBundle() {
+  if (!fs.existsSync(KAZ_UNIVERSITY_BUNDLE)) return "Missing frontend Kazakh university translation bundle";
+  try {
+    const frontendPack = JSON.parse(fs.readFileSync(KAZ_UNIVERSITY_BUNDLE, "utf8"));
+    const backendPack = JSON.parse(fs.readFileSync(BACKEND_UNIVERSITY_BUNDLE, "utf8")).languages?.kaz;
+    return isDeepStrictEqual(frontendPack, backendPack)
+      ? ""
+      : "Frontend Kazakh university translations differ from backend data";
+  } catch (error) {
+    return `Cannot read Kazakh university translation bundles: ${error.message}`;
+  }
+}
 
 function walkFiles(dir, predicate, out = []) {
   if (!fs.existsSync(dir)) return out;
@@ -27,6 +44,7 @@ function walkFiles(dir, predicate, out = []) {
 
 function parseLocalizationFile(filePath) {
   const keys = new Set();
+  const values = new Map();
   const duplicates = [];
   const lines = fs.readFileSync(filePath, "utf8").split(/\r?\n/);
 
@@ -39,9 +57,24 @@ function parseLocalizationFile(filePath) {
     if (!key) return;
     if (keys.has(key)) duplicates.push({ key, line: idx + 1 });
     keys.add(key);
+    values.set(key, line.slice(colon + 1).trim());
   });
 
-  return { keys, duplicates };
+  return { keys, values, duplicates };
+}
+
+function findPlaceholderMismatches(source, translated, language) {
+  const issues = [];
+  const placeholders = (value) => [...String(value || "").matchAll(/\{[a-zA-Z0-9_]+\}/g)]
+    .map((match) => match[0]).sort();
+  for (const [key, sourceValue] of source.values) {
+    const translatedValue = translated.values.get(key);
+    if (translatedValue === undefined) continue;
+    if (!isDeepStrictEqual(placeholders(sourceValue), placeholders(translatedValue))) {
+      issues.push(`${language}: ${key}`);
+    }
+  }
+  return issues;
 }
 
 function extractUsedI18nKeys() {
@@ -125,37 +158,52 @@ function main() {
       process.exit(1);
     }
     const parsed = parseLocalizationFile(filePath);
-    localization[lang] = parsed.keys;
+    localization[lang] = parsed;
     for (const dup of parsed.duplicates) {
       allDuplicates.push(`${path.relative(ROOT, filePath)}:${dup.line} (${dup.key})`);
     }
   }
 
-  const engKeys = localization.eng;
-  const missingInRu = sortedDiff(engKeys, localization.rus);
-  const extraInRu = sortedDiff(localization.rus, engKeys).filter((key) => !isAllowedExtraKey(key));
+  const engKeys = localization.eng.keys;
+  const missingInRu = sortedDiff(engKeys, localization.rus.keys);
+  const extraInRu = sortedDiff(localization.rus.keys, engKeys).filter((key) => !isAllowedExtraKey(key));
+  const missingInKaz = sortedDiff(engKeys, localization.kaz.keys);
+  const extraInKaz = sortedDiff(localization.kaz.keys, engKeys).filter((key) => !isAllowedExtraKey(key));
+  const placeholderIssues = [
+    ...findPlaceholderMismatches(localization.eng, localization.rus, "rus"),
+    ...findPlaceholderMismatches(localization.eng, localization.kaz, "kaz"),
+  ];
   const usedKeys = extractUsedI18nKeys();
   const missingUsedInEng = sortedDiff(usedKeys, engKeys);
   const toastIssues = findHardcodedToastIssues();
+  const universityBundleIssue = checkKazakhUniversityBundle();
 
   const hasIssues =
     allDuplicates.length > 0 ||
     missingInRu.length > 0 ||
     extraInRu.length > 0 ||
+    missingInKaz.length > 0 ||
+    extraInKaz.length > 0 ||
     missingUsedInEng.length > 0 ||
-    toastIssues.length > 0;
+    placeholderIssues.length > 0 ||
+    toastIssues.length > 0 ||
+    Boolean(universityBundleIssue);
 
   if (hasIssues) {
     printList("Duplicate localization keys:", allDuplicates);
     printList("Missing keys in ru (vs eng):", missingInRu);
     printList("Extra keys in ru (not in eng):", extraInRu);
+    printList("Missing keys in kaz (vs eng):", missingInKaz);
+    printList("Extra keys in kaz (not in eng):", extraInKaz);
     printList("Used i18n keys missing in eng localization:", missingUsedInEng);
+    printList("Translation placeholder mismatches:", placeholderIssues);
     printList("Hardcoded/non-localized toast usages:", toastIssues);
+    if (universityBundleIssue) console.error(universityBundleIssue);
     process.exit(1);
   }
 
   console.log(
-    `i18n-check passed: eng=${engKeys.size}, ru=${localization.rus.size}, used=${usedKeys.size}`
+    `i18n-check passed: eng=${engKeys.size}, ru=${localization.rus.keys.size}, kk=${localization.kaz.keys.size}, used=${usedKeys.size}`
   );
 }
 

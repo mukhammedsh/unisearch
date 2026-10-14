@@ -35,7 +35,7 @@ async function expectBackground(locator, expected) {
   await expect.poll(() => locator.evaluate((node) => getComputedStyle(node).backgroundColor)).toBe(expected);
 }
 
-async function expectAccentFocus(locator, accentColor) {
+async function expectFocusRing(locator, focusColor) {
   await locator.focus();
   if (!await locator.evaluate((node) => node.matches(":focus-visible"))) {
     await locator.page().keyboard.press("Shift+Tab");
@@ -44,15 +44,15 @@ async function expectAccentFocus(locator, accentColor) {
   await expect.poll(() => locator.evaluate((node) => {
     const style = getComputedStyle(node);
     return `${style.outlineWidth} ${style.outlineStyle} ${style.outlineColor}`;
-  })).toBe(`2px solid ${accentColor}`);
+  })).toBe(`2px solid ${focusColor}`);
 }
 
-async function expectCompositeFocus(control, composite, accentColor) {
+async function expectCompositeFocus(control, composite, focusColor) {
   await control.focus();
   await expect.poll(() => composite.evaluate((node) => {
     const style = getComputedStyle(node);
     return `${style.outlineWidth} ${style.outlineStyle} ${style.outlineColor}`;
-  })).toBe(`2px solid ${accentColor}`);
+  })).toBe(`2px solid ${focusColor}`);
 }
 
 test("shared controls use one hover, active, focus, pressed, and disabled contract", async ({ page }) => {
@@ -61,7 +61,7 @@ test("shared controls use one hover, active, focus, pressed, and disabled contra
 
   const hoverColor = await resolvedToken(page, "--interaction-hover-text");
   const activeColor = await resolvedToken(page, "--interaction-active-text");
-  const accentColor = await resolvedToken(page, "--accent");
+  const focusColor = await resolvedToken(page, "--focus-ring");
 
   const activeGuideLink = page.locator(".guide-nav a.is-active").first();
   await expect(activeGuideLink).toBeVisible();
@@ -80,7 +80,7 @@ test("shared controls use one hover, active, focus, pressed, and disabled contra
       width: style.outlineWidth,
     };
   });
-  expect(focusStyle).toEqual({ color: accentColor, style: "solid", width: "2px" });
+  expect(focusStyle).toEqual({ color: focusColor, style: "solid", width: "2px" });
 
   await page.evaluate(() => {
     const probe = document.createElement("button");
@@ -160,25 +160,38 @@ test("profile controls follow the shared interaction contract in light and dark 
   for (const theme of ["light", "dark"]) {
     await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
 
-    const accentColor = await resolvedToken(page, "--accent");
+    const focusColor = await resolvedToken(page, "--focus-ring");
     const hoverColor = await resolvedToken(page, "--interaction-hover-text");
     const mutedColor = await resolvedToken(page, "--text-muted");
     const softSurface = await resolvedBackgroundToken(page, "--surface-soft");
     const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
+
+    const progressContrast = await page.locator(".profile-progress-label").evaluate((element) => {
+      const channels = (color) => color.match(/[\d.]+/g).slice(0, 3).map(Number);
+      const luminance = (color) => channels(color).map((value) => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      }).reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+      const foreground = luminance(getComputedStyle(element).color);
+      const background = luminance(getComputedStyle(element.closest(".profile-shell")).backgroundColor);
+      const [lighter, darker] = [foreground, background].sort((a, b) => b - a);
+      return (lighter + 0.05) / (darker + 0.05);
+    });
+    expect(progressContrast).toBeGreaterThanOrEqual(4.5);
 
     const field = page.locator("#budgetInput");
     const fieldComposite = field.locator("xpath=..");
     await expectBackground(fieldComposite, softSurface);
     await field.hover();
     await expectBackground(fieldComposite, hoverSurface);
-    await expectCompositeFocus(field, fieldComposite, accentColor);
+    await expectCompositeFocus(field, fieldComposite, focusColor);
 
     const secondaryAction = page.locator(".profile-action-btn--secondary");
     await expectBackground(secondaryAction, softSurface);
     await secondaryAction.hover();
     await expectBackground(secondaryAction, hoverSurface);
     await expectColor(secondaryAction, hoverColor);
-    await expectAccentFocus(secondaryAction, accentColor);
+    await expectFocusRing(secondaryAction, focusColor);
 
     await page.locator('[data-profile-tab="scores"]').click();
     const unitToggle = page.locator(".profile-unit--toggle");
@@ -188,7 +201,7 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectBackground(gpaComposite, hoverSurface);
     await expectBackground(unitToggle, await resolvedBackgroundToken(page, "--interaction-active-surface"));
     await expectColor(unitToggle, hoverColor);
-    await expectCompositeFocus(unitToggle, gpaComposite, accentColor);
+    await expectCompositeFocus(unitToggle, gpaComposite, focusColor);
 
     await expect(page.locator('[data-profile-tab="scores"]')).toHaveAttribute("aria-selected", "true");
     const infoButton = page.locator('[data-profile-section="scores"] .profile-info').first();
@@ -197,7 +210,7 @@ test("profile controls follow the shared interaction contract in light and dark 
     await infoButton.hover();
     await expectBackground(infoButton, hoverSurface);
     await expectColor(infoButton, hoverColor);
-    await expectAccentFocus(infoButton, accentColor);
+    await expectFocusRing(infoButton, focusColor);
 
     await page.locator('[data-profile-tab="basics"]').click();
   }
@@ -215,14 +228,14 @@ test("embedded actions preserve their composite field state", async ({ page }) =
 
   for (const theme of ["light", "dark"]) {
     await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
-    const accentColor = await resolvedToken(page, "--accent");
+    const focusColor = await resolvedToken(page, "--focus-ring");
     const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
     const activeSurface = await resolvedBackgroundToken(page, "--interaction-active-surface");
 
     await clearButton.hover();
     await expectBackground(searchComposite, hoverSurface);
     await expectBackground(clearButton, activeSurface);
-    await expectCompositeFocus(clearButton, searchComposite, accentColor);
+    await expectCompositeFocus(clearButton, searchComposite, focusColor);
   }
 
   await page.setViewportSize({ width: 375, height: 667 });

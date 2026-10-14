@@ -21,8 +21,8 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 - Font weights: `--font-weight-regular` (`400`) for body copy, `--font-weight-medium` (`500`) for controls and compact labels, and `--font-weight-semibold` (`600`) for page headings and deliberately emphasized values. Product UI must not use weights above `600`.
 - Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
-- Spacing (8pt / 4pt grid): `--space-1` (4px), `--space-2` (8px), `--space-3` (12px), `--space-4` (16px), `--space-5` (20px), `--space-6` (24px), `--space-8` (32px), `--space-12` (48px), `--space-16` (64px).
-- Accent: `--accent` (`#5D17EB` both light and dark), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`).
+- Spacing uses shared `--space-*` primitives from 1px to 96px and semantic aliases (`--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, `--component-card-gap`, and `--component-control-gap`) for repeated roles and responsive changes.
+- Accent: `--accent` (`#5D17EB`, shared by light and dark themes), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`). Browser chrome reads this token through `theme-init.js`; external SVG logos mirror it with their fill value because they do not inherit CSS custom properties.
 - Interaction states: `--interaction-hover-text`, `--interaction-hover-surface`, `--interaction-active-text`, `--interaction-active-surface`, and `--interaction-disabled-opacity`. Reusable links, tabs, buttons, and icon controls must use these tokens instead of choosing local hover or selected colors. Semantic danger, warning, and success controls keep their matching status tokens.
 - Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`.
 - Text: `--text`, `--text-muted`.
@@ -104,7 +104,20 @@ Good reference:
 
 ## Spacing and Grid System
 
-UniSearch uses a strict 8-point spatial system (with 4px half-steps for compact UI). Follow these rules to prevent layout drift, double margins, and responsive collapse:
+UniSearch uses a shared spacing scale with compact 2px and 6px steps, a regular 4px/8px rhythm, and larger page-level steps. Use semantic aliases for repeated roles so responsive values can be changed centrally:
+
+| Token | Value | Intended use |
+| --- | ---: | --- |
+| `--space-0-25` | 1px | Optical alignment only |
+| `--space-0-5` | 2px | Fine component spacing |
+| `--space-1` / `--space-1-5` | 4px / 6px | Compact component spacing |
+| `--space-2` / `--space-3` | 8px / 12px | Controls, metadata, and small groups |
+| `--space-4` / `--space-5` | 16px / 20px | Cards and repeated content |
+| `--space-6` / `--space-8` | 24px / 32px | Page sections and content groups |
+| `--space-10` / `--space-12` | 40px / 48px | Major page-level separation |
+| `--space-16` / `--space-20` / `--space-24` | 64px / 80px / 96px | Rare top-level breathing room |
+
+Use `--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, `--component-card-gap`, and `--component-control-gap` for repeated layout roles. Their mobile overrides live in the shared foundation stylesheet.
 
 ### 1. Layout Ownership Principle
 - Reusable components (cards, badges, list items, buttons) must have zero external margins (`margin: 0`).
@@ -112,28 +125,18 @@ UniSearch uses a strict 8-point spatial system (with 4px half-steps for compact 
 - The only acceptable margin on flex/grid children is auto-alignment (`margin-left: auto` or `margin-top: auto`).
 
 ### 2. Preventing Double Spacing (Spacing Stacks)
-- **Never mix `gap` and child `margin`:** If a flex/grid container has `gap: 16px`, child elements must not have `margin-bottom` or `margin-right`.
+- **One owner for sibling spacing:** A flex/grid parent uses `gap`; direct children have zero margin on that same axis. Do not combine `gap` with child margins. When a title and its body need different spacing, group them in a wrapper and give that wrapper one `gap` value.
 - **Zero margins at container boundaries:** Inside any container that has `padding`, the first child must have `margin-top: 0` and the last child must have `margin-bottom: 0` (e.g., `:first-child { margin-top: 0; }` and `:last-child { margin-bottom: 0; }`).
 - **Single-layer padding responsibility:** Do not stack identical padding across nested wrapper divs (e.g. section padding + container padding + inner card padding). Allocate padding only to the visual surface boundary.
 - **No negative margin compensation:** Never use negative margins (`margin-top: -Npx`) to counteract unwanted gaps or line-height offsets. Eliminate the source margin or align the typography instead.
 
-### 3. Spacing Scale (Tokens)
-- `--space-1` (`4px`): Micro-spacing (icon + label, pill internal spacing).
-- `--space-2` (`8px`): Compact element spacing (tag lists, badge groups, button icon gap).
-- `--space-3` (`12px`): Moderate spacing (subtitles, secondary metadata, compact form fields).
-- `--space-4` (`16px`): Standard grid gap, input row spacing, mobile card padding.
-- `--space-5` (`20px`): Default desktop card padding, standard vertical rhythm between distinct blocks.
-- `--space-6` (`24px`): Section gap, toolbar-to-grid spacing, major card padding.
-- `--space-8` (`32px`): Spacing between major independent page sections.
-- `--space-12` (`48px`) / `--space-16` (`64px`): Page header top/bottom hero spacing on desktop.
+Use shared `var(--space-*)` or semantic aliases in margin, padding, gap, and scroll-spacing declarations. `npm run check:design-lint` rejects raw nonzero pixel values, including values inside `calc()` and `clamp()`; a necessary optical or platform workaround needs a same-line `/* spacing-exception: reason */` comment. Browser E2E checks scan active catalog, profile, admissions, and finance layouts for margins stacked on a flex/grid gap axis; add the check when introducing another layout state.
 
-Arbitrary pixel spacing (`3px`, `6px`, `10px`, `14px`, `18px`, `22px`, `26px`, `30px`) is strictly prohibited and guarded by `npm run check:design-lint`.
+### 3. Responsive Spacing
+- On desktop, page container padding uses `var(--layout-page-gutter)`; it resolves to 24px.
+- At `<= 768px`, the page gutter and card padding resolve to 16px. At `<= 480px`, the page gutter resolves to 12px. Keep responsive overrides in semantic aliases rather than page-specific pixel values.
 
-### 4. Responsive Spacing
-- On desktop, page container padding is `24px` to `32px` (`var(--space-6)` to `var(--space-8)`).
-- On tablet/mobile (`<= 768px` and `<= 480px`), compress outer padding to `12px - 16px` (`var(--space-3)` - `var(--space-4)`) and card padding to `12px - 16px`. Ensure layout paddings do not exceed 20% of total viewport width.
-
-### 5. Responsive Breakpoint Contract
+### 4. Responsive Breakpoint Contract
 
 Use these shared viewport boundaries for product-wide layout changes:
 

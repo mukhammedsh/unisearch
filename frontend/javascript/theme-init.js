@@ -14,4 +14,29 @@
     document.documentElement.setAttribute("data-theme", "light");
     document.documentElement.style.colorScheme = "light";
   }
+
+  const syncBrowserThemeColor = () => {
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    if (!accent) return;
+
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "theme-color";
+      document.head.append(meta);
+    }
+    meta.content = accent;
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", syncBrowserThemeColor, { once: true });
+  } else {
+    syncBrowserThemeColor();
+  }
+
+  const themeObserver = new MutationObserver(syncBrowserThemeColor);
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
 })();

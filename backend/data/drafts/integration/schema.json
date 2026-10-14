@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prepared three-institution admissions catalog",
+  "description": "Resolved storage representation for coordinated integration; not active runtime data or an implemented HTTP response.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "runtime_active", "institutions"],
+  "properties": {
+    "schema_version": {"const": "admissions-storage-1.0"},
+    "runtime_active": {"type": "boolean"},
+    "institutions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/institution"}
+    }
+  },
+  "$defs": {
+    "ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "levels": {
+      "type": "array",
+      "items": {"enum": ["undergraduate", "masters", "doctoral", "professional"]}
+    },
+    "text": {"type": ["string", "null"]},
+    "attributes": {"type": "object", "description": "Retained source-specific fields; these can contain significant conditions and must not be discarded by later consumers."},
+    "input": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^backend/data/drafts/"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "role": {"type": "string"}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["option_ids", "route_ids", "levels", "applicant_categories", "cycle", "fee_status", "additional_dimensions"],
+      "properties": {
+        "option_ids": {"$ref": "#/$defs/ids"},
+        "route_ids": {"$ref": "#/$defs/ids"},
+        "levels": {"$ref": "#/$defs/levels"},
+        "applicant_categories": {"$ref": "#/$defs/ids"},
+        "cycle": {"$ref": "#/$defs/text"},
+        "fee_status": {"$ref": "#/$defs/ids"},
+        "additional_dimensions": {"$ref": "#/$defs/attributes"}
+      },
+      "description": "Dimensions intersect. Empty dimensions are not universal applicability. Unresolved source level labels remain in additional_dimensions and original_scope."
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["evidence_file", "original_id", "original_scope", "original_source_ids"],
+      "properties": {
+        "evidence_file": {"type": "string"},
+        "original_id": {"type": "string", "minLength": 1},
+        "original_scope": {"type": ["object", "null"]},
+        "original_source_ids": {"type": ["array", "null"], "items": {"type": "string"}}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "title", "checked_at", "attributes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "url": {"type": "string"},
+        "title": {"type": "string"},
+        "checked_at": {"$ref": "#/$defs/text"},
+        "attributes": {"$ref": "#/$defs/attributes"}
+      },
+      "description": "Access, content-review dates/status and merged original evidence_records remain in attributes independently of checked_at."
+    },
+    "option_evidence": {
+      "type": "object",
+      "required": ["evidence_file", "original_id", "source_ids", "attributes"],
+      "properties": {
+        "evidence_file": {"type": "string"},
+        "original_id": {"type": "string", "minLength": 1},
+        "source_ids": {"$ref": "#/$defs/ids"},
+        "attributes": {"$ref": "#/$defs/attributes"}
+      }
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids", "evidence_profiles", "attributes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "levels": {"$ref": "#/$defs/levels"},
+        "awards": {"$ref": "#/$defs/ids"},
+        "route_ids": {"$ref": "#/$defs/ids"},
+        "parent_option_id": {"$ref": "#/$defs/text"},
+        "source_ids": {"$ref": "#/$defs/ids"},
+        "fact_ids": {"$ref": "#/$defs/ids"},
+        "evidence_profiles": {"type": "array", "items": {"$ref": "#/$defs/option_evidence"}},
+        "attributes": {"$ref": "#/$defs/attributes"}
+      },
+      "description": "Award, browsing level and application classification are independent. Native application/classification records, variants and published key facts remain in attributes/evidence_profiles."
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "classification", "target", "destination", "shared_form_family", "option_ids", "fact_ids", "source_ids", "shared_policy_context_ids", "provenance", "attributes", "index_attributes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "title": {"$ref": "#/$defs/text"},
+        "classification": {"$ref": "#/$defs/text"},
+        "target": {"$ref": "#/$defs/text"},
+        "destination": {"$ref": "#/$defs/text"},
+        "shared_form_family": {"$ref": "#/$defs/text"},
+        "option_ids": {"$ref": "#/$defs/ids"},
+        "fact_ids": {"$ref": "#/$defs/ids"},
+        "source_ids": {"$ref": "#/$defs/ids"},
+        "shared_policy_context_ids": {"$ref": "#/$defs/ids"},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "index_attributes": {"$ref": "#/$defs/attributes"}
+      },
+      "description": "One sourced procedure/context view, not necessarily an independent application. Shared form/policy links do not transfer conditions automatically."
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "topic", "topics", "scope", "value", "conditions", "conditions_and_exceptions", "exceptions", "source_ids", "publication_status", "review_status", "checked_at", "content_reviewed_at", "period", "related_fact_ids", "provenance", "attributes", "index_attributes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "topic": {"type": "string"},
+        "topics": {"$ref": "#/$defs/ids"},
+        "scope": {"$ref": "#/$defs/scope"},
+        "value": {"description": "Exact source JSON value: structured panels, prose and scalar values are retained without inferred numeric checks."},
+        "conditions": {"description": "Exact independently recorded conditions, or null when absent."},
+        "conditions_and_exceptions": {"description": "Exact combined source field, or null; not collapsed into conditions."},
+        "exceptions": {"description": "Exact independently recorded exceptions, or null when absent."},
+        "source_ids": {"$ref": "#/$defs/ids"},
+        "publication_status": {"$ref": "#/$defs/text"},
+        "review_status": {"$ref": "#/$defs/text"},
+        "checked_at": {"$ref": "#/$defs/text"},
+        "content_reviewed_at": {"$ref": "#/$defs/text"},
+        "period": {"description": "Exact source period object/string, or null; never an entry cycle inferred from a review date."},
+        "related_fact_ids": {"$ref": "#/$defs/ids"},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "index_attributes": {"$ref": "#/$defs/attributes"}
+      },
+      "description": "Original publication and review vocabularies are retained independently. Superseded facts remain history, not current policy."
+    },
+    "unknown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "reason", "official_next_step", "scope", "source_ids", "publication_status", "review_status", "checked_at", "content_reviewed_at", "provenance", "attributes", "index_attributes"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "official_next_step": {"type": "string", "minLength": 1},
+        "scope": {"$ref": "#/$defs/scope"},
+        "source_ids": {"$ref": "#/$defs/ids"},
+        "publication_status": {"$ref": "#/$defs/text"},
+        "review_status": {"$ref": "#/$defs/text"},
+        "checked_at": {"$ref": "#/$defs/text"},
+        "content_reviewed_at": {"$ref": "#/$defs/text"},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "index_attributes": {"$ref": "#/$defs/attributes"}
+      }
+    },
+    "institution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["institution", "snapshot", "inputs", "sources", "study_options", "application_routes", "facts", "unknowns", "collection_tasks", "organization", "supporting_records", "dossier_metadata", "historical_provenance"],
+      "properties": {
+        "institution": {
+          "type": "object",
+          "required": ["id", "official_name", "attributes"],
+          "properties": {
+            "id": {"enum": ["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]},
+            "official_name": {"type": "string", "minLength": 1},
+            "attributes": {"$ref": "#/$defs/attributes"}
+          }
+        },
+        "snapshot": {"type": "object"},
+        "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+        "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+        "study_options": {"type": "array", "items": {"$ref": "#/$defs/option"}},
+        "application_routes": {"type": "array", "items": {"$ref": "#/$defs/route"}},
+        "facts": {"type": "array", "items": {"$ref": "#/$defs/fact"}},
+        "unknowns": {"type": "array", "items": {"$ref": "#/$defs/unknown"}},
+        "collection_tasks": {"type": "array", "items": {"type": "object"}},
+        "organization": {"$ref": "#/$defs/attributes"},
+        "supporting_records": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+        "dossier_metadata": {"$ref": "#/$defs/attributes"},
+        "historical_provenance": {"type": "array", "items": {"$ref": "#/$defs/input"}}
+      }
+    }
+  }
+}

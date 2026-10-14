@@ -3,28 +3,22 @@ meta.code: rus
 academic_requirements: Академические требования
 academic_average: Средний академический балл
 language_average: Средний языковой балл
-about.bio.lead: Руководит основной разработкой и превращает видение продукта в надёжное, поддерживаемое программное обеспечение.
-about.bio.planning: Руководит UI/UX-направлением продукта и делает интерфейс понятным, сфокусированным и практичным.
-about.contact.email: Эл. почта
+about.bio.lead: Отвечает за серверную часть, базу данных и внутреннюю работу сервиса. Определяет направление развития проекта.
+about.bio.planning: Разрабатывает весь пользовательский интерфейс и проводит основное тестирование сервиса.
+about.contact.email: Почта
 about.contact.github: GitHub
-about.contact_kicker: Контакты
-about.contact_title: Свяжитесь с нами
-about.email_note: Основной контакт по вопросам проекта.
-about.eyebrow: О нас
-about.github_note: Код, коммиты и обновления проекта.
-about.lead: Наша цель — сделать выбор университета более понятным, простым и практичным.
+about.contact.telegram: Telegram
+about.contact.title: Свяжитесь с нами
+about.contact.email_value: unisearch.sup@gmail.com
+about.contact.telegram_value: @unisearch_kz
+about.evolution: После того как проект не прошёл отбор на олимпиаде, мы пересмотрели его направление. Вместо помощника с ненадежными советами мы сделали фокус на UniSearch как на инструменте, который даёт удобный доступ к информации и предлагает подходящие варианты. Спустя восемь месяцев мы продолжаем активно поддерживать UniSearch.
 about.name.lead: Шабдалулы Мухаммед
 about.name.planning: Рашидов Ерболат
-about.proof.product.body: Меньше шума, больше пользы: сколько стоит, как поступать и что подходит вашему профилю.
-about.proof.product.title: Цель продукта
-about.proof.scope.body: Программы разных уровней, условия поступления, стоимость и финансирование — в одном месте.
-about.proof.scope.title: Текущий охват
-about.proof.sources.body: Мы опираемся на официально опубликованные требования и прямо отмечаем, когда метрика отдельно не публикуется.
-about.proof.sources.title: Стандарт данных
+about.origin: UniSearch появился 9 февраля 2026 года в Казахстане как школьный проект и научная работа. Мы взялись за проблему, которая касается и нас – абитуриентов.
 about.role.lead: Сооснователь и ведущий разработчик
-about.role.planning: Сооснователь и UI/UX-лид
+about.role.planning: Сооснователь и ведущий разработчик интерфейса
 about.team_kicker: Наша команда
-about.title: Мы — команда абитуриентов, создавшая UniSearch.
+about.title: UniSearch – сервис, созданный абитуриентами для абитуриентов.
 footer.copyright: © 2026 UniSearch
 filter_any: Любой
 filter_grant: Грант
@@ -128,12 +122,15 @@ nav.close_menu: Закрыть меню
 nav.guide: Гайд
 nav.lang.eng: Английский (США)
 nav.lang.rus: Русский
+nav.lang.kaz: Қазақша
 nav.language: Язык
 nav.open_menu: Открыть меню
 nav.profile: Профиль
 nav.rankings: Рейтинг
 nav.settings: Настройки
 settings.section.appearance: Оформление
+settings.section.regional: Язык и регион
+settings.option.language.title: Язык сайта
 settings.option.theme.title: Тема
 theme.opt.system: Системная
 theme.opt.light: Светлая
@@ -332,6 +329,7 @@ profile.unit.currency_year: {currency} / год
 profile.progress.empty: Заполните профиль, чтобы подбор стал точнее.
 profile.progress.count: Заполнено разделов профиля: {completed}/{total}
 profile.sections.aria: Разделы профиля
+profile.title: Профиль
 profile.section.basics: Общее
 profile.section.scores: Академ. данные
 profile.section.languages: Языки
@@ -704,7 +702,7 @@ universities.help.country: Фильтрует университеты по ст
 universities.help.state_region: Сужает результаты внутри выбранной страны. Полезно для больших стран с множеством городов.
 universities.help.city: Показывает университеты в конкретном городе после выбора страны/региона.
 universities.help.cost_per_year: Задает минимальную и максимальную стоимость за год. В выдаче остаются только университеты в этом диапазоне.
-universities.help.sort_strategy: UniFit подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
+universities.help.sort_strategy: {fit} подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
 universities.help.tradeoff.atmosphere: Примерно показывает ваш выбор между более социальной студенческой средой и более академически интенсивной.
 universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные варианты.
@@ -728,6 +726,7 @@ universities.state.ml_unavailable: Интересы из вашего профи
 universities.state_region: Штат / Регион
 universities.view_list: Список
 universities.view_map: Карта
+universities.view_toggles.aria: Режим отображения
 university.about_campus: О университете и кампусе
 university.action.website: Сайт
 university.action.map: Карта
@@ -813,8 +812,8 @@ university.price_from: от {price} / год
 university.send: Отправить
 university.show_on_map: Показать на карте
 university.tab.admission: Поступление
-university.tab.costs: Стоимость
-university.tab.general: Общее
+university.tab.costs: Стоимость и финансирование
+university.tab.general: Обзор
 university.tab.programs: Программы
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
@@ -1559,7 +1558,7 @@ university.finance.domestic_and_international_policy: Разные правил�
 university.finance.domestic_and_international_policy_desc: Университет публикует разные правила финансовой помощи для местных и иностранных абитуриентов. Вашу категорию и право на помощь нужно проверить по официальным правилам.
 university.finance.uk_aid_general_desc: Право на стипендию и студенческое финансирование зависит от программы и обстоятельств абитуриента. Проверьте официальные правила университета.
 university.finance.zero_parent_contrib_badge: Без взноса родителей
-university.tab.deadlines: Дедлайны
+university.tab.deadlines: Даты и сроки
 university.deadlines.export_ics: Добавить в календарь (.ics)
 university.deadlines.official_source: Официальный источник
 university.deadlines.guidance_title: Информация о поступлении
@@ -2337,3 +2336,346 @@ admission.mit.program_condition: Условия для этой программ
 universities.why.preference_comparison: {label}: ваша настройка {requested}/100; показатель университета {observed}/100.
 admission.requirements_fit.check.profile_unassessed: Профиль не позволяет подтвердить нужные сведения или право на освобождение.
 admission.requirements_fit.missing_evidence_note: Добавьте указанные ниже подтверждения для проверки маршрута. Процент доступен только при наличии применимых числовых минимумов, которые можно оценить.
+profile.evidence.title: Данные для выбранных условий поступления
+profile.evidence.description: Необязательные сведения помогают оценить опубликованные условия, но не подтверждают официальные документы.
+profile.evidence.test_date: Дата экзамена (необязательно)
+profile.evidence.language_title: Языковой опыт
+profile.evidence.institution_title: Сведения для конкретного вуза
+profile.evidence.institution: Университет
+profile.evidence.institution_unavailable: Для этого вуза пока нет полей для сведений о курсах, среднем балле или сертификатах.
+profile.evidence.kind: Тип сведений
+profile.evidence.language: Код языка
+profile.evidence.country: Страна
+profile.evidence.qualification: Уровень образования
+profile.evidence.started: Начало
+profile.evidence.completed: Завершение
+profile.evidence.status: Статус
+profile.evidence.entirely: Обучение или работа полностью велись на этом языке
+profile.evidence.unknown: Не указано
+profile.evidence.entirely.yes: Да, полностью
+profile.evidence.entirely.no: Нет
+profile.evidence.program: Программа или вариант обучения
+profile.evidence.units: Завершённые учебные единицы
+profile.evidence.degree_units: Общее число учебных единиц программы
+profile.evidence.major_units: Учебные единицы по требованиям специальности
+profile.evidence.major_subjects: Завершённые предметы по требованиям специальности
+profile.evidence.major_subjects_short: Предметы специальности
+profile.evidence.expected_completion: Планируемое завершение
+profile.evidence.metric: Вид среднего балла
+profile.evidence.metric.overall: Общий средний балл
+profile.evidence.metric.technical: Технический средний балл
+profile.evidence.metric.major: Средний балл по специальности
+profile.evidence.value: Средний балл
+profile.evidence.scale: Шкала среднего балла
+profile.evidence.as_of_term: По состоянию на семестр
+profile.evidence.credential_id: Сертификат или программа
+profile.evidence.score_percent: Балл за сертификат (%)
+profile.evidence.error.percentage: Введите балл от 0 до 100 процентов.
+profile.evidence.completed_on: Дата завершения
+profile.evidence.add_language: Добавить языковые сведения
+profile.evidence.add_institution: Добавить сведения о вузе
+profile.evidence.self_reported: Заявлено пользователем; официальные документы не проверялись.
+profile.evidence.self_reported_short: Со слов пользователя
+profile.evidence.status.unknown: Не указано
+profile.evidence.status.in_progress: В процессе
+profile.evidence.status.completed: Завершено
+profile.evidence.status.enrolled: Обучается
+profile.evidence.status.on_leave: В академическом отпуске
+profile.evidence.status.not_enrolled: Не обучается
+profile.evidence.status.not_completed: Не завершено
+profile.evidence.language_kind.primary_language: Первый язык
+profile.evidence.language_kind.education: Образование
+profile.evidence.language_kind.employment: Опыт работы
+profile.evidence.qualification.secondary: Среднее образование
+profile.evidence.qualification.bachelor: Бакалавриат
+profile.evidence.qualification.master: Магистратура
+profile.evidence.qualification.doctorate: Докторантура
+profile.evidence.qualification.professional: Профессиональная степень
+profile.evidence.qualification.other: Другое образование
+profile.evidence.institution_kind.enrollment: Обучение или пройденные курсы
+profile.evidence.institution_kind.gpa: Средний балл по программе
+profile.evidence.institution_kind.credential: Сертификат программы
+profile.evidence.institution.mit: Массачусетский технологический институт
+profile.evidence.institution.imperial: Имперский колледж Лондона
+profile.evidence.institution.stanford: Стэнфордский университет
+profile.evidence.program.mit_course_6_9: Бакалаврская программа MIT Course 6-9
+profile.evidence.program.mit_scm_residential_masc: Очная программа Supply Chain Management (MASC)
+profile.evidence.program.mit_scm_residential_meng: Очная программа Supply Chain Management (MEng)
+profile.evidence.program.mit_scm_blended_masc: Смешанная программа Supply Chain Management (MASC)
+profile.evidence.program.mit_scm_blended_meng: Смешанная программа Supply Chain Management (MEng)
+profile.evidence.program.stanford_cs_bs: Бакалавриат по информатике
+profile.evidence.program.stanford_anthr_ma_coterm: Совмещённая магистратура по антропологии
+profile.evidence.credential.mit_dedp: Сертификат MITx DEDP MicroMasters
+profile.evidence.credential.mit_scm: Сертификат MITx Supply Chain Management MicroMasters
+profile.evidence.credential.mit_sc0x: Сертификат курса SC0x
+profile.evidence.credential_other: Сертификат программы
+profile.evidence.units_short: учебных единиц
+profile.evidence.error.language: Укажите корректный код языка и тип сведений.
+profile.evidence.error.dates: Проверьте даты в этих сведениях.
+profile.evidence.error.qualification: Выберите уровень образования.
+profile.evidence.error.max_language: Можно сохранить не более 10 языковых записей.
+profile.evidence.error.institution: Выберите поддерживаемый вуз и тип сведений.
+profile.evidence.error.units: Укажите целое неотрицательное число учебных единиц.
+profile.evidence.error.gpa: Укажите средний балл в пределах выбранной шкалы.
+profile.evidence.error.credential: Выберите сертификат из списка.
+profile.evidence.error.credential_score: Укажите опубликованный процентный балл сертификата.
+profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
+university.admissions.catalog.context_title: Контекст вашего поступления
+university.admissions.catalog.simple_title: Опубликованные пути поступления
+university.admissions.catalog.browse_note: Ищите программы в официальном каталоге по названию, предмету и уровню обучения. Выберите программу, чтобы прочитать о степени и связанных путях поступления.
+university.admissions.catalog.show_requirements: Читать опубликованные сведения
+university.admissions.catalog.advanced_options: Фильтры публикаций (необязательно)
+university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
+university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
+university.admissions.catalog.open_application: Открыть страницу подачи
+university.admissions.catalog.view_requirements: Посмотреть условия поступления
+university.admissions.catalog.study_info: О программе
+university.admissions.catalog.study_info_note: Официальные сведения об этом варианте обучения. Описание и требования к завершению программы отделены от условий поступления.
+university.admissions.catalog.source_note_simple: Текст официальных источников показан на языке оригинала.
+university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
+university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
+university.admissions.catalog.source_scope_details: Статус источника, область действия и даты
+university.admissions.catalog.check_details: Необязательная сверка профиля с опубликованными минимумами
+university.admissions.catalog.publication: Статус публикации
+university.admissions.catalog.topic.eligibility: Условия для заявителей
+university.admissions.catalog.topic.academic: Академические квалификации
+university.admissions.catalog.topic.tests: Экзамены
+university.admissions.catalog.topic.language: Языковые требования
+university.admissions.catalog.topic.documents: Документы для подачи
+university.admissions.catalog.topic.portfolio: Собеседования и портфолио
+university.admissions.catalog.topic.application: Порядок подачи
+university.admissions.catalog.topic.deadlines: Даты и периоды подачи
+university.admissions.catalog.topic.costs: Стоимость и сборы
+university.admissions.catalog.topic.funding: Финансирование
+university.admissions.catalog.topic.study: Содержание и структура программы
+university.admissions.catalog.topic.completion: Завершение программы
+university.admissions.catalog.topic.offers: Предложения и зачисление
+university.admissions.catalog.topic.support: Поддержка студентов
+university.admissions.catalog.context_note: Один выбор применяется к требованиям, датам, стоимости и финансированию. Ручные изменения действуют на этой странице; для проверок используются данные профиля.
+university.admissions.catalog.choose_program: Выбрать программу
+university.admissions.catalog.no_program_selected: Программа ещё не выбрана
+university.admissions.catalog.route_label: Опубликованный путь подачи
+university.admissions.catalog.choose_route: Выберите опубликованный путь
+university.admissions.catalog.route_required: Выберите один из опубликованных путей выше, чтобы прочитать требования и порядок подачи.
+university.admissions.catalog.applicant_label: Категория абитуриента
+university.admissions.catalog.unspecified: Не указана
+university.admissions.catalog.applicant.first_year: Поступление на первый курс
+university.admissions.catalog.applicant.transfer: Перевод из другого вуза
+university.admissions.catalog.applicant.graduate: Поступление после бакалавриата
+university.admissions.catalog.cycle_label: Планируемый набор
+university.admissions.catalog.cycle_example: Например: осенний набор 2027 года
+university.admissions.catalog.fee_label: Статус оплаты со слов абитуриента
+university.admissions.catalog.fee.unknown: Не определён
+university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (со слов абитуриента)
+university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (со слов абитуриента)
+university.admissions.catalog.fee.other: Другой / требует уточнения
+university.admissions.catalog.apply_context: Применить контекст
+university.admissions.catalog.legacy_pending: Предыдущий выбор программы ещё не сопоставлен с проверенным каталогом. Выберите программу заново; сохранённый профиль не изменён.
+university.admissions.catalog.incompatible_context: Выбранные программа, путь подачи или уровень не согласованы. Измените контекст; общие требования вуза вместо них не подставлены.
+university.admissions.catalog.loading: Загружаем проверенные сведения
+university.admissions.catalog.load_error: Не удалось загрузить проверенные сведения. Попробуйте ещё раз.
+university.admissions.catalog.retry: Повторить
+university.admissions.catalog.search_label: Программа или предмет
+university.admissions.catalog.search: Найти
+university.admissions.catalog.level_label: Уровень обучения
+university.admissions.catalog.all_levels: Все уровни обучения
+university.admissions.catalog.level.undergraduate: Бакалавриат
+university.admissions.catalog.level.masters: Магистратура
+university.admissions.catalog.level.doctoral: Докторантура
+university.admissions.catalog.level.professional: Профессиональная программа
+university.admissions.catalog.no_options: По этим фильтрам программы не найдены.
+university.admissions.catalog.previous: Назад
+university.admissions.catalog.next: Далее
+university.admissions.catalog.results: {from}–{to} из {total} программ
+university.admissions.catalog.finance_note: Сопоставимая годовая сумма не установлена. Сохраняются исходные валюта и период каждой статьи. Возможное финансирование не считается предоставленной помощью и не вычитается; разверните запись, чтобы открыть источник.
+university.admissions.catalog.study_options_title: Программы обучения
+university.admissions.catalog.study_options_note: Ищите официальные варианты получения степеней. Уровень обучения и присуждаемая квалификация указаны отдельно.
+university.admissions.catalog.admission_title: Требования и опубликованные пути поступления
+university.admissions.catalog.finance_intro: Опубликованные цены и финансирование для выбранной программы и пути с исходными периодами, валютами и условиями.
+university.admissions.catalog.deadlines_title: Даты и сроки
+university.admissions.catalog.deadlines_intro: Здесь собраны даты подачи, финансирования, ответа и внесения депозита для выбранной программы и пути. У каждой записи сохранены исходный период и официальный источник.
+university.admissions.catalog.route_intro: Выберите опубликованный путь поступления, чтобы прочитать относящиеся к нему требования и порядок подачи. Профиль для этого не нужен.
+university.admissions.catalog.reference_scope: Сейчас открыт раздел
+university.admissions.catalog.route_not_selected: Путь подачи не выбран
+university.admissions.catalog.browse_programs: Смотреть программы
+university.admissions.catalog.change_program: Сменить программу
+university.admissions.catalog.change_route: Сменить путь
+university.admissions.catalog.reference_filters: Сузить по категории, циклу или типу оплаты (необязательно)
+university.admissions.catalog.reference_filter_note: Эти фильтры сужают сведения по опубликованной области применения. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
+university.admissions.catalog.selected_route: Выбранный путь
+university.admissions.catalog.application_shape: Как поступают на программу
+university.admissions.catalog.catalog_code: Код курса
+university.admissions.catalog.official_course_page: Официальная страница курса
+university.admissions.catalog.application_class.post_admission_major: Сначала поступают в университет; основное направление выбирают после зачисления.
+university.admissions.catalog.application_class.direct_program: Заявление подаётся на выбранную программу.
+university.admissions.catalog.application_class.ucas_course_choice: Подача на этот курс через UCAS.
+university.admissions.catalog.application_class.postgraduate_course_choice: Подача на эту магистерскую программу.
+university.admissions.catalog.application_class.institution_wide: Для этой программы действует общий путь поступления в университет.
+university.admissions.catalog.application_class.external_and_coterm: Внешний приём и совмещённый путь coterm указаны отдельно.
+university.admissions.catalog.application_class.department_or_program: Путь подачи через факультет или программу.
+university.admissions.catalog.published_qualification_table: Опубликованные таблицы языковых квалификаций
+university.admissions.catalog.qualification_count: Квалификаций: {count}
+university.admissions.catalog.record_count: Записей: {count}
+university.admissions.catalog.full_source_text: Полный текст источника
+university.admissions.catalog.full_source_record: Полная запись источника
+university.admissions.catalog.source_text_note: Официальные формулировки сохранены на языке источника. У каждой записи свои область применения, период и условия; разверните её, чтобы увидеть подробности и источник.
+university.admissions.catalog.scope_varies: Область применения зависит от условий
+university.admissions.catalog.conditional: Применимость условий ещё требует проверки
+university.admissions.catalog.matched: Соответствует выбранному контексту
+university.admissions.catalog.unknown: Неизвестно
+university.admissions.catalog.published: Опубликовано
+university.admissions.catalog.partly_published: Опубликовано частично
+university.admissions.catalog.limited_publication: Опубликовано с ограниченной или неуточнённой областью применения
+university.admissions.catalog.conflicting: Официальные источники противоречат друг другу
+university.admissions.catalog.review: Проверка сведений
+university.admissions.catalog.review.verified: Проверено
+university.admissions.catalog.review.reviewed: Изучено
+university.admissions.catalog.review.carried_forward_review: Сохранена предыдущая проверка источника
+university.admissions.catalog.review.conflicting: Официальные источники противоречат друг другу
+university.admissions.catalog.review.superseded: Сведения заменены более поздним источником
+university.admissions.catalog.review.limited: Источник изучен; применимость или отдельные условия ещё требуют проверки
+university.admissions.catalog.not_published: Не опубликовано
+university.admissions.catalog.needs_review: Требует проверки
+university.admissions.catalog.historical: Исторические сведения
+university.admissions.catalog.checked: Официальная страница проверена
+university.admissions.catalog.period: Период публикации
+university.admissions.catalog.scope: Область применения источника
+university.admissions.catalog.conditions: Условия и исключения
+university.admissions.catalog.exceptions: Исключения
+university.admissions.catalog.source: Официальный источник
+university.admissions.catalog.no_facts: В этом разделе нет сведений источников для выбранного контекста. Проверьте официальные страницы программы и поступления.
+university.admissions.catalog.no_context: Выберите программу и связанный с ней маршрут поступления, чтобы увидеть сведения с подходящей областью применения.
+university.admissions.catalog.unknowns: Неуточнённые сведения источников
+university.admissions.catalog.next_step: Следующий шаг по официальным сведениям
+university.admissions.catalog.history: Исторические сведения
+university.admissions.catalog.history_note: Эти сведения сохранены как исторический контекст и не являются актуальными требованиями или ценами для выбранного набора.
+university.admissions.catalog.assessment: UniChance · опубликованные минимальные требования
+university.admissions.catalog.assessment_meaning: Процент показывает долю выполненных опубликованных академических и языковых минимальных требований, которые удалось оценить. Это не вероятность поступления, не оценка всех критериев отбора и не прогноз финансирования.
+university.admissions.catalog.assessment_unavailable: Для этого контекста процент соответствия требованиям недоступен.
+university.admissions.catalog.self_reported: Сведения заявителя указаны самостоятельно и не подтверждены университетом.
+university.admissions.catalog.provided: Указанные сведения
+university.admissions.catalog.minimum: Опубликованный минимум
+university.admissions.catalog.rule: Проверяемое правило
+university.admissions.catalog.source_rule: Исходное опубликованное правило
+university.admissions.catalog.met: Выполнено
+university.admissions.catalog.unmet: Не выполнено
+university.admissions.catalog.missing: Не хватает сведений
+university.admissions.catalog.unassessed: Не оценено
+university.admissions.catalog.yes: Да
+university.admissions.catalog.no: Нет
+university.admissions.catalog.detail: Сведения источника
+university.admissions.catalog.domain.institution: Сведения об университете
+university.admissions.catalog.domain.study: Содержание и структура обучения
+university.admissions.catalog.domain.degree_completion: Завершение обучения и выбор специальности
+university.admissions.catalog.domain.requirements: Требования к поступлению
+university.admissions.catalog.domain.application: Подача заявления и документы
+university.admissions.catalog.domain.offer_enrollment: Предложение места и зачисление
+university.admissions.catalog.domain.deadlines: Даты поступления и финансирования
+university.admissions.catalog.domain.costs: Опубликованная стоимость
+university.admissions.catalog.domain.funding: Финансирование и условия стипендий
+university.admissions.catalog.domain.career: Карьера и результаты обучения
+university.admissions.catalog.domain.student_support: Поддержка студентов
+university.admissions.catalog.domain.other: Другие сведения источников
+university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
+university.admissions.catalog.reason.missing_evidence: Не хватает необходимых сведений заявителя.
+university.admissions.catalog.reason.unassessed_minimums: Некоторые опубликованные минимальные требования или условия их применения пока нельзя оценить.
+university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
+university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
+university.admissions.catalog.reason.source_fact_changed: Сведения источника изменились; правила оценки требуют проверки.
+university.admissions.catalog.reason.source_state_not_verified: Правило источника не подтверждено для оценки.
+university.admissions.catalog.kind.exam_alternatives: Допустимые варианты обязательного теста
+university.admissions.catalog.kind.required_exam_presence: Наличие обязательного результата теста
+university.admissions.catalog.kind.scoped_gpa: Средний балл в указанной области
+university.admissions.catalog.kind.enrollment: Условие текущего обучения
+university.admissions.catalog.kind.enrollment_units: Завершение дисциплин специальности
+university.admissions.catalog.kind.credential: Условие квалификации
+university.admissions.catalog.kind.language_requirement: Языковое требование
+university.admissions.catalog.kind.covered_minima: Связанные проверки минимальных требований
+university.admissions.catalog.kind.remaining_conditions: Остальные условия источника
+university.admissions.catalog.kind.published_rule: Опубликованное правило поступления
+university.admissions.catalog.kind.conditional_rule: Правило с неуточнённой применимостью
+university.admissions.catalog.kind.unresolved_rule: Неуточнённое правило поступления
+university.admissions.catalog.kind.stale_annotation: Правило источника требует проверки
+university.admissions.catalog.kind.source_state: Статус источника требует проверки
+university.admissions.catalog.field.currency: Валюта
+university.admissions.catalog.field.period: Период стоимости
+university.admissions.catalog.field.amount: Сумма
+university.admissions.catalog.field.value: Значение
+university.admissions.catalog.field.minimum: Минимум
+university.admissions.catalog.field.scale: Исходная шкала
+university.admissions.catalog.field.unit: Единица измерения
+university.admissions.catalog.field.units: Общее число единиц обучения
+university.admissions.catalog.field.major_units: Единицы по специальности
+university.admissions.catalog.field.completed_major_subjects: Завершённые дисциплины специальности
+university.admissions.catalog.field.metric: Академический показатель
+university.admissions.catalog.field.status: Статус
+university.admissions.catalog.field.taken_on: Дата теста
+university.admissions.catalog.field.as_of_term: По состоянию на семестр
+university.admissions.catalog.field.levels: Уровни обучения
+university.admissions.catalog.field.applicant_categories: Категории заявителей
+university.admissions.catalog.field.cycle: Набор по источнику
+university.admissions.catalog.field.fee_status: Условия категории оплаты
+university.admissions.catalog.field.additional_dimensions: Дополнительные условия применимости
+university.admissions.catalog.field.study: Программа обучения
+university.admissions.catalog.field.application: Маршрут поступления
+university.admissions.catalog.field.A3i6E: Описание программы
+university.admissions.catalog.field.WOZxr: Правила зачёта обучения в другом вузе
+university.admissions.catalog.field.ItCSB: Требования программы
+university.admissions.catalog.field.advisingExpectations: Условия работы с научным руководителем
+university.admissions.catalog.field.cotermQuartersBack: Сроки переноса дисциплин в совмещённую магистратуру
+university.admissions.catalog.field.cotermTransferPolicy: Правила переноса дисциплин в совмещённую магистратуру
+university.admissions.catalog.field.programGradingPolicies: Правила оценок на программе
+university.admissions.catalog.field.programGPARequirement: Требование среднего балла для завершения программы
+university.admissions.catalog.field.programAdditionalPolicies: Дополнительные правила программы
+university.admissions.catalog.field.exam_id: Тест
+university.admissions.catalog.field.credential_id: Квалификация
+university.admissions.catalog.field.score_percent: Результат квалификации (%)
+university.admissions.catalog.field.subjects_minimum: Минимальное число дисциплин специальности
+university.admissions.catalog.field.required_modules: Обязательные модули теста
+university.admissions.catalog.field.allowed_windows: Опубликованные периоды сдачи теста
+university.admissions.catalog.field.alternatives: Опубликованные альтернативы
+university.admissions.catalog.field.condition: Условие
+university.admissions.catalog.study_level.undergraduate: Бакалавриат
+university.admissions.catalog.study_level.masters: Магистратура
+university.admissions.catalog.study_level.doctoral: Докторантура
+university.admissions.catalog.study_level.professional: Профессиональная программа
+university.admissions.catalog.fee.home: Указанная самостоятельно местная категория оплаты
+university.admissions.catalog.fee.overseas: Указанная самостоятельно международная категория оплаты
+university.admissions.catalog.enum.required: Обязательно
+university.admissions.catalog.enum.not_required: Не требуется
+university.admissions.catalog.enum.recommended: Рекомендуется
+university.admissions.catalog.enum.enrolled: Учится
+university.admissions.catalog.enum.completed: Завершено
+university.admissions.catalog.enum.in_progress: В процессе
+university.admissions.catalog.enum.not_started: Не начато
+university.admissions.catalog.enum.overall: Общий
+university.admissions.catalog.enum.technical: Технический
+university.admissions.catalog.enum.major: По специальности
+university.admissions.catalog.enum.required_coursework: Обязательные дисциплины
+university.admissions.catalog.enum.study_period_or_pathway: Период или траектория обучения
+university.admissions.catalog.enum.project_or_dissertation: Проект или диссертация
+university.admissions.catalog.enum.student_choice_coursework: Дисциплины по выбору студента
+university.admissions.catalog.enum.published_catalog_expected_length: Ожидаемая продолжительность по каталогу
+university.admissions.catalog.enum.catalog_metadata_not_fixed_individual_duration: Продолжительность по каталогу; индивидуальный срок обучения не фиксирован
+university.admissions.catalog.enum.required_if_applicable: Обязательно, когда условие применимо
+university.admissions.catalog.enum.not_accepted: Не принимается
+university.admissions.catalog.enum.prior_cycle_only: Опубликовано только для предыдущего набора
+university.admissions.catalog.enum.published_current_page_cycle: Опубликованный набор на проверенной странице
+university.admissions.catalog.enum.same_all_statuses: Одинаковая опубликованная сумма для всех категорий оплаты
+university.admissions.catalog.enum.postgraduate_taught: Программа после высшего образования с учебными дисциплинами
+university.admissions.catalog.enum.independent_award_entry: Отдельная программа квалификации
+university.admissions.catalog.enum.course_application: Заявление на конкретную программу
+university.admissions.catalog.enum.post_admission_major: Специальность выбирается после поступления в университет
+university.admissions.catalog.enum.institution_wide: Поступление в университет
+university.admissions.catalog.enum.program_specific: Для конкретной программы
+university.admissions.catalog.enum.route_wide: Для маршрута поступления
+university.admissions.catalog.enum.academic_year: Учебный год
+university.admissions.catalog.enum.one_time: Разовый платёж
+university.admissions.catalog.reset_notice: Прежний выбор поступления относился к предыдущему каталогу и сброшен. Выберите программу и путь подачи заново. Остальные данные профиля сохранены.
+university.admissions.catalog.save_choice: Сохранить выбор поступления
+university.admissions.catalog.choice_saved: Контекст поступления сохранён для этого вуза.
+university.admissions.catalog.choice_session_only: Выбор доступен только в этой сессии. Сохранить его на устройстве не удалось.
+university.admissions.catalog.apply_before_save: Примените изменённый контекст перед сохранением выбора.
+universities.compare.reviewed_catalog: Проверенный каталог программ и поступления
+universities.compare.optional_context: Сравните вузы сейчас или выберите программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
+universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.

@@ -12,8 +12,10 @@ from app.services.finance_modes import (
 )
 from app.services import languages as languages_service
 from app.services import universities as universities_service
+from app.services import admissions_catalog, admissions_assessment
 from app.services.university_tracks import (
     _canonical_major,
+    _major_tags_from_text,
     _has_explicit_empty_program_mapping,
     _normalize_major_text,
     _iter_programs,
@@ -25,6 +27,28 @@ _UI_BADGE_THRESHOLDS = {
     "your_vibe_max_mismatch": 0.14,
     "top_match_max_mismatch": 0.22,
 }
+
+
+def has_admissions_selection(profile: Dict[str, Any], university_id: str = "") -> bool:
+    selections = profile.get("selectedAdmissionChoices") or {}
+    rows = [selections.get(university_id, {})] if university_id else selections.values()
+    return any(isinstance(row, dict) and (row.get("studyOptionId") or row.get("applicationRouteId")) for row in rows)
+
+
+def _assess_admissions_selection(university_id: str, profile: Dict[str, Any]) -> Dict[str, Any]:
+    resolved = admissions_catalog.resolve_context(university_id, profile=profile)
+    result = admissions_assessment.assess_resolved_context(resolved, profile)
+    choice = result["choices"][0]
+    percent = result.get("overallChance")
+    level = _chance_level(percent) if percent is not None else _no_data_chance_level(profile)
+    choice["level"] = level
+    result.update({
+        "bestChoiceKey": choice["choiceKey"], "bestChoiceId": choice["choiceId"],
+        "bestChoiceLabel": choice["choiceLabel"], "selectedChoiceKey": choice["choiceKey"],
+        "selectedByUser": has_admissions_selection(profile, university_id), "level": level,
+        "catalogRevision": resolved["revision"],
+    })
+    return result
 
 
 def _preview_text(value: Any, max_len: int = 180) -> str:
@@ -976,6 +1000,8 @@ def _chance_level(chance_pct: float) -> Dict[str, str]:
 
 def _chance_locale(profile: Dict[str, Any]) -> str:
     raw = str((profile or {}).get("locale") or "").strip().lower()
+    if raw.startswith("kk") or raw == "kaz":
+        return "kaz"
     return "rus" if raw.startswith("ru") else "eng"
 
 
@@ -1003,17 +1029,30 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
             "requirements_not_reviewed": "Опубликованные минимумы для этого маршрута ещё не проверены",
             "applicability_unknown": "Применимость этого маршрута к выбранному типу заявителя, программе или циклу не подтверждена",
         },
+        "kaz": {
+            "missing_evidence": "Емтихан нәтижесін немесе тіл деңгейін қосыңыз",
+            "requirements_not_met": "Міндетті ең төменгі талапқа сай емессіз",
+            "missing_exam_score": "Осы түсу жолын бағалау үшін емтихан нәтижесі керек",
+            "unsupported_exam_normalization": "Бұл емтихан нәтижесін әзірге осы түсу жолымен салыстыру мүмкін емес",
+            "no_score_profile": "Оқуға қабылданғандар ұпайы туралы дерек жоқ",
+            "no_published_requirements": "Бұл түсу жолы бойынша өлшенетін жарияланған ең төменгі талап жоқ",
+            "unassessed_minimums": "Профильдегі дерекпен жарияланған ең төменгі талаптарды бағалау мүмкін емес",
+            "requirements_not_reviewed": "Бұл түсу жолының жарияланған ең төменгі талаптары әлі тексерілмеген",
+            "applicability_unknown": "Бұл жолдың таңдалған талапкерге, бағдарламаға не қабылдау цикліне сай екені расталмаған",
+        },
     }
     locale = _chance_locale(profile)
     if locale == "rus" and reason == "missing_exam_score":
         return "Нужны данные по экзаменам, чтобы оценить шанс по этому варианту поступления"
+    if locale == "kaz" and reason == "missing_exam_score":
+        return "Осы түсу жолын бағалау үшін емтихан нәтижелері керек"
     return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
 
 
 def _no_data_chance_level(profile: Dict[str, Any]) -> Dict[str, str]:
     return {
         "id": "no_data",
-        "label": "Нет данных" if _chance_locale(profile) == "rus" else "No data",
+        "label": {"rus": "Нет данных", "kaz": "Дерек жоқ"}.get(_chance_locale(profile), "No data"),
     }
 
 
@@ -1336,7 +1375,8 @@ _CHOICES_CACHE: Dict[str, List[Dict[str, Any]]] = {}
 def _extract_university_factors(university: Dict[str, Any], study_level: Any = "any") -> Dict[str, float]:
     uid = str(university.get("id") or "").strip()
     target_level = _normalize_study_level_str(study_level)
-    cache_key = f"{uid}:{target_level}"
+    revision = admissions_catalog.get_revision() if uid in admissions_catalog.INSTITUTION_IDS else "legacy"
+    cache_key = f"{uid}:{target_level}:{revision}"
     if uid and cache_key in _FACTORS_CACHE:
         return _FACTORS_CACHE[cache_key]
 
@@ -1499,7 +1539,8 @@ def sort_universities_ai(
         if not isinstance(row, dict):
             continue
         row_id = str(row.get("id") or "").strip()
-        choices = universities_service.expand_admission_choices(row.get("admission_categories"))
+        canonical_context = row_id in admissions_catalog.INSTITUTION_IDS
+        choices = [] if canonical_context else universities_service.expand_admission_choices(row.get("admission_categories"))
         choices = [t for t in choices if isinstance(t, dict)]
         target_level = _normalize_study_level_str(
             profile.get("studyLevel") or profile.get("study_level") or ""
@@ -1519,7 +1560,7 @@ def sort_universities_ai(
             and _choice_matches_entry_cycle(choice, target_cycle)
             and (not selected_program_id or not selected_program_is_known or _choice_matches_program(choice, selected_program_id))
         ]
-        selected_choice_key = _selected_choice_key_for_university(profile, row)
+        selected_choice_key = "" if canonical_context else _selected_choice_key_for_university(profile, row)
 
         uni_factors = _extract_university_factors(row, target_level)
         total_distance, distance_deltas = _distance_breakdown(user_pref, uni_factors)
@@ -1534,6 +1575,8 @@ def sort_universities_ai(
         )
 
         chance_general = estimate_uni_chance(row, profile_any, user_context=ctx, lang_cfg=lang_cfg)
+        if canonical_context:
+            selected_choice_key = str(chance_general.get("activeChoiceKey") or "")
         active_chance_bundle = chance_general
         general_choice_results = chance_general.get("choices") if isinstance(chance_general.get("choices"), list) else []
         selected_general_choice = _choice_result_by_key(general_choice_results, selected_choice_key)
@@ -1551,7 +1594,13 @@ def sort_universities_ai(
         if selected_by_user and selected_raw_choice is not None:
             selected_actual_chance = _chance_percent_value((selected_general_choice or {}).get("chancePercent"))
 
-        missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
+        if canonical_context:
+            selected_option = (chance_general.get("selectedContext") or {}).get("option") or {}
+            selected_title = str(selected_option.get("title") or "")
+            selected_academics = {"programs": [{"name": selected_title}], "majors": _major_tags_from_text(selected_title)}
+            missing_program = bool(profile_major and selected_title) and not _university_matches_major({"academics": selected_academics}, profile_major)
+        else:
+            missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
         program_missing_penalty = 0.25 if missing_program else 0.0
 
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
@@ -1592,7 +1641,13 @@ def sort_universities_ai(
         choice_meta_list = active_chance_bundle.get("choices") if isinstance(active_chance_bundle.get("choices"), list) else []
         active_choice_meta = _choice_result_by_key(choice_meta_list, active_choice_key) or {}
 
-        if not eligible_choices and (target_level != "any" or target_route or target_cycle or selected_program_id):
+        if canonical_context:
+            active_raw_choice = {
+                "id": active_choice_meta.get("choiceId"), "label": active_choice_meta.get("choiceLabel"),
+                "category_id": active_choice_meta.get("categoryId"),
+            }
+
+        if canonical_context or (not eligible_choices and (target_level != "any" or target_route or target_cycle or selected_program_id)):
             finance = row.get("finance") if isinstance(row.get("finance"), dict) else {}
             cost_usd, cost_native = 0.0, 0.0
             cost_currency, cost_mode = str(finance.get("currency") or "USD").strip().upper(), "unavailable"
@@ -1601,7 +1656,7 @@ def sort_universities_ai(
                 row, base_raw_choice, preferred_mode=preferred_mode,
                 intended_entry_cycle=target_cycle,
             )
-        aid_any = _get_track_funding_type(active_raw_choice) == "grant"
+        aid_any = None if canonical_context else _get_track_funding_type(active_raw_choice) == "grant"
 
         cost_range_payload = (
             _track_cost_range_payload(row, base_raw_choice)
@@ -1669,7 +1724,7 @@ def sort_universities_ai(
         requirement_checks = active_choice_details.get("checks") if isinstance(active_choice_details.get("checks"), list) else []
         missing_evidence = active_choice_meta.get("missingEvidence") if isinstance(active_choice_meta.get("missingEvidence"), list) else []
 
-        effective_selected_by_user = selected_by_user and active_choice_key != recommended_choice_key
+        effective_selected_by_user = selected_by_user if canonical_context else selected_by_user and active_choice_key != recommended_choice_key
         ui_badge_hints = _build_ui_badge_hints(
             preference_mismatch=preference_mismatch,
             conditional=is_conditional,
@@ -1752,6 +1807,11 @@ def sort_universities_ai(
             "selectedByUser": effective_selected_by_user,
             "choiceSelectionSource": "user" if effective_selected_by_user else "recommended",
         }
+        if canonical_context:
+            match_data["admissionsContext"] = chance_general.get("context")
+            match_data["catalogRevision"] = chance_general.get("catalogRevision")
+            match_data["assessmentRevision"] = chance_general.get("assessmentRevision")
+            match_data["costReason"] = "scoped_annual_cost_unassessed"
 
         item = dict(row)
         item["matchData"] = match_data
@@ -1940,6 +2000,8 @@ def estimate_uni_chance(
     lang_cfg: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
+    if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
+        return _assess_admissions_selection(str(university.get("id") or ""), profile)
     lang_cfg = lang_cfg if isinstance(lang_cfg, dict) else _language_config()
     ctx = user_context if isinstance(user_context, dict) else _build_user_context(profile, lang_cfg)
     funding_type = _normalize_funding_preference(profile.get("fundingType") or profile.get("funding_type") or "any")
@@ -2135,6 +2197,15 @@ def estimate_uni_chance(
 
 def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
+    if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
+        resolved = admissions_catalog.resolve_context(str(university.get("id") or ""), profile=profile)
+        return {
+            "title": "Estimated ROI (Return on Investment)", "salary_used_usd": None,
+            "annual_cost_usd": None, "roi_value": None, "roi_label": "No Data", "roi_tone": "neutral",
+            "context_type": "scoped_cost_and_outcomes_unassessed", "context": resolved["context"],
+            "catalogRevision": resolved["revision"], "user_major": str(profile.get("major") or ""),
+            "matched_major": "", "salary_data_points": 0,
+        }
     user_major = str(profile.get("major") or "").strip()
     study_level = _normalize_study_level_str(profile.get("studyLevel") or profile.get("study_level"))
     choices = universities_service.expand_admission_choices(university.get("admission_categories"))

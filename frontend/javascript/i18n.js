@@ -3,25 +3,29 @@ import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
-const I18N_SESSION_CACHE_PREFIX = "unisearch_i18n_pack_v1_";
+const I18N_SESSION_CACHE_PREFIX = "unisearch_i18n_pack_v3_";
 
 const LANG_ENG = "eng";
 const LANG_RUS = "rus";
-const SUPPORTED_LANGS = new Set([LANG_ENG, LANG_RUS]);
+const LANG_KAZ = "kaz";
+const SUPPORTED_LANGS = new Set([LANG_ENG, LANG_RUS, LANG_KAZ]);
 const LANG_FILE_BY_CODE = {
   [LANG_ENG]: "Localization/eng",
   [LANG_RUS]: "Localization/ru",
+  [LANG_KAZ]: "Localization/kaz",
 };
 const I18N_PACK_FETCH_TIMEOUT_MS = 4000;
 
 const HTML_LANG_MAP = {
   [LANG_ENG]: "en",
   [LANG_RUS]: "ru",
+  [LANG_KAZ]: "kk",
 };
 
 const DICT = {
   [LANG_ENG]: {},
   [LANG_RUS]: {},
+  [LANG_KAZ]: {},
 };
 
 let currentLang = LANG_ENG;
@@ -34,6 +38,7 @@ function normalizeLang(value) {
   if (SUPPORTED_LANGS.has(raw)) return raw;
   if (raw.startsWith("en")) return LANG_ENG;
   if (raw.startsWith("ru")) return LANG_RUS;
+  if (raw.startsWith("kk")) return LANG_KAZ;
   return "";
 }
 
@@ -85,7 +90,7 @@ async function _fetchLocalizationText(file, timeoutMs) {
   const controller = typeof AbortController === "function" ? new AbortController() : null;
   let timeoutId = 0;
   const fetchPromise = fetch(file, {
-    cache: "default",
+    cache: "no-cache",
     ...(controller ? { signal: controller.signal } : {}),
   })
     .then((res) => (res.ok ? res.text() : ""))
@@ -110,7 +115,7 @@ async function _fetchLocalizationText(file, timeoutMs) {
 }
 
 function _hydratePacksFromSession() {
-  const langs = [LANG_ENG, LANG_RUS];
+  const langs = [LANG_ENG, LANG_RUS, LANG_KAZ];
   langs.forEach((lang) => {
     if (Object.keys(DICT[lang] || {}).length > 0) return;
     try {
@@ -121,7 +126,7 @@ function _hydratePacksFromSession() {
       DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
 
       const code = String(parsed["meta.code"] || "").trim();
-      const navKey = lang === LANG_ENG ? "nav.lang.eng" : "nav.lang.rus";
+      const navKey = `nav.lang.${lang}`;
       if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
     } catch (e) {
       // ignore
@@ -135,7 +140,7 @@ async function _loadLocalizationPacks() {
   if (__packsLoadPromise) return __packsLoadPromise;
 
   __packsLoadPromise = (async () => {
-    const langs = [LANG_ENG, LANG_RUS];
+    const langs = [LANG_ENG, LANG_RUS, LANG_KAZ];
     await Promise.allSettled(
       langs.map(async (lang) => {
         const file = LANG_FILE_BY_CODE[lang];
@@ -150,7 +155,7 @@ async function _loadLocalizationPacks() {
           safeSessionStorage.set(`${I18N_SESSION_CACHE_PREFIX}${lang}`, raw);
 
           const code = String(parsed["meta.code"] || "").trim();
-          const navKey = lang === LANG_ENG ? "nav.lang.eng" : "nav.lang.rus";
+          const navKey = `nav.lang.${lang}`;
           if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
         } catch (e) {
           // keep already loaded keys from localization files
