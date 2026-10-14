@@ -108,9 +108,13 @@ test("rank tooltip stays usable for the legacy catalog and MIT admissions source
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   expect((await contextResponsePromise).ok()).toBeTruthy();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const fact = page.locator('#detailRequirements [data-admissions-fact="ug-sat-act-presence"]');
+  const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  await expect(group).not.toHaveAttribute("open");
+  await group.locator(":scope > summary").click();
+  await expect(group).toHaveAttribute("open", "");
   await expect(fact).toBeVisible();
-  await fact.locator(":scope > summary").click();
   await openEvidence(fact);
   await expect(fact.locator("a[href^='https://']").first()).toBeVisible();
   await expect(fact.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\/mitadmissions\.org\//);

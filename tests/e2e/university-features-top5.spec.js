@@ -167,7 +167,6 @@ test("exact Imperial Computing deadline preserves its source, time, course scope
 
   const exactDeadline = page.locator('#detailDeadlines [data-admissions-fact="imperial-ucas-2027-window"]');
   await expect(exactDeadline).toBeVisible();
-  await exactDeadline.locator(":scope > summary").click();
   await openEvidence(exactDeadline);
   await expect(exactDeadline).toContainText(/2027[-\u2011]01[-\u2011]13/);
   await expect(exactDeadline).toContainText("18:00");
@@ -245,8 +244,7 @@ test("MIT first-year deadline facts keep recurring dates separate from the 2027 
 
   const recurring = page.locator('#detailDeadlines [data-admissions-fact="first-year-rounds"]');
   await expect(recurring).toBeVisible();
-  await expect(recurring).not.toHaveAttribute("open", "");
-  await recurring.locator(":scope > summary").click();
+  await expect(recurring).toHaveAttribute("open", "");
   await expect(recurring).toContainText("Early Action");
   await expect(recurring).toContainText("November 1");
   await expect(recurring).toContainText("January 4");
@@ -274,7 +272,7 @@ test("UK citizenship alone does not assign a home fee status", async ({ page }) 
   await expect(feeStatus).not.toContainText("Overseas Status");
 });
 
-test("MIT requirement facts collapse and expand in the selected first-year context", async ({ page }) => {
+test("MIT requirement groups collapse and expand in the selected first-year context", async ({ page }) => {
   await page.goto(reviewedContextUrl({
     university: "mit-usa-cambridge",
     option: "mit-course-6-3-bachelor",
@@ -287,11 +285,18 @@ test("MIT requirement facts collapse and expand in the selected first-year conte
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
 
   await page.click(".d-tab-btn[data-tab='tab-admission']");
-  const collapsible = page.locator('#detailRequirements [data-admissions-domain="requirements"] [data-admissions-fact="first-year-documents"]');
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  const fact = page.locator('#detailRequirements [data-admissions-domain="requirements"] [data-admissions-fact="first-year-documents"]');
+  const collapsible = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
   await expect(collapsible).toBeVisible();
   await expect(collapsible).not.toHaveAttribute("open");
+  await expect(fact).not.toBeVisible();
   const summary = collapsible.locator(":scope > summary");
   await summary.click();
   await expect(collapsible).toHaveAttribute("open", "");
-  await expect(collapsible).toContainText("Two teacher recommendations");
+  await expect(fact).toBeVisible();
+  await expect(fact).toContainText("Two teacher recommendations");
+  await summary.click();
+  await expect(collapsible).not.toHaveAttribute("open");
+  await expect(fact).not.toBeVisible();
 });
