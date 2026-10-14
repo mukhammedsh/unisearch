@@ -66,7 +66,8 @@ function parseLocalizationFile(filePath) {
 function findPlaceholderMismatches(source, translated, language) {
   const issues = [];
   const placeholders = (value) => [...String(value || "").matchAll(/\{[a-zA-Z0-9_]+\}/g)]
-    .map((match) => match[0]).sort();
+    .map((match) => match[0])
+    .sort((left, right) => (left < right ? -1 : left > right ? 1 : 0));
   for (const [key, sourceValue] of source.values) {
     const translatedValue = translated.values.get(key);
     if (translatedValue === undefined) continue;

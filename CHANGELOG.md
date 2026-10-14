@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 8.1.6 (2026-10-14) - Stable Checks and Exact Source Links
+
+### Fixed
+- Seed the spacing-token reduction and use explicit stable comparators to resolve SonarCloud reliability gate findings.
+- Require exact `href` attributes in official-source assertions, addressing four CodeQL findings.
+- Use a patch version because these fixes add no user-facing capability.
+
 ## 8.1.5 (2026-10-14) - Code Scanning and Validator Fixes
 
 ### Fixed

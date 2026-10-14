@@ -280,7 +280,9 @@ function run() {
   const jsFiles = walkFiles(path.join(frontendDir, "javascript"), (_, name) => name.endsWith(".js"));
   const cssFiles = walkFiles(path.join(frontendDir, "css"), (_, name) => name.endsWith(".css"));
   const baseline = loadBaseline();
-  const scans = [...htmlFiles, ...jsFiles].sort().map(scanFile);
+  const scans = [...htmlFiles, ...jsFiles]
+    .sort((left, right) => (left < right ? -1 : left > right ? 1 : 0))
+    .map(scanFile);
   const newBaseline = Object.fromEntries(scans.map(({ relPath, violations }) => [relPath, violations.length]));
   const regressions = scans.flatMap(({ relPath, violations }) => {
     const excess = violations.slice(baseline[relPath] ?? 0);

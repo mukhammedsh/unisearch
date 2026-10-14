@@ -53,7 +53,8 @@ function suggestFontToken(pxVal) {
 
 export function spacingTokenFor(pxVal) {
   const px = Math.abs(Number(pxVal));
-  const [nearestValue, tokenName] = [...SPACING_TOKEN_VALUES.entries()].reduce((nearest, entry) => {
+  const entries = [...SPACING_TOKEN_VALUES.entries()];
+  const [nearestValue, tokenName] = entries.reduce((nearest, entry) => {
     const [value] = entry;
     const currentDistance = Math.abs(value - px);
     const nearestDistance = Math.abs(nearest[0] - px);
@@ -61,7 +62,7 @@ export function spacingTokenFor(pxVal) {
       return entry;
     }
     return nearest;
-  });
+  }, entries[0]);
   return `var(${tokenName}) (${nearestValue}px)`;
 }
 
