@@ -105,7 +105,7 @@ test("universities filter dropdowns update translated option text after language
   expect(await filterComboboxNames(page)).toEqual([
     { expected: "Country", actual: "Country" },
     { expected: "City", actual: "City" },
-    { expected: "Sort Strategy", actual: "Sort Strategy" },
+    { expected: "Sort by", actual: "Sort by" },
   ]);
 
   await switchLanguage(page, "rus");
