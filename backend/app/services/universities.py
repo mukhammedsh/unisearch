@@ -985,41 +985,45 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
         else []
     )
 
-    majors = academics.get("majors")
-    if not isinstance(majors, list) or len(majors) == 0:
-        academics["majors"] = _uniq_non_empty([p.get("name") for p in programs])
+    need_majors = not isinstance(academics.get("majors"), list) or len(academics.get("majors")) == 0
+    need_study_levels = not isinstance(academics.get("study_levels"), list) or len(academics.get("study_levels")) == 0
+    need_formats = not isinstance(academics.get("formats"), list) or len(academics.get("formats")) == 0
+    need_acc = _num_or_none(academics.get("acceptance_rate_percent")) is None
 
-    study_levels = academics.get("study_levels")
-    if not isinstance(study_levels, list) or len(study_levels) == 0:
-        levels: List[Any] = []
-        for p in programs:
-            lv = p.get("study_levels")
-            if isinstance(lv, list):
-                levels.extend(lv)
-            elif lv is not None:
-                levels.append(lv)
-        academics["study_levels"] = _uniq_non_empty(levels)
+    if need_majors or need_study_levels or need_formats or need_acc:
+        majors_list: List[Any] = []
+        levels_list: List[Any] = []
+        fmts_list: List[Any] = []
+        acc_vals: List[float] = []
 
-    formats = academics.get("formats")
-    if not isinstance(formats, list) or len(formats) == 0:
-        fmts: List[Any] = []
         for p in programs:
-            mode = p.get("study_mode")
-            if isinstance(mode, list):
-                fmts.extend(mode)
-            elif mode is not None:
-                fmts.append(mode)
-        academics["formats"] = _uniq_non_empty(fmts)
+            if need_majors:
+                majors_list.append(p.get("name"))
+            if need_study_levels:
+                lv = p.get("study_levels")
+                if isinstance(lv, list):
+                    levels_list.extend(lv)
+                elif lv is not None:
+                    levels_list.append(lv)
+            if need_formats:
+                mode = p.get("study_mode")
+                if isinstance(mode, list):
+                    fmts_list.extend(mode)
+                elif mode is not None:
+                    fmts_list.append(mode)
+            if need_acc:
+                v = _num_or_none(p.get("acceptance_rate_percent"))
+                if v is not None:
+                    acc_vals.append(v)
 
-    acc = _num_or_none(academics.get("acceptance_rate_percent"))
-    if acc is None:
-        vals = []
-        for p in programs:
-            v = _num_or_none(p.get("acceptance_rate_percent"))
-            if v is not None:
-                vals.append(v)
-        if vals:
-            academics["acceptance_rate_percent"] = round(sum(vals) / len(vals), 2)
+        if need_majors:
+            academics["majors"] = _uniq_non_empty(majors_list)
+        if need_study_levels:
+            academics["study_levels"] = _uniq_non_empty(levels_list)
+        if need_formats:
+            academics["formats"] = _uniq_non_empty(fmts_list)
+        if need_acc and acc_vals:
+            academics["acceptance_rate_percent"] = round(sum(acc_vals) / len(acc_vals), 2)
 
     categories = u.get("admission_categories")
     if isinstance(categories, list):
