@@ -1,7 +1,38 @@
 import unittest
+from unittest.mock import patch
 
-from app.services.exam_support import validate_numeric_score
+from app.services.exam_support import EXAMS_CONFIG, config_entry, validate_numeric_score
 from app.services.exams import coerce_exam_submission
+
+
+class ConfigEntryTests(unittest.TestCase):
+    def test_returns_config_dict_for_exact_match(self):
+        cfg = config_entry("SAT")
+        self.assertIsInstance(cfg, dict)
+        self.assertEqual(cfg.get("min"), 400)
+        self.assertEqual(cfg.get("max"), 1600)
+
+    def test_resolves_key_case_and_canonical_formatting(self):
+        cfg_lower = config_entry("sat")
+        self.assertEqual(cfg_lower, config_entry("SAT"))
+
+        cfg_canonical = config_entry("sat_math")
+        self.assertEqual(cfg_canonical, config_entry("SAT_MATH"))
+
+    def test_resolves_key_aliases(self):
+        cfg_alias = config_entry("ENT")
+        self.assertEqual(cfg_alias, config_entry("UNT"))
+        self.assertNotEqual(cfg_alias, {})
+
+    def test_returns_empty_dict_for_unknown_or_falsy_keys(self):
+        falsy_keys = [None, "", "   ", "NON_EXISTENT_EXAM_12345"]
+        for key in falsy_keys:
+            with self.subTest(key=key):
+                self.assertEqual(config_entry(key), {})
+
+    def test_returns_empty_dict_when_resolved_cfg_is_not_dict(self):
+        with patch.dict(EXAMS_CONFIG, {"INVALID_EXAM": "not a dict"}, clear=False):
+            self.assertEqual(config_entry("INVALID_EXAM"), {})
 
 
 class ValidateNumericScoreTests(unittest.TestCase):

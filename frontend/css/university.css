@@ -409,10 +409,6 @@
   color: var(--text);
   border: none;
   box-shadow: none;
-  transition:
-  transform var(--motion-snappy) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
-  background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .uni-tag::before {
@@ -426,8 +422,8 @@
 @media (hover: hover) and (pointer: fine) {
   .uni-tag:hover {
     box-shadow: none;
-    border-color: var(--line-accent);
-    background: var(--surface-soft);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -455,7 +451,7 @@
 
 .d-kv > span:first-child {
   color: var(--muted);
-  font-weight: 500;
+  font-weight: var(--font-weight-regular);
   flex: 1 1 55%;
   min-width: 0;
   overflow-wrap: anywhere;
@@ -463,7 +459,7 @@
 
 .d-kv > span:last-child {
   color: var(--text);
-  font-weight: 500;
+  font-weight: var(--font-weight-regular);
   text-align: right;
   flex: 1 1 45%;
   min-width: 0;
@@ -472,7 +468,7 @@
 
 .d-rank-emphasis {
   color: var(--text);
-  font-weight: 500;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.15px;
 }
 
@@ -3143,7 +3139,6 @@
 .uni-tag {
   padding: var(--space-2) var(--space-3);
   border-radius: 10px;
-  border-color: var(--line-accent);
   background: transparent;
   color: var(--text);
   box-shadow: none;
@@ -3158,7 +3153,8 @@
 @media (hover: hover) and (pointer: fine) {
   .uni-tag:hover {
     transform: none;
-    background: transparent;
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
     box-shadow: none;
   }
 }

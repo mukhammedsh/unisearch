@@ -57,6 +57,26 @@ async function expectUniversityReady(page) {
   await expect(page.locator("#detailName")).not.toBeEmpty();
 }
 
+test("reviewed university replaces a fresh detail cache entry without the catalog contract", async ({ page }) => {
+  await page.addInitScript((id) => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_detail_cache_v4", JSON.stringify({
+      [`${id}::eng`]: { data: { id, name: "STALE LEGACY DETAIL" }, etag: "legacy-etag", ts: Date.now() },
+    }));
+  }, MIT);
+  const detailResponse = page.waitForResponse((response) =>
+    new URL(response.url()).pathname.endsWith(`/universities/${MIT}`)
+    && response.request().method() === "GET");
+  await page.goto(`/university.html?id=${MIT}`);
+  expect((await detailResponse).status()).toBe(200);
+  await expectUniversityReady(page);
+  await expect(page.locator("#detailName")).not.toHaveText("STALE LEGACY DETAIL");
+  await expect(page.locator("#detailState")).toBeEmpty();
+  const cached = await page.evaluate((id) =>
+    JSON.parse(localStorage.getItem("unisearch_detail_cache_v4"))[`${id}::eng`].data, MIT);
+  expect(cached.admissions_catalog.availability).toBe("reviewed");
+});
+
 async function openAdvanced(page) {
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();

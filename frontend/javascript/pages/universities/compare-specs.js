@@ -252,8 +252,7 @@ export const compareSpecSections = () => ({
     context: t("universities.compare.section.context", "Context"),
 });
 
-export const buildCompareSpecs = (universities) => {
-    const specs = [
+const getBaseCompareSpecs = () => [
         {
             key: "location",
             section: "overview",
@@ -551,8 +550,10 @@ export const buildCompareSpecs = (universities) => {
             score: false,
             reason: false,
         },
-    ];
+];
 
+const getDynamicExamCompareSpecs = (universities) => {
+    const specs = [];
     const requirementKeys = collectCompareExamKeys(universities, compareSelectedRequirementKeys);
     requirementKeys.forEach((examId) => {
         specs.push({
@@ -594,6 +595,15 @@ export const buildCompareSpecs = (universities) => {
             formatter: compareScoreText,
         });
     });
+
+    return specs;
+};
+
+export const buildCompareSpecs = (universities) => {
+    const specs = [
+        ...getBaseCompareSpecs(),
+        ...getDynamicExamCompareSpecs(universities),
+    ];
 
     return specs.filter((spec) => {
         const values = universities.map((u) => compareSpecRawValue(spec, u));
