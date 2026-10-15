@@ -726,10 +726,21 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
             "conditional": False,
         }
 
-    best_score = max((x.get("score", 0.0) for x in candidates), default=0.0)
-    passed = any(bool(x.get("pass")) for x in candidates)
-    min_gap = min((x.get("gap", 1.0) for x in candidates), default=1.0)
-    is_conditional = all(bool(x.get("conditional")) for x in candidates)
+    best_score = float(candidates[0].get("score", 0.0)) if candidates else 0.0
+    passed = False
+    min_gap = float(candidates[0].get("gap", 1.0)) if candidates else 1.0
+    is_conditional = True
+    for x in candidates:
+        s = float(x.get("score", 0.0))
+        if s > best_score:
+            best_score = s
+        if x.get("pass"):
+            passed = True
+        g = float(x.get("gap", 1.0))
+        if g < min_gap:
+            min_gap = g
+        if not x.get("conditional"):
+            is_conditional = False
     return {
         "score": _clamp01(float(best_score)),
         "pass": passed,
