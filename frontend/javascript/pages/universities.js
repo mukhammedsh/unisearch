@@ -3293,13 +3293,19 @@ export function initUniversitiesPage() {
                 el.stateSelect.innerHTML += `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
             });
             initCustomSelect("stateSelect");
-            updateCityDropdown([]);
+            updateCitiesForState(country, "");
         }
     }
     function updateCitiesForState(country, region) {
-        if (!country || !region) { updateCityDropdown([]); return; }
+        if (!country) { updateCityDropdown([]); return; }
         const countryData = CITY_OPTIONS_BY_COUNTRY[country];
-        if (countryData && !Array.isArray(countryData)) { updateCityDropdown(countryData[region] || []); }
+        if (Array.isArray(countryData)) { updateCityDropdown(countryData); return; }
+        if (countryData && typeof countryData === "object") {
+            const cities = region
+                ? countryData[region] || []
+                : [...new Set(Object.values(countryData).flatMap((items) => Array.isArray(items) ? items : []))];
+            updateCityDropdown(cities);
+        }
     }
     function updateCityDropdown(cities) {
         if (!el.citySelect) return;
@@ -3943,11 +3949,8 @@ ${rankInnerHtml}
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
             <div class="uni-logo">${logoImgHtml}</div>
             </div>`;
-        const mapLogoCueHtml = mapVariant
-            ? `<span class="uni-map-logo-cue" aria-hidden="true">${renderInlineIcon("arrow-up-right", 14, "uni-map-logo-cue__icon")}</span>`
-            : "";
         const headHtml = hideMedia
-            ? `<div class="uni-head"><span class="uni-logo uni-logo--inline">${logoImgHtml}${mapLogoCueHtml}</span><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
+            ? `<div class="uni-head"><span class="uni-logo uni-logo--inline">${logoImgHtml}</span><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
             : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
         const detailsHtml = mapVariant
             ? `<a class="uni-details" href="${detailHref}"${universityLinkAttrs()}>${detailLabel}<span aria-hidden="true">→</span></a>`

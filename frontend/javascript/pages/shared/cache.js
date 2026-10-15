@@ -154,7 +154,7 @@ export function touchDetailCacheEntry(universityId, lang = getCurrentLanguage())
   writeDetailCache(cache);
 }
 
-export async function fetchUniversityDetailCached(universityId) {
+export async function fetchUniversityDetailCached(universityId, { requireReviewedCatalog = false } = {}) {
   const key = String(universityId || "").trim();
   const lang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
   if (!key) throw new Error("University ID is required");
@@ -162,10 +162,10 @@ export async function fetchUniversityDetailCached(universityId) {
   const cached = getDetailCacheEntry(key, lang);
   const reviewed = cached?.data?.admissions_catalog?.availability === "reviewed";
   const age = cached ? Date.now() - cached.ts : Number.POSITIVE_INFINITY;
-  if (cached && !reviewed && age < DETAIL_CACHE_TTL_MS) return cached.data;
+  if (cached && !requireReviewedCatalog && !reviewed && age < DETAIL_CACHE_TTL_MS) return cached.data;
 
   const headers = {};
-  if (cached?.etag) headers["If-None-Match"] = cached.etag;
+  if (cached?.etag && (!requireReviewedCatalog || reviewed)) headers["If-None-Match"] = cached.etag;
 
   const waitForRetry = () => new Promise((resolve) => globalThis.setTimeout(resolve, DETAIL_FETCH_RETRY_DELAY_MS));
 
@@ -177,12 +177,15 @@ export async function fetchUniversityDetailCached(universityId) {
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
         const response = await fetch(url, { headers });
-        if (response.status === 304 && cached?.data) {
+        if (response.status === 304 && cached?.data && (!requireReviewedCatalog || reviewed)) {
           touchDetailCacheEntry(key, lang);
           return cached.data;
         }
         if (response.ok) {
           const data = await response.json();
+          if (requireReviewedCatalog && data?.admissions_catalog?.availability !== "reviewed") {
+            throw new Error("Reviewed university catalog contract is unavailable");
+          }
           setDetailCacheEntry(key, data, response.headers.get("ETag") || "", lang);
           return data;
         }
@@ -195,7 +198,7 @@ export async function fetchUniversityDetailCached(universityId) {
 
     throw lastError || new Error("Backend error");
   } catch (error) {
-    if (cached?.data && !reviewed) return cached.data;
+    if (cached?.data && !reviewed && !requireReviewedCatalog) return cached.data;
     throw error;
   }
 }

@@ -655,6 +655,368 @@ function getAvailableProgramLevels(programs) {
   return out;
 }
 
+const hiddenProgramMetadata = new Set([
+  "id", "url", "source_url", "source_urls", "catalog_url", "deadline_source_url", "tuition_source_url",
+  "verified_at", "tuition_verified_at", "cycle", "tuition_cycle", "requirements_cycle",
+  "currency", "deadlines", "scholarship_eligibility",
+  "admission_route_id", "price_facts", "tuition_total_usd", "selection_timing",
+]);
+
+function prettyField(key) {
+  return String(key || "")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function isMajorTagField(key) {
+  const normalized = String(key || "").trim().toLowerCase();
+  return normalized === "major_tags" || normalized === "majors" || normalized === "applicable_majors";
+}
+
+function tokenizeName(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replaceAll("&", " ")
+    .split(/[^\p{L}\p{N}]+/u)
+    .map((token) => token.trim())
+    .filter(Boolean);
+}
+
+function normalizeSignalKey(value) {
+  return tokenizeName(value).join(" ");
+}
+
+function parentheticalRanges(text) {
+  const ranges = [];
+  let cursor = 0;
+  while (cursor < text.length) {
+    const start = text.indexOf("(", cursor);
+    if (start < 0) break;
+    const close = text.indexOf(")", start + 1);
+    if (close < 0) break;
+    ranges.push([start, close + 1]);
+    cursor = close + 1;
+  }
+  return ranges;
+}
+
+function stripParenthetical(value) {
+  const text = String(value || "");
+  const parts = [];
+  let cursor = 0;
+  for (const [start, end] of parentheticalRanges(text)) {
+    parts.push(text.slice(cursor, start), " ");
+    cursor = end;
+  }
+  parts.push(text.slice(cursor));
+  return parts.join("");
+}
+
+function parenTokenSet(value) {
+  const text = String(value || "");
+  return new Set(parentheticalRanges(text).flatMap(([start, end]) => tokenizeName(text.slice(start, end))));
+}
+
+function formatProgramValue(key, value, universityId = "") {
+  if (value === null || value === undefined || value === "") return "";
+  if (Array.isArray(value)) {
+    return value.map((item) => {
+      const raw = String(item);
+      if (String(key) === "study_levels") return trStudyLevel(raw);
+      if (String(key) === "language") return trProgramLanguage(raw);
+      if (String(key) === "study_mode") return trStudyMode(raw);
+      return raw;
+    }).join(", ");
+  }
+  if (typeof value === "boolean") return value ? t("common.yes", "Yes") : t("common.no", "No");
+  if (String(key) === "acceptance_rate_percent") return `${value}%`;
+  if (typeof value === "number" && /(?:_usd|_gbp|_eur)$/.test(String(key))) {
+    const currency = String(key).split("_").at(-1).toUpperCase();
+    return `${currency} ${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(value)}`;
+  }
+  if (String(key) === "study_mode") return trStudyMode(String(value));
+  if (String(key) === "duration") return localizeDuration(value);
+  if (["description", "entry_requirements", "tuition_status", "department"].includes(String(key))) {
+    return trTrackDescription(universityId, "", value);
+  }
+  return String(value);
+}
+
+function formatListValue(key, value, universityId = "") {
+  const list = Array.isArray(value) ? value : [value];
+  return list
+    .map((item) => {
+      const raw = String(item ?? "").trim();
+      if (!raw) return "";
+      if (String(key) === "study_levels") return trStudyLevel(raw);
+      if (String(key) === "language") return trProgramLanguage(raw);
+      if (String(key) === "study_mode") return trStudyMode(raw);
+      if (isMajorTagField(key)) return trProgramName(raw) || raw;
+      if (String(key) === "required_documents") return trTrackDescription(universityId, "", raw);
+      return raw;
+    })
+    .filter(Boolean);
+}
+
+function renderValueCell(label, key, rawValue, formattedValue, universityId = "") {
+  if (Array.isArray(rawValue) && rawValue.length) {
+    const translatedItems = formatListValue(key, rawValue, universityId);
+    if (!translatedItems.length) {
+      return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
+    }
+    return `
+      <div class="program-card-tags">
+        ${translatedItems.map((item) => `<span class="program-tag">${escapeHtml(String(item))}</span>`).join("")}
+      </div>
+    `;
+  }
+
+  if (String(key) === "acceptance_rate_percent") {
+    const num = toFiniteNumber(rawValue);
+    if (num !== null) {
+      const pct = Math.max(0, Math.min(100, num));
+      return `
+        <div class="program-acceptance">
+          <div class="program-acceptance-head">
+            <span class="program-pill program-pill--accent">${escapeHtml(`${Math.round(pct * 100) / 100}%`)}</span>
+          </div>
+          <div class="program-acceptance-track" aria-hidden="true">
+            <div class="program-acceptance-fill" data-width-pct="${pct}"></div>
+          </div>
+        </div>
+      `;
+    }
+    return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
+  }
+
+  if (!String(formattedValue || "").trim()) {
+    return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
+  }
+
+  return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
+}
+
+function renderSignalRows(rows, admissionsData, institutionWideOnly) {
+  if (!rows.length) return "";
+  return `
+    <div class="program-signal">
+      <div class="program-signal__label">${escapeHtml(t("university.admissions.program_signals", "Admissions data by program"))}</div>
+      ${rows.map((row) => {
+        const typeKey = admissionsDataTypeKey(row);
+        const checked = String(row?.provenance?.verified_at || admissionsData?.status_date || "").trim();
+        return `
+          <div class="program-signal__row">
+            <span class="program-signal__type">${escapeHtml(admissionsDataTypeLabel(typeKey))}</span>
+            ${renderAdmissionsChipRow(admissionsFactChips(row))}
+            <p class="program-signal__note">${escapeHtml(admissionsSignalSummary(row, { institutionWideOnly }))}</p>
+            ${checked ? `<div class="program-signal__meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(checked)}</div>` : ""}
+            ${renderAdmissionsSourceLink(row, { explainsAbsence: typeKey === "verified-null" })}
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function matchSignalsToPrograms(programs, signalRows) {
+  const programIndexByExactKey = new Map();
+  const programIndexesByCoreKey = new Map();
+  programs.forEach((program, idx) => {
+    const exactKey = normalizeSignalKey(program?.name);
+    if (exactKey && !programIndexByExactKey.has(exactKey)) programIndexByExactKey.set(exactKey, idx);
+    const coreKey = normalizeSignalKey(stripParenthetical(program?.name));
+    if (!coreKey) return;
+    if (!programIndexesByCoreKey.has(coreKey)) programIndexesByCoreKey.set(coreKey, []);
+    programIndexesByCoreKey.get(coreKey).push(idx);
+  });
+  const programParenTokens = programs.map((program) => parenTokenSet(program?.name));
+  const signalsByProgram = new Map();
+  const residualSignalRows = [];
+  signalRows.forEach((row) => {
+    const key = normalizeSignalKey(row?.program_name);
+    if (!key) return;
+    let targetIdx = programIndexByExactKey.has(key) ? programIndexByExactKey.get(key) : -1;
+    if (targetIdx < 0) {
+      const coreKey = normalizeSignalKey(stripParenthetical(row?.program_name));
+      const candidates = (coreKey && programIndexesByCoreKey.get(coreKey)) || [];
+      if (candidates.length === 1) targetIdx = candidates[0];
+    }
+    if (targetIdx < 0) {
+      const translatedCoreKey = normalizeSignalKey(stripParenthetical(trProgramName(row?.program_name || "")));
+      const translatedCandidates = (translatedCoreKey && programIndexesByCoreKey.get(translatedCoreKey)) || [];
+      if (translatedCandidates.length === 1) targetIdx = translatedCandidates[0];
+    }
+    if (targetIdx < 0) {
+      const signalParen = parenTokenSet(row?.program_name);
+      if (signalParen.size > 0) {
+        let bestIdx = -1;
+        let bestScore = 0;
+        let tied = false;
+        programParenTokens.forEach((programTokens, idx) => {
+          let score = 0;
+          signalParen.forEach((token) => {
+            if (programTokens.has(token)) score += 1;
+          });
+          if (score > bestScore) {
+            bestScore = score;
+            bestIdx = idx;
+            tied = false;
+          } else if (score === bestScore && score > 0) {
+            tied = true;
+          }
+        });
+        if (bestIdx >= 0 && bestScore >= 2 && !tied) targetIdx = bestIdx;
+      }
+    }
+    if (targetIdx < 0) {
+      residualSignalRows.push(row);
+      return;
+    }
+    if (!signalsByProgram.has(targetIdx)) signalsByProgram.set(targetIdx, []);
+    signalsByProgram.get(targetIdx).push(row);
+  });
+  return { signalsByProgram, residualSignalRows };
+}
+
+function bindProgramCardEvents({
+  container,
+  university,
+  universityKey,
+  expandLabel,
+  collapseLabel,
+  displayItems,
+  coverageProgram,
+  programs,
+  onProgramAdmissionSelected,
+  admissionsData,
+  profileMajor,
+}) {
+  const pendingCloseByCard = new WeakMap();
+  const prefersReducedMotion = () =>
+    typeof window !== "undefined"
+    && typeof window.matchMedia === "function"
+    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const setToggleState = (button, card, body, isOpen) => {
+    const title = card.querySelector(".program-card__title")?.textContent?.trim() || "";
+    const label = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
+    const pendingClose = pendingCloseByCard.get(card);
+    if (pendingClose) {
+      clearTimeout(pendingClose);
+      pendingCloseByCard.delete(card);
+    }
+    body.classList.remove("program-card__body--enter", "program-card__body--exit");
+    card.classList.toggle("is-open", isOpen);
+    button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    button.setAttribute("aria-label", label);
+    if (isOpen) {
+      body.removeAttribute("hidden");
+      if (!prefersReducedMotion()) body.classList.add("program-card__body--enter");
+    } else if (prefersReducedMotion()) {
+      body.setAttribute("hidden", "");
+    } else {
+      body.classList.add("program-card__body--exit");
+      pendingCloseByCard.set(card, setTimeout(() => {
+        body.setAttribute("hidden", "");
+        body.classList.remove("program-card__body--exit");
+        pendingCloseByCard.delete(card);
+      }, 160));
+    }
+  };
+
+  container.querySelectorAll("[data-program-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      motionPress(button);
+      const card = button.closest(".program-card");
+      const body = card?.querySelector(".program-card__body");
+      if (!card || !body) return;
+      const wasOpen = card.classList.contains("is-open");
+      container.querySelectorAll(".program-card.is-open").forEach((other) => {
+        if (other === card) return;
+        const otherButton = other.querySelector("[data-program-toggle]");
+        const otherBody = other.querySelector(".program-card__body");
+        if (otherButton && otherBody) setToggleState(otherButton, other, otherBody, false);
+      });
+      setToggleState(button, card, body, !wasOpen);
+      programOpenKeyByUniversity.set(universityKey, !wasOpen ? (card.getAttribute("data-program-key") || "") : "");
+      const coverageHost = container.querySelector("[data-program-coverage-host]");
+      const expandedKey = !wasOpen ? (card.getAttribute("data-program-key") || "") : "";
+      const activeCoverageProgram = resolveDisplayedCoverageProgram(displayItems, coverageProgram, expandedKey);
+      if (coverageHost) {
+        coverageHost.innerHTML = renderProgramCoverage(university?.coverage_by_program, activeCoverageProgram);
+      }
+      if (!wasOpen) applyPercentWidths(card);
+    });
+  });
+
+  container.querySelectorAll("[data-program-admission]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const selected = programs.find((program) => String(program.id || "") === button.dataset.programAdmission);
+      if (selected && typeof onProgramAdmissionSelected === "function") onProgramAdmissionSelected(selected);
+    });
+  });
+
+  container.querySelectorAll("[data-program-level]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      motionPress(btn);
+      const lvl = String(btn.getAttribute("data-program-level") || "").trim() || "all";
+      programStudyLevelSelectionByUniversity.set(universityKey, lvl);
+      renderProgramsSection({ admissionsData, container, university, profileMajor, coverageProgram, onProgramAdmissionSelected });
+    });
+  });
+}
+
+function bindProgramSearchEvents({ container, universityKey }) {
+  const searchInput = container.querySelector("[data-program-search]");
+  const searchClear = container.querySelector("[data-program-search-clear]");
+  const searchEmpty = container.querySelector("[data-program-empty]");
+  const applyProgramFilter = () => {
+    const queryTokens = tokenizeName(searchInput ? searchInput.value : "");
+    let visibleCount = 0;
+    container.querySelectorAll(".program-card").forEach((card) => {
+      const haystack = String(card.getAttribute("data-search") || "");
+      const visible = !queryTokens.length || queryTokens.every((token) => haystack.includes(token));
+      if (visible) {
+        card.removeAttribute("hidden");
+        visibleCount += 1;
+      } else {
+        card.setAttribute("hidden", "");
+      }
+    });
+    if (searchEmpty) {
+      if (visibleCount > 0) searchEmpty.setAttribute("hidden", "");
+      else searchEmpty.removeAttribute("hidden");
+    }
+    if (searchClear) {
+      if (searchInput && String(searchInput.value || "").trim()) searchClear.removeAttribute("hidden");
+      else searchClear.setAttribute("hidden", "");
+    }
+  };
+  if (searchInput) {
+    searchInput.value = programSearchQueryByUniversity.get(universityKey) || "";
+    searchInput.addEventListener("input", () => {
+      programSearchQueryByUniversity.set(universityKey, searchInput.value);
+      applyProgramFilter();
+    });
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && String(searchInput.value || "")) {
+        searchInput.value = "";
+        programSearchQueryByUniversity.set(universityKey, "");
+        applyProgramFilter();
+      }
+    });
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        motionPress(searchClear);
+        searchInput.value = "";
+        programSearchQueryByUniversity.set(universityKey, "");
+        applyProgramFilter();
+        searchInput.focus();
+      });
+    }
+    applyProgramFilter();
+  }
+}
+
 export function renderProgramsSection({
   admissionsData,
   container,
@@ -675,227 +1037,15 @@ export function renderProgramsSection({
     ? admissionsData.program_level
     : {};
   const institutionWideOnly = String(programLevel?.kind || "").trim().toLowerCase() === "institution_wide_only";
-
-  const prettyField = (key) =>
-    String(key || "")
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-
-  const hiddenProgramMetadata = new Set([
-    "id", "url", "source_url", "source_urls", "deadline_source_url", "tuition_source_url",
-    "verified_at", "tuition_verified_at", "cycle", "tuition_cycle", "requirements_cycle",
-    "currency", "deadlines", "scholarship_eligibility",
-    "admission_route_id", "price_facts", "tuition_total_usd", "selection_timing",
-  ]);
-
-  const isMajorTagField = (key) => {
-    const normalized = String(key || "").trim().toLowerCase();
-    return normalized === "major_tags" || normalized === "majors" || normalized === "applicable_majors";
-  };
-
-  const tokenizeName = (value) =>
-    String(value || "")
-      .toLowerCase()
-      .replaceAll("&", " ")
-      .split(/[^\p{L}\p{N}]+/u)
-      .map((token) => token.trim())
-      .filter(Boolean);
-
-  const normalizeSignalKey = (value) => tokenizeName(value).join(" ");
-
-  const parentheticalRanges = (text) => {
-    const ranges = [];
-    let cursor = 0;
-    while (cursor < text.length) {
-      const start = text.indexOf("(", cursor);
-      if (start < 0) break;
-      const close = text.indexOf(")", start + 1);
-      if (close < 0) break;
-      ranges.push([start, close + 1]);
-      cursor = close + 1;
-    }
-    return ranges;
-  };
-
-  const stripParenthetical = (value) => {
-    const text = String(value || "");
-    const parts = [];
-    let cursor = 0;
-    for (const [start, end] of parentheticalRanges(text)) {
-      parts.push(text.slice(cursor, start), " ");
-      cursor = end;
-    }
-    parts.push(text.slice(cursor));
-    return parts.join("");
-  };
-
-  const parenTokenSet = (value) => {
-    const text = String(value || "");
-    return new Set(parentheticalRanges(text).flatMap(([start, end]) => tokenizeName(text.slice(start, end))));
-  };
-
-  const formatProgramValue = (key, value) => {
-    if (value === null || value === undefined || value === "") return "";
-    if (Array.isArray(value)) {
-      return value.map((item) => {
-        const raw = String(item);
-        if (String(key) === "study_levels") return trStudyLevel(raw);
-        if (String(key) === "language") return trProgramLanguage(raw);
-        if (String(key) === "study_mode") return trStudyMode(raw);
-        return raw;
-      }).join(", ");
-    }
-    if (typeof value === "boolean") return value ? t("common.yes", "Yes") : t("common.no", "No");
-    if (String(key) === "acceptance_rate_percent") return `${value}%`;
-    if (typeof value === "number" && /(?:_usd|_gbp|_eur)$/.test(String(key))) {
-      const currency = String(key).split("_").at(-1).toUpperCase();
-      return `${currency} ${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(value)}`;
-    }
-    if (String(key) === "study_mode") return trStudyMode(String(value));
-    if (String(key) === "duration") return localizeDuration(value);
-    if (["description", "entry_requirements", "tuition_status", "department"].includes(String(key))) {
-      return trTrackDescription(university.id, "", value);
-    }
-    return String(value);
-  };
-
-  const formatListValue = (key, value) => {
-    const list = Array.isArray(value) ? value : [value];
-    return list
-      .map((item) => {
-        const raw = String(item ?? "").trim();
-        if (!raw) return "";
-        if (String(key) === "study_levels") return trStudyLevel(raw);
-        if (String(key) === "language") return trProgramLanguage(raw);
-        if (String(key) === "study_mode") return trStudyMode(raw);
-        if (isMajorTagField(key)) return trProgramName(raw) || raw;
-        if (String(key) === "required_documents") return trTrackDescription(university.id, "", raw);
-        return raw;
-      })
-      .filter(Boolean);
-  };
-
-  const renderValueCell = (label, key, rawValue, formattedValue) => {
-    if (Array.isArray(rawValue) && rawValue.length) {
-      const translatedItems = formatListValue(key, rawValue);
-      if (!translatedItems.length) {
-        return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
-      }
-      return `
-        <div class="program-card-tags">
-          ${translatedItems.map((item) => `<span class="program-tag">${escapeHtml(String(item))}</span>`).join("")}
-        </div>
-      `;
-    }
-
-    if (String(key) === "acceptance_rate_percent") {
-      const num = toFiniteNumber(rawValue);
-      if (num !== null) {
-        const pct = Math.max(0, Math.min(100, num));
-        return `
-          <div class="program-acceptance">
-            <div class="program-acceptance-head">
-              <span class="program-pill program-pill--accent">${escapeHtml(`${Math.round(pct * 100) / 100}%`)}</span>
-            </div>
-            <div class="program-acceptance-track" aria-hidden="true">
-              <div class="program-acceptance-fill" data-width-pct="${pct}"></div>
-            </div>
-          </div>
-        `;
-      }
-      return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
-    }
-
-    if (!String(formattedValue || "").trim()) {
-      return `<span class="program-card-value program-card-value--empty">${escapeHtml(unknownLabelText(label, label))}</span>`;
-    }
-
-    return `<span class="program-card-value">${escapeHtml(formattedValue)}</span>`;
-  };
-
-  const renderSignalRows = (rows) => {
-    if (!rows.length) return "";
-    return `
-      <div class="program-signal">
-        <div class="program-signal__label">${escapeHtml(t("university.admissions.program_signals", "Admissions data by program"))}</div>
-        ${rows.map((row) => {
-          const typeKey = admissionsDataTypeKey(row);
-          const checked = String(row?.provenance?.verified_at || admissionsData?.status_date || "").trim();
-          return `
-            <div class="program-signal__row">
-              <span class="program-signal__type">${escapeHtml(admissionsDataTypeLabel(typeKey))}</span>
-              ${renderAdmissionsChipRow(admissionsFactChips(row))}
-              <p class="program-signal__note">${escapeHtml(admissionsSignalSummary(row, { institutionWideOnly }))}</p>
-              ${checked ? `<div class="program-signal__meta">${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(checked)}</div>` : ""}
-              ${renderAdmissionsSourceLink(row, { explainsAbsence: typeKey === "verified-null" })}
-            </div>
-          `;
-        }).join("")}
-      </div>
-    `;
-  };
+  const universityKey = String(university?.id || "").trim();
 
   if (programs.length) {
     const knownKeys = new Set(["name", "study_levels", "acceptance_rate_percent", "duration", "language", "study_mode", "description"]);
-    const programIndexByExactKey = new Map();
-    const programIndexesByCoreKey = new Map();
-    programs.forEach((program, idx) => {
-      const exactKey = normalizeSignalKey(program?.name);
-      if (exactKey && !programIndexByExactKey.has(exactKey)) programIndexByExactKey.set(exactKey, idx);
-      const coreKey = normalizeSignalKey(stripParenthetical(program?.name));
-      if (!coreKey) return;
-      if (!programIndexesByCoreKey.has(coreKey)) programIndexesByCoreKey.set(coreKey, []);
-      programIndexesByCoreKey.get(coreKey).push(idx);
-    });
-    const programParenTokens = programs.map((program) => parenTokenSet(program?.name));
-    const signalsByProgram = new Map();
-    const residualSignalRows = [];
-    signalRows.forEach((row) => {
-      const key = normalizeSignalKey(row?.program_name);
-      if (!key) return;
-      let targetIdx = programIndexByExactKey.has(key) ? programIndexByExactKey.get(key) : -1;
-      if (targetIdx < 0) {
-        const coreKey = normalizeSignalKey(stripParenthetical(row?.program_name));
-        const candidates = (coreKey && programIndexesByCoreKey.get(coreKey)) || [];
-        if (candidates.length === 1) targetIdx = candidates[0];
-      }
-      if (targetIdx < 0) {
-        const translatedCoreKey = normalizeSignalKey(stripParenthetical(trProgramName(row?.program_name || "")));
-        const translatedCandidates = (translatedCoreKey && programIndexesByCoreKey.get(translatedCoreKey)) || [];
-        if (translatedCandidates.length === 1) targetIdx = translatedCandidates[0];
-      }
-      if (targetIdx < 0) {
-        const signalParen = parenTokenSet(row?.program_name);
-        if (signalParen.size > 0) {
-          let bestIdx = -1;
-          let bestScore = 0;
-          let tied = false;
-          programParenTokens.forEach((programTokens, idx) => {
-            let score = 0;
-            signalParen.forEach((token) => {
-              if (programTokens.has(token)) score += 1;
-            });
-            if (score > bestScore) {
-              bestScore = score;
-              bestIdx = idx;
-              tied = false;
-            } else if (score === bestScore && score > 0) {
-              tied = true;
-            }
-          });
-          if (bestIdx >= 0 && bestScore >= 2 && !tied) targetIdx = bestIdx;
-        }
-      }
-      if (targetIdx < 0) {
-        residualSignalRows.push(row);
-        return;
-      }
-      if (!signalsByProgram.has(targetIdx)) signalsByProgram.set(targetIdx, []);
-      signalsByProgram.get(targetIdx).push(row);
-    });
+    const { signalsByProgram, residualSignalRows } = matchSignalsToPrograms(programs, signalRows);
+
     const expandLabel = t("university.programs.expand", "Show details");
     const collapseLabel = t("university.programs.collapse", "Hide details");
-    const universityKey = String(university?.id || "").trim();
+
     const majorTokenSets = [
       tokenizeName(profileMajor),
       tokenizeName(trProgramName(profileMajor || "")),
@@ -916,14 +1066,14 @@ export function renderProgramsSection({
       const title = trProgramName(program.name || "")
         || unknownFieldText("placeholder.field.program_name", "Program name");
       const summaryParts = [
-        formatProgramValue("duration", program.duration),
-        formatListValue("language", program.language).join(", "),
-        formatProgramValue("study_mode", program.study_mode),
+        formatProgramValue("duration", program.duration, university?.id),
+        formatListValue("language", program.language, university?.id).join(", "),
+        formatProgramValue("study_mode", program.study_mode, university?.id),
       ].filter((part) => String(part || "").trim());
       const fieldParts = [
-        ...formatListValue("major_tags", program.major_tags),
-        ...formatListValue("majors", program.majors),
-        ...formatListValue("applicable_majors", program.applicable_majors),
+        ...formatListValue("major_tags", program.major_tags, university?.id),
+        ...formatListValue("majors", program.majors, university?.id),
+        ...formatListValue("applicable_majors", program.applicable_majors, university?.id),
       ].filter((part, pos, arr) => part && arr.indexOf(part) === pos);
       const summaryText = [...summaryParts, ...fieldParts].filter(Boolean).join(" · ");
       return {
@@ -958,21 +1108,12 @@ export function renderProgramsSection({
       : items;
     const displayedCoverageProgram = resolveDisplayedCoverageProgram(displayItems, coverageProgram, storedOpenKey);
 
-
     const levelFilterHtml = availableLevels.length > 1
       ? `
         <div class="programs-level-filter" role="group" aria-label="${escapeHtmlAttr(t("university.programs.filter_by_level", "Filter programs by degree level"))}">
-          <button
-            type="button"
-            class="programs-level-tab${activeLevelKey === "all" ? " is-active" : ""}"
-            data-program-level="all"
-          >${escapeHtml(t("university.admissions.all_levels", "All Degrees"))} (${programs.length})</button>
+          <button type="button" class="programs-level-tab${activeLevelKey === "all" ? " is-active" : ""}" data-program-level="all">${escapeHtml(t("university.programs.all_levels", "All levels"))} (${programs.length})</button>
           ${availableLevels.map((lvl) => `
-            <button
-              type="button"
-              class="programs-level-tab${activeLevelKey === lvl.key ? " is-active" : ""}"
-              data-program-level="${escapeHtmlAttr(lvl.key)}"
-            >${escapeHtml(lvl.label)} (${lvl.count})</button>
+            <button type="button" class="programs-level-tab${activeLevelKey === lvl.key ? " is-active" : ""}" data-program-level="${escapeHtmlAttr(lvl.key)}">${escapeHtml(lvl.label)} (${lvl.count})</button>
           `).join("")}
         </div>
       `
@@ -981,97 +1122,82 @@ export function renderProgramsSection({
     container.innerHTML = `
       ${levelFilterHtml}
       <div class="program-search">
+        <label for="program-search-input" class="visually-hidden">${escapeHtml(t("university.programs.search_label", "Search programs"))}</label>
         ${renderInlineIcon("magnifying-glass", 18, "program-search__icon")}
         <input
           type="search"
+          id="program-search-input"
           class="program-search__input"
-          data-program-search
           placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search programs..."))}"
           aria-label="${escapeHtmlAttr(t("university.programs.search_label", "Search programs"))}"
           autocomplete="off"
-        >
-        <button
-          type="button"
-          class="program-search__clear"
-          data-program-search-clear
-          aria-label="${escapeHtmlAttr(t("university.programs.clear_search", "Clear search"))}"
-          hidden
-        >${renderInlineIcon("x-mark", 16)}</button>
+          data-program-search
+        />
+        <button type="button" class="program-search__clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
+          ${renderInlineIcon("x-mark", 16)}
+        </button>
       </div>
       <div class="program-list" role="list">
         ${displayItems.map((item, displayIdx) => {
-          const program = item.program;
-          const idx = item.originalIdx;
-          const { title, summaryText } = item;
-          const programAcceptance = toFiniteNumber(program.acceptance_rate_percent);
-          const description = formatProgramValue("description", program.description);
+          const { program, key, title, summaryText, haystack } = item;
+          const isOpen = key === storedOpenKey;
+          const matchedSignals = signalsByProgram.get(item.originalIdx) || [];
           const sourceUrl = safeUrl(program.url || program.source_url);
-          const catalogUrl = safeUrl(program.source_url);
+          const catalogUrl = safeUrl(program.catalog_url || program.source_url);
+          const description = trTrackDescription(university?.id, "", program.description || "");
           const bodyId = `program-body-${displayIdx}`;
-          const isOpen = item.key === storedOpenKey;
-          const rows = [
-            ...(programAcceptance !== null ? [{
+
+          const allRows = [
+            ...(toFiniteNumber(program.acceptance_rate_percent) !== null ? [{
               label: translateWord("acceptance_rate", "Acceptance Rate"),
               key: "acceptance_rate_percent",
               rawValue: program.acceptance_rate_percent,
-              value: formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent),
+              value: formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent, university?.id),
             }] : []),
             {
               label: translateWord("study_levels", "Study Levels"),
               key: "study_levels",
               rawValue: program.study_levels,
-              value: formatProgramValue("study_levels", program.study_levels),
+              value: formatProgramValue("study_levels", program.study_levels, university?.id),
             },
             {
               label: translateWord("duration", "Duration"),
               key: "duration",
               rawValue: program.duration,
-              value: formatProgramValue("duration", program.duration),
+              value: formatProgramValue("duration", program.duration, university?.id),
             },
             {
               label: translateWord("language", "Language"),
               key: "language",
               rawValue: program.language,
-              value: formatProgramValue("language", program.language),
+              value: formatProgramValue("language", program.language, university?.id),
             },
             {
               label: translateWord("study_mode", "Study Mode"),
               key: "study_mode",
               rawValue: program.study_mode,
-              value: formatProgramValue("study_mode", program.study_mode),
+              value: formatProgramValue("study_mode", program.study_mode, university?.id),
             },
-          ];
+          ].filter(({ rawValue }) => rawValue != null && rawValue !== "" && (!Array.isArray(rawValue) || rawValue.length));
+          Object.entries(program).forEach(([k, v]) => {
+            if (hiddenProgramMetadata.has(k) || knownKeys.has(k) || isMajorTagField(k)) return;
+            if (v === null || v === undefined || v === "" || (typeof v === "object" && (!Array.isArray(v) || !v.length))) return;
+            allRows.push({
+              key: k,
+              label: t(`university.programs.field.${k}`, prettyField(k)),
+              rawValue: v,
+              value: formatProgramValue(k, v, university?.id),
+            });
+          });
 
-          const extraRows = Object.entries(program)
-            .filter(([key, value]) => !knownKeys.has(key)
-              && !hiddenProgramMetadata.has(key)
-              && value !== null && value !== undefined && value !== ""
-              && (typeof value !== "object" || (Array.isArray(value) && value.length > 0)))
-            .map(([key, value]) => ({
-              label: (key === "major_tags" || key === "majors")
-                ? translateWord("fields_of_study", "Fields of study")
-                : (key === "applicable_majors"
-                  ? t("placeholder.field.applicable_majors", "Applicable majors")
-                  : t(`university.programs.field.${key}`, prettyField(key))),
-              key,
-              rawValue: value,
-              value: formatProgramValue(key, value),
-            }));
+          const toggleLabel = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
 
-          const allRows = [...rows.filter(({ rawValue }) => rawValue != null && rawValue !== "" && (!Array.isArray(rawValue) || rawValue.length)), ...extraRows];
-          const matchedSignals = signalsByProgram.get(idx) || [];
-          const toggleLabel = `${isOpen ? collapseLabel : expandLabel}: ${title}`;
           return `
-            <article
-              class="program-card${isOpen ? " is-open" : ""}${item.isMajorMatch ? " program-card--major" : ""}"
-              role="listitem"
-              data-program-key="${escapeHtmlAttr(item.key)}"
-              data-search="${escapeHtmlAttr(item.haystack)}"
-            >
+            <article class="program-card${isOpen ? " is-open" : ""}${item.isMajorMatch ? " program-card--major" : ""}" role="listitem" data-program-key="${escapeHtmlAttr(key)}" data-search="${escapeHtmlAttr(haystack)}">
               <button
                 type="button"
                 class="program-card__toggle"
-                data-program-toggle="${displayIdx}"
+                data-program-toggle
                 aria-expanded="${isOpen ? "true" : "false"}"
                 aria-controls="${bodyId}"
                 aria-label="${escapeHtmlAttr(toggleLabel)}"
@@ -1093,11 +1219,11 @@ export function renderProgramsSection({
                     ${allRows.map((row) => `
                       <div class="program-card-row">
                         <span class="program-card-label">${escapeHtml(row.label)}</span>
-                        ${renderValueCell(row.label, row.key, row.rawValue, row.value)}
+                        ${renderValueCell(row.label, row.key, row.rawValue, row.value, university?.id)}
                       </div>
                     `).join("")}
                   </div>` : ""}
-                  ${renderSignalRows(matchedSignals)}
+                  ${renderSignalRows(matchedSignals, admissionsData, institutionWideOnly)}
                   <div class="program-card__actions">
                     ${program.id ? `
                       <button type="button" class="program-card__admission-action" data-program-admission="${escapeHtmlAttr(String(program.id || ""))}">
@@ -1139,128 +1265,21 @@ export function renderProgramsSection({
       <div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, displayedCoverageProgram)}</div>
     `;
 
-    const pendingCloseByCard = new WeakMap();
-    const prefersReducedMotion = () =>
-      typeof window !== "undefined"
-      && typeof window.matchMedia === "function"
-      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const setToggleState = (button, card, body, isOpen) => {
-      const title = card.querySelector(".program-card__title")?.textContent?.trim() || "";
-      const label = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
-      const pendingClose = pendingCloseByCard.get(card);
-      if (pendingClose) {
-        clearTimeout(pendingClose);
-        pendingCloseByCard.delete(card);
-      }
-      body.classList.remove("program-card__body--enter", "program-card__body--exit");
-      card.classList.toggle("is-open", isOpen);
-      button.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      button.setAttribute("aria-label", label);
-      if (isOpen) {
-        body.removeAttribute("hidden");
-        if (!prefersReducedMotion()) body.classList.add("program-card__body--enter");
-      } else if (prefersReducedMotion()) {
-        body.setAttribute("hidden", "");
-      } else {
-        body.classList.add("program-card__body--exit");
-        pendingCloseByCard.set(card, setTimeout(() => {
-          body.setAttribute("hidden", "");
-          body.classList.remove("program-card__body--exit");
-          pendingCloseByCard.delete(card);
-        }, 160));
-      }
-    };
-
-    container.querySelectorAll("[data-program-toggle]").forEach((button) => {
-      button.addEventListener("click", () => {
-        motionPress(button);
-        const card = button.closest(".program-card");
-        const body = card?.querySelector(".program-card__body");
-        if (!card || !body) return;
-        const wasOpen = card.classList.contains("is-open");
-        container.querySelectorAll(".program-card.is-open").forEach((other) => {
-          if (other === card) return;
-          const otherButton = other.querySelector("[data-program-toggle]");
-          const otherBody = other.querySelector(".program-card__body");
-          if (otherButton && otherBody) setToggleState(otherButton, other, otherBody, false);
-        });
-        setToggleState(button, card, body, !wasOpen);
-        programOpenKeyByUniversity.set(universityKey, !wasOpen ? (card.getAttribute("data-program-key") || "") : "");
-        const coverageHost = container.querySelector("[data-program-coverage-host]");
-        const expandedKey = !wasOpen ? (card.getAttribute("data-program-key") || "") : "";
-        const activeCoverageProgram = resolveDisplayedCoverageProgram(displayItems, coverageProgram, expandedKey);
-        if (coverageHost) {
-          coverageHost.innerHTML = renderProgramCoverage(university?.coverage_by_program, activeCoverageProgram);
-        }
-        if (!wasOpen) applyPercentWidths(card);
-      });
+    bindProgramCardEvents({
+      container,
+      university,
+      universityKey,
+      expandLabel,
+      collapseLabel,
+      displayItems,
+      coverageProgram,
+      programs,
+      onProgramAdmissionSelected,
+      admissionsData,
+      profileMajor,
     });
 
-    container.querySelectorAll("[data-program-admission]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const selected = programs.find((program) => String(program.id || "") === button.dataset.programAdmission);
-        if (selected && typeof onProgramAdmissionSelected === "function") onProgramAdmissionSelected(selected);
-      });
-    });
-
-    container.querySelectorAll("[data-program-level]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        motionPress(btn);
-        const lvl = String(btn.getAttribute("data-program-level") || "").trim() || "all";
-        programStudyLevelSelectionByUniversity.set(universityKey, lvl);
-        renderProgramsSection({ admissionsData, container, university, profileMajor, coverageProgram, onProgramAdmissionSelected });
-      });
-    });
-
-    const searchInput = container.querySelector("[data-program-search]");
-    const searchClear = container.querySelector("[data-program-search-clear]");
-    const searchEmpty = container.querySelector("[data-program-empty]");
-    const applyProgramFilter = () => {
-      const queryTokens = tokenizeName(searchInput ? searchInput.value : "");
-      let visibleCount = 0;
-      container.querySelectorAll(".program-card").forEach((card) => {
-        const haystack = String(card.getAttribute("data-search") || "");
-        const visible = !queryTokens.length || queryTokens.every((token) => haystack.includes(token));
-        if (visible) {
-          card.removeAttribute("hidden");
-          visibleCount += 1;
-        } else {
-          card.setAttribute("hidden", "");
-        }
-      });
-      if (searchEmpty) {
-        if (visibleCount > 0) searchEmpty.setAttribute("hidden", "");
-        else searchEmpty.removeAttribute("hidden");
-      }
-      if (searchClear) {
-        if (searchInput && String(searchInput.value || "").trim()) searchClear.removeAttribute("hidden");
-        else searchClear.setAttribute("hidden", "");
-      }
-    };
-    if (searchInput) {
-      searchInput.value = programSearchQueryByUniversity.get(universityKey) || "";
-      searchInput.addEventListener("input", () => {
-        programSearchQueryByUniversity.set(universityKey, searchInput.value);
-        applyProgramFilter();
-      });
-      searchInput.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && String(searchInput.value || "")) {
-          searchInput.value = "";
-          programSearchQueryByUniversity.set(universityKey, "");
-          applyProgramFilter();
-        }
-      });
-      if (searchClear) {
-        searchClear.addEventListener("click", () => {
-          motionPress(searchClear);
-          searchInput.value = "";
-          programSearchQueryByUniversity.set(universityKey, "");
-          applyProgramFilter();
-          searchInput.focus();
-        });
-      }
-      applyProgramFilter();
-    }
+    bindProgramSearchEvents({ container, universityKey });
   } else {
     const majors = Array.isArray(university?.academics?.majors)
       ? university.academics.majors.map((major) => String(major || "").trim()).filter(Boolean)
@@ -1268,12 +1287,13 @@ export function renderProgramsSection({
     const majorsHtml = majors.length
       ? majors.map((major) => `<span class="program-major-chip">${escapeHtml(trProgramName(major))}</span>`).join(" ")
       : `<div class="program-empty">${escapeHtml(unknownFieldText("placeholder.field.programs", "Programs"))}</div>`;
-    container.innerHTML = `${majorsHtml}${renderSignalRows(signalRows)}<div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, coverageProgram)}</div>`;
+    container.innerHTML = `${majorsHtml}${renderSignalRows(signalRows, admissionsData, institutionWideOnly)}<div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, coverageProgram)}</div>`;
   }
 
   applyPercentWidths(container);
   markMotionEnter(container, ".program-card, .program-major-chip, .program-signal, .program-empty", { limit: 18, staggerMs: 18 });
 }
+
 
 function normalizeQualificationLevel(value) {
   const key = String(value || "").trim().toLowerCase();
