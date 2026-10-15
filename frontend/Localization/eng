@@ -2681,3 +2681,5 @@ university.admissions.catalog.apply_before_save: Apply the changed context befor
 universities.compare.reviewed_catalog: Reviewed study and admissions catalog
 universities.compare.optional_context: Compare universities now, or choose a study option and application route to view applicable admissions facts.
 universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.
+university.programs.all_levels: All degree levels
+university.programs.search_clear: Clear search

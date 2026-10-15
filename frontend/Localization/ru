@@ -2679,3 +2679,5 @@ university.admissions.catalog.apply_before_save: Примените изменё
 universities.compare.reviewed_catalog: Проверенный каталог программ и поступления
 universities.compare.optional_context: Сравните вузы сейчас или выберите программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
+university.programs.all_levels: Все уровни обучения
+university.programs.search_clear: Очистить поиск
