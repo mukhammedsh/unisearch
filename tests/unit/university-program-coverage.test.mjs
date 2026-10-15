@@ -735,12 +735,14 @@ test("renderProgramsSection binds card toggles, level filters, admission action 
   const mockClearBtn = {
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
     addEventListener: (event, handler) => { eventListeners["clear_" + event] = handler; },
   };
   const mockCard1 = {
     getAttribute: (attr) => attr === "data-search" ? "msc computer science" : (attr === "data-program-key" ? "key-1" : null),
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
     classList: { contains: () => false, toggle: () => {}, add: () => {}, remove: () => {} },
     querySelector: () => null,
   };
@@ -748,6 +750,7 @@ test("renderProgramsSection binds card toggles, level filters, admission action 
     getAttribute: (attr) => attr === "data-search" ? "ba history" : (attr === "data-program-key" ? "key-2" : null),
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
     classList: { contains: () => false, toggle: () => {}, add: () => {}, remove: () => {} },
     querySelector: () => null,
   };
@@ -755,6 +758,7 @@ test("renderProgramsSection binds card toggles, level filters, admission action 
     closest: () => mockCard1,
     getAttribute: () => null,
     setAttribute: () => {},
+      querySelectorAll: () => [],
     addEventListener: (event, handler) => { eventListeners["toggle_1_" + event] = handler; },
   };
   const mockAdmissionBtn = {
@@ -771,7 +775,8 @@ test("renderProgramsSection binds card toggles, level filters, admission action 
     querySelector: (sel) => {
       if (sel === "[data-program-search]") return mockInput;
       if (sel === "[data-program-search-clear]") return mockClearBtn;
-      if (sel === "[data-program-empty]") return { setAttribute: () => {}, removeAttribute: () => {} };
+      if (sel === "[data-program-empty]") return { setAttribute: () => {},
+      querySelectorAll: () => [], removeAttribute: () => {} };
       if (sel === "[data-program-coverage-host]") return { innerHTML: "" };
       return null;
     },
@@ -866,16 +871,19 @@ test("renderProgramsSection search filtering, toggle close, escape key, and prof
   const mockClearBtn = {
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
     addEventListener: (event, handler) => { eventListeners["clear_" + event] = handler; },
   };
   const mockSearchEmpty = {
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
   };
   const mockCard1 = {
     getAttribute: (attr) => attr === "data-search" ? "msc computer science" : (attr === "data-program-key" ? "key-1" : null),
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
     classList: {
       _open: true,
       contains: (c) => c === "is-open" ? mockCard1.classList._open : false,
@@ -889,6 +897,7 @@ test("renderProgramsSection search filtering, toggle close, escape key, and prof
     getAttribute: (attr) => attr === "data-search" ? "ba history" : (attr === "data-program-key" ? "key-2" : null),
     removeAttribute: () => {},
     setAttribute: () => {},
+      querySelectorAll: () => [],
     classList: { contains: () => false, toggle: () => {}, add: () => {}, remove: () => {} },
     querySelector: () => null,
   };
@@ -896,6 +905,7 @@ test("renderProgramsSection search filtering, toggle close, escape key, and prof
     closest: () => mockCard1,
     getAttribute: () => null,
     setAttribute: () => {},
+      querySelectorAll: () => [],
     addEventListener: (event, handler) => { eventListeners["toggle_1_" + event] = handler; },
   };
 
@@ -1060,4 +1070,195 @@ test("renderProgramsSection residual signal rows and program-level filters", () 
   assert.ok(container.innerHTML.includes("program-signal--residual"));
   assert.ok(container.innerHTML.includes("Unmatched Doctoral Program"));
   assert.ok(container.innerHTML.includes("program-level-filter"));
+});
+
+test("comprehensive unit tests for renderProgramsSection extracted helpers", () => {
+  let eventListeners = {};
+  let focusedInput = false;
+
+  const mockInput = {
+    value: "SearchQuery",
+    addEventListener: (event, handler) => { eventListeners["input_" + event] = handler; },
+    focus: () => { focusedInput = true; },
+  };
+  const mockClearBtn = {
+    removeAttribute: () => {},
+    setAttribute: () => {},
+      querySelectorAll: () => [],
+    addEventListener: (event, handler) => { eventListeners["clear_" + event] = handler; },
+  };
+  const mockSearchEmpty = {
+    removeAttribute: () => {},
+    setAttribute: () => {},
+      querySelectorAll: () => [],
+  };
+
+  const createCard = (key, search, isOpen = false) => {
+    const card = {
+      key,
+      search,
+      isOpen,
+      classList: {
+        contains: (cls) => cls === "is-open" ? card.isOpen : false,
+        toggle: (cls, val) => { card.isOpen = val; },
+        add: () => {},
+        remove: () => {},
+      },
+      getAttribute: (attr) => attr === "data-search" ? card.search : (attr === "data-program-key" ? card.key : null),
+      setAttribute: () => {},
+      querySelectorAll: () => [],
+      removeAttribute: () => {},
+      querySelector: (sel) => {
+        if (sel === ".program-card__title") return { textContent: "Program Title" };
+        if (sel === ".program-card__body") return body;
+        if (sel === "[data-program-toggle]") return toggleBtn;
+        return null;
+      },
+    };
+    const body = {
+      classList: { remove: () => {}, add: () => {} },
+      setAttribute: () => {},
+      querySelectorAll: () => [],
+      removeAttribute: () => {},
+    };
+    const toggleBtn = {
+      closest: () => card,
+      getAttribute: () => null,
+      setAttribute: () => {},
+      querySelectorAll: () => [],
+      addEventListener: (event, handler) => { eventListeners["toggle_" + key + "_" + event] = handler; },
+    };
+    return { card, body, toggleBtn };
+  };
+
+  const card1Info = createCard("c1", "msc computer science", true);
+  const card2Info = createCard("c2", "ba history", false);
+
+  const mockAdmissionBtn = {
+    dataset: { programAdmission: "p1" },
+    addEventListener: (event, handler) => { eventListeners["admission_" + event] = handler; },
+  };
+  const mockLevelBtn = {
+    getAttribute: () => "doctorate",
+    addEventListener: (event, handler) => { eventListeners["level_" + event] = handler; },
+  };
+
+  const container = {
+    innerHTML: "",
+    querySelector: (sel) => {
+      if (sel === "[data-program-search]") return mockInput;
+      if (sel === "[data-program-search-clear]") return mockClearBtn;
+      if (sel === "[data-program-empty]") return mockSearchEmpty;
+      if (sel === "[data-program-coverage-host]") return { innerHTML: "" };
+      return null;
+    },
+    querySelectorAll: (sel) => {
+      if (sel === ".program-card") return [card1Info.card, card2Info.card];
+      if (sel === ".program-card.is-open") return [card1Info.card];
+      if (sel === "[data-program-toggle]") return [card1Info.toggleBtn, card2Info.toggleBtn];
+      if (sel === "[data-program-admission]") return [mockAdmissionBtn];
+      if (sel === "[data-program-level]") return [mockLevelBtn];
+      return [];
+    },
+  };
+
+  const university = {
+    id: "oxford-uk-max-coverage",
+    academics: {
+      programs: [
+        {
+          id: "p1",
+          name: "MSc in Computer Science (Artificial Intelligence)",
+          study_levels: ["master"],
+          study_mode: ["full-time"],
+          language: ["en"],
+          acceptance_rate_percent: 12.34,
+          tuition_year_usd: 40000,
+          application_fee_gbp: 75,
+          boolean_val: true,
+          false_val: false,
+          null_val: null,
+          empty_val: "",
+          array_tags: ["AI", "ML"],
+          required_documents: ["Transcript"],
+          entry_requirements: "High Second Class",
+          description: "Full CS master programme",
+          source_url: "https://ox.ac.uk/cs",
+          catalog_url: "https://ox.ac.uk/catalog",
+        },
+        {
+          id: "p2",
+          name: "BA in History",
+          study_levels: ["bachelor"],
+          study_mode: "part-time",
+          duration: "3 years",
+          acceptance_rate_percent: "not-a-number",
+          major_tags: ["History"],
+        },
+        {
+          id: "p3",
+          name: "Doctor of Philosophy (PhD) in Physics",
+          study_levels: ["doctorate"],
+        },
+        {
+          id: "p4",
+          name: "Master of Business Administration (MBA)",
+          study_levels: ["mba"],
+        },
+        {
+          id: "p5",
+          name: "Doctor of Medicine (MD)",
+          study_levels: ["professional"],
+        },
+      ],
+    },
+  };
+
+  const admissionsData = {
+    programs: [
+      {
+        program_name: "MSc in Computer Science (Artificial Intelligence)",
+        provenance: { verified_at: "2026-01-01" },
+      },
+      {
+        program_name: "BA in History",
+      },
+      {
+        program_name: "Doctor of Philosophy (PhD) in Physics",
+      },
+      {
+        program_name: "Master of Business Administration (MBA)",
+      },
+      {
+        program_name: "Doctor of Medicine (MD)",
+      },
+      {
+        program_name: "Unmatched Extra Program",
+      },
+    ],
+    status_date: "2026-01-01",
+    program_level: { kind: "program_specific" },
+  };
+
+  let selectedProgram = null;
+  renderProgramsSection({
+    admissionsData,
+    container,
+    university,
+    profileMajor: "Computer Science",
+    coverageProgram: null,
+    onProgramAdmissionSelected: (p) => { selectedProgram = p; },
+  });
+
+  // Test event listeners
+  if (eventListeners["toggle_c1_click"]) eventListeners["toggle_c1_click"](); // close card 1
+  if (eventListeners["toggle_c2_click"]) eventListeners["toggle_c2_click"](); // open card 2
+  if (eventListeners["admission_click"]) eventListeners["admission_click"](); // select admission
+  if (eventListeners["level_click"]) eventListeners["level_click"](); // level filter
+  if (eventListeners["input_input"]) eventListeners["input_input"](); // input search
+  if (eventListeners["input_keydown"]) eventListeners["input_keydown"]({ key: "Escape" }); // escape
+  if (eventListeners["clear_click"]) eventListeners["clear_click"](); // clear click
+
+  assert.equal(selectedProgram.id, "p1");
+  assert.equal(focusedInput, true);
 });
