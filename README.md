@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://unisearch-frontend.onrender.com/">
+  <a href="https://unisearch.web.app/">
     <img src="frontend/images/whitelogo-readme.svg" alt="UniSearch" width="360">
   </a>
 </h1>
@@ -19,7 +19,7 @@ UniSearch is an open-source university discovery catalog for applicants. Browse 
 Facts can vary by program, applicant category, and entry cycle. UniSearch keeps those scopes visible where the source data supports them; catalog coverage varies by institution.
 
 <p align="center">
-  <a href="https://unisearch-frontend.onrender.com/"><strong>Open the app</strong></a>
+  <a href="https://unisearch.web.app/"><strong>Open the app</strong></a>
   &nbsp; · &nbsp;
   <a href="#run-locally">Run locally</a>
   &nbsp; · &nbsp;

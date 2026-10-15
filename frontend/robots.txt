@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /ops/
 
-Sitemap: https://unisearch-frontend.onrender.com/sitemap.xml
+Sitemap: https://unisearch.web.app/sitemap.xml

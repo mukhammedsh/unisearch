@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "target": "unisearch",
+    "public": "frontend",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "rewrites": [
+      {
+        "source": "/universities/*",
+        "destination": "/university.html"
+      }
+    ]
+  }
+}
