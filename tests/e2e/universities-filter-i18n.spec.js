@@ -1,5 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
+const { setNativeSelect } = require("./helpers/selectors");
 
 async function switchLanguage(page, value) {
   await page.evaluate((lang) => {
@@ -104,7 +105,7 @@ test("universities filter dropdowns update translated option text after language
   expect(await filterComboboxNames(page)).toEqual([
     { expected: "Country", actual: "Country" },
     { expected: "City", actual: "City" },
-    { expected: "Sort Strategy", actual: "Sort Strategy" },
+    { expected: "Sort by", actual: "Sort by" },
   ]);
 
   await switchLanguage(page, "rus");
@@ -172,4 +173,31 @@ test("open selected custom select keeps readable text in dark mode", async ({ pa
     ];
   });
   for (const contrast of contrasts) expect(contrast).toBeGreaterThanOrEqual(4.5);
+});
+
+test("city filter is available after selecting a country without choosing a state", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator('#countrySelect option[value="USA"]')).toBeAttached();
+
+  await setNativeSelect(page, "countrySelect", "USA");
+  await expect(page.locator("#stateSelect")).toHaveValue("");
+  await expect(page.locator("#citySelect")).toBeEnabled();
+  await expect(page.locator('#citySelect option[value="Cambridge"]')).toBeAttached();
+  await expect(page.locator('#citySelect option[value="Stanford"]')).toBeAttached();
+
+  await setNativeSelect(page, "citySelect", "Stanford");
+  await expect(page.locator("#stateSelect")).toHaveValue("");
+  await expect(page.locator('#universitiesList .uni-card[data-uni-id="stanford-university-usa-ca"]')).toBeVisible();
+  await expect(page.locator("#universitiesList .uni-card[data-uni-id]")).toHaveCount(1);
+
+  await setNativeSelect(page, "stateSelect", "Massachusetts");
+  await expect(page.locator("#citySelect")).toHaveValue("");
+  await expect(page.locator('#citySelect option[value="Cambridge"]')).toBeAttached();
+  await expect(page.locator('#citySelect option[value="Stanford"]')).toHaveCount(0);
+
+  await setNativeSelect(page, "stateSelect", "");
+  await expect(page.locator("#citySelect")).toBeEnabled();
+  await expect(page.locator('#citySelect option[value="Stanford"]')).toBeAttached();
 });
