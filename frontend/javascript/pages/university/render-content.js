@@ -656,7 +656,7 @@ function getAvailableProgramLevels(programs) {
 }
 
 const hiddenProgramMetadata = new Set([
-  "id", "url", "source_url", "source_urls", "deadline_source_url", "tuition_source_url",
+  "id", "url", "source_url", "source_urls", "catalog_url", "deadline_source_url", "tuition_source_url",
   "verified_at", "tuition_verified_at", "cycle", "tuition_cycle", "requirements_cycle",
   "currency", "deadlines", "scholarship_eligibility",
   "admission_route_id", "price_facts", "tuition_total_usd", "selection_timing",
@@ -1110,10 +1110,10 @@ export function renderProgramsSection({
 
     const levelFilterHtml = availableLevels.length > 1
       ? `
-        <div class="program-level-filter" role="group" aria-label="${escapeHtmlAttr(t("university.programs.filter_by_level", "Filter programs by level"))}">
-          <button type="button" class="program-level-chip${activeLevelKey === "all" ? " is-active" : ""}" data-program-level="all">${escapeHtml(t("university.programs.all_levels", "All levels"))} <span class="program-level-chip__count">(${programs.length})</span></button>
+        <div class="programs-level-filter" role="group" aria-label="${escapeHtmlAttr(t("university.programs.filter_by_level", "Filter programs by degree level"))}">
+          <button type="button" class="programs-level-tab${activeLevelKey === "all" ? " is-active" : ""}" data-program-level="all">${escapeHtml(t("university.programs.all_levels", "All levels"))} (${programs.length})</button>
           ${availableLevels.map((lvl) => `
-            <button type="button" class="program-level-chip${activeLevelKey === lvl.key ? " is-active" : ""}" data-program-level="${escapeHtmlAttr(lvl.key)}">${escapeHtml(lvl.label)} <span class="program-level-chip__count">(${lvl.count})</span></button>
+            <button type="button" class="programs-level-tab${activeLevelKey === lvl.key ? " is-active" : ""}" data-program-level="${escapeHtmlAttr(lvl.key)}">${escapeHtml(lvl.label)} (${lvl.count})</button>
           `).join("")}
         </div>
       `
@@ -1121,49 +1121,79 @@ export function renderProgramsSection({
 
     container.innerHTML = `
       ${levelFilterHtml}
-      <div class="program-search-box">
-        <label for="program-search-input" class="program-search-label visually-hidden">${escapeHtml(t("university.programs.search_label", "Search programs"))}</label>
-        <div class="program-search-input-wrap">
-          <span class="program-search-icon" aria-hidden="true">${renderInlineIcon("magnifying-glass", 16)}</span>
-          <input
-            type="search"
-            id="program-search-input"
-            class="program-search-input"
-            placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search degree programs…"))}"
-            data-program-search
-          />
-          <button type="button" class="program-search-clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
-            ${renderInlineIcon("x-mark", 14)}
-          </button>
-        </div>
+      <div class="program-search">
+        <label for="program-search-input" class="visually-hidden">${escapeHtml(t("university.programs.search_label", "Search programs"))}</label>
+        ${renderInlineIcon("magnifying-glass", 18, "program-search__icon")}
+        <input
+          type="search"
+          id="program-search-input"
+          class="program-search__input"
+          placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search programs..."))}"
+          aria-label="${escapeHtmlAttr(t("university.programs.search_label", "Search programs"))}"
+          autocomplete="off"
+          data-program-search
+        />
+        <button type="button" class="program-search__clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
+          ${renderInlineIcon("x-mark", 16)}
+        </button>
       </div>
-      <div class="program-cards">
+      <div class="program-list" role="list">
         ${displayItems.map((item, displayIdx) => {
           const { program, key, title, summaryText, haystack } = item;
           const isOpen = key === storedOpenKey;
           const matchedSignals = signalsByProgram.get(item.originalIdx) || [];
-          const sourceUrl = String(program.source_url || program.url || "").trim();
-          const catalogUrl = String(program.catalog_url || "").trim();
+          const sourceUrl = safeUrl(program.url || program.source_url);
+          const catalogUrl = safeUrl(program.catalog_url || program.source_url);
           const description = trTrackDescription(university?.id, "", program.description || "");
           const bodyId = `program-body-${displayIdx}`;
 
-          const allRows = [];
+          const allRows = [
+            ...(toFiniteNumber(program.acceptance_rate_percent) !== null ? [{
+              label: translateWord("acceptance_rate", "Acceptance Rate"),
+              key: "acceptance_rate_percent",
+              rawValue: program.acceptance_rate_percent,
+              value: formatProgramValue("acceptance_rate_percent", program.acceptance_rate_percent, university?.id),
+            }] : []),
+            {
+              label: translateWord("study_levels", "Study Levels"),
+              key: "study_levels",
+              rawValue: program.study_levels,
+              value: formatProgramValue("study_levels", program.study_levels, university?.id),
+            },
+            {
+              label: translateWord("duration", "Duration"),
+              key: "duration",
+              rawValue: program.duration,
+              value: formatProgramValue("duration", program.duration, university?.id),
+            },
+            {
+              label: translateWord("language", "Language"),
+              key: "language",
+              rawValue: program.language,
+              value: formatProgramValue("language", program.language, university?.id),
+            },
+            {
+              label: translateWord("study_mode", "Study Mode"),
+              key: "study_mode",
+              rawValue: program.study_mode,
+              value: formatProgramValue("study_mode", program.study_mode, university?.id),
+            },
+          ].filter(({ rawValue }) => rawValue != null && rawValue !== "" && (!Array.isArray(rawValue) || rawValue.length));
           Object.entries(program).forEach(([k, v]) => {
             if (hiddenProgramMetadata.has(k) || knownKeys.has(k) || isMajorTagField(k)) return;
-            const formattedValue = formatProgramValue(k, v, university?.id);
-            if (!formattedValue && (!Array.isArray(v) || !v.length)) return;
+            if (v === null || v === undefined || v === "" || (typeof v === "object" && (!Array.isArray(v) || !v.length))) return;
             allRows.push({
               key: k,
-              label: prettyField(k),
+              label: t(`university.programs.field.${k}`, prettyField(k)),
               rawValue: v,
-              value: formattedValue,
+              value: formatProgramValue(k, v, university?.id),
             });
           });
 
           const toggleLabel = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
 
           return `
-            <article class="program-card${isOpen ? " is-open" : ""}${item.isMajorMatch ? " program-card--major-match" : ""}" data-program-key="${escapeHtmlAttr(key)}" data-search="${escapeHtmlAttr(haystack)}">
+            <article class="program-card${isOpen ? " is-open" : ""}${item.isMajorMatch ? " program-card--major" : ""}" role="listitem" data-program-key="${escapeHtmlAttr(key)}" data-search="${escapeHtmlAttr(haystack)}">
               <button
                 type="button"
                 class="program-card__toggle"

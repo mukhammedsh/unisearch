@@ -697,6 +697,7 @@ test("renderProgramsSection formats program details, level filter, search filter
   assert.ok(container.innerHTML.includes("MSc in Computer Science"));
   assert.ok(container.innerHTML.includes("Your major"));
   assert.ok(container.innerHTML.includes("35 000") || container.innerHTML.includes("35,000") || container.innerHTML.includes("USD"));
+  assert.ok(container.innerHTML.includes("15%"));
 });
 
 test("renderProgramsSection with no programs fallback renders majors list", () => {
@@ -970,25 +971,34 @@ test("renderProgramsSection selects profile study level when activeLevelStored i
           name: "MSc in Computer Science",
           study_levels: ["master"],
         },
+        {
+          id: "history-bachelor",
+          name: "BA in History",
+          study_levels: ["bachelor"],
+        },
       ],
     },
   };
 
-  // Mock localStorage for loadProfile()
-  if (typeof global.localStorage === "undefined") {
-    global.localStorage = {
-      getItem: (key) => key === "applicantProfile" ? JSON.stringify({ studyLevel: "master" }) : null,
-      setItem: () => {},
-    };
+  const originalStorage = window.localStorage;
+  window.localStorage = {
+    getItem: (key) => key === "unisearch_profile" ? JSON.stringify({ studyLevel: "master" }) : null,
+    setItem: () => {},
+    removeItem: () => {},
+  };
+  try {
+    renderProgramsSection({
+      admissionsData: {},
+      container,
+      university,
+    });
+
+    assert.match(container.innerHTML, /class="programs-level-tab is-active" data-program-level="master"/);
+    assert.equal((container.innerHTML.match(/<article class="program-card/g) || []).length, 1);
+  } finally {
+    if (originalStorage === undefined) delete window.localStorage;
+    else window.localStorage = originalStorage;
   }
-
-  renderProgramsSection({
-    admissionsData: {},
-    container,
-    university,
-  });
-
-  assert.ok(container.innerHTML.includes("MSc in Computer Science"));
 });
 
 
@@ -1024,6 +1034,25 @@ test("formatProgramValue, formatListValue, and renderValueCell handling of custo
 
   assert.ok(container.innerHTML.includes("MSc in Artificial Intelligence"));
   assert.ok(container.innerHTML.includes("Some custom text value"));
+});
+
+test("renderProgramsSection validates official program URLs and does not render them as fields", () => {
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  const university = {
+    id: "test-uni",
+    academics: {
+      programs: [{
+        name: "MSc in Computer Science",
+        source_url: "javascript:alert(1)",
+        catalog_url: "javascript:alert(2)",
+      }],
+    },
+  };
+
+  renderProgramsSection({ admissionsData: {}, container, university });
+
+  assert.doesNotMatch(container.innerHTML, /href="javascript:/i);
+  assert.doesNotMatch(container.innerHTML, /Catalog Url/);
 });
 
 test("renderProgramsSection residual signal rows and program-level filters", () => {
@@ -1069,7 +1098,7 @@ test("renderProgramsSection residual signal rows and program-level filters", () 
 
   assert.ok(container.innerHTML.includes("program-signal--residual"));
   assert.ok(container.innerHTML.includes("Unmatched Doctoral Program"));
-  assert.ok(container.innerHTML.includes("program-level-filter"));
+  assert.ok(container.innerHTML.includes("programs-level-filter"));
 });
 
 test("comprehensive unit tests for renderProgramsSection extracted helpers", () => {
