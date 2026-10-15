@@ -2369,7 +2369,6 @@ export function renderAdmissionSection({
   markMotionEnter(container, ".admission-category-card, .admission-funding-option, .admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 18, staggerMs: 18 });
   refreshFundingAwardsForVisibleAdmission(university);
 }
-}
 
 export function renderFinanceSection({
   annualCostForTrack,
