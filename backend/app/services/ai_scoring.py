@@ -1191,10 +1191,19 @@ def _published_requirements_fit(
             _language_rule_assessments(rule, user_languages, lang_cfg, "any")
             for rule in measurable_language_rules
         ]
-        if any(bool(result.get("pass")) and not bool(result.get("conditional")) for result in results):
+        has_unconditional_pass = False
+        has_conditional = False
+        for result in results:
+            if bool(result.get("pass")) and not bool(result.get("conditional")):
+                has_unconditional_pass = True
+                break
+            elif bool(result.get("conditional")):
+                has_conditional = True
+
+        if has_unconditional_pass:
             checks.append(True)
             assessments.extend(item for rows in rule_assessments for item in rows)
-        elif any(bool(result.get("conditional")) for result in results):
+        elif has_conditional:
             missing_evidence.extend(
                 {"type": "language_requirement", "code": str(rule.get("code") or ""), "exam": row.get("exam"), "minimum": row.get("minimum")}
                 for rule, result, rows in zip(measurable_language_rules, results, rule_assessments)
