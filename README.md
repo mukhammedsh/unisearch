@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://unisearch-frontend.onrender.com/">
-    <img src="frontend/images/whitelogo.svg" alt="UniSearch" width="360">
+    <img src="frontend/images/whitelogo-readme.svg" alt="UniSearch" width="360">
   </a>
 </h1>
 
