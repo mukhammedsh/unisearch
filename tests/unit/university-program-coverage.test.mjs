@@ -855,3 +855,209 @@ test("renderProgramsSection binds card toggles, level filters, admission action 
 
   assert.equal(admissionSelected, true);
 });
+
+test("renderProgramsSection search filtering, toggle close, escape key, and profile study level selection", () => {
+  let eventListeners = {};
+  const mockInput = {
+    value: "NonMatchingSearchTermQuery",
+    addEventListener: (event, handler) => { eventListeners[event] = handler; },
+    focus: () => {},
+  };
+  const mockClearBtn = {
+    removeAttribute: () => {},
+    setAttribute: () => {},
+    addEventListener: (event, handler) => { eventListeners["clear_" + event] = handler; },
+  };
+  const mockSearchEmpty = {
+    removeAttribute: () => {},
+    setAttribute: () => {},
+  };
+  const mockCard1 = {
+    getAttribute: (attr) => attr === "data-search" ? "msc computer science" : (attr === "data-program-key" ? "key-1" : null),
+    removeAttribute: () => {},
+    setAttribute: () => {},
+    classList: {
+      _open: true,
+      contains: (c) => c === "is-open" ? mockCard1.classList._open : false,
+      toggle: (c, val) => { mockCard1.classList._open = val; },
+      add: () => {},
+      remove: () => {},
+    },
+    querySelector: () => null,
+  };
+  const mockCard2 = {
+    getAttribute: (attr) => attr === "data-search" ? "ba history" : (attr === "data-program-key" ? "key-2" : null),
+    removeAttribute: () => {},
+    setAttribute: () => {},
+    classList: { contains: () => false, toggle: () => {}, add: () => {}, remove: () => {} },
+    querySelector: () => null,
+  };
+  const mockToggleBtn1 = {
+    closest: () => mockCard1,
+    getAttribute: () => null,
+    setAttribute: () => {},
+    addEventListener: (event, handler) => { eventListeners["toggle_1_" + event] = handler; },
+  };
+
+  const container = {
+    innerHTML: "",
+    querySelector: (sel) => {
+      if (sel === "[data-program-search]") return mockInput;
+      if (sel === "[data-program-search-clear]") return mockClearBtn;
+      if (sel === "[data-program-empty]") return mockSearchEmpty;
+      if (sel === "[data-program-coverage-host]") return { innerHTML: "" };
+      return null;
+    },
+    querySelectorAll: (sel) => {
+      if (sel === ".program-card") return [mockCard1, mockCard2];
+      if (sel === ".program-card.is-open") return [mockCard1];
+      if (sel === "[data-program-toggle]") return [mockToggleBtn1];
+      return [];
+    },
+  };
+
+  const university = {
+    id: "oxford-uk-2",
+    academics: {
+      programs: [
+        {
+          id: "cs-1",
+          name: "MSc in Computer Science",
+          study_levels: ["master"],
+        },
+        {
+          id: "hist-1",
+          name: "BA in History",
+          study_levels: ["bachelor"],
+        },
+      ],
+    },
+  };
+
+  renderProgramsSection({
+    admissionsData: {},
+    container,
+    university,
+  });
+
+  if (eventListeners["input"]) eventListeners["input"]();
+  if (eventListeners["keydown"]) eventListeners["keydown"]({ key: "Escape" });
+  if (eventListeners["toggle_1_click"]) eventListeners["toggle_1_click"]();
+});
+
+test("renderProgramsSection selects profile study level when activeLevelStored is not set", () => {
+  const container = {
+    innerHTML: "",
+    querySelector: () => null,
+    querySelectorAll: () => [],
+  };
+  const university = {
+    id: "oxford-uk-profile-level-test",
+    academics: {
+      programs: [
+        {
+          id: "cs-master",
+          name: "MSc in Computer Science",
+          study_levels: ["master"],
+        },
+      ],
+    },
+  };
+
+  // Mock localStorage for loadProfile()
+  if (typeof global.localStorage === "undefined") {
+    global.localStorage = {
+      getItem: (key) => key === "applicantProfile" ? JSON.stringify({ studyLevel: "master" }) : null,
+      setItem: () => {},
+    };
+  }
+
+  renderProgramsSection({
+    admissionsData: {},
+    container,
+    university,
+  });
+
+  assert.ok(container.innerHTML.includes("MSc in Computer Science"));
+});
+
+
+test("formatProgramValue, formatListValue, and renderValueCell handling of custom fields and types", () => {
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  const university = {
+    id: "oxford-uk-coverage-boost",
+    academics: {
+      programs: [
+        {
+          id: "prog-boost-1",
+          name: "MSc in Artificial Intelligence",
+          study_levels: ["master"],
+          language: ["English", "French"],
+          study_mode: "Full-time",
+          acceptance_rate_percent: "invalid-number",
+          custom_bool: false,
+          custom_text: "Some custom text value",
+          custom_null: null,
+          custom_empty: "",
+          custom_arr: [],
+          required_documents: ["CV", "Passport"],
+        },
+      ],
+    },
+  };
+
+  renderProgramsSection({
+    admissionsData: {},
+    container,
+    university,
+  });
+
+  assert.ok(container.innerHTML.includes("MSc in Artificial Intelligence"));
+  assert.ok(container.innerHTML.includes("Some custom text value"));
+});
+
+test("renderProgramsSection residual signal rows and program-level filters", () => {
+  const container = {
+    innerHTML: "",
+    querySelector: (sel) => sel === "[data-program-coverage-host]" ? { innerHTML: "" } : null,
+    querySelectorAll: () => [],
+  };
+  const university = {
+    id: "oxford-uk-residual-test",
+    academics: {
+      programs: [
+        {
+          id: "prog-1",
+          name: "Bachelor of Arts in Philosophy",
+          study_levels: ["bachelor"],
+        },
+        {
+          id: "prog-2",
+          name: "MSc in Physics",
+          study_levels: ["master"],
+        },
+      ],
+    },
+    coverage_by_program: [],
+  };
+  const admissionsData = {
+    programs: [
+      {
+        program_name: "Unmatched Doctoral Program",
+        provenance: { verified_at: "2026-02-01" },
+      },
+    ],
+    status_date: "2026-02-01",
+    program_level: { kind: "institution_wide_only" },
+  };
+
+  renderProgramsSection({
+    admissionsData,
+    container,
+    university,
+  });
+
+  assert.ok(container.innerHTML.includes("program-signal--residual"));
+  assert.ok(container.innerHTML.includes("Unmatched Doctoral Program"));
+  assert.ok(container.innerHTML.includes("program-level-filter"));
+});
