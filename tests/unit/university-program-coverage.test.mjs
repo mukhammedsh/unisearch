@@ -723,3 +723,135 @@ test("renderProgramsSection with no programs fallback renders majors list", () =
   assert.ok(container.innerHTML.includes("Engineering"));
   assert.ok(container.innerHTML.includes("Mathematics"));
 });
+
+
+test("renderProgramsSection binds card toggles, level filters, admission action and search events", () => {
+  let eventListeners = {};
+  const mockInput = {
+    value: "Computer",
+    addEventListener: (event, handler) => { eventListeners[event] = handler; },
+    focus: () => {},
+  };
+  const mockClearBtn = {
+    removeAttribute: () => {},
+    setAttribute: () => {},
+    addEventListener: (event, handler) => { eventListeners["clear_" + event] = handler; },
+  };
+  const mockCard1 = {
+    getAttribute: (attr) => attr === "data-search" ? "msc computer science" : (attr === "data-program-key" ? "key-1" : null),
+    removeAttribute: () => {},
+    setAttribute: () => {},
+    classList: { contains: () => false, toggle: () => {}, add: () => {}, remove: () => {} },
+    querySelector: () => null,
+  };
+  const mockCard2 = {
+    getAttribute: (attr) => attr === "data-search" ? "ba history" : (attr === "data-program-key" ? "key-2" : null),
+    removeAttribute: () => {},
+    setAttribute: () => {},
+    classList: { contains: () => false, toggle: () => {}, add: () => {}, remove: () => {} },
+    querySelector: () => null,
+  };
+  const mockToggleBtn1 = {
+    closest: () => mockCard1,
+    getAttribute: () => null,
+    setAttribute: () => {},
+    addEventListener: (event, handler) => { eventListeners["toggle_1_" + event] = handler; },
+  };
+  const mockAdmissionBtn = {
+    dataset: { programAdmission: "cs-1" },
+    addEventListener: (event, handler) => { eventListeners["admission_" + event] = handler; },
+  };
+  const mockLevelBtn = {
+    getAttribute: () => "master",
+    addEventListener: (event, handler) => { eventListeners["level_" + event] = handler; },
+  };
+
+  const container = {
+    innerHTML: "",
+    querySelector: (sel) => {
+      if (sel === "[data-program-search]") return mockInput;
+      if (sel === "[data-program-search-clear]") return mockClearBtn;
+      if (sel === "[data-program-empty]") return { setAttribute: () => {}, removeAttribute: () => {} };
+      if (sel === "[data-program-coverage-host]") return { innerHTML: "" };
+      return null;
+    },
+    querySelectorAll: (sel) => {
+      if (sel === ".program-card") return [mockCard1, mockCard2];
+      if (sel === ".program-card.is-open") return [];
+      if (sel === "[data-program-toggle]") return [mockToggleBtn1];
+      if (sel === "[data-program-admission]") return [mockAdmissionBtn];
+      if (sel === "[data-program-level]") return [mockLevelBtn];
+      return [];
+    },
+  };
+
+  const university = {
+    id: "oxford-uk",
+    academics: {
+      programs: [
+        {
+          id: "cs-1",
+          name: "MSc in Computer Science",
+          study_levels: ["master"],
+          duration: "1 year",
+          language: ["English"],
+          study_mode: "Full-time",
+          acceptance_rate_percent: 15,
+          major_tags: ["Computer Science"],
+          boolean_field: true,
+          false_field: false,
+          null_field: null,
+          empty_arr: [],
+          tuition_usd: 35000,
+          description: "Advanced study of computer science principles.",
+          source_url: "https://www.ox.ac.uk/cs",
+          catalog_url: "https://www.ox.ac.uk/catalog/cs",
+        },
+        {
+          id: "cs-2",
+          name: "BA in History",
+          study_levels: ["bachelor"],
+          duration: "3 years",
+          language: "English",
+          study_mode: "Full-time",
+        }
+      ],
+    },
+    coverage_by_program: [],
+  };
+
+  const admissionsData = {
+    programs: [
+      {
+        program_name: "MSc in Computer Science",
+        provenance: { verified_at: "2026-01-01" },
+      },
+      {
+        program_name: "BA in History (Honours)",
+      },
+      {
+        program_name: "Non Existent Program (Special (Track))",
+      }
+    ],
+    program_level: { kind: "program_specific" },
+  };
+
+  let admissionSelected = false;
+  renderProgramsSection({
+    admissionsData,
+    container,
+    university,
+    profileMajor: "Computer Science",
+    coverageProgram: null,
+    onProgramAdmissionSelected: () => { admissionSelected = true; },
+  });
+
+  if (eventListeners["input"]) eventListeners["input"]();
+  if (eventListeners["keydown"]) eventListeners["keydown"]({ key: "Escape" });
+  if (eventListeners["clear_click"]) eventListeners["clear_click"]();
+  if (eventListeners["toggle_1_click"]) eventListeners["toggle_1_click"]();
+  if (eventListeners["admission_click"]) eventListeners["admission_click"]();
+  if (eventListeners["level_click"]) eventListeners["level_click"]();
+
+  assert.equal(admissionSelected, true);
+});
