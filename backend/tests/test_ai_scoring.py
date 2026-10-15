@@ -1898,6 +1898,23 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual(100, fallback_result.get("overallChance"))
         self.assertEqual(fallback_result.get("overallChance"), profile_result.get("overallChance"))
 
+    def test_score_single_language_rule_multiple_candidates(self):
+        from app.services.ai_scoring import _score_single_language_rule
+        rule = {
+            "code": "en",
+            "requirements": {"IELTS": 6.5, "TOEFL_iBT_0_120": 90},
+        }
+        user_languages = {
+            "en": {
+                "native": False,
+                "cefr": None,
+                "exams": {"IELTS": 6.0, "TOEFL_iBT_0_120": 100},
+            }
+        }
+        res = _score_single_language_rule(rule, user_languages, {})
+        self.assertTrue(res["pass"])
+        self.assertEqual(0.0, res["gap"])
+
     def test_language_exam_requirements_are_not_inferred_from_cefr(self):
         university = {
             "id": "eth-demo",
