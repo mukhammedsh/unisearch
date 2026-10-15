@@ -19,7 +19,7 @@ UniSearch is an open-source university discovery catalog for applicants. Browse 
 Facts can vary by program, applicant category, and entry cycle. UniSearch keeps those scopes visible where the source data supports them; catalog coverage varies by institution.
 
 <p align="center">
-  <a href="https://unisearch-frontend.onrender.com/"><strong>Open the live catalog →</strong></a>
+  <a href="https://unisearch-frontend.onrender.com/"><strong>Open the app</strong></a>
   &nbsp; · &nbsp;
   <a href="#run-locally">Run locally</a>
   &nbsp; · &nbsp;
