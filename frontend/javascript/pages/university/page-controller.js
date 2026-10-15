@@ -285,7 +285,7 @@ export async function initUniversityPage(options = {}) {
     if (stateEl) stateEl.textContent = "";
 
     const [university] = await Promise.all([
-      fetchUniversityDetailCached(id),
+      fetchUniversityDetailCached(id, { requireReviewedCatalog: REVIEWED_ADMISSIONS_IDS.has(id) }),
       initUniversityTranslations().catch(() => null),
     ]);
     if (pageVersion !== detailPageVersion) return;

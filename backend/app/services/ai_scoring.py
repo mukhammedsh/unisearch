@@ -1086,25 +1086,16 @@ def _published_requirements_for_choice(
     return {}, [], ""
 
 
-def _published_requirements_fit(
-    *,
-    university: Dict[str, Any],
-    choice: Dict[str, Any],
+def _assess_academic_requirements(
+    requirements: Dict[str, Any],
+    has_language_rules: bool,
     user_scores: Dict[str, Any],
-    valid_exam_ids: set[str],
     user_languages: Dict[str, Any],
-    lang_cfg: Dict[str, Any],
-) -> Tuple[Optional[int], str, int, List[Dict[str, Any]], List[Dict[str, Any]]]:
-    """Score the share of measurable published minimum checks that are met."""
+) -> Tuple[List[bool], int, List[Dict[str, Any]], List[Dict[str, Any]]]:
     checks: List[bool] = []
     measurable_checks = 0
     assessments: List[Dict[str, Any]] = []
     missing_evidence: List[Dict[str, Any]] = []
-    requirements, unassessed_minimums, review_status = _published_requirements_for_choice(university, choice)
-    if review_status == "not_reviewed":
-        return None, "requirements_not_reviewed", 0, assessments, missing_evidence
-    language_rules = _collect_language_requirements(choice)
-    has_language_rules = bool(language_rules.get("items"))
 
     for exam_id, raw_minimum in requirements.items():
         if has_language_rules and _is_language_exam_key(exam_id):
@@ -1142,6 +1133,17 @@ def _published_requirements_fit(
         checks.append(passed)
         assessments.append({"exam": exam_key, "minimum": minimum, "provided": user_value, "status": "met" if passed else "unmet"})
 
+    return checks, measurable_checks, assessments, missing_evidence
+
+
+def _assess_required_exam_alternatives(
+    choice: Dict[str, Any],
+    user_scores: Dict[str, Any],
+    valid_exam_ids: set[str],
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    assessments: List[Dict[str, Any]] = []
+    missing_evidence: List[Dict[str, Any]] = []
+
     raw_exam_alternatives = choice.get("required_exam_alternatives")
     if isinstance(raw_exam_alternatives, list):
         for group in raw_exam_alternatives:
@@ -1166,6 +1168,20 @@ def _published_requirements_fit(
             if not supplied and not unsupported_ids:
                 missing_evidence.append({"type": "required_exam_alternative", "ids": exam_ids})
 
+    return assessments, missing_evidence
+
+
+def _assess_language_rules(
+    choice: Dict[str, Any],
+    user_languages: Dict[str, Any],
+    lang_cfg: Dict[str, Any],
+) -> Tuple[List[bool], int, List[Dict[str, Any]], List[Dict[str, Any]]]:
+    checks: List[bool] = []
+    measurable_checks = 0
+    assessments: List[Dict[str, Any]] = []
+    missing_evidence: List[Dict[str, Any]] = []
+
+    language_rules = _collect_language_requirements(choice)
     measurable_language_rules = []
     for rule in language_rules.get("items", []):
         if not isinstance(rule, dict):
@@ -1221,6 +1237,14 @@ def _published_requirements_fit(
                 checks.append(passed)
                 assessments.extend(rows)
 
+    return checks, measurable_checks, assessments, missing_evidence
+
+
+def _assess_unassessed_minimums(
+    unassessed_minimums: List[Dict[str, Any]],
+    user_scores: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    assessments: List[Dict[str, Any]] = []
     for row in unassessed_minimums:
         source_exam_id = str(row.get("exam_id") or "").strip()
         configured_exam_id = _configured_language_exam_id_any(source_exam_id) if source_exam_id else ""
@@ -1235,6 +1259,48 @@ def _published_requirements_fit(
         if configured_exam_id:
             assessment["examId"] = configured_exam_id
         assessments.append(assessment)
+    return assessments
+
+
+def _published_requirements_fit(
+    *,
+    university: Dict[str, Any],
+    choice: Dict[str, Any],
+    user_scores: Dict[str, Any],
+    valid_exam_ids: set[str],
+    user_languages: Dict[str, Any],
+    lang_cfg: Dict[str, Any],
+) -> Tuple[Optional[int], str, int, List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Score the share of measurable published minimum checks that are met."""
+    requirements, unassessed_minimums, review_status = _published_requirements_for_choice(university, choice)
+    if review_status == "not_reviewed":
+        return None, "requirements_not_reviewed", 0, [], []
+
+    language_rules = _collect_language_requirements(choice)
+    has_language_rules = bool(language_rules.get("items"))
+
+    checks, measurable_checks, assessments, missing_evidence = _assess_academic_requirements(
+        requirements, has_language_rules, user_scores, user_languages
+    )
+
+    alt_assessments, alt_missing = _assess_required_exam_alternatives(
+        choice, user_scores, valid_exam_ids
+    )
+    assessments.extend(alt_assessments)
+    missing_evidence.extend(alt_missing)
+
+    lang_checks, lang_measurable, lang_assessments, lang_missing = _assess_language_rules(
+        choice, user_languages, lang_cfg
+    )
+    checks.extend(lang_checks)
+    measurable_checks += lang_measurable
+    assessments.extend(lang_assessments)
+    missing_evidence.extend(lang_missing)
+
+    unassessed_assessments = _assess_unassessed_minimums(
+        unassessed_minimums, user_scores
+    )
+    assessments.extend(unassessed_assessments)
 
     if missing_evidence:
         return None, "missing_evidence", measurable_checks, assessments, missing_evidence
