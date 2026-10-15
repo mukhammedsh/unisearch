@@ -228,6 +228,7 @@ __marimo__/
 # Privacy database data
 firebase-key.json
 firebase-key
+.firebase/
 
 # Node / Playwright artifacts
 node_modules/
@@ -252,3 +253,4 @@ MAINTAINER_RELEASE.md
 
 # Local agent tool config
 .agents/
+/skills-lock.json
