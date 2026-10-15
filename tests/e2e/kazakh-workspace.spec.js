@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 
 const scenarios = [
   { name: "desktop light", width: 1280, height: 900, theme: "light" },

@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 
 const viewports = [
   { name: "mobile", width: 390, height: 844 },

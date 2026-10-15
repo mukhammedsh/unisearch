@@ -113,7 +113,14 @@ jobs:
         run: ./node_modules/.bin/playwright install --with-deps chromium
 
       - name: Run E2E PR suite
+        env:
+          CODECOV_BROWSER_COVERAGE_DIR: coverage/frontend/tmp
         run: npm run test:e2e:pr
+
+      - name: Merge browser coverage into frontend report
+        run: |
+          test -n "$(find coverage/frontend/tmp -maxdepth 1 -name 'browser-*.json' -print -quit)"
+          npx c8 report --all --src=frontend/javascript --include="frontend/javascript/**/*.js" --reporter=lcov --reporter=text --reports-dir=coverage/frontend --temp-directory=coverage/frontend/tmp
 
       - name: Upload frontend coverage to Codecov
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1

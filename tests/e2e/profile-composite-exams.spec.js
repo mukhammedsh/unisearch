@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
 const { expectNoStackedGapMargins } = require("./helpers/design");

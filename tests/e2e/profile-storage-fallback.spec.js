@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test("profile keeps edits in-session when localStorage is unavailable", async ({ page }) => {

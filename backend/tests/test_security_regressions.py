@@ -1,7 +1,10 @@
 import asyncio
 import concurrent.futures
+import socket
 import threading
 import unittest
+from urllib.error import URLError
+from urllib.request import Request as UrlRequest
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
@@ -115,6 +118,48 @@ class SecurityRegressionTests(unittest.TestCase):
 
         self.assertIsNone(status)
         self.assertEqual(final_url, "http://127.0.0.1:8000/admin")
+
+    def test_data_http_audit_rejects_non_public_addresses_from_dns(self):
+        addresses = ["10.1.2.3", "127.0.0.1", "169.254.1.2", "224.0.0.1", "0.0.0.0", "fe80::1"]
+        for address in addresses:
+            with self.subTest(address=address), patch.object(
+                audit_universities_data.socket,
+                "getaddrinfo",
+                return_value=[(socket.AF_INET, socket.SOCK_STREAM, 0, "", (address, 443))],
+            ):
+                reason = audit_universities_data._public_http_url_reason("https://catalog.example.edu")
+                self.assertIn("non-public", reason)
+                self.assertIn(address, reason)
+
+        with patch.object(
+            audit_universities_data.socket,
+            "getaddrinfo",
+            return_value=[
+                (socket.AF_INET, socket.SOCK_STREAM, 0, "", ("8.8.8.8", 443)),
+                (socket.AF_INET, socket.SOCK_STREAM, 0, "", ("10.1.2.3", 443)),
+            ],
+        ):
+            reason = audit_universities_data._public_http_url_reason("https://catalog.example.edu")
+
+        self.assertIn("10.1.2.3", reason)
+
+    def test_data_http_audit_rejects_bad_schemes_before_dns_lookup(self):
+        for url in ("file:///etc/passwd", "ftp://catalog.example.edu", "https:///missing-host"):
+            with self.subTest(url=url), patch.object(audit_universities_data.socket, "getaddrinfo") as lookup:
+                reason = audit_universities_data._public_http_url_reason(url)
+                self.assertIn("URL must use http/https", reason)
+                lookup.assert_not_called()
+
+    def test_data_http_audit_blocks_redirects_to_private_hosts(self):
+        request = UrlRequest("https://catalog.example.edu/admissions")
+        with patch.object(
+            audit_universities_data.socket,
+            "getaddrinfo",
+            return_value=[(socket.AF_INET, socket.SOCK_STREAM, 0, "", ("127.0.0.1", 80))],
+        ), self.assertRaisesRegex(URLError, "blocked redirect"):
+            audit_universities_data._SafeRedirectHandler().redirect_request(
+                request, None, 302, "Found", {}, "http://redirect.example.edu/private"
+            )
 
     def test_data_audit_does_not_include_salary_or_major_values_in_diagnostics(self):
         errors = []

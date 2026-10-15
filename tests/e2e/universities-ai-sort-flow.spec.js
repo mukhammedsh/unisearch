@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
 const { selectors, setRangeValue } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");

@@ -75,6 +75,62 @@ class LanguagesApiTests(unittest.TestCase):
         detail = str(response.json().get("detail", ""))
         self.assertTrue("step" in detail.lower() or "between" in detail.lower())
 
+    def test_validate_language_rejects_unknown_language_codes(self):
+        response = self.client.post(
+            "/languages/validate",
+            json={"code": "zz", "kind": "native"},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual("Unknown language code", response.json()["detail"])
+
+    def test_validate_language_rejects_unknown_cefr_labels(self):
+        response = self.client.post(
+            "/languages/validate",
+            json={"code": "en", "kind": "cefr", "label": "C3"},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual("Invalid CEFR label", response.json()["detail"])
+
+    def test_composite_ielts_rejects_malformed_or_unsupported_sections(self):
+        cases = [
+            ({"components": "not-a-list"}, "components must be a list"),
+            ({"components": [None]}, "components must be objects"),
+            ({"components": [{"score": 8.0}]}, "component exam is required"),
+            ({"components": [{"exam": "TOEFL", "score": 24}]}, "does not support component TOEFL"),
+            (
+                {"components": [
+                    {"exam": "IELTS_LISTENING", "score": 8.0},
+                    {"exam": "IELTS_LISTENING", "score": 7.0},
+                ]},
+                "does not allow duplicate component IELTS_LISTENING",
+            ),
+        ]
+        for details, expected_detail in cases:
+            with self.subTest(details=details):
+                response = self.client.post(
+                    "/languages/validate",
+                    json={"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0, "details": details},
+                )
+
+                self.assertEqual(response.status_code, 400)
+                self.assertIn(expected_detail, response.json()["detail"])
+
+    def test_composite_ielts_requires_all_sections_when_overall_score_is_missing(self):
+        response = self.client.post(
+            "/languages/validate",
+            json={
+                "code": "en",
+                "kind": "exam",
+                "exam": "IELTS",
+                "details": {"components": [{"exam": "IELTS_LISTENING", "score": 8.0}]},
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("requires all section scores when overall score is omitted", response.json()["detail"])
+
     def test_validate_language_exam_accepts_composite_ielts(self):
         response = self.client.post(
             "/languages/validate",

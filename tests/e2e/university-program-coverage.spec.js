@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { setNativeSelect } = require("./helpers/selectors");
 
 function contextUrl({ university, option, route, level, applicant, cycle }) {

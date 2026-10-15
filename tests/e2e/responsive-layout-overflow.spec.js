@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 
 test.describe("Responsive Layout and Overflow Verification", () => {
   test("adjusts sidebar and mobile filter button based on desktop viewport", async ({ page }) => {

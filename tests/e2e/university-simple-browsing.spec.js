@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const fs = require("node:fs");
 const path = require("node:path");
 const screenshotDir = path.resolve(__dirname, "../../.tmp_test/detail-redesign-browsing");

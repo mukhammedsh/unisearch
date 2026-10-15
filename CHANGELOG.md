@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 8.1.7 (2026-10-15) - Expanded Test Coverage
+
+### Added
+- Merge Chromium browser coverage with frontend unit coverage for Codecov uploads, and cover all frontend JavaScript sources.
+- Add behavioral tests for offline recovery, service worker caching, admission evidence, exam breakdowns, language validation, ML availability, exam input modes, and official-source auditing.
+
+### Updated
+- Use two local Playwright workers after validating stable API-backed runs; keep one worker in CI.
+
+### Fixed
+- Wait for map marker movement to settle before asserting that repeated clicks do not recenter the map.
+
 ## 8.1.6 (2026-10-14) - Stable Checks and Exact Source Links
 
 ### Fixed

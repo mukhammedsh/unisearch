@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./helpers/coverage-test.mjs";
 
 for (const viewport of [{ name: "phone", width: 390 }, { name: "tablet", width: 733 }]) {
 for (const theme of ["light", "dark"]) {

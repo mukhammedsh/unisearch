@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
 
 const tourKey = "unisearch_universities_tour_seen_v1";
@@ -27,6 +27,83 @@ for (const language of ["eng", "rus"]) {
     }
   }
 }
+
+test("language evidence rejects invalid entries and supports deleting a saved record", async ({ page }) => {
+  await page.addInitScript((key) => localStorage.setItem(key, "1"), tourKey);
+  await page.goto("/profile.html?lang=eng");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "basics");
+
+  const evidenceSummary = page.locator("#admissionEvidenceFields summary");
+  if (!(await page.locator("#languageEvidenceLanguage").isVisible())) await evidenceSummary.click();
+  const languageList = page.locator("#languageEvidenceList .profile-exam-item");
+
+  await setNativeSelect(page, "languageEvidenceKind", "primary_language");
+  await page.fill("#languageEvidenceLanguage", "English");
+  await page.click("#addLanguageEvidence");
+  await expect(page.locator(".toast.error")).toBeVisible();
+  await expect(languageList).toHaveCount(0);
+  await expect(page.locator(".toast.error")).toHaveCount(0, { timeout: 10000 });
+
+  await setNativeSelect(page, "languageEvidenceKind", "education");
+  await page.fill("#languageEvidenceLanguage", "en");
+  await page.click("#addLanguageEvidence");
+  await expect(page.locator(".toast.error")).toBeVisible();
+  await expect(languageList).toHaveCount(0);
+  await expect(page.locator(".toast.error")).toHaveCount(0, { timeout: 10000 });
+
+  await setNativeSelect(page, "languageEvidenceQualification", "bachelor");
+  await page.fill("#languageEvidenceStarted", "2025-09-01");
+  await page.fill("#languageEvidenceCompleted", "2025-08-01");
+  await page.click("#addLanguageEvidence");
+  await expect(page.locator(".toast.error")).toBeVisible();
+  await expect(languageList).toHaveCount(0);
+  await expect(page.locator(".toast.error")).toHaveCount(0, { timeout: 10000 });
+
+  await page.fill("#languageEvidenceCompleted", "2025-09-02");
+  await setNativeSelect(page, "languageEvidenceStatus", "completed");
+  await page.click("#addLanguageEvidence");
+  await expect(languageList).toHaveCount(1);
+  await expect(page.locator("#languageEvidenceList")).toContainText("EN");
+  await page.locator("#languageEvidenceList [data-remove-language-evidence='0']").click();
+  await expect(languageList).toHaveCount(0);
+});
+
+test("institutional evidence follows university support and keeps the selected program", async ({ page }) => {
+  await page.addInitScript((key) => localStorage.setItem(key, "1"), tourKey);
+  await page.goto("/profile.html?lang=eng");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "basics");
+
+  const evidenceSummary = page.locator("#admissionEvidenceFields summary");
+  if (!(await page.locator("#institutionEvidenceUniversity").isVisible())) await evidenceSummary.click();
+  const unavailable = page.locator("#institutionEvidenceUnavailable");
+  const institutionList = page.locator("#institutionalEvidenceList .profile-exam-item");
+
+  await setNativeSelect(page, "institutionEvidenceUniversity", "imperial-college-london-uk");
+  await setNativeSelect(page, "institutionEvidenceKind", "enrollment");
+  await expect(unavailable).toBeVisible();
+  await page.click("#addInstitutionEvidence");
+  await expect(page.locator(".toast.error")).toBeVisible();
+  await expect(institutionList).toHaveCount(0);
+  await expect(page.locator(".toast.error")).toHaveCount(0, { timeout: 10000 });
+
+  await setNativeSelect(page, "institutionEvidenceUniversity", "stanford-university-usa-ca");
+  await setNativeSelect(page, "institutionEvidenceKind", "gpa");
+  await setNativeSelect(page, "institutionEvidenceProgram", "stanford-option-cs-bs");
+  await setNativeSelect(page, "institutionEvidenceMetric", "major");
+  await page.fill("#institutionEvidenceValue", "3.7");
+  await page.fill("#institutionEvidenceScale", "4");
+  await page.fill("#institutionEvidenceTerm", "Spring 2026");
+  await page.click("#addInstitutionEvidence");
+  await expect(institutionList).toHaveCount(1);
+  await expect(page.locator("#institutionalEvidenceList")).toContainText("3.7/4");
+  await expect(page.locator("#institutionalEvidenceList")).toContainText("Stanford");
+  await page.locator("#institutionalEvidenceList [data-remove-institutional-evidence='0']").click();
+  await expect(institutionList).toHaveCount(0);
+});
 
 for (const scenario of [{ name: "desktop", language: "eng", theme: "light", width: 1280, height: 900 }, { name: "mobile", language: "rus", theme: "dark", width: 390, height: 844 }]) {
 test(`dated exam attempts and evidence save independently on ${scenario.name} and reach the admissions API`, async ({ page }, testInfo) => {

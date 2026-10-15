@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
 
 function makeUniversity(index) {
@@ -291,7 +291,14 @@ test("repeated click on the focused marker does not recenter the map", async ({ 
   // Second click on the already focused marker: the map must stay put and the
   // open card must survive instead of flying back to the marker logo.
   await marker.click();
-  await page.waitForTimeout(1800);
+  await expect.poll(async () => {
+    const first = await markerInMap();
+    await page.waitForTimeout(300);
+    const second = await markerInMap();
+    return first && second
+      && Math.abs(first.x - second.x) < 1
+      && Math.abs(first.y - second.y) < 1;
+  }).toBe(true);
   const boxAfter = await markerInMap();
   expect(Math.abs(boxAfter.x - boxBefore.x)).toBeLessThan(5);
   expect(Math.abs(boxAfter.y - boxBefore.y)).toBeLessThan(5);

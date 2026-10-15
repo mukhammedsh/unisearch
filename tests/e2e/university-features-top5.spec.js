@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile, markTourAsSeen } = require("./helpers/personas");
 
 function reviewedContextUrl({ university, option, route, level, applicant, cycle, fee = "unknown" }) {

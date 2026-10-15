@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "8.1.6",
+  "version": "8.1.7",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -22,7 +22,7 @@
     "sync:heroicons": "node scripts/sync-heroicons.mjs",
     "test:backend": "node scripts/test-backend.mjs",
     "test:unit": "node scripts/test-unit.mjs",
-    "test:unit:coverage": "c8 --reporter=lcov --reporter=text --reports-dir=coverage/frontend node scripts/test-unit.mjs",
+    "test:unit:coverage": "c8 --all --src=frontend/javascript --include=\"frontend/javascript/**/*.js\" --reporter=lcov --reporter=text --reports-dir=coverage/frontend --temp-directory=coverage/frontend/tmp node scripts/test-unit.mjs",
     "test:fast": "npm run test:unit && npm run test:backend",
     "test:smoke": "npm run test:unit && npx playwright test tests/e2e/smoke-home.spec.js --config=playwright.local.config.js",
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",

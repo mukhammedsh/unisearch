@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
 
 test.describe("UniChance Calculator Validation", () => {

@@ -11,7 +11,8 @@ const backendPython = process.env.PLAYWRIGHT_BACKEND_PYTHON
 module.exports = defineConfig({
   testDir: './tests/e2e',
   timeout: 60000,
-  workers: process.platform === 'win32' ? 1 : (process.env.CI ? 1 : 2),
+  // shortcut: cap local E2E at two; raise after three-worker API-backed runs pass reliably.
+  workers: process.env.CI ? 1 : 2,
   expect: { timeout: 12000 },
   use: {
     baseURL: 'http://127.0.0.1:5510',
