@@ -1998,217 +1998,150 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
   `;
 }
 
-export function renderAdmissionSection({
+function renderAdmissionCategoryCard({
   annualCostForTrack,
-  container,
-  uniChance,
-  uniChanceByChoiceKey,
+  category,
+  categoryIdx,
+  chanceByChoice,
+  compactMode,
+  effectiveSelectedChoiceKey,
+  hasExplicitProgramSelection,
+  recommendedChoiceKey,
   university,
-  onChoiceSelected,
-  effectiveSelectedChoiceKeyOverride,
-  onContextChange,
-  compactMode = false,
+  universityId,
 }) {
-  if (!container) return;
-  const chanceByChoice = uniChanceByChoiceKey instanceof Map ? uniChanceByChoiceKey : new Map();
+  const profiles = getCategoryProfiles(category);
+  const profileRows = profiles.length ? profiles : [{ id: "general", label: t("admission.profile.general", "General") }];
+  const categoryKey = `${universityId}:${category.id || categoryIdx}`;
+  const choiceKeyStr = String(effectiveSelectedChoiceKey || "").trim();
+  let effectiveProfileId = "";
+  if (choiceKeyStr) {
+    const delimiter = choiceKeyStr.includes("::") ? "::" : ":";
+    const parts = choiceKeyStr.split(delimiter);
+    if (parts.length >= 2 && parts[0] === String(category.id || categoryIdx)) {
+      effectiveProfileId = parts[1];
+    }
+  }
+  const selectedProfileId = admissionProfileSelectionByCategory.get(categoryKey) || effectiveProfileId;
+  const activeProfile = profileRows.find((profile) => String(profile.id || "") === selectedProfileId) || profileRows[0];
+  const categoryLabel = trTrackLabel(category.label || category.name || "") || unknownFieldText("placeholder.field.admission_category", "Admission category");
+  const categoryDescription = trTrackDescription(university.id, category.id, category.description || "");
+  const profileDescription = trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.description || "");
+  const scopeLabel = String(category.scope || "general").toLowerCase() === "general"
+    ? t("admission.scope.general", "General")
+    : t("admission.scope.program_specific", "Program-specific");
+  const routeText = `${t("university.admissions.route_label", "Applicant route")}: ${applicantRouteLabel(category.applicant_route)}`;
+  const activeProfileLabel = translatedProfileLabel(activeProfile);
+  const activeChoiceKey = admissionChoiceKey(category, activeProfile, null);
+  const fundingOptions = getFundingOptions(category, activeProfile);
+  const activeChoiceChance = chanceByChoice.get(activeChoiceKey)
+    || fundingOptions.map((funding) => chanceByChoice.get(admissionChoiceKey(category, activeProfile, funding))).find(Boolean);
+  const profileHasFundingOptions = fundingOptions.length > 0;
+  const noPublishedMinimums = activeChoiceChance?.reason === "no_published_requirements";
+  const profileIsSelected = !profileHasFundingOptions && Boolean(effectiveSelectedChoiceKey && effectiveSelectedChoiceKey === activeChoiceKey);
+  const profileIsRecommended = !profileHasFundingOptions && activeChoiceChance?.chancePercent != null && Boolean(recommendedChoiceKey && recommendedChoiceKey === activeChoiceKey);
 
-  const warningHtml = uniChance?.missingEvidence
-    ? `<div class="chance-warning">${escapeHtml(t("admission.requirements_fit.missing_evidence_note", "Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed."))}</div>`
+  const catLevels = getCategoryLevelsList(category);
+  const catLevelBadges = catLevels.length
+    ? ` &middot; ${catLevels.map((l) => `<span class="admission-level-badge">${escapeHtml(trStudyLevel(l))}</span>`).join(" ")}`
     : "";
-  const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
-    ? university.academics.admissions
-    : null;
-  const admissionsOverviewHtml = renderAdmissionsOverview(admissionsData);
-  const categories = getAdmissionCategories(university);
-  if (!categories.length) {
-    if (compactMode) {
-      container.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
-    } else {
-      container.innerHTML = `${warningHtml}${renderUniChanceSummary(uniChance)}${admissionsOverviewHtml}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
-    }
-    applyPercentWidths(container);
-    markMotionEnter(container, ".admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 12, staggerMs: 18 });
-    return;
+
+  let deadlinePillHtml = "";
+  const catRounds = category.admission_rounds || [];
+  const catDeadlines = category.deadlines || [];
+  const firstRoundDate = catRounds[0]?.deadline || catDeadlines[0]?.application_deadline || catDeadlines[0]?.date || category.application_deadline;
+  if (firstRoundDate) {
+    deadlinePillHtml = `
+      <div class="admission-category-deadline-pill">
+        ${heroIcon("document-check", "ui-icon ui-icon--14")}
+        <span><strong>${escapeHtml(t("university.admissions.deadline_label", "Deadline"))}:</strong> ${escapeHtml(localizeDeadlineDate(firstRoundDate))}</span>
+      </div>
+    `;
   }
 
-  const universityId = String(university.id || "").trim();
-  const contextProfile = getAdmissionContextProfile(university);
-  const admissionContext = selectedAdmissionContext(university, contextProfile);
-  const availableLevels = getAvailableStudyLevels(categories);
-  let activeLevelStored = admissionContext.selectedLevel;
-  if (!activeLevelStored) {
-    const profileStudyLevel = normalizeLevelKey(loadProfile()?.studyLevel);
-    if (availableLevels.some((l) => l.key === profileStudyLevel)) {
-      activeLevelStored = profileStudyLevel;
-    } else if (availableLevels.some((l) => l.key === "bachelor")) {
-      activeLevelStored = "bachelor";
-    } else {
-      activeLevelStored = "all";
-    }
-    admissionStudyLevelSelectionByUniversity.set(universityId, activeLevelStored);
-  }
-  const activeLevelKey = activeLevelStored || "all";
-
-  const levelFilteredCategories = admissionContext.levelCategories;
-  const selectedProgramStored = admissionContext.selectedProgram === GENERAL_PROGRAM_KEY ? "" : admissionContext.selectedProgram;
-  const hasExplicitProgramSelection = Boolean(selectedProgramStored);
-  const selectedProgramKey = selectedProgramStored || GENERAL_PROGRAM_KEY;
-  const visibleCategories = admissionContext.visibleCategories;
-  visibleAdmissionContextByUniversity.set(universityId, {
-    selectedLevel: activeLevelKey,
-    selectedProgram: selectedProgramKey,
-    visibleCategories,
-  });
-  const selectedChoiceKey = effectiveSelectedChoiceKeyOverride !== undefined
-    ? effectiveSelectedChoiceKeyOverride
-    : getSelectedAdmissionChoice(university.id);
-  const contextChance = uniChance;
-  const bestChoiceKey = String(contextChance?.bestChoiceKey || "").trim();
-  const recommendedChoiceKey = String(contextChance?.recommendedChoiceKey || bestChoiceKey || "").trim();
-  const effectiveSelectedChoiceKey = selectedChoiceKey || bestChoiceKey;
-
-  const studyLevelFilterHtml = !compactMode && !hasExplicitProgramSelection
-    ? renderStudyLevelFilter(availableLevels, activeLevelKey, categories.length) : "";
-
-  let html = "";
-  const analysisHtml = `<details class="mit-admission-analysis"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${renderUniChanceSummary(contextChance)}${admissionContext.route !== "transfer" && activeLevelKey === "bachelor" ? admissionsOverviewHtml : ""}</details>`;
-  if (!compactMode) {
-    html += warningHtml + studyLevelFilterHtml;
-  }
-  html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
-  if (!compactMode) html += renderAdmissionContextControls(admissionContext.programCategories.length ? admissionContext.programCategories : levelFilteredCategories, admissionContext);
-  if (!compactMode && visibleCategories.length) {
-    const sourceUrl = safeUrl(visibleCategories[0].source_url);
-    html += `<div class="admission-decision-actions">${sourceUrl ? `<a href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.next_official_step", "Open official application requirements"))}</a>` : ""}<button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-deadlines">${escapeHtml(t("university.tab.deadlines", "Deadlines"))}</button><button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-finance">${escapeHtml(t("university.tab.costs", "Costs"))}</button></div>`;
-  }
-  if (selectedProgramKey !== GENERAL_PROGRAM_KEY && visibleCategories.length && visibleCategories.every((category) => String(category?.scope || "general").toLowerCase() === "general")) {
-    html += `<div class="admission-scope-note">${escapeHtml(t("admission.program.using_general_note", "No program-specific score data is published here, so general requirements are shown."))}</div>`;
-  }
-
-  html += `<div class="admission-category-list">`;
-  visibleCategories.forEach((category, categoryIdx) => {
-    const profiles = getCategoryProfiles(category);
-    const profileRows = profiles.length ? profiles : [{ id: "general", label: t("admission.profile.general", "General") }];
-    const categoryKey = `${universityId}:${category.id || categoryIdx}`;
-    const choiceKeyStr = String(effectiveSelectedChoiceKey || "").trim();
-    let effectiveProfileId = "";
-    if (choiceKeyStr) {
-      const delimiter = choiceKeyStr.includes("::") ? "::" : ":";
-      const parts = choiceKeyStr.split(delimiter);
-      if (parts.length >= 2 && parts[0] === String(category.id || categoryIdx)) {
-        effectiveProfileId = parts[1];
-      }
-    }
-    const selectedProfileId = admissionProfileSelectionByCategory.get(categoryKey) || effectiveProfileId;
-    const activeProfile = profileRows.find((profile) => String(profile.id || "") === selectedProfileId) || profileRows[0];
-    const categoryLabel = trTrackLabel(category.label || category.name || "") || unknownFieldText("placeholder.field.admission_category", "Admission category");
-    const categoryDescription = trTrackDescription(university.id, category.id, category.description || "");
-    const profileDescription = trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.description || "");
-    const scopeLabel = String(category.scope || "general").toLowerCase() === "general"
-      ? t("admission.scope.general", "General")
-      : t("admission.scope.program_specific", "Program-specific");
-    const routeText = `${t("university.admissions.route_label", "Applicant route")}: ${applicantRouteLabel(category.applicant_route)}`;
-    const activeProfileLabel = translatedProfileLabel(activeProfile);
-    const activeChoiceKey = admissionChoiceKey(category, activeProfile, null);
-    const fundingOptions = getFundingOptions(category, activeProfile);
-    const activeChoiceChance = chanceByChoice.get(activeChoiceKey)
-      || fundingOptions.map((funding) => chanceByChoice.get(admissionChoiceKey(category, activeProfile, funding))).find(Boolean);
-    const profileHasFundingOptions = fundingOptions.length > 0;
-    const noPublishedMinimums = activeChoiceChance?.reason === "no_published_requirements";
-    const profileIsSelected = !profileHasFundingOptions && Boolean(effectiveSelectedChoiceKey && effectiveSelectedChoiceKey === activeChoiceKey);
-    const profileIsRecommended = !profileHasFundingOptions && activeChoiceChance?.chancePercent != null && Boolean(recommendedChoiceKey && recommendedChoiceKey === activeChoiceKey);
-
-    const catLevels = getCategoryLevelsList(category);
-    const catLevelBadges = catLevels.length
-      ? ` &middot; ${catLevels.map((l) => `<span class="admission-level-badge">${escapeHtml(trStudyLevel(l))}</span>`).join(" ")}`
-      : "";
-
-    let deadlinePillHtml = "";
-    const catRounds = category.admission_rounds || [];
-    const catDeadlines = category.deadlines || [];
-    const firstRoundDate = catRounds[0]?.deadline || catDeadlines[0]?.application_deadline || catDeadlines[0]?.date || category.application_deadline;
-    if (firstRoundDate) {
-      deadlinePillHtml = `
-        <div class="admission-category-deadline-pill">
-          ${heroIcon("document-check", "ui-icon ui-icon--14")}
-          <span><strong>${escapeHtml(t("university.admissions.deadline_label", "Deadline"))}:</strong> ${escapeHtml(localizeDeadlineDate(firstRoundDate))}</span>
+  const categoryId = String(category.id || categoryIdx);
+  return `
+    <section class="admission-category-card" data-admission-category="${escapeHtmlAttr(categoryId)}">
+      <div class="admission-category-head">
+        <div>
+          <div class="admission-category-kicker">${escapeHtml(t("admission.category", "Admission category"))} &middot; ${escapeHtml(scopeLabel)}${catLevelBadges} &middot; ${escapeHtml(routeText)}</div>
+          <h3 class="admission-category-title">${escapeHtml(categoryLabel)}</h3>
+          ${categoryDescription && categoryDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") ? `<p class="admission-category-description">${escapeHtml(categoryDescription)}</p>` : ""}
+          ${deadlinePillHtml}
         </div>
-      `;
-    }
+        <div class="admission-category-count">${escapeHtml(t("admission.profile_count", "{count} profiles").replace("{count}", String(profileRows.length)))}</div>
+      </div>
 
-    const categoryId = String(category.id || categoryIdx);
-    html += `
-      <section class="admission-category-card" data-admission-category="${escapeHtmlAttr(categoryId)}">
-        <div class="admission-category-head">
+      ${hasExplicitProgramSelection ? "" : renderApplicablePrograms(category, activeProfile)}
+
+      ${profileRows.length > 1 ? `
+      <div class="requirement-profile-tabs" role="tablist" aria-label="${escapeHtmlAttr(t("admission.profile.tabs_label", "Requirement profiles"))}">
+        ${profileRows.map((profile) => {
+          const active = profile === activeProfile;
+          return `
+            <button
+              type="button"
+              class="requirement-profile-tab${active ? " is-active" : ""}"
+              data-admission-category-key="${escapeHtmlAttr(categoryKey)}"
+              data-requirement-profile="${escapeHtmlAttr(String(profile.id || ""))}"
+              role="tab"
+              aria-selected="${active ? "true" : "false"}"
+            >${escapeHtml(translatedProfileLabel(profile))}</button>
+          `;
+        }).join("")}
+      </div>
+      ` : ""}
+
+      <div class="requirement-profile-panel">
+        ${!noPublishedMinimums && (profileRows.length > 1 || profileIsRecommended || activeChoiceChance) ? `
+        <div class="requirement-profile-head">
+          ${profileRows.length > 1 ? `
           <div>
-            <div class="admission-category-kicker">${escapeHtml(t("admission.category", "Admission category"))} &middot; ${escapeHtml(scopeLabel)}${catLevelBadges} &middot; ${escapeHtml(routeText)}</div>
-            <h3 class="admission-category-title">${escapeHtml(categoryLabel)}</h3>
-            ${categoryDescription && categoryDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") ? `<p class="admission-category-description">${escapeHtml(categoryDescription)}</p>` : ""}
-            ${deadlinePillHtml}
+            <div class="requirement-profile-kicker">${escapeHtml(t("admission.profile", "Requirement profile"))}</div>
+            <h4 class="requirement-profile-title">${escapeHtml(activeProfileLabel)}</h4>
           </div>
-          <div class="admission-category-count">${escapeHtml(t("admission.profile_count", "{count} profiles").replace("{count}", String(profileRows.length)))}</div>
-        </div>
-
-        ${hasExplicitProgramSelection ? "" : renderApplicablePrograms(category, activeProfile)}
-
-        ${profileRows.length > 1 ? `
-        <div class="requirement-profile-tabs" role="tablist" aria-label="${escapeHtmlAttr(t("admission.profile.tabs_label", "Requirement profiles"))}">
-          ${profileRows.map((profile) => {
-            const active = profile === activeProfile;
-            return `
-              <button
-                type="button"
-                class="requirement-profile-tab${active ? " is-active" : ""}"
-                data-admission-category-key="${escapeHtmlAttr(categoryKey)}"
-                data-requirement-profile="${escapeHtmlAttr(String(profile.id || ""))}"
-                role="tab"
-                aria-selected="${active ? "true" : "false"}"
-              >${escapeHtml(translatedProfileLabel(profile))}</button>
-            `;
-          }).join("")}
+          ` : `<div></div>`}
+          <div class="requirement-profile-badges">
+            ${profileIsRecommended ? `<span class="track-selection-badge">${escapeHtml(t("admission.choice.recommended", "Recommended"))}</span>` : ""}
+            ${renderTrackChanceChip(activeChoiceChance)}
+          </div>
         </div>
         ` : ""}
+        ${noPublishedMinimums ? renderTrackChanceChip(activeChoiceChance) : ""}
+        ${renderTrackFactors(activeChoiceChance)}
+        ${profileDescription && profileDescription !== categoryDescription && profileDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") && profileRows.length === 1 ? `<p class="admission-scope-note">${escapeHtml(profileDescription)}</p>` : ""}
+        ${activeChoiceChance?.chancePercent != null && (activeProfile.requirements_note || category.requirements_note) ? `<p class="admission-scope-note">${escapeHtml(t("admission.requirements_fit.unscored_conditions", "The percentage covers numeric minimums only. Subject, grade, document, and eligibility conditions still need separate review."))}</p>` : ""}
 
-        <div class="requirement-profile-panel">
-          ${!noPublishedMinimums && (profileRows.length > 1 || profileIsRecommended || activeChoiceChance) ? `
-          <div class="requirement-profile-head">
-            ${profileRows.length > 1 ? `
-            <div>
-              <div class="requirement-profile-kicker">${escapeHtml(t("admission.profile", "Requirement profile"))}</div>
-              <h4 class="requirement-profile-title">${escapeHtml(activeProfileLabel)}</h4>
+        ${renderChoiceRequirements({ category, funding: null, profile: activeProfile, university })}
+        ${!compactMode ? renderRequirementChecks(activeChoiceChance) : ""}
+
+        ${profileHasFundingOptions
+          ? renderFundingOptions({ annualCostForTrack, category, effectiveSelectedChoiceKey, profile: activeProfile, university })
+          : `
+            <div class="track-select-row">
+              <button type="button" class="track-select-btn${profileIsSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey: activeChoiceKey, profile: activeProfile })} ${profileIsSelected ? "disabled" : ""}>
+                ${escapeHtml(profileIsSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
+              </button>
             </div>
-            ` : `<div></div>`}
-            <div class="requirement-profile-badges">
-              ${profileIsRecommended ? `<span class="track-selection-badge">${escapeHtml(t("admission.choice.recommended", "Recommended"))}</span>` : ""}
-              ${renderTrackChanceChip(activeChoiceChance)}
-            </div>
-          </div>
-          ` : ""}
-          ${noPublishedMinimums ? renderTrackChanceChip(activeChoiceChance) : ""}
-          ${renderTrackFactors(activeChoiceChance)}
-          ${profileDescription && profileDescription !== categoryDescription && profileDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") && profileRows.length === 1 ? `<p class="admission-scope-note">${escapeHtml(profileDescription)}</p>` : ""}
-          ${activeChoiceChance?.chancePercent != null && (activeProfile.requirements_note || category.requirements_note) ? `<p class="admission-scope-note">${escapeHtml(t("admission.requirements_fit.unscored_conditions", "The percentage covers numeric minimums only. Subject, grade, document, and eligibility conditions still need separate review."))}</p>` : ""}
+          `}
+      </div>
+    </section>
+  `;
+}
 
-          ${renderChoiceRequirements({ category, funding: null, profile: activeProfile, university })}
-          ${!compactMode ? renderRequirementChecks(activeChoiceChance) : ""}
-
-          ${profileHasFundingOptions
-            ? renderFundingOptions({ annualCostForTrack, category, effectiveSelectedChoiceKey, profile: activeProfile, university })
-            : `
-              <div class="track-select-row">
-                <button type="button" class="track-select-btn${profileIsSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey: activeChoiceKey, profile: activeProfile })} ${profileIsSelected ? "disabled" : ""}>
-                  ${escapeHtml(profileIsSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
-                </button>
-              </div>
-            `}
-        </div>
-      </section>
-    `;
-  });
-  html += `</div>`;
-  if (!compactMode) html += analysisHtml;
-
-  container.innerHTML = html;
+function attachAdmissionSectionEventListeners({
+  annualCostForTrack,
+  chanceByChoice,
+  compactMode,
+  container,
+  effectiveSelectedChoiceKeyOverride,
+  onChoiceSelected,
+  onContextChange,
+  uniChance,
+  university,
+  universityId,
+  admissionContext,
+}) {
   container.querySelectorAll("[data-admission-open-tab]").forEach((button) => {
     button.addEventListener("click", () => document.querySelector(`.d-tab-btn[data-tab="${button.dataset.admissionOpenTab}"]`)?.click());
   });
@@ -2309,10 +2242,133 @@ export function renderAdmissionSection({
       replayMotion(button.closest(".admission-funding-option") || button.closest(".requirement-profile-panel") || button, "motion-state-pulse", { timeoutMs: 520 });
     });
   });
+}
+
+export function renderAdmissionSection({
+  annualCostForTrack,
+  container,
+  uniChance,
+  uniChanceByChoiceKey,
+  university,
+  onChoiceSelected,
+  effectiveSelectedChoiceKeyOverride,
+  onContextChange,
+  compactMode = false,
+}) {
+  if (!container) return;
+  const chanceByChoice = uniChanceByChoiceKey instanceof Map ? uniChanceByChoiceKey : new Map();
+
+  const warningHtml = uniChance?.missingEvidence
+    ? `<div class="chance-warning">${escapeHtml(t("admission.requirements_fit.missing_evidence_note", "Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed."))}</div>`
+    : "";
+  const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
+    ? university.academics.admissions
+    : null;
+  const admissionsOverviewHtml = renderAdmissionsOverview(admissionsData);
+  const categories = getAdmissionCategories(university);
+  if (!categories.length) {
+    if (compactMode) {
+      container.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
+    } else {
+      container.innerHTML = `${warningHtml}${renderUniChanceSummary(uniChance)}${admissionsOverviewHtml}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
+    }
+    applyPercentWidths(container);
+    markMotionEnter(container, ".admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 12, staggerMs: 18 });
+    return;
+  }
+
+  const universityId = String(university.id || "").trim();
+  const contextProfile = getAdmissionContextProfile(university);
+  const admissionContext = selectedAdmissionContext(university, contextProfile);
+  const availableLevels = getAvailableStudyLevels(categories);
+  let activeLevelStored = admissionContext.selectedLevel;
+  if (!activeLevelStored) {
+    const profileStudyLevel = normalizeLevelKey(loadProfile()?.studyLevel);
+    if (availableLevels.some((l) => l.key === profileStudyLevel)) {
+      activeLevelStored = profileStudyLevel;
+    } else if (availableLevels.some((l) => l.key === "bachelor")) {
+      activeLevelStored = "bachelor";
+    } else {
+      activeLevelStored = "all";
+    }
+    admissionStudyLevelSelectionByUniversity.set(universityId, activeLevelStored);
+  }
+  const activeLevelKey = activeLevelStored || "all";
+
+  const levelFilteredCategories = admissionContext.levelCategories;
+  const selectedProgramStored = admissionContext.selectedProgram === GENERAL_PROGRAM_KEY ? "" : admissionContext.selectedProgram;
+  const hasExplicitProgramSelection = Boolean(selectedProgramStored);
+  const selectedProgramKey = selectedProgramStored || GENERAL_PROGRAM_KEY;
+  const visibleCategories = admissionContext.visibleCategories;
+  visibleAdmissionContextByUniversity.set(universityId, {
+    selectedLevel: activeLevelKey,
+    selectedProgram: selectedProgramKey,
+    visibleCategories,
+  });
+  const selectedChoiceKey = effectiveSelectedChoiceKeyOverride !== undefined
+    ? effectiveSelectedChoiceKeyOverride
+    : getSelectedAdmissionChoice(university.id);
+  const contextChance = uniChance;
+  const bestChoiceKey = String(contextChance?.bestChoiceKey || "").trim();
+  const recommendedChoiceKey = String(contextChance?.recommendedChoiceKey || bestChoiceKey || "").trim();
+  const effectiveSelectedChoiceKey = selectedChoiceKey || bestChoiceKey;
+
+  const studyLevelFilterHtml = !compactMode && !hasExplicitProgramSelection
+    ? renderStudyLevelFilter(availableLevels, activeLevelKey, categories.length) : "";
+
+  let html = "";
+  const analysisHtml = `<details class="mit-admission-analysis"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${renderUniChanceSummary(contextChance)}${admissionContext.route !== "transfer" && activeLevelKey === "bachelor" ? admissionsOverviewHtml : ""}</details>`;
+  if (!compactMode) {
+    html += warningHtml + studyLevelFilterHtml;
+  }
+  html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
+  if (!compactMode) html += renderAdmissionContextControls(admissionContext.programCategories.length ? admissionContext.programCategories : levelFilteredCategories, admissionContext);
+  if (!compactMode && visibleCategories.length) {
+    const sourceUrl = safeUrl(visibleCategories[0].source_url);
+    html += `<div class="admission-decision-actions">${sourceUrl ? `<a href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.next_official_step", "Open official application requirements"))}</a>` : ""}<button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-deadlines">${escapeHtml(t("university.tab.deadlines", "Deadlines"))}</button><button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-finance">${escapeHtml(t("university.tab.costs", "Costs"))}</button></div>`;
+  }
+  if (selectedProgramKey !== GENERAL_PROGRAM_KEY && visibleCategories.length && visibleCategories.every((category) => String(category?.scope || "general").toLowerCase() === "general")) {
+    html += `<div class="admission-scope-note">${escapeHtml(t("admission.program.using_general_note", "No program-specific score data is published here, so general requirements are shown."))}</div>`;
+  }
+
+  html += `<div class="admission-category-list">`;
+  visibleCategories.forEach((category, categoryIdx) => {
+    html += renderAdmissionCategoryCard({
+      annualCostForTrack,
+      category,
+      categoryIdx,
+      chanceByChoice,
+      compactMode,
+      effectiveSelectedChoiceKey,
+      hasExplicitProgramSelection,
+      recommendedChoiceKey,
+      university,
+      universityId,
+    });
+  });
+  html += `</div>`;
+  if (!compactMode) html += analysisHtml;
+
+  container.innerHTML = html;
+
+  attachAdmissionSectionEventListeners({
+    annualCostForTrack,
+    chanceByChoice,
+    compactMode,
+    container,
+    effectiveSelectedChoiceKeyOverride,
+    onChoiceSelected,
+    onContextChange,
+    uniChance,
+    university,
+    universityId,
+    admissionContext,
+  });
 
   applyPercentWidths(container);
   markMotionEnter(container, ".admission-category-card, .admission-funding-option, .admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 18, staggerMs: 18 });
   refreshFundingAwardsForVisibleAdmission(university);
+}
 }
 
 export function renderFinanceSection({
