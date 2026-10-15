@@ -8,6 +8,19 @@ UniSearch is primarily a maintainer-led project with community contributions. Ex
 - Follow the [admissions product model](docs/admissions-product-model.md): cover undergraduate, master's, doctoral, and professional study, and keep facts scoped to the relevant program and applicant route.
 - Do not add dependencies unless they solve a clear problem and fit an open-source project.
 
+## Dependency Management
+
+Choose a dependency only when the standard library or an existing project dependency cannot do the job. Before adding one, review its upstream source, maintenance activity, license, and known security advisories; record any required attribution in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+- JavaScript dependencies are declared in `package.json` and resolved in `package-lock.json`. Use npm to add or update them; do not edit the lockfile by hand.
+- Python inputs are maintained in `backend/requirements.txt` and `backend/requirements-dev.txt`. Regenerate the hashed locks with the repository's pinned Python target:
+  ```bash
+  uv pip compile backend/requirements.txt --universal --python-version 3.12 --generate-hashes --output-file backend/requirements.lock
+  uv pip compile backend/requirements-dev.txt --universal --python-version 3.12 --generate-hashes --output-file backend/requirements-dev.lock
+  ```
+- Install from the lockfiles with `npm ci` and `uv pip install --require-hashes`; do not install unpinned dependency versions in CI or releases.
+- In the PR description, explain why a new direct dependency is needed and identify its source and license.
+
 ## Local Setup
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) before setting up the Python environment.
 
@@ -82,9 +95,14 @@ Use `npm run test:all` for broad behavior changes.
 
 For visible UI changes, include screenshots or notes for the relevant desktop and mobile widths, and mention whether light and dark themes were checked.
 
+Every PR must pass the required branch checks before it can merge. These include backend and browser tests, repository hygiene, dependency auditing, CodeQL for JavaScript and Python, Trivy repository checks, repository guards, SonarCloud, and DCO. Fuzzing and the full browser matrix also run on their configured path or scheduled triggers. The workflow files under `.github/workflows/` define the current triggers and commands.
+
+Changes to behavior, API contracts, data processing, persistence, or security controls must add or update automated tests for the changed behavior. Documentation-only changes do not need artificial tests.
+
 ## PR Expectations
 - Describe what changed and why.
 - List the checks you ran.
 - Mention any checks you could not run.
 - Keep screenshots or short notes for visible UI changes.
 - Do not include secrets, local paths, personal IPs, `.env` files, cookies, logs, or generated dumps.
+- Add a DCO sign-off to every commit in the PR. Use `git commit -s` to append `Signed-off-by: Full Name <email>`; the repository owner must install the [DCO GitHub App](https://github.com/apps/dco) for this repository and require its status before merging, so it can verify that each sign-off matches the commit author. Read the [Developer Certificate of Origin](https://developercertificate.org/) before signing.

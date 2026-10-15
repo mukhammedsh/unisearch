@@ -6,14 +6,14 @@ This document provides a comprehensive overview of the UniSearch technical archi
 
 ## 1. System Overview & Component Topology
 
-UniSearch is designed as a focused, high-performance academic search and recommendation engine. It pairs a borderless, lightweight vanilla JavaScript frontend (no heavy framework overhead) with a high-throughput Python FastAPI microservice, backed by in-memory Redis caching, neural semantic embeddings, and verified institutional datasets.
+UniSearch is a web application with a vanilla JavaScript frontend and a Python FastAPI API. It serves a source-backed university catalog, optional applicant-profile calculations, and localized program and admission information. Redis is an optional cache; semantic embeddings are available when the configured model is installed.
 
 ```mermaid
 flowchart TD
     subgraph Client ["Client Layer (Browser)"]
         UI["Calm Academic UI\n(HTML5, Vanilla ES Modules, CSS Tokens)"]
         State["State Management\n(LocalStorage, URL Routing, SafeStorage)"]
-        I18N["Client-side Localization\n(Dynamic EN / RU via i18n.js)"]
+        I18N["Client-side Localization\n(English, Russian, Kazakh)"]
     end
 
     subgraph Gateway ["Edge / Reverse Proxy Layer"]
@@ -24,14 +24,22 @@ flowchart TD
         MW["Security Middleware\n(Rate Limiter, Body Limit, CSP, Proxy Guard)"]
         Routers["API Routers\n(/universities, /ai-sort, /compare, /exams)"]
         UniFit["UniFit Composite Engine\n(Personalized Ranking, Sliders)"]
-        UniChance["UniChance Estimator\n(Admissions Probability Engine)"]
+        UniChance["UniChance\n(Published Requirements Fit)"]
         ML["ML Semantic Service\n(multilingual-e5 Embeddings, Vector Cosine)"]
     end
 
     subgraph Persistence ["Data & Cache Layer"]
-        Redis[("Redis In-Memory Cache\n(Query cache, Ping cache, Fallback safe)")]
-        Disk[("Verified JSON Catalog\n(50 Institutions, Criteria, Programs)")]
+        Redis[("Optional Redis Cache\n(Query and rate cache)")]
+        Disk[("Source-Controlled JSON Catalog\n(Coverage varies by institution)")]
         Media[("Media Assets\n(1:1 PNG Logos, 16:9 WebP Thumbnails)")]
+    end
+
+    subgraph External ["External Interfaces"]
+        CDN["unpkg\n(Pinned Leaflet assets)"]
+        Tiles["OpenStreetMap\n(Map tiles)"]
+        Rates["ExchangeRate-API\n(Currency rates)"]
+        ModelRegistry["Hugging Face Hub\n(Model weights, when needed)"]
+        Telemetry["Sentry\n(Optional telemetry)"]
     end
 
     UI <--> |HTTP / JSON over HTTPS| Proxy
@@ -43,13 +51,37 @@ flowchart TD
     Routers <--> Redis
     Routers --> Disk
     Routers --> Media
+    UI --> CDN
+    UI --> Tiles
+    Routers --> Rates
+    ML --> ModelRegistry
+    Routers -.-> Telemetry
 ```
+
+---
+
+## Actors and External Interfaces
+
+| Actor or interface | Purpose and data flow |
+| --- | --- |
+| Applicant or visitor | Browses public catalog data without an account. Optional profile evidence is kept in browser storage and sent to the API only when needed for a requested calculation or ranking. |
+| Contributor and maintainer | Contributors propose source, code, documentation, or data changes through pull requests. Maintainers review and merge changes, administer access, and publish releases. |
+| Browser to frontend | The browser downloads static HTML, JavaScript, CSS, and catalog media from the configured frontend host over HTTPS. |
+| Browser to FastAPI | The frontend sends JSON requests to the runtime-configured API base. Main routes cover catalog search and details, admissions context, UniFit ranking, UniChance requirements fit, ROI, validation, and currency rates. Request and response behavior is described in [the API and admissions runtime contract](admissions-runtime-contract.md); CORS and deployment guidance are in [deployment security](deployment_security.md). `/docs` and `/openapi.json` are available only when `DOCS_ENABLED=1`. |
+| Browser to unpkg and OpenStreetMap | The map loads version-pinned Leaflet assets from unpkg and map tiles from OpenStreetMap. Tile requests use catalog coordinates; applicant profile data is not sent to these providers. |
+| FastAPI to ExchangeRate-API | When currency-rate retrieval is enabled, the backend requests exchange rates from the configured `CURRENCY_RATES_API_URL`. The request contains currency-rate parameters, not applicant profile evidence. |
+| FastAPI to Redis | When configured, Redis stores bounded cache entries. Redis is not the authoritative catalog and can be disabled or unavailable without making it the source of application data. |
+| FastAPI to Hugging Face Hub | The configured sentence-transformer model (default `intfloat/multilingual-e5-base`) may be downloaded during initialization if it is not already available. Embedding inference runs in the backend; applicant profiles are not sent to the model registry. |
+| FastAPI to Sentry | If `SENTRY_DSN` is configured, the backend sends filtered error and transaction telemetry. Default PII and local-variable capture are disabled, and sensitive fields are scrubbed before transmission. |
+| Release workflow to GitHub | GitHub Actions builds versioned ZIP assets and a backend container image, publishes them to GitHub Releases and GHCR, and creates build-provenance attestations. |
+
+The backend links users to official university sources but does not fetch arbitrary applicant-supplied URLs. Runtime hosts, the API base, currency provider, optional Redis, model location, and optional telemetry are deployment configuration rather than hardcoded application addresses.
 
 ---
 
 ## 2. Frontend Layer (Calm Academic Workspace)
 
-The frontend is implemented purely in standards-compliant **Vanilla JavaScript (ES Modules)**, HTML5, and semantic CSS3. It deliberately avoids UI framework bloat (React/Vue/Angular), resulting in instant first-contentful paint (< 200ms) and minimal memory consumption.
+The frontend uses **Vanilla JavaScript (ES Modules)**, HTML5, and CSS without a UI framework.
 
 ### Key Architectural Modules
 
@@ -58,7 +90,7 @@ The frontend is implemented purely in standards-compliant **Vanilla JavaScript (
 * **Global Search Component (`frontend/javascript/components/navbar-search.js`):**
   Provides a debounced (180ms) autocomplete typeahead with keyboard navigation (arrow keys, Enter, Escape), matched alias badges, network status monitoring, and full mobile drawer overlay.
 * **Localization Subsystem (`frontend/javascript/i18n.js`):**
-  Dynamic client-side internationalization supporting English and Russian without full page reloads. Strings are loaded from `frontend/Localization/` with a fallback key mechanism.
+  Dynamic client-side internationalization supporting English, Russian, and Kazakh without full page reloads. Strings are loaded from `frontend/Localization/` with a fallback key mechanism.
 * **State Persistence (`frontend/javascript/utils/persistence.js` & `safe-storage.js`):**
   Safely syncs applicant preferences (GPA, exam scores, budget, currency choices, comparison trays) to browser `localStorage` with migration versioning and corrupted JSON recovery.
 * **Design System & Styling (`frontend/css/style.css`):**
@@ -69,9 +101,9 @@ The frontend is implemented purely in standards-compliant **Vanilla JavaScript (
 
 ---
 
-## 3. Backend Layer (FastAPI Microservice)
+## 3. Backend Layer (FastAPI API)
 
-The backend is built with **Python 3.12+ and FastAPI**, leveraging asynchronous event loops (ASGI) and strict type validation via Pydantic V2.
+The backend is built with **Python 3.12+ and FastAPI**, using ASGI and Pydantic V2 request and response models.
 
 ```
 backend/app/
@@ -111,7 +143,7 @@ backend/app/
 
 ## 4. Scoring & Intelligence Engine
 
-UniSearch separates calculated heuristic proxies from verified facts. Its core decision engine comprises two complementary algorithmic systems:
+UniSearch keeps personalized ranking separate from published-requirement checks. Neither system represents an admission outcome or funding decision.
 
 ```mermaid
 sequenceDiagram
@@ -121,7 +153,7 @@ sequenceDiagram
     participant API as FastAPI Backend
     participant Cache as Redis Store
     participant ML as ML Embeddings (e5)
-    participant Engine as UniFit / UniChance
+    participant Engine as UniFit
 
     User->>Client: Adjusts Trade-off Sliders (Budget, GPA, Science)
     Client->>API: POST /universities/ai-sort (Profile, Weights)
@@ -131,45 +163,37 @@ sequenceDiagram
     else Cache Miss
         API->>ML: Vectorize Query & Subject Preferences
         ML-->>API: Dense Query Embedding Vector
-        API->>Engine: Run Composite UniFit & UniChance Calculation
-        Note over Engine: 1. Budget Fit Score<br/>2. Academic / GPA Alignment<br/>3. Exam Target Calibration<br/>4. Semantic Vector Cosine Match<br/>5. Trade-off Weight Application
-        Engine-->>API: Sorted Ranked Results + Sub-factor Breakdown
+        API->>Engine: Calculate UniFit ranking components
+        Note over Engine: Available profile, preference, requirement, cost, and semantic inputs
+        Engine-->>API: Ranked results with available explanations
         API->>Cache: Store in Cache (TTL 10m)
     end
-    API-->>Client: JSON Payload (Ranked Universities, Chance Bands)
+    API-->>Client: JSON Payload (Ranked Universities)
     Client-->>User: Render Borderless Cards with Fit Badges
 ```
 
 ### A. UniFit (Composite Personalized Ranking)
-Implemented in `backend/app/services/ai_scoring.py`, UniFit generates a normalized score ($0.0 - 100.0$) tailored to an individual applicant profile:
-* **Academic Fit:** Evaluates GPA and standardized test scores (SAT, ACT, IELTS, TOEFL, TestDaF) against verified institutional quartiles (25th–75th percentiles). Missing test scores are handled conservatively without false-zero penalties.
-* **Financial Fit:** Compares total cost of attendance (tuition, fees, living costs) against applicant budget, factoring in merit scholarships and state grant programs.
-* **Trade-off Sliders:**
-  - *Budget vs. Prestige:* Balances tuition sensitivity against global/national university reputation.
-  - *Practice vs. Science:* Shifts weight between research activity/PhD density and internship/industry placement rates.
-  - *Social vs. Hardcore:* Balances student satisfaction/life ratings against academic selectivity and grading rigor.
-* **Language Compatibility:** Analyzes required instruction languages against applicant certified language proficiencies.
+Implemented in `backend/app/services/ai_scoring.py`, UniFit ranks catalog options using the applicant's selected profile context, preference weights, and available cost, academic, language, interest, and semantic inputs. Unavailable components are omitted rather than filled with invented values. UniFit is a sorting aid, not an admission probability or an aid prediction.
 
-### B. UniChance (Admissions Probability Calibration)
-UniChance computes non-linear admissions probability bands:
-* **Low / Reach (< 25%):** Applicant credentials fall below the institution's 25th percentile.
-* **Target / Competitive (25% - 70%):** Applicant credentials match institutional median profiles.
-* **Safe / High (> 70%):** Applicant credentials exceed the 75th percentile with confirmed high historical yield.
-* *Integrity Rule:* Without verified institutional admission profiles, the system returns `estimated_fallback` or `no_estimate`. Proxies are never misrepresented as verified guarantees.
+### B. UniChance (Published Requirements Fit)
+
+UniChance reports the percentage of evaluable, published academic and language minimum checks met for the applicable admission choice. Its denominator excludes evidence-presence checks, funding conditions, and nonnumeric or holistic requirements. It is a requirements-fit measure, not a probability of admission, overall eligibility decision, or funding prediction.
+
+The API calculates this value separately through `POST /universities/{university_id}/uni-chance`. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
 
 ### C. ML Semantic Matching (`multilingual-e5`)
 Implemented in `backend/app/services/ml_scoring.py`:
-* Leverages dense neural sentence embeddings via `intfloat/multilingual-e5-small`.
+* Uses dense multilingual sentence embeddings; the default model is `intfloat/multilingual-e5-base`, configurable through `ML_SEMANTIC_EMBEDDINGS_MODEL`.
 * Enables multilingual semantic query expansion (e.g. an applicant querying in Russian or Kazakh naturally matches English and German program descriptions).
-* **Fault-Tolerant Mode:** If neural models or PyTorch are disabled (`ML_SEMANTIC_EMBEDDINGS_ENABLED=0`) or unavailable in restricted container environments, the engine seamlessly reports `unavailable` mode and relies on deterministic lexical ranking without silent degradation.
+* **Unavailable Mode:** If the model or PyTorch is disabled or unavailable, the API reports `unavailable` mode. It does not silently substitute lexical matching for a missing semantic result.
 
 ---
 
 ## 5. Data Architecture & Caching Strategy
 
 ### Data Storage Model
-* **Authoritative Catalog (`backend/data/`):**
-  Stored as structured, normalized JSON files under source control. Every university entry contains verified data points: metadata, geographic coordinates, admissions requirements, tuition schedules, study modes, and language requirements.
+* **Catalog (`backend/data/`):**
+  Stored as structured JSON files under source control. Coverage varies by institution and program; missing facts remain unknown rather than being inferred. Admission facts are scoped to their source, program, applicant route, and cycle where published.
 * **Asset Directory (`backend/data/university_assets/`):**
   - Institutional logos: 1:1 square PNG format with responsive fallbacks.
   - Campus thumbnails: 16:9 WebP and JPEG images generated in multiple responsive resolutions.
@@ -200,12 +224,11 @@ UniSearch provides fine-grained observability for production hosting:
 
 The repository enforces progressive, layered testing:
 
-| Test Layer | Framework | Scope | Coverage / SLA |
-| --- | --- | --- | --- |
-| **Backend Unit & API** | Python `unittest` + `TestClient` | Routers, UniFit scoring, Redis store, security middleware, schemas | **85% Statement**, **81% Branch** |
-| **Frontend Unit** | Node.js Test Runner (V8) | Formatting, search autocomplete, i18n, persistence, DOM events | **80.15% Line Coverage** |
-| **E2E Integration** | Playwright (Chromium) | Full browser journeys, filters, compare tray, light/dark themes | Automated on every PR |
-| **Security SAST** | GitHub CodeQL | Python & JavaScript vulnerability scanning | Automated CI scan |
-| **Container & Secret Scan** | Aqua Security Trivy | Container image vulnerabilities and secret leaks | Automated CI scan |
-| **Fuzz Testing (DAST)** | Google ClusterFuzzLite / Atheris | Continuous fuzzing of scoring engines and input parsers | Automated CI fuzzing |
-| **Design Integrity** | Custom Token Linter | Zero hardcoded colors; strict borderless design system tokens | 0 violations baseline |
+| Test Layer | Framework | Scope and trigger |
+| --- | --- | --- |
+| **Backend Unit & API** | Python `unittest` + `TestClient` | Routers, scoring, Redis integration, security middleware, and schemas; required on PRs. |
+| **Frontend Unit** | Node.js test runner | Formatting, search, localization, persistence, and DOM behavior; required on PRs. |
+| **Browser Integration** | Playwright | Chromium applicant and catalog journeys; required on PRs. A broader browser matrix runs nightly. |
+| **Security Analysis** | GitHub CodeQL, npm audit, pip-audit, and Trivy | CodeQL and dependency audits run on PRs. Trivy scans repository files for secrets and configuration; it is not a container-image vulnerability scan. |
+| **Repository Checks** | GitHub Actions and SonarCloud | Version, encoding, tokens, localization, data, and quality checks; required statuses are configured on the primary branch. |
+| **Fuzzing** | Google ClusterFuzzLite / Atheris | Fuzzes selected backend paths on PRs and runs on a schedule. |
