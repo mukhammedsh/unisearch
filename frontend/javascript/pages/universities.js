@@ -352,8 +352,6 @@ function setupStatusOverflowHandlers() {
         }
     };
     document.addEventListener("keydown", __universitiesOverflowKeydownHandler);
-
-    return closeAllStatusOverflows;
 }
 
 export function initUniversitiesPage() {
@@ -409,7 +407,7 @@ export function initUniversitiesPage() {
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
     bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
 
-    const closeAllStatusOverflows = setupStatusOverflowHandlers();
+    setupStatusOverflowHandlers();
 
     let unifitWarningBannerDismissed = false;
 
