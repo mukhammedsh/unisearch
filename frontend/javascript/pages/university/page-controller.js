@@ -275,7 +275,7 @@ function computeAcceptanceRate(university) {
     : (Number.isFinite(acceptanceComputed) ? acceptanceComputed : null);
 }
 
-function resolveQualificationProgram(university, universityId, profile) {
+function resolveProgramForProfile(university, universityId, profile, { allowPartial = false } = {}) {
   const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
   const choices = profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object"
     ? profile.selectedAdmissionChoices
@@ -290,25 +290,18 @@ function resolveQualificationProgram(university, universityId, profile) {
     .map((value) => String(value || "").trim())
     .filter(Boolean);
   if (!targetNames.length) return null;
-  return resolveProgramByName(programs, targetNames, { allowPartial: true });
+  return resolveProgramByName(programs, targetNames, allowPartial ? { allowPartial: true } : undefined);
 }
 
-function resolveCoverageProgram(university, universityId, profile) {
-  const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];
-  const choices = profile?.selectedAdmissionChoices && typeof profile.selectedAdmissionChoices === "object"
-    ? profile.selectedAdmissionChoices
-    : {};
-  const selectedChoice = choices[universityId] && typeof choices[universityId] === "object" ? choices[universityId] : {};
-  const programId = String(selectedChoice.programId || selectedChoice.program_id || "").trim();
-  if (programId) {
-    const found = resolveProgramByIdentifier(programs, programId);
-    if (found) return found;
-  }
-  const exactNames = [selectedChoice.programName, selectedChoice.program_name, profile?.major]
-    .map((value) => String(value || "").trim())
-    .filter(Boolean);
-  if (!exactNames.length) return null;
-  return resolveProgramByName(programs, exactNames);
+async function fetchUniversityProfileMetric(id, endpoint, profile) {
+  const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ profile }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data?.detail || `${endpoint} API Error`);
+  return data || null;
 }
 
 async function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
@@ -393,15 +386,9 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   const recomputeUniChance = async () => {
     const requestVersion = ++uniChanceRequestVersion;
     try {
-      const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/uni-chance`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile: contextProfileForApi() }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data?.detail || "UniChance API Error");
+      const data = await fetchUniversityProfileMetric(id, "uni-chance", contextProfileForApi());
       if (requestVersion !== uniChanceRequestVersion) return;
-      uniChance = data || null;
+      uniChance = data;
     } catch (error) {
       if (requestVersion !== uniChanceRequestVersion) return;
       console.error("Failed to compute UniChance on backend:", error);
@@ -414,15 +401,9 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   const recomputeUniRoi = async () => {
     const requestVersion = ++uniRoiRequestVersion;
     try {
-      const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/roi`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile: contextProfileForApi() }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data?.detail || "ROI API Error");
+      const data = await fetchUniversityProfileMetric(id, "roi", contextProfileForApi());
       if (requestVersion !== uniRoiRequestVersion) return;
-      uniRoi = data || null;
+      uniRoi = data;
     } catch (error) {
       if (requestVersion !== uniRoiRequestVersion) return;
       console.error("Failed to compute ROI on backend:", error);
@@ -447,8 +428,8 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
 
   const renderProgramsTab = () => {
     const profile = getAdmissionContextProfile(university, loadProfile() || {});
-    const selectedProgram = resolveQualificationProgram(university, universityId, profile);
-    const coverageProgram = resolveCoverageProgram(university, universityId, profile);
+    const selectedProgram = resolveProgramForProfile(university, universityId, profile, { allowPartial: true });
+    const coverageProgram = resolveProgramForProfile(university, universityId, profile);
     renderProgramsSection({
       admissionsData,
       container: document.getElementById("detailPrograms"),
