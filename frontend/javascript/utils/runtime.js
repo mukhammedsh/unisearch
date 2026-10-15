@@ -23,12 +23,8 @@ export function aiName(key) {
 }
 
 export function frontendStaticAsset(path = "") {
-  const cleanPath = String(path || "").replace(/^\/+/, "");
-  const currentPath = String(window.location.pathname || "");
-  const frontendPrefix = currentPath === "/frontend" || currentPath.startsWith("/frontend/")
-    ? "/frontend"
-    : "";
-  return `${frontendPrefix}/${cleanPath}`.replace(/\/{2,}/g, "/");
+  const cleanPath = String(path || "").replace(/^\/+/, "").replace(/\/{2,}/g, "/");
+  return new URL(cleanPath, document.baseURI).pathname;
 }
 
 export function prefersReducedMotion() {

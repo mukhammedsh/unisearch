@@ -53,6 +53,7 @@ describe("runtime.js", () => {
       hostname: "localhost",
       pathname: "/",
     };
+    document.baseURI = "http://localhost/";
   });
 
   describe("aiName", () => {
@@ -72,16 +73,25 @@ describe("runtime.js", () => {
 
   describe("frontendStaticAsset", () => {
     it("returns clean path when served from root", () => {
+      document.baseURI = "https://example.com/";
       window.location.pathname = "/index.html";
       assert.equal(frontendStaticAsset("images/logo.png"), "/images/logo.png");
       assert.equal(frontendStaticAsset("/images/logo.png"), "/images/logo.png");
       assert.equal(frontendStaticAsset("///images///logo.png"), "/images/logo.png");
     });
 
-    it("prepends /frontend prefix when app is running under /frontend subpath", () => {
+    it("preserves the /frontend prefix when app is served from a subpath", () => {
+      document.baseURI = "https://example.com/frontend/";
       window.location.pathname = "/frontend/index.html";
       assert.equal(frontendStaticAsset("images/logo.png"), "/frontend/images/logo.png");
       assert.equal(frontendStaticAsset("/css/style.css"), "/frontend/css/style.css");
+    });
+
+    it("preserves the repository prefix on GitHub Pages", () => {
+      document.baseURI = "https://mukhammedsh.github.io/unisearch/";
+      window.location.pathname = "/unisearch/index.html";
+      assert.equal(frontendStaticAsset("images/logo.png"), "/unisearch/images/logo.png");
+      assert.equal(frontendStaticAsset(""), "/unisearch/");
     });
   });
 
