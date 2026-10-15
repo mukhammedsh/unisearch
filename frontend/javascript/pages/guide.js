@@ -33,43 +33,57 @@ function bindGuideHashChange(handler) {
   window.addEventListener("hashchange", guideHashChangeHandler);
 }
 
-function guideLoadingMarkup(text) {
-  return `<p class="guide-loading-inline">${escapeHtml(text)}</p>`;
+function normalizeExamId(value) {
+  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+function stableExamSortKey(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const canonical = canonicalizeExamId(raw);
+  return normalizeExamId(canonical || raw) || normalizeExamId(raw);
 }
 
 function scoreScaleText(cfg) {
-  if (typeof cfg?.min_score === "number" && typeof cfg?.max_score === "number") {
-    return tFormat("guide.score_scale.min_max", { min: cfg.min_score, max: cfg.max_score }, ` (Score scale: ${cfg.min_score}–${cfg.max_score}).`);
-  }
-  if (typeof cfg?.max_score === "number") {
-    return tFormat("guide.score_scale.max", { max: cfg.max_score }, ` (Max scale: ${cfg.max_score}).`);
-  }
-  return "";
+  const inputMode = String(cfg?.input_mode || "").trim().toLowerCase();
+  if (inputMode && inputMode !== "number") return "";
+  const min = Number(cfg?.min);
+  const max = Number(cfg?.max);
+  if (!Number.isFinite(min) || !Number.isFinite(max) || min === max) return "";
+  return tFormat("guide.scale_text", { min, max }, `In UniSearch, this score is entered on a ${min}-${max} scale.`);
 }
 
-function withExamLabel(baseText, labelText) {
-  const label = String(labelText || "").trim();
-  if (!label) return baseText;
-  return tFormat("guide.exam_with_label", { text: baseText, label }, `${baseText} Map as ${label}.`);
+function guideLoadingMarkup(label) {
+  return `
+    <div class="inline-loading-note inline-loading-note--compact" role="status" aria-live="polite">
+      ${escapeHtml(String(label || t("common.loading", "Loading")))}
+    </div>
+  `;
 }
 
-function describeAcademicExam(examId, cfg, labelText = "") {
-  const normalized = String(canonicalizeExamId(examId) || examId).toUpperCase();
+function withExamLabel(description, examLabel) {
+  const desc = String(description || "").trim();
+  const label = String(examLabel || "").trim();
+  if (!label) return desc;
+  if (!desc) return label;
+  if (desc.toLocaleLowerCase().startsWith(label.toLocaleLowerCase())) return desc;
+  return tFormat("guide.exam_desc_with_label", { exam: label, desc }, `${label} - ${desc}`);
+}
+
+function describeAcademicExam(id, cfg, labelText = "") {
+  const normalized = normalizeExamId(id);
   const descriptions = {
-    GPA: t("guide.academic.gpa", "Grade point average converted to the local scale for profile calculation."),
-    SAT: t("guide.academic.sat", "American standardized test assessing reading, writing, and math for undergraduate entry."),
-    ACT: t("guide.academic.act", "American standardized college readiness test with optional writing section."),
-    GRE: t("guide.academic.gre", "Graduate Record Examination required by graduate programs across English-speaking countries."),
-    GMAT: t("guide.academic.gmat", "Standardized exam tailored for business school and MBA admissions."),
-    ENT: t("guide.academic.ent", "Unified National Testing system used for university entry in Kazakhstan."),
-    EGE: t("guide.academic.ege", "Unified State Examination required for entry into Russian higher education."),
-    UNT: t("guide.academic.unt", "National entry examination for secondary graduates in Kazakhstan."),
-    IB: t("guide.academic.ib", "International Baccalaureate Diploma Program score evaluated for entry and credit."),
-    ALEVEL: t("guide.academic.alevel", "British Advanced Level qualifications required across UK and Commonwealth routes."),
-    AP: t("guide.academic.ap", "Advanced Placement exam scores that fulfill course or credit prerequisites."),
-    ATAR: t("guide.academic.atar", "Australian Tertiary Admission Rank for entry into Australian universities."),
-    GAOKAO: t("guide.academic.gaokao", "National College Entrance Examination for undergraduate admission in China."),
-    ABITUR: t("guide.academic.abitur", "German Abitur, the general certificate that opens the country's universities."),
+    SAT: t("guide.academic.sat", "The American admission test of reading, writing, and math, recognized far beyond the US."),
+    ACT: t("guide.academic.act", "Its counterpart, covering English, math, reading, and science reasoning."),
+    GPA: t("guide.academic.gpa", "Your average school grade, normalized to a 4.0 scale inside UniSearch so that countries stay comparable."),
+    UNT: t("guide.academic.unt", "Kazakhstan's national test and the main road to a bachelor's seat at home."),
+    NUETTOTAL: t("guide.academic.nuettotal", "The combined score of a single university's own entrance exam, valid only on its routes."),
+    APTOTAL: t("guide.academic.aptotal", "Combined performance across AP subjects, for systems that recognize them."),
+    IBDIPLOMA: t("guide.academic.ibdiploma", "The IB Diploma total, accepted by universities worldwide."),
+    ALEVELCERT: t("guide.academic.alevelcert", "British A-Level subject grades — enter them as A*AA, and the best three are converted into a comparable score."),
+    HKDSELEVEL: t("guide.academic.hkdselevel", "Hong Kong secondary-school levels, converted internally with 5* counting as 6 and 5** as 7."),
+    SWISSMATURITYCERT: t("guide.academic.swissmaturitycert", "The Swiss Matura, the general certificate that opens the country's universities."),
+    GERMANABITURCERT: t("guide.academic.germanabiturcert", "The German Abitur, the general certificate that opens the country's universities."),
     OSSDCERT: t("guide.academic.ossdcert", "Completion of the Ontario Secondary School Diploma for Canadian admissions."),
   };
   const base = descriptions[normalized]
@@ -124,16 +138,6 @@ function getLanguageTitle(code, fallback = "") {
   const fallbackLabel = String(fallback || "").trim() || String(code || "").toUpperCase();
   if (!normalized) return fallbackLabel;
   return t(`languages.name.${normalized}`, fallbackLabel);
-}
-
-function normalizeExamId(value) {
-  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-}
-
-function stableExamSortKey(value) {
-  const raw = String(value || "").trim();
-  const canon = String(canonicalizeExamId(raw) || raw).trim();
-  return normalizeExamId(canon || raw);
 }
 
 function renderGlossary(glossaryWrap) {
