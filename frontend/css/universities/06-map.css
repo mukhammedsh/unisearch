@@ -273,31 +273,6 @@
   padding: var(--space-1);
 }
 
-.u-map-logo-cue {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  border-radius: var(--radius-sm);
-  background: var(--tooltip-bg);
-  color: var(--tooltip-text);
-  box-shadow: var(--shadow-micro);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, calc(-50% + var(--space-1)));
-  transition:
-    opacity var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
-}
-
-.uni-map-logo-cue__icon {
-  width: 14px;
-  height: 14px;
-}
-
 .u-map-results-footer {
   display: grid;
   justify-items: center;
@@ -448,16 +423,6 @@
   .u-map-results-list .uni-card.is-active:hover {
     background: var(--accent-panel);
   }
-
-  .u-map-results-list .uni-card:hover .uni-map-logo-cue {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-}
-
-.u-map-results-list .uni-card:focus-within .uni-map-logo-cue {
-  opacity: 1;
-  transform: translate(-50%, -50%);
 }
 
 .u-map-container {
