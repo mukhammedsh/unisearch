@@ -5,18 +5,18 @@ This document records a point-in-time self-assessment; it is not an independent 
 
 ## Target
 
-UniSearch has earned **OSPS Baseline Level 1, version 2026.08.28**. The next assessment
-target is **Level 2** of the same version. Level 2 has not been claimed or submitted;
-the project will only publish that status after every applicable control is verified,
-including controls that depend on GitHub settings rather than repository files.
+UniSearch has earned **OSPS Baseline Levels 1 and 2, version 2026.08.28**. The next
+assessment target is **Level 3** of the same version. Level 3 has not been assessed or
+submitted.
 
 ## Badge status
 
 UniSearch already holds the Silver badge in the Metal series of [OpenSSF Best
 Practices project 14732](https://www.bestpractices.dev/projects/14732). The OSPS
 Baseline is a separate series in the same project entry. On 2026-10-15, UniSearch
-earned the [OSPS Baseline Level 1 badge](https://www.bestpractices.dev/projects/14732/baseline)
-for version 2026.08.28. Levels 2 and 3 have not been assessed.
+earned the [OSPS Baseline Level 1 badge](https://www.bestpractices.dev/projects/14732/baseline-1)
+and the [Level 2 badge](https://www.bestpractices.dev/projects/14732/baseline-2) for
+version 2026.08.28. Level 3 has not been assessed.
 
 ## Level 1 assessment
 
@@ -42,6 +42,14 @@ for version 2026.08.28. Levels 2 and 3 have not been assessed.
 | OSPS-QA-04.01 Multi-repository scope | N/A | UniSearch has one authoritative source repository; this control applies to projects with multiple repositories. |
 | OSPS-QA-05.01 and OSPS-QA-05.02 No generated or unreviewable binaries in VCS | Met | The repository contains no tracked executable or compiled artifacts. Its binary files are source-controlled university media (PNG, JPG, WebP, and SVG) used by the application. |
 | OSPS-VM-02.01 Security contacts | Met | [SECURITY.md](../SECURITY.md) lists private GitHub reporting and an email contact. |
+
+## Level 2 assessment
+
+The BadgeApp self-assessment recorded 18 controls as Met and OSPS-VM-04.01 as N/A
+because there are no publicly disclosed UniSearch vulnerability advisories. See the
+[public Level 2 record](https://www.bestpractices.dev/projects/14732/baseline-2) for
+the control-by-control statuses and justifications. This point-in-time self-assessment
+is not an independent audit or certification.
 
 ## Evidence and automation
 

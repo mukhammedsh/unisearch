@@ -6,7 +6,7 @@ header:
   comment: >-
     This is a single-repository Security Insights declaration. It reports the
     project's current security practices and point-in-time OSPS Baseline
-    Level 1 self-assessment.
+    Level 2 self-assessment.
 
 project:
   name: UniSearch
@@ -65,10 +65,12 @@ repository:
   security:
     assessments:
       self:
-        name: OSPS Baseline Level 1 self-assessment
+        name: OSPS Baseline Level 2 self-assessment
         date: '2026-10-15'
         evidence: https://github.com/mukhammedsh/unisearch/blob/main/docs/security-baseline.md
         comment: >-
-          UniSearch earned the OSPS Baseline Level 1 badge for version
+          UniSearch earned the OSPS Baseline Level 2 badge for version
           2026.08.28 through the OpenSSF Best Practices Badge application on
-          2026-10-15. This is a point-in-time self-assessment.
+          2026-10-15. The self-assessment recorded 18 controls as Met and one
+          N/A for the absence of publicly disclosed vulnerability advisories.
+          This is a point-in-time self-assessment, not an independent audit.

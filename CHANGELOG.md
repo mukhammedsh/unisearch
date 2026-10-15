@@ -5,6 +5,7 @@ All notable project changes should be recorded here.
 ## Unreleased
 
 ### Security
+- Record UniSearch's OSPS Baseline Level 2 self-attestation for version 2026.08.28 in BadgeApp and update the repository evidence.
 - Attach verified Sigstore provenance bundles to each release ZIP and require peer-reviewed pull requests for `main`.
 - Require dependency, CodeQL, Trivy, repository-guard, SonarCloud, DCO, and test status checks before merging changes to `main`.
 - Document DCO sign-off requirements for contributor commits.
