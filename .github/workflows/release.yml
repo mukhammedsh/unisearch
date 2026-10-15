@@ -139,6 +139,32 @@ jobs:
             release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip
             release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip
 
+      - name: Export and verify provenance bundles for release zip artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for artifact in \
+            release/unisearch-full-${{ steps.vars.outputs.tag }}.zip \
+            release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip \
+            release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip; do
+            bundle_dir="$(mktemp -d)"
+            artifact_path="${GITHUB_WORKSPACE}/${artifact}"
+            (
+              cd "$bundle_dir"
+              gh attestation download "$artifact_path" --repo "$GITHUB_REPOSITORY"
+            )
+            bundle_path="$(find "$bundle_dir" -maxdepth 1 -type f -name '*.jsonl' -print -quit)"
+            if [[ -z "$bundle_path" ]]; then
+              echo "::error::No provenance bundle was returned for $artifact."
+              exit 1
+            fi
+            gh attestation verify "$artifact_path" --repo "$GITHUB_REPOSITORY" --bundle "$bundle_path"
+            mv "$bundle_path" "${artifact}.intoto.jsonl"
+            rmdir "$bundle_dir"
+          done
+
       - name: Upload zip artifacts to GitHub Release
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         with:
@@ -147,8 +173,11 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             release/unisearch-full-${{ steps.vars.outputs.tag }}.zip
+            release/unisearch-full-${{ steps.vars.outputs.tag }}.zip.intoto.jsonl
             release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip
+            release/unisearch-frontend-${{ steps.vars.outputs.tag }}.zip.intoto.jsonl
             release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip
+            release/unisearch-backend-${{ steps.vars.outputs.tag }}.zip.intoto.jsonl
 
       - name: Update release download guide
         shell: bash
@@ -156,6 +185,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.vars.outputs.tag }}
           OWNER_LC: ${{ steps.vars.outputs.owner_lc }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           gh release view "$TAG" --json body -q .body > release/release-body-current.md
 
@@ -165,6 +195,7 @@ jobs:
 
           tag = os.environ["TAG"]
           owner_lc = os.environ["OWNER_LC"]
+          repository = os.environ["REPOSITORY"]
           start = "<!-- UNISEARCH_DOWNLOAD_GUIDE_START -->"
           end = "<!-- UNISEARCH_DOWNLOAD_GUIDE_END -->"
           guide = f"""## Download guide
@@ -175,14 +206,17 @@ jobs:
           - GitHub also shows auto-generated `Source code (zip)` and `Source code (tar.gz)` for every release. They are expected and cannot be removed.
 
           ### Cryptographic Verification (Sigstore Provenance)
-          Release artifacts and container images are cryptographically signed with GitHub Sigstore build provenance:
+          Release ZIPs include matching `.intoto.jsonl` provenance bundles. Download each ZIP with its bundle, then verify:
           ```bash
-          # Verify release zip archive authenticity:
-          gh attestation verify unisearch-full-{tag}.zip --owner {owner_lc}
+          # Verify release ZIP archives:
+          gh attestation verify unisearch-full-{tag}.zip --repo {repository} --bundle unisearch-full-{tag}.zip.intoto.jsonl
+          gh attestation verify unisearch-frontend-{tag}.zip --repo {repository} --bundle unisearch-frontend-{tag}.zip.intoto.jsonl
+          gh attestation verify unisearch-backend-{tag}.zip --repo {repository} --bundle unisearch-backend-{tag}.zip.intoto.jsonl
 
           # Verify Docker container image authenticity:
           gh attestation verify oci://ghcr.io/{owner_lc}/unisearch-backend:{tag} --owner {owner_lc}
           ```
+          For offline verification, also download the Sigstore trusted root and follow [GitHub's offline verification guide](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/verify-attestations-offline).
           """
 
           body_path = Path("release/release-body-current.md")
