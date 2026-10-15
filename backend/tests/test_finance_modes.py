@@ -1,6 +1,7 @@
 """Unit tests for backend/app/services/finance_modes.py.
 
 Covers:
+- normalize_cost_key: canonical keys, mixed case, special characters, None, empty/whitespace, non-string types
 - mode_breakdown_from_finance: canonical key, missing key, non-dict input
 - mode_total_from_finance: canonical key, missing key, negative value, non-dict input
 - Removed alternative key names must NOT be resolved
@@ -10,7 +11,35 @@ import unittest
 from app.services.finance_modes import (
     mode_breakdown_from_finance,
     mode_total_from_finance,
+    normalize_cost_key,
 )
+
+
+class NormalizeCostKeyTests(unittest.TestCase):
+    """Tests for normalize_cost_key."""
+
+    def test_lowercase_alphabetic_string_unchanged(self):
+        self.assertEqual(normalize_cost_key("tuition"), "tuition")
+
+    def test_uppercase_converted_to_lowercase(self):
+        self.assertEqual(normalize_cost_key("TUITION"), "tuition")
+        self.assertEqual(normalize_cost_key("Tuition_Fee"), "tuitionfee")
+
+    def test_strips_spaces_underscores_hyphens_special_chars_and_digits(self):
+        self.assertEqual(normalize_cost_key(" Tuition Fee (USD) 2024! "), "tuitionfeeusd")
+        self.assertEqual(normalize_cost_key("housing-dorm_cost#1"), "housingdormcost")
+
+    def test_empty_string_and_whitespace(self):
+        self.assertEqual(normalize_cost_key(""), "")
+        self.assertEqual(normalize_cost_key("   "), "")
+
+    def test_none_input(self):
+        self.assertEqual(normalize_cost_key(None), "")
+
+    def test_non_string_inputs(self):
+        self.assertEqual(normalize_cost_key(12345), "")
+        self.assertEqual(normalize_cost_key(True), "true")
+        self.assertEqual(normalize_cost_key(False), "")
 
 
 class FinanceModeBreakdownTests(unittest.TestCase):
