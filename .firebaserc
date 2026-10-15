@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "unisearch-b3b5f": {
+      "hosting": {
+        "unisearch": [
+          "unisearch"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

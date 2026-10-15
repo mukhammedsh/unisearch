@@ -10,7 +10,7 @@ header:
 
 project:
   name: UniSearch
-  homepage: https://unisearch-frontend.onrender.com/
+  homepage: https://unisearch.web.app/
   roadmap: https://github.com/mukhammedsh/unisearch/blob/main/docs/roadmap.md
   administrators:
     - name: mukhammedsh
