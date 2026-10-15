@@ -420,6 +420,38 @@ class UniversitySearchTests(unittest.TestCase):
         items = result.get("items", [])
         self.assertEqual(["university-of-oxford-uk-oxford"], [x.get("id") for x in items])
 
+    def test_normalize_university_schema_program_branches(self):
+        # Test scalar study_levels, scalar study_mode, and acceptance rate calculation
+        u1 = {
+            "id": "u1",
+            "academics": {
+                "programs": [
+                    {"name": "Prog 1", "study_levels": "bachelor", "study_mode": "full_time", "acceptance_rate_percent": 20.0},
+                    {"name": "Prog 2", "study_levels": ["master"], "study_mode": ["part_time"], "acceptance_rate_percent": 10.0},
+                    {"name": "Prog 3", "study_levels": None, "study_mode": None, "acceptance_rate_percent": None}
+                ]
+            }
+        }
+        res1 = uni_service._normalize_university_schema(u1)
+        self.assertIn("bachelor", res1["academics"]["study_levels"])
+        self.assertIn("master", res1["academics"]["study_levels"])
+        self.assertIn("full_time", res1["academics"]["formats"])
+        self.assertIn("part_time", res1["academics"]["formats"])
+        self.assertEqual(res1["academics"]["acceptance_rate_percent"], 15.0)
+
+        # Test when no acceptance rates are present
+        u2 = {
+            "id": "u2",
+            "academics": {
+                "programs": [
+                    {"name": "Prog 1"}
+                ]
+            }
+        }
+        res2 = uni_service._normalize_university_schema(u2)
+        self.assertNotIn("acceptance_rate_percent", res2["academics"])
+
+
 
 if __name__ == "__main__":
     unittest.main()
