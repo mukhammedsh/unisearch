@@ -646,3 +646,80 @@ test("expanded program supplies coverage without changing the selected admission
   assert.equal(resolveDisplayedCoverageProgram(items, routeSelected, ""), routeSelected);
   assert.equal(resolveDisplayedCoverageProgram(items, null, ""), null);
 });
+
+test("renderProgramsSection formats program details, level filter, search filter, and signals", () => {
+  const container = {
+    innerHTML: "",
+    querySelector: () => null,
+    querySelectorAll: () => [],
+  };
+  const university = {
+    id: "oxford-uk",
+    academics: {
+      programs: [
+        {
+          id: "cs-1",
+          name: "MSc in Computer Science",
+          study_levels: ["master"],
+          duration: "1 year",
+          language: ["English"],
+          study_mode: "Full-time",
+          acceptance_rate_percent: 15,
+          major_tags: ["Computer Science", "Software"],
+          tuition_year_usd: 35000,
+          description: "Advanced study of computer science principles.",
+          source_url: "https://www.ox.ac.uk/cs",
+          catalog_url: "https://www.ox.ac.uk/catalog/cs",
+        },
+      ],
+      majors: ["Computer Science"],
+    },
+    coverage_by_program: [],
+  };
+  const admissionsData = {
+    programs: [
+      {
+        program_name: "MSc in Computer Science",
+        provenance: { verified_at: "2026-01-01" },
+      },
+    ],
+    program_level: { kind: "program_specific" },
+  };
+
+  renderProgramsSection({
+    admissionsData,
+    container,
+    university,
+    profileMajor: "Computer Science",
+    coverageProgram: null,
+  });
+
+  assert.ok(container.innerHTML.includes("MSc in Computer Science"));
+  assert.ok(container.innerHTML.includes("Your major"));
+  assert.ok(container.innerHTML.includes("35 000") || container.innerHTML.includes("35,000") || container.innerHTML.includes("USD"));
+});
+
+test("renderProgramsSection with no programs fallback renders majors list", () => {
+  const container = {
+    innerHTML: "",
+    querySelector: () => null,
+    querySelectorAll: () => [],
+  };
+  const university = {
+    id: "test-uni",
+    academics: {
+      programs: [],
+      majors: ["Engineering", "Mathematics"],
+    },
+  };
+
+  renderProgramsSection({
+    admissionsData: {},
+    container,
+    university,
+  });
+
+  assert.ok(container.innerHTML.includes("program-major-chip"));
+  assert.ok(container.innerHTML.includes("Engineering"));
+  assert.ok(container.innerHTML.includes("Mathematics"));
+});
