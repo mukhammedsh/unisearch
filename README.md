@@ -4,6 +4,7 @@
 [![Codecov](https://codecov.io/github/mukhammedsh/unisearch/graph/badge.svg)](https://app.codecov.io/github/mukhammedsh/unisearch)
 [![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=mukhammedsh_unisearch&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mukhammedsh_unisearch)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14732/badge)](https://www.bestpractices.dev/projects/14732)
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/14732/baseline)](https://www.bestpractices.dev/projects/14732)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/mukhammedsh/unisearch/badge)](https://securityscorecards.dev/viewer/?uri=github.com/mukhammedsh/unisearch)
 [![Version](https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -135,7 +136,7 @@ Operations routes and health warmup requests require the configured operations t
 | Path | Contents |
 | --- | --- |
 | `frontend/` | HTML, CSS, and Vanilla JS without a UI framework |
-| `frontend/Localization/` | English and Russian interface strings |
+| `frontend/Localization/` | English, Russian, and Kazakh interface strings |
 | `backend/app/routers/`, `backend/app/schemas/` | FastAPI routes and Pydantic contracts |
 | `backend/app/services/` | Catalog, search, UniFit, UniChance, ROI, and ML ranking |
 | `backend/data/` | JSON catalogs and official data; media in `university_assets/` |

@@ -1,12 +1,12 @@
 header:
   schema-version: 2.2.0
-  last-updated: '2026-09-21'
-  last-reviewed: '2026-09-21'
+  last-updated: '2026-10-15'
+  last-reviewed: '2026-10-15'
   url: https://raw.githubusercontent.com/mukhammedsh/unisearch/main/security-insights.yml
   comment: >-
     This is a single-repository Security Insights declaration. It reports the
-    project's current security practices and does not claim OSPS Baseline
-    compliance until the tracked controls are verified.
+    project's current security practices and point-in-time OSPS Baseline
+    Level 1 self-assessment.
 
 project:
   name: UniSearch
@@ -65,9 +65,10 @@ repository:
   security:
     assessments:
       self:
-        name: OSPS Baseline Level 1 gap assessment
-        date: '2026-09-21'
+        name: OSPS Baseline Level 1 self-assessment
+        date: '2026-10-15'
         evidence: https://github.com/mukhammedsh/unisearch/blob/main/docs/security-baseline.md
         comment: >-
-          Initial assessment recorded. Level 1 compliance is not yet claimed;
-          GitHub access-control settings require maintainer verification.
+          UniSearch earned the OSPS Baseline Level 1 badge for version
+          2026.08.28 through the OpenSSF Best Practices Badge application on
+          2026-10-15. This is a point-in-time self-assessment.

@@ -6,6 +6,13 @@ All notable project changes should be recorded here.
 
 ### Security
 - Attach verified Sigstore provenance bundles to each release ZIP and require peer-reviewed pull requests for `main`.
+- Require dependency, CodeQL, Trivy, repository-guard, SonarCloud, DCO, and test status checks before merging changes to `main`.
+- Document DCO sign-off requirements for contributor commits.
+
+### Documentation
+- Describe dependency selection and lockfile maintenance, required CI checks, and tests expected for behavioral changes.
+- Refresh the architecture and security assessment for current external interfaces and the UniChance published-requirements-fit contract.
+- Record current repository access and the review process for elevated collaborator permissions.
 
 ## 8.1.7 (2026-10-15) - Expanded Test Coverage
 
