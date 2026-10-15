@@ -124,6 +124,13 @@ export const queryProfileElements = (modal) => {
     };
 };
 
+export const initCommonSelects = (selectIds = []) => {
+    if (typeof initCustomSelect !== "function") return;
+    selectIds.forEach((id) => {
+        if (id) initCustomSelect(id);
+    });
+};
+
 export const isProfileDirty = (state) => stableProfileSignature(state.profile) !== state.savedSignature;
 
 export const setProfileDraft = (state, els, next, options = {}) => {
@@ -165,7 +172,7 @@ export const populateExamSelect = (els, state) => {
         els.examNameSelect.appendChild(opt);
     });
 
-    if (typeof initCustomSelect === "function") initCustomSelect("examNameSelect");
+    initCommonSelects(["examNameSelect"]);
     syncExamScoreInputState(els, state);
     refreshExamActionButton(els, state);
 };
@@ -189,7 +196,7 @@ export const getCountryLabel = (code) => {
     return COUNTRY_CODES.includes(upper) ? `${getCountryName(upper, getCurrentLanguage())} (${upper})` : normalized;
 };
 
-export const populateCitizenshipCountries = (select) => {
+export const populateCountryOptionsInSelect = (select, searchPlaceholder) => {
     if (!select) return;
     select.querySelectorAll("option[data-country-code]").forEach((option) => option.remove());
     const otherOption = select.querySelector('option[value="OTHER"]');
@@ -202,24 +209,14 @@ export const populateCitizenshipCountries = (select) => {
         fragment.appendChild(option);
     });
     select.insertBefore(fragment, otherOption);
-    select.dataset.searchPlaceholder = t("profile.citizenship.search_placeholder", "Search countries");
+    if (searchPlaceholder) select.dataset.searchPlaceholder = searchPlaceholder;
 };
 
-export const populateContextCountrySelect = (select) => {
-    if (!select) return;
-    select.querySelectorAll("option[data-country-code]").forEach((option) => option.remove());
-    const otherOption = select.querySelector('option[value="OTHER"]');
-    const fragment = document.createDocumentFragment();
-    getCountryOptions(getCurrentLanguage()).forEach(({ code, name }) => {
-        const option = document.createElement("option");
-        option.value = code;
-        option.textContent = `${name} (${code})`;
-        option.dataset.countryCode = code;
-        fragment.appendChild(option);
-    });
-    select.insertBefore(fragment, otherOption);
-    select.dataset.searchPlaceholder = t("profile.applicant_context.country_search", "Search countries");
-};
+export const populateCitizenshipCountries = (select) =>
+    populateCountryOptionsInSelect(select, t("profile.citizenship.search_placeholder", "Search countries"));
+
+export const populateContextCountrySelect = (select) =>
+    populateCountryOptionsInSelect(select, t("profile.applicant_context.country_search", "Search countries"));
 
 export const syncOtherContextInput = (select, input, otherValue = "OTHER") => {
     if (!select || !input) return;
@@ -589,6 +586,12 @@ export const syncInputsToDraft = (els, state) => {
     state.profile = ensureProfileShape(state.profile);
 };
 
+export const reportFieldValidationError = (inputEl, message) => {
+    setFieldInvalid(inputEl, true, message);
+    inputEl?.focus();
+    return { ok: false, value: "" };
+};
+
 export const validateBudgetInput = (els) => {
     const rawVal = String(els.budgetInput?.value || "").trim();
     if (!rawVal) {
@@ -596,26 +599,20 @@ export const validateBudgetInput = (els) => {
         return { ok: true, value: "" };
     }
     if (rawVal.includes(".") || rawVal.includes(",")) {
-        const message = t("profile.budget_integers_only", "Integers only (no dots/commas)");
-        setFieldInvalid(els.budgetInput, true, message);
-        els.budgetInput?.focus();
-        return { ok: false, value: "" };
+        return reportFieldValidationError(els.budgetInput, t("profile.budget_integers_only", "Integers only (no dots/commas)"));
     }
     const val = Number(rawVal);
     if (!Number.isFinite(val)) {
-        const message = t("profile.budget_must_number", "Budget must be a number");
-        setFieldInvalid(els.budgetInput, true, message);
-        els.budgetInput?.focus();
-        return { ok: false, value: "" };
+        return reportFieldValidationError(els.budgetInput, t("profile.budget_must_number", "Budget must be a number"));
     }
     const currency = getBudgetCurrency();
     const maxBudget = getMaxBudgetForCurrency(currency);
     if (val < 0 || val > maxBudget) {
         const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
-        const message = tFormat("profile.budget_limit", { max: `${formattedMax} ${currency}` }, `Limit: 0–${formattedMax} ${currency}`);
-        setFieldInvalid(els.budgetInput, true, message);
-        els.budgetInput?.focus();
-        return { ok: false, value: "" };
+        return reportFieldValidationError(
+            els.budgetInput,
+            tFormat("profile.budget_limit", { max: `${formattedMax} ${currency}` }, `Limit: 0–${formattedMax} ${currency}`)
+        );
     }
     setFieldInvalid(els.budgetInput, false);
     return { ok: true, value: val };
@@ -629,10 +626,7 @@ export const validateFamilyIncomeInput = (els) => {
     }
     const val = Number(rawVal);
     if (!Number.isFinite(val) || val < 0 || val > 1_000_000_000_000) {
-        const message = t("profile.family_income_invalid", "Enter an amount from 0 to 1,000,000,000,000.");
-        setFieldInvalid(els.familyIncomeInput, true, message);
-        els.familyIncomeInput?.focus();
-        return { ok: false, value: "" };
+        return reportFieldValidationError(els.familyIncomeInput, t("profile.family_income_invalid", "Enter an amount from 0 to 1,000,000,000,000."));
     }
     setFieldInvalid(els.familyIncomeInput, false);
     return { ok: true, value: val };
@@ -673,10 +667,7 @@ export const validateGpaInput = (els, state) => {
 
     const val = Number(rawVal);
     if (!Number.isFinite(val)) {
-        const message = t("profile.gpa_must_number", "GPA must be a number");
-        setFieldInvalid(els.gpaInput, true, message);
-        els.gpaInput?.focus();
-        return { ok: false, value: "" };
+        return reportFieldValidationError(els.gpaInput, t("profile.gpa_must_number", "GPA must be a number"));
     }
 
     const scale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
@@ -684,13 +675,18 @@ export const validateGpaInput = (els, state) => {
     const max = scale;
 
     if (val < min || val > max) {
-        const message = tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}`);
-        setFieldInvalid(els.gpaInput, true, message);
-        els.gpaInput?.focus();
-        return { ok: false, value: "" };
+        return reportFieldValidationError(els.gpaInput, tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}`));
     }
     setFieldInvalid(els.gpaInput, false);
     return { ok: true, value: Number(Math.round(val * 100) / 100) };
+};
+
+export const resetCitizenshipInputs = (els) => {
+    if (els.citizenshipCountrySelect) els.citizenshipCountrySelect.value = "";
+    if (els.citizenshipOtherInput) {
+        els.citizenshipOtherInput.value = "";
+        els.citizenshipOtherInput.style.display = "none";
+    }
 };
 
 export const renderCitizenshipChips = (els, state) => {
@@ -812,11 +808,7 @@ export const applyDraftToInputs = (els, state) => {
     syncOtherContextInput(els.educationCredentialSelect, els.educationCredentialOtherInput, "other");
     syncOtherContextInput(els.currentResidenceCountrySelect, els.currentResidenceOtherInput);
     populateCitizenshipCountries(els.citizenshipCountrySelect);
-    if (els.citizenshipCountrySelect) els.citizenshipCountrySelect.value = "";
-    if (els.citizenshipOtherInput) {
-        els.citizenshipOtherInput.value = "";
-        els.citizenshipOtherInput.style.display = "none";
-    }
+    resetCitizenshipInputs(els);
     renderCitizenshipChips(els, state);
     renderAdmissionEvidence(els.admissionEvidenceFields, state.profile, (next) => {
         state.profile = ensureProfileShape({
@@ -829,7 +821,6 @@ export const applyDraftToInputs = (els, state) => {
     applyTranslations(els.admissionEvidenceFields);
     if (els.examNameSelect) els.examNameSelect.value = "";
     if (els.examScoreInput) els.examScoreInput.value = "";
-    if (els.examTakenOnInput) els.examTakenOnInput.value = "";
     if (els.examTakenOnInput) {
         els.examTakenOnInput.value = "";
         els.examTakenOnInput.max = new Date().toISOString().slice(0, 10);
@@ -839,20 +830,20 @@ export const applyDraftToInputs = (els, state) => {
         els.examSpecialInputContainer.style.display = "none";
         delete els.examSpecialInputContainer.dataset.breakdownExam;
     }
-    if (typeof initCustomSelect === "function") {
-        initCustomSelect("studyModeSelect");
-        initCustomSelect("profileFundingTypeSelect");
-        initCustomSelect("familyIncomeCurrencySelect");
-        initCustomSelect("profileMajorSelect");
-        initCustomSelect("examNameSelect");
-        initCustomSelect("studyLevelSelect");
-        initCustomSelect("citizenshipCountrySelect");
-        initCustomSelect("countryOfEducationSelect");
-        initCustomSelect("educationCredentialSelect");
-        initCustomSelect("applicantRouteSelect");
-        initCustomSelect("currentResidenceCountrySelect");
-        initCustomSelect("feeStatusContextSelect");
-    }
+    initCommonSelects([
+        "studyModeSelect",
+        "profileFundingTypeSelect",
+        "familyIncomeCurrencySelect",
+        "profileMajorSelect",
+        "examNameSelect",
+        "studyLevelSelect",
+        "citizenshipCountrySelect",
+        "countryOfEducationSelect",
+        "educationCredentialSelect",
+        "applicantRouteSelect",
+        "currentResidenceCountrySelect",
+        "feeStatusContextSelect",
+    ]);
     renderProfileData(els, state);
     updateBudgetUI(els, state);
     refreshSaveState(els, state);
@@ -902,40 +893,37 @@ export const saveAllProfileChanges = (els, state) => {
     return true;
 };
 
-export const closeUnsavedDialog = (els, state, focusCloseButton = false) => {
-    if (!els.unsavedModal) return;
+export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClose) => {
+    if (!modal) return;
     const finish = () => {
-        state.cleanupUnsavedFocusTrap?.();
-        state.cleanupUnsavedFocusTrap = null;
-        els.unsavedModal.classList.remove("is-open", "is-closing");
-        els.unsavedModal.setAttribute("aria-hidden", "true");
-        els.unsavedModal.style.display = "none";
-        if (focusCloseButton && els.closeBtn) els.closeBtn.focus();
+        focusTrapCleanup?.();
+        modal.classList.remove("is-open", "is-closing");
+        modal.setAttribute("aria-hidden", "true");
+        modal.style.display = "none";
+        if (focusTargetOnClose) focusTargetOnClose.focus();
     };
-    if (prefersReducedMotion() || !els.unsavedModal.classList.contains("is-open")) {
+    if (prefersReducedMotion() || !modal.classList.contains("is-open")) {
         finish();
         return;
     }
-    els.unsavedModal.classList.add("is-closing");
+    modal.classList.add("is-closing");
     window.setTimeout(finish, 180);
+};
+
+export const closeUnsavedDialog = (els, state, focusCloseButton = false) => {
+    if (!els.unsavedModal) return;
+    closeDialogWithMotion(els.unsavedModal, () => {
+        state.cleanupUnsavedFocusTrap?.();
+        state.cleanupUnsavedFocusTrap = null;
+    }, focusCloseButton ? els.closeBtn : null);
 };
 
 export const closeResetDialog = (els, state, focusResetButton = false) => {
     if (!els.resetModal) return;
-    const finish = () => {
+    closeDialogWithMotion(els.resetModal, () => {
         state.cleanupResetFocusTrap?.();
         state.cleanupResetFocusTrap = null;
-        els.resetModal.classList.remove("is-open", "is-closing");
-        els.resetModal.setAttribute("aria-hidden", "true");
-        els.resetModal.style.display = "none";
-        if (focusResetButton && els.resetProfileBtn) els.resetProfileBtn.focus();
-    };
-    if (prefersReducedMotion() || !els.resetModal.classList.contains("is-open")) {
-        finish();
-        return;
-    }
-    els.resetModal.classList.add("is-closing");
-    window.setTimeout(finish, 180);
+    }, focusResetButton ? els.resetProfileBtn : null);
 };
 
 export const closeImmediately = (els, state) => {
@@ -1072,16 +1060,16 @@ export const retranslateProfileUi = (els, state) => {
     if (selectedLangCefr && prevLangCefr) selectedLangCefr.value = prevLangCefr;
     if (selectedLangExam && prevLangExam) selectedLangExam.value = prevLangExam;
 
-    if (typeof initCustomSelect === "function") {
-        initCustomSelect("examNameSelect");
-        initCustomSelect("studyModeSelect");
-        initCustomSelect("profileFundingTypeSelect");
-        initCustomSelect("profileMajorSelect");
-        if (selectedLangCode) initCustomSelect("langCode");
-        if (selectedLangKind) initCustomSelect("langKind");
-        if (selectedLangCefr) initCustomSelect("langCefr");
-        if (selectedLangExam) initCustomSelect("langExam");
-    }
+    initCommonSelects([
+        "examNameSelect",
+        "studyModeSelect",
+        "profileFundingTypeSelect",
+        "profileMajorSelect",
+        selectedLangCode ? "langCode" : null,
+        selectedLangKind ? "langKind" : null,
+        selectedLangCefr ? "langCefr" : null,
+        selectedLangExam ? "langExam" : null,
+    ]);
 };
 
 export const setGpaScale = (els, state, scale) => {
@@ -1096,12 +1084,12 @@ export const openProfile = (els, state) => {
     resetFields(els, state);
     retranslateProfileUi(els, state);
 
-    if (typeof initCustomSelect === "function") {
-        initCustomSelect("examNameSelect");
-        initCustomSelect("studyModeSelect");
-        initCustomSelect("profileFundingTypeSelect");
-        initCustomSelect("profileMajorSelect");
-    }
+    initCommonSelects([
+        "examNameSelect",
+        "studyModeSelect",
+        "profileFundingTypeSelect",
+        "profileMajorSelect",
+    ]);
     refreshExamActionButton(els, state);
     updateProfileProgress(els, state);
     hydrateHeroIcons(els.modal);
@@ -1120,6 +1108,12 @@ export const openProfile = (els, state) => {
     requestAnimationFrame(() => {
         state.updateProfileTabsIndicator?.();
     });
+};
+
+export const showExamScoreError = (inputEl, message) => {
+    setFieldInvalid(inputEl, true);
+    inputEl?.focus();
+    showToast(message, "error");
 };
 
 export const handleAddExam = async (els, state) => {
@@ -1141,29 +1135,11 @@ export const handleAddExam = async (els, state) => {
                 && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score");
 
         if (usesNumberInput && Number.isFinite(min) && score < min) {
-            setFieldInvalid(els.examScoreInput, true);
-            els.examScoreInput?.focus();
-            showToast(
-                tFormat(
-                    "profile.exam_score_min",
-                    { exam: name, min },
-                    `Min for ${name} is ${min}`
-                ),
-                "error"
-            );
+            showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_min", { exam: name, min }, `Min for ${name} is ${min}`));
             return;
         }
         if (usesNumberInput && Number.isFinite(max) && score > max) {
-            setFieldInvalid(els.examScoreInput, true);
-            els.examScoreInput?.focus();
-            showToast(
-                tFormat(
-                    "profile.exam_score_max",
-                    { exam: name, max },
-                    `Max for ${name} is ${max}`
-                ),
-                "error"
-            );
+            showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_max", { exam: name, max }, `Max for ${name} is ${max}`));
             return;
         }
 
@@ -1172,16 +1148,7 @@ export const handleAddExam = async (els, state) => {
             const k = (score - base) / step;
             const diff = Math.abs(k - Math.round(k));
             if (diff > 1e-9) {
-                setFieldInvalid(els.examScoreInput, true);
-                els.examScoreInput?.focus();
-                showToast(
-                    tFormat(
-                        "profile.exam_score_step",
-                        { exam: name, step },
-                        `${name} score must use step ${step}`
-                    ),
-                    "error"
-                );
+                showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_step", { exam: name, step }, `${name} score must use step ${step}`));
                 return;
             }
         }
@@ -1202,23 +1169,17 @@ export const handleAddExam = async (els, state) => {
         && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
 
     if ((mode === "number" || compositeUsesParentScore) && Number.isNaN(score)) {
-        setFieldInvalid(els.examScoreInput, true);
-        els.examScoreInput?.focus();
-        showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
+        showExamScoreError(els.examScoreInput, t("profile.exam_invalid_score", "Invalid score format"));
         return;
     }
 
     if ((mode === "number" || compositeUsesParentScore) && cfg?.type === "int" && !Number.isInteger(score)) {
-        setFieldInvalid(els.examScoreInput, true);
-        els.examScoreInput?.focus();
-        showToast(tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`), "error");
+        showExamScoreError(els.examScoreInput, tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`));
         return;
     }
 
     if ((mode === "number" || compositeUsesParentScore) && name === "IELTS" && (score % 0.5 !== 0)) {
-        setFieldInvalid(els.examScoreInput, true);
-        els.examScoreInput?.focus();
-        showToast(t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"), "error");
+        showExamScoreError(els.examScoreInput, t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"));
         return;
     }
 
@@ -1265,15 +1226,19 @@ export const handleAddExam = async (els, state) => {
             && String(e.taken_on || "") === takenOn
         );
 
+        const examRecord = {
+            exam: examId,
+            ...(json.taken_on ? { taken_on: json.taken_on } : {}),
+            score: json.score,
+            ...(json.raw_value ? { raw_value: json.raw_value } : {}),
+            ...(json.display_value ? { display_value: json.display_value } : {}),
+            ...(json.details ? { details: json.details } : {}),
+        };
+
         if (existingIndex !== -1) {
             state.profile.exams[existingIndex] = {
                 ...state.profile.exams[existingIndex],
-                exam: examId,
-                ...(json.taken_on ? { taken_on: json.taken_on } : {}),
-                score: json.score,
-                ...(json.raw_value ? { raw_value: json.raw_value } : {}),
-                ...(json.display_value ? { display_value: json.display_value } : {}),
-                ...(json.details ? { details: json.details } : {}),
+                ...examRecord,
             };
             showToast(
                 (mode !== "number")
@@ -1282,14 +1247,7 @@ export const handleAddExam = async (els, state) => {
                 "success"
             );
         } else {
-            state.profile.exams.push({
-                exam: examId,
-                ...(json.taken_on ? { taken_on: json.taken_on } : {}),
-                score: json.score,
-                ...(json.raw_value ? { raw_value: json.raw_value } : {}),
-                ...(json.display_value ? { display_value: json.display_value } : {}),
-                ...(json.details ? { details: json.details } : {}),
-            });
+            state.profile.exams.push(examRecord);
             showToast(
                 savedValue
                     ? tFormat("profile.exam_added_value", { exam: examLabel, value: savedValue }, `Added ${examLabel}: ${savedValue}`)
@@ -1308,13 +1266,9 @@ export const handleAddExam = async (els, state) => {
         els.examNameSelect.value = "";
         syncExamScoreInputState(els, state);
         refreshExamActionButton(els, state);
-        if (typeof initCustomSelect === "function") {
-            initCustomSelect("examNameSelect");
-        }
+        initCommonSelects(["examNameSelect"]);
     } catch (e) {
-        setFieldInvalid(els.examScoreInput, true);
-        els.examScoreInput?.focus();
-        showToast(formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || "", getExamConfig), "error");
+        showExamScoreError(els.examScoreInput, formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || "", getExamConfig));
     }
 };
 
@@ -1327,7 +1281,7 @@ export const handleExamListClick = (e, els, state) => {
         if (!entry) return;
         els.examNameSelect.value = canonicalizeExamId(entry.exam ?? entry.id ?? "");
         if (els.examTakenOnInput) els.examTakenOnInput.value = String(entry.taken_on || "");
-        initCustomSelect("examNameSelect");
+        initCommonSelects(["examNameSelect"]);
         syncExamScoreInputState(els, state);
         refreshExamActionButton(els, state);
         els.examScoreInput?.focus();
@@ -1462,11 +1416,7 @@ export const bindProfileEvents = (els, state) => {
             state.profile.citizenships.push(country);
             if (!state.profile.citizenship) state.profile.citizenship = country;
             renderCitizenshipChips(els, state);
-            if (els.citizenshipCountrySelect) els.citizenshipCountrySelect.value = "";
-            if (els.citizenshipOtherInput) {
-                els.citizenshipOtherInput.value = "";
-                els.citizenshipOtherInput.style.display = "none";
-            }
+            resetCitizenshipInputs(els);
             refreshSaveState(els, state);
         });
     }
@@ -1489,6 +1439,12 @@ export const bindProfileEvents = (els, state) => {
         });
     }
 
+    const handleEnterSave = (e) => {
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        saveAllProfileChanges(els, state);
+    };
+
     if (els.budgetInput) {
         els.budgetInput.addEventListener("input", () => {
             setFieldInvalid(els.budgetInput, false);
@@ -1496,11 +1452,7 @@ export const bindProfileEvents = (els, state) => {
             state.lowBudgetGrantHintDismissed = false;
             refreshSaveState(els, state);
         });
-        els.budgetInput.addEventListener("keydown", (e) => {
-            if (e.key !== "Enter") return;
-            e.preventDefault();
-            saveAllProfileChanges(els, state);
-        });
+        els.budgetInput.addEventListener("keydown", handleEnterSave);
     }
 
     if (els.familyIncomeInput) {
@@ -1509,11 +1461,7 @@ export const bindProfileEvents = (els, state) => {
             state.profile.familyIncomeAmount = String(els.familyIncomeInput.value || "").trim().replace(/,/g, ".");
             refreshSaveState(els, state);
         });
-        els.familyIncomeInput.addEventListener("keydown", (event) => {
-            if (event.key !== "Enter") return;
-            event.preventDefault();
-            saveAllProfileChanges(els, state);
-        });
+        els.familyIncomeInput.addEventListener("keydown", handleEnterSave);
     }
 
     if (els.familyIncomeCurrencySelect) {
@@ -1534,9 +1482,7 @@ export const bindProfileEvents = (els, state) => {
         if (!els.profileFundingTypeSelect) return;
         state.lowBudgetGrantHintDismissed = true;
         els.profileFundingTypeSelect.value = "grant";
-        if (typeof initCustomSelect === "function") {
-            initCustomSelect("profileFundingTypeSelect");
-        }
+        initCommonSelects(["profileFundingTypeSelect"]);
         els.profileFundingTypeSelect.dispatchEvent(new Event("change", { bubbles: true }));
     });
 
@@ -1547,11 +1493,7 @@ export const bindProfileEvents = (els, state) => {
             state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
             refreshSaveState(els, state);
         });
-        els.gpaInput.addEventListener("keydown", (e) => {
-            if (e.key !== "Enter") return;
-            e.preventDefault();
-            saveAllProfileChanges(els, state);
-        });
+        els.gpaInput.addEventListener("keydown", handleEnterSave);
     }
 
     els.gpaUnit?.addEventListener("click", () => {
