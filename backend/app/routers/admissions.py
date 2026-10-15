@@ -60,12 +60,18 @@ def list_study_options(
             ensure_ascii=True, separators=(",", ":"),
         ).encode("utf-8")).hexdigest() + '"'
         cache_control = "public, max-age=300, stale-while-revalidate=60"
+        existing_vary = response.headers.get("Vary", "") if response is not None else ""
+        vary_parts = [part.strip() for part in existing_vary.split(",") if part.strip()]
+        if "Accept-Language" not in vary_parts:
+            vary_parts.append("Accept-Language")
+        vary_header = ", ".join(vary_parts)
+
         if response is not None:
             response.headers["Cache-Control"] = cache_control
             response.headers["ETag"] = etag
-            response.headers["Vary"] = "Accept-Language"
+            response.headers["Vary"] = vary_header
         if _etag_matches(request.headers.get("if-none-match", "") if request else "", etag):
-            return Response(status_code=304, headers={"Cache-Control": cache_control, "ETag": etag, "Vary": "Accept-Language"})
+            return Response(status_code=304, headers={"Cache-Control": cache_control, "ETag": etag, "Vary": vary_header})
         return result
     except HTTPException:
         raise
