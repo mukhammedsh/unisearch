@@ -128,7 +128,7 @@ nav.settings: Баптаулар
 settings.section.appearance: Сыртқы түрі
 settings.section.regional: Тіл және аймақ
 settings.option.language.title: Сайт тілі
-settings.option.theme.title: Тақырып
+settings.option.theme.title: Түс режимі
 theme.opt.system: Жүйе
 theme.opt.light: Ашық түс
 theme.opt.dark: Қараңғы түс
@@ -697,7 +697,7 @@ universities.tradeoff.balanced: Теңгерімді (50/50)
 universities.help.open: Түсіндірмені көрсету
 universities.help.country: Университеттерді ел бойынша сүзгіден өткізеді. Қала және аймақ таңдау құралдарымен бірге жұмыс істейді.
 universities.help.state_region: Таңдалған ел шегінде нәтижелерді нақтылайды. Көптеген қалалары бар ірі елдер үшін пайдалы.
-universities.help.city: Ел/аймақ таңдалғаннан кейін белгілі бір қаладағы университеттерді көрсетеді.
+universities.help.city: Елді таңдағаннан кейін белгілі бір қаладағы университеттерді көрсетеді. Штат немесе аймақ қалалар тізімін нақтылайды.
 universities.help.cost_per_year: Жылдық шығынның ең төменгі және ең жоғары шегін қойыңыз. Тізімде осы аралыққа кіретін университеттер ғана қалады.
 universities.help.sort_strategy: {fit} профильге сай сұрыптайды. Басқа режимдер тек атауы немесе құны бойынша сұрыптайды.
 universities.help.tradeoff.focus: Тәжірибеге бағытталған оқуды немесе теория мен зерттеуге баса назар аударатын оқуды қалайтыныңызды таңдаңыз.
@@ -710,8 +710,8 @@ universities.sort_cost_asc: Құны: төменнен жоғарыға
 universities.sort_cost_desc: Құны: жоғарыдан төменге
 universities.sort_name_asc: Атауы: A-Z
 universities.sort_rank_asc: Әлемдік рейтинг
-universities.sort_strategy: Сұрыптау стратегиясы
-universities.sort_hint_ai_tags: AI тегтері тек UniFit сұрыптау стратегиясында толық қолжетімді.
+universities.sort_strategy: Сұрыптау
+universities.sort_hint_ai_tags: AI тегтері тек UniFit бойынша сұрыптағанда толық қолжетімді.
 accessibility.skip_to_main: Негізгі мазмұнға өту
 accessibility.back_to_top: Жоғарыға оралу
 universities.state.warning_title: Қызығушылықтар қолжетімсіз
@@ -2681,3 +2681,5 @@ university.admissions.catalog.apply_before_save: Таңдауды сақтама
 universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
 universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
 universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.
+university.programs.all_levels: Барлық оқу деңгейлері
+university.programs.search_clear: Іздестіруді тазарту
