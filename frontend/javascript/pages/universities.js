@@ -211,49 +211,7 @@ export function disposeUniversitiesPage() {
     }
 }
 
-export function initUniversitiesPage() {
-    const prefCurrency = getPreferredCurrency();
-    let currentCurrency = prefCurrency;
-    let currentLimits = getFilterLimits(prefCurrency);
-    const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
-    const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
-
-    if (window.history && "scrollRestoration" in window.history) {
-        try {
-            window.history.scrollRestoration = "manual";
-        } catch (e) {}
-    }
-
-    const saveCurrentScrollPosition = () => {
-        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
-        const currentY = Math.max(0, Math.round(window.scrollY || window.pageYOffset || 0));
-        safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(currentY));
-    };
-
-    const clearSavedScrollPosition = () => {
-        safeSessionStorage.remove(UNIVERSITIES_SCROLL_KEY);
-    };
-
-    const restoreScrollPosition = () => {
-        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
-        const rawY = safeSessionStorage.get(UNIVERSITIES_SCROLL_KEY);
-        const targetY = rawY !== null ? Math.max(0, Number.parseInt(rawY, 10) || 0) : 0;
-        window.requestAnimationFrame(() => {
-            window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
-        });
-    };
-
-    const clampTuition = (value, fallback = 0) => {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return fallback;
-        return Math.max(currentLimits.min, Math.min(currentLimits.max, Math.round(n)));
-    };
-    const clampPercent = (value, fallback = 50) => {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return fallback;
-        return Math.max(0, Math.min(100, Math.round(n)));
-    };
-
+function collectUniversitiesElements() {
     const el = {
         qInput: $("qInput"), searchClearBtn: $("searchClearBtn"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
         stateSelect: $("stateSelect"), citySelect: $("citySelect"),
@@ -291,8 +249,7 @@ export function initUniversitiesPage() {
         catalogLevelSegmented: $("catalogLevelSegmented"),
         catalogLevelButtons: Array.from(document.querySelectorAll(".catalog-level-btn")),
     };
-    const ensureCompareTrayNode = () => {
-        if (el.compareTray) return;
+    if (!el.compareTray) {
         const tray = document.createElement("div");
         tray.id = "compareTray";
         tray.className = "compare-tray";
@@ -302,8 +259,11 @@ export function initUniversitiesPage() {
         if (main?.parentNode) main.parentNode.insertBefore(tray, main.nextSibling);
         else document.body.appendChild(tray);
         el.compareTray = tray;
-    };
-    ensureCompareTrayNode();
+    }
+    return el;
+}
+
+function initTranslationDebugLogger() {
     const isTranslationDebugEnabled = (() => {
         const raw = window.APP_DEBUG;
         if (typeof raw === "boolean") return raw;
@@ -324,25 +284,21 @@ export function initUniversitiesPage() {
         enabled: true,
         note: "ML + translation debug is enabled by APP_DEBUG runtime flag.",
     });
+    return logTranslationDebug;
+}
 
-    const getProfileFundingQueryValue = () => {
-        const profile = loadProfile();
-        return fundingPreferenceToQueryValue(profile?.fundingType || profile?.funding_type || "any");
-    };
+function getProfileFundingQueryValue() {
+    const profile = loadProfile();
+    return fundingPreferenceToQueryValue(profile?.fundingType || profile?.funding_type || "any");
+}
 
-    function hasProfileEvidence(profile) {
-        const exams = Array.isArray(profile?.exams) ? profile.exams : [];
-        const langs = Array.isArray(profile?.languages) ? profile.languages : [];
-        return exams.length > 0 || langs.length > 0;
-    }
+function hasProfileEvidence(profile) {
+    const exams = Array.isArray(profile?.exams) ? profile.exams : [];
+    const langs = Array.isArray(profile?.languages) ? profile.languages : [];
+    return exams.length > 0 || langs.length > 0;
+}
 
-    if (!el.list) return;
-    disposeUniversitiesPage();
-
-    bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
-    bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
-    bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
-
+function setupStatusOverflowHandlers() {
     const closeAllStatusOverflows = () => {
         document.querySelectorAll(".uni-status-overflow.is-open").forEach((wrap) => {
             wrap.classList.remove("is-open");
@@ -396,6 +352,64 @@ export function initUniversitiesPage() {
         }
     };
     document.addEventListener("keydown", __universitiesOverflowKeydownHandler);
+
+    return closeAllStatusOverflows;
+}
+
+export function initUniversitiesPage() {
+    const prefCurrency = getPreferredCurrency();
+    let currentCurrency = prefCurrency;
+    let currentLimits = getFilterLimits(prefCurrency);
+    const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
+    const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
+
+    if (window.history && "scrollRestoration" in window.history) {
+        try {
+            window.history.scrollRestoration = "manual";
+        } catch (e) {}
+    }
+
+    const saveCurrentScrollPosition = () => {
+        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
+        const currentY = Math.max(0, Math.round(window.scrollY || window.pageYOffset || 0));
+        safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(currentY));
+    };
+
+    const clearSavedScrollPosition = () => {
+        safeSessionStorage.remove(UNIVERSITIES_SCROLL_KEY);
+    };
+
+    const restoreScrollPosition = () => {
+        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
+        const rawY = safeSessionStorage.get(UNIVERSITIES_SCROLL_KEY);
+        const targetY = rawY !== null ? Math.max(0, Number.parseInt(rawY, 10) || 0) : 0;
+        window.requestAnimationFrame(() => {
+            window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
+        });
+    };
+
+    const clampTuition = (value, fallback = 0) => {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return fallback;
+        return Math.max(currentLimits.min, Math.min(currentLimits.max, Math.round(n)));
+    };
+    const clampPercent = (value, fallback = 50) => {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return fallback;
+        return Math.max(0, Math.min(100, Math.round(n)));
+    };
+
+    const el = collectUniversitiesElements();
+    const logTranslationDebug = initTranslationDebugLogger();
+
+    if (!el.list) return;
+    disposeUniversitiesPage();
+
+    bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
+    bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
+    bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
+
+    const closeAllStatusOverflows = setupStatusOverflowHandlers();
 
     let unifitWarningBannerDismissed = false;
 
