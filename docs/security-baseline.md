@@ -16,7 +16,7 @@ settings rather than repository files.
 | --- | --- | --- |
 | OSPS-AC-01.01 MFA for sensitive actions | Needs maintainer confirmation | Confirm that every administrator of the authoritative GitHub repository has MFA or a passkey enabled. |
 | OSPS-AC-02.01 Restrict collaborator permissions | Needs maintainer confirmation | Review collaborator and organization defaults; grant elevated access deliberately. |
-| OSPS-AC-03.01 Protect the primary branch from direct commits | Needs GitHub configuration | Require pull requests for `main` and enforce the rule for administrators. The current rule does not enforce for administrators. |
+| OSPS-AC-03.01 Protect the primary branch from direct commits | Met | The active `main` repository ruleset requires pull requests, one approval from another participant, current required checks, and has no bypass actors. |
 | OSPS-AC-03.02 Protect the primary branch from deletion | Met | The protected `main` branch disallows deletion. |
 | OSPS-BR-01.01 Sanitize untrusted CI metadata | Met | Workflow review found no unvalidated branch, pull-request, or manual inputs. Release tags are strictly validated before checkout or publication steps use them. |
 | OSPS-BR-01.03 Isolate untrusted CI code | Met | Pull-request workflows use no repository secrets and default to `contents: read`; privileged release credentials run only for published releases. |
@@ -39,7 +39,7 @@ settings rather than repository files.
 
 - `security-insights.yml` is the machine-readable declaration used by OSPS-compatible tooling.
 - GitHub Actions runs CodeQL, dependency auditing, Trivy, Scorecard, fuzzing, and the test suites.
-- Release automation produces GitHub build provenance attestations.
+- Release automation verifies and publishes GitHub build provenance bundles alongside all three ZIP artifacts and attests the container image.
 
 ## Review cadence
 

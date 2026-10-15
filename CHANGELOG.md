@@ -2,6 +2,11 @@
 
 All notable project changes should be recorded here.
 
+## Unreleased
+
+### Security
+- Attach verified Sigstore provenance bundles to each release ZIP and require peer-reviewed pull requests for `main`.
+
 ## 8.1.7 (2026-10-15) - Expanded Test Coverage
 
 ### Added
