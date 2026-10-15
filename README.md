@@ -7,6 +7,7 @@
 <p align="center">
   <a href="https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml"><img src="https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
   <a href="https://app.codecov.io/github/mukhammedsh/unisearch"><img src="https://codecov.io/github/mukhammedsh/unisearch/graph/badge.svg" alt="Codecov"></a>
+  <a href="https://www.bestpractices.dev/projects/14732"><img src="https://www.bestpractices.dev/projects/14732/badge" alt="OpenSSF Best Practices"></a>
   <a href="https://www.bestpractices.dev/projects/14732"><img src="https://www.bestpractices.dev/projects/14732/baseline" alt="OpenSSF Baseline"></a>
   <a href="https://securityscorecards.dev/viewer/?uri=github.com/mukhammedsh/unisearch"><img src="https://api.securityscorecards.dev/projects/github.com/mukhammedsh/unisearch/badge" alt="OpenSSF Scorecard"></a>
   <a href="package.json"><img src="https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json" alt="Version"></a>
