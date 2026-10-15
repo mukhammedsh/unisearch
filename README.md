@@ -4,16 +4,6 @@
   </a>
 </h1>
 
-<p align="center"><strong>Explore universities, compare study options, and understand published admission requirements.</strong></p>
-
-<p align="center">
-  <a href="https://unisearch-frontend.onrender.com/"><strong>Open the live catalog →</strong></a>
-  &nbsp; · &nbsp;
-  <a href="#run-locally">Run locally</a>
-  &nbsp; · &nbsp;
-  <a href="CONTRIBUTING.md">Contribute</a>
-</p>
-
 <p align="center">
   <a href="https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml"><img src="https://github.com/mukhammedsh/unisearch/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
   <a href="https://app.codecov.io/github/mukhammedsh/unisearch"><img src="https://codecov.io/github/mukhammedsh/unisearch/graph/badge.svg" alt="Codecov"></a>
@@ -26,6 +16,14 @@
 UniSearch is an open-source university discovery catalog for applicants. Browse without a profile, then optionally use your preferences to sort and compare universities. University pages bring study options, admissions requirements, costs, and funding information together with their official sources.
 
 Facts can vary by program, applicant category, and entry cycle. UniSearch keeps those scopes visible where the source data supports them; catalog coverage varies by institution.
+
+<p align="center">
+  <a href="https://unisearch-frontend.onrender.com/"><strong>Open the live catalog →</strong></a>
+  &nbsp; · &nbsp;
+  <a href="#run-locally">Run locally</a>
+  &nbsp; · &nbsp;
+  <a href="CONTRIBUTING.md">Contribute</a>
+</p>
 
 ## Contents
 
