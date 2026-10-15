@@ -1992,20 +1992,7 @@ def _choice_matches_study_level(choice: Dict[str, Any], target_level: str) -> bo
     return bool(scope and _normalize_study_level_str(scope) == target_level)
 
 
-def estimate_uni_chance(
-    university: Dict[str, Any],
-    profile: Optional[Dict[str, Any]] = None,
-    *,
-    user_context: Optional[Dict[str, Any]] = None,
-    lang_cfg: Optional[Dict[str, Any]] = None,
-) -> Dict[str, Any]:
-    profile = profile if isinstance(profile, dict) else {}
-    if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
-        return _assess_admissions_selection(str(university.get("id") or ""), profile)
-    lang_cfg = lang_cfg if isinstance(lang_cfg, dict) else _language_config()
-    ctx = user_context if isinstance(user_context, dict) else _build_user_context(profile, lang_cfg)
-    funding_type = _normalize_funding_preference(profile.get("fundingType") or profile.get("funding_type") or "any")
-
+def _load_university_admission_choices(university: Dict[str, Any]) -> List[Dict[str, Any]]:
     uid = str(university.get("id") or "").strip()
     choices = _CHOICES_CACHE.get(uid) if uid else None
     if choices is None:
@@ -2015,9 +2002,15 @@ def estimate_uni_chance(
         choices = [choice for choice in choices if isinstance(choice, dict)]
         if uid:
             _CHOICES_CACHE[uid] = choices
-    entries = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
-    selected_choice_key = _selected_choice_key_for_university(profile, university)
+    return choices
 
+
+def _filter_admission_entries(
+    choices: List[Dict[str, Any]],
+    university: Dict[str, Any],
+    profile: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    entries = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
     target_level = _normalize_study_level_str(
         profile.get("studyLevel") or profile.get("study_level") or ""
     )
@@ -2029,7 +2022,7 @@ def estimate_uni_chance(
         or selected_program_id.casefold() in _known_program_ids(university, choices)
     )
 
-    entries = [
+    return [
         row for row in entries
         if (target_level == "any" or _choice_matches_study_level(row["choice"], target_level))
         and _choice_matches_applicant_route(row["choice"], target_route)
@@ -2037,11 +2030,15 @@ def estimate_uni_chance(
         and (not selected_program_id or not selected_program_is_known or _choice_matches_program(row["choice"], selected_program_id))
     ]
 
-    has_evidence = bool(ctx["userScores"]) or any(
+
+def _has_profile_evidence(ctx: Dict[str, Any]) -> bool:
+    return bool(ctx["userScores"]) or any(
         isinstance(v, dict) and (bool(v.get("native")) or _to_num(v.get("cefr")) is not None or bool(v.get("exams")))
-        for v in (ctx["userLanguages"] or {}).values()
+        for v in (ctx.get("userLanguages") or {}).values()
     )
 
+
+def _resolve_profile_citizenship_status(university: Dict[str, Any], profile: Dict[str, Any]) -> Dict[str, Any]:
     citizenships = profile.get("citizenships") or []
     if isinstance(citizenships, str):
         citizenships = [c.strip() for c in citizenships.split(",") if c.strip()]
@@ -2055,35 +2052,58 @@ def estimate_uni_chance(
         or university.get("country")
         or ""
     )
-    citizenship_status = resolve_citizenship_status(uni_country, citizenships)
+    return resolve_citizenship_status(uni_country, citizenships)
 
-    if not entries:
-        return {
-            "overallChance": None,
-            "scoreMeaning": "published_requirements_met_percent",
-            "level": _no_data_chance_level(profile),
-            "bestChoiceKey": "none",
-            "bestChoiceId": "",
-            "bestChoiceLabel": "No choices for selected filters",
-            "recommendedChoiceKey": "none",
-            "recommendedChoiceId": "",
-            "recommendedChoiceLabel": "No choices for selected filters",
-            "selectedChoiceKey": "none",
-            "selectedChoiceId": "",
-            "selectedChoiceLabel": "No choices for selected filters",
-            "choices": [],
-            "missingEvidence": not has_evidence,
-            "conditional": False,
-            "fundingType": funding_type,
-            "selectedByUser": False,
-            "choiceSelectionSource": "recommended",
-            "chanceAvailable": False,
-            "reason": "no_choices",
-            "label": "Нет вариантов для выбранных фильтров"
-            if _chance_locale(profile) == "rus"
-            else "No choices for the selected filters",
-            "citizenshipStatus": citizenship_status,
-        }
+
+def _build_no_choices_chance_response(
+    profile: Dict[str, Any],
+    funding_type: str,
+    has_evidence: bool,
+    citizenship_status: Dict[str, Any],
+) -> Dict[str, Any]:
+    return {
+        "overallChance": None,
+        "scoreMeaning": "published_requirements_met_percent",
+        "level": _no_data_chance_level(profile),
+        "bestChoiceKey": "none",
+        "bestChoiceId": "",
+        "bestChoiceLabel": "No choices for selected filters",
+        "recommendedChoiceKey": "none",
+        "recommendedChoiceId": "",
+        "recommendedChoiceLabel": "No choices for selected filters",
+        "selectedChoiceKey": "none",
+        "selectedChoiceId": "",
+        "selectedChoiceLabel": "No choices for selected filters",
+        "choices": [],
+        "missingEvidence": not has_evidence,
+        "conditional": False,
+        "fundingType": funding_type,
+        "selectedByUser": False,
+        "choiceSelectionSource": "recommended",
+        "chanceAvailable": False,
+        "reason": "no_choices",
+        "label": "Нет вариантов для выбранных фильтров"
+        if _chance_locale(profile) == "rus"
+        else "No choices for the selected filters",
+        "citizenshipStatus": citizenship_status,
+    }
+
+
+def _evaluate_per_choice_chance(
+    university: Dict[str, Any],
+    profile: Dict[str, Any],
+    entries: List[Dict[str, Any]],
+    choices: List[Dict[str, Any]],
+    ctx: Dict[str, Any],
+    lang_cfg: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    target_route = profile.get("applicant_route")
+    target_cycle = profile.get("intended_entry_cycle")
+    selected_program_id = _selected_program_id_for_university(profile, university)
+    selected_program_is_known = (
+        not selected_program_id
+        or selected_program_id.casefold() in _known_program_ids(university, choices)
+    )
 
     per_choice = []
     for row in entries:
@@ -2152,6 +2172,36 @@ def estimate_uni_chance(
             str(x.get("choiceLabel") or ""),
         )
     )
+    return per_choice
+
+
+def estimate_uni_chance(
+    university: Dict[str, Any],
+    profile: Optional[Dict[str, Any]] = None,
+    *,
+    user_context: Optional[Dict[str, Any]] = None,
+    lang_cfg: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    profile = profile if isinstance(profile, dict) else {}
+    if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
+        return _assess_admissions_selection(str(university.get("id") or ""), profile)
+
+    lang_cfg = lang_cfg if isinstance(lang_cfg, dict) else _language_config()
+    ctx = user_context if isinstance(user_context, dict) else _build_user_context(profile, lang_cfg)
+    funding_type = _normalize_funding_preference(profile.get("fundingType") or profile.get("funding_type") or "any")
+
+    choices = _load_university_admission_choices(university)
+    selected_choice_key = _selected_choice_key_for_university(profile, university)
+    entries = _filter_admission_entries(choices, university, profile)
+
+    has_evidence = _has_profile_evidence(ctx)
+    citizenship_status = _resolve_profile_citizenship_status(university, profile)
+
+    if not entries:
+        return _build_no_choices_chance_response(profile, funding_type, has_evidence, citizenship_status)
+
+    per_choice = _evaluate_per_choice_chance(university, profile, entries, choices, ctx, lang_cfg)
+
     recommended = per_choice[0] if per_choice else {
         "choiceKey": "default",
         "choiceId": "default",
@@ -2166,6 +2216,7 @@ def estimate_uni_chance(
     user_selected = _choice_result_by_key(per_choice, selected_choice_key)
     selected_by_user = user_selected is not None and str(user_selected.get("choiceKey") or "") != str(recommended.get("choiceKey") or "")
     best = user_selected if selected_by_user else recommended
+
     return {
         "overallChance": best.get("chancePercent"),
         "scoreMeaning": "published_requirements_met_percent",
