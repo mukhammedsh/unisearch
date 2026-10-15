@@ -2681,3 +2681,5 @@ university.admissions.catalog.apply_before_save: Таңдауды сақтама
 universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
 universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
 universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.
+university.programs.all_levels: Барлық оқу деңгейлері
+university.programs.search_clear: Іздестіруді тазарту
