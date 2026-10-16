@@ -166,6 +166,32 @@ test("detail fetch returns fresh cache without a request", async () => {
   }
 });
 
+test("reviewed detail fetch replaces a fresh legacy cache entry", async () => {
+  cache.setDetailCacheEntry("mit-usa-cambridge", { id: "mit-usa-cambridge", name: "Legacy" }, "legacy-etag", "eng");
+  const originalFetch = global.fetch;
+  const replacement = { id: "mit-usa-cambridge", admissions_catalog: { availability: "reviewed" } };
+  global.fetch = async (_url, options) => {
+    assert.deepEqual(options.headers, {});
+    return response({ body: replacement });
+  };
+  try {
+    assert.deepEqual(await cache.fetchUniversityDetailCached("mit-usa-cambridge", { requireReviewedCatalog: true }), replacement);
+    assert.deepEqual(cache.getDetailCacheEntry("mit-usa-cambridge", "eng").data, replacement);
+  } finally { global.fetch = originalFetch; }
+});
+
+test("reviewed detail fetch rejects an outdated API response instead of caching it", async () => {
+  const originalFetch = global.fetch;
+  global.fetch = async () => response({ body: { id: "mit-usa-cambridge", name: "Legacy" } });
+  try {
+    await assert.rejects(
+      cache.fetchUniversityDetailCached("mit-usa-cambridge", { requireReviewedCatalog: true }),
+      /Reviewed university catalog contract is unavailable/,
+    );
+    assert.equal(cache.getDetailCacheEntry("mit-usa-cambridge", "eng"), null);
+  } finally { global.fetch = originalFetch; }
+});
+
 test("reviewed detail data revalidates even inside its cache TTL", async () => {
   cache.setDetailCacheEntry("reviewed", { admissions_catalog: { availability: "reviewed", revision: "old" } }, "old-etag", "eng");
   const originalFetch = global.fetch;

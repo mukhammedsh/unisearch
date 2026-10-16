@@ -49,6 +49,35 @@ class LanguageConfigCacheTests(unittest.TestCase):
                     languages.get_languages_config(),
                 )
 
+    def test_get_languages_index_returns_default_index(self):
+        with patch.dict(languages._LANG_CACHE, {"mtime": None, "data": {}, "index": None}):
+            idx = languages.get_languages_index()
+            self.assertIn("codes", idx)
+            self.assertIn("cefr_map", idx)
+            self.assertIn("exams_by_lang", idx)
+            self.assertIn("en", idx["codes"])
+
+    def test_get_languages_index_rebuilds_index_if_cached_index_is_none(self):
+        test_data = {
+            "languages": [{"code": "fr"}],
+            "cefr": [{"code": "C1", "id": 5}],
+            "language_exams": {"fr": [{"id": "DELF"}]},
+        }
+        with patch.dict(languages._LANG_CACHE, {"mtime": 100, "data": test_data, "index": None}), patch.object(
+            languages, "file_mtime", return_value=100
+        ):
+            idx = languages.get_languages_index()
+            self.assertEqual(idx["codes"], {"fr"})
+            self.assertEqual(idx["cefr_map"], {"C1": 5})
+            self.assertEqual(idx["exams_by_lang"], {"fr": [{"id": "DELF"}]})
+
+    def test_get_languages_index_handles_empty_data(self):
+        with patch.dict(languages._LANG_CACHE, {"mtime": 100, "data": {}, "index": None}), patch.object(
+            languages, "file_mtime", return_value=100
+        ):
+            idx = languages.get_languages_index()
+            self.assertEqual(idx, {"codes": set(), "cefr_map": {}, "exams_by_lang": {}})
+
 
 class ValidateLanguageExamFromCfgTests(unittest.TestCase):
     def test_valid_score_type_float_and_int(self):

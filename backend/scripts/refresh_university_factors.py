@@ -12,6 +12,7 @@ The script updates:
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 import datetime as dt
 import json
 import math
@@ -213,29 +214,37 @@ def _fetch_openalex_institution(
     query_candidates = [cleaned, re.sub(r"^the\s+", "", cleaned, flags=re.IGNORECASE), query_name_base, name]
     query_candidates = [q for i, q in enumerate(query_candidates) if q and q not in query_candidates[:i]]
 
+    urls = [
+        f"{OPENALEX_BASE}?{urllib.parse.urlencode({'search': q, 'per-page': '8'})}"
+        for q in query_candidates
+    ]
+
+    def _fetch(url: str) -> Tuple[str, Dict[str, Any]]:
+        return url, _http_get_json(url)
+
     best_row: Optional[Dict[str, Any]] = None
     best_url = ""
     best_score = -1.0
-    for query_name in query_candidates:
-        params = {"search": query_name, "per-page": "8"}
-        url = f"{OPENALEX_BASE}?{urllib.parse.urlencode(params)}"
-        payload = _http_get_json(url)
-        results = payload.get("results")
-        results = results if isinstance(results, list) else []
-        for result in results:
-            if not isinstance(result, dict):
-                continue
-            score = _openalex_candidate_score(
-                result,
-                target_name=name,
-                target_country_code=country_code,
-                target_lat=lat,
-                target_lon=lon,
-            )
-            if score > best_score:
-                best_score = score
-                best_row = result
-                best_url = url
+
+    max_workers = min(len(urls), 4) if urls else 1
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for url, payload in executor.map(_fetch, urls):
+            results = payload.get("results")
+            results = results if isinstance(results, list) else []
+            for result in results:
+                if not isinstance(result, dict):
+                    continue
+                score = _openalex_candidate_score(
+                    result,
+                    target_name=name,
+                    target_country_code=country_code,
+                    target_lat=lat,
+                    target_lon=lon,
+                )
+                if score > best_score:
+                    best_score = score
+                    best_row = result
+                    best_url = url
 
     return best_row, best_url
 

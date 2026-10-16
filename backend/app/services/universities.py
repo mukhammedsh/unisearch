@@ -1733,72 +1733,66 @@ def get_stats() -> Dict[str, Any]:
     }
 
 
-def list_universities(
-    q: Optional[str] = None,
+def _filter_by_search_query(
+    pairs: List[Tuple[Dict[str, Any], Dict[str, Any]]],
+    q: str,
+    lang: str,
+) -> Tuple[List[Tuple[Dict[str, Any], Dict[str, Any]]], Dict[str, float]]:
+    query_candidates = _search_query_candidates(q, search_lang=lang)
+    prepared_queries = []
+    for q_val in query_candidates:
+        pq = search_service.prepare_query(q_val)
+        if pq:
+            prepared_queries.append(pq)
+
+    scored_pairs = []
+    search_scores: Dict[str, float] = {}
+    prepared_key = {
+        SEARCH_LANG_ENG: "prepared_search_meta_eng",
+        SEARCH_LANG_RUS: "prepared_search_meta_rus",
+        SEARCH_LANG_KAZ: "prepared_search_meta_kaz",
+    }[lang]
+    for u, m in pairs:
+        pm = m.get(prepared_key)
+        if not pm:
+            meta_search = _meta_for_search_lang(m, lang)
+            pm = search_service.prepare_search_meta(meta_search)
+            if not pm:
+                continue
+
+        best_score: Optional[float] = None
+        for pq in prepared_queries:
+            score = search_service.score_prepared(pm, pq)
+            if score is None or score <= 0:
+                continue
+            if best_score is None or score > best_score:
+                best_score = float(score)
+
+        if best_score is None:
+            continue
+        uid = str(u.get("id", "")).strip() or f"@{id(u)}"
+        search_scores[uid] = best_score
+        scored_pairs.append((u, m))
+    return scored_pairs, search_scores
+
+
+def _filter_university_pairs(
+    pairs: List[Tuple[Dict[str, Any], Dict[str, Any]]],
+    region: Optional[str] = None,
     country: Optional[str] = None,
     city: Optional[str] = None,
-    region: Optional[str] = None,
     major: Optional[str] = None,
     study_level: Optional[str] = None,
-    funding_type: Optional[str] = None,
     format: Optional[str] = None,
+    funding_type: Optional[str] = None,
     user_budget: Optional[float] = None,
     min_tuition: Optional[float] = None,
     max_tuition: Optional[float] = None,
     min_acceptance: Optional[float] = None,
     max_acceptance: Optional[float] = None,
     size: Optional[str] = None,
-    sort: str = "name_asc",
-    page: int = 1,
-    limit: int = 200,
-    paginate: bool = True,
-    response_mode: str = "full",
-    search_lang: Optional[str] = None,
-    localize_output: bool = True,
-) -> Dict[str, Any]:
-    lang = _normalize_search_lang(search_lang)
-    mode_pref = _normalize_study_mode(format or "any")
-    items, meta = get_universities_with_meta()
-    pairs = list(zip(items, meta))
-    search_scores: Dict[str, float] = {}
-
-    if q:
-        query_candidates = _search_query_candidates(q, search_lang=lang)
-        prepared_queries = []
-        for q_val in query_candidates:
-            pq = search_service.prepare_query(q_val)
-            if pq:
-                prepared_queries.append(pq)
-
-        scored_pairs = []
-        prepared_key = {
-            SEARCH_LANG_ENG: "prepared_search_meta_eng",
-            SEARCH_LANG_RUS: "prepared_search_meta_rus",
-            SEARCH_LANG_KAZ: "prepared_search_meta_kaz",
-        }[lang]
-        for u, m in pairs:
-            pm = m.get(prepared_key)
-            if not pm:
-                meta_search = _meta_for_search_lang(m, lang)
-                pm = search_service.prepare_search_meta(meta_search)
-                if not pm:
-                    continue
-
-            best_score: Optional[float] = None
-            for pq in prepared_queries:
-                score = search_service.score_prepared(pm, pq)
-                if score is None or score <= 0:
-                    continue
-                if best_score is None or score > best_score:
-                    best_score = float(score)
-
-            if best_score is None:
-                continue
-            uid = str(u.get("id", "")).strip() or f"@{id(u)}"
-            search_scores[uid] = best_score
-            scored_pairs.append((u, m))
-        pairs = scored_pairs
-
+    mode_pref: str = "any",
+) -> List[Tuple[Dict[str, Any], Dict[str, Any]]]:
     if region or country or city:
         reg = _safe_lower(region) if region else None
         cc = _safe_lower(country) if country else None
@@ -1871,7 +1865,10 @@ def list_universities(
             for (u, meta_row) in pairs
             if any(
                 _safe_lower(x) == sl
-                or (u.get("id") in admissions_catalog.INSTITUTION_IDS and admissions_catalog._normalized_level(sl) == _safe_lower(x))
+                or (
+                    u.get("id") in admissions_catalog.INSTITUTION_IDS
+                    and admissions_catalog._normalized_level(sl) == _safe_lower(x)
+                )
                 or (sl in ("doctorate", "phd") and _safe_lower(x) in ("doctorate", "phd"))
                 for x in meta_row.get("study_levels", [])
             )
@@ -1926,22 +1923,41 @@ def list_universities(
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_gte(m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u), min_acceptance)
+            if _safe_compare_gte(
+                m.get("acceptance_rate")
+                if "acceptance_rate" in m
+                else _get_university_acceptance_rate(u),
+                min_acceptance,
+            )
         ]
     if max_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_lte(m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u), max_acceptance)
+            if _safe_compare_lte(
+                m.get("acceptance_rate")
+                if "acceptance_rate" in m
+                else _get_university_acceptance_rate(u),
+                max_acceptance,
+            )
         ]
 
     if size:
         ss = _safe_lower(size)
         pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
 
-    items = [u for (u, _) in pairs]
+    return pairs
+
+
+def _sort_university_items(
+    items: List[Dict[str, Any]],
+    q: Optional[str],
+    sort: str,
+    search_scores: Dict[str, float],
+    mode_pref: str,
+) -> List[Dict[str, Any]]:
     if q and sort in ("name_asc", "relevance"):
-        items = sorted(
+        return sorted(
             items,
             key=lambda u: (
                 -(search_scores.get(str(u.get("id", "")).strip() or f"@{id(u)}", 0.0)),
@@ -1966,9 +1982,63 @@ def list_universities(
                 _safe_lower(u.get("name")),
             ),
         )
-        items = top_exact + _apply_sort(rest, sort, format_preference=mode_pref)
+        return top_exact + _apply_sort(rest, sort, format_preference=mode_pref)
     else:
-        items = _apply_sort(items, sort, format_preference=mode_pref)
+        return _apply_sort(items, sort, format_preference=mode_pref)
+
+
+def list_universities(
+    q: Optional[str] = None,
+    country: Optional[str] = None,
+    city: Optional[str] = None,
+    region: Optional[str] = None,
+    major: Optional[str] = None,
+    study_level: Optional[str] = None,
+    funding_type: Optional[str] = None,
+    format: Optional[str] = None,
+    user_budget: Optional[float] = None,
+    min_tuition: Optional[float] = None,
+    max_tuition: Optional[float] = None,
+    min_acceptance: Optional[float] = None,
+    max_acceptance: Optional[float] = None,
+    size: Optional[str] = None,
+    sort: str = "name_asc",
+    page: int = 1,
+    limit: int = 200,
+    paginate: bool = True,
+    response_mode: str = "full",
+    search_lang: Optional[str] = None,
+    localize_output: bool = True,
+) -> Dict[str, Any]:
+    lang = _normalize_search_lang(search_lang)
+    mode_pref = _normalize_study_mode(format or "any")
+    items, meta = get_universities_with_meta()
+    pairs = list(zip(items, meta))
+    search_scores: Dict[str, float] = {}
+
+    if q:
+        pairs, search_scores = _filter_by_search_query(pairs, q, lang)
+
+    pairs = _filter_university_pairs(
+        pairs,
+        region=region,
+        country=country,
+        city=city,
+        major=major,
+        study_level=study_level,
+        format=format,
+        funding_type=funding_type,
+        user_budget=user_budget,
+        min_tuition=min_tuition,
+        max_tuition=max_tuition,
+        min_acceptance=min_acceptance,
+        max_acceptance=max_acceptance,
+        size=size,
+        mode_pref=mode_pref,
+    )
+
+    items = [u for (u, _) in pairs]
+    items = _sort_university_items(items, q, sort, search_scores, mode_pref)
 
     total = len(items)
     output_lang = lang if localize_output else SEARCH_LANG_ENG
