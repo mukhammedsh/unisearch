@@ -233,7 +233,7 @@ def _has_suspicious_url_chars(value: str) -> bool:
     return any(ord(ch) > 127 for ch in str(value or ""))
 
 
-def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
+def _iter_top_level_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
     website = university.get("website")
     if _is_non_empty_text(website):
         yield "website", str(website).strip()
@@ -253,148 +253,172 @@ def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
             topic = str(row.get("topic") or f"topic_{idx}").strip()
             yield f"verified_sources[{idx}]/{topic}", str(url).strip()
 
+
+def _iter_academics_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
     academics = university.get("academics")
-    if isinstance(academics, dict):
-        structure = academics.get("undergraduate_structure")
-        if isinstance(structure, dict) and _is_non_empty_text(structure.get("source_url")):
-            yield "academics.undergraduate_structure.source_url", str(structure.get("source_url")).strip()
-        admissions = academics.get("admissions")
-        if isinstance(admissions, dict):
-            for section_key in ("university_wide", "program_level"):
-                section = admissions.get(section_key)
-                if not isinstance(section, dict):
+    if not isinstance(academics, dict):
+        return
+
+    structure = academics.get("undergraduate_structure")
+    if isinstance(structure, dict) and _is_non_empty_text(structure.get("source_url")):
+        yield "academics.undergraduate_structure.source_url", str(structure.get("source_url")).strip()
+    admissions = academics.get("admissions")
+    if isinstance(admissions, dict):
+        for section_key in ("university_wide", "program_level"):
+            section = admissions.get(section_key)
+            if not isinstance(section, dict):
+                continue
+            provenance = section.get("provenance")
+            if isinstance(provenance, dict):
+                url = provenance.get("source_url")
+                if _is_non_empty_text(url):
+                    yield f"academics.admissions.{section_key}.provenance.source_url", str(url).strip()
+            sources = section.get("sources")
+            if isinstance(sources, list):
+                for s_idx, source_row in enumerate(sources):
+                    if not isinstance(source_row, dict):
+                        continue
+                    url = source_row.get("url")
+                    if _is_non_empty_text(url):
+                        yield f"academics.admissions.{section_key}.sources[{s_idx}]", str(url).strip()
+        programs = admissions.get("programs")
+        if isinstance(programs, list):
+            for p_idx, program in enumerate(programs):
+                if not isinstance(program, dict):
                     continue
-                provenance = section.get("provenance")
+                name = str(program.get("program_name") or program.get("name") or f"program_{p_idx}").strip()
+                provenance = program.get("provenance")
                 if isinstance(provenance, dict):
                     url = provenance.get("source_url")
                     if _is_non_empty_text(url):
-                        yield f"academics.admissions.{section_key}.provenance.source_url", str(url).strip()
-                sources = section.get("sources")
-                if isinstance(sources, list):
-                    for s_idx, source_row in enumerate(sources):
-                        if not isinstance(source_row, dict):
-                            continue
-                        url = source_row.get("url")
-                        if _is_non_empty_text(url):
-                            yield f"academics.admissions.{section_key}.sources[{s_idx}]", str(url).strip()
-            programs = admissions.get("programs")
-            if isinstance(programs, list):
-                for p_idx, program in enumerate(programs):
-                    if not isinstance(program, dict):
+                        yield f"academics.admissions.programs[{p_idx}]/{name}/provenance.source_url", str(url).strip()
+                sources = program.get("sources")
+                if not isinstance(sources, list):
+                    continue
+                for s_idx, source_row in enumerate(sources):
+                    if not isinstance(source_row, dict):
                         continue
-                    name = str(program.get("program_name") or program.get("name") or f"program_{p_idx}").strip()
-                    provenance = program.get("provenance")
-                    if isinstance(provenance, dict):
-                        url = provenance.get("source_url")
-                        if _is_non_empty_text(url):
-                            yield f"academics.admissions.programs[{p_idx}]/{name}/provenance.source_url", str(url).strip()
-                    sources = program.get("sources")
-                    if not isinstance(sources, list):
-                        continue
-                    for s_idx, source_row in enumerate(sources):
-                        if not isinstance(source_row, dict):
-                            continue
-                        url = source_row.get("url")
-                        if _is_non_empty_text(url):
-                            yield f"academics.admissions.programs[{p_idx}]/{name}/sources[{s_idx}]", str(url).strip()
+                    url = source_row.get("url")
+                    if _is_non_empty_text(url):
+                        yield f"academics.admissions.programs[{p_idx}]/{name}/sources[{s_idx}]", str(url).strip()
 
+
+def _iter_finance_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
     finance = university.get("finance")
-    if isinstance(finance, dict):
-        if _is_non_empty_text(finance.get("source_url")):
-            yield "finance.source_url", str(finance.get("source_url")).strip()
-        one_time_costs = finance.get("one_time_costs")
-        if isinstance(one_time_costs, list):
-            for cost_idx, cost in enumerate(one_time_costs):
-                if not isinstance(cost, dict):
-                    continue
-                source_urls = cost.get("source_urls")
-                if not isinstance(source_urls, list):
-                    continue
-                for source_idx, source_url in enumerate(source_urls):
-                    if _is_non_empty_text(source_url):
-                        yield (
-                            f"finance.one_time_costs[{cost_idx}].source_urls[{source_idx}]",
-                            str(source_url).strip(),
-                        )
-        financial_aid = finance.get("financial_aid")
-        if isinstance(financial_aid, dict) and _is_non_empty_text(financial_aid.get("source_url")):
-            yield "finance.financial_aid.source_url", str(financial_aid.get("source_url")).strip()
+    if not isinstance(finance, dict):
+        return
 
-    categories = university.get("admission_categories")
-    if isinstance(categories, list):
-        for c_idx, category in enumerate(categories):
-            if not isinstance(category, dict):
+    if _is_non_empty_text(finance.get("source_url")):
+        yield "finance.source_url", str(finance.get("source_url")).strip()
+    one_time_costs = finance.get("one_time_costs")
+    if isinstance(one_time_costs, list):
+        for cost_idx, cost in enumerate(one_time_costs):
+            if not isinstance(cost, dict):
                 continue
-            category_id = str(category.get("id") or f"category_{c_idx}").strip()
+            source_urls = cost.get("source_urls")
+            if not isinstance(source_urls, list):
+                continue
+            for source_idx, source_url in enumerate(source_urls):
+                if _is_non_empty_text(source_url):
+                    yield (
+                        f"finance.one_time_costs[{cost_idx}].source_urls[{source_idx}]",
+                        str(source_url).strip(),
+                    )
+    financial_aid = finance.get("financial_aid")
+    if isinstance(financial_aid, dict) and _is_non_empty_text(financial_aid.get("source_url")):
+        yield "finance.financial_aid.source_url", str(financial_aid.get("source_url")).strip()
+
+
+def _iter_admission_categories_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
+    categories = university.get("admission_categories")
+    if not isinstance(categories, list):
+        return
+
+    for c_idx, category in enumerate(categories):
+        if not isinstance(category, dict):
+            continue
+        category_id = str(category.get("id") or f"category_{c_idx}").strip()
+        for field_name in ("published_admission", "finance_override"):
+            structured = category.get(field_name)
+            if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
+                yield (
+                    f"admission_categories[{c_idx}]/{category_id}/{field_name}.source_url",
+                    str(structured.get("source_url")).strip(),
+                )
+        profiles = category.get("requirement_profiles")
+        if not isinstance(profiles, list):
+            continue
+        for p_idx, profile in enumerate(profiles):
+            if not isinstance(profile, dict):
+                continue
+            profile_id = str(profile.get("id") or f"profile_{p_idx}").strip()
             for field_name in ("published_admission", "finance_override"):
-                structured = category.get(field_name)
+                structured = profile.get(field_name)
                 if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
                     yield (
-                        f"admission_categories[{c_idx}]/{category_id}/{field_name}.source_url",
+                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/{field_name}.source_url",
                         str(structured.get("source_url")).strip(),
                     )
-            profiles = category.get("requirement_profiles")
-            if not isinstance(profiles, list):
-                continue
-            for p_idx, profile in enumerate(profiles):
-                if not isinstance(profile, dict):
-                    continue
-                profile_id = str(profile.get("id") or f"profile_{p_idx}").strip()
-                for field_name in ("published_admission", "finance_override"):
-                    structured = profile.get(field_name)
-                    if isinstance(structured, dict) and _is_non_empty_text(structured.get("source_url")):
+            profile_source_url = profile.get("stats_avg_source_url")
+            if _is_non_empty_text(profile_source_url):
+                yield (
+                    f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/stats_avg_source_url",
+                    str(profile_source_url).strip(),
+                )
+
+            lang_reqs = profile.get("language_requirements")
+            if isinstance(lang_reqs, list):
+                for lr_idx, row in enumerate(lang_reqs):
+                    if not isinstance(row, dict):
+                        continue
+                    code = str(row.get("code") or f"lang_{lr_idx}").strip()
+                    source_url = row.get("stats_avg_source_url")
+                    if _is_non_empty_text(source_url):
                         yield (
-                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/{field_name}.source_url",
-                            str(structured.get("source_url")).strip(),
+                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
+                            str(source_url).strip(),
                         )
-                profile_source_url = profile.get("stats_avg_source_url")
-                if _is_non_empty_text(profile_source_url):
+
+            funding_options = profile.get("funding_options")
+            if not isinstance(funding_options, list):
+                funding_options = category.get("funding_options")
+            if not isinstance(funding_options, list):
+                continue
+            for f_idx, funding in enumerate(funding_options):
+                if not isinstance(funding, dict):
+                    continue
+                funding_id = str(funding.get("id") or f"funding_{f_idx}").strip()
+                funding_source_url = funding.get("stats_avg_source_url")
+                if _is_non_empty_text(funding_source_url):
                     yield (
-                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/stats_avg_source_url",
-                        str(profile_source_url).strip(),
+                        f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/funding_options[{f_idx}]/{funding_id}/stats_avg_source_url",
+                        str(funding_source_url).strip(),
                     )
 
-                lang_reqs = profile.get("language_requirements")
-                if isinstance(lang_reqs, list):
-                    for lr_idx, row in enumerate(lang_reqs):
-                        if not isinstance(row, dict):
-                            continue
-                        code = str(row.get("code") or f"lang_{lr_idx}").strip()
-                        source_url = row.get("stats_avg_source_url")
-                        if _is_non_empty_text(source_url):
-                            yield (
-                                f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/language_requirements[{lr_idx}]/{code}/stats_avg_source_url",
-                                str(source_url).strip(),
-                            )
 
-                funding_options = profile.get("funding_options")
-                if not isinstance(funding_options, list):
-                    funding_options = category.get("funding_options")
-                if not isinstance(funding_options, list):
-                    continue
-                for f_idx, funding in enumerate(funding_options):
-                    if not isinstance(funding, dict):
-                        continue
-                    funding_id = str(funding.get("id") or f"funding_{f_idx}").strip()
-                    funding_source_url = funding.get("stats_avg_source_url")
-                    if _is_non_empty_text(funding_source_url):
-                        yield (
-                            f"admission_categories[{c_idx}]/{category_id}/requirement_profiles[{p_idx}]/{profile_id}/funding_options[{f_idx}]/{funding_id}/stats_avg_source_url",
-                            str(funding_source_url).strip(),
-                        )
-
+def _iter_fact_provenance_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
     fact_provenance = university.get("fact_provenance")
-    if isinstance(fact_provenance, dict):
-        facts = fact_provenance.get("facts")
-        if isinstance(facts, dict):
-            for fact_name, fact_obj in facts.items():
-                if isinstance(fact_obj, dict):
-                    source = fact_obj.get("source")
-                    if _is_non_empty_text(source) and _is_http_url(source):
-                        yield f"fact_provenance.facts.{fact_name}.source", str(source).strip()
-                    source_url = fact_obj.get("source_url")
-                    if _is_non_empty_text(source_url) and _is_http_url(source_url):
-                        yield f"fact_provenance.facts.{fact_name}.source_url", str(source_url).strip()
+    if not isinstance(fact_provenance, dict):
+        return
+
+    facts = fact_provenance.get("facts")
+    if isinstance(facts, dict):
+        for fact_name, fact_obj in facts.items():
+            if isinstance(fact_obj, dict):
+                source = fact_obj.get("source")
+                if _is_non_empty_text(source) and _is_http_url(source):
+                    yield f"fact_provenance.facts.{fact_name}.source", str(source).strip()
+                source_url = fact_obj.get("source_url")
+                if _is_non_empty_text(source_url) and _is_http_url(source_url):
+                    yield f"fact_provenance.facts.{fact_name}.source_url", str(source_url).strip()
+
+
+def _iter_source_urls(university: Dict[str, Any]) -> Iterable[Tuple[str, str]]:
+    yield from _iter_top_level_source_urls(university)
+    yield from _iter_academics_source_urls(university)
+    yield from _iter_finance_source_urls(university)
+    yield from _iter_admission_categories_source_urls(university)
+    yield from _iter_fact_provenance_source_urls(university)
 
 
 def _program_acceptance_values(academics: Dict[str, Any]) -> List[float]:
