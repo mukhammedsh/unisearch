@@ -1,16 +1,47 @@
 """Unit tests for backend/app/services/finance_modes.py.
 
 Covers:
+- normalize_cost_key: canonical keys, mixed case, special characters, None, empty/whitespace, non-string types
 - mode_breakdown_from_finance: canonical key, missing key, non-dict input
 - mode_total_from_finance: canonical key, missing key, negative value, non-dict input
+- extract_tuition_cost: extraction of tuition cost from breakdown dictionary
 - Removed alternative key names must NOT be resolved
 """
 import unittest
 
 from app.services.finance_modes import (
+    extract_tuition_cost,
     mode_breakdown_from_finance,
     mode_total_from_finance,
+    normalize_cost_key,
 )
+
+
+class NormalizeCostKeyTests(unittest.TestCase):
+    """Tests for normalize_cost_key."""
+
+    def test_lowercase_alphabetic_string_unchanged(self):
+        self.assertEqual(normalize_cost_key("tuition"), "tuition")
+
+    def test_uppercase_converted_to_lowercase(self):
+        self.assertEqual(normalize_cost_key("TUITION"), "tuition")
+        self.assertEqual(normalize_cost_key("Tuition_Fee"), "tuitionfee")
+
+    def test_strips_spaces_underscores_hyphens_special_chars_and_digits(self):
+        self.assertEqual(normalize_cost_key(" Tuition Fee (USD) 2024! "), "tuitionfeeusd")
+        self.assertEqual(normalize_cost_key("housing-dorm_cost#1"), "housingdormcost")
+
+    def test_empty_string_and_whitespace(self):
+        self.assertEqual(normalize_cost_key(""), "")
+        self.assertEqual(normalize_cost_key("   "), "")
+
+    def test_none_input(self):
+        self.assertEqual(normalize_cost_key(None), "")
+
+    def test_non_string_inputs(self):
+        self.assertEqual(normalize_cost_key(12345), "")
+        self.assertEqual(normalize_cost_key(True), "true")
+        self.assertEqual(normalize_cost_key(False), "")
 
 
 class FinanceModeBreakdownTests(unittest.TestCase):
@@ -134,6 +165,51 @@ class FinanceModeTotalTests(unittest.TestCase):
         }
         result = mode_total_from_finance(finance, "distance")
         self.assertAlmostEqual(result, 17000.0)
+
+
+class ExtractTuitionCostTests(unittest.TestCase):
+    """Tests for extract_tuition_cost."""
+
+    def test_returns_tuition_for_exact_key(self):
+        breakdown = {"Tuition": 15000, "Housing": 8000}
+        result = extract_tuition_cost(breakdown)
+        self.assertAlmostEqual(result, 15000.0)
+
+    def test_returns_tuition_for_normalized_key(self):
+        breakdown = {"tuition_fee_usd": "12500.50", "housing": 5000}
+        result = extract_tuition_cost(breakdown)
+        self.assertAlmostEqual(result, 12500.50)
+
+    def test_returns_none_when_no_tuition_key_present(self):
+        breakdown = {"Housing_Dorm": 10000, "Food": 4000}
+        self.assertIsNone(extract_tuition_cost(breakdown))
+
+    def test_returns_none_for_non_dict_input(self):
+        self.assertIsNone(extract_tuition_cost(None))
+        self.assertIsNone(extract_tuition_cost("not a dict"))
+        self.assertIsNone(extract_tuition_cost(123))
+        self.assertIsNone(extract_tuition_cost(["Tuition", 10000]))
+
+    def test_returns_none_for_empty_dict(self):
+        self.assertIsNone(extract_tuition_cost({}))
+
+    def test_returns_zero_for_zero_tuition(self):
+        breakdown = {"Tuition": 0}
+        result = extract_tuition_cost(breakdown)
+        self.assertAlmostEqual(result, 0.0)
+
+    def test_skips_negative_tuition_amount(self):
+        breakdown = {"Tuition": -1000}
+        self.assertIsNone(extract_tuition_cost(breakdown))
+
+    def test_skips_invalid_numeric_values(self):
+        breakdown = {"Tuition": "invalid", "Tuition_USD": 20000}
+        result = extract_tuition_cost(breakdown)
+        self.assertAlmostEqual(result, 20000.0)
+
+    def test_skips_invalid_values_and_returns_none_if_no_valid_tuition(self):
+        breakdown = {"Tuition": "free", "Tuition_Cost": None}
+        self.assertIsNone(extract_tuition_cost(breakdown))
 
 
 if __name__ == "__main__":
