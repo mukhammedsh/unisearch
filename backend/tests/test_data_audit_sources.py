@@ -117,6 +117,93 @@ class AuditSourceCollectionTests(unittest.TestCase):
         self.assertCountEqual(expected_keys, actual_keys)
         self.assertTrue(all(url == source(url.rsplit("/", 1)[-1]) for _, url in actual))
 
+    def test_iter_source_urls_edge_cases_and_fallbacks(self):
+        # Test empty university
+        self.assertEqual(list(_iter_source_urls({})), [])
+
+        # Test fallbacks and edge branches in sub-generators
+        university = {
+            "website": "   ",
+            "description_source": "https://example.edu/desc",
+            "verified_sources": [
+                {"url": "https://example.edu/verified-no-topic"},
+                "not-a-dict",
+                {"url": ""},
+            ],
+            "academics": {
+                "undergraduate_structure": {"source_url": "  "},
+                "admissions": {
+                    "university_wide": "not-a-dict",
+                    "program_level": {
+                        "provenance": "not-a-dict",
+                        "sources": "not-a-list",
+                    },
+                    "programs": [
+                        {
+                            "program_name": "Program Name Priority",
+                            "name": "Secondary Name",
+                            "provenance": {"source_url": "https://example.edu/p1-prov"},
+                            "sources": [{"url": "https://example.edu/p1-src"}, "not-a-dict"],
+                        },
+                        {
+                            "name": "Fallback Name Only",
+                            "provenance": {"source_url": "https://example.edu/p2-prov"},
+                        },
+                        {
+                            "provenance": {"source_url": "https://example.edu/p3-prov"},
+                        },
+                    ],
+                },
+            },
+            "finance": {
+                "source_url": "",
+                "one_time_costs": [
+                    {"source_urls": ["https://example.edu/cost1"]},
+                    "not-a-dict",
+                    {"source_urls": "not-a-list"},
+                ],
+                "financial_aid": "not-a-dict",
+            },
+            "admission_categories": [
+                {
+                    "published_admission": {"source_url": "https://example.edu/cat-pub"},
+                    "requirement_profiles": [
+                        {
+                            "language_requirements": [
+                                {"stats_avg_source_url": "https://example.edu/lang-no-code"},
+                                "not-a-dict",
+                            ],
+                            "funding_options": [
+                                {"stats_avg_source_url": "https://example.edu/funding-no-id"},
+                                "not-a-dict",
+                            ],
+                        },
+                        "not-a-dict",
+                    ],
+                },
+                "not-a-dict",
+            ],
+            "fact_provenance": {
+                "facts": {
+                    "f1": {"source": "https://example.edu/f1-source", "source_url": "https://example.edu/f1-url"},
+                    "f2": "not-a-dict",
+                }
+            },
+        }
+
+        actual = dict(_iter_source_urls(university))
+        self.assertIn("description_source", actual)
+        self.assertIn("verified_sources[0]/topic_0", actual)
+        self.assertIn("academics.admissions.programs[0]/Program Name Priority/provenance.source_url", actual)
+        self.assertIn("academics.admissions.programs[1]/Fallback Name Only/provenance.source_url", actual)
+        self.assertIn("academics.admissions.programs[2]/program_2/provenance.source_url", actual)
+        self.assertIn("finance.one_time_costs[0].source_urls[0]", actual)
+        self.assertIn("admission_categories[0]/category_0/published_admission.source_url", actual)
+        self.assertIn("admission_categories[0]/category_0/requirement_profiles[0]/profile_0/language_requirements[0]/lang_0/stats_avg_source_url", actual)
+        self.assertIn("admission_categories[0]/category_0/requirement_profiles[0]/profile_0/funding_options[0]/funding_0/stats_avg_source_url", actual)
+        self.assertIn("fact_provenance.facts.f1.source", actual)
+        self.assertIn("fact_provenance.facts.f1.source_url", actual)
+
     def test_dataset_audit_reports_unreadable_empty_and_invalid_root_inputs(self):
         with tempfile.TemporaryDirectory() as directory:
             data_path = Path(directory) / "universities.json"

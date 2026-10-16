@@ -90,69 +90,76 @@ def _coerce_grade_combo_submission(
     }
 
 
-def _coerce_subject_breakdown_submission(
+def _parse_breakdown_item(
     exam_key: str,
-    cfg: Dict[str, Any],
-    score_raw: Any = None,
-    raw_value: Any = None,
-    details: Any = None,
+    row: Any,
+    defs_map: Dict[str, Dict[str, Any]],
+    item_type_label: str,
+    allow_self: bool = False,
 ) -> Dict[str, Any]:
-    scheme = _breakdown_scheme(cfg)
-    fixed_defs = _breakdown_item_definitions(scheme.get("fixed_components"), default_required=True)
-    selectable_defs = _breakdown_item_definitions(scheme.get("selectable_components"), default_required=False)
-    extra_defs = _breakdown_item_definitions(scheme.get("extra_scores"), default_required=False)
+    if not isinstance(row, dict):
+        raise ValueError(f"{exam_key} {item_type_label} must be objects")
+    raw_exam = row.get("exam") or row.get("id")
+    resolved = resolve_exam_key(raw_exam)
+    if not resolved:
+        item_singular = item_type_label[:-1] if item_type_label.endswith("s") else item_type_label
+        if item_type_label == "extra scores":
+            item_singular = "extra score"
+        raise ValueError(f"{exam_key} {item_singular} exam is required")
+    if not allow_self and resolved == exam_key:
+        raise ValueError(f"{exam_key} cannot contain itself as a component")
+    if resolved not in defs_map:
+        item_singular = item_type_label[:-1] if item_type_label.endswith("s") else item_type_label
+        if item_type_label == "extra scores":
+            item_singular = "extra score"
+        raise ValueError(f"{exam_key} does not support {item_singular} {resolved}")
 
-    raw_components = details.get("components") if isinstance(details, dict) else None
-    raw_extra_scores = details.get("extra_scores") if isinstance(details, dict) else None
+    parsed = coerce_exam_submission(
+        resolved,
+        score_raw=row.get("score"),
+        raw_value=row.get("raw_value"),
+        details=row.get("details"),
+    )
+    child_mode = _input_mode(_config_entry(resolved))
+    item = {
+        "exam": resolved,
+        "label": defs_map[resolved].get("label") or resolved,
+        "score": parsed.get("score"),
+    }
+    if parsed.get("raw_value") not in (None, ""):
+        item["raw_value"] = parsed.get("raw_value")
+    if parsed.get("display_value") not in (None, ""):
+        item["display_value"] = parsed.get("display_value")
+    elif child_mode == "flag":
+        item["display_value"] = "Pass" if int(_to_float(parsed.get("score")) or 0) == 1 else "Not passed"
+    return item
+
+
+def _parse_breakdown_components(
+    exam_key: str,
+    raw_components: Any,
+    fixed_defs: List[Dict[str, Any]],
+    selectable_defs: List[Dict[str, Any]],
+    scheme: Dict[str, Any],
+) -> List[Dict[str, Any]]:
     if raw_components is None:
         raw_components = []
-    if raw_extra_scores is None:
-        raw_extra_scores = []
     if not isinstance(raw_components, list):
         raise ValueError(f"{exam_key} components must be a list")
-    if not isinstance(raw_extra_scores, list):
-        raise ValueError(f"{exam_key} extra scores must be a list")
 
     component_defs = {row["exam"]: row for row in fixed_defs + selectable_defs}
     selectable_ids = {row["exam"] for row in selectable_defs}
-    extra_defs_map = {row["exam"]: row for row in extra_defs}
     distinct_components = bool(scheme.get("distinct_components", True))
 
     parsed_components: List[Dict[str, Any]] = []
     component_counts: Dict[str, int] = {}
     for row in raw_components:
-        if not isinstance(row, dict):
-            raise ValueError(f"{exam_key} components must be objects")
-        raw_exam = row.get("exam") or row.get("id")
-        resolved = resolve_exam_key(raw_exam)
-        if not resolved:
-            raise ValueError(f"{exam_key} component exam is required")
-        if resolved == exam_key:
-            raise ValueError(f"{exam_key} cannot contain itself as a component")
-        if resolved not in component_defs:
-            raise ValueError(f"{exam_key} does not support component {resolved}")
+        parsed_item = _parse_breakdown_item(exam_key, row, component_defs, "components", allow_self=False)
+        resolved = parsed_item["exam"]
         component_counts[resolved] = component_counts.get(resolved, 0) + 1
         if distinct_components and component_counts[resolved] > 1:
             raise ValueError(f"{exam_key} does not allow duplicate component {resolved}")
-        parsed = coerce_exam_submission(
-            resolved,
-            score_raw=row.get("score"),
-            raw_value=row.get("raw_value"),
-            details=row.get("details"),
-        )
-        child_mode = _input_mode(_config_entry(resolved))
-        item = {
-            "exam": resolved,
-            "label": component_defs[resolved].get("label") or resolved,
-            "score": parsed.get("score"),
-        }
-        if parsed.get("raw_value") not in (None, ""):
-            item["raw_value"] = parsed.get("raw_value")
-        if parsed.get("display_value") not in (None, ""):
-            item["display_value"] = parsed.get("display_value")
-        elif child_mode == "flag":
-            item["display_value"] = "Pass" if int(_to_float(parsed.get("score")) or 0) == 1 else "Not passed"
-        parsed_components.append(item)
+        parsed_components.append(parsed_item)
 
     for row in fixed_defs:
         if row.get("required", True) and component_counts.get(row["exam"], 0) < 1:
@@ -167,61 +174,71 @@ def _coerce_subject_breakdown_submission(
         if selectable_max > 0 and selectable_count > selectable_max:
             raise ValueError(f"{exam_key} supports at most {selectable_max} selected subjects")
 
+    return parsed_components
+
+
+def _parse_breakdown_extra_scores(
+    exam_key: str,
+    raw_extra_scores: Any,
+    extra_defs: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    if raw_extra_scores is None:
+        raw_extra_scores = []
+    if not isinstance(raw_extra_scores, list):
+        raise ValueError(f"{exam_key} extra scores must be a list")
+
+    extra_defs_map = {row["exam"]: row for row in extra_defs}
     parsed_extra_scores: List[Dict[str, Any]] = []
     extra_counts: Dict[str, int] = {}
     for row in raw_extra_scores:
-        if not isinstance(row, dict):
-            raise ValueError(f"{exam_key} extra scores must be objects")
-        raw_exam = row.get("exam") or row.get("id")
-        resolved = resolve_exam_key(raw_exam)
-        if not resolved:
-            raise ValueError(f"{exam_key} extra score exam is required")
-        if resolved not in extra_defs_map:
-            raise ValueError(f"{exam_key} does not support extra score {resolved}")
+        parsed_item = _parse_breakdown_item(exam_key, row, extra_defs_map, "extra scores", allow_self=True)
+        resolved = parsed_item["exam"]
         extra_counts[resolved] = extra_counts.get(resolved, 0) + 1
         if extra_counts[resolved] > 1:
             raise ValueError(f"{exam_key} does not allow duplicate extra score {resolved}")
-        parsed = coerce_exam_submission(
-            resolved,
-            score_raw=row.get("score"),
-            raw_value=row.get("raw_value"),
-            details=row.get("details"),
-        )
-        child_mode = _input_mode(_config_entry(resolved))
-        item = {
-            "exam": resolved,
-            "label": extra_defs_map[resolved].get("label") or resolved,
-            "score": parsed.get("score"),
-        }
-        if parsed.get("raw_value") not in (None, ""):
-            item["raw_value"] = parsed.get("raw_value")
-        if parsed.get("display_value") not in (None, ""):
-            item["display_value"] = parsed.get("display_value")
-        elif child_mode == "flag":
-            item["display_value"] = "Pass" if int(_to_float(parsed.get("score")) or 0) == 1 else "Not passed"
-        parsed_extra_scores.append(item)
+        parsed_extra_scores.append(parsed_item)
 
+    return parsed_extra_scores
+
+
+def _calculate_breakdown_total_score(
+    exam_key: str,
+    cfg: Dict[str, Any],
+    scheme: Dict[str, Any],
+    parsed_components: List[Dict[str, Any]],
+    score_raw: Any,
+    raw_value: Any,
+) -> Optional[Union[int, float]]:
     total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()
     component_scores = [_to_float(row.get("score")) for row in parsed_components]
     numeric_component_scores = [float(row) for row in component_scores if row is not None]
+
     if total_strategy == "components_only":
         if not numeric_component_scores:
             raise ValueError(f"{exam_key} requires at least one component score")
-        total_score = None
-    elif total_strategy == "use_parent_score":
-        total_score = _validate_numeric_score(exam_key, cfg, score_raw if score_raw not in (None, "") else raw_value)
-    elif total_strategy == "best_of_sum":
+        return None
+    if total_strategy == "use_parent_score":
+        return _validate_numeric_score(exam_key, cfg, score_raw if score_raw not in (None, "") else raw_value)
+    if total_strategy == "best_of_sum":
         if not numeric_component_scores:
             raise ValueError(f"{exam_key} requires at least one subject score")
         best_of = max(1, int(scheme.get("best_of", len(numeric_component_scores)) or len(numeric_component_scores)))
-        total_score = sum(sorted(numeric_component_scores, reverse=True)[:best_of])
-        total_score = _validate_numeric_score(exam_key, cfg, total_score)
-    else:
-        if not numeric_component_scores:
-            raise ValueError(f"{exam_key} requires at least one subject score")
-        total_score = _validate_numeric_score(exam_key, cfg, sum(numeric_component_scores))
+        best_scores = sorted(numeric_component_scores, reverse=True)[:best_of]
+        return _validate_numeric_score(exam_key, cfg, sum(best_scores))
 
+    if not numeric_component_scores:
+        raise ValueError(f"{exam_key} requires at least one subject score")
+    return _validate_numeric_score(exam_key, cfg, sum(numeric_component_scores))
+
+
+def _build_breakdown_display_value(
+    scheme: Dict[str, Any],
+    parsed_components: List[Dict[str, Any]],
+    parsed_extra_scores: List[Dict[str, Any]],
+    total_score: Any,
+) -> str:
     display_parts: List[str] = []
+    total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()
     if total_strategy == "use_parent_score":
         parent_label = _strip_text(scheme.get("parent_score_label")) or "Total"
         display_parts.append(f"{parent_label} {_strip_text(total_score)}")
@@ -238,7 +255,31 @@ def _coerce_subject_breakdown_submission(
         if value:
             display_parts.append(f"{label} {value}")
 
-    display_value = ", ".join(part for part in display_parts if part)
+    return ", ".join(part for part in display_parts if part)
+
+
+def _coerce_subject_breakdown_submission(
+    exam_key: str,
+    cfg: Dict[str, Any],
+    score_raw: Any = None,
+    raw_value: Any = None,
+    details: Any = None,
+) -> Dict[str, Any]:
+    scheme = _breakdown_scheme(cfg)
+    fixed_defs = _breakdown_item_definitions(scheme.get("fixed_components"), default_required=True)
+    selectable_defs = _breakdown_item_definitions(scheme.get("selectable_components"), default_required=False)
+    extra_defs = _breakdown_item_definitions(scheme.get("extra_scores"), default_required=False)
+
+    raw_components = details.get("components") if isinstance(details, dict) else None
+    raw_extra_scores = details.get("extra_scores") if isinstance(details, dict) else None
+
+    parsed_components = _parse_breakdown_components(exam_key, raw_components, fixed_defs, selectable_defs, scheme)
+    parsed_extra_scores = _parse_breakdown_extra_scores(exam_key, raw_extra_scores, extra_defs)
+
+    total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()
+    total_score = _calculate_breakdown_total_score(exam_key, cfg, scheme, parsed_components, score_raw, raw_value)
+    display_value = _build_breakdown_display_value(scheme, parsed_components, parsed_extra_scores, total_score)
+
     result: Dict[str, Any] = {
         "exam": exam_key,
         "details": {
@@ -256,8 +297,6 @@ def _coerce_subject_breakdown_submission(
         result["raw_value"] = display_value
         result["display_value"] = display_value
     return result
-
-
 def _coerce_band_select_submission(
     exam_key: str,
     cfg: Dict[str, Any],
