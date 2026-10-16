@@ -500,12 +500,14 @@ def get_university(
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=120"
         response.headers["ETag"] = etag
+        response.headers["Vary"] = "Accept-Language"
 
     request_if_none_match = request.headers.get("if-none-match", "") if request is not None else ""
     if _etag_matches(request_if_none_match, etag):
         return Response(status_code=304, headers={
             "Cache-Control": "public, max-age=300, stale-while-revalidate=120",
             "ETag": etag,
+            "Vary": "Accept-Language",
         })
 
     return u
