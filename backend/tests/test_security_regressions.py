@@ -19,6 +19,19 @@ from scripts import audit_universities_data
 
 
 class SecurityRegressionTests(unittest.TestCase):
+    def test_university_endpoint_returns_vary_accept_language(self):
+        client = TestClient(app)
+        res_ok = client.get("/universities/mit-usa-cambridge")
+        self.assertEqual(res_ok.status_code, 200)
+        self.assertIn("Accept-Language", res_ok.headers.get("Vary", ""))
+
+        etag = res_ok.headers.get("ETag")
+        self.assertTrue(etag)
+
+        res_304 = client.get("/universities/mit-usa-cambridge", headers={"If-None-Match": etag})
+        self.assertEqual(res_304.status_code, 304)
+        self.assertIn("Accept-Language", res_304.headers.get("Vary", ""))
+
     def test_ops_authorization_handles_non_ascii_credentials(self):
         cases = (
             (b"x-unisearch-ops-token", b"test-ops-token", True),
