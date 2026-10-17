@@ -333,18 +333,20 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
         self.assertEqual(data["filter_limits"]["default"]["max"], 100000)
 
     def test_get_currency_status_endpoint(self):
-        resp = self.client.get("/currency/status")
-        self.assertEqual(resp.status_code, 200)
-        data = resp.json()
-        self.assertIn("enabled", data)
-        self.assertIn("circuit_state", data)
-        self.assertIn("source", data)
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
+            resp = self.client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json()
+            self.assertIn("enabled", data)
+            self.assertIn("circuit_state", data)
+            self.assertIn("source", data)
 
     def test_get_currency_status_does_not_expose_last_error(self):
-        resp = self.client.get("/currency/status")
-        self.assertEqual(resp.status_code, 200)
-        self.assertNotIn("last_error", resp.json())
-        self.assertNotIn("error", resp.json())
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
+            resp = self.client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn("last_error", resp.json())
+            self.assertNotIn("error", resp.json())
 
 
 class CurrencyNormalizationBackendTests(unittest.TestCase):
