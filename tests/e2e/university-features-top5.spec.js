@@ -161,12 +161,18 @@ test("exact Imperial Computing deadline preserves its source, time, course scope
     applicant: "first_year",
     cycle: "2027 entry",
   }));
-  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
 
+  const summary = page.locator("#detailDeadlines [data-ucas-dates]");
+  await expect(summary).toBeVisible();
+  await expect(summary).toContainText("January 13, 2027");
+  await expect(summary).toContainText("18:00");
   const exactDeadline = page.locator('#detailDeadlines [data-admissions-fact="imperial-ucas-2027-window"]');
+  await openDisclosureParents(exactDeadline);
   await expect(exactDeadline).toBeVisible();
   await openEvidence(exactDeadline);
   await expect(exactDeadline).toContainText(/2027[-\u2011]01[-\u2011]13/);
