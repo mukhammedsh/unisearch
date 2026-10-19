@@ -2914,7 +2914,7 @@
     {
       "id": "imperial-healthbridge-entry-process",
       "topic": "academic_application",
-      "value": "For October 2027 entry, HealthBRIDGE has one foundation year followed by three PhD years. Applicants normally need a first-class or good upper-second Bachelor’s/integrated Master’s in a relevant field. A lower-second Bachelor’s may qualify with a Master’s awarded at minimum Pass or equivalent before the studentship starts. A strong biological/biomedical component is typical, though relevant work can support other backgrounds. Predicted results are conditional; the studentship only funds studies that have not yet commenced; this does not prohibit an applicant from currently completing a prior bachelor or master. The initial scheme form is expected to open 14 October 2026 and close at 12:00 GMT on 11 November 2026; the form/template was unavailable at the original review. The initial form requires no separate CV, personal statement, transcript, or nationality upload. Provide two referees, at least one familiar with educational history; references are requested from shortlisted interviewees. Incorrect information may cause an offer to be withdrawn. Shortlisting is expected in late January 2027, online interviews in mid/late February, and offers in early March. Studentship offer-holders then apply through My Imperial for qualification, English, and fee-status checks. The stray MultiSci form label is a source copy error, not another route.",
+      "value": "For October 2027 entry, HealthBRIDGE has one foundation year followed by three PhD years. Applicants normally need a first-class or good upper-second Bachelor’s/integrated Master’s in a relevant field. A lower-second Bachelor’s may qualify with a Master’s awarded at minimum Pass or equivalent before the studentship starts. A strong biological/biomedical component is typical, though relevant work can support other backgrounds. Predicted results are conditional; the studentship only funds studies that have not yet commenced; this does not prohibit an applicant from currently completing a prior bachelor or master. The HealthBRIDGE homepage now reports October 2027 applications open, closing at 12:00 GMT on 11 November 2026. The detailed how-to-apply page still uses expected-opening wording for 14 October 2026 and promises a form link/template; the live form and template were not independently verified. The earlier 1 October review was prepublication. The initial form requires no separate CV, personal statement, transcript, or nationality upload. Provide two referees, at least one familiar with educational history; references are requested from shortlisted interviewees. Incorrect information may cause an offer to be withdrawn. Shortlisting is expected in late January 2027, online interviews in mid/late February, and offers in early March. Studentship offer-holders then apply through My Imperial for qualification, English, and fee-status checks. The stray MultiSci form label is a source copy error, not another route.",
       "scope": {
         "study_levels": [
           "doctoral"
@@ -2931,7 +2931,8 @@
       },
       "source_ids": [
         "source-13c663bcd4658fbc",
-        "source-6f0c9e0934f79efd"
+        "source-6f0c9e0934f79efd",
+        "imperial-healthbridge-opening-20261019"
       ],
       "publication_status": "published",
       "review_status": "verified",
@@ -2939,7 +2940,8 @@
       "conditions": [
         "The source says HealthBRIDGE studentships are only available for studies which have not yet commenced; the funded programme restriction does not exclude predicted-grade applicants currently completing prior qualifications."
       ],
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-03",
+      "content_reviewed_at": "2026-10-19"
     },
     {
       "id": "imperial-healthbridge-funding-progression",

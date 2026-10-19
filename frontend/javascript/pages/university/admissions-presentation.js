@@ -56,19 +56,19 @@ function sourceNote(row, resolved) {
     "Current published policy; cycle not specified": "current_policy",
     "Recurring first-year dates; page does not specify entry year": "yearless_period",
   };
-  const entry = value.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2}) entry$/);
+  const entry = value.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2}))?) entry$/);
   const translated = labels[value] ? label(labels[value]) : entry ? admissionsCycleLabel(value) : value;
   const simple = labels[value] || entry || /^[\d–—‑\s-]+$/.test(value);
   return `<div class="admissions-reading__source">${simple && value ? `<span>${escapeHtml(translated)}</span>` : ""}${links(row, resolved)}${value && !simple ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_period"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p>${escapeHtml(value)}</p></details>` : ""}</div>`;
 }
 
 function sourceSummaries(rows, resolved, section) {
-  const blocks = rows.filter(evidenceReviewed).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length
+  const blocks = rows.filter(row => evidenceReviewed(row) || /conflict|needs_resolution|requires_confirmation/.test(row.review_status || "")).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length
     || row.scope.levels.some(level => resolved.selected_option.levels.includes(level))).sort((left, right) => Number(linked(right, resolved)) - Number(linked(left, resolved))).map(row => {
     const value = row.value || {};
     const values = typeof value === "string" ? [value] : [JSON.stringify(value), value.full_course_specific_academic_requirement_and_exceptions, value.A_level_rules_by_option_panel, value.IB_rules_by_option_panel, ...Object.values(value)].flat();
     const texts = [...new Set(values.filter(value => typeof value === "string").map(value => translateAdmissionSummary(value, { section })).filter(Boolean))];
-    return texts.length ? `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved)}</div>` : "";
+    return texts.length ? `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${!evidenceReviewed(row) ? `<p class="admissions-context__note" data-summary-conflict>${escapeHtml(label("source_conflict"))}</p>` : ""}${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved)}</div>` : "";
   }).filter(Boolean);
   return blocks.length ? `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${blocks.join("")}</section>` : "";
 }
@@ -130,6 +130,12 @@ function requirements(rows, resolved) {
 
 function deadlines(rows, resolved) {
   return rows.filter(reviewed).sort((left, right) => Number(Boolean(right.value?.windows?.some(window => window.application_due))) - Number(Boolean(left.value?.windows?.some(window => window.application_due)))).map(row => {
+    if (row.value?.deadlines && typeof row.value.deadlines === "object") {
+      const entries = Object.entries(row.value.deadlines)
+        .filter(([key, value]) => resolved.reference_labels?.[key] === resolved.selected_option?.title && typeof value === "string")
+        .map(([, value]) => [escapeHtml(resolved.selected_option.title), escapeHtml(formatPublishedDate(value))]);
+      if (entries.length) return `<section class="admissions-reading__section" data-program-deadlines>${table(label("application_dates"), [label("program"), label("apply_by")], entries)}${sourceNote(row, resolved)}</section>`;
+    }
     if (row.value?.other_course_equal_consideration) {
       const medicine = ["imperial-option-medicine", "imperial-option-medicine-graduate-entry"].includes(resolved.selected_option?.id);
       const deadline = medicine ? row.value.medicine_deadline : row.value.other_course_equal_consideration;

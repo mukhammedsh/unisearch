@@ -139,6 +139,54 @@ const contrasts = [
   { option: "imperial-computing-phd", route: "procedure-computing-phd", award: "PhD" },
 ];
 
+for (const item of presentations) {
+  test(`Imperial completed study overviews stay readable in ${item.language}, ${item.width}px, ${item.theme}`, async ({ page }) => {
+    await prepare(page, item);
+    await page.goto(`/university.html?id=${university}`);
+    await ready(page);
+    for (const entry of [
+      { id: "imperial-option-full-time-mba", search: "Full-Time MBA", text: /management foundation|Основа управления|Басқару негіздері/, original: "Business Analytics" },
+      { id: "imperial-option-medicine", search: "Medicine", text: /six-year|Шестилетняя|Алты жылдық/, original: "Principles of Medicine" },
+      { id: "imperial-option-data-science", search: "Biomedical Research Data Science", text: /not compulsory|не являются обязательными|міндетті модульдер/, original: "Example projects" },
+      { id: "imperial_genomic_medicine_msc_pgcert", search: "Genomic Medicine", text: /four taught modules|четырёх модулей|төрт модуль/ },
+      { id: "imperial-brain-sciences-phd", search: "Brain Sciences", text: /neurology|неврологию|Неврология/ },
+      { id: "imperial_experimental_biomolecular_sciences_mres_msc", search: "Experimental Biomolecular Sciences", text: /not established|не подтверждён|расталмаған/ },
+    ]) {
+      await program(page, entry.id, entry.search);
+      const overview = page.locator("#admissionsStudyOverview");
+      await expect(overview.locator(":scope > .program-card__description")).toContainText(entry.text);
+      await expect(overview.locator("[data-program-overview-missing]")).toHaveCount(0);
+      if (entry.id === "imperial-option-full-time-mba") await expect(overview.locator(".program-card-rows")).toContainText(/12 (months|месяцев|ай)/);
+      if (entry.original) {
+        await overview.locator("[data-program-original] > summary").click();
+        await expect(overview.locator("[data-program-original]")).toContainText(entry.original);
+        await expect(overview.locator('[data-program-original] a[href*="imperial.ac.uk"]').first()).toBeVisible();
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
+        if (entry.id === "imperial-option-full-time-mba") await screenshot(page, `completed-overview-${item.language}-${item.width}-${item.theme}`, "#admissionsStudyOverview");
+        await overview.locator("[data-program-original] > summary").click();
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
+    }
+  });
+}
+
+for (const [index, language] of ["eng", "rus", "kaz"].entries()) {
+  test(`Imperial HealthBRIDGE distinguishes the opening announcement from an unverified form in ${language}`, async ({ page }) => {
+    await prepare(page, { language, width: index ? 390 : 1280, theme: index === 1 ? "dark" : "light" });
+    await page.goto(`/university.html?id=${university}`);
+    await ready(page);
+    await program(page, "imperial-healthbridge", "HealthBRIDGE");
+    await route(page, "procedure-healthbridge");
+    await expect(page.locator('[data-source-summary="application"]')).toContainText(/not been independently verified|отдельно не проверена|бөлек тексерілген жоқ/);
+    await tab(page, "deadlines");
+    const dates = page.locator('[data-source-summary="deadlines"]');
+    await expect(dates).toContainText("12:00 GMT");
+    await expect(dates).toContainText("2026");
+    await expect(dates).toContainText("2027");
+    await expect(dates).toContainText(/reports applications open|сообщает об открытом наборе|қабылдау ашық екенін хабарлайды/);
+  });
+}
+
 for (const [index, entry] of contrasts.entries()) for (const [position, language] of ["eng", "rus", "kaz"].entries()) {
   const item = { language, width: [320, 390, 1280][(index + position) % 3], theme: (index + position) % 2 ? "dark" : "light" };
   test(`Imperial ${entry.award} keeps its own entry, dates and costs in ${language}`, async ({ page }) => {

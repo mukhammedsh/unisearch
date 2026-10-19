@@ -2837,7 +2837,7 @@ university.programs.search_clear: Іздестіруді тазарту
 university.admissions.reading.summary_requirements: Негізгі жарияланған қабылдау талаптары
 university.admissions.reading.summary_application: Өтініш беру тәртібі
 university.admissions.reading.summary_deadlines: Курс күндері мен өтініш раундтары
-university.admissions.reading.summary_costs: Қосымша төлемдер мен шарттар
+university.admissions.reading.summary_costs: Жарияланған шығындар мен төлем шарттары
 university.admissions.reading.summary_funding: Қаржылық көмек: шарттары мен өтініш
 university.admissions.reading.home_fee: Home тарифі
 university.admissions.reading.overseas_fee: Overseas тарифі
@@ -2870,3 +2870,100 @@ university.admissions.reading.month_standalone.11: қараша
 university.admissions.reading.month_standalone.12: желтоқсан
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · кафедраға өтініш
 university.admissions.reading.integrated_meng: MEng — UCAS арқылы бакалавриат деңгейінде қабылдайтын интеграцияланған бағдарлама; ол бакалавриат пен магистр деңгейіндегі тереңдетілген оқуды біріктіреді.
+university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — тек Stanford-тың қазіргі бакалаврлары
+university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — Stanford-тың қазіргі бакалаврлары
+university.admissions.catalog.route_class.combined_external: Біріктірілген дәрежелерге сыртқы өтініш
+university.admissions.catalog.route_class.combined_ms_with_other_stanford_doctoral_or_professional_degree: MS-ті Stanford-тағы басқа докторлық/кәсіби дәрежемен біріктіру
+university.admissions.catalog.route_class.coterm_application: Stanford бакалавриатында оқып жүріп coterm магистратурасы
+university.admissions.catalog.route_class.coterm_current_stanford_undergraduate: Coterm — тек Stanford-тың қазіргі бакалаврлары
+university.admissions.catalog.route_class.coterm_or_internal_stanford_student: Coterm не Stanford студенттеріне арналған басқа ішкі жол
+university.admissions.catalog.route_class.current AA MS to PhD: Қазіргі Aeronautics MS студентінің PhD-ге өтуі
+university.admissions.catalog.route_class.current ChemE PhD optional MS: Қазіргі Chemical Engineering PhD студентіне қосымша MS
+university.admissions.catalog.route_class.current EPS coterm or MS student applying to PhD: Қазіргі Earth/Planetary Sciences coterm/MS студентінің PhD-ге өтініші
+university.admissions.catalog.route_class.current ESE MS student seeking PhD: Қазіргі Energy Science and Engineering MS студентінің PhD-ге өтініші
+university.admissions.catalog.route_class.current ME PhD optional MS: Қазіргі Mechanical Engineering PhD студентіне қосымша MS
+university.admissions.catalog.route_class.current Stanford graduate Joint/Dual MS: Қазіргі Stanford магистратура/докторантура студенттеріне Joint/Dual MS
+university.admissions.catalog.route_class.current Stanford graduate or NDO applicant using regular degree application: Қазіргі graduate не дәреже алмай оқитын (NDO) Stanford студентінің жалпы өтініші
+university.admissions.catalog.route_class.current Stanford other-department PhD candidate added MS: Stanford-тың басқа кафедра PhD студентіне қосымша MS
+university.admissions.catalog.route_class.current Stanford student regular external-style degree application: Қазіргі Stanford студентінің дәрежеге жалпы өтініші
+university.admissions.catalog.route_class.current Stanford undergraduate coterm: Қазіргі Stanford бакалаврларына coterm магистратурасы
+university.admissions.catalog.route_class.current Stanford undergraduate coterminal MA or MS: Қазіргі Stanford бакалаврларына coterm MA/MS
+university.admissions.catalog.route_class.current_Stanford_MD_or_PhD_internal_MSTP_funding_application: Қазіргі Stanford MD/PhD студентінің MSTP қаржыландыруына ішкі өтініші
+university.admissions.catalog.route_class.current_stanford_doctoral_or_professional_student: Тек Stanford-тың қазіргі докторлық/кәсіби студенттері
+university.admissions.catalog.route_class.current_stanford_graduate_and_professional_students: Тек Stanford-тың қазіргі магистратура/докторантура және кәсіби бағдарлама студенттері
+university.admissions.catalog.route_class.current_stanford_graduate_students_additional_ms: Қазіргі Stanford магистратура/докторантура студентіне қосымша MS
+university.admissions.catalog.route_class.current_stanford_undergraduate_coterm: Coterm — қазіргі Stanford бакалаврлары (каталог)
+university.admissions.catalog.route_class.direct_external: Кәсіби бағдарламаға тікелей өтініш
+university.admissions.catalog.route_class.direct_external_limited: Жарияланған шектеулері бар тікелей сыртқы өтініш
+university.admissions.catalog.route_class.en_route_award_no_external_admission: Аралық дәреже; сыртқы өтініш жоқ
+university.admissions.catalog.route_class.existing same-program PhD intermediate MS: Осы бағдарламаның қазіргі PhD студентіне аралық MS
+university.admissions.catalog.route_class.existing_Classics_PhD_intermediate_MA: Қазіргі Classics PhD студентіне аралық MA
+university.admissions.catalog.route_class.external HybridSESMS selection through GraduateAdmissions: Аралас Sustainable Engineered Systems MS-ке сыртқы өтініш
+university.admissions.catalog.route_class.external PhD application: PhD-ге сыртқы өтініш
+university.admissions.catalog.route_class.external PhD application with subplan selection: Бағыт таңдай отырып PhD-ге сыртқы өтініш
+university.admissions.catalog.route_class.external graduate MS or PhD: MS/PhD-ге сыртқы өтініш
+university.admissions.catalog.route_class.external interdisciplinary PhD: Пәнаралық PhD-ге сыртқы өтініш
+university.admissions.catalog.route_class.external non-professional graduate application: Сыртқы магистратура/PhD — Graduate Admissions
+university.admissions.catalog.route_class.external_doctoral: Докторантураға сыртқы өтініш
+university.admissions.catalog.route_class.external_joint_entry_via_gsb_mba_application: GSB MBA өтініші арқылы бірлескен дәреже
+university.admissions.catalog.route_class.external_joint_entry_via_gse_pols_application: Education POLS өтініші арқылы бірлескен дәреже
+university.admissions.catalog.route_class.external_joint_entry_via_law_jd_application: Law JD өтініші арқылы бірлескен дәреже
+university.admissions.catalog.route_class.external_masters: Магистратураға сыртқы өтініш
+university.admissions.catalog.route_class.external_nonprofessional_programme: Сыртқы магистратура/докторантура өтініші (бағдарламалар каталогы)
+university.admissions.catalog.route_class.external_part_time_distance_hcp_ms: Жартылай HCP MS — жұмыс пен тұрғылықты жер шектеулері
+university.admissions.catalog.route_class.external_professional_masters: Кәсіби магистратураға сыртқы өтініш
+university.admissions.catalog.route_class.external_program_specific_application: Нақты бағдарламаға сыртқы өтініш
+university.admissions.catalog.route_class.external_restricted_alumni: Тек көрсетілген түлектерге сыртқы өтініш
+university.admissions.catalog.route_class.external_terminal_admission: Дербес дәрежеге сыртқы өтініш
+university.admissions.catalog.route_class.external_terminal_masters: Дербес магистратураға сыртқы өтініш
+university.admissions.catalog.route_class.historical duplicate of coterm, no independent internal form verified: Coterm тарихи қайталанымы; бөлек ішкі форма расталмаған
+university.admissions.catalog.route_class.historical unresolved award context: Дәреженің тарихи аясы анықталмаған
+university.admissions.catalog.route_class.intermediate MS only for Oceans PhD student: Аралық MS — тек қазіргі Oceans PhD студенттері
+university.admissions.catalog.route_class.intermediate exit MA only: Тек аралық/аяқтау MA
+university.admissions.catalog.route_class.intermediate/exit award; no direct admission: Аралық/аяқтау дәрежесі; тікелей өтініш жоқ
+university.admissions.catalog.route_class.internal added MS for student enrolled in another Stanford department: Stanford басқа кафедра студентіне ішкі қосымша MS
+university.admissions.catalog.route_class.internal current-student application or added-degree petition: Қазіргі студент өтініші не қосымша дәреже сұрауы
+university.admissions.catalog.route_class.internal intermediate MS requirement for AA PhD students: Aeronautics PhD ішіндегі аралық MS талаптары
+university.admissions.catalog.route_class.internal_combined_degree_declaration: Біріктірілген дәрежелерді ішкі рәсімдеу
+university.admissions.catalog.route_class.internal_coterm_admission: Coterm магистратурасына ішкі өтініш
+university.admissions.catalog.route_class.internal_current_doctoral_only: Тек қазіргі докторанттар
+university.admissions.catalog.route_class.internal_current_stanford_graduate_students: Қазіргі Stanford магистратура/докторантура студенттеріне ішкі жол
+university.admissions.catalog.route_class.internal_intermediate_admission: Ішкі аралық дәреже; қазіргі студент шектеулерін тексеріңіз
+university.admissions.catalog.route_class.internal_progression_from_coterm_ma: Coterm MA-дан кейін ішкі жалғастыру
+university.admissions.catalog.route_class.internal_stanford_admission: Stanford ішкі қабылдау жолы
+university.admissions.catalog.route_class.internal_stanford_graduate_authorization: Stanford магистратура/докторантура студенттеріне ішкі рұқсат
+university.admissions.catalog.route_class.joint_degree_applicant_to_another_stanford_program: Stanford-тың басқа бағдарламасымен бірлескен дәреже жолы
+university.admissions.catalog.route_class.one_shared_application_with_primary_and_one_alternative_home_program: Негізгі және бір балама бағдарламасы бар ортақ өтініш
+university.admissions.catalog.route_class.phd_en_route_authorization: PhD кезінде аралық дәрежеге рұқсат
+university.admissions.catalog.route_class.phd_en_route_intermediate_award: PhD кезінде аралық дәреже
+university.admissions.catalog.route_class.possible internal added MS: Ықтимал ішкі қосымша MS; жарамдылық анықталмаған
+university.admissions.catalog.route_class.program_specific_application: Нақты бағдарлама ережесімен өтініш
+university.admissions.catalog.route_class.program_specific_external_admission: Бағдарламаның өз ережесімен сыртқы қабылдау
+university.admissions.catalog.route_class.prospective Stanford MBA/JD Joint MS: Stanford MBA/JD қабылдауымен байланысты Joint MS
+university.admissions.catalog.route_class.related Stanford PhD student added EE MS: Тиісті Stanford PhD студентіне қосымша Electrical Engineering MS
+university.admissions.catalog.route_class.required intermediate MS for existing MSE PhD: Қазіргі Materials PhD студентіне міндетті аралық MS
+university.admissions.catalog.route_class.researched_unresolved: Жол зерттелген; қолданылуы анықталмаған
+university.admissions.catalog.route_class.restricted_internal: Шектеулі ішкі жол
+university.admissions.catalog.route_class.restricted_ms_no_published_external_application: Шектеулі MS; сыртқы өтініш жарияланбаған
+university.admissions.catalog.route_class.same-program CS PhD intermediate MS petition: Аралық MS сұрауы — қазіргі CS PhD студенттері
+university.admissions.catalog.route_class.separate CS and professional-school applications with joint consent: Бірлескен дәреже: CS пен кәсіби мектепке бөлек өтініштер
+university.admissions.catalog.route_class.separate degree applications and approved combined study: Дәрежелерге бөлек өтініштер және мақұлданған біріктірілген оқу
+university.admissions.catalog.route_class.separate_advanced_degree_admission_after_qualifying_llm_or_spils: Жарамды LLM/SPILS-тен кейін жоғары дәрежеге бөлек қабылдау
+university.admissions.catalog.route_class.separately admitted joint/dual Stanford degrees: Stanford-қа бөлек қабылдауы бар Joint/Dual дәрежелер
+university.admissions.catalog.route_class.shared_advanced_degree_application_with_selection_path: Жол таңдалатын ортақ жоғары дәреже өтініші
+university.admissions.catalog.route_class.shared_joint_application: Бірлескен дәрежеге ортақ өтініш
+university.admissions.catalog.route_class.shared_medical_school_application: MD: AMCAS, кейін шақырумен Stanford supplemental
+university.admissions.catalog.route_class.shared_school_application: Университет мектебіне ортақ өтініш
+university.admissions.catalog.route_class.terminal_exit_award_no_admission_route: Оқуды аяқтау дәрежесі; бөлек қабылдау жоқ
+university.admissions.catalog.route_class.unresolved: Өтініш жолы анықталмаған
+university.admissions.reading.overview_missing: Бұл бағдарлама үшін оқу шолуы жиналмаған. Төмендегі ресми бағдарлама бетін ашыңыз; қабылдау жазбалары бөлек қолжетімді.
+university.admissions.reading.source_conflict: Жиналған ресми дереккөздер сәйкес емес. Шартты бағдарламадан нақтылаңыз; бұл қабылданған босату не жарамдылық шешімі емес.
+university.admissions.reading.program: Бағдарлама
+university.admissions.reading.degree.BS: BS — Bachelor of Science, ғылым бакалавры
+university.admissions.reading.degree.BA: BA — Bachelor of Arts, гуманитарлық/әлеуметтік ғылымдар бакалавры
+university.admissions.reading.degree.MS: MS — Master of Science, ғылым магистрі
+university.admissions.reading.degree.MA: MA — Master of Arts, гуманитарлық/әлеуметтік ғылымдар магистрі
+university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy, зерттеу докторлық дәрежесі
+university.admissions.reading.degree.MBA: MBA — Master of Business Administration, басқару бойынша кәсіби дәреже
+university.admissions.reading.degree.MD: MD — Doctor of Medicine, кәсіби медициналық дәреже
+university.admissions.reading.degree.ENG: Engineer — MS пен PhD-ден бөлек жоғары инженерлік дәреже

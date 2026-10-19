@@ -505,6 +505,150 @@
       "content_review_status": "original_2026_27_degree_specific_payload; completion/progression content reread2026-10-03",
       "content_reviewed_at": "2026-10-03",
       "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "study-overview-bmp-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/BMP-PHD",
+      "title": "BMP-PHD - Biomedical Physics (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-bioc-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/BIOC-PHD",
+      "title": "BIOC-PHD - Biochemistry (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-canbi-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/CANBI-PHD",
+      "title": "CANBI-PHD - Cancer Biology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-bmds-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/BMDS-PHD",
+      "title": "BMDS-PHD - Biomedical Data Science (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-csb-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/CSB-PHD",
+      "title": "CSB-PHD - Chemical and Systems Biology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-dbio-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/DBIO-PHD",
+      "title": "DBIO-PHD - Developmental Biology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-gene-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/GENE-PHD",
+      "title": "GENE-PHD - Genetics (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-epidcr-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/EPIDCR-PHD",
+      "title": "EPIDCR-PHD - Epidemiology and Clinical Research (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-hrp-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/HRP-PHD",
+      "title": "HRP-PHD - Health Policy (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-immun-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/IMMUN-PHD",
+      "title": "IMMUN-PHD - Immunology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-hmn-gen-ms-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/HMN%20GEN-MS",
+      "title": "HMN GEN-MS - Human Genetics and Genetic Counseling (MS)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-mcp-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/MCP-PHD",
+      "title": "MCP-PHD - Molecular and Cellular Physiology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-mi-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/MI-PHD",
+      "title": "MI-PHD - Microbiology and Immunology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-neurs-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/NEURS-PHD",
+      "title": "NEURS-PHD - Neurosciences (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-sbio-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/SBIO-PHD",
+      "title": "SBIO-PHD - Structural Biology (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
+    },
+    {
+      "id": "study-overview-stmrm-phd-2026-10-19",
+      "url": "https://bulletin.stanford.edu/programs/STMRM-PHD",
+      "title": "STMRM-PHD - Stem Cell Biology and Regenerative Medicine (PhD)",
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "content_review_status": "reviewed_official_2026_27_program_overview",
+      "source_locator": "General / Program Overview"
     }
   ],
   "study_options": [
@@ -529,6 +673,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-bioc-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -537,7 +682,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code BIOC-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "Biochemistry is a department within the School of Medicine, with offices and labs in the Beckman Center for Molecular and Genetic Medicine at the Stanford Medical Center, the Shriram Center for Bioengineering and Chemical Engineering, and the Stanford Genome Technology Center. Undergraduates and graduate and medical school students may take courses the department offers. The Department of Biochemistry focuses on the molecular basis of life by studying the structures and functions of proteins and nucleic acids, the control of development, molecular motors and the cytoskeleton, trafficking of proteins between organelles, regulation of gene expression, protein homeostasis, structure and design, genetic and epigenetic control of chromosome function, and the application of genomics, all toward the understanding of health and disease. Advanced courses in more specialized areas emphasize the most recent developments in biochemistry, biophysics, cell biology, and molecular biology. These courses include the physical chemistry of proteins and nucleic acids, membrane biology and biochemistry, the cytoskeleton, mechanisms and regulation of nucleic acid replication and recombination, the biochemistry of bacterial and animal viruses, the molecular basis of morphogenesis, and the structure and function of both eukaryotic and prokaryotic chromosomes. The Department of Biochemistry offers a PhD program that begins in Autumn quarter of each year. The program of study is designed to prepare students for productive careers in biochemistry; its emphasis is training in research, and each student works closely with faculty members. Opportunities exist for directed reading and research in biochemistry and molecular biology using the most advanced research facilities, including those for light and electron microscopy, chromatography and electrophoresis, protein and nucleic acid purification, rapid kinetic analysis, synthesis and analysis, single-molecule analyses using laser light traps, microarray generation and analysis, and computer graphic workstation facilities for protein and nucleic acid structural analysis. Ongoing research uses a variety of organisms, from bacteria to animal cells."
+      },
+      "catalog_access_description": "Stanford Bulletin code BIOC-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-bmds-ms",
@@ -564,6 +714,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-bmds-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -572,7 +723,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code BMDS-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Biomedical Data Science Program is interdisciplinary and offers instruction and research opportunities leading to MS and PhD degrees in Biomedical Data Science. The program emphasizes research to develop novel computational methods that can advance biomedicine. Students receive training in investigating new approaches to conceptual modeling and developing new algorithms that address challenging problems in the biological sciences and clinical medicine."
+      },
+      "catalog_access_description": "Stanford Bulletin code BMDS-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-bmp-phd",
@@ -580,6 +736,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-bmp-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -588,7 +745,12 @@
         "stanford-route-external-bmp-phd"
       ],
       "application_classification": "external_program_specific_admission",
-      "description": "Stanford Bulletin code BMP-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Biomedical Physics PhD program aims to offer unique interdisciplinary training in physics and engineering applied to solve clinical problems. This burgeoning translational field integrates topics including medical physics, diagnostic imaging, and molecular imaging and diagnostics. Synergistic with multiple departments and institutes from the School of Medicine, Engineering, and Humanities and Sciences, the BMP program leverages Stanford’s outstanding faculty, research, and resources to create a world-class training program. It targets physics, bioscience, and engineering students seeking to become the next generation of leaders focused on addressing the technical challenges of clinical medicine."
+      },
+      "catalog_access_description": "Stanford Bulletin code BMP-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-canbi-phd",
@@ -596,6 +758,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-canbi-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -604,7 +767,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code CANBI-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Cancer Biology PhD program was established in 1978 at Stanford University. During the past four decades, the understanding of cancer has increased dramatically with the discovery of oncogenes and tumor suppressor genes, DNA damage and repair pathways, cell cycle regulation, angiogenesis and responses to hypoxia, and the molecular basis of metastasis, among others. In addition, parallel analysis methods, including genomic and proteomic approaches, have begun to refine and redefine the taxonomy of cancer diagnosis. This explosion of basic and clinical science has, in turn, resulted in the first successful cancer chemotherapies and immunotherapies based on knowledge of specific molecular targets. Stanford presents a unique environment to pursue interdisciplinary cancer research because the School of Medicine, the School of Humanities and Sciences, and the School of Engineering are located on a single campus, all within walking distance of one another. Our students are not limited to a single department in choosing their research advisors. The Cancer Biology PhD program currently has approximately 65 graduate students in various basic science and clinical departments throughout the School of Medicine and School of Humanities and Sciences. A training grant from the National Cancer Institute, a branch of the United States government, supports many students. The Cancer Biology PhD program is committed to fostering a diverse community of students. The program welcomes all individuals and strives to support them so they achieve their full potential. It values the diversity of its students because culture, socioeconomic and educational background, race, ethnicity, gender, sexual orientation, physical ability, life experiences, hobbies, and interests allow the program as a group to reach a greater level of innovation in cancer research."
+      },
+      "catalog_access_description": "Stanford Bulletin code CANBI-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-cimgt-ms",
@@ -643,6 +811,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-csb-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -651,7 +820,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code CSB-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Department of Chemical and Systems Biology offers interdisciplinary training to prepare students for independent careers in biomedical science. The program’s primary focus is cell signaling, chemical biology, and systems biology. The program leading to the PhD degree includes formal and informal study in chemical biology, systems biology, drug discovery, biochemistry, and other areas of relevance to the interests of particular students. First-year students spend one quarter in each of three different laboratories, working closely with other graduate students, a professor, and postdoctoral fellows on various research projects. During the fourth quarter, the student chooses a faculty mentor — based on available positions and the student’s interest — with whom to undertake thesis research. During or before the eighth quarter of study, students must pass a qualifying exam which consists of an oral exam on general knowledge and defense of a research proposal. Course requirements are fulfilled during the first two years of study; the later years of the four- to six-year program are devoted to full-time dissertation research. Close tutorial contact between students and faculty is stressed throughout the program. Research opportunities also exist for medical students and undergraduates. The limited size of the labs in the department allows for close tutorial contact between students, postdoctoral fellows, and faculty. The department participates in the four-quarter Health and Human Disease and Practice of Medicine sequence, providing medical students with a comprehensive, systems-based education in physiology, pathology, microbiology, and pharmacology."
+      },
+      "catalog_access_description": "Stanford Bulletin code CSB-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-canbi-ms",
@@ -707,6 +881,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-dbio-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -715,7 +890,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code DBIO-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "A fundamental problem in biology is how the complex set of multicellular structures that characterize an adult animal is generated from the fertilized egg. Recent advances at the molecular level, particularly concerning the genetic control of development, have been explosive. These advances represent the beginning of a significant movement in the biological sciences toward understanding the molecular mechanisms underlying developmental decisions and the resulting morphogenetic processes. This new thrust in developmental biology derives from the extraordinary methodological advances of the past decade in molecular genetics, immunology, and biochemistry. However, it also derives from groundwork from classical developmental studies, the rapid advances in cell biology and animal virology, and models borrowed from prokaryotic systems. The work is increasingly related to human diseases, including oncogene function and inherited genetic disease. The department is located in the Beckman Center for Molecular and Genetic Medicine within the Stanford University Medical Center."
+      },
+      "catalog_access_description": "Stanford Bulletin code DBIO-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-epidcr-phd",
@@ -723,6 +903,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-epidcr-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -731,7 +912,12 @@
         "stanford-route-external-epidcr-phd"
       ],
       "application_classification": "external_program_specific_admission",
-      "description": "Stanford Bulletin code EPIDCR-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The PhD program in Epidemiology and Clinical Research provides methodologic and interdisciplinary training to equip students to conduct cutting-edge epidemiologic research and develop new methodology. The program trains students in the tools of modern epidemiology, with heavy emphasis on statistics, causal inference, computer science, genetics, genomics, and informatics. We welcome applicants with diverse backgrounds."
+      },
+      "catalog_access_description": "Stanford Bulletin code EPIDCR-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-epidm-ms",
@@ -771,6 +957,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-gene-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -779,7 +966,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code GENE-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "Genetics and genomics are undergoing an unparalleled revolution: our mission is to continue leading this revolution to better understand biology and human health."
+      },
+      "catalog_access_description": "Stanford Bulletin code GENE-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-hrp-ms",
@@ -803,6 +995,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-hrp-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -811,7 +1004,12 @@
         "stanford-route-external-hrp-phd"
       ],
       "application_classification": "external_program_specific_admission",
-      "description": "Stanford Bulletin code HRP-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "Health Policy investigates how social factors, financing systems, organizational structures and processes, health technologies, and personal behaviors affect the accessibility, quality, and cost of health care and, ultimately, our health and well-being. Stanford Health Policy offers a PhD program that promises to educate students who will be scholarly leaders in the field of health policy and will be highly knowledgeable about the theoretical and empirical approaches that can be applied in the development of improvements in health policy and the health care system. The curriculum offers courses across a wide range of health policy areas, including health economics, health insurance and government program operation, health financing, international health policy and economic development, cost-effectiveness analysis and the evaluation of new technologies, health law and ethics, health systems operations, relevant statistical and methodological approaches, and health policy issues related to public health concerns like obesity and chronic disease. See the program’s website for additional program information, including (but not limited to) faculty lists, admissions information, and deadlines. Address admission inquiries to the Health Policy Admissions Team at hrpadmissions@stanford.edu . Applications to the program must be submitted through the Stanford Graduate Admissions website by clicking Apply Now."
+      },
+      "catalog_access_description": "Stanford Bulletin code HRP-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-hmn-gen-ms",
@@ -819,6 +1017,7 @@
       "award": "MS",
       "level": "master",
       "source_ids": [
+        "study-overview-hmn-gen-ms-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -827,7 +1026,12 @@
         "stanford-route-external-hmn-gen-ms"
       ],
       "application_classification": "external_program_specific_application",
-      "description": "Stanford Bulletin code HMN GEN-MS; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=False, programCurrentPhdOnly=False. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The University requirements for the MS are described in the \" Graduate Degrees \" section of this bulletin. The Department of Genetics offers an MS in Human Genetics and Genetic Counseling, which is accredited by the Accreditation Council for Genetic Counseling. This program prepares students to practice in the healthcare profession of genetic counseling. The program is a full time two-year program, and accepts students to begin the program only in autumn quarter. Students must be admitted directly into this program and cannot automatically transfer from the PhD programs within the department, or vice versa. While courses are oriented primarily towards genetic counseling students, some courses may also be taken by medical students, other graduate students, residents, or post-doctoral fellows, and (with permission) undergraduates."
+      },
+      "catalog_access_description": "Stanford Bulletin code HMN GEN-MS; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=False, programCurrentPhdOnly=False. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-immun-ms",
@@ -851,6 +1055,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-immun-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -859,7 +1064,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code IMMUN-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Immunology doctoral program offers instruction and research opportunities leading to a PhD in Immunology. Two tracks are offered: Track 1: Molecular, Cellular, and Translational Immunology Track 2: Computational and Systems Immunology Molecular, Cellular, and Translational Immunology The MCTI track comprises interdisciplinary research that emphasizes the application of molecular approaches to open questions in cellular and clinical immunology. Graduate students in this track gain an advanced understanding of basic molecular and cellular biology, biochemistry, genetics, and cellular signaling concepts and experimental techniques and apply this knowledge to immunology problems. MCTI faculty interests include both bench-to-bedside approaches and basic science research. Computational & Systems Immunology The past decade has seen an explosion in the availability of high-throughput datasets spanning information on everything from DNA sequences to RNA transcript abundances, single-cell protein profiles, protein variants and metabolite profiles. These multi-dimensional omics datasets are complex to integrate, visualize and analyze for those not well versed in systems biology and bioinformatics. A new generation of scientists is needed to take advantage of these resources to ask and answer novel important questions in immunology. The CSI track will generate a class of hybrid scientists to identify important problems in immunology and to devise appropriate integrated computational/experimental plans for tackling them."
+      },
+      "catalog_access_description": "Stanford Bulletin code IMMUN-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-mcp-ms",
@@ -882,6 +1092,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-mcp-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -890,7 +1101,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code MCP-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Department of Molecular and Cellular Physiology is located in the Beckman Center for Molecular and Genetic Medicine. A central goal of physiology in the post-genomic era is to understand how thousands of encoded proteins serve to bring about the highly coordinated behavior of cells and tissues. Research in the department approaches this goal at many levels of organization, ranging from single molecules and individual cells to multicellular systems and the whole organism. The faculty share common interests in the molecular mechanisms of cell signaling and behavior, with a special focus on structure/function analysis of ion channels and G-protein coupled receptors, and their roles at the cellular, organ, and whole-organism levels; the molecular basis of sensory transduction, synaptic transmission, plasticity and memory; the role of ion channels and calcium in controlling gene expression in neural and immune cells; and the regulation of vesicle trafficking and targeting, cell polarity, and cell-cell interactions in the nervous system and in epithelia. Research programs employ a wide range of approaches, including molecular and cell biology, biochemistry, genetics, biophysics, x-ray crystallography, and solution NMR, electrophysiology, and in vitro and in vivo imaging with confocal and multi-photon microscopy."
+      },
+      "catalog_access_description": "Stanford Bulletin code MCP-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-mi-ms",
@@ -913,6 +1129,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-mi-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -921,7 +1138,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code MI-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The PhD degree requires coursework and independent research demonstrating an individual’s creative, scholastic, and intellectual abilities. On entering the department, students are oriented to the curriculum and the timetable for completing the degree requirements by the Director of Graduate Studies (DGS) and the Student Services Officer (SSO)."
+      },
+      "catalog_access_description": "Stanford Bulletin code MI-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=True, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-mlasc-ms",
@@ -963,6 +1185,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-neurs-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -971,7 +1194,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code NEURS-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "Learn how to approach and solve research problems by developing skills in modern methods of neuroscience research, the ability to appraise the scientific literature and make scientific judgments, and ultimately, to function as an independent creative neuroscientist."
+      },
+      "catalog_access_description": "Stanford Bulletin code NEURS-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-sbio-phd",
@@ -979,15 +1207,23 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-sbio-phd-2026-10-19",
         "bulletin-2026-27",
-        "external-graduate-directory"
+        "external-graduate-directory",
+        "structural-bio-application"
       ],
       "checked_at": "2026-10-02",
       "procedure_ids": [
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code SBIO-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The graduate program in Structural Biology is intended to prepare students for careers as independent investigators in cell and molecular biology. The principal requirement of a PhD degree is the completion of research constituting an original and significant contribution to advancing knowledge. It is training in a major with connections to biophysics (e.g., physics, chemistry, or biology, with a quantitative background equivalent to that of an undergraduate physics or chemistry major at Stanford). Current research topics in the department lie in gene expression; theoretical, crystallographic, and genetic analysis of protein structure; and cell-cell interaction. See Stanford’s School of Medicine website for further information. Admission Applicants to the program should have a bachelor’s degree and complete at least a year of coursework in biology, mathematics, organic chemistry, physical chemistry, and physics. The department must receive applications before December 15 for notification by April 15. Application to the National Science Foundation for fellowship support is also encouraged. Prospective applicants should contact the Department of Structural Biology for further information. The GRE general score is optional, and the GRE subject score is not required. It is recommended that prospective applicants have completed the following courses (or their equivalent) before applying: UNITS course Organic Polyfunctional Compounds 3 course Foundations of Physical Chemistry 4 course Physical Chemistry II 3 course Physical Chemistry III 3 course Applied Biochemistry 2",
+        "source_conflict": "The Bulletin overview includes a December 15 deadline and optional GRE General wording. The current departmental 2027 application page specifies December 1, 2026 at 11:59:59 p.m. PST and does not consider GRE General or Subject. Preserve the source wording as reference, but use the separately scoped current application records for applying."
+      },
+      "catalog_access_description": "Stanford Bulletin code SBIO-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-stmrm-ms",
@@ -1010,6 +1246,7 @@
       "award": "PHD",
       "level": "doctoral",
       "source_ids": [
+        "study-overview-stmrm-phd-2026-10-19",
         "bulletin-2026-27",
         "external-graduate-directory"
       ],
@@ -1018,7 +1255,12 @@
         "stanford-route-biosciences-phd"
       ],
       "application_classification": "external_shared_biosciences_home_program_choice",
-      "description": "Stanford Bulletin code STMRM-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review."
+      "description": {
+        "role": "preserved_official_study_content",
+        "text": "The Stanford Stem Cell Biology and Regenerative Medicine (SCBRM) program is dedicated to doctoral education that translates basic science to clinical applications, typically called Translational Science, and is of intense interest internationally in medical schools and universities. Our doctoral program provides exceptional didactic education and research experience in the basic sciences underlying stem cell biology. In addition, program participants will receive specialized training in developing and clinically applying discoveries in the basic sciences to achieve regenerative therapies. Thus, our graduates will be uniquely positioned to develop successful translational careers in Stem Cell Biology and Regenerative Medicine. They will emerge prepared to deliver on their passion for improving the human condition. The core curriculum combines unique research and clinical/professional immersion rotations to provide opportunities for doctoral students to specialize in the broad subject of translational medicine and yet focus specifically on the fundamentals of SCBRM. The curriculum combines genetics and developmental biology education with an introductory laboratory-based stem cell course, an advanced course in stem cell biology and regenerative medicine, and a clinical rotation with alternative law, business, and/or engineering opportunities."
+      },
+      "catalog_access_description": "Stanford Bulletin code STMRM-PHD; Bulletin flags: externalAdmissions=True, internalAdmissions=False, coterm=None, programCurrentPhdOnly=None. These catalog flags describe route access but do not substitute for program-specific admissions review.",
+      "description_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-option-tram-ms",
@@ -5667,6 +5909,521 @@
       "exceptions": [],
       "content_reviewed_at": "2026-10-03",
       "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "study-overview-bmp-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Biomedical Physics PhD program aims to offer unique interdisciplinary training in physics and engineering applied to solve clinical problems. This burgeoning translational field integrates topics including medical physics, diagnostic imaging, and molecular imaging and diagnostics. Synergistic with multiple departments and institutes from the School of Medicine, Engineering, and Humanities and Sciences, the BMP program leverages Stanford’s outstanding faculty, research, and resources to create a world-class training program. It targets physics, bioscience, and engineering students seeking to become the next generation of leaders focused on addressing the technical challenges of clinical medicine.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-bmp-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-bioc-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "Biochemistry is a department within the School of Medicine, with offices and labs in the Beckman Center for Molecular and Genetic Medicine at the Stanford Medical Center, the Shriram Center for Bioengineering and Chemical Engineering, and the Stanford Genome Technology Center. Undergraduates and graduate and medical school students may take courses the department offers. The Department of Biochemistry focuses on the molecular basis of life by studying the structures and functions of proteins and nucleic acids, the control of development, molecular motors and the cytoskeleton, trafficking of proteins between organelles, regulation of gene expression, protein homeostasis, structure and design, genetic and epigenetic control of chromosome function, and the application of genomics, all toward the understanding of health and disease. Advanced courses in more specialized areas emphasize the most recent developments in biochemistry, biophysics, cell biology, and molecular biology. These courses include the physical chemistry of proteins and nucleic acids, membrane biology and biochemistry, the cytoskeleton, mechanisms and regulation of nucleic acid replication and recombination, the biochemistry of bacterial and animal viruses, the molecular basis of morphogenesis, and the structure and function of both eukaryotic and prokaryotic chromosomes. The Department of Biochemistry offers a PhD program that begins in Autumn quarter of each year. The program of study is designed to prepare students for productive careers in biochemistry; its emphasis is training in research, and each student works closely with faculty members. Opportunities exist for directed reading and research in biochemistry and molecular biology using the most advanced research facilities, including those for light and electron microscopy, chromatography and electrophoresis, protein and nucleic acid purification, rapid kinetic analysis, synthesis and analysis, single-molecule analyses using laser light traps, microarray generation and analysis, and computer graphic workstation facilities for protein and nucleic acid structural analysis. Ongoing research uses a variety of organisms, from bacteria to animal cells.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-bioc-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-bioc-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-canbi-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Cancer Biology PhD program was established in 1978 at Stanford University. During the past four decades, the understanding of cancer has increased dramatically with the discovery of oncogenes and tumor suppressor genes, DNA damage and repair pathways, cell cycle regulation, angiogenesis and responses to hypoxia, and the molecular basis of metastasis, among others. In addition, parallel analysis methods, including genomic and proteomic approaches, have begun to refine and redefine the taxonomy of cancer diagnosis. This explosion of basic and clinical science has, in turn, resulted in the first successful cancer chemotherapies and immunotherapies based on knowledge of specific molecular targets. Stanford presents a unique environment to pursue interdisciplinary cancer research because the School of Medicine, the School of Humanities and Sciences, and the School of Engineering are located on a single campus, all within walking distance of one another. Our students are not limited to a single department in choosing their research advisors. The Cancer Biology PhD program currently has approximately 65 graduate students in various basic science and clinical departments throughout the School of Medicine and School of Humanities and Sciences. A training grant from the National Cancer Institute, a branch of the United States government, supports many students. The Cancer Biology PhD program is committed to fostering a diverse community of students. The program welcomes all individuals and strives to support them so they achieve their full potential. It values the diversity of its students because culture, socioeconomic and educational background, race, ethnicity, gender, sexual orientation, physical ability, life experiences, hobbies, and interests allow the program as a group to reach a greater level of innovation in cancer research.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-canbi-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-canbi-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-bmds-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Biomedical Data Science Program is interdisciplinary and offers instruction and research opportunities leading to MS and PhD degrees in Biomedical Data Science. The program emphasizes research to develop novel computational methods that can advance biomedicine. Students receive training in investigating new approaches to conceptual modeling and developing new algorithms that address challenging problems in the biological sciences and clinical medicine.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-bmds-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-csb-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Department of Chemical and Systems Biology offers interdisciplinary training to prepare students for independent careers in biomedical science. The program’s primary focus is cell signaling, chemical biology, and systems biology. The program leading to the PhD degree includes formal and informal study in chemical biology, systems biology, drug discovery, biochemistry, and other areas of relevance to the interests of particular students. First-year students spend one quarter in each of three different laboratories, working closely with other graduate students, a professor, and postdoctoral fellows on various research projects. During the fourth quarter, the student chooses a faculty mentor — based on available positions and the student’s interest — with whom to undertake thesis research. During or before the eighth quarter of study, students must pass a qualifying exam which consists of an oral exam on general knowledge and defense of a research proposal. Course requirements are fulfilled during the first two years of study; the later years of the four- to six-year program are devoted to full-time dissertation research. Close tutorial contact between students and faculty is stressed throughout the program. Research opportunities also exist for medical students and undergraduates. The limited size of the labs in the department allows for close tutorial contact between students, postdoctoral fellows, and faculty. The department participates in the four-quarter Health and Human Disease and Practice of Medicine sequence, providing medical students with a comprehensive, systems-based education in physiology, pathology, microbiology, and pharmacology.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-csb-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-csb-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-dbio-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "A fundamental problem in biology is how the complex set of multicellular structures that characterize an adult animal is generated from the fertilized egg. Recent advances at the molecular level, particularly concerning the genetic control of development, have been explosive. These advances represent the beginning of a significant movement in the biological sciences toward understanding the molecular mechanisms underlying developmental decisions and the resulting morphogenetic processes. This new thrust in developmental biology derives from the extraordinary methodological advances of the past decade in molecular genetics, immunology, and biochemistry. However, it also derives from groundwork from classical developmental studies, the rapid advances in cell biology and animal virology, and models borrowed from prokaryotic systems. The work is increasingly related to human diseases, including oncogene function and inherited genetic disease. The department is located in the Beckman Center for Molecular and Genetic Medicine within the Stanford University Medical Center.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-dbio-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-dbio-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-gene-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "Genetics and genomics are undergoing an unparalleled revolution: our mission is to continue leading this revolution to better understand biology and human health.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-gene-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-gene-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-epidcr-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The PhD program in Epidemiology and Clinical Research provides methodologic and interdisciplinary training to equip students to conduct cutting-edge epidemiologic research and develop new methodology. The program trains students in the tools of modern epidemiology, with heavy emphasis on statistics, causal inference, computer science, genetics, genomics, and informatics. We welcome applicants with diverse backgrounds.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-epidcr-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-epidcr-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-hrp-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "Health Policy investigates how social factors, financing systems, organizational structures and processes, health technologies, and personal behaviors affect the accessibility, quality, and cost of health care and, ultimately, our health and well-being. Stanford Health Policy offers a PhD program that promises to educate students who will be scholarly leaders in the field of health policy and will be highly knowledgeable about the theoretical and empirical approaches that can be applied in the development of improvements in health policy and the health care system. The curriculum offers courses across a wide range of health policy areas, including health economics, health insurance and government program operation, health financing, international health policy and economic development, cost-effectiveness analysis and the evaluation of new technologies, health law and ethics, health systems operations, relevant statistical and methodological approaches, and health policy issues related to public health concerns like obesity and chronic disease. See the program’s website for additional program information, including (but not limited to) faculty lists, admissions information, and deadlines. Address admission inquiries to the Health Policy Admissions Team at hrpadmissions@stanford.edu . Applications to the program must be submitted through the Stanford Graduate Admissions website by clicking Apply Now.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-hrp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-hrp-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-immun-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Immunology doctoral program offers instruction and research opportunities leading to a PhD in Immunology. Two tracks are offered: Track 1: Molecular, Cellular, and Translational Immunology Track 2: Computational and Systems Immunology Molecular, Cellular, and Translational Immunology The MCTI track comprises interdisciplinary research that emphasizes the application of molecular approaches to open questions in cellular and clinical immunology. Graduate students in this track gain an advanced understanding of basic molecular and cellular biology, biochemistry, genetics, and cellular signaling concepts and experimental techniques and apply this knowledge to immunology problems. MCTI faculty interests include both bench-to-bedside approaches and basic science research. Computational & Systems Immunology The past decade has seen an explosion in the availability of high-throughput datasets spanning information on everything from DNA sequences to RNA transcript abundances, single-cell protein profiles, protein variants and metabolite profiles. These multi-dimensional omics datasets are complex to integrate, visualize and analyze for those not well versed in systems biology and bioinformatics. A new generation of scientists is needed to take advantage of these resources to ask and answer novel important questions in immunology. The CSI track will generate a class of hybrid scientists to identify important problems in immunology and to devise appropriate integrated computational/experimental plans for tackling them.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-immun-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-immun-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-hmn-gen-ms",
+      "topic": "study_content",
+      "value": {
+        "description": "The University requirements for the MS are described in the \" Graduate Degrees \" section of this bulletin. The Department of Genetics offers an MS in Human Genetics and Genetic Counseling, which is accredited by the Accreditation Council for Genetic Counseling. This program prepares students to practice in the healthcare profession of genetic counseling. The program is a full time two-year program, and accepts students to begin the program only in autumn quarter. Students must be admitted directly into this program and cannot automatically transfer from the PhD programs within the department, or vice versa. While courses are oriented primarily towards genetic counseling students, some courses may also be taken by medical students, other graduate students, residents, or post-doctoral fellows, and (with permission) undergraduates.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-hmn-gen-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-hmn-gen-ms-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-mcp-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Department of Molecular and Cellular Physiology is located in the Beckman Center for Molecular and Genetic Medicine. A central goal of physiology in the post-genomic era is to understand how thousands of encoded proteins serve to bring about the highly coordinated behavior of cells and tissues. Research in the department approaches this goal at many levels of organization, ranging from single molecules and individual cells to multicellular systems and the whole organism. The faculty share common interests in the molecular mechanisms of cell signaling and behavior, with a special focus on structure/function analysis of ion channels and G-protein coupled receptors, and their roles at the cellular, organ, and whole-organism levels; the molecular basis of sensory transduction, synaptic transmission, plasticity and memory; the role of ion channels and calcium in controlling gene expression in neural and immune cells; and the regulation of vesicle trafficking and targeting, cell polarity, and cell-cell interactions in the nervous system and in epithelia. Research programs employ a wide range of approaches, including molecular and cell biology, biochemistry, genetics, biophysics, x-ray crystallography, and solution NMR, electrophysiology, and in vitro and in vivo imaging with confocal and multi-photon microscopy.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-mcp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-mcp-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-mi-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The PhD degree requires coursework and independent research demonstrating an individual’s creative, scholastic, and intellectual abilities. On entering the department, students are oriented to the curriculum and the timetable for completing the degree requirements by the Director of Graduate Studies (DGS) and the Student Services Officer (SSO).",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-mi-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-mi-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-neurs-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "Learn how to approach and solve research problems by developing skills in modern methods of neuroscience research, the ability to appraise the scientific literature and make scientific judgments, and ultimately, to function as an independent creative neuroscientist.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-neurs-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-neurs-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-sbio-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The graduate program in Structural Biology is intended to prepare students for careers as independent investigators in cell and molecular biology. The principal requirement of a PhD degree is the completion of research constituting an original and significant contribution to advancing knowledge. It is training in a major with connections to biophysics (e.g., physics, chemistry, or biology, with a quantitative background equivalent to that of an undergraduate physics or chemistry major at Stanford). Current research topics in the department lie in gene expression; theoretical, crystallographic, and genetic analysis of protein structure; and cell-cell interaction. See Stanford’s School of Medicine website for further information. Admission Applicants to the program should have a bachelor’s degree and complete at least a year of coursework in biology, mathematics, organic chemistry, physical chemistry, and physics. The department must receive applications before December 15 for notification by April 15. Application to the National Science Foundation for fellowship support is also encouraged. Prospective applicants should contact the Department of Structural Biology for further information. The GRE general score is optional, and the GRE subject score is not required. It is recommended that prospective applicants have completed the following courses (or their equivalent) before applying: UNITS course Organic Polyfunctional Compounds 3 course Foundations of Physical Chemistry 4 course Physical Chemistry II 3 course Physical Chemistry III 3 course Applied Biochemistry 2",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-sbio-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-sbio-phd-2026-10-19",
+        "structural-bio-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "verified_with_source_conflict",
+      "conditions": [
+        "The Bulletin overview includes a December 15 deadline and optional GRE General wording. The current departmental 2027 application page specifies December 1, 2026 at 11:59:59 p.m. PST and does not consider GRE General or Subject. Preserve the source wording as reference, but use the separately scoped current application records for applying."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "study-overview-stmrm-phd",
+      "topic": "study_content",
+      "value": {
+        "description": "The Stanford Stem Cell Biology and Regenerative Medicine (SCBRM) program is dedicated to doctoral education that translates basic science to clinical applications, typically called Translational Science, and is of intense interest internationally in medical schools and universities. Our doctoral program provides exceptional didactic education and research experience in the basic sciences underlying stem cell biology. In addition, program participants will receive specialized training in developing and clinically applying discoveries in the basic sciences to achieve regenerative therapies. Thus, our graduates will be uniquely positioned to develop successful translational careers in Stem Cell Biology and Regenerative Medicine. They will emerge prepared to deliver on their passion for improving the human condition. The core curriculum combines unique research and clinical/professional immersion rotations to provide opportunities for doctoral students to specialize in the broad subject of translational medicine and yet focus specifically on the fundamentals of SCBRM. The curriculum combines genetics and developmental biology education with an introductory laboratory-based stem cell course, an advanced course in stem cell biology and regenerative medicine, and a clinical rotation with alternative law, business, and/or engineering opportunities.",
+        "interpretation_boundary": "Published study content and degree structure; this overview does not replace the selected route admission requirements."
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-stmrm-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "study-overview-stmrm-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [],
+      "exceptions": []
     }
   ],
   "unresolved": [

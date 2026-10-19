@@ -14,6 +14,18 @@ test("readable route labels retain the official source title for references", ()
   const route = { id: "undergraduate-shared-evidence:stanford-first-year", title: "University-wide first-year undergraduate admission" };
   assert.equal(admissionsRouteName(route, { presentation: "simple" }), "Первый курс после школы");
   assert.equal(admissionsRouteName(route), route.title);
+  assert.match(admissionsCycleLabel("2027-28 entry"), /^Набор 2027[-‑]28$/);
+});
+
+test("Stanford internal and external route labels explain their access without rewriting official titles", () => {
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    const route = { classification: "Computer Science coterm application" };
+    const title = admissionsRouteName(route, { presentation: "simple" });
+    assert.match(title, /Stanford/);
+    if (language !== "eng") assert.match(title, /[\u0400-\u04ff]/u);
+    assert.equal(admissionsRouteName({ ...route, title: "Official CS title" }, { presentation: "simple" }), "Official CS title");
+  }
 });
 
 function context(rows, groups) {
@@ -25,6 +37,18 @@ function fact(id, value, extra = {}) {
   return { id, value, topic: "academic_tests", scope: { option_ids: [], route_ids: ["first-year"], applicant_categories: [] },
     source_ids: ["official"], publication_status: "published", review_status: "verified", applicability: { status: "conditional" }, ...extra };
 }
+
+test("program-keyed dates require a resolved exact program label and do not borrow another degree's date", () => {
+  setLanguage("eng", { emit: false });
+  const row = fact("dates", { deadlines: { "source-ms": "2026-12-08", "source-phd": "2026-12-01" } }, { topic: "application_deadlines" });
+  const resolved = { ...context([row], { deadlines: [row.id] }), selected_option: { id: "cs-ms", title: "Computer Science (MS)" },
+    reference_labels: { "source-ms": "Computer Science (MS)", "source-phd": "Computer Science (PhD)" } };
+  const html = renderApplicantSection(resolved, ["deadlines"]);
+  assert.match(html, /data-program-deadlines/);
+  assert.match(html.split('<details class="admissions-reading__references"')[0], /December 8, 2026/);
+  assert.doesNotMatch(html.split('<details class="admissions-reading__references"')[0], /December 1, 2026/);
+  assert.doesNotMatch(renderApplicantSection({ ...resolved, reference_labels: {} }, ["deadlines"]), /data-program-deadlines/);
+});
 
 test("yearless deadlines are localized without inventing a year and keep their source", () => {
   const resolved = context([fact("dates", { windows: [{ name: "Early Action", application_due: "November 1", aid_due: "November 30", decision: "mid-December" }] }, { topic: "application_windows" })], { deadlines: ["dates"] });

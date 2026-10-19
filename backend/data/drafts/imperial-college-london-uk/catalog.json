@@ -14,15 +14,17 @@
     "engineering-sciences-evidence.json",
     "medicine-business-evidence.json",
     "doctoral-evidence.json",
-    "course-qualification-panels.json"
+    "course-qualification-panels.json",
+    "programme-overviews-evidence.json"
   ],
   "historical_provenance_file": "runtime-provenance.json",
   "evidence_fingerprints": {
     "shared-evidence.json": "11c70d5bcb4c09edccbaf32299a9c055d313edfa173d167f9ee29ed0e6274f60",
     "engineering-sciences-evidence.json": "914099e2029168ed9fa1b001914939bfaabbeb96b6d3af38e24b8149ac014879",
-    "medicine-business-evidence.json": "30a812d9271c81aa28a031ecf1ded7dca8e700403482115017f86ad17e47c53a",
-    "doctoral-evidence.json": "ad2cdd0ccdf930e75ed2dfc3cc616ca0d803f6a468342bdeee43625bace468f6",
-    "course-qualification-panels.json": "5a768a9e14341f765ed2a7578411e4358efa1d168e7439b24205f4d87d712a9c"
+    "medicine-business-evidence.json": "29da67950ec044954ebc696c857263772bff04578b2e757cae0ccd9b766877bd",
+    "doctoral-evidence.json": "fc71efb28531f2f795cf87096c0f60106da5b2b5b0549c7d6333436b55a9bce0",
+    "course-qualification-panels.json": "5a768a9e14341f765ed2a7578411e4358efa1d168e7439b24205f4d87d712a9c",
+    "programme-overviews-evidence.json": "55b8dce133adc8df6c76aedb0fb3daf540092e505d793e6a504c880810109903"
   },
   "inventory": {
     "official_search_rows": 239,
@@ -2835,7 +2837,8 @@
       "department": "Department of Infectious Disease",
       "cycle": "2027 entry",
       "source_ids": [
-        "imperial_page_bacterial_pathogenesis_infection"
+        "imperial_page_bacterial_pathogenesis_infection",
+        "imperial-overview-source-3"
       ],
       "checked_at": "2026-10-01",
       "procedure_ids": [
@@ -7245,7 +7248,8 @@
       "department": "Department of Immunology and Inflammation",
       "cycle": "2027 entry",
       "source_ids": [
-        "imperial_page_experimental_biomolecular_sciences"
+        "imperial_page_experimental_biomolecular_sciences",
+        "imperial-overview-source-78"
       ],
       "checked_at": "2026-10-01",
       "procedure_ids": [
@@ -7489,7 +7493,8 @@
       "department": "National Heart and Lung Institute",
       "cycle": "2027 entry",
       "source_ids": [
-        "imperial_page_genes_drugs_stem_cells"
+        "imperial_page_genes_drugs_stem_cells",
+        "imperial-overview-source-79"
       ],
       "checked_at": "2026-10-01",
       "procedure_ids": [
@@ -7521,7 +7526,8 @@
       "department": "National Heart and Lung Institute",
       "cycle": "2027 entry",
       "source_ids": [
-        "imperial_page_genomic_medicine"
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
       ],
       "checked_at": "2026-10-01",
       "procedure_ids": [
@@ -12480,7 +12486,8 @@
       },
       "parent_option_id": "imperial-option-experimental-biomolecular-sciences",
       "fact_ids": [
-        "fact_imperial_experimental_biomolecular_sciences_mres_msc_award_level_scope"
+        "fact_imperial_experimental_biomolecular_sciences_mres_msc_award_level_scope",
+        "imperial_experimental_biomolecular_sciences_mres_msc-study-overview"
       ],
       "researched_unknown_ids": [
         "unknown_experimental_biomolecular_sciences_award_identity",
@@ -12530,7 +12537,8 @@
       },
       "parent_option_id": "imperial-option-genes-drugs-stem-cells",
       "fact_ids": [
-        "fact_imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert_award_level_scope"
+        "fact_imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert_award_level_scope",
+        "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert-study-overview"
       ],
       "researched_unknown_ids": [
         "unknown_imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert_award_level_details",
@@ -12579,7 +12587,8 @@
       },
       "parent_option_id": "imperial-option-genomic-medicine",
       "fact_ids": [
-        "fact_imperial_genomic_medicine_msc_pgcert_award_level_scope"
+        "fact_imperial_genomic_medicine_msc_pgcert_award_level_scope",
+        "imperial_genomic_medicine_msc_pgcert-study-overview"
       ],
       "researched_unknown_ids": [
         "unknown_imperial_genomic_medicine_msc_pgcert_award_level_details",
@@ -12628,7 +12637,8 @@
       },
       "parent_option_id": "imperial-option-genomic-medicine",
       "fact_ids": [
-        "fact_imperial_genomic_medicine_msc_pgdip_award_level_scope"
+        "fact_imperial_genomic_medicine_msc_pgdip_award_level_scope",
+        "imperial_genomic_medicine_msc_pgdip-study-overview"
       ],
       "researched_unknown_ids": [
         "unknown_imperial_genomic_medicine_msc_pgdip_award_level_details",
@@ -13018,7 +13028,8 @@
       },
       "parent_option_id": "imperial-option-mph-online",
       "fact_ids": [
-        "fact_imperial_master_of_public_health_online_pgdip_award_level_scope"
+        "fact_imperial_master_of_public_health_online_pgdip_award_level_scope",
+        "imperial_master_of_public_health_online_pgdip-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-curriculum-imperial_master_of_public_health_online_pgdip"
@@ -13150,7 +13161,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-aeronautics-funding-application-scope"
+        "imperial-aeronautics-funding-application-scope",
+        "imperial-aeronautics-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13183,7 +13195,8 @@
         "imperial-bioengineering-phd-admission",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-bioengineering-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13212,7 +13225,8 @@
         "imperial-bioengineering-mdres-profile",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-bioengineering-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13245,7 +13259,8 @@
         "imperial-chemical-engineering-phd-admission",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-chemical-engineering-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13281,7 +13296,8 @@
         "imperial-research-fees-2026-values",
         "imperial-civil-full-admissions-detail",
         "imperial-civil-scholarship-scheme-conditions",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-civil-environmental-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13315,7 +13331,8 @@
         "imperial-computing-funding-exceptions",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-computing-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13348,7 +13365,8 @@
         "imperial-design-engineering-phd-admission",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-design-engineering-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13382,7 +13400,8 @@
         "imperial-earth-funding-exceptions",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-earth-science-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13415,7 +13434,8 @@
         "imperial-eee-funding-exceptions",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-electrical-electronic-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13449,7 +13469,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-materials-departmental-commonwealth-funding",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-materials-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13482,7 +13503,8 @@
         "imperial-mechanical-engineering-phd-admission",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-mechanical-engineering-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13509,7 +13531,8 @@
         "imperial-research-attendance",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-mechanical-engineering-mdres-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-mechanical-mdres"
@@ -13544,7 +13567,8 @@
         "imperial-brain-sciences-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-brain-sciences-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13573,7 +13597,8 @@
         "imperial-brain-sciences-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-brain-sciences-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13606,7 +13631,8 @@
         "imperial-immunology-inflammation-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-immunology-inflammation-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13635,7 +13661,8 @@
         "imperial-immunology-inflammation-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-immunology-inflammation-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13668,7 +13695,8 @@
         "imperial-infectious-disease-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-infectious-disease-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13697,7 +13725,8 @@
         "imperial-infectious-disease-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-infectious-disease-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13730,7 +13759,8 @@
         "imperial-metabolism-digestion-reproduction-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-metabolism-digestion-reproduction-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13759,7 +13789,8 @@
         "imperial-metabolism-digestion-reproduction-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-metabolism-digestion-reproduction-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13791,7 +13822,8 @@
         "imperial-surgery-cancer-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-surgery-cancer-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13819,7 +13851,8 @@
         "imperial-surgery-cancer-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-surgery-cancer-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13851,7 +13884,8 @@
         "imperial-nhli-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-nhli-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13879,7 +13913,8 @@
         "imperial-nhli-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-nhli-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13911,7 +13946,8 @@
         "imperial-public-health-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-public-health-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13939,7 +13975,8 @@
         "imperial-public-health-application",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-public-health-mdres-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -13972,7 +14009,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-chemistry-funding-course-exceptions",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-chemistry-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14007,7 +14045,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-life-sciences-project-call-snapshot"
+        "imperial-life-sciences-project-call-snapshot",
+        "imperial-life-sciences-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14041,7 +14080,8 @@
         "imperial-mathematics-funding-exceptions",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-mathematics-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14074,7 +14114,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-physics-community-admission-exceptions",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-physics-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14108,7 +14149,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-environmental-policy-research-training"
+        "imperial-environmental-policy-research-training",
+        "imperial-environmental-policy-phd-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14138,7 +14180,8 @@
         "imperial-business-doctoral-entry",
         "imperial-business-doctoral-profile-funding",
         "imperial-business-doctoral-curriculum-progression",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-business-doctoral-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14170,7 +14213,8 @@
         "imperial-research-attendance",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-language-studies-phd-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-language-studies-phd"
@@ -14204,7 +14248,8 @@
         "imperial-research-attendance",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-science-communication-phd-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-science-communication-phd"
@@ -14232,7 +14277,8 @@
         "imperial-research-attendance",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-mphil-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-direct-mphil-target"
@@ -14254,7 +14300,8 @@
       ],
       "checked_at": "2026-10-01",
       "fact_ids": [
-        "imperial-engd-qnde-regulations"
+        "imperial-engd-qnde-regulations",
+        "imperial-engd-qnde-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-engd-recruitment"
@@ -14276,7 +14323,8 @@
       ],
       "checked_at": "2026-10-01",
       "fact_ids": [
-        "imperial-dsc-submission"
+        "imperial-dsc-submission",
+        "imperial-dsc-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-dsc-prescribed-fee"
@@ -14307,7 +14355,8 @@
         "imperial-healthbridge-entry-process",
         "imperial-healthbridge-funding-progression",
         "imperial-healthbridge-foundation-curriculum-milestones",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-healthbridge-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14335,7 +14384,8 @@
         "imperial-research-attendance",
         "imperial-chemical-biology-current-process",
         "imperial-chemical-biology-closed-predecessors",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-chemical-biology-integrated-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14368,7 +14418,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-educational-development-current-recruitment"
+        "imperial-educational-development-current-recruitment",
+        "imperial-educational-development-phd-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-educational-development-phd"
@@ -14395,7 +14446,8 @@
         "imperial-research-completion",
         "imperial-research-attendance",
         "imperial-photonics-integrated-exception",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-photonics-integrated-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14427,7 +14479,8 @@
         "imperial-research-attendance",
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-crick-phd-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-crick-phd"
@@ -14461,7 +14514,8 @@
         "imperial-research-fees-publication",
         "imperial-research-fees-2026-values",
         "imperial-qrt-application",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-qrt-computing-pathway-study-overview"
       ],
       "researched_unknown_ids": []
     },
@@ -14487,7 +14541,8 @@
         "imperial-research-attendance",
         "imperial-math-ccmi-scheme-scope",
         "imperial-ccmi-current-training-status",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-math-ccmi-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-math-ccmi-next-cycle"
@@ -14513,7 +14568,8 @@
         "imperial-research-completion",
         "imperial-research-attendance",
         "imperial-math-lsgnt-scheme-scope",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-math-lsgnt-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-math-lsgnt-next-cycle"
@@ -14543,7 +14599,8 @@
         "imperial-math-future-climate-scheme-scope",
         "imperial-mfc-current-application-process",
         "imperial-mfc-study-selection-conditions",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-math-future-climate-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-math-future-climate-next-cycle"
@@ -14568,7 +14625,8 @@
       "rechecked_at": "2026-10-03",
       "fact_ids": [
         "imperial-math-random-systems-scheme-scope",
-        "imperial-random-systems-closed-recruitment"
+        "imperial-random-systems-closed-recruitment",
+        "imperial-math-random-systems-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-math-random-systems-next-cycle"
@@ -14596,7 +14654,8 @@
         "imperial-research-attendance",
         "imperial-math-statml-scheme-scope",
         "imperial-statml-admissions-funding-context",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-math-statml-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-math-statml-next-cycle"
@@ -14623,7 +14682,8 @@
         "imperial-research-attendance",
         "imperial-medical-imaging-integrated-scheme-scope",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-medical-imaging-partner-route-conflict"
+        "imperial-medical-imaging-partner-route-conflict",
+        "imperial-medical-imaging-integrated-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-medical-imaging-integrated-next-cycle"
@@ -14651,7 +14711,8 @@
         "imperial-research-attendance",
         "imperial-other-training-inventory-boundaries",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-drivers-nuclear-project-application"
+        "imperial-drivers-nuclear-project-application",
+        "imperial-drivers-nuclear-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-drivers-nuclear-next-cycle"
@@ -14677,7 +14738,8 @@
         "imperial-research-completion",
         "imperial-research-attendance",
         "imperial-react-integrated-scheme-scope",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-react-integrated-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-react-integrated-next-cycle"
@@ -14704,7 +14766,8 @@
         "imperial-research-completion",
         "imperial-research-attendance",
         "imperial-other-training-inventory-boundaries",
-        "imperial-research-registration-transfer-restrictions"
+        "imperial-research-registration-transfer-restrictions",
+        "imperial-ai4health-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-ai4health-next-cycle"
@@ -14733,7 +14796,8 @@
         "imperial-research-completion",
         "imperial-research-attendance",
         "imperial-research-registration-transfer-restrictions",
-        "imperial-materials-cidt-ams-inventory-scope"
+        "imperial-materials-cidt-ams-inventory-scope",
+        "imperial-materials-cidt-ams-study-overview"
       ],
       "researched_unknown_ids": [
         "gap-materials-cidt-ams-current-target"
@@ -15412,7 +15476,8 @@
       "destination": "My Imperial, with course/school/scheme-specific category and conditions",
       "shared_form_family": "My Imperial",
       "source_ids": [
-        "imperial_page_bacterial_pathogenesis_infection"
+        "imperial_page_bacterial_pathogenesis_infection",
+        "imperial-overview-source-3"
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
@@ -16675,7 +16740,8 @@
       "destination": "My Imperial, with course/school/scheme-specific category and conditions",
       "shared_form_family": "My Imperial",
       "source_ids": [
-        "imperial_page_experimental_biomolecular_sciences"
+        "imperial_page_experimental_biomolecular_sciences",
+        "imperial-overview-source-78"
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
@@ -16780,7 +16846,8 @@
       "destination": "My Imperial, with course/school/scheme-specific category and conditions",
       "shared_form_family": "My Imperial",
       "source_ids": [
-        "imperial_page_genes_drugs_stem_cells"
+        "imperial_page_genes_drugs_stem_cells",
+        "imperial-overview-source-79"
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
@@ -16795,7 +16862,8 @@
       "destination": "My Imperial, with course/school/scheme-specific category and conditions",
       "shared_form_family": "My Imperial",
       "source_ids": [
-        "imperial_page_genomic_medicine"
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
@@ -60662,7 +60730,8 @@
         }
       },
       "source_ids": [
-        "imperial_page_bacterial_pathogenesis_infection"
+        "imperial_page_bacterial_pathogenesis_infection",
+        "imperial-overview-source-3"
       ],
       "content_reviewed_at": "2026-10-01",
       "publication_status": "published",
@@ -65783,7 +65852,8 @@
       },
       "source_ids": [
         "source-13c663bcd4658fbc",
-        "source-6f0c9e0934f79efd"
+        "source-6f0c9e0934f79efd",
+        "imperial-healthbridge-opening-20261019"
       ],
       "content_reviewed_at": "2026-10-01",
       "publication_status": "published",
@@ -70644,6 +70714,2435 @@
       "content_reviewed_at": "2026-10-01",
       "publication_status": "published",
       "review_status": "verified"
+    },
+    {
+      "id": "imperial_experimental_biomolecular_sciences_mres_msc-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_experimental_biomolecular_sciences_mres_msc"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "masters"
+          ],
+          "option_ids": [
+            "imperial_experimental_biomolecular_sciences_mres_msc"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "imperial_page_experimental_biomolecular_sciences",
+        "imperial-overview-source-78"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "masters"
+          ],
+          "option_ids": [
+            "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "imperial_page_genes_drugs_stem_cells",
+        "imperial-overview-source-79"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial_genomic_medicine_msc_pgcert-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_genomic_medicine_msc_pgcert"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "masters"
+          ],
+          "option_ids": [
+            "imperial_genomic_medicine_msc_pgcert"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial_genomic_medicine_msc_pgdip-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_genomic_medicine_msc_pgdip"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "masters"
+          ],
+          "option_ids": [
+            "imperial_genomic_medicine_msc_pgdip"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial_master_of_public_health_online_pgdip-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_master_of_public_health_online_pgdip"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "masters"
+          ],
+          "option_ids": [
+            "imperial_master_of_public_health_online_pgdip"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "imperial_page_mph_online"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-aeronautics-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-aeronautics-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-aeronautics-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-9092ac2b65e3b889",
+        "source-7320c40a2488c0db",
+        "source-e81426de703d229a",
+        "imperial-overview-source-92"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-bioengineering-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-bioengineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-bioengineering-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-baf1d30880524928",
+        "source-62cfec425e715f3f",
+        "imperial-overview-source-93"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-bioengineering-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-bioengineering-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-bioengineering-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-baf1d30880524928",
+        "source-bdd1549d596e4da4",
+        "source-afaa5407262fbf45",
+        "imperial-overview-source-93"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-chemical-engineering-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-chemical-engineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-chemical-engineering-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-222db8d8a087147f",
+        "source-dd133cb3fd3240bb",
+        "imperial-overview-source-95"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-civil-environmental-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-civil-environmental-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-civil-environmental-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-2b2128c9791faef2",
+        "source-a2aa0864112c2063",
+        "source-f361fcca18bc58f4",
+        "imperial-overview-source-96"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-computing-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-computing-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-computing-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-59264ed92f6cb70f",
+        "source-fcfd905e0321795e",
+        "source-f8beae4c36965770",
+        "imperial-overview-source-97"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-design-engineering-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-design-engineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-design-engineering-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-03704b4d997aff3b",
+        "source-59d6d64616ca4473",
+        "imperial-overview-source-98"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-earth-science-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-earth-science-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-earth-science-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-921b7ca52e9cc9a0",
+        "source-b7564f76b452c295",
+        "source-71596bbbe4abd1cd",
+        "imperial-overview-source-99"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-electrical-electronic-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-electrical-electronic-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-electrical-electronic-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-56f60ddee7c65ecc",
+        "source-c2fead65fb0e188e",
+        "imperial-overview-source-100"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-materials-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-materials-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-materials-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-08b2e8b31560114d",
+        "source-68b01fb67af7cb5a",
+        "imperial-overview-source-101"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-mechanical-engineering-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-mechanical-engineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-mechanical-engineering-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-1c9a6764bbe6a49f",
+        "source-afec6b43c625b23a",
+        "imperial-overview-source-102"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-mechanical-engineering-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-mechanical-engineering-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-mechanical-engineering-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-bdd1549d596e4da4"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-brain-sciences-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-brain-sciences-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-brain-sciences-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-ffca10756d87147c",
+        "source-307021a849db1df7",
+        "imperial-overview-source-104"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-brain-sciences-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-brain-sciences-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-brain-sciences-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-ffca10756d87147c",
+        "source-307021a849db1df7",
+        "imperial-overview-source-104"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-immunology-inflammation-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-immunology-inflammation-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-immunology-inflammation-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7b07c9087760c856",
+        "source-54dcab579d07548d",
+        "imperial-overview-source-106"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-immunology-inflammation-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-immunology-inflammation-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-immunology-inflammation-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7b07c9087760c856",
+        "source-54dcab579d07548d",
+        "imperial-overview-source-106"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-infectious-disease-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-infectious-disease-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-infectious-disease-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-f2c2352a4dda2b09",
+        "source-e6b5f76872a71d9f",
+        "imperial-overview-source-108"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-infectious-disease-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-infectious-disease-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-infectious-disease-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-f2c2352a4dda2b09",
+        "source-e6b5f76872a71d9f"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-metabolism-digestion-reproduction-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-metabolism-digestion-reproduction-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-metabolism-digestion-reproduction-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-8ac8fa4168d26c1c",
+        "source-d5c076134586e338",
+        "imperial-overview-source-110"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-metabolism-digestion-reproduction-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-metabolism-digestion-reproduction-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-metabolism-digestion-reproduction-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-8ac8fa4168d26c1c",
+        "source-d5c076134586e338"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-surgery-cancer-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-surgery-cancer-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-surgery-cancer-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-395d3020bacd1a2d",
+        "imperial-overview-source-112"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-surgery-cancer-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-surgery-cancer-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-surgery-cancer-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-395d3020bacd1a2d",
+        "imperial-overview-source-112"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-nhli-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-nhli-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-nhli-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-ea4c7c1e7828b1a7",
+        "imperial-overview-source-114"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-nhli-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-nhli-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-nhli-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-ea4c7c1e7828b1a7",
+        "imperial-overview-source-114"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-public-health-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-public-health-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-public-health-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-d6c32b2c0ecb1664",
+        "imperial-overview-source-116"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-public-health-mdres-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-public-health-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-public-health-mdres"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-d6c32b2c0ecb1664",
+        "imperial-overview-source-116"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-chemistry-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-chemistry-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-chemistry-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-52c09462a25a6c79",
+        "source-4cbfcb332d26d47f",
+        "imperial-overview-source-118"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-life-sciences-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-life-sciences-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-life-sciences-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-b97abbf035c2ee2c",
+        "source-e0275026ba786fc3",
+        "source-f988dd2d2d7fa78b",
+        "imperial-overview-source-119"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-mathematics-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-mathematics-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-mathematics-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-9569305f1e2bedb1",
+        "source-f30108653f91c6bd",
+        "source-f4f77da99cfcd678",
+        "source-2c250c893ad6975b",
+        "imperial-overview-source-120"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-physics-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-physics-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-physics-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-b3d7107359d68ae7",
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f",
+        "imperial-overview-source-121"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-environmental-policy-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-environmental-policy-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-environmental-policy-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-294c9e51404a91c0",
+        "source-e3663b2671d750f0"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-business-doctoral-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-business-doctoral"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-business-doctoral"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-e2f34734a0651582",
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-language-studies-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-language-studies-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-language-studies-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-cd0e4c6706b4ba42",
+        "source-071c8ad1148b7b48",
+        "imperial-overview-source-124"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-science-communication-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-science-communication-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-science-communication-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-cd0e4c6706b4ba42",
+        "source-3da42bf03b739cb4",
+        "imperial-overview-source-125"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-mphil-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial-mphil"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "masters"
+          ],
+          "option_ids": [
+            "imperial-mphil"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-engd-qnde-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-engd-qnde"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-engd-qnde"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-820d135453f0481c"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-dsc-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-dsc"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-dsc"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-9065495810539d6f"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-healthbridge-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-healthbridge"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-healthbridge"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-3dc0391791bf54e1",
+        "source-13c663bcd4658fbc",
+        "source-6f0c9e0934f79efd",
+        "source-a43a5d0b16919c98",
+        "source-28a9576ee3aa7534"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-chemical-biology-integrated-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-chemical-biology-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-chemical-biology-integrated"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-638087214dbddacd",
+        "source-a568dbee895747b1",
+        "source-3fa8204fb28ae821",
+        "source-593f2812402e3689",
+        "source-d01ee98be4c81964",
+        "source-fd9f0b26270fb793"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-educational-development-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-educational-development-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-educational-development-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-51d62f2b19486c37",
+        "source-182b6df36c19b700",
+        "source-2cc3e2e5b540d416",
+        "imperial-overview-source-131"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-photonics-integrated-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-photonics-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-photonics-integrated"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-51d62f2b19486c37",
+        "source-bfbf96c80339fb94"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-crick-phd-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-crick-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-crick-phd"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-51d62f2b19486c37",
+        "source-da8b3a76b3345020"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-qrt-computing-pathway-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-qrt-computing-pathway"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-qrt-computing-pathway"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-qrt-admissions"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-math-ccmi-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-ccmi"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-math-ccmi"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-5cfc900764598487"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-math-lsgnt-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-lsgnt"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-math-lsgnt"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-math-future-climate-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-future-climate"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-math-future-climate"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-ef36b4a0c7c51884",
+        "source-833651dcf1f97bf6"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-math-random-systems-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-random-systems"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-math-random-systems"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-9029a8d0791ccc9c"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-math-statml-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-statml"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-math-statml"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-f2b376f8c2199f1d"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-medical-imaging-integrated-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-medical-imaging-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-medical-imaging-integrated"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-1e206d093548d31a",
+        "source-9235bb2a1867d7b9",
+        "source-eebc4fd881232fac"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-drivers-nuclear-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-drivers-nuclear"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-drivers-nuclear"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-5ad10856b578c92d",
+        "source-c67c4899cfe97db8",
+        "source-aa1ddf6743f055c0",
+        "source-94ea739080f9d1fd",
+        "source-eea688ac605d370f",
+        "source-59090003d068b945",
+        "source-5f79fa2821b98244"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-react-integrated-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-react-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-react-integrated"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-5cb5f4c6bd0e6cc6"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-ai4health-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-ai4health"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-ai4health"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-eea688ac605d370f",
+        "source-f8beae4c36965770",
+        "source-aa1ddf6743f055c0",
+        "source-94ea739080f9d1fd",
+        "source-c67c4899cfe97db8"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "imperial-materials-cidt-ams-study-overview",
+      "evidence_file": "programme-overviews-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-materials-cidt-ams"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": [],
+        "original_scope_note": "",
+        "original_scope": {
+          "study_levels": [
+            "doctoral"
+          ],
+          "option_ids": [
+            "imperial-materials-cidt-ams"
+          ],
+          "route_ids": [],
+          "applicant_categories": [
+            "Readers of this explicitly named study option"
+          ],
+          "cycle": "Programme overview; no admissions cycle inferred",
+          "fee_status": []
+        }
+      },
+      "source_ids": [
+        "source-08b2e8b31560114d",
+        "source-68b01fb67af7cb5a",
+        "imperial-overview-source-101"
+      ],
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
     }
   ],
   "researched_unknowns": [
@@ -72390,10 +74889,11 @@
         "imperial_genomic_medicine_msc_pgcert"
       ],
       "source_ids": [
-        "imperial_page_genomic_medicine"
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
       ],
       "checked_at": "2026-10-01",
-      "rechecked_at": "2026-10-03",
+      "rechecked_at": "2026-10-19",
       "scope": {
         "study_levels": [
           "masters"
@@ -72405,13 +74905,14 @@
         "applicant_categories": [
           "Applicant considering the named award or mode; parent course requirements not inherited"
         ],
-        "cycle": "2027 entry course page, exact award content unavailable",
+        "cycle": "2027 course page; full award-specific assessment not established",
         "fee_status": []
       },
       "publication_status": "unknown",
       "review_status": "researched_unknown",
-      "finding": "The reviewed course Structure panels do not expose a separately named PGCert curriculum for Genomic Medicine (MSc) — PGCert. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements.",
-      "official_next_step": "Read the current named award programme specification or confirm required modules, project extent and assessment with the named course team; preserve only explicitly shared course content until then.",
+      "finding": "The current official course page now separately describes the Genomic Medicine PGCert taught outline and blended delivery. The full award-specific assessment, current module combinations and progression conditions are not established by the captured overview; do not inherit the MSc research project.",
+      "official_next_step": "Check the current named award programme specification or ask the course team to confirm assessment, module combinations and progression conditions. The separately sourced taught overview is available in the study record.",
+      "previous_finding": "The reviewed course Structure panels do not expose a separately named PGCert curriculum for Genomic Medicine (MSc) — PGCert. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements.",
       "evidence_file": "medicine-business-evidence.json"
     },
     {
@@ -72421,10 +74922,11 @@
         "imperial_genomic_medicine_msc_pgdip"
       ],
       "source_ids": [
-        "imperial_page_genomic_medicine"
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
       ],
       "checked_at": "2026-10-01",
-      "rechecked_at": "2026-10-03",
+      "rechecked_at": "2026-10-19",
       "scope": {
         "study_levels": [
           "masters"
@@ -72436,13 +74938,14 @@
         "applicant_categories": [
           "Applicant considering the named award or mode; parent course requirements not inherited"
         ],
-        "cycle": "2027 entry course page, exact award content unavailable",
+        "cycle": "2027 course page; full award-specific assessment not established",
         "fee_status": []
       },
       "publication_status": "unknown",
       "review_status": "researched_unknown",
-      "finding": "The reviewed course Structure panels do not expose a separately named PGDip curriculum for Genomic Medicine (MSc) — PGDip. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements.",
-      "official_next_step": "Read the current named award programme specification or confirm required modules, project extent and assessment with the named course team; preserve only explicitly shared course content until then.",
+      "finding": "The current official course page now separately describes the Genomic Medicine PGDip taught outline and blended delivery. The full award-specific assessment, current module combinations and progression conditions are not established by the captured overview; do not inherit the MSc research project.",
+      "official_next_step": "Check the current named award programme specification or ask the course team to confirm assessment, module combinations and progression conditions. The separately sourced taught overview is available in the study record.",
+      "previous_finding": "The reviewed course Structure panels do not expose a separately named PGDip curriculum for Genomic Medicine (MSc) — PGDip. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements.",
       "evidence_file": "medicine-business-evidence.json"
     },
     {

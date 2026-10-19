@@ -2837,7 +2837,7 @@ university.programs.search_clear: Clear search
 university.admissions.reading.summary_requirements: Key published entry requirements
 university.admissions.reading.summary_application: How to apply
 university.admissions.reading.summary_deadlines: Course dates and application rounds
-university.admissions.reading.summary_costs: Additional costs and fee conditions
+university.admissions.reading.summary_costs: Published costs and fee conditions
 university.admissions.reading.summary_funding: Funding: eligibility and application
 university.admissions.reading.home_fee: Home fee
 university.admissions.reading.overseas_fee: Overseas fee
@@ -2870,3 +2870,100 @@ university.admissions.reading.month_standalone.11: November
 university.admissions.reading.month_standalone.12: December
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · departmental application
 university.admissions.reading.integrated_meng: MEng is an integrated degree with undergraduate entry through UCAS, combining undergraduate and master's-level study.
+university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — current Stanford undergraduates only
+university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — current Stanford undergraduates
+university.admissions.catalog.route_class.combined_external: External combined-degree application
+university.admissions.catalog.route_class.combined_ms_with_other_stanford_doctoral_or_professional_degree: MS combined with another Stanford doctoral/professional degree
+university.admissions.catalog.route_class.coterm_application: Coterm master's while studying at Stanford
+university.admissions.catalog.route_class.coterm_current_stanford_undergraduate: Coterm — current Stanford undergraduates only
+university.admissions.catalog.route_class.coterm_or_internal_stanford_student: Coterm or another current Stanford student route
+university.admissions.catalog.route_class.current AA MS to PhD: Progression from current Aeronautics MS to PhD
+university.admissions.catalog.route_class.current ChemE PhD optional MS: Optional MS for current Chemical Engineering PhD students
+university.admissions.catalog.route_class.current EPS coterm or MS student applying to PhD: Current Earth/Planetary Sciences coterm or MS student seeking PhD
+university.admissions.catalog.route_class.current ESE MS student seeking PhD: Current Energy Science and Engineering MS student seeking PhD
+university.admissions.catalog.route_class.current ME PhD optional MS: Optional MS for current Mechanical Engineering PhD students
+university.admissions.catalog.route_class.current Stanford graduate Joint/Dual MS: Joint/Dual MS for current Stanford graduate students
+university.admissions.catalog.route_class.current Stanford graduate or NDO applicant using regular degree application: Regular application for current Stanford graduate or non-degree students
+university.admissions.catalog.route_class.current Stanford other-department PhD candidate added MS: Additional MS for Stanford PhD students in another department
+university.admissions.catalog.route_class.current Stanford student regular external-style degree application: Regular degree application for current Stanford students
+university.admissions.catalog.route_class.current Stanford undergraduate coterm: Coterm master's for current Stanford undergraduates
+university.admissions.catalog.route_class.current Stanford undergraduate coterminal MA or MS: Coterm MA/MS for current Stanford undergraduates
+university.admissions.catalog.route_class.current_Stanford_MD_or_PhD_internal_MSTP_funding_application: Internal MSTP funding application for current Stanford MD/PhD students
+university.admissions.catalog.route_class.current_stanford_doctoral_or_professional_student: Current Stanford doctoral/professional students only
+university.admissions.catalog.route_class.current_stanford_graduate_and_professional_students: Current Stanford graduate/professional students only
+university.admissions.catalog.route_class.current_stanford_graduate_students_additional_ms: Additional MS for current Stanford graduate students
+university.admissions.catalog.route_class.current_stanford_undergraduate_coterm: Coterm — current Stanford undergraduates (directory)
+university.admissions.catalog.route_class.direct_external: Direct application to the professional program
+university.admissions.catalog.route_class.direct_external_limited: Direct external application with published restrictions
+university.admissions.catalog.route_class.en_route_award_no_external_admission: Intermediate award; no external application
+university.admissions.catalog.route_class.existing same-program PhD intermediate MS: Intermediate MS for current PhD students in this program
+university.admissions.catalog.route_class.existing_Classics_PhD_intermediate_MA: Intermediate MA for current Classics PhD students
+university.admissions.catalog.route_class.external HybridSESMS selection through GraduateAdmissions: External hybrid Sustainable Engineered Systems MS application
+university.admissions.catalog.route_class.external PhD application: External PhD application
+university.admissions.catalog.route_class.external PhD application with subplan selection: External PhD application with a subplan choice
+university.admissions.catalog.route_class.external graduate MS or PhD: External MS/PhD application
+university.admissions.catalog.route_class.external interdisciplinary PhD: External interdisciplinary PhD application
+university.admissions.catalog.route_class.external non-professional graduate application: External master's/PhD — Graduate Admissions
+university.admissions.catalog.route_class.external_doctoral: External doctoral application
+university.admissions.catalog.route_class.external_joint_entry_via_gsb_mba_application: Joint degree through the GSB MBA application
+university.admissions.catalog.route_class.external_joint_entry_via_gse_pols_application: Joint degree through the Education POLS application
+university.admissions.catalog.route_class.external_joint_entry_via_law_jd_application: Joint degree through the Law JD application
+university.admissions.catalog.route_class.external_masters: External master's application
+university.admissions.catalog.route_class.external_nonprofessional_programme: External graduate application (program directory)
+university.admissions.catalog.route_class.external_part_time_distance_hcp_ms: Part-time HCP MS — published employment/location restrictions
+university.admissions.catalog.route_class.external_professional_masters: External professional master's application
+university.admissions.catalog.route_class.external_program_specific_application: External application to the named program
+university.admissions.catalog.route_class.external_restricted_alumni: External application restricted to specified alumni
+university.admissions.catalog.route_class.external_terminal_admission: External application to a standalone degree
+university.admissions.catalog.route_class.external_terminal_masters: External standalone master's application
+university.admissions.catalog.route_class.historical duplicate of coterm, no independent internal form verified: Historical coterm duplicate; no separate internal form verified
+university.admissions.catalog.route_class.historical unresolved award context: Historical award context remains unresolved
+university.admissions.catalog.route_class.intermediate MS only for Oceans PhD student: Intermediate MS — current Oceans PhD students only
+university.admissions.catalog.route_class.intermediate exit MA only: Intermediate/exit MA only
+university.admissions.catalog.route_class.intermediate/exit award; no direct admission: Intermediate/exit award; no direct application
+university.admissions.catalog.route_class.internal added MS for student enrolled in another Stanford department: Internal additional MS for students in another Stanford department
+university.admissions.catalog.route_class.internal current-student application or added-degree petition: Current-student application or additional-degree request
+university.admissions.catalog.route_class.internal intermediate MS requirement for AA PhD students: Intermediate MS requirement within Aeronautics PhD
+university.admissions.catalog.route_class.internal_combined_degree_declaration: Internal declaration of combined degrees
+university.admissions.catalog.route_class.internal_coterm_admission: Internal coterm master's application
+university.admissions.catalog.route_class.internal_current_doctoral_only: Current doctoral students only
+university.admissions.catalog.route_class.internal_current_stanford_graduate_students: Internal route for current Stanford graduate students
+university.admissions.catalog.route_class.internal_intermediate_admission: Internal intermediate degree; check current-student restrictions
+university.admissions.catalog.route_class.internal_progression_from_coterm_ma: Internal progression from the coterm MA
+university.admissions.catalog.route_class.internal_stanford_admission: Internal Stanford admission route
+university.admissions.catalog.route_class.internal_stanford_graduate_authorization: Internal authorization for Stanford graduate students
+university.admissions.catalog.route_class.joint_degree_applicant_to_another_stanford_program: Joint-degree route linked to another Stanford program
+university.admissions.catalog.route_class.one_shared_application_with_primary_and_one_alternative_home_program: One shared application with a main and one alternative program
+university.admissions.catalog.route_class.phd_en_route_authorization: Intermediate degree authorization during PhD study
+university.admissions.catalog.route_class.phd_en_route_intermediate_award: Intermediate award during PhD study
+university.admissions.catalog.route_class.possible internal added MS: Possible internal additional MS; eligibility unresolved
+university.admissions.catalog.route_class.program_specific_application: Program-specific application
+university.admissions.catalog.route_class.program_specific_external_admission: External admission under the program's own rules
+university.admissions.catalog.route_class.prospective Stanford MBA/JD Joint MS: Joint MS linked to Stanford MBA/JD admission
+university.admissions.catalog.route_class.related Stanford PhD student added EE MS: Additional Electrical Engineering MS for related Stanford PhD students
+university.admissions.catalog.route_class.required intermediate MS for existing MSE PhD: Required intermediate MS for current Materials PhD students
+university.admissions.catalog.route_class.researched_unresolved: Route researched; applicability remains unresolved
+university.admissions.catalog.route_class.restricted_internal: Restricted internal route
+university.admissions.catalog.route_class.restricted_ms_no_published_external_application: Restricted MS; no published external application
+university.admissions.catalog.route_class.same-program CS PhD intermediate MS petition: Intermediate MS request — current CS PhD students
+university.admissions.catalog.route_class.separate CS and professional-school applications with joint consent: Joint degree: separate CS and professional-school applications
+university.admissions.catalog.route_class.separate degree applications and approved combined study: Separate degree applications and approved combined study
+university.admissions.catalog.route_class.separate_advanced_degree_admission_after_qualifying_llm_or_spils: Separate advanced-degree admission after a qualifying LLM/SPILS
+university.admissions.catalog.route_class.separately admitted joint/dual Stanford degrees: Joint/Dual degrees with separate Stanford admissions
+university.admissions.catalog.route_class.shared_advanced_degree_application_with_selection_path: Shared advanced-degree application with a chosen pathway
+university.admissions.catalog.route_class.shared_joint_application: Shared joint-degree application
+university.admissions.catalog.route_class.shared_medical_school_application: MD: AMCAS, then invited Stanford supplement
+university.admissions.catalog.route_class.shared_school_application: Shared application to the school
+university.admissions.catalog.route_class.terminal_exit_award_no_admission_route: Exit award; no separate admission route
+university.admissions.catalog.route_class.unresolved: Application route remains unresolved
+university.admissions.reading.overview_missing: A study overview has not been collected for this option. Use the official program page below; application records are available separately.
+university.admissions.reading.source_conflict: The collected official sources differ. Confirm this condition with the program; it is not an accepted exemption or an eligibility decision.
+university.admissions.reading.program: Program
+university.admissions.reading.degree.BS: BS — Bachelor of Science (undergraduate degree)
+university.admissions.reading.degree.BA: BA — Bachelor of Arts (undergraduate degree)
+university.admissions.reading.degree.MS: MS — Master of Science (master's degree)
+university.admissions.reading.degree.MA: MA — Master of Arts (master's degree)
+university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy (research doctorate)
+university.admissions.reading.degree.MBA: MBA — Master of Business Administration (professional management degree)
+university.admissions.reading.degree.MD: MD — Doctor of Medicine (professional medical degree)
+university.admissions.reading.degree.ENG: Engineer — advanced engineering degree; separate from MS and PhD

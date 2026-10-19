@@ -31,6 +31,7 @@ export function normalizeAdmissionCycle(value) {
 export function getApplicationLink(resolved) {
   const route = resolved?.selected_route;
   if (!route) return "";
+  if (route.application_url) return safeUrl(route.application_url);
   const destination = String(route.destination || "");
   if (/^https?:\/\//i.test(destination)) return safeUrl(destination);
   const declaredHost = destination.match(/\((([a-z0-9-]+\.)+[a-z]{2,})\)/i);

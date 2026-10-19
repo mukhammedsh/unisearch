@@ -13,14 +13,14 @@
   "source_file": "sources.json",
   "evidence_fingerprints": {
     "undergraduate-study-evidence.json": "e907bf2eb312a58727491919ced270530a8a7775cdbc95aff2e97b60071826dd",
-    "undergraduate-shared-evidence.json": "fdffd6c3425c949cb922591717df0701f87ed054400052a5e98ff229dd9da958",
+    "undergraduate-shared-evidence.json": "d0647a9ac6d05bbd012af57456472f923337f55ab1b25e22fb9443c081ed720c",
     "directory-evidence.json": "91ac6e6e801d2c18e56d10dcb2c9c620529f2ef3d70ee832da76f8fab53901a4",
     "coterm-central-evidence.json": "b993f90b97710730fd851cde57435b10c49fa1e62439f679a44f4cad374c178e",
-    "engineering-doerr-evidence.json": "2f8e5781d1ce7bc76ff788df9a8b4eff2bb69146f4e196a963d3a5e3960f06e2",
+    "engineering-doerr-evidence.json": "e23f5c09092158cef555df33910b76dcb0caf67c49957226d8601965732b6457",
     "humanities-education-medicine-evidence.json": "a8fb3dcacadee65774afb6641c3542ec16bacfdb8431c04cf1187908cc927619",
     "hs-social-science-evidence.json": "42f3852ce99dc138afc6621a2cf9d8d442bccc7eabcc2ba740d841af0e4a7bab",
-    "medicine-graduate-evidence.json": "6f287159f4ff93643e541a2166e98161862f7bd497da86b8c64d3f86bb017293",
-    "professional-evidence.json": "86a76c22fed80489bb3ac182db9e26ea166f320766b850c2013a2981cca5fc70",
+    "medicine-graduate-evidence.json": "1a358e8704a39dffcbcbcd8fc1014734df67dc5132e0cf3678b3f3f614443a49",
+    "professional-evidence.json": "75fb42b3b088d30b0a4afdcc882f4d4b5862d86a3754911c1a7f413bde2cfdf4",
     "supplementary-degree-evidence.json": "fb371de5eb8052ef8a96d5ca4518878b07563e7b2642998219dbdddd21b2e296",
     "doerr-completion-evidence.json": "500ab4df870fe2d2fa1753bc5de89f9ca367e958202612baac2ff895c2e41d9f"
   },
@@ -10192,6 +10192,7 @@
         "Restrictive Early Action (non-binding)",
         "Regular Decision"
       ],
+      "application_url": "https://admission.stanford.edu/apply/first-year/apply.html",
       "evidence_file": "undergraduate-shared-evidence.json",
       "original_id": "stanford-first-year",
       "option_ids": [
@@ -10286,6 +10287,7 @@
       "decision_plans": [
         "Transfer admission (single annual deadline shown)"
       ],
+      "application_url": "https://admission.stanford.edu/apply/transfer/apply.html",
       "evidence_file": "undergraduate-shared-evidence.json",
       "original_id": "stanford-transfer",
       "option_ids": [
@@ -14439,6 +14441,7 @@
         "engineering-doerr-evidence:application-fee",
         "engineering-doerr-evidence:faq"
       ],
+      "application_url": "https://gradadmissions.stanford.edu/apply",
       "evidence_file": "engineering-doerr-evidence.json",
       "original_id": "external-graduate"
     },
@@ -14559,6 +14562,7 @@
         "engineering-doerr-evidence:cs-deadlines",
         "engineering-doerr-evidence:coterm-directory"
       ],
+      "application_url": "https://studentservices.stanford.edu/apply-coterm",
       "evidence_file": "engineering-doerr-evidence.json",
       "original_id": "cs-coterm"
     },
@@ -18188,6 +18192,7 @@
         "professional-evidence:gsb_mba_essentials",
         "professional-evidence:gsb_mba_rounds"
       ],
+      "application_url": "https://www.gsb.stanford.edu/programs/mba/admission/application",
       "evidence_file": "professional-evidence.json",
       "original_id": "gsb_mba_admission"
     },
@@ -18279,6 +18284,7 @@
         "professional-evidence:med_md_apply",
         "professional-evidence:med_mstp_faq"
       ],
+      "application_url": "https://med.stanford.edu/md-admissions/how-to-apply.html",
       "evidence_file": "professional-evidence.json",
       "original_id": "med_md_admission"
     },
@@ -42540,7 +42546,7 @@
         "applicant_categories": [
           "first-year"
         ],
-        "cycle": "2027-entry",
+        "cycle": null,
         "fee_status": []
       },
       "original_scope": {
@@ -42554,7 +42560,7 @@
         "applicant_categories": [
           "first-year"
         ],
-        "cycle": "2027-entry",
+        "cycle": null,
         "fee_status": []
       },
       "source_ids": [
@@ -43288,7 +43294,7 @@
         "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
       ],
       "checked_at": "2026-10-02",
-      "publication_status": "published",
+      "publication_status": "historical",
       "review_status": "reviewed"
     },
     {
@@ -44500,7 +44506,7 @@
         "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
       ],
       "checked_at": "2026-10-02",
-      "publication_status": "published",
+      "publication_status": "historical",
       "review_status": "reviewed"
     },
     {
@@ -44888,6 +44894,91 @@
       "checked_at": "2026-10-03",
       "publication_status": "published",
       "review_status": "verified"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+      "original_id": "stanford-ug-firstyear-international-aid-2027-28",
+      "evidence_file": "undergraduate-shared-evidence.json",
+      "topic": "financial_aid_documents",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "undergraduate-shared-evidence:stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "undergraduate-shared-evidence:stanford-ug-aid-international-rea",
+        "undergraduate-shared-evidence:stanford-ug-aid-rd-international"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28",
+      "original_id": "stanford-ug-transfer-international-aid-2027-28",
+      "evidence_file": "undergraduate-shared-evidence.json",
+      "topic": "financial_aid_documents",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "undergraduate-shared-evidence:stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
     },
     {
       "id": "directory-evidence:stanford-graduate-aa-ms-directory-table",
@@ -74708,6 +74799,679 @@
       "checked_at": "2026-10-02",
       "publication_status": "published",
       "review_status": "degree_specific_source_content_rechecked_2026_10_03"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-bmp-phd",
+      "original_id": "study-overview-bmp-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-bmp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-bmp-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-bioc-phd",
+      "original_id": "study-overview-bioc-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bioc-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-bioc-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-bioc-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-canbi-phd",
+      "original_id": "study-overview-canbi-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-canbi-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-canbi-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-canbi-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-bmds-phd",
+      "original_id": "study-overview-bmds-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-bmds-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-bmds-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-bmds-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-csb-phd",
+      "original_id": "study-overview-csb-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-csb-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-csb-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-csb-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-dbio-phd",
+      "original_id": "study-overview-dbio-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-dbio-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-dbio-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-dbio-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-gene-phd",
+      "original_id": "study-overview-gene-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-gene-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-gene-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-gene-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-epidcr-phd",
+      "original_id": "study-overview-epidcr-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-epidcr-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-epidcr-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-epidcr-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-hrp-phd",
+      "original_id": "study-overview-hrp-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-hrp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-hrp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-hrp-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-immun-phd",
+      "original_id": "study-overview-immun-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-immun-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-immun-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-immun-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-hmn-gen-ms",
+      "original_id": "study-overview-hmn-gen-ms",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-hmn-gen-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-hmn-gen-ms"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "master"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-hmn-gen-ms-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-mcp-phd",
+      "original_id": "study-overview-mcp-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-mcp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-mcp-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-mcp-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-mi-phd",
+      "original_id": "study-overview-mi-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-mi-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-mi-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-mi-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-neurs-phd",
+      "original_id": "study-overview-neurs-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-neurs-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-neurs-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-neurs-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-sbio-phd",
+      "original_id": "study-overview-sbio-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-sbio-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-sbio-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-sbio-phd-2026-10-19",
+        "medicine-graduate-evidence:structural-bio-application"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "verified_with_source_conflict"
+    },
+    {
+      "id": "medicine-graduate-evidence:study-overview-stmrm-phd",
+      "original_id": "study-overview-stmrm-phd",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "study_content",
+      "scope": {
+        "option_ids": [
+          "stanford-option-stmrm-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-stmrm-phd"
+        ],
+        "procedure_ids": [],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "prospective_students",
+          "enrolled_students"
+        ],
+        "cycle": "2026-2027 Bulletin",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:study-overview-stmrm-phd-2026-10-19"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
     },
     {
       "id": "professional-evidence:gsb_mba_eligibility_tests_docs",

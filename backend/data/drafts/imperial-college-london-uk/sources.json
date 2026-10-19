@@ -10291,6 +10291,470 @@
           "content_reviewed_at": "2026-10-03"
         }
       ]
+    },
+    {
+      "id": "imperial-overview-source-3",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/bacterial-pathogenesis-infection/",
+      "title": "Biomedical Research (Bacterial Pathogenesis and Infection) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-3",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/bacterial-pathogenesis-infection/",
+          "title": "Biomedical Research (Bacterial Pathogenesis and Infection) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-78",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+      "title": "Experimental Biomolecular Sciences (MRes) — MSc — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-78",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+          "title": "Experimental Biomolecular Sciences (MRes) — MSc — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-79",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+      "title": "Genes, Drugs and Stem Cells – Novel Therapies (MSc) — PGCert — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-79",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+          "title": "Genes, Drugs and Stem Cells – Novel Therapies (MSc) — PGCert — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-80",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/?addCourse=1198890",
+      "title": "Genomic Medicine (MSc) — PGCert — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-80",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/?addCourse=1198890",
+          "title": "Genomic Medicine (MSc) — PGCert — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-92",
+      "url": "https://www.imperial.ac.uk/aeronautics/study/phd/",
+      "title": "Aeronautics Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-92",
+          "url": "https://www.imperial.ac.uk/aeronautics/study/phd/",
+          "title": "Aeronautics Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-93",
+      "url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/",
+      "title": "Bioengineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-93",
+          "url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/",
+          "title": "Bioengineering Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-95",
+      "url": "https://www.imperial.ac.uk/chemical-engineering/courses/postgraduate/phd/",
+      "title": "Chemical Engineering — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-95",
+          "url": "https://www.imperial.ac.uk/chemical-engineering/courses/postgraduate/phd/",
+          "title": "Chemical Engineering — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-96",
+      "url": "https://www.imperial.ac.uk/civil-engineering/prospective-students/phd-postgraduate-research/",
+      "title": "Civil and Environmental Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-96",
+          "url": "https://www.imperial.ac.uk/civil-engineering/prospective-students/phd-postgraduate-research/",
+          "title": "Civil and Environmental Engineering Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-97",
+      "url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+      "title": "Computing Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-97",
+          "url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+          "title": "Computing Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-98",
+      "url": "https://www.imperial.ac.uk/design-engineering/study/phd/",
+      "title": "Design Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-98",
+          "url": "https://www.imperial.ac.uk/design-engineering/study/phd/",
+          "title": "Design Engineering Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-99",
+      "url": "https://www.imperial.ac.uk/earth-science/prosp-students/phd-opportunities/",
+      "title": "Earth Science and Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-99",
+          "url": "https://www.imperial.ac.uk/earth-science/prosp-students/phd-opportunities/",
+          "title": "Earth Science and Engineering Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-100",
+      "url": "https://www.imperial.ac.uk/engineering/departments/electrical-engineering/study/phd/",
+      "title": "Electrical and Electronic Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-100",
+          "url": "https://www.imperial.ac.uk/engineering/departments/electrical-engineering/study/phd/",
+          "title": "Electrical and Electronic Engineering Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-101",
+      "url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+      "title": "Materials Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-101",
+          "url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+          "title": "Materials Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-102",
+      "url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/phd-opportunities/",
+      "title": "Mechanical Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-102",
+          "url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/phd-opportunities/",
+          "title": "Mechanical Engineering Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-104",
+      "url": "https://www.imperial.ac.uk/brain-sciences/research/",
+      "title": "Clinical Medicine Research (Brain Sciences) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-104",
+          "url": "https://www.imperial.ac.uk/brain-sciences/research/",
+          "title": "Clinical Medicine Research (Brain Sciences) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-106",
+      "url": "https://www.imperial.ac.uk/immunology-inflammation/research/",
+      "title": "Clinical Medicine Research (Immunology and Inflammation) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-106",
+          "url": "https://www.imperial.ac.uk/immunology-inflammation/research/",
+          "title": "Clinical Medicine Research (Immunology and Inflammation) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-108",
+      "url": "https://www.imperial.ac.uk/infectious-disease/study/phd-opportunities/funding/",
+      "title": "Clinical Medicine Research (Infectious Disease) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-108",
+          "url": "https://www.imperial.ac.uk/infectious-disease/study/phd-opportunities/funding/",
+          "title": "Clinical Medicine Research (Infectious Disease) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-110",
+      "url": "https://www.imperial.ac.uk/metabolism-digestion-reproduction/research/diabetes-endocrinology-metabolism/",
+      "title": "Clinical Medicine Research (Metabolism, Digestion and Reproduction) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-110",
+          "url": "https://www.imperial.ac.uk/metabolism-digestion-reproduction/research/diabetes-endocrinology-metabolism/",
+          "title": "Clinical Medicine Research (Metabolism, Digestion and Reproduction) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-112",
+      "url": "https://www.imperial.ac.uk/department-surgery-cancer/study/postgraduate-research/",
+      "title": "Clinical Medicine Research (Surgery and Cancer) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-112",
+          "url": "https://www.imperial.ac.uk/department-surgery-cancer/study/postgraduate-research/",
+          "title": "Clinical Medicine Research (Surgery and Cancer) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-114",
+      "url": "https://www.imperial.ac.uk/nhli/study/postgraduate-research/",
+      "title": "Clinical Medicine Research (National Heart and Lung Institute) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-114",
+          "url": "https://www.imperial.ac.uk/nhli/study/postgraduate-research/",
+          "title": "Clinical Medicine Research (National Heart and Lung Institute) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-116",
+      "url": "https://www.imperial.ac.uk/school-public-health/study/postgraduate/research-degrees/",
+      "title": "Clinical Medicine Research (Public Health) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-116",
+          "url": "https://www.imperial.ac.uk/school-public-health/study/postgraduate/research-degrees/",
+          "title": "Clinical Medicine Research (Public Health) — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-118",
+      "url": "https://www.imperial.ac.uk/chemistry/postgraduate/phd/",
+      "title": "Chemistry Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-118",
+          "url": "https://www.imperial.ac.uk/chemistry/postgraduate/phd/",
+          "title": "Chemistry Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-119",
+      "url": "https://www.imperial.ac.uk/life-sciences/postgraduate/research/",
+      "title": "Life Sciences Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-119",
+          "url": "https://www.imperial.ac.uk/life-sciences/postgraduate/research/",
+          "title": "Life Sciences Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-120",
+      "url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/",
+      "title": "Mathematics Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-120",
+          "url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/",
+          "title": "Mathematics Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-121",
+      "url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+      "title": "Physics Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-121",
+          "url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+          "title": "Physics Research — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-124",
+      "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+      "title": "Arabic, German, Italian, Russian and Spanish Studies — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-124",
+          "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+          "title": "Arabic, German, Italian, Russian and Spanish Studies — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-125",
+      "url": "https://www.imperial.ac.uk/science-communication-unit/research/",
+      "title": "Science Communication Studies — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-125",
+          "url": "https://www.imperial.ac.uk/science-communication-unit/research/",
+          "title": "Science Communication Studies — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-overview-source-131",
+      "url": "https://www.imperial.ac.uk/staff/educational-development/about-us/",
+      "title": "Educational Development — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed.",
+      "evidence_records": [
+        {
+          "id": "imperial-overview-source-131",
+          "url": "https://www.imperial.ac.uk/staff/educational-development/about-us/",
+          "title": "Educational Development — official programme or research overview",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+        }
+      ]
+    },
+    {
+      "id": "imperial-healthbridge-opening-20261019",
+      "url": "https://www.imperial.ac.uk/medicine/study/postgraduate/healthbridge/",
+      "title": "HealthBRIDGE — October 2027 applications reported open",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official homepage search-index text reports open applications; the detailed application-page text retains prepublication wording. The live application form was not submitted or independently verified.",
+      "evidence_records": [
+        {
+          "id": "imperial-healthbridge-opening-20261019",
+          "url": "https://www.imperial.ac.uk/medicine/study/postgraduate/healthbridge/",
+          "title": "HealthBRIDGE — October 2027 applications reported open",
+          "checked_at": "2026-10-19",
+          "content_review_method": "Official homepage search-index text reports open applications; the detailed application-page text retains prepublication wording. The live application form was not submitted or independently verified."
+        }
+      ]
     }
   ]
 }

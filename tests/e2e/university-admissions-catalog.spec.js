@@ -447,12 +447,13 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   page.on("pageerror", (error) => pageErrors.push(error.message));
   const item = cases.find((entry) => entry.name === "Stanford external Computer Science MS");
   await openContext(page, item);
-  await expect(page.locator('#admissionsRoute option:checked')).toHaveText("external non-professional graduate application");
-  await expect(page.locator('#admissionsRoute option[value="engineering-doerr-evidence:cs-coterm"]')).toHaveText("Computer Science coterm application");
+  await expect(page.locator('#admissionsRoute option:checked')).toHaveText("External master's/PhD — Graduate Admissions");
+  await expect(page.locator('#admissionsRoute option[value="engineering-doerr-evidence:cs-coterm"]')).toHaveText("CS coterm — current Stanford undergraduates only");
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
 
   const table = page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]').first();
+  await openDisclosureParents(table);
   const group = table.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(table).toBeVisible();

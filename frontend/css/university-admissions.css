@@ -1171,6 +1171,11 @@ details[open] > summary > .admissions-disclosure-icon {
   min-width: 0;
 }
 
+.admissions-reading__excerpt > p,
+#admissionsStudyOverview > .program-card__description {
+  max-inline-size: 75ch;
+}
+
 .admissions-programs__relationship p {
   margin: 0;
   line-height: var(--leading-normal);

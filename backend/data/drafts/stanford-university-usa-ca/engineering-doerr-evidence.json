@@ -1919,7 +1919,8 @@
         "test-scores",
         "application-fee",
         "faq"
-      ]
+      ],
+      "application_url": "https://gradadmissions.stanford.edu/apply"
     },
     {
       "id": "engineering-coterm",
@@ -2026,7 +2027,8 @@
         "cs-coterm-faq",
         "cs-deadlines",
         "coterm-directory"
-      ]
+      ],
+      "application_url": "https://studentservices.stanford.edu/apply-coterm"
     },
     {
       "id": "aa-phd-internal-ms",

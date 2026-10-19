@@ -2835,7 +2835,7 @@ university.programs.search_clear: Очистить поиск
 university.admissions.reading.summary_requirements: Основные опубликованные требования
 university.admissions.reading.summary_application: Как подать заявку
 university.admissions.reading.summary_deadlines: Даты курса и раунды подачи
-university.admissions.reading.summary_costs: Дополнительные платежи и условия
+university.admissions.reading.summary_costs: Опубликованная стоимость и условия оплаты
 university.admissions.reading.summary_funding: Помощь: условия и подача
 university.admissions.reading.home_fee: Тариф Home
 university.admissions.reading.overseas_fee: Тариф Overseas
@@ -2868,3 +2868,100 @@ university.admissions.reading.month_standalone.11: ноябрь
 university.admissions.reading.month_standalone.12: декабрь
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
 university.admissions.reading.integrated_meng: MEng — интегрированная программа с поступлением через UCAS на уровне бакалавриата; она объединяет бакалаврское обучение и дисциплины магистерского уровня.
+university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — только нынешние бакалавры Stanford
+university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — нынешние бакалавры Stanford
+university.admissions.catalog.route_class.combined_external: Внешняя подача на совмещённые степени
+university.admissions.catalog.route_class.combined_ms_with_other_stanford_doctoral_or_professional_degree: MS вместе с другой докторской/профессиональной степенью Stanford
+university.admissions.catalog.route_class.coterm_application: Coterm-магистратура во время бакалавриата Stanford
+university.admissions.catalog.route_class.coterm_current_stanford_undergraduate: Coterm — только нынешние бакалавры Stanford
+university.admissions.catalog.route_class.coterm_or_internal_stanford_student: Coterm или другой внутренний путь для студентов Stanford
+university.admissions.catalog.route_class.current AA MS to PhD: Переход нынешних студентов Aeronautics MS на PhD
+university.admissions.catalog.route_class.current ChemE PhD optional MS: Дополнительная MS для нынешних студентов Chemical Engineering PhD
+university.admissions.catalog.route_class.current EPS coterm or MS student applying to PhD: Подача на PhD для нынешних студентов Earth/Planetary Sciences coterm/MS
+university.admissions.catalog.route_class.current ESE MS student seeking PhD: Подача на PhD для нынешних студентов Energy Science and Engineering MS
+university.admissions.catalog.route_class.current ME PhD optional MS: Дополнительная MS для нынешних студентов Mechanical Engineering PhD
+university.admissions.catalog.route_class.current Stanford graduate Joint/Dual MS: Joint/Dual MS для нынешних студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.current Stanford graduate or NDO applicant using regular degree application: Обычная заявка для нынешних студентов магистратуры/докторантуры или студентов без степени (NDO)
+university.admissions.catalog.route_class.current Stanford other-department PhD candidate added MS: Дополнительная MS для PhD-студентов другой кафедры Stanford
+university.admissions.catalog.route_class.current Stanford student regular external-style degree application: Обычная заявка на степень для нынешних студентов Stanford
+university.admissions.catalog.route_class.current Stanford undergraduate coterm: Coterm-магистратура для нынешних бакалавров Stanford
+university.admissions.catalog.route_class.current Stanford undergraduate coterminal MA or MS: Coterm MA/MS для нынешних бакалавров Stanford
+university.admissions.catalog.route_class.current_Stanford_MD_or_PhD_internal_MSTP_funding_application: Внутренняя подача на финансирование MSTP для нынешних студентов MD/PhD Stanford
+university.admissions.catalog.route_class.current_stanford_doctoral_or_professional_student: Только нынешние докторские/профессиональные студенты Stanford
+university.admissions.catalog.route_class.current_stanford_graduate_and_professional_students: Только нынешние студенты магистратуры/докторантуры и профессиональных программ Stanford
+university.admissions.catalog.route_class.current_stanford_graduate_students_additional_ms: Дополнительная MS для нынешних студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.current_stanford_undergraduate_coterm: Coterm — нынешние бакалавры Stanford (каталог)
+university.admissions.catalog.route_class.direct_external: Прямая подача на профессиональную программу
+university.admissions.catalog.route_class.direct_external_limited: Прямая внешняя подача с опубликованными ограничениями
+university.admissions.catalog.route_class.en_route_award_no_external_admission: Промежуточная степень; внешней подачи нет
+university.admissions.catalog.route_class.existing same-program PhD intermediate MS: Промежуточная MS для нынешних PhD-студентов этой программы
+university.admissions.catalog.route_class.existing_Classics_PhD_intermediate_MA: Промежуточная MA для нынешних студентов Classics PhD
+university.admissions.catalog.route_class.external HybridSESMS selection through GraduateAdmissions: Внешняя заявка на смешанную Sustainable Engineered Systems MS
+university.admissions.catalog.route_class.external PhD application: Внешняя подача на PhD
+university.admissions.catalog.route_class.external PhD application with subplan selection: Внешняя подача на PhD с выбором направления
+university.admissions.catalog.route_class.external graduate MS or PhD: Внешняя подача на MS/PhD
+university.admissions.catalog.route_class.external interdisciplinary PhD: Внешняя подача на междисциплинарную PhD
+university.admissions.catalog.route_class.external non-professional graduate application: Внешняя магистратура/PhD — Graduate Admissions
+university.admissions.catalog.route_class.external_doctoral: Внешняя подача в докторантуру
+university.admissions.catalog.route_class.external_joint_entry_via_gsb_mba_application: Совместная степень через заявку GSB MBA
+university.admissions.catalog.route_class.external_joint_entry_via_gse_pols_application: Совместная степень через заявку Education POLS
+university.admissions.catalog.route_class.external_joint_entry_via_law_jd_application: Совместная степень через заявку Law JD
+university.admissions.catalog.route_class.external_masters: Внешняя подача в магистратуру
+university.admissions.catalog.route_class.external_nonprofessional_programme: Внешняя заявка в магистратуру/докторантуру (каталог программ)
+university.admissions.catalog.route_class.external_part_time_distance_hcp_ms: Неполная HCP MS — ограничения по работе и месту проживания
+university.admissions.catalog.route_class.external_professional_masters: Внешняя подача на профессиональную магистратуру
+university.admissions.catalog.route_class.external_program_specific_application: Внешняя заявка на конкретную программу
+university.admissions.catalog.route_class.external_restricted_alumni: Внешняя подача только для указанных выпускников
+university.admissions.catalog.route_class.external_terminal_admission: Внешняя подача на самостоятельную степень
+university.admissions.catalog.route_class.external_terminal_masters: Внешняя подача на самостоятельную магистратуру
+university.admissions.catalog.route_class.historical duplicate of coterm, no independent internal form verified: Исторический дубль coterm; отдельная внутренняя форма не подтверждена
+university.admissions.catalog.route_class.historical unresolved award context: Исторический контекст степени остаётся неуточнённым
+university.admissions.catalog.route_class.intermediate MS only for Oceans PhD student: Промежуточная MS — только нынешние студенты Oceans PhD
+university.admissions.catalog.route_class.intermediate exit MA only: Только промежуточная/выходная MA
+university.admissions.catalog.route_class.intermediate/exit award; no direct admission: Промежуточная/выходная степень; прямой подачи нет
+university.admissions.catalog.route_class.internal added MS for student enrolled in another Stanford department: Внутренняя дополнительная MS для студентов другой кафедры Stanford
+university.admissions.catalog.route_class.internal current-student application or added-degree petition: Внутренняя заявка студента или запрос дополнительной степени
+university.admissions.catalog.route_class.internal intermediate MS requirement for AA PhD students: Требования промежуточной MS внутри Aeronautics PhD
+university.admissions.catalog.route_class.internal_combined_degree_declaration: Внутреннее оформление совмещённых степеней
+university.admissions.catalog.route_class.internal_coterm_admission: Внутренняя подача на coterm-магистратуру
+university.admissions.catalog.route_class.internal_current_doctoral_only: Только нынешние докторанты
+university.admissions.catalog.route_class.internal_current_stanford_graduate_students: Внутренний путь для нынешних студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.internal_intermediate_admission: Внутренняя промежуточная степень; проверьте ограничения
+university.admissions.catalog.route_class.internal_progression_from_coterm_ma: Внутреннее продолжение после coterm MA
+university.admissions.catalog.route_class.internal_stanford_admission: Внутренний путь поступления Stanford
+university.admissions.catalog.route_class.internal_stanford_graduate_authorization: Внутреннее разрешение для студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.joint_degree_applicant_to_another_stanford_program: Совместная степень с другой программой Stanford
+university.admissions.catalog.route_class.one_shared_application_with_primary_and_one_alternative_home_program: Одна общая заявка с основной и одной альтернативной программой
+university.admissions.catalog.route_class.phd_en_route_authorization: Разрешение промежуточной степени во время PhD
+university.admissions.catalog.route_class.phd_en_route_intermediate_award: Промежуточная степень во время PhD
+university.admissions.catalog.route_class.possible internal added MS: Возможная внутренняя дополнительная MS; условия не уточнены
+university.admissions.catalog.route_class.program_specific_application: Заявка по правилам конкретной программы
+university.admissions.catalog.route_class.program_specific_external_admission: Внешнее поступление по собственным правилам программы
+university.admissions.catalog.route_class.prospective Stanford MBA/JD Joint MS: Joint MS, связанная с приёмом на Stanford MBA/JD
+university.admissions.catalog.route_class.related Stanford PhD student added EE MS: Дополнительная Electrical Engineering MS для подходящих PhD-студентов Stanford
+university.admissions.catalog.route_class.required intermediate MS for existing MSE PhD: Обязательная промежуточная MS для нынешних студентов Materials PhD
+university.admissions.catalog.route_class.researched_unresolved: Путь исследован; применимость остаётся неясной
+university.admissions.catalog.route_class.restricted_internal: Внутренний путь с ограничениями
+university.admissions.catalog.route_class.restricted_ms_no_published_external_application: Ограниченная MS; внешняя подача не опубликована
+university.admissions.catalog.route_class.same-program CS PhD intermediate MS petition: Запрос промежуточной MS — нынешние студенты CS PhD
+university.admissions.catalog.route_class.separate CS and professional-school applications with joint consent: Совместная степень: отдельные заявки CS и профессиональной школы
+university.admissions.catalog.route_class.separate degree applications and approved combined study: Отдельные заявки на степени и согласованное совмещение
+university.admissions.catalog.route_class.separate_advanced_degree_admission_after_qualifying_llm_or_spils: Отдельное поступление на углублённую степень после подходящей LLM/SPILS
+university.admissions.catalog.route_class.separately admitted joint/dual Stanford degrees: Joint/Dual-степени с отдельным приёмом Stanford
+university.admissions.catalog.route_class.shared_advanced_degree_application_with_selection_path: Общая заявка на углублённую степень с выбором пути
+university.admissions.catalog.route_class.shared_joint_application: Общая заявка на совместную степень
+university.admissions.catalog.route_class.shared_medical_school_application: MD: AMCAS, затем supplemental Stanford по приглашению
+university.admissions.catalog.route_class.shared_school_application: Общая заявка в школу университета
+university.admissions.catalog.route_class.terminal_exit_award_no_admission_route: Степень при завершении обучения; отдельного набора нет
+university.admissions.catalog.route_class.unresolved: Путь подачи остаётся неуточнённым
+university.admissions.reading.overview_missing: Обзор обучения для этой программы не собран. Откройте официальную страницу ниже; записи о поступлении доступны отдельно.
+university.admissions.reading.source_conflict: Собранные официальные источники расходятся. Подтвердите условие у программы; это не принятое освобождение и не решение о праве поступления.
+university.admissions.reading.program: Программа
+university.admissions.reading.degree.BS: BS — Bachelor of Science, бакалавр наук
+university.admissions.reading.degree.BA: BA — Bachelor of Arts, бакалавр гуманитарных/общественных наук
+university.admissions.reading.degree.MS: MS — Master of Science, магистр наук
+university.admissions.reading.degree.MA: MA — Master of Arts, магистр гуманитарных/общественных наук
+university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy, исследовательская докторская степень
+university.admissions.reading.degree.MBA: MBA — Master of Business Administration, профессиональная степень по управлению
+university.admissions.reading.degree.MD: MD — Doctor of Medicine, профессиональная медицинская степень
+university.admissions.reading.degree.ENG: Engineer — углублённая инженерная степень, отдельная от MS и PhD

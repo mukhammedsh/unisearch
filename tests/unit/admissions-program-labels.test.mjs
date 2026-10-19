@@ -82,6 +82,117 @@ test("all available MIT overview descriptions have complete Russian and Kazakh t
   }
 });
 
+test("Stanford collected study overviews have source-bound summaries, originals and honest missing states", async () => {
+  const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
+  const descriptions = new Set();
+  let covered = 0;
+  for (const option of stanford.study_options) {
+    const facts = stanford.facts.filter(row => row.publication_status === "published" && row.scope.option_ids.includes(option.id) && !row.scope.route_ids.length);
+    const description = facts.flatMap(row => [row.value?.description, row.value?.course_page_programme_summary, row.value?.A3i6E, row.topic === "study_content" ? row.value?.source_content : undefined]).find(value => typeof value === "string" && value.trim());
+    if (description) { descriptions.add(description); covered += 1; }
+  }
+  assert.equal(covered, 151);
+  assert.equal(descriptions.size, 149);
+  const fallback = JSON.parse(await readFile(new URL("../../frontend/Localization/universities-kaz.json", import.meta.url), "utf8"));
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const description of descriptions) {
+      const summary = translateAdmissionSummary(description, { section: "study" });
+      assert.ok(summary, `${language}: ${description}`);
+      if (language !== "eng") assert.match(summary, /[\u0400-\u04ff]/u);
+      if (language === "kaz") assert.equal(fallback.admission_summaries[description].study, summary);
+    }
+    const option = stanford.study_options.find(row => row.id === "stanford-option-cs-ms");
+    const row = stanford.facts.find(row => row.id === "engineering-doerr-evidence:recheck-cs-ms-degree-completion-context");
+    const html = renderStudyOptionOverview({ selected_option: option, facts: [row], fact_groups: { study: [row.id] } });
+    assert.match(html, /data-program-original/);
+    assert.match(html, /data-award-explanation/);
+    assert.ok(html.includes("does not lead to the PhD"));
+    assert.match(renderStudyOptionOverview({ selected_option: option, facts: [], fact_groups: {} }), /data-program-overview-missing/);
+    assert.equal(translateAdmissionSummary("Changed overview", { section: "study" }), "");
+  }
+});
+
+test("Stanford summaries retain international aid consequences, route-specific dates and source conflicts", async () => {
+  const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const suffix of ["stanford-ug-international-financial-aid-admission", "cs-phd-funding", "gsb_mba_aid_process", "med_md_aid"]) {
+      const row = stanford.facts.find(row => row.id.split(":").at(-1) === suffix);
+      assert.ok(translateAdmissionSummary(row.value, { section: "funding" }));
+    }
+    const conflict = stanford.facts.find(row => row.id.endsWith(":cs-ms-tests-and-english-policy"));
+    const html = renderApplicantSection({ selected_option: { id: "stanford-option-cs-ms", levels: ["masters"] }, facts: [conflict], fact_groups: { requirements: [conflict.id] }, sources: stanford.sources }, ["requirements", "application"]);
+    assert.match(html, /data-summary-conflict/);
+    assert.match(html, /GRE/);
+    assert.ok(html.includes(stanford.sources.find(source => source.id === conflict.source_ids[0]).url));
+  }
+});
+
+test("accepted profile overviews extend Stanford reading without displaying catalog flags as descriptions", async () => {
+  const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    let coverage = 0;
+    for (const original of stanford.study_options) {
+      const overviews = original.evidence_profiles.flatMap(profile => {
+        const description = profile.attributes.description;
+        const text = typeof description === "object" && description ? description.text : description;
+        return text ? [{ text, source_ids: profile.source_ids }] : [];
+      });
+      const option = { ...original, overviews };
+      const facts = stanford.facts.filter(row => row.scope.option_ids.includes(option.id) && !row.scope.route_ids.length && row.topic.includes("study"));
+      const html = renderStudyOptionOverview({ selected_option: option, facts, fact_groups: { study: facts.map(row => row.id) }, sources: stanford.sources });
+      if (!html.includes("data-program-overview-missing")) coverage += 1;
+      assert.doesNotMatch(html, /Bulletin flags:|externalAdmissions=True|programCurrentPhdOnly/);
+    }
+    assert.equal(coverage, stanford.study_options.length, language);
+    const mba = stanford.study_options.find(row => row.id === "stanford-option-gsb-mba");
+    const profile = mba.evidence_profiles[0];
+    const html = renderStudyOptionOverview({ selected_option: { ...mba, overviews: [{ text: profile.attributes.description, source_ids: profile.source_ids }] }, facts: [], fact_groups: {}, sources: stanford.sources });
+    assert.match(html, /data-program-original/);
+    assert.match(html, /gsb\.stanford\.edu/);
+    assert.ok(html.includes("Two-year, full-time MBA"));
+  }
+});
+
+test("all sixteen completed Stanford overviews retain their original, exact official source and translations", async () => {
+  const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
+  const completed = stanford.study_options.filter(option => option.evidence_profiles.some(profile => profile.attributes.catalog_access_description));
+  assert.equal(completed.length, 16);
+  const fallback = JSON.parse(await readFile(new URL("../../frontend/Localization/universities-kaz.json", import.meta.url), "utf8"));
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const original of completed) {
+      const profile = original.evidence_profiles.find(profile => profile.attributes.catalog_access_description);
+      const description = profile.attributes.description.text;
+      const source = stanford.sources.find(source => profile.source_ids.includes(source.id) && source.checked_at === "2026-10-19" && source.url.startsWith("https://bulletin.stanford.edu/programs/"));
+      assert.ok(source, original.id);
+      assert.equal(decodeURIComponent(source.url).split("/").at(-1), original.catalog_code || original.attributes.catalog_code);
+      const summary = translateAdmissionSummary(description, { section: "study" });
+      assert.ok(summary, `${language}: ${original.id}`);
+      if (language !== "eng") assert.match(summary, /[\u0400-\u04ff]/u);
+      if (language === "kaz") assert.equal(fallback.admission_summaries[description].study, summary);
+      const html = renderStudyOptionOverview({ selected_option: { ...original, overviews: [{ text: description, source_ids: profile.source_ids }] }, facts: [], fact_groups: {}, sources: stanford.sources });
+      assert.match(html, /data-program-original/);
+      assert.doesNotMatch(html, /data-program-overview-missing|Bulletin flags|externalAdmissions/);
+      assert.ok(html.includes(source.url));
+    }
+    const structural = completed.find(option => option.id === "stanford-option-sbio-phd");
+    const profile = structural.evidence_profiles.find(profile => profile.attributes.catalog_access_description);
+    const summary = translateAdmissionSummary(profile.attributes.description.text, { section: "study" });
+    assert.match(summary, /2026/);
+    assert.match(summary, /23:59:59|11:59:59/);
+    assert.match(summary, /GRE/);
+    assert.match(profile.attributes.description.text, /December 15/);
+    assert.match(profile.attributes.description.text, /GRE general score is optional/);
+  }
+});
+
 test("every available Imperial overview is translated in both packs and the Kazakh fallback", async () => {
   const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
   const fallback = JSON.parse(await readFile(new URL("../../frontend/Localization/universities-kaz.json", import.meta.url), "utf8"));
@@ -95,6 +206,52 @@ test("every available Imperial overview is translated in both packs and the Kaza
       if (language === "kaz") assert.equal(fallback.admission_exact[description], translateAdmissionSummary(description));
     }
   }
+});
+
+test("every Imperial option has a source-bound study overview in all three languages", async () => {
+  const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
+  assert.equal(imperial.study_options.length, 360);
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const option of imperial.study_options) {
+      const facts = imperial.facts.filter(row => row.scope.option_ids.includes(option.id));
+      const resolved = { selected_option: option, facts, sources: imperial.sources,
+        fact_groups: { study: facts.map(row => row.id) } };
+      const html = renderStudyOptionOverview(resolved);
+      assert.doesNotMatch(html, /data-program-overview-missing/, `${language}: ${option.id}`);
+      const description = html.match(/<p class="program-card__description">([^<]+)<\/p>/)?.[1];
+      assert.ok(description, `${language}: ${option.id}`);
+      if (language !== "eng") {
+        assert.match(description, /[\u0400-\u04ff]/u, `${language}: ${option.id}`);
+        assert.doesNotMatch(description, /перевод.*не.*готов|аудармасы.*дайын емес/i, `${language}: ${option.id}`);
+      }
+    }
+  }
+});
+
+test("structured Imperial curricula retain their original record, source links and option scope", async () => {
+  const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
+  const option = imperial.study_options.find(row => row.id === "imperial-option-full-time-mba");
+  const facts = imperial.facts.filter(row => row.scope.option_ids.includes(option.id));
+  const resolved = { selected_option: option, facts, sources: imperial.sources, fact_groups: { study: facts.map(row => row.id) } };
+  const before = structuredClone(resolved);
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    const html = renderStudyOptionOverview(resolved);
+    assert.match(html, /data-program-original/);
+    assert.match(html, /Business Analytics/);
+    assert.match(html, /https:\/\/www\.imperial\.ac\.uk/);
+    assert.doesNotMatch(html, /&quot;study_periods_pathways_and_components&quot;/);
+    assert.doesNotMatch(html, /Selector mode|Study periods pathways and components|Section label/);
+    assert.match(html, /12 (?:months|месяцев|ай)/, `${language}: duration from the published key facts`);
+    if (language !== "eng") assert.doesNotMatch(html.split("<details")[0], /Core modules|Pre-study modules/);
+    const mismatched = { ...resolved, facts: facts.map(row => ({ ...row, applicability: { status: "mismatched" } })) };
+    assert.match(renderStudyOptionOverview(mismatched), /data-program-overview-missing/);
+    assert.match(renderStudyOptionOverview({ ...resolved, selected_option: { id: "unrelated" } }), /data-program-overview-missing/);
+  }
+  assert.deepEqual(resolved, before);
 });
 
 test("Imperial summaries keep course requirements, costs, dates and aid tied to their original evidence", async () => {

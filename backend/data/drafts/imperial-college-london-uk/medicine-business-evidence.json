@@ -11498,7 +11498,8 @@
         "duration": "1 year full-time",
         "start_date": "20 September 2027",
         "programme_scope": "16 enumerated pathways (plus an official count discrepancy with Business School) within the external intercalated BSc programme",
-        "applicant_route": "External intercalated route; applicant remains registered at their home medical, dental or veterinary school."
+        "applicant_route": "External intercalated route; applicant remains registered at their home medical, dental or veterinary school.",
+        "description": "A one-year intercalated BSc offers 16 published pathways for eligible students registered at another medical, dental or veterinary school. Applicants return to their home programme afterwards; overseas-institution eligibility must be discussed with the School."
       },
       "scope": {
         "study_option_id": "imperial_intercalated_bsc_external_uk_irish",
@@ -11515,7 +11516,9 @@
       "checked_at": "2026-10-01",
       "conditions": [
         "This is an external one-year intercalated BSc, not an MBBS year or internal PhD progression route."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_imperial_intercalated_bsc_external_uk_irish_course_admission_dates_fees_awards",
@@ -13220,7 +13223,8 @@
           "Reports",
           "Participation",
           "Written exams"
-        ]
+        ],
+        "description": "Study how AI changes markets and policy through economics, programming, algorithmic regulation and responsible AI. Electives develop specialist interests, followed by an individual project or an industry internship."
       },
       "scope": {
         "study_levels": [
@@ -13245,7 +13249,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_applied_multiomics_biomedicine_study_structure",
@@ -13312,7 +13318,8 @@
           "Oral examination",
           "Poster presentation",
           "Team-based learning"
-        ]
+        ],
+        "description": "Combine multi-omics, gene editing and disease modelling with practical research skills. A six-month project in a host research group may be laboratory-based, computational or a combination of both."
       },
       "scope": {
         "study_levels": [
@@ -13337,7 +13344,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_applications_innovation_study_structure",
@@ -13457,7 +13466,8 @@
           "Written examinations",
           "Written reports",
           "Essays"
-        ]
+        ],
+        "description": "Develop AI applications through a team venture project, responsible-AI study and technical electives spanning machine learning, robotics and innovation. Complete an individual project or internship; elective combinations follow the published group requirements."
       },
       "scope": {
         "study_levels": [
@@ -13482,7 +13492,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_bacterial_pathogenesis_infection_study_structure",
@@ -13528,7 +13540,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Specialise in bacterial infection, immunity and antibiotic susceptibility at the host–pathogen interface. The Biomedical Research stream combines theoretical and practical training with two research projects; stream choice is fixed once study begins."
       },
       "scope": {
         "study_levels": [
@@ -13545,7 +13558,8 @@
         "fee_status": []
       },
       "source_ids": [
-        "imperial_page_bacterial_pathogenesis_infection"
+        "imperial_page_bacterial_pathogenesis_infection",
+        "imperial-overview-source-3"
       ],
       "publication_status": "published",
       "review_status": "verified_source_selector",
@@ -13553,7 +13567,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_data_science_study_structure",
@@ -13572,7 +13588,22 @@
               {
                 "heading": "Research Project 1 and Research Project 2",
                 "components": []
-              },
+              }
+            ],
+            "published_component_names": [
+              "Grant Writing Exercise",
+              "Research Project 1 and Research Project 2"
+            ],
+            "published_requirement_or_structure_notes": [
+              "You’ll take all of these core modules.",
+              "This will correspond to your research project(s)."
+            ]
+          },
+          {
+            "selector_mode": "Default",
+            "section_label": "Example projects",
+            "component_type": "illustrative_research_projects",
+            "published_component_groups": [
               {
                 "heading": "Example projects",
                 "components": [
@@ -13602,8 +13633,6 @@
               "Machine Learning Applications to Radiomics of Early Pregnancy Ultrasound To Predict Miscarriage"
             ],
             "published_requirement_or_structure_notes": [
-              "You’ll take all of these core modules.",
-              "This will correspond to your research project(s).",
               "The projects available to you are determined by your chosen stream.",
               "You can also choose projects from other streams, though you will only have priority within your own stream."
             ]
@@ -13628,7 +13657,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Apply data science to biomedical research. Published project examples include disease prediction, imaging and molecular data analysis. Research projects depend on the selected stream and availability; the examples are not compulsory modules or guaranteed project allocations."
       },
       "scope": {
         "study_levels": [
@@ -13653,7 +13683,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_epidemiology_evolution_control_infectious_diseases_study_structure",
@@ -13672,7 +13704,22 @@
               {
                 "heading": "Research Project 1 and Research Project 2",
                 "components": []
-              },
+              }
+            ],
+            "published_component_names": [
+              "Grant Writing Exercise",
+              "Research Project 1 and Research Project 2"
+            ],
+            "published_requirement_or_structure_notes": [
+              "You’ll take all of these core modules.",
+              "This will correspond to your research project(s)."
+            ]
+          },
+          {
+            "selector_mode": "Default",
+            "section_label": "Example projects",
+            "component_type": "illustrative_research_projects",
+            "published_component_groups": [
               {
                 "heading": "Example projects",
                 "components": [
@@ -13700,8 +13747,6 @@
               "The potential impact of HIV pre-exposure prophylaxis (PrEP) on HIV outcomes in Western Africa: a mathematical modelling analysis"
             ],
             "published_requirement_or_structure_notes": [
-              "You’ll take all of these core modules.",
-              "This will correspond to your research project(s).",
               "You have a wide range of research projects available to you, determined by your chosen stream (Epidemiology, Evolution and Control of Infectious Diseases).",
               "You can also choose projects from other streams, though you will only have priority within your own stream."
             ]
@@ -13726,7 +13771,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Explore infectious-disease epidemiology, evolution and control through biomedical research. Published examples include transmission modelling, genomic surveillance and intervention evaluation; project choice depends on stream priority and availability, rather than a fixed list of compulsory projects."
       },
       "scope": {
         "study_levels": [
@@ -13751,7 +13797,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_biomedical_research_study_structure",
@@ -13770,7 +13818,22 @@
               {
                 "heading": "Research Project 1 and Research Project 2",
                 "components": []
-              },
+              }
+            ],
+            "published_component_names": [
+              "Grant Writing Exercise",
+              "Research Project 1 and Research Project 2"
+            ],
+            "published_requirement_or_structure_notes": [
+              "You’ll take all of these core modules.",
+              "This will correspond to your research project(s)."
+            ]
+          },
+          {
+            "selector_mode": "Default",
+            "section_label": "Example projects",
+            "component_type": "illustrative_research_projects",
+            "published_component_groups": [
               {
                 "heading": "Example projects",
                 "components": [
@@ -13810,8 +13873,6 @@
               "AstraZeneca Sponsored Project: Proteomic analysis of human mesenchymal stem cell cross-talk with haematopoietic stem cells in 3 dimensional niche of complex in vitro model of bone marrow"
             ],
             "published_requirement_or_structure_notes": [
-              "You’ll take all of these core modules.",
-              "This will correspond to your research project(s).",
               "The projects available to you are determined by your chosen stream.",
               "You can also choose projects from other streams, though you will only have priority within your own stream."
             ]
@@ -13836,7 +13897,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Receive broad biomedical research training through research projects and grant-writing work. Published examples span metabolism, molecular biology, imaging and clinical applications. Projects are illustrative choices, with priority within the selected stream and subject to availability."
       },
       "scope": {
         "study_levels": [
@@ -13861,7 +13923,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_microbiome_health_disease_study_structure",
@@ -13880,7 +13944,22 @@
               {
                 "heading": "Research Project 1 and Research Project 2",
                 "components": []
-              },
+              }
+            ],
+            "published_component_names": [
+              "Grant Writing Exercise",
+              "Research Project 1 and Research Project 2"
+            ],
+            "published_requirement_or_structure_notes": [
+              "You’ll take all of these core modules.",
+              "This will correspond to your research project(s)."
+            ]
+          },
+          {
+            "selector_mode": "Default",
+            "section_label": "Example projects",
+            "component_type": "illustrative_research_projects",
+            "published_component_groups": [
               {
                 "heading": "Example projects",
                 "components": [
@@ -13906,8 +13985,6 @@
               "Can stabilized stool samples be used for bacterial culture, basic proteomics and clinical diagnostics?"
             ],
             "published_requirement_or_structure_notes": [
-              "You’ll take all of these core modules.",
-              "This will correspond to your research project(s).",
               "The projects available to you are determined by your chosen stream.",
               "You can also choose projects from other streams, though you will only have priority within your own stream."
             ]
@@ -13932,7 +14009,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Investigate the microbiome in health and disease. Example research projects explore diet, microbial metabolism, antimicrobial resistance and host interactions. These are illustrative opportunities, with project availability and priority determined by the selected Biomedical Research stream."
       },
       "scope": {
         "study_levels": [
@@ -13957,7 +14035,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_molecular_basis_of_human_disease_study_structure",
@@ -13976,7 +14056,22 @@
               {
                 "heading": "Research Project 1 and Research Project 2",
                 "components": []
-              },
+              }
+            ],
+            "published_component_names": [
+              "Grant Writing Exercise",
+              "Research Project 1 and Research Project 2"
+            ],
+            "published_requirement_or_structure_notes": [
+              "You’ll take all of these core modules.",
+              "This will correspond to your research project(s)."
+            ]
+          },
+          {
+            "selector_mode": "Default",
+            "section_label": "Example projects",
+            "component_type": "illustrative_research_projects",
+            "published_component_groups": [
               {
                 "heading": "Example projects",
                 "components": [
@@ -14006,8 +14101,6 @@
               "Investigating the impact of genomic diversity on cell wall chemistry in Aspergillus fumigatus"
             ],
             "published_requirement_or_structure_notes": [
-              "You’ll take all of these core modules.",
-              "This will correspond to your research project(s).",
               "The projects available to you are determined by your chosen stream.",
               "You can also choose projects from other streams, though you will only have priority within your own stream."
             ]
@@ -14032,7 +14125,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Investigate molecular mechanisms of human disease through biomedical research projects. Published examples cover protein homeostasis, cell signalling, stem cells and disease models; they illustrate possible research topics rather than compulsory modules or guaranteed placements."
       },
       "scope": {
         "study_levels": [
@@ -14057,7 +14151,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_respiratory_cardiovascular_science_study_structure",
@@ -14076,7 +14172,22 @@
               {
                 "heading": "Research Project 1 and Research Project 2",
                 "components": []
-              },
+              }
+            ],
+            "published_component_names": [
+              "Grant Writing Exercise",
+              "Research Project 1 and Research Project 2"
+            ],
+            "published_requirement_or_structure_notes": [
+              "You’ll take all of these core modules.",
+              "This will correspond to your research project(s)."
+            ]
+          },
+          {
+            "selector_mode": "Default",
+            "section_label": "Example projects",
+            "component_type": "illustrative_research_projects",
+            "published_component_groups": [
               {
                 "heading": "Example projects",
                 "components": [
@@ -14114,8 +14225,6 @@
               "A systematic review and meta-analysis of trial evidence evaluating behavioural interventions to reduce asthma symptoms"
             ],
             "published_requirement_or_structure_notes": [
-              "You’ll take all of these core modules.",
-              "This will correspond to your research project(s).",
               "The projects available to you are determined by your chosen stream.",
               "You can also choose projects from other streams, though you will only have priority within your own stream."
             ]
@@ -14140,7 +14249,8 @@
           "Poster presentation",
           "Research reports",
           "Oral assessment"
-        ]
+        ],
+        "description": "Explore respiratory and cardiovascular science through biomedical research. Example projects examine heart and lung disease, tissue repair, biomarkers and experimental models. Project allocation follows stream priority and availability; the published examples are not a compulsory curriculum."
       },
       "scope": {
         "study_levels": [
@@ -14165,7 +14275,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_bioscience_futures_study_structure",
@@ -14246,7 +14358,8 @@
           "Commercialisation strategy",
           "Outreach/societal engagement activity",
           "Dragon’s Den"
-        ]
+        ],
+        "description": "Connect bioscience with communication, ethical business and entrepreneurship. Study how research becomes a viable innovation, then apply the taught material in a supported work-placement project shaped around your interests."
       },
       "scope": {
         "study_levels": [
@@ -14271,7 +14384,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_business_analytics_study_structure",
@@ -14440,7 +14555,8 @@
           "Reports",
           "Participation",
           "Written exams"
-        ]
+        ],
+        "description": "Build analytics skills in algorithms, databases, statistics, optimisation, machine learning and generative AI. Specialist electives lead into applied business analytics or research work; consulting and placement options have their own availability and approval conditions."
       },
       "scope": {
         "study_levels": [
@@ -14465,7 +14581,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_business_mres_study_structure",
@@ -14795,7 +14913,8 @@
           "Reports",
           "Case studies",
           "Participation"
-        ]
+        ],
+        "description": "The MRes is the initial research-training phase of the Business doctoral programme. Pathway-specific theory and research methods lead to a second-year research project; progression to PhD study requires successful completion and the programme's conditions."
       },
       "scope": {
         "study_levels": [
@@ -14820,7 +14939,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_cancer_biology_study_structure",
@@ -14870,7 +14991,8 @@
           "Poster presentation",
           "Projects (thesis and oral assessment)",
           "Experimental design and critical review"
-        ]
+        ],
+        "description": "Study the molecular basis of cancer and experimental cancer biology, then undertake a dedicated cancer-biology research project. The MRes combines specialist taught preparation with research training."
       },
       "scope": {
         "study_levels": [
@@ -14895,7 +15017,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_cancer_informatics_study_structure",
@@ -14944,7 +15068,8 @@
           "Mock grant proposal",
           "Poster presentation",
           "Projects (thesis and oral assessment)"
-        ]
+        ],
+        "description": "Combine the molecular basis of cancer with cancer informatics and machine intelligence. A dedicated research project develops computational approaches to cancer research within this MRes stream."
       },
       "scope": {
         "study_levels": [
@@ -14969,7 +15094,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_cancer_innovation_study_structure",
@@ -15021,7 +15148,8 @@
           "Projects (thesis and oral assessment)",
           "Oral assessment",
           "Mock grant proposal"
-        ]
+        ],
+        "description": "Study the molecular basis of cancer alongside innovation in cancer research. Specialist taught work is followed by a Cancer Innovation research project within this MRes stream."
       },
       "scope": {
         "study_levels": [
@@ -15046,7 +15174,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_cardiovascular_healthcare_study_structure",
@@ -15138,7 +15268,8 @@
           "Practical examination",
           "Research project thesis and oral presentation",
           "Written case study reports"
-        ]
+        ],
+        "description": "Study cardiovascular and respiratory science, clinical-practice evaluation, study design and healthcare quality. Electives develop specialist interests, and the MSc includes a research project; shorter awards have their own curriculum scope."
       },
       "scope": {
         "study_levels": [
@@ -15163,7 +15294,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_climate_change_management_finance_study_structure",
@@ -15303,7 +15436,8 @@
           "Multiple choice tests",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Combine climate science, adaptation and mitigation with economics, carbon reporting and finance. Electives and a consulting, placement or individual research project connect climate knowledge with management and financial decisions."
       },
       "scope": {
         "study_levels": [
@@ -15328,7 +15462,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_diabetes_obesity_study_structure",
@@ -15399,7 +15535,8 @@
           "Oral examination",
           "Online exams",
           "Research Article"
-        ]
+        ],
+        "description": "Learn clinical research conduct, study design and critical appraisal, specialising in diabetes and obesity. The MRes includes a research project; the PGCert stream has a separate, shorter taught curriculum."
       },
       "scope": {
         "study_levels": [
@@ -15424,7 +15561,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_human_nutrition_study_structure",
@@ -15495,7 +15634,8 @@
           "Oral examination",
           "Online exams",
           "Research Article"
-        ]
+        ],
+        "description": "Study clinical research methods, research conduct and critical appraisal through the Human Nutrition stream. The MRes includes a research project applying these skills; shorter awards do not automatically include the full MRes project."
       },
       "scope": {
         "study_levels": [
@@ -15520,7 +15660,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_multiple_long_term_conditions_study_structure",
@@ -15593,7 +15735,8 @@
           "Oral examination",
           "Online exams",
           "Research Article"
-        ]
+        ],
+        "description": "Learn clinical research conduct, methods and critical appraisal, focusing on the challenge of multiple long-term conditions. The MRes develops these skills through a research project; the corresponding PGCert has its own taught scope."
       },
       "scope": {
         "study_levels": [
@@ -15618,7 +15761,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_clinical_research_study_structure",
@@ -15689,7 +15834,8 @@
           "Oral examination",
           "Online exams",
           "Research Article"
-        ]
+        ],
+        "description": "Develop clinical research design, conduct and critical-appraisal skills in the Translational Medicine stream. The MRes includes a research project translating biomedical questions into clinical investigation; PGCert study is separately scoped."
       },
       "scope": {
         "study_levels": [
@@ -15714,7 +15860,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_computational_biomedicine_brain_sciences_study_structure",
@@ -15781,7 +15929,8 @@
           "Lab reports",
           "Research dissertation",
           "Literature review"
-        ]
+        ],
+        "description": "Online study combines biomedical data-science foundations, machine learning and biostatistics with computational neuroscience and brain imaging. The MSc includes a research project; PGCert and PGDip variants have distinct taught requirements."
       },
       "scope": {
         "study_levels": [
@@ -15806,7 +15955,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_computational_biomedicine_genomics_study_structure",
@@ -15874,7 +16025,8 @@
           "Lab reports",
           "Research dissertation",
           "Literature review"
-        ]
+        ],
+        "description": "Study biomedical data science, machine learning and biostatistics online, then specialise in computational genomics, epigenome regulation, single-cell omics and network biology. The MSc includes a research project, distinct from its shorter certificate and diploma variants."
       },
       "scope": {
         "study_levels": [
@@ -15899,7 +16051,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_digital_health_leadership_study_structure",
@@ -15963,7 +16117,8 @@
           "Reflective journals",
           "Written assignments",
           "Video assessments"
-        ]
+        ],
+        "description": "Develop digital-health leadership through health systems, transformation strategy, innovation, information systems and data-driven decisions. The PGDip includes leadership in practice; employer sponsorship and any later progression follow their separate published conditions."
       },
       "scope": {
         "study_levels": [
@@ -15988,7 +16143,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_economics_strategy_business_study_structure",
@@ -16194,7 +16351,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Combine economics, corporate finance, business strategy and quantitative analysis. Simulations, case work and consulting projects apply the core material; electives develop interests in innovation, digital markets and global business."
       },
       "scope": {
         "study_levels": [
@@ -16219,7 +16377,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_economics_finance_data_science_study_structure",
@@ -16383,7 +16543,8 @@
           "Project reports",
           "Presentations",
           "In-class or online quizzes"
-        ]
+        ],
+        "description": "This undergraduate BSc integrates economics and finance with mathematics, probability, statistics, programming and data science. Study progresses from foundational tools to more advanced economic and quantitative work across three years."
       },
       "scope": {
         "study_levels": [
@@ -16408,7 +16569,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_epidemiology_study_structure",
@@ -16539,7 +16702,8 @@
           "Mini research projects",
           "Individual and group presentations",
           "Video blogs"
-        ]
+        ],
+        "description": "Build a foundation in epidemiological principles, statistical analysis, research methods and infectious-disease modelling. Optional modules develop specialist interests, followed by an epidemiology research project."
       },
       "scope": {
         "study_levels": [
@@ -16564,7 +16728,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_executive_mba_study_structure",
@@ -16823,7 +16989,8 @@
           "Reports",
           "Case studies",
           "Participation"
-        ]
+        ],
+        "description": "Executive management study covers finance, accounting, strategy, marketing, leadership and emerging technology. Electives, professional development and global experiences connect the core curriculum with senior business practice; individual opportunities follow programme conditions."
       },
       "scope": {
         "study_levels": [
@@ -16848,7 +17015,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_experimental_biomolecular_sciences_study_structure",
@@ -16904,7 +17073,8 @@
           "Presentations",
           "Research Project",
           "Oral assessment"
-        ]
+        ],
+        "description": "Learn biomolecular laboratory skills and advanced research techniques through taught and practical work, including a mini-research project. The MRes adds an extended research project; the PGCert has a shorter, separately defined curriculum."
       },
       "scope": {
         "study_levels": [
@@ -16929,7 +17099,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_experimental_neuroscience_study_structure",
@@ -16969,7 +17141,8 @@
           "PhD proposal",
           "Group activity",
           "Poster presentation"
-        ]
+        ],
+        "description": "Develop experimental neuroscience skills alongside technical training and critical appraisal. The research-focused curriculum builds the ability to evaluate evidence and communicate scientific work; assessment includes research reports and presentations."
       },
       "scope": {
         "study_levels": [
@@ -16994,7 +17167,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_finance_study_structure",
@@ -17218,7 +17393,8 @@
           "Reports",
           "Participation",
           "Written exams"
-        ]
+        ],
+        "description": "Build finance expertise in corporate finance, derivatives, econometrics, investment and portfolio management. Electives lead to an applied or research project; an extended placement requires a secured opportunity and programme approval."
       },
       "scope": {
         "study_levels": [
@@ -17243,7 +17419,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_finance_accounting_study_structure",
@@ -17417,7 +17595,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Combine accounting with corporate finance, financial econometrics, derivatives and investment analysis. Electives support an applied or research project; longer placements depend on finding a position and obtaining academic approval."
       },
       "scope": {
         "study_levels": [
@@ -17442,7 +17621,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_financial_technology_study_structure",
@@ -17640,7 +17821,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Connect programming and quantitative finance with financial data, blockchain and investment management. Electives lead to an applied or research project; optional extended placements require a secured opportunity and approval."
       },
       "scope": {
         "study_levels": [
@@ -17665,7 +17847,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_full_time_mba_study_structure",
@@ -18025,7 +18209,8 @@
           "Reports",
           "Case studies",
           "Participation"
-        ]
+        ],
+        "description": "Build a management foundation in analytics, finance, marketing, strategy and entrepreneurship. Flexcore choices, electives, leadership development and applied projects personalise the MBA; internships, exchanges and extended placements have separate availability and approval conditions."
       },
       "scope": {
         "study_levels": [
@@ -18050,7 +18235,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_genes_drugs_stem_cells_study_structure",
@@ -18143,7 +18330,8 @@
           "Poster presentations",
           "Oral presentations",
           "Practical write-ups"
-        ]
+        ],
+        "description": "Study gene and nucleic-acid therapies, regenerative medicine and pharmacology alongside evidence evaluation and scientific communication. The MSc develops a specialism through advanced study and a research project; the PGCert covers a separately scoped shorter stage."
       },
       "scope": {
         "study_levels": [
@@ -18168,7 +18356,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_genomic_medicine_study_structure",
@@ -18277,7 +18467,8 @@
           "Coursework",
           "Oral presentations",
           "Research project"
-        ]
+        ],
+        "description": "Explore human genetics, omics, inherited disease, cancer genomics, infectious disease and bioinformatics. Electives and a research project connect genomic evidence with clinical practice; the MSc, PGDip and PGCert have different module and project requirements."
       },
       "scope": {
         "study_levels": [
@@ -18302,7 +18493,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_global_health_management_study_structure",
@@ -18568,7 +18761,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Study health economics, policy, financing and behavioural science alongside healthcare strategy and operations. Concentrations, electives and experiential work connect management skills with global health challenges."
       },
       "scope": {
         "study_levels": [
@@ -18593,7 +18787,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_global_mba_study_structure",
@@ -18898,7 +19094,8 @@
           "Reports",
           "Case studies",
           "Participation"
-        ]
+        ],
+        "description": "Online MBA study covers finance, accounting, economics, marketing, organisational behaviour and strategy. Flexcore modules, electives and leadership development personalise the curriculum; global experiences follow their own participation conditions."
       },
       "scope": {
         "study_levels": [
@@ -18923,7 +19120,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_health_data_analytics_study_structure",
@@ -19015,7 +19214,8 @@
           "Final research paper",
           "Research plan",
           "Project journal and log"
-        ]
+        ],
+        "description": "Combine epidemiology and statistical analysis with clinical data management, machine learning and translational data science. A research project applies computational methods to health-data questions."
       },
       "scope": {
         "study_levels": [
@@ -19040,7 +19240,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_health_policy_study_structure",
@@ -19134,7 +19336,8 @@
           "Video blogs",
           "Podcasts",
           "Article and case study reviews"
-        ]
+        ],
+        "description": "Study health systems, policy, economics, behavioural science and healthcare financing, with options in innovation, delivery and leadership. The MSc includes a research project and dissertation; shorter awards have distinct requirements."
       },
       "scope": {
         "study_levels": [
@@ -19159,7 +19362,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_human_molecular_genetics_study_structure",
@@ -19231,7 +19436,8 @@
           "Study groups",
           "Tutorial discussions",
           "Written examination"
-        ]
+        ],
+        "description": "Develop knowledge of molecular genetics, rare and common disease, analytical methods and laboratory genomics. A research project brings the taught material into practical human-genetics investigation."
       },
       "scope": {
         "study_levels": [
@@ -19256,7 +19462,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_immunology_study_structure",
@@ -19324,7 +19532,8 @@
           "Coursework assessments",
           "Tutorial discussions",
           "Written examination"
-        ]
+        ],
+        "description": "Study immunology principles, experimental approaches, practical investigation and immune function in health and disease. The MSc includes a research project; PGCert study is a separately defined shorter stage."
       },
       "scope": {
         "study_levels": [
@@ -19349,7 +19558,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_innovation_entrepreneurship_management_study_structure",
@@ -19522,7 +19733,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Develop venture-creation skills through entrepreneurship, design thinking, innovation management, strategy, marketing and finance. Electives and projects apply the core material; global experiences and placements have separate participation conditions."
       },
       "scope": {
         "study_levels": [
@@ -19547,7 +19759,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medicine_phd_study_structure",
@@ -19613,7 +19827,8 @@
           "Progress tests",
           "Workplace assessments",
           "Applied knowledge tests"
-        ]
+        ],
+        "description": "An internal intercalated research route within Imperial Medicine combines the MBBS/BSc phases with a PhD period. This is progression for eligible medical students, rather than a direct school-leaver PhD application; the internal academic conditions remain required."
       },
       "scope": {
         "study_levels": [
@@ -19638,7 +19853,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_investment_wealth_management_study_structure",
@@ -19839,7 +20056,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Study investment and portfolio management through quantitative finance, financial statistics, markets and derivatives. Electives develop specialist interests before an applied or research project; optional placements need a secured opportunity and approval."
       },
       "scope": {
         "study_levels": [
@@ -19864,7 +20082,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_public_health_masters_study_structure",
@@ -20040,7 +20260,8 @@
           "Mini research project",
           "Reports and paper reviews",
           "Written examinations"
-        ]
+        ],
+        "description": "Build public-health skills in epidemiology, statistical analysis, research methods, health economics and practice. Optional modules develop specialist interests, followed by a research project."
       },
       "scope": {
         "study_levels": [
@@ -20065,7 +20286,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_mph_online_study_structure",
@@ -20203,7 +20426,8 @@
           "Short Answer Examinations",
           "Slide Decks",
           "Policy Briefs"
-        ]
+        ],
+        "description": "Study public-health epidemiology, statistics, health protection and health-system development online. The MPH includes a staged research portfolio; the two-year, three-year and shorter award pathways have distinct progression and module requirements."
       },
       "scope": {
         "study_levels": [
@@ -20228,7 +20452,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medical_biosciences_study_structure",
@@ -20450,7 +20676,8 @@
           "Placement report",
           "Data handling",
           "Presentations"
-        ]
+        ],
+        "description": "This BSc combines molecular and cellular biology, physiology, genetics, statistics and laboratory work. Later study develops specialist biomedical interests through options such as cancer biology, microbiome science and pharmacology."
       },
       "scope": {
         "study_levels": [
@@ -20475,7 +20702,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medical_biosciences_management_study_structure",
@@ -20745,7 +20974,8 @@
           "Placement report",
           "Data handling",
           "Presentations"
-        ]
+        ],
+        "description": "Combine the Medical Biosciences scientific and laboratory curriculum with an additional management year. The four-year BSc develops biomedical knowledge before introducing business and management study."
       },
       "scope": {
         "study_levels": [
@@ -20770,7 +21000,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medical_robotics_study_structure",
@@ -20842,7 +21074,8 @@
           "Individual project",
           "Presentations",
           "Report writing"
-        ]
+        ],
+        "description": "Explore medical robotics, instrumentation, surgical imaging, sensing and minimally invasive intervention. A group project develops applied skills before the dedicated research project."
       },
       "scope": {
         "study_levels": [
@@ -20867,7 +21100,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_clinical_robotics_ai_study_structure",
@@ -20936,7 +21171,8 @@
           "Individual project",
           "Presentations",
           "Report writing"
-        ]
+        ],
+        "description": "Combine clinical robotics with surgical data science, AI and minimally invasive surgery. The curriculum includes group work, a clinical observership and a research project; observing clinical practice is distinct from clinical qualification."
       },
       "scope": {
         "study_levels": [
@@ -20961,7 +21197,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medical_science_innovation_study_structure",
@@ -21120,7 +21358,8 @@
           "Peer assessment",
           "Digital presentations",
           "Oral presentations"
-        ]
+        ],
+        "description": "This integrated undergraduate MSci studies medical science through health challenges including cardiovascular disease, infection, brain injury and diabetes. Later stages develop laboratory skills, diagnostics and innovation through health-challenge work."
       },
       "scope": {
         "study_levels": [
@@ -21145,7 +21384,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medical_ultrasound_echocardiography_study_structure",
@@ -21209,7 +21450,8 @@
           "Presentations",
           "Research project",
           "Oral assessment"
-        ]
+        ],
+        "description": "Study ultrasound physics, echocardiography foundations and specialist clinical applications. Experimental design and an individual project connect technical knowledge with investigation in this ultrasound specialism."
       },
       "scope": {
         "study_levels": [
@@ -21234,7 +21476,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medical_ultrasound_vascular_study_structure",
@@ -21299,7 +21543,8 @@
           "Presentations",
           "Research project",
           "Oral assessment"
-        ]
+        ],
+        "description": "Study ultrasound physics, vascular-ultrasound foundations and specialist clinical applications. Experimental design and an individual project develop investigation skills within the vascular-ultrasound pathway."
       },
       "scope": {
         "study_levels": [
@@ -21324,7 +21569,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medicine_study_structure",
@@ -21492,7 +21739,8 @@
           "Progress tests",
           "Workplace assessments",
           "Applied knowledge tests"
-        ]
+        ],
+        "description": "The six-year Medicine programme combines medical science, clinical skills and patient care. Its three phases progress through foundational and clinical learning, an intercalated BSc year, and advanced clinical practice in the final two years."
       },
       "scope": {
         "study_levels": [
@@ -21517,7 +21765,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_medicine_graduate_entry_study_structure",
@@ -21612,7 +21862,8 @@
           "Reports and Write-ups",
           "Workplace Based Assessments",
           "Project work"
-        ]
+        ],
+        "description": "This four-year graduate-entry MBBS combines medical science, prevention, healthcare delivery, clinical skills and professional practice. It is a distinct graduate-entry route with its own eligibility and application conditions."
       },
       "scope": {
         "study_levels": [
@@ -21637,7 +21888,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_molecular_biology_study_structure",
@@ -21709,7 +21962,8 @@
           "Research project thesis",
           "Oral examination",
           "Poster and oral poster presentation"
-        ]
+        ],
+        "description": "Explore viral molecular biology, pathology and evolution, alongside research evaluation and communication. A mini-research project builds practical skills before the main research project."
       },
       "scope": {
         "study_levels": [
@@ -21734,7 +21988,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_molecular_medicine_study_structure",
@@ -21846,7 +22102,8 @@
           "Oral examination",
           "Written examinations",
           "Written research thesis report"
-        ]
+        ],
+        "description": "Study molecular mechanisms relevant to medicine, including cell signalling, gene regulation, immunity and genomic stability. A research project applies the taught material to molecular and cellular investigation."
       },
       "scope": {
         "study_levels": [
@@ -21871,7 +22128,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_management_study_structure",
@@ -22105,7 +22364,8 @@
           "Reports",
           "Simulations",
           "Written exams"
-        ]
+        ],
+        "description": "Build a management foundation in finance, economics, accounting, innovation, marketing, leadership and strategy. Electives, integrative work and consulting or placement options connect business knowledge with practical decisions."
       },
       "scope": {
         "study_levels": [
@@ -22130,7 +22390,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_reproductive_developmental_biology_study_structure",
@@ -22185,7 +22447,8 @@
           "Data handling and analysis",
           "Experimental design and project planning",
           "Examinations"
-        ]
+        ],
+        "description": "Study reproductive and developmental biology from gonads and gametes through embryos, pregnancy and birth. The MSc includes a research project; the PGCert covers a separately defined selection of taught modules."
       },
       "scope": {
         "study_levels": [
@@ -22210,7 +22473,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_responsible_mining_metals_finance_study_structure",
@@ -22301,7 +22566,8 @@
           "Dissertations",
           "Syndicate exercises (group work)",
           "Appraisal sheets from field trips"
-        ]
+        ],
+        "description": "Combine mining and mineral-resource evaluation with finance, investment, derivatives and mining management. Environmental and social considerations, a field trip and dissertation work connect technical and financial perspectives."
       },
       "scope": {
         "study_levels": [
@@ -22326,7 +22592,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_risk_management_financial_engineering_study_structure",
@@ -22532,7 +22800,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Develop quantitative risk-management and financial-engineering skills through financial statistics, empirical finance, programming and specialist electives. Complete an applied or research project; placement options require a secured opportunity and programme approval."
       },
       "scope": {
         "study_levels": [
@@ -22557,7 +22826,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_strategic_marketing_study_structure",
@@ -22756,7 +23027,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Study consumer behaviour, digital marketing, pricing, market research, analytics and brand strategy. Applied marketing work, case studies and consulting connect the core curriculum with real business questions."
       },
       "scope": {
         "study_levels": [
@@ -22781,7 +23053,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_strategic_marketing_online_study_structure",
@@ -22939,7 +23213,8 @@
           "Participation",
           "Reports",
           "Written exams"
-        ]
+        ],
+        "description": "Study strategic marketing online through consumer behaviour, digital marketing, pricing, analytics and brand management. Applied reports, case studies and research work develop the ability to analyse marketing decisions."
       },
       "scope": {
         "study_levels": [
@@ -22964,7 +23239,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_translational_neuroscience_study_structure",
@@ -23073,7 +23350,8 @@
           "Research grant concept",
           "Dissertation",
           "Oral examination"
-        ]
+        ],
+        "description": "Study functional neuroanatomy, cellular and molecular neuroscience, and computational methods. Choose a specialist stream in psychiatric imaging and machine learning or neurodegeneration and related mechanisms, with a laboratory-based research project on both streams."
       },
       "scope": {
         "study_levels": [
@@ -23098,7 +23376,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_translational_research_perioperative_study_structure",
@@ -23164,7 +23444,8 @@
           "Critical appraisal",
           "Dissertation",
           "Scientific posters"
-        ]
+        ],
+        "description": "Study translational research and innovation in surgery, perioperative and critical care. Core work covers emerging techniques, study design and project planning before an eight-month independent research project in a selected research team."
       },
       "scope": {
         "study_levels": [
@@ -23189,7 +23470,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "fact_weekend_mba_study_structure",
@@ -23429,7 +23712,8 @@
           "Reports",
           "Case studies",
           "Participation"
-        ]
+        ],
+        "description": "Study management through analytics, finance, accounting, economics, marketing and strategy. The Weekend MBA combines periodic campus teaching with six electives and applied learning; international experiences and placements follow their own conditions."
       },
       "scope": {
         "study_levels": [
@@ -23454,7 +23738,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the base Default study selector applies here; other awards have separate scoped facts or explicit unknowns. Teaching methods describe this course; no formal test/qualification waiver is inferred."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_cardiovascular_and_respiratory_healthcare_msc_pgcert",
@@ -23511,7 +23797,8 @@
         ],
         "source_selector_modes": [
           "pgcert"
-        ]
+        ],
+        "description": "The PGCert covers cardiovascular and respiratory science foundations, reflection on clinical practice and selected optional study. Its published curriculum does not include the full MSc research project."
       },
       "scope": {
         "study_levels": [
@@ -23536,7 +23823,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_cardiovascular_and_respiratory_healthcare_msc_pgdip",
@@ -23605,7 +23894,8 @@
         ],
         "source_selector_modes": [
           "pgdip"
-        ]
+        ],
+        "description": "The PGDip develops cardiovascular and respiratory healthcare knowledge through clinical-practice evaluation, study design, healthcare quality and optional modules. It has a separate taught curriculum from the MSc research-project stage."
       },
       "scope": {
         "study_levels": [
@@ -23630,7 +23920,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_clinical_research_diabetes_and_obesity_mres_pgcert",
@@ -23673,7 +23965,8 @@
         ],
         "source_selector_modes": [
           "PG Cert"
-        ]
+        ],
+        "description": "The Diabetes and Obesity PGCert covers clinical research conduct, research scenarios, critical appraisal and specialist teaching. Its published curriculum is the certificate stage, rather than the full MRes research project."
       },
       "scope": {
         "study_levels": [
@@ -23698,7 +23991,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_clinical_research_human_nutrition_mres_pgcert",
@@ -23741,7 +24036,8 @@
         ],
         "source_selector_modes": [
           "PGCert"
-        ]
+        ],
+        "description": "The Human Nutrition PGCert covers clinical research conduct, research scenarios, critical appraisal and nutrition-specific teaching. The full MRes research project is not included in this certificate's published module scope."
       },
       "scope": {
         "study_levels": [
@@ -23766,7 +24062,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_clinical_research_multiple_long_term_conditions_mres_pgcert",
@@ -23811,7 +24109,8 @@
         ],
         "source_selector_modes": [
           "PGCert"
-        ]
+        ],
+        "description": "The Multiple Long-Term Conditions PGCert covers clinical research conduct, scenarios and critical appraisal alongside specialist teaching on multimorbidity. It is a taught certificate stage, separate from the full MRes research project."
       },
       "scope": {
         "study_levels": [
@@ -23836,7 +24135,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_clinical_research_translational_medicine_mres_pgcert",
@@ -23879,7 +24180,8 @@
         ],
         "source_selector_modes": [
           "PGCert"
-        ]
+        ],
+        "description": "The Translational Medicine PGCert covers clinical research conduct, research scenarios, critical appraisal and stream-specific teaching. The full MRes research project is outside this certificate's published module scope."
       },
       "scope": {
         "study_levels": [
@@ -23904,7 +24206,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_computational_biomedicine_computational_brain_sciences_online_msc_pgcert",
@@ -23933,7 +24237,8 @@
         ],
         "source_selector_modes": [
           "PG Cert"
-        ]
+        ],
+        "description": "This online PGCert teaches biomedical data-science foundations, introductory biomedical machine learning and biostatistics. The longer diploma and MSc add separately defined specialist or research study."
       },
       "scope": {
         "study_levels": [
@@ -23958,7 +24263,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_computational_biomedicine_computational_brain_sciences_online_msc_pgdip",
@@ -23996,7 +24303,8 @@
         ],
         "source_selector_modes": [
           "PG Dip"
-        ]
+        ],
+        "description": "This online PGDip combines biomedical data science, machine learning and biostatistics with translational neuroscience and brain-imaging methods. The MSc research project is a separate stage rather than part of the diploma's published modules."
       },
       "scope": {
         "study_levels": [
@@ -24021,7 +24329,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_computational_biomedicine_computational_genomics_online_msc_pgcert",
@@ -24050,7 +24360,8 @@
         ],
         "source_selector_modes": [
           "PG Cert"
-        ]
+        ],
+        "description": "This online PGCert teaches biomedical data-science foundations, introductory biomedical machine learning and biostatistics. The longer diploma and MSc add separately defined specialist or research study."
       },
       "scope": {
         "study_levels": [
@@ -24075,7 +24386,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_computational_biomedicine_computational_genomics_online_msc_pgdip",
@@ -24114,7 +24427,8 @@
         ],
         "source_selector_modes": [
           "PG Dip"
-        ]
+        ],
+        "description": "This online PGDip combines biomedical data science and machine learning with computational genomics, epigenome regulation, single-cell omics and network biology. The full MSc research project is outside the diploma's published module scope."
       },
       "scope": {
         "study_levels": [
@@ -24139,7 +24453,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_experimental_biomolecular_sciences_mres_pgcert",
@@ -24173,7 +24489,8 @@
         ],
         "source_selector_modes": [
           "PG Cert"
-        ]
+        ],
+        "description": "The PGCert develops experimental biomolecular laboratory skills, advanced techniques and a mini-research project. The longer research project belongs to the MRes curriculum and is not automatically part of this certificate."
       },
       "scope": {
         "study_levels": [
@@ -24198,7 +24515,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_health_policy_msc_pgcert",
@@ -24237,7 +24556,8 @@
         ],
         "source_selector_modes": [
           "PGCert"
-        ]
+        ],
+        "description": "The Health Policy PGCert covers health systems and policy, economics and behavioural science, healthcare financing, and health in society. The published certificate curriculum does not include the MSc dissertation."
       },
       "scope": {
         "study_levels": [
@@ -24262,7 +24582,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_health_policy_msc_pgdip",
@@ -24332,7 +24654,8 @@
         ],
         "source_selector_modes": [
           "PGDip"
-        ]
+        ],
+        "description": "The Health Policy PGDip builds on health systems, economics, behaviour and financing with options in healthcare innovation, service delivery and leadership. It is a taught diploma, separate from the MSc dissertation stage."
       },
       "scope": {
         "study_levels": [
@@ -24357,7 +24680,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_immunology_msc_pgcert",
@@ -24392,7 +24717,8 @@
         ],
         "source_selector_modes": [
           "PG Cert"
-        ]
+        ],
+        "description": "The Immunology PGCert develops immunology principles, experimental skills and practical investigation, including a mini-research project and critical engagement with scientific work. The full MSc research project is a separate stage."
       },
       "scope": {
         "study_levels": [
@@ -24417,7 +24743,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_master_of_public_health_online_pgcert",
@@ -24508,7 +24836,8 @@
         ],
         "source_selector_modes": [
           "PGCert"
-        ]
+        ],
+        "description": "This online PGCert covers epidemiology, public-health practice and statistics, plus three optional modules. Some options are prerequisites for progression to the three-year MPH; the certificate itself does not confer the full MPH."
       },
       "scope": {
         "study_levels": [
@@ -24533,7 +24862,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_reproductive_and_developmental_biology_msc_pgcert",
@@ -24577,7 +24908,8 @@
         ],
         "source_selector_modes": [
           "PG Cert"
-        ]
+        ],
+        "description": "The PGCert covers reproductive biology from gonads to gametes, followed by a choice between embryonic development or pregnancy and birth. The MSc research project is outside the certificate's published module scope."
       },
       "scope": {
         "study_levels": [
@@ -24602,7 +24934,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Only the named award selector applies; parent MSc/MRes thesis and requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_master_of_public_health_online_2ypt",
@@ -24721,7 +25055,8 @@
             ]
           }
         ],
-        "relationship": "The source explicitly describes the same MPH degree as a two- or three-year part-time programme; no different module sets are published for these durations."
+        "relationship": "The source explicitly describes the same MPH degree as a two- or three-year part-time programme; no different module sets are published for these durations.",
+        "description": "This two-year online MPH combines epidemiology, statistics, health protection, health systems and population-health improvement with a four-part research portfolio. Its curriculum is distinct from the shorter PGCert and PGDip awards."
       },
       "scope": {
         "study_levels": [
@@ -24746,7 +25081,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Shared MPH curriculum applies to these explicitly described durations only; PGCert/PGDip requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     },
     {
       "id": "curriculum-imperial_master_of_public_health_online_3ypt",
@@ -24865,7 +25202,8 @@
             ]
           }
         ],
-        "relationship": "The source explicitly describes the same MPH degree as a two- or three-year part-time programme; no different module sets are published for these durations."
+        "relationship": "The source explicitly describes the same MPH degree as a two- or three-year part-time programme; no different module sets are published for these durations.",
+        "description": "This three-year online MPH follows the programme's modular progression route, including required public-health subjects and a four-part research portfolio. Earlier PGCert choices can affect eligibility to progress; the published pathway conditions remain applicable."
       },
       "scope": {
         "study_levels": [
@@ -24890,7 +25228,9 @@
       "rechecked_at": "2026-10-03",
       "conditions": [
         "Shared MPH curriculum applies to these explicitly described durations only; PGCert/PGDip requirements are not inherited."
-      ]
+      ],
+      "description_reviewed_at": "2026-10-19",
+      "description_basis": "Editorial overview of this option-scoped curriculum evidence; no parent award or application policy is inherited."
     }
   ],
   "sources": [
@@ -26418,10 +26758,11 @@
         "imperial_genomic_medicine_msc_pgcert"
       ],
       "source_ids": [
-        "imperial_page_genomic_medicine"
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
       ],
       "checked_at": "2026-10-01",
-      "rechecked_at": "2026-10-03",
+      "rechecked_at": "2026-10-19",
       "scope": {
         "study_levels": [
           "masters"
@@ -26433,13 +26774,14 @@
         "applicant_categories": [
           "Applicant considering the named award or mode; parent course requirements not inherited"
         ],
-        "cycle": "2027 entry course page, exact award content unavailable",
+        "cycle": "2027 course page; full award-specific assessment not established",
         "fee_status": []
       },
       "publication_status": "unknown",
       "review_status": "researched_unknown",
-      "finding": "The reviewed course Structure panels do not expose a separately named PGCert curriculum for Genomic Medicine (MSc) — PGCert. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements.",
-      "official_next_step": "Read the current named award programme specification or confirm required modules, project extent and assessment with the named course team; preserve only explicitly shared course content until then."
+      "finding": "The current official course page now separately describes the Genomic Medicine PGCert taught outline and blended delivery. The full award-specific assessment, current module combinations and progression conditions are not established by the captured overview; do not inherit the MSc research project.",
+      "official_next_step": "Check the current named award programme specification or ask the course team to confirm assessment, module combinations and progression conditions. The separately sourced taught overview is available in the study record.",
+      "previous_finding": "The reviewed course Structure panels do not expose a separately named PGCert curriculum for Genomic Medicine (MSc) — PGCert. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements."
     },
     {
       "id": "gap-curriculum-imperial_genomic_medicine_msc_pgdip",
@@ -26448,10 +26790,11 @@
         "imperial_genomic_medicine_msc_pgdip"
       ],
       "source_ids": [
-        "imperial_page_genomic_medicine"
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
       ],
       "checked_at": "2026-10-01",
-      "rechecked_at": "2026-10-03",
+      "rechecked_at": "2026-10-19",
       "scope": {
         "study_levels": [
           "masters"
@@ -26463,13 +26806,14 @@
         "applicant_categories": [
           "Applicant considering the named award or mode; parent course requirements not inherited"
         ],
-        "cycle": "2027 entry course page, exact award content unavailable",
+        "cycle": "2027 course page; full award-specific assessment not established",
         "fee_status": []
       },
       "publication_status": "unknown",
       "review_status": "researched_unknown",
-      "finding": "The reviewed course Structure panels do not expose a separately named PGDip curriculum for Genomic Medicine (MSc) — PGDip. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements.",
-      "official_next_step": "Read the current named award programme specification or confirm required modules, project extent and assessment with the named course team; preserve only explicitly shared course content until then."
+      "finding": "The current official course page now separately describes the Genomic Medicine PGDip taught outline and blended delivery. The full award-specific assessment, current module combinations and progression conditions are not established by the captured overview; do not inherit the MSc research project.",
+      "official_next_step": "Check the current named award programme specification or ask the course team to confirm assessment, module combinations and progression conditions. The separately sourced taught overview is available in the study record.",
+      "previous_finding": "The reviewed course Structure panels do not expose a separately named PGDip curriculum for Genomic Medicine (MSc) — PGDip. The award relationship/key facts were researched independently; parent MSc/MRes module/project requirements cannot establish this award's complete requirements."
     },
     {
       "id": "gap-curriculum-imperial_master_of_public_health_online_pgdip",

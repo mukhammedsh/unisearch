@@ -58,7 +58,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -763,7 +765,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -824,7 +828,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -886,7 +892,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -948,7 +956,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -1009,7 +1019,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -1124,7 +1136,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -1187,7 +1201,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -1261,7 +1277,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-bioc-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -1715,7 +1732,8 @@
         "medicine-graduate-evidence:bmds-ms-prerequisites",
         "medicine-graduate-evidence:bmds-phd-format-funding",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-bmds-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -1756,7 +1774,8 @@
       "direct_option_fact_ids": [
         "directory-evidence:stanford-graduate-bmp-phd-directory-table",
         "medicine-graduate-evidence:bmp-admission-2027",
-        "medicine-graduate-evidence:bmp-structure-funding"
+        "medicine-graduate-evidence:bmp-structure-funding",
+        "medicine-graduate-evidence:study-overview-bmp-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -1841,7 +1860,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -1905,7 +1926,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -2036,7 +2059,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-canbi-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -3092,7 +3116,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -3326,7 +3352,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-csb-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -3429,7 +3456,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -3519,7 +3548,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -3582,7 +3613,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -3783,7 +3816,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -3846,7 +3881,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -3988,7 +4025,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -4160,7 +4199,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -4377,7 +4418,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -4423,7 +4466,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-dbio-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -4510,7 +4554,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -4692,7 +4738,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -4755,7 +4803,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -4924,7 +4974,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -5381,7 +5433,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -5506,7 +5560,8 @@
         "directory-evidence:stanford-graduate-epidcr-phd-directory-table",
         "medicine-graduate-evidence:epi-phd-2027-application",
         "medicine-graduate-evidence:epi-phd-funding",
-        "medicine-graduate-evidence:epi-phd-study-structure"
+        "medicine-graduate-evidence:epi-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-epidcr-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -6265,7 +6320,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -6328,7 +6385,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -6601,7 +6660,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -6715,7 +6776,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -6948,7 +7011,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7330,7 +7395,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7453,7 +7520,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7528,7 +7597,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7584,7 +7655,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7641,7 +7714,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7698,7 +7773,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7761,7 +7838,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -7876,7 +7955,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -8543,7 +8624,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -8606,7 +8689,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -8670,7 +8755,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -8716,7 +8803,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-gene-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -9230,7 +9318,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9292,7 +9382,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9355,7 +9447,8 @@
         "medicine-graduate-evidence:health-policy-phd-requirements",
         "medicine-graduate-evidence:health-policy-phd-five-year-funding",
         "medicine-graduate-evidence:health-policy-phd-2027-gre",
-        "medicine-graduate-evidence:health-policy-phd-eligibility-and-materials"
+        "medicine-graduate-evidence:health-policy-phd-eligibility-and-materials",
+        "medicine-graduate-evidence:study-overview-hrp-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -9442,7 +9535,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9607,7 +9702,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9668,7 +9765,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9690,7 +9789,8 @@
         "medicine-graduate-evidence:genetic-counseling-match",
         "medicine-graduate-evidence:genetic-counseling-study-structure",
         "medicine-graduate-evidence:genetic-counseling-field-preparation",
-        "medicine-graduate-evidence:gc-admissions-match-2027"
+        "medicine-graduate-evidence:gc-admissions-match-2027",
+        "medicine-graduate-evidence:study-overview-hmn-gen-ms"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -9775,7 +9875,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9838,7 +9940,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -9988,7 +10092,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-immun-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -10074,7 +10179,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -10273,7 +10380,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -10336,7 +10445,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -10452,7 +10563,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -10784,7 +10897,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -11181,7 +11296,8 @@
         "medicine-graduate-evidence:biosci-application-fee-2027",
         "medicine-graduate-evidence:biosci-phd-study-structure",
         "medicine-graduate-evidence:mcp-phd-course-preparation",
-        "medicine-graduate-evidence:mcp-phd-typical-duration"
+        "medicine-graduate-evidence:mcp-phd-typical-duration",
+        "medicine-graduate-evidence:study-overview-mcp-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -11496,7 +11612,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -11679,7 +11797,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-mi-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -11940,7 +12059,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -12003,7 +12124,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -12352,7 +12475,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -12575,7 +12700,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -12622,7 +12749,8 @@
         "medicine-graduate-evidence:biosci-funding-2026-27",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-neurs-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -12978,7 +13106,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13041,7 +13171,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13409,7 +13541,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13528,7 +13662,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13590,7 +13726,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13708,7 +13846,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13879,7 +14019,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -13988,7 +14130,8 @@
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
         "medicine-graduate-evidence:biosci-phd-study-structure",
-        "medicine-graduate-evidence:structural-bio-course-preparation"
+        "medicine-graduate-evidence:structural-bio-course-preparation",
+        "medicine-graduate-evidence:study-overview-sbio-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -14262,7 +14405,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -14366,7 +14511,8 @@
         "medicine-graduate-evidence:scbrm-home-choice-and-khs",
         "medicine-graduate-evidence:biosci-home-program-selection",
         "medicine-graduate-evidence:biosci-application-fee-2027",
-        "medicine-graduate-evidence:biosci-phd-study-structure"
+        "medicine-graduate-evidence:biosci-phd-study-structure",
+        "medicine-graduate-evidence:study-overview-stmrm-phd"
       ],
       "actual_procedure_fact_ids": [],
       "conditional_shared_fact_ids": [
@@ -14452,7 +14598,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -14515,7 +14663,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -14850,7 +15000,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -14911,7 +15063,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -15031,7 +15185,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -15186,7 +15342,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],
@@ -15248,7 +15406,9 @@
         "undergraduate-shared-evidence:stanford-incoming-student-health-requirements",
         "undergraduate-shared-evidence:stanford-ug-firstyear-aid-checklists-2026-27",
         "undergraduate-shared-evidence:stanford-firstyear-rea-concurrent-application-restrictions",
-        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27"
+        "undergraduate-shared-evidence:stanford-additional-residential-and-incidental-charges-2026-27",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+        "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28"
       ],
       "conditional_shared_fact_ids": [],
       "declared_domain_reviews": [],

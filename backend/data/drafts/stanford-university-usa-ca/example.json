@@ -105,6 +105,7 @@
             "Restrictive Early Action (non-binding)",
             "Regular Decision"
           ],
+          "application_url": "https://admission.stanford.edu/apply/first-year/apply.html",
           "evidence_file": "undergraduate-shared-evidence.json",
           "original_id": "stanford-first-year",
           "option_ids": [
@@ -199,6 +200,7 @@
           "decision_plans": [
             "Transfer admission (single annual deadline shown)"
           ],
+          "application_url": "https://admission.stanford.edu/apply/transfer/apply.html",
           "evidence_file": "undergraduate-shared-evidence.json",
           "original_id": "stanford-transfer",
           "option_ids": [
@@ -373,6 +375,7 @@
             "engineering-doerr-evidence:application-fee",
             "engineering-doerr-evidence:faq"
           ],
+          "application_url": "https://gradadmissions.stanford.edu/apply",
           "evidence_file": "engineering-doerr-evidence.json",
           "original_id": "external-graduate"
         },
@@ -417,6 +420,7 @@
             "engineering-doerr-evidence:cs-deadlines",
             "engineering-doerr-evidence:coterm-directory"
           ],
+          "application_url": "https://studentservices.stanford.edu/apply-coterm",
           "evidence_file": "engineering-doerr-evidence.json",
           "original_id": "cs-coterm"
         },
@@ -1519,7 +1523,7 @@
             "applicant_categories": [
               "first-year"
             ],
-            "cycle": "2027-entry",
+            "cycle": null,
             "fee_status": []
           },
           "original_scope": {
@@ -1533,7 +1537,7 @@
             "applicant_categories": [
               "first-year"
             ],
-            "cycle": "2027-entry",
+            "cycle": null,
             "fee_status": []
           },
           "source_ids": [
@@ -1543,7 +1547,7 @@
           "checked_at": "2026-10-02",
           "publication_status": "published",
           "review_status": "reviewed",
-          "value": "For 2027 entry, REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD."
+          "value": "REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD. The reviewed page lists recurring month/day deadlines without an explicit entry year."
         },
         {
           "id": "undergraduate-shared-evidence:stanford-firstyear-interview",
@@ -2011,7 +2015,7 @@
           "checked_at": "2026-10-02",
           "publication_status": "published",
           "review_status": "reviewed",
-          "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 2. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline."
+          "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 1. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline."
         },
         {
           "id": "undergraduate-shared-evidence:stanford-transfer-arts-portfolio",
@@ -2284,7 +2288,7 @@
             "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
           ],
           "checked_at": "2026-10-02",
-          "publication_status": "published",
+          "publication_status": "historical",
           "review_status": "reviewed",
           "value": "For transfer entrants in the published 2026–27 aid checklist, US citizens/eligible noncitizens submit CSS Profile, FAFSA and IDOC (parent tax records); priority date March 15 and mid-May aid notification. CSS Profile, FAFSA and tax documents are all required for institutional scholarship; CSS is not required if seeking only federal/state aid. International transfer applicants use CSS Profile and International Student Supplement; Canadian citizens submit specified Canadian tax records through IDOC and do not submit the supplement. Applicants unable to pay CSS fee or in a country where payment is unavailable may use ISAFA. Divorced/separated/never-married parents submit separate CSS profiles; noncustodial-parent waiver requires supporting documents. International applicants must request aid in the admission application."
         },
@@ -2713,7 +2717,7 @@
             "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
           ],
           "checked_at": "2026-10-02",
-          "publication_status": "published",
+          "publication_status": "historical",
           "review_status": "reviewed",
           "value": "Stanford's published 2026–27 first-year aid checklists distinguish Restrictive Early Action from Regular Decision and domestic/eligible-noncitizen/undocumented from international applicants. For US citizens and eligible noncitizens, CSS Profile (school code 4704), FAFSA (001305), and IDOC parent 2024 federal tax returns/forms are due Nov 15 for REA (mid-December notice) or Feb 15 for RD (April notice). If parents are divorced, separated or never married, each completes a CSS Profile and both submit tax documents; FAFSA parent is the parent providing more support. A noncustodial-parent waiver requires signed request and supporting documentation through IDOC. CSS Profile, FAFSA and IDOC are needed for institutional scholarship; CSS is not required if seeking only federal/state aid. Undocumented students follow domestic dates and submit CSS Profile/tax documents but do not file FAFSA. International aid applicants must request aid on the admission application and submit CSS Profile plus the International Student Supplement; Canadian citizens submit 2024 Canadian tax statements through IDOC and do not submit the supplement. If an international applicant cannot pay the CSS fee or College Board payments are unavailable in their country, the current checklist permits ISAFA instead. For international REA, priority date is Nov 15/mid-December notification; RD is Feb 15/April notification. Divorced/separated/never-married parents each complete CSS; a noncustodial-parent waiver requires evidence through Document Upload."
         },
@@ -2826,6 +2830,93 @@
             ],
             "fellowship_withholding": "International fellowship recipients may have quarterly federal tax withholding, with tax-treaty exemption where eligible."
           }
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+          "original_id": "stanford-ug-firstyear-international-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-international-rea",
+            "undergraduate-shared-evidence:stanford-ug-aid-rd-international"
+          ],
+          "checked_at": "2026-10-19",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 first-year aid cycle, REA priority filing is November 15 with mid-December notification; RD priority filing is February 15 with April notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28",
+          "original_id": "stanford-ug-transfer-international-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
+          ],
+          "checked_at": "2026-10-19",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 transfer aid cycle, priority filing is March 15 with May notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement."
         },
         {
           "id": "directory-evidence:stanford-graduate-cs-ms-directory-table",
@@ -7570,6 +7661,7 @@
             "Restrictive Early Action (non-binding)",
             "Regular Decision"
           ],
+          "application_url": "https://admission.stanford.edu/apply/first-year/apply.html",
           "evidence_file": "undergraduate-shared-evidence.json",
           "original_id": "stanford-first-year",
           "option_ids": [
@@ -7664,6 +7756,7 @@
           "decision_plans": [
             "Transfer admission (single annual deadline shown)"
           ],
+          "application_url": "https://admission.stanford.edu/apply/transfer/apply.html",
           "evidence_file": "undergraduate-shared-evidence.json",
           "original_id": "stanford-transfer",
           "option_ids": [
@@ -9063,7 +9156,7 @@
             "applicant_categories": [
               "first-year"
             ],
-            "cycle": "2027-entry",
+            "cycle": null,
             "fee_status": []
           },
           "original_scope": {
@@ -9077,7 +9170,7 @@
             "applicant_categories": [
               "first-year"
             ],
-            "cycle": "2027-entry",
+            "cycle": null,
             "fee_status": []
           },
           "source_ids": [
@@ -9087,7 +9180,7 @@
           "checked_at": "2026-10-02",
           "publication_status": "published",
           "review_status": "reviewed",
-          "value": "For 2027 entry, REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD."
+          "value": "REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD. The reviewed page lists recurring month/day deadlines without an explicit entry year."
         },
         {
           "id": "undergraduate-shared-evidence:stanford-firstyear-interview",
@@ -9555,7 +9648,7 @@
           "checked_at": "2026-10-02",
           "publication_status": "published",
           "review_status": "reviewed",
-          "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 2. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline."
+          "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 1. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline."
         },
         {
           "id": "undergraduate-shared-evidence:stanford-transfer-arts-portfolio",
@@ -9828,7 +9921,7 @@
             "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
           ],
           "checked_at": "2026-10-02",
-          "publication_status": "published",
+          "publication_status": "historical",
           "review_status": "reviewed",
           "value": "For transfer entrants in the published 2026–27 aid checklist, US citizens/eligible noncitizens submit CSS Profile, FAFSA and IDOC (parent tax records); priority date March 15 and mid-May aid notification. CSS Profile, FAFSA and tax documents are all required for institutional scholarship; CSS is not required if seeking only federal/state aid. International transfer applicants use CSS Profile and International Student Supplement; Canadian citizens submit specified Canadian tax records through IDOC and do not submit the supplement. Applicants unable to pay CSS fee or in a country where payment is unavailable may use ISAFA. Divorced/separated/never-married parents submit separate CSS profiles; noncustodial-parent waiver requires supporting documents. International applicants must request aid in the admission application."
         },
@@ -10257,7 +10350,7 @@
             "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
           ],
           "checked_at": "2026-10-02",
-          "publication_status": "published",
+          "publication_status": "historical",
           "review_status": "reviewed",
           "value": "Stanford's published 2026–27 first-year aid checklists distinguish Restrictive Early Action from Regular Decision and domestic/eligible-noncitizen/undocumented from international applicants. For US citizens and eligible noncitizens, CSS Profile (school code 4704), FAFSA (001305), and IDOC parent 2024 federal tax returns/forms are due Nov 15 for REA (mid-December notice) or Feb 15 for RD (April notice). If parents are divorced, separated or never married, each completes a CSS Profile and both submit tax documents; FAFSA parent is the parent providing more support. A noncustodial-parent waiver requires signed request and supporting documentation through IDOC. CSS Profile, FAFSA and IDOC are needed for institutional scholarship; CSS is not required if seeking only federal/state aid. Undocumented students follow domestic dates and submit CSS Profile/tax documents but do not file FAFSA. International aid applicants must request aid on the admission application and submit CSS Profile plus the International Student Supplement; Canadian citizens submit 2024 Canadian tax statements through IDOC and do not submit the supplement. If an international applicant cannot pay the CSS fee or College Board payments are unavailable in their country, the current checklist permits ISAFA instead. For international REA, priority date is Nov 15/mid-December notification; RD is Feb 15/April notification. Divorced/separated/never-married parents each complete CSS; a noncustodial-parent waiver requires evidence through Document Upload."
         },
@@ -10370,6 +10463,93 @@
             ],
             "fellowship_withholding": "International fellowship recipients may have quarterly federal tax withholding, with tax-treaty exemption where eligible."
           }
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-firstyear-international-aid-2027-28",
+          "original_id": "stanford-ug-firstyear-international-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-international-rea",
+            "undergraduate-shared-evidence:stanford-ug-aid-rd-international"
+          ],
+          "checked_at": "2026-10-19",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 first-year aid cycle, REA priority filing is November 15 with mid-December notification; RD priority filing is February 15 with April notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-transfer-international-aid-2027-28",
+          "original_id": "stanford-ug-transfer-international-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "international",
+              "Canadian citizen"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
+          ],
+          "checked_at": "2026-10-19",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 transfer aid cycle, priority filing is March 15 with May notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement."
         },
         {
           "id": "supplementary-degree-evidence:stanford-bas-degree-structure",

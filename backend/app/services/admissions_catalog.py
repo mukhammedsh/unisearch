@@ -263,8 +263,11 @@ def _option_summary(option):
 
 
 def _route_summary(route):
-    return copy.deepcopy({key: route[key] for key in ("id", "title", "classification", "target", "destination", "shared_form_family",
-                                                   "option_ids", "source_ids", "fact_ids", "shared_policy_context_ids")})
+    summary = {key: route[key] for key in ("id", "title", "classification", "target", "destination", "shared_form_family",
+                                         "option_ids", "source_ids", "fact_ids", "shared_policy_context_ids")}
+    if route.get("attributes", {}).get("application_url"):
+        summary["application_url"] = route["attributes"]["application_url"]
+    return copy.deepcopy(summary)
 
 
 def _reference_labels(indexed):
@@ -465,8 +468,16 @@ def resolve_context(institution_id, profile=None, context=None):
                 for domain in domains:
                     groups.setdefault(domain, []).append(row["id"])
     available_routes = [_route_summary(indexed["application_routes"][route_id]) for route_id in option["route_ids"]] if option else []
+    selected_option = _option_summary(option) if option else None
+    if selected_option is not None:
+        selected_option["overviews"] = []
+        for evidence_profile in option.get("evidence_profiles", []):
+            description = evidence_profile.get("attributes", {}).get("description")
+            text = description.get("text") if isinstance(description, dict) else description
+            if isinstance(text, str) and text.strip():
+                selected_option["overviews"].append({"text": text, "source_ids": copy.deepcopy(evidence_profile.get("source_ids", []))})
     return {"institution_id": institution_id, "revision": cached["revision"], "context": effective,
-            "context_applicability": statuses, "selected_option": _option_summary(option) if option else None,
+            "context_applicability": statuses, "selected_option": selected_option,
             "selected_route": _route_summary(route) if route else None, "available_routes": available_routes,
             "facts": facts, "unknowns": unknowns, "fact_groups": groups,
             "sources": [copy.deepcopy(source) for source in institution["sources"] if source["id"] in source_ids],
