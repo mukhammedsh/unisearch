@@ -713,7 +713,7 @@ universities.tradeoff.balanced: Сбалансировано (50/50)
 universities.help.open: Показать объяснение
 universities.help.country: Фильтрует университеты по стране. Работает вместе с выбором региона и города.
 universities.help.state_region: Сужает результаты внутри выбранной страны. Полезно для больших стран с множеством городов.
-universities.help.city: Показывает университеты в конкретном городе после выбора страны/региона.
+universities.help.city: Показывает университеты в конкретном городе после выбора страны. Штат или регион сужает список городов.
 universities.help.cost_per_year: Задает минимальную и максимальную стоимость за год. В выдаче остаются только университеты в этом диапазоне.
 universities.help.sort_strategy: {fit} подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
@@ -2830,3 +2830,5 @@ university.admissions.reading.aid_fafsa: FAFSA относится к внутр�
 university.admissions.reading.aid_international_title: Для международных абитуриентов
 university.admissions.reading.aid_finances_title: Для CSS Profile подготовьте:
 university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи
+university.programs.all_levels: Все уровни обучения
+university.programs.search_clear: Очистить поиск

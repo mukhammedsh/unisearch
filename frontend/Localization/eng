@@ -710,7 +710,7 @@ universities.tradeoff.balanced: Balanced (50/50)
 universities.help.open: Show explanation
 universities.help.country: Filters universities by country. Works together with city and region selectors.
 universities.help.state_region: Narrows results inside the selected country. Useful for large countries with many cities.
-universities.help.city: Shows universities in a specific city after country/region is selected.
+universities.help.city: Shows universities in a specific city after a country is selected. A state or region can narrow the city list.
 universities.help.cost_per_year: Sets min/max annual cost filter. The list includes only universities inside this range.
 universities.help.sort_strategy: {fit} sorts using your profile. Other modes sort only by name or cost.
 universities.help.tradeoff.focus: Choose whether you want more practice-oriented study or more theory and research.
@@ -723,8 +723,8 @@ universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
 universities.sort_rank_asc: Global Rank
-universities.sort_strategy: Sort Strategy
-universities.sort_hint_ai_tags: AI tags are fully available only in UniFit sort strategy.
+universities.sort_strategy: Sort by
+universities.sort_hint_ai_tags: AI tags are fully available only when sorting by UniFit.
 accessibility.skip_to_main: Skip to main content
 accessibility.back_to_top: Back to top
 universities.state.warning_title: Interests unavailable
@@ -2832,3 +2832,5 @@ university.admissions.reading.aid_fafsa: FAFSA applies to domestic applicants el
 university.admissions.reading.aid_international_title: For international aid applicants
 university.admissions.reading.aid_finances_title: Prepare financial information for the CSS Profile:
 university.admissions.reading.aid_priority_dates: Priority aid application dates
+university.programs.all_levels: All degree levels
+university.programs.search_clear: Clear search

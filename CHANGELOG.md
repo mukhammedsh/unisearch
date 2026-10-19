@@ -19,16 +19,34 @@ All notable project changes should be recorded here.
 - Localize summary source periods and reduce repeated applicability badges while retaining each record's conditions and source metadata.
 - Explain empty deadline sections and keep the unawarded-aid notice visible in MIT summaries; align browser checks with expandable references and permitted automatic spacing.
 
+
+## 9.0.0 (2026-10-16) - Firebase Hosting, University Filters and Security
+
+### Breaking Changes
+- Move the public frontend from `https://unisearch-frontend.onrender.com` to `https://unisearch.web.app`; the former address now returns 404, so existing bookmarks need updating.
+
+### Added
+- Allow filtering universities by city after selecting a country without requiring a state or region.
+- Publish verified Sigstore provenance bundles with release ZIPs and document online and offline verification.
+
+### Updated
+- Deploy the frontend through Firebase Hosting with clean routes, a university-detail rewrite, and deploy-time runtime configuration.
+- Set `Vary: Accept-Language` on localized university-detail responses, including 304 responses, so caches separate representations by language.
+- Improve university overview facts and localized filter guidance, including map-logo and tag hover presentation.
+- Speed up OpenAlex factor refreshes with concurrent candidate lookups while preserving candidate ordering and fallback behavior.
+
+### Fixed
+- Replace stale legacy detail-cache entries when loading reviewed admissions data.
+
 ### Security
-- Record UniSearch's OSPS Baseline Level 2 self-attestation for version 2026.08.28 in BadgeApp and update the repository evidence.
-- Attach verified Sigstore provenance bundles to each release ZIP and require peer-reviewed pull requests for `main`.
-- Require dependency, CodeQL, Trivy, repository-guard, SonarCloud, DCO, and test status checks before merging changes to `main`.
-- Document DCO sign-off requirements for contributor commits.
+- Require DCO and security, quality, and test checks for pull requests to `main`; dismiss stale approvals after new pushes.
+
+### Quality
+- Expand regression coverage for admissions, program rendering, translations, language indexes, configuration, finance, cache behavior, and language-exam validation boundaries.
+- Refactor university listing and detail-page initialization, program and admission rendering, admissions scoring, exam breakdowns, profile setup, comparison, guide, and custom-select internals; split audit source URL generation while preserving existing contracts.
 
 ### Documentation
-- Describe dependency selection and lockfile maintenance, required CI checks, and tests expected for behavioral changes.
-- Refresh the architecture and security assessment for current external interfaces and the UniChance published-requirements-fit contract.
-- Record current repository access and the review process for elevated collaborator permissions.
+- Refresh the README, accessibility guidance, security and architecture assessments, dependency and testing guidance, governance, and contributor instructions; record the OSPS Baseline Level 2 self-attestation.
 
 ## 8.1.7 (2026-10-15) - Expanded Test Coverage
 

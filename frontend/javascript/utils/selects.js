@@ -20,26 +20,27 @@ function bindCustomSelectGlobalClick() {
   });
 }
 
-export function initCustomSelect(selectId) {
-  const select = document.getElementById(selectId);
-  if (!select) return;
-  bindCustomSelectGlobalClick();
+function getSelectLabel(select) {
+  const associatedLabel = Array.from(select.labels || [])
+    .map((label) => label.querySelector("[data-i18n]")?.textContent?.trim() || label.textContent?.trim())
+    .find(Boolean);
+  return select.getAttribute("aria-label") || select.getAttribute("title") || associatedLabel || select.name || "";
+}
 
-  const isLanguageSelect = selectId === "languageSelect";
-  const showFlags = select.dataset.flags !== "off";
+function ensureSelectWrapper(select) {
   let wrapper = select.parentNode;
   const alreadyWrapped = wrapper && wrapper.classList.contains("custom-select-wrapper");
-
   if (!alreadyWrapped) {
     wrapper = document.createElement("div");
     wrapper.classList.add("custom-select-wrapper");
     select.parentNode.insertBefore(wrapper, select.nextSibling);
     wrapper.appendChild(select);
-    select.classList.add("u-select-hidden");
-  } else {
-    select.classList.add("u-select-hidden");
   }
+  select.classList.add("u-select-hidden");
+  return wrapper;
+}
 
+function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) {
   let trigger = wrapper.querySelector(".custom-select-trigger");
   if (!trigger) {
     trigger = document.createElement("div");
@@ -60,13 +61,7 @@ export function initCustomSelect(selectId) {
 
   const popupId = customOptions.id || `custom-options-${selectId}`;
   customOptions.id = popupId;
-  const getSelectLabel = () => {
-    const associatedLabel = Array.from(select.labels || [])
-      .map((label) => label.querySelector("[data-i18n]")?.textContent?.trim() || label.textContent?.trim())
-      .find(Boolean);
-    return select.getAttribute("aria-label") || select.getAttribute("title") || associatedLabel || select.name || "";
-  };
-  const selectLabel = getSelectLabel();
+
   const searchable = select.dataset.searchable === "true";
   let optionList = searchable ? customOptions.querySelector(".custom-select-option-list") : null;
   if (searchable && !optionList) {
@@ -81,6 +76,7 @@ export function initCustomSelect(selectId) {
   } else {
     customOptions.setAttribute("role", "listbox");
   }
+
   let searchInput = searchable ? customOptions.querySelector(".custom-select-search") : null;
   if (searchable && !searchInput) {
     searchInput = document.createElement("input");
@@ -88,34 +84,280 @@ export function initCustomSelect(selectId) {
     searchInput.className = "custom-select-search";
     searchInput.autocomplete = "off";
   }
-  if (searchInput) {
-    searchInput.placeholder = select.dataset.searchPlaceholder || "";
-    searchInput.setAttribute("aria-label", select.dataset.searchPlaceholder || selectLabel || "");
+
+  return { trigger, customOptions, optionList, searchInput, listboxId };
+}
+
+function shouldOpenUp(trigger, wrapper) {
+  if (typeof trigger.getBoundingClientRect !== "function") return false;
+
+  const triggerRect = trigger.getBoundingClientRect();
+  let scrollParent = null;
+
+  if (typeof wrapper.closest === "function") {
+    const filterCard = wrapper.closest(".u-filter-card");
+    const sidebar = wrapper.closest(".u-sidebar");
+    if (filterCard && typeof window !== "undefined" && typeof window.getComputedStyle === "function") {
+      const fcOverflow = window.getComputedStyle(filterCard).overflowY;
+      if (fcOverflow === "auto" || fcOverflow === "scroll") {
+        scrollParent = filterCard;
+      }
+    }
+    if (!scrollParent && sidebar) {
+      scrollParent = sidebar;
+    }
   }
 
-  trigger.setAttribute("role", "combobox");
-  trigger.setAttribute("aria-haspopup", "listbox");
-  trigger.setAttribute("aria-expanded", "false");
-  trigger.setAttribute("aria-controls", listboxId);
+  let parentBottom = typeof window !== "undefined" && window.innerHeight ? window.innerHeight : 800;
+  let parentTop = 0;
+  if (scrollParent && typeof scrollParent.getBoundingClientRect === "function") {
+    const parentRect = scrollParent.getBoundingClientRect();
+    parentBottom = Math.min(parentBottom, parentRect.bottom);
+    parentTop = Math.max(parentTop, parentRect.top);
+  }
+
+  const spaceBelow = parentBottom - triggerRect.bottom;
+  const spaceAbove = triggerRect.top - parentTop;
+  return spaceBelow < 210 && spaceAbove > spaceBelow;
+}
+
+function createOptionNode(option, index, listboxId, showFlags) {
+  const node = document.createElement("div");
+  node.classList.add("custom-option");
+  node.id = `${listboxId}-opt-${index}`;
+  node.setAttribute("role", "option");
+  node.setAttribute("data-value", String(option.value || ""));
+  node.setAttribute("data-label", option.text || "");
+  node.setAttribute("aria-selected", option.selected ? "true" : "false");
+  if (option.disabled) {
+    node.classList.add("is-disabled");
+    node.setAttribute("aria-disabled", "true");
+  }
+  const flag = showFlags ? getFlagImg(option.value) : "";
+  node.innerHTML = flag ? `${flag} <span>${escapeHtml(option.text)}</span>` : escapeHtml(option.text);
+  if (option.selected) node.classList.add("selected");
+  return node;
+}
+
+function rebuildCustomOptions(select, customOptions, optionList, searchInput, listboxId, showFlags) {
+  customOptions.innerHTML = "";
+  if (searchInput) customOptions.appendChild(searchInput);
+  if (optionList) {
+    optionList.innerHTML = "";
+    customOptions.appendChild(optionList);
+  }
+  const fragment = document.createDocumentFragment();
+  let optIndex = 0;
+
+  Array.from(select.children).forEach((child) => {
+    if (child.tagName === "OPTGROUP") {
+      const groupLabel = child.getAttribute("label") || "";
+      const groupHeader = document.createElement("div");
+      groupHeader.classList.add("custom-optgroup-label");
+      groupHeader.setAttribute("role", "presentation");
+      groupHeader.textContent = groupLabel;
+      fragment.appendChild(groupHeader);
+
+      Array.from(child.children).forEach((subChild) => {
+        if (subChild.tagName === "OPTION") {
+          fragment.appendChild(createOptionNode(subChild, optIndex++, listboxId, showFlags));
+        }
+      });
+    } else if (child.tagName === "OPTION") {
+      fragment.appendChild(createOptionNode(child, optIndex++, listboxId, showFlags));
+    }
+  });
+
+  (optionList || customOptions).appendChild(fragment);
+}
+
+function updateTriggerContent(trigger, select, isLanguageSelect, showFlags) {
   trigger.setAttribute("tabindex", select.disabled ? "-1" : "0");
-  if (selectLabel) {
-    trigger.setAttribute("aria-label", selectLabel);
-    (optionList || customOptions).setAttribute("aria-label", selectLabel);
+  trigger.classList.toggle("is-disabled", !!select.disabled);
+  trigger.setAttribute("aria-disabled", select.disabled ? "true" : "false");
+
+  const selectedOption = select.options[select.selectedIndex];
+  if (!selectedOption) return;
+
+  const flag = showFlags ? getFlagImg(selectedOption.value) : "";
+  if (isLanguageSelect) {
+    const shortLabel = ({ eng: "EN", rus: "RU", kaz: "KZ" }[String(selectedOption.value || "").toLowerCase()] || String(selectedOption.value || "").toUpperCase() || selectedOption.text);
+    trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
+    return;
   }
+  trigger.innerHTML = flag
+    ? `<div class="custom-select-trigger-content">${flag} <span>${escapeHtml(selectedOption.text)}</span></div>`
+    : `<span>${escapeHtml(selectedOption.text)}</span>`;
+}
 
-  let highlightedIndex = -1;
+function findTypeaheadMatch(enabled, currentIdx, buffer) {
+  const isSingleChar = buffer.length === 1;
+  const isRepeatedChar = buffer.length > 1 && buffer.split("").every((c) => c === buffer[0]);
 
-  const getEnabledOptions = () => {
-    return Array.from(customOptions.querySelectorAll(".custom-option:not(.is-disabled)"))
-      .filter((option) => !option.hidden);
+  const matchesQuery = (node, query) => {
+    const text = (node.getAttribute("data-label") || node.textContent || "").trim().toLowerCase();
+    const val = String(node.getAttribute("data-value") || "").trim().toLowerCase();
+    return text.startsWith(query) || val.startsWith(query);
   };
 
-  const setHighlightedOption = (index, scrollIntoView = true) => {
+  const currentOption = enabled[currentIdx];
+  const currentOptionText = (currentOption?.getAttribute("data-label") || currentOption?.textContent || "").trim().toLowerCase();
+  const currentOptionVal = String(currentOption?.getAttribute("data-value") || "").trim().toLowerCase();
+  const isSameLetterAsCurrent = currentOptionText.startsWith(buffer[0]) || currentOptionVal.startsWith(buffer[0]);
+
+  if (isRepeatedChar || (isSingleChar && isSameLetterAsCurrent)) {
+    const searchChar = buffer[0];
+    for (let i = currentIdx + 1; i < enabled.length; i++) {
+      if (matchesQuery(enabled[i], searchChar)) return i;
+    }
+    for (let i = 0; i <= currentIdx; i++) {
+      if (matchesQuery(enabled[i], searchChar)) return i;
+    }
+  } else {
+    for (let i = 0; i < enabled.length; i++) {
+      if (matchesQuery(enabled[i], buffer)) return i;
+    }
+  }
+  return -1;
+}
+
+function bindSearchInputEvents(searchInput, customOptions, closeSelect, setHighlightedOption, getSelectedOption, selectOptionByNode) {
+  if (!searchInput || searchInput.dataset.bound === "1") return;
+  searchInput.dataset.bound = "1";
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim().toLocaleLowerCase();
+    customOptions.querySelectorAll(".custom-option").forEach((option) => {
+      const label = String(option.getAttribute("data-label") || "").toLocaleLowerCase();
+      const value = String(option.getAttribute("data-value") || "").toLocaleLowerCase();
+      option.hidden = Boolean(query) && !label.includes(query) && !value.includes(query);
+    });
+    setHighlightedOption(0, false);
+  });
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeSelect(true);
+    } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      setHighlightedOption(event.key === "ArrowDown" ? 1 : -1, true, true);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      const option = getSelectedOption();
+      if (option) selectOptionByNode(option);
+    }
+  });
+}
+
+function bindTriggerKeyboardEvents({ select, wrapper, trigger, getEnabledOptions, openSelect, closeSelect, setHighlightedOption, selectOptionByNode, getHighlightedIndex }) {
+  if (trigger.dataset.keyBound === "1") return;
+  trigger.dataset.keyBound = "1";
+
+  let typeaheadBuffer = "";
+  let typeaheadTimeout = null;
+
+  trigger.addEventListener("blur", () => {
+    typeaheadBuffer = "";
+    clearTimeout(typeaheadTimeout);
+  });
+
+  const handleTypeahead = (char, isOpen) => {
     const enabled = getEnabledOptions();
     if (!enabled.length) return;
-    if (index < 0) index = 0;
-    if (index >= enabled.length) index = enabled.length - 1;
-    highlightedIndex = index;
+
+    clearTimeout(typeaheadTimeout);
+    typeaheadTimeout = setTimeout(() => { typeaheadBuffer = ""; }, 800);
+    typeaheadBuffer += char.toLowerCase();
+
+    const currentIdx = isOpen
+      ? (getHighlightedIndex() >= 0 ? getHighlightedIndex() : 0)
+      : Math.max(0, enabled.findIndex((opt) => String(opt.getAttribute("data-value") || "") === String(select.value || "")));
+
+    const matchIdx = findTypeaheadMatch(enabled, currentIdx, typeaheadBuffer);
+    if (matchIdx !== -1) {
+      if (isOpen) setHighlightedOption(matchIdx, true);
+      else selectOptionByNode(enabled[matchIdx]);
+    }
+  };
+
+  trigger.addEventListener("keydown", (event) => {
+    if (select.disabled) return;
+    const isOpen = wrapper.classList.contains("open");
+
+    switch (event.key) {
+      case "Down":
+      case "ArrowDown":
+        event.preventDefault();
+        if (!isOpen) openSelect();
+        else setHighlightedOption(getHighlightedIndex() + 1);
+        break;
+      case "Up":
+      case "ArrowUp":
+        event.preventDefault();
+        if (!isOpen) openSelect();
+        else setHighlightedOption(getHighlightedIndex() - 1);
+        break;
+      case "Home":
+        if (isOpen) {
+          event.preventDefault();
+          setHighlightedOption(0);
+        }
+        break;
+      case "End":
+        if (isOpen) {
+          event.preventDefault();
+          const enabled = getEnabledOptions();
+          setHighlightedOption(enabled.length - 1);
+        }
+        break;
+      case "Enter":
+      case " ":
+        event.preventDefault();
+        if (!isOpen) openSelect();
+        else {
+          const enabled = getEnabledOptions();
+          const idx = getHighlightedIndex();
+          if (idx >= 0 && idx < enabled.length) selectOptionByNode(enabled[idx]);
+          else closeSelect(true);
+        }
+        break;
+      case "Escape":
+        if (isOpen) {
+          event.preventDefault();
+          event.stopPropagation();
+          closeSelect(true);
+        }
+        break;
+      case "Tab":
+        if (isOpen) closeSelect(false);
+        break;
+      default:
+        if (
+          event.key &&
+          event.key.length === 1 &&
+          !event.ctrlKey &&
+          !event.altKey &&
+          !event.metaKey
+        ) {
+          event.preventDefault();
+          handleTypeahead(event.key, isOpen);
+        }
+        break;
+    }
+  });
+}
+
+function setupSelectStateController({ select, wrapper, trigger, customOptions, optionList, searchInput, listboxId, isLanguageSelect, showFlags }) {
+  let highlightedIndex = -1;
+
+  const getEnabledOptions = () => Array.from(customOptions.querySelectorAll(".custom-option:not(.is-disabled)")).filter((opt) => !opt.hidden);
+
+  const setHighlightedOption = (index, scrollIntoView = true, relative = false) => {
+    const enabled = getEnabledOptions();
+    if (!enabled.length) return;
+    let targetIndex = relative ? highlightedIndex + index : index;
+    if (targetIndex < 0) targetIndex = 0;
+    if (targetIndex >= enabled.length) targetIndex = enabled.length - 1;
+    highlightedIndex = targetIndex;
 
     customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
     const target = enabled[highlightedIndex];
@@ -125,6 +367,19 @@ export function initCustomSelect(selectId) {
       if (scrollIntoView && typeof target.scrollIntoView === "function") {
         target.scrollIntoView({ block: "nearest" });
       }
+    }
+  };
+
+  const closeSelect = (restoreFocus = false) => {
+    if (!wrapper.classList.contains("open")) return;
+    wrapper.classList.remove("open");
+    wrapper.classList.remove("open-up");
+    trigger.setAttribute("aria-expanded", "false");
+    customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
+    if (searchInput) searchInput.value = "";
+    highlightedIndex = -1;
+    if (restoreFocus) {
+      try { trigger.focus(); } catch (e) {}
     }
   };
 
@@ -139,39 +394,8 @@ export function initCustomSelect(selectId) {
       }
     });
 
-    if (typeof trigger.getBoundingClientRect === "function") {
-      const triggerRect = trigger.getBoundingClientRect();
-      let scrollParent = null;
-      if (typeof wrapper.closest === "function") {
-        const filterCard = wrapper.closest(".u-filter-card");
-        const sidebar = wrapper.closest(".u-sidebar");
-        if (filterCard && typeof window !== "undefined" && typeof window.getComputedStyle === "function") {
-          const fcOverflow = window.getComputedStyle(filterCard).overflowY;
-          if (fcOverflow === "auto" || fcOverflow === "scroll") {
-            scrollParent = filterCard;
-          }
-        }
-        if (!scrollParent && sidebar) {
-          scrollParent = sidebar;
-        }
-      }
-
-      let parentBottom = typeof window !== "undefined" && window.innerHeight ? window.innerHeight : 800;
-      let parentTop = 0;
-      if (scrollParent && typeof scrollParent.getBoundingClientRect === "function") {
-        const parentRect = scrollParent.getBoundingClientRect();
-        parentBottom = Math.min(parentBottom, parentRect.bottom);
-        parentTop = Math.max(parentTop, parentRect.top);
-      }
-
-      const spaceBelow = parentBottom - triggerRect.bottom;
-      const spaceAbove = triggerRect.top - parentTop;
-      if (spaceBelow < 210 && spaceAbove > spaceBelow) {
-        wrapper.classList.add("open-up");
-      } else {
-        wrapper.classList.remove("open-up");
-      }
-    }
+    if (shouldOpenUp(trigger, wrapper)) wrapper.classList.add("open-up");
+    else wrapper.classList.remove("open-up");
 
     wrapper.classList.add("open");
     trigger.setAttribute("aria-expanded", "true");
@@ -188,33 +412,6 @@ export function initCustomSelect(selectId) {
     if (searchInput) searchInput.focus();
   };
 
-  const closeSelect = (restoreFocus = false) => {
-    if (!wrapper.classList.contains("open")) return;
-    typeaheadBuffer = "";
-    clearTimeout(typeaheadTimeout);
-    wrapper.classList.remove("open");
-    wrapper.classList.remove("open-up");
-    trigger.setAttribute("aria-expanded", "false");
-    customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
-    if (searchInput) searchInput.value = "";
-    highlightedIndex = -1;
-    if (restoreFocus) {
-      try { trigger.focus(); } catch (e) {}
-    }
-  };
-
-  const selectOptionByNode = (option) => {
-    if (!option || option.classList.contains("is-disabled")) return;
-    const nextValue = String(option.getAttribute("data-value") || "");
-    const changed = String(select.value || "") !== nextValue;
-    select.value = nextValue;
-    if (changed) select.dispatchEvent(new Event("change"));
-    else syncFromNativeSelect();
-    if (wrapper.classList.contains("open")) {
-      closeSelect(true);
-    }
-  };
-
   const syncSelectedOptionState = () => {
     const currentValue = String(select.value || "");
     customOptions.querySelectorAll(".custom-option").forEach((node) => {
@@ -227,292 +424,41 @@ export function initCustomSelect(selectId) {
     });
   };
 
-  const rebuildCustomOptions = () => {
-    customOptions.innerHTML = "";
-    if (searchInput) customOptions.appendChild(searchInput);
-    if (optionList) {
-      optionList.innerHTML = "";
-      customOptions.appendChild(optionList);
-    }
-    const fragment = document.createDocumentFragment();
-    let optIndex = 0;
-
-    const createOptionNode = (option) => {
-      const node = document.createElement("div");
-      node.classList.add("custom-option");
-      node.id = `${listboxId}-opt-${optIndex++}`;
-      node.setAttribute("role", "option");
-      node.setAttribute("data-value", String(option.value || ""));
-      node.setAttribute("data-label", option.text || "");
-      node.setAttribute("aria-selected", option.selected ? "true" : "false");
-      if (option.disabled) {
-        node.classList.add("is-disabled");
-        node.setAttribute("aria-disabled", "true");
-      }
-      const flag = showFlags ? getFlagImg(option.value) : "";
-      node.innerHTML = flag ? `${flag} <span>${escapeHtml(option.text)}</span>` : escapeHtml(option.text);
-      if (option.selected) node.classList.add("selected");
-      return node;
-    };
-
-    Array.from(select.children).forEach((child) => {
-      if (child.tagName === "OPTGROUP") {
-        const groupLabel = child.getAttribute("label") || "";
-        const groupHeader = document.createElement("div");
-        groupHeader.classList.add("custom-optgroup-label");
-        groupHeader.setAttribute("role", "presentation");
-        groupHeader.textContent = groupLabel;
-        fragment.appendChild(groupHeader);
-
-        Array.from(child.children).forEach((subChild) => {
-          if (subChild.tagName === "OPTION") {
-            fragment.appendChild(createOptionNode(subChild));
-          }
-        });
-      } else if (child.tagName === "OPTION") {
-        fragment.appendChild(createOptionNode(child));
-      }
-    });
-
-    (optionList || customOptions).appendChild(fragment);
-  };
-
-  function updateTrigger() {
-    trigger.setAttribute("tabindex", select.disabled ? "-1" : "0");
-    trigger.classList.toggle("is-disabled", !!select.disabled);
-    trigger.setAttribute("aria-disabled", select.disabled ? "true" : "false");
-
-    const selectedOption = select.options[select.selectedIndex];
-    if (!selectedOption) return;
-    const flag = showFlags ? getFlagImg(selectedOption.value) : "";
-    if (isLanguageSelect) {
-      const shortLabel = ({ eng: "EN", rus: "RU", kaz: "KZ" }[String(selectedOption.value || "").toLowerCase()] || String(selectedOption.value || "").toUpperCase() || selectedOption.text);
-      trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
-      return;
-    }
-    trigger.innerHTML = flag
-      ? `<div class="custom-select-trigger-content">${flag} <span>${escapeHtml(selectedOption.text)}</span></div>`
-      : `<span>${escapeHtml(selectedOption.text)}</span>`;
-  }
-
   const syncFromNativeSelect = () => {
-    const currentLabel = getSelectLabel();
+    const currentLabel = getSelectLabel(select);
     if (currentLabel) {
       trigger.setAttribute("aria-label", currentLabel);
       (optionList || customOptions).setAttribute("aria-label", currentLabel);
       if (searchInput) searchInput.setAttribute("aria-label", select.dataset.searchPlaceholder || currentLabel);
     }
-    rebuildCustomOptions();
-    updateTrigger();
+    rebuildCustomOptions(select, customOptions, optionList, searchInput, listboxId, showFlags);
+    updateTriggerContent(trigger, select, isLanguageSelect, showFlags);
     syncSelectedOptionState();
   };
 
-  syncFromNativeSelect();
-
-  if (searchInput && searchInput.dataset.bound !== "1") {
-    searchInput.dataset.bound = "1";
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.trim().toLocaleLowerCase();
-      customOptions.querySelectorAll(".custom-option").forEach((option) => {
-        const label = String(option.getAttribute("data-label") || "").toLocaleLowerCase();
-        const value = String(option.getAttribute("data-value") || "").toLocaleLowerCase();
-        option.hidden = Boolean(query) && !label.includes(query) && !value.includes(query);
-      });
-      highlightedIndex = -1;
-      setHighlightedOption(0, false);
-    });
-    searchInput.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeSelect(true);
-      } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault();
-        setHighlightedOption(highlightedIndex + (event.key === "ArrowDown" ? 1 : -1));
-      } else if (event.key === "Enter") {
-        event.preventDefault();
-        const option = getEnabledOptions()[highlightedIndex];
-        if (option) selectOptionByNode(option);
-      }
-    });
-  }
-
-  if (customOptions.dataset.bound !== "1") {
-    customOptions.dataset.bound = "1";
-    customOptions.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const option = target.closest(".custom-option");
-      if (!(option instanceof Element) || !customOptions.contains(option)) return;
-      selectOptionByNode(option);
-    });
-  }
-
-  if (wrapper.dataset.bound !== "1") {
-    wrapper.dataset.bound = "1";
-    trigger.addEventListener("click", (event) => {
-      if (select.disabled) return;
-      event.stopPropagation();
-      if (wrapper.classList.contains("open")) {
-        closeSelect(false);
-      } else {
-        openSelect();
-      }
-    });
-    select.addEventListener("change", syncFromNativeSelect);
-  }
-
-  let typeaheadBuffer = "";
-  let typeaheadTimeout = null;
-
-  const handleTypeahead = (char, isOpen) => {
-    const enabled = getEnabledOptions();
-    if (!enabled.length) return;
-
-    clearTimeout(typeaheadTimeout);
-    typeaheadTimeout = setTimeout(() => {
-      typeaheadBuffer = "";
-    }, 800);
-
-    typeaheadBuffer += char.toLowerCase();
-
-    const currentIdx = isOpen
-      ? (highlightedIndex >= 0 ? highlightedIndex : 0)
-      : Math.max(0, enabled.findIndex((opt) => String(opt.getAttribute("data-value") || "") === String(select.value || "")));
-
-    const isSingleChar = typeaheadBuffer.length === 1;
-    const isRepeatedChar = typeaheadBuffer.length > 1 && typeaheadBuffer.split("").every((c) => c === typeaheadBuffer[0]);
-
-    let matchIdx = -1;
-
-    const matchesQuery = (node, query) => {
-      const text = (node.getAttribute("data-label") || node.textContent || "").trim().toLowerCase();
-      const val = String(node.getAttribute("data-value") || "").trim().toLowerCase();
-      return text.startsWith(query) || val.startsWith(query);
-    };
-
-    const currentOption = enabled[currentIdx];
-    const currentOptionText = (currentOption?.getAttribute("data-label") || currentOption?.textContent || "").trim().toLowerCase();
-    const currentOptionVal = String(currentOption?.getAttribute("data-value") || "").trim().toLowerCase();
-    const isSameLetterAsCurrent = currentOptionText.startsWith(typeaheadBuffer[0]) || currentOptionVal.startsWith(typeaheadBuffer[0]);
-
-    if (isRepeatedChar || (isSingleChar && isSameLetterAsCurrent)) {
-      const searchChar = typeaheadBuffer[0];
-      for (let i = currentIdx + 1; i < enabled.length; i++) {
-        if (matchesQuery(enabled[i], searchChar)) {
-          matchIdx = i;
-          break;
-        }
-      }
-      if (matchIdx === -1) {
-        for (let i = 0; i <= currentIdx; i++) {
-          if (matchesQuery(enabled[i], searchChar)) {
-            matchIdx = i;
-            break;
-          }
-        }
-      }
-    } else {
-      for (let i = 0; i < enabled.length; i++) {
-        if (matchesQuery(enabled[i], typeaheadBuffer)) {
-          matchIdx = i;
-          break;
-        }
-      }
-    }
-
-    if (matchIdx !== -1) {
-      if (isOpen) {
-        setHighlightedOption(matchIdx, true);
-      } else {
-        selectOptionByNode(enabled[matchIdx]);
-      }
-    }
+  const selectOptionByNode = (option) => {
+    if (!option || option.classList.contains("is-disabled")) return;
+    const nextValue = String(option.getAttribute("data-value") || "");
+    const changed = String(select.value || "") !== nextValue;
+    select.value = nextValue;
+    if (changed) select.dispatchEvent(new Event("change"));
+    else syncFromNativeSelect();
+    if (wrapper.classList.contains("open")) closeSelect(true);
   };
 
-  if (trigger.dataset.keyBound !== "1") {
-    trigger.dataset.keyBound = "1";
-    trigger.addEventListener("blur", () => {
-      typeaheadBuffer = "";
-      clearTimeout(typeaheadTimeout);
-    });
-    trigger.addEventListener("keydown", (event) => {
-      if (select.disabled) return;
-      const isOpen = wrapper.classList.contains("open");
+  return {
+    getEnabledOptions,
+    setHighlightedOption,
+    openSelect,
+    closeSelect,
+    syncFromNativeSelect,
+    selectOptionByNode,
+    getHighlightedIndex: () => highlightedIndex,
+    getCurrentHighlightedOption: () => getEnabledOptions()[highlightedIndex],
+  };
+}
 
-      switch (event.key) {
-        case "Down":
-        case "ArrowDown":
-          event.preventDefault();
-          if (!isOpen) {
-            openSelect();
-          } else {
-            setHighlightedOption(highlightedIndex + 1);
-          }
-          break;
-        case "Up":
-        case "ArrowUp":
-          event.preventDefault();
-          if (!isOpen) {
-            openSelect();
-          } else {
-            setHighlightedOption(highlightedIndex - 1);
-          }
-          break;
-        case "Home":
-          if (isOpen) {
-            event.preventDefault();
-            setHighlightedOption(0);
-          }
-          break;
-        case "End":
-          if (isOpen) {
-            event.preventDefault();
-            const enabled = getEnabledOptions();
-            setHighlightedOption(enabled.length - 1);
-          }
-          break;
-        case "Enter":
-        case " ":
-          event.preventDefault();
-          if (!isOpen) {
-            openSelect();
-          } else {
-            const enabled = getEnabledOptions();
-            if (highlightedIndex >= 0 && highlightedIndex < enabled.length) {
-              selectOptionByNode(enabled[highlightedIndex]);
-            } else {
-              closeSelect(true);
-            }
-          }
-          break;
-        case "Escape":
-          if (isOpen) {
-            event.preventDefault();
-            event.stopPropagation();
-            closeSelect(true);
-          }
-          break;
-        case "Tab":
-          if (isOpen) {
-            closeSelect(false);
-          }
-          break;
-        default:
-          if (
-            event.key &&
-            event.key.length === 1 &&
-            !event.ctrlKey &&
-            !event.altKey &&
-            !event.metaKey
-          ) {
-            event.preventDefault();
-            handleTypeahead(event.key, isOpen);
-          }
-          break;
-      }
-    });
-  }
-
+function bindSelectObserverAndEvents(wrapper, select, syncFromNativeSelect) {
   if (!wrapper.__customSelectLanguageBound && typeof window !== "undefined") {
     wrapper.__customSelectLanguageBound = true;
     wrapper.__customSelectLanguageHandler = () => {
@@ -533,7 +479,6 @@ export function initCustomSelect(selectId) {
     wrapper.__customSelectObserver = observer;
   }
 
-  syncFromNativeSelect();
   return () => {
     if (wrapper.__customSelectLanguageHandler) {
       window.removeEventListener("languageChanged", wrapper.__customSelectLanguageHandler);
@@ -543,6 +488,76 @@ export function initCustomSelect(selectId) {
     wrapper.__customSelectObserver?.disconnect();
     wrapper.__customSelectObserver = null;
   };
+}
+
+export function initCustomSelect(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+  bindCustomSelectGlobalClick();
+
+  const isLanguageSelect = selectId === "languageSelect";
+  const showFlags = select.dataset.flags !== "off";
+  const wrapper = ensureSelectWrapper(select);
+  const elements = setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect);
+  const { trigger, customOptions, optionList, searchInput, listboxId } = elements;
+
+  const selectLabel = getSelectLabel(select);
+  if (searchInput) {
+    searchInput.placeholder = select.dataset.searchPlaceholder || "";
+    searchInput.setAttribute("aria-label", select.dataset.searchPlaceholder || selectLabel || "");
+  }
+
+  trigger.setAttribute("role", "combobox");
+  trigger.setAttribute("aria-haspopup", "listbox");
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-controls", listboxId);
+  trigger.setAttribute("tabindex", select.disabled ? "-1" : "0");
+  if (selectLabel) {
+    trigger.setAttribute("aria-label", selectLabel);
+    (optionList || customOptions).setAttribute("aria-label", selectLabel);
+  }
+
+  const state = setupSelectStateController({ select, wrapper, trigger, customOptions, optionList, searchInput, listboxId, isLanguageSelect, showFlags });
+
+  state.syncFromNativeSelect();
+
+  bindSearchInputEvents(searchInput, customOptions, state.closeSelect, state.setHighlightedOption, state.getCurrentHighlightedOption, state.selectOptionByNode);
+
+  if (customOptions.dataset.bound !== "1") {
+    customOptions.dataset.bound = "1";
+    customOptions.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const option = target.closest(".custom-option");
+      if (!(option instanceof Element) || !customOptions.contains(option)) return;
+      state.selectOptionByNode(option);
+    });
+  }
+
+  if (wrapper.dataset.bound !== "1") {
+    wrapper.dataset.bound = "1";
+    trigger.addEventListener("click", (event) => {
+      if (select.disabled) return;
+      event.stopPropagation();
+      if (wrapper.classList.contains("open")) state.closeSelect(false);
+      else state.openSelect();
+    });
+    select.addEventListener("change", state.syncFromNativeSelect);
+  }
+
+  bindTriggerKeyboardEvents({
+    select,
+    wrapper,
+    trigger,
+    getEnabledOptions: state.getEnabledOptions,
+    openSelect: state.openSelect,
+    closeSelect: state.closeSelect,
+    setHighlightedOption: state.setHighlightedOption,
+    selectOptionByNode: state.selectOptionByNode,
+    getHighlightedIndex: state.getHighlightedIndex,
+  });
+
+  return bindSelectObserverAndEvents(wrapper, select, state.syncFromNativeSelect);
 }
 
 export function setupSlidingIndicator(containerSelector, itemSelector, activeClass = "active") {
@@ -572,9 +587,6 @@ export function setupSlidingIndicator(containerSelector, itemSelector, activeCla
       indicator.style.opacity = "0";
       return;
     }
-    // The indicator is laid out inside the scrollable content, so it rides
-    // along with the tabs when the bar scrolls: plain offsetLeft keeps it
-    // glued to the target without any scroll compensation.
     const left = target.offsetLeft;
     const width = Math.max(1, target.offsetWidth + readExtraWidth());
     const isReady = indicator.dataset.ready === "1";

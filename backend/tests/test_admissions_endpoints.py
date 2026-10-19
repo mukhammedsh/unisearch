@@ -79,11 +79,11 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         self.assertEqual(localized.headers["ETag"], normalized.headers["ETag"])
         self.assertEqual(localized.headers["ETag"], hinted.headers["ETag"])
         self.assertEqual(localized.json(), hinted.json())
-        self.assertEqual("Accept-Language", hinted.headers["Vary"])
+        self.assertIn("Accept-Language", hinted.headers["Vary"])
         unchanged = self.client.get(endpoint, params={"search": "Информатика", "study_level": "undergraduate"},
                                     headers={"Accept-Language": "kk-KZ", "If-None-Match": hinted.headers["ETag"]})
         self.assertEqual(304, unchanged.status_code)
-        self.assertEqual("Accept-Language", unchanged.headers["Vary"])
+        self.assertIn("Accept-Language", unchanged.headers["Vary"])
         self.assertNotEqual(localized.headers["ETag"], english.headers["ETag"])
         self.assertEqual([], english.json()["items"])
 
