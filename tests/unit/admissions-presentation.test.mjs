@@ -39,6 +39,12 @@ test("yearless deadlines are localized without inventing a year and keep their s
   }
 });
 
+test("a selected route without deadline records explains the empty section", () => {
+  setLanguage("eng", { emit: false });
+  const html = renderApplicantSection(context([], { deadlines: [] }), ["deadlines"]);
+  assert.match(html, /No source records are catalogued for this selection/);
+});
+
 test("Kazakh deadlines remain readable without browser locale data", () => {
   setLanguage("kaz", { emit: false });
   const original = Intl.DateTimeFormat;

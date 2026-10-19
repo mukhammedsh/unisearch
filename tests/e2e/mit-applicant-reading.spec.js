@@ -129,6 +129,7 @@ for (const item of cases) {
     await expect(aid.locator("ol")).toContainText("IDOC");
     await expect(aid.locator("[data-aid-fafsa]")).toBeVisible();
     await expect(aid).toContainText("3514");
+    await expect(aid).toContainText({ eng: "not awarded aid", rus: "не считается предоставленной помощью", kaz: "тағайындалған көмек емес" }[item.language]);
     await aid.locator("h3").evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-aid.png`) });
     await expectNoStackedGapMargins(page, "#tab-finance");

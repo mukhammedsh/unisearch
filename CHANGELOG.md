@@ -17,6 +17,7 @@ All notable project changes should be recorded here.
 - Filter published tariffs without filling gaps between fee categories or treating unknown costs or potential aid as an affordable price.
 - Translate available MIT program overviews into Russian and Kazakh with expandable originals; surface undergraduate aid documents, applicable dates and international instructions.
 - Localize summary source periods and reduce repeated applicability badges while retaining each record's conditions and source metadata.
+- Explain empty deadline sections and keep the unawarded-aid notice visible in MIT summaries; align browser checks with expandable references and permitted automatic spacing.
 
 ### Security
 - Record UniSearch's OSPS Baseline Level 2 self-attestation for version 2026.08.28 in BadgeApp and update the repository evidence.

@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { selectors, openDisclosureParents } = require("./helpers/selectors");
 
 const MIT_ID = "mit-usa-cambridge";
 const MBA_URL = "/university.html?id=mit-usa-cambridge&admission_option=mit-sloan-mba-full-time&admission_application_route=mit_sloan_mba_admissions&admission_level=masters&admission_route=graduate&admission_cycle=2027%20entry&admission_fee=unknown";
@@ -61,8 +61,9 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
 
   await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
   const finance = page.locator("#detailFinance");
-  await expect(finance).toContainText(/comparable annual total is not established/i);
+  await expect(finance).toContainText(/No comparable budget is confirmed for this selection/i);
   const feeConflict = finance.locator('[data-admissions-domain="costs"] [data-admissions-fact="mba-tuition-fee-conflict"]');
+  await openDisclosureParents(feeConflict);
   await expect(feeConflict).toBeVisible();
   await feeConflict.locator(":scope > summary").click();
   await expect(feeConflict).toContainText(/2026[-\u2011]2027/);

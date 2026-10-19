@@ -423,7 +423,7 @@ for (const [id, award] of [["imperial-option-computing-beng", "BEng"], ["imperia
     await expect(profile).toContainText("Home fee");
     await expect(profile).toContainText("Overseas fee");
     await expect(profile).toContainText("£10,050 per year");
-    await expect(page.locator("#detailFinance")).toContainText("comparable annual total is not established");
+    await expect(page.locator("#detailFinance")).toContainText("No comparable budget is confirmed for this selection");
     await expect(page.locator("#detailFinance")).not.toContainText(/\$0\b/);
     await noFitPercentage(page);
   });

@@ -95,6 +95,13 @@ test("catalog layout has no stacked gap and child margins", async ({ page }) => 
   await expectNoStackedGapMargins(page, "#universitiesCatalogPane");
 });
 
+test("spacing audit permits automatic alignment but rejects a fixed child margin", async ({ page }) => {
+  await page.setContent('<main id="spacingProbe" style="display:flex;flex-direction:column;gap:12px;height:100px"><span style="margin-top:auto">Aligned content</span></main>');
+  await expectNoStackedGapMargins(page, "#spacingProbe");
+  await page.locator("#spacingProbe span").evaluate(element => { element.style.marginTop = "4px"; });
+  await expect(expectNoStackedGapMargins(page, "#spacingProbe")).rejects.toThrow(/marginTop/);
+});
+
 test("catalog level selector stays clear across themes and desktop/phone layouts", async ({ page }) => {
   for (const theme of ["light", "dark"]) {
     for (const viewport of [
@@ -277,7 +284,8 @@ test("selected comparison cards keep a compact localized status at desktop and m
       const card = page.locator(`#universitiesList .uni-card[data-uni-id="${MIT_ID}"]`).first();
       await expect(card).toBeVisible();
       await expect(card.locator(".uni-details")).toHaveText(`${compareLabel}→`);
-      await card.click();
+      // Activate the card action; its center can contain an interactive ranking tooltip.
+      await card.locator(".uni-card-link-overlay").press("Enter");
       await expect(card).toHaveClass(/uni-card--compare-selected/);
       await expect(card.locator(".uni-details")).toHaveText(`${selectedLabel}→`);
       await expect(card.locator(".uni-details")).not.toContainText("for comparison");

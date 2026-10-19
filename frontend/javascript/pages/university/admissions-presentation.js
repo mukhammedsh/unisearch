@@ -73,7 +73,7 @@ function aidSummary(rows, resolved) {
     ${process.value.required.includes("FAFSA for federal-aid eligible domestic applicants") ? `<p class="admissions-reading__note" data-aid-fafsa>${escapeHtml(label("aid_fafsa"))}</p>` : ""}
     ${timeline}
     ${international ? `<h4>${escapeHtml(label("aid_international_title"))}</h4><p>${text(international.value.international_category)}</p><p>${text(international.value.international_need)}</p><p>${escapeHtml(label("aid_finances_title"))}</p>${renderAdmissionsValue((international.value.parent_finances || []).map(value => translateAdmissionSummary(value) || label("summary_translation_missing")))}${["separated_divorced_parents", "non_english", "submission", "processing"].filter(key => international.value[key]).map(key => `<p>${text(international.value[key])}</p>`).join("")}${sourceNote(international, resolved)}` : ""}
-    ${process.value.late ? `<p>${text(process.value.late)}</p>` : ""}<p class="admissions-reading__note">${process.value.individual_award ? text(process.value.individual_award) : escapeHtml(label("potential_aid"))}</p>${sourceNote(process, resolved)}</section>`;
+    ${process.value.late ? `<p>${text(process.value.late)}</p>` : ""}${process.value.individual_award ? `<p class="admissions-reading__note">${text(process.value.individual_award)}</p>` : ""}<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>${sourceNote(process, resolved)}</section>`;
 }
 
 function table(caption, headings, rows) {
@@ -162,6 +162,6 @@ export function renderApplicantSection(resolved, domains) {
   });
   const mainRecords = highlights && mode !== "requirements"
     ? `<details class="admissions-reading__references"><summary>${escapeHtml(label("full_records"))}</summary>${references(focused)}</details>`
-    : focused.length ? references(focused) : "";
+    : focused.length || !general.length ? references(focused) : "";
   return `<div class="admissions-reading">${highlights}${mode === "finance" && !focused.some(row => row.value?.funding_program) ? `<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>` : ""}${mainRecords}${general.length ? `<details class="admissions-reading__references" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}${mode === "requirements" ? renderAdmissionsContext({ ...resolved, facts: [], fact_groups: {} }, { domains: [], includeSourceNote: false, includeHistory: false, presentation: "simple" }) : ""}</div>`;
 }

@@ -33,7 +33,15 @@ async function expectNoStackedGapMargins(page, scopeSelector) {
           ...(vertical ? [["marginTop", childStyle.marginTop], ["marginBottom", childStyle.marginBottom]] : []),
           ...(horizontal ? [["marginLeft", childStyle.marginLeft], ["marginRight", childStyle.marginRight]] : []),
         ];
-        const margins = sides.filter(([, value]) => px(value) > 0.5);
+        const margins = sides.filter(([side, value]) => {
+          if (px(value) <= 0.5) return false;
+          // Hidden elements expose the computed keyword instead of flex's resolved auto spacing.
+          const inlineStyle = child.style.cssText;
+          child.style.setProperty("display", "none", "important");
+          const automatic = getComputedStyle(child)[side] === "auto";
+          child.style.cssText = inlineStyle;
+          return !automatic;
+        });
         if (margins.length) {
           stacks.push({
             parent: `${parent.tagName.toLowerCase()}.${Array.from(parent.classList).join(".")}`,
