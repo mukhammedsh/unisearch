@@ -76,7 +76,6 @@ import {
   unknownFieldText,
   textOrUnknown,
   moneyOrUnknown,
-  splitPriceDisplay,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
@@ -100,11 +99,42 @@ import {
   rankingStatusLabel,
 } from './_shared.js';
 
-export function universityCardPriceInfo(university) {
-    if (university?.admissions_catalog?.availability === "reviewed") {
+export function universityCardPriceInfo(university, basis = "annual_total") {
+    const quote = university?.catalog_costs?.[basis];
+    const minimum = toFiniteNumber(quote?.min);
+    const maximum = toFiniteNumber(quote?.max);
+    if (minimum !== null && maximum !== null && minimum >= 0 && maximum >= minimum && quote.currency) {
+        return { ...quote, amount: minimum, currency: quote.currency, amountUSD: convert(minimum, quote.currency, "USD"), min: minimum, max: maximum };
+    }
+    if (basis === "tuition" || university?.admissions_catalog?.availability === "reviewed") {
         return { amount: null, currency: "", amountUSD: null };
     }
     return resolveUniversityCardPrice(university);
+}
+
+export function renderUniversityCardCosts(university, basis = "annual_total") {
+    const other = basis === "tuition" ? "annual_total" : "tuition";
+    const bases = universityCardPriceInfo(university, basis).amount === null && universityCardPriceInfo(university, other).amount !== null ? [other, basis] : [basis, other];
+    const shownScopes = new Set();
+    const lines = bases.map((key, index) => {
+        const price = universityCardPriceInfo(university, key);
+        const known = price.amount !== null && Number.isFinite(price.amount);
+        const money = value => moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, { presentation: "summary" });
+        const unavailable = key === "annual_total" && universityCardPriceInfo(university, "tuition").amount !== null ? t("universities.cost.full_budget_unavailable") : t("universities.cost.unavailable");
+        const value = known ? (price.max > price.min ? `${money(price.min)} – ${money(price.max)}` : money(price.amount)) : unavailable;
+        const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
+        const period = entry ? tFormat("universities.cost.entry", { year: entry[1] }) : price.period;
+        const scope = [price.study_level ? t(`university.admissions.catalog.level.${price.study_level}`) : "", period].filter(Boolean).join(" · ");
+        const showScope = scope && !shownScopes.has(scope);
+        shownScopes.add(scope);
+        return `<div class="uni-cost-row${index ? " uni-cost-row--secondary" : ""}" data-cost-basis="${key}"><span class="uni-cost-label">${escapeHtml(t(`universities.cost.${key}`))}</span><span class="uni-price-val${known ? "" : " uni-cost-unavailable"}">${escapeHtml(value)}${known ? ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year"))}</span>` : ""}</span>${showScope ? `<span class="uni-cost-context">${escapeHtml(scope)}</span>` : ""}</div>`;
+    });
+    const reference = university?.catalog_costs?.reference;
+    const exclusions = university?.catalog_costs?.annual_total?.exclusions || [];
+    const note = [reference ? t("universities.cost.reference") : t("universities.cost.before_aid"),
+        university?.catalog_costs?.tuition?.fee_statuses?.length > 1 ? t("universities.cost.fee_scope") : "",
+        ...exclusions.map(key => t(`universities.cost.exclusion.${key}`))].filter(Boolean).join(" ");
+    return `<div class="uni-price uni-price--catalog">${lines.join("")}<span class="uni-cost-context">${escapeHtml(note)}</span></div>`;
 }
 
 let __universitiesProfileUpdatedHandler = null;
@@ -524,6 +554,7 @@ export function initUniversitiesPage() {
         currency: currentCurrency,
         min_tuition: initialMin,
         max_tuition: initialMax, 
+        cost_basis: savedState.cost_basis === "tuition" ? "tuition" : "annual_total",
         sort: normalizeSortMode(resolvedSort || defaultSortMode),
         practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
         social_vs_hardcore: clampPercent(
@@ -1673,6 +1704,7 @@ export function initUniversitiesPage() {
                 region: "",
                 city: "",
                 study_level: "",
+                cost_basis: "annual_total",
                 funding_type: getProfileFundingQueryValue(),
                 min_tuition: currentLimits.min,
                 max_tuition: currentLimits.max,
@@ -1859,6 +1891,7 @@ export function initUniversitiesPage() {
     el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
+    $("costBasisSelect")?.addEventListener("change", () => { state.cost_basis = $("costBasisSelect").value; refetch(); });
 
     el.catalogLevelButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -1948,6 +1981,7 @@ export function initUniversitiesPage() {
             region: "",
             city: "",
             study_level: "",
+            cost_basis: "annual_total",
             funding_type: getProfileFundingQueryValue(),
             min_tuition: currentLimits.min,
             max_tuition: currentLimits.max,
@@ -2950,7 +2984,7 @@ export function initUniversitiesPage() {
         try {
             const detail = await mapPopupLoads.get(cacheKey);
             if (markersByUniId.get(uniId) !== marker) return;
-            marker.setPopupContent(renderFullMapPopup(detail));
+            marker.setPopupContent(renderFullMapPopup({ ...detail, catalog_costs: point.catalog_costs || detail.catalog_costs }));
             marker.getPopup()?.update();
             syncCardActionState();
         } catch (error) {
@@ -3149,6 +3183,7 @@ export function initUniversitiesPage() {
         const tuitionParams = getApiTuitionParams();
         if (tuitionParams.min_tuition !== undefined) p.set("min_tuition", String(tuitionParams.min_tuition));
         if (tuitionParams.max_tuition !== undefined) p.set("max_tuition", String(tuitionParams.max_tuition));
+        if (state.cost_basis === "tuition") p.set("cost_basis", "tuition");
         if (state.study_level) p.set("study_level", state.study_level);
         if (state.funding_type) p.set("funding_type", state.funding_type);
 
@@ -3204,6 +3239,7 @@ export function initUniversitiesPage() {
         if (state.city) payload.city = state.city;
         if (state.study_level) payload.study_level = state.study_level;
         if (state.funding_type) payload.funding_type = state.funding_type;
+        payload.cost_basis = state.cost_basis;
         const tuitionParams = getApiTuitionParams();
         if (tuitionParams.min_tuition !== undefined) payload.min_tuition = tuitionParams.min_tuition;
         if (tuitionParams.max_tuition !== undefined) payload.max_tuition = tuitionParams.max_tuition;
@@ -3244,6 +3280,7 @@ export function initUniversitiesPage() {
         }
         const studyLevelSelect = $("studyLevelSelect");
         if (studyLevelSelect) studyLevelSelect.value = state.study_level || "";
+        if ($("costBasisSelect")) $("costBasisSelect").value = state.cost_basis;
         if (el.focusSlider) el.focusSlider.value = state.practice_vs_science;
         if (el.atmosphereSlider) el.atmosphereSlider.value = state.social_vs_hardcore;
         if (el.financeSlider) el.financeSlider.value = state.budget_vs_prestige;
@@ -3258,7 +3295,7 @@ export function initUniversitiesPage() {
         fillTrack(); 
         updateSliderLabels();
 
-        ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect"].forEach(id => initCustomSelect(id));
+        ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect", "costBasisSelect"].forEach(id => initCustomSelect(id));
         updateSliderVisibility();
         updateTradeoffLabels();
         updateMobileFilterUi();
@@ -3326,6 +3363,7 @@ export function initUniversitiesPage() {
         if(sp.has("region")) state.region = sp.get("region");
         if(sp.has("city")) state.city = sp.get("city");
         if(sp.has("study_level")) state.study_level = sp.get("study_level");
+        if(sp.has("cost_basis")) state.cost_basis = sp.get("cost_basis") === "tuition" ? "tuition" : "annual_total";
         if(sp.has("min_tuition")) {
             const raw = Number(sp.get("min_tuition"));
             if (Number.isFinite(raw)) {
@@ -3714,7 +3752,7 @@ export function initUniversitiesPage() {
         });
         const reviewedAdmissions = u?.admissions_catalog?.availability === "reviewed";
         const match = u.matchData || {};
-        const priceInfo = universityCardPriceInfo(u);
+        const priceInfo = universityCardPriceInfo(u, state.cost_basis);
         const cost = priceInfo.amount;
         const uniCurrency = priceInfo.currency;
 
@@ -3751,7 +3789,7 @@ export function initUniversitiesPage() {
         const aidAny = !reviewedAdmissions && (Object.hasOwn(match, "aidAny") ? match.aidAny === true : hasGrant);
         const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
         const compareCostUSD = priceInfo.amountUSD ?? (cost !== null && uniCurrency ? (uniCurrency === "USD" ? cost : convert(cost, uniCurrency, "USD")) : cost);
-        const overBudget = hasUserBudget && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
+        const overBudget = !reviewedAdmissions && state.cost_basis === "annual_total" && hasUserBudget && compareCostUSD !== null && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
         const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
         const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
         const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
@@ -3869,7 +3907,6 @@ export function initUniversitiesPage() {
         const overlayTitle = String(name || "");
         const rankValue = toFiniteNumber(u?.rank);
         const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
-        const costText = moneyOrUnknown(cost, "placeholder.field.cost", "Cost", uniCurrency, { presentation: "summary" });
         const isCompared = isCompareSelectionMode() && compareUniversityIds.has(String(id));
         const detailLabel = escapeHtml(isCompareSelectionMode()
             ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
@@ -3915,14 +3952,7 @@ ${rankInnerHtml}
             </div>
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const hasCost = Number.isFinite(Number(cost));
-        const priceParts = splitPriceDisplay(costText);
-        const priceHtml = hasCost
-            ? `<div class="uni-price${priceParts.secondary ? " uni-price--with-conversion" : ""}">
-                <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(priceParts.primary)}</span>${priceParts.secondary ? "" : ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span>`}</span>
-                ${priceParts.secondary ? `<span class="uni-price-line"><span class="uni-price-val">${escapeHtml(priceParts.secondary)}</span> <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span></span>` : ""}
-              </div>`
-            : `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(costText)}</span></div>`;
+        const priceHtml = renderUniversityCardCosts(u, state.cost_basis);
         const logoImgHtml = `<img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">

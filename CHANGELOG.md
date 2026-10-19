@@ -4,6 +4,20 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+### Updated
+- Reuse the existing expandable program-card design for MIT, Imperial College London, and Stanford University, with concise sourced overviews and full records available separately.
+- Keep program details beside their selected card across searches and guide visitors from dates and costs to the required program or application path.
+- Version localization caches and requests so returning visitors receive current interface labels after an update; reuse valid packs and retry failed language loads.
+- Present scoped exam summaries, readable application/test dates, and explicitly dated reference budgets; retain full source records and additional applicability references.
+- Recognize Russian and Kazakh entry-cycle examples, narrow program search to the complete subject, and preserve program-search state when switching languages.
+- Expose official application actions and mobile tab controls without replacing the existing university-page layout.
+- Translate reviewed program names and study essentials into Russian and Kazakh, retain English originals, explain MIT program codes, and support searches using the displayed names.
+- Keep published deadline month names readable when browser Kazakh locale data is incomplete.
+- Show tuition and study/living reference budgets on catalog cards, with a persisted price-basis filter, scoped source periods, and the same prices in map cards.
+- Filter published tariffs without filling gaps between fee categories or treating unknown costs or potential aid as an affordable price.
+- Translate available MIT program overviews into Russian and Kazakh with expandable originals; surface undergraduate aid documents, applicable dates and international instructions.
+- Localize summary source periods and reduce repeated applicability badges while retaining each record's conditions and source metadata.
+
 ### Security
 - Record UniSearch's OSPS Baseline Level 2 self-attestation for version 2026.08.28 in BadgeApp and update the repository evidence.
 - Attach verified Sigstore provenance bundles to each release ZIP and require peer-reviewed pull requests for `main`.

@@ -68,6 +68,10 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         self.assertGreater(canonical.json()["total"], 0)
         self.assertEqual(canonical.json()["items"], localized.json()["items"])
         self.assertEqual(canonical.json()["total"], localized.json()["total"])
+        for search in ("компьютерлік ғылым", "компьютерлік ғылымдар"):
+            with self.subTest(search=search):
+                synonym = self.client.get(endpoint, params={"search": search, "study_level": "undergraduate", "lang": "kaz"})
+                self.assertEqual(canonical.json()["items"], synonym.json()["items"])
 
         normalized = self.client.get(endpoint, params={"search": "Информатика", "study_level": "undergraduate", "lang": "kaz"})
         hinted = self.client.get(endpoint, params={"search": "Информатика", "study_level": "undergraduate"}, headers={"Accept-Language": "kk-KZ, en;q=0.8"})
@@ -82,6 +86,24 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         self.assertEqual("Accept-Language", unchanged.headers["Vary"])
         self.assertNotEqual(localized.headers["ETag"], english.headers["ETag"])
         self.assertEqual([], english.json()["items"])
+
+    def test_study_options_find_displayed_translations_with_awards_and_keep_official_titles(self):
+        cases = (
+            ("mit-usa-cambridge", "mit-course-6-3-bachelor", "rus", "Компьютерные науки и инженерия", "Computer Science and Engineering (Course 6-3)"),
+            ("mit-usa-cambridge", "mit-course-6-3-bachelor", "kaz", "Информатика және инженерия", "Computer Science and Engineering (Course 6-3)"),
+            ("imperial-college-london-uk", "imperial-option-computing-meng", "rus", "Вычислительные системы", "Computing"),
+            ("stanford-university-usa-ca", "stanford-option-cs-bs", "rus", "Компьютерные науки (BS)", "Computer Science (BS)"),
+            ("stanford-university-usa-ca", "stanford-option-cs-bs", "kaz", "Информатика (BS)", "Computer Science (BS)"),
+        )
+        for institution, option_id, language, search, official_title in cases:
+            with self.subTest(institution=institution, language=language):
+                response = self.client.get(f"/universities/{institution}/study-options", params={
+                    "search": search, "study_level": "undergraduate", "lang": language,
+                })
+                self.assertEqual(200, response.status_code)
+                option = next((item for item in response.json()["items"] if item["id"] == option_id), None)
+                self.assertIsNotNone(option)
+                self.assertEqual(official_title, option["title"])
 
     def test_study_options_rejects_oversized_language_input(self):
         response = self.client.get("/universities/stanford-university-usa-ca/study-options", params={"lang": "k" * 17})

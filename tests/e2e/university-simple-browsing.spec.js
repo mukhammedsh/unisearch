@@ -140,6 +140,23 @@ async function chooseOption(page, item) {
   await option.click();
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  const card = option.locator("xpath=..");
+  await expect(card).toHaveClass(/program-card/);
+  await expect(option).toHaveAttribute("aria-expanded", "true");
+  await expect(card.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(card.locator("#admissionsStudyOverview")).not.toBeEmpty();
+  await expect(card.locator('[data-admissions-domain="study"] .admissions-catalog__fact').first()).not.toHaveAttribute("open", "");
+  const selectedUrl = page.url();
+  await option.press("Enter");
+  await expect(option).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
+  expect(page.url()).toBe(selectedUrl);
+  await option.press("Enter");
+  await expect(card.locator("#admissionsStudyDetails")).toBeVisible();
+  if (["MIT first-year", "Imperial Computing MEng", "Stanford CS external MS"].includes(item.name)) {
+    await option.evaluate(node => node.scrollIntoView({ block: "start" }));
+    await saveScreenshot(page, `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-program-overview.png`);
+  }
   await expectAccessibleTextContrast(option);
   const selectionActions = page.locator("#admissionsReferenceSummary .admissions-selection__actions button");
   await expect(selectionActions).toHaveCount(2);
@@ -151,8 +168,8 @@ async function chooseOption(page, item) {
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expectProgramFacts(page, item);
   await expect(page.locator("#admissionsStudyInfo .admissions-catalog__assessment")).toHaveCount(0);
-  await expect(page.locator("#admissionsStudyDetails .admissions-context__note")).toHaveCount(1);
-  await expect(page.locator("#admissionsStudyDetails .admissions-context__note").first()).not.toBeEmpty();
+  await expect(page.locator("#admissionsStudyDetails .program-card__body-inner > .admissions-context__note")).toHaveCount(1);
+  await expect(page.locator("#admissionsStudyDetails .program-card__body-inner > .admissions-context__note")).not.toBeEmpty();
   await expect(page.locator("#admissionsStudyRelationship")).not.toBeEmpty();
   const officialCourseLink = page.locator("#admissionsStudyRelationship a[href^=\"https://\"]").first();
   if (await officialCourseLink.count()) await expectAccessibleTextContrast(officialCourseLink);
@@ -231,7 +248,11 @@ async function expectReferenceTabs(page, item) {
     await page.locator(`.d-tab-btn[data-tab="${tab}"]`).click();
     await expect(page.locator(`#${tab}`)).toHaveClass(/active/);
     await expect(summary).toBeVisible();
-    await expect(page.locator(`${pane} [data-admissions-domain="${domain}"]`)).toBeVisible();
+    const fullRecords = page.locator(`${pane} > .admissions-reading > .admissions-reading__references:not([data-general-references])`).first();
+    if (await fullRecords.count() && !(await fullRecords.evaluate(node => node.open))) await fullRecords.locator(":scope > summary").click();
+    const general = page.locator(`${pane} > .admissions-reading > [data-general-references]`);
+    if (await general.count() && !(await general.evaluate(node => node.open))) await general.locator(":scope > summary").click();
+    await expect(page.locator(`${pane} [data-admissions-domain="${domain}"]`).first()).toBeVisible();
     await expect(page.locator(`${pane} .admissions-catalog__fact[open]`).first()).toBeVisible();
     await expect(page.locator(`${pane} .admissions-catalog__meta`).first()).not.toBeEmpty();
     if (domain === "deadlines" && item.name === "MIT first-year") {
@@ -242,7 +263,7 @@ async function expectReferenceTabs(page, item) {
     if (domain === "deadlines" && item.name === "Stanford CS external MS") await expect(page.locator(pane)).toContainText(/2026[\u2011-]12[\u2011-]08/);
     if (item.name === "MIT first-year") await saveScreenshot(page, `mit-${domain === "deadlines" ? "dates" : "costs"}.png`);
     if (domain === "costs") {
-      await expect(page.locator(`${pane} [data-admissions-domain="funding"]`)).toBeVisible();
+      await expect(page.locator(`${pane} [data-admissions-domain="funding"]`).first()).toBeVisible();
       await expect(page.locator(pane)).toContainText(/potential funding is not awarded aid|не считается предоставленной помощью|тағайындалған көмек емес/i);
       if (item.name === "MIT first-year") {
         await expect(page.locator(pane)).toContainText("USD");
@@ -267,6 +288,82 @@ for (const item of journeys) {
 
     if (item.viewport.width <= 480) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.viewport.width);
+    }
+  });
+}
+
+test("a program remains readable outside search results without losing its selected application path", async ({ page }) => {
+  const item = journeys[0];
+  await openGuestUniversity(page, item);
+  await chooseOption(page, item);
+  await chooseRoute(page, item);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  const selectedUrl = page.url();
+
+  await page.locator("#admissionsSearch").fill("Physics");
+  await page.locator("#admissionsSearchSubmit").click();
+  await expect(page.locator("#admissionsProgramList [data-study-option]").first()).toContainText("Physics");
+  const pinned = page.locator("#admissionsSelectedProgram");
+  await expect(pinned).toBeVisible();
+  await expect(pinned.locator("#admissionsStudyDetails")).toBeVisible();
+  const toggle = pinned.locator("[data-study-option]");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(pinned.locator("#admissionsStudyDetails")).toBeHidden();
+  await toggle.click();
+  await expect(pinned.locator("#admissionsStudyDetails")).toBeVisible();
+  expect(page.url()).toBe(selectedUrl);
+  await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
+
+  await page.locator("#admissionsSearch").fill("");
+  await page.locator("#admissionsSearch").press("Enter");
+  const originalCard = page.locator(`#admissionsProgramList [data-study-option="${item.option}"]`).locator("xpath=..");
+  await expect(originalCard.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(pinned).toBeHidden();
+  await expect(page.locator("#admissionsStudyDetails")).toHaveCount(1);
+  await expect(page.locator(`[data-study-option="${item.option}"]`)).toHaveCount(1);
+  await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
+});
+
+test("dates and costs guide guests to the missing program or application path", async ({ page }) => {
+  const item = journeys[0];
+  await openGuestUniversity(page, item);
+  await page.locator('[data-tab="tab-deadlines"]').click();
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+  await page.locator("#detailDeadlines .admissions-state button").click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  const option = page.locator(`[data-study-option="${item.option}"]`);
+  await expect(option).toBeVisible();
+  await option.click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.locator('[data-tab="tab-finance"]').click();
+  await expect(page.locator("#tab-finance")).toHaveClass(/active/);
+  await page.locator("#detailFinance .admissions-state button").click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await expect(page.locator("#admissionsRoute")).toBeEnabled();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  expect(new URL(page.url()).searchParams.get("admission_option")).toBe(item.option);
+});
+
+for (const theme of ["light", "dark"]) {
+  test(`Russian program actions stay inside the card at narrow phone widths (${theme})`, async ({ page }) => {
+    const item = { ...journeys[2], name: "Imperial phone", theme, viewport: { width: 390, height: 844 } };
+    await openGuestUniversity(page, item);
+    await chooseOption(page, item);
+    await page.locator('[data-tab="tab-programs"]').click();
+    await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+    for (const width of [390, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const bounds = await page.locator("#admissionsViewRequirements").evaluate(button => {
+        const action = button.getBoundingClientRect();
+        const body = button.closest(".program-card__body-inner").getBoundingClientRect();
+        return { left: action.left - body.left, right: body.right - action.right, height: action.height };
+      });
+      expect(bounds.left).toBeGreaterThanOrEqual(-1);
+      expect(bounds.right).toBeGreaterThanOrEqual(-1);
+      expect(bounds.height).toBeGreaterThanOrEqual(44);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     }
   });
 }

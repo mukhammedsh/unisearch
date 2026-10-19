@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 global.fetch = async (url) => {
-  const target = String(url || "");
+  const target = String(url || "").split("?")[0];
   for (const language of ["eng", "ru"]) {
     if (target.endsWith(`Localization/${language}`)) {
       return { ok: true, text: () => readFile(new URL(`../../frontend/Localization/${language}`, import.meta.url), "utf8") };

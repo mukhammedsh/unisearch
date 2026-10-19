@@ -940,6 +940,7 @@ export function saveFilters(state) {
     only_saved: !!state.only_saved,
     min_tuition: state.min_tuition,
     max_tuition: state.max_tuition,
+    cost_basis: state.cost_basis === "tuition" ? "tuition" : "annual_total",
     sort: state.sort,
     practice_vs_science: state.practice_vs_science,
     social_vs_hardcore: state.social_vs_hardcore,

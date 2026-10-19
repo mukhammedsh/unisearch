@@ -3,7 +3,8 @@ import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
-const I18N_SESSION_CACHE_PREFIX = "unisearch_i18n_pack_v3_";
+const I18N_PACK_REVISION = "11";
+const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";
 const LANG_RUS = "rus";
@@ -29,8 +30,9 @@ const DICT = {
 };
 
 let currentLang = LANG_ENG;
-let __packsLoaded = false;
-let __packsLoadPromise = null;
+const __loadedPacks = new Set();
+const __packLoadPromises = new Map();
+let __i18nInitialized = false;
 
 function normalizeLang(value) {
   const raw = String(value || "").trim().toLowerCase();
@@ -122,8 +124,9 @@ function _hydratePacksFromSession() {
       const cached = safeSessionStorage.get(`${I18N_SESSION_CACHE_PREFIX}${lang}`, "");
       if (!cached) return;
       const parsed = _parseLocalizationFile(cached);
-      if (!parsed || typeof parsed !== "object") return;
+      if (!parsed || typeof parsed !== "object" || Object.keys(parsed).length === 0) return;
       DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+      __loadedPacks.add(lang);
 
       const code = String(parsed["meta.code"] || "").trim();
       const navKey = `nav.lang.${lang}`;
@@ -136,39 +139,38 @@ function _hydratePacksFromSession() {
 
 async function _loadLocalizationPacks() {
   _hydratePacksFromSession();
-  if (__packsLoaded) return;
-  if (__packsLoadPromise) return __packsLoadPromise;
+  await Promise.all([LANG_ENG, LANG_RUS, LANG_KAZ].map(_loadLocalizationPack));
+}
 
-  __packsLoadPromise = (async () => {
-    const langs = [LANG_ENG, LANG_RUS, LANG_KAZ];
-    await Promise.allSettled(
-      langs.map(async (lang) => {
-        const file = LANG_FILE_BY_CODE[lang];
-        if (!file) return;
-        try {
-          const raw = await _fetchLocalizationText(file, I18N_PACK_FETCH_TIMEOUT_MS);
-          if (!raw) return;
-          const parsed = _parseLocalizationFile(raw);
-          if (!parsed || typeof parsed !== "object") return;
-          DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+function _loadLocalizationPack(lang) {
+  if (__loadedPacks.has(lang)) return Promise.resolve(true);
+  if (__packLoadPromises.has(lang)) return __packLoadPromises.get(lang);
 
-          safeSessionStorage.set(`${I18N_SESSION_CACHE_PREFIX}${lang}`, raw);
+  const file = LANG_FILE_BY_CODE[lang];
+  if (!file) return Promise.resolve(false);
 
-          const code = String(parsed["meta.code"] || "").trim();
-          const navKey = `nav.lang.${lang}`;
-          if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
-        } catch (e) {
-          // keep already loaded keys from localization files
-        }
-      })
-    );
-    __packsLoaded = true;
-  })().catch(() => {
-    // keep already loaded keys from localization files
-    __packsLoaded = true;
+  const promise = (async () => {
+    try {
+      const raw = await _fetchLocalizationText(`${file}?v=${encodeURIComponent(window.APP_VERSION || "dev")}&r=${I18N_PACK_REVISION}`, I18N_PACK_FETCH_TIMEOUT_MS);
+      if (!raw) return false;
+      const parsed = _parseLocalizationFile(raw);
+      if (Object.keys(parsed).length === 0) return false;
+      DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+      __loadedPacks.add(lang);
+      safeSessionStorage.set(`${I18N_SESSION_CACHE_PREFIX}${lang}`, raw);
+
+      const code = String(parsed["meta.code"] || "").trim();
+      const navKey = `nav.lang.${lang}`;
+      if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  })();
+  __packLoadPromises.set(lang, promise);
+  return promise.finally(() => {
+    if (__packLoadPromises.get(lang) === promise) __packLoadPromises.delete(lang);
   });
-
-  return __packsLoadPromise;
 }
 
 export function getCurrentLanguage() {
@@ -256,6 +258,11 @@ export function setLanguage(lang, options = {}) {
   currentLang = next;
   setHtmlLang(next);
   if (persist) writeStoredLang(next);
+  if (__i18nInitialized) {
+    void _loadLocalizationPack(next).then((loaded) => {
+      if (loaded && currentLang === next) applyTranslations();
+    });
+  }
   if (changed && emit) {
     window.dispatchEvent(new CustomEvent("languageChanged", { detail: { language: next } }));
   }
@@ -270,6 +277,7 @@ export async function initI18n() {
   setLanguage(resolved, { persist: !stored, emit: false });
 
   await _loadLocalizationPacks();
+  __i18nInitialized = true;
   return currentLang;
 }
 

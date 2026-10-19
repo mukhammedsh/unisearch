@@ -442,7 +442,7 @@ def _best_token_score(
     return best_weight, best_mult
 
 
-def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any]) -> Optional[float]:
+def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any], *, require_all_terms: bool = False) -> Optional[float]:
     q_norm = prepared_query["q_norm"]
     q_tokens = prepared_query["q_tokens"]
     core_tokens = prepared_query.get("core_tokens", q_tokens)
@@ -478,6 +478,8 @@ def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any]
 
     # Disqualification criteria:
     if matched_core == 0:
+        return None
+    if require_all_terms and matched_core < len(core_tokens):
         return None
     if len(core_tokens) >= 3 and matched_core < 2:
         return None

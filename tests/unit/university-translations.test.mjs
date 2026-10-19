@@ -6,8 +6,9 @@ import { test } from "node:test";
 const calls = [];
 global.fetch = async (url) => {
   const target = String(url || "");
-  if (target.endsWith("Localization/eng") || target.endsWith("Localization/ru")) {
-    const language = target.endsWith("/ru") ? "ru" : "eng";
+  const resourcePath = target.split("?")[0];
+  if (resourcePath.endsWith("Localization/eng") || resourcePath.endsWith("Localization/ru")) {
+    const language = resourcePath.endsWith("/ru") ? "ru" : "eng";
     return { ok: true, text: () => readFile(new URL(`../../frontend/Localization/${language}`, import.meta.url), "utf8") };
   }
   if (target.includes("/universities/translations?lang=rus")) {
@@ -50,6 +51,8 @@ test("university translation packs load once per language and drive typed transl
   assert.equal(translations.translateUniversityName("", "Fallback"), "Fallback");
   assert.equal(translations.translateAdmissionText("Official route"), "Официальный путь");
   assert.equal(translations.translateAdmissionText("Interview required"), "Собеседование required");
+  assert.equal(translations.translateAdmissionSummary("Official route"), "Официальный путь");
+  assert.equal(translations.translateAdmissionSummary("Interview required"), "");
   assert.equal(translations.translateTrackLabel("Merit Grant"), "Грант за заслуги");
   assert.equal(translations.translateTrackLabel("Paid route"), "Платное route");
   assert.equal(translations.translateProgramName("Computer Science"), "Информатика");

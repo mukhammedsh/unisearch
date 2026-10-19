@@ -411,6 +411,19 @@ universities.city: City
 universities.cost_per_year: Cost / year
 universities.cost_min: Min cost
 universities.cost_max: Max cost
+universities.cost.filter_basis: Price per academic year
+universities.cost.annual_total: Study and living budget
+universities.cost.tuition: Tuition
+universities.cost.entry: {year} entry
+universities.cost.unavailable: Check the program
+universities.cost.full_budget_unavailable: No comparable full budget
+universities.cost.reference: Published reference, before aid.
+universities.cost.before_aid: Before scholarships or financial aid.
+universities.cost.fee_scope: Range varies by program and Home/Overseas fee category.
+universities.cost.exclusion.insurance: Insurance is additional.
+universities.cost.exclusion.travel: Travel is additional.
+universities.cost.exclusion.one_time_fees: One-time fees are additional.
+universities.cost.filter_help: Before aid. A range may partly match: check the program and fee category. Unknown prices are excluded when a price limit is active.
 universities.country: Country
 universities.filter: Filter
 universities.filter.all: All
@@ -2432,11 +2445,11 @@ university.admissions.catalog.choose_program_hint: Choose a program in the Progr
 university.admissions.catalog.open_application: Open application page
 university.admissions.catalog.view_requirements: View admission requirements
 university.admissions.catalog.study_info: About the program
-university.admissions.catalog.study_info_note: Official information about this study option. Study and degree-completion rules are separate from admission requirements.
+university.admissions.catalog.study_info_note: Full program information stays in the official source language. Admission requirements are shown separately.
 university.admissions.catalog.source_note_simple: Official source text is shown in its original language.
 university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
 university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
-university.admissions.catalog.source_scope_details: Source status, scope and dates
+university.admissions.catalog.source_scope_details: Source and conditions
 university.admissions.catalog.check_details: Optional profile check of published minimums
 university.admissions.catalog.publication: Publication status
 university.admissions.catalog.topic.eligibility: Eligibility
@@ -2458,6 +2471,7 @@ university.admissions.catalog.choose_program: Choose a study option
 university.admissions.catalog.no_program_selected: No study option selected
 university.admissions.catalog.route_label: Published application path
 university.admissions.catalog.choose_route: Choose a published path
+university.admissions.catalog.choose_route_action: Choose application path
 university.admissions.catalog.route_required: Choose one of the published paths above to read its requirements and application details.
 university.admissions.catalog.applicant_label: Applicant category
 university.admissions.catalog.unspecified: Not specified
@@ -2620,6 +2634,123 @@ university.admissions.catalog.field.fee_status: Fee-status conditions
 university.admissions.catalog.field.additional_dimensions: Additional applicability conditions
 university.admissions.catalog.field.study: Study option
 university.admissions.catalog.field.application: Application route
+university.admissions.catalog.field.duration: Duration
+university.admissions.catalog.field.mode: Study mode
+university.admissions.catalog.field.language: Teaching language
+university.admissions.catalog.field.location: Location
+university.admissions.catalog.field.department: Department
+university.admissions.catalog.field.start_date: Start date
+university.admissions.catalog.field.presence: Test policy
+university.admissions.catalog.field.cutoff: Numeric cutoff
+university.admissions.catalog.field.recommended: Recommended score
+university.admissions.catalog.field.exam: Exam
+university.admissions.catalog.field.minima_and_recommendations: Minimum and recommended scores
+university.admissions.catalog.field.test_date_before: Test taken before
+university.admissions.catalog.field.test_date_from: Test taken on or after
+university.admissions.catalog.field.tuition: Tuition
+university.admissions.catalog.field.total_before_aid: Total before aid
+university.admissions.catalog.field.student_life_fee: Student fee
+university.admissions.catalog.field.housing_estimate: Housing estimate
+university.admissions.catalog.field.food_estimate: Food estimate
+university.admissions.catalog.field.materials_estimate: Study materials
+university.admissions.catalog.field.personal_estimate: Personal expenses
+university.admissions.catalog.field.windows: Application windows
+university.admissions.catalog.field.round: Application window
+university.admissions.catalog.field.application_due: Application deadline
+university.admissions.catalog.field.aid_due: Aid deadline
+university.admissions.catalog.field.decision: Admission decision
+university.admissions.catalog.field.tests: Tests
+university.admissions.catalog.field.latest: Last accepted date
+university.admissions.catalog.field.year: Entry year
+university.admissions.catalog.field.exact_time_timezone: Published time and timezone
+university.admissions.catalog.field.funding_type: Funding type
+university.admissions.catalog.field.funding_program: Funding program
+university.admissions.catalog.field.required: Required documents
+university.admissions.catalog.field.when: Applies when
+university.admissions.catalog.field.effect: What the rule means
+university.admissions.catalog.field.health_insurance: Health insurance
+university.admissions.catalog.field.enrollment_reply: Offer reply deadline
+university.admissions.catalog.field.name: Name
+university.admissions.catalog.field.act_writing: ACT Writing
+university.admissions.catalog.field.act_science: ACT Science
+university.admissions.catalog.field.sat_essay: SAT Essay
+university.admissions.catalog.field.sat_formats: Accepted SAT formats
+university.admissions.catalog.enum.strongly_recommended: Strongly recommended under the stated conditions
+university.admissions.catalog.enum.not_stated: Not stated in this source
+university.admissions.catalog.enum.not_published_on_this_page: Not published on this page
+university.admissions.catalog.enum.paper: Paper-based
+university.admissions.catalog.enum.digital: Digital
+university.admissions.reading.tests: Academic tests
+university.admissions.reading.or: or
+university.admissions.reading.no_numeric_cutoff: This source record does not set a numeric cutoff. Test submission and admission selection are separate.
+university.admissions.reading.language: English proficiency
+university.admissions.reading.english_condition: This strong recommendation applies to non-native English speakers who have used English for fewer than five years or do not speak it at home or school. It is separate from the required SAT or ACT.
+university.admissions.reading.language_scores: Published English-test scores
+university.admissions.reading.exam: Exam
+university.admissions.reading.minimum: Minimum
+university.admissions.reading.recommended: Recommended
+university.admissions.reading.test_before: Taken before
+university.admissions.reading.test_from: Taken on or after
+university.admissions.reading.scale: Scale
+university.admissions.reading.documents: Application documents
+university.admissions.reading.document_application: MIT application with essays, activities and academic information
+university.admissions.reading.document_school: Secondary School Report and transcript
+university.admissions.reading.document_references: Two teacher recommendations
+university.admissions.reading.document_tests: SAT or ACT
+university.admissions.reading.insurance_not_included: Required health-insurance coverage is additional and is not included in this total.
+university.admissions.reading.application_dates: Application windows
+university.admissions.reading.test_dates: Last accepted test dates
+university.admissions.reading.window: Application window
+university.admissions.reading.apply_by: Application
+university.admissions.reading.aid_by: Financial aid
+university.admissions.reading.decision: Decision
+university.admissions.reading.last_test: Last accepted date
+university.admissions.reading.recurring_dates: These dates recur annually; this source does not establish an entry year. Confirm the selected cycle on the official page.
+university.admissions.reading.reply_by: Reply to an offer
+university.admissions.reading.reference_budget: Published reference budget
+university.admissions.reading.dated_budget: This is the published budget for the period shown, before aid. It is not a confirmed price for another entry cycle.
+university.admissions.reading.tuition: Tuition
+university.admissions.reading.student_life_fee: Student fee
+university.admissions.reading.housing_estimate: Housing estimate
+university.admissions.reading.food_estimate: Food estimate
+university.admissions.reading.materials_estimate: Study materials
+university.admissions.reading.personal_estimate: Personal expenses
+university.admissions.reading.insurance_extra: Insurance and other limits:
+university.admissions.reading.potential_aid: Potential funding is not awarded aid. Eligibility, documents and deadlines are separate; no award is subtracted from published costs.
+university.admissions.reading.no_budget: No comparable budget is confirmed for this selection. Published amounts below keep their own period, currency and conditions.
+university.admissions.reading.full_records: Full source records and conditions
+university.admissions.reading.general_references: Additional reference information
+university.admissions.reading.general_reference_note: These records cover broader or special situations. Their applicability to this selection is unresolved; check each record's scope before treating it as a requirement.
+university.admissions.reading.update_selection: Update selection
+university.admissions.catalog.route_name.mit-first-year: First-year admission after school
+university.admissions.catalog.route_name.mit-transfer: Transfer from another university
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: First-year admission after school
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Transfer from another university
+university.admissions.reading.mid_month: Mid-{month}
+university.admissions.reading.month.1: January
+university.admissions.reading.month.2: February
+university.admissions.reading.month.3: March
+university.admissions.reading.month.4: April
+university.admissions.reading.month.5: May
+university.admissions.reading.month.6: June
+university.admissions.reading.month.7: July
+university.admissions.reading.month.8: August
+university.admissions.reading.month.9: September
+university.admissions.reading.month.10: October
+university.admissions.reading.month.11: November
+university.admissions.reading.month.12: December
+university.admissions.reading.early_action: Early Action · early application
+university.admissions.reading.regular_action: Regular Action · regular application
+university.admissions.reading.official_application: Official application instructions
+university.admissions.reading.official_source: Official source
+university.admissions.reading.unknown: Not stated here
+university.admissions.reading.previous_tabs: Previous sections
+university.admissions.reading.next_tabs: More sections
+university.admissions.reading.cycle_help: Use a year such as 2027, or choose a suggested entry cycle. An unrecognized label cannot narrow facts by year.
+university.admissions.reading.cycle_invalid: This entry label is not recognized as a year or term. Use a year or a suggested cycle; no year-specific match is assumed.
+university.admissions.reading.january_tests: January test dates accepted
+university.admissions.reading.mit_course_code: MIT program code: {code}
+university.admissions.reading.mit_course_help: Course {code} is this program's code in the MIT catalog. MIT uses “Course” to refer to a field of study.
 university.admissions.catalog.field.A3i6E: Program description
 university.admissions.catalog.field.WOZxr: External-credit policy
 university.admissions.catalog.field.ItCSB: Program requirements
@@ -2681,3 +2812,23 @@ university.admissions.catalog.apply_before_save: Apply the changed context befor
 universities.compare.reviewed_catalog: Reviewed study and admissions catalog
 universities.compare.optional_context: Compare universities now, or choose a study option and application route to view applicable admissions facts.
 universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.
+university.admissions.reading.summary_translation_missing: A summary translation is not available yet. Read the original below.
+university.admissions.reading.original_description: Original program description (English)
+university.admissions.reading.reference_scope_note: Full records retain the official source language. Each record includes its conditions, period and applicability.
+university.admissions.reading.current_policy: Published policy; entry year not specified
+university.admissions.reading.yearless_period: Recurring dates; entry year not specified
+university.admissions.reading.source_period: Source period and wording
+university.admissions.reading.entry_fall: Fall {year} entry
+university.admissions.reading.entry_spring: Spring {year} entry
+university.admissions.reading.entry_summer: Summer {year} entry
+university.admissions.reading.entry_winter: Winter {year} entry
+university.admissions.reading.entry_year: {year} entry
+university.admissions.reading.aid_title: Need-based financial aid
+university.admissions.reading.aid_explained: This aid is based on the family’s financial circumstances. Applying for admission and applying for aid are separate steps.
+university.admissions.reading.aid_documents: What to submit for aid
+university.admissions.reading.aid_css: Complete the CSS Profile, the College Board financial-aid application.
+university.admissions.reading.aid_css_code: MIT recipient code: {code}.
+university.admissions.reading.aid_fafsa: FAFSA applies to domestic applicants eligible for U.S. federal aid. It is not part of MIT’s international aid instructions.
+university.admissions.reading.aid_international_title: For international aid applicants
+university.admissions.reading.aid_finances_title: Prepare financial information for the CSS Profile:
+university.admissions.reading.aid_priority_dates: Priority aid application dates

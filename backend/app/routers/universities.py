@@ -3,7 +3,7 @@ import json
 import threading
 import time
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
 
@@ -175,6 +175,7 @@ def list_universities(
     user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
     min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
@@ -200,6 +201,7 @@ def list_universities(
         "user_budget": user_budget,
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
+        "cost_basis": cost_basis,
         "min_acceptance": min_acceptance,
         "max_acceptance": max_acceptance,
         "size": size,
@@ -232,6 +234,7 @@ def list_universities(
         user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
+        cost_basis=cost_basis,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -272,6 +275,7 @@ def list_university_map_points(
     user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
     min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
@@ -300,6 +304,7 @@ def list_university_map_points(
         "user_budget": user_budget,
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
+        "cost_basis": cost_basis,
         "min_acceptance": min_acceptance,
         "max_acceptance": max_acceptance,
         "size": size,
@@ -325,6 +330,7 @@ def list_university_map_points(
         user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
+        cost_basis=cost_basis,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -409,6 +415,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             format=fmt,
             min_tuition=min_tuition,
             max_tuition=max_tuition,
+            cost_basis=payload.cost_basis,
             min_acceptance=min_acceptance,
             max_acceptance=max_acceptance,
             size=size,

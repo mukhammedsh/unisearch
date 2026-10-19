@@ -468,6 +468,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
         city: 'Cambridge',
         min_tuition: 10000,
         max_tuition: 60000,
+        cost_basis: 'tuition',
         sort: 'uni_ai',
         only_saved: true,
         viewMode: 'list',
@@ -481,6 +482,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(loaded.city, 'Cambridge');
       assert.strictEqual(loaded.min_tuition, 10000);
       assert.strictEqual(loaded.max_tuition, 60000);
+      assert.strictEqual(loaded.cost_basis, 'tuition');
       assert.strictEqual(loaded.sort, 'uni_ai');
       assert.strictEqual(loaded.only_saved, true);
     });

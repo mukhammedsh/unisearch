@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen, seedProfile } = require("./helpers/personas");
-const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
+const { openProfileTab, selectors, setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const MIT_ID = "mit-usa-cambridge";
 const MBA_OPTION = "mit-sloan-mba-full-time";
@@ -46,6 +46,7 @@ async function openFact(page, tab, id) {
   await page.locator(`.d-tab-btn[data-tab="tab-${tab}"]`).click();
   await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
   const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  await openDisclosureParents(fact);
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();

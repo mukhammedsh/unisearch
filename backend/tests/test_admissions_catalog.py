@@ -137,6 +137,17 @@ class AdmissionsCatalogTests(unittest.TestCase):
             with self.subTest(published=published, selected=selected):
                 self.assertEqual(service._cycle_axis(published, selected), expected)
 
+    def test_localized_entry_examples_match_the_same_term_without_borrowing_an_academic_year(self):
+        for selected in ("осенний набор 2027 года", "2027 жылғы күзгі қабылдау"):
+            with self.subTest(selected=selected):
+                self.assertEqual(service._cycle_axis("Fall 2027 entry", selected), "matched")
+                self.assertEqual(service._cycle_axis("Fall 2028 entry", selected), "mismatched")
+                self.assertEqual(service._cycle_axis("Spring 2027 entry", selected), "mismatched")
+                self.assertEqual(service._cycle_axis("2026-27", selected), "unknown")
+        self.assertEqual(service._cycle_axis("Spring 2027", "весенний набор 2027 года"), "matched")
+        self.assertEqual(service._cycle_axis("Spring 2027", "2027 жылғы көктемгі қабылдау"), "matched")
+        self.assertIsNone(service._cycle("Reviewed 2027 жылғы күзгі қабылдау"))
+
     def test_named_intake_period_matches_without_borrowing_an_academic_year(self):
         row = self.mit()["facts"][0]
         row["scope"]["cycle"] = None
@@ -204,6 +215,13 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertEqual(service.list_study_options(MIT, study_level="masters")["items"][0]["id"], "physics")
         self.assertEqual(service.list_study_options(MIT, page=3, limit=1)["items"], [])
         self.assertEqual(service.list_study_options(MIT, search_candidates=["unrelated nonexistent course"])["items"], [])
+
+    def test_multiword_program_search_requires_the_whole_subject(self):
+        self.mit()["study_options"][0]["title"] = "Computer Science and Engineering"
+        self.mit()["study_options"][1]["title"] = "Political Science"
+        self.write()
+        result = service.list_study_options(MIT, search_candidates=["Computer Science"])
+        self.assertEqual([row["id"] for row in result["items"]], ["computing"])
 
     def test_compact_options_expose_only_declared_application_metadata(self):
         option = self.mit()["study_options"][0]

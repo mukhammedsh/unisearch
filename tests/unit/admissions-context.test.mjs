@@ -1,9 +1,24 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionContextUrl, admissionsRequest, readAdmissionContext } from "../../frontend/javascript/pages/university/admissions-controller.js";
+import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink } from "../../frontend/javascript/pages/university/admissions-controller.js";
 
 const uid = "mit-usa-cambridge";
+
+test("localized entry examples normalize without guessing a year from free text", () => {
+  assert.equal(normalizeAdmissionCycle("осенний набор 2027 года"), "Fall 2027");
+  assert.equal(normalizeAdmissionCycle("2027 жылғы күзгі қабылдау"), "Fall 2027");
+  assert.equal(normalizeAdmissionCycle("2027 жылғы көктемгі қабылдау"), "Spring 2027");
+  assert.equal(normalizeAdmissionCycle("Not yet decided for 2027"), "Not yet decided for 2027");
+});
+
+test("application actions use a declared destination or an official route source without guessing a portal", () => {
+  const selected_route = { destination: "Dedicated MIT Application (apply.mitadmissions.org)", source_ids: ["official"] };
+  assert.equal(getApplicationLink({ selected_route }), "https://apply.mitadmissions.org/");
+  assert.equal(getApplicationLink({ selected_route: { ...selected_route, destination: "UCAS Hub" }, sources: [{ id: "unrelated", url: "https://example.com" }, { id: "official", url: "https://example.edu/apply" }] }), "https://example.edu/apply");
+  assert.equal(getApplicationLink({ selected_route: { destination: "javascript:alert(1)" } }), "");
+  assert.equal(getApplicationLink({ selected_route: null }), "");
+});
 const profile = {
   study_level: "Master", applicant_route: "graduate", intended_entry_cycle: "2027 entry",
   fee_status_context: "self_reported_international_overseas", exams: [{ exam: "SAT", score: 1500 }],

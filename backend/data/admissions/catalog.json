@@ -379965,7 +379965,20 @@
               "stanford-ug-budget"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "catalog_costs": {
+              "period": "Academic year",
+              "academic_year": "2026-2027",
+              "currency": "USD",
+              "tuition": 67731,
+              "total_before_aid": 97545,
+              "exclusions": [
+                "insurance",
+                "travel",
+                "one_time_fees"
+              ]
+            }
+          },
           "index_attributes": {}
         },
         {

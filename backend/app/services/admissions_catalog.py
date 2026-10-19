@@ -3,6 +3,7 @@
 import copy
 import hashlib
 import json
+import math
 import re
 import threading
 from pathlib import Path
@@ -164,6 +165,74 @@ def get_institution(institution_id):
     return _load()["institutions"].get(institution_id)
 
 
+def catalog_costs(institution_id, study_level=None, study_mode="any"):
+    """Return published reference prices without claiming personal affordability."""
+    institution = get_institution(institution_id)
+    summary = {"annual_total": None, "tuition": None, "reference": True}
+    if institution is None or study_mode == "online":
+        return summary
+    level = LEVEL_ALIASES.get(str(study_level or "").lower(), str(study_level or "").lower())
+    options = {option["id"]: option for option in institution["study_options"]}
+    quotes = []
+
+    def add(row, basis, amount, currency, period, fee_status="", exclusions=()):
+        if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount) or amount < 0:
+            return
+        if not isinstance(currency, str) or not re.fullmatch(r"[A-Z]{3}", currency) or not period:
+            return
+        levels = row["scope"]["levels"] or sorted({value for option_id in row["scope"]["option_ids"] for value in options[option_id]["levels"]})
+        if level and level not in levels:
+            return
+        quotes.append({"basis": basis, "amount": amount, "currency": currency, "period": period,
+                       "levels": levels, "fee_status": fee_status, "exclusions": list(exclusions),
+                       "fact_id": row["id"], "source_ids": row["source_ids"]})
+
+    for row in institution["facts"]:
+        if row["publication_status"] != "published" or not re.search(r"verified|reviewed|rechecked|carried_forward_review", row.get("review_status") or "") or re.search(r"superseded|conflict|partial|pending", row.get("review_status") or ""):
+            continue
+        value = row.get("attributes", {}).get("catalog_costs") or row.get("value")
+        if not isinstance(value, dict):
+            continue
+        period = value.get("academic_year") or (row.get("period") or {}).get("label")
+        if value.get("period") == "Academic year":
+            add(row, "tuition", value.get("tuition"), value.get("currency"), period)
+            add(row, "annual_total", value.get("total_before_aid"), value.get("currency"), period,
+                exclusions=value.get("exclusions", ["insurance", "travel"] if value.get("health_insurance") else []))
+        panels = value.get("course_page_tuition_fees")
+        if not isinstance(panels, dict):
+            continue
+        for status in ("Home fee", "Overseas fee"):
+            for panel in panels.get(status, []):
+                if panel.get("panel_status") != "published":
+                    continue
+                for text in panel.get("amounts_and_periods", []):
+                    annual = re.fullmatch(r"£([\d,]+(?:\.\d+)?) per year", text)
+                    one_year = re.fullmatch(r"£([\d,]+(?:\.\d+)?)", text) if value.get("duration") == "1 year" and value.get("mode") == "Full-time" else None
+                    if annual or one_year:
+                        add(row, "tuition", float((annual or one_year)[1].replace(",", "")), panel.get("currency"), panel.get("panel_cycle_label"), status)
+
+    if not level and any("undergraduate" in quote["levels"] for quote in quotes):
+        level = "undergraduate"
+        quotes = [quote for quote in quotes if level in quote["levels"]]
+    for basis in ("annual_total", "tuition"):
+        candidates = [quote for quote in quotes if quote["basis"] == basis]
+        if not candidates:
+            continue
+        # Keep one source period and currency; do not join prices across entry years.
+        latest = max(candidates, key=lambda quote: (re.findall(r"20\d{2}", quote["period"]) or [""])[0])
+        candidates = [quote for quote in candidates if (quote["period"], quote["currency"]) == (latest["period"], latest["currency"])]
+        bounds = [min(candidates, key=lambda quote: quote["amount"]), max(candidates, key=lambda quote: quote["amount"])]
+        source_ids = {source_id for quote in bounds for source_id in quote["source_ids"]}
+        summary[basis] = {"min": min(quote["amount"] for quote in candidates), "max": max(quote["amount"] for quote in candidates),
+                          "amounts": sorted({quote["amount"] for quote in candidates}),
+                          "currency": latest["currency"], "period": latest["period"], "study_level": level or "",
+                          "fee_statuses": sorted({quote["fee_status"] for quote in candidates if quote["fee_status"]}),
+                          "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
+                          "fact_ids": sorted({quote["fact_id"] for quote in bounds}),
+                          "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
+    return summary
+
+
 def get_public_contract(institution_id):
     cached = _load()
     institution = cached["institutions"].get(institution_id)
@@ -216,7 +285,7 @@ def list_study_options(institution_id, search_candidates=(), study_level=None, p
     for option in institution["study_options"]:
         if study_level and study_level not in option["levels"]:
             continue
-        scores = [search_service.score_prepared(indexed["search"][option["id"]], query) for query in queries]
+        scores = [search_service.score_prepared(indexed["search"][option["id"]], query, require_all_terms=True) for query in queries]
         score = max((score for score in scores if score is not None), default=None) if queries else 0
         if score is not None:
             items.append((score, option))
@@ -245,6 +314,12 @@ def _history(row):
 
 def _cycle(value):
     label = str(value or "").strip().casefold()
+    localized = re.fullmatch(r"(осенний|весенний) набор (20\d{2})(?: года)?", label)
+    if localized:
+        return int(localized[2]), "fall" if localized[1] == "осенний" else "spring"
+    localized = re.fullmatch(r"(20\d{2}) жылғы (күзгі|көктемгі) қабылдау", label)
+    if localized:
+        return int(localized[1]), "fall" if localized[2] == "күзгі" else "spring"
     label = re.sub(r"\s+entry$", "", label)
     match = re.fullmatch(r"(20\d{2})", label)
     if match:

@@ -414,6 +414,19 @@ universities.city: Город
 universities.cost_per_year: Стоимость / год
 universities.cost_min: Мин. стоимость
 universities.cost_max: Макс. стоимость
+universities.cost.filter_basis: Цена за учебный год
+universities.cost.annual_total: Учёба и проживание
+universities.cost.tuition: Обучение
+universities.cost.entry: Набор {year}
+universities.cost.unavailable: Уточните программу
+universities.cost.full_budget_unavailable: Нет сопоставимого полного бюджета
+universities.cost.reference: Справочная цена, до финансовой помощи.
+universities.cost.before_aid: До стипендий и финансовой помощи.
+universities.cost.fee_scope: Диапазон зависит от программы и тарифа: Home — местный, Overseas — международный. Категорию определяет вуз.
+universities.cost.exclusion.insurance: Страховка отдельно.
+universities.cost.exclusion.travel: Проезд отдельно.
+universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
+universities.cost.filter_help: До финансовой помощи. Диапазон может совпадать частично: уточните программу и категорию оплаты. При ограничении цены вузы с неизвестной суммой не показываются.
 universities.country: Страна
 universities.filter: Фильтр
 universities.filter.all: Все
@@ -2430,11 +2443,11 @@ university.admissions.catalog.choose_program_hint: Во вкладке «Про�
 university.admissions.catalog.open_application: Открыть страницу подачи
 university.admissions.catalog.view_requirements: Посмотреть условия поступления
 university.admissions.catalog.study_info: О программе
-university.admissions.catalog.study_info_note: Официальные сведения об этом варианте обучения. Описание и требования к завершению программы отделены от условий поступления.
+university.admissions.catalog.study_info_note: Подробные сведения приведены на языке источника. Условия поступления открываются отдельно.
 university.admissions.catalog.source_note_simple: Текст официальных источников показан на языке оригинала.
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
-university.admissions.catalog.source_scope_details: Статус источника, область действия и даты
+university.admissions.catalog.source_scope_details: Источник и условия
 university.admissions.catalog.check_details: Необязательная сверка профиля с опубликованными минимумами
 university.admissions.catalog.publication: Статус публикации
 university.admissions.catalog.topic.eligibility: Условия для заявителей
@@ -2456,6 +2469,7 @@ university.admissions.catalog.choose_program: Выбрать программу
 university.admissions.catalog.no_program_selected: Программа ещё не выбрана
 university.admissions.catalog.route_label: Опубликованный путь подачи
 university.admissions.catalog.choose_route: Выберите опубликованный путь
+university.admissions.catalog.choose_route_action: Выбрать путь подачи
 university.admissions.catalog.route_required: Выберите один из опубликованных путей выше, чтобы прочитать требования и порядок подачи.
 university.admissions.catalog.applicant_label: Категория абитуриента
 university.admissions.catalog.unspecified: Не указана
@@ -2618,6 +2632,123 @@ university.admissions.catalog.field.fee_status: Условия категори�
 university.admissions.catalog.field.additional_dimensions: Дополнительные условия применимости
 university.admissions.catalog.field.study: Программа обучения
 university.admissions.catalog.field.application: Маршрут поступления
+university.admissions.catalog.field.duration: Продолжительность
+university.admissions.catalog.field.mode: Формат обучения
+university.admissions.catalog.field.language: Язык обучения
+university.admissions.catalog.field.location: Место обучения
+university.admissions.catalog.field.department: Факультет или кафедра
+university.admissions.catalog.field.start_date: Начало обучения
+university.admissions.catalog.field.presence: Нужен ли экзамен
+university.admissions.catalog.field.cutoff: Числовой порог
+university.admissions.catalog.field.recommended: Рекомендованный балл
+university.admissions.catalog.field.exam: Экзамен
+university.admissions.catalog.field.minima_and_recommendations: Минимальные и рекомендуемые баллы
+university.admissions.catalog.field.test_date_before: Экзамен сдан до
+university.admissions.catalog.field.test_date_from: Экзамен сдан начиная с
+university.admissions.catalog.field.tuition: Стоимость обучения
+university.admissions.catalog.field.total_before_aid: Итого до финансовой помощи
+university.admissions.catalog.field.student_life_fee: Студенческий сбор
+university.admissions.catalog.field.housing_estimate: Проживание, оценка
+university.admissions.catalog.field.food_estimate: Питание, оценка
+university.admissions.catalog.field.materials_estimate: Учебные материалы
+university.admissions.catalog.field.personal_estimate: Личные расходы
+university.admissions.catalog.field.windows: Периоды подачи
+university.admissions.catalog.field.round: Период подачи
+university.admissions.catalog.field.application_due: Срок подачи заявления
+university.admissions.catalog.field.aid_due: Срок подачи на помощь
+university.admissions.catalog.field.decision: Решение о зачислении
+university.admissions.catalog.field.tests: Экзамены
+university.admissions.catalog.field.latest: Последняя принимаемая дата
+university.admissions.catalog.field.year: Год набора
+university.admissions.catalog.field.exact_time_timezone: Время и часовой пояс по источнику
+university.admissions.catalog.field.funding_type: Вид финансирования
+university.admissions.catalog.field.funding_program: Программа помощи
+university.admissions.catalog.field.required: Обязательные документы
+university.admissions.catalog.field.when: Когда применяется
+university.admissions.catalog.field.effect: Что означает условие
+university.admissions.catalog.field.health_insurance: Медицинская страховка
+university.admissions.catalog.field.enrollment_reply: Срок ответа на предложение
+university.admissions.catalog.field.name: Название
+university.admissions.catalog.field.act_writing: ACT Writing
+university.admissions.catalog.field.act_science: ACT Science
+university.admissions.catalog.field.sat_essay: SAT Essay
+university.admissions.catalog.field.sat_formats: Принимаемые форматы SAT
+university.admissions.catalog.enum.strongly_recommended: Настоятельно рекомендуется при указанных условиях
+university.admissions.catalog.enum.not_stated: В источнике не указано
+university.admissions.catalog.enum.not_published_on_this_page: На этой странице не опубликовано
+university.admissions.catalog.enum.paper: Бумажный
+university.admissions.catalog.enum.digital: Цифровой
+university.admissions.reading.tests: Академические экзамены
+university.admissions.reading.or: или
+university.admissions.reading.no_numeric_cutoff: В этой записи нет числового порога. Необходимость сдать экзамен и решение о зачислении — разные вещи.
+university.admissions.reading.language: Английский язык
+university.admissions.reading.english_condition: Настоятельная рекомендация относится к тем, для кого английский не родной и кто использует его менее пяти лет либо не говорит на нём дома или в школе. Это отдельное условие от обязательного SAT или ACT.
+university.admissions.reading.language_scores: Опубликованные баллы по английскому
+university.admissions.reading.exam: Экзамен
+university.admissions.reading.minimum: Минимум
+university.admissions.reading.recommended: Рекомендовано
+university.admissions.reading.test_before: Сдан до
+university.admissions.reading.test_from: Сдан начиная с
+university.admissions.reading.scale: Шкала
+university.admissions.reading.documents: Документы для подачи
+university.admissions.reading.document_application: Заявление MIT с эссе, внеучебными занятиями и сведениями об учёбе
+university.admissions.reading.document_school: Школьный отчёт и выписка оценок
+university.admissions.reading.document_references: Две рекомендации преподавателей
+university.admissions.reading.document_tests: SAT или ACT
+university.admissions.reading.insurance_not_included: Обязательное медицинское страхование оплачивается дополнительно и не входит в эту сумму.
+university.admissions.reading.application_dates: Периоды подачи
+university.admissions.reading.test_dates: Сроки сдачи экзаменов
+university.admissions.reading.window: Период подачи
+university.admissions.reading.apply_by: Заявление
+university.admissions.reading.aid_by: Финансовая помощь
+university.admissions.reading.decision: Решение
+university.admissions.reading.last_test: Последний срок
+university.admissions.reading.recurring_dates: Это ежегодные сроки: источник не указывает год набора. Уточните выбранный цикл на официальной странице.
+university.admissions.reading.reply_by: Ответ на предложение места
+university.admissions.reading.reference_budget: Справочный бюджет по источнику
+university.admissions.reading.dated_budget: Это опубликованный бюджет за указанный период до финансовой помощи. Он не подтверждает цену для другого года поступления.
+university.admissions.reading.tuition: Обучение
+university.admissions.reading.student_life_fee: Студенческий сбор
+university.admissions.reading.housing_estimate: Проживание, оценка
+university.admissions.reading.food_estimate: Питание, оценка
+university.admissions.reading.materials_estimate: Учебные материалы
+university.admissions.reading.personal_estimate: Личные расходы
+university.admissions.reading.insurance_extra: Страховка и ограничения расчёта:
+university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
+university.admissions.reading.no_budget: Сопоставимый бюджет для этого выбора не подтверждён. Ниже каждая сумма сохраняет свой период, валюту и условия.
+university.admissions.reading.full_records: Полные записи источников и условия
+university.admissions.reading.general_references: Дополнительные справочные сведения
+university.admissions.reading.general_reference_note: Эти записи относятся к общим или особым ситуациям. Их применимость к вашему выбору не установлена; проверьте область действия, прежде чем считать запись требованием.
+university.admissions.reading.update_selection: Обновить выбор
+university.admissions.catalog.route_name.mit-first-year: Первый курс после школы
+university.admissions.catalog.route_name.mit-transfer: Перевод из другого вуза
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Первый курс после школы
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Перевод из другого вуза
+university.admissions.reading.mid_month: Середина {month}
+university.admissions.reading.month.1: января
+university.admissions.reading.month.2: февраля
+university.admissions.reading.month.3: марта
+university.admissions.reading.month.4: апреля
+university.admissions.reading.month.5: мая
+university.admissions.reading.month.6: июня
+university.admissions.reading.month.7: июля
+university.admissions.reading.month.8: августа
+university.admissions.reading.month.9: сентября
+university.admissions.reading.month.10: октября
+university.admissions.reading.month.11: ноября
+university.admissions.reading.month.12: декабря
+university.admissions.reading.early_action: Early Action · ранняя подача
+university.admissions.reading.regular_action: Regular Action · обычная подача
+university.admissions.reading.official_application: Официальная подача и инструкции
+university.admissions.reading.official_source: Официальный источник
+university.admissions.reading.unknown: Здесь не указано
+university.admissions.reading.previous_tabs: Предыдущие разделы
+university.admissions.reading.next_tabs: Другие разделы
+university.admissions.reading.cycle_help: Введите год, например 2027, или выберите подсказку набора. Нераспознанная запись не позволяет отфильтровать сведения по году.
+university.admissions.reading.cycle_invalid: Запись не распознана как год или сезон набора. Укажите год или выберите подсказку; совпадение по году не предполагается.
+university.admissions.reading.january_tests: Принимаются январские даты экзамена
+university.admissions.reading.mit_course_code: Код программы MIT: {code}
+university.admissions.reading.mit_course_help: Course {code} — код этой программы в каталоге MIT. Словом Course здесь называют направление обучения.
 university.admissions.catalog.field.A3i6E: Описание программы
 university.admissions.catalog.field.WOZxr: Правила зачёта обучения в другом вузе
 university.admissions.catalog.field.ItCSB: Требования программы
@@ -2679,3 +2810,23 @@ university.admissions.catalog.apply_before_save: Примените изменё
 universities.compare.reviewed_catalog: Проверенный каталог программ и поступления
 universities.compare.optional_context: Сравните вузы сейчас или выберите программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
+university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
+university.admissions.reading.original_description: Описание программы в оригинале (английский)
+university.admissions.reading.reference_scope_note: Подробные записи приведены на языке источника. В каждой записи доступны условия, период и область действия.
+university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
+university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан
+university.admissions.reading.source_period: Период и формулировка источника
+university.admissions.reading.entry_fall: Осенний набор {year}
+university.admissions.reading.entry_spring: Весенний набор {year}
+university.admissions.reading.entry_summer: Летний набор {year}
+university.admissions.reading.entry_winter: Зимний набор {year}
+university.admissions.reading.entry_year: Набор {year}
+university.admissions.reading.aid_title: Помощь по финансовой потребности
+university.admissions.reading.aid_explained: Эту помощь рассчитывают по финансовым обстоятельствам семьи. Заявление на поступление и документы для финансовой помощи подают отдельно.
+university.admissions.reading.aid_documents: Что подать для финансовой помощи
+university.admissions.reading.aid_css: Заполните CSS Profile — анкету College Board для расчёта финансовой помощи.
+university.admissions.reading.aid_css_code: Код получателя MIT: {code}.
+university.admissions.reading.aid_fafsa: FAFSA относится к внутренним абитуриентам с правом на федеральную помощь США. Для международной категории MIT действуют отдельные инструкции.
+university.admissions.reading.aid_international_title: Для международных абитуриентов
+university.admissions.reading.aid_finances_title: Для CSS Profile подготовьте:
+university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи

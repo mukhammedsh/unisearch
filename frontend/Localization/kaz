@@ -411,6 +411,19 @@ universities.city: Қала
 universities.cost_per_year: Жылдық шығын
 universities.cost_min: Ең төменгі шығын
 universities.cost_max: Ең жоғары шығын
+universities.cost.filter_basis: Оқу жылына арналған баға
+universities.cost.annual_total: Оқу және тұру бюджеті
+universities.cost.tuition: Оқу ақысы
+universities.cost.entry: {year} жылғы қабылдау
+universities.cost.unavailable: Бағдарламаны нақтылаңыз
+universities.cost.full_budget_unavailable: Салыстыруға келетін толық бюджет жоқ
+universities.cost.reference: Қаржылай көмекке дейінгі анықтамалық баға.
+universities.cost.before_aid: Стипендия мен қаржылай көмекке дейін.
+universities.cost.fee_scope: Ауқым бағдарлама мен тарифке байланысты: Home — жергілікті, Overseas — халықаралық. Санатты университет анықтайды.
+universities.cost.exclusion.insurance: Сақтандыру бөлек төленеді.
+universities.cost.exclusion.travel: Жол ақысы бөлек төленеді.
+universities.cost.exclusion.one_time_fees: Бір реттік алымдар бөлек төленеді.
+universities.cost.filter_help: Қаржылай көмекке дейін. Ауқым ішінара сәйкес болуы мүмкін: бағдарлама мен төлем санатын тексеріңіз. Баға шектеуі қосылса, бағасы белгісіз ЖОО көрсетілмейді.
 universities.country: Ел
 universities.filter: Фильтр
 universities.filter.all: Барлығы
@@ -2432,11 +2445,11 @@ university.admissions.catalog.choose_program_hint: Жарияланған қаб
 university.admissions.catalog.open_application: Өтініш беру бетін ашу
 university.admissions.catalog.view_requirements: Қабылдау талаптарын көру
 university.admissions.catalog.study_info: Бағдарлама туралы
-university.admissions.catalog.study_info_note: Бұл оқу нұсқасы туралы ресми ақпарат. Оқу мазмұны мен дәрежені аяқтау талаптары қабылдау талаптарынан бөлек.
+university.admissions.catalog.study_info_note: Бағдарлама туралы толық ақпарат ресми дереккөз тілінде берілген. Қабылдау талаптары бөлек көрсетіледі.
 university.admissions.catalog.source_note_simple: Ресми дереккөз мәтіні түпнұсқа тілінде көрсетіледі.
 university.admissions.catalog.route_class.ucas_course_choice: UCAS арқылы курс таңдау
 university.admissions.catalog.route_class.postgraduate_course_choice: Жоғары оқу орнынан кейінгі бағдарламаға өтініш
-university.admissions.catalog.source_scope_details: Дереккөздің күйі, аясы және күндері
+university.admissions.catalog.source_scope_details: Дереккөз және шарттар
 university.admissions.catalog.check_details: Жарияланған минимумдарды профильмен салыстыру (міндетті емес)
 university.admissions.catalog.publication: Жариялану күйі
 university.admissions.catalog.topic.eligibility: Талаптарға сәйкестік
@@ -2458,6 +2471,7 @@ university.admissions.catalog.choose_program: Оқу нұсқасын таңда
 university.admissions.catalog.no_program_selected: Оқу нұсқасы таңдалмаған
 university.admissions.catalog.route_label: Жарияланған өтініш беру жолы
 university.admissions.catalog.choose_route: Жарияланған жолды таңдаңыз
+university.admissions.catalog.choose_route_action: Өтініш беру жолын таңдау
 university.admissions.catalog.route_required: Қабылдау талаптары мен өтініш тәртібін оқу үшін жоғарыдағы жарияланған жолдардың бірін таңдаңыз.
 university.admissions.catalog.applicant_label: Өтініш беруші санаты
 university.admissions.catalog.unspecified: Көрсетілмеген
@@ -2620,6 +2634,123 @@ university.admissions.catalog.field.fee_status: Оқу ақысы мәртебе
 university.admissions.catalog.field.additional_dimensions: Қолданылуына әсер ететін қосымша шарттар
 university.admissions.catalog.field.study: Оқу нұсқасы
 university.admissions.catalog.field.application: Өтініш беру бағыты
+university.admissions.catalog.field.duration: Оқу ұзақтығы
+university.admissions.catalog.field.mode: Оқу форматы
+university.admissions.catalog.field.language: Оқыту тілі
+university.admissions.catalog.field.location: Оқу орны
+university.admissions.catalog.field.department: Факультет немесе кафедра
+university.admissions.catalog.field.start_date: Оқудың басталуы
+university.admissions.catalog.field.presence: Емтихан талабы
+university.admissions.catalog.field.cutoff: Сандық шек
+university.admissions.catalog.field.recommended: Ұсынылатын балл
+university.admissions.catalog.field.exam: Емтихан
+university.admissions.catalog.field.minima_and_recommendations: Ең төменгі және ұсынылатын балдар
+university.admissions.catalog.field.test_date_before: Емтихан күні, дейін
+university.admissions.catalog.field.test_date_from: Емтихан күні, бастап
+university.admissions.catalog.field.tuition: Оқу ақысы
+university.admissions.catalog.field.total_before_aid: Көмек шегерілмеген жиынтық
+university.admissions.catalog.field.student_life_fee: Студенттік алым
+university.admissions.catalog.field.housing_estimate: Тұрғын үй, бағалау
+university.admissions.catalog.field.food_estimate: Тамақ, бағалау
+university.admissions.catalog.field.materials_estimate: Оқу материалдары
+university.admissions.catalog.field.personal_estimate: Жеке шығындар
+university.admissions.catalog.field.windows: Өтініш кезеңдері
+university.admissions.catalog.field.round: Өтініш кезеңі
+university.admissions.catalog.field.application_due: Өтініш мерзімі
+university.admissions.catalog.field.aid_due: Көмекке өтініш мерзімі
+university.admissions.catalog.field.decision: Қабылдау шешімі
+university.admissions.catalog.field.tests: Емтихандар
+university.admissions.catalog.field.latest: Соңғы қабылданатын күн
+university.admissions.catalog.field.year: Қабылдау жылы
+university.admissions.catalog.field.exact_time_timezone: Дереккөздегі уақыт пен белдеу
+university.admissions.catalog.field.funding_type: Қаржыландыру түрі
+university.admissions.catalog.field.funding_program: Көмек бағдарламасы
+university.admissions.catalog.field.required: Міндетті құжаттар
+university.admissions.catalog.field.when: Қолданылатын жағдай
+university.admissions.catalog.field.effect: Шарттың мәні
+university.admissions.catalog.field.health_insurance: Медициналық сақтандыру
+university.admissions.catalog.field.enrollment_reply: Ұсынысқа жауап мерзімі
+university.admissions.catalog.field.name: Атауы
+university.admissions.catalog.field.act_writing: ACT Writing
+university.admissions.catalog.field.act_science: ACT Science
+university.admissions.catalog.field.sat_essay: SAT Essay
+university.admissions.catalog.field.sat_formats: Қабылданатын SAT форматтары
+university.admissions.catalog.enum.strongly_recommended: Көрсетілген шарттарда қатаң ұсынылады
+university.admissions.catalog.enum.not_stated: Дереккөзде көрсетілмеген
+university.admissions.catalog.enum.not_published_on_this_page: Бұл бетте жарияланбаған
+university.admissions.catalog.enum.paper: Қағаз
+university.admissions.catalog.enum.digital: Цифрлық
+university.admissions.reading.tests: Академиялық емтихандар
+university.admissions.reading.or: немесе
+university.admissions.reading.no_numeric_cutoff: Бұл жазбада сандық шек белгіленбеген. Емтихан тапсыру талабы мен қабылдау шешімі бөлек.
+university.admissions.reading.language: Ағылшын тілі
+university.admissions.reading.english_condition: Бұл ұсыныс ағылшын тілі ана тілі емес және оны бес жылдан аз қолданатын не үйде немесе мектепте ағылшынша сөйлемейтін талапкерлерге қатысты. Ол міндетті SAT немесе ACT талабынан бөлек.
+university.admissions.reading.language_scores: Ағылшын тілі бойынша жарияланған балдар
+university.admissions.reading.exam: Емтихан
+university.admissions.reading.minimum: Ең төменгі балл
+university.admissions.reading.recommended: Ұсынылатын балл
+university.admissions.reading.test_before: Дейін тапсырылған
+university.admissions.reading.test_from: Бастап тапсырылған
+university.admissions.reading.scale: Шкала
+university.admissions.reading.documents: Өтініш құжаттары
+university.admissions.reading.document_application: Эссе, сабақтан тыс істер мен оқу мәліметтері қамтылған MIT өтініші
+university.admissions.reading.document_school: Мектеп есебі және бағалар көшірмесі
+university.admissions.reading.document_references: Екі мұғалімнің ұсыным хаты
+university.admissions.reading.document_tests: SAT немесе ACT
+university.admissions.reading.insurance_not_included: Міндетті медициналық сақтандыру бөлек төленеді және бұл сомаға кірмейді.
+university.admissions.reading.application_dates: Өтініш беру кезеңдері
+university.admissions.reading.test_dates: Емтихан тапсыру мерзімдері
+university.admissions.reading.window: Өтініш кезеңі
+university.admissions.reading.apply_by: Өтініш
+university.admissions.reading.aid_by: Қаржылай көмек
+university.admissions.reading.decision: Шешім
+university.admissions.reading.last_test: Соңғы мерзім
+university.admissions.reading.recurring_dates: Бұл — жыл сайынғы мерзімдер: дереккөз қабылдау жылын белгілемейді. Таңдалған кезеңді ресми беттен тексеріңіз.
+university.admissions.reading.reply_by: Ұсынысқа жауап
+university.admissions.reading.reference_budget: Дереккөздегі анықтамалық бюджет
+university.admissions.reading.dated_budget: Бұл — көрсетілген кезеңге арналған, қаржылай көмек шегерілмеген бюджет. Ол басқа қабылдау жылының бағасын растамайды.
+university.admissions.reading.tuition: Оқу ақысы
+university.admissions.reading.student_life_fee: Студенттік алым
+university.admissions.reading.housing_estimate: Тұрғын үй, бағалау
+university.admissions.reading.food_estimate: Тамақ, бағалау
+university.admissions.reading.materials_estimate: Оқу материалдары
+university.admissions.reading.personal_estimate: Жеке шығындар
+university.admissions.reading.insurance_extra: Сақтандыру және есеп шектеулері:
+university.admissions.reading.potential_aid: Ықтимал қаржыландыру тағайындалған көмек емес. Оның шарттары, құжаттары мен мерзімдері бөлек тексеріледі; ол құннан шегерілмейді.
+university.admissions.reading.no_budget: Бұл таңдау үшін салыстырмалы бюджет расталмаған. Төмендегі әр сома өз кезеңін, валютасы мен шарттарын сақтайды.
+university.admissions.reading.full_records: Дереккөздің толық жазбалары мен шарттары
+university.admissions.reading.general_references: Қосымша анықтамалық мәліметтер
+university.admissions.reading.general_reference_note: Бұл жазбалар жалпы немесе ерекше жағдайларға арналған. Олардың осы таңдауға қолданылуы анықталмаған; талап деп қабылдамас бұрын әр жазбаның аясын тексеріңіз.
+university.admissions.reading.update_selection: Таңдауды жаңарту
+university.admissions.catalog.route_name.mit-first-year: Мектептен кейінгі бірінші курс
+university.admissions.catalog.route_name.mit-transfer: Басқа университеттен ауысу
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Мектептен кейінгі бірінші курс
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Басқа университеттен ауысу
+university.admissions.reading.mid_month: {month} айының ортасы
+university.admissions.reading.month.1: қаңтар
+university.admissions.reading.month.2: ақпан
+university.admissions.reading.month.3: наурыз
+university.admissions.reading.month.4: сәуір
+university.admissions.reading.month.5: мамыр
+university.admissions.reading.month.6: маусым
+university.admissions.reading.month.7: шілде
+university.admissions.reading.month.8: тамыз
+university.admissions.reading.month.9: қыркүйек
+university.admissions.reading.month.10: қазан
+university.admissions.reading.month.11: қараша
+university.admissions.reading.month.12: желтоқсан
+university.admissions.reading.early_action: Early Action · ерте өтініш
+university.admissions.reading.regular_action: Regular Action · негізгі өтініш
+university.admissions.reading.official_application: Ресми өтініш беру және нұсқаулық
+university.admissions.reading.official_source: Ресми дереккөз
+university.admissions.reading.unknown: Мұнда көрсетілмеген
+university.admissions.reading.previous_tabs: Алдыңғы бөлімдер
+university.admissions.reading.next_tabs: Басқа бөлімдер
+university.admissions.reading.cycle_help: 2027 сияқты жылды енгізіңіз немесе ұсынылған кезеңді таңдаңыз. Танылмаған жазба мәліметтерді жыл бойынша сүзбейді.
+university.admissions.reading.cycle_invalid: Бұл жазба қабылдау жылы не маусымы ретінде танылмады. Жылды енгізіңіз немесе ұсынысты таңдаңыз; жыл сәйкестігі болжанбайды.
+university.admissions.reading.january_tests: Қаңтардағы емтихан күндері қабылданады
+university.admissions.reading.mit_course_code: MIT бағдарламасының коды: {code}
+university.admissions.reading.mit_course_help: Course {code} — MIT каталогындағы осы бағдарламаның коды. Мұнда Course сөзі оқу бағытын білдіреді.
 university.admissions.catalog.field.A3i6E: Бағдарлама сипаттамасы
 university.admissions.catalog.field.WOZxr: Сыртқы кредиттерді есептеу тәртібі
 university.admissions.catalog.field.ItCSB: Бағдарлама талаптары
@@ -2681,3 +2812,23 @@ university.admissions.catalog.apply_before_save: Таңдауды сақтама
 universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
 universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
 universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.
+university.admissions.reading.summary_translation_missing: Қысқаша аударма әзірге дайын емес. Түпнұсқаны төменнен ашуға болады.
+university.admissions.reading.original_description: Бағдарламаның түпнұсқа сипаттамасы (ағылшынша)
+university.admissions.reading.reference_scope_note: Толық жазбалар дереккөз тілінде берілген. Әр жазбада шарттар, кезең және қолданылу аясы бар.
+university.admissions.reading.current_policy: Жарияланған ережелер; қабылдау жылы көрсетілмеген
+university.admissions.reading.yearless_period: Жыл сайынғы мерзімдер; қабылдау жылы көрсетілмеген
+university.admissions.reading.source_period: Дереккөздегі кезең мен тұжырым
+university.admissions.reading.entry_fall: {year} жылғы күзгі қабылдау
+university.admissions.reading.entry_spring: {year} жылғы көктемгі қабылдау
+university.admissions.reading.entry_summer: {year} жылғы жазғы қабылдау
+university.admissions.reading.entry_winter: {year} жылғы қысқы қабылдау
+university.admissions.reading.entry_year: {year} жылғы қабылдау
+university.admissions.reading.aid_title: Қаржылық қажеттілікке негізделген көмек
+university.admissions.reading.aid_explained: Бұл көмек отбасының қаржылық жағдайына қарай есептеледі. Оқуға түсу өтініші мен қаржылай көмек құжаттары бөлек тапсырылады.
+university.admissions.reading.aid_documents: Қаржылай көмекке не тапсыру керек
+university.admissions.reading.aid_css: CSS Profile — қаржылай көмекті есептеуге арналған College Board сауалнамасын толтырыңыз.
+university.admissions.reading.aid_css_code: MIT алушы коды: {code}.
+university.admissions.reading.aid_fafsa: FAFSA АҚШ федералдық көмегіне құқығы бар ішкі үміткерлерге қатысты. MIT халықаралық санатына бөлек нұсқаулықтар қолданылады.
+university.admissions.reading.aid_international_title: Халықаралық үміткерлер үшін
+university.admissions.reading.aid_finances_title: CSS Profile үшін дайындаңыз:
+university.admissions.reading.aid_priority_dates: Қаржылай көмек өтінішінің басым мерзімдері

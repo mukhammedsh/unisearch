@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 
@@ -318,6 +319,20 @@ def prepare_institution(folder):
               "application_routes": routes, "facts": facts, "unknowns": unknowns, "collection_tasks": tasks,
               "organization": attributes(catalog, consumed_catalog), "supporting_records": supporting,
               "dossier_metadata": dossier_metadata, "historical_provenance": historical}
+    for fact in facts:
+        if fact["id"] != "undergraduate-shared-evidence:stanford-ug-tuition-and-budget-2026-27":
+            continue
+        # shortcut: parse this reviewed prose budget until the accepted dossier has structured cost fields.
+        text = fact["value"]
+        tuition = re.search(r"\btuition USD ([\d,]+);", text)
+        total = re.search(r"\btotal USD ([\d,]+)\.", text)
+        year = re.fullmatch(r"(20\d{2}-20\d{2}) academic year", fact["scope"]["cycle"])
+        require(tuition and total and year, "Stanford undergraduate reference cost wording needs review")
+        fact["attributes"]["catalog_costs"] = {
+            "period": "Academic year", "academic_year": year[1], "currency": "USD",
+            "tuition": int(tuition[1].replace(",", "")), "total_before_aid": int(total[1].replace(",", "")),
+            "exclusions": ["insurance", "travel", "one_time_fees"],
+        }
     validate_institution(result)
     return result
 

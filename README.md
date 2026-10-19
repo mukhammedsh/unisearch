@@ -42,7 +42,10 @@ Facts can vary by program, applicant category, and entry cycle. UniSearch keeps 
 
 - **Discover:** Search and filter universities by location, cost, and other preferences. Browse in a list or on a map, and sort with optional profile-based UniFit recommendations.
 - **Compare:** Save universities and compare study options, requirements, costs, and funding information. Cost displays support multiple currencies.
-- **Review admissions:** Read published study options and application paths, then select a program, applicant route, or entry cycle when those choices affect the facts shown.
+- **Compare prices:** Catalog cards distinguish tuition from study-and-living budgets. Choose the price basis in filters; sorting uses that basis too. Read the displayed level, period and exclusions. Price limits exclude unknown amounts, and potential aid is not deducted.
+- **Review admissions:** On the three reviewed pages, program names follow the selected language, with the English original available for reference and MIT codes explained. Expand a program card for its study overview and official references, then open the linked admission requirements. Select an applicant route or entry cycle when those choices affect the facts shown.
+- **Read scoped details:** Reviewed pages summarize published tests, application windows, and dated reference budgets before their full source records. Additional references retain their own conditions; a reference-year budget does not confirm another entry year's price.
+- **Read MIT in your language:** Available program overviews have Russian and Kazakh translations with the English original alongside. Undergraduate funding shows CSS Profile/IDOC documents, priority dates and international instructions before full source records. FAFSA retains its domestic federal-aid eligibility condition.
 - **Make it yours:** Choose English, Russian, or Kazakh, and use the system, light, or dark theme. University source material stays in its original language.
 - **Learn the terms:** The [Guide](frontend/guide.html) explains admissions requirements, exams, UniFit, UniChance, and comparisons.
 
