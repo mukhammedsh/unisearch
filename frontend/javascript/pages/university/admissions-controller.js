@@ -104,6 +104,7 @@ function renderStudyOptionRelationship(option) {
   if (!classification && !relationship && !courseUrl && !code && !courseCode) return "";
   return `<div class="admissions-programs__relationship">
     ${classification ? `<p><strong>${escapeHtml(label("application_shape"))}:</strong> ${escapeHtml(classification)}</p>` : ""}
+    ${option.levels?.includes("undergraduate") && option.awards?.includes("MEng") && option.catalog_classification === "ucas_course_choice" ? `<p data-integrated-meng>${escapeHtml(t("university.admissions.reading.integrated_meng"))}</p>` : ""}
     ${relationship ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("detail"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p>${escapeHtml(relationship)}</p></details>` : ""}
     ${code ? `<p><strong>${escapeHtml(label("catalog_code"))}:</strong> ${escapeHtml(code)}</p>` : ""}
     ${courseCode ? `<p class="admissions-context__note" data-course-code-help>${escapeHtml(tFormat("university.admissions.reading.mit_course_help", { code: courseCode }))}</p>` : ""}
@@ -208,6 +209,7 @@ export function mountAdmissionsCatalog(institutionId) {
     selectionSummary.hidden = !option;
     if (!option) return;
     const scope = [
+      ...(option.awards || []),
       route ? routeName(route) : label("route_not_selected"),
       context.applicant_route ? label(`applicant.${context.applicant_route}`) : "",
       admissionsCycleLabel(context.intended_entry_cycle),

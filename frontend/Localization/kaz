@@ -2834,3 +2834,39 @@ university.admissions.reading.aid_finances_title: CSS Profile үшін дайы�
 university.admissions.reading.aid_priority_dates: Қаржылай көмек өтінішінің басым мерзімдері
 university.programs.all_levels: Барлық оқу деңгейлері
 university.programs.search_clear: Іздестіруді тазарту
+university.admissions.reading.summary_requirements: Негізгі жарияланған қабылдау талаптары
+university.admissions.reading.summary_application: Өтініш беру тәртібі
+university.admissions.reading.summary_deadlines: Курс күндері мен өтініш раундтары
+university.admissions.reading.summary_costs: Қосымша төлемдер мен шарттар
+university.admissions.reading.summary_funding: Қаржылық көмек: шарттары мен өтініш
+university.admissions.reading.home_fee: Home тарифі
+university.admissions.reading.overseas_fee: Overseas тарифі
+university.admissions.reading.fee_status: Төлем санаты
+university.admissions.reading.per_year: жылына
+university.admissions.reading.published_tuition: Курстың жарияланған оқу ақысы
+university.admissions.reading.fee_status_explained: Home және Overseas — Imperial анықтайтын төлем санаттары. Азаматтықтың өзі санатты анықтамайды; тұру мен қосымша төлемдер оқу ақысына кірмейді.
+university.admissions.reading.living_reference: Тұру шығындарының бағдары
+university.admissions.reading.living_nine_months: 9 ай · жарияланған орташа аралық
+university.admissions.reading.living_twelve_months: 12 ай · жеке баспанаға арналған бағдар
+university.admissions.reading.different_cost_periods: Бұл тұру бағдары 2027 жылғы оқу ақысынан басқа кезеңге қатысты. Сомалар бөлек көрсетіліп, расталған жылдық бюджетке қосылмайды.
+university.admissions.reading.scholarship_rounds: President’s PhD стипендиясының раундтары
+university.admissions.reading.scholarship_dates_separate: Бұлар стипендияны қарау мерзімдері. Кафедра PhD өтінішін ертерек талап етуі мүмкін; қабылдау мен стипендия тағайындау — бөлек шешімдер.
+university.admissions.reading.ucas_medicine: UCAS · Medicine мерзімі
+university.admissions.reading.ucas_equal_consideration: UCAS · өтініштерді тең қарау мерзімі
+university.admissions.reading.submission_opens: Өтініш қабылдаудың басталуы
+university.admissions.reading.date: Күні
+university.admissions.reading.local_time: Жарияланған жергілікті уақыт
+university.admissions.reading.month_standalone.1: қаңтар
+university.admissions.reading.month_standalone.2: ақпан
+university.admissions.reading.month_standalone.3: наурыз
+university.admissions.reading.month_standalone.4: сәуір
+university.admissions.reading.month_standalone.5: мамыр
+university.admissions.reading.month_standalone.6: маусым
+university.admissions.reading.month_standalone.7: шілде
+university.admissions.reading.month_standalone.8: тамыз
+university.admissions.reading.month_standalone.9: қыркүйек
+university.admissions.reading.month_standalone.10: қазан
+university.admissions.reading.month_standalone.11: қараша
+university.admissions.reading.month_standalone.12: желтоқсан
+university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · кафедраға өтініш
+university.admissions.reading.integrated_meng: MEng — UCAS арқылы бакалавриат деңгейінде қабылдайтын интеграцияланған бағдарлама; ол бакалавриат пен магистр деңгейіндегі тереңдетілген оқуды біріктіреді.

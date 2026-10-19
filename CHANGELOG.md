@@ -5,6 +5,8 @@ All notable project changes should be recorded here.
 ## Unreleased
 
 ### Updated
+- Improve Imperial applicant reading with all 168 collected course-overview translations, visible award/context labels, and source-bound requirements, application, date and funding summaries.
+- Separate Imperial course tuition, dated living references and application charges; retain fee-category conditions and distinct UCAS, MSc, PhD and scholarship timelines.
 - Reuse the existing expandable program-card design for MIT, Imperial College London, and Stanford University, with concise sourced overviews and full records available separately.
 - Keep program details beside their selected card across searches and guide visitors from dates and costs to the required program or application path.
 - Version localization caches and requests so returning visitors receive current interface labels after an update; reuse valid packs and retry failed language loads.

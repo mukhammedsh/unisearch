@@ -2834,3 +2834,39 @@ university.admissions.reading.aid_finances_title: Prepare financial information 
 university.admissions.reading.aid_priority_dates: Priority aid application dates
 university.programs.all_levels: All degree levels
 university.programs.search_clear: Clear search
+university.admissions.reading.summary_requirements: Key published entry requirements
+university.admissions.reading.summary_application: How to apply
+university.admissions.reading.summary_deadlines: Course dates and application rounds
+university.admissions.reading.summary_costs: Additional costs and fee conditions
+university.admissions.reading.summary_funding: Funding: eligibility and application
+university.admissions.reading.home_fee: Home fee
+university.admissions.reading.overseas_fee: Overseas fee
+university.admissions.reading.fee_status: Fee category
+university.admissions.reading.per_year: per year
+university.admissions.reading.published_tuition: Published course tuition
+university.admissions.reading.fee_status_explained: Home and Overseas are fee categories assessed by Imperial. Citizenship alone does not determine the category; tuition excludes living costs and additional charges.
+university.admissions.reading.living_reference: Living-cost reference
+university.admissions.reading.living_nine_months: 9 months · published average range
+university.admissions.reading.living_twelve_months: 12 months · private accommodation reference
+university.admissions.reading.different_cost_periods: This living estimate is from a different period than 2027 tuition. The figures are separate references and are not added into a confirmed annual total.
+university.admissions.reading.scholarship_rounds: President’s PhD scholarship rounds
+university.admissions.reading.scholarship_dates_separate: These are scholarship consideration dates. A department may require an earlier PhD application; admission and a scholarship award are separate decisions.
+university.admissions.reading.ucas_medicine: UCAS · Medicine deadline
+university.admissions.reading.ucas_equal_consideration: UCAS · equal consideration deadline
+university.admissions.reading.submission_opens: Application submission opens
+university.admissions.reading.date: Date
+university.admissions.reading.local_time: Published local time
+university.admissions.reading.month_standalone.1: January
+university.admissions.reading.month_standalone.2: February
+university.admissions.reading.month_standalone.3: March
+university.admissions.reading.month_standalone.4: April
+university.admissions.reading.month_standalone.5: May
+university.admissions.reading.month_standalone.6: June
+university.admissions.reading.month_standalone.7: July
+university.admissions.reading.month_standalone.8: August
+university.admissions.reading.month_standalone.9: September
+university.admissions.reading.month_standalone.10: October
+university.admissions.reading.month_standalone.11: November
+university.admissions.reading.month_standalone.12: December
+university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · departmental application
+university.admissions.reading.integrated_meng: MEng is an integrated degree with undergraduate entry through UCAS, combining undergraduate and master's-level study.

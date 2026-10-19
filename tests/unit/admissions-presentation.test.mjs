@@ -68,6 +68,29 @@ test("displayed cycles translate without changing stored or unknown source label
   assert.equal(admissionsCycleLabel("Spring 2027 entry"), "2027 жылғы көктемгі қабылдау");
 });
 
+test("published ISO dates retain the stated year and do not normalize invalid calendar dates", () => {
+  setLanguage("rus", { emit: false });
+  assert.equal(formatPublishedDate("2027-01-13"), "13 января 2027");
+  assert.equal(formatPublishedDate("2027-02-29"), "2027-02-29");
+  assert.equal(formatPublishedDate("January 13"), "13 января");
+  assert.equal(admissionsCycleLabel("October 2027"), "октябрь 2027");
+});
+
+test("UCAS Medicine and other courses retain separate published deadlines", () => {
+  setLanguage("eng", { emit: false });
+  const row = fact("ucas", { medicine_deadline: { date: "2026-10-15", time: "18:00", timezone: "Europe/London" },
+    other_course_equal_consideration: { date: "2027-01-13", time: "18:00", timezone: "Europe/London" } });
+  for (const [id, date, other] of [["cs", "January 13, 2027", "October 15, 2026"], ["imperial-option-medicine", "October 15, 2026", "January 13, 2027"]]) {
+    const resolved = context([row], { deadlines: [row.id] });
+    resolved.selected_option.id = id;
+    const html = renderApplicantSection(resolved, ["deadlines"]);
+    const summary = html.split('<details class="admissions-reading__references"')[0];
+    assert.ok(summary.includes(date));
+    assert.ok(!summary.includes(other));
+    assert.match(summary, /Europe\/London/);
+  }
+});
+
 test("requirements distinguish required alternatives from conditional language recommendations", () => {
   setLanguage("rus", { emit: false });
   const rows = [fact("sat", { presence: "required", alternatives: ["SAT", "ACT"], cutoff: null }),

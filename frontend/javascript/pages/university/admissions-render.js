@@ -9,6 +9,11 @@ const PREFIX = "university.admissions.catalog.";
 
 export function admissionsCycleLabel(value) {
   const raw = String(value || "");
+  const month = raw.match(/^(January|February|March|April|May|June|July|August|September|October|November|December) (20\d{2})$/);
+  if (month) {
+    const index = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(month[1]) + 1;
+    return `${t(`university.admissions.reading.month_standalone.${index}`, month[1])} ${month[2]}`;
+  }
   const entry = raw.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2})(?: entry)?$/);
   if (!entry) return raw;
   return tFormat(`university.admissions.reading.${entry[1] ? `entry_${entry[1].toLowerCase()}` : "entry_year"}`, { year: entry[2] });
@@ -329,12 +334,12 @@ export function renderStudyOptionOverview(resolved) {
     .find(value => typeof value === "string" && value.trim());
   const translatedDescription = translateAdmissionSummary(description);
   const descriptionHtml = !description ? "" : `<p class="program-card__description">${escapeHtml(translatedDescription || t("university.admissions.reading.summary_translation_missing"))}</p>${getCurrentLanguage() === "eng" ? "" : `<details class="admissions-catalog__evidence" data-program-original><summary>${escapeHtml(t("university.admissions.reading.original_description"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p class="program-card__description" lang="en">${escapeHtml(description)}</p></details>`}`;
-  const formatters = { duration: localizeDuration, mode: trStudyMode, language: trProgramLanguage };
+  const formatters = { duration: localizeDuration, mode: trStudyMode, language: trProgramLanguage, start_date: admissionsCycleLabel };
   const fields = ["duration", "mode", "language", "location", "department", "start_date"].map(key => {
     const value = rows.map(row => row.value[key]).find(value => value != null && value !== "") ?? option.format?.[key];
     if (typeof value !== "string" && !(Array.isArray(value) && value.every(item => typeof item === "string"))) return "";
     if (!value.length) return "";
-    const formatted = (Array.isArray(value) ? value : [value]).map(item => formatters[key] ? formatters[key](item) : item).join(", ");
+    const formatted = (Array.isArray(value) ? value : [value]).map(item => formatters[key] ? formatters[key](item) : translateAdmissionSummary(item) || item).join(", ");
     return `<div class="program-card-row"><dt class="program-card-label">${escapeHtml(label(`field.${key}`))}</dt><dd class="program-card-value">${escapeHtml(formatted)}</dd></div>`;
   }).filter(Boolean);
   return `${descriptionHtml}${fields.length ? `<dl class="program-card-rows">${fields.join("")}</dl>` : ""}`;

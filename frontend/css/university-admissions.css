@@ -1165,6 +1165,12 @@ details[open] > summary > .admissions-disclosure-icon {
   padding-block: var(--space-2);
 }
 
+.admissions-reading__excerpt {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
 .admissions-programs__relationship p {
   margin: 0;
   line-height: var(--leading-normal);

@@ -7,10 +7,18 @@ import { heroIcon } from "../../icons.js";
 const label = key => t(`university.admissions.reading.${key}`);
 const locale = () => ({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" })[getCurrentLanguage()];
 const period = row => typeof row.period === "object" ? row.period?.label || "" : row.period || "";
-const reviewed = row => row.publication_status === "published" && !/(?:conflict|pending|partial|superseded|requires_confirmation)/.test(row.review_status || "") && /(?:verified|reviewed|rechecked|carried_forward_review)/.test(row.review_status || "");
+const evidenceReviewed = row => !/(?:conflict|pending|partial|superseded|requires_confirmation)/.test(row.review_status || "") && /(?:verified|reviewed|rechecked|carried_forward_review)/.test(row.review_status || "");
+const reviewed = row => row.publication_status === "published" && evidenceReviewed(row);
 
 export function formatPublishedDate(value) {
   const text = String(value || "");
+  const iso = text.match(/^(20\d{2})-(\d{2})-(\d{2})$/);
+  if (iso) {
+    const date = new Date(`${text}T00:00:00Z`);
+    if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== text) return text;
+    const month = label(`month.${Number(iso[2])}`);
+    return getCurrentLanguage() === "eng" ? `${month} ${Number(iso[3])}, ${iso[1]}` : `${Number(iso[3])} ${month} ${iso[1]}`;
+  }
   const middle = text.match(/^mid-(January|February|March|April|May|June|July|August|September|October|November|December)$/i);
   if (middle) {
     const month = formatPublishedDate(`${middle[1][0].toUpperCase()}${middle[1].slice(1).toLowerCase()} 1`).replace(/\b1\b/, "").trim();
@@ -43,7 +51,7 @@ function links(row, resolved) {
 }
 
 function sourceNote(row, resolved) {
-  const value = period(row);
+  const value = period(row) || row.scope?.cycle || "";
   const labels = {
     "Current published policy; cycle not specified": "current_policy",
     "Recurring first-year dates; page does not specify entry year": "yearless_period",
@@ -52,6 +60,17 @@ function sourceNote(row, resolved) {
   const translated = labels[value] ? label(labels[value]) : entry ? admissionsCycleLabel(value) : value;
   const simple = labels[value] || entry || /^[\d–—‑\s-]+$/.test(value);
   return `<div class="admissions-reading__source">${simple && value ? `<span>${escapeHtml(translated)}</span>` : ""}${links(row, resolved)}${value && !simple ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_period"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p>${escapeHtml(value)}</p></details>` : ""}</div>`;
+}
+
+function sourceSummaries(rows, resolved, section) {
+  const blocks = rows.filter(evidenceReviewed).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length
+    || row.scope.levels.some(level => resolved.selected_option.levels.includes(level))).sort((left, right) => Number(linked(right, resolved)) - Number(linked(left, resolved))).map(row => {
+    const value = row.value || {};
+    const values = typeof value === "string" ? [value] : [JSON.stringify(value), value.full_course_specific_academic_requirement_and_exceptions, value.A_level_rules_by_option_panel, value.IB_rules_by_option_panel, ...Object.values(value)].flat();
+    const texts = [...new Set(values.filter(value => typeof value === "string").map(value => translateAdmissionSummary(value, { section })).filter(Boolean))];
+    return texts.length ? `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved)}</div>` : "";
+  }).filter(Boolean);
+  return blocks.length ? `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${blocks.join("")}</section>` : "";
 }
 
 function aidSummary(rows, resolved) {
@@ -111,6 +130,14 @@ function requirements(rows, resolved) {
 
 function deadlines(rows, resolved) {
   return rows.filter(reviewed).sort((left, right) => Number(Boolean(right.value?.windows?.some(window => window.application_due))) - Number(Boolean(left.value?.windows?.some(window => window.application_due)))).map(row => {
+    if (row.value?.other_course_equal_consideration) {
+      const medicine = ["imperial-option-medicine", "imperial-option-medicine-graduate-entry"].includes(resolved.selected_option?.id);
+      const deadline = medicine ? row.value.medicine_deadline : row.value.other_course_equal_consideration;
+      if (!deadline?.date) return "";
+      const entries = [[escapeHtml(label(medicine ? "ucas_medicine" : "ucas_equal_consideration")), escapeHtml(formatPublishedDate(deadline.date)), escapeHtml([deadline.time, deadline.timezone].filter(Boolean).join(" · "))]];
+      if (row.value.submission_opens) entries.unshift([escapeHtml(label("submission_opens")), escapeHtml(formatPublishedDate(row.value.submission_opens)), ""]);
+      return `<section class="admissions-reading__section" data-ucas-dates>${table(label("application_dates"), [label("window"), label("date"), label("local_time")], entries)}${sourceNote(row, resolved)}</section>`;
+    }
     const windows = row.value?.windows;
     if (!Array.isArray(windows)) return "";
     const rounds = windows.filter(window => typeof window.name === "string" && typeof window.application_due === "string");
@@ -148,6 +175,36 @@ function finance(rows, resolved) {
   return `${budgets.length ? "" : `<p class="admissions-reading__note">${escapeHtml(label("no_budget"))}</p>`}${budgetHtml}${fundingHtml}`;
 }
 
+function courseCosts(rows, resolved) {
+  return rows.filter(reviewed).filter(row => row.value?.course_page_tuition_fees).map(row => {
+    const entries = Object.entries(row.value.course_page_tuition_fees).flatMap(([status, panels]) => Array.isArray(panels) ? panels.map(panel => [
+      escapeHtml(status === "Home fee" ? label("home_fee") : status === "Overseas fee" ? label("overseas_fee") : status),
+      panel.panel_status === "published" && panel.amounts_and_periods?.length
+        ? panel.amounts_and_periods.map(amount => escapeHtml(amount.replace(/\bper year\b/g, label("per_year")))).join("<br>") : escapeHtml(label("unknown")),
+      escapeHtml(admissionsCycleLabel(panel.cycle || panel.panel_cycle_label || "")),
+    ]) : []);
+    return entries.length ? `<section class="admissions-reading__section" data-course-tuition>${table(label("published_tuition"), [label("fee_status"), label("tuition"), label("source_period")], entries)}<p class="admissions-reading__note">${escapeHtml(label("fee_status_explained"))}</p>${sourceNote(row, resolved)}</section>` : "";
+  }).join("");
+}
+
+function livingReferences(rows, resolved) {
+  return rows.filter(reviewed).filter(row => row.value?.average_9months && Number.isFinite(row.value.private_sector_total_12months)).map(row => {
+    const value = row.value;
+    const money = amount => `${new Intl.NumberFormat(locale()).format(amount)} ${escapeHtml(value.currency)}`;
+    const range = value.average_9months;
+    if (!Number.isFinite(range.min) || !Number.isFinite(range.max)) return "";
+    return `<section class="admissions-reading__section" data-living-reference><h3>${escapeHtml(label("living_reference"))} · ${escapeHtml(translateAdmissionSummary(value.cycle) || value.cycle)}</h3><dl class="admissions-reading__costs"><div><dt>${escapeHtml(label("living_nine_months"))}</dt><dd>${money(range.min)}–${money(range.max)}</dd></div><div><dt>${escapeHtml(label("living_twelve_months"))}</dt><dd>${money(value.private_sector_total_12months)}</dd></div></dl><p>${escapeHtml(translateAdmissionSummary(value.exclusions) || value.exclusions)}</p><p class="admissions-reading__note">${escapeHtml(label("different_cost_periods"))}</p>${sourceNote(row, resolved)}</section>`;
+  }).join("");
+}
+
+function scholarshipRounds(rows, resolved) {
+  return rows.filter(reviewed).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length || row.scope.levels.some(level => resolved.selected_option.levels.includes(level)))
+    .filter(row => row.value?.coverage && row.value.rounds?.some(round => round.deadline && round.notify_by)).map(row => {
+    const dates = row.value.rounds.filter(round => round.deadline && round.notify_by).map(round => [escapeHtml(formatPublishedDate(round.deadline)), escapeHtml(formatPublishedDate(round.notify_by))]);
+    return `<section class="admissions-reading__section" data-scholarship-rounds>${table(label("scholarship_rounds"), [label("apply_by"), label("decision")], dates)}${row.value.deadline_time ? `<p>${escapeHtml(label("local_time"))}: ${escapeHtml([row.value.deadline_time, row.value.timezone].filter(Boolean).join(" · "))}</p>` : ""}<p class="admissions-reading__note">${escapeHtml(label("scholarship_dates_separate"))}</p>${sourceNote(row, resolved)}</section>`;
+  }).join("");
+}
+
 export function renderApplicantSection(resolved, domains) {
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
   const rows = (resolved.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched");
@@ -155,7 +212,10 @@ export function renderApplicantSection(resolved, domains) {
   const focused = rows.filter(relevant);
   const general = rows.filter(row => !relevant(row));
   const mode = domains.includes("costs") ? "finance" : domains.includes("deadlines") ? "dates" : "requirements";
-  const highlights = mode === "finance" ? finance(focused, resolved) : mode === "dates" ? deadlines(focused, resolved) : requirements(focused, resolved);
+  const summaryRows = (resolved.facts || []).filter(row => row.applicability?.status !== "mismatched");
+  const highlights = mode === "finance" ? `${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
+    : mode === "dates" ? `${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines")}`
+      : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
   const references = facts => renderAdmissionsContext({ ...resolved, facts }, {
     domains, includeAssessment: false, includeUnknowns: false, includeHistory: false,
     includeSourceNote: false, presentation: "simple",

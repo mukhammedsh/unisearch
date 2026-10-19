@@ -82,6 +82,77 @@ test("all available MIT overview descriptions have complete Russian and Kazakh t
   }
 });
 
+test("every available Imperial overview is translated in both packs and the Kazakh fallback", async () => {
+  const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
+  const fallback = JSON.parse(await readFile(new URL("../../frontend/Localization/universities-kaz.json", import.meta.url), "utf8"));
+  const descriptions = new Set(imperial.facts.map(row => row.value?.course_page_programme_summary).filter(Boolean));
+  assert.equal(descriptions.size, 168);
+  for (const language of ["rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const description of descriptions) {
+      assert.match(translateAdmissionSummary(description), /[\u0400-\u04ff]/u, `${language}: ${description}`);
+      if (language === "kaz") assert.equal(fallback.admission_exact[description], translateAdmissionSummary(description));
+    }
+  }
+});
+
+test("Imperial summaries keep course requirements, costs, dates and aid tied to their original evidence", async () => {
+  const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
+  const ids = ["imperial-computing-meng-admission", "imperial-computing-meng-course-profile", "imperial-ucas-process", "imperial-ucas-2027-window", "imperial-london-living-2026", "imperial-bursary-conditions", "imperial-inspires-2027-contract"];
+  const facts = imperial.facts.filter(row => ids.includes(row.id));
+  const resolved = { selected_option: imperial.study_options.find(row => row.id === "imperial-option-computing-meng"),
+    selected_route: imperial.application_routes.find(row => row.id === "procedure-computing-meng"), facts, sources: imperial.sources,
+    fact_groups: { requirements: [ids[0]], application: [ids[2]], deadlines: [ids[3]], costs: [ids[1], ids[4]], funding: ids.slice(5) } };
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    const entry = renderApplicantSection(resolved, ["requirements", "application"]);
+    assert.match(entry, /data-source-summary="requirements"/);
+    assert.match(entry, /41/);
+    assert.match(entry, /TMUA/);
+    assert.match(entry, /I50/);
+    const overview = renderStudyOptionOverview({ ...resolved, fact_groups: { study: [ids[1]] } });
+    if (language !== "eng") assert.doesNotMatch(overview, />Full-time<|>October 2027<|>Department of Computing</);
+    const finance = renderApplicantSection(resolved, ["costs", "funding"]);
+    assert.match(finance, /data-course-tuition/);
+    assert.match(finance, /47,800/);
+    assert.match(finance, /data-living-reference/);
+    assert.doesNotMatch(finance, /admissions-reading__total/);
+    assert.match(finance, /data-source-summary="funding"/);
+    const dates = renderApplicantSection(resolved, ["deadlines"]);
+    assert.match(dates, /data-ucas-dates/);
+    assert.match(dates, /2027/);
+    assert.match(dates, /TMUA/);
+    const admission = facts.find(row => row.id === ids[0]);
+    assert.ok(translateAdmissionSummary(admission.value.course_specific_test_blocks[0], { section: "requirements" }));
+    assert.equal(translateAdmissionSummary("Changed official evidence", { section: "requirements" }), "");
+  }
+});
+
+test("Computing PhD reading does not borrow MSc rounds and keeps yearless funding suggestions yearless", async () => {
+  const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
+  const ids = ["imperial-computing-phd-admission", "imperial-computing-funding-exceptions", "imperial-president-phd-funding"];
+  const facts = imperial.facts.filter(row => ids.includes(row.id));
+  const resolved = { selected_option: imperial.study_options.find(row => row.id === "imperial-computing-phd"),
+    selected_route: imperial.application_routes.find(row => row.id === "procedure-computing-phd"), facts, sources: imperial.sources,
+    fact_groups: { requirements: [ids[0]], application: [ids[0]], deadlines: [], funding: ids.slice(1) } };
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    const dates = renderApplicantSection(resolved, ["deadlines"]);
+    assert.match(dates, /data-source-summary="deadlines"/);
+    assert.match(dates, /2026/);
+    assert.doesNotMatch(dates, /23:59|6 January|6 января|6 қаңтар/);
+    const finance = renderApplicantSection(resolved, ["costs", "funding"]);
+    assert.match(finance, /data-scholarship-rounds/);
+    assert.match(finance, /2027/);
+    assert.match(finance, /i?360|27,036|27 036/);
+    const undergraduate = renderApplicantSection({ ...resolved, selected_option: { id: "undergraduate", levels: ["undergraduate"] } }, ["costs", "funding"]);
+    assert.doesNotMatch(undergraduate, /data-scholarship-rounds|data-source-summary="funding"/);
+  }
+});
+
 test("MIT aid documents are readable without disclosures and keep first-year and transfer dates separate", async () => {
   const mit = catalog.institutions[0];
   const facts = mit.facts.filter(row => ["undergraduate-aid-process-and-renewal", "undergraduate-aid-category-and-documents"].includes(row.id));

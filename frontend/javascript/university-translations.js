@@ -198,8 +198,9 @@ export function translateAdmissionText(value, fallback = "") {
   return out;
 }
 
-export function translateAdmissionSummary(value) {
+export function translateAdmissionSummary(value, { section = "" } = {}) {
   const raw = String(value || "").trim();
+  if (section) return String(getPack()?.admission_summaries?.[raw]?.[section] || "");
   if (normalizeLang(getCurrentLanguage()) === "eng") return raw;
   return String(getPack()?.admission_exact?.[raw] || "");
 }

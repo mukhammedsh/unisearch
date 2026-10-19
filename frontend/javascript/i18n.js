@@ -3,7 +3,7 @@ import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
-const I18N_PACK_REVISION = "11";
+const I18N_PACK_REVISION = "12";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";

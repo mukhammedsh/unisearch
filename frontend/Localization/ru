@@ -2832,3 +2832,39 @@ university.admissions.reading.aid_finances_title: Для CSS Profile подго�
 university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи
 university.programs.all_levels: Все уровни обучения
 university.programs.search_clear: Очистить поиск
+university.admissions.reading.summary_requirements: Основные опубликованные требования
+university.admissions.reading.summary_application: Как подать заявку
+university.admissions.reading.summary_deadlines: Даты курса и раунды подачи
+university.admissions.reading.summary_costs: Дополнительные платежи и условия
+university.admissions.reading.summary_funding: Помощь: условия и подача
+university.admissions.reading.home_fee: Тариф Home
+university.admissions.reading.overseas_fee: Тариф Overseas
+university.admissions.reading.fee_status: Категория оплаты
+university.admissions.reading.per_year: в год
+university.admissions.reading.published_tuition: Опубликованная плата за курс
+university.admissions.reading.fee_status_explained: Home и Overseas — категории оплаты, которые определяет Imperial. Одного гражданства для их определения недостаточно; проживание и дополнительные платежи не включены в обучение.
+university.admissions.reading.living_reference: Ориентир расходов на жизнь
+university.admissions.reading.living_nine_months: 9 месяцев · опубликованный средний диапазон
+university.admissions.reading.living_twelve_months: 12 месяцев · ориентир с частным жильём
+university.admissions.reading.different_cost_periods: Этот ориентир проживания относится к другому периоду, чем обучение 2027 года. Суммы показаны отдельно и не складываются в подтверждённый годовой бюджет.
+university.admissions.reading.scholarship_rounds: Раунды President’s PhD Scholarships
+university.admissions.reading.scholarship_dates_separate: Это сроки рассмотрения стипендии. Кафедра может требовать более ранней заявки PhD; поступление и назначение стипендии — отдельные решения.
+university.admissions.reading.ucas_medicine: UCAS · срок для Medicine
+university.admissions.reading.ucas_equal_consideration: UCAS · равное рассмотрение заявок
+university.admissions.reading.submission_opens: Начало подачи заявок
+university.admissions.reading.date: Дата
+university.admissions.reading.local_time: Опубликованное местное время
+university.admissions.reading.month_standalone.1: январь
+university.admissions.reading.month_standalone.2: февраль
+university.admissions.reading.month_standalone.3: март
+university.admissions.reading.month_standalone.4: апрель
+university.admissions.reading.month_standalone.5: май
+university.admissions.reading.month_standalone.6: июнь
+university.admissions.reading.month_standalone.7: июль
+university.admissions.reading.month_standalone.8: август
+university.admissions.reading.month_standalone.9: сентябрь
+university.admissions.reading.month_standalone.10: октябрь
+university.admissions.reading.month_standalone.11: ноябрь
+university.admissions.reading.month_standalone.12: декабрь
+university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
+university.admissions.reading.integrated_meng: MEng — интегрированная программа с поступлением через UCAS на уровне бакалавриата; она объединяет бакалаврское обучение и дисциплины магистерского уровня.
