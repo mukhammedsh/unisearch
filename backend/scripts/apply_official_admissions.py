@@ -12,6 +12,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from atomic_json import write_json_atomic
+
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
 DEFAULT_ADMISSIONS_PATH = ROOT / "backend" / "data" / "official_admissions.json"
@@ -255,9 +257,7 @@ def main() -> None:
         raise RuntimeError("universities.json root must be a list")
 
     changed = apply_official_admissions(universities, catalog)
-    data_path.write_text(  # NOSONAR (S2083): resolved path is constrained to repo_root above.
-        json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    write_json_atomic(data_path, universities)
     print(f"Updated {changed} university rows from structured official admissions data")
 
 

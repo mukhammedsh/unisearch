@@ -254,7 +254,7 @@ class MlRecommenderTests(unittest.TestCase):
             self.assertEqual("query: ai systems", self.recommender._format_semantic_query("ai systems"))
             self.assertEqual("passage: robotics lab", self.recommender._format_semantic_passage("robotics lab"))
 
-    def test_predict_semantic_applies_cross_lingual_offset(self):
+    def test_predict_semantic_uses_embedding_similarity_without_language_bonus(self):
         import numpy as np
 
         self.recommender._university_ids = ["u1"]
@@ -267,15 +267,13 @@ class MlRecommenderTests(unittest.TestCase):
 
         self.recommender._semantic_model = MockModel()
 
-        # ASCII query: no offset -> (0.75 - 0.55) / 0.35 = 0.5714
         out_en = self.recommender._predict_semantic("robotics")
-        # Non-ASCII query: offset 0.038 -> (0.75 + 0.038 - 0.55) / 0.35 = 0.68
         out_ru = self.recommender._predict_semantic("робототехника")
 
         self.assertIsNotNone(out_en)
         self.assertIsNotNone(out_ru)
         self.assertAlmostEqual(0.5714, out_en["u1"], places=3)
-        self.assertAlmostEqual(0.6800, out_ru["u1"], places=3)
+        self.assertEqual(out_en["u1"], out_ru["u1"])
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@
 Sources:
 - OpenAlex Institutions API: research activity metrics.
 - Open-Meteo Geocoding API: city population.
+- Wikidata and documented official city-population fallbacks when geocoding has no population.
 
 The script updates:
 - `factors` (0.0..1.0 values used by UniFit sliders)
@@ -18,6 +19,7 @@ import json
 import math
 import os
 import re
+import sys
 import time
 import urllib.parse
 import urllib.request
@@ -25,11 +27,16 @@ from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+from atomic_json import write_json_atomic
+
 
 ROOT = Path(__file__).resolve().parents[2]
 UNIVERSITIES_PATH = (ROOT / "backend" / "data" / "universities.json").resolve()
 if not (UNIVERSITIES_PATH == ROOT or ROOT in UNIVERSITIES_PATH.parents):
     raise RuntimeError("Path traversal detected")
+sys.path.insert(0, str(ROOT / "backend"))
+
+from app.services.currency import convert as convert_currency  # noqa: E402
 
 OPENALEX_BASE = "https://api.openalex.org/institutions"
 OPEN_METEO_BASE = "https://geocoding-api.open-meteo.com/v1/search"
@@ -74,8 +81,12 @@ OPENALEX_NAME_OVERRIDES = {
     "L.N. Gumilyov Eurasian National University": "L. N. Gumilyov Eurasian National University",
 }
 
-FALLBACK_CITY_POPULATION = {
-    "Kaskelen": 79499.0,  # official 2022 Kaskelen population fallback
+OFFICIAL_CITY_POPULATION_FALLBACKS = {
+    "Kaskelen": {
+        "population": 79482.0,
+        "year": 2021,
+        "source_url": "https://stat.gov.kz/upload/medialibrary/75f/z2gxd3z3s8gsf7em4x4q5ahd87mgoc5m/%D0%9D%D0%B0%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%201%20%D1%82%D0%BE%D0%BC.pdf",
+    },
 }
 
 
@@ -116,6 +127,17 @@ def _safe_num(value: Any) -> Optional[float]:
     except Exception:
         return None
     return None
+
+
+def _tuition_usd(finance: Dict[str, Any]) -> Optional[float]:
+    amount = _safe_num(finance.get("total_cost_year_usd"))
+    if amount is None:
+        return None
+    currency = str(finance.get("currency") or "USD").strip().upper()
+    try:
+        return _safe_num(convert_currency(amount, currency, "USD"))
+    except ValueError:
+        return None
 
 
 def _clamp01(value: float) -> float:
@@ -424,6 +446,9 @@ def main() -> None:
         geocode_url = ""
         wikidata_population = None
         wikidata_url = ""
+        official_population_fallback = None
+        official_population_fallback_year = None
+        official_population_fallback_url = ""
 
         try:
             openalex_row, openalex_url = _fetch_openalex_institution(university)
@@ -439,15 +464,18 @@ def main() -> None:
 
         finance = university.get("finance")
         finance = finance if isinstance(finance, dict) else {}
-        tuition = _safe_num(finance.get("total_cost_year_usd"))
+        tuition = _tuition_usd(finance)
         research = _research_signal(openalex_row)
         official_rank = _official_rank_position(university)
         population = _safe_num((geocode_row or {}).get("population"))
         if population is None:
             city_name = str((university.get("location") or {}).get("city") or "").strip()
-            if city_name in FALLBACK_CITY_POPULATION:
-                population = FALLBACK_CITY_POPULATION[city_name]
-                wikidata_population = population
+            official_fallback = OFFICIAL_CITY_POPULATION_FALLBACKS.get(city_name)
+            if isinstance(official_fallback, dict):
+                population = _safe_num(official_fallback.get("population"))
+                official_population_fallback = population
+                official_population_fallback_year = official_fallback.get("year")
+                official_population_fallback_url = str(official_fallback.get("source_url") or "")
             else:
                 try:
                     wikidata_population, wikidata_url = _fetch_city_population_wikidata(university)
@@ -469,6 +497,9 @@ def main() -> None:
                 "population": population,
                 "wikidata_population": wikidata_population,
                 "wikidata_url": wikidata_url,
+                "official_population_fallback": official_population_fallback,
+                "official_population_fallback_year": official_population_fallback_year,
+                "official_population_fallback_url": official_population_fallback_url,
             }
         )
 
@@ -524,7 +555,8 @@ def main() -> None:
             "computed_at": now_iso,
             "method": (
                 "Deterministic mapping from OpenAlex (research metrics), "
-                "Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, "
+                "Open-Meteo geocoding/Wikidata and documented official fallbacks (city population), "
+                "official QS rank metadata where available, "
                 "and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. "
                 "Location axis is computed as city-life(0.0) <-> outside-major-city(1.0)."
             ),
@@ -532,6 +564,7 @@ def main() -> None:
                 "openalex_query": row.get("openalex_url", ""),
                 "open_meteo_query": row.get("geocode_url", ""),
                 "wikidata_population_query": row.get("wikidata_url", ""),
+                "official_population_fallback": row.get("official_population_fallback_url", ""),
             },
             "raw_metrics": {
                 "openalex": {
@@ -550,6 +583,8 @@ def main() -> None:
                     "admin1": geocode.get("admin1"),
                     "population": geocode.get("population"),
                     "population_wikidata_fallback": row.get("wikidata_population"),
+                    "population_official_fallback": row.get("official_population_fallback"),
+                    "population_official_fallback_year": row.get("official_population_fallback_year"),
                 },
                 "rank": {
                     "position": row.get("official_rank"),
@@ -571,10 +606,7 @@ def main() -> None:
             },
         }
 
-    UNIVERSITIES_PATH.write_text(  # NOSONAR (S2083): module path is fixed below the resolved repository root.
-        json.dumps(universities, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    write_json_atomic(UNIVERSITIES_PATH, universities)
 
     matched_openalex = sum(1 for row in staged if isinstance(row.get("openalex"), dict))
     matched_population = sum(
@@ -583,12 +615,13 @@ def main() -> None:
         if (
             _safe_num(((row.get("geocode") or {}).get("population"))) is not None
             or _safe_num(row.get("wikidata_population")) is not None
+            or _safe_num(row.get("official_population_fallback")) is not None
         )
     )
     print("")
     print(f"Updated: {UNIVERSITIES_PATH}")
     print(f"OpenAlex matches: {matched_openalex}/{len(staged)}")
-    print(f"City population matches (Open-Meteo/Wikidata): {matched_population}/{len(staged)}")
+    print(f"City population matches (Open-Meteo/Wikidata/official fallback): {matched_population}/{len(staged)}")
 
 
 if __name__ == "__main__":
