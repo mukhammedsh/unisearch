@@ -8,7 +8,7 @@ from app.services import languages
 
 
 class LanguageConfigCacheTests(unittest.TestCase):
-    def test_config_cache_reloads_on_mtime_change_and_falls_back_for_bad_files(self):
+    def test_config_cache_reloads_and_retries_after_invalid_files(self):
         with tempfile.TemporaryDirectory() as directory:
             config_path = Path(directory) / "languages.json"
             modified = [None]
@@ -16,11 +16,10 @@ class LanguageConfigCacheTests(unittest.TestCase):
             with patch.object(languages, "LANGUAGES_PATH", config_path), patch.object(
                 languages, "file_mtime", side_effect=lambda _: modified[0]
             ), patch.dict(languages._LANG_CACHE, {"mtime": None, "data": {}, "index": None}):
-                self.assertEqual({}, languages.load_languages())
-                self.assertEqual(
-                    {"version": 0, "cefr": [], "languages": [], "language_exams": {}, "waiver_rules": []},
-                    languages.get_languages_config(),
-                )
+                with self.assertRaises(languages.RequiredDataUnavailable):
+                    languages.load_languages()
+                with self.assertRaises(languages.RequiredDataUnavailable):
+                    languages.get_languages_config()
 
                 def write_config(version):
                     config_path.write_text(json.dumps({
@@ -43,11 +42,15 @@ class LanguageConfigCacheTests(unittest.TestCase):
 
                 config_path.write_text("{", encoding="utf-8")
                 modified[0] = 3
-                self.assertEqual({}, languages.load_languages())
-                self.assertEqual(
-                    {"version": 0, "cefr": [], "languages": [], "language_exams": {}, "waiver_rules": []},
-                    languages.get_languages_config(),
-                )
+                with self.assertRaises(languages.RequiredDataUnavailable):
+                    languages.load_languages()
+                with self.assertRaises(languages.RequiredDataUnavailable):
+                    languages.get_languages_config()
+                self.assertEqual(2, languages._LANG_CACHE["mtime"])
+
+                write_config(3)
+                modified[0] = 4
+                self.assertEqual(3, languages.get_languages_config()["version"])
 
     def test_get_languages_index_returns_default_index(self):
         with patch.dict(languages._LANG_CACHE, {"mtime": None, "data": {}, "index": None}):

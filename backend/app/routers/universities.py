@@ -82,10 +82,15 @@ def _quantize_slider_value(val: Any) -> Optional[int]:
         return None
 
 
-def _ai_sort_cache_key(payload: UniversitiesAiSortRequest) -> str:
+def _ai_sort_cache_key(
+    payload: UniversitiesAiSortRequest,
+    search_lang: Optional[str] = None,
+) -> str:
     raw = payload.model_dump(exclude_none=True)
     raw["admissions_revision"] = admissions_catalog.get_revision()
     raw["assessment_revision"] = admissions_assessment.get_assessment_revision()
+    raw.pop("lang", None)
+    raw["search_lang"] = _normalize_search_lang(search_lang if search_lang is not None else payload.lang)
     raw.pop("page", None)
     raw.pop("limit", None)
     for field in (
@@ -213,14 +218,12 @@ def list_universities(
     }
     redis_cache_key = _cache_key("api:universities:list", cache_payload)
 
-    use_redis_cache = True
-    if use_redis_cache:
-        cached = cache_get_json(redis_cache_key)
-        if isinstance(cached, dict):
-            if response is not None:
-                response.headers["Cache-Control"] = "public, max-age=60"
-                response.headers["X-Redis-Cache"] = "HIT"
-            return cached
+    cached = cache_get_json(redis_cache_key)
+    if isinstance(cached, dict):
+        if response is not None:
+            response.headers["Cache-Control"] = "public, max-age=60"
+            response.headers["X-Redis-Cache"] = "HIT"
+        return cached
 
     result = uni_service.list_universities(
         q=q,
@@ -245,12 +248,11 @@ def list_universities(
         search_lang=search_lang,
     )
 
-    if use_redis_cache:
-        cache_set_json(redis_cache_key, result, ttl_seconds=max(1, int(REDIS_CACHE_TTL_SEC)))
+    cache_set_json(redis_cache_key, result, ttl_seconds=max(1, int(REDIS_CACHE_TTL_SEC)))
 
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=60"
-        response.headers["X-Redis-Cache"] = "MISS" if use_redis_cache else "BYPASS"
+        response.headers["X-Redis-Cache"] = "MISS"
     return result
 
 
@@ -394,8 +396,8 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     page = payload.page
     limit = payload.limit
 
-    cache_key = _ai_sort_cache_key(payload)
     search_lang = _resolve_search_lang(payload.lang, request)
+    cache_key = _ai_sort_cache_key(payload, search_lang)
     sorted_items = _ai_sort_cache_get(cache_key)
     cache_hit = sorted_items is not None
 

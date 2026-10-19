@@ -17,11 +17,11 @@ flowchart TD
     end
 
     subgraph Gateway ["Edge / Reverse Proxy Layer"]
-        Proxy["Reverse Proxy / CDN\n(TLS 1.2+, HTTPS Termination, Host Guard)"]
+        Proxy["Reverse Proxy / CDN\n(Deployment-specific TLS and request limits)"]
     end
 
     subgraph Backend ["Application Layer (FastAPI)"]
-        MW["Security Middleware\n(Rate Limiter, Body Limit, CSP, Proxy Guard)"]
+        MW["Security Middleware\n(Rate Limiter, Body Limit, CSP, Trusted Proxy Resolution)"]
         Routers["API Routers\n(/universities, /ai-sort, /compare, /exams)"]
         UniFit["UniFit Composite Engine\n(Personalized Ranking, Sliders)"]
         UniChance["UniChance\n(Published Requirements Fit)"]
@@ -110,7 +110,7 @@ backend/app/
 ├── core/
 │   ├── security.py       # Sliding-window rate limiter, proxy resolution, CSP headers
 │   ├── redis_store.py    # Robust Redis client with automatic fallback suppression
-│   ├── settings.py       # Pydantic BaseSettings with typed environment overrides
+│   ├── settings.py       # Environment variable settings and parsing
 │   └── observability.py   # Metrics collection, request duration tracking, structured logging
 ├── routers/
 │   ├── universities.py   # Core catalog, search, AI sort, ROI, and comparisons
@@ -128,9 +128,9 @@ backend/app/
 
 ### Request Lifecycle & Defense-in-Depth Pipeline
 
-1. **Host Header Validation:** Discards requests with unapproved hostnames.
+1. **Host Handling:** FastAPI does not validate `Host` against an allowlist, and the shipped Nginx example uses `server_name _`. Configure host restrictions at the deployment ingress when required.
 2. **Payload Size Guard:** Rejects incoming request bodies exceeding 128 KiB (`REQUEST_BODY_MAX_BYTES`) with HTTP 413.
-3. **Client IP Resolution (`request_client_ip`):** Evaluates `X-Forwarded-For` right-to-left against configured `TRUSTED_PROXY_IPS` and private network ranges, rejecting client-spoofed headers.
+3. **Client IP Resolution (`request_client_ip`):** When `TRUST_X_FORWARDED_FOR=1` and the direct peer is trusted, walks `X-Forwarded-For` right-to-left. Trusted proxies come from `TRUSTED_PROXY_IPS`; private or local ranges are trusted only when `TRUST_PRIVATE_NETWORK_PROXIES=1`.
 4. **Sliding-Window Rate Limiter:** Enforces IP-based rate limits (global requests and expensive calculation budgets) using memory-safe sliding window counters.
 5. **Contract Enforcement:** Request payloads are deserialized and strictly validated against Pydantic models in `backend/app/schemas/payloads.py`. Invalid parameters trigger structured HTTP 422 errors.
 6. **Security Headers Middleware:** Injects defensive headers into every HTTP response:
@@ -201,22 +201,21 @@ Implemented in `backend/app/services/ml_scoring.py`:
   Automated script validating schema conformance, URL liveliness, required fields, and asset presence before any release.
 
 ### Redis Caching Layer (`app/core/redis_store.py`)
-* **Environment-Isolated Key Namespaces:** All cache keys are dynamically prefixed with deployment environments (e.g. `unisearch:prod:`, `unisearch:test:`).
-* **Graceful Failure Suppression:** Redis errors (connection timeouts, cluster restarts) are trapped and logged without bubbling to the client. The system transparently falls back to computing fresh responses.
-* **Ping Caching:** Connection liveness is cached for 10 seconds to eliminate redundant network roundtrips during health probes.
+* **Key Prefixes:** Cache entries and rate-limiter keys use `REDIS_PREFIX`, which defaults to `unisearch`; it does not add an environment name automatically. Set a unique prefix for each deployment when environments share a Redis instance.
+* **Graceful Failure:** Cache helper exceptions are swallowed and returned as misses or failed writes; `redis_store.py` does not log them. Callers can recompute data after a cache miss.
+* **Ping Caching:** Redis connectivity status is cached for 5 seconds. `/ready` and `/ops/runtime` request a fresh check.
 
 ---
 
 ## 6. Observability, Health & Startup Lifecycle
 
-UniSearch provides fine-grained observability for production hosting:
+UniSearch provides health probes, optional request metrics, and protected operations endpoints:
 
-* **`/health`:** Lightweight liveness check for load balancers. Returns HTTP 200 with system uptime.
-* **`/ready`:** Readiness probe validating catalog data load, Redis connectivity, and embedding model availability.
-* **`/metrics`:** Exposes Prometheus-compatible operational counters: request counts, duration histograms, cache hit/miss ratios, and rate-limit triggers.
-* **`/ops/*` (Ops Admin Endpoints):** Protected administrative endpoints requiring `OPS_ADMIN_TOKEN` for on-demand cache flushing, catalog reload, and runtime diagnostics.
-* **Background Startup Synchronization (`app/services/background_tasks.py`):**
-  Upon application start, an asynchronous warmup routine loads the catalog into memory, primes currency conversion tables from open exchange rate feeds, and initializes ML vector indices in the background without blocking initial HTTP readiness.
+* **`/health`:** Lightweight liveness check. Returns the service status and version; it does not report uptime.
+* **`/ready`:** Checks that the universities, languages, and exams datasets are loaded. It reports Redis status but does not fail readiness when Redis is unavailable, and it does not check ML availability.
+* **`/metrics`:** When `METRICS_ENABLED=1` and the Instrumentator dependency is available, the configurable `METRICS_PATH` (default `/metrics`) exposes its standard request metrics. No custom cache or rate-limit counters are registered; metrics are disabled by default.
+* **Ops endpoints:** The only routes are `GET /ops/runtime` and `POST /ops/warmup`. `/ops/*` requests require the configured `OPS_ADMIN_TOKEN`; when it is unset, they return 404.
+* **Background Startup Warmup (`app/services/background_tasks.py`):** When `AUTO_WARMUP_ON_STARTUP` is enabled (default), a background task loads university, language, and exam data and currency rates. ML warmup is skipped by default (`WARMUP_ML_ON_STARTUP=0`).
 
 ---
 

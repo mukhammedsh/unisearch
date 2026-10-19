@@ -13,6 +13,7 @@ from app.core.settings import (
     METRICS_PATH,
     OPS_ADMIN_HEADER,
     OPS_ADMIN_TOKEN,
+    REDIS_PREFIX,
     TRUST_CF_CONNECTING_IP,
     TRUST_PRIVATE_NETWORK_PROXIES,
     TRUST_X_FORWARDED_FOR,
@@ -141,7 +142,7 @@ def build_rate_limiter(
         limit=limit,
         window_seconds=window_seconds,
         redis_client=redis_client,
-        key_prefix=redis_key_prefix,
+        key_prefix=f"{REDIS_PREFIX}:{redis_key_prefix}",
     )
 
 

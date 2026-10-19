@@ -1,10 +1,10 @@
 # Default ownership for all project files.
-* @mukhammedsh
+* @mukhammedsh @raiselx
 
 # Higher-risk areas that need deliberate review.
-/.github/ @mukhammedsh
-/backend/app/ @mukhammedsh
-/backend/data/ @mukhammedsh
-/frontend/Localization/ @mukhammedsh
-/frontend/javascript/icons.js @mukhammedsh
-/docs/design-system.md @mukhammedsh
+/.github/ @mukhammedsh @raiselx
+/backend/app/ @mukhammedsh @raiselx
+/backend/data/ @mukhammedsh @raiselx
+/frontend/Localization/ @mukhammedsh @raiselx
+/frontend/javascript/icons.js @mukhammedsh @raiselx
+/docs/design-system.md @mukhammedsh @raiselx

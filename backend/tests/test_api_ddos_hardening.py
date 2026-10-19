@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 from starlette.datastructures import Headers
 
-from app.main import app, _is_expensive_request
+from app.main import app, _expensive_rate_limit_path, _is_expensive_request
 from app.core.security import SlidingWindowRateLimiter, request_client_ip
 
 
@@ -23,6 +23,17 @@ class ApiDdosHardeningTests(unittest.TestCase):
         req.method = "POST"
         req.scope = {"path": "/universities/ai-sort"}
         self.assertTrue(_is_expensive_request(req))
+
+    def test_university_ids_share_the_same_expensive_route_bucket(self):
+        first = MagicMock()
+        first.scope = {"path": "/universities/mit-usa-cambridge/uni-chance"}
+        second = MagicMock()
+        second.scope = {"path": "/universities/stanford-university-usa-ca/uni-chance"}
+        roi = MagicMock()
+        roi.scope = {"path": "/universities/mit-usa-cambridge/roi"}
+
+        self.assertEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(second))
+        self.assertNotEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(roi))
 
     def test_compare_profiles_caches_results(self):
         payload = {

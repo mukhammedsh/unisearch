@@ -6,7 +6,7 @@ import re
 import urllib.parse
 from typing import Any, Dict, List, Optional, Tuple
 
-from app.core.files import file_mtime
+from app.core.files import RequiredDataUnavailable, file_mtime
 from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
 from app.core.utils import (
     to_float as _num_or_none,
@@ -1651,21 +1651,17 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
     mtime = file_mtime(DATA_PATH)
     admissions_revision = admissions_catalog.get_revision()
     if mtime is None:
-        _UNI_CACHE["mtime"] = None
-        _UNI_CACHE["data"] = []
-        _UNI_CACHE["by_id"] = {}
-        _UNI_CACHE["meta"] = []
-        return []
+        raise RequiredDataUnavailable("University data is unavailable")
 
     if mtime != _UNI_CACHE["mtime"] or admissions_revision != _UNI_CACHE.get("admissions_revision"):
         try:
             with open(DATA_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            if not isinstance(data, list):
-                data = []
+            if not isinstance(data, list) or not data or any(not isinstance(row, dict) for row in data):
+                raise ValueError("universities.json must contain university records")
             data = _sanitize_public_source_urls(data)
-        except Exception:
-            data = []
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+            raise RequiredDataUnavailable("University data is unavailable") from exc
 
         out: List[Dict[str, Any]] = []
         meta_list: List[Dict[str, Any]] = []

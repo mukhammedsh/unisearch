@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.core.observability import setup_observability
 from app.core.paths import UNIVERSITY_ASSETS_DIR
+from app.core.files import RequiredDataUnavailable
 from app.core.security import (
     build_rate_limiter,
     is_protected_ops_request,
@@ -162,6 +163,14 @@ def _is_expensive_request(request: Request) -> bool:
     return False
 
 
+def _expensive_rate_limit_path(request: Request) -> str:
+    path = request_scope_path(request)
+    parts = path.strip("/").split("/")
+    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] in {"uni-chance", "roi"}:
+        return "/" + "/".join([*parts[:-2], "{id}", parts[-1]])
+    return path
+
+
 def _security_headers() -> dict[str, str]:
     return {
         "X-Content-Type-Options": "nosniff",
@@ -259,7 +268,7 @@ def _rate_limit_result(request: Request) -> tuple[Response | None, dict[str, str
             GLOBAL_RATE_LIMIT_WINDOW_SEC,
         )
 
-    request_key = f"{client_key}:{request.method.upper()}:{request_scope_path(request)}"
+    request_key = f"{client_key}:{request.method.upper()}:{_expensive_rate_limit_path(request)}"
     allowed, remaining, retry_after = _EXPENSIVE_RATE_LIMITER.check(request_key)
     if not allowed:
         return _rate_limit_response(
@@ -318,6 +327,13 @@ async def admissions_catalog_error_handler(request: Request, exc: AdmissionsCata
     return JSONResponse(
         {"detail": "Admissions catalog not found" if missing else "Admissions catalog is unavailable"},
         status_code=404 if missing else 503, headers={"Cache-Control": "private, no-store"},
+    )
+
+
+@app.exception_handler(RequiredDataUnavailable)
+async def required_data_unavailable_handler(request: Request, exc: RequiredDataUnavailable) -> JSONResponse:
+    return _apply_security_headers(
+        JSONResponse({"detail": "Required application data is unavailable"}, status_code=503)
     )
 
 

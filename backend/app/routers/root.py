@@ -23,7 +23,7 @@ def health(warmup: bool = Query(False)):
     return payload
 
 
-@router.get("/ready", summary="Readiness check", description="Verifies that all required datasets (universities, languages, exams) are loaded and Redis is reachable.")
+@router.get("/ready", summary="Readiness check", description="Verifies required university, language, and exam data; reports Redis status without requiring Redis to be available.")
 def ready():
     universities = universities_service.load_universities()
     locations = universities_service.get_locations()
