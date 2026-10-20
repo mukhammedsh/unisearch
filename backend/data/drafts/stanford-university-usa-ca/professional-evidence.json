@@ -770,7 +770,8 @@
         "gsb_mba",
         "gsb_mba_essentials",
         "gsb_mba_rounds"
-      ]
+      ],
+      "application_url": "https://www.gsb.stanford.edu/programs/mba/admission/application"
     },
     {
       "id": "gsb_msx_admission",
@@ -849,7 +850,8 @@
         "med_md_timeline",
         "med_md_apply",
         "med_mstp_faq"
-      ]
+      ],
+      "application_url": "https://med.stanford.edu/md-admissions/how-to-apply.html"
     },
     {
       "id": "med_mstp_external_admission",

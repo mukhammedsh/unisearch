@@ -22,6 +22,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from atomic_json import write_json_atomic
+
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
@@ -502,9 +504,7 @@ def main() -> None:
         catalog,
         verified_at=str(args.verified_at).strip() or "2026-03-12",
     )
-    data_path.write_text(  # NOSONAR (S2083): resolved path is constrained to repo_root above.
-        json.dumps(universities, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    write_json_atomic(data_path, universities)
     print(f"Updated {changed} university rows from curated official facts")
 
 

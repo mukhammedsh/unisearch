@@ -72,8 +72,9 @@
       "id": "test-scores",
       "url": "https://gradadmissions.stanford.edu/apply/test-scores",
       "title": "Test Scores | Graduate Admissions",
-      "checked_at": "2026-10-02",
-      "content_review_status": "Reviewed 2027-28 English score minimums, GRE program-specific policy and score validity."
+      "checked_at": "2026-10-20",
+      "content_review_status": "Rechecked CS MS eligibility, all four English exemptions, current TOEFL scales and score submission timing; the prior exemption omission is resolved.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "application-fee",
@@ -212,8 +213,9 @@
       "id": "cs-ms-faq",
       "url": "https://www.cs.stanford.edu/admissions/masters-admissions-frequently-asked-questions",
       "title": "Master’s Admissions FAQ | Computer Science",
-      "checked_at": "2026-10-02",
-      "content_review_status": "Reviewed department-specific English test rule, GRE status and international applicant exceptions; English exemptions conflict with central policy wording."
+      "checked_at": "2026-10-20",
+      "content_review_status": "Rechecked CS MS eligibility, all four English exemptions, current TOEFL scales and score submission timing; the prior exemption omission is resolved.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "cs-phd-faq",
@@ -226,8 +228,9 @@
       "id": "cs-checklist",
       "url": "https://www.cs.stanford.edu/admissions/graduate-application-checklists",
       "title": "Graduate Application Checklists | Computer Science",
-      "checked_at": "2026-10-02",
-      "content_review_status": "Reviewed MS/PhD supporting material and official English test submission timing."
+      "checked_at": "2026-10-20",
+      "content_review_status": "Rechecked CS MS eligibility, all four English exemptions, current TOEFL scales and score submission timing; the prior exemption omission is resolved.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "cs-deadlines",
@@ -1919,7 +1922,8 @@
         "test-scores",
         "application-fee",
         "faq"
-      ]
+      ],
+      "application_url": "https://gradadmissions.stanford.edu/apply"
     },
     {
       "id": "engineering-coterm",
@@ -2026,7 +2030,8 @@
         "cs-coterm-faq",
         "cs-deadlines",
         "coterm-directory"
-      ]
+      ],
+      "application_url": "https://studentservices.stanford.edu/apply-coterm"
     },
     {
       "id": "aa-phd-internal-ms",
@@ -2673,7 +2678,7 @@
     {
       "id": "cs-ms-entry-and-hcp",
       "topic": "program_eligibility_and_study_format",
-      "value": "CS MS applicants need a qualifying bachelor’s degree but need not major in CS; the department recommends strong quantitative/analytical preparation and directs applicants to review its CS Foundation requirements. The MS can be coursework-only or include research. HCP is a part-time MS route for full-time employed people; HCP applicants must reside in the U.S., and international HCP applicants must be employed and located in the U.S. A CS MS is not a guaranteed path to the CS PhD.",
+      "value": "CS MS applicants need a qualifying bachelor’s degree but need not major in CS; strong quantitative and analytical preparation is recommended. Applicants who already hold an MS in Computer Science from another institution cannot apply to the CS MS, but may apply to the CS PhD. Units from another institution’s MS cannot be transferred to this MS. The MS can be coursework-only or include research. HCP is a part-time MS route for full-time employed people residing in the U.S.; international HCP applicants must be employed and located in the U.S. HCP students cannot enroll from overseas. A CS MS does not automatically lead to the CS PhD.",
       "scope": {
         "option_ids": [
           "stanford-cs-ms"
@@ -2691,22 +2696,38 @@
         "fee_status": []
       },
       "source_ids": [
-        "cs-ms"
+        "cs-ms",
+        "cs-ms-faq"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-20",
       "publication_status": "published",
-      "review_status": "verified_department_level",
+      "review_status": "reviewed",
       "conditions": [
-        "Specific undergraduate coursework is recommended, not a mandatory admission prerequisite in the cited department page. HCP and full-time external routes remain distinct."
+        "The prior CS MS restriction applies to admission to the CS MS; it is not a ban on CS PhD applications. The FAQ separately permits up to 18 eligible Stanford NDO units after MS admission. HCP location and employment conditions do not apply to the full-time external MS route."
       ],
       "exceptions": [
         "HCP location/employment restriction applies to HCP route, not full-time MS applicants."
-      ]
+      ],
+      "review_history": [
+        {
+          "value": "CS MS applicants need a qualifying bachelor’s degree but need not major in CS; the department recommends strong quantitative/analytical preparation and directs applicants to review its CS Foundation requirements. The MS can be coursework-only or include research. HCP is a part-time MS route for full-time employed people; HCP applicants must reside in the U.S., and international HCP applicants must be employed and located in the U.S. A CS MS is not a guaranteed path to the CS PhD.",
+          "checked_at": "2026-10-02",
+          "publication_status": "published",
+          "review_status": "verified_department_level",
+          "conditions": [
+            "Specific undergraduate coursework is recommended, not a mandatory admission prerequisite in the cited department page. HCP and full-time external routes remain distinct."
+          ],
+          "source_ids": [
+            "cs-ms"
+          ]
+        }
+      ],
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "cs-ms-tests-and-english-policy",
       "topic": "standardized_and_english_tests",
-      "value": "CS says GRE is not required and is not considered for MS applicants. Its FAQ says TOEFL is required for applicants whose first language is not English regardless of citizenship, with stated exceptions for U.S. citizens/permanent residents, English first language, or an English-instruction degree. The central Graduate Admissions page also recognizes two years of consecutive full-time English-medium professional/educational experience as an exemption; CS MS FAQ does not mention that exemption.",
+      "value": "CS MS does not require or consider GRE scores. The current CS MS FAQ, CS Graduate Application Checklists and central Graduate Admissions page agree that TOEFL iBT or IELTS Academic is required unless an exemption applies: U.S. citizenship or permanent residence; English as first language; a U.S. bachelor’s, master’s or doctoral degree or international equivalent taught entirely in English; or at least two consecutive years of full-time professional or educational experience in English within the past ten years. The central admission-consideration minimum is TOEFL iBT 90 for tests before January 21, 2026, TOEFL iBT 4.5 for tests on or after that date, or IELTS Academic 7.0. These are consideration thresholds, not an admission guarantee. CS requires scores within 24 months and testing before application submission and the application deadline. Official TOEFL scores go through ETS code 4704; IELTS Academic uses E-delivery to Stanford University Graduate.",
       "scope": {
         "option_ids": [
           "stanford-cs-ms"
@@ -2725,17 +2746,34 @@
       },
       "source_ids": [
         "cs-ms-faq",
+        "cs-checklist",
         "test-scores"
       ],
-      "checked_at": "2026-10-02",
-      "publication_status": "published_with_scope_ambiguity",
-      "review_status": "needs_resolution",
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed",
       "conditions": [
-        "Do not silently replace either source rule; ask CS admissions whether the central experience exemption applies to CS MS applicants."
+        "Application-stage English exemption is based on the application responses; supporting evidence may be required after admission. The separate Stanford English Placement Test cutoff is 109 on the older TOEFL scale, 5.5 on the new scale or IELTS 8.0; it is not the admission minimum."
       ],
       "exceptions": [
         "GRE is not considered."
-      ]
+      ],
+      "review_history": [
+        {
+          "value": "CS says GRE is not required and is not considered for MS applicants. Its FAQ says TOEFL is required for applicants whose first language is not English regardless of citizenship, with stated exceptions for U.S. citizens/permanent residents, English first language, or an English-instruction degree. The central Graduate Admissions page also recognizes two years of consecutive full-time English-medium professional/educational experience as an exemption; CS MS FAQ does not mention that exemption.",
+          "checked_at": "2026-10-02",
+          "publication_status": "published_with_scope_ambiguity",
+          "review_status": "needs_resolution",
+          "conditions": [
+            "Do not silently replace either source rule; ask CS admissions whether the central experience exemption applies to CS MS applicants."
+          ],
+          "source_ids": [
+            "cs-ms-faq",
+            "test-scores"
+          ]
+        }
+      ],
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "cs-phd-application-scope",

@@ -94,6 +94,31 @@ class AdmissionsCatalogTests(unittest.TestCase):
         result["facts"][0]["value"]["requirements"]["SAT"] = 0
         self.assertEqual(self.resolve()["facts"][0]["value"]["requirements"]["SAT"], 1200)
 
+    def test_reviewed_application_url_keeps_the_original_destination(self):
+        route = self.mit()["application_routes"][0]
+        route["attributes"]["application_url"] = "https://example.edu/apply"
+        self.write()
+        result = self.resolve()
+        self.assertEqual(result["selected_route"]["application_url"], "https://example.edu/apply")
+        self.assertEqual(result["selected_route"]["destination"], "Official application")
+        self.assertEqual(result["available_routes"][0]["application_url"], "https://example.edu/apply")
+
+    def test_selected_program_preserves_source_bound_profile_overviews_without_expanding_the_list(self):
+        self.mit()["study_options"][0]["evidence_profiles"] = [
+            {"attributes": {"description": {"text": "Collected study description."}}, "source_ids": ["official"]},
+            {"attributes": {"description": "A separate accepted overview."}, "source_ids": ["official"]},
+            {"attributes": {"description": None}, "source_ids": ["official"]},
+        ]
+        self.write()
+        result = self.resolve()
+        self.assertEqual(result["selected_option"]["overviews"], [
+            {"text": "Collected study description.", "source_ids": ["official"]},
+            {"text": "A separate accepted overview.", "source_ids": ["official"]},
+        ])
+        result["selected_option"]["overviews"][0]["source_ids"].clear()
+        self.assertEqual(self.resolve()["selected_option"]["overviews"][0]["source_ids"], ["official"])
+        self.assertNotIn("overviews", service.list_study_options(MIT)["items"][0])
+
     def test_profile_canonical_selection_and_manual_unknowns_do_not_select_default_route(self):
         profile = {"study_level": "bachelor", "selectedAdmissionChoices": {MIT: {"studyOptionId": "computing", "applicationRouteId": "transfer"}}}
         result = service.resolve_context(MIT, profile)
@@ -136,6 +161,17 @@ class AdmissionsCatalogTests(unittest.TestCase):
         for published, selected, expected in cases:
             with self.subTest(published=published, selected=selected):
                 self.assertEqual(service._cycle_axis(published, selected), expected)
+
+    def test_localized_entry_examples_match_the_same_term_without_borrowing_an_academic_year(self):
+        for selected in ("осенний набор 2027 года", "2027 жылғы күзгі қабылдау"):
+            with self.subTest(selected=selected):
+                self.assertEqual(service._cycle_axis("Fall 2027 entry", selected), "matched")
+                self.assertEqual(service._cycle_axis("Fall 2028 entry", selected), "mismatched")
+                self.assertEqual(service._cycle_axis("Spring 2027 entry", selected), "mismatched")
+                self.assertEqual(service._cycle_axis("2026-27", selected), "unknown")
+        self.assertEqual(service._cycle_axis("Spring 2027", "весенний набор 2027 года"), "matched")
+        self.assertEqual(service._cycle_axis("Spring 2027", "2027 жылғы көктемгі қабылдау"), "matched")
+        self.assertIsNone(service._cycle("Reviewed 2027 жылғы күзгі қабылдау"))
 
     def test_named_intake_period_matches_without_borrowing_an_academic_year(self):
         row = self.mit()["facts"][0]
@@ -205,6 +241,13 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertEqual(service.list_study_options(MIT, page=3, limit=1)["items"], [])
         self.assertEqual(service.list_study_options(MIT, search_candidates=["unrelated nonexistent course"])["items"], [])
 
+    def test_multiword_program_search_requires_the_whole_subject(self):
+        self.mit()["study_options"][0]["title"] = "Computer Science and Engineering"
+        self.mit()["study_options"][1]["title"] = "Political Science"
+        self.write()
+        result = service.list_study_options(MIT, search_candidates=["Computer Science"])
+        self.assertEqual([row["id"] for row in result["items"]], ["computing"])
+
     def test_compact_options_expose_only_declared_application_metadata(self):
         option = self.mit()["study_options"][0]
         option["attributes"] = {"application": {"classification": "post_admission_major", "reason": "Major follows admission"},
@@ -267,6 +310,22 @@ class AdmissionsCatalogTests(unittest.TestCase):
         with self.assertRaisesRegex(service.AdmissionsCatalogError, "contract"):
             service.get_revision()
 
+    def test_mit_completed_overviews_resolve_before_route_selection(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            institution = service.get_institution("mit-usa-cambridge")
+            for option_id in ("mit-bs-3-c", "mit-bs-21", "mit-bs-sts", "mit-chemical-engineering-sm", "mit-eecs-en-route-sm", "mit-hst-terminal-sm"):
+                resolved = service.resolve_context("mit-usa-cambridge", context={"study_option_id": option_id})
+                records = [row for row in resolved["facts"] if row["id"] in resolved["fact_groups"].get("study", []) and isinstance(row.get("value"), dict) and row["value"].get("description")]
+                self.assertTrue(records, option_id)
+                overview = next(row for row in records if row["id"].endswith("study-overview-2026-10-20"))
+                self.assertEqual([option_id], overview["scope"]["option_ids"])
+                self.assertEqual([], overview["scope"]["route_ids"])
+                self.assertEqual("2026-10-20", overview["checked_at"])
+                self.assertTrue(overview["source_ids"])
+                self.assertIsNone(resolved["selected_route"])
+            self.assertEqual(191, len(institution["study_options"]))
+
     def test_real_normalized_snapshot_contrasts_and_fidelity(self):
         with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
             service.clear_cache()
@@ -310,6 +369,97 @@ class AdmissionsCatalogTests(unittest.TestCase):
             for row in business["facts"]:
                 if "programme_phase" in row["scope"]["additional_dimensions"]:
                     self.assertEqual(row["applicability"]["conditions"], "unknown")
+
+    def test_stanford_current_fee_aid_and_cs_policy_replace_resolved_gaps(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            for route, aid_id, other_aid_id in [
+                ("stanford-first-year", "firstyear", "transfer"),
+                ("stanford-transfer", "transfer", "firstyear"),
+            ]:
+                result = service.resolve_context("stanford-university-usa-ca", context={
+                    "study_option_id": "stanford-option-cs-bs",
+                    "application_route_id": "undergraduate-shared-evidence:" + route,
+                    "study_level": "undergraduate",
+                    "intended_entry_cycle": "2027-2028",
+                })
+                facts = {row["id"].split(":")[-1]: row for row in result["facts"]}
+                self.assertIn(f"stanford-ug-{aid_id}-domestic-aid-2027-28", list(facts))
+                self.assertNotIn(f"stanford-ug-{other_aid_id}-domestic-aid-2027-28", list(facts))
+                aid = facts[f"stanford-ug-{aid_id}-domestic-aid-2027-28"]
+                self.assertIn("2025", aid["value"])
+                self.assertIn("do not file FAFSA", aid["value"])
+                unknowns = {row["id"] for row in result["unknowns"]}
+                self.assertNotIn("undergraduate-shared-evidence:stanford-firstyear-aid-2027-28-publication", unknowns)
+                self.assertNotIn("undergraduate-shared-evidence:stanford-transfer-application-fee-conflict", unknowns)
+                if route == "stanford-transfer":
+                    fee = facts["stanford-transfer-fee"]
+                    self.assertEqual(fee["publication_status"], "published")
+                    self.assertEqual(fee["review_status"], "reviewed")
+                    self.assertIn("USD 100", fee["value"])
+                    self.assertIn("undergraduate-shared-evidence:stanford-transfer-application-fee-conflict", result["history"]["unknown_ids"])
+            cs = service.resolve_context("stanford-university-usa-ca", context={
+                "study_option_id": "stanford-option-cs-ms",
+                "application_route_id": "engineering-doerr-evidence:external-graduate",
+            })
+            facts = {row["id"].split(":")[-1]: row for row in cs["facts"]}
+            self.assertIn("cannot apply", facts["cs-ms-entry-and-hcp"]["value"])
+            english = facts["cs-ms-tests-and-english-policy"]
+            self.assertEqual(english["review_status"], "reviewed")
+            self.assertIn("full-time professional or educational experience", english["value"])
+            self.assertIn("cs-checklist", [sid.split(":")[-1] for sid in english["source_ids"]])
+
+    def test_every_stanford_program_and_linked_route_resolves_with_scoped_sources(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            institution = service.get_institution("stanford-university-usa-ca")
+            self.assertEqual(len(institution["study_options"]), 254)
+            for option in institution["study_options"]:
+                for route_id in [None, *option["route_ids"]]:
+                    with self.subTest(option=option["id"], route=route_id):
+                        result = service.resolve_context("stanford-university-usa-ca", context={
+                            "study_option_id": option["id"], "application_route_id": route_id,
+                            "study_level": option["levels"][0],
+                        })
+                        self.assertEqual(result["selected_option"]["id"], option["id"])
+                        self.assertNotEqual(result["context_applicability"]["route"], "mismatched")
+                        self.assertEqual(result["selected_route"]["id"] if route_id else result["selected_route"], route_id)
+                        self.assertTrue(result["facts"] or result["unknowns"])
+                        source_ids = {source["id"] for source in result["sources"]}
+                        facts = {row["id"]: row for row in result["facts"]}
+                        for group in result["fact_groups"].values():
+                            self.assertTrue(set(group).issubset(facts))
+                        for row in [*result["facts"], *result["unknowns"]]:
+                            self.assertTrue(row["source_ids"])
+                            self.assertTrue(set(row["source_ids"]).issubset(source_ids))
+                            self.assertFalse((row["review_status"] or "").startswith("superseded"))
+                            self.assertNotEqual(row["applicability"]["status"], "mismatched")
+                            if row["scope"]["option_ids"]:
+                                self.assertIn(option["id"], row["scope"]["option_ids"])
+
+    def test_all_completed_stanford_medical_overviews_resolve_with_their_specific_sources(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            institution = service.get_institution("stanford-university-usa-ca")
+            completed = [option for option in institution["study_options"]
+                         if any(profile["attributes"].get("catalog_access_description") for profile in option["evidence_profiles"])]
+            self.assertEqual(len(completed), 16)
+            for option in completed:
+                result = service.resolve_context("stanford-university-usa-ca", context={"study_option_id": option["id"]})
+                self.assertIsNone(result["selected_route"])
+                self.assertEqual(result["selected_option"]["id"], option["id"])
+                sources = {source["id"]: source for source in result["sources"]}
+                overviews = result["selected_option"]["overviews"]
+                self.assertTrue(overviews, option["id"])
+                for overview in overviews:
+                    self.assertNotIn("Bulletin flags:", overview["text"])
+                    self.assertTrue(set(overview["source_ids"]).issubset(sources))
+                self.assertTrue(any(source["checked_at"] == "2026-10-19"
+                                    and source["url"].startswith("https://bulletin.stanford.edu/programs/")
+                                    for source in sources.values()), option["id"])
+                record_id = "medicine-graduate-evidence:study-overview-" + option["id"].removeprefix("stanford-option-")
+                self.assertIn(record_id, result["fact_groups"]["study"])
+                self.assertNotIn(record_id, result["fact_groups"].get("requirements", []))
 
 
 if __name__ == "__main__":

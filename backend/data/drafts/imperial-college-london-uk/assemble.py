@@ -7,11 +7,10 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent
-REPO = ROOT.parents[3]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--reviewed', action='store_true', help='Record the completed Stage 1 review after the source rechecks are accepted.')
 args = parser.parse_args()
-EVIDENCE = ['shared-evidence.json', 'engineering-sciences-evidence.json', 'medicine-business-evidence.json', 'doctoral-evidence.json', 'course-qualification-panels.json']
+EVIDENCE = ['shared-evidence.json', 'engineering-sciences-evidence.json', 'medicine-business-evidence.json', 'doctoral-evidence.json', 'course-qualification-panels.json', 'programme-overviews-evidence.json', '2027-recheck-evidence.json']
 
 def read(name):
     return json.loads(ROOT.joinpath(name).read_text(encoding='utf-8'))
@@ -59,7 +58,7 @@ for row in snapshot['rows']:
     if 'digital-health-leadership' in row['url']:
         classification = 'employer_sponsored_or_conditional_progression'
     sid = original.get('source_id')
-    ids = [sid] if sid else source_by_url.get(key(row['url']), [])
+    ids = original.get('source_ids') or ([sid] if sid else source_by_url.get(key(row['url']), []))
     option = {'id': oid, 'title': row['name'], 'award': row['award'], 'level': level,
               'catalog_classification': classification, 'independent_application': 'A course choice or internal route as stated; not inferred from a search row or award label',
               'course_url': row['url'], 'department': original.get('department', original.get('school')),
@@ -69,8 +68,8 @@ for row in snapshot['rows']:
               'ucas_course_codes': original.get('ucas_course_codes', [])}
     options.append(option)
     procedures.append({'id': option['procedure_ids'][0], 'option_ids': [oid], 'classification': classification,
-                       'destination': 'Department-approved internal progression' if internal else 'UCAS Hub; institution I50, stated course code' if level == 'undergraduate' else 'My Imperial, with course/school/scheme-specific category and conditions',
-                       'shared_form_family': 'Department internal progression' if internal else 'UCAS' if level == 'undergraduate' else 'My Imperial',
+                       'destination': original.get('application_destination') or ('Department-approved internal progression' if internal else 'UCAS Hub; institution I50, stated course code' if level == 'undergraduate' else 'My Imperial, with course/school/scheme-specific category and conditions'),
+                       'shared_form_family': original.get('shared_form_family') or ('Department internal progression' if internal else 'UCAS' if level == 'undergraduate' else 'My Imperial'),
                        'source_ids': ids, 'policy_boundary': 'Shared form is not policy inheritance; intersect all fact scopes.'})
     option['inventory_origin'] = 'official_course_search'
     option['application_relationship'] = original.get('application_relationship', 'Course-specific choice; see scoped application evidence')
@@ -169,28 +168,8 @@ for name, bundle in bundles.items():
 
 for o in options:
     o['fact_ids'] = [f['id'] for f in fact_index if o['id'] in f['scope']['option_ids']]
-runtime = next(u for u in json.loads(REPO.joinpath('backend/data/universities.json').read_text(encoding='utf-8')) if u['id'] == 'imperial-college-london-uk')
-aliases = {'efds-bsc':['economics-finance-data-science'], 'aeronautical-engineering-meng':['aeronautical-engineering'],
-           'mechanical-engineering-meng':['mechanical-engineering'], 'electrical-electronic-engineering-beng-meng':['electrical-electronic-engineering-beng','electrical-electronic-engineering-meng'],
-           'chemical-engineering-meng':['chemical-engineering'], 'civil-engineering-meng':['civil-engineering'],
-           'biomedical-engineering-beng-meng':['biomedical-engineering'],
-           'mathematics-bsc-msci':['mathematics-bsc','mathematics-msci'], 'physics-bsc-msci':['physics-bsc','physics-msci'],
-           'chemistry-bsc-msci':['chemistry-bsc','chemistry-msci'], 'biological-sciences-bsc':['biological-sciences'],
-           'medicine-mbbs-bsc':['medicine'], 'msc-advanced-computing':['advanced-computing'], 'msc-artificial-intelligence':['artificial-intelligence'],
-           'msc-financial-technology':['financial-technology'], 'msc-finance':['finance'], 'full-time-mba':['full-time-mba'],
-           'msc-biomedical-engineering':['engineering-biomedicine'], 'computing-beng':['computing-beng'], 'computing-meng':['computing-meng']}
-research = {'phd-computing':'computing-phd','phd-bioengineering':'bioengineering-phd','phd-physics':'physics-phd','phd-mathematics':'mathematics-phd','phd-mechanical-engineering':'mechanical-engineering-phd'}
-history = []
-for p in runtime['academics']['programs']:
-    stem = p['id'].removeprefix('imperial-')
-    targets = ['imperial-'+research[stem]] if stem in research else ['imperial-option-'+x for x in aliases.get(stem, [])]
-    history.append({'runtime_id': p['id'], 'runtime_name': p['name'], 'draft_option_ids': targets,
-                    'relationship': 'Legacy BEng/MEng combined row maps to the currently listed MEng; no current BEng entry is established by the reviewed inventory' if stem == 'biomedical-engineering-beng-meng' else 'Legacy combined award row expands to separate course choices where listed' if len(targets)>1 else 'Retained identity mapped to dated draft record',
-                    'original_review_dates': {k:v for k,v in p.items() if 'verified_at' in k},
-                    'original_provenance': {k:v for k,v in p.items() if 'source_url' in k or k=='url'},
-                    'previous_facts': {k:v for k,v in p.items() if k in ['entry_requirements','tuition_status','tuition_cycle','admissions_test_notes','application_fee','deadlines']},
-                    'status': 'historical_runtime_review; current draft may supersede individual facts without changing original review dates'})
-write('runtime-provenance.json', {'runtime_head':'e87b5ce7906dd2c9700ce8c42dbd00f51e7c90a8','runtime_version':'7.2.1','programs':history})
+# Preserve the accepted historical snapshot after the active catalog cutover.
+assert read('runtime-provenance.json')['programs'], 'Accepted historical provenance is missing.'
 write('sources.json', {'sources':list(sources.values())})
 gaps = [dict(g, evidence_file=name) if isinstance(g,dict) else {'id':'gap-'+str(i)+'-'+name.removesuffix('.json'),'finding':g,'evidence_file':name,'official_next_step':'Recheck the named official policy or admission office before integration.'} for name,b in bundles.items() for i,g in enumerate(b.get('researched_unknowns', []))]
 for gap in gaps:

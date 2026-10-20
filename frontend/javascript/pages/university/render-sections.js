@@ -27,8 +27,8 @@ import {
   splitExamEntries,
 } from "../../university-detail-helpers.js";
 import { translateAdmissionText, translateFundingAwardField, translateWord } from "../../university-translations.js";
-import { getCalendarCells, parseExactDeadlineDate } from "./deadline-calendar.js";
-import { createDeadlineIcs } from "./deadline-calendar.js";
+import { parseExactDeadlineDate } from "./deadline-calendar.js";
+import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 import {
   costBreakdownCoverageNote,
   modeAwareAnnualCost,
@@ -138,8 +138,7 @@ const admissionProfileSelectionByCategory = new Map();
 
 const admissionStudyLevelSelectionByUniversity = new Map();
 const deadlinesActiveLevelByUniversity = new Map();
-const deadlineCalendarMonthByUniversity = new Map();
-const deadlineCalendarDayByUniversity = new Map();
+const deadlineCalendarStateByUniversity = new Map();
 const visibleAdmissionContextByUniversity = new Map();
 
 export function selectAdmissionProgram(university, program) {
@@ -473,7 +472,6 @@ function localizeDeadlineDate(value) {
 }
 
 const KAZAKH_MONTHS = ["қаңтар", "ақпан", "наурыз", "сәуір", "мамыр", "маусым", "шілде", "тамыз", "қыркүйек", "қазан", "қараша", "желтоқсан"];
-const KAZAKH_WEEKDAYS = ["Дс", "Сс", "Ср", "Бс", "Жм", "Сб", "Жс"];
 
 function formatKazakhDate(date, includeYear = true) {
   const day = date.getUTCDate();
@@ -993,62 +991,6 @@ function extractUniversityDeadlines(university, categories) {
   return items;
 }
 
-function renderDeadlineCalendar(universityId, deadlines) {
-  const language = getCurrentLanguage();
-  const locale = language === "rus" ? "ru-RU" : language === "kaz" ? "kk-KZ" : "en-US";
-  const dated = deadlines.map((item, index) => ({ item, index, date: item.approximate || item.is_approximate ? null : parseExactDeadlineDate(item.deadline) }))
-    .filter((entry) => entry.date);
-  const undatedCount = deadlines.length - dated.length;
-  if (!dated.length) {
-    return `<section class="deadline-calendar"><h4>${escapeHtml(t("university.deadlines.calendar_title", "Deadline calendar"))}</h4><p>${escapeHtml(t("university.deadlines.calendar_no_exact", "No deadlines with an exact published date and year. See the deadline list for approximate or yearless deadlines."))}</p></section>`;
-  }
-
-  dated.sort((a, b) => a.date.localeCompare(b.date));
-  const today = new Date().toISOString().slice(0, 10);
-  const firstRelevant = dated.find((entry) => entry.date >= today) || dated[0];
-  const monthKey = deadlineCalendarMonthByUniversity.get(universityId) || firstRelevant.date.slice(0, 7);
-  const [year, month] = monthKey.split("-").map(Number);
-  const monthStart = new Date(Date.UTC(year, month - 1, 1));
-  const monthTitle = language === "kaz" ? `${year} жылғы ${KAZAKH_MONTHS[month - 1]}` : new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(monthStart);
-  const weekFormatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
-  const weekdays = language === "kaz" ? KAZAKH_WEEKDAYS : Array.from({ length: 7 }, (_, index) => weekFormatter.format(new Date(Date.UTC(2026, 0, 5 + index))));
-  const monthEvents = dated.filter((entry) => entry.date.startsWith(monthKey));
-  const selectedDay = deadlineCalendarDayByUniversity.get(universityId);
-  const activeDay = selectedDay?.startsWith(monthKey) ? selectedDay : (monthEvents[0]?.date || "");
-  const activeEvents = monthEvents.filter((entry) => entry.date === activeDay);
-  const dateFormatter = language === "kaz" ? { format: formatKazakhDate } : new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-
-  const cells = getCalendarCells(year, month - 1).map((day) => {
-    if (day === null) return '<span class="deadline-calendar__blank" aria-hidden="true"></span>';
-    const date = `${monthKey}-${String(day).padStart(2, "0")}`;
-    const count = monthEvents.filter((entry) => entry.date === date).length;
-    if (!count) return `<span class="deadline-calendar__day">${day}</span>`;
-    const fullDate = dateFormatter.format(new Date(`${date}T00:00:00Z`));
-    return `<button type="button" class="deadline-calendar__day deadline-calendar__day--event${date === activeDay ? " is-active" : ""}" data-calendar-day="${date}" aria-label="${escapeHtmlAttr(fullDate)}: ${count} ${escapeHtmlAttr(t("university.deadlines.calendar_events", "deadlines"))}" aria-pressed="${date === activeDay}"><span>${day}</span><span class="deadline-calendar__count">${count}</span></button>`;
-  }).join("");
-
-  return `<section class="deadline-calendar" aria-label="${escapeHtmlAttr(t("university.deadlines.calendar_title", "Deadline calendar"))}">
-    <div class="deadline-calendar__head">
-      <h4>${escapeHtml(t("university.deadlines.calendar_title", "Deadline calendar"))}</h4>
-      <div class="deadline-calendar__navigation">
-        <button type="button" data-calendar-month="previous" aria-label="${escapeHtmlAttr(t("university.deadlines.calendar_previous", "Previous month"))}">${heroIcon("chevron-left", "ui-icon ui-icon--16")}</button>
-        <strong aria-live="polite">${escapeHtml(monthTitle)}</strong>
-        <button type="button" data-calendar-month="next" aria-label="${escapeHtmlAttr(t("university.deadlines.calendar_next", "Next month"))}">${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>
-      </div>
-    </div>
-    <div class="deadline-calendar__grid" role="group" aria-label="${escapeHtmlAttr(monthTitle)}" data-calendar-month-key="${monthKey}">
-      ${weekdays.map((day) => `<span class="deadline-calendar__weekday">${escapeHtml(day)}</span>`).join("")}
-      ${cells}
-    </div>
-    <div class="deadline-calendar__details" aria-live="polite">
-      ${activeEvents.length
-        ? `<strong>${escapeHtml(dateFormatter.format(new Date(`${activeDay}T00:00:00Z`)))}</strong><ul>${activeEvents.map(({ item, index }) => `<li><a href="#deadline-card-${index}">${escapeHtml(item.title)}</a><button type="button" class="deadline-calendar__export" data-calendar-export="${index}">${escapeHtml(t("university.deadlines.export_ics", "Add to calendar (.ics)"))}</button></li>`).join("")}</ul>`
-        : `<p>${escapeHtml(t("university.deadlines.calendar_empty_month", "No exact deadlines this month."))}</p>`}
-    </div>
-    ${undatedCount ? `<p class="deadline-calendar__note">${escapeHtml(t("university.deadlines.calendar_partial_note", "Deadlines without an exact date and year appear only in the list below."))}</p>` : ""}
-  </section>`;
-}
-
 export function renderDeadlinesTabSection({ container, university, onContextChange }) {
   if (!container) return;
   const universityId = String(university.id || "").trim();
@@ -1062,7 +1004,8 @@ export function renderDeadlinesTabSection({ container, university, onContextChan
     return;
   }
   if (!allDeadlines.some((item) => item.deadline || item.guidance)) {
-    container.innerHTML = `${renderDeadlineCalendar(universityId, [])}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.deadlines", "No deadlines published."))}</div>`;
+    container.innerHTML = `<div data-deadline-calendar-host></div><div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.deadlines", "No deadlines published."))}</div>`;
+    mountDeadlineCalendar(container.querySelector("[data-deadline-calendar-host]"), []);
     return;
   }
 
@@ -1204,7 +1147,7 @@ export function renderDeadlinesTabSection({ container, university, onContextChan
     </div>
   ` : `<div class="admission-empty-state">${escapeHtml(t("university.deadlines.none_for_level", "No published deadlines for this study level."))}</div>`;
 
-  const calendarHtml = renderDeadlineCalendar(universityId, filteredDeadlines);
+  const calendarHtml = '<div data-deadline-calendar-host></div>';
   container.innerHTML = `${levelFilterHtml}${calendarHtml}${guidanceHtml}${timelineHtml}${cardsHtml}`;
 
   container.querySelectorAll("[data-deadlines-level]").forEach((btn) => {
@@ -1214,55 +1157,15 @@ export function renderDeadlinesTabSection({ container, university, onContextChan
       deadlinesActiveLevelByUniversity.set(universityId, lvl);
       admissionStudyLevelSelectionByUniversity.set(universityId, lvl);
       updateAdmissionUrl({ level: lvl, route: "", cycle: "" });
-      deadlineCalendarMonthByUniversity.delete(universityId);
-      deadlineCalendarDayByUniversity.delete(universityId);
+      deadlineCalendarStateByUniversity.delete(universityId);
       onContextChange?.();
       renderDeadlinesTabSection({ container, university });
     });
   });
 
-  container.querySelectorAll("[data-calendar-month]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const current = deadlineCalendarMonthByUniversity.get(universityId)
-        || container.querySelector(".deadline-calendar__grid")?.getAttribute("data-calendar-month-key");
-      const visibleMonth = /^\d{4}-\d{2}$/.test(current || "") ? current : null;
-      const dated = filteredDeadlines.map((item) => parseExactDeadlineDate(item.deadline)).filter(Boolean)
-        .sort((left, right) => left.localeCompare(right));
-      const defaultMonth = dated.find((date) => date >= new Date().toISOString().slice(0, 10))?.slice(0, 7) || dated[0]?.slice(0, 7);
-      const [year, month] = (visibleMonth || defaultMonth).split("-").map(Number);
-      const offset = button.getAttribute("data-calendar-month") === "next" ? 1 : -1;
-      const direction = button.getAttribute("data-calendar-month");
-      const next = new Date(Date.UTC(year, month - 1 + offset, 1));
-      deadlineCalendarMonthByUniversity.set(universityId, `${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, "0")}`);
-      deadlineCalendarDayByUniversity.delete(universityId);
-      renderDeadlinesTabSection({ container, university });
-      container.querySelector(`[data-calendar-month="${direction}"]`)?.focus();
-    });
-  });
-  container.querySelectorAll("[data-calendar-day]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const day = button.getAttribute("data-calendar-day");
-      deadlineCalendarDayByUniversity.set(universityId, day);
-      renderDeadlinesTabSection({ container, university });
-      container.querySelector(`[data-calendar-day="${day}"]`)?.focus();
-    });
-  });
-
-  container.querySelectorAll("[data-calendar-export]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const item = filteredDeadlines[Number(button.getAttribute("data-calendar-export"))];
-      if (!item || !parseExactDeadlineDate(item.deadline) || item.approximate || item.is_approximate) return;
-      const uid = globalThis.crypto?.randomUUID?.() || `deadline-${Date.now()}@unisearch`;
-      const ics = createDeadlineIcs(item, { uid });
-      if (!ics) return;
-      const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `unisearch-deadline-${parseExactDeadlineDate(item.deadline)}.ics`;
-      link.click();
-      globalThis.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    });
-  });
+  const calendarState = deadlineCalendarStateByUniversity.get(universityId) || {};
+  deadlineCalendarStateByUniversity.set(universityId, calendarState);
+  mountDeadlineCalendar(container.querySelector("[data-deadline-calendar-host]"), filteredDeadlines, calendarState);
 
   markMotionEnter(container, ".timeline-milestone, .admissions-deadline-item", { limit: 16, staggerMs: 18 });
 }

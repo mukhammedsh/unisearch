@@ -13096,7 +13096,8 @@
         "source-90d15c07f55d067f"
       ],
       "fact_ids": [
-        "mit-bs-3-c-selection"
+        "mit-bs-3-c-selection",
+        "mit-bs-3-c-study-overview-2026-10-20"
       ],
       "catalog_entry_ids": [
         "catalog-cb6e0c4d2ef2429d"
@@ -13144,7 +13145,8 @@
         "source-54860c153bdb3c64"
       ],
       "fact_ids": [
-        "mit-bs-21-selection"
+        "mit-bs-21-selection",
+        "mit-bs-21-study-overview-2026-10-20"
       ],
       "catalog_entry_ids": [
         "catalog-b225ca1ee1215dc0"
@@ -13192,7 +13194,8 @@
         "source-ed6f79a70ab8fec1"
       ],
       "fact_ids": [
-        "mit-bs-sts-selection"
+        "mit-bs-sts-selection",
+        "mit-bs-sts-study-overview-2026-10-20"
       ],
       "catalog_entry_ids": [
         "catalog-e3e4754ad2f7bdc3"
@@ -13281,7 +13284,8 @@
         "source-09869282fec5f418"
       ],
       "fact_ids": [
-        "chemical-engineering-sm-structure"
+        "chemical-engineering-sm-structure",
+        "mit-chemical-engineering-sm-study-overview-2026-10-20"
       ],
       "catalog_entry_ids": [
         "catalog-c6ab44165d498430"
@@ -13327,7 +13331,8 @@
         "source-4e63da1e3003c1dd"
       ],
       "fact_ids": [
-        "eecs-engineer-and-doctoral-progression"
+        "eecs-engineer-and-doctoral-progression",
+        "mit-eecs-en-route-sm-study-overview-2026-10-20"
       ],
       "catalog_entry_ids": [
         "catalog-77f55e6b0ce01ae8",
@@ -13693,7 +13698,8 @@
         "source-88df756ebf7a986b"
       ],
       "fact_ids": [
-        "hst-terminal-sm-procedure"
+        "hst-terminal-sm-procedure",
+        "mit-hst-terminal-sm-study-overview-2026-10-20"
       ],
       "catalog_entry_ids": [
         "catalog-a6b4355f84e2be56",
@@ -27427,7 +27433,10 @@
         "undergraduate-budget-2026-27",
         "undergraduate-full-time-structure",
         "undergraduate-housing-policy",
-        "undergraduate-optional-portfolio-conditions"
+        "undergraduate-optional-portfolio-conditions",
+        "mit-bs-3-c-study-overview-2026-10-20",
+        "mit-bs-21-study-overview-2026-10-20",
+        "mit-bs-sts-study-overview-2026-10-20"
       ]
     },
     {
@@ -27578,7 +27587,10 @@
         "undergraduate-budget-2026-27",
         "undergraduate-full-time-structure",
         "undergraduate-housing-policy",
-        "undergraduate-optional-portfolio-conditions"
+        "undergraduate-optional-portfolio-conditions",
+        "mit-bs-3-c-study-overview-2026-10-20",
+        "mit-bs-21-study-overview-2026-10-20",
+        "mit-bs-sts-study-overview-2026-10-20"
       ]
     },
     {
@@ -29052,7 +29064,8 @@
         "reviewed-mit_eecs_doctoral_admissions-funding",
         "reviewed-mit_eecs_doctoral_admissions-gaps",
         "reviewed-mit_eecs_doctoral_admissions-required-documents",
-        "reviewed-mit_eecs_doctoral_admissions-tests"
+        "reviewed-mit_eecs_doctoral_admissions-tests",
+        "mit-eecs-en-route-sm-study-overview-2026-10-20"
       ]
     },
     {
@@ -64538,7 +64551,7 @@
           "apply": "Second term junior year.",
           "normal_expectation_not_hard_cutoff": {
             "overall_gpa": 4.3,
-            "math_science_engineering_gpa": 4.0,
+            "math_science_engineering_gpa": 4,
             "scale": 5
           }
         },
@@ -65157,7 +65170,7 @@
           "verbal_native": 157,
           "verbal_non_native": 150,
           "quantitative": 159,
-          "analytical_writing": 4.0
+          "analytical_writing": 4
         },
         "recommended_not_compulsory_minimum": "Described as recommended minimal expectations when voluntarily submitting; absence of optional GRE is not an eligibility failure.",
         "score_age": "Recent scores requested, no precise age in department FAQ.",
@@ -69172,6 +69185,217 @@
         "reason": "HST English-waiver criteria do not establish Cambridge test-result age eligibility.",
         "next_official_step": "Confirm Cambridge-result age and any required waiver in selected HST application or with HST admissions; do not assign another test age or the waiver period."
       }
+    },
+    {
+      "id": "mit-bs-3-c-study-overview-2026-10-20",
+      "group": "study_content",
+      "summary": "Reviewed program overview and degree-access boundary.",
+      "value": {
+        "description": "This SB combines materials science and engineering with archaeology. The degree chart includes materials fundamentals, archaeological study and laboratory work. It is a major chosen after admission to MIT, not a separate undergraduate application."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-bs-3-c"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "Program information; not an admission assessment"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Official program guidance reviewed 2026-10-20"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "source_ids": [
+        "source-90d15c07f55d067f"
+      ],
+      "origin": "official_program_overview_review_2026-10-20",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-bs-21-study-overview-2026-10-20",
+      "group": "study_content",
+      "summary": "Reviewed program overview and degree-access boundary.",
+      "value": {
+        "description": "Humanities is an individually arranged SB major. Every option requires approval by the SHASS Dean and review of two proposed communication-intensive subjects in the major. These are degree-planning conditions after MIT admission, not high-school admission prerequisites."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-bs-21"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "Program information; not an admission assessment"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Official program guidance reviewed 2026-10-20"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "source_ids": [
+        "source-54860c153bdb3c64"
+      ],
+      "origin": "official_program_overview_review_2026-10-20",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-bs-sts-study-overview-2026-10-20",
+      "group": "study_content",
+      "summary": "Reviewed program overview and degree-access boundary.",
+      "value": {
+        "description": "STS studies science and technology in historical and social contexts, with electives and a thesis. This SB is available only as a second major alongside engineering or science, or another field with individual approval. It is not a standalone first major."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-bs-sts"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Bachelor"
+        ],
+        "applicant_category": "Program information; not an admission assessment"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Official program guidance reviewed 2026-10-20"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "source_ids": [
+        "source-ed6f79a70ab8fec1"
+      ],
+      "origin": "official_program_overview_review_2026-10-20",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-chemical-engineering-sm-study-overview-2026-10-20",
+      "group": "study_content",
+      "summary": "Reviewed program overview and degree-access boundary.",
+      "value": {
+        "description": "The thesis-based Chemical Engineering SM deepens undergraduate professional training through at least 66 graduate subject units and a thesis, generally over four terms. It differs from the Practice School SM. The reviewed catalog does not establish a separate external application for this thesis SM; confirm the active degree choice with ChemE."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-chemical-engineering-sm"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "Program information; not an admission assessment"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Official program guidance reviewed 2026-10-20"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "source_ids": [
+        "source-09869282fec5f418"
+      ],
+      "origin": "official_program_overview_review_2026-10-20",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-eecs-en-route-sm-study-overview-2026-10-20",
+      "group": "study_content",
+      "summary": "Reviewed program overview and degree-access boundary.",
+      "value": {
+        "description": "This research SM is an intermediate degree on the EECS doctoral pathway, rather than a terminal master’s admission option. Students entering without a master’s normally earn it before proceeding to the PhD. MIT EECS undergraduates complete the MEng instead of this SM before doctoral progression."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-eecs-en-route-sm"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "Program information; not an admission assessment"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Official program guidance reviewed 2026-10-20"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "source_ids": [
+        "source-4e63da1e3003c1dd",
+        "source-e33e696f492c09c2"
+      ],
+      "origin": "official_program_overview_review_2026-10-20",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
+    },
+    {
+      "id": "mit-hst-terminal-sm-study-overview-2026-10-20",
+      "group": "study_content",
+      "summary": "Reviewed program overview and degree-access boundary.",
+      "value": {
+        "description": "This terminal SM is available only to students withdrawing from an HST PhD. It requires an Academic Office coursework audit, an agreed thesis plan and HICAP approval. It has no external master’s application; it is not a general admission option for graduates of other universities."
+      },
+      "scope": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [
+          "mit-hst-terminal-sm"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "Master"
+        ],
+        "applicant_category": "Program information; not an admission assessment"
+      },
+      "period": {
+        "kind": "named",
+        "label": "Official program guidance reviewed 2026-10-20"
+      },
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "source_ids": [
+        "source-88df756ebf7a986b"
+      ],
+      "origin": "official_program_overview_review_2026-10-20",
+      "conditions": [],
+      "related_fact_ids": [],
+      "topics": [
+        "study_content"
+      ]
     }
   ],
   "exclusions": [

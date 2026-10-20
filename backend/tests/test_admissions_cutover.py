@@ -83,7 +83,10 @@ class AdmissionsCutoverTests(unittest.TestCase):
         for level in ("Bachelor", "undergraduate"):
             result = universities.list_universities(study_level=level, paginate=False)
             self.assertTrue(admissions_catalog.INSTITUTION_IDS.issubset({row["id"] for row in result["items"]}))
-        for filters in ({"max_tuition": 1000000}, {"user_budget": 1000000}, {"funding_type": "grant"}, {"funding_type": "paid"}):
+        for filters in ({"max_tuition": 1000000}, {"user_budget": 1000000}):
+            rows = universities.list_universities(paginate=False, **filters)["items"]
+            self.assertEqual({MIT, STANFORD}, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
+        for filters in ({"funding_type": "grant"}, {"funding_type": "paid"}):
             rows = universities.list_universities(paginate=False, **filters)["items"]
             self.assertFalse(admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
 
@@ -144,6 +147,10 @@ class AdmissionsCutoverTests(unittest.TestCase):
         with patch.object(admissions_assessment, "get_assessment_revision", return_value="second"):
             second = router._ai_sort_cache_key(payload)
         self.assertNotEqual(first, second)
+        self.assertNotEqual(
+            router._ai_sort_cache_key(payload, "rus"),
+            router._ai_sort_cache_key(payload, "eng"),
+        )
         captured = []
         with patch.object(router, "cache_get_json", side_effect=lambda key: captured.append(key)), \
              patch.object(router, "cache_set_json"), patch.object(router, "_compare_profiles_cache_get", return_value=None), \

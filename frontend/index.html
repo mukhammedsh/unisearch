@@ -132,10 +132,14 @@
 
           <div class="u-field">
             <div class="u-label">
-              <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.cost_per_year">Cost / year</span></span>
+              <label class="u-label-icon" for="costBasisSelect"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.cost.filter_basis">Compare prices</span></label>
             </div>
 
             <div class="budget-control-wrapper">
+                <select id="costBasisSelect" class="u-input" data-flags="off" aria-describedby="catalogCostHelp">
+                    <option value="annual_total" data-i18n="universities.cost.annual_total">Yearly study budget</option>
+                    <option value="tuition" data-i18n="universities.cost.tuition">Tuition</option>
+                </select>
                 <div class="budget-inputs">
                     <label class="sr-only" for="minCostInput" data-i18n="universities.cost_min">Min cost</label>
                     <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
@@ -155,6 +159,7 @@
                     <span id="minCostLabel">$0</span>
                     <span id="maxCostLabel">$100,000</span>
                 </div>
+                <p id="catalogCostHelp" class="catalog-cost-help" data-i18n="universities.cost.filter_help">Before aid. Ranges may overlap your filter; check the program and fee category. Missing prices do not pass an active price filter.</p>
             </div>
           </div>
 

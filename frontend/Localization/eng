@@ -1,5 +1,10 @@
 meta.display_name: English
 meta.code: eng
+university.deadlines.mba_early: MBA Early · deferred entry
+university.admissions.reading.no_route_short: Application path needs clarification
+university.admissions.reading.no_application_route: No independent application path is established for this option. It may be an internal/intermediate award or require clarification from the department. Read the program's access conditions and official instructions; this does not mean that admission is closed.
+university.admissions.reading.applicant_scope: Who may apply
+university.admissions.reading.check_source_conditions: Check the published applicant conditions
 academic_requirements: Academic requirements
 academic_average: Academic average
 language_average: Language average
@@ -411,6 +416,19 @@ universities.city: City
 universities.cost_per_year: Cost / year
 universities.cost_min: Min cost
 universities.cost_max: Max cost
+universities.cost.filter_basis: Price per academic year
+universities.cost.annual_total: Study and living budget
+universities.cost.tuition: Tuition
+universities.cost.entry: {year} entry
+universities.cost.unavailable: Check the program
+universities.cost.full_budget_unavailable: No comparable full budget
+universities.cost.reference: Published reference, before aid.
+universities.cost.before_aid: Before scholarships or financial aid.
+universities.cost.fee_scope: Range varies by program and Home/Overseas fee category.
+universities.cost.exclusion.insurance: Insurance is additional.
+universities.cost.exclusion.travel: Travel is additional.
+universities.cost.exclusion.one_time_fees: One-time fees are additional.
+universities.cost.filter_help: Before aid. A range may partly match: check the program and fee category. Unknown prices are excluded when a price limit is active.
 universities.country: Country
 universities.filter: Filter
 universities.filter.all: All
@@ -2432,11 +2450,11 @@ university.admissions.catalog.choose_program_hint: Choose a program in the Progr
 university.admissions.catalog.open_application: Open application page
 university.admissions.catalog.view_requirements: View admission requirements
 university.admissions.catalog.study_info: About the program
-university.admissions.catalog.study_info_note: Official information about this study option. Study and degree-completion rules are separate from admission requirements.
+university.admissions.catalog.study_info_note: Full program information stays in the official source language. Admission requirements are shown separately.
 university.admissions.catalog.source_note_simple: Official source text is shown in its original language.
 university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
 university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
-university.admissions.catalog.source_scope_details: Source status, scope and dates
+university.admissions.catalog.source_scope_details: Source and conditions
 university.admissions.catalog.check_details: Optional profile check of published minimums
 university.admissions.catalog.publication: Publication status
 university.admissions.catalog.topic.eligibility: Eligibility
@@ -2458,6 +2476,7 @@ university.admissions.catalog.choose_program: Choose a study option
 university.admissions.catalog.no_program_selected: No study option selected
 university.admissions.catalog.route_label: Published application path
 university.admissions.catalog.choose_route: Choose a published path
+university.admissions.catalog.choose_route_action: Choose application path
 university.admissions.catalog.route_required: Choose one of the published paths above to read its requirements and application details.
 university.admissions.catalog.applicant_label: Applicant category
 university.admissions.catalog.unspecified: Not specified
@@ -2620,6 +2639,123 @@ university.admissions.catalog.field.fee_status: Fee-status conditions
 university.admissions.catalog.field.additional_dimensions: Additional applicability conditions
 university.admissions.catalog.field.study: Study option
 university.admissions.catalog.field.application: Application route
+university.admissions.catalog.field.duration: Duration
+university.admissions.catalog.field.mode: Study mode
+university.admissions.catalog.field.language: Teaching language
+university.admissions.catalog.field.location: Location
+university.admissions.catalog.field.department: Department
+university.admissions.catalog.field.start_date: Start date
+university.admissions.catalog.field.presence: Test policy
+university.admissions.catalog.field.cutoff: Numeric cutoff
+university.admissions.catalog.field.recommended: Recommended score
+university.admissions.catalog.field.exam: Exam
+university.admissions.catalog.field.minima_and_recommendations: Minimum and recommended scores
+university.admissions.catalog.field.test_date_before: Test taken before
+university.admissions.catalog.field.test_date_from: Test taken on or after
+university.admissions.catalog.field.tuition: Tuition
+university.admissions.catalog.field.total_before_aid: Total before aid
+university.admissions.catalog.field.student_life_fee: Student fee
+university.admissions.catalog.field.housing_estimate: Housing estimate
+university.admissions.catalog.field.food_estimate: Food estimate
+university.admissions.catalog.field.materials_estimate: Study materials
+university.admissions.catalog.field.personal_estimate: Personal expenses
+university.admissions.catalog.field.windows: Application windows
+university.admissions.catalog.field.round: Application window
+university.admissions.catalog.field.application_due: Application deadline
+university.admissions.catalog.field.aid_due: Aid deadline
+university.admissions.catalog.field.decision: Admission decision
+university.admissions.catalog.field.tests: Tests
+university.admissions.catalog.field.latest: Last accepted date
+university.admissions.catalog.field.year: Entry year
+university.admissions.catalog.field.exact_time_timezone: Published time and timezone
+university.admissions.catalog.field.funding_type: Funding type
+university.admissions.catalog.field.funding_program: Funding program
+university.admissions.catalog.field.required: Required documents
+university.admissions.catalog.field.when: Applies when
+university.admissions.catalog.field.effect: What the rule means
+university.admissions.catalog.field.health_insurance: Health insurance
+university.admissions.catalog.field.enrollment_reply: Offer reply deadline
+university.admissions.catalog.field.name: Name
+university.admissions.catalog.field.act_writing: ACT Writing
+university.admissions.catalog.field.act_science: ACT Science
+university.admissions.catalog.field.sat_essay: SAT Essay
+university.admissions.catalog.field.sat_formats: Accepted SAT formats
+university.admissions.catalog.enum.strongly_recommended: Strongly recommended under the stated conditions
+university.admissions.catalog.enum.not_stated: Not stated in this source
+university.admissions.catalog.enum.not_published_on_this_page: Not published on this page
+university.admissions.catalog.enum.paper: Paper-based
+university.admissions.catalog.enum.digital: Digital
+university.admissions.reading.tests: Academic tests
+university.admissions.reading.or: or
+university.admissions.reading.no_numeric_cutoff: This source record does not set a numeric cutoff. Test submission and admission selection are separate.
+university.admissions.reading.language: English proficiency
+university.admissions.reading.english_condition: This strong recommendation applies to non-native English speakers who have used English for fewer than five years or do not speak it at home or school. It is separate from the required SAT or ACT.
+university.admissions.reading.language_scores: Published English-test scores
+university.admissions.reading.exam: Exam
+university.admissions.reading.minimum: Minimum
+university.admissions.reading.recommended: Recommended
+university.admissions.reading.test_before: Taken before
+university.admissions.reading.test_from: Taken on or after
+university.admissions.reading.scale: Scale
+university.admissions.reading.documents: Application documents
+university.admissions.reading.document_application: MIT application with essays, activities and academic information
+university.admissions.reading.document_school: Secondary School Report and transcript
+university.admissions.reading.document_references: Two teacher recommendations
+university.admissions.reading.document_tests: SAT or ACT
+university.admissions.reading.insurance_not_included: Required health-insurance coverage is additional and is not included in this total.
+university.admissions.reading.application_dates: Application windows
+university.admissions.reading.test_dates: Last accepted test dates
+university.admissions.reading.window: Application window
+university.admissions.reading.apply_by: Application
+university.admissions.reading.aid_by: Financial aid
+university.admissions.reading.decision: Decision
+university.admissions.reading.last_test: Last accepted date
+university.admissions.reading.recurring_dates: These dates recur annually; this source does not establish an entry year. Confirm the selected cycle on the official page.
+university.admissions.reading.reply_by: Reply to an offer
+university.admissions.reading.reference_budget: Published reference budget
+university.admissions.reading.dated_budget: This is the published budget for the period shown, before aid. It is not a confirmed price for another entry cycle.
+university.admissions.reading.tuition: Tuition
+university.admissions.reading.student_life_fee: Student fee
+university.admissions.reading.housing_estimate: Housing estimate
+university.admissions.reading.food_estimate: Food estimate
+university.admissions.reading.materials_estimate: Study materials
+university.admissions.reading.personal_estimate: Personal expenses
+university.admissions.reading.insurance_extra: Insurance and other limits:
+university.admissions.reading.potential_aid: Potential funding is not awarded aid. Eligibility, documents and deadlines are separate; no award is subtracted from published costs.
+university.admissions.reading.no_budget: No comparable budget is confirmed for this selection. Published amounts below keep their own period, currency and conditions.
+university.admissions.reading.full_records: Full source records and conditions
+university.admissions.reading.general_references: Additional reference information
+university.admissions.reading.general_reference_note: These records cover broader or special situations. Their applicability to this selection is unresolved; check each record's scope before treating it as a requirement.
+university.admissions.reading.update_selection: Update selection
+university.admissions.catalog.route_name.mit-first-year: First-year admission after school
+university.admissions.catalog.route_name.mit-transfer: Transfer from another university
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: First-year admission after school
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Transfer from another university
+university.admissions.reading.mid_month: Mid-{month}
+university.admissions.reading.month.1: January
+university.admissions.reading.month.2: February
+university.admissions.reading.month.3: March
+university.admissions.reading.month.4: April
+university.admissions.reading.month.5: May
+university.admissions.reading.month.6: June
+university.admissions.reading.month.7: July
+university.admissions.reading.month.8: August
+university.admissions.reading.month.9: September
+university.admissions.reading.month.10: October
+university.admissions.reading.month.11: November
+university.admissions.reading.month.12: December
+university.admissions.reading.early_action: Early Action · early application
+university.admissions.reading.regular_action: Regular Action · regular application
+university.admissions.reading.official_application: Official application instructions
+university.admissions.reading.official_source: Official source
+university.admissions.reading.unknown: Not stated here
+university.admissions.reading.previous_tabs: Previous sections
+university.admissions.reading.next_tabs: More sections
+university.admissions.reading.cycle_help: Use a year such as 2027, or choose a suggested entry cycle. An unrecognized label cannot narrow facts by year.
+university.admissions.reading.cycle_invalid: This entry label is not recognized as a year or term. Use a year or a suggested cycle; no year-specific match is assumed.
+university.admissions.reading.january_tests: January test dates accepted
+university.admissions.reading.mit_course_code: MIT program code: {code}
+university.admissions.reading.mit_course_help: Course {code} is this program's code in the MIT catalog. MIT uses “Course” to refer to a field of study.
 university.admissions.catalog.field.A3i6E: Program description
 university.admissions.catalog.field.WOZxr: External-credit policy
 university.admissions.catalog.field.ItCSB: Program requirements
@@ -2681,5 +2817,276 @@ university.admissions.catalog.apply_before_save: Apply the changed context befor
 universities.compare.reviewed_catalog: Reviewed study and admissions catalog
 universities.compare.optional_context: Compare universities now, or choose a study option and application route to view applicable admissions facts.
 universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.
+university.admissions.reading.summary_translation_missing: A summary translation is not available yet. Read the original below.
+university.admissions.reading.original_description: Original program description (English)
+university.admissions.reading.reference_scope_note: Full records retain the official source language. Each record includes its conditions, period and applicability.
+university.admissions.reading.current_policy: Published policy; entry year not specified
+university.admissions.reading.yearless_period: Recurring dates; entry year not specified
+university.admissions.reading.source_period: Source period and wording
+university.admissions.reading.entry_fall: Fall {year} entry
+university.admissions.reading.entry_spring: Spring {year} entry
+university.admissions.reading.entry_summer: Summer {year} entry
+university.admissions.reading.entry_winter: Winter {year} entry
+university.admissions.reading.entry_year: {year} entry
+university.admissions.reading.aid_title: Need-based financial aid
+university.admissions.reading.aid_explained: This aid is based on the family’s financial circumstances. Applying for admission and applying for aid are separate steps.
+university.admissions.reading.aid_documents: What to submit for aid
+university.admissions.reading.aid_css: Complete the CSS Profile, the College Board financial-aid application.
+university.admissions.reading.aid_css_code: MIT recipient code: {code}.
+university.admissions.reading.aid_fafsa: FAFSA applies to domestic applicants eligible for U.S. federal aid. It is not part of MIT’s international aid instructions.
+university.admissions.reading.aid_international_title: For international aid applicants
+university.admissions.reading.aid_finances_title: Prepare financial information for the CSS Profile:
+university.admissions.reading.aid_priority_dates: Priority aid application dates
 university.programs.all_levels: All degree levels
 university.programs.search_clear: Clear search
+university.admissions.reading.summary_requirements: Key published entry requirements
+university.admissions.reading.summary_application: How to apply
+university.admissions.reading.summary_deadlines: Course dates and application rounds
+university.admissions.reading.summary_costs: Published costs and fee conditions
+university.admissions.reading.summary_funding: Funding: eligibility and application
+university.admissions.reading.home_fee: Home fee
+university.admissions.reading.overseas_fee: Overseas fee
+university.admissions.reading.fee_status: Fee category
+university.admissions.reading.per_year: per year
+university.admissions.reading.published_tuition: Published course tuition
+university.admissions.reading.fee_status_explained: Home and Overseas are fee categories assessed by Imperial. Citizenship alone does not determine the category; tuition excludes living costs and additional charges.
+university.admissions.reading.living_reference: Living-cost reference
+university.admissions.reading.living_nine_months: 9 months · published average range
+university.admissions.reading.living_twelve_months: 12 months · private accommodation reference
+university.admissions.reading.different_cost_periods: This living estimate is from a different period than 2027 tuition. The figures are separate references and are not added into a confirmed annual total.
+university.admissions.reading.scholarship_rounds: President’s PhD scholarship rounds
+university.admissions.reading.scholarship_dates_separate: These are scholarship consideration dates. A department may require an earlier PhD application; admission and a scholarship award are separate decisions.
+university.admissions.reading.ucas_medicine: UCAS · Medicine deadline
+university.admissions.reading.ucas_equal_consideration: UCAS · equal consideration deadline
+university.admissions.reading.submission_opens: Application submission opens
+university.admissions.reading.date: Date
+university.admissions.reading.local_time: Published local time
+university.admissions.reading.month_standalone.1: January
+university.admissions.reading.month_standalone.2: February
+university.admissions.reading.month_standalone.3: March
+university.admissions.reading.month_standalone.4: April
+university.admissions.reading.month_standalone.5: May
+university.admissions.reading.month_standalone.6: June
+university.admissions.reading.month_standalone.7: July
+university.admissions.reading.month_standalone.8: August
+university.admissions.reading.month_standalone.9: September
+university.admissions.reading.month_standalone.10: October
+university.admissions.reading.month_standalone.11: November
+university.admissions.reading.month_standalone.12: December
+university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · departmental application
+university.admissions.reading.integrated_meng: MEng is an integrated degree with undergraduate entry through UCAS, combining undergraduate and master's-level study.
+university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — current Stanford undergraduates only
+university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — current Stanford undergraduates
+university.admissions.catalog.route_class.combined_external: External combined-degree application
+university.admissions.catalog.route_class.combined_ms_with_other_stanford_doctoral_or_professional_degree: MS combined with another Stanford doctoral/professional degree
+university.admissions.catalog.route_class.coterm_application: Coterm master's while studying at Stanford
+university.admissions.catalog.route_class.coterm_current_stanford_undergraduate: Coterm — current Stanford undergraduates only
+university.admissions.catalog.route_class.coterm_or_internal_stanford_student: Coterm or another current Stanford student route
+university.admissions.catalog.route_class.current AA MS to PhD: Progression from current Aeronautics MS to PhD
+university.admissions.catalog.route_class.current ChemE PhD optional MS: Optional MS for current Chemical Engineering PhD students
+university.admissions.catalog.route_class.current EPS coterm or MS student applying to PhD: Current Earth/Planetary Sciences coterm or MS student seeking PhD
+university.admissions.catalog.route_class.current ESE MS student seeking PhD: Current Energy Science and Engineering MS student seeking PhD
+university.admissions.catalog.route_class.current ME PhD optional MS: Optional MS for current Mechanical Engineering PhD students
+university.admissions.catalog.route_class.current Stanford graduate Joint/Dual MS: Joint/Dual MS for current Stanford graduate students
+university.admissions.catalog.route_class.current Stanford graduate or NDO applicant using regular degree application: Regular application for current Stanford graduate or non-degree students
+university.admissions.catalog.route_class.current Stanford other-department PhD candidate added MS: Additional MS for Stanford PhD students in another department
+university.admissions.catalog.route_class.current Stanford student regular external-style degree application: Regular degree application for current Stanford students
+university.admissions.catalog.route_class.current Stanford undergraduate coterm: Coterm master's for current Stanford undergraduates
+university.admissions.catalog.route_class.current Stanford undergraduate coterminal MA or MS: Coterm MA/MS for current Stanford undergraduates
+university.admissions.catalog.route_class.current_Stanford_MD_or_PhD_internal_MSTP_funding_application: Internal MSTP funding application for current Stanford MD/PhD students
+university.admissions.catalog.route_class.current_stanford_doctoral_or_professional_student: Current Stanford doctoral/professional students only
+university.admissions.catalog.route_class.current_stanford_graduate_and_professional_students: Current Stanford graduate/professional students only
+university.admissions.catalog.route_class.current_stanford_graduate_students_additional_ms: Additional MS for current Stanford graduate students
+university.admissions.catalog.route_class.current_stanford_undergraduate_coterm: Coterm — current Stanford undergraduates (directory)
+university.admissions.catalog.route_class.direct_external: Direct application to the professional program
+university.admissions.catalog.route_class.direct_external_limited: Direct external application with published restrictions
+university.admissions.catalog.route_class.en_route_award_no_external_admission: Intermediate award; no external application
+university.admissions.catalog.route_class.existing same-program PhD intermediate MS: Intermediate MS for current PhD students in this program
+university.admissions.catalog.route_class.existing_Classics_PhD_intermediate_MA: Intermediate MA for current Classics PhD students
+university.admissions.catalog.route_class.external HybridSESMS selection through GraduateAdmissions: External hybrid Sustainable Engineered Systems MS application
+university.admissions.catalog.route_class.external PhD application: External PhD application
+university.admissions.catalog.route_class.external PhD application with subplan selection: External PhD application with a subplan choice
+university.admissions.catalog.route_class.external graduate MS or PhD: External MS/PhD application
+university.admissions.catalog.route_class.external interdisciplinary PhD: External interdisciplinary PhD application
+university.admissions.catalog.route_class.external non-professional graduate application: External master's/PhD — Graduate Admissions
+university.admissions.catalog.route_class.external_doctoral: External doctoral application
+university.admissions.catalog.route_class.external_joint_entry_via_gsb_mba_application: Joint degree through the GSB MBA application
+university.admissions.catalog.route_class.external_joint_entry_via_gse_pols_application: Joint degree through the Education POLS application
+university.admissions.catalog.route_class.external_joint_entry_via_law_jd_application: Joint degree through the Law JD application
+university.admissions.catalog.route_class.external_masters: External master's application
+university.admissions.catalog.route_class.external_nonprofessional_programme: External graduate application (program directory)
+university.admissions.catalog.route_class.external_part_time_distance_hcp_ms: Part-time HCP MS — published employment/location restrictions
+university.admissions.catalog.route_class.external_professional_masters: External professional master's application
+university.admissions.catalog.route_class.external_program_specific_application: External application to the named program
+university.admissions.catalog.route_class.external_restricted_alumni: External application restricted to specified alumni
+university.admissions.catalog.route_class.external_terminal_admission: External application to a standalone degree
+university.admissions.catalog.route_class.external_terminal_masters: External standalone master's application
+university.admissions.catalog.route_class.historical duplicate of coterm, no independent internal form verified: Historical coterm duplicate; no separate internal form verified
+university.admissions.catalog.route_class.historical unresolved award context: Historical award context remains unresolved
+university.admissions.catalog.route_class.intermediate MS only for Oceans PhD student: Intermediate MS — current Oceans PhD students only
+university.admissions.catalog.route_class.intermediate exit MA only: Intermediate/exit MA only
+university.admissions.catalog.route_class.intermediate/exit award; no direct admission: Intermediate/exit award; no direct application
+university.admissions.catalog.route_class.internal added MS for student enrolled in another Stanford department: Internal additional MS for students in another Stanford department
+university.admissions.catalog.route_class.internal current-student application or added-degree petition: Current-student application or additional-degree request
+university.admissions.catalog.route_class.internal intermediate MS requirement for AA PhD students: Intermediate MS requirement within Aeronautics PhD
+university.admissions.catalog.route_class.internal_combined_degree_declaration: Internal declaration of combined degrees
+university.admissions.catalog.route_class.internal_coterm_admission: Internal coterm master's application
+university.admissions.catalog.route_class.internal_current_doctoral_only: Current doctoral students only
+university.admissions.catalog.route_class.internal_current_stanford_graduate_students: Internal route for current Stanford graduate students
+university.admissions.catalog.route_class.internal_intermediate_admission: Internal intermediate degree; check current-student restrictions
+university.admissions.catalog.route_class.internal_progression_from_coterm_ma: Internal progression from the coterm MA
+university.admissions.catalog.route_class.internal_stanford_admission: Internal Stanford admission route
+university.admissions.catalog.route_class.internal_stanford_graduate_authorization: Internal authorization for Stanford graduate students
+university.admissions.catalog.route_class.joint_degree_applicant_to_another_stanford_program: Joint-degree route linked to another Stanford program
+university.admissions.catalog.route_class.one_shared_application_with_primary_and_one_alternative_home_program: One shared application with a main and one alternative program
+university.admissions.catalog.route_class.phd_en_route_authorization: Intermediate degree authorization during PhD study
+university.admissions.catalog.route_class.phd_en_route_intermediate_award: Intermediate award during PhD study
+university.admissions.catalog.route_class.possible internal added MS: Possible internal additional MS; eligibility unresolved
+university.admissions.catalog.route_class.program_specific_application: Program-specific application
+university.admissions.catalog.route_class.program_specific_external_admission: External admission under the program's own rules
+university.admissions.catalog.route_class.prospective Stanford MBA/JD Joint MS: Joint MS linked to Stanford MBA/JD admission
+university.admissions.catalog.route_class.related Stanford PhD student added EE MS: Additional Electrical Engineering MS for related Stanford PhD students
+university.admissions.catalog.route_class.required intermediate MS for existing MSE PhD: Required intermediate MS for current Materials PhD students
+university.admissions.catalog.route_class.researched_unresolved: Route researched; applicability remains unresolved
+university.admissions.catalog.route_class.restricted_internal: Restricted internal route
+university.admissions.catalog.route_class.restricted_ms_no_published_external_application: Restricted MS; no published external application
+university.admissions.catalog.route_class.same-program CS PhD intermediate MS petition: Intermediate MS request — current CS PhD students
+university.admissions.catalog.route_class.separate CS and professional-school applications with joint consent: Joint degree: separate CS and professional-school applications
+university.admissions.catalog.route_class.separate degree applications and approved combined study: Separate degree applications and approved combined study
+university.admissions.catalog.route_class.separate_advanced_degree_admission_after_qualifying_llm_or_spils: Separate advanced-degree admission after a qualifying LLM/SPILS
+university.admissions.catalog.route_class.separately admitted joint/dual Stanford degrees: Joint/Dual degrees with separate Stanford admissions
+university.admissions.catalog.route_class.shared_advanced_degree_application_with_selection_path: Shared advanced-degree application with a chosen pathway
+university.admissions.catalog.route_class.shared_joint_application: Shared joint-degree application
+university.admissions.catalog.route_class.shared_medical_school_application: MD: AMCAS, then invited Stanford supplement
+university.admissions.catalog.route_class.shared_school_application: Shared application to the school
+university.admissions.catalog.route_class.terminal_exit_award_no_admission_route: Exit award; no separate admission route
+university.admissions.catalog.route_class.unresolved: Application route remains unresolved
+university.admissions.reading.overview_missing: A study overview has not been collected for this option. Use the official program page below; application records are available separately.
+university.admissions.reading.source_conflict: The collected official sources differ. Confirm this condition with the program; it is not an accepted exemption or an eligibility decision.
+university.admissions.reading.program: Program
+university.admissions.reading.degree.BS: BS — Bachelor of Science (undergraduate degree)
+university.admissions.reading.degree.BA: BA — Bachelor of Arts (undergraduate degree)
+university.admissions.reading.degree.MS: MS — Master of Science (master's degree)
+university.admissions.reading.degree.MA: MA — Master of Arts (master's degree)
+university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy (research doctorate)
+university.admissions.reading.degree.MBA: MBA — Master of Business Administration (professional management degree)
+university.admissions.reading.degree.MD: MD — Doctor of Medicine (professional medical degree)
+university.admissions.reading.degree.ENG: Engineer — advanced engineering degree; separate from MS and PhD
+university.deadlines.weekday.mon: Mon
+university.deadlines.weekday.tue: Tue
+university.deadlines.weekday.wed: Wed
+university.deadlines.weekday.thu: Thu
+university.deadlines.weekday.fri: Fri
+university.deadlines.weekday.sat: Sat
+university.deadlines.weekday.sun: Sun
+university.deadlines.kind.application: Application deadline
+university.deadlines.kind.funding: Funding deadline
+university.deadlines.kind.decision: Decision notification
+university.deadlines.kind.reply: Reply deadline
+university.deadlines.kind.opens: Applications open
+university.deadlines.kind.test: Last test date
+university.deadlines.kind.booking: Test booking deadline
+university.deadlines.round: Round {number}
+university.deadlines.calendar_time_unknown: Time not stated; exported as an all-day event.
+university.deadlines.export_time_unresolved: The published time or timezone cannot be converted reliably; check the official source.
+universities.compare.summary.title: Compare your selected programs
+universities.compare.summary.scope_note: Program facts belong to the selected program, application route and published period. Original currencies and fee categories are retained; a dated reference is not a current offer.
+universities.compare.summary.program: Study option
+universities.compare.summary.study: Duration and format
+universities.compare.summary.route: Application route
+universities.compare.summary.cycle: Selected entry cycle
+universities.compare.summary.tuition: Published tuition
+universities.compare.summary.budget: Study and living reference
+universities.compare.summary.deadline: Published application dates
+universities.compare.summary.funding: Funding
+universities.compare.summary.admission: Requirements and conditions
+universities.compare.summary.deadlines: Open dates and calendar
+universities.compare.summary.finance: Open costs and funding
+universities.compare.summary.source: Official source
+universities.compare.summary.reference: Dated reference
+universities.compare.summary.before_aid: Before aid; check the source exclusions
+universities.compare.summary.unknown: Not established for this selection
+universities.compare.summary.year_not_stated: The source does not state a year; no calendar date is inferred.
+universities.compare.summary.potential_aid: Potential funding is subject to eligibility and selection.
+universities.compare.summary.full_records: Complete source records
+universities.compare.summary.additional_facts: Additional university facts
+universities.compare.summary.choose_programs: Choose programs
+universities.compare.summary.configure_title: Choose programs and application routes
+university.admissions.reading.total_fee: total fee
+university.deadlines.kind.funding_consideration: Admissions cutoff for scholarship consideration
+university.admissions.reading.first_year: first year
+university.admissions.reading.second_year: Second year
+university.admissions.reading.funding_excluded: This programme or format is excluded from this scholarship.
+university.admissions.reading.funding_unconfirmed: Participation in this scholarship is not confirmed for this award.
+university.deadlines.kind.booking_open: Test booking opens
+university.admissions.catalog.route_name.mit_sloan_mba_admissions: MIT Sloan full-time MBA application
+university.admissions.catalog.route_name.mit_sloan_mfin_admissions: MIT Sloan Master of Finance application
+university.admissions.catalog.route_name.mit_sloan_mban_admissions: MIT Sloan Master of Business Analytics application
+university.admissions.catalog.route_name.mit_physics_phd_admissions: MIT Physics PhD application
+university.admissions.catalog.route_name.mit_eecs_meng_admissions: MIT EECS internal Master of Engineering application
+university.admissions.catalog.route_name.mit_bcs_meng_admissions: MIT Brain and Cognitive Sciences Course 6-9P internal MEng application
+university.admissions.catalog.route_name.mit_sloan_msms_admissions: MIT Sloan MSMS application
+university.admissions.catalog.route_name.mit_grad_architecture_admissions: Architecture
+university.admissions.catalog.route_name.mit_grad_civil_environmental_admissions: Civil and Environmental Engineering
+university.admissions.catalog.route_name.mit_grad_dedp_admissions: Data, Economics, and Design of Policy
+university.admissions.catalog.route_name.mit_grad_science_writing_admissions: Science Writing
+university.admissions.catalog.route_name.mit_grad_sdm_admissions: System Design and Management
+university.admissions.catalog.route_name.mit_grad_music_technology_admissions: Music Technology and Computation
+university.admissions.catalog.route_name.mit_grad_real_estate_admissions: Center for Real Estate
+university.admissions.catalog.route_name.mit_grad_scm_residential_admissions: Supply Chain Management Residential
+university.admissions.catalog.route_name.mit_grad_scm_blended_admissions: Supply Chain Management Blended
+university.admissions.catalog.route_name.mit_grad_tpp_admissions: Technology and Policy Program
+university.admissions.catalog.route_name.mit_grad_lgo_admissions: Leaders for Global Operations
+university.admissions.catalog.route_name.mit_grad_aero_admissions: Aeronautics and Astronautics
+university.admissions.catalog.route_name.mit_grad_chemical_admissions: Chemical Engineering
+university.admissions.catalog.route_name.mit_grad_eaps_admissions: Earth, Atmospheric, and Planetary Sciences
+university.admissions.catalog.route_name.mit_grad_materials_admissions: Materials Science and Engineering
+university.admissions.catalog.route_name.mit_grad_meche_admissions: Mechanical Engineering
+university.admissions.catalog.route_name.mit_grad_media_arts_admissions: Media Arts and Sciences
+university.admissions.catalog.route_name.mit_grad_nuclear_admissions: Nuclear Science and Engineering
+university.admissions.catalog.route_name.mit_grad_physics_admissions: Physics special-case SM consideration
+university.admissions.catalog.route_name.mit_grad_political_admissions: Political Science
+university.admissions.catalog.route_name.mit_grad_urban_planning_admissions: Urban Studies and Planning
+university.admissions.catalog.route_name.mit_grad_whoi_admissions: MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering
+university.admissions.catalog.route_name.mit_sloan_evening_mba_admissions: MIT Sloan Evening MBA Program
+university.admissions.catalog.route_name.mit_sloan_executive_mba_admissions: MIT Sloan Executive MBA Program
+university.admissions.catalog.route_name.mit_sloan_fellows_mba_admissions: MIT Sloan Fellows MBA Program
+university.admissions.catalog.route_name.mit_aeroastro_doctoral_admissions: Aeronautics and Astronautics graduate application
+university.admissions.catalog.route_name.mit_architecture_doctoral_admissions: Architecture graduate application
+university.admissions.catalog.route_name.mit_biological_engineering_doctoral_admissions: Biological Engineering graduate application
+university.admissions.catalog.route_name.mit_biology_doctoral_admissions: Biology graduate application
+university.admissions.catalog.route_name.mit_brain_and_cognitive_sciences_doctoral_admissions: Brain and Cognitive Sciences graduate application
+university.admissions.catalog.route_name.mit_chemical_engineering_doctoral_admissions: Chemical Engineering graduate application
+university.admissions.catalog.route_name.mit_chemistry_doctoral_admissions: Chemistry graduate application
+university.admissions.catalog.route_name.mit_civil_and_environmental_engineering_doctoral_admissions: Civil and Environmental Engineering graduate application
+university.admissions.catalog.route_name.mit_computational_and_systems_biology_doctoral_admissions: Computational and Systems Biology graduate application
+university.admissions.catalog.route_name.mit_computational_science_and_engineering_doctoral_admissions: Standalone Computational Science and Engineering PhD application
+university.admissions.catalog.route_name.mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions: Earth, Atmospheric, and Planetary Sciences graduate application
+university.admissions.catalog.route_name.mit_eecs_doctoral_admissions: Electrical Engineering and Computer Science graduate application
+university.admissions.catalog.route_name.mit_hst_memp_doctoral_admissions: Health Sciences and Technology (Joint Harvard-MIT Program) graduate application
+university.admissions.catalog.route_name.mit_hasts_doctoral_admissions: History, Anthropology, and Science, Technology, and Society graduate application
+university.admissions.catalog.route_name.mit_social_and_engineering_systems_doctoral_admissions: Institute for Data, Systems, and Society graduate application
+university.admissions.catalog.route_name.mit_mitili_sm_admissions: Linguistics graduate application (MITILI)
+university.admissions.catalog.route_name.mit_linguistics_doctoral_admissions: Linguistics graduate application
+university.admissions.catalog.route_name.mit_materials_science_and_engineering_doctoral_admissions: Materials Science and Engineering graduate application
+university.admissions.catalog.route_name.mit_mathematics_doctoral_admissions: Mathematics graduate application
+university.admissions.catalog.route_name.mit_mechanical_engineering_doctoral_admissions: Mechanical Engineering graduate application
+university.admissions.catalog.route_name.mit_microbiology_doctoral_admissions: Microbiology graduate application
+university.admissions.catalog.route_name.mit_sloan_management_doctoral_admissions: MIT Sloan PhD Program graduate application
+university.admissions.catalog.route_name.mit_mit_whoi_doctoral_admissions: MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate application
+university.admissions.catalog.route_name.mit_nuclear_science_and_engineering_doctoral_admissions: Nuclear Science and Engineering graduate application
+university.admissions.catalog.route_name.mit_operations_research_doctoral_admissions: Operations Research Center graduate application
+university.admissions.catalog.route_name.mit_philosophy_doctoral_admissions: Philosophy graduate application
+university.admissions.catalog.route_name.mit_political_science_doctoral_admissions: Political Science graduate application
+university.admissions.catalog.route_name.mit_transportation_doctoral_admissions: Transportation graduate application
+university.admissions.catalog.route_name.mit_urban_studies_and_planning_doctoral_admissions: Urban Studies and Planning graduate application
+university.admissions.catalog.route_name.mit_mathematics_of_data_sm_admissions: Mathematics of Data SM application
+university.admissions.catalog.route_name.mit_grad_transportation_mst_admissions: Transportation graduate application
+university.admissions.catalog.route_name.mit_economics_doctoral_admissions: Economics PhD application
+university.admissions.catalog.route_name.mit-be-meng-internal: Biological Engineering internal MEng
+university.admissions.catalog.route_name.mit-mathematics-fifth-year-internal: Mathematics fifth-year MASc
+university.admissions.catalog.route_name.mit-cse-secondary-sm-internal: CCSE secondary SM consideration
+university.admissions.catalog.route_name.mit-mas-phd-progression: Media Arts and Sciences internal PhD progression
+university.admissions.catalog.route_name.mit-idps-internal-selection: IDPS selection for participating MIT PhD students
+university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Joint Department–Computational Science and Engineering PhD application
+university.admissions.catalog.route_name.mit-economics-sm-special-approval: Economics special SM approval for current MIT students

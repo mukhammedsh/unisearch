@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const IMPERIAL = "imperial-college-london-uk";
@@ -235,7 +235,7 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   const csOption = chooser.locator('[data-compare-programs] [data-study-option="stanford-option-cs-ms"]');
   await expect(csOption).toBeVisible();
   await csOption.click();
-  await expect(chooser.locator(".admissions-context__summary")).toContainText("Computer Science (MS)");
+  await expect(chooser.locator(".admissions-context__summary")).toContainText("Компьютерные науки (MS)");
   const route = chooser.locator('select[data-context-field="application_route_id"]');
   await expect(route).toHaveValue("");
   const routeWrapper = route.locator("xpath=..");
@@ -266,7 +266,7 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   await page.locator('[data-action="build-compare-results"]').click();
   const reviewed = page.locator(`.compare-analysis-block[data-reviewed-context="${STANFORD}"]`);
   await expect(reviewed).toBeVisible();
-  await expect(reviewed).toContainText("Computer Science (MS)");
+  await expect(reviewed).toContainText("Компьютерные науки (MS)");
   await expect(reviewed).not.toContainText(/stanford_standard|stanford-bs-computer-science/);
 });
 
@@ -306,13 +306,15 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expectUniversityReady(page);
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
-  await expect(page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]')).toBeVisible();
+  const greDeadlineFact = page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]');
+  await page.locator("#tab-deadlines .admissions-reading__references > summary").first().click();
+  await expect(greDeadlineFact).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#detailRequirements")).not.toContainText("0%");
   await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
   await expect(page.locator("#tab-finance")).toHaveClass(/active/);
-  await expect(page.locator("#detailFinance")).toContainText("A comparable annual total is not established");
+  await expect(page.locator("#detailFinance")).toContainText("No comparable budget is confirmed for this selection");
   await expect(page.locator(".finance-summary-container")).toBeHidden();
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
   let currentProfile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
@@ -325,12 +327,13 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await setNativeSelect(page, "admissionsApplicant", "");
   await page.locator("#admissionsCycle").fill("2026-27 to 2027-28 entries");
   await page.locator("#admissionsContextApply").click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("engineering-doerr-evidence:cs-coterm");
   await expectUniversityReady(page);
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const eligibilityFact = page.locator('#tab-admission [data-admissions-fact="coterm-central-evidence:stanford-coterm-central-eligibility"]').first();
-  const eligibilityGroup = eligibilityFact.locator("xpath=ancestor::details[@data-admissions-group][1]");
-  if (await eligibilityGroup.count() && !(await eligibilityGroup.evaluate((node) => node.open))) await eligibilityGroup.locator(":scope > summary").click();
+  await openDisclosureParents(eligibilityFact);
   await expect(eligibilityFact).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);

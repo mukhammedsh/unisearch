@@ -49,6 +49,11 @@ async function setNativeSelect(page, elementId, value) {
   );
 }
 
+async function openDisclosureParents(locator) {
+  const closedParent = locator.locator("xpath=ancestor::details[not(@open)][last()]");
+  while (await closedParent.count()) await closedParent.locator(":scope > summary").click();
+}
+
 async function setRangeValue(page, elementId, value) {
   await page.evaluate(
     ({ id, nextValue }) => {
@@ -79,6 +84,7 @@ async function expectProfileTabVisible(page, tabName) {
 }
 
 module.exports = {
+  openDisclosureParents,
   selectors,
   expectProfileTabVisible,
   openProfileTab,

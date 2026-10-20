@@ -91,6 +91,11 @@ test("map marker opens the complete university card and responds to zoom control
     id: "marker-only-university",
     name: "Marker Only University",
     coordinates: { lat: 0, lon: 0 },
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: { reference: true,
+      annual_total: { min: 9000, max: 9000, currency: "USD", period: "2026-2027", study_level: "undergraduate", exclusions: [] },
+      tuition: { min: 7000, max: 7000, currency: "USD", period: "2026-2027", study_level: "undergraduate" },
+    },
   };
   let detailRequests = 0;
 
@@ -108,7 +113,7 @@ test("map marker opens the complete university card and responds to zoom control
       status: 200,
       contentType: "application/json",
       headers: { ETag: '"marker-only"' },
-      body: JSON.stringify(markerUniversity),
+      body: JSON.stringify({ ...markerUniversity, catalog_costs: undefined }),
     });
   });
 
@@ -170,6 +175,8 @@ test("map marker opens the complete university card and responds to zoom control
   await expect(popupCard).toBeVisible();
   await expect(popupCard.locator(".uni-title")).toHaveText("Marker Only University");
   await expect(popupCard.locator(".uni-media")).toBeVisible();
+  await expect(popupCard.locator('[data-cost-basis="annual_total"]')).toContainText(/9[\s,]?000/);
+  await expect(popupCard.locator('[data-cost-basis="tuition"]')).toContainText(/7[\s,]?000/);
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   const popupSurface = await popupCard.evaluate((node) => {
     const popup = node.closest(".leaflet-popup");

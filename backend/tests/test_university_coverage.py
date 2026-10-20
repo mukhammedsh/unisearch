@@ -211,7 +211,11 @@ class UniversityCoverageTests(unittest.TestCase):
         self.assertEqual(taught_application["scope"]["option_ids"], ["imperial-option-computing"])
         self.assertIn("rounds", str(taught_application["value"]).lower())
         self.assertFalse(any(row["id"] == taught_application["id"] for row in phd["facts"]))
-        self.assertFalse(any("deadline" in row["topic"] for row in phd["facts"]))
+        phd_dates = self.fact(phd, "imperial-computing-phd-2027-round-dates")
+        self.assertEqual(phd_dates["scope"]["option_ids"], ["imperial-computing-phd"])
+        self.assertEqual(phd_dates["value"]["windows"][0]["application_due"], "2026-10-01")
+        self.assertEqual(phd_dates["value"]["windows"][1]["application_due"], "2026-12-01")
+        self.assertNotIn(phd_dates["id"], [row["id"] for row in taught["facts"]])
 
     def test_imperial_course_limited_awards_do_not_attach_to_every_degree_at_the_same_level(self):
         institution = admissions_catalog.get_institution("imperial-college-london-uk")

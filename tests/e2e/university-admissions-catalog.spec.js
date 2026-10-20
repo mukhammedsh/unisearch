@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const cases = [
   {
@@ -19,7 +19,7 @@ const cases = [
       { id: "ug-sat-act-presence", text: /SAT.*ACT|ACT.*SAT/i },
     ],
     excludedFacts: ["reviewed-mit_eecs_doctoral_admissions-tests"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
+    finance: { note: /Published reference budget.*2026[‑-]2027/i },
   },
   {
     name: "MIT EECS doctoral Computer Science",
@@ -40,7 +40,7 @@ const cases = [
       { id: "reviewed-mit_eecs_doctoral_admissions-funding", tab: "finance", text: /automatically considered|full tuition|medical insurance/i },
     ],
     excludedFacts: ["ug-sat-act-presence"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i, excluded: /MIT Need-Based Scholarship/i },
+    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i, excluded: /MIT Need-Based Scholarship/i },
   },
   {
     name: "Imperial Computing MEng",
@@ -62,7 +62,7 @@ const cases = [
       { id: "imperial-computing-meng-course-profile", tab: "finance", text: /Home|Overseas/i },
     ],
     excludedFacts: ["imperial-computing-admission"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
+    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
   },
   {
     name: "Imperial Computing MSc",
@@ -83,7 +83,7 @@ const cases = [
       { id: "imperial-computing-course-profile", tab: "finance", text: /Home|Overseas/i },
     ],
     excludedFacts: ["imperial-computing-meng-admission"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
+    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
   },
   {
     name: "Stanford external Computer Science MS",
@@ -102,7 +102,7 @@ const cases = [
       { id: "engineering-doerr-evidence:graduate-entry-eligibility", text: /bachelor.*equivalent|recognized international equivalent/i },
       { id: "engineering-doerr-evidence:graduate-application-limit", text: /one.*graduate degree program|one Stanford graduate degree program/i },
     ],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
+    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
   },
   {
     name: "Stanford current-student Computer Science coterm",
@@ -122,7 +122,7 @@ const cases = [
       { id: "coterm-central-evidence:stanford-coterm-central-application-fee", tab: "finance", text: /125|coterm application fee/i },
     ],
     excludedFacts: ["engineering-doerr-evidence:graduate-application-limit"],
-    finance: { note: /comparable annual total is not established|сопоставимая годовая сумма.*не установлена/i },
+    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
   },
 ];
 
@@ -171,6 +171,7 @@ async function openAssessment(page) {
 async function openFact(page, tab, id, pattern) {
   await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
   const fact = page.locator(`.d-tab-pane.active [data-admissions-fact="${id}"]`).first();
+  await openDisclosureParents(fact);
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
@@ -212,7 +213,7 @@ for (const item of cases) {
     }
 
     if (item.name === "MIT first-year Computer Science") {
-      const requirements = page.locator('#detailRequirements .admissions-catalog__section[data-admissions-domain="requirements"]');
+      const requirements = page.locator('#detailRequirements .admissions-catalog__section[data-admissions-domain="requirements"]').first();
       for (const presentation of [
         { name: "desktop-light", theme: "light", width: 1280, height: 900 },
         { name: "desktop-dark", theme: "dark", width: 1280, height: 900 },
@@ -263,7 +264,7 @@ for (const language of ["eng", "rus"]) {
       language,
       theme: language === "rus" ? "dark" : "light",
     });
-    const summary = page.locator("#admissionsContext .admissions-context__summary");
+    const summary = page.locator("#admissionsReferenceSummary");
     await expect(summary).toContainText(language === "rus" ? "Выбор программы через UCAS" : "UCAS course choice");
     await expect(summary).not.toContainText("UCAS Hub; institution I50, stated course code");
 
@@ -446,12 +447,13 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   page.on("pageerror", (error) => pageErrors.push(error.message));
   const item = cases.find((entry) => entry.name === "Stanford external Computer Science MS");
   await openContext(page, item);
-  await expect(page.locator('#admissionsRoute option:checked')).toHaveText("external non-professional graduate application");
-  await expect(page.locator('#admissionsRoute option[value="engineering-doerr-evidence:cs-coterm"]')).toHaveText("Computer Science coterm application");
+  await expect(page.locator('#admissionsRoute option:checked')).toHaveText("External master's/PhD — Graduate Admissions");
+  await expect(page.locator('#admissionsRoute option[value="engineering-doerr-evidence:cs-coterm"]')).toHaveText("CS coterm — current Stanford undergraduates only");
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
 
   const table = page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]').first();
+  await openDisclosureParents(table);
   const group = table.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(table).toBeVisible();

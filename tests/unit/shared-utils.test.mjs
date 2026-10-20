@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import fs from 'node:fs';
 
 global.fetch = async (url) => {
-  const target = String(url || '');
+  const target = String(url || '').split('?')[0];
   if (target.endsWith('Localization/eng')) {
     return {
       ok: true,

@@ -1,0 +1,2208 @@
+{
+  "schema_version": "imperial-programme-overviews-1.0",
+  "checked_at": "2026-10-19",
+  "review_scope": "Programme reading refinements only. Descriptions are editorial summaries of the cited official evidence, not verbatim university quotations. Existing admissions, funding, conflicts and researched unknowns remain separately scoped.",
+  "sources": [
+    {
+      "id": "imperial-overview-source-3",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/bacterial-pathogenesis-infection/",
+      "title": "Biomedical Research (Bacterial Pathogenesis and Infection) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-78",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+      "title": "Experimental Biomolecular Sciences (MRes) — MSc — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-79",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+      "title": "Genes, Drugs and Stem Cells – Novel Therapies (MSc) — PGCert — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-80",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/?addCourse=1198890",
+      "title": "Genomic Medicine (MSc) — PGCert — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-92",
+      "url": "https://www.imperial.ac.uk/aeronautics/study/phd/",
+      "title": "Aeronautics Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-93",
+      "url": "https://www.imperial.ac.uk/bioengineering/study/postgraduate-research/",
+      "title": "Bioengineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-95",
+      "url": "https://www.imperial.ac.uk/chemical-engineering/courses/postgraduate/phd/",
+      "title": "Chemical Engineering — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-96",
+      "url": "https://www.imperial.ac.uk/civil-engineering/prospective-students/phd-postgraduate-research/",
+      "title": "Civil and Environmental Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-97",
+      "url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+      "title": "Computing Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-98",
+      "url": "https://www.imperial.ac.uk/design-engineering/study/phd/",
+      "title": "Design Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-99",
+      "url": "https://www.imperial.ac.uk/earth-science/prosp-students/phd-opportunities/",
+      "title": "Earth Science and Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-100",
+      "url": "https://www.imperial.ac.uk/engineering/departments/electrical-engineering/study/phd/",
+      "title": "Electrical and Electronic Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-101",
+      "url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+      "title": "Materials Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-102",
+      "url": "https://www.imperial.ac.uk/mechanical-engineering/study/phd/phd-opportunities/",
+      "title": "Mechanical Engineering Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-104",
+      "url": "https://www.imperial.ac.uk/brain-sciences/research/",
+      "title": "Clinical Medicine Research (Brain Sciences) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-106",
+      "url": "https://www.imperial.ac.uk/immunology-inflammation/research/",
+      "title": "Clinical Medicine Research (Immunology and Inflammation) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-108",
+      "url": "https://www.imperial.ac.uk/infectious-disease/study/phd-opportunities/funding/",
+      "title": "Clinical Medicine Research (Infectious Disease) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-110",
+      "url": "https://www.imperial.ac.uk/metabolism-digestion-reproduction/research/diabetes-endocrinology-metabolism/",
+      "title": "Clinical Medicine Research (Metabolism, Digestion and Reproduction) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-112",
+      "url": "https://www.imperial.ac.uk/department-surgery-cancer/study/postgraduate-research/",
+      "title": "Clinical Medicine Research (Surgery and Cancer) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-114",
+      "url": "https://www.imperial.ac.uk/nhli/study/postgraduate-research/",
+      "title": "Clinical Medicine Research (National Heart and Lung Institute) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-116",
+      "url": "https://www.imperial.ac.uk/school-public-health/study/postgraduate/research-degrees/",
+      "title": "Clinical Medicine Research (Public Health) — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-118",
+      "url": "https://www.imperial.ac.uk/chemistry/postgraduate/phd/",
+      "title": "Chemistry Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-119",
+      "url": "https://www.imperial.ac.uk/life-sciences/postgraduate/research/",
+      "title": "Life Sciences Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-120",
+      "url": "https://www.imperial.ac.uk/mathematics/postgraduate/doctoral-programme/prospective-students/",
+      "title": "Mathematics Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-121",
+      "url": "https://www.imperial.ac.uk/physics/students/postgraduate-admissions/phd-opportunities/",
+      "title": "Physics Research — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-124",
+      "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+      "title": "Arabic, German, Italian, Russian and Spanish Studies — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-125",
+      "url": "https://www.imperial.ac.uk/science-communication-unit/research/",
+      "title": "Science Communication Studies — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-overview-source-131",
+      "url": "https://www.imperial.ac.uk/staff/educational-development/about-us/",
+      "title": "Educational Development — official programme or research overview",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official university page text returned by web search. Direct page retrieval returned HTTP 403 for tested Imperial pages; no successful HTTP check is claimed."
+    },
+    {
+      "id": "imperial-healthbridge-opening-20261019",
+      "url": "https://www.imperial.ac.uk/medicine/study/postgraduate/healthbridge/",
+      "title": "HealthBRIDGE — October 2027 applications reported open",
+      "checked_at": "2026-10-19",
+      "content_review_method": "Official homepage search-index text reports open applications; the detailed application-page text retains prepublication wording. The live application form was not submitted or independently verified."
+    }
+  ],
+  "facts": [
+    {
+      "id": "imperial_experimental_biomolecular_sciences_mres_msc-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The official page describes Experimental Biomolecular Sciences as an MRes with laboratory training and research, while its application text still mentions an MSc. A separate MSc curriculum is not established; confirm the intended award before applying."
+      },
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_experimental_biomolecular_sciences_mres_msc"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial_page_experimental_biomolecular_sciences",
+        "imperial-overview-source-78"
+      ],
+      "related_fact_ids": [
+        "fact_imperial_experimental_biomolecular_sciences_mres_msc_award_level_scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The PGCert is the shorter taught stage in novel therapies, covering evidence and communication alongside gene therapies, regenerative medicine and pharmacology. The MSc's advanced specialism and extended research project must not be assumed for this award."
+      },
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial_page_genes_drugs_stem_cells",
+        "imperial-overview-source-79"
+      ],
+      "related_fact_ids": [
+        "fact_imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert_award_level_scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial_genomic_medicine_msc_pgcert-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Genomic Medicine PGCert consists of four taught modules: human genetics and genomics foundations plus three options. Blended study combines online work with on-campus teaching; the MSc research project is not part of this certificate's published structure.",
+        "taught_module_count": 4,
+        "compulsory_module": "Fundamentals in Human Genetics and Genomics",
+        "optional_module_count": 3,
+        "published_optional_examples": [
+          "Omics Technologies and their Application to Genomic Medicine",
+          "Genomics of Common and Rare Inherited Diseases",
+          "Molecular Pathology of Cancer and Application in Cancer Diagnosis, Screening and Treatment"
+        ],
+        "delivery": "Blended online study, live webinars, self-study and face-to-face teaching blocks in London",
+        "research_project_scope": "The MSc research project is not part of this award-specific taught outline.",
+        "remaining_verification": "Full award-specific assessment, current module combinations and progression conditions still require the programme specification or course-team confirmation."
+      },
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_genomic_medicine_msc_pgcert"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
+      ],
+      "related_fact_ids": [
+        "fact_imperial_genomic_medicine_msc_pgcert_award_level_scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial_genomic_medicine_msc_pgdip-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Genomic Medicine PGDip comprises eight taught modules, combining core genomic science with optional specialisms. Blended teaching includes online study and on-campus blocks; the MSc research project is a separate requirement.",
+        "taught_module_count": 8,
+        "delivery": "Blended online study, live webinars, self-study and face-to-face teaching blocks in London",
+        "research_project_scope": "The MSc research project is not part of this award-specific taught outline.",
+        "remaining_verification": "Full award-specific assessment, current module combinations and progression conditions still require the programme specification or course-team confirmation."
+      },
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_genomic_medicine_msc_pgdip"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial_page_genomic_medicine",
+        "imperial-overview-source-80"
+      ],
+      "related_fact_ids": [
+        "fact_imperial_genomic_medicine_msc_pgdip_award_level_scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial_master_of_public_health_online_pgdip-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The online Public Health PGDip is a published progression or exit award within the modular public-health pathway. It is distinct from the full MPH and its research requirements; confirm the exact diploma modules and progression conditions with the programme."
+      },
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial_master_of_public_health_online_pgdip"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial_page_mph_online"
+      ],
+      "related_fact_ids": [
+        "fact_imperial_master_of_public_health_online_pgdip_award_level_scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-aeronautics-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Undertake aerospace-related research, including themes in net-zero flight, space, autonomous systems and data-centric engineering. Projects can also connect aeronautics with environmental, energy and healthcare applications; the supervisor and project determine the research focus."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-aeronautics-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-9092ac2b65e3b889",
+        "source-7320c40a2488c0db",
+        "source-e81426de703d229a",
+        "imperial-overview-source-92"
+      ],
+      "related_fact_ids": [
+        "imperial-aeronautics-phd-admission",
+        "imperial-aeronautics-funding-application-scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-bioengineering-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Bioengineering PhD is a research-based degree bringing engineering and physical, mathematical, biological or medical sciences together. Independent investigation is supported by supervisors and collaborative laboratory research; the published full-time duration is four years."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-bioengineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-baf1d30880524928",
+        "source-62cfec425e715f3f",
+        "imperial-overview-source-93"
+      ],
+      "related_fact_ids": [
+        "imperial-bioengineering-phd-admission"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-bioengineering-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Bioengineering MD(Res) is a research-based route for medically qualified professionals. Its published full-time duration is two years; medical and GMC eligibility conditions remain distinct from the engineering PhD entry route."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-bioengineering-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-baf1d30880524928",
+        "source-bdd1549d596e4da4",
+        "source-afaa5407262fbf45",
+        "imperial-overview-source-93"
+      ],
+      "related_fact_ids": [
+        "imperial-bioengineering-mdres-profile"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-chemical-engineering-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Conduct supervised chemical-engineering research through experimental or computational work. Themes include biotechnology, energy and environment, materials, transport, molecular systems, reaction engineering, catalysis, separations and soft matter; the published PhD normally spans three to four years."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-chemical-engineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-222db8d8a087147f",
+        "source-dd133cb3fd3240bb",
+        "imperial-overview-source-95"
+      ],
+      "related_fact_ids": [
+        "imperial-chemical-engineering-phd-admission"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-civil-environmental-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Work within a Civil and Environmental Engineering research group using experimental and computational facilities. The PhD supports multidisciplinary projects drawing on engineering and the physical, life and social sciences; the chosen project and supervisor define the research programme."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-civil-environmental-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-2b2128c9791faef2",
+        "source-a2aa0864112c2063",
+        "source-f361fcca18bc58f4",
+        "imperial-overview-source-96"
+      ],
+      "related_fact_ids": [
+        "imperial-civil-environmental-phd-admission",
+        "imperial-civil-full-admissions-detail",
+        "imperial-civil-scholarship-scheme-conditions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-computing-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Pursue original computer-science research within the Department of Computing, matched to a supervisor's expertise. Computing Research is the general PhD application target; AI4Health uses a separate named target and must not be treated as the same application route."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-computing-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-59264ed92f6cb70f",
+        "source-fcfd905e0321795e",
+        "source-f8beae4c36965770",
+        "imperial-overview-source-97"
+      ],
+      "related_fact_ids": [
+        "imperial-computing-phd-admission",
+        "imperial-computing-funding-exceptions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-design-engineering-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Research design engineering across complex systems, platforms, products and user experiences. The Dyson School connects academic work with industrial, government and charity sectors; the project is developed with an agreed supervisor."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-design-engineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-03704b4d997aff3b",
+        "source-59d6d64616ca4473",
+        "imperial-overview-source-98"
+      ],
+      "related_fact_ids": [
+        "imperial-design-engineering-phd-admission"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-earth-science-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Research topics span planetary, environmental, Earth and climate science, subsurface engineering, energy, resources and computational methods. Most applicants pursue a defined project; a self-proposed project depends on supervisor agreement and the funding arrangement."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-earth-science-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-921b7ca52e9cc9a0",
+        "source-b7564f76b452c295",
+        "source-71596bbbe4abd1cd",
+        "imperial-overview-source-99"
+      ],
+      "related_fact_ids": [
+        "imperial-earth-science-phd-admission",
+        "imperial-earth-funding-exceptions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-electrical-electronic-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Undertake in-depth electrical and electronic engineering research, with applications including smart technologies, healthcare electronics and sustainable power. The PhD develops original insights or applications through a supervised project and formal progress milestones."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-electrical-electronic-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-56f60ddee7c65ecc",
+        "source-c2fead65fb0e188e",
+        "imperial-overview-source-100"
+      ],
+      "related_fact_ids": [
+        "imperial-electrical-electronic-phd-admission",
+        "imperial-eee-funding-exceptions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-materials-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Investigate materials for applications such as energy conversion, environmental protection, transport, electronics and healthcare. The PhD is project-based; named doctoral-training centres add their own subject modules and cohort activities rather than defining every Materials PhD."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-materials-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-08b2e8b31560114d",
+        "source-68b01fb67af7cb5a",
+        "imperial-overview-source-101"
+      ],
+      "related_fact_ids": [
+        "imperial-materials-phd-admission",
+        "imperial-materials-departmental-commonwealth-funding"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-mechanical-engineering-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Develop a Mechanical Engineering research project with a supporting supervisor, either from advertised opportunities or an agreed research idea. Research-group and doctoral-training-centre pathways have their own project and funding conditions; a named supervisor is required for the departmental application."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-mechanical-engineering-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-1c9a6764bbe6a49f",
+        "source-afec6b43c625b23a",
+        "imperial-overview-source-102"
+      ],
+      "related_fact_ids": [
+        "imperial-mechanical-engineering-phd-admission"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-mechanical-engineering-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "This listed MD(Res) context is a medical research degree rather than the Mechanical Engineering PhD. The reviewed evidence establishes central medical and GMC eligibility, but not a separate mechanical-engineering curriculum or current project intake; confirm the project and registration target with Imperial."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-mechanical-engineering-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-bdd1549d596e4da4"
+      ],
+      "related_fact_ids": [],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-brain-sciences-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Research brain science within a department spanning neurology, neuroscience and psychiatry. Work links laboratory mechanisms with translational neuroscience and mental-health questions; the selected supervisor and project define the PhD topic."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-brain-sciences-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-ffca10756d87147c",
+        "source-307021a849db1df7",
+        "imperial-overview-source-104"
+      ],
+      "related_fact_ids": [
+        "imperial-brain-sciences-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-brain-sciences-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Brain Sciences MD(Res) provides a medical research context within neurology, neuroscience and psychiatry. It is distinct from the PhD: the medically qualified applicant requirements and the specific project and attendance conditions remain applicable."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-brain-sciences-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-ffca10756d87147c",
+        "source-307021a849db1df7",
+        "imperial-overview-source-104"
+      ],
+      "related_fact_ids": [
+        "imperial-brain-sciences-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-immunology-inflammation-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Investigate immune and inflammatory mechanisms linking discovery science with clinical medicine. Departmental research includes inflammatory disease, haematology and myeloma; the supervisor-led project determines the PhD's specific scientific focus."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-immunology-inflammation-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7b07c9087760c856",
+        "source-54dcab579d07548d",
+        "imperial-overview-source-106"
+      ],
+      "related_fact_ids": [
+        "imperial-immunology-inflammation-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-immunology-inflammation-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Undertake medical research in immunology and inflammation, within a department linking laboratory discovery with clinical medicine. MD(Res) medical eligibility and project-specific conditions remain separate from the department's PhD requirements."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-immunology-inflammation-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7b07c9087760c856",
+        "source-54dcab579d07548d",
+        "imperial-overview-source-106"
+      ],
+      "related_fact_ids": [
+        "imperial-immunology-inflammation-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-infectious-disease-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Pursue research into infectious disease within a collaborative biomedical setting. Published departmental examples include bacterial pathogenesis, host defence, the microbiome and antimicrobial resistance; each supervisor-led project has its own scope and funding conditions."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-infectious-disease-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-f2c2352a4dda2b09",
+        "source-e6b5f76872a71d9f",
+        "imperial-overview-source-108"
+      ],
+      "related_fact_ids": [
+        "imperial-infectious-disease-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-infectious-disease-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Infectious Disease MD(Res) is a medical research route, with the project agreed within the department's infectious-disease expertise. Medical and GMC eligibility remain required; a published PhD studentship does not automatically establish MD(Res) recruitment or funding."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-infectious-disease-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-f2c2352a4dda2b09",
+        "source-e6b5f76872a71d9f"
+      ],
+      "related_fact_ids": [
+        "imperial-infectious-disease-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-metabolism-digestion-reproduction-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Conduct supervised research within Metabolism, Digestion and Reproduction. Departmental work includes diabetes, endocrinology, metabolism and related biomedical questions; the chosen laboratory or clinical project defines the PhD research programme."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-metabolism-digestion-reproduction-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-8ac8fa4168d26c1c",
+        "source-d5c076134586e338",
+        "imperial-overview-source-110"
+      ],
+      "related_fact_ids": [
+        "imperial-metabolism-digestion-reproduction-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-metabolism-digestion-reproduction-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "This MD(Res) offers a medical research context within Metabolism, Digestion and Reproduction. The research topic is agreed with departmental supervisors; medical eligibility and the selected project's conditions remain distinct from ordinary PhD entry."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-metabolism-digestion-reproduction-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-8ac8fa4168d26c1c",
+        "source-d5c076134586e338"
+      ],
+      "related_fact_ids": [
+        "imperial-metabolism-digestion-reproduction-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-surgery-cancer-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Conduct patient-centred translational research within Surgery and Cancer. The department supports laboratory and clinical research projects; a named supervisor and an agreed project are required before the departmental PhD application can be considered."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-surgery-cancer-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-395d3020bacd1a2d",
+        "imperial-overview-source-112"
+      ],
+      "related_fact_ids": [
+        "imperial-surgery-cancer-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-surgery-cancer-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Surgery and Cancer MD(Res) is a supervisor-led medical research route within the department's patient-centred translational work. Its medical eligibility and correct degree code must be checked independently of the PhD route."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-surgery-cancer-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-395d3020bacd1a2d",
+        "imperial-overview-source-112"
+      ],
+      "related_fact_ids": [
+        "imperial-surgery-cancer-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-nhli-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Undertake basic or clinical research at the National Heart and Lung Institute with specialist supervisors and mentors. The PhD is available full-time or part-time; the project determines its specific cardiac or respiratory focus."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-nhli-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-ea4c7c1e7828b1a7",
+        "imperial-overview-source-114"
+      ],
+      "related_fact_ids": [
+        "imperial-nhli-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-nhli-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The National Heart and Lung Institute offers medical research leading to MD(Res) in its basic and clinical research environment. The department states that MD(Res) study is part-time only; do not apply the PhD's full-time option to this degree."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-nhli-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-ea4c7c1e7828b1a7",
+        "imperial-overview-source-114"
+      ],
+      "related_fact_ids": [
+        "imperial-nhli-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-public-health-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Public-health doctoral research spans epidemiology, biostatistics, infectious disease, primary care, common-disease genomics, ageing and clinical trials. Students work within research groups connected to evidence-led policy and follow supervised research milestones."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-public-health-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-d6c32b2c0ecb1664",
+        "imperial-overview-source-116"
+      ],
+      "related_fact_ids": [
+        "imperial-public-health-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-public-health-mdres-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The School of Public Health lists MD(Res) within its supervised research degrees. Research interests span population health, epidemiology, prevention and clinical evaluation; medical eligibility and the correct registration target must be confirmed for the individual project."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-public-health-mdres"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-d6c32b2c0ecb1664",
+        "imperial-overview-source-116"
+      ],
+      "related_fact_ids": [
+        "imperial-public-health-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-chemistry-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Research theoretical and experimental chemistry, including interfaces with materials, engineering, biology and medicine. The PhD combines a supervisor-led project with transferable-skills training; integrated doctoral-training networks are separately structured routes."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-chemistry-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-52c09462a25a6c79",
+        "source-4cbfcb332d26d47f",
+        "imperial-overview-source-118"
+      ],
+      "related_fact_ids": [
+        "imperial-chemistry-phd-admission",
+        "imperial-chemistry-funding-course-exceptions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-life-sciences-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Investigate life sciences across levels from molecular systems to the biosphere in a multidisciplinary research environment. The PhD combines a defined research project with departmental and professional-development training; advertised studentships have separate eligibility and funding conditions."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-life-sciences-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-b97abbf035c2ee2c",
+        "source-e0275026ba786fc3",
+        "source-f988dd2d2d7fa78b",
+        "imperial-overview-source-119"
+      ],
+      "related_fact_ids": [
+        "imperial-life-sciences-phd-admission",
+        "imperial-life-sciences-project-call-snapshot"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-mathematics-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Pursue research in applied mathematics and mathematical physics, mathematical finance, pure mathematics or statistics. The supervisor and research area shape the PhD; joint doctoral-training schemes have their own applications and training structures."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-mathematics-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-9569305f1e2bedb1",
+        "source-f30108653f91c6bd",
+        "source-f4f77da99cfcd678",
+        "source-2c250c893ad6975b",
+        "imperial-overview-source-120"
+      ],
+      "related_fact_ids": [
+        "imperial-mathematics-phd-admission",
+        "imperial-mathematics-funding-exceptions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-physics-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Physics research is organised through Light, Matter, Particles, Universe–Astrophysics, Universe–Theory, and Space–Climate–Plasma communities. Choose a research community and project; these are research and application variants rather than automatically separate degrees with shared admission or funding rules."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-physics-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-b3d7107359d68ae7",
+        "source-a63a49bdd278f6db",
+        "source-336a50bc818fbdbb",
+        "source-28fbd0e6ecdc677e",
+        "source-616638cc9e92473a",
+        "source-d5aa04151675294c",
+        "source-e279a180ded7d95e",
+        "source-f7718d7e735837fd",
+        "source-cb7e5f53984db24f",
+        "imperial-overview-source-121"
+      ],
+      "related_fact_ids": [
+        "imperial-physics-phd-admission",
+        "imperial-physics-community-admission-exceptions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-environmental-policy-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Undertake self-directed environmental-policy research connecting social and natural sciences with economics, law and management. Supervision, research-review panels and seminars support the project; teaching opportunities are separate from guaranteed employment or funding."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-environmental-policy-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-294c9e51404a91c0",
+        "source-e3663b2671d750f0"
+      ],
+      "related_fact_ids": [
+        "imperial-environmental-policy-phd-admission",
+        "imperial-environmental-policy-research-training"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-business-doctoral-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The integrated Business doctoral programme begins with a two-year MRes in pathway-specific theory and research methods, followed by a PhD subject to successful progression. Research pathways include analytics, economics, finance, management, entrepreneurship and marketing."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-business-doctoral"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-e2f34734a0651582",
+        "source-17c356e9a8ad71bd",
+        "source-13dc087e577b938e"
+      ],
+      "related_fact_ids": [
+        "imperial-business-doctoral-entry",
+        "imperial-business-doctoral-profile-funding",
+        "imperial-business-doctoral-curriculum-progression"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-language-studies-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Imperial's official doctoral inventory lists Arabic, German, Italian, Russian and Spanish Studies. A current subject-specific curriculum, supervisor offer and intake are not established by that listing; discuss the proposed research with the language centre before treating this as an open application."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-language-studies-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-cd0e4c6706b4ba42",
+        "source-071c8ad1148b7b48",
+        "imperial-overview-source-124"
+      ],
+      "related_fact_ids": [],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-science-communication-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Research in science communication connects academic investigation with professional media practice, including science in the media and narratives of technological change. Published PhD projects are examples of past research, rather than a confirmed current list of available projects."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-science-communication-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-cd0e4c6706b4ba42",
+        "source-3da42bf03b739cb4",
+        "imperial-overview-source-125"
+      ],
+      "related_fact_ids": [],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-mphil-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The MPhil is a research master's award, not a taught course. Imperial regulations allow direct registration or a transfer/exit outcome, with research training and examination requirements; this does not establish a currently open standalone application in every department."
+      },
+      "scope": {
+        "study_levels": [
+          "masters"
+        ],
+        "option_ids": [
+          "imperial-mphil"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-afaa5407262fbf45"
+      ],
+      "related_fact_ids": [],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-engd-qnde-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The four-year Quantitative Non-Destructive Evaluation EngD combines mainly industry-based research with academic and industrial supervision and taught professional components. Progress reports, assessments and a final research examination follow its separate EngD regulations; conditional MPhil exit and transfer arrangements are retained."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-engd-qnde"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-820d135453f0481c"
+      ],
+      "related_fact_ids": [
+        "imperial-engd-qnde-regulations"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-dsc-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The DSc is a higher doctorate awarded for a substantial body of published original research and sustained international distinction. It is assessed through a portfolio and contribution statement, rather than an ordinary taught or supervised-entry doctoral course; affiliation eligibility applies."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-dsc"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-9065495810539d6f"
+      ],
+      "related_fact_ids": [
+        "imperial-dsc-submission"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-healthbridge-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "HealthBRIDGE combines a foundation year with two research rotations and an MRes or PGCert pathway, followed by separate registration for a three-year PhD. Foundation tracks include biomedical research, innovation and entrepreneurship, or computational biomedicine; progression and funding conditions remain applicable."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-healthbridge"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-3dc0391791bf54e1",
+        "source-13c663bcd4658fbc",
+        "source-6f0c9e0934f79efd",
+        "source-a43a5d0b16919c98",
+        "source-28a9576ee3aa7534"
+      ],
+      "related_fact_ids": [
+        "imperial-healthbridge-entry-process",
+        "imperial-healthbridge-funding-progression",
+        "imperial-healthbridge-foundation-curriculum-milestones"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-chemical-biology-integrated-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The current Chemical Biology CDT, Empowering UK BioTech Innovation, combines one MRes year with three PhD years. Research bridges physical and life sciences; PhD progression requires passing the MRes. Closed predecessor programmes do not establish current recruitment or funding."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-chemical-biology-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-638087214dbddacd",
+        "source-a568dbee895747b1",
+        "source-3fa8204fb28ae821",
+        "source-593f2812402e3689",
+        "source-d01ee98be4c81964",
+        "source-fd9f0b26270fb793"
+      ],
+      "related_fact_ids": [
+        "imperial-chemical-biology-current-process",
+        "imperial-chemical-biology-closed-predecessors"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-educational-development-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Educational Development research concerns teaching, learning, assessment, course design and academic practice. Imperial staff describe PhD co-supervision with other departments, but the reviewed vacancy page lists no advertised positions; the exact current registration target and non-advertised intake remain unconfirmed."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-educational-development-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-51d62f2b19486c37",
+        "source-182b6df36c19b700",
+        "source-2cc3e2e5b540d416",
+        "imperial-overview-source-131"
+      ],
+      "related_fact_ids": [
+        "imperial-educational-development-current-recruitment"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-photonics-integrated-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The integrated Photonics route normally combines a one-year MRes with three years of Physics PhD research. Initial optics and photonics teaching leads into a nine-month research project; PhD progression requires successful MRes completion and is not automatic."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-photonics-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-51d62f2b19486c37",
+        "source-bfbf96c80339fb94"
+      ],
+      "related_fact_ids": [
+        "imperial-photonics-integrated-exception"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-crick-phd-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "This option records Imperial-registered research at the Francis Crick Institute. It is a research-location and registration context rather than a separate taught course; the reviewed fee inventory alone does not establish a current project list, application route or studentship offer."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-crick-phd"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-51d62f2b19486c37",
+        "source-da8b3a76b3345020"
+      ],
+      "related_fact_ids": [],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-qrt-computing-pathway-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The Imperial × QRT Labs PhD pathway supports advertised projects or an agreed self-proposed research topic across participating Computing, Mathematics and Business supervisors. All applicants use Computing Research; a Business supervisor does not turn it into the Business MRes doctoral route."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-qrt-computing-pathway"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-qrt-admissions"
+      ],
+      "related_fact_ids": [
+        "imperial-qrt-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-math-ccmi-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The UCL–Imperial CCMI programme combines computational modelling, scientific algorithms, high-performance computing, data science and research software engineering. Training includes workshops, software weeks and summer schools; the host university and the target intake's recruitment terms must be checked separately."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-ccmi"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-5cfc900764598487"
+      ],
+      "related_fact_ids": [
+        "imperial-math-ccmi-scheme-scope",
+        "imperial-ccmi-current-training-status"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-math-lsgnt-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The joint Geometry and Number Theory programme links UCL, Imperial and King's College London. Training covers mathematical research, communication, coding and teamwork; the reviewed 2026 intake details are historical and do not establish an open 2027 intake."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-lsgnt"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363"
+      ],
+      "related_fact_ids": [
+        "imperial-math-lsgnt-scheme-scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-math-future-climate-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Mathematics for our Future Climate links Imperial, Reading and Southampton through mathematical and numerical modelling, Earth-system data and data assimilation. Research and training address climate questions; the admitting university awards the degree and its project-specific admission conditions apply."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-future-climate"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-ef36b4a0c7c51884",
+        "source-833651dcf1f97bf6"
+      ],
+      "related_fact_ids": [
+        "imperial-math-future-climate-scheme-scope",
+        "imperial-mfc-current-application-process",
+        "imperial-mfc-study-selection-conditions"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-math-random-systems-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "Mathematics of Random Systems covers probability, stochastic modelling and computational methods through an Oxford–Imperial partnership. The joint programme states that new admissions are permanently closed, although Imperial's inventory still lists it; this is not an open new-entry route."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-random-systems"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-9029a8d0791ccc9c"
+      ],
+      "related_fact_ids": [
+        "imperial-math-random-systems-scheme-scope",
+        "imperial-random-systems-closed-recruitment"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-math-statml-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "StatML develops statistical theory, methods and machine-learning foundations through an Imperial–Oxford doctoral-training partnership. Applications to the two universities are separate; the reviewed historical intake dates and stipend amounts must not be treated as a confirmed new-cycle offer."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-math-statml"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-7e7361227d1c5363",
+        "source-f2b376f8c2199f1d"
+      ],
+      "related_fact_ids": [
+        "imperial-math-statml-scheme-scope",
+        "imperial-statml-admissions-funding-context"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-medical-imaging-integrated-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The joint medical-imaging pathway combines an initial MRes with subsequent PhD research at the supervisor's university. Imperial and the joint programme use different MRes titles; confirm the actual intake and award before applying rather than assuming the two descriptions are interchangeable."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-medical-imaging-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-1e206d093548d31a",
+        "source-9235bb2a1867d7b9",
+        "source-eebc4fd881232fac"
+      ],
+      "related_fact_ids": [
+        "imperial-medical-imaging-integrated-scheme-scope",
+        "imperial-medical-imaging-partner-route-conflict"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-drivers-nuclear-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "DRIVERS supports four-year nuclear research PhDs across partner universities, with projects in areas such as reactor systems, materials and manufacturing. It is a direct-research route without a required MRes; project expression of interest is distinct from formal university admission."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-drivers-nuclear"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-5ad10856b578c92d",
+        "source-c67c4899cfe97db8",
+        "source-aa1ddf6743f055c0",
+        "source-94ea739080f9d1fd",
+        "source-eea688ac605d370f",
+        "source-59090003d068b945",
+        "source-5f79fa2821b98244"
+      ],
+      "related_fact_ids": [
+        "imperial-other-training-inventory-boundaries",
+        "imperial-drivers-nuclear-project-application"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-react-integrated-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The rEaCt doctoral-training context combines chemistry, engineering and data science with automated reaction platforms and quantitative analysis. Imperial describes periodically available BASF/EPSRC opportunities through IConIC; that wording does not establish an open intake or a universal funding offer."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-react-integrated"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-5cb5f4c6bd0e6cc6"
+      ],
+      "related_fact_ids": [
+        "imperial-react-integrated-scheme-scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-ai4health-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "AI4Health is a doctoral-training route applying AI to healthcare, registered through Computing under its specific application target. The reviewed scholarship listing is historical; do not infer current funding, deadlines or general Computing PhD eligibility from that closed call."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-ai4health"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-eea688ac605d370f",
+        "source-f8beae4c36965770",
+        "source-aa1ddf6743f055c0",
+        "source-94ea739080f9d1fd",
+        "source-c67c4899cfe97db8"
+      ],
+      "related_fact_ids": [
+        "imperial-other-training-inventory-boundaries"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    },
+    {
+      "id": "imperial-materials-cidt-ams-study-overview",
+      "topic": "study_content",
+      "value": {
+        "description": "The industry-partnered Advanced Materials Science training context adds subject modules, professional development and cohort activities to Materials research. It is not automatically a separate degree or application; the exact scheme-specific award, recruitment and funding terms remain to be confirmed."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-materials-cidt-ams"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Readers of this explicitly named study option"
+        ],
+        "cycle": "Programme overview; no admissions cycle inferred",
+        "fee_status": []
+      },
+      "source_ids": [
+        "source-08b2e8b31560114d",
+        "source-68b01fb67af7cb5a",
+        "imperial-overview-source-101"
+      ],
+      "related_fact_ids": [
+        "imperial-materials-cidt-ams-inventory-scope"
+      ],
+      "checked_at": "2026-10-19",
+      "content_reviewed_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "description_basis": "Editorial overview of cited official evidence. Explicitly limited descriptions retain unresolved award, curriculum or recruitment status; no automatic parent-policy inheritance."
+    }
+  ],
+  "researched_unknowns": [],
+  "uncompleted_collection": []
+}

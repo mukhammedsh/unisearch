@@ -34,6 +34,8 @@ for s in sources:
         partner_host = s.get('accepted_option_ids') == [joint_cdt_options[host]] and s.get('relationship_evidence_source_ids') == ['source-7e7361227d1c5363'] and bool(s.get('institution_relationship'))
     if host == 'www.imagingcdt.com':
         partner_host = s.get('accepted_option_ids') == ['imperial-medical-imaging-integrated'] and s.get('relationship_evidence_source_ids') == ['source-1e206d093548d31a'] and s.get('institution_relationship') == 'Imperial and Kings College London joint Smart Medical Imaging CDT'
+    if host == 'www.rca.ac.uk':
+        partner_host = s.get('accepted_option_ids') == ['imperial-option-innovation-design-engineering'] and s.get('relationship_evidence_source_ids') == ['imperial-course-innovation-design-engineering-2027'] and s.get('institution_relationship') == 'Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc'
     require(university_host or partner_host, 'Non-university evidence URL: '+s['id'])
     require(bool(s.get('checked_at') or s.get('verified_at')), 'Missing original source review date: '+s['id'])
 bundles = {n:read(n) for n in catalog['evidence_files']}

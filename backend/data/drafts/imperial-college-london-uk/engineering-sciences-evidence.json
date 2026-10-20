@@ -1505,11 +1505,11 @@
       "level": "postgraduate_taught",
       "award": "MA/MSc",
       "department": "Dyson School of Design Engineering",
-      "application_relationship": "A course choice within the shared postgraduate-taught application route; the course page does not identify a separate institutional portal or independent admissions route.",
+      "application_relationship": "Joint Imperial/Royal College of Art MA/MSc; apply through the RCA programme page and applicant portal, as linked by Imperial.",
       "ucas_course_codes": [],
       "variants": [],
       "variant_count": 0,
-      "independent_application_route": "not established by the reviewed course page; application_relationship describes the stated shared route",
+      "independent_application_route": "Published RCA application for the joint programme; not the general My Imperial taught-course destination.",
       "cycle": "2027 entry",
       "variant_card_reconciliation": {
         "page_key_fact_cards": 1,
@@ -1518,8 +1518,13 @@
       },
       "source_id": "imperial-course-innovation-design-engineering-2027",
       "source_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/innovation-design-engineering/",
-      "checked_at": "2026-10-01",
-      "application_destination": "Imperial postgraduate taught application process; the reviewed course page does not identify a separate application destination for this option."
+      "checked_at": "2026-10-20",
+      "application_destination": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+      "shared_form_family": "Royal College of Art",
+      "source_ids": [
+        "imperial-course-innovation-design-engineering-2027",
+        "imperial-recheck-20261020-51"
+      ]
     },
     {
       "option_id": "imperial-option-machine-learning-physical-sciences",
@@ -8860,30 +8865,30 @@
             {
               "fee_status": "Home fee",
               "cycle": "2027 course page, panel cycle omitted",
-              "panel_status": "not_set",
-              "panel_cycle_label": "not stated in panel",
+              "panel_status": "published_current_page_cycle",
+              "panel_cycle_label": "2027 course page, panel cycle omitted",
               "currency": "GBP",
-              "published_panel_text": "Home fee Full-time Not set total fee As a guide, the total fee for 2026-27 was £16,500 Part-time Not set per year As a guide, the fee for 2026-27 was £8,250 per year",
-              "amounts_and_periods": [],
-              "guide_amounts_and_periods": [
-                "£16,500",
-                "£8,250 per year"
-              ]
+              "published_panel_text": "Home fee Full-time £17,000 total fee Part-time £8,500 per year Overseas fee Full-time £35,880 total fee Part-time £17,940 per year",
+              "amounts_and_periods": [
+                "Full-time: £17,000 total fee",
+                "Part-time: £8,500 per year"
+              ],
+              "publication_note": "Full-time total and part-time annual amounts must remain separate."
             }
           ],
           "Overseas fee": [
             {
               "fee_status": "Overseas fee",
               "cycle": "2027 course page, panel cycle omitted",
-              "panel_status": "not_set",
-              "panel_cycle_label": "not stated in panel",
+              "panel_status": "published_current_page_cycle",
+              "panel_cycle_label": "2027 course page, panel cycle omitted",
               "currency": "GBP",
-              "published_panel_text": "Overseas fee Full-time Not set As a guide, the fee for 2026-27 was £34,500 Part-time Not set As a guide, the fee for 2026-27 was £17,250",
-              "amounts_and_periods": [],
-              "guide_amounts_and_periods": [
-                "£34,500",
-                "£17,250"
-              ]
+              "published_panel_text": "Home fee Full-time £17,000 total fee Part-time £8,500 per year Overseas fee Full-time £35,880 total fee Part-time £17,940 per year",
+              "amounts_and_periods": [
+                "Full-time: £35,880 total fee",
+                "Part-time: £17,940 per year"
+              ],
+              "publication_note": "Full-time total and part-time annual amounts must remain separate."
             }
           ]
         },
@@ -8891,6 +8896,7 @@
         "course_page_programme_summary": "Learn to lead conservation programmes to tackle global biodiversity challenges based on conservation science practice"
       },
       "source_ids": [
+        "imperial-recheck-20261020-05",
         "imperial-course-conservation-science-practice-2027"
       ],
       "scope": {
@@ -8905,7 +8911,58 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page."
+      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page.",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "value": {
+            "award": "MSc",
+            "duration": "1 year, 2 years",
+            "start_date": "October 2027",
+            "mode": "Full-time, Part-time",
+            "location": "South Kensington",
+            "department": "Centre for Environmental Policy",
+            "same_page_variants": [],
+            "course_page_tuition_fees": {
+              "Home fee": [
+                {
+                  "fee_status": "Home fee",
+                  "cycle": "2027 course page, panel cycle omitted",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "not stated in panel",
+                  "currency": "GBP",
+                  "published_panel_text": "Home fee Full-time Not set total fee As a guide, the total fee for 2026-27 was £16,500 Part-time Not set per year As a guide, the fee for 2026-27 was £8,250 per year",
+                  "amounts_and_periods": [],
+                  "guide_amounts_and_periods": [
+                    "£16,500",
+                    "£8,250 per year"
+                  ]
+                }
+              ],
+              "Overseas fee": [
+                {
+                  "fee_status": "Overseas fee",
+                  "cycle": "2027 course page, panel cycle omitted",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "not stated in panel",
+                  "currency": "GBP",
+                  "published_panel_text": "Overseas fee Full-time Not set As a guide, the fee for 2026-27 was £34,500 Part-time Not set As a guide, the fee for 2026-27 was £17,250",
+                  "amounts_and_periods": [],
+                  "guide_amounts_and_periods": [
+                    "£34,500",
+                    "£17,250"
+                  ]
+                }
+              ]
+            },
+            "course_page_scholarship_panel": "Scholarships View all scholarships",
+            "course_page_programme_summary": "Learn to lead conservation programmes to tackle global biodiversity challenges based on conservation science practice"
+          },
+          "review_status": "verified"
+        }
+      ],
+      "checked_at": "2026-10-20"
     },
     {
       "id": "imperial-conservation-science-practice-admission",
@@ -11085,32 +11142,40 @@
           "Home fee": [
             {
               "fee_status": "Home fee",
-              "cycle": "2026 entry only",
-              "panel_status": "set_by_partner",
-              "panel_cycle_label": "2026 entry",
+              "cycle": "2027 entry",
+              "panel_status": "published",
+              "panel_cycle_label": "2027 entry",
               "currency": "GBP",
-              "published_panel_text": "Home fee 2026 entry Set by RCA The tuition fees for this course are set and charged by the RCA.",
-              "amounts_and_periods": [],
-              "official_fee_setter": "Royal College of Art; course page says tuition fees are set and charged by RCA."
+              "published_panel_text": "2027 entry: Home £20,350 first year; Overseas and EU £47,250 first year; second year/continuing TBC.",
+              "amounts_and_periods": [
+                "£20,350 first year",
+                "Second year: TBC"
+              ],
+              "publication_note": "First-year fee only; continuing-year fee remains unpublished."
             }
           ],
           "Overseas fee": [
             {
               "fee_status": "Overseas fee",
-              "cycle": "2026 entry only",
-              "panel_status": "set_by_partner",
-              "panel_cycle_label": "2026 entry",
+              "cycle": "2027 entry",
+              "panel_status": "published",
+              "panel_cycle_label": "2027 entry",
               "currency": "GBP",
-              "published_panel_text": "Overseas fee 2026 entry Set by RCA The tuition fees for this course are set and charged by the RCA.",
-              "amounts_and_periods": [],
-              "official_fee_setter": "Royal College of Art; course page says tuition fees are set and charged by RCA."
+              "published_panel_text": "2027 entry: Home £20,350 first year; Overseas and EU £47,250 first year; second year/continuing TBC.",
+              "amounts_and_periods": [
+                "£47,250 first year",
+                "Second year: TBC"
+              ],
+              "publication_note": "First-year fee only; continuing-year fee remains unpublished."
             }
           ]
         },
         "course_page_scholarship_panel": "Scholarships View all scholarships Royal College of Art Scholarships As this programme is joint with the Royal College of Art, they also offer a range of scholarships to students. More information can be found on the RCA website .",
-        "course_page_programme_summary": "Go beyond boundaries. Build better futures. A programme for fiercely curious changemakers."
+        "course_page_programme_summary": "Go beyond boundaries. Build better futures. A programme for fiercely curious changemakers.",
+        "tuition_payment_destination": "Tuition is paid to the Royal College of Art. First-year figures are not a complete two-year budget."
       },
       "source_ids": [
+        "imperial-recheck-20261020-51",
         "imperial-course-innovation-design-engineering-2027"
       ],
       "scope": {
@@ -11125,7 +11190,52 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page."
+      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page.",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "value": {
+            "award": "MA/MSc",
+            "duration": "2 years",
+            "start_date": "October 2027",
+            "mode": "Full-time",
+            "location": "Royal College of Art (Battersea)",
+            "department": "Dyson School of Design Engineering",
+            "same_page_variants": [],
+            "course_page_tuition_fees": {
+              "Home fee": [
+                {
+                  "fee_status": "Home fee",
+                  "cycle": "2026 entry only",
+                  "panel_status": "set_by_partner",
+                  "panel_cycle_label": "2026 entry",
+                  "currency": "GBP",
+                  "published_panel_text": "Home fee 2026 entry Set by RCA The tuition fees for this course are set and charged by the RCA.",
+                  "amounts_and_periods": [],
+                  "official_fee_setter": "Royal College of Art; course page says tuition fees are set and charged by RCA."
+                }
+              ],
+              "Overseas fee": [
+                {
+                  "fee_status": "Overseas fee",
+                  "cycle": "2026 entry only",
+                  "panel_status": "set_by_partner",
+                  "panel_cycle_label": "2026 entry",
+                  "currency": "GBP",
+                  "published_panel_text": "Overseas fee 2026 entry Set by RCA The tuition fees for this course are set and charged by the RCA.",
+                  "amounts_and_periods": [],
+                  "official_fee_setter": "Royal College of Art; course page says tuition fees are set and charged by RCA."
+                }
+              ]
+            },
+            "course_page_scholarship_panel": "Scholarships View all scholarships Royal College of Art Scholarships As this programme is joint with the Royal College of Art, they also offer a range of scholarships to students. More information can be found on the RCA website .",
+            "course_page_programme_summary": "Go beyond boundaries. Build better futures. A programme for fiercely curious changemakers."
+          },
+          "review_status": "verified"
+        }
+      ],
+      "checked_at": "2026-10-20"
     },
     {
       "id": "imperial-innovation-design-engineering-admission",
@@ -11170,23 +11280,29 @@
           "Home fee": [
             {
               "fee_status": "Home fee",
-              "cycle": "2027 entry only",
-              "panel_status": "not_set",
+              "cycle": "2027 entry",
+              "panel_status": "published",
               "panel_cycle_label": "2027 entry",
               "currency": "GBP",
-              "published_panel_text": "Home fee - BD&ML Not set - Temporary 2027 entry Not set",
-              "amounts_and_periods": []
+              "published_panel_text": "Home fee - BD&ML Not set - Temporary 2027 entry £23,200 Overseas fee - BD&ML Not set - Temporary 2027 entry £46,750",
+              "amounts_and_periods": [
+                "£23,200"
+              ],
+              "publication_note": "Actual visible fee amount is published; a hidden administrative heading still says Not set - Temporary."
             }
           ],
           "Overseas fee": [
             {
               "fee_status": "Overseas fee",
-              "cycle": "2027 entry only",
-              "panel_status": "not_set",
+              "cycle": "2027 entry",
+              "panel_status": "published",
               "panel_cycle_label": "2027 entry",
               "currency": "GBP",
-              "published_panel_text": "Overseas fee - BD&ML Not set - Temporary 2027 entry Not set",
-              "amounts_and_periods": []
+              "published_panel_text": "Home fee - BD&ML Not set - Temporary 2027 entry £23,200 Overseas fee - BD&ML Not set - Temporary 2027 entry £46,750",
+              "amounts_and_periods": [
+                "£46,750"
+              ],
+              "publication_note": "Actual visible fee amount is published; a hidden administrative heading still says Not set - Temporary."
             }
           ]
         },
@@ -11194,6 +11310,7 @@
         "course_page_programme_summary": "Deepen your understanding of the methodologies used in research involving large data sets."
       },
       "source_ids": [
+        "imperial-recheck-20261020-09",
         "imperial-course-machine-learning-physical-sciences-2027"
       ],
       "scope": {
@@ -11208,7 +11325,50 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page."
+      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page.",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "value": {
+            "award": "MRes",
+            "duration": "1 year",
+            "start_date": "October 2027",
+            "mode": "Full-time",
+            "location": "South Kensington",
+            "department": "Department of Physics",
+            "same_page_variants": [],
+            "course_page_tuition_fees": {
+              "Home fee": [
+                {
+                  "fee_status": "Home fee",
+                  "cycle": "2027 entry only",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "2027 entry",
+                  "currency": "GBP",
+                  "published_panel_text": "Home fee - BD&ML Not set - Temporary 2027 entry Not set",
+                  "amounts_and_periods": []
+                }
+              ],
+              "Overseas fee": [
+                {
+                  "fee_status": "Overseas fee",
+                  "cycle": "2027 entry only",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "2027 entry",
+                  "currency": "GBP",
+                  "published_panel_text": "Overseas fee - BD&ML Not set - Temporary 2027 entry Not set",
+                  "amounts_and_periods": []
+                }
+              ]
+            },
+            "course_page_scholarship_panel": "Scholarships View all scholarships",
+            "course_page_programme_summary": "Deepen your understanding of the methodologies used in research involving large data sets."
+          },
+          "review_status": "verified"
+        }
+      ],
+      "checked_at": "2026-10-20"
     },
     {
       "id": "imperial-machine-learning-physical-sciences-admission",
@@ -13007,29 +13167,29 @@
           "Home fee": [
             {
               "fee_status": "Home fee",
-              "cycle": "2026 entry only",
-              "panel_status": "not_set",
-              "panel_cycle_label": "2026 entry",
+              "cycle": "2027 entry",
+              "panel_status": "published",
+              "panel_cycle_label": "2027 entry",
               "currency": "GBP",
-              "published_panel_text": "Home fee 2026 entry Not set As a guide, the fee for 2026-27 was £13,800",
-              "amounts_and_periods": [],
-              "guide_amounts_and_periods": [
-                "£13,800"
-              ]
+              "published_panel_text": "Home fee 2027 entry £14,650 Overseas fee 2027 entry £33,050",
+              "amounts_and_periods": [
+                "£14,650"
+              ],
+              "publication_note": "No additional fee period is inferred from an unlabelled price."
             }
           ],
           "Overseas fee": [
             {
               "fee_status": "Overseas fee",
-              "cycle": "2026 entry only",
-              "panel_status": "not_set",
-              "panel_cycle_label": "2026 entry",
+              "cycle": "2027 entry",
+              "panel_status": "published",
+              "panel_cycle_label": "2027 entry",
               "currency": "GBP",
-              "published_panel_text": "Overseas fee 2026 entry Not set As a guide, the fee for 2026-27 was £31,200",
-              "amounts_and_periods": [],
-              "guide_amounts_and_periods": [
-                "£31,200"
-              ]
+              "published_panel_text": "Home fee 2027 entry £14,650 Overseas fee 2027 entry £33,050",
+              "amounts_and_periods": [
+                "£33,050"
+              ],
+              "publication_note": "No additional fee period is inferred from an unlabelled price."
             }
           ]
         },
@@ -13037,6 +13197,7 @@
         "course_page_programme_summary": "Develop the expertise required to work in broadcast media television or radio."
       },
       "source_ids": [
+        "imperial-recheck-20261020-13",
         "imperial-course-science-media-production-2027"
       ],
       "scope": {
@@ -13051,7 +13212,56 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page."
+      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page.",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "value": {
+            "award": "MSc",
+            "duration": "1 year",
+            "start_date": "October 2027",
+            "mode": "Full-time",
+            "location": "South Kensington",
+            "department": "Science Communication Unit",
+            "same_page_variants": [],
+            "course_page_tuition_fees": {
+              "Home fee": [
+                {
+                  "fee_status": "Home fee",
+                  "cycle": "2026 entry only",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "2026 entry",
+                  "currency": "GBP",
+                  "published_panel_text": "Home fee 2026 entry Not set As a guide, the fee for 2026-27 was £13,800",
+                  "amounts_and_periods": [],
+                  "guide_amounts_and_periods": [
+                    "£13,800"
+                  ]
+                }
+              ],
+              "Overseas fee": [
+                {
+                  "fee_status": "Overseas fee",
+                  "cycle": "2026 entry only",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "2026 entry",
+                  "currency": "GBP",
+                  "published_panel_text": "Overseas fee 2026 entry Not set As a guide, the fee for 2026-27 was £31,200",
+                  "amounts_and_periods": [],
+                  "guide_amounts_and_periods": [
+                    "£31,200"
+                  ]
+                }
+              ]
+            },
+            "course_page_scholarship_panel": "Scholarships View all scholarships Imperial grants and scholarships Who it's for See what scholarships and grants are available – eligibility varies Find out more",
+            "course_page_programme_summary": "Develop the expertise required to work in broadcast media television or radio."
+          },
+          "review_status": "verified"
+        }
+      ],
+      "checked_at": "2026-10-20"
     },
     {
       "id": "imperial-science-media-production-admission",
@@ -13793,28 +14003,28 @@
             {
               "fee_status": "Home fee",
               "cycle": "2027 course page, panel cycle omitted",
-              "panel_status": "not_set",
-              "panel_cycle_label": "not stated in panel",
+              "panel_status": "published_current_page_cycle",
+              "panel_cycle_label": "2027 course page, panel cycle omitted",
               "currency": "GBP",
-              "published_panel_text": "Home fee Full-time Not set As a guide, the fee for 2026-27 was £16,500",
-              "amounts_and_periods": [],
-              "guide_amounts_and_periods": [
-                "£16,500"
-              ]
+              "published_panel_text": "Home fee Full-time £17,000 Overseas fee Full-time £35,880",
+              "amounts_and_periods": [
+                "£17,000"
+              ],
+              "publication_note": "No additional fee period is inferred from an unlabelled price."
             }
           ],
           "Overseas fee": [
             {
               "fee_status": "Overseas fee",
               "cycle": "2027 course page, panel cycle omitted",
-              "panel_status": "not_set",
-              "panel_cycle_label": "not stated in panel",
+              "panel_status": "published_current_page_cycle",
+              "panel_cycle_label": "2027 course page, panel cycle omitted",
               "currency": "GBP",
-              "published_panel_text": "Overseas fee Full-time Not set As a guide, the fee for 2026-27 was £34,500",
-              "amounts_and_periods": [],
-              "guide_amounts_and_periods": [
-                "£34,500"
-              ]
+              "published_panel_text": "Home fee Full-time £17,000 Overseas fee Full-time £35,880",
+              "amounts_and_periods": [
+                "£35,880"
+              ],
+              "publication_note": "No additional fee period is inferred from an unlabelled price."
             }
           ]
         },
@@ -13822,6 +14032,7 @@
         "course_page_programme_summary": "Gain skills for leadership in sustainability and environmental technology."
       },
       "source_ids": [
+        "imperial-recheck-20261020-14",
         "imperial-course-sustainability-environmental-policy-innovation-2027"
       ],
       "scope": {
@@ -13836,7 +14047,56 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page."
+      "conditions_and_exceptions": "Course content and same-page variants are as published for this entry cycle; course-page fee labels do not establish an applicant fee status. Module combinations and changes are subject to the qualifications stated on the page.",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "value": {
+            "award": "MSc",
+            "duration": "1 year",
+            "start_date": "October 2027",
+            "mode": "Full-time",
+            "location": "South Kensington",
+            "department": "Centre for Environmental Policy",
+            "same_page_variants": [],
+            "course_page_tuition_fees": {
+              "Home fee": [
+                {
+                  "fee_status": "Home fee",
+                  "cycle": "2027 course page, panel cycle omitted",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "not stated in panel",
+                  "currency": "GBP",
+                  "published_panel_text": "Home fee Full-time Not set As a guide, the fee for 2026-27 was £16,500",
+                  "amounts_and_periods": [],
+                  "guide_amounts_and_periods": [
+                    "£16,500"
+                  ]
+                }
+              ],
+              "Overseas fee": [
+                {
+                  "fee_status": "Overseas fee",
+                  "cycle": "2027 course page, panel cycle omitted",
+                  "panel_status": "not_set",
+                  "panel_cycle_label": "not stated in panel",
+                  "currency": "GBP",
+                  "published_panel_text": "Overseas fee Full-time Not set As a guide, the fee for 2026-27 was £34,500",
+                  "amounts_and_periods": [],
+                  "guide_amounts_and_periods": [
+                    "£34,500"
+                  ]
+                }
+              ]
+            },
+            "course_page_scholarship_panel": "Scholarships View all scholarships",
+            "course_page_programme_summary": "Gain skills for leadership in sustainability and environmental technology."
+          },
+          "review_status": "verified"
+        }
+      ],
+      "checked_at": "2026-10-20"
     },
     {
       "id": "imperial-sustainability-environmental-policy-innovation-admission",
@@ -23856,9 +24116,11 @@
           "Portfolio: Candidates must submit a portfolio of work. See the RCA's website for guidance on the portfolio . Part 2 -",
           "Interview: Selected applicants are invited for an interview (by MS Teams, Zoom and/or accessibility positive options) with staff and a student representative and to participate in a creative exercise."
         ],
-        "ATAS_course_scope_statement": "ATAS certificate An ATAS certificate is not required for students applying for this course."
+        "ATAS_course_scope_statement": "ATAS certificate An ATAS certificate is not required for students applying for this course.",
+        "application_destination": "Apply via the official RCA Innovation Design Engineering programme page and linked applicant portal."
       },
       "source_ids": [
+        "imperial-recheck-20261020-51",
         "imperial-course-innovation-design-engineering-2027"
       ],
       "scope": {
@@ -23873,7 +24135,24 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "conditions_and_exceptions": "Preserves published current round deadlines and course-specific extra documents, selection, interview, or ATAS terms. Shared portal steps and application fee rules remain covered by the institution-wide evidence."
+      "conditions_and_exceptions": "Preserves published current round deadlines and course-specific extra documents, selection, interview, or ATAS terms. Shared portal steps and application fee rules remain covered by the institution-wide evidence.",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "value": {
+            "course_page_application_rounds_and_deadlines": null,
+            "course_specific_required_documents_selection_or_interview": [
+              "Making an application You apply directly to the Royal College of Art (RCA) who jointly deliver this course. We advise that you apply as soon as possible. Find out about application deadlines to avoid disappointment. Visit the RCA website to read more about how to apply. Two-part application process Part 1 - Portfolio: Candidates must submit a portfolio of work. See the RCA's website for guidance on the portfolio . Part 2 -",
+              "Portfolio: Candidates must submit a portfolio of work. See the RCA's website for guidance on the portfolio . Part 2 -",
+              "Interview: Selected applicants are invited for an interview (by MS Teams, Zoom and/or accessibility positive options) with staff and a student representative and to participate in a creative exercise."
+            ],
+            "ATAS_course_scope_statement": "ATAS certificate An ATAS certificate is not required for students applying for this course."
+          },
+          "review_status": "verified"
+        }
+      ],
+      "checked_at": "2026-10-20"
     },
     {
       "id": "imperial-machine-learning-physical-sciences-application-details",
@@ -51503,7 +51782,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-molecular-synthesis-2027"
+        "imperial-course-molecular-synthesis-2027",
+        "imperial-recheck-20261020-02"
       ],
       "option_ids": [
         "imperial-option-molecular-synthesis"
@@ -51513,7 +51793,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-molecular-synthesis-overseas-fee-2027-tuition",
@@ -51521,7 +51802,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-molecular-synthesis-2027"
+        "imperial-course-molecular-synthesis-2027",
+        "imperial-recheck-20261020-02"
       ],
       "option_ids": [
         "imperial-option-molecular-synthesis"
@@ -51531,7 +51813,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-catalysis-home-fee-2027-tuition",
@@ -51539,7 +51822,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-catalysis-2027"
+        "imperial-course-catalysis-2027",
+        "imperial-recheck-20261020-03"
       ],
       "option_ids": [
         "imperial-option-catalysis"
@@ -51549,7 +51833,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-catalysis-overseas-fee-2027-tuition",
@@ -51557,7 +51842,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-catalysis-2027"
+        "imperial-course-catalysis-2027",
+        "imperial-recheck-20261020-03"
       ],
       "option_ids": [
         "imperial-option-catalysis"
@@ -51567,7 +51853,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-chemical-biology-home-fee-2027-tuition",
@@ -51575,7 +51862,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-chemical-biology-2027"
+        "imperial-course-chemical-biology-2027",
+        "imperial-recheck-20261020-04"
       ],
       "option_ids": [
         "imperial-option-chemical-biology"
@@ -51585,7 +51873,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-chemical-biology-overseas-fee-2027-tuition",
@@ -51593,7 +51882,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-chemical-biology-2027"
+        "imperial-course-chemical-biology-2027",
+        "imperial-recheck-20261020-04"
       ],
       "option_ids": [
         "imperial-option-chemical-biology"
@@ -51603,15 +51893,17 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-conservation-science-practice-home-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Home fee: Full-time: £17,000 total fee; Part-time: £8,500 per year. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-conservation-science-practice-2027"
+        "imperial-course-conservation-science-practice-2027",
+        "imperial-recheck-20261020-05"
       ],
       "option_ids": [
         "imperial-option-conservation-science-practice"
@@ -51621,15 +51913,26 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Home fee: Full-time: £17,000 total fee; Part-time: £8,500 per year. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-conservation-science-practice-overseas-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Overseas fee: Full-time: £35,880 total fee; Part-time: £17,940 per year. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-conservation-science-practice-2027"
+        "imperial-course-conservation-science-practice-2027",
+        "imperial-recheck-20261020-05"
       ],
       "option_ids": [
         "imperial-option-conservation-science-practice"
@@ -51639,7 +51942,17 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Overseas fee: Full-time: £35,880 total fee; Part-time: £17,940 per year. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-drug-discovery-development-home-fee-2027-tuition",
@@ -51647,7 +51960,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-drug-discovery-development-2027"
+        "imperial-course-drug-discovery-development-2027",
+        "imperial-recheck-20261020-06"
       ],
       "option_ids": [
         "imperial-option-drug-discovery-development"
@@ -51657,7 +51971,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-drug-discovery-development-overseas-fee-2027-tuition",
@@ -51665,7 +51980,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-drug-discovery-development-2027"
+        "imperial-course-drug-discovery-development-2027",
+        "imperial-recheck-20261020-06"
       ],
       "option_ids": [
         "imperial-option-drug-discovery-development"
@@ -51675,7 +51991,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-green-chemistry-home-fee-2027-tuition",
@@ -51683,7 +52000,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-green-chemistry-2027"
+        "imperial-course-green-chemistry-2027",
+        "imperial-recheck-20261020-07"
       ],
       "option_ids": [
         "imperial-option-green-chemistry"
@@ -51693,7 +52011,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-green-chemistry-overseas-fee-2027-tuition",
@@ -51701,7 +52020,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-green-chemistry-2027"
+        "imperial-course-green-chemistry-2027",
+        "imperial-recheck-20261020-07"
       ],
       "option_ids": [
         "imperial-option-green-chemistry"
@@ -51711,15 +52031,18 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-innovation-design-engineering-home-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is set_by_partner; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Home fee: £20,350 first year; Second year: TBC. The second-year fee remains TBC; no two-year total is established.",
+      "official_next_step": "Check RCA continuing-year tuition before calculating the complete two-year cost.",
       "source_ids": [
-        "imperial-course-innovation-design-engineering-2027"
+        "imperial-course-innovation-design-engineering-2027",
+        "imperial-recheck-20261020-08",
+        "imperial-recheck-20261020-51"
       ],
       "option_ids": [
         "imperial-option-innovation-design-engineering"
@@ -51729,15 +52052,27 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is set_by_partner; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Home fee: £20,350 first year; Second year: TBC. The second-year fee remains TBC; no two-year total is established."
     },
     {
       "id": "imperial-innovation-design-engineering-overseas-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is set_by_partner; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Overseas fee: £47,250 first year; Second year: TBC. The second-year fee remains TBC; no two-year total is established.",
+      "official_next_step": "Check RCA continuing-year tuition before calculating the complete two-year cost.",
       "source_ids": [
-        "imperial-course-innovation-design-engineering-2027"
+        "imperial-course-innovation-design-engineering-2027",
+        "imperial-recheck-20261020-08",
+        "imperial-recheck-20261020-51"
       ],
       "option_ids": [
         "imperial-option-innovation-design-engineering"
@@ -51747,15 +52082,26 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is set_by_partner; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Overseas fee: £47,250 first year; Second year: TBC. The second-year fee remains TBC; no two-year total is established."
     },
     {
       "id": "imperial-machine-learning-physical-sciences-home-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Home fee: £23,200. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-machine-learning-physical-sciences-2027"
+        "imperial-course-machine-learning-physical-sciences-2027",
+        "imperial-recheck-20261020-09"
       ],
       "option_ids": [
         "imperial-option-machine-learning-physical-sciences"
@@ -51765,15 +52111,26 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Home fee: £23,200. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-machine-learning-physical-sciences-overseas-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Overseas fee: £46,750. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-machine-learning-physical-sciences-2027"
+        "imperial-course-machine-learning-physical-sciences-2027",
+        "imperial-recheck-20261020-09"
       ],
       "option_ids": [
         "imperial-option-machine-learning-physical-sciences"
@@ -51783,7 +52140,17 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Overseas fee: £46,750. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-machine-learning-data-science-home-fee-2027-tuition",
@@ -51791,7 +52158,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-machine-learning-data-science-2027"
+        "imperial-course-machine-learning-data-science-2027",
+        "imperial-recheck-20261020-10"
       ],
       "option_ids": [
         "imperial-option-machine-learning-data-science"
@@ -51801,7 +52169,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-machine-learning-data-science-overseas-fee-2027-tuition",
@@ -51809,7 +52178,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-machine-learning-data-science-2027"
+        "imperial-course-machine-learning-data-science-2027",
+        "imperial-recheck-20261020-10"
       ],
       "option_ids": [
         "imperial-option-machine-learning-data-science"
@@ -51819,7 +52189,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-nanomaterials-home-fee-2027-tuition",
@@ -51827,7 +52198,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-nanomaterials-2027"
+        "imperial-course-nanomaterials-2027",
+        "imperial-recheck-20261020-11"
       ],
       "option_ids": [
         "imperial-option-nanomaterials"
@@ -51837,7 +52209,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-nanomaterials-overseas-fee-2027-tuition",
@@ -51845,7 +52218,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-nanomaterials-2027"
+        "imperial-course-nanomaterials-2027",
+        "imperial-recheck-20261020-11"
       ],
       "option_ids": [
         "imperial-option-nanomaterials"
@@ -51855,7 +52229,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-nanomedicine-home-fee-2027-tuition",
@@ -51863,7 +52238,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-nanomedicine-2027"
+        "imperial-course-nanomedicine-2027",
+        "imperial-recheck-20261020-12"
       ],
       "option_ids": [
         "imperial-option-nanomedicine"
@@ -51873,7 +52249,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-nanomedicine-overseas-fee-2027-tuition",
@@ -51881,7 +52258,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-nanomedicine-2027"
+        "imperial-course-nanomedicine-2027",
+        "imperial-recheck-20261020-12"
       ],
       "option_ids": [
         "imperial-option-nanomedicine"
@@ -51891,15 +52269,17 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-science-media-production-home-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Home fee: £14,650. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-science-media-production-2027"
+        "imperial-course-science-media-production-2027",
+        "imperial-recheck-20261020-13"
       ],
       "option_ids": [
         "imperial-option-science-media-production"
@@ -51909,15 +52289,26 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Home fee: £14,650. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-science-media-production-overseas-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Overseas fee: £33,050. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-science-media-production-2027"
+        "imperial-course-science-media-production-2027",
+        "imperial-recheck-20261020-13"
       ],
       "option_ids": [
         "imperial-option-science-media-production"
@@ -51927,15 +52318,26 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Overseas fee: £33,050. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-sustainability-environmental-policy-innovation-home-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Home fee: £17,000. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-sustainability-environmental-policy-innovation-2027"
+        "imperial-course-sustainability-environmental-policy-innovation-2027",
+        "imperial-recheck-20261020-14"
       ],
       "option_ids": [
         "imperial-option-sustainability-environmental-policy-innovation"
@@ -51945,15 +52347,26 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Home fee: £17,000. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-sustainability-environmental-policy-innovation-overseas-fee-2027-tuition",
       "topic": "course_tuition",
-      "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
-      "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
+      "reason": "Current official publication establishes Overseas fee: £35,880. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels.",
+      "official_next_step": "Use the linked current course fee panels, preserving fee status, mode and period.",
       "source_ids": [
-        "imperial-course-sustainability-environmental-policy-innovation-2027"
+        "imperial-course-sustainability-environmental-policy-innovation-2027",
+        "imperial-recheck-20261020-14"
       ],
       "option_ids": [
         "imperial-option-sustainability-environmental-policy-innovation"
@@ -51963,7 +52376,17 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "superseded_by_published_tuition",
+      "rechecked_at": "2026-10-20",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": null,
+          "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is not_set; any earlier-year guide remains separate.",
+          "review_status": "researched_unknown"
+        }
+      ],
+      "finding": "Current official publication establishes Overseas fee: £35,880. Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels."
     },
     {
       "id": "imperial-synthetic-cell-science-home-fee-2027-tuition",
@@ -51971,7 +52394,8 @@
       "reason": "The direct page review did not establish a 2027 Home fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-synthetic-cell-science-2027"
+        "imperial-course-synthetic-cell-science-2027",
+        "imperial-recheck-20261020-15"
       ],
       "option_ids": [
         "imperial-option-synthetic-cell-science"
@@ -51981,7 +52405,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Home fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-synthetic-cell-science-overseas-fee-2027-tuition",
@@ -51989,7 +52414,8 @@
       "reason": "The direct page review did not establish a 2027 Overseas fee amount: panel status is prior_cycle_only; any earlier-year guide remains separate.",
       "official_next_step": "Recheck this fee-status panel on the official course page when the 2027 amount is published.",
       "source_ids": [
-        "imperial-course-synthetic-cell-science-2027"
+        "imperial-course-synthetic-cell-science-2027",
+        "imperial-recheck-20261020-15"
       ],
       "option_ids": [
         "imperial-option-synthetic-cell-science"
@@ -51999,7 +52425,8 @@
       "applicant_category": "applicants to this course with this stated fee status",
       "fee_status": "Overseas fee",
       "cycle": "2027 entry",
-      "review_status": "needs_review"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "imperial-aeronautical-integrated-abroad-home-2027-fee-unknown",
@@ -52007,7 +52434,8 @@
         "imperial-option-aeronautical-engineering-variant-1"
       ],
       "source_ids": [
-        "imperial-course-aeronautical-engineering-2027"
+        "imperial-course-aeronautical-engineering-2027",
+        "imperial-recheck-20261020-16"
       ],
       "topic": "tuition_fees",
       "level": "undergraduate",
@@ -52020,7 +52448,8 @@
       "reason": "The official course page labels the Home four-year integrated-abroad rate2026 while the option starts2027; five-year Home andOverseas panels do not resolve that variant/cycle.",
       "official_next_step": "Confirm the2027 integrated-abroad-year Home rate with Aeronautics/Student Fees or an updated named variant fee panel before budgeting.",
       "checked_at": "2026-10-03",
-      "review_status": "researched_unknown"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     }
   ],
   "uncompleted_collection": [],

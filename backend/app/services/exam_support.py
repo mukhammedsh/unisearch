@@ -3,7 +3,7 @@ import re
 from decimal import Decimal, InvalidOperation
 from typing import Any, Dict, List, Optional, Union
 
-from app.core.files import file_mtime
+from app.core.files import RequiredDataUnavailable, file_mtime
 from app.core.paths import EXAMS_PATH
 
 EXAMS_CONFIG: Dict[str, Dict[str, Any]] = {}
@@ -22,30 +22,29 @@ EXAM_KEY_ALIASES = {
 
 def load_exams_config() -> Dict[str, Dict[str, Any]]:
     if not EXAMS_PATH:
-        return {}
+        raise RequiredDataUnavailable("Exam data is unavailable")
     try:
         with open(EXAMS_PATH, "r", encoding="utf-8") as file:
             raw = json.load(file)
-    except (OSError, json.JSONDecodeError):
-        return {}
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RequiredDataUnavailable("Exam data is unavailable") from exc
 
-    if not isinstance(raw, dict):
-        return {}
+    if not isinstance(raw, dict) or not raw:
+        raise RequiredDataUnavailable("Exam data is unavailable")
 
     config: Dict[str, Dict[str, Any]] = {}
     for key, value in raw.items():
         if isinstance(value, dict):
             config[str(key).strip().upper()] = value
+    if not config:
+        raise RequiredDataUnavailable("Exam data is unavailable")
     return config
 
 
 def ensure_exams_cache() -> None:
     mtime = file_mtime(EXAMS_PATH)
     if mtime is None:
-        EXAMS_CONFIG.clear()
-        EXAM_WHITELIST.clear()
-        _EXAMS_CACHE["mtime"] = None
-        return
+        raise RequiredDataUnavailable("Exam data is unavailable")
     if mtime == _EXAMS_CACHE["mtime"]:
         return
 

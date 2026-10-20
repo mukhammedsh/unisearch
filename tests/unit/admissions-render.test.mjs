@@ -1,7 +1,7 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue } from "../../frontend/javascript/pages/university/admissions-render.js";
+import { admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue, renderStudyOptionOverview } from "../../frontend/javascript/pages/university/admissions-render.js";
 
 test("a source route classification distinguishes external and coterm procedures when no title is published", () => {
   assert.equal(admissionsRouteName({ title: null, target: null, classification: "external non-professional graduate application" }), "external non-professional graduate application");
@@ -26,6 +26,41 @@ function fact(value, extra = {}) {
     ...extra,
   };
 }
+
+test("program overviews show scoped source descriptions and essentials without expanding compound records", () => {
+  const resolved = context();
+  resolved.selected_option.format = { language: ["English"], mode: "On-campus" };
+  const overviewFact = (id, value, extra = {}) => fact(value, { id, review_status: "reviewed", scope: { option_ids: ["example-option"] }, ...extra });
+  resolved.facts = [
+    overviewFact("other", { description: "Another program" }, { scope: { option_ids: ["another-option"] } }),
+    overviewFact("route", { description: "Route-only conditions" }, { scope: { option_ids: ["example-option"], route_ids: ["example-route"] } }),
+    overviewFact("conflicting", { description: "Conflicting wording" }, { publication_status: "conflicting" }),
+    overviewFact("summary", { course_page_programme_summary: "Build computing systems.", duration: "4 years", start_date: "October 2027", course_page_tuition_fees: { amount: 12345 }, structure: "Detailed curriculum remains available." }),
+  ];
+  resolved.fact_groups.study = resolved.facts.map(row => row.id);
+  const html = renderStudyOptionOverview(resolved);
+  for (const text of ["Build computing systems.", "4 years", "October 2027", "On-campus", "English"]) assert.ok(html.includes(text), text);
+  assert.doesNotMatch(html, /Another program|Route-only|Conflicting wording|12345|Detailed curriculum/);
+  const fullRecord = renderAdmissionsContext(resolved, { presentation: "simple", programOnly: true });
+  assert.match(fullRecord, /12,345/);
+  assert.match(fullRecord, /Detailed curriculum remains available/);
+});
+
+test("program overviews retain source-language descriptions without guessing a fixed duration", () => {
+  const resolved = context();
+  resolved.facts = [fact({ A3i6E: "An MS does not lead to the PhD.", expected_length: { value: 2, unit: "Years", status: "catalog_metadata_not_fixed_individual_duration" } }, { review_status: "original_catalog_content_rechecked_2026_10_03", scope: { option_ids: ["example-option"] } })];
+  resolved.fact_groups.study = ["private-fact-id"];
+  assert.match(renderStudyOptionOverview(resolved), /An MS does not lead to the PhD/);
+  assert.doesNotMatch(renderStudyOptionOverview(resolved), /Duration|2|Years/);
+  assert.equal(renderStudyOptionOverview({ selected_option: null }), "");
+  resolved.facts = [
+    fact({ source_content: "Full course lists." }, { id: "structure", topic: "study_structure", review_status: "verified", scope: { option_ids: ["example-option"] } }),
+    fact({ source_content: "The undergraduate program covers computing theory and practice." }, { id: "content", topic: "study_content", review_status: "verified", scope: { option_ids: ["example-option"] } }),
+  ];
+  resolved.fact_groups.study = ["structure", "content"];
+  assert.match(renderStudyOptionOverview(resolved), /The undergraduate program covers computing theory and practice/);
+  assert.doesNotMatch(renderStudyOptionOverview(resolved), /Full course lists/);
+});
 
 test("structured source prices retain original currencies, periods, zero amounts, and limits", () => {
   const resolved = context();
@@ -380,7 +415,7 @@ test("simple qualification tables retain source wording, extra fields, condition
   resolved.sources = [{ id: "qualification-policy", title: "Official qualification policy", url: "https://example.edu/qualifications", checked_at: "2026-10-13" }];
 
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
-  for (const value of ["International Baccalaureate", "Subject", "Published minimum", "Higher level", "The mathematics subject must be taken at higher level", "full diploma", "The university evaluates each qualification", "Only for first-year applicants", "Required subjects vary by course", "A separate test may also apply", "Evidence review", "Source status, scope and dates", "Published period", "2027 entry", "Fall 2027", "Official qualification policy", "https://example.edu/qualifications", "Scope varies"]) {
+  for (const value of ["International Baccalaureate", "Subject", "Published minimum", "Higher level", "The mathematics subject must be taken at higher level", "full diploma", "The university evaluates each qualification", "Only for first-year applicants", "Required subjects vary by course", "A separate test may also apply", "Evidence review", "Source and conditions", "Published period", "2027 entry", "Fall 2027", "Official qualification policy", "https://example.edu/qualifications", "Scope varies"]) {
     assert.ok(html.includes(value), value);
   }
   assert.match(html, /2026[‑-]10-13/);

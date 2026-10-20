@@ -52,7 +52,9 @@ async function openReviewedUniversity(page, university) {
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expect(page.locator("#admissionsProgramList [data-study-option]").first()).toBeVisible();
   await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
-  await expect(page.locator("#detailPrograms .program-card")).toHaveCount(0);
+  const programCards = page.locator("#admissionsProgramList .program-card:has([data-study-option])");
+  expect(await programCards.count()).toBeGreaterThan(0);
+  await expect(page.locator("#detailPrograms .program-card:visible")).toHaveCount(await programCards.count());
   await expect(page.locator("#admissionsStudyLevel")).toHaveValue("");
   return detail;
 }

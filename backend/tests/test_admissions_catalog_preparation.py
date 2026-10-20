@@ -3,6 +3,8 @@ import importlib.util
 import json
 from pathlib import Path
 import shutil
+import sys
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -28,8 +30,33 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(self.batch["schema_version"], "admissions-storage-1.0")
         self.assertIs(self.batch["runtime_active"], False)
         self.assertEqual([(len(row["study_options"]), len(row["application_routes"]), len(row["facts"]), len(row["unknowns"]))
-                          for row in self.batch["institutions"]], [(191, 73, 913, 0), (360, 311, 1271, 73), (254, 465, 1394, 95)])
+                          for row in self.batch["institutions"]], [(191, 73, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95)])
         self.assertEqual({frozenset(row) for row in self.batch["institutions"]}, {frozenset(self.batch["institutions"][0])})
+
+    def test_imperial_reassembly_preserves_history_without_retired_runtime_programs(self):
+        original = preparation.DRAFTS / "imperial-college-london-uk"
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary) / "imperial"
+            shutil.copytree(original, folder)
+            history = (folder / "runtime-provenance.json").read_bytes()
+            result = subprocess.run([sys.executable, str(folder / "assemble.py"), "--reviewed"],
+                                    capture_output=True, text=True, check=False)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((folder / "runtime-provenance.json").read_bytes(), history)
+            self.assertEqual(read(folder / "catalog.json"), read(original / "catalog.json"))
+
+    def test_imperial_project_examples_are_not_compulsory_modules(self):
+        imperial = self.by_id["imperial-college-london-uk"]
+        for subject in ("data_science", "epidemiology_evolution_control_infectious_diseases", "biomedical_research",
+                        "microbiome_health_disease", "molecular_basis_of_human_disease", "respiratory_cardiovascular_science"):
+            fact = next(row for row in imperial["facts"] if row["id"] == f"fact_{subject}_study_structure")
+            required, examples = fact["value"]["study_periods_pathways_and_components"]
+            self.assertEqual(required["component_type"], "required_coursework")
+            self.assertEqual(required["published_component_names"], ["Grant Writing Exercise", "Research Project 1 and Research Project 2"])
+            self.assertEqual(examples["component_type"], "illustrative_research_projects")
+            self.assertGreater(len(examples["published_component_names"]), 5)
+            self.assertTrue(set(required["published_component_names"]).isdisjoint(examples["published_component_names"]))
+            self.assertTrue(any("priority" in note for note in examples["published_requirement_or_structure_notes"]))
 
     def test_backend_snapshot_preserves_all_prepared_entities(self):
         snapshot = read(REPO / "backend/data/admissions/catalog.json")

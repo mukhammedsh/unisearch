@@ -71,15 +71,17 @@
       "id": "stanford-ug-transfer-requirements",
       "url": "https://admission.stanford.edu/apply/transfer/",
       "title": "Transfer Applicants — Requirements and Deadlines | Stanford Undergraduate Admission",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-10-20",
+      "content_review_status": "Rechecked both transfer fee pages: USD 100 and published fee-waiver instructions now agree.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-ug-transfer-fee",
       "url": "https://admission.stanford.edu/apply/transfer/fee.html",
       "title": "Application Fee/Fee Waiver | Stanford Undergraduate Admission",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-10-20",
+      "content_review_status": "Rechecked both transfer fee pages: USD 100 and published fee-waiver instructions now agree.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-ug-transfer-eligibility",
@@ -148,8 +150,9 @@
       "id": "stanford-ug-aid-transfer-us",
       "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/transfer_us.html",
       "title": "Transfer—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-10-20",
+      "content_review_status": "Reviewed published 2027-28 domestic first-year/transfer aid requirements and the separate undocumented-student FAFSA exception.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-ug-aid-transfer-international",
@@ -407,15 +410,17 @@
       "id": "stanford-ug-aid-rea-us",
       "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rea_us.html",
       "title": "Restrictive Early Action—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-10-20",
+      "content_review_status": "Reviewed published 2027-28 domestic first-year/transfer aid requirements and the separate undocumented-student FAFSA exception.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-ug-aid-rd-us",
       "url": "https://financialaid.stanford.edu/undergrad/apply/requirements/rd_us.html",
       "title": "Regular Decision—U.S. Citizen/Eligible Noncitizens | Stanford Financial Aid",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-10-20",
+      "content_review_status": "Reviewed published 2027-28 domestic first-year/transfer aid requirements and the separate undocumented-student FAFSA exception.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-ug-aid-rd-international",
@@ -428,8 +433,9 @@
       "id": "stanford-ug-undocumented-aid",
       "url": "https://financialaid.stanford.edu/undergrad/how/undocumented.html",
       "title": "Undocumented Students | Stanford Financial Aid",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-10-20",
+      "content_review_status": "Reviewed published 2027-28 domestic first-year/transfer aid requirements and the separate undocumented-student FAFSA exception.",
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-fees-full-2026-27",
@@ -506,7 +512,8 @@
       "decision_plans": [
         "Restrictive Early Action (non-binding)",
         "Regular Decision"
-      ]
+      ],
+      "application_url": "https://admission.stanford.edu/apply/first-year/apply.html"
     },
     {
       "id": "stanford-transfer",
@@ -523,7 +530,8 @@
       ],
       "decision_plans": [
         "Transfer admission (single annual deadline shown)"
-      ]
+      ],
+      "application_url": "https://admission.stanford.edu/apply/transfer/apply.html"
     },
     {
       "id": "stanford-nonprofessional-graduate",
@@ -830,7 +838,7 @@
     {
       "id": "stanford-firstyear-decision-rounds-deadlines",
       "topic": "application_deadlines",
-      "value": "For 2027 entry, REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD.",
+      "value": "REA Common Application deadline is November 1, with decisions by mid-December; RD deadline is January 5, with decisions by early April. Submit by 11:59 p.m. in the applicant's local timezone. REA is nonbinding. If admitted, reply by May 1. Application with Optional Arts Portfolio uses earlier application deadlines: October 15 REA and December 5 RD. The reviewed page lists recurring month/day deadlines without an explicit entry year.",
       "scope": {
         "option_ids": [],
         "procedure_ids": [
@@ -842,7 +850,7 @@
         "applicant_categories": [
           "first-year"
         ],
-        "cycle": "2027-entry",
+        "cycle": null,
         "fee_status": []
       },
       "source_ids": [
@@ -857,7 +865,8 @@
       ],
       "exceptions": [
         "REA denial is final and the applicant may not reapply RD in that cycle. REA applicants face restrictions on applying to other institutions' early plans, with specified exceptions; applicants must check the official REA policy for their exact concurrent application pattern."
-      ]
+      ],
+      "content_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-firstyear-interview",
@@ -1052,7 +1061,7 @@
     {
       "id": "stanford-transfer-fee",
       "topic": "application_fee",
-      "value": "Official Stanford transfer pages conflict: the general Transfer Applicants requirements page lists USD 90; the dedicated Application Fee/Fee Waiver page says USD 100. Both describe a nonrefundable fee and Common App fee-waiver request. Do not display a single confirmed amount until Stanford resolves the discrepancy.",
+      "value": "The transfer application fee is USD 100 and is nonrefundable. Both the general Transfer Applicants requirements page and the dedicated Application Fee/Fee Waiver page now publish the same amount. Eligible U.S. and non-U.S. citizens may request a fee waiver through Common App. Select the fee-waiver request, submit the NACAC Transfer Fee Waiver form and either a Student Aid Report or a school official signature. Applicants do not need to wait for waiver approval before submitting the application; Stanford may request further information.",
       "scope": {
         "option_ids": [],
         "procedure_ids": [
@@ -1071,13 +1080,29 @@
         "stanford-ug-transfer-requirements",
         "stanford-ug-transfer-fee"
       ],
-      "checked_at": "2026-10-02",
-      "publication_status": "conflicting_official_publication",
-      "review_status": "needs_review",
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed",
       "conditions": [
-        "The dedicated fee page says submit Common App fee-waiver selection plus NACAC Transfer Fee Waiver form, and either attach Student Aid Report or obtain school official signature. Applicant need not wait for waiver approval before submitting; Stanford may ask for additional information."
+        "This transfer application fee and waiver do not establish first-year, graduate or CSS Profile fees."
       ],
-      "exceptions": []
+      "exceptions": [],
+      "review_history": [
+        {
+          "value": "Official Stanford transfer pages conflict: the general Transfer Applicants requirements page lists USD 90; the dedicated Application Fee/Fee Waiver page says USD 100. Both describe a nonrefundable fee and Common App fee-waiver request. Do not display a single confirmed amount until Stanford resolves the discrepancy.",
+          "checked_at": "2026-10-02",
+          "publication_status": "conflicting_official_publication",
+          "review_status": "needs_review",
+          "conditions": [
+            "The dedicated fee page says submit Common App fee-waiver selection plus NACAC Transfer Fee Waiver form, and either attach Student Aid Report or obtain school official signature. Applicant need not wait for waiver approval before submitting; Stanford may ask for additional information."
+          ],
+          "source_ids": [
+            "stanford-ug-transfer-requirements",
+            "stanford-ug-transfer-fee"
+          ]
+        }
+      ],
+      "content_reviewed_at": "2026-10-20"
     },
     {
       "id": "stanford-transfer-standardized-tests",
@@ -1170,7 +1195,7 @@
     {
       "id": "stanford-transfer-deadline",
       "topic": "application_deadlines",
-      "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 2. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline.",
+      "value": "Transfer Common Application deadline is March 15 at 11:59 p.m. applicant local time. Missing-document notice is in April, decisions are released by mid-May, and admitted applicants reply by June 1. All new transfer entrants begin in autumn/fall; no winter or spring start is offered. The official page does not label a calendar year for this recurring deadline.",
       "scope": {
         "option_ids": [],
         "procedure_ids": [
@@ -1194,7 +1219,8 @@
       "conditions": [
         "Stanford may decide an application even when some materials have not arrived."
       ],
-      "exceptions": []
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-transfer-arts-portfolio",
@@ -1383,14 +1409,15 @@
         "stanford-ug-aid-transfer-international"
       ],
       "checked_at": "2026-10-02",
-      "publication_status": "published",
+      "publication_status": "historical",
       "review_status": "reviewed",
       "conditions": [
         "These are the official 2026–27 checklists; do not carry tax years, forms, or publication timing forward to a later aid cycle without checking its edition."
       ],
       "exceptions": [
         "Undocumented applicants follow US timelines but do not file FAFSA; current transfer page should be checked for the relevant aid year and alternate undocumented-student documents."
-      ]
+      ],
+      "content_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-ug-aid-types",
@@ -2302,14 +2329,15 @@
         "stanford-ug-undocumented-aid"
       ],
       "checked_at": "2026-10-02",
-      "publication_status": "published",
+      "publication_status": "historical",
       "review_status": "reviewed",
       "conditions": [
         "These forms and tax-year instructions are expressly labeled 2026–27 and do not establish the exact 2027–28 applicant checklist. For international applicants, aid request at admission is a condition of later institutional-aid eligibility."
       ],
       "exceptions": [
         "Undocumented students do not file FAFSA. Only Canadian citizens use the specified Canadian tax-IDOC substitution and omit the International Student Supplement. ISAFA is an alternative only when CSS payment is unaffordable or unavailable, not a general replacement."
-      ]
+      ],
+      "content_reviewed_at": "2026-10-19"
     },
     {
       "id": "stanford-firstyear-rea-concurrent-application-restrictions",
@@ -2625,6 +2653,132 @@
         "This is KHS application policy; each degree program may state a different policy."
       ],
       "exceptions": []
+    },
+    {
+      "id": "stanford-ug-firstyear-international-aid-2027-28",
+      "topic": "financial_aid_documents",
+      "value": "For the published 2027-2028 first-year aid cycle, REA priority filing is November 15 with mid-December notification; RD priority filing is February 15 with April notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-international-rea",
+        "stanford-ug-aid-rd-international"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Aid filing dates are separate from admission deadlines; requesting aid does not establish an award."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-ug-transfer-international-aid-2027-28",
+      "topic": "financial_aid_documents",
+      "value": "For the published 2027-2028 transfer aid cycle, priority filing is March 15 with May notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international",
+          "Canadian citizen"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-transfer-international"
+      ],
+      "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Aid filing dates are separate from admission deadlines; requesting aid does not establish an award."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-ug-firstyear-domestic-aid-2027-28",
+      "topic": "financial_aid_documents",
+      "value": "For the published 2027-2028 undergraduate financial aid cycle, REA priority filing is November 15, with mid-December notification; RD priority filing is February 15, with April notification. U.S. citizens and eligible noncitizens seeking institutional need-based scholarships submit CSS Profile (school code 4704), FAFSA (001305) and IDOC 2025 parent federal tax returns, schedules, attachments, W-2 forms and other earning statements, including personal and corporate partnership returns. Divorced, separated or never-married parents each provide separate CSS information and tax documents; a noncustodial-parent waiver needs a signed request and supporting documents through IDOC. The FAFSA uses the parent providing greater financial support. CSS Profile is not required for federal-only aid. Undocumented students follow the same application requirements and dates, but do not file FAFSA; they submit CSS Profile and tax documents through IDOC.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-rea-us",
+        "stanford-ug-aid-rd-us",
+        "stanford-ug-undocumented-aid"
+      ],
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Aid filing dates are separate from admission deadlines; application does not establish an award. The undocumented-student FAFSA exception must not be applied to eligible FAFSA applicants."
+      ],
+      "exceptions": []
+    },
+    {
+      "id": "stanford-ug-transfer-domestic-aid-2027-28",
+      "topic": "financial_aid_documents",
+      "value": "For the published 2027-2028 undergraduate financial aid cycle, Transfer priority filing is March 15; applicants completing CSS Profile and IDOC by that date can expect notification in mid-May. U.S. citizens and eligible noncitizens seeking institutional need-based scholarships submit CSS Profile (school code 4704), FAFSA (001305) and IDOC 2025 parent federal tax returns, schedules, attachments, W-2 forms and other earning statements, including personal and corporate partnership returns. Divorced, separated or never-married parents each provide separate CSS information and tax documents; a noncustodial-parent waiver needs a signed request and supporting documents through IDOC. The FAFSA uses the parent providing greater financial support. CSS Profile is not required for federal-only aid. Undocumented students follow the same application requirements and dates, but do not file FAFSA; they submit CSS Profile and tax documents through IDOC.",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-aid-transfer-us",
+        "stanford-ug-undocumented-aid"
+      ],
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "Aid filing dates are separate from admission deadlines; application does not establish an award. The undocumented-student FAFSA exception must not be applied to eligible FAFSA applicants."
+      ],
+      "exceptions": []
     }
   ],
   "unresolved": [
@@ -2673,7 +2827,10 @@
           "transfer"
         ],
         "cycle": null
-      }
+      },
+      "review_status": "superseded_by_official_source_update",
+      "resolved_at": "2026-10-20",
+      "resolution": "Both current transfer pages publish USD 100; the reviewed fee and waiver fact replaces this former source conflict."
     },
     {
       "id": "stanford-transfer-testing-waiver",
@@ -2792,7 +2949,10 @@
           "international"
         ],
         "cycle": "2027-2028 aid cycle"
-      }
+      },
+      "review_status": "superseded_by_official_source_update",
+      "resolved_at": "2026-10-20",
+      "resolution": "Stanford now publishes 2027-28 first-year REA/RD domestic and international aid checklists. Current facts retain the route, applicant category, tax year and undocumented-student FAFSA exception; the former publication gap is historical."
     },
     {
       "id": "stanford-kazakhstan-undergraduate-credential-case",

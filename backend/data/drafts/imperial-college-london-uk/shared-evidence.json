@@ -5322,7 +5322,7 @@
     {
       "id": "imperial-inspires-2027-contract",
       "topic": "funding",
-      "value": "For 2027–28, Imperial expects to award at least 300 competitive Imperial Inspires scholarships to full-time Overseas-fee-paying undergraduate and selected postgraduate taught students. Eligibility is limited to courses/departments confirmed through the course or scholarship search; it does not cover every course. Each award is at least £15,000 per year for the full course duration, excluding repeat years and pausing during interruption. The faculty decides the tuition/maintenance split, stated in the award letter. Eligible applicants who meet the course minimums are invited to submit a separate application through i360 after applying for admission; scholarship assessment does not change the admission decision. Undergraduate awards are due by mid-April 2027; postgraduate taught outcomes follow the relevant admissions-round decision. Admission and award conditions must be met before registration. The scholarship requires satisfactory academic progression and annual review when it lasts more than 11 months; donor thank-you/update activities may be required and travel may not be reimbursed. Awards cannot be deferred: a deferred applicant must reapply in the new cycle. A student cannot hold this alongside a full tuition-and-maintenance scholarship or exceed the London maintenance cap; multiple partial awards are considered case by case and must be reported. A fee-status change ends eligibility. Non-registration or withdrawal stops payments; interruption pauses them and repeat years postpone them. Tuition is paid to Imperial and maintenance to a UK bank account on My Imperial. Students need funds for initial expenses while opening that account. Payments are normally made on the seventh of each month, with bank details required by midnight on the 20th of the previous month; initial payment requires registration. Imperial may recover overpayments or withdraw an award for breach. The contract does not state the exact eligible-course list or invited-application deadline; check the scholarship search and invitation rather than infer them.",
+      "value": "For 2027–28, Imperial expects to award at least 300 competitive Imperial Inspires scholarships to full-time Overseas-fee-paying undergraduate and selected postgraduate taught students. Eligibility is limited to courses/departments confirmed through the course or scholarship search; it does not cover every course. Each award is at least £15,000 per year for the full course duration, excluding repeat years and pausing during interruption. The faculty decides the tuition/maintenance split, stated in the award letter. Eligible applicants who meet the course minimums are invited to submit a separate application through i360 after applying for admission; scholarship assessment does not change the admission decision. Undergraduate awards are due by mid-April 2027; postgraduate taught outcomes follow the relevant admissions-round decision. Admission and award conditions must be met before registration. The scholarship requires satisfactory academic progression and annual review when it lasts more than 11 months; donor thank-you/update activities may be required and travel may not be reimbursed. Awards cannot be deferred: a deferred applicant must reapply in the new cycle. A student cannot hold this alongside a full tuition-and-maintenance scholarship or exceed the London maintenance cap; multiple partial awards are considered case by case and must be reported. A fee-status change ends eligibility. Non-registration or withdrawal stops payments; interruption pauses them and repeat years postpone them. Tuition is paid to Imperial and maintenance to a UK bank account on My Imperial. Students need funds for initial expenses while opening that account. Payments are normally made on the seventh of each month, with bank details required by midnight on the 20th of the previous month; initial payment requires registration. Imperial may recover overpayments or withdraw an award for breach. The dedicated 2027 application guidance now publishes course-class exclusions and separate undergraduate and postgraduate processes. Undergraduate applicants have an optional 250-word statement and a 5 February 2027 scholarship deadline; postgraduate applicants have no additional written task and two weeks from invitation. The department dates are admissions cutoffs for scholarship consideration, not universal scholarship-form deadlines. Selected Medicine and Natural Sciences courses still require course participation and an invitation; the joint RCA application must not inherit My Imperial scholarship participation.",
       "scope": {
         "study_levels": [
           "undergraduate",
@@ -5340,13 +5340,22 @@
         ]
       },
       "source_ids": [
-        "source-422317aba5a39e29"
+        "source-422317aba5a39e29",
+        "imperial-recheck-20261020-50"
       ],
       "publication_status": "published",
       "review_status": "verified",
-      "checked_at": "2026-10-01",
+      "checked_at": "2026-10-20",
       "conditions": [],
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-03",
+      "previous_reviews": [
+        {
+          "retained_on": "2026-10-20",
+          "checked_at": "2026-10-01",
+          "value": "For 2027–28, Imperial expects to award at least 300 competitive Imperial Inspires scholarships to full-time Overseas-fee-paying undergraduate and selected postgraduate taught students. Eligibility is limited to courses/departments confirmed through the course or scholarship search; it does not cover every course. Each award is at least £15,000 per year for the full course duration, excluding repeat years and pausing during interruption. The faculty decides the tuition/maintenance split, stated in the award letter. Eligible applicants who meet the course minimums are invited to submit a separate application through i360 after applying for admission; scholarship assessment does not change the admission decision. Undergraduate awards are due by mid-April 2027; postgraduate taught outcomes follow the relevant admissions-round decision. Admission and award conditions must be met before registration. The scholarship requires satisfactory academic progression and annual review when it lasts more than 11 months; donor thank-you/update activities may be required and travel may not be reimbursed. Awards cannot be deferred: a deferred applicant must reapply in the new cycle. A student cannot hold this alongside a full tuition-and-maintenance scholarship or exceed the London maintenance cap; multiple partial awards are considered case by case and must be reported. A fee-status change ends eligibility. Non-registration or withdrawal stops payments; interruption pauses them and repeat years postpone them. Tuition is paid to Imperial and maintenance to a UK bank account on My Imperial. Students need funds for initial expenses while opening that account. Payments are normally made on the seventh of each month, with bank details required by midnight on the 20th of the previous month; initial payment requires registration. Imperial may recover overpayments or withdraw an award for breach. The contract does not state the exact eligible-course list or invited-application deadline; check the scholarship search and invitation rather than infer them.",
+          "review_status": "verified"
+        }
+      ]
     },
     {
       "id": "imperial-published-pg-country-qualification-panels",
@@ -6321,10 +6330,13 @@
         "fee_status": []
       },
       "source_ids": [
-        "source-3bca25cf0a89e8d6"
+        "source-3bca25cf0a89e8d6",
+        "imperial-recheck-20261020-00"
       ],
       "checked_at": "2026-10-01",
-      "official_next_step": "Use the named official admissions qualification assessment or updated cycle-specific offer conditions; never infer eligibility or future dates."
+      "official_next_step": "Use the named official admissions qualification assessment or updated cycle-specific offer conditions; never infer eligibility or future dates.",
+      "rechecked_at": "2026-10-20",
+      "review_status": "researched_unknown"
     },
     {
       "id": "imperial-ug-2027-offer-deadlines-unknown",
@@ -6461,10 +6473,13 @@
         "conditions": "Course-specific deadlines, medicine test/fee-status and PCSM eligibility conditions remain separately applicable; external intercalated BSc is excluded."
       },
       "source_ids": [
-        "source-ed907e91a3a22cd2"
+        "source-ed907e91a3a22cd2",
+        "imperial-recheck-20261020-01"
       ],
       "checked_at": "2026-10-01",
-      "official_next_step": "Use the named official admissions qualification assessment or updated cycle-specific offer conditions; never infer eligibility or future dates."
+      "official_next_step": "Use the named official admissions qualification assessment or updated cycle-specific offer conditions; never infer eligibility or future dates.",
+      "rechecked_at": "2026-10-20",
+      "review_status": "researched_unknown"
     }
   ],
   "uncompleted_collection": [],

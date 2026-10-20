@@ -1,11 +1,12 @@
 import copy
 import hashlib
 import json
+import math
 import re
 import urllib.parse
 from typing import Any, Dict, List, Optional, Tuple
 
-from app.core.files import file_mtime
+from app.core.files import RequiredDataUnavailable, file_mtime
 from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
 from app.core.utils import (
     to_float as _num_or_none,
@@ -599,6 +600,10 @@ _MAJOR_LOCALIZED_BY_LANG: Dict[str, Dict[str, str]] = {
 }
 
 _MAJOR_QUERY_ALIASES_BY_LANG: Dict[str, Dict[str, str]] = {
+    SEARCH_LANG_KAZ: {
+        "компьютерлік ғылым": "computer science",
+        "компьютерлік ғылымдар": "computer science",
+    },
     SEARCH_LANG_RUS: {
         "компьютерные науки": "computer science",
         "информатика": "computer science",
@@ -772,18 +777,17 @@ def _search_query_candidates(
                 ck = _norm_space(str(key).replace("_", " "))
                 if lk and ck:
                     alias_map[lk] = ck
-        program_names = (
-            pack.get("program_names")
-            if isinstance(pack.get("program_names"), dict)
-            else {}
-        )
-        for key, localized in program_names.items():
-            lk = _norm_space(localized)
-            ck = _norm_space(str(key).replace("_", " "))
-            if lk and ck:
-                alias_map[lk] = ck
-                if lk == norm_query:
-                    candidates.append(ck)
+    pack = _translation_lang_pack(lang)
+    program_names = pack.get("program_names") if isinstance(pack.get("program_names"), dict) else {}
+    for key, localized in program_names.items():
+        lk = _norm_space(localized)
+        ck = _norm_space(str(key).replace("_", " "))
+        if lk and ck:
+            alias_map[lk] = ck
+            if lk == norm_query:
+                candidates.append(ck)
+            elif norm_query.startswith(lk + " (") and norm_query.endswith(")"):
+                candidates.append(ck + norm_query[len(lk):])
     for localized, canonical in (
         _MAJOR_QUERY_ALIASES_BY_LANG.get(lang, {}) or {}
     ).items():
@@ -868,7 +872,7 @@ def _effective_university_cost(
             return max(0.0, mode_total)
         return None
 
-    return max(0.0, total) if total is not None else None
+    return total if total is not None and math.isfinite(total) and total >= 0 else None
 
 
 def _effective_university_cost_usd(
@@ -920,6 +924,51 @@ def _university_cost_range(u: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         "source_url": finance.get("source_url"),
         "source_urls": finance.get("source_urls"),
     }
+
+
+def _catalog_costs(u, format_preference="any"):
+    if isinstance(u.get("catalog_costs"), dict):
+        return u["catalog_costs"]
+    if u.get("id") in admissions_catalog.INSTITUTION_IDS:
+        return admissions_catalog.catalog_costs(u["id"], study_mode=_normalize_study_mode(format_preference))
+    finance = u.get("finance") or {}
+    mode = _normalize_study_mode(format_preference)
+    breakdown = _mode_breakdown_from_finance(finance, mode) if mode == "online" else finance.get("costs_breakdown_year_usd")
+    tuition = _extract_tuition_cost(breakdown or {})
+    total = _effective_university_cost(u, format_preference)
+    currency = finance.get("currency") or "USD"
+
+    def quote(amount):
+        if amount is None or not math.isfinite(amount) or amount < 0:
+            return None
+        return {"min": amount, "max": amount, "currency": currency, "period": finance.get("academic_year") or "",
+                "study_level": "", "fee_statuses": [], "exclusions": []}
+
+    price_range = None
+    if mode != "online":
+        lower, upper = _to_float(finance.get("total_cost_year_min")), _to_float(finance.get("total_cost_year_max"))
+        if lower is not None and upper is not None and math.isfinite(lower) and math.isfinite(upper) and 0 <= lower <= upper:
+            price_range = {**quote(lower), "max": upper, "currency": finance.get("currency")}
+    return {"annual_total": quote(total) or price_range, "tuition": quote(tuition), "reference": False}
+
+
+def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any"):
+    quote = _catalog_costs(u, format_preference).get(basis)
+    if not isinstance(quote, dict):
+        return None
+    low, high = _to_float(quote.get("min")), _to_float(quote.get("max"))
+    if low is None or high is None or not math.isfinite(low) or not math.isfinite(high) or low < 0 or high < low:
+        return None
+    currency = quote.get("currency")
+    if currency == "USD":
+        return low, high
+    if not currency:
+        return None
+    try:
+        from app.services.currency import convert
+        return float(convert(low, currency, "USD")), float(convert(high, currency, "USD"))
+    except ValueError:
+        return None
 
 
 from app.services.university_tracks import (
@@ -1435,6 +1484,7 @@ def to_university_card(
             _safe_lower(x) for x in _hidden_search_aliases_for_university(u)
         ],
         "aid_any": _has_any_aid(u),
+        "catalog_costs": _catalog_costs(u, mode),
     }
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
@@ -1496,6 +1546,8 @@ def to_university_map_point(
     }
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
+    if isinstance(u.get("catalog_costs"), dict):
+        out["catalog_costs"] = u["catalog_costs"]
     return out
 
 
@@ -1540,7 +1592,7 @@ def _safe_compare_gte(value: Optional[float], threshold: float) -> bool:
 
 
 def _apply_sort(
-    items: List[Dict[str, Any]], sort: str, format_preference: Any = "any"
+    items: List[Dict[str, Any]], sort: str, format_preference: Any = "any", cost_basis: str = "annual_total"
 ) -> List[Dict[str, Any]]:
     sort = (sort or "").strip()
 
@@ -1551,16 +1603,16 @@ def _apply_sort(
         return sorted(
             items,
             key=lambda u: (
-                (cost := _effective_university_cost_usd(u, format_preference=format_preference)) is None,
-                cost if cost is not None else 0.0,
+                (cost := _catalog_cost_range_usd(u, cost_basis, format_preference)) is None,
+                cost[0] if cost is not None else 0.0,
             ),
         )
     if sort == "tuition_desc":
         return sorted(
             items,
             key=lambda u: (
-                (cost := _effective_university_cost_usd(u, format_preference=format_preference)) is None,
-                -(cost if cost is not None else 0.0),
+                (cost := _catalog_cost_range_usd(u, cost_basis, format_preference)) is None,
+                -(cost[0] if cost is not None else 0.0),
             ),
         )
 
@@ -1599,21 +1651,17 @@ def _load_universities_cached() -> List[Dict[str, Any]]:
     mtime = file_mtime(DATA_PATH)
     admissions_revision = admissions_catalog.get_revision()
     if mtime is None:
-        _UNI_CACHE["mtime"] = None
-        _UNI_CACHE["data"] = []
-        _UNI_CACHE["by_id"] = {}
-        _UNI_CACHE["meta"] = []
-        return []
+        raise RequiredDataUnavailable("University data is unavailable")
 
     if mtime != _UNI_CACHE["mtime"] or admissions_revision != _UNI_CACHE.get("admissions_revision"):
         try:
             with open(DATA_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            if not isinstance(data, list):
-                data = []
+            if not isinstance(data, list) or not data or any(not isinstance(row, dict) for row in data):
+                raise ValueError("universities.json must contain university records")
             data = _sanitize_public_source_urls(data)
-        except Exception:
-            data = []
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+            raise RequiredDataUnavailable("University data is unavailable") from exc
 
         out: List[Dict[str, Any]] = []
         meta_list: List[Dict[str, Any]] = []
@@ -1788,6 +1836,7 @@ def _filter_university_pairs(
     user_budget: Optional[float] = None,
     min_tuition: Optional[float] = None,
     max_tuition: Optional[float] = None,
+    cost_basis: str = "annual_total",
     min_acceptance: Optional[float] = None,
     max_acceptance: Optional[float] = None,
     size: Optional[str] = None,
@@ -1890,32 +1939,25 @@ def _filter_university_pairs(
             pairs = [(u, m) for (u, m) in pairs if m.get("has_paid")]
 
     if user_budget is not None:
-        cost_key = f"cost_usd_{mode_pref}"
-        filtered = []
-        for u, m in pairs:
-            cost = m.get(cost_key)
-            if u.get("id") in admissions_catalog.INSTITUTION_IDS:
-                continue
-            if cost is None:
-                cost = _effective_university_cost_usd(u, format_preference=mode_pref) or 999999.0
-            aid = m.get("has_aid")
-            if aid is None:
-                aid = _has_any_aid(u)
-            if cost <= user_budget or aid:
-                filtered.append((u, m))
-        pairs = filtered
+        pairs = [(u, m) for u, m in pairs
+                 if (cost := _catalog_cost_range_usd(u, "annual_total", mode_pref)) is not None and cost[0] <= user_budget]
 
     if min_tuition is not None or max_tuition is not None:
-        cost_key = f"cost_usd_{mode_pref}"
         filtered = []
         for u, m in pairs:
-            cost = m.get(cost_key)
+            cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
             if cost is None:
-                cost = _effective_university_cost_usd(u, format_preference=mode_pref)
-            if min_tuition is not None and not _safe_compare_gte(cost, min_tuition):
                 continue
-            if max_tuition is not None and not _safe_compare_lte(cost, max_tuition):
+            if min_tuition is not None and cost[1] < min_tuition:
                 continue
+            if max_tuition is not None and cost[0] > max_tuition:
+                continue
+            quote = _catalog_costs(u, mode_pref).get(cost_basis) or {}
+            if quote.get("amounts"):
+                from app.services.currency import convert
+                amounts = [convert(amount, quote["currency"], "USD") for amount in quote["amounts"]]
+                if not any((min_tuition is None or amount >= min_tuition) and (max_tuition is None or amount <= max_tuition) for amount in amounts):
+                    continue
             filtered.append((u, m))
         pairs = filtered
 
@@ -1955,6 +1997,7 @@ def _sort_university_items(
     sort: str,
     search_scores: Dict[str, float],
     mode_pref: str,
+    cost_basis: str = "annual_total",
 ) -> List[Dict[str, Any]]:
     if q and sort in ("name_asc", "relevance"):
         return sorted(
@@ -1982,9 +2025,9 @@ def _sort_university_items(
                 _safe_lower(u.get("name")),
             ),
         )
-        return top_exact + _apply_sort(rest, sort, format_preference=mode_pref)
+        return top_exact + _apply_sort(rest, sort, format_preference=mode_pref, cost_basis=cost_basis)
     else:
-        return _apply_sort(items, sort, format_preference=mode_pref)
+        return _apply_sort(items, sort, format_preference=mode_pref, cost_basis=cost_basis)
 
 
 def list_universities(
@@ -1999,6 +2042,7 @@ def list_universities(
     user_budget: Optional[float] = None,
     min_tuition: Optional[float] = None,
     max_tuition: Optional[float] = None,
+    cost_basis: str = "annual_total",
     min_acceptance: Optional[float] = None,
     max_acceptance: Optional[float] = None,
     size: Optional[str] = None,
@@ -2014,6 +2058,8 @@ def list_universities(
     mode_pref = _normalize_study_mode(format or "any")
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
+    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref)
+               if u.get("id") in admissions_catalog.INSTITUTION_IDS else _catalog_costs(u, mode_pref)}, m) for u, m in pairs]
     search_scores: Dict[str, float] = {}
 
     if q:
@@ -2031,6 +2077,7 @@ def list_universities(
         user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
+        cost_basis=cost_basis,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -2038,7 +2085,7 @@ def list_universities(
     )
 
     items = [u for (u, _) in pairs]
-    items = _sort_university_items(items, q, sort, search_scores, mode_pref)
+    items = _sort_university_items(items, q, sort, search_scores, mode_pref, cost_basis)
 
     total = len(items)
     output_lang = lang if localize_output else SEARCH_LANG_ENG

@@ -295,6 +295,7 @@ class UniversitiesAiSortRequest(BaseModel):
     format: Optional[str] = Field(default=None, max_length=32)
     min_tuition: Optional[float] = Field(default=None, ge=0, le=1_000_000)
     max_tuition: Optional[float] = Field(default=None, ge=0, le=1_000_000)
+    cost_basis: Literal["annual_total", "tuition"] = "annual_total"
     min_acceptance: Optional[float] = Field(default=None, ge=0, le=100)
     max_acceptance: Optional[float] = Field(default=None, ge=0, le=100)
     size: Optional[str] = Field(default=None, max_length=40)

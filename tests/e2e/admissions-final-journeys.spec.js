@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const STANFORD = "stanford-university-usa-ca";
@@ -69,6 +69,7 @@ async function openFact(page, tab, id) {
   await page.locator(`.d-tab-btn[data-tab="tab-${tab}"]`).click();
   await expect(page.locator(`#tab-${tab}`)).toHaveClass(/active/);
   const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  await openDisclosureParents(fact);
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
@@ -121,7 +122,7 @@ test("Kazakhstan secondary-school guest and applicant can distinguish university
     expect(result.selected_route.target).toMatch(/university|MIT undergraduate (?:transfer )?admission/i);
 
     const routeLabel = await page.locator("#admissionsRoute option:checked").innerText();
-    expect(routeLabel).toMatch(journey.university === MIT ? /MIT undergraduate (?:transfer )?admission/ : /University-wide .* undergraduate admission/);
+    expect(routeLabel).toBe(journey.applicant === "transfer" ? "Transfer from another university" : "First-year admission after school");
     await expect(page.locator("#admissionsReferenceSummary")).toContainText(journey.search);
     await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
     if (journey.university === MIT && journey.applicant === "first_year") {

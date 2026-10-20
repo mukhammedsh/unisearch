@@ -368,6 +368,35 @@
   font-weight: 500;
 }
 
+.uni-price--catalog {
+  gap: var(--space-2);
+}
+
+.uni-cost-row {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.uni-cost-label,
+.uni-cost-context,
+.uni-cost-unavailable {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.uni-cost-row--secondary .uni-price-val {
+  font-size: var(--text-sm);
+}
+
+.catalog-cost-help {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
 .uni-logo {
   position: absolute;
   left: 10px;

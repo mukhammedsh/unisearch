@@ -1,5 +1,10 @@
 meta.display_name: Russian
 meta.code: rus
+university.deadlines.mba_early: MBA Early · отложенное начало учёбы
+university.admissions.reading.no_route_short: Путь подачи требует уточнения
+university.admissions.reading.no_application_route: Для этого варианта самостоятельный путь подачи не установлен. Это может быть внутренняя или промежуточная степень либо вопрос, требующий уточнения у департамента. Прочитайте условия доступа и официальные инструкции; это не означает, что приём закрыт.
+university.admissions.reading.applicant_scope: Кто может подать
+university.admissions.reading.check_source_conditions: Проверьте опубликованные условия для заявителей
 academic_requirements: Академические требования
 academic_average: Средний академический балл
 language_average: Средний языковой балл
@@ -414,6 +419,19 @@ universities.city: Город
 universities.cost_per_year: Стоимость / год
 universities.cost_min: Мин. стоимость
 universities.cost_max: Макс. стоимость
+universities.cost.filter_basis: Цена за учебный год
+universities.cost.annual_total: Учёба и проживание
+universities.cost.tuition: Обучение
+universities.cost.entry: Набор {year}
+universities.cost.unavailable: Уточните программу
+universities.cost.full_budget_unavailable: Нет сопоставимого полного бюджета
+universities.cost.reference: Справочная цена, до финансовой помощи.
+universities.cost.before_aid: До стипендий и финансовой помощи.
+universities.cost.fee_scope: Диапазон зависит от программы и тарифа: Home — местный, Overseas — международный. Категорию определяет вуз.
+universities.cost.exclusion.insurance: Страховка отдельно.
+universities.cost.exclusion.travel: Проезд отдельно.
+universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
+universities.cost.filter_help: До финансовой помощи. Диапазон может совпадать частично: уточните программу и категорию оплаты. При ограничении цены вузы с неизвестной суммой не показываются.
 universities.country: Страна
 universities.filter: Фильтр
 universities.filter.all: Все
@@ -2430,11 +2448,11 @@ university.admissions.catalog.choose_program_hint: Во вкладке «Про�
 university.admissions.catalog.open_application: Открыть страницу подачи
 university.admissions.catalog.view_requirements: Посмотреть условия поступления
 university.admissions.catalog.study_info: О программе
-university.admissions.catalog.study_info_note: Официальные сведения об этом варианте обучения. Описание и требования к завершению программы отделены от условий поступления.
+university.admissions.catalog.study_info_note: Подробные сведения приведены на языке источника. Условия поступления открываются отдельно.
 university.admissions.catalog.source_note_simple: Текст официальных источников показан на языке оригинала.
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
-university.admissions.catalog.source_scope_details: Статус источника, область действия и даты
+university.admissions.catalog.source_scope_details: Источник и условия
 university.admissions.catalog.check_details: Необязательная сверка профиля с опубликованными минимумами
 university.admissions.catalog.publication: Статус публикации
 university.admissions.catalog.topic.eligibility: Условия для заявителей
@@ -2456,6 +2474,7 @@ university.admissions.catalog.choose_program: Выбрать программу
 university.admissions.catalog.no_program_selected: Программа ещё не выбрана
 university.admissions.catalog.route_label: Опубликованный путь подачи
 university.admissions.catalog.choose_route: Выберите опубликованный путь
+university.admissions.catalog.choose_route_action: Выбрать путь подачи
 university.admissions.catalog.route_required: Выберите один из опубликованных путей выше, чтобы прочитать требования и порядок подачи.
 university.admissions.catalog.applicant_label: Категория абитуриента
 university.admissions.catalog.unspecified: Не указана
@@ -2618,6 +2637,123 @@ university.admissions.catalog.field.fee_status: Условия категори�
 university.admissions.catalog.field.additional_dimensions: Дополнительные условия применимости
 university.admissions.catalog.field.study: Программа обучения
 university.admissions.catalog.field.application: Маршрут поступления
+university.admissions.catalog.field.duration: Продолжительность
+university.admissions.catalog.field.mode: Формат обучения
+university.admissions.catalog.field.language: Язык обучения
+university.admissions.catalog.field.location: Место обучения
+university.admissions.catalog.field.department: Факультет или кафедра
+university.admissions.catalog.field.start_date: Начало обучения
+university.admissions.catalog.field.presence: Нужен ли экзамен
+university.admissions.catalog.field.cutoff: Числовой порог
+university.admissions.catalog.field.recommended: Рекомендованный балл
+university.admissions.catalog.field.exam: Экзамен
+university.admissions.catalog.field.minima_and_recommendations: Минимальные и рекомендуемые баллы
+university.admissions.catalog.field.test_date_before: Экзамен сдан до
+university.admissions.catalog.field.test_date_from: Экзамен сдан начиная с
+university.admissions.catalog.field.tuition: Стоимость обучения
+university.admissions.catalog.field.total_before_aid: Итого до финансовой помощи
+university.admissions.catalog.field.student_life_fee: Студенческий сбор
+university.admissions.catalog.field.housing_estimate: Проживание, оценка
+university.admissions.catalog.field.food_estimate: Питание, оценка
+university.admissions.catalog.field.materials_estimate: Учебные материалы
+university.admissions.catalog.field.personal_estimate: Личные расходы
+university.admissions.catalog.field.windows: Периоды подачи
+university.admissions.catalog.field.round: Период подачи
+university.admissions.catalog.field.application_due: Срок подачи заявления
+university.admissions.catalog.field.aid_due: Срок подачи на помощь
+university.admissions.catalog.field.decision: Решение о зачислении
+university.admissions.catalog.field.tests: Экзамены
+university.admissions.catalog.field.latest: Последняя принимаемая дата
+university.admissions.catalog.field.year: Год набора
+university.admissions.catalog.field.exact_time_timezone: Время и часовой пояс по источнику
+university.admissions.catalog.field.funding_type: Вид финансирования
+university.admissions.catalog.field.funding_program: Программа помощи
+university.admissions.catalog.field.required: Обязательные документы
+university.admissions.catalog.field.when: Когда применяется
+university.admissions.catalog.field.effect: Что означает условие
+university.admissions.catalog.field.health_insurance: Медицинская страховка
+university.admissions.catalog.field.enrollment_reply: Срок ответа на предложение
+university.admissions.catalog.field.name: Название
+university.admissions.catalog.field.act_writing: ACT Writing
+university.admissions.catalog.field.act_science: ACT Science
+university.admissions.catalog.field.sat_essay: SAT Essay
+university.admissions.catalog.field.sat_formats: Принимаемые форматы SAT
+university.admissions.catalog.enum.strongly_recommended: Настоятельно рекомендуется при указанных условиях
+university.admissions.catalog.enum.not_stated: В источнике не указано
+university.admissions.catalog.enum.not_published_on_this_page: На этой странице не опубликовано
+university.admissions.catalog.enum.paper: Бумажный
+university.admissions.catalog.enum.digital: Цифровой
+university.admissions.reading.tests: Академические экзамены
+university.admissions.reading.or: или
+university.admissions.reading.no_numeric_cutoff: В этой записи нет числового порога. Необходимость сдать экзамен и решение о зачислении — разные вещи.
+university.admissions.reading.language: Английский язык
+university.admissions.reading.english_condition: Настоятельная рекомендация относится к тем, для кого английский не родной и кто использует его менее пяти лет либо не говорит на нём дома или в школе. Это отдельное условие от обязательного SAT или ACT.
+university.admissions.reading.language_scores: Опубликованные баллы по английскому
+university.admissions.reading.exam: Экзамен
+university.admissions.reading.minimum: Минимум
+university.admissions.reading.recommended: Рекомендовано
+university.admissions.reading.test_before: Сдан до
+university.admissions.reading.test_from: Сдан начиная с
+university.admissions.reading.scale: Шкала
+university.admissions.reading.documents: Документы для подачи
+university.admissions.reading.document_application: Заявление MIT с эссе, внеучебными занятиями и сведениями об учёбе
+university.admissions.reading.document_school: Школьный отчёт и выписка оценок
+university.admissions.reading.document_references: Две рекомендации преподавателей
+university.admissions.reading.document_tests: SAT или ACT
+university.admissions.reading.insurance_not_included: Обязательное медицинское страхование оплачивается дополнительно и не входит в эту сумму.
+university.admissions.reading.application_dates: Периоды подачи
+university.admissions.reading.test_dates: Сроки сдачи экзаменов
+university.admissions.reading.window: Период подачи
+university.admissions.reading.apply_by: Заявление
+university.admissions.reading.aid_by: Финансовая помощь
+university.admissions.reading.decision: Решение
+university.admissions.reading.last_test: Последний срок
+university.admissions.reading.recurring_dates: Это ежегодные сроки: источник не указывает год набора. Уточните выбранный цикл на официальной странице.
+university.admissions.reading.reply_by: Ответ на предложение места
+university.admissions.reading.reference_budget: Справочный бюджет по источнику
+university.admissions.reading.dated_budget: Это опубликованный бюджет за указанный период до финансовой помощи. Он не подтверждает цену для другого года поступления.
+university.admissions.reading.tuition: Обучение
+university.admissions.reading.student_life_fee: Студенческий сбор
+university.admissions.reading.housing_estimate: Проживание, оценка
+university.admissions.reading.food_estimate: Питание, оценка
+university.admissions.reading.materials_estimate: Учебные материалы
+university.admissions.reading.personal_estimate: Личные расходы
+university.admissions.reading.insurance_extra: Страховка и ограничения расчёта:
+university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
+university.admissions.reading.no_budget: Сопоставимый бюджет для этого выбора не подтверждён. Ниже каждая сумма сохраняет свой период, валюту и условия.
+university.admissions.reading.full_records: Полные записи источников и условия
+university.admissions.reading.general_references: Дополнительные справочные сведения
+university.admissions.reading.general_reference_note: Эти записи относятся к общим или особым ситуациям. Их применимость к вашему выбору не установлена; проверьте область действия, прежде чем считать запись требованием.
+university.admissions.reading.update_selection: Обновить выбор
+university.admissions.catalog.route_name.mit-first-year: Первый курс после школы
+university.admissions.catalog.route_name.mit-transfer: Перевод из другого вуза
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Первый курс после школы
+university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Перевод из другого вуза
+university.admissions.reading.mid_month: Середина {month}
+university.admissions.reading.month.1: января
+university.admissions.reading.month.2: февраля
+university.admissions.reading.month.3: марта
+university.admissions.reading.month.4: апреля
+university.admissions.reading.month.5: мая
+university.admissions.reading.month.6: июня
+university.admissions.reading.month.7: июля
+university.admissions.reading.month.8: августа
+university.admissions.reading.month.9: сентября
+university.admissions.reading.month.10: октября
+university.admissions.reading.month.11: ноября
+university.admissions.reading.month.12: декабря
+university.admissions.reading.early_action: Early Action · ранняя подача
+university.admissions.reading.regular_action: Regular Action · обычная подача
+university.admissions.reading.official_application: Официальная подача и инструкции
+university.admissions.reading.official_source: Официальный источник
+university.admissions.reading.unknown: Здесь не указано
+university.admissions.reading.previous_tabs: Предыдущие разделы
+university.admissions.reading.next_tabs: Другие разделы
+university.admissions.reading.cycle_help: Введите год, например 2027, или выберите подсказку набора. Нераспознанная запись не позволяет отфильтровать сведения по году.
+university.admissions.reading.cycle_invalid: Запись не распознана как год или сезон набора. Укажите год или выберите подсказку; совпадение по году не предполагается.
+university.admissions.reading.january_tests: Принимаются январские даты экзамена
+university.admissions.reading.mit_course_code: Код программы MIT: {code}
+university.admissions.reading.mit_course_help: Course {code} — код этой программы в каталоге MIT. Словом Course здесь называют направление обучения.
 university.admissions.catalog.field.A3i6E: Описание программы
 university.admissions.catalog.field.WOZxr: Правила зачёта обучения в другом вузе
 university.admissions.catalog.field.ItCSB: Требования программы
@@ -2679,5 +2815,276 @@ university.admissions.catalog.apply_before_save: Примените изменё
 universities.compare.reviewed_catalog: Проверенный каталог программ и поступления
 universities.compare.optional_context: Сравните вузы сейчас или выберите программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
+university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
+university.admissions.reading.original_description: Описание программы в оригинале (английский)
+university.admissions.reading.reference_scope_note: Подробные записи приведены на языке источника. В каждой записи доступны условия, период и область действия.
+university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
+university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан
+university.admissions.reading.source_period: Период и формулировка источника
+university.admissions.reading.entry_fall: Осенний набор {year}
+university.admissions.reading.entry_spring: Весенний набор {year}
+university.admissions.reading.entry_summer: Летний набор {year}
+university.admissions.reading.entry_winter: Зимний набор {year}
+university.admissions.reading.entry_year: Набор {year}
+university.admissions.reading.aid_title: Помощь по финансовой потребности
+university.admissions.reading.aid_explained: Эту помощь рассчитывают по финансовым обстоятельствам семьи. Заявление на поступление и документы для финансовой помощи подают отдельно.
+university.admissions.reading.aid_documents: Что подать для финансовой помощи
+university.admissions.reading.aid_css: Заполните CSS Profile — анкету College Board для расчёта финансовой помощи.
+university.admissions.reading.aid_css_code: Код получателя MIT: {code}.
+university.admissions.reading.aid_fafsa: FAFSA относится к внутренним абитуриентам с правом на федеральную помощь США. Для международной категории MIT действуют отдельные инструкции.
+university.admissions.reading.aid_international_title: Для международных абитуриентов
+university.admissions.reading.aid_finances_title: Для CSS Profile подготовьте:
+university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи
 university.programs.all_levels: Все уровни обучения
 university.programs.search_clear: Очистить поиск
+university.admissions.reading.summary_requirements: Основные опубликованные требования
+university.admissions.reading.summary_application: Как подать заявку
+university.admissions.reading.summary_deadlines: Даты курса и раунды подачи
+university.admissions.reading.summary_costs: Опубликованная стоимость и условия оплаты
+university.admissions.reading.summary_funding: Помощь: условия и подача
+university.admissions.reading.home_fee: Тариф Home
+university.admissions.reading.overseas_fee: Тариф Overseas
+university.admissions.reading.fee_status: Категория оплаты
+university.admissions.reading.per_year: в год
+university.admissions.reading.published_tuition: Опубликованная плата за курс
+university.admissions.reading.fee_status_explained: Home и Overseas — категории оплаты, которые определяет Imperial. Одного гражданства для их определения недостаточно; проживание и дополнительные платежи не включены в обучение.
+university.admissions.reading.living_reference: Ориентир расходов на жизнь
+university.admissions.reading.living_nine_months: 9 месяцев · опубликованный средний диапазон
+university.admissions.reading.living_twelve_months: 12 месяцев · ориентир с частным жильём
+university.admissions.reading.different_cost_periods: Этот ориентир проживания относится к другому периоду, чем обучение 2027 года. Суммы показаны отдельно и не складываются в подтверждённый годовой бюджет.
+university.admissions.reading.scholarship_rounds: Раунды President’s PhD Scholarships
+university.admissions.reading.scholarship_dates_separate: Это сроки рассмотрения стипендии. Кафедра может требовать более ранней заявки PhD; поступление и назначение стипендии — отдельные решения.
+university.admissions.reading.ucas_medicine: UCAS · срок для Medicine
+university.admissions.reading.ucas_equal_consideration: UCAS · равное рассмотрение заявок
+university.admissions.reading.submission_opens: Начало подачи заявок
+university.admissions.reading.date: Дата
+university.admissions.reading.local_time: Опубликованное местное время
+university.admissions.reading.month_standalone.1: январь
+university.admissions.reading.month_standalone.2: февраль
+university.admissions.reading.month_standalone.3: март
+university.admissions.reading.month_standalone.4: апрель
+university.admissions.reading.month_standalone.5: май
+university.admissions.reading.month_standalone.6: июнь
+university.admissions.reading.month_standalone.7: июль
+university.admissions.reading.month_standalone.8: август
+university.admissions.reading.month_standalone.9: сентябрь
+university.admissions.reading.month_standalone.10: октябрь
+university.admissions.reading.month_standalone.11: ноябрь
+university.admissions.reading.month_standalone.12: декабрь
+university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
+university.admissions.reading.integrated_meng: MEng — интегрированная программа с поступлением через UCAS на уровне бакалавриата; она объединяет бакалаврское обучение и дисциплины магистерского уровня.
+university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — только нынешние бакалавры Stanford
+university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — нынешние бакалавры Stanford
+university.admissions.catalog.route_class.combined_external: Внешняя подача на совмещённые степени
+university.admissions.catalog.route_class.combined_ms_with_other_stanford_doctoral_or_professional_degree: MS вместе с другой докторской/профессиональной степенью Stanford
+university.admissions.catalog.route_class.coterm_application: Coterm-магистратура во время бакалавриата Stanford
+university.admissions.catalog.route_class.coterm_current_stanford_undergraduate: Coterm — только нынешние бакалавры Stanford
+university.admissions.catalog.route_class.coterm_or_internal_stanford_student: Coterm или другой внутренний путь для студентов Stanford
+university.admissions.catalog.route_class.current AA MS to PhD: Переход нынешних студентов Aeronautics MS на PhD
+university.admissions.catalog.route_class.current ChemE PhD optional MS: Дополнительная MS для нынешних студентов Chemical Engineering PhD
+university.admissions.catalog.route_class.current EPS coterm or MS student applying to PhD: Подача на PhD для нынешних студентов Earth/Planetary Sciences coterm/MS
+university.admissions.catalog.route_class.current ESE MS student seeking PhD: Подача на PhD для нынешних студентов Energy Science and Engineering MS
+university.admissions.catalog.route_class.current ME PhD optional MS: Дополнительная MS для нынешних студентов Mechanical Engineering PhD
+university.admissions.catalog.route_class.current Stanford graduate Joint/Dual MS: Joint/Dual MS для нынешних студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.current Stanford graduate or NDO applicant using regular degree application: Обычная заявка для нынешних студентов магистратуры/докторантуры или студентов без степени (NDO)
+university.admissions.catalog.route_class.current Stanford other-department PhD candidate added MS: Дополнительная MS для PhD-студентов другой кафедры Stanford
+university.admissions.catalog.route_class.current Stanford student regular external-style degree application: Обычная заявка на степень для нынешних студентов Stanford
+university.admissions.catalog.route_class.current Stanford undergraduate coterm: Coterm-магистратура для нынешних бакалавров Stanford
+university.admissions.catalog.route_class.current Stanford undergraduate coterminal MA or MS: Coterm MA/MS для нынешних бакалавров Stanford
+university.admissions.catalog.route_class.current_Stanford_MD_or_PhD_internal_MSTP_funding_application: Внутренняя подача на финансирование MSTP для нынешних студентов MD/PhD Stanford
+university.admissions.catalog.route_class.current_stanford_doctoral_or_professional_student: Только нынешние докторские/профессиональные студенты Stanford
+university.admissions.catalog.route_class.current_stanford_graduate_and_professional_students: Только нынешние студенты магистратуры/докторантуры и профессиональных программ Stanford
+university.admissions.catalog.route_class.current_stanford_graduate_students_additional_ms: Дополнительная MS для нынешних студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.current_stanford_undergraduate_coterm: Coterm — нынешние бакалавры Stanford (каталог)
+university.admissions.catalog.route_class.direct_external: Прямая подача на профессиональную программу
+university.admissions.catalog.route_class.direct_external_limited: Прямая внешняя подача с опубликованными ограничениями
+university.admissions.catalog.route_class.en_route_award_no_external_admission: Промежуточная степень; внешней подачи нет
+university.admissions.catalog.route_class.existing same-program PhD intermediate MS: Промежуточная MS для нынешних PhD-студентов этой программы
+university.admissions.catalog.route_class.existing_Classics_PhD_intermediate_MA: Промежуточная MA для нынешних студентов Classics PhD
+university.admissions.catalog.route_class.external HybridSESMS selection through GraduateAdmissions: Внешняя заявка на смешанную Sustainable Engineered Systems MS
+university.admissions.catalog.route_class.external PhD application: Внешняя подача на PhD
+university.admissions.catalog.route_class.external PhD application with subplan selection: Внешняя подача на PhD с выбором направления
+university.admissions.catalog.route_class.external graduate MS or PhD: Внешняя подача на MS/PhD
+university.admissions.catalog.route_class.external interdisciplinary PhD: Внешняя подача на междисциплинарную PhD
+university.admissions.catalog.route_class.external non-professional graduate application: Внешняя магистратура/PhD — Graduate Admissions
+university.admissions.catalog.route_class.external_doctoral: Внешняя подача в докторантуру
+university.admissions.catalog.route_class.external_joint_entry_via_gsb_mba_application: Совместная степень через заявку GSB MBA
+university.admissions.catalog.route_class.external_joint_entry_via_gse_pols_application: Совместная степень через заявку Education POLS
+university.admissions.catalog.route_class.external_joint_entry_via_law_jd_application: Совместная степень через заявку Law JD
+university.admissions.catalog.route_class.external_masters: Внешняя подача в магистратуру
+university.admissions.catalog.route_class.external_nonprofessional_programme: Внешняя заявка в магистратуру/докторантуру (каталог программ)
+university.admissions.catalog.route_class.external_part_time_distance_hcp_ms: Неполная HCP MS — ограничения по работе и месту проживания
+university.admissions.catalog.route_class.external_professional_masters: Внешняя подача на профессиональную магистратуру
+university.admissions.catalog.route_class.external_program_specific_application: Внешняя заявка на конкретную программу
+university.admissions.catalog.route_class.external_restricted_alumni: Внешняя подача только для указанных выпускников
+university.admissions.catalog.route_class.external_terminal_admission: Внешняя подача на самостоятельную степень
+university.admissions.catalog.route_class.external_terminal_masters: Внешняя подача на самостоятельную магистратуру
+university.admissions.catalog.route_class.historical duplicate of coterm, no independent internal form verified: Исторический дубль coterm; отдельная внутренняя форма не подтверждена
+university.admissions.catalog.route_class.historical unresolved award context: Исторический контекст степени остаётся неуточнённым
+university.admissions.catalog.route_class.intermediate MS only for Oceans PhD student: Промежуточная MS — только нынешние студенты Oceans PhD
+university.admissions.catalog.route_class.intermediate exit MA only: Только промежуточная/выходная MA
+university.admissions.catalog.route_class.intermediate/exit award; no direct admission: Промежуточная/выходная степень; прямой подачи нет
+university.admissions.catalog.route_class.internal added MS for student enrolled in another Stanford department: Внутренняя дополнительная MS для студентов другой кафедры Stanford
+university.admissions.catalog.route_class.internal current-student application or added-degree petition: Внутренняя заявка студента или запрос дополнительной степени
+university.admissions.catalog.route_class.internal intermediate MS requirement for AA PhD students: Требования промежуточной MS внутри Aeronautics PhD
+university.admissions.catalog.route_class.internal_combined_degree_declaration: Внутреннее оформление совмещённых степеней
+university.admissions.catalog.route_class.internal_coterm_admission: Внутренняя подача на coterm-магистратуру
+university.admissions.catalog.route_class.internal_current_doctoral_only: Только нынешние докторанты
+university.admissions.catalog.route_class.internal_current_stanford_graduate_students: Внутренний путь для нынешних студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.internal_intermediate_admission: Внутренняя промежуточная степень; проверьте ограничения
+university.admissions.catalog.route_class.internal_progression_from_coterm_ma: Внутреннее продолжение после coterm MA
+university.admissions.catalog.route_class.internal_stanford_admission: Внутренний путь поступления Stanford
+university.admissions.catalog.route_class.internal_stanford_graduate_authorization: Внутреннее разрешение для студентов магистратуры/докторантуры Stanford
+university.admissions.catalog.route_class.joint_degree_applicant_to_another_stanford_program: Совместная степень с другой программой Stanford
+university.admissions.catalog.route_class.one_shared_application_with_primary_and_one_alternative_home_program: Одна общая заявка с основной и одной альтернативной программой
+university.admissions.catalog.route_class.phd_en_route_authorization: Разрешение промежуточной степени во время PhD
+university.admissions.catalog.route_class.phd_en_route_intermediate_award: Промежуточная степень во время PhD
+university.admissions.catalog.route_class.possible internal added MS: Возможная внутренняя дополнительная MS; условия не уточнены
+university.admissions.catalog.route_class.program_specific_application: Заявка по правилам конкретной программы
+university.admissions.catalog.route_class.program_specific_external_admission: Внешнее поступление по собственным правилам программы
+university.admissions.catalog.route_class.prospective Stanford MBA/JD Joint MS: Joint MS, связанная с приёмом на Stanford MBA/JD
+university.admissions.catalog.route_class.related Stanford PhD student added EE MS: Дополнительная Electrical Engineering MS для подходящих PhD-студентов Stanford
+university.admissions.catalog.route_class.required intermediate MS for existing MSE PhD: Обязательная промежуточная MS для нынешних студентов Materials PhD
+university.admissions.catalog.route_class.researched_unresolved: Путь исследован; применимость остаётся неясной
+university.admissions.catalog.route_class.restricted_internal: Внутренний путь с ограничениями
+university.admissions.catalog.route_class.restricted_ms_no_published_external_application: Ограниченная MS; внешняя подача не опубликована
+university.admissions.catalog.route_class.same-program CS PhD intermediate MS petition: Запрос промежуточной MS — нынешние студенты CS PhD
+university.admissions.catalog.route_class.separate CS and professional-school applications with joint consent: Совместная степень: отдельные заявки CS и профессиональной школы
+university.admissions.catalog.route_class.separate degree applications and approved combined study: Отдельные заявки на степени и согласованное совмещение
+university.admissions.catalog.route_class.separate_advanced_degree_admission_after_qualifying_llm_or_spils: Отдельное поступление на углублённую степень после подходящей LLM/SPILS
+university.admissions.catalog.route_class.separately admitted joint/dual Stanford degrees: Joint/Dual-степени с отдельным приёмом Stanford
+university.admissions.catalog.route_class.shared_advanced_degree_application_with_selection_path: Общая заявка на углублённую степень с выбором пути
+university.admissions.catalog.route_class.shared_joint_application: Общая заявка на совместную степень
+university.admissions.catalog.route_class.shared_medical_school_application: MD: AMCAS, затем supplemental Stanford по приглашению
+university.admissions.catalog.route_class.shared_school_application: Общая заявка в школу университета
+university.admissions.catalog.route_class.terminal_exit_award_no_admission_route: Степень при завершении обучения; отдельного набора нет
+university.admissions.catalog.route_class.unresolved: Путь подачи остаётся неуточнённым
+university.admissions.reading.overview_missing: Обзор обучения для этой программы не собран. Откройте официальную страницу ниже; записи о поступлении доступны отдельно.
+university.admissions.reading.source_conflict: Собранные официальные источники расходятся. Подтвердите условие у программы; это не принятое освобождение и не решение о праве поступления.
+university.admissions.reading.program: Программа
+university.admissions.reading.degree.BS: BS — Bachelor of Science, бакалавр наук
+university.admissions.reading.degree.BA: BA — Bachelor of Arts, бакалавр гуманитарных/общественных наук
+university.admissions.reading.degree.MS: MS — Master of Science, магистр наук
+university.admissions.reading.degree.MA: MA — Master of Arts, магистр гуманитарных/общественных наук
+university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy, исследовательская докторская степень
+university.admissions.reading.degree.MBA: MBA — Master of Business Administration, профессиональная степень по управлению
+university.admissions.reading.degree.MD: MD — Doctor of Medicine, профессиональная медицинская степень
+university.admissions.reading.degree.ENG: Engineer — углублённая инженерная степень, отдельная от MS и PhD
+university.deadlines.weekday.mon: Пн
+university.deadlines.weekday.tue: Вт
+university.deadlines.weekday.wed: Ср
+university.deadlines.weekday.thu: Чт
+university.deadlines.weekday.fri: Пт
+university.deadlines.weekday.sat: Сб
+university.deadlines.weekday.sun: Вс
+university.deadlines.kind.application: Срок подачи заявления
+university.deadlines.kind.funding: Срок заявки на финансирование
+university.deadlines.kind.decision: Уведомление о решении
+university.deadlines.kind.reply: Срок ответа на предложение
+university.deadlines.kind.opens: Начало подачи заявлений
+university.deadlines.kind.test: Последняя дата теста
+university.deadlines.kind.booking: Срок регистрации на тест
+university.deadlines.round: Раунд {number}
+university.deadlines.calendar_time_unknown: Время не указано; в календарь добавляется событие на весь день.
+university.deadlines.export_time_unresolved: Опубликованное время или часовой пояс нельзя надёжно преобразовать; проверьте официальный источник.
+universities.compare.summary.title: Сравнение выбранных программ
+universities.compare.summary.scope_note: Факты относятся к выбранным программе, маршруту поступления и опубликованному периоду. Валюты и категории оплаты сохранены; датированный ориентир не является ценой нового предложения.
+universities.compare.summary.program: Программа
+universities.compare.summary.study: Продолжительность и формат
+universities.compare.summary.route: Маршрут поступления
+universities.compare.summary.cycle: Выбранный набор
+universities.compare.summary.tuition: Опубликованная стоимость обучения
+universities.compare.summary.budget: Ориентир расходов на учёбу и проживание
+universities.compare.summary.deadline: Опубликованные сроки подачи
+universities.compare.summary.funding: Финансирование
+universities.compare.summary.admission: Требования и условия
+universities.compare.summary.deadlines: Открыть сроки и календарь
+universities.compare.summary.finance: Открыть расходы и финансирование
+universities.compare.summary.source: Официальный источник
+universities.compare.summary.reference: Датированный ориентир
+universities.compare.summary.before_aid: До финансовой помощи; исключения указаны в источнике
+universities.compare.summary.unknown: Для выбранного варианта не подтверждено
+universities.compare.summary.year_not_stated: В источнике не указан год; дата для календаря не подставляется.
+universities.compare.summary.potential_aid: Возможное финансирование зависит от условий и отбора.
+universities.compare.summary.full_records: Полные записи источников
+universities.compare.summary.additional_facts: Дополнительные факты об университетах
+universities.compare.summary.choose_programs: Выбрать программы
+universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
+university.admissions.reading.total_fee: за весь курс
+university.deadlines.kind.funding_consideration: Подача на обучение для рассмотрения на стипендию
+university.admissions.reading.first_year: первый год
+university.admissions.reading.second_year: Второй год
+university.admissions.reading.funding_excluded: Эта программа или формат исключены из этой стипендии.
+university.admissions.reading.funding_unconfirmed: Участие этой степени в стипендии не подтверждено.
+university.deadlines.kind.booking_open: Открытие записи на тест
+university.admissions.catalog.route_name.mit_sloan_mba_admissions: Подача на очную MBA MIT Sloan
+university.admissions.catalog.route_name.mit_sloan_mfin_admissions: Подача на магистратуру по финансам MIT Sloan
+university.admissions.catalog.route_name.mit_sloan_mban_admissions: Подача на бизнес-аналитику MIT Sloan
+university.admissions.catalog.route_name.mit_physics_phd_admissions: Подача в докторантуру по физике MIT
+university.admissions.catalog.route_name.mit_eecs_meng_admissions: Внутренняя подача на MEng EECS для студентов MIT
+university.admissions.catalog.route_name.mit_bcs_meng_admissions: Внутренняя MEng BCS для студентов MIT Course 6-9
+university.admissions.catalog.route_name.mit_sloan_msms_admissions: Подача на MSMS MIT Sloan для кандидатов партнёрских программ
+university.admissions.catalog.route_name.mit_grad_architecture_admissions: Подача: архитектура
+university.admissions.catalog.route_name.mit_grad_civil_environmental_admissions: Подача: гражданская и экологическая инженерия
+university.admissions.catalog.route_name.mit_grad_dedp_admissions: Подача DEDP: данные, экономика и разработка политики
+university.admissions.catalog.route_name.mit_grad_science_writing_admissions: Подача: научная журналистика и письмо
+university.admissions.catalog.route_name.mit_grad_sdm_admissions: Подача: проектирование систем и управление (SDM)
+university.admissions.catalog.route_name.mit_grad_music_technology_admissions: Подача: музыкальные технологии и вычисления
+university.admissions.catalog.route_name.mit_grad_real_estate_admissions: Подача в Центр недвижимости
+university.admissions.catalog.route_name.mit_grad_scm_residential_admissions: Подача на очную программу управления цепями поставок
+university.admissions.catalog.route_name.mit_grad_scm_blended_admissions: Подача на смешанную программу управления цепями поставок
+university.admissions.catalog.route_name.mit_grad_tpp_admissions: Подача: технологии и политика (TPP)
+university.admissions.catalog.route_name.mit_grad_lgo_admissions: Подача на Leaders for Global Operations (LGO)
+university.admissions.catalog.route_name.mit_grad_aero_admissions: Подача: авиация и космонавтика
+university.admissions.catalog.route_name.mit_grad_chemical_admissions: Подача: химическая инженерия
+university.admissions.catalog.route_name.mit_grad_eaps_admissions: Подача: науки о Земле, атмосфере и планетах
+university.admissions.catalog.route_name.mit_grad_materials_admissions: Подача: материаловедение и инженерия
+university.admissions.catalog.route_name.mit_grad_meche_admissions: Подача: машиностроение
+university.admissions.catalog.route_name.mit_grad_media_arts_admissions: Подача: медиаискусство и науки
+university.admissions.catalog.route_name.mit_grad_nuclear_admissions: Подача: ядерные науки и инженерия
+university.admissions.catalog.route_name.mit_grad_physics_admissions: Рассмотрение SM по физике только в особых случаях
+university.admissions.catalog.route_name.mit_grad_political_admissions: Подача: политология
+university.admissions.catalog.route_name.mit_grad_urban_planning_admissions: Подача: урбанистика и планирование
+university.admissions.catalog.route_name.mit_grad_whoi_admissions: Совместная программа MIT–WHOI: океанография и океаническая инженерия
+university.admissions.catalog.route_name.mit_sloan_evening_mba_admissions: Подача на вечернюю MBA MIT Sloan
+university.admissions.catalog.route_name.mit_sloan_executive_mba_admissions: Подача на Executive MBA MIT Sloan для руководителей
+university.admissions.catalog.route_name.mit_sloan_fellows_mba_admissions: Подача на Sloan Fellows MBA
+university.admissions.catalog.route_name.mit_aeroastro_doctoral_admissions: Подача: авиация и космонавтика
+university.admissions.catalog.route_name.mit_architecture_doctoral_admissions: Подача: архитектура
+university.admissions.catalog.route_name.mit_biological_engineering_doctoral_admissions: Подача: биологическая инженерия
+university.admissions.catalog.route_name.mit_biology_doctoral_admissions: Подача: биология
+university.admissions.catalog.route_name.mit_brain_and_cognitive_sciences_doctoral_admissions: Подача: науки о мозге и когнитивные науки
+university.admissions.catalog.route_name.mit_chemical_engineering_doctoral_admissions: Подача: химическая инженерия
+university.admissions.catalog.route_name.mit_chemistry_doctoral_admissions: Подача: химия
+university.admissions.catalog.route_name.mit_civil_and_environmental_engineering_doctoral_admissions: Подача: гражданская и экологическая инженерия
+university.admissions.catalog.route_name.mit_computational_and_systems_biology_doctoral_admissions: Подача: вычислительная и системная биология
+university.admissions.catalog.route_name.mit_computational_science_and_engineering_doctoral_admissions: Подача на самостоятельную PhD по вычислительным наукам и инженерии
+university.admissions.catalog.route_name.mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions: Подача: науки о Земле, атмосфере и планетах
+university.admissions.catalog.route_name.mit_eecs_doctoral_admissions: Докторский путь EECS: электротехника и компьютерные науки
+university.admissions.catalog.route_name.mit_hst_memp_doctoral_admissions: Подача: науки о здоровье и технологии (Harvard–MIT)
+university.admissions.catalog.route_name.mit_hasts_doctoral_admissions: Подача HASTS: история, антропология, наука и общество
+university.admissions.catalog.route_name.mit_social_and_engineering_systems_doctoral_admissions: Подача в Институт данных, систем и общества (IDSS)
+university.admissions.catalog.route_name.mit_mitili_sm_admissions: Подача на лингвистическую программу MITILI (SM)
+university.admissions.catalog.route_name.mit_linguistics_doctoral_admissions: Подача: лингвистика
+university.admissions.catalog.route_name.mit_materials_science_and_engineering_doctoral_admissions: Подача: материаловедение и инженерия
+university.admissions.catalog.route_name.mit_mathematics_doctoral_admissions: Подача: математика
+university.admissions.catalog.route_name.mit_mechanical_engineering_doctoral_admissions: Подача: машиностроение
+university.admissions.catalog.route_name.mit_microbiology_doctoral_admissions: Подача: микробиология
+university.admissions.catalog.route_name.mit_sloan_management_doctoral_admissions: Подача в докторантуру MIT Sloan
+university.admissions.catalog.route_name.mit_mit_whoi_doctoral_admissions: Совместная программа MIT–WHOI: океанография и океаническая инженерия
+university.admissions.catalog.route_name.mit_nuclear_science_and_engineering_doctoral_admissions: Подача: ядерные науки и инженерия
+university.admissions.catalog.route_name.mit_operations_research_doctoral_admissions: Подача: исследование операций
+university.admissions.catalog.route_name.mit_philosophy_doctoral_admissions: Подача: философия
+university.admissions.catalog.route_name.mit_political_science_doctoral_admissions: Подача: политология
+university.admissions.catalog.route_name.mit_transportation_doctoral_admissions: Подача: транспорт
+university.admissions.catalog.route_name.mit_urban_studies_and_planning_doctoral_admissions: Подача: урбанистика и планирование
+university.admissions.catalog.route_name.mit_mathematics_of_data_sm_admissions: Подача на SM по математике данных
+university.admissions.catalog.route_name.mit_grad_transportation_mst_admissions: Подача: транспорт
+university.admissions.catalog.route_name.mit_economics_doctoral_admissions: Подача в докторантуру по экономике
+university.admissions.catalog.route_name.mit-be-meng-internal: Внутренняя MEng по биологической инженерии
+university.admissions.catalog.route_name.mit-mathematics-fifth-year-internal: Пятый год MASc по математике для студентов MIT
+university.admissions.catalog.route_name.mit-cse-secondary-sm-internal: Внутреннее рассмотрение второй SM по вычислительным наукам (CCSE)
+university.admissions.catalog.route_name.mit-mas-phd-progression: Внутренний переход из MAS SM в PhD
+university.admissions.catalog.route_name.mit-idps-internal-selection: Внутренний отбор IDPS для докторантов участвующих программ MIT
+university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Совместная PhD департамента и вычислительных наук (CSE)
+university.admissions.catalog.route_name.mit-economics-sm-special-approval: Особое одобрение SM по экономике для действующих студентов MIT

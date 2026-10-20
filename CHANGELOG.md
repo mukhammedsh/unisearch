@@ -4,6 +4,48 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 9.1.0 (2026-10-20) - Program Comparison and Deadline Calendar
+
+### Updated
+- Complete the six remaining MIT study overviews, localize route guidance and transfer restrictions, and explain options without a confirmed standalone application instead of presenting an unusable selector.
+- Localize all 73 MIT application-path labels while retaining official titles in source records.
+- Include published MIT deadline arrays in the calendar and readable date summaries; distinguish regular Sloan MBA rounds from deferred MBA Early and retain source scope and timezones in exports.
+- Compare the selected reviewed programs in a concise sourced table, retain context in detail links, and keep full records and institutional metrics expandable.
+- Share the deadline calendar across reviewed and legacy pages; export exact sourced dates with published times/timezones and distinguish scholarship-consideration cutoffs from award-form deadlines.
+- Recheck Imperial's retained publication gaps, fill newly published 2027 tuition and the Medical Science and Innovation English band, and preserve remaining uncertainty with dated sources.
+- Respect the joint RCA application and first-year-only tuition for Innovation Design Engineering; show Imperial Inspires course exclusions and separate undergraduate/postgraduate application rules.
+- Refresh Stanford transfer fees, CS MS eligibility and English exemptions, and 2027–28 domestic aid checklists; keep resolved source gaps in history.
+- Complete Imperial study overviews for all 360 options in English, Russian and Kazakh, retaining limited publication detail, award conflicts and restricted recruitment explicitly.
+- Expose collected curriculum records and study essentials, separate Biomedical Research project examples from compulsory modules, and refresh HealthBRIDGE's published application status.
+- Reassemble Imperial evidence after catalog cutover without rewriting the accepted historical program snapshot.
+- Add source-linked study overviews for all 254 Stanford options, including the sixteen newly completed medical and bioscience records, while keeping route and cycle guidance scoped.
+- Improve Imperial applicant reading with all 168 collected course-overview translations, visible award/context labels, and source-bound requirements, application, date and funding summaries.
+- Separate Imperial course tuition, dated living references and application charges; retain fee-category conditions and distinct UCAS, MSc, PhD and scholarship timelines.
+- Reuse the existing expandable program-card design for MIT, Imperial College London, and Stanford University, with concise sourced overviews and full records available separately.
+- Keep program details beside their selected card across searches and guide visitors from dates and costs to the required program or application path.
+- Version localization caches and requests so returning visitors receive current interface labels after an update; reuse valid packs and retry failed language loads.
+- Present scoped exam summaries, readable application/test dates, and explicitly dated reference budgets; retain full source records and additional applicability references.
+- Recognize Russian and Kazakh entry-cycle examples, narrow program search to the complete subject, and preserve program-search state when switching languages.
+- Expose official application actions and mobile tab controls without replacing the existing university-page layout.
+- Translate reviewed program names and study essentials into Russian and Kazakh, retain English originals, explain MIT program codes, and support searches using the displayed names.
+- Keep published deadline month names readable when browser Kazakh locale data is incomplete.
+- Show tuition and study/living reference budgets on catalog cards, with a persisted price-basis filter, scoped source periods, and the same prices in map cards.
+- Filter published tariffs without filling gaps between fee categories or treating unknown costs or potential aid as an affordable price.
+- Translate available MIT program overviews into Russian and Kazakh with expandable originals; surface undergraduate aid documents, applicable dates and international instructions.
+- Localize summary source periods and reduce repeated applicability badges while retaining each record's conditions and source metadata.
+- Explain empty deadline sections and keep the unawarded-aid notice visible in MIT summaries; align browser checks with expandable references and permitted automatic spacing.
+
+### Fixed
+- Prevent stale exam validation and canceled SPA navigation from clearing newer profile edits; keep reopened confirmation dialogs visible.
+- Return HTTP 503 when required university, exam, or language data is unavailable instead of silently serving empty fallbacks.
+- Load university detail resources correctly when the page is served under the `/frontend` mount.
+- Convert tuition using its declared currency before deriving university factors, and retain the official population fallback provenance.
+- Remove the query-language-only semantic score bonus and key AI-sort results by the resolved search language.
+
+### Security
+- Share expensive-request limits across university IDs and apply the configured Redis prefix to rate-limit keys.
+
+
 ## 9.0.0 (2026-10-16) - Firebase Hosting, University Filters and Security
 
 ### Breaking Changes

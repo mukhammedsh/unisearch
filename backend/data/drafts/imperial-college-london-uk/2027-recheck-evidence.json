@@ -1,0 +1,1700 @@
+{
+  "schema_version": "imperial-recheck-1.0",
+  "checked_at": "2026-10-20",
+  "owner_scope": "Published 2027 course prices, exact scholarship applicability and applicant calendar dates; existing unresolved award and research-route publications rechecked separately.",
+  "sources": [
+    {
+      "id": "imperial-recheck-20261020-00",
+      "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+      "title": "Accepted qualifications | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+        "body_sha256": "0070334a5172850ad2258c7e225d3a6ae85f44ac23394dfd25b915e58d674c91"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-01",
+      "url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+      "title": "Submit your offer conditions | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+        "body_sha256": "91efff02be920dfc365f034d312d03552454500531f607ab1d08a7f1a0a2733a"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-02",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/molecular-synthesis/",
+      "title": "Advanced Molecular Synthesis — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/molecular-synthesis/",
+        "body_sha256": "4c5095090a8886514cf5ee95aa22ffc7667ef5503e8f7bfc85da921970373ca6"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-03",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/catalysis/",
+      "title": "Catalysis: Chemistry and Engineering — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/catalysis/",
+        "body_sha256": "ef532e47dc7bd99ff4803de111d9114d0c830d3a2a79b7f7d8463f9fc02b616e"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-04",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/chemical-biology/",
+      "title": "Chemical Biology and Bio-Entrepreneurship — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/chemical-biology/",
+        "body_sha256": "b38c1ad37ca1a0248c219f18cb0fb6563af45fd4926a63e0c9a75af749ab9b80"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-05",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/conservation-science-practice/",
+      "title": "Conservation Science and Practice — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/conservation-science-practice/",
+        "body_sha256": "7993e8fd63b56541c5e2924c4d615837d48622dcb4caf23a4df43fd689452718"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-06",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/drug-discovery-development/",
+      "title": "Drug Discovery and Development — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/drug-discovery-development/",
+        "body_sha256": "9114f14fea33a976f2dc460e5660010ac0cf212d12c87e934f75bcb4664c045c"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-07",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/green-chemistry/",
+      "title": "Green Chemistry: Energy and the Environment — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/green-chemistry/",
+        "body_sha256": "4c7841ffd2e53662550a9e442fb0e6aa5cd64ee1fb4602e985818533be2ea476"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-08",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/innovation-design-engineering/",
+      "title": "Innovation Design Engineering — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/innovation-design-engineering/",
+        "body_sha256": "bb4bfb260a43464c4a1d7a67097b446e843f142be1da1e7766e97a4fb833a3fd"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-09",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-physical-sciences/",
+      "title": "Machine Learning and Big Data in the Physical Sciences — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-physical-sciences/",
+        "body_sha256": "47d5580067cc508ffb4942d202f6210c0e6074a9a4ba08f673e3f3bd10f8e49d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-10",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-data-science/",
+      "title": "Machine Learning and Data Science (Online) — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-data-science/",
+        "body_sha256": "bcffae84fdd95eba4efbf2ee8a3edb05a012c266bb8e3cfa36658f022a69d43a"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-11",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomaterials/",
+      "title": "Nanomaterials — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomaterials/",
+        "body_sha256": "5d998ea68c0eec8a7a43e9f39c5c54606866e438cb7d5c62400b6a5bd9773da2"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-12",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomedicine/",
+      "title": "Nanomedicine and Nanodiagnostics MRes — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomedicine/",
+        "body_sha256": "08ef65de1edb41f00656d933521bf5fcb6beb4e0ea832eb1e0cc26ba24ba769e"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-13",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/science-media-production/",
+      "title": "Science Media Production — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/science-media-production/",
+        "body_sha256": "984c73397dd1c10422b731606268b4d07d7462a002a83189cda3d0df1143dd87"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-14",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/sustainability-environmental-policy-innovation/",
+      "title": "Sustainability, Environmental Policy and Innovation — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/sustainability-environmental-policy-innovation/",
+        "body_sha256": "6b121ef887f9e1781cf613d08ae50c376585c647f87feb25762c6e7b65c6bebf"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-15",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/synthetic-cell-science/",
+      "title": "Synthetic Cell Science — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/synthetic-cell-science/",
+        "body_sha256": "dba9cc0999feaa18e66c198387b02769e2212cfaaf1d285adb1e18b019275b03"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-16",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/aeronautical-engineering/",
+      "title": "Aeronautical Engineering — Imperial College London (undergraduate, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/aeronautical-engineering/",
+        "body_sha256": "d94f20feadd9a691c2fed603926dcd4c4627138dd530aa32213705623c908602"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-17",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine-graduate-entry/",
+      "title": "Medicine (Graduate Entry) (MBBS 4YFT) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine-graduate-entry/",
+        "body_sha256": "bf9d4780e3ad7a2a3cb19c2f178c29fe87b013cdf1fc169f61c2dd519c68e467"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-18",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine/",
+      "title": "Medicine | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine/",
+        "body_sha256": "016d830e7b0b3aa06dd143664a0c804f3d1db5f961aae99c9f2ebf5238b57db9"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-19",
+      "url": "https://www.imperial.ac.uk/medicine/study/undergraduate/intercalated-bsc-programme/",
+      "title": "Intercalated BSc programme | Faculty of Medicine | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/medicine/study/undergraduate/intercalated-bsc-programme/",
+        "body_sha256": "6f034a99575180032d06dde067b26ffd8110076e00bf670da99070bd7f9b1bac"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-20",
+      "url": "https://www.imperial.ac.uk/medicine/study/postgraduate/fees-and-funding/masters/",
+      "title": "Master’s funding | Faculty of Medicine | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/medicine/study/postgraduate/fees-and-funding/masters/",
+        "body_sha256": "3b81616c7d17a8ce7a677357bb9651223fa99ba386dbaf5cc315fc6b47150870"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-21",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+      "title": "Terms and Conditions - 2027 Entry | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+        "body_sha256": "0588e05f85e2231ff7a8fc05af54c2615dfeeba5149d57a269d665cbdbcba28d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-22",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medical-science-innovation/",
+      "title": "Medical Science and Innovation | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medical-science-innovation/",
+        "body_sha256": "a4f67dbce4e030ec8c5a0b95fda23c7ad95d85576e4d8b5d6fe003f0143f4484"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-23",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+      "title": "Experimental Biomolecular Sciences (MRes) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+        "body_sha256": "d34b48b42a28a4fc8e31f3b29224247f0726eace0e6c748aa8df69f03d66cfda"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-24",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/global-mba/",
+      "title": "Global Online MBA | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/global-mba/",
+        "body_sha256": "34ab55a5d06260867c54b955d827a30fbd98949f0673dc7b4591463500030e32"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-25",
+      "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/admissions/",
+      "title": "Full-Time MBA admissions | Imperial Business School",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/admissions/",
+        "body_sha256": "1de15e9f2620841e00401c9b8af6a3fb14e4c05effb6664c28c27f6308d384d2"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-26",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+      "title": "Full-Time MBA | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+        "body_sha256": "78f1a97d080bb21177115266706be3ee9a728a34dcaa89e2ff2784cf72663e6a"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-27",
+      "url": "https://www.imperial.ac.uk/business-school/executive-education/apprenticeship-programmes/data-analytics/",
+      "title": "Data & Analytics | Imperial Business School",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/executive-education/apprenticeship-programmes/data-analytics/",
+        "body_sha256": "13d3594d185badc8957763efb1c93d1641212016aa1cdded2d640c3725cf8024"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-28",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+      "title": "Genes, Drugs and Stem Cells – Novel Therapies (MSc) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+        "body_sha256": "9da4ff533af785d650bd1408d9d9836be859530fdf924685c398f6c4276e64ae"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-29",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/",
+      "title": "Genomic Medicine (MSc) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/",
+        "body_sha256": "1cc364ed8a6b73113a787a0bbf3c277d8d5294ba96dde1c26cb65db846e91794"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-30",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/mph-online/",
+      "title": "Master of Public Health (Online) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/mph-online/",
+        "body_sha256": "92ec74a88890eb076ae91cbc19764a91225fa2172db0c8d4cb5f78f798371502"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-31",
+      "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+      "title": "Professional Doctorate | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+        "body_sha256": "3ac8819ada8046edf7f5d2f135ba6fe8109dc55cbf782b7e3fcd7f9ad496f109"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-32",
+      "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+      "title": "PhD | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+        "body_sha256": "a0c5041fe8a393d12840c40b46da7461f1d67f11c9e7ce41a9772c1cf306b266"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-33",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+      "title": "Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+        "body_sha256": "865d502abf5555a72911768e0e7d138aad3e45e4031ff8b79714a8448b652b56"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-34",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+      "title": "EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+        "body_sha256": "e897b6098d59fd94a3104ba478048f5fe61b06b3b71ce3fa249938c01774a232"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-35",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/DSc_Regulations_2026-27-v1.0.pdf",
+      "title": "DSc_Regulations_2026-27-v1.0.pdf",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/DSc_Regulations_2026-27-v1.0.pdf",
+        "body_sha256": "b45af59d8f1ec0e53f369d4a27b66dd0916c83c8d9437de6f5584e180af8684d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-36",
+      "url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/centre-for-languages-culture-and-communication/",
+      "title": "Centre for Languages, Culture and Communication | Current students | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/centre-for-languages-culture-and-communication/",
+        "body_sha256": "229174ce14e0124f46e9f836a3166af5cb0c42a5d04abcff990dea76eb06ec0e"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-37",
+      "url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/crick-institute/",
+      "title": "Crick Institute | Current students | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/crick-institute/",
+        "body_sha256": "4ba84ad015929761423a4b61efc2c79495d9eb039828efb01de3448b9aaf4161"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-38",
+      "url": "https://www.imperial.ac.uk/mathematics/postgraduate/cdts/",
+      "title": "Centres for Doctoral Training | Faculty of Natural Sciences | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/mathematics/postgraduate/cdts/",
+        "body_sha256": "edfe3742d0adfee230fbe305e9baa530ec6985956351e1004c3d70352d4a97e8"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-39",
+      "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/pg/mresphd/",
+      "title": "Integrated MRes/PhD Degrees | Faculty of Engineering | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/pg/mresphd/",
+        "body_sha256": "707f2a9d50a0a26083061ef9f31c02b6242b50091ee4f6d0f5edda725dfee7c2"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-40",
+      "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/",
+      "title": "DRIVERS Doctoral Focal Award in Nuclear Skills | Research groups | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/",
+        "body_sha256": "4b4379a1a089dbd2a99dbc18b82a3800be188769f4e7196068e61b74669ea530"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-41",
+      "url": "https://www.imperial.ac.uk/next-generation-synthesis-reaction-technology/",
+      "title": "EPSRC CDT Next Generation Synthesis & Reaction Technology | Research groups | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/next-generation-synthesis-reaction-technology/",
+        "body_sha256": "80f118be918f157f4afa11a80bb5f2c08437507a5c251f6caad9cc8cd19f1bcc"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-42",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/ukri-ai-for-healthcare-cdt-studentship-20252026.php",
+      "title": "UKRI AI for Healthcare CDT Studentship | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/ukri-ai-for-healthcare-cdt-studentship-20252026.php",
+        "body_sha256": "6c13e16dc19c748e275525473043c01b764e6083b9345b2ef866f6f472da2fee"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-43",
+      "url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+      "title": "Postgraduate Research (PhD) | Faculty of Engineering | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+        "body_sha256": "5c1617c7168dd1ac60ac549f51eb378e4eeaf40aa9b5573bd9feaefcf3e31632"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-44",
+      "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/",
+      "title": "Full-Time MBA programme",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/",
+        "body_sha256": "4e28dec2e75d303f30c079076841647e12dd853d0f2631818c41c85efe2e8f54"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-45",
+      "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/fees-and-funding/",
+      "title": "Full-Time MBA fees and funding",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/fees-and-funding/",
+        "body_sha256": "c7ae3c4a0a8abd925f1fad35d278730a1c3575c17f74469416fa1b109a19a67d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-46",
+      "url": "https://www.imperial.ac.uk/business-school/mba/global-online-mba/fees-and-funding/",
+      "title": "Global Online MBA fees and funding",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/global-online-mba/fees-and-funding/",
+        "body_sha256": "15e51e0115b57ee43332dfaaab37d8383553ce1ebd33a579e2ed894fbc04cce7"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-47",
+      "url": "https://www.imperial.ac.uk/business-school/mba/compare/",
+      "title": "Compare Imperial MBA programmes",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/compare/",
+        "body_sha256": "fc4495fbe07629653012210090a4dbb01eebb96eceb08b3030839c46c1d9e2bb"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-48",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-undergraduate-20272028.php",
+      "title": "Imperial Inspires undergraduate scholarship 2027/28",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-undergraduate-20272028.php",
+        "body_sha256": "6649f2b5a0fb5a236a422e4470d6316c02d8c72400ea6b856005fadc1a71b7c0"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-49",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-postgraduate-taught-20272028.php",
+      "title": "Imperial Inspires postgraduate taught scholarship 2027/28",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-postgraduate-taught-20272028.php",
+        "body_sha256": "4be1c22e1a83efc937f4441c8a655685e8487b3ac7681bf05316bea80e2abab1"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-50",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/apply/",
+      "title": "How to apply for an Imperial Inspires Scholarship",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/apply/",
+        "body_sha256": "3be14be55531ccf553aa420faeb083decc61a5b94db5b4b4931538d8d6c2f772"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-51",
+      "url": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+      "title": "Innovation Design Engineering MA/MSc | Royal College of Art",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+        "body_sha256": "5e53e6d7be6faadee1c7f049fd4307a2fee98a81c96b8362f942f2601872e1a1"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "accepted_option_ids": [
+        "imperial-option-innovation-design-engineering"
+      ],
+      "relationship_evidence_source_ids": [
+        "imperial-course-innovation-design-engineering-2027"
+      ],
+      "institution_relationship": "Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc"
+    },
+    {
+      "id": "imperial-recheck-20261020-52",
+      "url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+      "title": "Computing postgraduate research admissions",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+        "body_sha256": "a1948c3019cb7b996a9a806199876d77c2181fe330ddfa002d1aba547b4ea6f5"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+    },
+    {
+      "id": "imperial-recheck-20261020-53",
+      "url": "https://www.rca.ac.uk/study/apply-to-study/eligibility-and-key-dates/",
+      "title": "Eligibility and key dates for 2027 entry | Royal College of Art",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.rca.ac.uk/study/apply-to-study/eligibility-and-key-dates/",
+        "body_sha256": "ccf40feba287380e36ec1f8ce50edd3a6ca4b239527edb33413f52698824dfb7"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "accepted_option_ids": [
+        "imperial-option-innovation-design-engineering"
+      ],
+      "relationship_evidence_source_ids": [
+        "imperial-course-innovation-design-engineering-2027"
+      ],
+      "institution_relationship": "Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc"
+    }
+  ],
+  "facts": [
+    {
+      "id": "imperial-ide-rca-2027-application",
+      "topic": "application_deadline",
+      "value": {
+        "application_due": {
+          "date": "2027-01-08",
+          "time": "12:00",
+          "timezone": "Europe/London"
+        },
+        "application_destination": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+        "cutoff_note": "RCA programme lists 8 January 2027, 12 noon. The linked official 2027 key-dates page explicitly confirms UK time for Round 1; the timezone is Europe/London, not an inferred local timezone.",
+        "deposit": {
+          "Home": {
+            "amount": 1000,
+            "currency": "GBP"
+          },
+          "Overseas and EU": {
+            "amount": 3500,
+            "currency": "GBP"
+          },
+          "terms": "Non-refundable; offset against tuition rather than an additional tuition charge."
+        }
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-innovation-design-engineering"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "Applicants to the explicitly listed programme and entry cycle"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-08",
+        "imperial-recheck-20261020-51",
+        "imperial-recheck-20261020-53"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period.",
+      "topics": [
+        "costs"
+      ]
+    },
+    {
+      "id": "imperial-medical-science-innovation-higher-english-2027",
+      "topic": "language_requirements",
+      "value": {
+        "english_level": "Higher",
+        "applicability": "The 2027 Medical Science and Innovation course explicitly requires the higher university English-language requirement; use the separately sourced Higher-band accepted-test policy for exam-specific grades."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-medical-science-innovation"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "Applicants to the explicitly listed programme and entry cycle"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-22"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period."
+    },
+    {
+      "id": "imperial-inspires-ug-2027-application",
+      "topic": "funding",
+      "value": {
+        "funding_program": "Imperial Inspires (2027/28)",
+        "funding_type": "competitive_scholarship",
+        "availability": "conditional",
+        "value": "£15,000 per year of the course; 150 awards are listed for undergraduate applicants.",
+        "deadline": {
+          "date": "2027-02-05",
+          "time": "23:59",
+          "timezone": "Europe/London"
+        },
+        "application": "Apply through UCAS first; scholarship invitation required. An optional 250-word statement may be submitted. The scholarship opening date is not inferred from the October announcement.",
+        "outcome": "Notification no later than 30 April 2027.",
+        "eligibility_note": "New Overseas-fee entrants to full-time on-campus undergraduate courses; course minimums, invitation and award conditions still apply."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-aeronautical-engineering",
+          "imperial-option-aeronautical-engineering-variant-1",
+          "imperial-option-aeronautical-engineering-variant-2",
+          "imperial-option-aeronautical-engineering-variant-3",
+          "imperial-option-aeronautics-spacecraft-engineering",
+          "imperial-option-biochemistry-bsc",
+          "imperial-option-biochemistry-bsc-variant-1",
+          "imperial-option-biochemistry-bsc-variant-2",
+          "imperial-option-biochemistry-msci",
+          "imperial-option-biochemistry-language",
+          "imperial-option-biochemistry-language-variant-1",
+          "imperial-option-biochemistry-language-variant-2",
+          "imperial-option-biochemistry-language-variant-3",
+          "imperial-option-biochemistry-management",
+          "imperial-option-biochemistry-management-variant-1",
+          "imperial-option-biological-sciences",
+          "imperial-option-biological-sciences-variant-1",
+          "imperial-option-biological-sciences-variant-2",
+          "imperial-option-biological-sciences-msci",
+          "imperial-option-biological-sciences-language",
+          "imperial-option-biological-sciences-language-variant-1",
+          "imperial-option-biological-sciences-language-variant-2",
+          "imperial-option-biological-sciences-language-variant-3",
+          "imperial-option-biological-sciences-management",
+          "imperial-option-biological-sciences-management-variant-1",
+          "imperial-option-biomaterials-tissue-engineering-meng",
+          "imperial-option-biomedical-engineering",
+          "imperial-option-biomedical-engineering-variant-1",
+          "imperial-option-biomedical-engineering-variant-2",
+          "imperial-option-biomedical-technology-ventures",
+          "imperial-option-biomedical-technology-ventures-variant-1",
+          "imperial-option-biotechnology",
+          "imperial-option-biotechnology-variant-1",
+          "imperial-option-biotechnology-variant-2",
+          "imperial-option-biotechnology-msci",
+          "imperial-option-biotechnology-language",
+          "imperial-option-biotechnology-language-variant-1",
+          "imperial-option-biotechnology-language-variant-2",
+          "imperial-option-biotechnology-language-variant-3",
+          "imperial-option-biotechnology-management",
+          "imperial-option-chemical-engineering",
+          "imperial-option-chemical-engineering-variant-1",
+          "imperial-option-chemistry-bsc",
+          "imperial-option-chemistry-msci",
+          "imperial-option-chemistry-msci-variant-1",
+          "imperial-option-chemistry-msci-variant-2",
+          "imperial-option-chemistry-msci-variant-3",
+          "imperial-option-chemistry-management",
+          "imperial-option-chemistry-medicinal",
+          "imperial-option-chemistry-medicinal-variant-1",
+          "imperial-option-chemistry-molecular-physics",
+          "imperial-option-chemistry-molecular-physics-variant-1",
+          "imperial-option-civil-engineering",
+          "imperial-option-civil-engineering-variant-1",
+          "imperial-option-computing-meng",
+          "imperial-option-computing-beng",
+          "imperial-option-computing-artificial-intelligence-meng",
+          "imperial-option-computing-international-programme-of-study",
+          "imperial-option-computing-security-reliability-meng",
+          "imperial-option-computing-software-engineering-meng",
+          "imperial-option-computing-visual-computing-robotics-meng",
+          "imperial-option-design-engineering",
+          "imperial-option-earth-planetary-science-bsc",
+          "imperial-option-earth-planetary-science-msci",
+          "imperial-option-earth-planetary-science-msci-variant-1",
+          "imperial-option-ecology-environmental-biology",
+          "imperial-option-economics-finance-data-science",
+          "imperial-option-electrical-electronic-engineering-beng",
+          "imperial-option-electrical-electronic-engineering-meng",
+          "imperial-option-electrical-electronic-engineering-meng-variant-1",
+          "imperial-option-electrical-electronic-engineering-management",
+          "imperial-option-electronic-information-beng",
+          "imperial-option-electronic-information-meng",
+          "imperial-option-electronic-information-meng-variant-1",
+          "imperial-option-geology-bsc",
+          "imperial-option-geology-msci",
+          "imperial-option-geology-msci-variant-1",
+          "imperial-option-geophysics-bsc",
+          "imperial-option-geophysics-msci",
+          "imperial-option-geophysics-msci-variant-1",
+          "imperial-option-materials-science-engineering-meng",
+          "imperial-option-materials-science-engineering-beng",
+          "imperial-option-materials-nuclear-engineering",
+          "imperial-option-mathematics-msci",
+          "imperial-option-mathematics-msci-variant-1",
+          "imperial-option-mathematics-bsc",
+          "imperial-option-pure-mathematics-bsc",
+          "imperial-option-mathematics-computer-science-meng",
+          "imperial-option-mathematics-computer-science-beng",
+          "imperial-option-mathematics-computer-science-ai-meng",
+          "imperial-option-mathematics-computer-science-ai-beng",
+          "imperial-option-mathematics-applied-physics",
+          "imperial-option-mathematics-computation",
+          "imperial-option-mathematics-statistics",
+          "imperial-option-mathematics-statistics-finance",
+          "imperial-option-mechanical-engineering",
+          "imperial-option-mechanical-engineering-variant-1",
+          "imperial-option-mechanical-engineering-variant-2",
+          "imperial-option-mechanical-engineering-variant-3",
+          "imperial-option-mechanical-engineering-nuclear",
+          "imperial-option-mechanical-engineering-nuclear-variant-1",
+          "imperial-option-medical-biosciences",
+          "imperial-option-medical-biosciences-management",
+          "imperial-option-medical-science-innovation",
+          "imperial-option-medicine",
+          "imperial-option-medicine-graduate-entry",
+          "imperial-option-microbiology",
+          "imperial-option-molecular-bioengineering",
+          "imperial-option-molecular-bioengineering-variant-1",
+          "imperial-option-molecular-bioengineering-variant-2",
+          "imperial-option-physics-bsc",
+          "imperial-option-physics-msci",
+          "imperial-option-physics-msci-variant-1",
+          "imperial-option-physics-theoretical-msci",
+          "imperial-option-physics-theoretical-bsc"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "New Overseas-fee undergraduate UCAS applicants; full-time on-campus course and scholarship invitation required"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": [
+          "Overseas"
+        ]
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-48",
+        "imperial-recheck-20261020-50",
+        "imperial-recheck-20261020-21"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period.",
+      "topics": [
+        "deadlines"
+      ]
+    },
+    {
+      "id": "imperial-inspires-pgt-2027-conditional_course_class",
+      "topic": "funding",
+      "value": {
+        "funding_program": "Imperial Inspires (2027/28)",
+        "funding_type": "competitive_scholarship",
+        "availability": "conditional_course_class",
+        "eligibility_note": "Only new Overseas-fee entrants to the published full-time on-campus MSc course class can be considered. A scholarship invitation and the full award conditions are required. Part-time study is excluded; eligibility is not inferred for an individual applicant.",
+        "application": "Invited postgraduate taught applicants have two weeks from invitation to complete the scholarship form; no additional written task is required. The relative invitation window is not an absolute calendar deadline.",
+        "award_reference": "The postgraduate listing advertises 200 awards of £15,000. The Business School applies its award to tuition. Exact award duration, split and personal entitlement follow the award letter and full terms.",
+        "deadlines": {
+          "imperial-option-advanced-aeronautical-engineering": "2027-03-10",
+          "imperial-option-advanced-chemical-engineering": "2027-01-06",
+          "imperial-option-chemical-engineering-biotechnology": "2027-01-06",
+          "imperial-option-computational-methods": "2027-03-10",
+          "imperial-option-advanced-computing": "2027-04-28",
+          "imperial-option-advanced-materials-sustainable-infrastructure": "2027-01-06",
+          "imperial-option-advanced-materials": "2027-01-06",
+          "imperial-option-advanced-mechanical-engineering": "2027-01-06",
+          "imperial-option-advanced-structural-engineering": "2027-01-06",
+          "imperial-option-structural-engineering-data-science": "2027-01-06",
+          "imperial-option-ai-economics-policy": "2027-04-28",
+          "imperial-option-analogue-digital-circuit-design": "2027-01-06",
+          "imperial-option-applied-machine-learning": "2027-01-06",
+          "imperial-option-artificial-intelligence": "2027-04-28",
+          "imperial-option-applications-innovation": "2027-04-28",
+          "imperial-option-biomedical-engineering-biomaterials": "2027-03-10",
+          "imperial-option-biomedical-engineering-biomechanics": "2027-03-10",
+          "imperial-option-biomedical-engineering-computational": "2027-03-10",
+          "imperial-option-biomedical-engineering-medical": "2027-03-10",
+          "imperial-option-biomedical-engineering-neurotechnology": "2027-03-10",
+          "imperial-option-business-analytics": "2027-04-28",
+          "imperial-option-cleantech-innovation": "2027-03-10",
+          "imperial-option-climate-change-management-finance": "2027-04-28",
+          "imperial-option-communications-signal-processing": "2027-01-06",
+          "imperial-option-composites": "2027-03-10",
+          "imperial-option-computing": "2027-04-28",
+          "imperial-option-computing-artificial-intelligence-msc": "2027-04-28",
+          "imperial-option-computing-security-reliability-msc": "2027-04-28",
+          "imperial-option-computing-software-engineering-msc": "2027-04-28",
+          "imperial-option-computing-visual-computing-robotics-msc": "2027-04-28",
+          "imperial-option-control-optimisation": "2027-01-06",
+          "imperial-option-design-engineering-msc": "2027-03-10",
+          "imperial-option-design-behaviour": "2027-03-10",
+          "imperial-option-earthquake-engineering": "2027-01-06",
+          "imperial-option-economics-strategy-business": "2027-04-28",
+          "imperial-option-fluid-mechanics": "2027-01-06",
+          "imperial-option-engineering-biomedicine": "2027-03-10",
+          "imperial-option-environmental-engineering": "2027-01-06",
+          "imperial-option-environmental-engineering-data-science": "2027-01-06",
+          "imperial-option-finance": "2027-04-28",
+          "imperial-option-finance-accounting": "2027-04-28",
+          "imperial-option-financial-technology": "2027-04-28",
+          "imperial-option-future-power-networks": "2027-01-06",
+          "imperial-option-geological-engineering": "2027-01-06",
+          "imperial-option-geotechnical-engineering": "2027-01-06",
+          "imperial-option-offshore-renewables": "2027-01-06",
+          "imperial-option-global-health-management": "2027-04-28",
+          "imperial-option-human-biological-robotics": "2027-03-10",
+          "imperial-option-hydrology": "2027-01-06",
+          "imperial-option-innovation-entrepreneurship-management": "2027-04-28",
+          "imperial-option-investment-wealth-management": "2027-04-28",
+          "imperial-option-process-systems-engineering": "2027-01-06",
+          "imperial-option-medical-device-design": "2027-03-10",
+          "imperial-option-management": "2027-04-28",
+          "imperial-option-responsible-mining-metals-finance": "2027-04-28",
+          "imperial-option-risk-management-financial-engineering": "2027-04-28",
+          "imperial-option-sensor-systems": "2027-01-06",
+          "imperial-option-strategic-marketing": "2027-04-28",
+          "imperial-option-sustainable-energy-futures": "2027-01-06",
+          "imperial-option-transport": "2027-01-06",
+          "imperial-option-transport-data-science": "2027-01-06"
+        },
+        "deadline_kind": "admissions_for_scholarship_consideration",
+        "deadline_scope": "Admissions application cutoff for scholarship consideration; not the deadline of the separate invited scholarship form.",
+        "earth_science_exception": "Earth Science and Engineering considers awards on a rolling basis through Round 2; apply as soon as possible after 30 September 2026. No exact consideration deadline is invented."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-advanced-aeronautical-engineering",
+          "imperial-option-advanced-chemical-engineering",
+          "imperial-option-chemical-engineering-biotechnology",
+          "imperial-option-computational-methods",
+          "imperial-option-advanced-computing",
+          "imperial-option-advanced-materials-sustainable-infrastructure",
+          "imperial-option-advanced-materials",
+          "imperial-option-advanced-mechanical-engineering",
+          "imperial-option-advanced-structural-engineering",
+          "imperial-option-structural-engineering-data-science",
+          "imperial-option-ai-economics-policy",
+          "imperial-option-analogue-digital-circuit-design",
+          "imperial-option-applied-computational-science",
+          "imperial-option-applied-machine-learning",
+          "imperial-option-artificial-intelligence",
+          "imperial-option-applications-innovation",
+          "imperial-option-biomedical-engineering-biomaterials",
+          "imperial-option-biomedical-engineering-biomechanics",
+          "imperial-option-biomedical-engineering-computational",
+          "imperial-option-biomedical-engineering-medical",
+          "imperial-option-biomedical-engineering-neurotechnology",
+          "imperial-option-business-analytics",
+          "imperial-option-cleantech-innovation",
+          "imperial-option-climate-change-management-finance",
+          "imperial-option-communications-signal-processing",
+          "imperial-option-composites",
+          "imperial-option-computing",
+          "imperial-option-computing-artificial-intelligence-msc",
+          "imperial-option-computing-security-reliability-msc",
+          "imperial-option-computing-software-engineering-msc",
+          "imperial-option-computing-visual-computing-robotics-msc",
+          "imperial-option-control-optimisation",
+          "imperial-option-design-engineering-msc",
+          "imperial-option-design-behaviour",
+          "imperial-option-earthquake-engineering",
+          "imperial-option-economics-strategy-business",
+          "imperial-option-fluid-mechanics",
+          "imperial-option-engineering-biomedicine",
+          "imperial-option-environmental-data-science-machine-learning",
+          "imperial-option-environmental-engineering",
+          "imperial-option-environmental-engineering-data-science",
+          "imperial-option-finance",
+          "imperial-option-finance-accounting",
+          "imperial-option-financial-technology",
+          "imperial-option-future-power-networks",
+          "imperial-option-geo-energy-machine-learning-data-science",
+          "imperial-option-geological-engineering",
+          "imperial-option-geotechnical-engineering",
+          "imperial-option-offshore-renewables",
+          "imperial-option-global-health-management",
+          "imperial-option-human-biological-robotics",
+          "imperial-option-hydrology",
+          "imperial-option-innovation-entrepreneurship-management",
+          "imperial-option-investment-wealth-management",
+          "imperial-option-process-systems-engineering",
+          "imperial-option-medical-device-design",
+          "imperial-option-management",
+          "imperial-option-renewable-energy",
+          "imperial-option-responsible-mining-metals-finance",
+          "imperial-option-risk-management-financial-engineering",
+          "imperial-option-sensor-systems",
+          "imperial-option-strategic-marketing",
+          "imperial-option-sustainable-energy-futures",
+          "imperial-option-transport",
+          "imperial-option-transport-data-science"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "New Overseas-fee applicants; only the exact published course class, full-time on-campus mode and invitation qualify"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": [
+          "Overseas"
+        ]
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-49",
+        "imperial-recheck-20261020-50",
+        "imperial-recheck-20261020-21"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period.",
+      "topics": [
+        "deadlines"
+      ]
+    },
+    {
+      "id": "imperial-inspires-pgt-2027-conditional_selected_course",
+      "topic": "funding",
+      "value": {
+        "funding_program": "Imperial Inspires (2027/28)",
+        "funding_type": "competitive_scholarship",
+        "availability": "conditional_selected_course",
+        "eligibility_note": "Only selected full-time on-campus Master's courses participate. Department membership and a consideration date do not confirm that this particular course participates. An invitation and the full award conditions are required.",
+        "application": "Invited postgraduate taught applicants have two weeks from invitation to complete the scholarship form; no additional written task is required. The relative invitation window is not an absolute calendar deadline.",
+        "award_reference": "The postgraduate listing advertises 200 awards of £15,000. The Business School applies its award to tuition. Exact award duration, split and personal entitlement follow the award letter and full terms.",
+        "deadlines": {
+          "imperial-option-molecular-synthesis": "2027-01-06",
+          "imperial-option-biosciences-biotechnology": "2027-03-10",
+          "imperial-option-applied-mathematics": "2027-01-06",
+          "imperial-option-nature-based-solutions": "2027-03-10",
+          "imperial-option-bioinformatics": "2027-03-10",
+          "imperial-option-bacterial-pathogenesis-infection": "2027-01-06",
+          "imperial-option-data-science": "2027-01-06",
+          "imperial-option-epidemiology-evolution-control-infectious-diseases": "2027-01-06",
+          "imperial-option-biomedical-research": "2027-01-06",
+          "imperial-option-microbiome-health-disease": "2027-01-06",
+          "imperial-option-molecular-basis-of-human-disease": "2027-01-06",
+          "imperial-option-respiratory-cardiovascular-science": "2027-01-06",
+          "imperial-option-bioscience-futures": "2027-01-06",
+          "imperial-option-biosystematics": "2027-03-10",
+          "imperial-option-cancer-biology": "2027-01-06",
+          "imperial-option-cancer-informatics": "2027-01-06",
+          "imperial-option-cancer-innovation": "2027-01-06",
+          "imperial-option-cardiovascular-healthcare": "2027-01-06",
+          "imperial-option-catalysis": "2027-01-06",
+          "imperial-option-chemical-biology": "2027-01-06",
+          "imperial-option-computational-methods-ecology-evolution-msc": "2027-03-10",
+          "imperial-option-conservation-science-practice": "2027-04-28",
+          "imperial-option-drug-discovery-development": "2027-01-06",
+          "imperial-option-ecology-evolution-conservation-research": "2027-03-10",
+          "imperial-option-ecology-evolution-conservation": "2027-03-10",
+          "imperial-option-ecology-evolution-conservation-ai-methods": "2027-03-10",
+          "imperial-option-ecology-evolution-conservation-research-ai-methods": "2027-03-10",
+          "imperial-option-epidemiology": "2027-01-06",
+          "imperial-option-experimental-biomolecular-sciences": "2027-01-06",
+          "imperial-option-experimental-neuroscience": "2027-01-06",
+          "imperial-option-genes-drugs-stem-cells": "2027-01-06",
+          "imperial-option-genomic-medicine": "2027-01-06",
+          "imperial-option-green-chemistry": "2027-01-06",
+          "imperial-option-health-data-analytics": "2027-01-06",
+          "imperial-option-machine-learning-physical-sciences": "2027-03-10",
+          "imperial-option-public-health-masters": "2027-01-06",
+          "imperial-option-mathematics-finance": "2027-01-06",
+          "imperial-option-medical-ultrasound-echocardiography": "2027-01-06",
+          "imperial-option-medical-ultrasound-vascular": "2027-01-06",
+          "imperial-option-molecular-cellular-biosciences": "2027-03-10",
+          "imperial-option-molecular-biology": "2027-01-06",
+          "imperial-option-molecular-medicine": "2027-01-06",
+          "imperial-option-molecular-plant-microbial-sciences": "2027-03-10",
+          "imperial-option-nanomaterials": "2027-01-06",
+          "imperial-option-nanomedicine": "2027-01-06",
+          "imperial-option-optics-photonics": "2027-03-10",
+          "imperial-option-photonics": "2027-03-10",
+          "imperial-option-physics": "2027-03-10",
+          "imperial-option-physics-extended-research": "2027-03-10",
+          "imperial-option-fusion-plasma": "2027-03-10",
+          "imperial-option-physics-quantum-dynamics": "2027-03-10",
+          "imperial-option-pure-mathematics-msc": "2027-01-06",
+          "imperial-option-pure-mathematics-formalisation-msc": "2027-01-06",
+          "imperial-option-quantum-fields-fundamental-forces": "2027-03-10",
+          "imperial-option-soft-electronic-materials": "2027-03-10",
+          "imperial-option-statistics": "2027-01-06",
+          "imperial-option-statistics-applied-statistics": "2027-01-06",
+          "imperial-option-statistics-data-science": "2027-01-06",
+          "imperial-option-statistics-statistical-finance": "2027-01-06",
+          "imperial-option-statistics-theory-methods": "2027-01-06",
+          "imperial-option-structural-biology": "2027-03-10",
+          "imperial-option-sustainability-environmental-policy-innovation": "2027-04-28",
+          "imperial-option-sustainable-agriculture-technology": "2027-03-10",
+          "imperial-option-synthetic-cell-science": "2027-01-06",
+          "imperial-option-systems-synthetic-biology": "2027-03-10",
+          "imperial-option-taxonomy-biodiversity": "2027-03-10",
+          "imperial-option-translational-neuroscience": "2027-01-06",
+          "imperial_experimental_biomolecular_sciences_mres_msc": "2027-01-06"
+        },
+        "deadline_kind": "admissions_for_scholarship_consideration",
+        "deadline_scope": "Admissions application cutoff for scholarship consideration; not the deadline of the separate invited scholarship form."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-molecular-synthesis",
+          "imperial-option-biosciences-biotechnology",
+          "imperial-option-applied-mathematics",
+          "imperial-option-nature-based-solutions",
+          "imperial-option-bioinformatics",
+          "imperial-option-bacterial-pathogenesis-infection",
+          "imperial-option-data-science",
+          "imperial-option-epidemiology-evolution-control-infectious-diseases",
+          "imperial-option-biomedical-research",
+          "imperial-option-microbiome-health-disease",
+          "imperial-option-molecular-basis-of-human-disease",
+          "imperial-option-respiratory-cardiovascular-science",
+          "imperial-option-bioscience-futures",
+          "imperial-option-biosystematics",
+          "imperial-option-cancer-biology",
+          "imperial-option-cancer-informatics",
+          "imperial-option-cancer-innovation",
+          "imperial-option-cardiovascular-healthcare",
+          "imperial-option-catalysis",
+          "imperial-option-chemical-biology",
+          "imperial-option-computational-methods-ecology-evolution-msc",
+          "imperial-option-conservation-science-practice",
+          "imperial-option-drug-discovery-development",
+          "imperial-option-ecology-evolution-conservation-research",
+          "imperial-option-ecology-evolution-conservation",
+          "imperial-option-ecology-evolution-conservation-ai-methods",
+          "imperial-option-ecology-evolution-conservation-research-ai-methods",
+          "imperial-option-epidemiology",
+          "imperial-option-experimental-biomolecular-sciences",
+          "imperial-option-experimental-neuroscience",
+          "imperial-option-genes-drugs-stem-cells",
+          "imperial-option-genomic-medicine",
+          "imperial-option-green-chemistry",
+          "imperial-option-health-data-analytics",
+          "imperial-option-machine-learning-physical-sciences",
+          "imperial-option-public-health-masters",
+          "imperial-option-mathematics-finance",
+          "imperial-option-medical-ultrasound-echocardiography",
+          "imperial-option-medical-ultrasound-vascular",
+          "imperial-option-molecular-cellular-biosciences",
+          "imperial-option-molecular-biology",
+          "imperial-option-molecular-medicine",
+          "imperial-option-molecular-plant-microbial-sciences",
+          "imperial-option-nanomaterials",
+          "imperial-option-nanomedicine",
+          "imperial-option-optics-photonics",
+          "imperial-option-photonics",
+          "imperial-option-physics",
+          "imperial-option-physics-extended-research",
+          "imperial-option-fusion-plasma",
+          "imperial-option-physics-quantum-dynamics",
+          "imperial-option-pure-mathematics-msc",
+          "imperial-option-pure-mathematics-formalisation-msc",
+          "imperial-option-quantum-fields-fundamental-forces",
+          "imperial-option-soft-electronic-materials",
+          "imperial-option-statistics",
+          "imperial-option-statistics-applied-statistics",
+          "imperial-option-statistics-data-science",
+          "imperial-option-statistics-statistical-finance",
+          "imperial-option-statistics-theory-methods",
+          "imperial-option-structural-biology",
+          "imperial-option-sustainability-environmental-policy-innovation",
+          "imperial-option-sustainable-agriculture-technology",
+          "imperial-option-synthetic-cell-science",
+          "imperial-option-systems-synthetic-biology",
+          "imperial-option-taxonomy-biodiversity",
+          "imperial-option-translational-neuroscience",
+          "imperial_experimental_biomolecular_sciences_mres_msc"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "New Overseas-fee applicants; only the exact published course class, full-time on-campus mode and invitation qualify"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": [
+          "Overseas"
+        ]
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-49",
+        "imperial-recheck-20261020-50",
+        "imperial-recheck-20261020-21"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period.",
+      "topics": [
+        "deadlines"
+      ]
+    },
+    {
+      "id": "imperial-inspires-pgt-2027-excluded_by_published_course_rules",
+      "topic": "funding",
+      "value": {
+        "funding_program": "Imperial Inspires (2027/28)",
+        "funding_type": "competitive_scholarship",
+        "availability": "excluded_by_published_course_rules",
+        "eligibility_note": "This award or delivery format is excluded by the published Imperial Inspires 2027 course rules. This does not rule out other scholarships or funding programmes.",
+        "application": "Invited postgraduate taught applicants have two weeks from invitation to complete the scholarship form; no additional written task is required. The relative invitation window is not an absolute calendar deadline.",
+        "award_reference": "The postgraduate listing advertises 200 awards of £15,000. The Business School applies its award to tuition. Exact award duration, split and personal entitlement follow the award letter and full terms."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-aerospace-sciences",
+          "imperial-option-alternative-protein",
+          "imperial-option-applied-multiomics-biomedicine",
+          "imperial-option-artificial-intelligence-machine-learning",
+          "imperial-option-bioengineering-mres",
+          "imperial-option-cancer-technology",
+          "imperial-option-diabetes-obesity",
+          "imperial-option-human-nutrition",
+          "imperial-option-multiple-long-term-conditions",
+          "imperial-option-clinical-research",
+          "imperial-option-computational-biomedicine-brain-sciences",
+          "imperial-option-computational-biomedicine-genomics",
+          "imperial-option-design-engineering-mres",
+          "imperial-option-digital-chemistry",
+          "imperial-option-executive-mba",
+          "imperial-option-full-time-mba",
+          "imperial-option-global-mba",
+          "imperial-option-health-policy",
+          "imperial-option-human-molecular-genetics",
+          "imperial-option-immunology",
+          "imperial-option-machine-learning-data-science",
+          "imperial-option-mph-online",
+          "imperial-option-medical-robotics",
+          "imperial-option-clinical-robotics-ai",
+          "imperial-option-neurotechnology",
+          "imperial-option-reproductive-developmental-biology",
+          "imperial-option-strategic-marketing-online",
+          "imperial-option-translational-research-perioperative",
+          "imperial-option-weekend-mba",
+          "imperial_master_of_public_health_online_2ypt",
+          "imperial_master_of_public_health_online_3ypt"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "New Overseas-fee applicants; only the exact published course class, full-time on-campus mode and invitation qualify"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": [
+          "Overseas"
+        ]
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-49",
+        "imperial-recheck-20261020-50",
+        "imperial-recheck-20261020-21"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period."
+    },
+    {
+      "id": "imperial-inspires-pgt-2027-not_established",
+      "topic": "funding",
+      "value": {
+        "funding_program": "Imperial Inspires (2027/28)",
+        "funding_type": "competitive_scholarship",
+        "availability": "not_established",
+        "eligibility_note": "Imperial Inspires participation is not established for this exact award or application context. Do not inherit participation from a parent MSc, a faculty name, an internal doctoral phase or a joint partner application.",
+        "application": "Invited postgraduate taught applicants have two weeks from invitation to complete the scholarship form; no additional written task is required. The relative invitation window is not an absolute calendar deadline.",
+        "award_reference": "The postgraduate listing advertises 200 awards of £15,000. The Business School applies its award to tuition. Exact award duration, split and personal entitlement follow the award letter and full terms."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-business-mres",
+          "imperial-option-digital-chemistry-variant-1",
+          "imperial-option-digital-health-leadership",
+          "imperial-option-innovation-design-engineering",
+          "imperial-option-science-communication",
+          "imperial-option-science-media-production",
+          "imperial_cardiovascular_and_respiratory_healthcare_msc_pgcert",
+          "imperial_cardiovascular_and_respiratory_healthcare_msc_pgdip",
+          "imperial_clinical_research_translational_medicine_mres_pgcert",
+          "imperial_computational_biomedicine_computational_brain_sciences_online_msc_pgcert",
+          "imperial_computational_biomedicine_computational_brain_sciences_online_msc_pgdip",
+          "imperial_computational_biomedicine_computational_genomics_online_msc_pgcert",
+          "imperial_computational_biomedicine_computational_genomics_online_msc_pgdip",
+          "imperial_clinical_research_diabetes_and_obesity_mres_pgcert",
+          "imperial_experimental_biomolecular_sciences_mres_pgcert",
+          "imperial_genes_drugs_and_stem_cells_novel_therapies_msc_pgcert",
+          "imperial_genomic_medicine_msc_pgcert",
+          "imperial_genomic_medicine_msc_pgdip",
+          "imperial_health_policy_msc_pgcert",
+          "imperial_health_policy_msc_pgdip",
+          "imperial_clinical_research_human_nutrition_mres_pgcert",
+          "imperial_immunology_msc_pgcert",
+          "imperial_clinical_research_multiple_long_term_conditions_mres_pgcert",
+          "imperial_reproductive_and_developmental_biology_msc_pgcert",
+          "imperial_master_of_public_health_online_pgcert",
+          "imperial_master_of_public_health_online_pgdip",
+          "imperial-mphil"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "New Overseas-fee applicants; only the exact published course class, full-time on-campus mode and invitation qualify"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": [
+          "Overseas"
+        ]
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-49",
+        "imperial-recheck-20261020-50",
+        "imperial-recheck-20261020-21"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period."
+    },
+    {
+      "id": "imperial-computing-phd-2027-round-dates",
+      "topic": "deadlines",
+      "value": {
+        "windows": [
+          {
+            "name": "Round 1",
+            "application_due": "2026-10-01",
+            "decision": "2027-02-15"
+          },
+          {
+            "name": "Round 2",
+            "application_due": "2026-12-01",
+            "decision": "2027-04-15"
+          },
+          {
+            "name": "Round 3",
+            "application_due": "2027-02-01",
+            "decision": "2027-06-15"
+          },
+          {
+            "name": "Round 4",
+            "application_due": "2027-04-01",
+            "decision": "2027-07-15"
+          }
+        ],
+        "entry_period": "April 2027/October 2027",
+        "decision_meaning": "Notification of acceptance and funding; a supervisor acceptance alone does not guarantee funding.",
+        "funding_guidance": "Overseas candidates needing funding are particularly advised to apply by the October and December deadlines. General applications may be made throughout the year; no exact cutoff time is published."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-computing-phd"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "doctoral"
+        ],
+        "applicant_categories": [
+          "Applicants to the explicitly listed programme and entry cycle"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-52"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period."
+    },
+    {
+      "id": "imperial-full-time-mba-2027-tuition-and-deposits",
+      "topic": "costs",
+      "value": {
+        "course_page_tuition_fees": {
+          "Home and Overseas": [
+            {
+              "fee_status": "Home and Overseas",
+              "cycle": "September 2027",
+              "panel_status": "published",
+              "panel_cycle_label": "September 2027",
+              "currency": "GBP",
+              "amounts_and_periods": [
+                "£81,000 whole programme"
+              ]
+            }
+          ]
+        },
+        "deposits": [
+          {
+            "start": "September 2027",
+            "amount": 8100,
+            "currency": "GBP"
+          }
+        ],
+        "deposit_terms": "Deposits secure the place and are deducted from tuition; do not add them again to the programme tuition. Programme and start-month prices must remain separate."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-full-time-mba"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "Applicants to the explicitly listed programme and entry cycle"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-45"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period."
+    },
+    {
+      "id": "imperial-global-mba-2027-tuition-and-deposits",
+      "topic": "costs",
+      "value": {
+        "course_page_tuition_fees": {
+          "Home and Overseas": [
+            {
+              "fee_status": "Home and Overseas",
+              "cycle": "January 2027",
+              "panel_status": "published",
+              "panel_cycle_label": "January 2027",
+              "currency": "GBP",
+              "amounts_and_periods": [
+                "£57,000 whole programme"
+              ]
+            },
+            {
+              "fee_status": "Home and Overseas",
+              "cycle": "September 2027",
+              "panel_status": "published",
+              "panel_cycle_label": "September 2027",
+              "currency": "GBP",
+              "amounts_and_periods": [
+                "£60,500 whole programme"
+              ]
+            }
+          ]
+        },
+        "deposits": [
+          {
+            "start": "January 2027",
+            "amount": 5700,
+            "currency": "GBP"
+          },
+          {
+            "start": "September 2027",
+            "amount": 6050,
+            "currency": "GBP"
+          }
+        ],
+        "deposit_terms": "Deposits secure the place and are deducted from tuition; do not add them again to the programme tuition. Programme and start-month prices must remain separate."
+      },
+      "scope": {
+        "option_ids": [
+          "imperial-option-global-mba"
+        ],
+        "route_ids": [],
+        "study_levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "Applicants to the explicitly listed programme and entry cycle"
+        ],
+        "cycle": "2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial-recheck-20261020-46"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "conditions_and_exceptions": "Applies only to the named course, award, applicant category and stated publication period."
+    },
+    {
+      "id": "imperial-healthbridge-2027-exact-deadline",
+      "topic": "deadlines",
+      "value": {
+        "application_due": {
+          "date": "2026-11-11",
+          "time": "12:00",
+          "timezone": "GMT"
+        },
+        "entry_period": "October 2027",
+        "application_boundary": "Initial HealthBRIDGE studentship form precedes the offer-holder My Imperial qualification/English/fee checks. Approximate shortlisting/interview dates remain references, not calendar events."
+      },
+      "scope": {
+        "study_levels": [
+          "doctoral"
+        ],
+        "option_ids": [
+          "imperial-healthbridge"
+        ],
+        "route_ids": [],
+        "applicant_categories": [
+          "Applicants to the HealthBRIDGE October 2027 initial studentship round"
+        ],
+        "cycle": "October 2027 entry",
+        "fee_status": []
+      },
+      "source_ids": [
+        "imperial-healthbridge-opening-20261019"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-10-20",
+      "related_fact_ids": [
+        "imperial-healthbridge-entry-process"
+      ]
+    }
+  ],
+  "researched_unknowns": [],
+  "uncompleted_collection": []
+}

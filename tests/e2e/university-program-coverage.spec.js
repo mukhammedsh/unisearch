@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 function contextUrl({ university, option, route, level, applicant, cycle }) {
   const params = new URLSearchParams({
@@ -91,6 +91,7 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   expect(mdTuition.scope.cycle).toBe("2026-27 academic year");
   await openTab(page, "finance");
   const mdCost = page.locator('#tab-finance [data-admissions-fact="professional-evidence:med_md_award_cost"]');
+  await openDisclosureParents(mdCost);
   await expect(mdCost).toBeVisible();
   await expect(mdCost).toContainText(/2026[-\u2011]27/);
   await expect(mdCost).toContainText("USD 24,034 per quarter");
@@ -116,6 +117,7 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
 
   await openTab(page, "finance");
   const csCost = page.locator('#tab-finance [data-admissions-fact="engineering-doerr-evidence:engineering-2026-27-historical-tuition"]');
+  await openDisclosureParents(csCost);
   await expect(csCost).toBeVisible();
   await expect(csCost).toContainText(/2026[-\u2011]27/);
   await expect(csCost).toContainText(/15,?100/);
@@ -173,6 +175,7 @@ test("MIT application dates and Imperial award deadlines stay in their own sourc
   await expect(page.locator("#detailDeadlines")).not.toContainText("2026-11-02");
   await openTab(page, "finance");
   const funding = page.locator('#tab-finance [data-admissions-fact="imperial-civil-scholarship-scheme-conditions"]');
+  await openDisclosureParents(funding);
   await expect(funding).toBeVisible();
   await expect(funding).toContainText(/2026[-\u2011]11[-\u2011]02/);
 });

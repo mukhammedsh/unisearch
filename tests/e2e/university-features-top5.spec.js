@@ -1,5 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile, markTourAsSeen } = require("./helpers/personas");
+const { openDisclosureParents } = require("./helpers/selectors");
 
 function reviewedContextUrl({ university, option, route, level, applicant, cycle, fee = "unknown" }) {
   const params = new URLSearchParams({
@@ -95,7 +96,7 @@ test("reviewed Imperial shows fee-scoped course tuition and leaves Oxford legacy
   await expect(imperialFinance).toContainText("£25,850");
   await expect(imperialFinance).toContainText("Overseas fee");
   await expect(imperialFinance).toContainText("£48,300");
-  await expect(imperialFinance).toContainText(/comparable annual total is not established/i);
+  await expect(imperialFinance).toContainText(/No comparable budget is confirmed for this selection/i);
 
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
   await expect(page.locator("#detailCard")).toBeVisible();
@@ -160,12 +161,18 @@ test("exact Imperial Computing deadline preserves its source, time, course scope
     applicant: "first_year",
     cycle: "2027 entry",
   }));
-  await expect(page.locator("#detailCard")).toBeVisible();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
 
+  const summary = page.locator("#detailDeadlines [data-ucas-dates]");
+  await expect(summary).toBeVisible();
+  await expect(summary).toContainText("January 13, 2027");
+  await expect(summary).toContainText("18:00");
   const exactDeadline = page.locator('#detailDeadlines [data-admissions-fact="imperial-ucas-2027-window"]');
+  await openDisclosureParents(exactDeadline);
   await expect(exactDeadline).toBeVisible();
   await openEvidence(exactDeadline);
   await expect(exactDeadline).toContainText(/2027[-\u2011]01[-\u2011]13/);
@@ -243,6 +250,7 @@ test("MIT first-year deadline facts keep recurring dates separate from the 2027 
   await deadlinesTabBtn.click();
 
   const recurring = page.locator('#detailDeadlines [data-admissions-fact="first-year-rounds"]');
+  await openDisclosureParents(recurring);
   await expect(recurring).toBeVisible();
   await expect(recurring).toHaveAttribute("open", "");
   await expect(recurring).toContainText("Early Action");
@@ -251,6 +259,7 @@ test("MIT first-year deadline facts keep recurring dates separate from the 2027 
   await expect(recurring).toContainText("page does not specify entry year");
 
   const cycleDeadline = page.locator('#detailDeadlines [data-admissions-fact="mit-first-year-application-deadline"]');
+  await openDisclosureParents(cycleDeadline);
   await expect(cycleDeadline).toBeVisible();
   await expect(cycleDeadline).toContainText("January 4");
   await expect(cycleDeadline).toContainText("Fall 2027 entry");

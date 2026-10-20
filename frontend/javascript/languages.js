@@ -347,7 +347,22 @@ function findExistingExamEntry(profile, code, examId, takenOn = "") {
 }
 
 export function initLanguagesPanel() {
+  let disposed = false;
+  let booted = false;
+  let languageConfigLoadedHandler = null;
+  let disposeWindowHandlers = () => {};
+  const dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    if (languageConfigLoadedHandler) {
+      window.removeEventListener("languageConfigLoaded", languageConfigLoadedHandler);
+      languageConfigLoadedHandler = null;
+    }
+    disposeWindowHandlers();
+  };
+
   const boot = () => {
+    if (disposed || booted) return;
     const cfg = getConfigOrNull();
     if (!cfg) return;
 
@@ -373,6 +388,7 @@ export function initLanguagesPanel() {
     ) {
       return;
     }
+    booted = true;
 
     function findExistingEntryIndex(entries, draft) {
       const list = Array.isArray(entries) ? entries : [];
@@ -940,14 +956,24 @@ export function initLanguagesPanel() {
       });
     });
 
-    window.addEventListener("profileModalOpened", renderForm);
-    window.addEventListener("languageChanged", renderForm);
-    window.addEventListener("profileUpdated", renderForm);
+    const onProfileModalOpened = () => renderForm();
+    const onLanguageChanged = () => renderForm();
+    const onProfileUpdated = () => renderForm();
+    window.addEventListener("profileModalOpened", onProfileModalOpened);
+    window.addEventListener("languageChanged", onLanguageChanged);
+    window.addEventListener("profileUpdated", onProfileUpdated);
+    disposeWindowHandlers = () => {
+      window.removeEventListener("profileModalOpened", onProfileModalOpened);
+      window.removeEventListener("languageChanged", onLanguageChanged);
+      window.removeEventListener("profileUpdated", onProfileUpdated);
+    };
   };
 
   if (!getConfigOrNull()) {
-    window.addEventListener("languageConfigLoaded", () => boot(), { once: true });
-    return;
+    languageConfigLoadedHandler = () => boot();
+    window.addEventListener("languageConfigLoaded", languageConfigLoadedHandler, { once: true });
+    return dispose;
   }
   boot();
+  return dispose;
 }

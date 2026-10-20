@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 global.fetch = async (url) => {
-  const target = String(url || "");
+  const target = String(url || "").split("?")[0];
   if (target.endsWith("Localization/eng")) {
     return {
       ok: true,
@@ -452,7 +452,7 @@ test("legacy deadlines follow the selected program", () => {
       { id: "general-route", label: "General route", scope: "general", study_levels: ["Master"], application_deadline: "February 1, 2027" },
     ],
   };
-  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const container = { innerHTML: "", querySelectorAll: () => [], querySelector: () => null };
 
   selectAdmissionProgram(university, mfin);
   window.location.search = "?admission_program=sample-mfin";

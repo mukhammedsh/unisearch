@@ -329,8 +329,9 @@ async function renderReviewedUniversityPage({ id, preserveVisibleContent, univer
   }
   setupTabs();
   const initialUrl = new URL(window.location.href);
-  const initialTab = initialUrl.searchParams.get("admission_application_route") ? "admission"
-    : initialUrl.searchParams.get("admission_option") ? "programs" : "general";
+  const requestedTab = initialUrl.hash.match(/^#tab-(general|programs|admission|deadlines|finance)$/)?.[1];
+  const initialTab = requestedTab || (initialUrl.searchParams.get("admission_application_route") ? "admission"
+    : initialUrl.searchParams.get("admission_option") ? "programs" : "general");
   if (!preserveVisibleContent) document.querySelector(`[data-tab="tab-${initialTab}"]`)?.click();
   bindDetailRefreshLifecycle();
   await mounted.ready;

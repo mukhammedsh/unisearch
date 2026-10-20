@@ -3,7 +3,7 @@ import json
 import threading
 import time
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
 
@@ -82,10 +82,15 @@ def _quantize_slider_value(val: Any) -> Optional[int]:
         return None
 
 
-def _ai_sort_cache_key(payload: UniversitiesAiSortRequest) -> str:
+def _ai_sort_cache_key(
+    payload: UniversitiesAiSortRequest,
+    search_lang: Optional[str] = None,
+) -> str:
     raw = payload.model_dump(exclude_none=True)
     raw["admissions_revision"] = admissions_catalog.get_revision()
     raw["assessment_revision"] = admissions_assessment.get_assessment_revision()
+    raw.pop("lang", None)
+    raw["search_lang"] = _normalize_search_lang(search_lang if search_lang is not None else payload.lang)
     raw.pop("page", None)
     raw.pop("limit", None)
     for field in (
@@ -175,6 +180,7 @@ def list_universities(
     user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
     min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
@@ -200,6 +206,7 @@ def list_universities(
         "user_budget": user_budget,
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
+        "cost_basis": cost_basis,
         "min_acceptance": min_acceptance,
         "max_acceptance": max_acceptance,
         "size": size,
@@ -211,14 +218,12 @@ def list_universities(
     }
     redis_cache_key = _cache_key("api:universities:list", cache_payload)
 
-    use_redis_cache = True
-    if use_redis_cache:
-        cached = cache_get_json(redis_cache_key)
-        if isinstance(cached, dict):
-            if response is not None:
-                response.headers["Cache-Control"] = "public, max-age=60"
-                response.headers["X-Redis-Cache"] = "HIT"
-            return cached
+    cached = cache_get_json(redis_cache_key)
+    if isinstance(cached, dict):
+        if response is not None:
+            response.headers["Cache-Control"] = "public, max-age=60"
+            response.headers["X-Redis-Cache"] = "HIT"
+        return cached
 
     result = uni_service.list_universities(
         q=q,
@@ -232,6 +237,7 @@ def list_universities(
         user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
+        cost_basis=cost_basis,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -242,12 +248,11 @@ def list_universities(
         search_lang=search_lang,
     )
 
-    if use_redis_cache:
-        cache_set_json(redis_cache_key, result, ttl_seconds=max(1, int(REDIS_CACHE_TTL_SEC)))
+    cache_set_json(redis_cache_key, result, ttl_seconds=max(1, int(REDIS_CACHE_TTL_SEC)))
 
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=60"
-        response.headers["X-Redis-Cache"] = "MISS" if use_redis_cache else "BYPASS"
+        response.headers["X-Redis-Cache"] = "MISS"
     return result
 
 
@@ -272,6 +277,7 @@ def list_university_map_points(
     user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
     min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
@@ -300,6 +306,7 @@ def list_university_map_points(
         "user_budget": user_budget,
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
+        "cost_basis": cost_basis,
         "min_acceptance": min_acceptance,
         "max_acceptance": max_acceptance,
         "size": size,
@@ -325,6 +332,7 @@ def list_university_map_points(
         user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
+        cost_basis=cost_basis,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -388,8 +396,8 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     page = payload.page
     limit = payload.limit
 
-    cache_key = _ai_sort_cache_key(payload)
     search_lang = _resolve_search_lang(payload.lang, request)
+    cache_key = _ai_sort_cache_key(payload, search_lang)
     sorted_items = _ai_sort_cache_get(cache_key)
     cache_hit = sorted_items is not None
 
@@ -409,6 +417,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             format=fmt,
             min_tuition=min_tuition,
             max_tuition=max_tuition,
+            cost_basis=payload.cost_basis,
             min_acceptance=min_acceptance,
             max_acceptance=max_acceptance,
             size=size,

@@ -18,6 +18,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from atomic_json import write_json_atomic
+
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
@@ -217,9 +219,7 @@ def main() -> None:
         raise RuntimeError("Dataset root must be a list")
 
     changed = refresh_fact_provenance(payload, verified_at=str(args.verified_at).strip() or "2026-02-21")
-    data_path.write_text(  # NOSONAR (S2083): resolved path is constrained to repo_root above.
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    write_json_atomic(data_path, payload)
     print(f"Updated fact_provenance for {changed} rows")
 
 

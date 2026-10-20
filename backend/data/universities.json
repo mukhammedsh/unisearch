@@ -30947,11 +30947,12 @@
     "factors_meta": {
       "version": "internet_v1",
       "computed_at": "2026-05-23T22:07:21Z",
-      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
+      "method": "Deterministic mapping from OpenAlex (research metrics), Open-Meteo geocoding/Wikidata and documented official fallbacks (city population), official QS rank metadata where available, and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. Location axis is computed as city-life(0.0) <-> outside-major-city(1.0).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Suleyman+Demirel+University&per-page=8",
         "open_meteo_query": "https://geocoding-api.open-meteo.com/v1/search?name=Kaskelen&count=10&language=en&format=json&countryCode=KZ",
-        "wikidata_population_query": ""
+        "wikidata_population_query": "",
+        "official_population_fallback": "https://stat.gov.kz/upload/medialibrary/75f/z2gxd3z3s8gsf7em4x4q5ahd87mgoc5m/%D0%9D%D0%B0%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%201%20%D1%82%D0%BE%D0%BC.pdf"
       },
       "raw_metrics": {
         "openalex": {
@@ -30967,7 +30968,9 @@
           "country_code": "KZ",
           "admin1": "Almaty Region",
           "population": null,
-          "population_wikidata_fallback": 79499
+          "population_wikidata_fallback": null,
+          "population_official_fallback": 79482,
+          "population_official_fallback_year": 2021
         },
         "rank": {
           "position": null,
@@ -30980,7 +30983,7 @@
           "research_norm_0_1": 0.627112,
           "official_rank_norm_0_1": null,
           "tuition_norm_0_1": 0.064113,
-          "city_population_norm_0_1": 0.003467
+          "city_population_norm_0_1": 0.003466
         }
       }
     },

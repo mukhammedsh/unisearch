@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const STANFORD = "stanford-university-usa-ca";
@@ -90,6 +90,7 @@ async function openFact(page, tab, id) {
   if (tab === "admission") await openAdmission(page);
   else await openTab(page, tab);
   const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  await openDisclosureParents(fact);
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
@@ -422,7 +423,7 @@ for (const [id, award] of [["imperial-option-computing-beng", "BEng"], ["imperia
     await expect(profile).toContainText("Home fee");
     await expect(profile).toContainText("Overseas fee");
     await expect(profile).toContainText("£10,050 per year");
-    await expect(page.locator("#detailFinance")).toContainText("comparable annual total is not established");
+    await expect(page.locator("#detailFinance")).toContainText("No comparable budget is confirmed for this selection");
     await expect(page.locator("#detailFinance")).not.toContainText(/\$0\b/);
     await noFitPercentage(page);
   });
@@ -500,10 +501,14 @@ test("MIT admission context and source finance fit a narrow dark-theme screen", 
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
   await openTab(page, "deadlines");
+  await openDisclosureParents(page.locator("#detailDeadlines [data-admissions-fact]").first());
   await expect(page.locator("#detailDeadlines [data-admissions-fact]").first()).toBeVisible();
   await openTab(page, "finance");
-  await expect(page.locator("#detailFinance [data-admissions-domain='costs']")).toBeVisible();
-  await expect(page.locator("#detailFinance [data-admissions-domain='funding']")).toBeVisible();
+  for (const domain of ["costs", "funding"]) {
+    const section = page.locator(`#detailFinance [data-admissions-domain='${domain}']`).first();
+    await openDisclosureParents(section);
+    await expect(section).toBeVisible();
+  }
   await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
   await fitsViewport(page, 390);
 });

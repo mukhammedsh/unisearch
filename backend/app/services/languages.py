@@ -2,7 +2,7 @@ import json
 from decimal import Decimal
 from typing import Any, Dict, List, Optional, Union
 
-from app.core.files import file_mtime
+from app.core.files import RequiredDataUnavailable, file_mtime
 from app.core.paths import LANGUAGES_PATH
 
 
@@ -259,17 +259,15 @@ _LANG_CACHE = {"mtime": None, "data": {}, "index": None}
 def load_languages() -> Dict[str, Any]:
     mtime = file_mtime(LANGUAGES_PATH)
     if mtime is None:
-        _LANG_CACHE["mtime"] = None
-        _LANG_CACHE["data"] = {}
-        _LANG_CACHE["index"] = None
-        return {}
+        raise RequiredDataUnavailable("Language data is unavailable")
     if mtime != _LANG_CACHE["mtime"]:
         try:
             with open(LANGUAGES_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            data = data if isinstance(data, dict) else {}
-        except Exception:
-            data = {}
+            if not isinstance(data, dict) or not isinstance(data.get("languages"), list) or not data["languages"]:
+                raise ValueError("languages.json has no language entries")
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+            raise RequiredDataUnavailable("Language data is unavailable") from exc
         _LANG_CACHE["data"] = data
         _LANG_CACHE["index"] = _build_languages_index(data)
         _LANG_CACHE["mtime"] = mtime
@@ -284,10 +282,7 @@ def get_languages_index() -> Dict[str, Any]:
 
 
 def get_languages_config() -> Dict[str, Any]:
-    data = load_languages()
-    if data:
-        return data
-    return {"version": 0, "cefr": [], "languages": [], "language_exams": {}, "waiver_rules": []}
+    return load_languages()
 
 
 def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:

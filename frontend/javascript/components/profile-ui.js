@@ -58,6 +58,11 @@ import {
 } from "./profile/profile-utils.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
+let activeProfileNavigationClose = null;
+
+export function requestProfileNavigationClose() {
+    return activeProfileNavigationClose ? activeProfileNavigationClose() : true;
+}
 
 export const queryProfileElements = (modal) => {
     const unsavedModal = document.getElementById("profileUnsavedModal");
@@ -895,7 +900,9 @@ export const saveAllProfileChanges = (els, state) => {
 
 export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClose) => {
     if (!modal) return;
+    window.clearTimeout(modal._closeMotionTimer);
     const finish = () => {
+        modal._closeMotionTimer = null;
         focusTrapCleanup?.();
         modal.classList.remove("is-open", "is-closing");
         modal.setAttribute("aria-hidden", "true");
@@ -907,7 +914,7 @@ export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClos
         return;
     }
     modal.classList.add("is-closing");
-    window.setTimeout(finish, 180);
+    modal._closeMotionTimer = window.setTimeout(finish, 180);
 };
 
 export const closeUnsavedDialog = (els, state, focusCloseButton = false) => {
@@ -983,6 +990,7 @@ export const closeImmediately = (els, state) => {
 
 export const openUnsavedDialog = (els, state) => {
     if (!els.unsavedModal) return;
+    window.clearTimeout(els.unsavedModal._closeMotionTimer);
     els.unsavedModal.style.display = "flex";
     els.unsavedModal.classList.remove("is-closing");
     els.unsavedModal.classList.add("is-open");
@@ -999,6 +1007,7 @@ export const openResetDialog = (els, state) => {
         }
         return;
     }
+    window.clearTimeout(els.resetModal._closeMotionTimer);
     els.resetModal.style.display = "flex";
     els.resetModal.classList.remove("is-closing");
     els.resetModal.classList.add("is-open");
@@ -1117,7 +1126,7 @@ export const showExamScoreError = (inputEl, message) => {
 };
 
 export const handleAddExam = async (els, state) => {
-    if (!els.addExamBtn || !els.examNameSelect) return;
+    if (!els.addExamBtn || !els.examNameSelect || state.examValidationPending) return;
     motionPress(els.addExamBtn);
     const name = canonicalizeExamId(els.examNameSelect.value);
     const takenOn = String(els.examTakenOnInput?.value || "").trim();
@@ -1183,6 +1192,9 @@ export const handleAddExam = async (els, state) => {
         return;
     }
 
+    const submittedDraftRevision = state.examDraftRevision;
+    state.examValidationPending = true;
+    els.addExamBtn.disabled = true;
     try {
         const res = await fetch(`${API_BASE}/exams/validate`, {
             method: "POST",
@@ -1260,15 +1272,22 @@ export const handleAddExam = async (els, state) => {
         refreshSaveState(els, state);
         renderProfileData(els, state);
 
-        setFieldInvalid(els.examScoreInput, false);
-        els.examScoreInput.value = "";
-        if (els.examTakenOnInput) els.examTakenOnInput.value = "";
-        els.examNameSelect.value = "";
-        syncExamScoreInputState(els, state);
+        if (state.examDraftRevision === submittedDraftRevision) {
+            setFieldInvalid(els.examScoreInput, false);
+            els.examScoreInput.value = "";
+            if (els.examTakenOnInput) els.examTakenOnInput.value = "";
+            els.examNameSelect.value = "";
+            syncExamScoreInputState(els, state);
+            initCommonSelects(["examNameSelect"]);
+        }
         refreshExamActionButton(els, state);
-        initCommonSelects(["examNameSelect"]);
     } catch (e) {
-        showExamScoreError(els.examScoreInput, formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || "", getExamConfig));
+        if (state.examDraftRevision === submittedDraftRevision) {
+            showExamScoreError(els.examScoreInput, formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || "", getExamConfig));
+        }
+    } finally {
+        state.examValidationPending = false;
+        els.addExamBtn.disabled = false;
     }
 };
 
@@ -1305,6 +1324,24 @@ export const handleExamListClick = (e, els, state) => {
 };
 
 export const bindProfileEvents = (els, state) => {
+    const globalListenerDisposers = [];
+    const listenGlobal = (target, type, handler) => {
+        target.addEventListener(type, handler);
+        globalListenerDisposers.push(() => target.removeEventListener(type, handler));
+    };
+    let pendingNavigationPromise = null;
+    let resolvePendingNavigation = null;
+    const settleNavigationClose = (allowed) => {
+        if (!resolvePendingNavigation) return;
+        const resolve = resolvePendingNavigation;
+        resolvePendingNavigation = null;
+        pendingNavigationPromise = null;
+        resolve(allowed);
+    };
+    const examForm = els.modal.querySelector(".profile-exam-form");
+    const markExamDraftChanged = () => { state.examDraftRevision += 1; };
+    examForm?.addEventListener("input", markExamDraftChanged);
+    examForm?.addEventListener("change", markExamDraftChanged);
     els.profileSectionTabs.forEach((tab) => {
         tab.addEventListener("click", () => setProfileSection(els, state, tab.dataset.profileTab || "basics"));
     });
@@ -1313,7 +1350,7 @@ export const bindProfileEvents = (els, state) => {
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect(els, state);
     }
-    window.addEventListener("examConfigLoaded", () => populateExamSelect(els, state));
+    listenGlobal(window, "examConfigLoaded", () => populateExamSelect(els, state));
 
     if (els.examNameSelect) {
         els.examNameSelect.addEventListener("change", () => {
@@ -1514,30 +1551,47 @@ export const bindProfileEvents = (els, state) => {
         openResetDialog(els, state);
     });
 
-    if (els.openBtn) els.openBtn.onclick = () => openProfile(els, state);
+    const openProfileHandler = () => openProfile(els, state);
+    const requestCloseHandler = () => requestClose(els, state);
+    if (els.openBtn) els.openBtn.onclick = openProfileHandler;
 
-    if (els.closeBtn) els.closeBtn.onclick = () => requestClose(els, state);
-    if (els.backdrop) els.backdrop.onclick = () => requestClose(els, state);
+    if (els.closeBtn) els.closeBtn.onclick = requestCloseHandler;
+    if (els.backdrop) els.backdrop.onclick = requestCloseHandler;
 
     els.discardBtn?.addEventListener("click", () => {
         motionPress(els.discardBtn);
+        if (pendingNavigationPromise) {
+            state.isDiscarding = false;
+            resetFields(els, state);
+            closeUnsavedDialog(els, state, false);
+            settleNavigationClose(true);
+            return;
+        }
         closeImmediately(els, state);
     });
     els.cancelCloseBtn?.addEventListener("click", () => {
         motionPress(els.cancelCloseBtn);
         closeUnsavedDialog(els, state, true);
+        settleNavigationClose(false);
     });
     els.saveAndCloseBtn?.addEventListener("click", () => {
         motionPress(els.saveAndCloseBtn);
         syncInputsToDraft(els, state);
         if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) {
             closeUnsavedDialog(els, state, true);
+            settleNavigationClose(false);
+            return;
+        }
+        if (pendingNavigationPromise) {
+            closeUnsavedDialog(els, state, false);
+            settleNavigationClose(true);
             return;
         }
         closeImmediately(els, state);
     });
     els.unsavedBackdrop?.addEventListener("click", () => {
         closeUnsavedDialog(els, state, true);
+        settleNavigationClose(false);
     });
     els.resetBackdrop?.addEventListener("click", () => {
         closeResetDialog(els, state, true);
@@ -1551,7 +1605,7 @@ export const bindProfileEvents = (els, state) => {
         resetProfileData(els, state);
     });
 
-    document.addEventListener("keydown", (e) => {
+    const handleProfileKeydown = (e) => {
         if (e.key !== "Escape") return;
         if (els.resetModal?.classList.contains("is-open")) {
             closeResetDialog(els, state, true);
@@ -1559,16 +1613,19 @@ export const bindProfileEvents = (els, state) => {
         }
         if (els.unsavedModal?.classList.contains("is-open")) {
             closeUnsavedDialog(els, state, true);
+            settleNavigationClose(false);
             return;
         }
         requestClose(els, state);
-    });
+    };
+    listenGlobal(document, "keydown", handleProfileKeydown);
 
-    window.addEventListener("languageChanged", () => {
+    const handleLanguageChanged = () => {
         retranslateProfileUi(els, state);
-    });
+    };
+    listenGlobal(window, "languageChanged", handleLanguageChanged);
 
-    window.addEventListener("currencyChanged", () => {
+    const handleCurrencyChanged = () => {
         const activeCurrency = getBudgetCurrency();
         if (els.familyIncomeInput && !String(els.familyIncomeInput.value || "").trim() && els.familyIncomeCurrencySelect) {
             els.familyIncomeCurrencySelect.value = activeCurrency;
@@ -1593,7 +1650,8 @@ export const bindProfileEvents = (els, state) => {
         }
         updateBudgetUI(els, state);
         refreshSaveState(els, state);
-    });
+    };
+    listenGlobal(window, "currencyChanged", handleCurrencyChanged);
 
     if (els.examScoreInput) {
         els.examScoreInput.addEventListener("input", () => {
@@ -1609,28 +1667,49 @@ export const bindProfileEvents = (els, state) => {
         els.examList.onclick = (e) => handleExamListClick(e, els, state);
     }
 
-    window.addEventListener("beforeunload", (event) => {
-        if (state.isDiscarding) return;
-        if (!state.isDedicatedPage && !els.modal.classList.contains("is-open")) {
-            return;
-        }
+    const hasUnsavedChanges = () => {
+        if (state.isDiscarding) return false;
+        if (!state.isDedicatedPage && !els.modal.classList.contains("is-open")) return false;
         syncInputsToDraft(els, state);
-        if (!isProfileDirty(state)) return;
-
+        return isProfileDirty(state);
+    };
+    const requestNavigationClose = () => {
+        if (!hasUnsavedChanges()) return true;
+        if (pendingNavigationPromise) return pendingNavigationPromise;
+        pendingNavigationPromise = new Promise((resolve) => {
+            resolvePendingNavigation = resolve;
+        });
+        openUnsavedDialog(els, state);
+        return pendingNavigationPromise;
+    };
+    activeProfileNavigationClose = requestNavigationClose;
+    const handleBeforeUnload = (event) => {
+        if (!hasUnsavedChanges()) return;
         event.preventDefault();
         event.returnValue = "";
         return "";
-    });
+    };
+    listenGlobal(window, "beforeunload", handleBeforeUnload);
+    return () => {
+        settleNavigationClose(false);
+        globalListenerDisposers.splice(0).forEach((dispose) => dispose());
+        if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
+        if (els.openBtn?.onclick === openProfileHandler) els.openBtn.onclick = null;
+        if (els.closeBtn?.onclick === requestCloseHandler) els.closeBtn.onclick = null;
+        if (els.backdrop?.onclick === requestCloseHandler) els.backdrop.onclick = null;
+        if (els.addExamBtn?.onclick) els.addExamBtn.onclick = null;
+        if (els.examList?.onclick) els.examList.onclick = null;
+    };
 };
 
 export function initProfileUI() {
     const modal = document.getElementById("profileModal");
     if (!modal) {
         console.error("initProfileUI: profile modal is missing");
-        return;
+        return () => {};
     }
 
-    if (modal.dataset.bound === "1") return;
+    if (modal.dataset.bound === "1") return () => {};
     modal.dataset.bound = "1";
 
     const isDedicatedPage = Boolean(
@@ -1663,6 +1742,8 @@ export function initProfileUI() {
         cleanupUnsavedFocusTrap: null,
         cleanupResetFocusTrap: null,
         updateProfileTabsIndicator,
+        examValidationPending: false,
+        examDraftRevision: 0,
     };
     state.profileStoragePersistent = !isFutureProfile(state.profile);
 
@@ -1675,11 +1756,15 @@ export function initProfileUI() {
     };
 
     populateMajors(els.profileMajorSelect);
-    bindProfileEvents(els, state);
+    const disposeEvents = bindProfileEvents(els, state);
 
     if (isDedicatedPage) {
         openProfile(els, state);
     } else {
         resetFields(els, state);
     }
+    return () => {
+        disposeEvents();
+        if (modal.dataset.bound === "1") delete modal.dataset.bound;
+    };
 }
