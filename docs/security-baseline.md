@@ -24,7 +24,7 @@ version 2026.08.28. Level 3 has not been assessed.
 | --- | --- | --- |
 | OSPS-AC-01.01 MFA for sensitive actions | Met | The maintainer confirms all repository administrators have MFA enabled with security keys. Verified 2026-10-15. |
 | OSPS-AC-02.01 Restrict collaborator permissions | Met | GitHub grants collaborator access to this personal repository only by an explicit owner invitation. General contributors use forks and pull requests; direct write access is reserved for trusted maintainers. Verified 2026-10-15. |
-| OSPS-AC-03.01 Protect the primary branch from direct commits | Met | The active `main` ruleset requires a pull request, one non-author approval, dismissal of stale approvals after new pushes, ten required checks (including DCO), and has no bypass actors. Code-owner review is not required. Verified 2026-10-16. |
+| OSPS-AC-03.01 Protect the primary branch from direct commits | Met | The active `main` ruleset requires a pull request and ten required checks (including DCO), blocks deletion and force pushes, and has no bypass actors. Approvals are not required. Code-owner review is not required. Verified 2026-10-20. |
 | OSPS-AC-03.02 Protect the primary branch from deletion | Met | The active repository ruleset blocks deletion of `main`. Verified 2026-10-15. |
 | OSPS-BR-01.01 Sanitize untrusted CI metadata | Met | Workflow review found no unvalidated branch, pull-request, or manual inputs. Release tags are strictly validated before checkout or publication steps use them. |
 | OSPS-BR-01.03 Isolate untrusted CI code | Met | Fork-origin pull requests receive a read-only token and no repository secrets. `CODECOV_TOKEN` is passed only to Codecov upload steps; published-release credentials are isolated to the release workflow. |
