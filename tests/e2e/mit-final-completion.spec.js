@@ -1,6 +1,4 @@
 const { test, expect } = require('./helpers/coverage-test.cjs');
-const { setNativeSelect } = require('./helpers/selectors');
-
 const MIT = 'mit-usa-cambridge';
 const presentations = [
   { language: 'eng', width: 1280, theme: 'light' },

@@ -99,7 +99,7 @@ for (const item of presentations) {
     await expect(requirements).toContainText("41");
     await expect(requirements).toContainText(/Kazakhstan|Казахстан|Қазақстан/);
     await expect(page.locator('[data-source-summary="application"]')).toContainText("I50");
-    await expect(page.locator(".admissions-application-link")).toHaveAttribute("href", /imperial\.ac\.uk/);
+    await expect(page.locator(".admissions-application-link")).toHaveAttribute("href", /^https:\/\/(?:[a-z0-9-]+\.)*imperial\.ac\.uk(?:[/?#]|$)/i);
     await expectNoStackedGapMargins(page, "#tab-admission");
     await screenshot(page, `${item.language}-${item.width}-${item.theme}-requirements`, '[data-source-summary="requirements"] h3');
     await tab(page, "deadlines");

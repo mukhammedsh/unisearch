@@ -162,5 +162,5 @@ test("MIT yearless windows stay in references while Stanford CS exports its exac
   const calendar = await month(page, "2026-12");
   await calendar.locator('[data-calendar-day="2026-12-08"]').click();
   await expect(calendar.locator("[data-calendar-export]")).toBeEnabled();
-  await expect(calendar.locator(".deadline-calendar__details a")).toHaveAttribute("href", /stanford\.edu/);
+  await expect(calendar.locator(".deadline-calendar__details a")).toHaveAttribute("href", /^https:\/\/(?:[a-z0-9-]+\.)*stanford\.edu(?:[/?#]|$)/i);
 });

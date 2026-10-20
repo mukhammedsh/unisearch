@@ -4,6 +4,12 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+## 9.1.1 (2026-10-20) - Code Scanning fixes
+
+### Fixed
+- Replace URL substring regexes in admissions tests with literal checks and strict university-host assertions.
+- Remove unused imports reported by CodeQL.
+
 ## 9.1.0 (2026-10-20) - Program Comparison and Deadline Calendar
 
 ### Updated
