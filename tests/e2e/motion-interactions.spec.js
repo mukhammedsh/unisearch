@@ -296,6 +296,10 @@ test("map results rail renders status badges in vertical column without overlapp
   await expect(triggers.nth(1)).toBeVisible();
   const count = await triggers.count();
   expect(count).toBeGreaterThanOrEqual(2);
+  await expect.poll(() => cardWithStatuses.evaluate(card => {
+    const [first, second] = [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2);
+    return second.getBoundingClientRect().top - first.getBoundingClientRect().top;
+  })).toBeGreaterThan(0);
 
   // Read one rendered card atomically while map results may refresh.
   const { boxes: [box0, box1], titleBox } = await cardWithStatuses.evaluate(card => {
