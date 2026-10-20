@@ -54,6 +54,19 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
 
+    def test_currency_status_is_protected_ops_endpoint(self):
+        client = TestClient(app)
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
+            res_unauth = client.get("/currency/status")
+            self.assertEqual(res_unauth.status_code, 401)
+
+            res_auth = client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+            self.assertEqual(res_auth.status_code, 200)
+
+        with patch("app.core.security.OPS_ADMIN_TOKEN", ""):
+            res_no_token = client.get("/currency/status")
+            self.assertEqual(res_no_token.status_code, 404)
+
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
         client = TestClient(app)
         with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:

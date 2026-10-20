@@ -315,7 +315,7 @@ def is_protected_ops_request(request: Request) -> bool:
         path = path[len(root_path):]
     if path.startswith("/ops/"):
         return True
-    if path == str(METRICS_PATH or "/metrics"):
+    if path in (str(METRICS_PATH or "/metrics"), "/currency/status"):
         return True
     if path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on", "t", "y"}:
         return True
