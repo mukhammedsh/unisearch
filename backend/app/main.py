@@ -153,9 +153,9 @@ class RequestBodyLimitMiddleware:
 
 
 def _is_expensive_request(request: Request) -> bool:
-    path = request_scope_path(request)
     if request.method.upper() != "POST":
         return False
+    path = request_scope_path(request).rstrip("/") or "/"
     if path in _EXPENSIVE_POST_PATHS:
         return True
     if path.endswith("/uni-chance") or path.endswith("/roi") or path == "/ops/warmup":
