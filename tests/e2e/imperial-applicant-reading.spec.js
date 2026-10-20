@@ -111,7 +111,8 @@ for (const item of presentations) {
     await expect(page.locator("[data-course-tuition]")).toContainText("47,800");
     await expect(page.locator("[data-living-reference]")).toContainText("2026");
     await expect(page.locator(".admissions-reading__total")).toHaveCount(0);
-    await expect(page.locator('[data-source-summary="funding"]')).toContainText("i360");
+    await expect(page.locator('[data-source-summary="funding"]')).toContainText("Imperial Bursary");
+    await expect(page.locator('[data-source-summary="funding"]')).not.toContainText("i360");
     await expect(page.locator('[data-source-summary="costs"]')).toContainText(/34[.,]50/);
     await expectNoStackedGapMargins(page, "#tab-finance");
     await screenshot(page, `${item.language}-${item.width}-${item.theme}-costs`, "[data-course-tuition] caption");
