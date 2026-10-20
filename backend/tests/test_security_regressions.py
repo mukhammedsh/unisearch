@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 from starlette.requests import Request
 
-from app.main import app
+from app.main import app, _is_expensive_request
 from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
@@ -19,6 +19,27 @@ from scripts import audit_universities_data
 
 
 class SecurityRegressionTests(unittest.TestCase):
+    def test_admissions_context_post_is_classified_as_expensive(self):
+        for path in (
+            "/universities/mit-usa-cambridge/admissions-context",
+            "/universities/mit-usa-cambridge/admissions-context/",
+        ):
+            with self.subTest(path=path):
+                request = Request({"type": "http", "method": "POST", "path": path})
+                self.assertTrue(_is_expensive_request(request))
+
+    def test_admissions_context_endpoint_uses_expensive_rate_limit(self):
+        client = TestClient(app)
+        with patch("app.main.RATE_LIMIT_ENABLED", True):
+            response = client.post(
+                "/universities/mit-usa-cambridge/admissions-context",
+                json={"context": {"study_option_id": "computing"}},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("X-RateLimit-Limit", response.headers)
+        from app.core.settings import EXPENSIVE_RATE_LIMIT_REQUESTS
+        self.assertEqual(response.headers["X-RateLimit-Limit"], str(EXPENSIVE_RATE_LIMIT_REQUESTS))
+
     def test_university_endpoint_returns_vary_accept_language(self):
         client = TestClient(app)
         res_ok = client.get("/universities/mit-usa-cambridge")
