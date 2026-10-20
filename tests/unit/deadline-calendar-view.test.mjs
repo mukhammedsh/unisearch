@@ -19,7 +19,7 @@ test("calendar exposes native date controls, source time and applicant restricti
     assert.match(html, /data-calendar-month="previous" aria-label=/);
     assert.match(html, /18:00 · Europe\/London/);
     assert.match(html, /US citizen; US permanent resident/);
-    assert.ok(html.includes("https://example.edu/apply"));
+    assert.ok([...html.matchAll(/\bhref="([^"]*)"/g)].some(([, href]) => href === "https://example.edu/apply"));
     assert.match(html, /data-calendar-export="0"/);
   }
 });
