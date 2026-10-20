@@ -35,6 +35,22 @@ class ApiDdosHardeningTests(unittest.TestCase):
         self.assertEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(second))
         self.assertNotEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(roi))
 
+    def test_expensive_request_guard_normalizes_trailing_slashes(self):
+        for path in (
+            "/universities/ai-sort/",
+            "/universities/compare-profiles/",
+            "/exams/validate/",
+            "/languages/validate/",
+            "/universities/mit-usa-cambridge/uni-chance/",
+            "/universities/mit-usa-cambridge/roi/",
+            "/ops/warmup/",
+        ):
+            with self.subTest(path=path):
+                req = MagicMock()
+                req.method = "POST"
+                req.scope = {"path": path}
+                self.assertTrue(_is_expensive_request(req))
+
     def test_compare_profiles_caches_results(self):
         payload = {
             "university_ids": ["mit-usa-cambridge"],
