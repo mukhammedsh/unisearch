@@ -68,6 +68,7 @@ class AdmissionsCatalogTests(unittest.TestCase):
 
     def write(self):
         self.path.write_text(json.dumps(self.data), encoding="utf-8")
+        service.clear_cache()
 
     def mit(self):
         return next(row for row in self.data["institutions"] if row["institution"]["id"] == MIT)
