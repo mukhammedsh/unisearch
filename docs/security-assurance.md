@@ -29,11 +29,11 @@ Likelihood and impact are qualitative assessments for the current public web app
 
 | Scenario | Likelihood | Impact | Existing controls and response |
 | --- | --- | --- | --- |
-| Compromised repository account changes code or a release | Medium | High | MFA for repository administrators; protected primary branch; non-author review; required test, dependency, code-analysis, repository, and quality checks; release provenance attestations. Review collaborator access before increasing permissions. |
+| Compromised repository account changes code or a release | Medium | High | MFA for repository administrators; pull requests required for the primary branch; required test, dependency, code-analysis, repository, and quality checks; release provenance attestations. Review collaborator access before increasing permissions. |
 | Vulnerable or malicious dependency reaches a release | Medium | High | npm and Python lockfiles with hashes; dependency audits on pull requests; pinned GitHub Actions; maintainers review dependency changes and remediate audit findings before merge. |
 | Applicant profile evidence is exposed through API logs or telemetry | Low to medium | High | No server-side profile database; bounded, schema-validated API requests; sensitive fields are scrubbed from optional Sentry events; default PII and local-variable capture are disabled. |
 | Public requests exhaust API resources | Medium | Medium to high | Request-size limits, per-client rate limits, bounded input schemas, edge/reverse-proxy guidance, and safe Redis degradation. |
-| Catalog or release content is altered without a trustworthy review | Low | High | Public Git history, source-backed data workflow, protected branch, required peer approval and checks, and signed build-provenance attestations. |
+| Catalog or release content is altered without a trustworthy review | Low | High | Public Git history, source-backed data workflow, required pull requests and checks, and signed build-provenance attestations. |
 | A third-party service is compromised or unavailable | Low to medium | Medium | HTTPS, pinned frontend map-library versions, fixed/configured provider endpoints, no applicant profile sent to map or rate providers, and optional rather than mandatory Redis, Sentry, and embeddings. |
 
 ---

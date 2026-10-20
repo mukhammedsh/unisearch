@@ -70,7 +70,7 @@ Before granting a contributor write, maintain, admin, or secret access, the repo
 
 ### Day-to-Day Development
 * Routine fixes, documentation edits, and small feature additions are proposed via Pull Requests.
-* PRs require passing automated CI/CD checks (linting, encoding, token checks, unit and E2E suites) and approval from at least one maintainer or core contributor.
+* PRs require passing automated CI/CD checks (linting, encoding, token checks, unit and E2E suites); maintainer or core-contributor approval is optional.
 
 ### Major Architectural Changes (RFC Process)
 * Non-trivial changes (e.g., PostgreSQL migration, Google Auth integration, new scoring algorithms) require an **RFC (Request for Comments)** issue.
