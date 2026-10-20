@@ -109,6 +109,9 @@ for (const item of presentations) {
     await expect(page.locator('[data-source-summary="funding"]')).toContainText("4704");
     await expect(page.locator('[data-source-summary="funding"]')).toContainText("2027");
     await expect(page.locator('[data-source-summary="funding"]')).toContainText("ISAFA");
+    const domesticAid = page.locator('[data-summary-fact="undergraduate-shared-evidence:stanford-ug-firstyear-domestic-aid-2027-28"]');
+    await expect(domesticAid).toContainText("2025");
+    await expect(domesticAid).toContainText("001305");
     await expectNoStackedGapMargins(page, "#tab-finance");
     await screenshot(page, `${item.language}-${item.width}-${item.theme}-aid`, '[data-source-summary="funding"] h3');
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
@@ -155,7 +158,11 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
     const requirements = page.locator('[data-source-summary="requirements"]');
     if (entry.kind === "transfer") await expect(requirements).toContainText("College Report");
     if (["MS", "PhD"].includes(entry.kind)) await expect(requirements).toContainText("GRE");
-    if (entry.kind === "MS") await expect(page.locator("[data-summary-conflict]")).toBeVisible();
+    if (entry.kind === "MS") {
+      await expect(page.locator('[data-summary-fact="engineering-doerr-evidence:cs-ms-tests-and-english-policy"] [data-summary-conflict]')).toHaveCount(0);
+      await expect(page.locator('[data-summary-fact="engineering-doerr-evidence:cs-ms-tests-and-english-policy"]')).toContainText("10");
+      await expect(page.locator('[data-summary-fact="engineering-doerr-evidence:cs-ms-entry-and-hcp"]')).toContainText("PhD");
+    }
     if (entry.kind === "coterm") await expect(requirements).toContainText("120");
     if (entry.kind === "MBA") await expect(requirements).toContainText("GMAT");
     if (entry.kind === "MD") {
@@ -181,7 +188,13 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
     }
     await tab(page, "finance");
     const funding = page.locator('[data-source-summary="funding"]');
-    if (entry.kind === "transfer") { await expect(funding).toContainText("4704"); await expect(funding).not.toContainText("REA"); }
+    if (entry.kind === "transfer") {
+      await expect(funding).toContainText("4704");
+      await expect(funding).not.toContainText("REA");
+      await expect(page.locator('#detailFinance [data-summary-fact="undergraduate-shared-evidence:stanford-transfer-fee"]')).toContainText("100");
+      await expect(page.locator('[data-summary-fact="undergraduate-shared-evidence:stanford-ug-transfer-domestic-aid-2027-28"]')).toContainText("2025");
+      expect((await page.locator('#detailFinance .admissions-catalog__unknowns').allTextContents()).join(" ")).not.toContain("general transfer requirements page states USD 90");
+    }
     if (entry.kind === "PhD") await expect(funding).toContainText(/progress|прогресс|ілгерілеу/);
     if (entry.kind === "MS") await expect(funding).not.toContainText(/PhD funding guarantee|гарантию финансирования PhD|PhD қаржыландыру кепілдігін/);
     if (entry.kind === "MBA") await expect(page.locator('[data-source-summary="costs"]')).toContainText(/89[\s,]?187/);

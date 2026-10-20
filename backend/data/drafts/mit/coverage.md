@@ -4,6 +4,12 @@
 
 Research snapshot: **2026-10-01**, official catalog **2026-2027**. Scope: Stage 1 task 1.1, MIT data/schema only. Drafts remain outside active runtime inputs.
 
+## Applicant-reading follow-up (2026-10-20)
+
+The accepted draft now also contains six source-reviewed study overviews for Archaeology and Materials, Humanities, STS, Chemical Engineering thesis SM, EECS intermediate SM, and HST terminal SM. These clarify existing study/access conditions; they add no program or application route. The current prepared snapshot contains 191 options, 73 routes and 919 facts. Earlier research checkpoint totals below remain historical.
+
+All 191 options have a source-linked English overview and Russian/Kazakh translations. Application summaries cover the 73 existing procedures, including internal selection and unresolved public-checklist boundaries. Confirmed publication gaps and the nine unresolved external award classifications remain distinct from missing UI content; no external application or funding guarantee is invented.
+
 ## Inventory and application reconciliation
 
 [catalog.json](catalog.json) contains **191 study options**: 55 undergraduate, 70 master's, 58 doctoral and 8 professional under the draft's existing level classification. **391 official school/college/interdisciplinary degree-table rows** map to options, research/thesis fields, partner variants, concentrations, combined degrees or Harvard-award exclusions. The [raw snapshot](catalog-degree-table-rows-2026-09-30.json) preserves source URLs and original labels. Counts are evidence, not target counts or independent application counts.

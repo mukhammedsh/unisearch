@@ -14,9 +14,11 @@ global.fetch = async url => {
 };
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { initUniversityTranslations } = await import("../../frontend/javascript/university-translations.js");
-const { admissionsProgramLabel, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
+const { admissionsProgramLabel, admissionsRouteName, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 const { translateAdmissionSummary } = await import("../../frontend/javascript/university-translations.js");
 const { renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
+const { getReviewedDeadlineEvents, createDeadlineIcs } = await import("../../frontend/javascript/pages/university/deadline-calendar.js");
+const { admissionDeadlineTitle } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
 test("MIT titles explain catalog codes separately from localized program names", async () => {
@@ -123,11 +125,22 @@ test("Stanford summaries retain international aid consequences, route-specific d
       const row = stanford.facts.find(row => row.id.split(":").at(-1) === suffix);
       assert.ok(translateAdmissionSummary(row.value, { section: "funding" }));
     }
-    const conflict = stanford.facts.find(row => row.id.endsWith(":cs-ms-tests-and-english-policy"));
-    const html = renderApplicantSection({ selected_option: { id: "stanford-option-cs-ms", levels: ["masters"] }, facts: [conflict], fact_groups: { requirements: [conflict.id] }, sources: stanford.sources }, ["requirements", "application"]);
-    assert.match(html, /data-summary-conflict/);
+    const english = stanford.facts.find(row => row.id.endsWith(":cs-ms-tests-and-english-policy"));
+    const entry = stanford.facts.find(row => row.id.endsWith(":cs-ms-entry-and-hcp"));
+    const html = renderApplicantSection({ selected_option: { id: "stanford-option-cs-ms", levels: ["masters"] }, facts: [english, entry], fact_groups: { requirements: [english.id, entry.id] }, sources: stanford.sources }, ["requirements", "application"]);
+    assert.doesNotMatch(html, /data-summary-conflict/);
     assert.match(html, /GRE/);
-    assert.ok(html.includes(stanford.sources.find(source => source.id === conflict.source_ids[0]).url));
+    assert.match(html, /10/);
+    assert.match(html, /PhD/);
+    assert.ok(html.includes(stanford.sources.find(source => source.id === english.source_ids[0]).url));
+    for (const suffix of ["stanford-transfer-fee", "stanford-ug-firstyear-domestic-aid-2027-28", "stanford-ug-transfer-domestic-aid-2027-28"]) {
+      const row = stanford.facts.find(row => row.id.split(":").at(-1) === suffix);
+      const section = suffix === "stanford-transfer-fee" ? "costs" : "funding";
+      const summary = translateAdmissionSummary(row.value, { section });
+      assert.ok(summary, `${language}: ${suffix}`);
+      assert.match(summary, suffix === "stanford-transfer-fee" ? /100/ : /2025/);
+      if (language !== "eng") assert.match(summary, /[\u0400-\u04ff]/u);
+    }
   }
 });
 
@@ -327,5 +340,95 @@ test("MIT aid documents are readable without disclosures and keep first-year and
       if (route === "mit-transfer") assert.doesNotMatch(highlights, /Early Action|Regular Action/);
       else assert.match(highlights, /Early Action/);
     }
+  }
+});
+
+test("every MIT study option has a translated source-bound overview, including intermediate awards", async () => {
+  const mit = catalog.institutions.find(row => row.institution.id === "mit-usa-cambridge");
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const option of mit.study_options) {
+      const facts = mit.facts.filter(row => row.scope.option_ids.includes(option.id));
+      const html = renderStudyOptionOverview({ selected_option: option, facts, sources: mit.sources, fact_groups: { study: facts.map(row => row.id) } });
+      assert.match(html, /class="program-card__description"/, `${language}: ${option.id}`);
+      assert.doesNotMatch(html, /data-program-overview-missing/, `${language}: ${option.id}`);
+      if (language !== "eng") {
+        const description = html.match(/<p class="program-card__description">([\s\S]*?)<\/p>/)?.[1];
+        assert.match(description || "", /[А-Яа-яӘәҒғҚқҢңӨөҰұҮүҺһІі]/u, `${language}: ${option.id}`);
+        assert.doesNotMatch(description || "", /перевод.*не|аудармасы.*жоқ/i, `${language}: ${option.id}`);
+      }
+    }
+  }
+});
+
+test("MIT transfer dates and graduate summaries preserve applicant and funding boundaries in three languages", async () => {
+  const mit = catalog.institutions.find(row => row.institution.id === "mit-usa-cambridge");
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const [routeId, optionId] of [["mit-transfer", "mit-course-6-3-bachelor"], ["mit_bcs_meng_admissions", "mit-course-6-9p-meng"], ["mit_grad_dedp_admissions", "mit-dedp-masc"]]) {
+      const route = mit.application_routes.find(row => row.id === routeId);
+      const option = mit.study_options.find(row => row.id === optionId) || mit.study_options.find(row => row.route_ids.includes(routeId));
+      const facts = mit.facts.filter(row => row.scope.route_ids.includes(routeId));
+      const ids = facts.map(row => row.id);
+      const resolved = { selected_option: option, selected_route: route, facts, sources: mit.sources, fact_groups: { requirements: ids, application: ids, deadlines: ids, costs: ids, funding: ids } };
+      const html = renderApplicantSection(resolved, routeId === "mit-transfer" ? ["deadlines"] : ["requirements", "application"]);
+      assert.match(html, routeId === "mit-transfer" ? /data-transfer-windows/ : /data-source-summary="requirements"/);
+      if (routeId === "mit-transfer") {
+        assert.match(html, /2026/);
+        assert.match(html, /2027/);
+        assert.match(html, { eng: /Only U.S. citizens|Only US citizens/, rus: /Только граждане США/, kaz: /Тек АҚШ азаматтары/ }[language]);
+      } else if (routeId === "mit_bcs_meng_admissions") assert.match(html, /4[.,]25\/5/);
+      else assert.match(html, /MicroMasters/);
+    }
+  }
+});
+
+test("all MIT application procedures have source-bound application guidance in three languages", async () => {
+  const mit = catalog.institutions.find(row => row.institution.id === "mit-usa-cambridge");
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    for (const route of mit.application_routes) {
+      const option = mit.study_options.find(row => row.route_ids.includes(route.id));
+      assert.ok(option, route.id);
+      const facts = mit.facts.filter(row => row.scope.route_ids.includes(route.id)
+        || row.scope.option_ids.includes(option.id) && !row.scope.route_ids.length);
+      const html = renderApplicantSection({ selected_option: option, selected_route: route, facts, sources: mit.sources,
+        fact_groups: { application: facts.map(row => row.id) } }, ["application"]);
+      assert.match(html, /data-source-summary="application"/, `${language}: ${route.id}`);
+      assert.equal(admissionsRouteName(route), route.title);
+      if (language !== "eng") assert.match(admissionsRouteName(route, { presentation: "simple" }), /[\u0400-\u04ff]/u, route.id);
+    }
+  }
+});
+
+test("Sloan's regular rounds stay distinct from deferred MBA Early and export the actual Eastern deadline", async () => {
+  const mit = catalog.institutions.find(row => row.institution.id === "mit-usa-cambridge");
+  const facts = mit.facts.filter(row => ["mit_sloan_mba_admissions-deadlines", "mba-early-2027-window-and-fee"].includes(row.id));
+  const resolved = { selected_option: mit.study_options.find(row => row.id === "mit-sloan-mba-full-time"),
+    selected_route: mit.application_routes.find(row => row.id === "mit_sloan_mba_admissions"), facts, sources: mit.sources,
+    fact_groups: { deadlines: facts.map(row => row.id) } };
+  const events = getReviewedDeadlineEvents(resolved);
+  assert.deepEqual(events.map(event => [event.deadline, event.name]), [["2026-09-29", "Round 1"], ["2027-01-12", "Round 2"], ["2027-04-13", "MBA Early"]]);
+  assert.equal(events[1].time, "15:00");
+  assert.equal(events[1].cycle, "2027 entry");
+  assert.match(createDeadlineIcs(events[1]).replace(/\r\n /g, ""), /DTSTART:20270112T200000Z/);
+  assert.match(events[2].applicantCategoryLabel, /deferred/);
+  const exclusions = structuredClone(resolved);
+  exclusions.facts[0].value.push(
+    { date: "2027-02-01", publication_status: "unknown", program_ids: ["mit-sloan-mba-full-time"] },
+    { date: "2027-02-02", publication_status: "published", program_ids: ["another-program"] },
+  );
+  assert.deepEqual(getReviewedDeadlineEvents(exclusions).map(event => event.deadline), events.map(event => event.deadline));
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    const html = renderApplicantSection(resolved, ["deadlines"]);
+    assert.match(html, /data-published-deadline-array/);
+    assert.match(html, /2027/);
+    assert.match(html, /15:00/);
+    assert.match(admissionDeadlineTitle(events[2]), { eng: /deferred entry/, rus: /отложенное начало/, kaz: /кейін бастау/ }[language]);
   }
 });

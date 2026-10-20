@@ -1,5 +1,10 @@
 meta.display_name: Қазақша
 meta.code: kaz
+university.deadlines.mba_early: MBA Early · оқуды кейін бастау
+university.admissions.reading.no_route_short: Өтініш беру жолын нақтылау қажет
+university.admissions.reading.no_application_route: Бұл нұсқаға дербес өтініш беру жолы анықталмаған. Ол ішкі не аралық дәреже болуы немесе департаменттен нақтылауды қажет етуі мүмкін. Қолжетімділік шарттары мен ресми нұсқаулықты оқыңыз; бұл қабылдау жабық дегенді білдірмейді.
+university.admissions.reading.applicant_scope: Кім өтініш бере алады
+university.admissions.reading.check_source_conditions: Талапкерлерге арналған жарияланған шарттарды тексеріңіз
 academic_requirements: Академиялық талаптар
 academic_average: Орташа академиялық балл
 language_average: Тілдік дайындық деңгейі (орташа балл)
@@ -2967,3 +2972,121 @@ university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy, зерт
 university.admissions.reading.degree.MBA: MBA — Master of Business Administration, басқару бойынша кәсіби дәреже
 university.admissions.reading.degree.MD: MD — Doctor of Medicine, кәсіби медициналық дәреже
 university.admissions.reading.degree.ENG: Engineer — MS пен PhD-ден бөлек жоғары инженерлік дәреже
+university.deadlines.weekday.mon: Дс
+university.deadlines.weekday.tue: Сс
+university.deadlines.weekday.wed: Ср
+university.deadlines.weekday.thu: Бс
+university.deadlines.weekday.fri: Жм
+university.deadlines.weekday.sat: Сб
+university.deadlines.weekday.sun: Жс
+university.deadlines.kind.application: Өтініш беру мерзімі
+university.deadlines.kind.funding: Қаржыландыру өтінімінің мерзімі
+university.deadlines.kind.decision: Шешім туралы хабарлау
+university.deadlines.kind.reply: Ұсынысқа жауап беру мерзімі
+university.deadlines.kind.opens: Өтініш қабылдаудың басталуы
+university.deadlines.kind.test: Тест тапсырудың соңғы күні
+university.deadlines.kind.booking: Тестке тіркелу мерзімі
+university.deadlines.round: {number}-раунд
+university.deadlines.calendar_time_unknown: Уақыты көрсетілмеген; күнтізбеге толық күндік оқиға қосылады.
+university.deadlines.export_time_unresolved: Жарияланған уақытты не уақыт белдеуін сенімді түрлендіру мүмкін емес; ресми дереккөзді тексеріңіз.
+universities.compare.summary.title: Таңдалған бағдарламаларды салыстыру
+universities.compare.summary.scope_note: Деректер таңдалған бағдарламаға, қабылдау бағытына және жарияланған кезеңге қатысты. Бастапқы валюта мен төлем санаттары сақталған; мерзімі көрсетілген бағдар жаңа ұсыныстың бағасы емес.
+universities.compare.summary.program: Бағдарлама
+universities.compare.summary.study: Ұзақтығы мен оқу формасы
+universities.compare.summary.route: Қабылдау бағыты
+universities.compare.summary.cycle: Таңдалған қабылдау кезеңі
+universities.compare.summary.tuition: Жарияланған оқу ақысы
+universities.compare.summary.budget: Оқу және тұру шығындарының бағдары
+universities.compare.summary.deadline: Жарияланған өтініш мерзімдері
+universities.compare.summary.funding: Қаржыландыру
+universities.compare.summary.admission: Талаптар мен шарттар
+universities.compare.summary.deadlines: Мерзімдер мен күнтізбені ашу
+universities.compare.summary.finance: Шығындар мен қаржыландыруды ашу
+universities.compare.summary.source: Ресми дереккөз
+universities.compare.summary.reference: Мерзімі көрсетілген бағдар
+universities.compare.summary.before_aid: Қаржылай көмекке дейін; қамтылмаған шығындарды дереккөзден тексеріңіз
+universities.compare.summary.unknown: Таңдалған нұсқа үшін расталмаған
+universities.compare.summary.year_not_stated: Дереккөзде жыл көрсетілмеген; күнтізбе күні болжанып қойылмайды.
+universities.compare.summary.potential_aid: Ықтимал қаржыландыру талаптар мен іріктеуге байланысты.
+universities.compare.summary.full_records: Дереккөздердің толық жазбалары
+universities.compare.summary.additional_facts: Университеттер туралы қосымша деректер
+universities.compare.summary.choose_programs: Бағдарламаларды таңдау
+universities.compare.summary.configure_title: Бағдарламалар мен қабылдау бағыттарын таңдау
+university.admissions.reading.total_fee: толық оқу ақысы
+university.deadlines.kind.funding_consideration: Стипендияға қарастырылу үшін оқуға өтінім беру
+university.admissions.reading.first_year: бірінші жыл
+university.admissions.reading.second_year: Екінші жыл
+university.admissions.reading.funding_excluded: Бұл бағдарлама немесе оқу форматы осы стипендияға кірмейді.
+university.admissions.reading.funding_unconfirmed: Осы дәреженің стипендияға қатысуы расталмаған.
+university.deadlines.kind.booking_open: Тестке тіркелудің ашылуы
+university.admissions.catalog.route_name.mit_sloan_mba_admissions: MIT Sloan күндізгі MBA бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_sloan_mfin_admissions: MIT Sloan қаржы магистратурасына өтініш
+university.admissions.catalog.route_name.mit_sloan_mban_admissions: MIT Sloan бизнес-талдау бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_physics_phd_admissions: MIT физика докторантурасына өтініш
+university.admissions.catalog.route_name.mit_eecs_meng_admissions: MIT студенттеріне арналған EECS MEng ішкі өтініші
+university.admissions.catalog.route_name.mit_bcs_meng_admissions: MIT Course 6-9 студенттеріне арналған BCS MEng ішкі жолы
+university.admissions.catalog.route_name.mit_sloan_msms_admissions: Серіктес бағдарлама талапкерлеріне арналған MIT Sloan MSMS өтініші
+university.admissions.catalog.route_name.mit_grad_architecture_admissions: Өтініш: сәулет
+university.admissions.catalog.route_name.mit_grad_civil_environmental_admissions: Өтініш: азаматтық және экологиялық инженерия
+university.admissions.catalog.route_name.mit_grad_dedp_admissions: DEDP өтініші: деректер, экономика және саясатты жобалау
+university.admissions.catalog.route_name.mit_grad_science_writing_admissions: Өтініш: ғылыми журналистика және жазу
+university.admissions.catalog.route_name.mit_grad_sdm_admissions: Өтініш: жүйелерді жобалау және басқару (SDM)
+university.admissions.catalog.route_name.mit_grad_music_technology_admissions: Өтініш: музыкалық технологиялар және есептеулер
+university.admissions.catalog.route_name.mit_grad_real_estate_admissions: Жылжымайтын мүлік орталығына өтініш
+university.admissions.catalog.route_name.mit_grad_scm_residential_admissions: Жеткізу тізбектерін басқарудың күндізгі бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_grad_scm_blended_admissions: Жеткізу тізбектерін басқарудың аралас бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_grad_tpp_admissions: Өтініш: технологиялар және саясат (TPP)
+university.admissions.catalog.route_name.mit_grad_lgo_admissions: Leaders for Global Operations (LGO) бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_grad_aero_admissions: Өтініш: авиация және ғарыштану
+university.admissions.catalog.route_name.mit_grad_chemical_admissions: Өтініш: химиялық инженерия
+university.admissions.catalog.route_name.mit_grad_eaps_admissions: Өтініш: Жер, атмосфера және планета ғылымдары
+university.admissions.catalog.route_name.mit_grad_materials_admissions: Өтініш: материалтану және инженерия
+university.admissions.catalog.route_name.mit_grad_meche_admissions: Өтініш: машина жасау
+university.admissions.catalog.route_name.mit_grad_media_arts_admissions: Өтініш: медиа өнері және ғылымдары
+university.admissions.catalog.route_name.mit_grad_nuclear_admissions: Өтініш: ядролық ғылымдар және инженерия
+university.admissions.catalog.route_name.mit_grad_physics_admissions: Физика SM дәрежесін тек ерекше жағдайда қарастыру
+university.admissions.catalog.route_name.mit_grad_political_admissions: Өтініш: саясаттану
+university.admissions.catalog.route_name.mit_grad_urban_planning_admissions: Өтініш: урбанистика және жоспарлау
+university.admissions.catalog.route_name.mit_grad_whoi_admissions: MIT–WHOI бірлескен бағдарламасы: мұхиттану және мұхит инженериясы
+university.admissions.catalog.route_name.mit_sloan_evening_mba_admissions: MIT Sloan кешкі MBA бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_sloan_executive_mba_admissions: Басшыларға арналған MIT Sloan Executive MBA өтініші
+university.admissions.catalog.route_name.mit_sloan_fellows_mba_admissions: Sloan Fellows MBA бағдарламасына өтініш
+university.admissions.catalog.route_name.mit_aeroastro_doctoral_admissions: Өтініш: авиация және ғарыштану
+university.admissions.catalog.route_name.mit_architecture_doctoral_admissions: Өтініш: сәулет
+university.admissions.catalog.route_name.mit_biological_engineering_doctoral_admissions: Өтініш: биологиялық инженерия
+university.admissions.catalog.route_name.mit_biology_doctoral_admissions: Өтініш: биология
+university.admissions.catalog.route_name.mit_brain_and_cognitive_sciences_doctoral_admissions: Өтініш: ми және когнитивтік ғылымдар
+university.admissions.catalog.route_name.mit_chemical_engineering_doctoral_admissions: Өтініш: химиялық инженерия
+university.admissions.catalog.route_name.mit_chemistry_doctoral_admissions: Өтініш: химия
+university.admissions.catalog.route_name.mit_civil_and_environmental_engineering_doctoral_admissions: Өтініш: азаматтық және экологиялық инженерия
+university.admissions.catalog.route_name.mit_computational_and_systems_biology_doctoral_admissions: Өтініш: есептеу және жүйелік биология
+university.admissions.catalog.route_name.mit_computational_science_and_engineering_doctoral_admissions: Есептеу ғылымдары және инженерия бойынша дербес PhD өтініші
+university.admissions.catalog.route_name.mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions: Өтініш: Жер, атмосфера және планета ғылымдары
+university.admissions.catalog.route_name.mit_eecs_doctoral_admissions: EECS докторлық жолы: электротехника және компьютерлік ғылымдар
+university.admissions.catalog.route_name.mit_hst_memp_doctoral_admissions: Өтініш: денсаулық ғылымдары және технологиялар (Harvard–MIT)
+university.admissions.catalog.route_name.mit_hasts_doctoral_admissions: HASTS өтініші: тарих, антропология, ғылым және қоғам
+university.admissions.catalog.route_name.mit_social_and_engineering_systems_doctoral_admissions: Деректер, жүйелер және қоғам институтына (IDSS) өтініш
+university.admissions.catalog.route_name.mit_mitili_sm_admissions: MITILI лингвистика бағдарламасына (SM) өтініш
+university.admissions.catalog.route_name.mit_linguistics_doctoral_admissions: Өтініш: лингвистика
+university.admissions.catalog.route_name.mit_materials_science_and_engineering_doctoral_admissions: Өтініш: материалтану және инженерия
+university.admissions.catalog.route_name.mit_mathematics_doctoral_admissions: Өтініш: математика
+university.admissions.catalog.route_name.mit_mechanical_engineering_doctoral_admissions: Өтініш: машина жасау
+university.admissions.catalog.route_name.mit_microbiology_doctoral_admissions: Өтініш: микробиология
+university.admissions.catalog.route_name.mit_sloan_management_doctoral_admissions: MIT Sloan докторантурасына өтініш
+university.admissions.catalog.route_name.mit_mit_whoi_doctoral_admissions: MIT–WHOI бірлескен бағдарламасы: мұхиттану және мұхит инженериясы
+university.admissions.catalog.route_name.mit_nuclear_science_and_engineering_doctoral_admissions: Өтініш: ядролық ғылымдар және инженерия
+university.admissions.catalog.route_name.mit_operations_research_doctoral_admissions: Өтініш: операцияларды зерттеу
+university.admissions.catalog.route_name.mit_philosophy_doctoral_admissions: Өтініш: философия
+university.admissions.catalog.route_name.mit_political_science_doctoral_admissions: Өтініш: саясаттану
+university.admissions.catalog.route_name.mit_transportation_doctoral_admissions: Өтініш: көлік
+university.admissions.catalog.route_name.mit_urban_studies_and_planning_doctoral_admissions: Өтініш: урбанистика және жоспарлау
+university.admissions.catalog.route_name.mit_mathematics_of_data_sm_admissions: Деректер математикасы бойынша SM өтініші
+university.admissions.catalog.route_name.mit_grad_transportation_mst_admissions: Өтініш: көлік
+university.admissions.catalog.route_name.mit_economics_doctoral_admissions: Экономика докторантурасына өтініш
+university.admissions.catalog.route_name.mit-be-meng-internal: Биологиялық инженерия бойынша ішкі MEng
+university.admissions.catalog.route_name.mit-mathematics-fifth-year-internal: MIT студенттеріне арналған математика MASc бесінші жылы
+university.admissions.catalog.route_name.mit-cse-secondary-sm-internal: Есептеу ғылымдары бойынша екінші SM-ді ішкі қарастыру (CCSE)
+university.admissions.catalog.route_name.mit-mas-phd-progression: MAS SM-нен PhD-ге ішкі жалғастыру
+university.admissions.catalog.route_name.mit-idps-internal-selection: Қатысушы MIT бағдарламаларының докторанттарына арналған IDPS ішкі іріктеуі
+university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Департамент пен есептеу ғылымдарының (CSE) бірлескен PhD өтініші
+university.admissions.catalog.route_name.mit-economics-sm-special-approval: Қазіргі MIT студенттеріне экономика SM дәрежесін ерекше мақұлдау

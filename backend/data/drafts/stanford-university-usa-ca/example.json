@@ -1847,10 +1847,10 @@
             "undergraduate-shared-evidence:stanford-ug-transfer-requirements",
             "undergraduate-shared-evidence:stanford-ug-transfer-fee"
           ],
-          "checked_at": "2026-10-02",
-          "publication_status": "conflicting_official_publication",
-          "review_status": "needs_review",
-          "value": "Official Stanford transfer pages conflict: the general Transfer Applicants requirements page lists USD 90; the dedicated Application Fee/Fee Waiver page says USD 100. Both describe a nonrefundable fee and Common App fee-waiver request. Do not display a single confirmed amount until Stanford resolves the discrepancy."
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "The transfer application fee is USD 100 and is nonrefundable. Both the general Transfer Applicants requirements page and the dedicated Application Fee/Fee Waiver page now publish the same amount. Eligible U.S. and non-U.S. citizens may request a fee waiver through Common App. Select the fee-waiver request, submit the NACAC Transfer Fee Waiver form and either a Student Aid Report or a school official signature. Applicants do not need to wait for waiver approval before submitting the application; Stanford may request further information."
         },
         {
           "id": "undergraduate-shared-evidence:stanford-transfer-standardized-tests",
@@ -2919,6 +2919,99 @@
           "value": "For the published 2027-2028 transfer aid cycle, priority filing is March 15 with May notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement."
         },
         {
+          "id": "undergraduate-shared-evidence:stanford-ug-firstyear-domestic-aid-2027-28",
+          "original_id": "stanford-ug-firstyear-domestic-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-rea-us",
+            "undergraduate-shared-evidence:stanford-ug-aid-rd-us",
+            "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
+          ],
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 undergraduate financial aid cycle, REA priority filing is November 15, with mid-December notification; RD priority filing is February 15, with April notification. U.S. citizens and eligible noncitizens seeking institutional need-based scholarships submit CSS Profile (school code 4704), FAFSA (001305) and IDOC 2025 parent federal tax returns, schedules, attachments, W-2 forms and other earning statements, including personal and corporate partnership returns. Divorced, separated or never-married parents each provide separate CSS information and tax documents; a noncustodial-parent waiver needs a signed request and supporting documents through IDOC. The FAFSA uses the parent providing greater financial support. CSS Profile is not required for federal-only aid. Undocumented students follow the same application requirements and dates, but do not file FAFSA; they submit CSS Profile and tax documents through IDOC."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-transfer-domestic-aid-2027-28",
+          "original_id": "stanford-ug-transfer-domestic-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-transfer-us",
+            "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
+          ],
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 undergraduate financial aid cycle, Transfer priority filing is March 15; applicants completing CSS Profile and IDOC by that date can expect notification in mid-May. U.S. citizens and eligible noncitizens seeking institutional need-based scholarships submit CSS Profile (school code 4704), FAFSA (001305) and IDOC 2025 parent federal tax returns, schedules, attachments, W-2 forms and other earning statements, including personal and corporate partnership returns. Divorced, separated or never-married parents each provide separate CSS information and tax documents; a noncustodial-parent waiver needs a signed request and supporting documents through IDOC. The FAFSA uses the parent providing greater financial support. CSS Profile is not required for federal-only aid. Undocumented students follow the same application requirements and dates, but do not file FAFSA; they submit CSS Profile and tax documents through IDOC."
+        },
+        {
           "id": "directory-evidence:stanford-graduate-cs-ms-directory-table",
           "original_id": "stanford-graduate-cs-ms-directory-table",
           "evidence_file": "directory-evidence.json",
@@ -3739,12 +3832,13 @@
             "fee_status": []
           },
           "source_ids": [
-            "engineering-doerr-evidence:cs-ms"
+            "engineering-doerr-evidence:cs-ms",
+            "engineering-doerr-evidence:cs-ms-faq"
           ],
-          "checked_at": "2026-10-02",
+          "checked_at": "2026-10-20",
           "publication_status": "published",
-          "review_status": "verified_department_level",
-          "value": "CS MS applicants need a qualifying bachelor’s degree but need not major in CS; the department recommends strong quantitative/analytical preparation and directs applicants to review its CS Foundation requirements. The MS can be coursework-only or include research. HCP is a part-time MS route for full-time employed people; HCP applicants must reside in the U.S., and international HCP applicants must be employed and located in the U.S. A CS MS is not a guaranteed path to the CS PhD."
+          "review_status": "reviewed",
+          "value": "CS MS applicants need a qualifying bachelor’s degree but need not major in CS; strong quantitative and analytical preparation is recommended. Applicants who already hold an MS in Computer Science from another institution cannot apply to the CS MS, but may apply to the CS PhD. Units from another institution’s MS cannot be transferred to this MS. The MS can be coursework-only or include research. HCP is a part-time MS route for full-time employed people residing in the U.S.; international HCP applicants must be employed and located in the U.S. HCP students cannot enroll from overseas. A CS MS does not automatically lead to the CS PhD."
         },
         {
           "id": "engineering-doerr-evidence:cs-ms-tests-and-english-policy",
@@ -3785,12 +3879,13 @@
           },
           "source_ids": [
             "engineering-doerr-evidence:cs-ms-faq",
+            "engineering-doerr-evidence:cs-checklist",
             "engineering-doerr-evidence:test-scores"
           ],
-          "checked_at": "2026-10-02",
-          "publication_status": "published_with_scope_ambiguity",
-          "review_status": "needs_resolution",
-          "value": "CS says GRE is not required and is not considered for MS applicants. Its FAQ says TOEFL is required for applicants whose first language is not English regardless of citizenship, with stated exceptions for U.S. citizens/permanent residents, English first language, or an English-instruction degree. The central Graduate Admissions page also recognizes two years of consecutive full-time English-medium professional/educational experience as an exemption; CS MS FAQ does not mention that exemption."
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "CS MS does not require or consider GRE scores. The current CS MS FAQ, CS Graduate Application Checklists and central Graduate Admissions page agree that TOEFL iBT or IELTS Academic is required unless an exemption applies: U.S. citizenship or permanent residence; English as first language; a U.S. bachelor’s, master’s or doctoral degree or international equivalent taught entirely in English; or at least two consecutive years of full-time professional or educational experience in English within the past ten years. The central admission-consideration minimum is TOEFL iBT 90 for tests before January 21, 2026, TOEFL iBT 4.5 for tests on or after that date, or IELTS Academic 7.0. These are consideration thresholds, not an admission guarantee. CS requires scores within 24 months and testing before application submission and the application deadline. Official TOEFL scores go through ETS code 4704; IELTS Academic uses E-delivery to Stanford University Graduate."
         },
         {
           "id": "engineering-doerr-evidence:cs-phd-application-scope",
@@ -9480,10 +9575,10 @@
             "undergraduate-shared-evidence:stanford-ug-transfer-requirements",
             "undergraduate-shared-evidence:stanford-ug-transfer-fee"
           ],
-          "checked_at": "2026-10-02",
-          "publication_status": "conflicting_official_publication",
-          "review_status": "needs_review",
-          "value": "Official Stanford transfer pages conflict: the general Transfer Applicants requirements page lists USD 90; the dedicated Application Fee/Fee Waiver page says USD 100. Both describe a nonrefundable fee and Common App fee-waiver request. Do not display a single confirmed amount until Stanford resolves the discrepancy."
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "The transfer application fee is USD 100 and is nonrefundable. Both the general Transfer Applicants requirements page and the dedicated Application Fee/Fee Waiver page now publish the same amount. Eligible U.S. and non-U.S. citizens may request a fee waiver through Common App. Select the fee-waiver request, submit the NACAC Transfer Fee Waiver form and either a Student Aid Report or a school official signature. Applicants do not need to wait for waiver approval before submitting the application; Stanford may request further information."
         },
         {
           "id": "undergraduate-shared-evidence:stanford-transfer-standardized-tests",
@@ -10550,6 +10645,99 @@
           "publication_status": "published",
           "review_status": "reviewed",
           "value": "For the published 2027-2028 transfer aid cycle, priority filing is March 15 with May notification. International aid applicants must request aid on the admission application. Submit CSS Profile (school code 4704) and the signed International Student Supplement to Stanford Financial Aid through its secure Document Upload. If parents are divorced, separated or never married, each provides separate CSS information; a noncustodial-parent waiver requires a signed request and supporting documentation. Applicants unable to afford the CSS fee, or whose country cannot process College Board payments, may use ISAFA through Document Upload instead of CSS; do not use the paper form when CSS can be filed. Canadian citizens use IDOC for signed 2025 Canadian tax statements and do not submit the supplement."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-firstyear-domestic-aid-2027-28",
+          "original_id": "stanford-ug-firstyear-domestic-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-rea-us",
+            "undergraduate-shared-evidence:stanford-ug-aid-rd-us",
+            "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
+          ],
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 undergraduate financial aid cycle, REA priority filing is November 15, with mid-December notification; RD priority filing is February 15, with April notification. U.S. citizens and eligible noncitizens seeking institutional need-based scholarships submit CSS Profile (school code 4704), FAFSA (001305) and IDOC 2025 parent federal tax returns, schedules, attachments, W-2 forms and other earning statements, including personal and corporate partnership returns. Divorced, separated or never-married parents each provide separate CSS information and tax documents; a noncustodial-parent waiver needs a signed request and supporting documents through IDOC. The FAFSA uses the parent providing greater financial support. CSS Profile is not required for federal-only aid. Undocumented students follow the same application requirements and dates, but do not file FAFSA; they submit CSS Profile and tax documents through IDOC."
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-ug-transfer-domestic-aid-2027-28",
+          "original_id": "stanford-ug-transfer-domestic-aid-2027-28",
+          "evidence_file": "undergraduate-shared-evidence.json",
+          "topic": "financial_aid_documents",
+          "scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "undergraduate-shared-evidence:stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "original_scope": {
+            "option_ids": [],
+            "procedure_ids": [
+              "stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "US citizen",
+              "eligible noncitizen",
+              "undocumented"
+            ],
+            "cycle": "2027-2028 financial aid cycle",
+            "fee_status": []
+          },
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-aid-transfer-us",
+            "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
+          ],
+          "checked_at": "2026-10-20",
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "value": "For the published 2027-2028 undergraduate financial aid cycle, Transfer priority filing is March 15; applicants completing CSS Profile and IDOC by that date can expect notification in mid-May. U.S. citizens and eligible noncitizens seeking institutional need-based scholarships submit CSS Profile (school code 4704), FAFSA (001305) and IDOC 2025 parent federal tax returns, schedules, attachments, W-2 forms and other earning statements, including personal and corporate partnership returns. Divorced, separated or never-married parents each provide separate CSS information and tax documents; a noncustodial-parent waiver needs a signed request and supporting documents through IDOC. The FAFSA uses the parent providing greater financial support. CSS Profile is not required for federal-only aid. Undocumented students follow the same application requirements and dates, but do not file FAFSA; they submit CSS Profile and tax documents through IDOC."
         },
         {
           "id": "supplementary-degree-evidence:stanford-bas-degree-structure",

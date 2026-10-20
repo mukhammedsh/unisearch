@@ -14,9 +14,11 @@ export function admissionsCycleLabel(value) {
     const index = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(month[1]) + 1;
     return `${t(`university.admissions.reading.month_standalone.${index}`, month[1])} ${month[2]}`;
   }
-  const entry = raw.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2}))?)(?: entry)?$/);
+  const entry = raw.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2}))?)(?: entry)?(?: \((January|February|March|April|May|June|July|August|September|October|November|December)\))?$/);
   if (!entry) return raw;
-  return tFormat(`university.admissions.reading.${entry[1] ? `entry_${entry[1].toLowerCase()}` : "entry_year"}`, { year: entry[2] });
+  const cycle = tFormat(`university.admissions.reading.${entry[1] ? `entry_${entry[1].toLowerCase()}` : "entry_year"}`, { year: entry[2] });
+  const monthIndex = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(entry[3]) + 1;
+  return monthIndex ? `${cycle} (${t(`university.admissions.reading.month_standalone.${monthIndex}`)})` : cycle;
 }
 
 export function admissionsProgramLabel(option) {
@@ -307,6 +309,17 @@ function scalar(value, referenceLabels = {}) {
   return escapeHtml(text);
 }
 
+export function admissionDeadlineTitle(event) {
+  if (!event.kind) return event.title;
+  const kind = t(`university.deadlines.kind.${event.kind}`);
+  const round = event.name?.match(/^Round (\d+)$/);
+  const name = round ? tFormat("university.deadlines.round", { number: round[1] })
+    : event.name === "Early Action" ? t("university.admissions.reading.early_action")
+      : event.name === "Regular Action" ? t("university.admissions.reading.regular_action")
+        : event.name === "MBA Early" ? t("university.deadlines.mba_early") : admissionsCycleLabel(event.name);
+  return name ? `${kind} · ${name}` : kind;
+}
+
 export function renderAdmissionsValue(value, referenceLabels = {}) {
   if (Array.isArray(value)) {
     const items = value.map(item => renderAdmissionsValue(item, referenceLabels)).filter(Boolean);
@@ -335,14 +348,33 @@ function renderStudyCurriculum(value, referenceLabels) {
   return sections.join("");
 }
 
-export function renderStudyOptionOverview(resolved) {
+function reviewedStudyRows(resolved) {
   const option = resolved?.selected_option;
-  if (!option) return "";
+  if (!option) return [];
   const studyIds = new Set(resolved.fact_groups?.study || []);
-  const rows = (resolved.facts || []).filter(row => studyIds.has(row.id)
+  return (resolved.facts || []).filter(row => studyIds.has(row.id)
     && row.publication_status === "published" && [label("review.verified"), label("review.reviewed"), label("review.carried_forward_review")].includes(reviewLabel(row.review_status))
     && row.applicability?.status !== "mismatched" && row.scope?.option_ids?.includes(option.id)
     && !row.scope.route_ids?.length && row.value && typeof row.value === "object");
+}
+
+export function studyOptionEssentials(resolved) {
+  const rows = reviewedStudyRows(resolved);
+  const formatters = { duration: localizeDuration, mode: trStudyMode, language: trProgramLanguage, start_date: admissionsCycleLabel };
+  const publishedKeys = { duration: "Duration", mode: "Study mode", location: "Location", start_date: "Start date", department: "Delivered by", language: "Language" };
+  return ["duration", "mode", "language", "location", "department", "start_date"].flatMap(key => {
+    const value = rows.map(row => row.value[key] ?? row.value[publishedKeys[key]]).find(value => value != null && value !== "") ?? resolved?.selected_option?.format?.[key];
+    if (typeof value !== "string" && !(Array.isArray(value) && value.every(item => typeof item === "string"))) return [];
+    if (!value.length) return [];
+    const formatted = (Array.isArray(value) ? value : [value]).map(item => formatters[key] ? formatters[key](item) : translateAdmissionSummary(item) || item).join(", ");
+    return [[key, formatted]];
+  });
+}
+
+export function renderStudyOptionOverview(resolved) {
+  const option = resolved?.selected_option;
+  if (!option) return "";
+  const rows = reviewedStudyRows(resolved);
   const overview = option.overviews?.find(row => translateAdmissionSummary(row.text, { section: "study" }));
   const descriptionRow = rows.find(row => [row.value.description, row.value.course_page_programme_summary, row.value.A3i6E, row.topic === "study_content" ? row.value.source_content : undefined]
     .some(value => typeof value === "string" && value.trim()));
@@ -354,17 +386,9 @@ export function renderStudyOptionOverview(resolved) {
   const overviewSources = (resolved.sources || []).filter(source => overviewSourceIds.includes(source.id)).map(source => sourceLink(source.url, source.title)).join("");
   const curriculum = descriptionRow?.value.study_periods_pathways_and_components ? descriptionRow.value : null;
   const descriptionHtml = !description ? `<p class="admissions-context__note" data-program-overview-missing>${escapeHtml(t("university.admissions.reading.overview_missing"))}</p>` : `<p class="program-card__description">${escapeHtml(translatedDescription || t("university.admissions.reading.summary_translation_missing"))}</p>${getCurrentLanguage() === "eng" && !summary && !curriculum ? "" : `<details class="admissions-catalog__evidence" data-program-original><summary>${escapeHtml(t("university.admissions.reading.original_description"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary>${curriculum ? `<div class="admissions-catalog__body" lang="en">${renderStudyCurriculum(curriculum, resolved.reference_labels)}</div>` : `<p class="program-card__description" lang="en">${escapeHtml(description)}</p>`}${overviewSources ? `<div class="admissions-catalog__sources">${overviewSources}</div>` : ""}</details>`}`;
-  const formatters = { duration: localizeDuration, mode: trStudyMode, language: trProgramLanguage, start_date: admissionsCycleLabel };
-  const publishedKeys = { duration: "Duration", mode: "Study mode", location: "Location", start_date: "Start date", department: "Delivered by" };
-  const fields = ["duration", "mode", "language", "location", "department", "start_date"].map(key => {
-    const value = rows.map(row => row.value[key] ?? row.value[publishedKeys[key]]).find(value => value != null && value !== "") ?? option.format?.[key];
-    if (typeof value !== "string" && !(Array.isArray(value) && value.every(item => typeof item === "string"))) return "";
-    if (!value.length) return "";
-    const formatted = (Array.isArray(value) ? value : [value]).map(item => formatters[key] ? formatters[key](item) : translateAdmissionSummary(item) || item).join(", ");
-    return `<div class="program-card-row"><dt class="program-card-label">${escapeHtml(label(`field.${key}`))}</dt><dd class="program-card-value">${escapeHtml(formatted)}</dd></div>`;
-  }).filter(Boolean);
+  const fields = studyOptionEssentials(resolved).map(([key, value]) => `<div class="program-card-row"><dt class="program-card-label">${escapeHtml(label(`field.${key}`))}</dt><dd class="program-card-value">${escapeHtml(value)}</dd></div>`);
   const degrees = [...new Set(option.awards || [])].map(award => t(`university.admissions.reading.degree.${award}`)).filter(Boolean);
-  return `${degrees.length ? `<p class="admissions-context__note" data-award-explanation>${degrees.map(escapeHtml).join(" · ")}</p>` : ""}${descriptionHtml}${fields.length ? `<dl class="program-card-rows">${fields.join("")}</dl>` : ""}`;
+  return `${degrees.length ? `<p class="admissions-context__note" data-award-explanation>${degrees.map(escapeHtml).join(" · ")}</p>` : ""}${descriptionHtml}${getCurrentLanguage() === "eng" && !summary && !curriculum && overviewSources ? `<div class="admissions-catalog__sources" data-program-overview-sources>${overviewSources}</div>` : ""}${fields.length ? `<dl class="program-card-rows">${fields.join("")}</dl>` : ""}`;
 }
 
 function sources(row, resolved) {

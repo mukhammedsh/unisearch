@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 const { expectNoStackedGapMargins } = require("./helpers/design");
 
 const MIT_ID = "mit-usa-cambridge";
@@ -217,7 +217,9 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
   await expect(page.locator(".compare-decision-theme")).toHaveCount(1);
   await expect(page.locator(".compare-decision-side")).toHaveCount(2);
   await expect(page.locator(".compare-uni-card")).toHaveCount(2);
-  await expect(page.locator(".compare-table thead th")).toHaveCount(3);
+  await expect(page.locator("[data-reviewed-comparison] .compare-table thead th")).toHaveCount(3);
+  await expect(page.locator(".compare-additional-facts")).not.toHaveAttribute("open", "");
+  await page.locator(".compare-additional-facts > summary").click();
   await expect(page.locator(".compare-tests")).toBeVisible();
   await expect(page.locator("#compareResultsPane")).toContainText("What matters for your choice");
   await expect(page.locator("#compareResultsPane")).toContainText("Tests and characteristics");
@@ -367,13 +369,16 @@ test("compare configuration requires two explicit reviewed contexts and persists
   await chooseReviewedContext(page, MIT_ID, "Computer Science and Engineering", "mit-course-6-3-bachelor", "mit-first-year", "Fall 2027 entry");
   await chooseReviewedContext(page, IMPERIAL_ID, "Computing", "imperial-option-computing-meng", "procedure-computing-meng", "2027 entry");
   await page.locator('[data-action="build-compare-results"]').click();
-  await expect(page.locator(".compare-table")).toBeVisible();
-  const studyModeRow = page.locator(".compare-table tbody tr").filter({ hasText: "Study mode" });
+  await expect(page.locator("[data-reviewed-comparison] .compare-table")).toBeVisible();
+  const studyModeRow = page.locator(".compare-tests .compare-table tbody tr").filter({ hasText: "Study mode" });
+  await openDisclosureParents(studyModeRow);
   await expect(studyModeRow).toHaveCount(1);
   await expect(studyModeRow).toContainText("Not specified");
   await expect(studyModeRow).not.toContainText("not_stated");
-  await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] [data-admissions-fact="ug-sat-act-presence"]`)).toBeVisible();
-  await expect(page.locator(`[data-reviewed-context="${IMPERIAL_ID}"] [data-admissions-fact="imperial-computing-meng-admission"]`)).toBeVisible();
+  for (const fact of [page.locator(`[data-reviewed-context="${MIT_ID}"] [data-admissions-fact="ug-sat-act-presence"]`), page.locator(`[data-reviewed-context="${IMPERIAL_ID}"] [data-admissions-fact="imperial-computing-meng-admission"]`)]) {
+    await openDisclosureParents(fact);
+    await expect(fact).toBeVisible();
+  }
   await page.reload();
   await expect(page.locator(`[data-reviewed-context="${MIT_ID}"] .admissions-context__summary`)).toContainText("Fall 2027 entry");
   await expect(page.locator(`[data-reviewed-context="${IMPERIAL_ID}"] .admissions-context__summary`)).toContainText("2027 entry");
@@ -391,11 +396,15 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   const mit = page.locator(`[data-reviewed-context="${MIT_ID}"]`);
   const imperial = page.locator(`[data-reviewed-context="${IMPERIAL_ID}"]`);
   const mitTest = mit.locator('[data-admissions-fact="ug-sat-act-presence"]');
+  await mitTest.waitFor({ state: "attached" });
+  await openDisclosureParents(mitTest);
   await expect(mitTest).toBeVisible();
   await mitTest.locator("summary").click();
   await expect(mitTest).toContainText(/SAT.*ACT|ACT.*SAT/i);
   await expect(mitTest.locator('a[href*="mitadmissions.org"]')).not.toHaveCount(0);
   const course = imperial.locator('[data-admissions-fact="imperial-computing-meng-admission"]');
+  await course.waitFor({ state: "attached" });
+  await openDisclosureParents(course);
   await expect(course).toBeVisible();
   await course.locator("summary").click();
   await expect(course).toContainText("TMUA");
@@ -404,7 +413,7 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   await expect(imperial.locator('[data-admissions-fact="ug-sat-act-presence"]')).toHaveCount(0);
   await expect(mit).toContainText("No requirements-match percentage is available");
   await expect(imperial).toContainText("No requirements-match percentage is available");
-  await expect(page.locator(".compare-table")).not.toContainText(/1,450|1,550/);
+  await expect(page.locator("[data-reviewed-comparison] .compare-table")).not.toContainText(/1,450|1,550/);
 });
 
 test("compare deep link IDs override stale selection while old reviewed pointers cannot override canonical profile context", async ({ page }) => {
@@ -422,7 +431,7 @@ test("compare deep link IDs override stale selection while old reviewed pointers
   await seedReviewedContexts(page);
 
   await page.goto("/compare.html?lang=eng&ids=mit-usa-cambridge,imperial-college-london-uk&choices=mit_regular::mit_regular::mit_regular,imperial_eng::imperial_sat::imperial_sat");
-  await expect(page.locator(".compare-table")).toBeVisible();
+  await expect(page.locator("[data-reviewed-comparison] .compare-table")).toBeVisible();
   await expect(page.locator(".compare-uni-card")).toContainText([
     "Massachusetts Institute of Technology",
     "Imperial College London",
@@ -500,12 +509,13 @@ test("compare rework: diff toggle, neutral rows, and reviewed context controls",
 
   // 7. Verify diff-only toggle
   const diffToggle = page.locator(".compare-diff-toggle");
+  await openDisclosureParents(diffToggle);
   await expect(diffToggle).toBeVisible();
-  await expect(page.locator(".compare-table-wrap")).not.toHaveClass(/is-diff-only/);
+  await expect(page.locator(".compare-tests .compare-table-wrap")).not.toHaveClass(/is-diff-only/);
   await diffToggle.click();
-  await expect(page.locator(".compare-table-wrap")).toHaveClass(/is-diff-only/);
+  await expect(page.locator(".compare-tests .compare-table-wrap")).toHaveClass(/is-diff-only/);
   await diffToggle.click();
-  await expect(page.locator(".compare-table-wrap")).not.toHaveClass(/is-diff-only/);
+  await expect(page.locator(".compare-tests .compare-table-wrap")).not.toHaveClass(/is-diff-only/);
 
   // 8. Verify neutral decision-support themes and paired evidence
   await expect(page.locator(".compare-decision-theme")).toHaveCount(1);

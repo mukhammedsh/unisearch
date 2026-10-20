@@ -79,7 +79,8 @@ for (const item of cases) {
     await expect(academic).toContainText(/SAT.*ACT/);
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText("IELTS Academic");
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText(/7[.,]5/);
-    await expect(page.locator("#detailRequirements .admissions-reading__section")).toHaveCount(3);
+    await expect(page.locator('#detailRequirements [data-source-summary="requirements"]')).toContainText({ eng: "recommended preparation", rus: "рекомендуемую подготовку", kaz: "ұсынылатын даярлықты" }[item.language]);
+    await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText({ eng: "MIT as a whole", rus: "MIT в целом", kaz: "тұтас MIT" }[item.language]);
     const special = page.locator('#detailRequirements [data-admissions-fact="simultaneous-sb-master-status"]');
     await expect(special).toBeHidden();
     await expect(special.locator('xpath=ancestor::*[@data-general-references]')).toHaveCount(1);

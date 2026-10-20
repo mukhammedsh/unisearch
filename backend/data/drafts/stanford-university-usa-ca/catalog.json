@@ -13,10 +13,10 @@
   "source_file": "sources.json",
   "evidence_fingerprints": {
     "undergraduate-study-evidence.json": "e907bf2eb312a58727491919ced270530a8a7775cdbc95aff2e97b60071826dd",
-    "undergraduate-shared-evidence.json": "d0647a9ac6d05bbd012af57456472f923337f55ab1b25e22fb9443c081ed720c",
+    "undergraduate-shared-evidence.json": "a793e5df573cb9a345ec924a58e889d8ca904484c4bfe743df206b56f9a50a9c",
     "directory-evidence.json": "91ac6e6e801d2c18e56d10dcb2c9c620529f2ef3d70ee832da76f8fab53901a4",
     "coterm-central-evidence.json": "b993f90b97710730fd851cde57435b10c49fa1e62439f679a44f4cad374c178e",
-    "engineering-doerr-evidence.json": "e23f5c09092158cef555df33910b76dcb0caf67c49957226d8601965732b6457",
+    "engineering-doerr-evidence.json": "fa3803d37ff37cf3b631d8272762035025180101f6eb3227e8f2202fb96b439d",
     "humanities-education-medicine-evidence.json": "a8fb3dcacadee65774afb6641c3542ec16bacfdb8431c04cf1187908cc927619",
     "hs-social-science-evidence.json": "42f3852ce99dc138afc6621a2cf9d8d442bccc7eabcc2ba740d841af0e4a7bab",
     "medicine-graduate-evidence.json": "1a358e8704a39dffcbcbcd8fc1014734df67dc5132e0cf3678b3f3f614443a49",
@@ -42863,9 +42863,9 @@
         "undergraduate-shared-evidence:stanford-ug-transfer-requirements",
         "undergraduate-shared-evidence:stanford-ug-transfer-fee"
       ],
-      "checked_at": "2026-10-02",
-      "publication_status": "conflicting_official_publication",
-      "review_status": "needs_review"
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed"
     },
     {
       "id": "undergraduate-shared-evidence:stanford-transfer-standardized-tests",
@@ -44977,6 +44977,97 @@
         "undergraduate-shared-evidence:stanford-ug-aid-transfer-international"
       ],
       "checked_at": "2026-10-19",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-ug-firstyear-domestic-aid-2027-28",
+      "original_id": "stanford-ug-firstyear-domestic-aid-2027-28",
+      "evidence_file": "undergraduate-shared-evidence.json",
+      "topic": "financial_aid_documents",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "undergraduate-shared-evidence:stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "undergraduate-shared-evidence:stanford-ug-aid-rea-us",
+        "undergraduate-shared-evidence:stanford-ug-aid-rd-us",
+        "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
+      ],
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-ug-transfer-domestic-aid-2027-28",
+      "original_id": "stanford-ug-transfer-domestic-aid-2027-28",
+      "evidence_file": "undergraduate-shared-evidence.json",
+      "topic": "financial_aid_documents",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "undergraduate-shared-evidence:stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "US citizen",
+          "eligible noncitizen",
+          "undocumented"
+        ],
+        "cycle": "2027-2028 financial aid cycle",
+        "fee_status": []
+      },
+      "source_ids": [
+        "undergraduate-shared-evidence:stanford-ug-aid-transfer-us",
+        "undergraduate-shared-evidence:stanford-ug-undocumented-aid"
+      ],
+      "checked_at": "2026-10-20",
       "publication_status": "published",
       "review_status": "reviewed"
     },
@@ -53040,11 +53131,12 @@
         "fee_status": []
       },
       "source_ids": [
-        "engineering-doerr-evidence:cs-ms"
+        "engineering-doerr-evidence:cs-ms",
+        "engineering-doerr-evidence:cs-ms-faq"
       ],
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-10-20",
       "publication_status": "published",
-      "review_status": "verified_department_level"
+      "review_status": "reviewed"
     },
     {
       "id": "engineering-doerr-evidence:cs-ms-tests-and-english-policy",
@@ -53085,11 +53177,12 @@
       },
       "source_ids": [
         "engineering-doerr-evidence:cs-ms-faq",
+        "engineering-doerr-evidence:cs-checklist",
         "engineering-doerr-evidence:test-scores"
       ],
-      "checked_at": "2026-10-02",
-      "publication_status": "published_with_scope_ambiguity",
-      "review_status": "needs_resolution"
+      "checked_at": "2026-10-20",
+      "publication_status": "published",
+      "review_status": "reviewed"
     },
     {
       "id": "engineering-doerr-evidence:cs-phd-application-scope",
@@ -82460,6 +82553,9 @@
         "cycle": null,
         "option_ids": []
       },
+      "review_status": "superseded_by_official_source_update",
+      "resolved_at": "2026-10-20",
+      "resolution": "Both current transfer pages publish USD 100; the reviewed fee and waiver fact replaces this former source conflict.",
       "evidence_file": "undergraduate-shared-evidence.json",
       "original_id": "stanford-transfer-application-fee-conflict",
       "source_ids": [
@@ -82679,6 +82775,9 @@
         "cycle": "2027-2028 aid cycle",
         "option_ids": []
       },
+      "review_status": "superseded_by_official_source_update",
+      "resolved_at": "2026-10-20",
+      "resolution": "Stanford now publishes 2027-28 first-year REA/RD domestic and international aid checklists. Current facts retain the route, applicant category, tax year and undocumented-student FAFSA exception; the former publication gap is historical.",
       "evidence_file": "undergraduate-shared-evidence.json",
       "original_id": "stanford-firstyear-aid-2027-28-publication",
       "source_ids": [

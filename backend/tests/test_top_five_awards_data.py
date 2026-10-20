@@ -116,7 +116,7 @@ class ActiveFundingDataTests(unittest.TestCase):
         funding = self.fact(resolved, "imperial-inspires-2027-contract")
 
         self.assertEqual(["Overseas"], funding["scope"]["fee_status"])
-        self.assertEqual(["source-422317aba5a39e29"], funding["source_ids"])
+        self.assertEqual(["source-422317aba5a39e29", "imperial-recheck-20261020-50"], funding["source_ids"])
         self.assertIn("selected postgraduate taught course", funding["scope"]["applicant_categories"][0])
         self.assertIn("at least £15,000 per year", funding["value"])
         self.assertNotIn("awarded_amount", funding["value"])

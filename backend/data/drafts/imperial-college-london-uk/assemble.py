@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--reviewed', action='store_true', help='Record the completed Stage 1 review after the source rechecks are accepted.')
 args = parser.parse_args()
-EVIDENCE = ['shared-evidence.json', 'engineering-sciences-evidence.json', 'medicine-business-evidence.json', 'doctoral-evidence.json', 'course-qualification-panels.json', 'programme-overviews-evidence.json']
+EVIDENCE = ['shared-evidence.json', 'engineering-sciences-evidence.json', 'medicine-business-evidence.json', 'doctoral-evidence.json', 'course-qualification-panels.json', 'programme-overviews-evidence.json', '2027-recheck-evidence.json']
 
 def read(name):
     return json.loads(ROOT.joinpath(name).read_text(encoding='utf-8'))
@@ -58,7 +58,7 @@ for row in snapshot['rows']:
     if 'digital-health-leadership' in row['url']:
         classification = 'employer_sponsored_or_conditional_progression'
     sid = original.get('source_id')
-    ids = [sid] if sid else source_by_url.get(key(row['url']), [])
+    ids = original.get('source_ids') or ([sid] if sid else source_by_url.get(key(row['url']), []))
     option = {'id': oid, 'title': row['name'], 'award': row['award'], 'level': level,
               'catalog_classification': classification, 'independent_application': 'A course choice or internal route as stated; not inferred from a search row or award label',
               'course_url': row['url'], 'department': original.get('department', original.get('school')),
@@ -68,8 +68,8 @@ for row in snapshot['rows']:
               'ucas_course_codes': original.get('ucas_course_codes', [])}
     options.append(option)
     procedures.append({'id': option['procedure_ids'][0], 'option_ids': [oid], 'classification': classification,
-                       'destination': 'Department-approved internal progression' if internal else 'UCAS Hub; institution I50, stated course code' if level == 'undergraduate' else 'My Imperial, with course/school/scheme-specific category and conditions',
-                       'shared_form_family': 'Department internal progression' if internal else 'UCAS' if level == 'undergraduate' else 'My Imperial',
+                       'destination': original.get('application_destination') or ('Department-approved internal progression' if internal else 'UCAS Hub; institution I50, stated course code' if level == 'undergraduate' else 'My Imperial, with course/school/scheme-specific category and conditions'),
+                       'shared_form_family': original.get('shared_form_family') or ('Department internal progression' if internal else 'UCAS' if level == 'undergraduate' else 'My Imperial'),
                        'source_ids': ids, 'policy_boundary': 'Shared form is not policy inheritance; intersect all fact scopes.'})
     option['inventory_origin'] = 'official_course_search'
     option['application_relationship'] = original.get('application_relationship', 'Course-specific choice; see scoped application evidence')

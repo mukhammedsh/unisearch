@@ -1,5 +1,10 @@
 meta.display_name: Russian
 meta.code: rus
+university.deadlines.mba_early: MBA Early · отложенное начало учёбы
+university.admissions.reading.no_route_short: Путь подачи требует уточнения
+university.admissions.reading.no_application_route: Для этого варианта самостоятельный путь подачи не установлен. Это может быть внутренняя или промежуточная степень либо вопрос, требующий уточнения у департамента. Прочитайте условия доступа и официальные инструкции; это не означает, что приём закрыт.
+university.admissions.reading.applicant_scope: Кто может подать
+university.admissions.reading.check_source_conditions: Проверьте опубликованные условия для заявителей
 academic_requirements: Академические требования
 academic_average: Средний академический балл
 language_average: Средний языковой балл
@@ -2965,3 +2970,121 @@ university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy, иссл
 university.admissions.reading.degree.MBA: MBA — Master of Business Administration, профессиональная степень по управлению
 university.admissions.reading.degree.MD: MD — Doctor of Medicine, профессиональная медицинская степень
 university.admissions.reading.degree.ENG: Engineer — углублённая инженерная степень, отдельная от MS и PhD
+university.deadlines.weekday.mon: Пн
+university.deadlines.weekday.tue: Вт
+university.deadlines.weekday.wed: Ср
+university.deadlines.weekday.thu: Чт
+university.deadlines.weekday.fri: Пт
+university.deadlines.weekday.sat: Сб
+university.deadlines.weekday.sun: Вс
+university.deadlines.kind.application: Срок подачи заявления
+university.deadlines.kind.funding: Срок заявки на финансирование
+university.deadlines.kind.decision: Уведомление о решении
+university.deadlines.kind.reply: Срок ответа на предложение
+university.deadlines.kind.opens: Начало подачи заявлений
+university.deadlines.kind.test: Последняя дата теста
+university.deadlines.kind.booking: Срок регистрации на тест
+university.deadlines.round: Раунд {number}
+university.deadlines.calendar_time_unknown: Время не указано; в календарь добавляется событие на весь день.
+university.deadlines.export_time_unresolved: Опубликованное время или часовой пояс нельзя надёжно преобразовать; проверьте официальный источник.
+universities.compare.summary.title: Сравнение выбранных программ
+universities.compare.summary.scope_note: Факты относятся к выбранным программе, маршруту поступления и опубликованному периоду. Валюты и категории оплаты сохранены; датированный ориентир не является ценой нового предложения.
+universities.compare.summary.program: Программа
+universities.compare.summary.study: Продолжительность и формат
+universities.compare.summary.route: Маршрут поступления
+universities.compare.summary.cycle: Выбранный набор
+universities.compare.summary.tuition: Опубликованная стоимость обучения
+universities.compare.summary.budget: Ориентир расходов на учёбу и проживание
+universities.compare.summary.deadline: Опубликованные сроки подачи
+universities.compare.summary.funding: Финансирование
+universities.compare.summary.admission: Требования и условия
+universities.compare.summary.deadlines: Открыть сроки и календарь
+universities.compare.summary.finance: Открыть расходы и финансирование
+universities.compare.summary.source: Официальный источник
+universities.compare.summary.reference: Датированный ориентир
+universities.compare.summary.before_aid: До финансовой помощи; исключения указаны в источнике
+universities.compare.summary.unknown: Для выбранного варианта не подтверждено
+universities.compare.summary.year_not_stated: В источнике не указан год; дата для календаря не подставляется.
+universities.compare.summary.potential_aid: Возможное финансирование зависит от условий и отбора.
+universities.compare.summary.full_records: Полные записи источников
+universities.compare.summary.additional_facts: Дополнительные факты об университетах
+universities.compare.summary.choose_programs: Выбрать программы
+universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
+university.admissions.reading.total_fee: за весь курс
+university.deadlines.kind.funding_consideration: Подача на обучение для рассмотрения на стипендию
+university.admissions.reading.first_year: первый год
+university.admissions.reading.second_year: Второй год
+university.admissions.reading.funding_excluded: Эта программа или формат исключены из этой стипендии.
+university.admissions.reading.funding_unconfirmed: Участие этой степени в стипендии не подтверждено.
+university.deadlines.kind.booking_open: Открытие записи на тест
+university.admissions.catalog.route_name.mit_sloan_mba_admissions: Подача на очную MBA MIT Sloan
+university.admissions.catalog.route_name.mit_sloan_mfin_admissions: Подача на магистратуру по финансам MIT Sloan
+university.admissions.catalog.route_name.mit_sloan_mban_admissions: Подача на бизнес-аналитику MIT Sloan
+university.admissions.catalog.route_name.mit_physics_phd_admissions: Подача в докторантуру по физике MIT
+university.admissions.catalog.route_name.mit_eecs_meng_admissions: Внутренняя подача на MEng EECS для студентов MIT
+university.admissions.catalog.route_name.mit_bcs_meng_admissions: Внутренняя MEng BCS для студентов MIT Course 6-9
+university.admissions.catalog.route_name.mit_sloan_msms_admissions: Подача на MSMS MIT Sloan для кандидатов партнёрских программ
+university.admissions.catalog.route_name.mit_grad_architecture_admissions: Подача: архитектура
+university.admissions.catalog.route_name.mit_grad_civil_environmental_admissions: Подача: гражданская и экологическая инженерия
+university.admissions.catalog.route_name.mit_grad_dedp_admissions: Подача DEDP: данные, экономика и разработка политики
+university.admissions.catalog.route_name.mit_grad_science_writing_admissions: Подача: научная журналистика и письмо
+university.admissions.catalog.route_name.mit_grad_sdm_admissions: Подача: проектирование систем и управление (SDM)
+university.admissions.catalog.route_name.mit_grad_music_technology_admissions: Подача: музыкальные технологии и вычисления
+university.admissions.catalog.route_name.mit_grad_real_estate_admissions: Подача в Центр недвижимости
+university.admissions.catalog.route_name.mit_grad_scm_residential_admissions: Подача на очную программу управления цепями поставок
+university.admissions.catalog.route_name.mit_grad_scm_blended_admissions: Подача на смешанную программу управления цепями поставок
+university.admissions.catalog.route_name.mit_grad_tpp_admissions: Подача: технологии и политика (TPP)
+university.admissions.catalog.route_name.mit_grad_lgo_admissions: Подача на Leaders for Global Operations (LGO)
+university.admissions.catalog.route_name.mit_grad_aero_admissions: Подача: авиация и космонавтика
+university.admissions.catalog.route_name.mit_grad_chemical_admissions: Подача: химическая инженерия
+university.admissions.catalog.route_name.mit_grad_eaps_admissions: Подача: науки о Земле, атмосфере и планетах
+university.admissions.catalog.route_name.mit_grad_materials_admissions: Подача: материаловедение и инженерия
+university.admissions.catalog.route_name.mit_grad_meche_admissions: Подача: машиностроение
+university.admissions.catalog.route_name.mit_grad_media_arts_admissions: Подача: медиаискусство и науки
+university.admissions.catalog.route_name.mit_grad_nuclear_admissions: Подача: ядерные науки и инженерия
+university.admissions.catalog.route_name.mit_grad_physics_admissions: Рассмотрение SM по физике только в особых случаях
+university.admissions.catalog.route_name.mit_grad_political_admissions: Подача: политология
+university.admissions.catalog.route_name.mit_grad_urban_planning_admissions: Подача: урбанистика и планирование
+university.admissions.catalog.route_name.mit_grad_whoi_admissions: Совместная программа MIT–WHOI: океанография и океаническая инженерия
+university.admissions.catalog.route_name.mit_sloan_evening_mba_admissions: Подача на вечернюю MBA MIT Sloan
+university.admissions.catalog.route_name.mit_sloan_executive_mba_admissions: Подача на Executive MBA MIT Sloan для руководителей
+university.admissions.catalog.route_name.mit_sloan_fellows_mba_admissions: Подача на Sloan Fellows MBA
+university.admissions.catalog.route_name.mit_aeroastro_doctoral_admissions: Подача: авиация и космонавтика
+university.admissions.catalog.route_name.mit_architecture_doctoral_admissions: Подача: архитектура
+university.admissions.catalog.route_name.mit_biological_engineering_doctoral_admissions: Подача: биологическая инженерия
+university.admissions.catalog.route_name.mit_biology_doctoral_admissions: Подача: биология
+university.admissions.catalog.route_name.mit_brain_and_cognitive_sciences_doctoral_admissions: Подача: науки о мозге и когнитивные науки
+university.admissions.catalog.route_name.mit_chemical_engineering_doctoral_admissions: Подача: химическая инженерия
+university.admissions.catalog.route_name.mit_chemistry_doctoral_admissions: Подача: химия
+university.admissions.catalog.route_name.mit_civil_and_environmental_engineering_doctoral_admissions: Подача: гражданская и экологическая инженерия
+university.admissions.catalog.route_name.mit_computational_and_systems_biology_doctoral_admissions: Подача: вычислительная и системная биология
+university.admissions.catalog.route_name.mit_computational_science_and_engineering_doctoral_admissions: Подача на самостоятельную PhD по вычислительным наукам и инженерии
+university.admissions.catalog.route_name.mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions: Подача: науки о Земле, атмосфере и планетах
+university.admissions.catalog.route_name.mit_eecs_doctoral_admissions: Докторский путь EECS: электротехника и компьютерные науки
+university.admissions.catalog.route_name.mit_hst_memp_doctoral_admissions: Подача: науки о здоровье и технологии (Harvard–MIT)
+university.admissions.catalog.route_name.mit_hasts_doctoral_admissions: Подача HASTS: история, антропология, наука и общество
+university.admissions.catalog.route_name.mit_social_and_engineering_systems_doctoral_admissions: Подача в Институт данных, систем и общества (IDSS)
+university.admissions.catalog.route_name.mit_mitili_sm_admissions: Подача на лингвистическую программу MITILI (SM)
+university.admissions.catalog.route_name.mit_linguistics_doctoral_admissions: Подача: лингвистика
+university.admissions.catalog.route_name.mit_materials_science_and_engineering_doctoral_admissions: Подача: материаловедение и инженерия
+university.admissions.catalog.route_name.mit_mathematics_doctoral_admissions: Подача: математика
+university.admissions.catalog.route_name.mit_mechanical_engineering_doctoral_admissions: Подача: машиностроение
+university.admissions.catalog.route_name.mit_microbiology_doctoral_admissions: Подача: микробиология
+university.admissions.catalog.route_name.mit_sloan_management_doctoral_admissions: Подача в докторантуру MIT Sloan
+university.admissions.catalog.route_name.mit_mit_whoi_doctoral_admissions: Совместная программа MIT–WHOI: океанография и океаническая инженерия
+university.admissions.catalog.route_name.mit_nuclear_science_and_engineering_doctoral_admissions: Подача: ядерные науки и инженерия
+university.admissions.catalog.route_name.mit_operations_research_doctoral_admissions: Подача: исследование операций
+university.admissions.catalog.route_name.mit_philosophy_doctoral_admissions: Подача: философия
+university.admissions.catalog.route_name.mit_political_science_doctoral_admissions: Подача: политология
+university.admissions.catalog.route_name.mit_transportation_doctoral_admissions: Подача: транспорт
+university.admissions.catalog.route_name.mit_urban_studies_and_planning_doctoral_admissions: Подача: урбанистика и планирование
+university.admissions.catalog.route_name.mit_mathematics_of_data_sm_admissions: Подача на SM по математике данных
+university.admissions.catalog.route_name.mit_grad_transportation_mst_admissions: Подача: транспорт
+university.admissions.catalog.route_name.mit_economics_doctoral_admissions: Подача в докторантуру по экономике
+university.admissions.catalog.route_name.mit-be-meng-internal: Внутренняя MEng по биологической инженерии
+university.admissions.catalog.route_name.mit-mathematics-fifth-year-internal: Пятый год MASc по математике для студентов MIT
+university.admissions.catalog.route_name.mit-cse-secondary-sm-internal: Внутреннее рассмотрение второй SM по вычислительным наукам (CCSE)
+university.admissions.catalog.route_name.mit-mas-phd-progression: Внутренний переход из MAS SM в PhD
+university.admissions.catalog.route_name.mit-idps-internal-selection: Внутренний отбор IDPS для докторантов участвующих программ MIT
+university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Совместная PhD департамента и вычислительных наук (CSE)
+university.admissions.catalog.route_name.mit-economics-sm-special-approval: Особое одобрение SM по экономике для действующих студентов MIT

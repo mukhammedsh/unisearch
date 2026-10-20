@@ -30,7 +30,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(self.batch["schema_version"], "admissions-storage-1.0")
         self.assertIs(self.batch["runtime_active"], False)
         self.assertEqual([(len(row["study_options"]), len(row["application_routes"]), len(row["facts"]), len(row["unknowns"]))
-                          for row in self.batch["institutions"]], [(191, 73, 913, 0), (360, 311, 1329, 73), (254, 465, 1412, 95)])
+                          for row in self.batch["institutions"]], [(191, 73, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95)])
         self.assertEqual({frozenset(row) for row in self.batch["institutions"]}, {frozenset(self.batch["institutions"][0])})
 
     def test_imperial_reassembly_preserves_history_without_retired_runtime_programs(self):

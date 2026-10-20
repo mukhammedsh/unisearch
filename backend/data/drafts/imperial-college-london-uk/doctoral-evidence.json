@@ -5819,7 +5819,8 @@
       "official_next_step": "Verify current MD(Res) target and degree-specific process with Mechanical Engineering postgraduate research admissions before integration.",
       "source_ids": [
         "source-bdd1549d596e4da4",
-        "source-afec6b43c625b23a"
+        "source-afec6b43c625b23a",
+        "imperial-recheck-20261020-31"
       ],
       "procedure_ids": [
         "procedure-mechanical-engineering-mdres"
@@ -5840,7 +5841,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-language-studies-phd",
@@ -5856,7 +5858,8 @@
       "official_next_step": "Confirm current degree availability and My Imperial target with CLCC/Science Communication admissions before treating it as open.",
       "source_ids": [
         "source-cd0e4c6706b4ba42",
-        "source-071c8ad1148b7b48"
+        "source-071c8ad1148b7b48",
+        "imperial-recheck-20261020-32"
       ],
       "procedure_ids": [
         "procedure-language-studies-phd"
@@ -5877,7 +5880,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-science-communication-phd",
@@ -5893,7 +5897,8 @@
       "official_next_step": "Confirm current degree availability and My Imperial target with CLCC/Science Communication admissions before treating it as open.",
       "source_ids": [
         "source-cd0e4c6706b4ba42",
-        "source-3da42bf03b739cb4"
+        "source-3da42bf03b739cb4",
+        "imperial-recheck-20261020-32"
       ],
       "procedure_ids": [
         "procedure-science-communication-phd"
@@ -5914,7 +5919,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-direct-mphil-target",
@@ -5930,7 +5936,8 @@
       "official_next_step": "Ask the chosen research department to confirm direct MPhil availability and portal target; retain exit/transfer distinction.",
       "source_ids": [
         "source-afaa5407262fbf45",
-        "source-d6c32b2c0ecb1664"
+        "source-d6c32b2c0ecb1664",
+        "imperial-recheck-20261020-33"
       ],
       "procedure_ids": [
         "procedure-mphil"
@@ -5951,7 +5958,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-engd-recruitment",
@@ -5967,7 +5975,8 @@
       "official_next_step": "Confirm Engineering/Registry current EngDQNDE availability, industrial sponsorship, application destination and fees before integration.",
       "source_ids": [
         "source-820d135453f0481c",
-        "source-bdd1549d596e4da4"
+        "source-bdd1549d596e4da4",
+        "imperial-recheck-20261020-34"
       ],
       "procedure_ids": [
         "procedure-engd-qnde"
@@ -5988,7 +5997,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-dsc-prescribed-fee",
@@ -6002,7 +6012,8 @@
       "finding": "A prescribed submission fee is required; amount is absent from reviewed regulations.",
       "official_next_step": "Obtain current prescribed DSc fee and submission form from Registry Assessment and Records.",
       "source_ids": [
-        "source-9065495810539d6f"
+        "source-9065495810539d6f",
+        "imperial-recheck-20261020-35"
       ],
       "procedure_ids": [
         "procedure-dsc"
@@ -6023,7 +6034,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-educational-development-phd",
@@ -6040,7 +6052,8 @@
       "source_ids": [
         "source-182b6df36c19b700",
         "source-51d62f2b19486c37",
-        "source-2cc3e2e5b540d416"
+        "source-2cc3e2e5b540d416",
+        "imperial-recheck-20261020-36"
       ],
       "procedure_ids": [
         "procedure-educational-development-phd"
@@ -6062,7 +6075,7 @@
       },
       "publication_status": "unknown",
       "review_status": "verified",
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-crick-phd",
@@ -6078,7 +6091,8 @@
       "official_next_step": "ConfirmcurrentrecruitmentthroughnamedImperialdepartment/Registryandofficialpartneruniversityadmissionsbeforeintegration.",
       "source_ids": [
         "source-da8b3a76b3345020",
-        "source-51d62f2b19486c37"
+        "source-51d62f2b19486c37",
+        "imperial-recheck-20261020-37"
       ],
       "procedure_ids": [
         "procedure-crick-phd"
@@ -6099,7 +6113,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-math-ccmi-next-cycle",
@@ -6113,7 +6128,8 @@
       "finding": "Official university inventory and linked institutional content establish the scheme and destination relationship; exact2027 project availability, complete eligibility or current deadline is not published in the reviewed Imperial content. LSGNT explicitly publishes2026 only; MedicalImaging announces2027October opening. Do not inherit generic department funding/entry rules solely through scheme membership.",
       "official_next_step": "Use the named university scheme admissions contact to confirm its current publication and appropriate partner application target before integration; retain reviewed current/closed status and historical dates.",
       "source_ids": [
-        "source-7e7361227d1c5363"
+        "source-7e7361227d1c5363",
+        "imperial-recheck-20261020-38"
       ],
       "procedure_ids": [
         "procedure-math-ccmi"
@@ -6134,7 +6150,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-math-lsgnt-next-cycle",
@@ -6148,7 +6165,8 @@
       "finding": "Official university inventory and linked institutional content establish the scheme and destination relationship; exact2027 project availability, complete eligibility or current deadline is not published in the reviewed Imperial content. LSGNT explicitly publishes2026 only; MedicalImaging announces2027October opening. Do not inherit generic department funding/entry rules solely through scheme membership.",
       "official_next_step": "Use the named university scheme admissions contact to confirm its current publication and appropriate partner application target before integration; retain reviewed current/closed status and historical dates.",
       "source_ids": [
-        "source-7e7361227d1c5363"
+        "source-7e7361227d1c5363",
+        "imperial-recheck-20261020-38"
       ],
       "procedure_ids": [
         "procedure-math-lsgnt"
@@ -6169,7 +6187,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-math-future-climate-next-cycle",
@@ -6185,7 +6204,8 @@
       "source_ids": [
         "source-7e7361227d1c5363",
         "source-ef36b4a0c7c51884",
-        "source-833651dcf1f97bf6"
+        "source-833651dcf1f97bf6",
+        "imperial-recheck-20261020-38"
       ],
       "procedure_ids": [
         "procedure-math-future-climate"
@@ -6207,7 +6227,7 @@
       },
       "publication_status": "unknown",
       "review_status": "verified",
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-math-random-systems-next-cycle",
@@ -6222,7 +6242,8 @@
       "official_next_step": "Keep closed status visible; do not offer a new-intake application. Separate ordinary Mathematics PhD remains separately evidenced.",
       "source_ids": [
         "source-7e7361227d1c5363",
-        "source-9029a8d0791ccc9c"
+        "source-9029a8d0791ccc9c",
+        "imperial-recheck-20261020-38"
       ],
       "procedure_ids": [
         "procedure-math-random-systems"
@@ -6244,7 +6265,7 @@
       },
       "publication_status": "published",
       "review_status": "superseded_by_published_closure",
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-math-statml-next-cycle",
@@ -6259,7 +6280,8 @@
       "official_next_step": "Use the named university scheme admissions contact to confirm its current publication and appropriate partner application target before integration; retain reviewed current/closed status and historical dates.",
       "source_ids": [
         "source-7e7361227d1c5363",
-        "source-f2b376f8c2199f1d"
+        "source-f2b376f8c2199f1d",
+        "imperial-recheck-20261020-38"
       ],
       "procedure_ids": [
         "procedure-math-statml"
@@ -6281,7 +6303,7 @@
       },
       "publication_status": "unknown",
       "review_status": "verified",
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-medical-imaging-integrated-next-cycle",
@@ -6297,7 +6319,8 @@
       "source_ids": [
         "source-1e206d093548d31a",
         "source-9235bb2a1867d7b9",
-        "source-eebc4fd881232fac"
+        "source-eebc4fd881232fac",
+        "imperial-recheck-20261020-39"
       ],
       "procedure_ids": [
         "procedure-medical-imaging-integrated"
@@ -6319,7 +6342,7 @@
       },
       "publication_status": "unknown",
       "review_status": "verified",
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-drivers-nuclear-next-cycle",
@@ -6337,7 +6360,8 @@
         "source-5ad10856b578c92d",
         "source-c67c4899cfe97db8",
         "source-59090003d068b945",
-        "source-5f79fa2821b98244"
+        "source-5f79fa2821b98244",
+        "imperial-recheck-20261020-40"
       ],
       "procedure_ids": [
         "procedure-drivers-nuclear"
@@ -6359,7 +6383,7 @@
       },
       "publication_status": "unknown",
       "review_status": "verified",
-      "rechecked_at": "2026-10-03"
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-react-integrated-next-cycle",
@@ -6373,7 +6397,8 @@
       "finding": "Official university inventory and linked institutional content establish the scheme and destination relationship; exact2027 project availability, complete eligibility or current deadline is not published in the reviewed Imperial content. LSGNT explicitly publishes2026 only; MedicalImaging announces2027October opening. Do not inherit generic department funding/entry rules solely through scheme membership.",
       "official_next_step": "Use the named university scheme admissions contact to confirm its current publication and appropriate partner application target before integration; retain reviewed current/closed status and historical dates.",
       "source_ids": [
-        "source-5cb5f4c6bd0e6cc6"
+        "source-5cb5f4c6bd0e6cc6",
+        "imperial-recheck-20261020-41"
       ],
       "procedure_ids": [
         "procedure-react-integrated"
@@ -6394,7 +6419,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-ai4health-next-cycle",
@@ -6410,7 +6436,8 @@
       "official_next_step": "Use the named university scheme admissions contact to confirm its current publication and appropriate partner application target before integration; retain reviewed current/closed status and historical dates.",
       "source_ids": [
         "source-eea688ac605d370f",
-        "source-f8beae4c36965770"
+        "source-f8beae4c36965770",
+        "imperial-recheck-20261020-42"
       ],
       "procedure_ids": [
         "procedure-ai4health"
@@ -6431,7 +6458,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "verified"
+      "review_status": "verified",
+      "rechecked_at": "2026-10-20"
     },
     {
       "id": "gap-materials-cidt-ams-current-target",
@@ -6444,7 +6472,8 @@
       "topic": "scheme_specific_current_recruitment_eligibility_funding",
       "source_ids": [
         "source-08b2e8b31560114d",
-        "source-68b01fb67af7cb5a"
+        "source-68b01fb67af7cb5a",
+        "imperial-recheck-20261020-43"
       ],
       "investigated_source_ids": [
         "source-08b2e8b31560114d",
@@ -6470,7 +6499,8 @@
         "fee_status": []
       },
       "publication_status": "unknown",
-      "review_status": "researched_unknown"
+      "review_status": "researched_unknown",
+      "rechecked_at": "2026-10-20"
     }
   ],
   "uncompleted_collection": []

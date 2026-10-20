@@ -1,5 +1,10 @@
 meta.display_name: English
 meta.code: eng
+university.deadlines.mba_early: MBA Early · deferred entry
+university.admissions.reading.no_route_short: Application path needs clarification
+university.admissions.reading.no_application_route: No independent application path is established for this option. It may be an internal/intermediate award or require clarification from the department. Read the program's access conditions and official instructions; this does not mean that admission is closed.
+university.admissions.reading.applicant_scope: Who may apply
+university.admissions.reading.check_source_conditions: Check the published applicant conditions
 academic_requirements: Academic requirements
 academic_average: Academic average
 language_average: Language average
@@ -2967,3 +2972,121 @@ university.admissions.reading.degree.PHD: PhD — Doctor of Philosophy (research
 university.admissions.reading.degree.MBA: MBA — Master of Business Administration (professional management degree)
 university.admissions.reading.degree.MD: MD — Doctor of Medicine (professional medical degree)
 university.admissions.reading.degree.ENG: Engineer — advanced engineering degree; separate from MS and PhD
+university.deadlines.weekday.mon: Mon
+university.deadlines.weekday.tue: Tue
+university.deadlines.weekday.wed: Wed
+university.deadlines.weekday.thu: Thu
+university.deadlines.weekday.fri: Fri
+university.deadlines.weekday.sat: Sat
+university.deadlines.weekday.sun: Sun
+university.deadlines.kind.application: Application deadline
+university.deadlines.kind.funding: Funding deadline
+university.deadlines.kind.decision: Decision notification
+university.deadlines.kind.reply: Reply deadline
+university.deadlines.kind.opens: Applications open
+university.deadlines.kind.test: Last test date
+university.deadlines.kind.booking: Test booking deadline
+university.deadlines.round: Round {number}
+university.deadlines.calendar_time_unknown: Time not stated; exported as an all-day event.
+university.deadlines.export_time_unresolved: The published time or timezone cannot be converted reliably; check the official source.
+universities.compare.summary.title: Compare your selected programs
+universities.compare.summary.scope_note: Program facts belong to the selected program, application route and published period. Original currencies and fee categories are retained; a dated reference is not a current offer.
+universities.compare.summary.program: Study option
+universities.compare.summary.study: Duration and format
+universities.compare.summary.route: Application route
+universities.compare.summary.cycle: Selected entry cycle
+universities.compare.summary.tuition: Published tuition
+universities.compare.summary.budget: Study and living reference
+universities.compare.summary.deadline: Published application dates
+universities.compare.summary.funding: Funding
+universities.compare.summary.admission: Requirements and conditions
+universities.compare.summary.deadlines: Open dates and calendar
+universities.compare.summary.finance: Open costs and funding
+universities.compare.summary.source: Official source
+universities.compare.summary.reference: Dated reference
+universities.compare.summary.before_aid: Before aid; check the source exclusions
+universities.compare.summary.unknown: Not established for this selection
+universities.compare.summary.year_not_stated: The source does not state a year; no calendar date is inferred.
+universities.compare.summary.potential_aid: Potential funding is subject to eligibility and selection.
+universities.compare.summary.full_records: Complete source records
+universities.compare.summary.additional_facts: Additional university facts
+universities.compare.summary.choose_programs: Choose programs
+universities.compare.summary.configure_title: Choose programs and application routes
+university.admissions.reading.total_fee: total fee
+university.deadlines.kind.funding_consideration: Admissions cutoff for scholarship consideration
+university.admissions.reading.first_year: first year
+university.admissions.reading.second_year: Second year
+university.admissions.reading.funding_excluded: This programme or format is excluded from this scholarship.
+university.admissions.reading.funding_unconfirmed: Participation in this scholarship is not confirmed for this award.
+university.deadlines.kind.booking_open: Test booking opens
+university.admissions.catalog.route_name.mit_sloan_mba_admissions: MIT Sloan full-time MBA application
+university.admissions.catalog.route_name.mit_sloan_mfin_admissions: MIT Sloan Master of Finance application
+university.admissions.catalog.route_name.mit_sloan_mban_admissions: MIT Sloan Master of Business Analytics application
+university.admissions.catalog.route_name.mit_physics_phd_admissions: MIT Physics PhD application
+university.admissions.catalog.route_name.mit_eecs_meng_admissions: MIT EECS internal Master of Engineering application
+university.admissions.catalog.route_name.mit_bcs_meng_admissions: MIT Brain and Cognitive Sciences Course 6-9P internal MEng application
+university.admissions.catalog.route_name.mit_sloan_msms_admissions: MIT Sloan MSMS application
+university.admissions.catalog.route_name.mit_grad_architecture_admissions: Architecture
+university.admissions.catalog.route_name.mit_grad_civil_environmental_admissions: Civil and Environmental Engineering
+university.admissions.catalog.route_name.mit_grad_dedp_admissions: Data, Economics, and Design of Policy
+university.admissions.catalog.route_name.mit_grad_science_writing_admissions: Science Writing
+university.admissions.catalog.route_name.mit_grad_sdm_admissions: System Design and Management
+university.admissions.catalog.route_name.mit_grad_music_technology_admissions: Music Technology and Computation
+university.admissions.catalog.route_name.mit_grad_real_estate_admissions: Center for Real Estate
+university.admissions.catalog.route_name.mit_grad_scm_residential_admissions: Supply Chain Management Residential
+university.admissions.catalog.route_name.mit_grad_scm_blended_admissions: Supply Chain Management Blended
+university.admissions.catalog.route_name.mit_grad_tpp_admissions: Technology and Policy Program
+university.admissions.catalog.route_name.mit_grad_lgo_admissions: Leaders for Global Operations
+university.admissions.catalog.route_name.mit_grad_aero_admissions: Aeronautics and Astronautics
+university.admissions.catalog.route_name.mit_grad_chemical_admissions: Chemical Engineering
+university.admissions.catalog.route_name.mit_grad_eaps_admissions: Earth, Atmospheric, and Planetary Sciences
+university.admissions.catalog.route_name.mit_grad_materials_admissions: Materials Science and Engineering
+university.admissions.catalog.route_name.mit_grad_meche_admissions: Mechanical Engineering
+university.admissions.catalog.route_name.mit_grad_media_arts_admissions: Media Arts and Sciences
+university.admissions.catalog.route_name.mit_grad_nuclear_admissions: Nuclear Science and Engineering
+university.admissions.catalog.route_name.mit_grad_physics_admissions: Physics special-case SM consideration
+university.admissions.catalog.route_name.mit_grad_political_admissions: Political Science
+university.admissions.catalog.route_name.mit_grad_urban_planning_admissions: Urban Studies and Planning
+university.admissions.catalog.route_name.mit_grad_whoi_admissions: MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering
+university.admissions.catalog.route_name.mit_sloan_evening_mba_admissions: MIT Sloan Evening MBA Program
+university.admissions.catalog.route_name.mit_sloan_executive_mba_admissions: MIT Sloan Executive MBA Program
+university.admissions.catalog.route_name.mit_sloan_fellows_mba_admissions: MIT Sloan Fellows MBA Program
+university.admissions.catalog.route_name.mit_aeroastro_doctoral_admissions: Aeronautics and Astronautics graduate application
+university.admissions.catalog.route_name.mit_architecture_doctoral_admissions: Architecture graduate application
+university.admissions.catalog.route_name.mit_biological_engineering_doctoral_admissions: Biological Engineering graduate application
+university.admissions.catalog.route_name.mit_biology_doctoral_admissions: Biology graduate application
+university.admissions.catalog.route_name.mit_brain_and_cognitive_sciences_doctoral_admissions: Brain and Cognitive Sciences graduate application
+university.admissions.catalog.route_name.mit_chemical_engineering_doctoral_admissions: Chemical Engineering graduate application
+university.admissions.catalog.route_name.mit_chemistry_doctoral_admissions: Chemistry graduate application
+university.admissions.catalog.route_name.mit_civil_and_environmental_engineering_doctoral_admissions: Civil and Environmental Engineering graduate application
+university.admissions.catalog.route_name.mit_computational_and_systems_biology_doctoral_admissions: Computational and Systems Biology graduate application
+university.admissions.catalog.route_name.mit_computational_science_and_engineering_doctoral_admissions: Standalone Computational Science and Engineering PhD application
+university.admissions.catalog.route_name.mit_earth_atmospheric_and_planetary_sciences_doctoral_admissions: Earth, Atmospheric, and Planetary Sciences graduate application
+university.admissions.catalog.route_name.mit_eecs_doctoral_admissions: Electrical Engineering and Computer Science graduate application
+university.admissions.catalog.route_name.mit_hst_memp_doctoral_admissions: Health Sciences and Technology (Joint Harvard-MIT Program) graduate application
+university.admissions.catalog.route_name.mit_hasts_doctoral_admissions: History, Anthropology, and Science, Technology, and Society graduate application
+university.admissions.catalog.route_name.mit_social_and_engineering_systems_doctoral_admissions: Institute for Data, Systems, and Society graduate application
+university.admissions.catalog.route_name.mit_mitili_sm_admissions: Linguistics graduate application (MITILI)
+university.admissions.catalog.route_name.mit_linguistics_doctoral_admissions: Linguistics graduate application
+university.admissions.catalog.route_name.mit_materials_science_and_engineering_doctoral_admissions: Materials Science and Engineering graduate application
+university.admissions.catalog.route_name.mit_mathematics_doctoral_admissions: Mathematics graduate application
+university.admissions.catalog.route_name.mit_mechanical_engineering_doctoral_admissions: Mechanical Engineering graduate application
+university.admissions.catalog.route_name.mit_microbiology_doctoral_admissions: Microbiology graduate application
+university.admissions.catalog.route_name.mit_sloan_management_doctoral_admissions: MIT Sloan PhD Program graduate application
+university.admissions.catalog.route_name.mit_mit_whoi_doctoral_admissions: MIT-WHOI Joint Program in Oceanography / Applied Ocean Science and Engineering graduate application
+university.admissions.catalog.route_name.mit_nuclear_science_and_engineering_doctoral_admissions: Nuclear Science and Engineering graduate application
+university.admissions.catalog.route_name.mit_operations_research_doctoral_admissions: Operations Research Center graduate application
+university.admissions.catalog.route_name.mit_philosophy_doctoral_admissions: Philosophy graduate application
+university.admissions.catalog.route_name.mit_political_science_doctoral_admissions: Political Science graduate application
+university.admissions.catalog.route_name.mit_transportation_doctoral_admissions: Transportation graduate application
+university.admissions.catalog.route_name.mit_urban_studies_and_planning_doctoral_admissions: Urban Studies and Planning graduate application
+university.admissions.catalog.route_name.mit_mathematics_of_data_sm_admissions: Mathematics of Data SM application
+university.admissions.catalog.route_name.mit_grad_transportation_mst_admissions: Transportation graduate application
+university.admissions.catalog.route_name.mit_economics_doctoral_admissions: Economics PhD application
+university.admissions.catalog.route_name.mit-be-meng-internal: Biological Engineering internal MEng
+university.admissions.catalog.route_name.mit-mathematics-fifth-year-internal: Mathematics fifth-year MASc
+university.admissions.catalog.route_name.mit-cse-secondary-sm-internal: CCSE secondary SM consideration
+university.admissions.catalog.route_name.mit-mas-phd-progression: Media Arts and Sciences internal PhD progression
+university.admissions.catalog.route_name.mit-idps-internal-selection: IDPS selection for participating MIT PhD students
+university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Joint Department–Computational Science and Engineering PhD application
+university.admissions.catalog.route_name.mit-economics-sm-special-approval: Economics special SM approval for current MIT students

@@ -452,7 +452,7 @@ test("legacy deadlines follow the selected program", () => {
       { id: "general-route", label: "General route", scope: "general", study_levels: ["Master"], application_deadline: "February 1, 2027" },
     ],
   };
-  const container = { innerHTML: "", querySelectorAll: () => [] };
+  const container = { innerHTML: "", querySelectorAll: () => [], querySelector: () => null };
 
   selectAdmissionProgram(university, mfin);
   window.location.search = "?admission_program=sample-mfin";

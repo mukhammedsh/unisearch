@@ -18,6 +18,7 @@ test("application actions use a declared destination or an official route source
   assert.equal(getApplicationLink({ selected_route: { ...selected_route, destination: "UCAS Hub" }, sources: [{ id: "unrelated", url: "https://example.com" }, { id: "official", url: "https://example.edu/apply" }] }), "https://example.edu/apply");
   assert.equal(getApplicationLink({ selected_route: { destination: "javascript:alert(1)" } }), "");
   assert.equal(getApplicationLink({ selected_route: null }), "");
+  assert.equal(getApplicationLink({ selected_route: { destination: "https://applymitsloan.mit.edu/apply/ (select the cited programme/cohort)" } }), "https://applymitsloan.mit.edu/apply/");
   assert.equal(getApplicationLink({ selected_route: { ...selected_route, application_url: "https://admission.stanford.edu/apply/transfer/apply.html" } }), "https://admission.stanford.edu/apply/transfer/apply.html");
   assert.equal(getApplicationLink({ selected_route: { application_url: "javascript:alert(1)" } }), "");
 });

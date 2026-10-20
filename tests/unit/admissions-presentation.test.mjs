@@ -6,7 +6,7 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { formatPublishedDate, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
-const { admissionsCycleLabel, admissionsRouteName } = await import("../../frontend/javascript/pages/university/admissions-render.js");
+const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
 test("readable route labels retain the official source title for references", () => {
@@ -92,6 +92,15 @@ test("displayed cycles translate without changing stored or unknown source label
   assert.equal(admissionsCycleLabel("Spring 2027 entry"), "2027 жылғы көктемгі қабылдау");
 });
 
+test("transfer calendar titles localize the entry term and retain its published month", () => {
+  const event = { kind: "application", name: "Fall 2027 (September)" };
+  setLanguage("rus", { emit: false });
+  assert.match(admissionDeadlineTitle(event), /Осенний набор 2027 \(сентябрь\)/);
+  setLanguage("kaz", { emit: false });
+  assert.match(admissionDeadlineTitle(event), /2027 жылғы күзгі қабылдау \(қыркүйек\)/);
+  assert.equal(event.name, "Fall 2027 (September)");
+});
+
 test("published ISO dates retain the stated year and do not normalize invalid calendar dates", () => {
   setLanguage("rus", { emit: false });
   assert.equal(formatPublishedDate("2027-01-13"), "13 января 2027");
@@ -166,4 +175,14 @@ test("structured catalog cost references retain original prose and expose their 
   assert.match(html, /2026[‑-]2027/);
   assert.match(html, /Insurance is additional/);
   assert.match(html, /Official source prose and conditional fees remain available/);
+});
+
+test("scholarship exclusions and unconfirmed awards are distinct from potential aid", () => {
+  setLanguage("eng", { emit: false });
+  for (const [availability, expected] of [["excluded_by_published_course_rules", "excluded from this scholarship"], ["not_established", "not confirmed for this award"]]) {
+    const row = fact("ineligible", { funding_program: "Imperial Inspires", availability }, { topic: "funding" });
+    const html = renderApplicantSection(context([row], { funding: [row.id] }), ["costs", "funding"]);
+    assert.ok(html.includes(expected), availability);
+    assert.match(html, /Imperial Inspires/);
+  }
 });

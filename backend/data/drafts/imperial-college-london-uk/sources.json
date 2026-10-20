@@ -10755,6 +10755,1654 @@
           "content_review_method": "Official homepage search-index text reports open applications; the detailed application-page text retains prepublication wording. The live application form was not submitted or independently verified."
         }
       ]
+    },
+    {
+      "id": "imperial-recheck-20261020-00",
+      "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+      "title": "Accepted qualifications | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+        "body_sha256": "0070334a5172850ad2258c7e225d3a6ae85f44ac23394dfd25b915e58d674c91"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-00",
+          "url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+          "title": "Accepted qualifications | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/apply/undergraduate/process/entry-requirements/accepted-qualifications/",
+            "body_sha256": "0070334a5172850ad2258c7e225d3a6ae85f44ac23394dfd25b915e58d674c91"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-01",
+      "url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+      "title": "Submit your offer conditions | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+        "body_sha256": "91efff02be920dfc365f034d312d03552454500531f607ab1d08a7f1a0a2733a"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-01",
+          "url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+          "title": "Submit your offer conditions | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/apply/undergraduate/offer-holders/next-steps/submit-offer-conditions/",
+            "body_sha256": "91efff02be920dfc365f034d312d03552454500531f607ab1d08a7f1a0a2733a"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-02",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/molecular-synthesis/",
+      "title": "Advanced Molecular Synthesis — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/molecular-synthesis/",
+        "body_sha256": "4c5095090a8886514cf5ee95aa22ffc7667ef5503e8f7bfc85da921970373ca6"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-02",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/molecular-synthesis/",
+          "title": "Advanced Molecular Synthesis — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/molecular-synthesis/",
+            "body_sha256": "4c5095090a8886514cf5ee95aa22ffc7667ef5503e8f7bfc85da921970373ca6"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-03",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/catalysis/",
+      "title": "Catalysis: Chemistry and Engineering — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/catalysis/",
+        "body_sha256": "ef532e47dc7bd99ff4803de111d9114d0c830d3a2a79b7f7d8463f9fc02b616e"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-03",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/catalysis/",
+          "title": "Catalysis: Chemistry and Engineering — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/catalysis/",
+            "body_sha256": "ef532e47dc7bd99ff4803de111d9114d0c830d3a2a79b7f7d8463f9fc02b616e"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-04",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/chemical-biology/",
+      "title": "Chemical Biology and Bio-Entrepreneurship — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/chemical-biology/",
+        "body_sha256": "b38c1ad37ca1a0248c219f18cb0fb6563af45fd4926a63e0c9a75af749ab9b80"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-04",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/chemical-biology/",
+          "title": "Chemical Biology and Bio-Entrepreneurship — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/chemical-biology/",
+            "body_sha256": "b38c1ad37ca1a0248c219f18cb0fb6563af45fd4926a63e0c9a75af749ab9b80"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-05",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/conservation-science-practice/",
+      "title": "Conservation Science and Practice — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/conservation-science-practice/",
+        "body_sha256": "7993e8fd63b56541c5e2924c4d615837d48622dcb4caf23a4df43fd689452718"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-05",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/conservation-science-practice/",
+          "title": "Conservation Science and Practice — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/conservation-science-practice/",
+            "body_sha256": "7993e8fd63b56541c5e2924c4d615837d48622dcb4caf23a4df43fd689452718"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-06",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/drug-discovery-development/",
+      "title": "Drug Discovery and Development — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/drug-discovery-development/",
+        "body_sha256": "9114f14fea33a976f2dc460e5660010ac0cf212d12c87e934f75bcb4664c045c"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-06",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/drug-discovery-development/",
+          "title": "Drug Discovery and Development — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/drug-discovery-development/",
+            "body_sha256": "9114f14fea33a976f2dc460e5660010ac0cf212d12c87e934f75bcb4664c045c"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-07",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/green-chemistry/",
+      "title": "Green Chemistry: Energy and the Environment — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/green-chemistry/",
+        "body_sha256": "4c7841ffd2e53662550a9e442fb0e6aa5cd64ee1fb4602e985818533be2ea476"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-07",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/green-chemistry/",
+          "title": "Green Chemistry: Energy and the Environment — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/green-chemistry/",
+            "body_sha256": "4c7841ffd2e53662550a9e442fb0e6aa5cd64ee1fb4602e985818533be2ea476"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-08",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/innovation-design-engineering/",
+      "title": "Innovation Design Engineering — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/innovation-design-engineering/",
+        "body_sha256": "bb4bfb260a43464c4a1d7a67097b446e843f142be1da1e7766e97a4fb833a3fd"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-08",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/innovation-design-engineering/",
+          "title": "Innovation Design Engineering — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/innovation-design-engineering/",
+            "body_sha256": "bb4bfb260a43464c4a1d7a67097b446e843f142be1da1e7766e97a4fb833a3fd"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-09",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-physical-sciences/",
+      "title": "Machine Learning and Big Data in the Physical Sciences — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-physical-sciences/",
+        "body_sha256": "47d5580067cc508ffb4942d202f6210c0e6074a9a4ba08f673e3f3bd10f8e49d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-09",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-physical-sciences/",
+          "title": "Machine Learning and Big Data in the Physical Sciences — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-physical-sciences/",
+            "body_sha256": "47d5580067cc508ffb4942d202f6210c0e6074a9a4ba08f673e3f3bd10f8e49d"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-10",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-data-science/",
+      "title": "Machine Learning and Data Science (Online) — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-data-science/",
+        "body_sha256": "bcffae84fdd95eba4efbf2ee8a3edb05a012c266bb8e3cfa36658f022a69d43a"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-10",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-data-science/",
+          "title": "Machine Learning and Data Science (Online) — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/machine-learning-data-science/",
+            "body_sha256": "bcffae84fdd95eba4efbf2ee8a3edb05a012c266bb8e3cfa36658f022a69d43a"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-11",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomaterials/",
+      "title": "Nanomaterials — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomaterials/",
+        "body_sha256": "5d998ea68c0eec8a7a43e9f39c5c54606866e438cb7d5c62400b6a5bd9773da2"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-11",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomaterials/",
+          "title": "Nanomaterials — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomaterials/",
+            "body_sha256": "5d998ea68c0eec8a7a43e9f39c5c54606866e438cb7d5c62400b6a5bd9773da2"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-12",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomedicine/",
+      "title": "Nanomedicine and Nanodiagnostics MRes — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomedicine/",
+        "body_sha256": "08ef65de1edb41f00656d933521bf5fcb6beb4e0ea832eb1e0cc26ba24ba769e"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-12",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomedicine/",
+          "title": "Nanomedicine and Nanodiagnostics MRes — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/nanomedicine/",
+            "body_sha256": "08ef65de1edb41f00656d933521bf5fcb6beb4e0ea832eb1e0cc26ba24ba769e"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-13",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/science-media-production/",
+      "title": "Science Media Production — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/science-media-production/",
+        "body_sha256": "984c73397dd1c10422b731606268b4d07d7462a002a83189cda3d0df1143dd87"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-13",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/science-media-production/",
+          "title": "Science Media Production — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/science-media-production/",
+            "body_sha256": "984c73397dd1c10422b731606268b4d07d7462a002a83189cda3d0df1143dd87"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-14",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/sustainability-environmental-policy-innovation/",
+      "title": "Sustainability, Environmental Policy and Innovation — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/sustainability-environmental-policy-innovation/",
+        "body_sha256": "6b121ef887f9e1781cf613d08ae50c376585c647f87feb25762c6e7b65c6bebf"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-14",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/sustainability-environmental-policy-innovation/",
+          "title": "Sustainability, Environmental Policy and Innovation — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/sustainability-environmental-policy-innovation/",
+            "body_sha256": "6b121ef887f9e1781cf613d08ae50c376585c647f87feb25762c6e7b65c6bebf"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-15",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/synthetic-cell-science/",
+      "title": "Synthetic Cell Science — Imperial College London (postgraduate taught, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/synthetic-cell-science/",
+        "body_sha256": "dba9cc0999feaa18e66c198387b02769e2212cfaaf1d285adb1e18b019275b03"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-15",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/synthetic-cell-science/",
+          "title": "Synthetic Cell Science — Imperial College London (postgraduate taught, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/synthetic-cell-science/",
+            "body_sha256": "dba9cc0999feaa18e66c198387b02769e2212cfaaf1d285adb1e18b019275b03"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-16",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/aeronautical-engineering/",
+      "title": "Aeronautical Engineering — Imperial College London (undergraduate, 2027 entry)",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/aeronautical-engineering/",
+        "body_sha256": "d94f20feadd9a691c2fed603926dcd4c4627138dd530aa32213705623c908602"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-16",
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/aeronautical-engineering/",
+          "title": "Aeronautical Engineering — Imperial College London (undergraduate, 2027 entry)",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/aeronautical-engineering/",
+            "body_sha256": "d94f20feadd9a691c2fed603926dcd4c4627138dd530aa32213705623c908602"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-17",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine-graduate-entry/",
+      "title": "Medicine (Graduate Entry) (MBBS 4YFT) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine-graduate-entry/",
+        "body_sha256": "bf9d4780e3ad7a2a3cb19c2f178c29fe87b013cdf1fc169f61c2dd519c68e467"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-17",
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine-graduate-entry/",
+          "title": "Medicine (Graduate Entry) (MBBS 4YFT) | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine-graduate-entry/",
+            "body_sha256": "bf9d4780e3ad7a2a3cb19c2f178c29fe87b013cdf1fc169f61c2dd519c68e467"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-18",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine/",
+      "title": "Medicine | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine/",
+        "body_sha256": "016d830e7b0b3aa06dd143664a0c804f3d1db5f961aae99c9f2ebf5238b57db9"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-18",
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine/",
+          "title": "Medicine | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medicine/",
+            "body_sha256": "016d830e7b0b3aa06dd143664a0c804f3d1db5f961aae99c9f2ebf5238b57db9"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-19",
+      "url": "https://www.imperial.ac.uk/medicine/study/undergraduate/intercalated-bsc-programme/",
+      "title": "Intercalated BSc programme | Faculty of Medicine | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/medicine/study/undergraduate/intercalated-bsc-programme/",
+        "body_sha256": "6f034a99575180032d06dde067b26ffd8110076e00bf670da99070bd7f9b1bac"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-19",
+          "url": "https://www.imperial.ac.uk/medicine/study/undergraduate/intercalated-bsc-programme/",
+          "title": "Intercalated BSc programme | Faculty of Medicine | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/medicine/study/undergraduate/intercalated-bsc-programme/",
+            "body_sha256": "6f034a99575180032d06dde067b26ffd8110076e00bf670da99070bd7f9b1bac"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-20",
+      "url": "https://www.imperial.ac.uk/medicine/study/postgraduate/fees-and-funding/masters/",
+      "title": "Master’s funding | Faculty of Medicine | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/medicine/study/postgraduate/fees-and-funding/masters/",
+        "body_sha256": "3b81616c7d17a8ce7a677357bb9651223fa99ba386dbaf5cc315fc6b47150870"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-20",
+          "url": "https://www.imperial.ac.uk/medicine/study/postgraduate/fees-and-funding/masters/",
+          "title": "Master’s funding | Faculty of Medicine | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/medicine/study/postgraduate/fees-and-funding/masters/",
+            "body_sha256": "3b81616c7d17a8ce7a677357bb9651223fa99ba386dbaf5cc315fc6b47150870"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-21",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+      "title": "Terms and Conditions - 2027 Entry | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+        "body_sha256": "0588e05f85e2231ff7a8fc05af54c2615dfeeba5149d57a269d665cbdbcba28d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-21",
+          "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+          "title": "Terms and Conditions - 2027 Entry | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/terms-and-conditions/",
+            "body_sha256": "0588e05f85e2231ff7a8fc05af54c2615dfeeba5149d57a269d665cbdbcba28d"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-22",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medical-science-innovation/",
+      "title": "Medical Science and Innovation | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medical-science-innovation/",
+        "body_sha256": "a4f67dbce4e030ec8c5a0b95fda23c7ad95d85576e4d8b5d6fe003f0143f4484"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-22",
+          "url": "https://www.imperial.ac.uk/study/courses/undergraduate/medical-science-innovation/",
+          "title": "Medical Science and Innovation | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/undergraduate/medical-science-innovation/",
+            "body_sha256": "a4f67dbce4e030ec8c5a0b95fda23c7ad95d85576e4d8b5d6fe003f0143f4484"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-23",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+      "title": "Experimental Biomolecular Sciences (MRes) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+        "body_sha256": "d34b48b42a28a4fc8e31f3b29224247f0726eace0e6c748aa8df69f03d66cfda"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-23",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+          "title": "Experimental Biomolecular Sciences (MRes) | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/experimental-biomolecular-sciences/",
+            "body_sha256": "d34b48b42a28a4fc8e31f3b29224247f0726eace0e6c748aa8df69f03d66cfda"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-24",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/global-mba/",
+      "title": "Global Online MBA | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/global-mba/",
+        "body_sha256": "34ab55a5d06260867c54b955d827a30fbd98949f0673dc7b4591463500030e32"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-24",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/global-mba/",
+          "title": "Global Online MBA | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/global-mba/",
+            "body_sha256": "34ab55a5d06260867c54b955d827a30fbd98949f0673dc7b4591463500030e32"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-25",
+      "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/admissions/",
+      "title": "Full-Time MBA admissions | Imperial Business School",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/admissions/",
+        "body_sha256": "1de15e9f2620841e00401c9b8af6a3fb14e4c05effb6664c28c27f6308d384d2"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-25",
+          "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/admissions/",
+          "title": "Full-Time MBA admissions | Imperial Business School",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/admissions/",
+            "body_sha256": "1de15e9f2620841e00401c9b8af6a3fb14e4c05effb6664c28c27f6308d384d2"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-26",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+      "title": "Full-Time MBA | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+        "body_sha256": "78f1a97d080bb21177115266706be3ee9a728a34dcaa89e2ff2784cf72663e6a"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-26",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+          "title": "Full-Time MBA | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/full-time-mba/",
+            "body_sha256": "78f1a97d080bb21177115266706be3ee9a728a34dcaa89e2ff2784cf72663e6a"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-27",
+      "url": "https://www.imperial.ac.uk/business-school/executive-education/apprenticeship-programmes/data-analytics/",
+      "title": "Data & Analytics | Imperial Business School",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/executive-education/apprenticeship-programmes/data-analytics/",
+        "body_sha256": "13d3594d185badc8957763efb1c93d1641212016aa1cdded2d640c3725cf8024"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-27",
+          "url": "https://www.imperial.ac.uk/business-school/executive-education/apprenticeship-programmes/data-analytics/",
+          "title": "Data & Analytics | Imperial Business School",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/executive-education/apprenticeship-programmes/data-analytics/",
+            "body_sha256": "13d3594d185badc8957763efb1c93d1641212016aa1cdded2d640c3725cf8024"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-28",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+      "title": "Genes, Drugs and Stem Cells – Novel Therapies (MSc) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+        "body_sha256": "9da4ff533af785d650bd1408d9d9836be859530fdf924685c398f6c4276e64ae"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-28",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+          "title": "Genes, Drugs and Stem Cells – Novel Therapies (MSc) | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genes-drugs-stem-cells/",
+            "body_sha256": "9da4ff533af785d650bd1408d9d9836be859530fdf924685c398f6c4276e64ae"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-29",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/",
+      "title": "Genomic Medicine (MSc) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/",
+        "body_sha256": "1cc364ed8a6b73113a787a0bbf3c277d8d5294ba96dde1c26cb65db846e91794"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-29",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/",
+          "title": "Genomic Medicine (MSc) | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/genomic-medicine/",
+            "body_sha256": "1cc364ed8a6b73113a787a0bbf3c277d8d5294ba96dde1c26cb65db846e91794"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-30",
+      "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/mph-online/",
+      "title": "Master of Public Health (Online) | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/mph-online/",
+        "body_sha256": "92ec74a88890eb076ae91cbc19764a91225fa2172db0c8d4cb5f78f798371502"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-30",
+          "url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/mph-online/",
+          "title": "Master of Public Health (Online) | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/mph-online/",
+            "body_sha256": "92ec74a88890eb076ae91cbc19764a91225fa2172db0c8d4cb5f78f798371502"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-31",
+      "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+      "title": "Professional Doctorate | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+        "body_sha256": "3ac8819ada8046edf7f5d2f135ba6fe8109dc55cbf782b7e3fcd7f9ad496f109"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-31",
+          "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+          "title": "Professional Doctorate | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/professional-doctorate/",
+            "body_sha256": "3ac8819ada8046edf7f5d2f135ba6fe8109dc55cbf782b7e3fcd7f9ad496f109"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-32",
+      "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+      "title": "PhD | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+        "body_sha256": "a0c5041fe8a393d12840c40b46da7461f1d67f11c9e7ce41a9772c1cf306b266"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-32",
+          "url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+          "title": "PhD | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/apply/postgraduate-doctoral/application-process/choose-course/phd/",
+            "body_sha256": "a0c5041fe8a393d12840c40b46da7461f1d67f11c9e7ce41a9772c1cf306b266"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-33",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+      "title": "Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+        "body_sha256": "865d502abf5555a72911768e0e7d138aad3e45e4031ff8b79714a8448b652b56"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-33",
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+          "title": "Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/Regulations-for-Research-Programmes-of-Study-2026.2027-v1.0.pdf",
+            "body_sha256": "865d502abf5555a72911768e0e7d138aad3e45e4031ff8b79714a8448b652b56"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-34",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+      "title": "EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+        "body_sha256": "e897b6098d59fd94a3104ba478048f5fe61b06b3b71ce3fa249938c01774a232"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-34",
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+          "title": "EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/EngD_QNDE_Regulations_2026-27-v1.0.pdf",
+            "body_sha256": "e897b6098d59fd94a3104ba478048f5fe61b06b3b71ce3fa249938c01774a232"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-35",
+      "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/DSc_Regulations_2026-27-v1.0.pdf",
+      "title": "DSc_Regulations_2026-27-v1.0.pdf",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/DSc_Regulations_2026-27-v1.0.pdf",
+        "body_sha256": "b45af59d8f1ec0e53f369d4a27b66dd0916c83c8d9437de6f5584e180af8684d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-35",
+          "url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/DSc_Regulations_2026-27-v1.0.pdf",
+          "title": "DSc_Regulations_2026-27-v1.0.pdf",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/regulations/2026-27/DSc_Regulations_2026-27-v1.0.pdf",
+            "body_sha256": "b45af59d8f1ec0e53f369d4a27b66dd0916c83c8d9437de6f5584e180af8684d"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-36",
+      "url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/centre-for-languages-culture-and-communication/",
+      "title": "Centre for Languages, Culture and Communication | Current students | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/centre-for-languages-culture-and-communication/",
+        "body_sha256": "229174ce14e0124f46e9f836a3166af5cb0c42a5d04abcff990dea76eb06ec0e"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-36",
+          "url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/centre-for-languages-culture-and-communication/",
+          "title": "Centre for Languages, Culture and Communication | Current students | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/centre-for-languages-culture-and-communication/",
+            "body_sha256": "229174ce14e0124f46e9f836a3166af5cb0c42a5d04abcff990dea76eb06ec0e"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-37",
+      "url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/crick-institute/",
+      "title": "Crick Institute | Current students | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/crick-institute/",
+        "body_sha256": "4ba84ad015929761423a4b61efc2c79495d9eb039828efb01de3448b9aaf4161"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-37",
+          "url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/crick-institute/",
+          "title": "Crick Institute | Current students | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/students/fees-and-funding/tuition-fees/postgraduate-tuition-fees/2026-27/postgraduate-research-programmes/crick-institute/",
+            "body_sha256": "4ba84ad015929761423a4b61efc2c79495d9eb039828efb01de3448b9aaf4161"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-38",
+      "url": "https://www.imperial.ac.uk/mathematics/postgraduate/cdts/",
+      "title": "Centres for Doctoral Training | Faculty of Natural Sciences | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/mathematics/postgraduate/cdts/",
+        "body_sha256": "edfe3742d0adfee230fbe305e9baa530ec6985956351e1004c3d70352d4a97e8"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-38",
+          "url": "https://www.imperial.ac.uk/mathematics/postgraduate/cdts/",
+          "title": "Centres for Doctoral Training | Faculty of Natural Sciences | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/mathematics/postgraduate/cdts/",
+            "body_sha256": "edfe3742d0adfee230fbe305e9baa530ec6985956351e1004c3d70352d4a97e8"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-39",
+      "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/pg/mresphd/",
+      "title": "Integrated MRes/PhD Degrees | Faculty of Engineering | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/pg/mresphd/",
+        "body_sha256": "707f2a9d50a0a26083061ef9f31c02b6242b50091ee4f6d0f5edda725dfee7c2"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-39",
+          "url": "https://www.imperial.ac.uk/computing/prospective-students/courses/pg/mresphd/",
+          "title": "Integrated MRes/PhD Degrees | Faculty of Engineering | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/computing/prospective-students/courses/pg/mresphd/",
+            "body_sha256": "707f2a9d50a0a26083061ef9f31c02b6242b50091ee4f6d0f5edda725dfee7c2"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-40",
+      "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/",
+      "title": "DRIVERS Doctoral Focal Award in Nuclear Skills | Research groups | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/",
+        "body_sha256": "4b4379a1a089dbd2a99dbc18b82a3800be188769f4e7196068e61b74669ea530"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-40",
+          "url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/",
+          "title": "DRIVERS Doctoral Focal Award in Nuclear Skills | Research groups | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/a-z-research/nuclear-dfa/",
+            "body_sha256": "4b4379a1a089dbd2a99dbc18b82a3800be188769f4e7196068e61b74669ea530"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-41",
+      "url": "https://www.imperial.ac.uk/next-generation-synthesis-reaction-technology/",
+      "title": "EPSRC CDT Next Generation Synthesis & Reaction Technology | Research groups | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/next-generation-synthesis-reaction-technology/",
+        "body_sha256": "80f118be918f157f4afa11a80bb5f2c08437507a5c251f6caad9cc8cd19f1bcc"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-41",
+          "url": "https://www.imperial.ac.uk/next-generation-synthesis-reaction-technology/",
+          "title": "EPSRC CDT Next Generation Synthesis & Reaction Technology | Research groups | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/next-generation-synthesis-reaction-technology/",
+            "body_sha256": "80f118be918f157f4afa11a80bb5f2c08437507a5c251f6caad9cc8cd19f1bcc"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-42",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/ukri-ai-for-healthcare-cdt-studentship-20252026.php",
+      "title": "UKRI AI for Healthcare CDT Studentship | Study | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/ukri-ai-for-healthcare-cdt-studentship-20252026.php",
+        "body_sha256": "6c13e16dc19c748e275525473043c01b764e6083b9345b2ef866f6f472da2fee"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-42",
+          "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/ukri-ai-for-healthcare-cdt-studentship-20252026.php",
+          "title": "UKRI AI for Healthcare CDT Studentship | Study | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/ukri-ai-for-healthcare-cdt-studentship-20252026.php",
+            "body_sha256": "6c13e16dc19c748e275525473043c01b764e6083b9345b2ef866f6f472da2fee"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-43",
+      "url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+      "title": "Postgraduate Research (PhD) | Faculty of Engineering | Imperial College London",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+        "body_sha256": "5c1617c7168dd1ac60ac549f51eb378e4eeaf40aa9b5573bd9feaefcf3e31632"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-43",
+          "url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+          "title": "Postgraduate Research (PhD) | Faculty of Engineering | Imperial College London",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/materials/study/materialsphd/",
+            "body_sha256": "5c1617c7168dd1ac60ac549f51eb378e4eeaf40aa9b5573bd9feaefcf3e31632"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-44",
+      "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/",
+      "title": "Full-Time MBA programme",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/",
+        "body_sha256": "4e28dec2e75d303f30c079076841647e12dd853d0f2631818c41c85efe2e8f54"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-44",
+          "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/",
+          "title": "Full-Time MBA programme",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/",
+            "body_sha256": "4e28dec2e75d303f30c079076841647e12dd853d0f2631818c41c85efe2e8f54"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-45",
+      "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/fees-and-funding/",
+      "title": "Full-Time MBA fees and funding",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/fees-and-funding/",
+        "body_sha256": "c7ae3c4a0a8abd925f1fad35d278730a1c3575c17f74469416fa1b109a19a67d"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-45",
+          "url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/fees-and-funding/",
+          "title": "Full-Time MBA fees and funding",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/mba/full-time-mba/fees-and-funding/",
+            "body_sha256": "c7ae3c4a0a8abd925f1fad35d278730a1c3575c17f74469416fa1b109a19a67d"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-46",
+      "url": "https://www.imperial.ac.uk/business-school/mba/global-online-mba/fees-and-funding/",
+      "title": "Global Online MBA fees and funding",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/global-online-mba/fees-and-funding/",
+        "body_sha256": "15e51e0115b57ee43332dfaaab37d8383553ce1ebd33a579e2ed894fbc04cce7"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-46",
+          "url": "https://www.imperial.ac.uk/business-school/mba/global-online-mba/fees-and-funding/",
+          "title": "Global Online MBA fees and funding",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/mba/global-online-mba/fees-and-funding/",
+            "body_sha256": "15e51e0115b57ee43332dfaaab37d8383553ce1ebd33a579e2ed894fbc04cce7"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-47",
+      "url": "https://www.imperial.ac.uk/business-school/mba/compare/",
+      "title": "Compare Imperial MBA programmes",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/business-school/mba/compare/",
+        "body_sha256": "fc4495fbe07629653012210090a4dbb01eebb96eceb08b3030839c46c1d9e2bb"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-47",
+          "url": "https://www.imperial.ac.uk/business-school/mba/compare/",
+          "title": "Compare Imperial MBA programmes",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/business-school/mba/compare/",
+            "body_sha256": "fc4495fbe07629653012210090a4dbb01eebb96eceb08b3030839c46c1d9e2bb"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-48",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-undergraduate-20272028.php",
+      "title": "Imperial Inspires undergraduate scholarship 2027/28",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-undergraduate-20272028.php",
+        "body_sha256": "6649f2b5a0fb5a236a422e4470d6316c02d8c72400ea6b856005fadc1a71b7c0"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-48",
+          "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-undergraduate-20272028.php",
+          "title": "Imperial Inspires undergraduate scholarship 2027/28",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-undergraduate-20272028.php",
+            "body_sha256": "6649f2b5a0fb5a236a422e4470d6316c02d8c72400ea6b856005fadc1a71b7c0"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-49",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-postgraduate-taught-20272028.php",
+      "title": "Imperial Inspires postgraduate taught scholarship 2027/28",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-postgraduate-taught-20272028.php",
+        "body_sha256": "4be1c22e1a83efc937f4441c8a655685e8487b3ac7681bf05316bea80e2abab1"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-49",
+          "url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-postgraduate-taught-20272028.php",
+          "title": "Imperial Inspires postgraduate taught scholarship 2027/28",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/scholarships-search/imperial-inspires-scholarships-postgraduate-taught-20272028.php",
+            "body_sha256": "4be1c22e1a83efc937f4441c8a655685e8487b3ac7681bf05316bea80e2abab1"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-50",
+      "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/apply/",
+      "title": "How to apply for an Imperial Inspires Scholarship",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/apply/",
+        "body_sha256": "3be14be55531ccf553aa420faeb083decc61a5b94db5b4b4931538d8d6c2f772"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-50",
+          "url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/apply/",
+          "title": "How to apply for an Imperial Inspires Scholarship",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/study/fees-and-funding/imperial-inspires-scholarships/apply/",
+            "body_sha256": "3be14be55531ccf553aa420faeb083decc61a5b94db5b4b4931538d8d6c2f772"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-51",
+      "url": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+      "title": "Innovation Design Engineering MA/MSc | Royal College of Art",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+        "body_sha256": "5e53e6d7be6faadee1c7f049fd4307a2fee98a81c96b8362f942f2601872e1a1"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "accepted_option_ids": [
+        "imperial-option-innovation-design-engineering"
+      ],
+      "relationship_evidence_source_ids": [
+        "imperial-course-innovation-design-engineering-2027"
+      ],
+      "institution_relationship": "Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-51",
+          "url": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+          "title": "Innovation Design Engineering MA/MSc | Royal College of Art",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.rca.ac.uk/study/programme-finder/innovation-design-engineering-ma-msc/",
+            "body_sha256": "5e53e6d7be6faadee1c7f049fd4307a2fee98a81c96b8362f942f2601872e1a1"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+          "accepted_option_ids": [
+            "imperial-option-innovation-design-engineering"
+          ],
+          "relationship_evidence_source_ids": [
+            "imperial-course-innovation-design-engineering-2027"
+          ],
+          "institution_relationship": "Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc"
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-52",
+      "url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+      "title": "Computing postgraduate research admissions",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+        "body_sha256": "a1948c3019cb7b996a9a806199876d77c2181fe330ddfa002d1aba547b4ea6f5"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-52",
+          "url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+          "title": "Computing postgraduate research admissions",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.imperial.ac.uk/computing/prospective-students/phd/",
+            "body_sha256": "a1948c3019cb7b996a9a806199876d77c2181fe330ddfa002d1aba547b4ea6f5"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained."
+        }
+      ]
+    },
+    {
+      "id": "imperial-recheck-20261020-53",
+      "url": "https://www.rca.ac.uk/study/apply-to-study/eligibility-and-key-dates/",
+      "title": "Eligibility and key dates for 2027 entry | Royal College of Art",
+      "checked_at": "2026-10-20",
+      "content_reviewed_at": "2026-10-20",
+      "content_review_status": "reviewed_for_linked_facts",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://www.rca.ac.uk/study/apply-to-study/eligibility-and-key-dates/",
+        "body_sha256": "ccf40feba287380e36ec1f8ce50edd3a6ca4b239527edb33413f52698824dfb7"
+      },
+      "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+      "accepted_option_ids": [
+        "imperial-option-innovation-design-engineering"
+      ],
+      "relationship_evidence_source_ids": [
+        "imperial-course-innovation-design-engineering-2027"
+      ],
+      "institution_relationship": "Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc",
+      "evidence_records": [
+        {
+          "id": "imperial-recheck-20261020-53",
+          "url": "https://www.rca.ac.uk/study/apply-to-study/eligibility-and-key-dates/",
+          "title": "Eligibility and key dates for 2027 entry | Royal College of Art",
+          "checked_at": "2026-10-20",
+          "content_reviewed_at": "2026-10-20",
+          "content_review_status": "reviewed_for_linked_facts",
+          "access": {
+            "http_status": 200,
+            "final_url": "https://www.rca.ac.uk/study/apply-to-study/eligibility-and-key-dates/",
+            "body_sha256": "ccf40feba287380e36ec1f8ce50edd3a6ca4b239527edb33413f52698824dfb7"
+          },
+          "review_method": "Direct official HTTP response; readable course panels or university-hosted PDF content reviewed. Original dated source records are retained.",
+          "accepted_option_ids": [
+            "imperial-option-innovation-design-engineering"
+          ],
+          "relationship_evidence_source_ids": [
+            "imperial-course-innovation-design-engineering-2027"
+          ],
+          "institution_relationship": "Imperial and Royal College of Art joint Innovation Design Engineering MA/MSc"
+        }
+      ]
     }
   ]
 }

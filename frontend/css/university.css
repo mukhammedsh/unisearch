@@ -7220,6 +7220,14 @@ body[data-page="university"],
 
 .deadline-calendar > p,
 .deadline-calendar__note,
+.deadline-calendar__details small {
+  margin: 0;
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
 .deadline-calendar__details p {
   margin: 0;
   color: var(--text-muted);

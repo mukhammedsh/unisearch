@@ -1,6 +1,8 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
-import { admissionsCycleLabel, renderAdmissionsContext, renderAdmissionsValue } from "./admissions-render.js";
+import { admissionsCycleLabel, admissionDeadlineTitle, renderAdmissionsContext, renderAdmissionsValue } from "./admissions-render.js";
+import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
+import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary } from "../../university-translations.js";
 import { heroIcon } from "../../icons.js";
 
@@ -122,7 +124,7 @@ function requirements(rows, resolved) {
         "Two teacher recommendations": "document_references",
         "SAT or ACT": "document_tests",
       };
-      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("documents"))}</h3>${renderAdmissionsValue(value.required.map(item => documentLabels[item] ? label(documentLabels[item]) : item))}${sourceNote(row, resolved)}</section>`;
+      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("documents"))}</h3>${renderAdmissionsValue(value.required.map(item => documentLabels[item] ? label(documentLabels[item]) : translateAdmissionSummary(item) || item))}${sourceNote(row, resolved)}</section>`;
     }
     return "";
   }).join("");
@@ -130,6 +132,20 @@ function requirements(rows, resolved) {
 
 function deadlines(rows, resolved) {
   return rows.filter(reviewed).sort((left, right) => Number(Boolean(right.value?.windows?.some(window => window.application_due))) - Number(Boolean(left.value?.windows?.some(window => window.application_due)))).map(row => {
+    if (Array.isArray(row.value)) {
+      const entries = getReviewedDeadlineEvents(resolved).filter(event => event.sourceFactId === row.id).map(event => [
+        escapeHtml(admissionDeadlineTitle(event)), escapeHtml(formatPublishedDate(event.deadline)),
+        escapeHtml([event.time, event.timezone].filter(Boolean).join(" · ") || label("unknown")),
+      ]);
+      return entries.length ? `<section class="admissions-reading__section" data-published-deadline-array>${table(t("university.admissions.catalog.domain.deadlines"), [label("window"), label("date"), label("local_time")], entries)}${sourceNote(row, resolved)}</section>` : "";
+    }
+    if (row.value?.windows?.some(window => window.entry && window.date)) {
+      const entries = row.value.windows.filter(window => window.entry && window.date).map(window => [
+        escapeHtml(admissionsCycleLabel(window.entry)), escapeHtml(formatPublishedDate(window.date)),
+        escapeHtml(translateAdmissionSummary(JSON.stringify(window.applicant_category), { section: "applicant_scope" }) || translateAdmissionSummary(window.applicant_category, { section: "applicant_scope" }) || label("check_source_conditions")),
+      ]);
+      return `<section class="admissions-reading__section" data-transfer-windows>${table(label("application_dates"), [label("window"), label("apply_by"), label("applicant_scope")], entries)}${sourceNote(row, resolved)}</section>`;
+    }
     if (row.value?.deadlines && typeof row.value.deadlines === "object") {
       const entries = Object.entries(row.value.deadlines)
         .filter(([key, value]) => resolved.reference_labels?.[key] === resolved.selected_option?.title && typeof value === "string")
@@ -177,18 +193,31 @@ function finance(rows, resolved) {
     if (!funding.has(key)) funding.set(key, row);
   }
   const aid = aidSummary(rows, resolved);
-  const fundingHtml = aid || [...funding.values()].map(row => `<section class="admissions-reading__section"><h3>${escapeHtml(row.value.funding_program === "Need-based Aid" ? label("aid_title") : row.value.funding_program)}</h3><p>${escapeHtml(label("potential_aid"))}</p>${sourceNote(row, resolved)}</section>`).join("");
+  const fundingHtml = aid || [...funding.values()].map(row => {
+    const availability = row.value.availability;
+    const status = availability === "excluded_by_published_course_rules" ? "funding_excluded"
+      : availability === "not_established" ? "funding_unconfirmed" : "potential_aid";
+    return `<section class="admissions-reading__section" data-funding-availability="${escapeHtmlAttr(availability || "conditional")}"><h3>${escapeHtml(row.value.funding_program === "Need-based Aid" ? label("aid_title") : row.value.funding_program)}</h3><p>${escapeHtml(label(status))}</p>${row.value.eligibility_note ? `<p>${escapeHtml(translateAdmissionSummary(row.value.eligibility_note) || row.value.eligibility_note)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
+  }).join("");
   return `${budgets.length ? "" : `<p class="admissions-reading__note">${escapeHtml(label("no_budget"))}</p>`}${budgetHtml}${fundingHtml}`;
+}
+
+export function publishedTuitionQuotes(row) {
+  if (!reviewed(row) || !row.value?.course_page_tuition_fees) return [];
+  return Object.entries(row.value.course_page_tuition_fees).flatMap(([status, panels]) => Array.isArray(panels) ? panels.map(panel => ({
+    feeStatus: status === "Home fee" ? label("home_fee") : status === "Overseas fee" ? label("overseas_fee") : status,
+    currency: panel.currency || "",
+    amounts: ["published", "published_current_page_cycle"].includes(panel.panel_status) && panel.amounts_and_periods?.length
+      ? panel.amounts_and_periods.map(amount => amount.replace(/\bper year\b/g, label("per_year")).replace(/\btotal fee\b/g, label("total_fee"))
+        .replace(/\bwhole programme\b/g, label("total_fee")).replace(/\bfirst year\b/g, label("first_year")).replace(/\bSecond year\b/g, label("second_year"))
+        .replace(/\b(?:Full-time|Part-time)\b/g, value => trStudyMode(value))) : [label("unknown")],
+    period: admissionsCycleLabel(panel.cycle || panel.panel_cycle_label || ""),
+  })) : []);
 }
 
 function courseCosts(rows, resolved) {
   return rows.filter(reviewed).filter(row => row.value?.course_page_tuition_fees).map(row => {
-    const entries = Object.entries(row.value.course_page_tuition_fees).flatMap(([status, panels]) => Array.isArray(panels) ? panels.map(panel => [
-      escapeHtml(status === "Home fee" ? label("home_fee") : status === "Overseas fee" ? label("overseas_fee") : status),
-      panel.panel_status === "published" && panel.amounts_and_periods?.length
-        ? panel.amounts_and_periods.map(amount => escapeHtml(amount.replace(/\bper year\b/g, label("per_year")))).join("<br>") : escapeHtml(label("unknown")),
-      escapeHtml(admissionsCycleLabel(panel.cycle || panel.panel_cycle_label || "")),
-    ]) : []);
+    const entries = publishedTuitionQuotes(row).map(quote => [escapeHtml(quote.feeStatus), quote.amounts.map(escapeHtml).join("<br>"), escapeHtml(quote.period)]);
     return entries.length ? `<section class="admissions-reading__section" data-course-tuition>${table(label("published_tuition"), [label("fee_status"), label("tuition"), label("source_period")], entries)}<p class="admissions-reading__note">${escapeHtml(label("fee_status_explained"))}</p>${sourceNote(row, resolved)}</section>` : "";
   }).join("");
 }
