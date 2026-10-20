@@ -33,6 +33,6 @@ export async function initProfilePage() {
   ]);
 
   if (generation !== profilePageGeneration || !page.isConnected) return;
-  disposeLanguagesPanel = initLanguagesPanel() || null;
-  disposeProfileUi = initProfileUI() || null;
+  disposeLanguagesPanel = initLanguagesPanel();
+  disposeProfileUi = initProfileUI();
 }
