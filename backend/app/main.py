@@ -158,7 +158,7 @@ def _is_expensive_request(request: Request) -> bool:
     path = request_scope_path(request).rstrip("/") or "/"
     if path in _EXPENSIVE_POST_PATHS:
         return True
-    if path.endswith("/uni-chance") or path.endswith("/roi") or path == "/ops/warmup":
+    if path.endswith(("/uni-chance", "/roi", "/admissions-context")) or path == "/ops/warmup":
         return True
     return False
 
