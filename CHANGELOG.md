@@ -4,6 +4,9 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+### Security
+- Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
+
 ## 9.1.1 (2026-10-20) - Code Scanning fixes
 
 ### Fixed
