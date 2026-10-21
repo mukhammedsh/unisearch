@@ -31,7 +31,7 @@ test("comparison keeps the two program contexts, currencies, periods and source 
   assert.match(html, /66720 USD/);
   assert.match(html, /2026[-‑]27/);
   assert.match(html, /2027/);
-  assert.ok([...html.matchAll(/\bhref="([^"]*)"/g)].some(([, href]) => href === "https://example.edu/fees"));
+  assert.ok([...html.matchAll(/\shref="([^"]*)"/g)].some(([, href]) => href === "https://example.edu/fees"));
   assert.match(html, /admission_option=computing/);
   assert.match(html, /#tab-deadlines/);
   assert.doesNotMatch(html, /%|admission probability|total net cost/i);

@@ -57,7 +57,7 @@ test("yearless deadlines are localized without inventing a year and keep their s
     const html = renderApplicantSection(resolved, ["deadlines"]);
     assert.ok(html.includes(month));
     assert.match(html, /<caption>.+<\/caption>/);
-    assert.ok([...html.matchAll(/\bhref="([^"]*)"/g)].some(([, href]) => href === "https://example.edu/admissions"));
+    assert.ok([...html.matchAll(/\shref="([^"]*)"/g)].some(([, href]) => href === "https://example.edu/admissions"));
     assert.doesNotMatch(formatPublishedDate("November 1"), /2000|2027/);
     assert.equal(formatPublishedDate("February 31"), "February 31");
   }

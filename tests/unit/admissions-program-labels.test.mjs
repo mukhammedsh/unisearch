@@ -167,7 +167,7 @@ test("accepted profile overviews extend Stanford reading without displaying cata
     const profile = mba.evidence_profiles[0];
     const html = renderStudyOptionOverview({ selected_option: { ...mba, overviews: [{ text: profile.attributes.description, source_ids: profile.source_ids }] }, facts: [], fact_groups: {}, sources: stanford.sources });
     assert.match(html, /data-program-original/);
-    assert.ok([...html.matchAll(/\bhref="([^"]*)"/g)].some(([, href]) => new URL(href, "https://example.edu").hostname === "www.gsb.stanford.edu"));
+    assert.ok([...html.matchAll(/\shref="([^"]*)"/g)].some(([, href]) => new URL(href, "https://example.edu").hostname === "www.gsb.stanford.edu"));
     assert.ok(html.includes("Two-year, full-time MBA"));
   }
 });
@@ -255,7 +255,7 @@ test("structured Imperial curricula retain their original record, source links a
     const html = renderStudyOptionOverview(resolved);
     assert.match(html, /data-program-original/);
     assert.match(html, /Business Analytics/);
-    assert.ok([...html.matchAll(/\bhref="([^"]*)"/g)].some(([, href]) => new URL(href, "https://example.edu").hostname === "www.imperial.ac.uk"));
+    assert.ok([...html.matchAll(/\shref="([^"]*)"/g)].some(([, href]) => new URL(href, "https://example.edu").hostname === "www.imperial.ac.uk"));
     assert.doesNotMatch(html, /&quot;study_periods_pathways_and_components&quot;/);
     assert.doesNotMatch(html, /Selector mode|Study periods pathways and components|Section label/);
     assert.match(html, /12 (?:months|месяцев|ай)/, `${language}: duration from the published key facts`);
