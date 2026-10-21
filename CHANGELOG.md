@@ -7,6 +7,11 @@ All notable project changes should be recorded here.
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
+## 9.1.3 (2026-10-21) - Russian admissions summaries
+
+### Fixed
+- Add Russian translations for MIT and Imperial program/application relationship summaries while preserving official program names and source wording.
+
 ## 9.1.2 (2026-10-21) - Security dependency updates
 
 ### Fixed

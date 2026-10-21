@@ -45,6 +45,23 @@ test("every reviewed program has a Russian and Kazakh title while retaining its 
   }
 });
 
+test("accepted program application explanations have Russian summaries while source records stay unchanged", async () => {
+  setLanguage("rus", { emit: false });
+  await initUniversityTranslations();
+  const acceptedIds = new Set(["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]);
+  for (const institution of catalog.institutions.filter(row => acceptedIds.has(row.institution.id))) {
+    const explanations = new Set(institution.study_options.flatMap(option => [
+      option.attributes?.application?.reason,
+      option.attributes?.application_relationship,
+      option.application_relationship,
+    ].filter(Boolean)));
+    for (const source of explanations) {
+      const translation = translateAdmissionSummary(source);
+      assert.match(translation, /[\u0400-\u04ff]/u, `${institution.institution.id}: ${source}`);
+    }
+  }
+});
+
 test("award suffixes, distinct subjects and named routes stay visible", () => {
   setLanguage("eng", { emit: false });
   assert.equal(admissionsProgramLabel({ title: "Computer Science (PhD)", awards: ["PHD"] }).title, "Computer Science (PhD)");
