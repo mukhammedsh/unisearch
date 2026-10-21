@@ -179,6 +179,7 @@ def _security_headers() -> dict[str, str]:
         "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
         "Cross-Origin-Opener-Policy": "same-origin",
         "X-Permitted-Cross-Domain-Policies": "none",
+        "X-XSS-Protection": "0",
         "Content-Security-Policy": (
             "default-src 'self'; "
             "connect-src 'self' http://127.0.0.1:* http://localhost:*; "
