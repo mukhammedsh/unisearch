@@ -272,7 +272,10 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual(chance["selectedContext"]["option"]["id"], "mit-course-6-3-bachelor")
         self.assertNotIn("mit-transfer", {check["sourceRule"]["scope"]["route_ids"][0]
                          for check in chance["choices"][0]["details"]["checks"] if check["sourceRule"]["scope"]["route_ids"]})
-        self.assertEqual("unavailable", match["costMode"])
+        self.assertEqual("published_reference", match["costMode"])
+        self.assertEqual("dated_reference", match["costQuote"]["cycle_status"])
+        self.assertEqual("2026-2027", match["costQuote"]["period"])
+        self.assertIn("undergraduate-budget-2026-27", match["costQuote"]["fact_ids"])
         self.assertIsNone(match["finalPrice"])
 
     def test_stanford_undergraduate_computer_science_context_excludes_jd(self):

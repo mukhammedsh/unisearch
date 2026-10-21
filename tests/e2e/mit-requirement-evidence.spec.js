@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen, seedProfile } = require("./helpers/personas");
-const { openProfileTab, selectors, setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
+const { openProfileTab, selectors, setNativeSelect, openDisclosureParents, openAdmissionSelectionEditor } = require("./helpers/selectors");
 
 const MIT_ID = "mit-usa-cambridge";
 const MBA_OPTION = "mit-sloan-mba-full-time";
@@ -62,6 +62,7 @@ async function openAssessment(page) {
 }
 
 async function openAdvanced(page) {
+  await openAdmissionSelectionEditor(page);
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
 }

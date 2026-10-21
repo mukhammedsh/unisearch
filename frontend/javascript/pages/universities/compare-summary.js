@@ -12,13 +12,13 @@ const label = key => t(`universities.compare.summary.${key}`);
 const unknown = () => `<span class="admissions-context__note">${escapeHtml(label("unknown"))}</span>`;
 
 function factsFor(resolved, domains) {
-  if (!resolved?.selected_option || Object.values(resolved.context_applicability || {}).includes("mismatched")) return [];
+  if ((!resolved?.selected_option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched")) return [];
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
   const routeIds = [resolved.selected_route?.id, ...(resolved.selected_route?.shared_policy_context_ids || [])];
   return (resolved.facts || []).filter(row => ids.has(row.id) && row.publication_status === "published"
     && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
     && !/conflict|pending|partial|superseded|requires_confirmation/.test(row.review_status || "")
-    && row.applicability?.status !== "mismatched" && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(resolved.selected_option.id))
+    && row.applicability?.status !== "mismatched" && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(resolved.selected_option?.id))
     && (!row.scope?.route_ids?.length || row.scope.route_ids.some(id => routeIds.includes(id))));
 }
 
@@ -40,9 +40,9 @@ function detailLink(university, state, tab) {
 function cells(university, state) {
   const resolved = state?.resolved;
   const option = resolved?.selected_option;
-  const unavailable = state?.status !== "ready" || !option || Object.values(resolved.context_applicability || {}).includes("mismatched");
-  const program = unavailable ? unknown() : `<strong>${escapeHtml(admissionsProgramLabel(option).title)}</strong><small>${escapeHtml((option.awards || []).join(" · "))}</small>`;
-  const study = unavailable ? [] : studyOptionEssentials(resolved).filter(([key]) => ["duration", "mode", "language"].includes(key)).map(([, value]) => value);
+  const unavailable = state?.status !== "ready" || (!option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched");
+  const program = unavailable ? unknown() : option ? `<strong>${escapeHtml(admissionsProgramLabel(option).title)}</strong><small>${escapeHtml((option.awards || []).join(" · "))}</small>` : escapeHtml(t("universities.compare.institution_route"));
+  const study = unavailable || !option ? [] : studyOptionEssentials(resolved).filter(([key]) => ["duration", "mode", "language"].includes(key)).map(([, value]) => value);
   const tuition = unavailable ? [] : factsFor(resolved, ["study", "costs"]).flatMap(row => {
     const quotes = publishedTuitionQuotes(row);
     if (quotes.length) return quotes.map(quote => `<div>${quote.amounts.map(escapeHtml).join(" · ")}<small>${escapeHtml([quote.currency, quote.feeStatus, quote.period].filter(Boolean).join(" · "))} ${source(row, resolved)}</small></div>`);
@@ -67,7 +67,7 @@ function cells(university, state) {
     .map(row => `<div>${escapeHtml(row.value.funding_program)}<small>${escapeHtml(t(`university.admissions.reading.${row.value.availability === "excluded_by_published_course_rules" ? "funding_excluded" : row.value.availability === "not_established" ? "funding_unconfirmed" : "potential_aid"}`))}</small></div>`);
   return {
     program, study: study.length ? escapeHtml(study.join(" · ")) : unknown(),
-    route: unavailable || !resolved.selected_route ? unknown() : escapeHtml(admissionsRouteName(resolved.selected_route, { presentation: "simple" })),
+    route: unavailable || !resolved.selected_route ? unknown() : escapeHtml(admissionsRouteName({ ...resolved.selected_route, title: "", target: "" }, { presentation: "simple" })),
     cycle: state?.context?.intended_entry_cycle ? escapeHtml(admissionsCycleLabel(state.context.intended_entry_cycle)) : unknown(),
     tuition: tuition.length ? tuition.join("") : unknown(), budget: budget.length ? budget.join("") : unknown(),
     deadline: `${date || unknown()}${detailLink(university, state, "deadlines")}`,

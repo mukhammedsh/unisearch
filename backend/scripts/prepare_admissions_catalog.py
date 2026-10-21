@@ -359,6 +359,8 @@ def validate_institution(institution):
             if key == "application_routes":
                 refs(row["option_ids"], "study_options", context)
                 refs(row["shared_policy_context_ids"], "application_routes", context)
+                metadata = {**row["attributes"], **row["index_attributes"]}
+                refs(metadata.get("policy_for_route_ids", []), "application_routes", context)
                 refs(row["fact_ids"], "facts", context)
             if key in ("facts", "unknowns"):
                 refs(row["scope"]["option_ids"], "study_options", context)

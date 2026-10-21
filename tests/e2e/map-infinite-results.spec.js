@@ -176,7 +176,7 @@ test("map marker opens the complete university card and responds to zoom control
   await expect(popupCard.locator(".uni-title")).toHaveText("Marker Only University");
   await expect(popupCard.locator(".uni-media")).toBeVisible();
   await expect(popupCard.locator('[data-cost-basis="annual_total"]')).toContainText(/9[\s,]?000/);
-  await expect(popupCard.locator('[data-cost-basis="tuition"]')).toContainText(/7[\s,]?000/);
+  await expect(popupCard.locator('[data-cost-basis="tuition"]')).toHaveCount(0);
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   const popupSurface = await popupCard.evaluate((node) => {
     const popup = node.closest(".leaflet-popup");

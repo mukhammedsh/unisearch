@@ -56,6 +56,40 @@ test("comparison labels and dated-reference guidance render in all supported lan
   }
 });
 
+test("shared undergraduate comparison reads route facts and prices without a selected major", () => {
+  setLanguage("eng", { emit: false });
+  const shared = state("USD", 66720, "2026-27");
+  shared.context = { study_option_id: "", application_route_id: "mit-first-year", study_level: "undergraduate" };
+  shared.resolved.selected_option = null;
+  shared.resolved.selected_route = { id: "mit-first-year", title: "MIT undergraduate admission" };
+  shared.resolved.reading_scope = "institution_route";
+  shared.resolved.context_applicability = { option: "not_required", route: "matched", level: "matched" };
+  shared.resolved.facts = [
+    { ...fact("budget", { tuition: 66720, total_before_aid: 92760, currency: "USD", academic_year: "2026-27" }),
+      scope: { option_ids: [], route_ids: ["mit-first-year"] } },
+    { ...fact("date", { deadline: "2027-01-05" }), scope: { option_ids: [], route_ids: ["mit-first-year"] }, topic: "deadlines" },
+    fact("other-program", { tuition: 1, currency: "USD" }),
+  ];
+  shared.resolved.fact_groups = { costs: ["budget", "other-program"], deadlines: ["date"] };
+  const html = renderReviewedComparison([universities[1]], new Map([["mit", shared]]));
+  assert.match(html, /University-wide application route/);
+  assert.match(html, /66,720 USD/);
+  assert.match(html, /92,760 USD/);
+  assert.match(html, /January 5, 2027/);
+  assert.doesNotMatch(html, /<div>1 USD/);
+  shared.resolved.context_applicability.level = "mismatched";
+  assert.doesNotMatch(renderReviewedComparison([universities[1]], new Map([["mit", shared]])), /66,720 USD|92,760 USD/);
+});
+
+test("comparison route labels use the localized simple classification when a route has no translation", () => {
+  setLanguage("rus", { emit: false });
+  const selected = state("GBP", 47800, "2027 entry");
+  selected.resolved.selected_route = { id: "procedure-computing-meng", title: null, classification: "ucas_course_choice" };
+  const html = renderReviewedComparison([universities[0]], new Map([["imperial", selected]]));
+  assert.match(html, /Выбор программы через UCAS/);
+  assert.doesNotMatch(html, /ucas_course_choice/);
+});
+
 test("comparison identifies a published scholarship exclusion without promising aid", () => {
   setLanguage("eng", { emit: false });
   const selected = state("GBP", 81000, "September 2027");

@@ -37,10 +37,23 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         self.assertTrue(result["catalogRevision"])
         match = sort_universities_ai([self.mit], profile)[0]["matchData"]
         self.assertIsNone(match["requirementsGap"])
-        self.assertIsNone(match["affordabilityGap"])
         self.assertIsNone(match["finalPriceUSD"])
         self.assertFalse(match["selectedByUser"])
-        self.assertAlmostEqual(match["finalScore"], match["preferenceMismatch"])
+        self.assertEqual("published_reference", match["costMode"])
+        self.assertEqual("dated_reference", match["budgetAssessment"]["evidence"])
+        self.assertIn("undergraduate-budget-2026-27", match["costQuote"]["fact_ids"])
+        if profile.get("budget", 0) > 0:
+            self.assertEqual("unknown_cost", match["budgetStatus"])
+            reference_cost = match["costQuote"]["minUSD"]
+            expected_gap = max(0.0, 1.0 - profile["budget"] / reference_cost)
+            self.assertAlmostEqual(expected_gap, match["affordabilityGap"])
+            self.assertEqual("over_budget" if reference_cost > profile["budget"] else "within_budget",
+                             match["budgetAssessment"]["status"])
+            self.assertAlmostEqual((0.60 * match["preferenceMismatch"] + 0.20 * expected_gap) / 0.80,
+                                   match["finalScore"])
+        else:
+            self.assertIsNone(match["affordabilityGap"])
+            self.assertAlmostEqual(match["finalScore"], match["preferenceMismatch"])
 
     def test_alexey_german_budget_persona(self):
         """

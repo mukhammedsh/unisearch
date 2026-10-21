@@ -40,6 +40,7 @@ def _catalog_error(error: Exception) -> HTTPException:
 def list_study_options(
     university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
     search: str = Query("", max_length=200),
+    major: Optional[str] = Query(None, max_length=120),
     study_level: Optional[Literal["undergraduate", "masters", "doctoral", "professional"]] = Query(None),
     page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(30, ge=1, le=100),
@@ -49,14 +50,15 @@ def list_study_options(
 ):
     try:
         language = _resolve_search_lang(lang, request)
+        major = (major or "").strip() or None
         result = admissions_catalog.list_study_options(
             university_id,
             search_candidates=university_service._search_query_candidates(search.strip(), search_lang=language),
-            study_level=study_level, page=page, limit=limit,
+            study_level=study_level, page=page, limit=limit, major=major,
         )
         revision = result["revision"]
         etag = '"' + hashlib.sha256(json.dumps(
-            [revision, university_id, search.strip(), study_level, page, limit, language],
+            [revision, university_id, search.strip(), study_level, major, page, limit, language],
             ensure_ascii=True, separators=(",", ":"),
         ).encode("utf-8")).hexdigest() + '"'
         cache_control = "public, max-age=300, stale-while-revalidate=60"

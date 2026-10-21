@@ -6,6 +6,23 @@ Active plan agreed on 2026-09-30; first-ten scope recorded on 2026-10-08; immedi
 
 Product focus confirmed on 2026-10-13: a university catalog with optional basic profile, UniFit, comparison, saved choices and clear university/program/admissions pages. Personal roadmaps, automatic next-level selection and exhaustive personalized exception evaluation are not required. Existing reviewed facts are retained. The immediate work is to make the three integrated university pages useful to a novice before expanding the same presentation to more institutions.
 
+### Current three-university integration checkpoint (2026-10-21)
+
+- [x] Close the parent integration follow-ups: bootstrap direct nested detail URLs at root and under the frontend mount, reuse canonical subject matching for profile-based program suggestions, and allow exact shared-route calendar dates and comparison facts without a fabricated selected major. Explain reference/tuition-only budget comparisons on UniFit cards. Final checks passed 787 backend tests, 619 frontend unit tests, focused browser routes/suggestions/comparison/mobile copy, and changed-domain static checks. New source changes remain local; the public app is the previously released 9.1.3.
+- [x] Received backend, admissions UI, and catalog UI `ready_for_integration` handoffs; checked their exact changed files and limitations. Deployment was tracked separately.
+- [x] Verified no-major UniFit discovery, budget and fee-status filters, unknown costs, shortlist comparison, and the selected MIT/Imperial/Stanford admissions contexts after owners stopped editing.
+- [x] Exercised institution-wide MIT/Stanford undergraduate routes, Imperial Computing MEng's single UCAS route, Stanford external/coterm graduate paths, saved contexts, profile suggestions, URL/reload/history, and future entry cycles using synthetic profiles.
+- [x] Ran the changed admissions/catalog unit tests, focused browser scenarios and required static checks across English/Russian/Kazakh, desktop/mobile, light/dark. Backend focused tests and the data audit were already final in the owner handoff; no data changed afterward.
+- [x] Compared local changes with `deployment-handoff.md` and public frontend/API versions, reviewed the combined diff and functional docs, and recorded passed/failed/pending plus production status in `integration-handoff.md`.
+
+### Visual presentation checkpoint (2026-10-22)
+
+- [x] Catalog cards show only the filter's selected price basis. Two-currency mode presents the converted and original amount on separate lines, with compact notation for large conversions. The price tooltip retains dated references, source period, fee scope, exclusions and UniFit budget explanations; full costs and sources remain on the detail page. The price-filter explanation stays in its keyboard/touch disclosure.
+- [x] Complete university names wrap in list cards and map results. MIT first-year admission remains available without a selected major; Imperial Computing BEng/G400 and integrated MEng/G401 remain distinct through UCAS; Stanford CS MS shows the ordinary external path first and keeps four restricted/internal paths reachable.
+- [x] Detail pages use one selected-context summary with a clear edit action. Comparison supports per-university program/route edits, MIT's shared first-year route without a major, saved contexts, results, reload and Back/Forward.
+- [x] Independent Chromium review used synthetic state at 1440px desktop and 390px mobile, light/dark, RU/EN/KZ, keyboard/touch disclosures, and horizontal-overflow checks. Browser screenshots and the visual QA handoff are kept outside the repository.
+- [x] Final frontend unit/static results and contrast measurements are recorded in the local visual QA handoff. Backend, data, version, and release state were not changed by this presentation checkpoint.
+
 ## Immediate catalog-first work
 
 - [x] Record the agreed product focus in the product model and execution instructions; retain existing data, checks and saved-state contracts.

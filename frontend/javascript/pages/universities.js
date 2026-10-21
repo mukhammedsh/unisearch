@@ -14,6 +14,7 @@ import {
   loadProfile,
   loadProfileForApi,
   formatExamValue,
+  formatCurrency,
   getExamDisplayName,
   getFlagImg,
   initCustomSelect,
@@ -76,6 +77,7 @@ import {
   unknownFieldText,
   textOrUnknown,
   moneyOrUnknown,
+  splitPriceDisplay,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
@@ -112,29 +114,64 @@ export function universityCardPriceInfo(university, basis = "annual_total") {
     return resolveUniversityCardPrice(university);
 }
 
-export function renderUniversityCardCosts(university, basis = "annual_total") {
-    const other = basis === "tuition" ? "annual_total" : "tuition";
-    const bases = universityCardPriceInfo(university, basis).amount === null && universityCardPriceInfo(university, other).amount !== null ? [other, basis] : [basis, other];
-    const shownScopes = new Set();
-    const lines = bases.map((key, index) => {
-        const price = universityCardPriceInfo(university, key);
-        const known = price.amount !== null && Number.isFinite(price.amount);
-        const money = value => moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, { presentation: "summary" });
-        const unavailable = key === "annual_total" && universityCardPriceInfo(university, "tuition").amount !== null ? t("universities.cost.full_budget_unavailable") : t("universities.cost.unavailable");
-        const value = known ? (price.max > price.min ? `${money(price.min)} – ${money(price.max)}` : money(price.amount)) : unavailable;
-        const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
-        const period = entry ? tFormat("universities.cost.entry", { year: entry[1] }) : price.period;
-        const scope = [price.study_level ? t(`university.admissions.catalog.level.${price.study_level}`) : "", period].filter(Boolean).join(" · ");
-        const showScope = scope && !shownScopes.has(scope);
-        shownScopes.add(scope);
-        return `<div class="uni-cost-row${index ? " uni-cost-row--secondary" : ""}" data-cost-basis="${key}"><span class="uni-cost-label">${escapeHtml(t(`universities.cost.${key}`))}</span><span class="uni-price-val${known ? "" : " uni-cost-unavailable"}">${escapeHtml(value)}${known ? ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year"))}</span>` : ""}</span>${showScope ? `<span class="uni-cost-context">${escapeHtml(scope)}</span>` : ""}</div>`;
-    });
-    const reference = university?.catalog_costs?.reference;
-    const exclusions = university?.catalog_costs?.annual_total?.exclusions || [];
-    const note = [reference ? t("universities.cost.reference") : t("universities.cost.before_aid"),
-        university?.catalog_costs?.tuition?.fee_statuses?.length > 1 ? t("universities.cost.fee_scope") : "",
-        ...exclusions.map(key => t(`universities.cost.exclusion.${key}`))].filter(Boolean).join(" ");
-    return `<div class="uni-price uni-price--catalog">${lines.join("")}<span class="uni-cost-context">${escapeHtml(note)}</span></div>`;
+export function renderUniversityCardCosts(university, basis = "annual_total", scope = "catalog") {
+    const price = universityCardPriceInfo(university, basis);
+    const known = price.amount !== null && Number.isFinite(price.amount);
+    const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference");
+    const money = value => {
+        const parts = splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, { presentation: "summary" }));
+        const converted = convert(value, price.currency, getPreferredCurrency());
+        if (parts.primary.startsWith("≈ ") && Math.abs(converted) >= 1_000_000) {
+            parts.primary = `≈ ${formatCurrency(converted, getPreferredCurrency(), {
+                locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
+                notation: "compact", maximumSignificantDigits: 2, currencyDisplay: "narrowSymbol",
+            })}`;
+        }
+        return parts;
+    };
+    const range = known && price.max > price.min;
+    const minimum = known ? money(range ? price.min : price.amount) : { primary: t("universities.cost.price_unavailable"), secondary: "" };
+    const maximum = range ? money(price.max) : minimum;
+    const primary = range ? `${minimum.primary} – ${maximum.primary.replace(/^≈ /, "")}` : minimum.primary;
+    const secondary = minimum.secondary ? (range ? `(${minimum.secondary.slice(1, -1)} – ${maximum.secondary.slice(1, -1)})` : minimum.secondary) : "";
+    const title = t(`universities.cost.${basis}`);
+    const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
+    const period = entry ? tFormat("universities.cost.entry", { year: entry[1] }) : price.period;
+    const levels = Array.isArray(price.levels) ? price.levels : price.study_level ? [price.study_level] : [];
+    const feeStatuses = Array.isArray(price.fee_statuses) ? price.fee_statuses : [];
+    const context = [levels.map(level => t(`university.admissions.catalog.level.${level}`)).join(", "), period, feeStatuses.join(", "),
+        price.cycle_status === "dated_reference" ? t(university?.catalog_costs?.reference ? "universities.cost.cycle_unconfirmed" : "universities.cost.dated_reference") : "",
+        price.cycle_status === "unspecified" ? t("universities.cost.cycle_unspecified") : "",
+        price.fee_status_match === "unknown" ? t("universities.cost.fee_status_unknown") : "",
+        price.filter_match === "partial" ? t("universities.cost.filter_partial") : "",
+    ].filter(Boolean).join(" · ");
+    const exclusions = basis === "annual_total" ? university?.catalog_costs?.annual_total?.exclusions || [] : [];
+    const note = [reference ? t("universities.cost.reference") : known ? t("universities.cost.before_aid") : "",
+        !known && basis === "annual_total" && universityCardPriceInfo(university, "tuition").amount !== null ? t("universities.cost.full_budget_unavailable") : "",
+        basis === "tuition" ? t("universities.cost.tuition_scope_note") : "",
+        feeStatuses.length > 1 ? t("universities.cost.fee_scope") : "",
+        ...exclusions.map(key => t(`universities.cost.exclusion.${key}`))].filter(Boolean).join(" · ");
+    const assessment = university?.matchData?.budgetAssessment;
+    const budgetKey = { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment?.status];
+    const budgetNote = budgetKey
+        ? [t(budgetKey === "uncertain" ? "universities.cost.budget_uncertain_range" : `universities.cost.budget_${budgetKey}_${assessment.evidence === "applicable" ? "applicable" : "reference"}`),
+            assessment.basis === "tuition" ? t("universities.cost.budget_tuition_only") : ""].filter(Boolean).join(" · ") : "";
+    const tooltipId = `uni-cost-info-${scope}-${university.id || "university"}-${basis}`;
+    return `<div class="uni-price uni-price--catalog" data-cost-basis="${basis}">
+        <span class="ui-tooltip-wrap uni-cost-tooltip">
+            <button class="ui-tooltip-trigger uni-cost-trigger" type="button" aria-label="${escapeHtmlAttr(tFormat("universities.cost.price_details", { basis: title }))}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+                <span>${escapeHtml(title)}${reference ? ` · ${escapeHtml(t("universities.cost.reference_short"))}` : ""}</span>${heroIcon("information-circle", "uni-cost-info-icon", { "aria-hidden": "true" })}
+            </button>
+            <span class="ui-tooltip-bubble" id="${escapeHtmlAttr(tooltipId)}" role="tooltip">
+                <strong class="ui-tooltip-title">${escapeHtml(title)}</strong>
+                ${context ? `<span class="uni-cost-context" data-cost-context>${escapeHtml(context)}</span>` : ""}
+                ${note ? `<span class="uni-cost-context">${escapeHtml(note)}</span>` : ""}
+                ${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}
+            </span>
+        </span>
+        <span class="uni-price-val${known ? "" : " uni-cost-unavailable"}">${escapeHtml(primary)}${known ? ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year"))}</span>` : ""}</span>
+        ${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}
+    </div>`;
 }
 
 let __universitiesProfileUpdatedHandler = null;
@@ -2963,7 +3000,7 @@ export function initUniversitiesPage() {
     function renderFullMapPopup(item) {
         const profile = loadProfileForApi();
         const userBudget = Number.parseFloat(profile.budget);
-        return `<div class="map-card-wrapper">${renderCard(item, userBudget, 0)}</div>`;
+        return `<div class="map-card-wrapper">${renderCard(item, userBudget, 0, { costTooltipScope: "map-popup" })}</div>`;
     }
 
     function findLoadedMapCard(uniId) {
@@ -3204,10 +3241,10 @@ export function initUniversitiesPage() {
 
         if (forApi) {
             const profile = loadProfile();
-            const major = String(profile?.major || "").trim();
-            const mode = String(profile?.studyMode || "").trim();
-            if (major) p.set("major", major);
-            if (mode && mode.toLowerCase() !== "any") p.set("format", mode);
+            const feeStatus = String(profile?.feeStatusContext || profile?.fee_status_context || "").trim();
+            const entryCycle = String(profile?.intendedEntryCycle || profile?.intended_entry_cycle || "").trim();
+            if (feeStatus && feeStatus !== "unknown") p.set("fee_status_context", feeStatus);
+            if (entryCycle) p.set("intended_entry_cycle", entryCycle);
         }
         
         if (forApi && state.only_saved) {
@@ -3256,10 +3293,6 @@ export function initUniversitiesPage() {
         if (tuitionParams.min_tuition !== undefined) payload.min_tuition = tuitionParams.min_tuition;
         if (tuitionParams.max_tuition !== undefined) payload.max_tuition = tuitionParams.max_tuition;
 
-        const major = String(profile?.major || "").trim();
-        const mode = String(profile?.studyMode || "").trim();
-        if (major) payload.major = major;
-        if (mode && mode.toLowerCase() !== "any") payload.format = mode;
         logTranslationDebug("ai-sort payload", {
             viewMode: state.viewMode,
             uiLang,
@@ -3970,7 +4003,7 @@ ${rankInnerHtml}
             </div>
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis);
+        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"));
         const logoImgHtml = `<img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">

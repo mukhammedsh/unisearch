@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
-const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents, openAdmissionSelectionEditor, revealRestrictedProgram, selectAdmissionRoute } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const STANFORD = "stanford-university-usa-ca";
@@ -29,6 +29,7 @@ async function openAdmission(page) {
 }
 
 async function openAdvanced(page) {
+  await openAdmissionSelectionEditor(page);
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
 }
@@ -48,7 +49,11 @@ async function searchOptions(page, query, level = "") {
   await openTab(page, "programs");
   await setNativeSelect(page, "admissionsStudyLevel", level);
   await page.locator("#admissionsSearch").fill(query);
-  const response = page.waitForResponse((response) => response.url().includes("/study-options?") && response.request().method() === "GET");
+  const response = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return url.pathname.endsWith("/study-options") && response.request().method() === "GET"
+      && url.searchParams.get("search") === query && url.searchParams.get("study_level") === level;
+  });
   await page.locator("#admissionsSearchSubmit").click();
   expect((await response).ok()).toBe(true);
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
@@ -57,6 +62,7 @@ async function searchOptions(page, query, level = "") {
 async function chooseOption(page, id, query, level) {
   await searchOptions(page, query, level);
   const option = page.locator(`#admissionsProgramList [data-study-option="${id}"]`);
+  await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   const title = await option.locator(".admissions-programs__option-title").innerText();
   const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
@@ -71,8 +77,8 @@ async function chooseOption(page, id, query, level) {
 
 async function applyContext(page, route, applicant = "", cycle = "", fee = "unknown") {
   await openAdmission(page);
+  await selectAdmissionRoute(page, route);
   await openAdvanced(page);
-  await setNativeSelect(page, "admissionsRoute", route);
   await setNativeSelect(page, "admissionsApplicant", applicant);
   await setNativeSelect(page, "admissionsFee", fee);
   await page.locator("#admissionsCycle").fill(cycle);
@@ -278,10 +284,11 @@ test("reviewed MIT program levels use Russian labels while source names remain d
 test("MIT program requires an explicit admission route and keeps funding separate", async ({ page }) => {
   await openCatalog(page);
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("Choose a program in the Programs tab to see its published application paths.");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose a published application path to browse its requirements and process.");
+  await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeVisible();
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("Choose one of the published paths above to read its requirements and application details.");
+  await expect(page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger")).toBeVisible();
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option")).toHaveCount(3);
@@ -367,7 +374,8 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
   try {
     await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");
     await applyContext(page, "mit_physics_phd_admissions", "graduate", "Fall 2027");
-    const current = requests.find((request) => request.context.application_route_id === "mit_physics_phd_admissions");
+    const matching = requests.filter((request) => request.context.application_route_id === "mit_physics_phd_admissions");
+    const current = matching[matching.length - 1];
     expect(current.context.study_level).toBe("doctoral");
     expect(current.context.applicant_route).toBe("graduate");
     expect(current.context.intended_entry_cycle).toBe("Fall 2027");
@@ -380,7 +388,7 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
     await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
     await page.goBack();
     await openAdmission(page);
-    await expect(page.locator("#admissionsRoute")).toHaveValue("");
+    await expect(page.locator("#admissionsRoute")).toHaveValue("mit_physics_phd_admissions");
     await page.goBack();
     await openAdmission(page);
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
@@ -496,6 +504,7 @@ test("MIT admission context and source finance fit a narrow dark-theme screen", 
   await openCatalog(page, MIT, { width: 390, theme: "dark" });
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await openAdmissionSelectionEditor(page);
   await expect(page.locator("#admissionsContextApply")).toBeVisible();
   const bounds = await page.locator("#admissionsContext").boundingBox();
   expect(bounds.x).toBeGreaterThanOrEqual(0);
@@ -519,7 +528,15 @@ test("reviewed programs search filters the full inventory and shows localized em
   await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(1);
   await expect(page.locator("#admissionsProgramList [data-study-option]")).toContainText("Physics");
   await searchOptions(page, "", "undergraduate");
-  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(24);
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(8);
+  await expect(page.locator("#admissionsProgramCount")).toContainText("55");
+  await expect(page.locator("#admissionsNext")).toBeEnabled();
+  await page.locator("#admissionsNext").click();
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(8);
+  await expect(page.locator("#admissionsProgramCount")).toContainText("9");
+  await page.locator("#admissionsNext").click();
+  await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(8);
+  await expect(page.locator("#admissionsProgramCount")).toContainText("17");
   await expect(page.locator("#admissionsNext")).toBeEnabled();
   await searchOptions(page, "zzz-no-such-program", "undergraduate");
   await expect(page.locator("#admissionsProgramList .admissions-state")).toHaveText("По этим фильтрам программы не найдены.");
@@ -534,8 +551,8 @@ test("profile major remains available through explicit catalogue search without 
   await expect(page.locator('[data-study-option="mit-course-6-3-bachelor"]')).toBeVisible();
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext .admissions-context__status")).toContainText("Choose a program in the Programs tab to see its published application paths.");
-  await expect(page.locator("#admissionsRoute")).toBeDisabled();
+  await expect(page.locator('#admissionsContext [data-shared-route="mit-first-year"]')).toBeVisible();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
   await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.major).toBe(personas.ruStemGrant.profile.major);

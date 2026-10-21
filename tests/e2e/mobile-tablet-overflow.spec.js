@@ -1,7 +1,7 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
-const { setNativeSelect } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const viewports = [
   { name: "narrow", width: 320, height: 568 },
@@ -153,6 +153,7 @@ for (const viewport of viewports) {
       { id: "imperial-college-london-uk", option: "imperial-option-computing-meng", route: "procedure-computing-meng", query: "Computing" },
     ]) {
       const chooser = page.locator(`#compare-options-${choice.id}`);
+      await openDisclosureParents(chooser.locator("[data-compare-search-form]"));
       await expect(chooser.locator("[data-compare-search-form]")).toBeVisible();
       await chooser.locator('input[type="search"]').fill(choice.query);
       await setNativeSelect(page, `compare-filter_level-${choice.id}`, "undergraduate");

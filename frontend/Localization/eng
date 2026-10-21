@@ -419,16 +419,27 @@ universities.cost_max: Max cost
 universities.cost.filter_basis: Price per academic year
 universities.cost.annual_total: Study and living budget
 universities.cost.tuition: Tuition
+universities.cost.price_details: About the price: {basis}
+universities.cost.reference_short: reference
+universities.cost.price_unavailable: Price unavailable
+universities.cost.tuition_scope_note: Living and other costs are additional.
 universities.cost.entry: {year} entry
 universities.cost.unavailable: Check the program
 universities.cost.full_budget_unavailable: No comparable full budget
-universities.cost.reference: Published reference, before aid.
-universities.cost.before_aid: Before scholarships or financial aid.
-universities.cost.fee_scope: Range varies by program and Home/Overseas fee category.
-universities.cost.exclusion.insurance: Insurance is additional.
-universities.cost.exclusion.travel: Travel is additional.
-universities.cost.exclusion.one_time_fees: One-time fees are additional.
-universities.cost.filter_help: Before aid. A range may partly match: check the program and fee category. Unknown prices are excluded when a price limit is active.
+universities.cost.reference: Reference price · before aid
+universities.cost.before_aid: Before financial aid
+universities.cost.fee_scope: Varies by program and fee category
+universities.cost.exclusion.insurance: Insurance extra
+universities.cost.exclusion.travel: Travel extra
+universities.cost.exclusion.one_time_fees: One-time fees extra
+universities.cost.filter_help_summary: Price limits hide unknown prices; profile budget affects UniFit.
+universities.cost.filter_help: Prices are before financial aid. A range may only partly match; confirm the program and fee category. University details show the full breakdown and sources.
+universities.cost.dated_reference: Dated reference; cycle unconfirmed
+universities.cost.cycle_unconfirmed: Cycle unconfirmed
+universities.cost.cycle_unspecified: Cycle not stated
+universities.cost.fee_status_unknown: Fee category unconfirmed
+universities.cost.filter_partial: Partial price match
+universities.cost.fee_categories: Published fee category: {categories}.
 universities.country: Country
 universities.filter: Filter
 universities.filter.all: All
@@ -2442,7 +2453,7 @@ profile.evidence.error.credential_score: Enter the published credential score pe
 profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
 university.admissions.catalog.context_title: Your application context
 university.admissions.catalog.simple_title: Published application paths
-university.admissions.catalog.browse_note: Search the official program list by name or subject and study level. Select a program to read about its degree and linked application paths.
+university.admissions.catalog.browse_note: Search by subject or program. Open a result for study and admission details.
 university.admissions.catalog.show_requirements: Read published details
 university.admissions.catalog.advanced_options: Filter published records (optional)
 university.admissions.catalog.advanced_note: These optional filters narrow source records by published applicant group, entry cycle or fee category. Leave them unspecified to browse all records for this program and path.
@@ -2521,7 +2532,16 @@ university.admissions.catalog.route_not_selected: Choose a published application
 university.admissions.catalog.browse_programs: Browse programs
 university.admissions.catalog.change_program: Change program
 university.admissions.catalog.change_route: Change path
-university.admissions.catalog.reference_filters: Filter by applicant group, cycle or fee category (optional)
+university.admissions.catalog.reference_filters: Applicant, entry year and fee status (optional)
+university.admissions.reading.edit_selection: Edit selection
+university.admissions.reading.exclusion.insurance: Insurance is additional; check the required coverage and waiver conditions.
+university.admissions.reading.exclusion.travel: Travel is additional and varies by applicant.
+university.admissions.reading.exclusion.one_time_fees: One-time charges are additional; check the source for the applicable new-student fees.
+university.admissions.reading.special_routes: Current Stanford students and joint degrees ({count})
+university.admissions.reading.cost_scope: Prices apply only to the program or application route, fee category and period stated in each source. Tuition is one part of the budget; living costs, required fees and one-time charges may be separate. Open the full records for itemized source wording and conditions.
+university.admissions.reading.degree.BEng: BEng — Bachelor of Engineering
+university.admissions.reading.degree.MEng: MEng — Master of Engineering
+university.admissions.reading.degree.MEng_integrated: MEng — integrated Master of Engineering, undergraduate entry
 university.admissions.catalog.reference_filter_note: These filters narrow source records by their published scope. Leave them unspecified to browse all records for this program and path.
 university.admissions.catalog.selected_route: Selected path
 university.admissions.catalog.application_shape: How this program is entered
@@ -2815,7 +2835,19 @@ university.admissions.catalog.choice_saved: Application context saved for this u
 university.admissions.catalog.choice_session_only: This choice is available for this session only. It could not be saved on this device.
 university.admissions.catalog.apply_before_save: Apply the changed context before saving this choice.
 universities.compare.reviewed_catalog: Reviewed study and admissions catalog
-universities.compare.optional_context: Compare universities now, or choose a study option and application route to view applicable admissions facts.
+universities.compare.optional_context: Compare universities now, or choose a university-wide route or study option and application route to view applicable admissions facts.
+universities.compare.context_summary_label: Current selection
+universities.compare.selection_empty: No program or route selected
+universities.compare.choose_context: Choose a program or route
+universities.compare.change_context: Change selection
+universities.compare.institution_route: University-wide application route
+universities.cost.budget_within_reference: Budget covers this reference.
+universities.cost.budget_over_reference: This reference is above budget.
+universities.cost.budget_within_applicable: Published amount within budget.
+universities.cost.budget_over_applicable: Published amount above budget.
+universities.cost.budget_uncertain_range: Some prices fit; check the program.
+universities.cost.budget_tuition_only: Tuition only; living and other costs extra.
+universities.compare.clear_program: Clear study option
 universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.
 university.admissions.reading.summary_translation_missing: A summary translation is not available yet. Read the original below.
 university.admissions.reading.original_description: Original program description (English)
@@ -2875,6 +2907,23 @@ university.admissions.reading.month_standalone.11: November
 university.admissions.reading.month_standalone.12: December
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · departmental application
 university.admissions.reading.integrated_meng: MEng is an integrated degree with undergraduate entry through UCAS, combining undergraduate and master's-level study.
+university.admissions.entry.institution_wide: Undergraduate admission is to the university as a whole. Read the published first-year or transfer path without choosing a major; Programs remains available to explore study interests.
+university.admissions.entry.profile_hints: Profile hints: {details}. Apply them here or keep browsing the public reference.
+university.admissions.entry.use_profile: Use profile hints
+university.admissions.entry.route_situations: Choose the published path for your situation, or leave it unresolved. Shared university policies appear within the selected path, rather than as another application.
+university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: External applicants apply to the CS MS program. Shared graduate and department policies are included with this application.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: For current Stanford undergraduates seeking the CS coterminal MS; department eligibility and term deadlines apply.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: For current Stanford students applying for an additional or different CS degree through regular admission. This differs from coterm and the same-program PhD intermediate MS petition.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-corresponding-phd-added-ms: An intermediate MS petition for current CS PhD students. This is not an external master's application.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: Joint CS and professional degrees require separate applications and joint consent. Read the published MBA or Law conditions for the intended combination.
+university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — external applicants
+university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm applicants
+university.programs.entry.profile_suggestions: Search suggestions from your profile
+university.programs.entry.remove_suggestion: Remove suggestion: {value}
+university.programs.entry.show_all: Browse all official options
+university.programs.entry.internal: For current students / internal progression
+university.programs.entry.restricted: Published entry restrictions — inspect before applying
+university.programs.entry.restricted_options: Internal and restricted options
 university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — current Stanford undergraduates only
 university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — current Stanford undergraduates
 university.admissions.catalog.route_class.combined_external: External combined-degree application

@@ -1,5 +1,25 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 
+for (const [name, route, root] of [
+  ["root", "/universities/mit-usa-cambridge", "/"],
+  ["root trailing slash", "/universities/mit-usa-cambridge/", "/"],
+  ["frontend mount", "/frontend/universities/mit-usa-cambridge", "/frontend/"],
+]) {
+  test(`nested detail URL resolves resources from ${name}`, async ({ page }) => {
+    const loadedAssets = [];
+    page.on("response", response => {
+      if (response.ok() && /\.(?:js|css)(?:\?|$)/.test(response.url())) loadedAssets.push(new URL(response.url()).pathname);
+    });
+    await page.goto(route);
+    await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+    await expect(page.locator("#detailName")).not.toHaveText("University Name");
+    expect(await page.evaluate(() => new URL(document.baseURI).pathname)).toBe(root);
+    expect(loadedAssets).toEqual(expect.arrayContaining([
+      `${root}javascript/main.js`, `${root}css/style.css`, `${root}css/university.css`,
+    ]));
+  });
+}
+
 test("university detail loads its page resources under the /frontend mount", async ({ page }) => {
   const frontendRequests = [];
   page.on("request", (request) => {

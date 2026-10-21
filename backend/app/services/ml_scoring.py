@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.core.paths import DATA_PATH
+from app.services import admissions_catalog
 from app.core.settings import (
     ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE,
     ML_SEMANTIC_EMBEDDINGS_DEVICE,
@@ -303,6 +304,9 @@ class MLRecommender:
                         if p_name:
                             program_names.append(p_name)
 
+            if uni.get("id") in admissions_catalog.INSTITUTION_IDS:
+                institution = admissions_catalog.get_institution(uni["id"])
+                program_names = [option["title"] for option in institution["study_options"]]
             program_text = " ".join(program_names)
             description = _safe_text(uni.get("description"))
 
@@ -405,6 +409,7 @@ class MLRecommender:
             self._semantic_embeddings = None
 
     def _load_and_fit(self) -> None:
+        self._catalog_revision = admissions_catalog.get_revision()
         try:
             self._data_mtime = self.data_path.stat().st_mtime
         except Exception:
@@ -433,7 +438,7 @@ class MLRecommender:
             mtime = self.data_path.stat().st_mtime
         except Exception:
             mtime = -1.0
-        if mtime != self._data_mtime:
+        if mtime != self._data_mtime or admissions_catalog.get_revision() != getattr(self, "_catalog_revision", None):
             self._load_and_fit()
 
     def is_ready(self) -> bool:

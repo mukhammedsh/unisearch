@@ -78,12 +78,25 @@ test("reviewed university replaces a fresh detail cache entry without the catalo
 });
 
 async function openAdvanced(page) {
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
 }
 
 async function selectCustomOption(page, select, value) {
   const control = page.locator(select);
+  if (select === "#admissionsRoute") {
+    if (await control.inputValue() === value) return;
+    if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
+    const entry = page.locator(`[data-read-route="${value}"]`);
+    if (await entry.count()) await openDisclosureParents(entry);
+    if (await entry.isVisible()) {
+      await entry.click();
+      await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+      await expect(control).toHaveValue(value);
+      return;
+    }
+  }
   const wrapper = control.locator("xpath=..");
   await wrapper.locator(".custom-select-trigger").click();
   await wrapper.locator(`.custom-option[data-value="${value}"]`).click();
@@ -228,6 +241,7 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   expect(retainedCompareChoices[ASTANA].choiceKey).toBe("aitu_paid::aitu_paid::aitu_paid");
 
   const chooser = page.locator(`#compare-options-${STANFORD}`);
+  await openDisclosureParents(chooser.locator("[data-compare-context-form]"));
   await expect(chooser.locator("[data-compare-context-form]")).toBeVisible();
   await chooser.locator("[data-compare-search-form] input[type=search]").fill("Computer Science");
   await setNativeSelect(page, `compare-filter_level-${STANFORD}`, "masters");
@@ -235,13 +249,13 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   const csOption = chooser.locator('[data-compare-programs] [data-study-option="stanford-option-cs-ms"]');
   await expect(csOption).toBeVisible();
   await csOption.click();
-  await expect(chooser.locator(".admissions-context__summary")).toContainText("Компьютерные науки (MS)");
+  await expect(chooser.locator(".compare-context-current__value")).toContainText("Компьютерные науки (MS)");
   const route = chooser.locator('select[data-context-field="application_route_id"]');
   await expect(route).toHaveValue("");
   const routeWrapper = route.locator("xpath=..");
   await routeWrapper.locator(".custom-select-trigger").click();
-  await routeWrapper.locator('.custom-option[data-value="engineering-doerr-evidence:external-graduate"]').click();
-  await expect(route).toHaveValue("engineering-doerr-evidence:external-graduate");
+  await routeWrapper.locator('.custom-option[data-value="directory-evidence:stanford-graduate-cs-ms"]').click();
+  await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
   await setNativeSelect(page, `compare-study_level-${STANFORD}`, "masters");
   await setNativeSelect(page, `compare-applicant_route-${STANFORD}`, "graduate");
   await chooser.locator(`#compare-cycle-${STANFORD}`).fill("2027-28 entry");
@@ -249,7 +263,7 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   await chooser.locator("[data-compare-context-form]").locator("button[type=submit]").click();
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.["stanford-university-usa-ca"])).toMatchObject({
     studyOptionId: "stanford-option-cs-ms",
-    applicationRouteId: "engineering-doerr-evidence:external-graduate",
+    applicationRouteId: "directory-evidence:stanford-graduate-cs-ms",
     studyLevel: "masters",
     applicantRoute: "graduate",
     intendedEntryCycle: "2027-28 entry",
@@ -281,7 +295,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext")).toContainText("Choose one of the published paths above to read its requirements and application details.");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose the published path for your situation");
   await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
   await expect(page.locator('#tab-admission [data-admissions-fact]')).toHaveCount(0);
 
@@ -297,7 +311,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   expect(reviewedIds).toEqual([IMPERIAL, MIT, STANFORD].sort());
   expect(catalog.body.items.filter((item) => item.admissions_catalog?.availability === "legacy_unreviewed")).toHaveLength(47);
 
-  await selectCustomOption(page, "#admissionsRoute", "engineering-doerr-evidence:external-graduate");
+  await selectCustomOption(page, "#admissionsRoute", "directory-evidence:stanford-graduate-cs-ms");
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsApplicant", "graduate");
   await page.locator("#admissionsCycle").fill("2027-28 entry");

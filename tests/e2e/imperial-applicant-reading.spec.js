@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { expectNoStackedGapMargins } = require("./helpers/design");
-const { openDisclosureParents } = require("./helpers/selectors");
+const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram, selectAdmissionRoute } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -47,11 +47,21 @@ async function select(page, id, value) {
   await expect(page.locator(`#${id}`)).toHaveValue(value);
 }
 
-async function program(page, id, search = "Computing") {
+async function program(page, id, search = "Computing", level = "") {
   await tab(page, "programs");
+  if (level) await select(page, "admissionsStudyLevel", level);
+  const selectedLevel = level || await page.locator("#admissionsStudyLevel").inputValue();
   await page.locator("#admissionsSearch").fill(search);
+  const response = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname.endsWith("/study-options") && response.request().method() === "GET"
+      && url.searchParams.get("search") === search && (url.searchParams.get("study_level") || "") === selectedLevel;
+  });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await response).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   const option = page.locator(`[data-study-option="${id}"]`);
+  await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   await option.click();
   await ready(page);
@@ -60,10 +70,14 @@ async function program(page, id, search = "Computing") {
 
 async function route(page, value) {
   await page.locator("#admissionsViewRequirements").click();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await select(page, "admissionsRoute", value);
-  await page.locator("#admissionsContextApply").click();
+  if (await selectAdmissionRoute(page, value)) await page.locator("#admissionsContextApply").click();
   await ready(page);
+}
+
+async function openAdvanced(page) {
+  await openAdmissionSelectionEditor(page);
+  const advanced = page.locator("#admissionsAdvanced");
+  if (!(await advanced.evaluate(node => node.open))) await advanced.locator(":scope > summary").click();
 }
 
 async function screenshot(page, name, section) {
@@ -137,7 +151,7 @@ for (const item of presentations) {
 const contrasts = [
   { option: "imperial-option-computing-beng", route: "procedure-computing-beng", award: "BEng" },
   { option: "imperial-option-computing", route: "procedure-computing", award: "MSc" },
-  { option: "imperial-computing-phd", route: "procedure-computing-phd", award: "PhD" },
+  { option: "imperial-computing-phd", search: "Computing Research", level: "doctoral", route: "procedure-computing-phd", award: "PhD" },
 ];
 
 for (const item of presentations) {
@@ -194,7 +208,7 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
     await prepare(page, item);
     await page.goto(`/university.html?id=${university}`);
     await ready(page);
-    await program(page, entry.option);
+    await program(page, entry.option, entry.search, entry.level);
     await expect(page.locator("#admissionsReferenceSummary")).toContainText(entry.award);
     await route(page, entry.route);
     const requirements = page.locator('[data-source-summary="requirements"]');
@@ -243,7 +257,7 @@ test("Imperial language changes, invalid cycles and saving preserve a synthetic 
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
     await expect(page.locator("#admissionsReferenceSummary")).toContainText("MEng");
   }
-  await page.locator("#admissionsAdvanced > summary").click();
+  await openAdvanced(page);
   await page.locator("#admissionsCycle").fill("undecided cycle");
   await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
   await page.locator("#admissionsCycle").fill("2027 entry");
@@ -267,7 +281,13 @@ test("Imperial retries a context failure and keeps the selected program through 
   await page.route(`**/universities/${university}/admissions-context`, route => route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Unavailable"}' }), { times: 1 });
   await tab(page, "programs");
   await page.locator("#admissionsSearch").fill("Computing");
+  const searchResponse = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname.endsWith("/study-options") && url.searchParams.get("search") === "Computing";
+  });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await searchResponse).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await page.locator('[data-study-option="imperial-option-computing-meng"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
   await page.locator('#admissionsStudyInfo [data-admissions-retry="context"]').click();
@@ -298,7 +318,7 @@ for (const item of [
     await prepare(page, presentations[1]);
     await page.goto(`/university.html?id=${university}`);
     await ready(page);
-    await program(page, item.option, item.search);
+    await program(page, item.option, item.search, item.level);
     if (item.award) await expect(page.locator("#admissionsReferenceSummary")).toContainText(item.award);
     await route(page, item.route);
     await expect(page.locator('[data-source-summary="requirements"]')).not.toContainText(/Computing requires TMUA|Для Computing нужен TMUA/);
@@ -333,12 +353,13 @@ test("Imperial ignores an older delayed response after Back and exposes keyboard
   });
   await page.goto(`/university.html?id=${university}&admission_option=imperial-option-computing-meng&admission_application_route=procedure-computing-meng&admission_level=undergraduate&admission_cycle=2026%20entry`);
   await ready(page);
-  const trigger = page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger");
-  await trigger.focus();
+  await openAdmissionSelectionEditor(page);
+  const advancedSummary = page.locator("#admissionsAdvanced > summary");
+  await advancedSummary.focus();
   await page.keyboard.press("Tab");
   await expect(page.locator("#admissionsContextApply")).toBeFocused();
   expect(await page.locator("#admissionsContextApply").evaluate(node => getComputedStyle(node).outlineWidth)).toBe("2px");
-  await page.locator("#admissionsAdvanced > summary").click();
+  await openAdvanced(page);
   await page.locator("#admissionsCycle").fill("2027 entry");
   await page.locator("#admissionsContextApply").click();
   await fetchedResponse;
@@ -369,7 +390,9 @@ test("Imperial map marker keeps tuition separate from the unavailable annual bud
   const popup = page.locator(`#mapContainer .custom-map-popup .uni-card[data-uni-id="${university}"]`);
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-cost-basis="tuition"]')).toContainText(/10[\s,]?050/);
-  await expect(popup.locator('[data-cost-basis="annual_total"]')).toContainText("No comparable full budget");
-  await expect(popup).toContainText("2027");
+  await expect(popup.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
+  await popup.locator('.uni-cost-trigger').click();
+  await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toBeVisible();
+  await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toContainText("2027");
   await screenshot(page, "eng-1280-map-tuition", "#mapContainer");
 });

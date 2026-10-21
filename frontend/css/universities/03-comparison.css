@@ -393,8 +393,7 @@
 @media (hover: hover) and (pointer: fine) {
 
 .compare-uni-card__link:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  color: var(--interaction-hover-text);
   transform: translateY(-1px);
 }
 }
@@ -412,8 +411,7 @@
   }
 
   :root .compare-uni-card:hover .compare-uni-card__link {
-    border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong));
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -824,7 +822,7 @@
 
 .compare-source-details > summary:focus-visible,
 .compare-summary-value a:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -1573,7 +1571,7 @@
 
 .compare-decision-source a,
 .compare-source-link {
-  color: var(--accent);
+  color: var(--text);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -1686,5 +1684,151 @@
   .compare-uni-card__metrics span + span {
     border-left: 0;
     border-top: none;
+  }
+}
+
+.compare-config-options .admissions-context {
+  gap: var(--space-3);
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+.compare-context-selection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.compare-context-current {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.compare-context-current__label {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.compare-context-current__value,
+.compare-context-save-status {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  overflow-wrap: anywhere;
+}
+
+.compare-context-save-status {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.compare-context-save-status:empty {
+  display: none;
+}
+
+.compare-context-reset {
+  color: var(--color-warning);
+}
+
+.compare-context-settings {
+  min-width: 0;
+}
+
+.compare-context-settings > summary {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  list-style: none;
+}
+
+.compare-context-settings > summary::-webkit-details-marker {
+  display: none;
+}
+
+.compare-context-settings > summary:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.compare-context-settings > summary:active {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
+}
+
+.compare-context-settings > summary:focus-visible,
+.compare-config-options .admissions-programs__option:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.compare-context-settings__content {
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  min-width: 0;
+}
+
+.compare-config-options .admissions-programs__list {
+  gap: var(--space-2);
+}
+
+.compare-config-options .admissions-programs__option {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  display: grid;
+  align-content: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  appearance: none;
+  border: 0;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.compare-config-options .admissions-programs__option:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.compare-config-options .admissions-programs__option:active {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
+}
+
+.compare-config-options .admissions-programs__option-levels {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+@media (max-width: 480px) {
+  .compare-context-selection {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .compare-context-settings > summary {
+    justify-content: flex-start;
   }
 }

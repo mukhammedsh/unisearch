@@ -10269,7 +10269,9 @@
         "stanford-option-thpst-ba",
         "stanford-option-urbst-ba"
       ],
-      "source_ids": []
+      "source_ids": [],
+      "admission_scope": "institution_wide_undergraduate",
+      "applicant_route": "first_year"
     },
     {
       "id": "undergraduate-shared-evidence:stanford-transfer",
@@ -10364,7 +10366,9 @@
         "stanford-option-thpst-ba",
         "stanford-option-urbst-ba"
       ],
-      "source_ids": []
+      "source_ids": [],
+      "admission_scope": "institution_wide_undergraduate",
+      "applicant_route": "transfer"
     },
     {
       "id": "undergraduate-shared-evidence:stanford-nonprofessional-graduate",
@@ -11233,7 +11237,8 @@
       "evidence_file": "directory-evidence.json",
       "original_id": "stanford-graduate-cs-ms",
       "shared_policy_context_ids": [
-        "undergraduate-shared-evidence:stanford-nonprofessional-graduate"
+        "undergraduate-shared-evidence:stanford-nonprofessional-graduate",
+        "engineering-doerr-evidence:external-graduate"
       ],
       "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy."
     },
@@ -13627,7 +13632,11 @@
         "https://bulletin.stanford.edu/programs/CS-MS"
       ],
       "evidence_file": "directory-evidence.json",
-      "original_id": "stanford-coterm-cs-ms"
+      "original_id": "stanford-coterm-cs-ms",
+      "policy_for_route_ids": [
+        "engineering-doerr-evidence:cs-coterm"
+      ],
+      "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
     },
     {
       "id": "directory-evidence:stanford-coterm-eps-ms",
@@ -14443,7 +14452,11 @@
       ],
       "application_url": "https://gradadmissions.stanford.edu/apply",
       "evidence_file": "engineering-doerr-evidence.json",
-      "original_id": "external-graduate"
+      "original_id": "external-graduate",
+      "policy_for_route_ids": [
+        "directory-evidence:stanford-graduate-cs-ms"
+      ],
+      "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
     },
     {
       "id": "engineering-doerr-evidence:engineering-coterm",
@@ -14471,7 +14484,11 @@
         "engineering-doerr-evidence:coterm-directory"
       ],
       "evidence_file": "engineering-doerr-evidence.json",
-      "original_id": "engineering-coterm"
+      "original_id": "engineering-coterm",
+      "policy_for_route_ids": [
+        "engineering-doerr-evidence:cs-coterm"
+      ],
+      "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
     },
     {
       "id": "engineering-doerr-evidence:doerr-coterm",
@@ -14564,7 +14581,11 @@
       ],
       "application_url": "https://studentservices.stanford.edu/apply-coterm",
       "evidence_file": "engineering-doerr-evidence.json",
-      "original_id": "cs-coterm"
+      "original_id": "cs-coterm",
+      "shared_policy_context_ids": [
+        "directory-evidence:stanford-coterm-cs-ms",
+        "engineering-doerr-evidence:engineering-coterm"
+      ]
     },
     {
       "id": "engineering-doerr-evidence:aa-phd-internal-ms",

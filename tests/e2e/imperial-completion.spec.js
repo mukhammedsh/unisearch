@@ -157,7 +157,7 @@ test("MIT yearless windows stay in references while Stanford CS exports its exac
   await page.goto(contextUrl(MIT, "mit-course-6-3-bachelor", "mit-first-year", "undergraduate", "deadlines"));
   await ready(page, "deadlines");
   await expect(page.locator("#detailDeadlines [data-calendar-export]")).toHaveCount(0);
-  await page.goto(contextUrl(STANFORD, "stanford-option-cs-ms", "engineering-doerr-evidence:external-graduate", "masters", "deadlines"));
+  await page.goto(contextUrl(STANFORD, "stanford-option-cs-ms", "directory-evidence:stanford-graduate-cs-ms", "masters", "deadlines"));
   await ready(page, "deadlines");
   const calendar = await month(page, "2026-12");
   await calendar.locator('[data-calendar-day="2026-12-08"]').click();

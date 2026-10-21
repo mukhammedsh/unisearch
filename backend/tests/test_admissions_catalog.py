@@ -153,6 +153,30 @@ class AdmissionsCatalogTests(unittest.TestCase):
         result = self.resolve(study_option_id="physics")
         self.assertEqual(result["context_applicability"]["route"], "mismatched")
 
+    def test_shared_route_without_option_excludes_program_facts_and_history(self):
+        route = self.mit()["application_routes"][0]
+        route["attributes"].update(admission_scope="institution_wide_undergraduate", applicant_route="first_year")
+        shared = fact("shared-minimum")
+        shared["scope"]["option_ids"] = []
+        self.mit()["facts"].append(shared)
+        historical = copy.deepcopy(self.mit()["facts"][0])
+        historical["id"] = "program-history"
+        historical["publication_status"] = "historical"
+        self.mit()["facts"].append(historical)
+        self.write()
+        result = self.resolve(study_option_id=None)
+        self.assertEqual("institution_route", result["reading_scope"])
+        self.assertEqual("not_required", result["context_applicability"]["option"])
+        self.assertEqual(["shared-minimum"], [row["id"] for row in result["facts"]])
+        self.assertEqual([], result["history"]["facts"])
+        self.assertEqual("matched", result["facts"][0]["applicability"]["option"])
+        self.assertEqual([], self.resolve(study_option_id=None, study_level="masters")["facts"])
+        self.assertEqual(["first-year"], [row["id"] for row in service.list_study_options(MIT)["shared_routes"]])
+        self.assertEqual([], service.list_study_options(MIT, study_level="masters")["shared_routes"])
+
+    def test_non_shared_route_without_option_never_unions_program_facts(self):
+        self.assertEqual([], self.resolve(study_option_id=None)["facts"])
+
     def test_anchored_cycles_preserve_unknown_periods_and_terms(self):
         cases = (("Fall 2027 entry", "Autumn 2027", "matched"), ("2027 Fall", "Spring 2027", "mismatched"),
                  ("2027", "Fall 2027", "unknown"), ("2027 entry", "2028", "mismatched"),
@@ -401,7 +425,7 @@ class AdmissionsCatalogTests(unittest.TestCase):
                     self.assertIn("undergraduate-shared-evidence:stanford-transfer-application-fee-conflict", result["history"]["unknown_ids"])
             cs = service.resolve_context("stanford-university-usa-ca", context={
                 "study_option_id": "stanford-option-cs-ms",
-                "application_route_id": "engineering-doerr-evidence:external-graduate",
+                "application_route_id": "directory-evidence:stanford-graduate-cs-ms",
             })
             facts = {row["id"].split(":")[-1]: row for row in cs["facts"]}
             self.assertIn("cannot apply", facts["cs-ms-entry-and-hcp"]["value"])
@@ -461,6 +485,42 @@ class AdmissionsCatalogTests(unittest.TestCase):
                 record_id = "medicine-graduate-evidence:study-overview-" + option["id"].removeprefix("stanford-option-")
                 self.assertIn(record_id, result["fact_groups"]["study"])
                 self.assertNotIn(record_id, result["fact_groups"].get("requirements", []))
+
+
+class SharedRouteProductionTests(unittest.TestCase):
+    def test_institution_routes_are_readable_without_a_major(self):
+        for institution_id in (MIT, "stanford-university-usa-ca"):
+            routes = service.list_study_options(institution_id)["shared_routes"]
+            self.assertEqual(2, len(routes))
+            for route in routes:
+                result = service.resolve_context(institution_id, context={"application_route_id": route["id"]})
+                self.assertEqual("institution_route", result["reading_scope"])
+                self.assertIsNone(result["selected_option"])
+                self.assertTrue(result["facts"])
+                self.assertTrue(all(not fact["scope"]["option_ids"] for fact in result["facts"]))
+                self.assertTrue(all(not fact["scope"]["option_ids"] for fact in result["unknowns"]))
+                self.assertTrue(all(not fact["scope"]["option_ids"] for fact in result["history"]["facts"]))
+        self.assertEqual([], service.list_study_options("imperial-college-london-uk")["shared_routes"])
+
+    def test_cs_policy_layers_attach_to_real_routes_and_special_paths_survive(self):
+        institution_id = "stanford-university-usa-ca"
+        context = {"study_option_id": "stanford-option-cs-ms", "study_level": "masters"}
+        result = service.resolve_context(institution_id, context=context)
+        routes = {route["id"] for route in result["available_routes"]}
+        self.assertEqual(5, len(routes))
+        self.assertIn("directory-evidence:stanford-graduate-cs-ms", routes)
+        self.assertIn("engineering-doerr-evidence:cs-coterm", routes)
+        self.assertIn("engineering-doerr-evidence:cs-current-regular-admission", routes)
+        self.assertIn("engineering-doerr-evidence:cs-corresponding-phd-added-ms", routes)
+        self.assertIn("engineering-doerr-evidence:cs-joint-professional-degrees", routes)
+        regular = service.resolve_context(institution_id, context={**context, "application_route_id": "directory-evidence:stanford-graduate-cs-ms"})
+        self.assertIn("engineering-doerr-evidence:cs-ms-entry-and-hcp", {fact["id"] for fact in regular["facts"]})
+        coterm = service.resolve_context(institution_id, context={**context, "application_route_id": "engineering-doerr-evidence:cs-coterm"})
+        self.assertIn("engineering-doerr-evidence:coterm-general", {fact["id"] for fact in coterm["facts"]})
+        self.assertNotIn("engineering-doerr-evidence:cs-ms-entry-and-hcp", {fact["id"] for fact in coterm["facts"]})
+        retained = service.resolve_context(institution_id, context={**context, "application_route_id": "directory-evidence:stanford-coterm-cs-ms"})
+        self.assertEqual("directory-evidence:stanford-coterm-cs-ms", retained["selected_route"]["id"])
+        self.assertIn("directory-evidence:stanford-coterm-cs-ms", {route["id"] for route in retained["available_routes"]})
 
 
 if __name__ == "__main__":

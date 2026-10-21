@@ -47,7 +47,7 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 | `--surface` | `rgba(255, 255, 255, 0.88)` | `rgba(24, 25, 27, 0.88)` | Translucent header, floating docked bars |
 | `--surface-soft` | `#f1f3f7` | `#222427` | Form inputs, chip/tag pills, table row hover |
 | `--text` | `#111827` | `#f3f4f6` | Primary high-contrast typography |
-| `--text-muted` | `#64748b` | `#94a3b8` | Secondary labels, descriptions, captions |
+| `--text-muted` | `#5f6b7d` | `#94a3b8` | Secondary labels, descriptions, captions |
 | `--line` | `rgba(15, 23, 42, 0.20)` | `rgba(255, 255, 255, 0.20)` | Focus ring or structural separator, never a default component box |
 | `--line-strong` | `rgba(15, 23, 42, 0.30)` | `rgba(255, 255, 255, 0.30)` | Prominent structural separator or non-box state ring |
 | `--line-faint` | `rgba(15, 23, 42, 0.10)` | `rgba(255, 255, 255, 0.10)` | Subtle separator where whitespace alone cannot express structure |

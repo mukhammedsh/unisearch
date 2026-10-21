@@ -159,7 +159,10 @@
                     <span id="minCostLabel">$0</span>
                     <span id="maxCostLabel">$100,000</span>
                 </div>
-                <p id="catalogCostHelp" class="catalog-cost-help" data-i18n="universities.cost.filter_help">Before aid. Ranges may overlap your filter; check the program and fee category. Missing prices do not pass an active price filter.</p>
+                <details class="catalog-cost-help">
+                    <summary id="catalogCostHelp" data-i18n="universities.cost.filter_help_summary">Price limits hide unknown prices; profile budget affects UniFit.</summary>
+                    <p data-i18n="universities.cost.filter_help">Prices are before financial aid. A range may only partly match; confirm the program and fee category. University details show the full breakdown and sources.</p>
+                </details>
             </div>
           </div>
 

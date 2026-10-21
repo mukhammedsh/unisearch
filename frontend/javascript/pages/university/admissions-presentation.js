@@ -38,7 +38,8 @@ export function formatPublishedDate(value) {
 
 function linked(row, resolved) {
   const routes = [resolved.selected_route?.id, ...(resolved.selected_route?.shared_policy_context_ids || [])];
-  return row.scope?.option_ids?.includes(resolved.selected_option?.id)
+  return (resolved.reading_scope === "institution_route" && !row.scope?.option_ids?.length)
+    || row.scope?.option_ids?.includes(resolved.selected_option?.id)
     || row.scope?.route_ids?.some(id => routes.includes(id));
 }
 
@@ -182,7 +183,7 @@ function finance(rows, resolved) {
     const items = ["tuition", "student_life_fee", "housing_estimate", "food_estimate", "materials_estimate", "personal_estimate"]
       .filter(key => Number.isFinite(value[key]));
     const insurance = value.health_insurance === "Additional required coverage, not in this total" ? label("insurance_not_included") : value.health_insurance;
-    const exclusions = (value.exclusions || []).map(key => t(`universities.cost.exclusion.${key}`)).join(" ");
+    const exclusions = (value.exclusions || []).map(key => label(`exclusion.${key}`)).join(" ");
     return `<section class="admissions-reading__section"><h3>${escapeHtml(label("reference_budget"))} · ${escapeHtml(period(row))}</h3><p class="admissions-reading__total">${money(value.total_before_aid)}</p><p class="admissions-reading__note">${escapeHtml(label("dated_budget"))}</p><dl class="admissions-reading__costs">${items.map(key => `<div><dt>${escapeHtml(label(key))}</dt><dd>${money(value[key])}</dd></div>`).join("")}</dl>${insurance ? `<p>${escapeHtml(label("insurance_extra"))} ${escapeHtml(insurance)}</p>` : ""}${exclusions ? `<p>${escapeHtml(exclusions)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
   }).join("");
   const funding = new Map();
@@ -248,7 +249,7 @@ export function renderApplicantSection(resolved, domains) {
   const general = rows.filter(row => !relevant(row));
   const mode = domains.includes("costs") ? "finance" : domains.includes("deadlines") ? "dates" : "requirements";
   const summaryRows = (resolved.facts || []).filter(row => row.applicability?.status !== "mismatched");
-  const highlights = mode === "finance" ? `${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
+  const highlights = mode === "finance" ? `<p class="admissions-reading__note" data-finance-scope>${escapeHtml(label("cost_scope"))}</p>${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
     : mode === "dates" ? `${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines")}`
       : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
   const references = facts => renderAdmissionsContext({ ...resolved, facts }, {

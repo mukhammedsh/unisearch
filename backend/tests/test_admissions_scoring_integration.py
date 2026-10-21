@@ -94,6 +94,45 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
         self.assertTrue(all(check["factId"] in {fact["id"] for fact in result["facts"]} for check in checks))
         self.assertEqual(result["assessment"]["choices"][0]["cycle"], "Fall 2027")
 
+    def test_discovery_budget_uses_dated_reference_without_claiming_future_price(self):
+        for institution_id in (MIT, STANFORD):
+            university = universities.get_university_by_id(institution_id)
+            value = {"study_level": "Bachelor", "major": "computer science", "intended_entry_cycle": "Fall 2027"}
+            low = ai_scoring.sort_universities_ai([university], {**value, "budget": 20000})[0]["matchData"]
+            high = ai_scoring.sort_universities_ai([university], {**value, "budget": 150000})[0]["matchData"]
+            self.assertGreater(low["finalScore"], high["finalScore"])
+            self.assertEqual("over_budget", low["budgetAssessment"]["status"])
+            self.assertEqual("within_budget", high["budgetAssessment"]["status"])
+            self.assertEqual("dated_reference", high["budgetAssessment"]["evidence"])
+            self.assertEqual("unknown_cost", high["budgetStatus"])
+            self.assertIsNone(high["finalPriceUSD"])
+            self.assertIsNone(high["requirementsFitPercent"])
+            self.assertEqual("matched", high["subjectMatch"]["status"])
+
+    def test_major_without_saved_choice_matches_catalog_at_the_requested_level(self):
+        imperial = universities.get_university_by_id("imperial-college-london-uk")
+        matched = ai_scoring.sort_universities_ai([imperial], {"major": "computer science", "study_level": "undergraduate"})[0]["matchData"]
+        missing = ai_scoring.sort_universities_ai([imperial], {"major": "law", "study_level": "undergraduate"})[0]["matchData"]
+        self.assertFalse(matched["missingProgram"])
+        self.assertTrue(missing["missingProgram"])
+        self.assertGreater(missing["finalScore"], matched["finalScore"])
+        self.assertEqual("missing", missing["subjectMatch"]["status"])
+        catalog = universities.list_universities(major="law", study_level="undergraduate")
+        self.assertNotIn(imperial["id"], [row["id"] for row in catalog["items"]])
+
+    def test_tuition_and_unknown_fee_status_do_not_claim_a_full_budget(self):
+        imperial = universities.get_university_by_id("imperial-college-london-uk")
+        value = {"major": "computer science", "study_level": "undergraduate", "budget": 150000, "intended_entry_cycle": "Fall 2027"}
+        unknown = ai_scoring.sort_universities_ai([imperial], value)[0]["matchData"]
+        self.assertEqual("fee_status_unknown", unknown["budgetAssessment"]["evidence"])
+        self.assertIsNone(unknown["affordabilityGap"])
+        known = ai_scoring.sort_universities_ai([imperial], {**value, "fee_status_context": "self_reported_international_overseas"})[0]["matchData"]
+        self.assertEqual("within_budget", known["budgetAssessment"]["status"])
+        self.assertEqual("tuition", known["budgetAssessment"]["basis"])
+        self.assertFalse(known["budgetAssessment"]["full_budget"])
+        self.assertEqual("unknown_cost", known["budgetStatus"])
+        self.assertIsNone(known["costYearUSD"])
+
     def test_compare_uses_each_universitys_selection_and_keeps_roi_unknown(self):
         value = profile()
         value["selectedAdmissionChoices"][MIT] = {"studyOptionId": "mit-course-6-3-bachelor", "applicationRouteId": "mit-transfer"}

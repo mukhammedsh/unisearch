@@ -264,9 +264,8 @@
 }
 
 .map-card-wrapper .uni-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .map-card-wrapper .uni-why {

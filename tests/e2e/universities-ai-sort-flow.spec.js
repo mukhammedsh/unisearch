@@ -83,6 +83,42 @@ test("universities page uses AI sort with realistic search/filter interactions",
   await expect(page.locator(selectors.locationLabel)).not.toHaveText("");
 });
 
+test("profile discovery context stays soft while explicit level and price context reach the catalog", async ({ page }) => {
+  await seedProfile(page, {
+    ...personas.ruStemGrant.profile,
+    studyLevel: "masters",
+    feeStatusContext: "self_reported_international_overseas",
+    intendedEntryCycle: "2027 entry",
+  });
+  let aiRequest;
+  page.on("request", request => {
+    if (new URL(request.url()).pathname.endsWith("/universities/ai-sort")) aiRequest = request;
+  });
+
+  await page.goto("/index.html?sort=uni_ai&study_level=undergraduate");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect.poll(() => aiRequest?.postDataJSON()).toBeTruthy();
+  const ranking = aiRequest.postDataJSON();
+  expect(ranking.profile.major).toBe("Computer Science");
+  expect(ranking.major).toBeUndefined();
+  expect(ranking.study_level).toBe("undergraduate");
+
+  let catalogRequest;
+  page.on("request", request => {
+    const url = new URL(request.url());
+    if (url.pathname.endsWith("/universities") && request.method() === "GET") catalogRequest = request;
+  });
+  await page.goto("/index.html?sort=name_asc&study_level=undergraduate");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  const query = new URL(catalogRequest.url()).searchParams;
+  expect(query.get("major")).toBeNull();
+  expect(query.get("format")).toBeNull();
+  expect(query.get("study_level")).toBe("undergraduate");
+  expect(query.get("fee_status_context")).toBe("self_reported_international_overseas");
+  expect(query.get("intended_entry_cycle")).toBe("2027 entry");
+});
+
 test("unifit tradeoff tooltips are hidden by default and toggle on interaction", async ({ page }) => {
   await seedProfile(page, personas.ruStemGrant.profile);
   await page.goto("/index.html");

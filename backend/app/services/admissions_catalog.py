@@ -10,6 +10,7 @@ from pathlib import Path
 
 from app.core.paths import DATA_DIR
 from app.services import search as search_service
+from app.services.university_tracks import _canonical_major, _major_tags_from_text, _normalize_major_text
 
 
 CATALOG_PATH = DATA_DIR / "admissions" / "catalog.json"
@@ -130,6 +131,7 @@ def _load():
                     _references(route["fact_ids"], entities["facts"])
                     _references(route["source_ids"], entities["sources"])
                     _references(route["shared_policy_context_ids"], entities["application_routes"])
+                    _references(_route_metadata(route).get("policy_for_route_ids", []), entities["application_routes"])
                 for key in ("facts", "unknowns"):
                     for fact in entities[key].values():
                         _references(fact["scope"]["option_ids"], entities["study_options"])
@@ -165,14 +167,55 @@ def get_institution(institution_id):
     return _load()["institutions"].get(institution_id)
 
 
-def catalog_costs(institution_id, study_level=None, study_mode="any"):
+def matching_study_options(institution_id, major=None, study_level=None):
+    """Use the catalog subject taxonomy without choosing an application target."""
+    institution = get_institution(institution_id)
+    if institution is None:
+        return []
+    level = _normalized_level(study_level)
+    subject = _canonical_major(major) if major else None
+    return [option for option in institution["study_options"]
+            if (not level or level == "any" or level in option["levels"])
+            and (not major or (subject in _major_tags_from_text(option["title"]) if subject
+                 else _normalize_major_text(major) == _normalize_major_text(option["title"])))]
+
+
+def catalog_costs(institution_id, study_level=None, study_mode="any", *, major=None,
+                  fee_status_context=None, intended_entry_cycle=None, study_option_id=None,
+                  application_route_id=None, profile=None):
     """Return published reference prices without claiming personal affordability."""
     institution = get_institution(institution_id)
     summary = {"annual_total": None, "tuition": None, "reference": True}
     if institution is None or study_mode == "online":
         return summary
-    level = LEVEL_ALIASES.get(str(study_level or "").lower(), str(study_level or "").lower())
+    profile = profile or {}
+    selection = profile.get("selectedAdmissionChoices", {}).get(institution_id, {})
+    study_level = study_level or profile.get("study_level") or profile.get("studyLevel")
+    major = major if major is not None else profile.get("major")
+    fee_status_context = fee_status_context or selection.get("feeStatusContext") or profile.get("fee_status_context", "unknown")
+    intended_entry_cycle = intended_entry_cycle or selection.get("intendedEntryCycle") or profile.get("intended_entry_cycle")
+    level = _normalized_level(study_level)
+    if level == "any":
+        level = None
     options = {option["id"]: option for option in institution["study_options"]}
+    selected = options.get(study_option_id or selection.get("studyOptionId"))
+    if selected and (not level or level in selected["levels"]):
+        study_option_id = selected["id"]
+        application_route_id = application_route_id or selection.get("applicationRouteId")
+        if not level and len(selected["levels"]) == 1:
+            level = selected["levels"][0]
+    candidate_ids = {option["id"] for option in matching_study_options(institution_id, major, level)}
+    if selection.get("studyOptionId") and selection["studyOptionId"] not in options:
+        candidate_ids.clear()
+    if study_option_id:
+        candidate_ids.intersection_update([study_option_id])
+    if not selection.get("studyOptionId"):
+        application_route_id = application_route_id or selection.get("applicationRouteId")
+    if application_route_id:
+        route = next((route for route in institution["application_routes"] if route["id"] == application_route_id), None)
+        candidate_ids.intersection_update(route["option_ids"] if route else [])
+    summary["scope"] = {"study_level": level, "major": major or "", "option_ids": sorted(candidate_ids),
+                        "fee_status_context": fee_status_context, "intended_entry_cycle": intended_entry_cycle}
     quotes = []
 
     def add(row, basis, amount, currency, period, fee_status="", exclusions=()):
@@ -180,11 +223,23 @@ def catalog_costs(institution_id, study_level=None, study_mode="any"):
             return
         if not isinstance(currency, str) or not re.fullmatch(r"[A-Z]{3}", currency) or not period:
             return
-        levels = row["scope"]["levels"] or sorted({value for option_id in row["scope"]["option_ids"] for value in options[option_id]["levels"]})
+        scoped_options = set(row["scope"]["option_ids"])
+        if not candidate_ids or (scoped_options and not candidate_ids.intersection(scoped_options)):
+            return
+        if application_route_id and row["scope"]["route_ids"] and application_route_id not in row["scope"]["route_ids"]:
+            return
+        levels = row["scope"]["levels"] or sorted({value for option_id in scoped_options for value in options[option_id]["levels"]})
         if level and level not in levels:
+            return
+        if not set(levels).intersection(value for option_id in candidate_ids for value in options[option_id]["levels"]):
+            return
+        expected_fee = {"self_reported_home_domestic": "Home fee", "self_reported_international_overseas": "Overseas fee"}.get(fee_status_context)
+        if fee_status and fee_status_context not in (None, "unknown") and fee_status != expected_fee:
             return
         quotes.append({"basis": basis, "amount": amount, "currency": currency, "period": period,
                        "levels": levels, "fee_status": fee_status, "exclusions": list(exclusions),
+                       "option_ids": sorted(option_id for option_id in candidate_ids
+                                            if (not scoped_options or option_id in scoped_options) and set(levels).intersection(options[option_id]["levels"])),
                        "fact_id": row["id"], "source_ids": row["source_ids"]})
 
     for row in institution["facts"]:
@@ -211,24 +266,33 @@ def catalog_costs(institution_id, study_level=None, study_mode="any"):
                     if annual or one_year:
                         add(row, "tuition", float((annual or one_year)[1].replace(",", "")), panel.get("currency"), panel.get("panel_cycle_label"), status)
 
-    if not level and any("undergraduate" in quote["levels"] for quote in quotes):
-        level = "undergraduate"
-        quotes = [quote for quote in quotes if level in quote["levels"]]
     for basis in ("annual_total", "tuition"):
         candidates = [quote for quote in quotes if quote["basis"] == basis]
         if not candidates:
             continue
         # Keep one source period and currency; do not join prices across entry years.
-        latest = max(candidates, key=lambda quote: (re.findall(r"20\d{2}", quote["period"]) or [""])[0])
+        def period_matches(quote):
+            actual = re.fullmatch(r"(20\d{2})-(?:\d{2}|20\d{2})", quote["period"])
+            published = actual[1] if actual else quote["period"]
+            target = _cycle(intended_entry_cycle)
+            return _cycle_axis(published, str(target[0]) if target and target[1] != "spring" else intended_entry_cycle) == "matched"
+
+        latest = max(candidates, key=lambda quote: (period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]))
         candidates = [quote for quote in candidates if (quote["period"], quote["currency"]) == (latest["period"], latest["currency"])]
-        bounds = [min(candidates, key=lambda quote: quote["amount"]), max(candidates, key=lambda quote: quote["amount"])]
-        source_ids = {source_id for quote in bounds for source_id in quote["source_ids"]}
+        source_ids = {source_id for quote in candidates for source_id in quote["source_ids"]}
         summary[basis] = {"min": min(quote["amount"] for quote in candidates), "max": max(quote["amount"] for quote in candidates),
                           "amounts": sorted({quote["amount"] for quote in candidates}),
                           "currency": latest["currency"], "period": latest["period"], "study_level": level or "",
                           "fee_statuses": sorted({quote["fee_status"] for quote in candidates if quote["fee_status"]}),
+                          "fee_status_match": ("not_required" if not any(quote["fee_status"] for quote in candidates)
+                                               else "unknown" if fee_status_context in (None, "unknown") else "matched"),
+                          "cycle_status": "matched" if period_matches(latest) else "dated_reference" if intended_entry_cycle else "unspecified",
+                          "levels": sorted({value for quote in candidates for value in quote["levels"]}),
+                          "option_ids": sorted({value for quote in candidates for value in quote["option_ids"]}),
+                          "candidate_option_count": len(candidate_ids),
+                          "priced_option_count": len({value for quote in candidates for value in quote["option_ids"]}),
                           "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
-                          "fact_ids": sorted({quote["fact_id"] for quote in bounds}),
+                          "fact_ids": sorted({quote["fact_id"] for quote in candidates}),
                           "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
     return summary
 
@@ -262,11 +326,17 @@ def _option_summary(option):
     return copy.deepcopy(summary)
 
 
+def _route_metadata(route):
+    return {**route.get("attributes", {}), **route.get("index_attributes", {})}
+
+
 def _route_summary(route):
     summary = {key: route[key] for key in ("id", "title", "classification", "target", "destination", "shared_form_family",
                                          "option_ids", "source_ids", "fact_ids", "shared_policy_context_ids")}
-    if route.get("attributes", {}).get("application_url"):
-        summary["application_url"] = route["attributes"]["application_url"]
+    metadata = _route_metadata(route)
+    for key in ("application_url", "admission_scope", "applicant_route", "policy_for_route_ids"):
+        if key in metadata:
+            summary[key] = metadata[key]
     return copy.deepcopy(summary)
 
 
@@ -280,14 +350,12 @@ def _reference_labels(indexed):
     return {alias: next(iter(titles)) for alias, titles in labels.items() if len(titles) == 1}
 
 
-def list_study_options(institution_id, search_candidates=(), study_level=None, page=1, limit=30):
+def list_study_options(institution_id, search_candidates=(), study_level=None, page=1, limit=30, *, major=None):
     cached, institution, indexed = _institution(institution_id)
     queries = [query for candidate in search_candidates
                if (query := search_service.prepare_query(candidate))]
     items = []
-    for option in institution["study_options"]:
-        if study_level and study_level not in option["levels"]:
-            continue
+    for option in matching_study_options(institution_id, major=major, study_level=study_level):
         scores = [search_service.score_prepared(indexed["search"][option["id"]], query, require_all_terms=True) for query in queries]
         score = max((score for score in scores if score is not None), default=None) if queries else 0
         if score is not None:
@@ -296,6 +364,10 @@ def list_study_options(institution_id, search_candidates=(), study_level=None, p
         items.sort(key=lambda row: (-row[0], row[1]["title"].casefold(), row[1]["id"]))
     start = (page - 1) * limit
     return {"institution_id": institution_id, "revision": cached["revision"], "total": len(items), "page": page, "limit": limit,
+            "shared_routes": [{**_route_summary(route), "levels": ["undergraduate"]}
+                              for route in institution["application_routes"]
+                              if _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate"
+                              and study_level in (None, "undergraduate")],
             "items": [_option_summary(option) for _, option in items[start:start + limit]]}
 
 
@@ -379,6 +451,8 @@ def _fact_applicability(row, context, context_status, shared_route_ids):
     }
     if axes["route"] == "mismatched" and shared_route_ids.intersection(declared["route_ids"]):
         axes["route"] = "unknown"
+    if context_status["option"] == "not_required" and not declared["option_ids"]:
+        axes["option"] = "matched"
     for fact_axis, selected_axis in (("option", "option"), ("route", "route"), ("level", "level")):
         if context_status[selected_axis] == "unknown":
             axes[fact_axis] = "unknown"
@@ -428,7 +502,14 @@ def resolve_context(institution_id, profile=None, context=None):
     if effective["study_level"] == "mba" and option and len(option["levels"]) == 1:
         effective["study_level"] = option["levels"][0]
     route = indexed["application_routes"].get(effective["application_route_id"])
+    shared_reading = (option is None and not effective["study_option_id"] and route is not None
+                      and _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate")
+    if shared_reading:
+        effective["study_level"] = effective["study_level"] or "undergraduate"
+        effective["applicant_route"] = effective["applicant_route"] or _route_metadata(route).get("applicant_route")
     statuses = {"option": "matched" if option else "unknown", "route": "matched" if route else "unknown", "level": "unknown"}
+    if shared_reading:
+        statuses["option"] = "not_required"
     if effective["study_level"]:
         statuses["level"] = ("matched" if effective["study_level"] in LEVELS else "unknown")
         if option and effective["study_level"] not in option["levels"]:
@@ -438,8 +519,16 @@ def resolve_context(institution_id, profile=None, context=None):
     invalid_selection = ((effective["study_option_id"] and option is None)
                          or (effective["application_route_id"] and route is None)
                          or statuses["route"] == "mismatched"
+                         or (option is None and not shared_reading)
+                         or (shared_reading and effective["study_level"] != "undergraduate")
                          or (option is None and route is None))
-    shared_route_ids = set(route["shared_policy_context_ids"]) if route else set()
+    shared_route_ids = set()
+    pending = list(route["shared_policy_context_ids"]) if route else []
+    while pending:
+        policy_id = pending.pop()
+        if policy_id not in shared_route_ids:
+            shared_route_ids.add(policy_id)
+            pending.extend(indexed["application_routes"][policy_id]["shared_policy_context_ids"])
     facts = []
     unknowns = []
     history = {"fact_ids": [], "unknown_ids": [], "facts": [], "unknowns": []}
@@ -449,6 +538,10 @@ def resolve_context(institution_id, profile=None, context=None):
     for key, result in (("facts", facts), ("unknowns", unknowns)):
         for row in institution[key]:
             applicability = _fact_applicability(row, effective, statuses, shared_route_ids)
+            outside_shared_scope = shared_reading and bool(row["scope"]["option_ids"])
+            if outside_shared_scope:
+                excluded[key].append({"id": row["id"], "applicability": applicability})
+                continue
             if _history(row):
                 history["fact_ids" if key == "facts" else "unknown_ids"].append(row["id"])
                 historical_context = {**effective, "intended_entry_cycle": None}
@@ -467,7 +560,8 @@ def resolve_context(institution_id, profile=None, context=None):
                 domains = list(dict.fromkeys(domain for topic in topics for domain in _topic_domains(topic)))
                 for domain in domains:
                     groups.setdefault(domain, []).append(row["id"])
-    available_routes = [_route_summary(indexed["application_routes"][route_id]) for route_id in option["route_ids"]] if option else []
+    available_routes = [_route_summary(indexed["application_routes"][route_id]) for route_id in option["route_ids"]
+                        if route_id == effective["application_route_id"] or not set(_route_metadata(indexed["application_routes"][route_id]).get("policy_for_route_ids", [])).intersection(option["route_ids"])] if option else []
     selected_option = _option_summary(option) if option else None
     if selected_option is not None:
         selected_option["overviews"] = []
@@ -477,6 +571,7 @@ def resolve_context(institution_id, profile=None, context=None):
             if isinstance(text, str) and text.strip():
                 selected_option["overviews"].append({"text": text, "source_ids": copy.deepcopy(evidence_profile.get("source_ids", []))})
     return {"institution_id": institution_id, "revision": cached["revision"], "context": effective,
+            "reading_scope": "institution_route" if shared_reading else "study_option",
             "context_applicability": statuses, "selected_option": selected_option,
             "selected_route": _route_summary(route) if route else None, "available_routes": available_routes,
             "facts": facts, "unknowns": unknowns, "fact_groups": groups,
