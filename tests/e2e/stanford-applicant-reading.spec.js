@@ -169,7 +169,7 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
       await expect(requirements).toContainText("MCAT");
       await expect(page.locator('[data-source-summary="application"]')).toContainText("AMCAS");
     }
-    await expect(page.locator(".admissions-application-link")).toHaveAttribute("href", /^https:\/\/.+stanford\.edu\//);
+    await expect(page.locator(".admissions-application-link")).toHaveAttribute("href", /^https:\/\/(?:[a-z0-9-]+\.)*stanford\.edu(?:[/?#]|$)/i);
     const full = page.locator("#detailRequirements [data-admissions-fact]").first();
     await openDisclosureParents(full);
     if (await full.evaluate(node => node.tagName === "DETAILS" && !node.open)) await full.locator(":scope > summary").click();

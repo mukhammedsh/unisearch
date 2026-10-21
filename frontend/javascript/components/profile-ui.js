@@ -41,7 +41,6 @@ import {
 } from "./profile/exam-breakdowns.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import {
-  GPA_MAX_CHARS,
   cloneProfile,
   enforceGpaMaxLength,
   ensureProfileShape,
