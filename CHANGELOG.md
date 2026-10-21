@@ -7,6 +7,11 @@ All notable project changes should be recorded here.
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
+## 9.1.2 (2026-10-21) - Pillow security update
+
+### Fixed
+- Upgrade development Pillow to 13.0.0 to resolve nine OSV vulnerability advisories.
+
 ## 9.1.1 (2026-10-20) - Code Scanning fixes
 
 ### Fixed
