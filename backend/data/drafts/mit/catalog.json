@@ -27437,7 +27437,9 @@
         "mit-bs-3-c-study-overview-2026-10-20",
         "mit-bs-21-study-overview-2026-10-20",
         "mit-bs-sts-study-overview-2026-10-20"
-      ]
+      ],
+      "admission_scope": "institution_wide_undergraduate",
+      "applicant_route": "first_year"
     },
     {
       "id": "mit-transfer",
@@ -27591,7 +27593,9 @@
         "mit-bs-3-c-study-overview-2026-10-20",
         "mit-bs-21-study-overview-2026-10-20",
         "mit-bs-sts-study-overview-2026-10-20"
-      ]
+      ],
+      "admission_scope": "institution_wide_undergraduate",
+      "applicant_route": "transfer"
     },
     {
       "id": "mit_sloan_mba_admissions",

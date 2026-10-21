@@ -6,8 +6,18 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { formatPublishedDate, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
-const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle } = await import("../../frontend/javascript/pages/university/admissions-render.js");
+const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
+
+test("integrated undergraduate MEng explanations never apply to MIT internal master's options", () => {
+  setLanguage("eng", { emit: false });
+  const resolved = context([], {});
+  resolved.selected_option.awards = ["MEng"];
+  assert.match(renderStudyOptionOverview(resolved), /Master of Engineering/);
+  assert.doesNotMatch(renderStudyOptionOverview(resolved), /undergraduate entry/);
+  resolved.selected_option.catalog_classification = "ucas_course_choice";
+  assert.match(renderStudyOptionOverview(resolved), /undergraduate entry/);
+});
 
 test("readable route labels retain the official source title for references", () => {
   setLanguage("rus", { emit: false });
@@ -37,6 +47,16 @@ function fact(id, value, extra = {}) {
   return { id, value, topic: "academic_tests", scope: { option_ids: [], route_ids: ["first-year"], applicant_categories: [] },
     source_ids: ["official"], publication_status: "published", review_status: "verified", applicability: { status: "conditional" }, ...extra };
 }
+
+test("shared institutional facts remain primary reading content without a selected major", () => {
+  setLanguage("eng", { emit: false });
+  const row = fact("shared-dates", { windows: [{ name: "Regular Action", application_due: "January 5" }] }, { topic: "application_windows", scope: { option_ids: [], route_ids: [], levels: ["undergraduate"] } });
+  const resolved = { ...context([row], { deadlines: [row.id] }), selected_option: null, reading_scope: "institution_route" };
+  const html = renderApplicantSection(resolved, ["deadlines"]);
+  assert.match(html, /January 5/);
+  assert.doesNotMatch(html, /data-general-references/);
+  assert.match(html, /https:\/\/example.edu\/admissions/);
+});
 
 test("program-keyed dates require a resolved exact program label and do not borrow another degree's date", () => {
   setLanguage("eng", { emit: false });
@@ -175,6 +195,8 @@ test("structured catalog cost references retain original prose and expose their 
   assert.match(html, /2026[‑-]2027/);
   assert.match(html, /Insurance is additional/);
   assert.match(html, /Official source prose and conditional fees remain available/);
+  assert.match(html, /Tuition is one part of the budget/);
+  assert.match(html, /One-time charges are additional/);
 });
 
 test("scholarship exclusions and unconfirmed awards are distinct from potential aid", () => {

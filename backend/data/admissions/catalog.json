@@ -17,7 +17,7 @@
       "inputs": [
         {
           "path": "backend/data/drafts/mit/catalog.json",
-          "sha256": "2b4007de293fa52166f048c82c2f74846094b3493111af7bc87480adae755580"
+          "sha256": "ca01dbee53dd571ebbd67c1d5c612ede3e773a0a35364a108352b24a519f6491"
         },
         {
           "path": "backend/data/drafts/mit/doctoral-candidates-2026-09-29.json",
@@ -16550,7 +16550,9 @@
             "publication_status": "published",
             "review_status": "carried_forward_review",
             "checked_at": "2026-09-24",
-            "period": "Fall 2027 entry"
+            "period": "Fall 2027 entry",
+            "admission_scope": "institution_wide_undergraduate",
+            "applicant_route": "first_year"
           },
           "index_attributes": {}
         },
@@ -16777,7 +16779,9 @@
             "publication_status": "published",
             "review_status": "carried_forward_review",
             "checked_at": "2026-09-24",
-            "period": "Spring 2027 and Fall 2027 entry"
+            "period": "Spring 2027 and Fall 2027 entry",
+            "admission_scope": "institution_wide_undergraduate",
+            "applicant_route": "transfer"
           },
           "index_attributes": {}
         },
@@ -304542,7 +304546,7 @@
       "inputs": [
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/catalog.json",
-          "sha256": "fac05f382674ac353937249bd0fe7809f18258f871543322bd369b0d4776bcb4"
+          "sha256": "8404664cfb70c1c2e1a641f6876e62feb0215b9b2e508c69f0f2935a6189acb0"
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/coterm-central-evidence.json",
@@ -336427,7 +336431,10 @@
             ],
             "application_url": "https://admission.stanford.edu/apply/first-year/apply.html"
           },
-          "index_attributes": {}
+          "index_attributes": {
+            "admission_scope": "institution_wide_undergraduate",
+            "applicant_route": "first_year"
+          }
         },
         {
           "id": "undergraduate-shared-evidence:stanford-transfer",
@@ -336563,7 +336570,10 @@
             ],
             "application_url": "https://admission.stanford.edu/apply/transfer/apply.html"
           },
-          "index_attributes": {}
+          "index_attributes": {
+            "admission_scope": "institution_wide_undergraduate",
+            "applicant_route": "transfer"
+          }
         },
         {
           "id": "undergraduate-shared-evidence:stanford-nonprofessional-graduate",
@@ -337947,7 +337957,8 @@
             "directory-evidence:stanford-graduate-cs-ms-directory-table"
           ],
           "shared_policy_context_ids": [
-            "undergraduate-shared-evidence:stanford-nonprofessional-graduate"
+            "undergraduate-shared-evidence:stanford-nonprofessional-graduate",
+            "engineering-doerr-evidence:external-graduate"
           ],
           "provenance": {
             "evidence_file": "directory-evidence.json",
@@ -341771,7 +341782,12 @@
               "https://bulletin.stanford.edu/programs/CS-MS"
             ]
           },
-          "index_attributes": {}
+          "index_attributes": {
+            "policy_for_route_ids": [
+              "engineering-doerr-evidence:cs-coterm"
+            ],
+            "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
+          }
         },
         {
           "id": "directory-evidence:stanford-coterm-eps-ms",
@@ -343191,7 +343207,12 @@
           "attributes": {
             "application_url": "https://gradadmissions.stanford.edu/apply"
           },
-          "index_attributes": {}
+          "index_attributes": {
+            "policy_for_route_ids": [
+              "directory-evidence:stanford-graduate-cs-ms"
+            ],
+            "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
+          }
         },
         {
           "id": "engineering-doerr-evidence:engineering-coterm",
@@ -343249,7 +343270,12 @@
             ]
           },
           "attributes": {},
-          "index_attributes": {}
+          "index_attributes": {
+            "policy_for_route_ids": [
+              "engineering-doerr-evidence:cs-coterm"
+            ],
+            "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
+          }
         },
         {
           "id": "engineering-doerr-evidence:doerr-coterm",
@@ -343417,7 +343443,10 @@
           "fact_ids": [
             "engineering-doerr-evidence:cs-coterm-eligibility-and-application"
           ],
-          "shared_policy_context_ids": [],
+          "shared_policy_context_ids": [
+            "directory-evidence:stanford-coterm-cs-ms",
+            "engineering-doerr-evidence:engineering-coterm"
+          ],
           "provenance": {
             "evidence_file": "engineering-doerr-evidence.json",
             "original_id": "cs-coterm",

@@ -422,16 +422,27 @@ universities.cost_max: Макс. стоимость
 universities.cost.filter_basis: Цена за учебный год
 universities.cost.annual_total: Учёба и проживание
 universities.cost.tuition: Обучение
+universities.cost.price_details: О цене: {basis}
+universities.cost.reference_short: ориентир
+universities.cost.price_unavailable: Цена неизвестна
+universities.cost.tuition_scope_note: Проживание и другие расходы оплачиваются отдельно.
 universities.cost.entry: Набор {year}
 universities.cost.unavailable: Уточните программу
 universities.cost.full_budget_unavailable: Нет сопоставимого полного бюджета
-universities.cost.reference: Справочная цена, до финансовой помощи.
-universities.cost.before_aid: До стипендий и финансовой помощи.
-universities.cost.fee_scope: Диапазон зависит от программы и тарифа: Home — местный, Overseas — международный. Категорию определяет вуз.
+universities.cost.reference: Справочный ориентир · до финансовой помощи
+universities.cost.before_aid: До финансовой помощи.
+universities.cost.fee_scope: Зависит от программы и категории оплаты
 universities.cost.exclusion.insurance: Страховка отдельно.
 universities.cost.exclusion.travel: Проезд отдельно.
 universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
-universities.cost.filter_help: До финансовой помощи. Диапазон может совпадать частично: уточните программу и категорию оплаты. При ограничении цены вузы с неизвестной суммой не показываются.
+universities.cost.filter_help_summary: Ценовой предел скрывает вузы без цены; бюджет влияет на UniFit.
+universities.cost.filter_help: Цены указаны до финансовой помощи. Диапазон может соответствовать лишь части программ — уточните программу и категорию оплаты. Полная разбивка и источники доступны на странице вуза.
+universities.cost.dated_reference: Ориентир; набор не подтверждён
+universities.cost.cycle_unconfirmed: Набор не подтверждён
+universities.cost.cycle_unspecified: Набор не указан
+universities.cost.fee_status_unknown: Категория оплаты не подтверждена
+universities.cost.filter_partial: Частичное совпадение цены
+universities.cost.fee_categories: Категория оплаты в источнике: {categories}.
 universities.country: Страна
 universities.filter: Фильтр
 universities.filter.all: Все
@@ -2440,7 +2451,7 @@ profile.evidence.error.credential_score: Укажите опубликованн
 profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
 university.admissions.catalog.context_title: Контекст вашего поступления
 university.admissions.catalog.simple_title: Опубликованные пути поступления
-university.admissions.catalog.browse_note: Ищите программы в официальном каталоге по названию, предмету и уровню обучения. Выберите программу, чтобы прочитать о степени и связанных путях поступления.
+university.admissions.catalog.browse_note: Ищите по направлению или программе. Откройте результат, чтобы узнать об учёбе и поступлении.
 university.admissions.catalog.show_requirements: Читать опубликованные сведения
 university.admissions.catalog.advanced_options: Фильтры публикаций (необязательно)
 university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
@@ -2519,7 +2530,16 @@ university.admissions.catalog.route_not_selected: Путь подачи не в�
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
 university.admissions.catalog.change_route: Сменить путь
-university.admissions.catalog.reference_filters: Сузить по категории, циклу или типу оплаты (необязательно)
+university.admissions.catalog.reference_filters: Категория, год поступления и оплата (необязательно)
+university.admissions.reading.edit_selection: Изменить выбор
+university.admissions.reading.exclusion.insurance: Страховка оплачивается отдельно; проверьте обязательное покрытие и условия освобождения.
+university.admissions.reading.exclusion.travel: Проезд оплачивается отдельно и зависит от абитуриента.
+university.admissions.reading.exclusion.one_time_fees: Разовые сборы оплачиваются отдельно; применимые платежи для новых студентов указаны в источнике.
+university.admissions.reading.special_routes: Нынешним студентам Stanford и совместные степени ({count})
+university.admissions.reading.cost_scope: Цена относится только к программе или пути подачи, категории оплаты и периоду, указанным в источнике. Обучение — часть бюджета; проживание, обязательные и разовые сборы могут оплачиваться отдельно. В полных записях доступны состав расходов и условия источника.
+university.admissions.reading.degree.BEng: BEng — бакалавр инженерных наук
+university.admissions.reading.degree.MEng: MEng — магистр инженерных наук
+university.admissions.reading.degree.MEng_integrated: MEng — интегрированная инженерная магистратура, поступление после школы
 university.admissions.catalog.reference_filter_note: Эти фильтры сужают сведения по опубликованной области применения. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
 university.admissions.catalog.selected_route: Выбранный путь
 university.admissions.catalog.application_shape: Как поступают на программу
@@ -2813,7 +2833,19 @@ university.admissions.catalog.choice_saved: Контекст поступлен�
 university.admissions.catalog.choice_session_only: Выбор доступен только в этой сессии. Сохранить его на устройстве не удалось.
 university.admissions.catalog.apply_before_save: Примените изменённый контекст перед сохранением выбора.
 universities.compare.reviewed_catalog: Проверенный каталог программ и поступления
-universities.compare.optional_context: Сравните вузы сейчас или выберите программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
+universities.compare.optional_context: Сравните вузы сейчас или выберите общий маршрут либо программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
+universities.compare.context_summary_label: Текущий выбор
+universities.compare.selection_empty: Программа или маршрут не выбраны
+universities.compare.choose_context: Выбрать программу или маршрут
+universities.compare.change_context: Изменить выбор
+universities.compare.institution_route: Общий маршрут подачи документов вуза
+universities.cost.budget_within_reference: Бюджет покрывает этот ориентир.
+universities.cost.budget_over_reference: Этот ориентир выше бюджета.
+universities.cost.budget_within_applicable: Опубликованная сумма укладывается в бюджет.
+universities.cost.budget_over_applicable: Опубликованная сумма выше бюджета.
+universities.cost.budget_uncertain_range: Некоторые цены подходят; уточните программу.
+universities.cost.budget_tuition_only: Только обучение; проживание и прочие расходы отдельно.
+universities.compare.clear_program: Сбросить программу
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
 university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
 university.admissions.reading.original_description: Описание программы в оригинале (английский)
@@ -2873,6 +2905,23 @@ university.admissions.reading.month_standalone.11: ноябрь
 university.admissions.reading.month_standalone.12: декабрь
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
 university.admissions.reading.integrated_meng: MEng — интегрированная программа с поступлением через UCAS на уровне бакалавриата; она объединяет бакалаврское обучение и дисциплины магистерского уровня.
+university.admissions.entry.institution_wide: На бакалавриат поступают в университет в целом. Читайте правила первого курса или перевода без выбора будущей специальности; изучить направления можно в разделе «Программы».
+university.admissions.entry.profile_hints: Подсказки из профиля: {details}. Примените их здесь или продолжайте читать общие сведения.
+university.admissions.entry.use_profile: Применить подсказки профиля
+university.admissions.entry.route_situations: Выберите опубликованный путь для своей ситуации или оставьте выбор открытым. Общие правила университета показаны внутри пути, а не как отдельная заявка.
+university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Внешние абитуриенты подают заявку на CS MS. Общие правила graduate-поступления и кафедры включены в этот путь.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: Для нынешних бакалавров Stanford, поступающих на coterminal CS MS; действуют требования кафедры и сроки по учебным периодам.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: Для нынешних студентов Stanford, поступающих на дополнительную или другую степень CS через обычный приём. Отличается от coterm и запроса промежуточной MS внутри CS PhD.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-corresponding-phd-added-ms: Запрос промежуточной MS для нынешних студентов CS PhD. Это не внешняя заявка в магистратуру.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: Совместные степени CS и профессиональной школы требуют отдельных заявок и совместного согласия. Изучите правила MBA или Law для нужного сочетания.
+university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — внешние абитуриенты
+university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm
+university.programs.entry.profile_suggestions: Поисковые подсказки из профиля
+university.programs.entry.remove_suggestion: Убрать подсказку: {value}
+university.programs.entry.show_all: Все официальные варианты
+university.programs.entry.internal: Для текущих студентов / внутреннее продолжение обучения
+university.programs.entry.restricted: Есть ограничения приёма — уточните перед подачей
+university.programs.entry.restricted_options: Внутренние варианты и варианты с ограничениями
 university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — только нынешние бакалавры Stanford
 university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — нынешние бакалавры Stanford
 university.admissions.catalog.route_class.combined_external: Внешняя подача на совмещённые степени

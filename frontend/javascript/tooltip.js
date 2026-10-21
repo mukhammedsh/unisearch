@@ -94,6 +94,7 @@ export function bindInfoTooltips(options = {}) {
       const lastOpen = openWraps[openWraps.length - 1];
       const btn = lastOpen.querySelector(buttonSelector);
       closeAll();
+      lastOpen.classList.add(closedClass);
       if (btn) {
         try { btn.focus(); } catch (e) {}
       }

@@ -32,6 +32,22 @@ test("calendar does not manufacture years or accept mismatched, historical or co
   assert.deepEqual(getReviewedDeadlineEvents({ ...context(rows), selected_route: null }), []);
 });
 
+test("institution-wide routes export exact shared dates without selecting a major", () => {
+  const rows = [
+    fact("shared-date", { deadline: "2027-01-13" }, { scope: { option_ids: [], route_ids: ["first-year"] } }),
+    fact("other-program", { deadline: "2027-02-01" }),
+    fact("other-route", { deadline: "2027-03-01" }, { scope: { option_ids: [], route_ids: ["transfer"] } }),
+  ];
+  const resolved = { ...context(rows), selected_option: null, reading_scope: "institution_route",
+    selected_route: { id: "first-year", title: "University-wide first-year admission" },
+    context_applicability: { option: "not_required", route: "matched", level: "matched" } };
+  const events = getReviewedDeadlineEvents(resolved);
+  assert.deepEqual(events.map(row => row.deadline), ["2027-01-13"]);
+  assert.equal(events[0].title, "University-wide first-year admission");
+  assert.match(createDeadlineIcs(events[0]), /University-wide first-year admission/);
+  assert.deepEqual(getReviewedDeadlineEvents({ ...resolved, reading_scope: undefined }), []);
+});
+
 test("unstructured MBA round prose stays a reference without breaking the calendar", () => {
   const rows = [fact("mba", { rounds: "January and September 2027 have separate rounds" }),
     fact("published", { deadline: "2027-01-12" })];

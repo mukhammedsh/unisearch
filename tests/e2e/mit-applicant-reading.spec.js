@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect } = require("./helpers/selectors");
+const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram, selectAdmissionRoute, setNativeSelect } = require("./helpers/selectors");
 const { expectNoStackedGapMargins } = require("./helpers/design");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -43,8 +43,16 @@ for (const item of cases) {
     await expect(page.locator("#tab-programs")).toHaveClass(/active/);
     await setNativeSelect(page, "admissionsStudyLevel", "undergraduate");
     await page.locator("#admissionsSearch").fill(item.search);
+    const programSearchResponse = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname.endsWith("/study-options") && response.request().method() === "GET"
+        && url.searchParams.get("search") === item.search && url.searchParams.get("study_level") === "undergraduate";
+    });
     await page.locator("#admissionsSearchSubmit").click();
+    expect((await programSearchResponse).ok()).toBe(true);
+    await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
     const cs = page.locator('[data-study-option="mit-course-6-3-bachelor"]');
+    await revealRestrictedProgram(cs);
     await expect(cs).toBeVisible();
     const title = { eng: "Computer Science and Engineering", rus: "Компьютерные науки и инженерия", kaz: "Информатика және инженерия" }[item.language];
     await expect(cs.locator(".program-card__title")).toHaveText(title);
@@ -72,8 +80,7 @@ for (const item of cases) {
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-program.png`) });
     await page.locator("#admissionsViewRequirements").click();
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-    await setNativeSelect(page, "admissionsRoute", "mit-first-year");
-    await page.locator("#admissionsContextApply").click();
+    if (await selectAdmissionRoute(page, "mit-first-year")) await page.locator("#admissionsContextApply").click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     const academic = page.locator("#detailRequirements .admissions-reading__section").first();
     await expect(academic).toContainText(/SAT.*ACT/);
@@ -88,6 +95,7 @@ for (const item of cases) {
     expect(await page.locator("#detailRequirements").innerText()).not.toMatch(/Scope varies|Область применения зависит от условий|Қолданылу аясы шарттарға байланысты|Current published policy/);
     await expectNoStackedGapMargins(page, "#tab-admission");
 
+    await openAdmissionSelectionEditor(page);
     await page.locator("#admissionsAdvanced > summary").click();
     await setNativeSelect(page, "admissionsApplicant", "first_year");
     await page.locator("#admissionsCycle").fill("Not decided yet");

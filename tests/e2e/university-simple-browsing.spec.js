@@ -1,4 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
+const { openDisclosureParents } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 const screenshotDir = path.resolve(__dirname, "../../.tmp_test/detail-redesign-browsing");
@@ -8,7 +9,7 @@ const journeys = [
   { name: "MIT doctoral", university: "mit-usa-cambridge", option: "mit-eecs-phd-course-6", search: "Computer Science and Engineering", route: "mit_eecs_doctoral_admissions", viewport: { width: 390, height: 844 }, language: "kaz", theme: "dark", domains: ["mit.edu", "mitadmissions.org"] },
   { name: "Imperial Computing MEng", university: "imperial-college-london-uk", option: "imperial-option-computing-meng", search: "Computing", route: "procedure-computing-meng", viewport: { width: 1280, height: 900 }, language: "rus", theme: "dark", domains: ["imperial.ac.uk"] },
   { name: "Imperial Computing MSc", university: "imperial-college-london-uk", option: "imperial-option-computing", search: "Computing", route: "procedure-computing", viewport: { width: 390, height: 844 }, language: "eng", theme: "light", domains: ["imperial.ac.uk"] },
-  { name: "Stanford CS external MS", university: "stanford-university-usa-ca", option: "stanford-option-cs-ms", search: "Computer Science", route: "engineering-doerr-evidence:external-graduate", viewport: { width: 1280, height: 900 }, language: "eng", theme: "dark", domains: ["stanford.edu"] },
+  { name: "Stanford CS external MS", university: "stanford-university-usa-ca", option: "stanford-option-cs-ms", search: "Computer Science", route: "directory-evidence:stanford-graduate-cs-ms", viewport: { width: 1280, height: 900 }, language: "eng", theme: "dark", domains: ["stanford.edu"] },
   { name: "Stanford CS coterm MS", university: "stanford-university-usa-ca", option: "stanford-option-cs-ms", search: "Computer Science", route: "engineering-doerr-evidence:cs-coterm", viewport: { width: 390, height: 844 }, language: "rus", theme: "light", domains: ["stanford.edu"] },
 ];
 
@@ -159,10 +160,10 @@ async function chooseOption(page, item) {
   }
   await expectAccessibleTextContrast(option);
   const selectionActions = page.locator("#admissionsReferenceSummary .admissions-selection__actions button");
-  await expect(selectionActions).toHaveCount(2);
+  await expect(selectionActions).toHaveCount(1);
   for (const action of await selectionActions.all()) await expectHoverAndActiveContrast(page, action);
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await selectionActions.nth(1).click();
+  await selectionActions.first().click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
@@ -179,7 +180,7 @@ async function chooseOption(page, item) {
   }
   const url = new URL(page.url());
   expect(url.searchParams.get("admission_option")).toBe(item.option);
-  expect(url.searchParams.get("admission_application_route")).toBe("");
+  expect(url.searchParams.get("admission_application_route")).toBe(await page.locator("#admissionsRoute").inputValue());
   await expect(page.locator("#admissionsViewRequirements")).toBeEnabled();
   await page.locator("#admissionsViewRequirements").click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
@@ -201,19 +202,29 @@ async function expectProgramFacts(page, item) {
 }
 
 async function chooseRoute(page, item) {
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced[data-admissions-advanced]");
   await expect(advanced).toBeVisible();
   await expect(advanced).not.toHaveAttribute("open", "");
 
   const route = page.locator("#admissionsRoute");
-  const routeWrapper = route.locator("xpath=..");
-  await expect(routeWrapper.locator(".custom-select-trigger")).toBeVisible();
-  await expect(route).toHaveValue("");
-  await routeWrapper.locator(".custom-select-trigger").click();
-  const routeOption = routeWrapper.locator(`.custom-option[data-value="${item.route}"]`);
-  await expect(routeOption).toBeVisible();
-  await routeOption.click();
+  if (await route.inputValue() !== item.route) {
+    const entry = page.locator(`[data-read-route="${item.route}"]`);
+    if (await entry.count()) await openDisclosureParents(entry);
+    if (await entry.isVisible()) {
+      await entry.click();
+      await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    } else {
+      const routeWrapper = route.locator("xpath=..");
+      await expect(routeWrapper.locator(".custom-select-trigger")).toBeVisible();
+      await routeWrapper.locator(".custom-select-trigger").click();
+      const routeOption = routeWrapper.locator(`.custom-option[data-value="${item.route}"]`);
+      await expect(routeOption).toBeVisible();
+      await routeOption.click();
+    }
+  }
   await expect(route).toHaveValue(item.route);
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   await page.locator("#admissionsContextApply").click();
   await expect(page.locator("#admissionsContext[data-state='ready']")).toBeVisible();
   await expect(advanced).not.toHaveAttribute("open", "");
@@ -377,9 +388,12 @@ test("undergraduate requirements in all three universities can be read without a
     await openGuestUniversity(page, item);
     await page.screenshot({ path: testInfo.outputPath(`${item.university}-overview.png`), fullPage: false });
     await chooseOption(page, item);
-    const wrapper = page.locator("#admissionsRoute").locator("xpath=..");
-    await wrapper.locator(".custom-select-trigger").click();
-    await wrapper.locator(`.custom-option[data-value="${item.route}"]`).click();
+    if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
+    if (await page.locator("#admissionsRoute").inputValue() !== item.route) {
+      const wrapper = page.locator("#admissionsRoute").locator("xpath=..");
+      await wrapper.locator(".custom-select-trigger").click();
+      await wrapper.locator(`.custom-option[data-value="${item.route}"]`).click();
+    }
     const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
     await page.locator("#admissionsContextApply").click();
     const context = await (await response).json();
@@ -494,8 +508,8 @@ test("Kazakh browsing keeps all three reviewed catalogs usable and searches a tr
     await expect(page.locator("html")).toHaveAttribute("lang", "kk");
     await chooseOption(page, item);
     await expect(page.locator("#admissionsContext h2")).toHaveText("Жарияланған өтініш беру жолдары");
-    await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы бойынша сүзу (міндетті емес)");
-    await expect(page.locator("#admissionsContextApply")).toHaveText("Жарияланған мәліметтерді оқу");
+    await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Санат, қабылдау жылы және төлем (міндетті емес)");
+    await expect(page.locator("#admissionsContextApply")).toHaveText(await page.locator("#admissionsRoute").inputValue() ? "Таңдауды жаңарту" : "Жарияланған мәліметтерді оқу");
     await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open", "");
   }
 });

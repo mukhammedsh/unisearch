@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="./" />
+  <script>
+    if (/\/universities\/[^/]+\/?$/.test(window.location.pathname)) {
+      document.querySelector("base").setAttribute("href", window.location.pathname.replace(/universities\/[^/]+\/?$/, ""));
+    }
+  </script>
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.university">University | UniSearch</title>
   <meta name="description" content="Explore university programs, admission requirements, deadlines, costs, and funding across study levels." />

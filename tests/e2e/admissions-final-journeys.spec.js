@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents, revealRestrictedProgram } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const STANFORD = "stanford-university-usa-ca";
@@ -27,6 +27,16 @@ async function openAdmission(page) {
 
 async function selectRoute(page, route) {
   await openAdmission(page);
+  if (await page.locator("#admissionsRoute").inputValue() === route) return;
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
+  const entry = page.locator(`[data-read-route="${route}"]`);
+  if (await entry.count()) await openDisclosureParents(entry);
+  if (await entry.isVisible()) {
+    await entry.click();
+    await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    await expect(page.locator("#admissionsRoute")).toHaveValue(route);
+    return;
+  }
   const wrapper = page.locator("#admissionsRoute").locator("xpath=..");
   await wrapper.locator(".custom-select-trigger").click();
   await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
@@ -38,8 +48,16 @@ async function chooseOption(page, optionId, search, level) {
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await setNativeSelect(page, "admissionsStudyLevel", level);
   await page.locator("#admissionsSearch").fill(search);
+  const response = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return url.pathname.endsWith("/study-options") && response.request().method() === "GET"
+      && url.searchParams.get("search") === search && url.searchParams.get("study_level") === level;
+  });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await response).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   const option = page.locator(`#admissionsProgramList [data-study-option="${optionId}"]`);
+  await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   const title = await option.locator(".admissions-programs__option-title").innerText();
   await option.click();
@@ -47,11 +65,13 @@ async function chooseOption(page, optionId, search, level) {
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
   await expect(page.locator("#admissionsViewRequirements")).toBeEnabled();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  if (await page.locator("select#admissionsRoute").count()) await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  else await expect(page.locator("#admissionsRoute")).not.toHaveValue("");
 }
 
 async function applyContext(page, route, applicant, cycle) {
   await selectRoute(page, route);
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
   await setNativeSelect(page, "admissionsApplicant", applicant);
@@ -207,7 +227,8 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-course-6-9p-meng", "Course 6-9P", "masters");
   await openAdmission(page);
-  await expect(page.locator('#admissionsRoute option[value="mit_bcs_meng_admissions"]')).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
+  await expect(page.locator("#admissionsRoute")).toHaveValue("mit_bcs_meng_admissions");
+  await expect(page.locator("#admissionsContext .admissions-route-name")).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
   const result = await applyContext(page, "mit_bcs_meng_admissions", "graduate", "");
   expect(result.assessment.chancePercent).toBe(100);
   const checks = Object.fromEntries(result.assessment.activeChoice.details.checks.filter((check) => check.checkId).map((check) => [check.checkId, check]));
@@ -273,6 +294,7 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy", "Data, Economics, and Design of Policy", "masters");
   await selectRoute(page, "mit_grad_dedp_admissions");
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
   await setNativeSelect(page, "admissionsApplicant", "graduate");

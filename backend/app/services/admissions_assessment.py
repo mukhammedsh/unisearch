@@ -254,7 +254,9 @@ def _context_is_applicable(resolved: dict[str, Any]) -> bool:
         return False
     applicability = resolved.get("context_applicability")
     return isinstance(applicability, dict) and all(
-        applicability.get(axis) == "matched" for axis in ("option", "route", "level")
+        applicability.get(axis) == "matched" or (
+            axis == "option" and applicability.get(axis) == "not_required" and resolved.get("reading_scope") == "institution_route"
+        ) for axis in ("option", "route", "level")
     )
 
 

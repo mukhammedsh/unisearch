@@ -1,7 +1,23 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue, renderStudyOptionOverview } from "../../frontend/javascript/pages/university/admissions-render.js";
+import { admissionsProgramLabel, admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue, renderStudyOptionOverview } from "../../frontend/javascript/pages/university/admissions-render.js";
+
+test("detail course labels distinguish UCAS awards without changing shared helper defaults", () => {
+  const option = { title: "Computing", awards: ["MEng"], catalog_classification: "ucas_course_choice" };
+  assert.equal(admissionsProgramLabel(option).title, "Computing");
+  assert.equal(admissionsProgramLabel(option, { includeAward: true }).title, "Computing (MEng)");
+  assert.equal(admissionsProgramLabel({ ...option, title: "Computing (MEng)" }, { includeAward: true }).title, "Computing (MEng)");
+  assert.equal(admissionsProgramLabel({ ...option, awards: ["BEng"] }, { includeAward: true }).title, "Computing (BEng)");
+});
+
+test("unknown study format metadata does not leak into the program overview", () => {
+  const resolved = context();
+  resolved.selected_option.format = { duration: "not_stated", mode: "not_stated", language: ["English"] };
+  const html = renderStudyOptionOverview(resolved);
+  assert.doesNotMatch(html, /not_stated|Study mode|Duration/);
+  assert.match(html, /English/);
+});
 
 test("a source route classification distinguishes external and coterm procedures when no title is published", () => {
   assert.equal(admissionsRouteName({ title: null, target: null, classification: "external non-professional graduate application" }), "external non-professional graduate application");
@@ -26,6 +42,17 @@ function fact(value, extra = {}) {
     ...extra,
   };
 }
+
+test("institution-route reading renders scoped facts without inventing a selected program", () => {
+  const resolved = context();
+  resolved.selected_option = null;
+  resolved.reading_scope = "institution_route";
+  resolved.facts = [fact("Shared requirements remain readable.", { scope: { route_ids: ["example-route"], levels: ["undergraduate"] }, topic: "eligibility" })];
+  resolved.fact_groups = { requirements: ["private-fact-id"] };
+  assert.match(renderAdmissionsContext(resolved, { domains: ["requirements"], includeAssessment: false }), /Shared requirements remain readable/);
+  delete resolved.reading_scope;
+  assert.doesNotMatch(renderAdmissionsContext(resolved), /Shared requirements remain readable/);
+});
 
 test("program overviews show scoped source descriptions and essentials without expanding compound records", () => {
   const resolved = context();

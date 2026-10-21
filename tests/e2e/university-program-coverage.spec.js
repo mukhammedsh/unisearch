@@ -99,13 +99,13 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   const cs = await openContext(page, {
     university: "stanford-university-usa-ca",
     option: "stanford-option-cs-ms",
-    route: "engineering-doerr-evidence:external-graduate",
+    route: "directory-evidence:stanford-graduate-cs-ms",
     level: "masters",
     applicant: "graduate",
     cycle: "2027-28 entry",
   });
   expect(cs.selected_option.id).toBe("stanford-option-cs-ms");
-  expect(cs.selected_route.id).toBe("engineering-doerr-evidence:external-graduate");
+  expect(cs.selected_route.id).toBe("directory-evidence:stanford-graduate-cs-ms");
   const publishedTuition = cs.facts.find((fact) => fact.id === "engineering-doerr-evidence:engineering-2026-27-historical-tuition");
   expect(publishedTuition.scope.option_ids).toContain("stanford-option-cs-ms");
   expect(publishedTuition.scope.cycle).toBe("2026-27 tuition year");

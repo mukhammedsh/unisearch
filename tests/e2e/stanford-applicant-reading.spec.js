@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { expectNoStackedGapMargins } = require("./helpers/design");
-const { openDisclosureParents } = require("./helpers/selectors");
+const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram, selectAdmissionRoute } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -50,8 +50,17 @@ async function select(page, id, value) {
 async function program(page, id, search = "Computer Science") {
   await tab(page, "programs");
   await page.locator("#admissionsSearch").fill(search);
+  const level = await page.locator("#admissionsStudyLevel").inputValue();
+  const response = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname.endsWith("/study-options") && response.request().method() === "GET"
+      && url.searchParams.get("search") === search && (url.searchParams.get("study_level") || "") === level;
+  });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await response).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   const option = page.locator(`[data-study-option="${id}"]`);
+  await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   await option.click();
   await ready(page);
@@ -60,10 +69,14 @@ async function program(page, id, search = "Computer Science") {
 
 async function route(page, value) {
   await page.locator("#admissionsViewRequirements").click();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await select(page, "admissionsRoute", value);
-  await page.locator("#admissionsContextApply").click();
+  if (await selectAdmissionRoute(page, value)) await page.locator("#admissionsContextApply").click();
   await ready(page);
+}
+
+async function openAdvanced(page) {
+  await openAdmissionSelectionEditor(page);
+  const advanced = page.locator("#admissionsAdvanced");
+  if (!(await advanced.evaluate(node => node.open))) await advanced.locator(":scope > summary").click();
 }
 
 async function screenshot(page, name, section) {
@@ -133,7 +146,7 @@ for (const item of presentations) {
 
 const contrasts = [
   { option: "stanford-option-cs-bs", route: "undergraduate-shared-evidence:stanford-transfer", kind: "transfer", search: "Computer Science" },
-  { option: "stanford-option-cs-ms", route: "engineering-doerr-evidence:external-graduate", kind: "MS", search: "Computer Science" },
+  { option: "stanford-option-cs-ms", route: "directory-evidence:stanford-graduate-cs-ms", kind: "MS", search: "Computer Science" },
   { option: "stanford-option-cs-ms", route: "engineering-doerr-evidence:cs-coterm", kind: "coterm", search: "Computer Science" },
   { option: "stanford-option-cs-phd", route: "engineering-doerr-evidence:external-graduate", kind: "PhD", search: "Computer Science" },
   { option: "stanford-option-gsb-mba", route: "professional-evidence:gsb_mba_admission", kind: "MBA", search: "Business Administration" },
@@ -226,7 +239,7 @@ test("Stanford preserves search, route and general profile across language chang
     await expect(page.locator("#admissionsSearch")).toHaveValue("Computer Science");
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
   }
-  await page.locator("#admissionsAdvanced > summary").click();
+  await openAdvanced(page);
   await page.locator("#admissionsCycle").fill("undecided cycle");
   await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
   await page.locator("#admissionsCycle").fill("");
@@ -245,6 +258,7 @@ test("Stanford preserves search, route and general profile across language chang
   await ready(page);
   await page.goForward();
   await ready(page);
+  await openAdmissionSelectionEditor(page);
   await expect(page.locator("#admissionsApplicant")).toHaveValue("transfer");
 });
 
@@ -255,12 +269,18 @@ test("Stanford retries failures and keeps selection through an empty search", as
   await page.route(`**/universities/${university}/admissions-context`, route => route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Unavailable"}' }), { times: 1 });
   await tab(page, "programs");
   await page.locator("#admissionsSearch").fill("Computer Science");
+  const searchResponse = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname.endsWith("/study-options") && url.searchParams.get("search") === "Computer Science";
+  });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await searchResponse).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await page.locator('[data-study-option="stanford-option-cs-ms"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
   await page.locator('#admissionsStudyInfo [data-admissions-retry="context"]').click();
   await ready(page);
-  await route(page, "engineering-doerr-evidence:external-graduate");
+  await route(page, "directory-evidence:stanford-graduate-cs-ms");
   await tab(page, "programs");
   await page.locator("#admissionsSearch").fill("no such published course 123");
   await page.locator("#admissionsSearchSubmit").click();
@@ -283,13 +303,14 @@ test("Stanford ignores an older response after Back and retains keyboard focus",
       await route.fulfill({ response });
     } else await route.continue();
   });
-  await page.goto(`/university.html?id=${university}&admission_option=stanford-option-cs-ms&admission_application_route=engineering-doerr-evidence:external-graduate&admission_level=masters&admission_cycle=2026%20entry`);
+  await page.goto(`/university.html?id=${university}&admission_option=stanford-option-cs-ms&admission_application_route=directory-evidence:stanford-graduate-cs-ms&admission_level=masters&admission_cycle=2026%20entry`);
   await ready(page);
-  await page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger").focus();
+  await openAdmissionSelectionEditor(page);
+  await page.locator("#admissionsAdvanced > summary").focus();
   await page.keyboard.press("Tab");
   await expect(page.locator("#admissionsContextApply")).toBeFocused();
   expect(await page.locator("#admissionsContextApply").evaluate(node => getComputedStyle(node).outlineWidth)).toBe("2px");
-  await page.locator("#admissionsAdvanced > summary").click();
+  await openAdvanced(page);
   await page.locator("#admissionsCycle").fill("2027 entry");
   await page.locator("#admissionsContextApply").click();
   await fetchedResponse;
@@ -316,7 +337,6 @@ for (const [index, entry] of [
     await expect(page.locator("#admissionsStudyOverview > .program-card__description")).not.toBeEmpty();
     await page.locator("[data-program-original] > summary").click();
     await expect(page.locator("[data-program-original] p")).toContainText(entry.original);
-    await expect(page.locator("#admissionsRoute")).toHaveValue("");
     await expect(page.locator("#admissionsStudyOverview")).not.toContainText(/Bulletin flags|externalAdmissions/);
     await screenshot(page, `overview-${entry.option}-${presentations[index].language}`, "#admissionsStudyOverview");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(presentations[index].width);
@@ -333,7 +353,7 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   await select(page, "costBasisSelect", "tuition");
   await expect(card).toBeVisible();
   await expect(card.locator('[data-cost-basis="tuition"]')).toContainText(/67[\s,]?731/);
-  await expect(card.locator('[data-cost-basis="annual_total"]')).toContainText(/97[\s,]?545/);
+  await expect(card.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
   await select(page, "sortSelect", "tuition_asc");
   await expect(card).toBeVisible();
   await page.locator('#catalogLevelSegmented [data-level="master"]').click();
@@ -366,7 +386,9 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   const popup = page.locator(`#mapContainer .custom-map-popup .uni-card[data-uni-id="${university}"]`);
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-cost-basis="tuition"]')).toContainText(/₸|KZT/);
-  await expect(popup.locator('[data-cost-basis="annual_total"]')).toContainText(/₸|KZT/);
+  await expect(popup.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
+  await popup.locator('.uni-cost-trigger').click();
+  await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toBeVisible();
   await expect(popup).toContainText("2026");
   await screenshot(page, "eng-1280-map-tuition-kzt", "#mapContainer");
 });
@@ -408,7 +430,6 @@ for (const [languageIndex, language] of ["eng", "rus", "kaz"].entries()) {
       await expect(overview).not.toContainText(/Bulletin flags:|externalAdmissions|programCurrentPhdOnly/);
       const sourceRecord = page.locator(`#admissionsStudyInfo [data-admissions-fact="medicine-graduate-evidence:study-overview-${suffix}"]`);
       await expect(sourceRecord).toHaveCount(1);
-      await expect(page.locator("#admissionsRoute")).toHaveValue("");
       if (suffix === "hmn-gen-ms") await expect(summary).toContainText(/cannot automatically transfer|автоматического перехода|автоматты ауысу/i);
       if (suffix === "sbio-phd") {
         await expect(summary).toContainText("2026");

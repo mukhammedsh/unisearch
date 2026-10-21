@@ -181,6 +181,8 @@ def list_universities(
     min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
+    fee_status_context: Optional[Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"]] = Query(None),
+    intended_entry_cycle: Optional[str] = Query(None, max_length=40),
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
@@ -207,6 +209,8 @@ def list_universities(
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
         "cost_basis": cost_basis,
+        "fee_status_context": fee_status_context,
+        "intended_entry_cycle": intended_entry_cycle,
         "min_acceptance": min_acceptance,
         "max_acceptance": max_acceptance,
         "size": size,
@@ -238,6 +242,8 @@ def list_universities(
         min_tuition=min_tuition,
         max_tuition=max_tuition,
         cost_basis=cost_basis,
+        fee_status_context=fee_status_context,
+        intended_entry_cycle=intended_entry_cycle,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -278,6 +284,8 @@ def list_university_map_points(
     min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
     cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
+    fee_status_context: Optional[Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"]] = Query(None),
+    intended_entry_cycle: Optional[str] = Query(None, max_length=40),
     min_acceptance: Optional[float] = Query(None, ge=0, le=100),
     max_acceptance: Optional[float] = Query(None, ge=0, le=100),
     size: Optional[str] = Query(None, max_length=40),
@@ -307,6 +315,8 @@ def list_university_map_points(
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
         "cost_basis": cost_basis,
+        "fee_status_context": fee_status_context,
+        "intended_entry_cycle": intended_entry_cycle,
         "min_acceptance": min_acceptance,
         "max_acceptance": max_acceptance,
         "size": size,
@@ -333,6 +343,8 @@ def list_university_map_points(
         min_tuition=min_tuition,
         max_tuition=max_tuition,
         cost_basis=cost_basis,
+        fee_status_context=fee_status_context,
+        intended_entry_cycle=intended_entry_cycle,
         min_acceptance=min_acceptance,
         max_acceptance=max_acceptance,
         size=size,
@@ -403,8 +415,12 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
 
     if sorted_items is None:
         effective_profile = dict(profile)
-        if major and not effective_profile.get("major"):
+        if major:
             effective_profile["major"] = major
+        if study_level:
+            effective_profile["study_level"] = study_level
+        if fmt:
+            effective_profile["studyMode"] = fmt
 
         base = uni_service.list_universities(
             q=q,
@@ -412,7 +428,8 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             city=city,
             region=region,
             major=None,
-            study_level=study_level,
+            study_level=effective_profile.get("study_level"),
+            profile=effective_profile,
             funding_type=None,
             format=fmt,
             min_tuition=min_tuition,

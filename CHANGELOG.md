@@ -7,6 +7,18 @@ All notable project changes should be recorded here.
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
+## 9.2.0 (2026-10-22) - Catalog pricing and applicant context
+
+### Added
+- Filter university and map results by fee status and intended entry cycle, and narrow reviewed program catalogs by canonical subject.
+- Show the selected tuition or annual-budget price on catalog cards with optional dual-currency values and clear source-period, fee-scope, exclusion, and unknown-price details.
+- Browse, compare, and read shared MIT and Stanford undergraduate application routes without selecting a major; profile-based program suggestions remain optional and removable.
+- Open the sole compatible application route after a deliberate program selection, while keeping multi-route choices explicit.
+
+### Updated
+- Keep UniFit, comparison, admission summaries, and deadline calendars aligned with selected study and applicant context while preserving published restrictions and unresolved costs.
+- Keep integrated BEng and MEng qualification labels visible beside course names, with their undergraduate entry level retained.
+
 ## 9.1.3 (2026-10-21) - Russian admissions summaries
 
 ### Fixed

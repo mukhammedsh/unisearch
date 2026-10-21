@@ -89,6 +89,25 @@ class MlRecommenderTests(unittest.TestCase):
         self.assertIn("portfolio", doc)
         self.assertTrue(("on-campus" in doc) or ("on campus" in doc))
 
+    def test_canonical_inventory_enters_interest_corpus_without_legacy_programs(self):
+        docs = self.recommender.prepare_text_features([
+            {"id": "mit-usa-cambridge", "name": "MIT"},
+            {"id": "imperial-college-london-uk", "name": "Imperial"},
+            {"id": "stanford-university-usa-ca", "name": "Stanford"},
+        ])
+        self.assertIn("computer science", docs[0].lower())
+        self.assertIn("digital chemistry", docs[1].lower())
+        self.assertIn("computer science", docs[2].lower())
+
+    def test_canonical_revision_refreshes_existing_corpus_without_model_download(self):
+        self.recommender._data_mtime = self.data_path.stat().st_mtime
+        self.recommender._catalog_revision = "previous"
+        with patch.object(ml_scoring.admissions_catalog, "get_revision", return_value="current"), patch.object(
+            self.recommender, "_load_and_fit"
+        ) as reload_corpus:
+            self.recommender._ensure_fresh()
+        reload_corpus.assert_called_once()
+
     def test_predict_relevance_uses_semantic_when_available(self):
         self.recommender._university_ids = ["u1", "u2"]
         with patch.object(self.recommender, "_ensure_fresh", return_value=None), patch.object(

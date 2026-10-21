@@ -419,16 +419,27 @@ universities.cost_max: Ең жоғары шығын
 universities.cost.filter_basis: Оқу жылына арналған баға
 universities.cost.annual_total: Оқу және тұру бюджеті
 universities.cost.tuition: Оқу ақысы
+universities.cost.price_details: Баға туралы: {basis}
+universities.cost.reference_short: бағдар
+universities.cost.price_unavailable: Бағасы белгісіз
+universities.cost.tuition_scope_note: Тұру және басқа шығындар бөлек төленеді.
 universities.cost.entry: {year} жылғы қабылдау
 universities.cost.unavailable: Бағдарламаны нақтылаңыз
 universities.cost.full_budget_unavailable: Салыстыруға келетін толық бюджет жоқ
-universities.cost.reference: Қаржылай көмекке дейінгі анықтамалық баға.
-universities.cost.before_aid: Стипендия мен қаржылай көмекке дейін.
-universities.cost.fee_scope: Ауқым бағдарлама мен тарифке байланысты: Home — жергілікті, Overseas — халықаралық. Санатты университет анықтайды.
+universities.cost.reference: Бағдарлық баға · қаржылай көмекке дейін
+universities.cost.before_aid: Қаржылай көмекке дейін.
+universities.cost.fee_scope: Бағдарлама мен төлем санатына байланысты
 universities.cost.exclusion.insurance: Сақтандыру бөлек төленеді.
 universities.cost.exclusion.travel: Жол ақысы бөлек төленеді.
 universities.cost.exclusion.one_time_fees: Бір реттік алымдар бөлек төленеді.
-universities.cost.filter_help: Қаржылай көмекке дейін. Ауқым ішінара сәйкес болуы мүмкін: бағдарлама мен төлем санатын тексеріңіз. Баға шектеуі қосылса, бағасы белгісіз ЖОО көрсетілмейді.
+universities.cost.filter_help_summary: Баға шегі бағасы белгісіз ЖОО-ларды жасырады; бюджет UniFit-ке әсер етеді.
+universities.cost.filter_help: Бағалар қаржылай көмексіз көрсетілген. Диапазон университет бағдарламаларының бір бөлігіне ғана сәйкес келуі мүмкін; бағдарлама мен төлем санатын тексеріңіз. Толық шығын құрамы мен дереккөздер университет бетінде берілген.
+universities.cost.dated_reference: Бағдар; қабылдау кезеңі расталмаған
+universities.cost.cycle_unconfirmed: Қабылдау кезеңі расталмаған
+universities.cost.cycle_unspecified: Қабылдау кезеңі көрсетілмеген
+universities.cost.fee_status_unknown: Төлем санаты расталмаған
+universities.cost.filter_partial: Баға бойынша ішінара сәйкестік
+universities.cost.fee_categories: Дереккөздегі төлем санаты: {categories}.
 universities.country: Ел
 universities.filter: Фильтр
 universities.filter.all: Барлығы
@@ -2442,7 +2453,7 @@ profile.evidence.error.credential_score: Жарияланған біліктіл
 profile.evidence.error.max_institution: Ең көбі 20 оқу орны туралы растау сақтауға болады.
 university.admissions.catalog.context_title: Өтініш беру контексті
 university.admissions.catalog.simple_title: Жарияланған өтініш беру жолдары
-university.admissions.catalog.browse_note: Ресми бағдарлама каталогын атауы, пән саласы және оқу деңгейі бойынша іздеңіз. Дәреже мен оған байланысты өтініш беру жолдарын оқу үшін бағдарламаны таңдаңыз.
+university.admissions.catalog.browse_note: Бағыт немесе бағдарлама бойынша іздеңіз. Оқу және қабылдау туралы білу үшін нәтижені ашыңыз.
 university.admissions.catalog.show_requirements: Жарияланған мәліметтерді оқу
 university.admissions.catalog.advanced_options: Жарияланған мәліметтерді сүзу (міндетті емес)
 university.admissions.catalog.advanced_note: Бұл сүзгілер дереккөз жазбаларын жарияланған өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы санаты бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
@@ -2521,7 +2532,16 @@ university.admissions.catalog.route_not_selected: Өтініш беру жолы
 university.admissions.catalog.browse_programs: Бағдарламаларды шолу
 university.admissions.catalog.change_program: Бағдарламаны өзгерту
 university.admissions.catalog.change_route: Жолды өзгерту
-university.admissions.catalog.reference_filters: Өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы бойынша сүзу (міндетті емес)
+university.admissions.catalog.reference_filters: Санат, қабылдау жылы және төлем (міндетті емес)
+university.admissions.reading.edit_selection: Таңдауды өзгерту
+university.admissions.reading.exclusion.insurance: Сақтандыру бөлек төленеді; міндетті қамту мен босату шарттарын тексеріңіз.
+university.admissions.reading.exclusion.travel: Жол шығыны бөлек төленеді және өтініш берушіге байланысты.
+university.admissions.reading.exclusion.one_time_fees: Біржолғы төлемдер бөлек; жаңа студенттерге қатысты төлемдер дереккөзде көрсетілген.
+university.admissions.reading.special_routes: Stanford студенттері және бірлескен дәрежелер ({count})
+university.admissions.reading.cost_scope: Баға тек дереккөзде көрсетілген бағдарламаға не өтініш жолына, төлем санатына және кезеңге қатысты. Оқу ақысы — бюджеттің бір бөлігі; тұру, міндетті және біржолғы төлемдер бөлек болуы мүмкін. Толық жазбаларда шығындар құрамы мен дереккөз шарттары бар.
+university.admissions.reading.degree.BEng: BEng — инженерия бакалавры
+university.admissions.reading.degree.MEng: MEng — инженерия магистрі
+university.admissions.reading.degree.MEng_integrated: MEng — интеграцияланған инженерия магистратурасы, мектептен кейін түсу
 university.admissions.catalog.reference_filter_note: Бұл сүзгілер дереккөз жазбаларын жарияланған аясы бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
 university.admissions.catalog.selected_route: Таңдалған жол
 university.admissions.catalog.application_shape: Бағдарламаға қабылдау тәсілі
@@ -2815,7 +2835,19 @@ university.admissions.catalog.choice_saved: Осы университетке а
 university.admissions.catalog.choice_session_only: Бұл таңдау тек осы сеансқа қолжетімді. Оны осы құрылғыда сақтау мүмкін болмады.
 university.admissions.catalog.apply_before_save: Таңдауды сақтамас бұрын өзгертілген контексті қолданыңыз.
 universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
-universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
+universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін университетке ортақ жолды не оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
+universities.compare.context_summary_label: Ағымдағы таңдау
+universities.compare.selection_empty: Бағдарлама немесе өтініш беру жолы таңдалмаған
+universities.compare.choose_context: Бағдарлама немесе өтініш беру жолын таңдау
+universities.compare.change_context: Таңдауды өзгерту
+universities.compare.institution_route: Университетке ортақ өтініш беру жолы
+universities.cost.budget_within_reference: Бюджетіңіз осы бағдарды жабады.
+universities.cost.budget_over_reference: Бұл бағдар бюджеттен жоғары.
+universities.cost.budget_within_applicable: Жарияланған сома бюджетке сай.
+universities.cost.budget_over_applicable: Жарияланған сома бюджеттен жоғары.
+universities.cost.budget_uncertain_range: Кейбір бағалар сай келеді; бағдарламаны нақтылаңыз.
+universities.cost.budget_tuition_only: Тек оқу ақысы; тұру мен басқа шығындар бөлек.
+universities.compare.clear_program: Оқу нұсқасын алып тастау
 universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.
 university.admissions.reading.summary_translation_missing: Қысқаша аударма әзірге дайын емес. Түпнұсқаны төменнен ашуға болады.
 university.admissions.reading.original_description: Бағдарламаның түпнұсқа сипаттамасы (ағылшынша)
@@ -2875,6 +2907,23 @@ university.admissions.reading.month_standalone.11: қараша
 university.admissions.reading.month_standalone.12: желтоқсан
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · кафедраға өтініш
 university.admissions.reading.integrated_meng: MEng — UCAS арқылы бакалавриат деңгейінде қабылдайтын интеграцияланған бағдарлама; ол бакалавриат пен магистр деңгейіндегі тереңдетілген оқуды біріктіреді.
+university.admissions.entry.institution_wide: Бакалавриатқа қабылдау университетке тұтастай жүргізіледі. Болашақ мамандықты таңдамай, бірінші курсқа немесе ауысу арқылы түсу жолын оқыңыз; оқу бағыттарын «Бағдарламалар» бөлімінен қарауға болады.
+university.admissions.entry.profile_hints: Профильдегі ұсыныстар: {details}. Оларды осында қолданыңыз немесе жалпы мәліметтерді оқуды жалғастырыңыз.
+university.admissions.entry.use_profile: Профиль ұсыныстарын қолдану
+university.admissions.entry.route_situations: Жағдайыңызға сай жарияланған жолды таңдаңыз немесе таңдауды ашық қалдырыңыз. Университеттің ортақ ережелері бөлек өтініш ретінде емес, таңдалған жолдың ішінде көрсетіледі.
+university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Сыртқы талапкерлер CS MS бағдарламасына өтініш береді. Graduate қабылдаудың және кафедраның ортақ ережелері осы жолға енгізілген.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: CS coterminal MS бағдарламасына түсетін қазіргі Stanford бакалаврларына арналған; кафедра талаптары мен оқу кезеңдерінің мерзімдері қолданылады.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: Қалыпты қабылдау арқылы қосымша немесе басқа CS дәрежесіне өтініш беретін қазіргі Stanford студенттеріне арналған. Coterm және CS PhD ішіндегі аралық MS сұрауынан бөлек.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-corresponding-phd-added-ms: Қазіргі CS PhD студенттерінің аралық MS дәрежесін сұрауы. Бұл сыртқы магистратура өтініші емес.
+university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: CS пен кәсіби мектептің бірлескен дәрежелері бөлек өтініштер мен ортақ келісімді талап етеді. Қажетті үйлесім үшін MBA немесе Law ережелерін оқыңыз.
+university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — сыртқы талапкерлер
+university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm
+university.programs.entry.profile_suggestions: Профильдегі іздеу ұсыныстары
+university.programs.entry.remove_suggestion: Ұсынысты алып тастау: {value}
+university.programs.entry.show_all: Барлық ресми нұсқалар
+university.programs.entry.internal: Қазіргі студенттерге / ішкі оқу жалғастыруға арналған
+university.programs.entry.restricted: Қабылдау шектеулері бар — өтініш берер алдында тексеріңіз
+university.programs.entry.restricted_options: Ішкі және шектеулері бар нұсқалар
 university.admissions.catalog.route_class.Computer Science coterm application: CS coterm — тек Stanford-тың қазіргі бакалаврлары
 university.admissions.catalog.route_class.Electrical Engineering coterm: Electrical Engineering coterm — Stanford-тың қазіргі бакалаврлары
 university.admissions.catalog.route_class.combined_external: Біріктірілген дәрежелерге сыртқы өтініш

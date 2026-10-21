@@ -55,7 +55,8 @@ function publishedInstant(date, time, timezone) {
 }
 
 export function getReviewedDeadlineEvents(resolved) {
-  if (!resolved?.selected_option || !resolved.selected_route || Object.values(resolved.context_applicability || {}).includes("mismatched")) return [];
+  const option = resolved?.selected_option;
+  if ((!option && resolved?.reading_scope !== "institution_route") || !resolved?.selected_route || Object.values(resolved.context_applicability || {}).includes("mismatched")) return [];
   const ids = new Set([...(resolved.fact_groups?.deadlines || []), ...(resolved.fact_groups?.funding || []), ...(resolved.fact_groups?.requirements || [])]);
   const events = new Map();
   const add = (row, kind, value, name = "", parent = {}) => {
@@ -69,14 +70,14 @@ export function getReviewedDeadlineEvents(resolved) {
     const key = JSON.stringify([kind, deadline, name, applicantCategoryLabel]);
     const existing = events.get(key);
     if (existing && (existing.time || !time)) return;
-    events.set(key, { id: `${row.id}:${kind}:${deadline}:${name}`, kind, name, title: name || resolved.selected_option.title,
+    events.set(key, { id: `${row.id}:${kind}:${deadline}:${name}`, kind, name, title: name || option?.title || resolved.selected_route.title,
       deadline, time, timezone, sourceFactId: row.id, sourceUrl: detail.source_url || resolved.sources?.find(source => row.source_ids?.includes(source.id))?.url || "",
-      cycle: detail.cycle || row.scope?.cycle || "", scope: [resolved.selected_option.title, resolved.selected_route.title].filter(Boolean).join(" · "), applicantCategoryLabel });
+      cycle: detail.cycle || row.scope?.cycle || "", scope: [option?.title, resolved.selected_route.title].filter(Boolean).join(" · "), applicantCategoryLabel });
   };
   const rows = (resolved.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched"
     && row.publication_status === "published" && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
     && !/conflict|pending|partial|superseded|requires_confirmation/.test(row.review_status || "")
-    && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(resolved.selected_option.id))
+    && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(option?.id))
     && (!row.scope?.route_ids?.length || row.scope.route_ids.some(id => [resolved.selected_route.id, ...(resolved.selected_route.shared_policy_context_ids || [])].includes(id))));
   for (const row of rows) {
     const value = row.value;
@@ -84,7 +85,7 @@ export function getReviewedDeadlineEvents(resolved) {
     if (Array.isArray(value)) {
       for (const entry of value) {
         if (!entry || typeof entry !== "object" || entry.publication_status && entry.publication_status !== "published") continue;
-        if (entry.program_ids?.length && !entry.program_ids.includes(resolved.selected_option.id)) continue;
+        if (entry.program_ids?.length && !entry.program_ids.includes(option?.id)) continue;
         const round = (entry.deadline_type || entry.window)?.match(/^round_(\d+)$/);
         const name = round ? `Round ${round[1]}` : entry.label || entry.cycle || "";
         const kind = entry.deadline_type === "aid_application" ? "funding" : entry.deadline_type === "standardized_test" ? "test" : "application";
@@ -103,7 +104,7 @@ export function getReviewedDeadlineEvents(resolved) {
       }
     }
     if (value.other_course_equal_consideration) {
-      const medicine = resolved.selected_option.awards?.some(award => /MBBS/.test(award));
+      const medicine = option?.awards?.some(award => /MBBS/.test(award));
       add(row, "application", medicine ? value.medicine_deadline : value.other_course_equal_consideration);
       add(row, "opens", value.submission_opens);
       continue;
@@ -121,7 +122,7 @@ export function getReviewedDeadlineEvents(resolved) {
       add(row, "decision", round.notify_by || round.decision, name);
     }
     for (const [key, date] of Object.entries(value.deadlines || {})) {
-      if (key === resolved.selected_option.id || resolved.reference_labels?.[key] === resolved.selected_option.title) {
+      if (option && (key === option.id || resolved.reference_labels?.[key] === option.title)) {
         const kind = value.deadline_kind === "admissions_for_scholarship_consideration" ? "funding_consideration" : row.topic.includes("funding") ? "funding" : "application";
         add(row, kind, date, value.funding_program || "", value);
       }

@@ -1661,10 +1661,8 @@ def sort_universities_ai(
             selected_actual_chance = _chance_percent_value((selected_general_choice or {}).get("chancePercent"))
 
         if canonical_context:
-            selected_option = (chance_general.get("selectedContext") or {}).get("option") or {}
-            selected_title = str(selected_option.get("title") or "")
-            selected_academics = {"programs": [{"name": selected_title}], "majors": _major_tags_from_text(selected_title)}
-            missing_program = bool(profile_major and selected_title) and not _university_matches_major({"academics": selected_academics}, profile_major)
+            matching_options = admissions_catalog.matching_study_options(row_id, profile_major, target_level)
+            missing_program = bool(profile_major) and not matching_options
         else:
             missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
         program_missing_penalty = 0.25 if missing_program else 0.0
@@ -1760,6 +1758,45 @@ def sort_universities_ai(
                     if final_price_usd > budget else 0.0
                 )
                 budget_status = "over_budget" if final_price_usd > budget else "within_budget"
+
+        cost_quote = None
+        budget_assessment = None
+        if canonical_context:
+            projected_costs = admissions_catalog.catalog_costs(row_id, target_level, preferred_mode, profile=profile)
+            # Preserve price-band annotations from the same scoped catalog projection.
+            for basis in ("annual_total", "tuition"):
+                previous = (row.get("catalog_costs") or {}).get(basis) or {}
+                if projected_costs.get(basis) and previous.get("filter_match"):
+                    projected_costs[basis]["filter_match"] = previous["filter_match"]
+            basis = "annual_total" if projected_costs.get("annual_total") else "tuition"
+            quote = projected_costs.get(basis)
+            evidence = "unavailable"
+            status = "not_set" if budget is None or budget <= 0 else "unknown_cost"
+            affordability_gap = None
+            if quote:
+                bounds = universities_service._catalog_cost_range_usd({"catalog_costs": projected_costs}, basis)
+                cost_quote = {**quote, "basis": basis, "minUSD": bounds[0] if bounds else None, "maxUSD": bounds[1] if bounds else None}
+                evidence = ("fee_status_unknown" if quote["fee_status_match"] == "unknown"
+                            else "scope_unknown" if target_level == "any" and not projected_costs.get("scope", {}).get("study_level")
+                            else "applicable" if quote["cycle_status"] == "matched" else "dated_reference")
+                if bounds and budget is not None and budget > 0 and evidence not in {"fee_status_unknown", "scope_unknown"}:
+                    low, high = bounds
+                    if low > budget:
+                        status, affordability_gap = "over_budget", _clamp01(1.0 - budget / low)
+                    elif high <= budget:
+                        status, affordability_gap = "within_budget", 0.0
+                    else:
+                        status = "uncertain_range"
+            full_budget = basis == "annual_total" and quote is not None
+            budget_assessment = {"status": status, "basis": basis if quote else None, "evidence": evidence,
+                                 "full_budget": full_budget, "exclusions": quote["exclusions"] if quote else []}
+            budget_status = status if full_budget and evidence == "applicable" else "not_set" if budget is None or budget <= 0 else "unknown_cost"
+            cost_mode = "published_annual_total" if full_budget and evidence == "applicable" else "published_reference" if quote else "unavailable"
+            cost_unavailable = not (full_budget and evidence == "applicable" and bounds is not None and quote["min"] == quote["max"])
+            if not cost_unavailable:
+                cost_native, cost_currency = quote["min"], quote["currency"]
+                cost_usd = cost_quote["minUSD"]
+                final_price_native, final_price_usd = cost_native, cost_usd
 
         requirements_gap = (
             _clamp01(1.0 - selected_actual_chance / 100.0)
@@ -1877,9 +1914,16 @@ def sort_universities_ai(
             match_data["admissionsContext"] = chance_general.get("context")
             match_data["catalogRevision"] = chance_general.get("catalogRevision")
             match_data["assessmentRevision"] = chance_general.get("assessmentRevision")
-            match_data["costReason"] = "scoped_annual_cost_unassessed"
+            match_data["costQuote"] = cost_quote
+            match_data["budgetAssessment"] = budget_assessment
+            match_data["subjectMatch"] = {"status": "missing" if missing_program else "matched" if profile_major else "not_set",
+                                          "option_ids": [option["id"] for option in matching_options] if profile_major else [],
+                                          "study_level": target_level}
+            match_data["costReason"] = budget_assessment["evidence"]
 
         item = dict(row)
+        if canonical_context:
+            item["catalog_costs"] = projected_costs
         item["matchData"] = match_data
         item["__ai_score"] = final_score
         item["__distance"] = preference_mismatch

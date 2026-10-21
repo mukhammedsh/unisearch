@@ -1887,12 +1887,14 @@ def _filter_university_pairs(
             (u, meta_row)
             for (u, meta_row) in pairs
             if (
-                (
+                (bool(admissions_catalog.matching_study_options(u["id"], major, study_level))
+                 if u.get("id") in admissions_catalog.INSTITUTION_IDS else (
                     bool(m_exact)
                     and any(x == m_exact for x in meta_row.get("major_exact", []))
-                )
+                ))
                 or (
-                    not m_exact
+                    u.get("id") not in admissions_catalog.INSTITUTION_IDS
+                    and not m_exact
                     and (
                         any(
                             _normalize_major_text(x) == m_raw
@@ -1956,8 +1958,14 @@ def _filter_university_pairs(
             if quote.get("amounts"):
                 from app.services.currency import convert
                 amounts = [convert(amount, quote["currency"], "USD") for amount in quote["amounts"]]
-                if not any((min_tuition is None or amount >= min_tuition) and (max_tuition is None or amount <= max_tuition) for amount in amounts):
+                matches = [(min_tuition is None or amount >= min_tuition) and (max_tuition is None or amount <= max_tuition) for amount in amounts]
+                if not any(matches):
                     continue
+                quote["filter_match"] = "full" if all(matches) else "partial"
+            else:
+                quote["filter_match"] = "full" if (min_tuition is None or cost[0] >= min_tuition) and (max_tuition is None or cost[1] <= max_tuition) else "partial"
+            if quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
+                quote["filter_match"] = "partial"
             filtered.append((u, m))
         pairs = filtered
 
@@ -2043,6 +2051,9 @@ def list_universities(
     min_tuition: Optional[float] = None,
     max_tuition: Optional[float] = None,
     cost_basis: str = "annual_total",
+    fee_status_context: Optional[str] = None,
+    intended_entry_cycle: Optional[str] = None,
+    profile: Optional[Dict[str, Any]] = None,
     min_acceptance: Optional[float] = None,
     max_acceptance: Optional[float] = None,
     size: Optional[str] = None,
@@ -2058,7 +2069,8 @@ def list_universities(
     mode_pref = _normalize_study_mode(format or "any")
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
-    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref)
+    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref, major=major,
+                   fee_status_context=fee_status_context, intended_entry_cycle=intended_entry_cycle, profile=profile)
                if u.get("id") in admissions_catalog.INSTITUTION_IDS else _catalog_costs(u, mode_pref)}, m) for u, m in pairs]
     search_scores: Dict[str, float] = {}
 

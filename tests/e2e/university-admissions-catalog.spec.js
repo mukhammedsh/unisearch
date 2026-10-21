@@ -89,7 +89,7 @@ const cases = [
     name: "Stanford external Computer Science MS",
     university: "stanford-university-usa-ca",
     option: "stanford-option-cs-ms",
-    route: "engineering-doerr-evidence:external-graduate",
+    route: "directory-evidence:stanford-graduate-cs-ms",
     level: "masters",
     applicant: "graduate",
     cycle: "2027-28 entry",
@@ -159,6 +159,7 @@ async function openContext(page, item) {
 }
 
 async function openAdvanced(page) {
+  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
 }
@@ -272,7 +273,7 @@ for (const language of ["eng", "rus"]) {
   });
 }
 
-test("program search requires an explicit route and a manual context stays out of the saved profile", async ({ page }) => {
+test("program search opens a sole route and manual context stays out of the saved profile", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
@@ -283,6 +284,7 @@ test("program search requires an explicit route and a manual context stays out o
   await page.goto("/university.html?id=imperial-college-london-uk");
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   const originalProfile = await page.evaluate(() => localStorage.getItem("unisearch_profile"));
 
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
@@ -300,13 +302,10 @@ test("program search requires an explicit route and a manual context stays out o
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
   await page.locator("#admissionsViewRequirements").click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  const routeTrigger = page.locator("#admissionsContext .custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger");
-  await expect(routeTrigger).toBeVisible();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext .admissions-context__status")).toContainText("Choose one of the published paths above to read its requirements and application details.");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
+  await expect(page.locator("select#admissionsRoute")).toHaveCount(0);
 
-  await setNativeSelect(page, "admissionsRoute", "procedure-computing-meng");
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsApplicant", "first_year");
   await page.locator("#admissionsCycle").fill("2027 entry");
@@ -319,11 +318,10 @@ test("program search requires an explicit route and a manual context stays out o
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBe(originalProfile);
 
   await page.goBack();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
-  await page.locator("#admissionsViewRequirements").click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
+  await expect(page.locator("#admissionsCycle")).toHaveValue("");
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBe(originalProfile);
 });
 
@@ -497,10 +495,10 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   const routeTrigger = routeWrapper.locator(".custom-select-trigger");
   await routeTrigger.scrollIntoViewIfNeeded();
   await routeTrigger.click();
-  const routeOption = routeWrapper.locator('.custom-option[data-value="engineering-doerr-evidence:external-graduate"]');
+  const routeOption = routeWrapper.locator('.custom-option[data-value="directory-evidence:stanford-graduate-cs-ms"]');
   await expect(routeOption).toBeVisible();
   await routeOption.click();
-  await expect(route).toHaveValue("engineering-doerr-evidence:external-graduate");
+  await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
 
   const applicant = page.locator("#admissionsApplicant");
   const applicantTrigger = page.locator("#admissionsContext .custom-select-wrapper:has(#admissionsApplicant) .custom-select-trigger");
@@ -535,6 +533,7 @@ test("dynamic admission controls release global subscriptions on refresh and pag
   await page.waitForLoadState("networkidle");
   const baseline = await page.evaluate(() => window.__testLanguageListenerCount());
   for (let attempt = 0; attempt < 3; attempt += 1) {
+    if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
     await page.locator("#admissionsContextApply").click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     expect(await page.evaluate(() => window.__testLanguageListenerCount())).toBe(baseline);

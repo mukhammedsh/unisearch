@@ -1,9 +1,39 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink } from "../../frontend/javascript/pages/university/admissions-controller.js";
+import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, automaticAdmissionRoute, programProfileSuggestions, programRestriction } from "../../frontend/javascript/pages/university/admissions-controller.js";
 
 const uid = "mit-usa-cambridge";
+
+test("only explicit institution-route projection permits reading without a major", () => {
+  const route = { id: "first-year" };
+  assert.equal(hasReadableAdmissionContext({ selected_route: route, reading_scope: "institution_route" }), true);
+  assert.equal(hasReadableAdmissionContext({ selected_route: route }), false);
+  assert.equal(hasReadableAdmissionContext({ selected_option: { id: "cs" }, selected_route: route }), true);
+  assert.equal(hasReadableAdmissionContext({ selected_option: { id: "cs" } }), false);
+});
+
+test("a sole route opens only for a new deliberate program selection", () => {
+  const resolved = { selected_option: { id: "computing-meng" }, available_routes: [{ id: "ucas" }], context_applicability: { option: "matched", level: "matched" } };
+  assert.equal(automaticAdmissionRoute(resolved, {}, true), "ucas");
+  assert.equal(automaticAdmissionRoute(resolved, {}, false), "");
+  assert.equal(automaticAdmissionRoute(resolved, { application_route_id: "explicit" }, true), "");
+  assert.equal(automaticAdmissionRoute({ ...resolved, context_applicability: { level: "mismatched" } }, {}, true), "");
+  assert.equal(automaticAdmissionRoute({ ...resolved, available_routes: [{ id: "external" }, { id: "coterm" }] }, {}, true), "");
+});
+
+test("profile suggestions use the declared target without inferring the next level", () => {
+  assert.deepEqual(programProfileSuggestions({ study_level: "Bachelor", major: "Computer Science", education_level: "masters" }), { major: "Computer Science", level: "undergraduate" });
+  assert.deepEqual(programProfileSuggestions({ education_level: "undergraduate" }), { major: "", level: "" });
+  assert.deepEqual(programProfileSuggestions({ study_level: "unknown" }), { major: "", level: "" });
+});
+
+test("restriction labels use explicit catalog metadata and never program title guesses", () => {
+  assert.equal(programRestriction({ title: "Internal medicine", application: { classification: "direct_program" } }), "");
+  assert.equal(programRestriction({ application: { classification: "intermediate_doctoral_award" } }), "internal");
+  assert.equal(programRestriction({ new_applicant_availability: "not_open_for_2027_28_entry" }), "restricted");
+  assert.equal(programRestriction({ applicant_access: "unknown" }), "");
+});
 
 test("localized entry examples normalize without guessing a year from free text", () => {
   assert.equal(normalizeAdmissionCycle("осенний набор 2027 года"), "Fall 2027");

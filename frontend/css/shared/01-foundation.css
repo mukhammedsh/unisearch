@@ -36,7 +36,7 @@
   --tour-skip-bg: #F2F3F7;
   --card: var(--surface-solid);
   --text: #111827;
-  --text-muted: #64748b;
+  --text-muted: #5f6b7d;
   --line: rgba(15, 23, 42, 0.20);
   --line-strong: rgba(15, 23, 42, 0.30);
   --line-faint: rgba(15, 23, 42, 0.05);
@@ -146,6 +146,7 @@
 
 :root[data-theme="dark"] {
   --accent-strong: color-mix(in srgb, var(--accent) 80%, #fff);
+  --interaction-hover-text: #a78bfa;
   --interaction-active-text: var(--text);
   --focus-ring: var(--text);
   --accent-soft: color-mix(in srgb, var(--accent) 22%, transparent);

@@ -37,7 +37,7 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         list_options.assert_called_once_with(
             "stanford-university-usa-ca",
             search_candidates=university_service._search_query_candidates("computer science", search_lang="eng"),
-            study_level="undergraduate", page=2, limit=10,
+            study_level="undergraduate", page=2, limit=10, major=None,
         )
 
         unchanged = self.client.get(
@@ -58,6 +58,31 @@ class AdmissionsEndpointsTests(unittest.TestCase):
             with self.subTest(params=params):
                 response = self.client.get("/universities/stanford-university-usa-ca/study-options", params=params)
                 self.assertEqual(422, response.status_code)
+
+    def test_profile_subject_finds_related_course_names_and_has_its_own_etag(self):
+        endpoint = "/universities/imperial-college-london-uk/study-options"
+        params = {"major": "Computer Science", "study_level": "undergraduate", "limit": 100}
+        response = self.client.get(endpoint, params=params)
+        self.assertEqual(200, response.status_code)
+        ids = {row["id"] for row in response.json()["items"]}
+        self.assertIn("imperial-option-computing-meng", ids)
+        self.assertIn("imperial-option-computing-beng", ids)
+        self.assertFalse(any(row["title"] == "Medicine" for row in response.json()["items"]))
+        medicine = self.client.get(endpoint, params={**params, "major": "Medicine"},
+                                   headers={"If-None-Match": response.headers["ETag"]})
+        self.assertEqual(200, medicine.status_code)
+        self.assertGreater(medicine.json()["total"], 0)
+        self.assertNotIn("imperial-option-computing-meng", {row["id"] for row in medicine.json()["items"]})
+        self.assertNotEqual(response.headers["ETag"], medicine.headers["ETag"])
+        empty = self.client.get(endpoint, params={**params, "major": "Unlisted subject"})
+        self.assertEqual(0, empty.json()["total"])
+        narrowed = self.client.get(endpoint, params={**params, "search": "Security and Reliability"})
+        narrowed_ids = {row["id"] for row in narrowed.json()["items"]}
+        self.assertIn("imperial-option-computing-security-reliability-meng", narrowed_ids)
+        self.assertNotIn("imperial-option-computing-beng", narrowed_ids)
+        self.assertTrue(narrowed_ids.issubset(ids))
+        invalid = self.client.get(endpoint, params={"major": "x" * 121})
+        self.assertEqual(422, invalid.status_code)
 
     def test_study_options_searches_kazakh_aliases_without_changing_source_titles(self):
         endpoint = "/universities/stanford-university-usa-ca/study-options"
