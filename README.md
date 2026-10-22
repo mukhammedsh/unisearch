@@ -122,6 +122,8 @@ Set backend options in backend/.env. Start with [backend/.env.example](backend/.
 
 Docker Compose starts the backend and Redis; serve the static frontend separately. See [deployment and API security](docs/deployment_security.md) for hosting, reverse-proxy, CORS, and secret-handling guidance. Redis is optional for a basic local setup.
 
+After the `FIREBASE_SERVICE_ACCOUNT_UNISEARCH_B3B5F` repository secret is configured, the [Firebase Hosting workflow](.github/workflows/firebase-hosting.yml) deploys the `unisearch` site on every push to `main`. The secret must contain a service-account JSON key for an account granted Firebase Hosting Admin and Service Usage API Keys Viewer roles.
+
 ## Project structure and API
 
 | Path | Purpose |
