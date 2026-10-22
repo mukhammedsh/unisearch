@@ -55,7 +55,7 @@ test("shared institutional facts remain primary reading content without a select
   const html = renderApplicantSection(resolved, ["deadlines"]);
   assert.match(html, /January 5/);
   assert.doesNotMatch(html, /data-general-references/);
-  assert.match(html, /https:\/\/example.edu\/admissions/);
+  assert.ok(html.includes('href="https://example.edu/admissions"'));
 });
 
 test("program-keyed dates require a resolved exact program label and do not borrow another degree's date", () => {

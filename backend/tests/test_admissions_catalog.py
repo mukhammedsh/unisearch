@@ -197,6 +197,8 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertEqual(service._cycle_axis("Spring 2027", "весенний набор 2027 года"), "matched")
         self.assertEqual(service._cycle_axis("Spring 2027", "2027 жылғы көктемгі қабылдау"), "matched")
         self.assertIsNone(service._cycle("Reviewed 2027 жылғы күзгі қабылдау"))
+        self.assertEqual(service._cycle("2027    entry"), (2027, None))
+        self.assertEqual(service._cycle("2027\tentry"), (2027, None))
 
     def test_named_intake_period_matches_without_borrowing_an_academic_year(self):
         row = self.mit()["facts"][0]

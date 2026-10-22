@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram, selectAdmissionRoute, setNativeSelect } = require("./helpers/selectors");
+const { openAdmissionSelectionEditor, revealRestrictedProgram, selectAdmissionRoute, setNativeSelect } = require("./helpers/selectors");
 const { expectNoStackedGapMargins } = require("./helpers/design");
 const fs = require("node:fs");
 const path = require("node:path");
