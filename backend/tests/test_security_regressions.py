@@ -12,7 +12,7 @@ from httpx import ASGITransport, AsyncClient
 from starlette.requests import Request
 
 from app.main import app, _is_expensive_request
-from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
+from app.core.security import RedisSlidingWindowRateLimiter, is_protected_ops_request, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
@@ -78,15 +78,28 @@ class SecurityRegressionTests(unittest.TestCase):
     def test_currency_status_is_protected_ops_endpoint(self):
         client = TestClient(app)
         with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
-            res_unauth = client.get("/currency/status")
-            self.assertEqual(res_unauth.status_code, 401)
+            for path in ("/currency/status", "/currency/status/"):
+                with self.subTest(path=path):
+                    res_unauth = client.get(path)
+                    self.assertEqual(res_unauth.status_code, 401)
 
-            res_auth = client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
-            self.assertEqual(res_auth.status_code, 200)
+                    res_auth = client.get(path, headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+                    self.assertEqual(res_auth.status_code, 200)
 
         with patch("app.core.security.OPS_ADMIN_TOKEN", ""):
-            res_no_token = client.get("/currency/status")
-            self.assertEqual(res_no_token.status_code, 404)
+            for path in ("/currency/status", "/currency/status/"):
+                with self.subTest(path=path):
+                    res_no_token = client.get(path)
+                    self.assertEqual(res_no_token.status_code, 404)
+
+    def test_protected_ops_endpoints_trailing_slash_normalization(self):
+        for path in ("/ops", "/ops/", "/currency/status/", "/metrics/"):
+            with self.subTest(path=path):
+                req = Request({"type": "http", "path": path})
+                self.assertTrue(is_protected_ops_request(req))
+
+        req_health = Request({"type": "http", "path": "/health/", "query_string": b"warmup=true"})
+        self.assertTrue(is_protected_ops_request(req_health))
 
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
         client = TestClient(app)
