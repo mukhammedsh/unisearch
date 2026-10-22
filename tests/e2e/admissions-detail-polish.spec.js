@@ -102,7 +102,7 @@ test(`Imperial course titles distinguish BEng and MEng and retain duration and f
   await tab(page, "finance");
   await expect(page.locator("[data-course-tuition]")).toContainText("Home");
   await expect(page.locator("[data-course-tuition]")).toContainText("Overseas");
-  await expect(page.locator("[data-course-tuition] a").first()).toHaveAttribute("href", /^https:\/\/www.imperial.ac.uk\//);
+  await expect(page.locator("[data-course-tuition] a").first()).toHaveAttribute("href", /^https:\/\/www\.imperial\.ac\.uk\//);
   await page.locator("#detailFinance").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath(`imperial-finance-${appearance.width}-${appearance.theme}-${appearance.language}.png`) });
   await noOverflow(page);

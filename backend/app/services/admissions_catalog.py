@@ -395,7 +395,9 @@ def _cycle(value):
     localized = re.fullmatch(r"(20\d{2}) жылғы (күзгі|көктемгі) қабылдау", label)
     if localized:
         return int(localized[1]), "fall" if localized[2] == "күзгі" else "spring"
-    label = re.sub(r"\s+entry$", "", label)
+    cycle_parts = label.rsplit(None, 1)
+    if len(cycle_parts) == 2 and cycle_parts[1] == "entry":
+        label = cycle_parts[0]
     match = re.fullmatch(r"(20\d{2})", label)
     if match:
         return int(match[1]), None
