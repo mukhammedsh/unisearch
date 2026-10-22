@@ -4,6 +4,9 @@ All notable project changes should be recorded here.
 
 ## Unreleased
 
+### Deployment
+- Add automatic Firebase Hosting deployment on pushes to `main`; the workflow requires its service-account secret.
+
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
