@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 from starlette.requests import Request
 
-from app.main import app, _is_expensive_request
+from app.main import app, _is_expensive_request, _expensive_rate_limit_path
 from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
@@ -19,6 +19,17 @@ from scripts import audit_universities_data
 
 
 class SecurityRegressionTests(unittest.TestCase):
+    def test_expensive_rate_limit_path_normalizes_trailing_slashes_and_admissions_context(self):
+        req_sort_clean = Request({"type": "http", "method": "POST", "path": "/universities/ai-sort"})
+        req_sort_slash = Request({"type": "http", "method": "POST", "path": "/universities/ai-sort/"})
+        self.assertEqual(_expensive_rate_limit_path(req_sort_clean), "/universities/ai-sort")
+        self.assertEqual(_expensive_rate_limit_path(req_sort_slash), "/universities/ai-sort")
+
+        req_mit = Request({"type": "http", "method": "POST", "path": "/universities/mit-usa-cambridge/admissions-context"})
+        req_harvard_slash = Request({"type": "http", "method": "POST", "path": "/universities/harvard-usa-cambridge/admissions-context/"})
+        self.assertEqual(_expensive_rate_limit_path(req_mit), "/universities/{id}/admissions-context")
+        self.assertEqual(_expensive_rate_limit_path(req_harvard_slash), "/universities/{id}/admissions-context")
+
     def test_admissions_context_post_is_classified_as_expensive(self):
         for path in (
             "/universities/mit-usa-cambridge/admissions-context",
