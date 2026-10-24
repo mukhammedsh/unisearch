@@ -88,6 +88,23 @@ class SecurityRegressionTests(unittest.TestCase):
             res_no_token = client.get("/currency/status")
             self.assertEqual(res_no_token.status_code, 404)
 
+    def test_protected_ops_endpoints_with_trailing_slashes_require_auth(self):
+        client = TestClient(app)
+        cases = [
+            ("/currency/status/", 200),
+            ("/ops/runtime/", 200),
+            ("/ops/", 404),
+            ("/health/?warmup=true", 200),
+            ("/health/?warmup=1", 200),
+        ]
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
+            for path, expected_auth_status in cases:
+                with self.subTest(path=path):
+                    res = client.get(path)
+                    self.assertEqual(res.status_code, 401)
+                    res_auth = client.get(path, headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+                    self.assertEqual(res_auth.status_code, expected_auth_status)
+
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
         client = TestClient(app)
         with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:
