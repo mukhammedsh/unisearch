@@ -185,7 +185,7 @@ test("accepted profile overviews extend Stanford reading without displaying cata
     const html = renderStudyOptionOverview({ selected_option: { ...mba, overviews: [{ text: profile.attributes.description, source_ids: profile.source_ids }] }, facts: [], fact_groups: {}, sources: stanford.sources });
     assert.match(html, /data-program-overview-sources/);
     assert.doesNotMatch(html, /data-program-original/);
-    assert.match(html, /gsb\.stanford\.edu/);
+    assert.ok(html.includes("gsb.stanford.edu"));
     if (language === "eng") assert.ok(html.includes("Two-year, full-time MBA"));
   }
 });
@@ -275,7 +275,7 @@ test("structured Imperial curricula retain source links and option scope", async
     const html = renderStudyOptionOverview(resolved);
     assert.match(html, /data-program-overview-sources/);
     assert.doesNotMatch(html, /data-program-original|Business Analytics/);
-    assert.match(html, /https:\/\/www\.imperial\.ac\.uk/);
+    assert.ok(html.includes("https://www.imperial.ac.uk"));
     assert.doesNotMatch(html, /&quot;study_periods_pathways_and_components&quot;/);
     assert.doesNotMatch(html, /Selector mode|Study periods pathways and components|Section label/);
     assert.match(html, /12 (?:months|месяцев|ай)/, `${language}: duration from the published key facts`);

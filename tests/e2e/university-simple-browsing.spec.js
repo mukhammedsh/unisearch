@@ -485,7 +485,6 @@ for (const item of [journeys[0], journeys[1], journeys[2]]) {
     await expectAccessibleTextContrast(selectProgram);
     const resting = await selectProgram.evaluate(button => {
       const card = button.closest(".program-card").getBoundingClientRect();
-      const action = button.closest(".program-card__select-actions").getBoundingClientRect();
       const bounds = button.getBoundingClientRect();
       const heading = button.closest(".program-card").querySelector(".program-card__toggle").getBoundingClientRect();
       return { top: bounds.top - heading.bottom, right: card.right - bounds.right, bottom: card.bottom - bounds.bottom, background: getComputedStyle(button).backgroundColor };

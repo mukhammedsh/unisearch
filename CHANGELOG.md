@@ -21,6 +21,9 @@ All notable project changes should be recorded here.
 - Keep the application route unselected after choosing a program until the applicant confirms a route or supplies context that resolves it.
 - Refine reviewed program summaries, source disclosures, and the handling of scoped price ranges and unknown costs.
 
+### Security
+- Update the backend lock files to patched `filelock` 4.2.1 and `setuptools` 84.1.0 releases.
+
 ## 9.2.0 (2026-10-22) - Catalog pricing and applicant context
 
 ### Added

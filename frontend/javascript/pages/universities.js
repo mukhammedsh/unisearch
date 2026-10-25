@@ -194,7 +194,6 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
         return `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(note || t("universities.cost.unavailable"))}</span>${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}</div>`;
     }
     const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
-    const preferredLocale = { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US";
     return `<span class="ui-tooltip-wrap uni-cost-tooltip">
         <button type="button" class="ui-tooltip-trigger uni-price${secondary ? " uni-price--with-conversion" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${primary}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
             <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>${secondary ? "" : ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span>`}${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
