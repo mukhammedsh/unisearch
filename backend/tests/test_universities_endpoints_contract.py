@@ -500,6 +500,9 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             "Швейцарская высшая техническая школа Цюриха",
             detail.json().get("name"),
         )
+        program = detail.json()["academics"]["programs"][0]
+        self.assertEqual(program["name"], "Компьютерные науки")
+        self.assertEqual(program["source_name"], "Computer Science")
 
     def test_ai_sort_uni_chance_and_roi_contracts(self):
         university_id = self._first_university_id()

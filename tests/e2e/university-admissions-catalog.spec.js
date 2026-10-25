@@ -273,7 +273,7 @@ for (const language of ["eng", "rus"]) {
   });
 }
 
-test("program search opens a sole route and manual context stays out of the saved profile", async ({ page }) => {
+test("program search resolves its sole route from applicant context without changing the saved profile", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
@@ -298,13 +298,14 @@ test("program search opens a sole route and manual context stays out of the save
   const program = page.locator('#admissionsProgramList button[data-study-option="imperial-option-computing-meng"]');
   await expect(program).toBeVisible();
   await program.click();
+  await program.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
-  await page.locator("#admissionsViewRequirements").click();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
-  await expect(page.locator("select#admissionsRoute")).toHaveCount(0);
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await expect(page.locator("#admissionsRoute")).toBeEnabled();
 
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsApplicant", "first_year");
@@ -318,7 +319,11 @@ test("program search opens a sole route and manual context stays out of the save
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBe(originalProfile);
 
   await page.goBack();
-  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.goBack();
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   await expect(page.locator("#admissionsCycle")).toHaveValue("");

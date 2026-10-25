@@ -143,11 +143,12 @@ const visibleAdmissionContextByUniversity = new Map();
 
 export function selectAdmissionProgram(university, program) {
   const universityId = String(university?.id || "").trim();
-  const programId = normalizeProgramToken(program?.id);
-  if (!universityId || !programId) return;
-  admissionProgramSelectionByUniversity.set(universityId, normalizeProgramToken(program.name || program.program_name || program.id));
+  const programId = String(program?.id || "").trim();
+  const programName = String(program?.source_name || program?.name || program?.program_name || "").trim();
+  if (!universityId || (!programId && !programName)) return;
+  admissionProgramSelectionByUniversity.set(universityId, normalizeProgramToken(programName || programId));
   const params = new URLSearchParams(window.location.search);
-  params.set("admission_program", String(program.id));
+  params.set("admission_program", programId || programName);
   const level = Array.isArray(program.study_levels) ? program.study_levels[0] : (program.study_level || program.level);
   const levelKey = normalizeLevelKey(level);
   admissionStudyLevelSelectionByUniversity.set(universityId, levelKey);
@@ -182,21 +183,29 @@ export function getAdmissionContextProfile(university, baseProfile = loadProfile
     const levels = Array.isArray(program?.study_levels) ? program.study_levels : [program?.study_level || program?.level].filter(Boolean);
     return !profileLevel || profileLevel === "any" || levels.some((level) => normalizeLevelKey(level) === profileLevel);
   };
-  const selectedProgram = programs.find((program) => String(program?.id || "") === queryProgram)
-    || programs.find((program) => String(program?.id || "") === String(saved.programId || ""))
-    || programs.find((program) => normalizeProgramToken(program?.name || program?.program_name) === normalizeProgramToken(trProgramName(saved.programName || saved.program_name)))
+  const queryNameMatches = queryProgram ? programs.filter((program) =>
+    [program?.source_name, program?.name, program?.program_name].some((name) => String(name || "").trim() === queryProgram)) : [];
+  const selectedProgram = (queryProgram && programs.find((program) => String(program?.id || "") === queryProgram))
+    || (queryNameMatches.length === 1 ? queryNameMatches[0] : null)
+    || (saved.programId && programs.find((program) => String(program?.id || "") === String(saved.programId)))
+    || programs.find((program) => [program?.source_name, program?.name, program?.program_name]
+      .some((name) => normalizeProgramToken(name) === normalizeProgramToken(trProgramName(saved.programName || saved.program_name))))
     || programs.find((program) => programMatchesLevel(program) && normalizeProgramToken(program?.name || program?.program_name) === normalizeProgramToken(trProgramName(baseProfile?.major)));
   if (selectedProgram) {
     const rawLevel = Array.isArray(selectedProgram.study_levels) ? selectedProgram.study_levels[0] : (selectedProgram.study_level || selectedProgram.level);
     profile.study_level = rawLevel || profile.study_level;
     profile.studyLevel = profile.study_level;
     const previousChoice = profile.selectedAdmissionChoices?.[id] || saved;
-    if (queryProgram === String(selectedProgram.id || "")) {
-      const sameProgram = String(previousChoice.programId || "") === String(selectedProgram.id || "");
+    const selectedId = String(selectedProgram.id || "");
+    const selectedName = String(selectedProgram.source_name || selectedProgram.name || selectedProgram.program_name || "").trim();
+    if (queryProgram && (queryProgram === selectedId || queryProgram === selectedName || queryProgram === String(selectedProgram.name || "").trim())) {
+      const sameProgram = selectedId
+        ? String(previousChoice.programId || "") === selectedId
+        : String(previousChoice.programName || previousChoice.program_name || "").trim() === selectedName;
       const rawLevelKey = normalizeLevelKey(rawLevel);
       const applicableCategories = getVisibleAdmissionCategories(
         getAdmissionCategories(university).filter((category) => categoryMatchesStudyLevel(category, rawLevelKey)),
-        normalizeProgramToken(selectedProgram.name || selectedProgram.program_name || selectedProgram.id),
+        normalizeProgramToken(selectedName || selectedProgram.id),
         university,
       );
       const savedChoiceCategoryId = String(previousChoice.categoryId || previousChoice.category_id || "");
@@ -205,8 +214,8 @@ export function getAdmissionContextProfile(university, baseProfile = loadProfile
       profile.selectedAdmissionChoices = {
         ...(profile.selectedAdmissionChoices || {}),
         [id]: sameProgram || legacyChoiceApplies
-          ? { ...previousChoice, programId: selectedProgram.id }
-          : { programId: selectedProgram.id },
+          ? { ...previousChoice, ...(selectedId ? { programId: selectedId } : { programName: selectedName }) }
+          : selectedId ? { programId: selectedId } : { programName: selectedName },
       };
     }
   }
@@ -236,7 +245,7 @@ export function getAdmissionContextProfile(university, baseProfile = loadProfile
   const currentLevel = normalizeLevelKey(profile.study_level || profile.studyLevel);
   const scopedCategories = getVisibleAdmissionCategories(
     categories.filter((category) => categoryMatchesStudyLevel(category, currentLevel)),
-    selectedProgram ? normalizeProgramToken(selectedProgram.name || selectedProgram.program_name || selectedProgram.id) : GENERAL_PROGRAM_KEY,
+    selectedProgram ? normalizeProgramToken(selectedProgram.source_name || selectedProgram.name || selectedProgram.program_name || selectedProgram.id) : GENERAL_PROGRAM_KEY,
     university,
   );
   const routes = [...new Set(scopedCategories.map((category) => String(category.applicant_route || "").trim()).filter(Boolean))];
@@ -362,11 +371,15 @@ function selectedAdmissionContext(university, profile) {
     const levels = Array.isArray(program?.study_levels) ? program.study_levels : [program?.study_level || program?.level].filter(Boolean);
     return !profileLevel || profileLevel === "any" || levels.some((level) => normalizeLevelKey(level) === profileLevel);
   };
-  const storedProgram = programs.find((program) => String(program?.id || "") === queryProgramId)
-    || programs.find((program) => String(program?.id || "") === String(storedChoice.programId || ""))
-    || programs.find((program) => normalizeProgramToken(program?.name || program?.program_name) === normalizeProgramToken(trProgramName(storedChoice.programName || storedChoice.program_name)))
+  const queryNameMatches = queryProgramId ? programs.filter((program) => [program?.source_name, program?.name, program?.program_name]
+    .some((name) => String(name || "").trim() === queryProgramId)) : [];
+  const storedProgram = (queryProgramId && programs.find((program) => String(program?.id || "") === queryProgramId))
+    || (queryNameMatches.length === 1 ? queryNameMatches[0] : null)
+    || (storedChoice.programId && programs.find((program) => String(program?.id || "") === String(storedChoice.programId)))
+    || programs.find((program) => [program?.source_name, program?.name, program?.program_name]
+      .some((name) => normalizeProgramToken(name) === normalizeProgramToken(trProgramName(storedChoice.programName || storedChoice.program_name))))
     || programs.find((program) => programMatchesLevel(program) && normalizeProgramToken(program?.name || program?.program_name) === normalizeProgramToken(trProgramName(profile?.major)));
-  if (storedProgram) admissionProgramSelectionByUniversity.set(universityId, normalizeProgramToken(storedProgram.name || storedProgram.program_name || storedProgram.id));
+  if (storedProgram) admissionProgramSelectionByUniversity.set(universityId, normalizeProgramToken(storedProgram.source_name || storedProgram.name || storedProgram.program_name || storedProgram.id));
   const storedProgramLevels = storedProgram
     ? (Array.isArray(storedProgram.study_levels) ? storedProgram.study_levels : [storedProgram.study_level || storedProgram.level].filter(Boolean))
       .map(normalizeLevelKey)
@@ -385,7 +398,7 @@ function selectedAdmissionContext(university, profile) {
   if (queryLevel) admissionStudyLevelSelectionByUniversity.set(universityId, queryLevel);
   else admissionStudyLevelSelectionByUniversity.delete(universityId);
   const selectedProgram = storedProgram
-    ? normalizeProgramToken(storedProgram.name || storedProgram.program_name || storedProgram.id)
+    ? normalizeProgramToken(storedProgram.source_name || storedProgram.name || storedProgram.program_name || storedProgram.id)
     : GENERAL_PROGRAM_KEY;
   if (storedProgram) admissionProgramSelectionByUniversity.set(universityId, selectedProgram);
   else admissionProgramSelectionByUniversity.delete(universityId);
@@ -1595,7 +1608,7 @@ function getStudyProgramOptions(university, categories, activeLevelKey) {
         ? progLevels.map(normalizeLevelKey)
         : [normalizeLevelKey(program?.level || "bachelor")];
       if (activeLevelKey !== "all" && !normalizedLevels.includes(activeLevelKey)) return;
-      programNames.push(program?.name || program?.program_name);
+      programNames.push(program?.source_name || program?.name || program?.program_name);
     });
   }
   categories.forEach((category) => {
@@ -1622,7 +1635,8 @@ function categoryMatchesProgram(category, programKey, university) {
   const wanted = normalizeProgramToken(programKey);
   if (!wanted) return false;
   const selectedProgram = (Array.isArray(university?.academics?.programs) ? university.academics.programs : [])
-    .find((program) => normalizeProgramToken(program?.name || program?.program_name) === wanted);
+    .find((program) => [program?.source_name, program?.name, program?.program_name]
+      .some((name) => normalizeProgramToken(name) === wanted));
   const programId = normalizeProgramToken(selectedProgram?.id || selectedProgram?.course_number);
   return categoryTokens(category).some((token) => token === wanted || (programId && token === programId));
 }

@@ -30,16 +30,14 @@ for (const presentation of presentations) {
       await open(page, presentation, option);
       const description = page.locator('#admissionsStudyOverview > .program-card__description');
       await expect(description).toBeVisible();
-      if (presentation.language !== 'eng') {
-        await expect(description).toContainText(/[\u0400-\u04ff]/);
-        const original = page.locator('#admissionsStudyOverview [data-program-original]');
-        await original.locator(':scope > summary').click();
-        await expect(original.locator('p').first()).toBeVisible();
-        await expect(original.locator('a[href^="https://"]')).not.toHaveCount(0);
-      } else await expect(page.locator('[data-program-overview-sources] a')).not.toHaveCount(0);
+      if (presentation.language !== 'eng') await expect(description).toContainText(/[\u0400-\u04ff]/);
+      const programSources = page.locator('#admissionsStudySources .admissions-programs__references');
+      await programSources.locator(':scope > summary').click();
+      await expect(programSources.locator('a[href^="https://"]')).not.toHaveCount(0);
+      await expect(programSources.locator('[data-program-overview-sources] p')).toHaveCount(0);
       if (option === 'mit-bs-sts') await expect(description).toContainText(/second major|вторую специальность|екінші мамандық/);
       if (['mit-chemical-engineering-sm', 'mit-hst-terminal-sm'].includes(option)) {
-        await page.locator('#admissionsViewRequirements').click();
+        await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
         await expect(page.locator('[data-no-application-route]')).toBeVisible();
         await expect(page.locator('#admissionsContextForm')).toBeHidden();
         await expect(page.locator('#admissionsSaveChoice')).toBeDisabled();

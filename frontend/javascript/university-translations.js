@@ -211,7 +211,8 @@ export function translateFundingAwardField(award, field, value) {
   const awardId = String(award?.id || "").trim();
   const fieldKey = String(field || "").trim();
   if (!awardId || !fieldKey) return raw;
-  return t(`university.finance.award.copy.${awardId}.${fieldKey}`, raw);
+  const localized = translateAdmissionSummary(raw) || translateAdmissionText(raw, raw);
+  return t(`university.finance.award.copy.${awardId}.${fieldKey}`, localized);
 }
 
 export function translateTrackLabel(value, fallback = "") {

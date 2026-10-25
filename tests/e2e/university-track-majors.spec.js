@@ -65,19 +65,21 @@ async function chooseOption(page, id, query, level) {
   await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   const title = await option.locator(".admissions-programs__option-title").innerText();
-  const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
   await option.click();
+  const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+  await option.locator("xpath=..").locator("[data-select-study-option]").click();
   expect((await response).ok()).toBe(true);
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
-  await expect(page.locator("#admissionsViewRequirements")).toBeEnabled();
+  await expect(page.locator("#admissionsViewRequirements")).toHaveCount(0);
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe(id);
 }
 
 async function applyContext(page, route, applicant = "", cycle = "", fee = "unknown") {
   await openAdmission(page);
-  await selectAdmissionRoute(page, route);
+  await setNativeSelect(page, "admissionsRoute", route);
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsApplicant", applicant);
   await setNativeSelect(page, "admissionsFee", fee);
@@ -288,7 +290,7 @@ test("MIT program requires an explicit admission route and keeps funding separat
   await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeVisible();
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
-  await expect(page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger")).toBeVisible();
+  await expect(page.locator("#admissionsContext")).toContainText("Choose a published path to open its requirements and process. No profile is needed.");
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option")).toHaveCount(3);
@@ -457,7 +459,7 @@ test("MIT catalog Architecture shares institutional first-year and transfer rout
   await openCatalog(page);
   await chooseOption(page, "mit-bs-4", "Architecture", "undergraduate");
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("Architecture (Course 4)");
+  await expect(page.locator("#admissionsStudySources a[href^='https://']")).not.toHaveCount(0);
   await openAdmission(page);
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);

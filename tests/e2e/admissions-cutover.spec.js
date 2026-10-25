@@ -113,7 +113,8 @@ async function searchAndChooseMitCourse(page) {
   await expect(option).toBeVisible();
   await option.click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(option.locator("xpath=..").locator(".program-card__body")).toBeVisible();
+  await option.locator("xpath=..").locator("[data-select-study-option]").click();
 }
 
 test("profile v2 migration resets only reviewed legacy choices and an explicit MIT save preserves global defaults", async ({ page }) => {
@@ -145,7 +146,7 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expect(page.locator("#detailCard")).not.toContainText("STALE V3 DETAIL CACHE");
 
   await searchAndChooseMitCourse(page);
-  await page.locator("#admissionsViewRequirements").click();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await selectCustomOption(page, "#admissionsRoute", "mit-first-year");
   await openAdvanced(page);
@@ -291,7 +292,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await page.goto(`/university.html?id=${STANFORD}&admission_option=stanford-option-cs-ms&admission_level=masters`);
   await expectUniversityReady(page);
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await page.locator("#admissionsViewRequirements").click();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");

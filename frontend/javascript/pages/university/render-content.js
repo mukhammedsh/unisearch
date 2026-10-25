@@ -267,7 +267,7 @@ export function renderCoverageSection({ container, coverageByLevel }) {
 }
 
 const programSearchQueryByUniversity = new Map();
-const programOpenKeyByUniversity = new Map();
+const programOpenKeysByUniversity = new Map();
 const programStudyLevelSelectionByUniversity = new Map();
 
 function normalizeProgramLevelKey(rawLevel) {
@@ -317,12 +317,13 @@ export function resolveProgramCoverage({ coverageByProgram = [], program = null 
   if (!program || typeof program !== "object") return null;
   const rows = Array.isArray(coverageByProgram) ? coverageByProgram : [];
   const programId = String(program.id || program.program_id || program.course_number || "").trim();
-  const programName = normalizedProgramCoverageText(program.name || program.program_name);
+  const programNames = [program.source_name, program.name, program.program_name]
+    .map(normalizedProgramCoverageText).filter(Boolean);
   return rows.find((row) => {
     if (!row || typeof row !== "object") return false;
     const rowId = String(row.program_id || "").trim();
     if (programId && rowId && rowId === programId) return true;
-    return Boolean(programName && normalizedProgramCoverageText(row.program_name) === programName);
+    return programNames.includes(normalizedProgramCoverageText(row.program_name));
   }) || null;
 }
 
@@ -345,12 +346,12 @@ export function resolveProgramByName(programs, names, { allowPartial = false } =
   if (!targets.length) return null;
   const namedPrograms = candidates.map((program) => ({
     program,
-    name: normalizedProgramCoverageText(program?.name || program?.program_name),
-  })).filter((entry) => entry.name);
-  const exactMatches = namedPrograms.filter(({ name }) => targets.includes(name));
+    names: [program?.source_name, program?.name, program?.program_name].map(normalizedProgramCoverageText).filter(Boolean),
+  })).filter((entry) => entry.names.length);
+  const exactMatches = namedPrograms.filter(({ names }) => names.some((name) => targets.includes(name)));
   if (exactMatches.length === 1) return exactMatches[0].program;
   if (exactMatches.length > 1 || !allowPartial) return null;
-  const partialMatches = namedPrograms.filter(({ name }) => targets.some((target) => name.includes(target) || target.includes(name)));
+  const partialMatches = namedPrograms.filter(({ names }) => names.some((name) => targets.some((target) => name.includes(target) || target.includes(name))));
   return partialMatches.length === 1 ? partialMatches[0].program : null;
 }
 
@@ -656,7 +657,7 @@ function getAvailableProgramLevels(programs) {
 }
 
 const hiddenProgramMetadata = new Set([
-  "id", "url", "source_url", "source_urls", "catalog_url", "deadline_source_url", "tuition_source_url",
+  "id", "source_name", "url", "source_url", "source_urls", "catalog_url", "deadline_source_url", "tuition_source_url",
   "verified_at", "tuition_verified_at", "cycle", "tuition_cycle", "requirements_cycle",
   "currency", "deadlines", "scholarship_eligibility",
   "admission_route_id", "price_facts", "tuition_total_usd", "selection_timing",
@@ -884,14 +885,15 @@ function bindProgramCardEvents({
   universityKey,
   expandLabel,
   collapseLabel,
-  displayItems,
   coverageProgram,
+  selectedProgram,
   programs,
   onProgramAdmissionSelected,
   admissionsData,
   profileMajor,
 }) {
-  const pendingCloseByCard = new WeakMap();
+  const openKeys = programOpenKeysByUniversity.get(universityKey) || new Set();
+  programOpenKeysByUniversity.set(universityKey, openKeys);
   const prefersReducedMotion = () =>
     typeof window !== "undefined"
     && typeof window.matchMedia === "function"
@@ -899,58 +901,48 @@ function bindProgramCardEvents({
   const setToggleState = (button, card, body, isOpen) => {
     const title = card.querySelector(".program-card__title")?.textContent?.trim() || "";
     const label = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
-    const pendingClose = pendingCloseByCard.get(card);
-    if (pendingClose) {
-      clearTimeout(pendingClose);
-      pendingCloseByCard.delete(card);
-    }
-    body.classList.remove("program-card__body--enter", "program-card__body--exit");
+    body.getAnimations?.().forEach((animation) => animation.cancel());
+    const from = body.getBoundingClientRect?.().height || 0;
     card.classList.toggle("is-open", isOpen);
     button.setAttribute("aria-expanded", isOpen ? "true" : "false");
     button.setAttribute("aria-label", label);
+    body.inert = !isOpen;
+    body.setAttribute("aria-hidden", String(!isOpen));
     if (isOpen) {
       body.removeAttribute("hidden");
-      if (!prefersReducedMotion()) body.classList.add("program-card__body--enter");
-    } else if (prefersReducedMotion()) {
+    } else if (prefersReducedMotion() || !body.animate) {
       body.setAttribute("hidden", "");
-    } else {
-      body.classList.add("program-card__body--exit");
-      pendingCloseByCard.set(card, setTimeout(() => {
-        body.setAttribute("hidden", "");
-        body.classList.remove("program-card__body--exit");
-        pendingCloseByCard.delete(card);
-      }, 160));
     }
+    if (prefersReducedMotion() || !body.animate) return;
+    const to = isOpen ? body.scrollHeight : 0;
+    if (from === to) return;
+    const duration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-medium")) || 240;
+    const animation = body.animate([
+      { height: `${from}px`, opacity: isOpen ? 0 : 1 },
+      { height: `${to}px`, opacity: isOpen ? 1 : 0 },
+    ], { duration, easing: "ease-in-out" });
+    if (!isOpen) animation.onfinish = () => {
+      if (!card.classList.contains("is-open")) body.setAttribute("hidden", "");
+    };
   };
 
   container.querySelectorAll("[data-program-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
-      motionPress(button);
       const card = button.closest(".program-card");
       const body = card?.querySelector(".program-card__body");
       if (!card || !body) return;
       const wasOpen = card.classList.contains("is-open");
-      container.querySelectorAll(".program-card.is-open").forEach((other) => {
-        if (other === card) return;
-        const otherButton = other.querySelector("[data-program-toggle]");
-        const otherBody = other.querySelector(".program-card__body");
-        if (otherButton && otherBody) setToggleState(otherButton, other, otherBody, false);
-      });
       setToggleState(button, card, body, !wasOpen);
-      programOpenKeyByUniversity.set(universityKey, !wasOpen ? (card.getAttribute("data-program-key") || "") : "");
-      const coverageHost = container.querySelector("[data-program-coverage-host]");
-      const expandedKey = !wasOpen ? (card.getAttribute("data-program-key") || "") : "";
-      const activeCoverageProgram = resolveDisplayedCoverageProgram(displayItems, coverageProgram, expandedKey);
-      if (coverageHost) {
-        coverageHost.innerHTML = renderProgramCoverage(university?.coverage_by_program, activeCoverageProgram);
-      }
+      const key = card.getAttribute("data-program-key") || "";
+      if (key && !wasOpen) openKeys.add(key);
+      else openKeys.delete(key);
       if (!wasOpen) applyPercentWidths(card);
     });
   });
 
   container.querySelectorAll("[data-program-admission]").forEach((button) => {
     button.addEventListener("click", () => {
-      const selected = programs.find((program) => String(program.id || "") === button.dataset.programAdmission);
+      const selected = programs.find((program) => String(program.id || program.source_name || program.name || "") === button.dataset.programAdmission);
       if (selected && typeof onProgramAdmissionSelected === "function") onProgramAdmissionSelected(selected);
     });
   });
@@ -960,7 +952,7 @@ function bindProgramCardEvents({
       motionPress(btn);
       const lvl = String(btn.getAttribute("data-program-level") || "").trim() || "all";
       programStudyLevelSelectionByUniversity.set(universityKey, lvl);
-      renderProgramsSection({ admissionsData, container, university, profileMajor, coverageProgram, onProgramAdmissionSelected });
+      renderProgramsSection({ admissionsData, container, university, profileMajor, coverageProgram, selectedProgram, onProgramAdmissionSelected });
     });
   });
 }
@@ -969,6 +961,7 @@ function bindProgramSearchEvents({ container, universityKey }) {
   const searchInput = container.querySelector("[data-program-search]");
   const searchClear = container.querySelector("[data-program-search-clear]");
   const searchEmpty = container.querySelector("[data-program-empty]");
+  const searchForm = container.querySelector("[data-program-search-form]");
   const applyProgramFilter = () => {
     const queryTokens = tokenizeName(searchInput ? searchInput.value : "");
     let visibleCount = 0;
@@ -991,6 +984,10 @@ function bindProgramSearchEvents({ container, universityKey }) {
       else searchClear.setAttribute("hidden", "");
     }
   };
+  searchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyProgramFilter();
+  });
   if (searchInput) {
     searchInput.value = programSearchQueryByUniversity.get(universityKey) || "";
     searchInput.addEventListener("input", () => {
@@ -1023,6 +1020,7 @@ export function renderProgramsSection({
   university,
   profileMajor = "",
   coverageProgram = null,
+  selectedProgram = null,
   onProgramAdmissionSelected = null,
 }) {
   if (!container) return;
@@ -1062,6 +1060,7 @@ export function renderProgramsSection({
       return majorTokenSets.some((tokens) =>
         tags.includes(tokens.join(" ")) || tokens.every((token) => nameTokens.has(token)));
     };
+    const selectedKey = String(selectedProgram?.id || selectedProgram?.source_name || selectedProgram?.name || "").trim();
     const items = programs.map((program, originalIdx) => {
       const title = trProgramName(program.name || "")
         || unknownFieldText("placeholder.field.program_name", "Program name");
@@ -1079,20 +1078,24 @@ export function renderProgramsSection({
       return {
         program,
         originalIdx,
-        key: normalizeSignalKey(program?.name) || `program-${originalIdx}`,
+        key: normalizeSignalKey(program?.source_name || program?.name) || `program-${originalIdx}`,
         title,
         summaryText,
-        haystack: normalizeSignalKey(`${title} ${summaryText} ${program?.name || ""}`),
+        haystack: normalizeSignalKey(`${title} ${summaryText} ${program?.name || ""} ${program?.source_name || ""}`),
+        isSelected: Boolean(selectedKey && selectedKey === String(program?.id || program?.source_name || program?.name || "").trim()),
         isMajorMatch: programMatchesMajor(program),
       };
-    }).sort((a, b) => Number(b.isMajorMatch) - Number(a.isMajorMatch));
-    const storedOpenKey = programOpenKeyByUniversity.get(universityKey) || "";
+    }).sort((a, b) => Number(b.isSelected) - Number(a.isSelected) || Number(b.isMajorMatch) - Number(a.isMajorMatch));
+    const storedOpenKeys = programOpenKeysByUniversity.get(universityKey) || new Set();
 
     const availableLevels = getAvailableProgramLevels(programs);
     let activeLevelStored = programStudyLevelSelectionByUniversity.get(universityKey);
     if (!activeLevelStored) {
       const profileStudyLevel = normalizeProgramLevelKey(loadProfile()?.studyLevel);
-      if (availableLevels.some((l) => l.key === profileStudyLevel)) {
+      const selectedLevel = selectedProgram ? getProgramLevelKeys(selectedProgram).find((key) => availableLevels.some((level) => level.key === key)) : "";
+      if (selectedLevel) {
+        activeLevelStored = selectedLevel;
+      } else if (availableLevels.some((l) => l.key === profileStudyLevel)) {
         activeLevelStored = profileStudyLevel;
       } else if (availableLevels.some((l) => l.key === "bachelor")) {
         activeLevelStored = "bachelor";
@@ -1106,8 +1109,6 @@ export function renderProgramsSection({
     const displayItems = availableLevels.length > 1
       ? items.filter((item) => programMatchesStudyLevel(item.program, activeLevelKey))
       : items;
-    const displayedCoverageProgram = resolveDisplayedCoverageProgram(displayItems, coverageProgram, storedOpenKey);
-
     const levelFilterHtml = availableLevels.length > 1
       ? `
         <div class="programs-level-filter" role="group" aria-label="${escapeHtmlAttr(t("university.programs.filter_by_level", "Filter programs by degree level"))}">
@@ -1121,30 +1122,42 @@ export function renderProgramsSection({
 
     container.innerHTML = `
       ${levelFilterHtml}
-      <div class="program-search">
-        <label for="program-search-input" class="visually-hidden">${escapeHtml(t("university.programs.search_label", "Search programs"))}</label>
-        ${renderInlineIcon("magnifying-glass", 18, "program-search__icon")}
-        <input
-          type="search"
-          id="program-search-input"
-          class="program-search__input"
-          placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search programs..."))}"
-          aria-label="${escapeHtmlAttr(t("university.programs.search_label", "Search programs"))}"
-          autocomplete="off"
-          data-program-search
-        />
-        <button type="button" class="program-search__clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
-          ${renderInlineIcon("x-mark", 16)}
-        </button>
-      </div>
+      <form class="admissions-programs__toolbar admissions-programs__toolbar--catalog" data-program-search-form>
+        <div class="admissions-context__field">
+          <label for="program-search-input">${escapeHtml(t("university.admissions.catalog.search_label", "Study option or subject"))}</label>
+          <span class="program-search">
+            ${renderInlineIcon("magnifying-glass", 18, "program-search__icon")}
+            <input
+              type="search"
+              id="program-search-input"
+              class="program-search__input"
+              maxlength="200"
+              placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search programs..."))}"
+              autocomplete="off"
+              data-program-search
+            />
+            <button type="button" class="program-search__clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
+              ${renderInlineIcon("x-mark", 16)}
+            </button>
+          </span>
+        </div>
+        <button type="submit" data-program-search-submit>${escapeHtml(t("university.admissions.catalog.search", "Search"))}</button>
+      </form>
       <div class="program-list" role="list">
         ${displayItems.map((item, displayIdx) => {
-          const { program, key, title, summaryText, haystack } = item;
-          const isOpen = key === storedOpenKey;
+          const { program, key, title, haystack } = item;
+          const isOpen = storedOpenKeys.has(key);
           const matchedSignals = signalsByProgram.get(item.originalIdx) || [];
-          const sourceUrl = safeUrl(program.url || program.source_url);
-          const catalogUrl = safeUrl(program.catalog_url || program.source_url);
+          const sourceUrl = safeUrl(program.url);
+          const catalogUrl = safeUrl(program.catalog_url);
+          const referenceUrl = safeUrl(program.source_url);
+          const tuitionSourceUrl = safeUrl(program.tuition_source_url);
+          const deadlineSourceUrl = safeUrl(program.deadline_source_url);
           const description = trTrackDescription(university?.id, "", program.description || "");
+          const originalTitle = String(program.source_name || program.name || "").trim();
+          const original = title !== originalTitle ? originalTitle : "";
+          const kicker = [...getProgramLevelsList(program).map(trStudyLevel), String(program.degree_type || "").trim()].filter(Boolean).join(" · ");
+          const selectionToken = String(program.id || originalTitle).trim();
           const bodyId = `program-body-${displayIdx}`;
 
           const allRows = [
@@ -1179,6 +1192,7 @@ export function renderProgramsSection({
               value: formatProgramValue("study_mode", program.study_mode, university?.id),
             },
           ].filter(({ rawValue }) => rawValue != null && rawValue !== "" && (!Array.isArray(rawValue) || rawValue.length));
+          const basicRowCount = allRows.length;
           Object.entries(program).forEach(([k, v]) => {
             if (hiddenProgramMetadata.has(k) || knownKeys.has(k) || isMajorTagField(k)) return;
             if (v === null || v === undefined || v === "" || (typeof v === "object" && (!Array.isArray(v) || !v.length))) return;
@@ -1189,11 +1203,30 @@ export function renderProgramsSection({
               value: formatProgramValue(k, v, university?.id),
             });
           });
+          const subjectTags = [
+            ...formatListValue("major_tags", program.major_tags, university?.id),
+            ...formatListValue("majors", program.majors, university?.id),
+            ...formatListValue("applicable_majors", program.applicable_majors, university?.id),
+          ].filter((part, pos, parts) => part && parts.indexOf(part) === pos);
+          const directions = subjectTags.length
+            ? `<p class="program-card__description"><span class="program-card-label">${escapeHtml(t("university.programs.field.subjects"))}:</span> ${subjectTags.map(escapeHtml).join(" · ")}</p>` : "";
+          const renderRows = (rows, className = "", plainValues = false) => rows.length ? `<dl class="program-card-rows${className ? ` ${className}` : ""}">
+            ${rows.map((row) => `<div class="program-card-row"><dt class="program-card-label">${escapeHtml(row.label)}</dt><dd${plainValues ? ' class="program-card-value"' : ""}>${plainValues ? escapeHtml(row.value) : renderValueCell(row.label, row.key, row.rawValue, row.value, university?.id)}</dd></div>`).join("")}</dl>` : "";
+          const signalsHtml = renderSignalRows(matchedSignals, admissionsData, institutionWideOnly);
+          const sourceLinks = [
+            [sourceUrl, t("university.programs.official_page", "Official program page")],
+            [catalogUrl, t("university.programs.official_catalog", "Official degree catalog")],
+            [referenceUrl, t("university.admissions.reading.official_source", "Official source")],
+            [tuitionSourceUrl, t("university.finance.official_tuition_source", "Official tuition source")],
+            [deadlineSourceUrl, t("university.deadlines.official_source", "Official source")],
+          ].filter(([url], index, links) => url && links.findIndex(([candidate]) => candidate === url) === index)
+            .map(([url, label]) => `<a class="program-card__source" href="${escapeHtmlAttr(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}${renderInlineIcon("arrow-top-right-on-square", 16)}</a>`).join("");
+          const sourceDate = String(program.verified_at || "").trim();
 
           const toggleLabel = `${isOpen ? collapseLabel : expandLabel}${title ? `: ${title}` : ""}`;
 
           return `
-            <article class="program-card${isOpen ? " is-open" : ""}${item.isMajorMatch ? " program-card--major" : ""}" role="listitem" data-program-key="${escapeHtmlAttr(key)}" data-search="${escapeHtmlAttr(haystack)}">
+            <article class="program-card${isOpen ? " is-open" : ""}" role="listitem" data-program-key="${escapeHtmlAttr(key)}" data-search="${escapeHtmlAttr(haystack)}">
               <button
                 type="button"
                 class="program-card__toggle"
@@ -1203,38 +1236,26 @@ export function renderProgramsSection({
                 aria-label="${escapeHtmlAttr(toggleLabel)}"
               >
                 <span class="program-card__text">
-                  <span class="program-card__kicker-row">
-                    <span class="program-card__kicker">${escapeHtml(translateWord("program", "Program"))} ${displayIdx + 1}</span>
-                    ${item.isMajorMatch ? `<span class="program-card__major-badge">${escapeHtml(t("university.programs.major_badge", "Your major"))}</span>` : ""}
-                  </span>
+                  ${kicker ? `<span class="program-card__kicker">${escapeHtml(kicker)}</span>` : ""}
                   <span class="program-card__title">${escapeHtml(title)}</span>
-                  ${summaryText ? `<span class="program-card__summary">${escapeHtml(summaryText)}</span>` : ""}
+                  ${original ? `<span class="admissions-programs__original" lang="en">${escapeHtml(original)}</span>` : ""}
                 </span>
                 <span class="program-card__chevron" aria-hidden="true">${renderInlineIcon("chevron-right", 16)}</span>
               </button>
-              <div class="program-card__body" id="${bodyId}" role="region"${isOpen ? "" : " hidden"}>
+              <div class="program-card__body" id="${bodyId}" role="region" aria-label="${escapeHtmlAttr(title)}" aria-hidden="${!isOpen}"${isOpen ? "" : " hidden inert"}>
                 <div class="program-card__body-inner">
-                  ${description ? `<p class="program-card__description">${escapeHtml(description)}</p>` : (sourceUrl ? `<p class="program-card__description">${escapeHtml(t("university.programs.summary_incomplete", "A detailed summary is not yet catalogued here. See the official program page for its curriculum."))}</p>` : "")}
-                  ${allRows.length ? `<div class="program-card-rows">
-                    ${allRows.map((row) => `
-                      <div class="program-card-row">
-                        <span class="program-card-label">${escapeHtml(row.label)}</span>
-                        ${renderValueCell(row.label, row.key, row.rawValue, row.value, university?.id)}
-                      </div>
-                    `).join("")}
-                  </div>` : ""}
-                  ${renderSignalRows(matchedSignals, admissionsData, institutionWideOnly)}
-                  <div class="program-card__actions">
-                    ${program.id ? `
-                      <button type="button" class="program-card__admission-action" data-program-admission="${escapeHtmlAttr(String(program.id || ""))}">
-                        ${escapeHtml(t("university.programs.view_admission", "See how to apply"))}
-                      </button>
-                    ` : ""}
-                    ${sourceUrl ? `<a class="program-card__source" href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.programs.official_page", "Official program page"))}${renderInlineIcon("arrow-top-right-on-square", 16)}</a>` : ""}
-                    ${catalogUrl && catalogUrl !== sourceUrl ? `<a class="program-card__source" href="${escapeHtmlAttr(catalogUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.programs.official_catalog", "Official degree catalog"))}${renderInlineIcon("arrow-top-right-on-square", 16)}</a>` : ""}
+                  <div class="admissions-programs__overview">
+                    ${description ? `<p class="program-card__description">${escapeHtml(description)}</p>` : ""}
+                    ${directions}
+                    ${renderRows(allRows.slice(0, basicRowCount), "admissions-programs__essentials", true)}
                   </div>
+                  ${renderRows(allRows.slice(basicRowCount))}
+                  ${signalsHtml || sourceLinks.trim() ? `<div class="admissions-programs__sources"><details class="admissions-programs__references"><summary>${escapeHtml(t("university.admissions.reading.source_and_date"))}${renderInlineIcon("chevron-down", 16, "admissions-disclosure-icon")}</summary><div class="admissions-programs__references-body">${signalsHtml}${sourceLinks.trim() ? `<div class="program-card__actions">${sourceLinks}</div>` : ""}${sourceLinks.trim() && sourceDate ? `<p class="program-signal__meta">${escapeHtml(t("university.admissions.checked"))}: ${escapeHtml(sourceDate)}</p>` : ""}</div></details></div>` : ""}
                 </div>
               </div>
+              <div class="program-card__select-actions">${item.isSelected
+                ? `<span class="program-card__selection-state" data-selected-program role="status">${renderInlineIcon("check", 16)}${escapeHtml(t("admission.choice.selected"))}</span>`
+                : `<button type="button" class="program-card__admission-action" data-program-admission="${escapeHtmlAttr(selectionToken)}">${escapeHtml(t("university.admissions.catalog.select_program"))}</button>`}</div>
             </article>
           `;
         }).join("")}
@@ -1262,7 +1283,7 @@ export function renderProgramsSection({
           </div>
         `;
       })()}
-      <div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, displayedCoverageProgram)}</div>
+      <div data-program-coverage-host>${renderProgramCoverage(university?.coverage_by_program, coverageProgram)}</div>
     `;
 
     bindProgramCardEvents({
@@ -1271,8 +1292,8 @@ export function renderProgramsSection({
       universityKey,
       expandLabel,
       collapseLabel,
-      displayItems,
       coverageProgram,
+      selectedProgram,
       programs,
       onProgramAdmissionSelected,
       admissionsData,

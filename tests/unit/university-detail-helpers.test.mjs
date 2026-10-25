@@ -127,6 +127,26 @@ test("manual program context overrides a stale camel-case profile choice without
   window.location.search = "";
 });
 
+test("a catalog program without an ID can be selected by its exact stored name", () => {
+  const previousHistory = window.history;
+  const previousSearch = window.location.search;
+  const university = { id: "name-only-university", academics: { programs: [
+    { name: "Компьютерные науки", source_name: "Computer Science", study_levels: ["Bachelor"] },
+    { name: "Экономика", source_name: "Economics", study_levels: ["Bachelor"] },
+  ] } };
+  window.history = { pushState: (_state, _title, url) => { window.location.search = new URL(url, "http://localhost").search; } };
+  try {
+    selectAdmissionProgram(university, university.academics.programs[1]);
+    assert.equal(new URLSearchParams(window.location.search).get("admission_program"), "Economics");
+    const profile = getAdmissionContextProfile(university, {});
+    assert.deepEqual(profile.selectedAdmissionChoices[university.id], { programName: "Economics" });
+    assert.equal(profile.study_level, "Bachelor");
+  } finally {
+    window.history = previousHistory;
+    window.location.search = previousSearch;
+  }
+});
+
 test("cycle context keeps equivalent requested values selected and labels only proven mismatches", () => {
   const university = {
     id: "cycle_context_test",
@@ -695,7 +715,9 @@ test("a university-scoped range does not leak into a different undergraduate cat
 test("Harvard Law JD shows its published tuition without presenting it as total cost", async () => {
   setLanguage("eng", { persist: false, emit: false });
   const previousProfile = loadProfile();
+  const previousSearch = window.location.search;
   saveProfile({ studyLevel: "Professional" });
+  window.location.search = "?admission_program=harvard-hls-jd&admission_level=professional";
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const priceEl = { innerHTML: "", textContent: "" };
   const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
@@ -716,6 +738,7 @@ test("Harvard Law JD shows its published tuition without presenting it as total 
     assert.doesNotMatch(priceEl.innerHTML, /\$84,400/);
   } finally {
     saveProfile(previousProfile);
+    window.location.search = previousSearch;
   }
 });
 

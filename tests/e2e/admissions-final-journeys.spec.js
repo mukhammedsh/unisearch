@@ -18,9 +18,7 @@ async function preparePage(page, { mobile = false, profile = null } = {}) {
 }
 
 async function openAdmission(page) {
-  const viewRequirements = page.locator("#admissionsViewRequirements");
-  if (await viewRequirements.isVisible()) await viewRequirements.click();
-  else if (!(await page.locator("#tab-admission").evaluate((node) => node.classList.contains("active")))) await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  if (!(await page.locator("#tab-admission").evaluate((node) => node.classList.contains("active")))) await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
 }
@@ -62,11 +60,11 @@ async function chooseOption(page, optionId, search, level) {
   const title = await option.locator(".admissions-programs__option-title").innerText();
   await option.click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(option.locator("xpath=..").locator(".program-card__body")).toBeVisible();
+  await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
-  await expect(page.locator("#admissionsViewRequirements")).toBeEnabled();
-  if (await page.locator("select#admissionsRoute").count()) await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  else await expect(page.locator("#admissionsRoute")).not.toHaveValue("");
+  await expect(page.locator("#admissionsViewRequirements")).toHaveCount(0);
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
 }
 
 async function applyContext(page, route, applicant, cycle) {

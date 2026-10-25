@@ -368,67 +368,6 @@
   font-weight: 500;
 }
 
-.uni-price.uni-price--catalog {
-  display: grid;
-  gap: var(--space-0-5);
-  min-width: 0;
-}
-
-.uni-cost-trigger,
-.uni-cost-secondary,
-.uni-cost-context,
-.uni-cost-unavailable {
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  line-height: var(--leading-normal);
-}
-
-.uni-cost-secondary {
-  overflow-wrap: anywhere;
-}
-
-.uni-cost-trigger {
-  gap: var(--space-1);
-  min-height: 24px;
-  text-align: start;
-}
-
-.uni-cost-trigger:hover {
-  color: var(--interaction-hover-text);
-}
-
-.uni-cost-trigger:active {
-  color: var(--interaction-active-text);
-}
-
-.uni-cost-info-icon {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
-
-.uni-cost-tooltip .ui-tooltip-bubble {
-  top: auto;
-  bottom: calc(100% + var(--space-2));
-  display: grid;
-  gap: var(--space-2);
-}
-
-.uni-cost-tooltip .ui-tooltip-title {
-  margin: 0;
-}
-
-.uni-cost-tooltip .uni-cost-context {
-  color: inherit;
-  font: inherit;
-}
-
-.uni-card:has(.uni-cost-tooltip:not(.is-closed):hover),
-.uni-card:has(.uni-cost-tooltip:not(.is-closed):focus-within),
-.uni-card:has(.uni-cost-tooltip.is-open) {
-  z-index: var(--z-card-elevated);
-}
-
 .catalog-cost-help {
   display: grid;
   gap: var(--space-1);

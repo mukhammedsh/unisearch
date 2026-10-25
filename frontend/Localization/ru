@@ -429,20 +429,28 @@ universities.cost.tuition_scope_note: Проживание и другие ра�
 universities.cost.entry: Набор {year}
 universities.cost.unavailable: Уточните программу
 universities.cost.full_budget_unavailable: Нет сопоставимого полного бюджета
-universities.cost.reference: Справочный ориентир · до финансовой помощи
-universities.cost.before_aid: До финансовой помощи.
-universities.cost.fee_scope: Зависит от программы и категории оплаты
+universities.cost.reference: Справочная цена, до финансовой помощи.
+universities.cost.legacy_server_warning: API ещё работает на старой версии. До его перезапуска показаны справочные цены.
+universities.cost.before_aid: До стипендий и финансовой помощи.
+universities.cost.fee_scope: Диапазон зависит от программы и тарифа: Home — местный, Overseas — международный. Категорию определяет вуз.
 universities.cost.exclusion.insurance: Страховка отдельно.
 universities.cost.exclusion.travel: Проезд отдельно.
 universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
-universities.cost.filter_help_summary: Ценовой предел скрывает вузы без цены; бюджет влияет на UniFit.
-universities.cost.filter_help: Цены указаны до финансовой помощи. Диапазон может соответствовать лишь части программ — уточните программу и категорию оплаты. Полная разбивка и источники доступны на странице вуза.
-universities.cost.dated_reference: Ориентир; набор не подтверждён
-universities.cost.cycle_unconfirmed: Набор не подтверждён
-universities.cost.cycle_unspecified: Набор не указан
+universities.cost.filter_help: До финансовой помощи. Диапазон может совпадать частично: уточните программу и категорию оплаты. При ограничении цены вузы с неизвестной суммой не показываются.
+universities.cost.filter_help_summary: Ценовой фильтр скрывает неизвестные цены; бюджет профиля влияет на UniFit.
+universities.cost.dated_reference: Опубликован ориентир; цикл поступления не подтверждён
+universities.cost.cycle_unconfirmed: Цикл поступления не подтверждён
+universities.cost.cycle_unspecified: Цикл не указан
 universities.cost.fee_status_unknown: Категория оплаты не подтверждена
-universities.cost.filter_partial: Частичное совпадение цены
-universities.cost.fee_categories: Категория оплаты в источнике: {categories}.
+universities.cost.filter_partial: Частичное совпадение по цене
+universities.cost.tooltip_open: Как рассчитана цена
+universities.cost.tooltip_title: О диапазоне цен
+universities.cost.tooltip_range: Это минимальная и максимальная известные цены для текущего выбора, а не среднее. Сумма зависит от программы и категории оплаты.
+universities.cost.tooltip_living_range: Границы получены сложением известных цен обучения и опубликованного диапазона расходов на проживание, а не усреднением. Оценка проживания может относиться к другому году.
+universities.cost.tooltip_single: Это одна известная годовая цена для текущего выбора. Уточните программу, категорию оплаты и год.
+universities.cost.tooltip_filter_variants: Фильтр проверяет каждый известный вариант. Вуз показывается, если хотя бы один вариант пересекает ваши границы, даже когда весь диапазон шире их. Цены между крайними значениями могут отсутствовать.
+universities.cost.tooltip_filter_reference: Общий справочный диапазон может пересекать ваши границы без подтверждённой подходящей программы. Уточните её цену в вузе.
+universities.cost.tooltip_living_year: Оценка проживания: {year} год.
 universities.country: Страна
 universities.filter: Фильтр
 universities.filter.all: Все
@@ -1383,6 +1391,7 @@ university.programs.no_results: По этому запросу программ�
 university.programs.major_badge: Ваше направление
 university.programs.field.degree_titles: Присваиваемая степень
 university.programs.field.degree_type: Тип степени
+university.programs.field.subjects: Направления
 university.programs.field.course_number: Номер программы
 university.programs.field.description: О программе
 university.programs.field.faculty: Факультет
@@ -2457,9 +2466,14 @@ university.admissions.catalog.advanced_options: Фильтры публикац�
 university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
 university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
 university.admissions.catalog.open_application: Открыть страницу подачи
+university.admissions.catalog.select_program: Выбрать программу
 university.admissions.catalog.view_requirements: Посмотреть условия поступления
+university.admissions.catalog.requirements_tab_hint: Условия поступления — во вкладке «Поступление».
 university.admissions.catalog.study_info: О программе
-university.admissions.catalog.study_info_note: Подробные сведения приведены на языке источника. Условия поступления открываются отдельно.
+university.admissions.catalog.program_detail.study: Обучение
+university.admissions.catalog.program_detail.fees: Опубликованная стоимость обучения
+university.admissions.catalog.program_detail.degree_policies: Требования и правила программы
+university.admissions.catalog.program_detail.curriculum: Учебный план и варианты обучения
 university.admissions.catalog.source_note_simple: Текст официальных источников показан на языке оригинала.
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
@@ -2499,7 +2513,7 @@ university.admissions.catalog.fee.unknown: Не определён
 university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (со слов абитуриента)
 university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (со слов абитуриента)
 university.admissions.catalog.fee.other: Другой / требует уточнения
-university.admissions.catalog.apply_context: Применить контекст
+university.admissions.catalog.apply_context: Применить фильтры
 university.admissions.catalog.legacy_pending: Предыдущий выбор программы ещё не сопоставлен с проверенным каталогом. Выберите программу заново; сохранённый профиль не изменён.
 university.admissions.catalog.incompatible_context: Выбранные программа, путь подачи или уровень не согласованы. Измените контекст; общие требования вуза вместо них не подставлены.
 university.admissions.catalog.loading: Загружаем проверенные сведения
@@ -2524,22 +2538,13 @@ university.admissions.catalog.admission_title: Требования и опуб�
 university.admissions.catalog.finance_intro: Опубликованные цены и финансирование для выбранной программы и пути с исходными периодами, валютами и условиями.
 university.admissions.catalog.deadlines_title: Даты и сроки
 university.admissions.catalog.deadlines_intro: Здесь собраны даты подачи, финансирования, ответа и внесения депозита для выбранной программы и пути. У каждой записи сохранены исходный период и официальный источник.
-university.admissions.catalog.route_intro: Выберите опубликованный путь поступления, чтобы прочитать относящиеся к нему требования и порядок подачи. Профиль для этого не нужен.
+university.admissions.catalog.route_intro: Выберите путь поступления — требования и порядок подачи откроются сразу. Профиль не нужен.
 university.admissions.catalog.reference_scope: Сейчас открыт раздел
 university.admissions.catalog.route_not_selected: Путь подачи не выбран
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
 university.admissions.catalog.change_route: Сменить путь
-university.admissions.catalog.reference_filters: Категория, год поступления и оплата (необязательно)
-university.admissions.reading.edit_selection: Изменить выбор
-university.admissions.reading.exclusion.insurance: Страховка оплачивается отдельно; проверьте обязательное покрытие и условия освобождения.
-university.admissions.reading.exclusion.travel: Проезд оплачивается отдельно и зависит от абитуриента.
-university.admissions.reading.exclusion.one_time_fees: Разовые сборы оплачиваются отдельно; применимые платежи для новых студентов указаны в источнике.
-university.admissions.reading.special_routes: Нынешним студентам Stanford и совместные степени ({count})
-university.admissions.reading.cost_scope: Цена относится только к программе или пути подачи, категории оплаты и периоду, указанным в источнике. Обучение — часть бюджета; проживание, обязательные и разовые сборы могут оплачиваться отдельно. В полных записях доступны состав расходов и условия источника.
-university.admissions.reading.degree.BEng: BEng — бакалавр инженерных наук
-university.admissions.reading.degree.MEng: MEng — магистр инженерных наук
-university.admissions.reading.degree.MEng_integrated: MEng — интегрированная инженерная магистратура, поступление после школы
+university.admissions.catalog.reference_filters: Уточнить контекст (необязательно)
 university.admissions.catalog.reference_filter_note: Эти фильтры сужают сведения по опубликованной области применения. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
 university.admissions.catalog.selected_route: Выбранный путь
 university.admissions.catalog.application_shape: Как поступают на программу
@@ -2739,6 +2744,12 @@ university.admissions.reading.food_estimate: Питание, оценка
 university.admissions.reading.materials_estimate: Учебные материалы
 university.admissions.reading.personal_estimate: Личные расходы
 university.admissions.reading.insurance_extra: Страховка и ограничения расчёта:
+university.admissions.reading.cost_scope: Стоимость сохраняет опубликованный охват программы, категорию поступающего и период.
+university.admissions.reading.tuition_budget_note: Обучение — лишь часть бюджета; проживание и другие расходы оплачиваются отдельно.
+university.admissions.reading.exclusion.insurance: Страховка оплачивается отдельно.
+university.admissions.reading.exclusion.one_time_fees: Разовые сборы оплачиваются отдельно.
+university.admissions.reading.degree.MEng: Магистр инженерии
+university.admissions.reading.degree.MEng_ucas_note: Это интегрированная программа бакалавриата, ведущая к степени Master of Engineering.
 university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
 university.admissions.reading.no_budget: Сопоставимый бюджет для этого выбора не подтверждён. Ниже каждая сумма сохраняет свой период, валюту и условия.
 university.admissions.reading.full_records: Полные записи источников и условия
@@ -2848,7 +2859,12 @@ universities.cost.budget_tuition_only: Только обучение; прожи
 universities.compare.clear_program: Сбросить программу
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
 university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
-university.admissions.reading.original_description: Описание программы в оригинале (английский)
+university.admissions.reading.source_short: Источник
+university.admissions.reading.original_and_date: Оригинал и дата
+university.admissions.reading.source_and_date: Источник и дата
+university.admissions.reading.source_details: Сведения об источнике
+university.admissions.reading.official_sources_count: Официальные источники ({count})
+university.admissions.reading.original_and_sources_count: Оригинал и источники ({count})
 university.admissions.reading.reference_scope_note: Подробные записи приведены на языке источника. В каждой записи доступны условия, период и область действия.
 university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
 university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан

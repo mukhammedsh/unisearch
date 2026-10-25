@@ -26,37 +26,27 @@ test("legacy catalog cards keep their existing price resolution", () => {
   assert.equal(price.amountUSD, 42_000);
 });
 
-test("published reference cards show only the selected price basis and retain its explanation", () => {
-  setLanguage("eng", { emit: false });
+test("card uses the selected published reference price", () => {
   const university = { admissions_catalog: { availability: "reviewed" }, catalog_costs: { reference: true,
     annual_total: { min: 92760, max: 92760, currency: "USD", period: "2026-2027", study_level: "undergraduate", exclusions: ["insurance"] },
     tuition: { min: 66720, max: 66720, currency: "USD", period: "2026-2027", study_level: "undergraduate" } } };
   assert.equal(universityCardPriceInfo(university).amount, 92760);
+  assert.equal(universityCardPriceInfo(university).basis, "annual_total");
   assert.equal(universityCardPriceInfo(university, "tuition").amount, 66720);
-  const html = renderUniversityCardCosts(university, "tuition");
-  assert.match(html, /66,720/);
-  assert.doesNotMatch(html, /92,760/);
-  assert.equal((html.match(/data-cost-basis=/g) || []).length, 1);
-  assert.match(html, /data-cost-basis="tuition"/);
-  assert.match(html, /role="tooltip"/);
-  assert.match(html, /2026[‑-]2027/);
-  assert.equal((html.match(/2026[‑-]2027/g) || []).length, 1);
-  const annual = renderUniversityCardCosts(university);
-  assert.match(annual, /92,760/);
-  assert.doesNotMatch(annual, /66,720/);
-  assert.match(annual, /Insurance extra/);
+  assert.equal(universityCardPriceInfo(university, "tuition").basis, "tuition");
 });
 
-test("ranges and verified zero remain prices while missing values do not become free", () => {
-  setLanguage("eng", { emit: false });
-  const university = { catalog_costs: { tuition: { min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"] } } };
-  const html = renderUniversityCardCosts(university, "tuition");
-  assert.match(html, / – /);
-  assert.match(html, /Home fee, Overseas fee/);
-  assert.doesNotMatch(html, /data-cost-basis="annual_total"/);
-  const missingTotal = renderUniversityCardCosts(university);
-  assert.match(missingTotal, /No comparable full budget/);
-  assert.doesNotMatch(missingTotal, /data-cost-basis="tuition"|10,050|47,800/);
+test("card falls back to a published tuition range when a full budget is unavailable", () => {
+  const university = { admissions_catalog: { availability: "reviewed" }, catalog_costs: { tuition: { min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"] } } };
+  const price = universityCardPriceInfo(university);
+  assert.equal(price.basis, "tuition");
+  assert.equal(price.amount, 10050);
+  assert.equal(price.min, 10050);
+  assert.equal(price.max, 47800);
+  assert.ok(Number.isFinite(price.amountUSD) && price.amountUSD > 0);
+});
+
+test("verified zero remains a price while missing values do not become free", () => {
   assert.equal(universityCardPriceInfo({ catalog_costs: { tuition: { min: 0, max: 0, currency: "USD" } } }, "tuition").amount, 0);
   assert.equal(universityCardPriceInfo({ catalog_costs: { tuition: { min: null, max: null, currency: "USD" } } }, "tuition").amount, null);
   assert.match(renderUniversityCardCosts({ catalog_costs: { tuition: { min: 0, max: 0, currency: "USD" } } }, "tuition"), /\$0/);
