@@ -296,25 +296,20 @@ test("map results rail renders status badges in vertical column without overlapp
   await expect(triggers.nth(1)).toBeVisible();
   const count = await triggers.count();
   expect(count).toBeGreaterThanOrEqual(2);
+
   await expect.poll(() => cardWithStatuses.evaluate(card => {
-    const [first, second] = [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2);
-    return second.getBoundingClientRect().top - first.getBoundingClientRect().top;
-  })).toBeGreaterThan(0);
-
-  // Read one rendered card atomically while map results may refresh.
-  const { boxes: [box0, box1], titleBox } = await cardWithStatuses.evaluate(card => {
-    const box = element => {
-      const rect = element.getBoundingClientRect();
-      return { x: rect.x, y: rect.y, width: rect.width };
-    };
-    return { boxes: [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2).map(box), titleBox: box(card.querySelector(".uni-title")) };
-  });
-  expect(box0 && box1).toBeTruthy();
-  expect(Math.abs(box0.x - box1.x)).toBeLessThanOrEqual(2);
-  expect(box1.y).toBeGreaterThan(box0.y);
-
-  expect(titleBox).toBeTruthy();
-  expect(titleBox.x + titleBox.width).toBeLessThanOrEqual(box0.x + 1);
+    const statusTriggers = [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2);
+    const title = card.querySelector(".uni-title");
+    if (statusTriggers.length < 2 || !title) return false;
+    const r0 = statusTriggers[0].getBoundingClientRect();
+    const r1 = statusTriggers[1].getBoundingClientRect();
+    const rt = title.getBoundingClientRect();
+    return (
+      r1.top > r0.top &&
+      Math.abs(r0.left - r1.left) <= 2 &&
+      rt.left + rt.width <= r0.left + 1
+    );
+  })).toBe(true);
 });
 
 test("university detail category switching leaves one active pane", async ({ page }) => {
