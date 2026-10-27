@@ -195,7 +195,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     }
     const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
     return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-price${secondary ? " uni-price--with-conversion" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${primary}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary ? " uni-price--with-conversion" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${primary}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
             <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>${secondary ? "" : ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span>`}${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
             ${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}
         </button>
@@ -4086,7 +4086,7 @@ ${rankInnerHtml}
             </div>
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, mapVariant ? "map-result" : "catalog");
+        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"));
         const logoImgHtml = `<img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">

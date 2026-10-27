@@ -100,6 +100,7 @@ async function selectCustomOption(page, select, value) {
   const wrapper = control.locator("xpath=..");
   await wrapper.locator(".custom-select-trigger").click();
   await wrapper.locator(`.custom-option[data-value="${value}"]`).click();
+  if (select === "#admissionsRoute") await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(control).toHaveValue(value);
 }
 

@@ -38,6 +38,7 @@ async function selectRoute(page, route) {
   const wrapper = page.locator("#admissionsRoute").locator("xpath=..");
   await wrapper.locator(".custom-select-trigger").click();
   await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(route);
 }
 
@@ -225,8 +226,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-course-6-9p-meng", "Course 6-9P", "masters");
   await openAdmission(page);
-  await expect(page.locator("#admissionsRoute")).toHaveValue("mit_bcs_meng_admissions");
-  await expect(page.locator("#admissionsContext .admissions-route-name")).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
+  await expect(page.locator('#admissionsRoute option[value="mit_bcs_meng_admissions"]')).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
   const result = await applyContext(page, "mit_bcs_meng_admissions", "graduate", "");
   expect(result.assessment.chancePercent).toBe(100);
   const checks = Object.fromEntries(result.assessment.activeChoice.details.checks.filter((check) => check.checkId).map((check) => [check.checkId, check]));

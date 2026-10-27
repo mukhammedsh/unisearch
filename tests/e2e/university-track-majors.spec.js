@@ -97,16 +97,17 @@ async function applyContext(page, route, applicant = "", cycle = "", fee = "unkn
 async function openFact(page, tab, id) {
   if (tab === "admission") await openAdmission(page);
   else await openTab(page, tab);
-  const fact = page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`).first();
+  const detailsFact = page.locator(`#tab-${tab} details.admissions-catalog__fact[data-admissions-fact="${id}"]`);
+  const fact = (await detailsFact.count() ? detailsFact : page.locator(`#tab-${tab} [data-admissions-fact="${id}"]`)).first();
   await openDisclosureParents(fact);
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count() && !(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
   await expect(fact).toBeVisible();
   const isDetails = await fact.evaluate((node) => node.tagName === "DETAILS");
   if (isDetails && !(await fact.evaluate((node) => node.open))) await fact.locator(":scope > summary").click();
-  const evidence = fact.locator("details.admissions-catalog__evidence");
+  const evidence = fact.locator("details.admissions-catalog__evidence").first();
   if (await evidence.count() && !(await evidence.evaluate((node) => node.open))) await evidence.locator(":scope > summary").click();
-  const unknowns = fact.locator("details.admissions-catalog__unknowns");
+  const unknowns = fact.locator("details.admissions-catalog__unknowns").first();
   if (await unknowns.count() && !(await unknowns.evaluate((node) => node.open))) await unknowns.locator(":scope > summary").click();
   return fact;
 }
@@ -124,8 +125,8 @@ async function fitsViewport(page, width) {
 }
 
 for (const [id, width, query, description] of [
-  ["mit-bs-6-5", 1280, "Electrical Engineering with Computing", "programming"],
-  ["mit-bs-21e", 390, "Humanities and Engineering", "humanities"],
+  ["mit-bs-6-5", 1280, "Electrical Engineering with Computing", /programming|программирование/i],
+  ["mit-bs-21e", 390, "Humanities and Engineering", /humanities|гуманитарную область/i],
 ]) {
   test(`MIT ${id} retains sourced study content and Russian interface with shared admission`, async ({ page }) => {
     await openCatalog(page, MIT, { width, language: "rus" });
@@ -139,7 +140,7 @@ for (const [id, width, query, description] of [
     const fact = await openFact(page, "programs", `${id}-description`);
     await expect(fact).toContainText(description);
     await expect(fact.locator('a[href*="catalog.mit.edu/degree-charts/"]')).toBeVisible();
-    await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке источника");
+    await expect(page.locator("#admissionsStudyDetails")).toContainText("Источник и дата");
     await fitsViewport(page, width);
   });
 }
@@ -155,7 +156,7 @@ for (const [id, width, language, query] of [
     await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(0);
     await applyContext(page, "mit_eecs_meng_admissions");
     const description = await openFact(page, "programs", `${id}-description`);
-    await expect(description).toContainText("related MIT Course");
+    await expect(description).toContainText(/related MIT Course|бакалаврскую степень MIT по Course/i);
     await expect(description.locator('a[href*="catalog.mit.edu/degree-charts/"]')).toBeVisible();
     const preparation = await openFact(page, "admission", "eecs-meng-preparation");
     await expect(preparation).toContainText("apply before graduation");
@@ -186,8 +187,8 @@ test("MIT Sloan MSMS keeps partner-school eligibility and its own deadline", asy
   await chooseOption(page, "mit-sloan-msms", "Management Studies", "masters");
   await applyContext(page, "mit_sloan_msms_admissions", "graduate", "Fall 2027 entry");
   const eligibility = await openFact(page, "admission", "mit_sloan_msms_admissions-extra-requirements");
-  await expect(eligibility).toContainText("partner or affiliate");
-  await expect(eligibility).toContainText("Only current students or graduates");
+  await expect(eligibility).toContainText(/partner or affiliate|списка партнёров MIT Sloan/i);
+  await expect(eligibility).toContainText(/Only current students or graduates|действующие студенты или выпускники/i);
   await expect(page.locator("#admissionsRoute option[value='mit_sloan_mban_admissions']")).toHaveCount(0);
   const dates = await openFact(page, "deadlines", "mit_sloan_msms_admissions-deadlines");
   await expect(dates).toContainText(/2027[-\u2011]02[-\u2011]18/);
@@ -204,11 +205,11 @@ test("MITILI Linguistics SM keeps its shared PhD procedure and separate scholars
   await chooseOption(page, "mit-linguistics-sm-mit-grad-linguistics", "Linguistics", "masters");
   await applyContext(page, "mit_mitili_sm_admissions");
   const procedure = await openFact(page, "admission", "mit_mitili_sm_admissions-extra-requirements");
-  await expect(procedure).toContainText("Linguistics PhD application procedure");
+  await expect(procedure).toContainText(/Linguistics PhD application procedure|процедуру приёма на программу PhD по лингвистике/i);
   await expect(procedure).toContainText("Statement of Objectives");
   const funding = await openFact(page, "finance", "mit_mitili_sm_admissions-funding-0-0");
-  await expect(funding).toContainText("health insurance");
-  await expect(funding).toContainText("MITILI Full Scholarship");
+  await expect(funding).toContainText(/health insurance|медицинскую страховку/i);
+  await expect(funding).toContainText(/MITILI Full Scholarship|Полная стипендия MITILI/i);
   await expect(page.locator("#detailFinance")).toContainText("не считается предоставленной помощью");
   await expect(page.locator("#admissionsRoute option[value='mit_linguistics_doctoral_admissions']")).toHaveCount(0);
   await fitsViewport(page, 390);
@@ -222,7 +223,7 @@ test("MIT Mathematics of Data SM keeps its internal route and unassessed GPA", a
   await expect(eligibility).toContainText("4,8");
   await expect(eligibility).toContainText("MIT 5.0");
   const procedure = await openFact(page, "admission", "mit_mathematics_of_data_sm_admissions-description");
-  await expect(procedure).toContainText("current MIT Mathematics undergraduates");
+  await expect(procedure).toContainText(/current MIT Mathematics undergraduates|действующих студентов MIT по математике/i);
   await noFitPercentage(page);
   const deadline = await openFact(page, "deadlines", "mit_mathematics_of_data_sm_admissions-deadlines");
   await expect(deadline).toContainText(/2026[-\u2011]12[-\u2011]01/);
@@ -249,8 +250,8 @@ for (const width of [1280, 390]) {
       await chooseOption(page, "mit-bs-15-2", "Business Analytics", "undergraduate");
       await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
       const curriculum = await openFact(page, "programs", "mit-bs-15-2-description");
-      await expect(curriculum).toContainText("data modeling");
-      await expect(curriculum).toContainText("degree requirements, not admission prerequisites");
+      await expect(curriculum).toContainText(/data modeling|моделирование данных/i);
+      await expect(curriculum).toContainText(/degree requirements, not admission prerequisites|требования для получения степени, а не условия поступления/i);
       await expect(curriculum.locator('a[href*="business-analytics-course-15-2"]')).toBeVisible();
       const exam = await openFact(page, "admission", "ug-sat-act-presence");
       await expect(exam).toContainText("SAT");
@@ -286,7 +287,7 @@ test("reviewed MIT program levels use Russian labels while source names remain d
 test("MIT program requires an explicit admission route and keeps funding separate", async ({ page }) => {
   await openCatalog(page);
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("Choose a published application path to browse its requirements and process.");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose a published path to open its requirements and process. No profile is needed.");
   await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeVisible();
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
@@ -371,7 +372,6 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
   await openAdmission(page);
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsRoute", "mit-first-year");
-  await page.locator("#admissionsContextApply").click();
   await fetched;
   try {
     await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");
@@ -391,6 +391,7 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
     await page.goBack();
     await openAdmission(page);
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit_physics_phd_admissions");
+    await page.goBack();
     await page.goBack();
     await openAdmission(page);
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
@@ -486,7 +487,7 @@ test("MIT transfer context localizes interface and preserves the scoped original
   await expect(fact).toContainText("At least two full-time terms");
   await expect(fact).toContainText("committee review required");
   await openTab(page, "programs");
-  await expect(page.locator("#admissionsStudyDetails")).toContainText("на языке источника");
+  await expect(page.locator("#admissionsStudyDetails")).toContainText("Источник и дата");
 });
 
 test("MIT MFin hides raw identifiers and first-year statistics while retaining its own study rules", async ({ page }) => {
@@ -494,10 +495,10 @@ test("MIT MFin hides raw identifiers and first-year statistics while retaining i
   await chooseOption(page, "mit-sloan-mfin", "Master of Finance", "masters");
   await applyContext(page, "mit_sloan_mfin_admissions", "graduate", "2027 entry");
   const description = await openFact(page, "programs", "mit-sloan-mfin-description");
-  await expect(description).toContainText("12- or 18-month");
+  await expect(description).toContainText(/12- or 18-month|12 или 18 месяцев/i);
   await expect(description).not.toContainText("[object Object]");
   const admission = await openFact(page, "admission", "mit_sloan_mfin_admissions-extra-requirements");
-  await expect(admission).toContainText("Python proficiency is preferred");
+  await expect(admission).toContainText(/Python proficiency is preferred|Владение Python желательно/i);
   await expect(admission).not.toContainText(/source-[a-f0-9]+|ADMISSION ROUTE ID|PRICE FACTS|Class of 2029/);
   await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
 });

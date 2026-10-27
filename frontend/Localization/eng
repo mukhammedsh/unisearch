@@ -3155,3 +3155,4 @@ university.admissions.catalog.route_name.mit-mas-phd-progression: Media Arts and
 university.admissions.catalog.route_name.mit-idps-internal-selection: IDPS selection for participating MIT PhD students
 university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Joint Department–Computational Science and Engineering PhD application
 university.admissions.catalog.route_name.mit-economics-sm-special-approval: Economics special SM approval for current MIT students
+university.admissions.reading.special_routes: Current Stanford students and joint degrees ({count})

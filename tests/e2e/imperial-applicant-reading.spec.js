@@ -176,7 +176,7 @@ for (const item of presentations) {
       await sources.locator(":scope > summary").click();
       await expect(sources.locator('a[href*="imperial.ac.uk"]').first()).toBeVisible();
       await expect(sources.locator(".admissions-catalog__meta").first()).toBeVisible();
-      await expect(sources.locator("p")).toHaveCount(0);
+      await expect(sources.locator("[data-program-overview-sources] p")).toHaveCount(0);
       if (entry.id === "imperial-option-full-time-mba") await screenshot(page, `completed-overview-${item.language}-${item.width}-${item.theme}`, "#admissionsStudyOverview");
       await sources.locator(":scope > summary").click();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
@@ -285,8 +285,11 @@ test("Imperial retries a context failure and keeps the selected program through 
     return url.pathname.endsWith("/study-options") && url.searchParams.get("search") === "Computing";
   });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await searchResponse).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await page.locator('[data-select-study-option="imperial-option-computing-meng"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
+  await page.locator('[data-study-option="imperial-option-computing-meng"]').click();
   await page.locator('#admissionsStudyOverview [data-admissions-retry="context"]').click();
   await ready(page);
   await route(page, "procedure-computing-meng");

@@ -3153,3 +3153,4 @@ university.admissions.catalog.route_name.mit-mas-phd-progression: Внутрен
 university.admissions.catalog.route_name.mit-idps-internal-selection: Внутренний отбор IDPS для докторантов участвующих программ MIT
 university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Совместная PhD департамента и вычислительных наук (CSE)
 university.admissions.catalog.route_name.mit-economics-sm-special-approval: Особое одобрение SM по экономике для действующих студентов MIT
+university.admissions.reading.special_routes: Нынешним студентам Stanford и совместные степени ({count})

@@ -280,8 +280,11 @@ test("Stanford retries failures and keeps selection through an empty search", as
     return url.pathname.endsWith("/study-options") && url.searchParams.get("search") === "Computer Science";
   });
   await page.locator("#admissionsSearchSubmit").click();
+  expect((await searchResponse).ok()).toBe(true);
+  await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await page.locator('[data-select-study-option="stanford-option-cs-ms"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
+  await page.locator('[data-study-option="stanford-option-cs-ms"]').click();
   await page.locator('#admissionsStudyOverview [data-admissions-retry="context"]').click();
   await ready(page);
   await route(page, "directory-evidence:stanford-graduate-cs-ms");
@@ -452,7 +455,7 @@ for (const [languageIndex, language] of ["eng", "rus", "kaz"].entries()) {
       await expect(official.first()).toBeVisible();
       if (suffix === "sbio-phd") {
         await expect(summary).toContainText("GRE");
-        await expect(page.locator('#admissionsStudySources a[href="https://med.stanford.edu/structuralbio/education/application.html"]')).toBeVisible();
+        await expect(page.locator('#admissionsStudySources a[href="https://med.stanford.edu/structuralbio/education/application.html"]').first()).toBeVisible();
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       await expectNoStackedGapMargins(page, "#admissionsStudyOverview");

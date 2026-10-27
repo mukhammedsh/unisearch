@@ -37,7 +37,7 @@ for (const item of [
   });
 }
 
-test("Imperial opens the single course route directly and preserves an explicit empty URL override", async ({ page }, testInfo) => {
+test("Imperial keeps the course route unselected until chosen and preserves an explicit empty URL override", async ({ page }, testInfo) => {
   await openUniversity(page, "imperial-college-london-uk", { language: "kaz", width: 390, theme: "dark" });
   await page.locator('[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
@@ -46,17 +46,21 @@ test("Imperial opens the single course route directly and preserves an explicit 
   const course = page.locator('[data-study-option="imperial-option-computing-meng"]');
   await expect(course).toBeVisible();
   await course.click();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
+  await page.locator('[data-select-study-option="imperial-option-computing-meng"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("select#admissionsRoute")).toHaveCount(0);
-  await expect(page.locator("#admissionsStudyRelationship [data-integrated-meng]")).toBeVisible();
-  await page.locator("#admissionsViewRequirements").click();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await expect(page.locator("#admissionsStudyOverview [data-award-explanation]")).toBeVisible();
+  await page.locator('[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger").click();
+  await page.locator('.custom-select-wrapper:has(#admissionsRoute) .custom-option[data-value="procedure-computing-meng"]').click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
   await page.locator("#admissionsContext").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("imperial-direct-route-mobile-dark-kz.png") });
   await page.goBack();
-  await expect(page.locator("#admissionsReferenceSummary")).toBeHidden();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
   await page.goForward();
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   const empty = new URL(page.url());

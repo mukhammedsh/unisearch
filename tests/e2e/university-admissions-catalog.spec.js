@@ -307,6 +307,8 @@ test("program search resolves its sole route from applicant context without chan
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
   await expect(page.locator("#admissionsRoute")).toBeEnabled();
 
+  await setNativeSelect(page, "admissionsRoute", "procedure-computing-meng");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsApplicant", "first_year");
   await page.locator("#admissionsCycle").fill("2027 entry");
@@ -318,7 +320,6 @@ test("program search resolves its sole route from applicant context without chan
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBe(originalProfile);
 
-  await page.goBack();
   await page.goBack();
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
