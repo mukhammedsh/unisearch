@@ -305,7 +305,9 @@ def request_scope_path(request: Optional[Request]) -> str:
         return ""
     scope = getattr(request, "scope", {}) or {}
     path = str(scope.get("path") or "").strip()
-    return path or "/"
+    if not path or path == "/":
+        return "/"
+    return path.rstrip("/") or "/"
 
 
 def is_protected_ops_request(request: Request) -> bool:
