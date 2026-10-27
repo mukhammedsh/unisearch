@@ -76,10 +76,13 @@ class SecurityRegressionTests(unittest.TestCase):
         self.assertEqual(warmup.status_code, 401)
 
     def test_currency_status_is_protected_ops_endpoint(self):
-        client = TestClient(app)
+        client = TestClient(app, follow_redirects=False)
         with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
             res_unauth = client.get("/currency/status")
             self.assertEqual(res_unauth.status_code, 401)
+
+            res_unauth_slash = client.get("/currency/status/")
+            self.assertEqual(res_unauth_slash.status_code, 401)
 
             res_auth = client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
             self.assertEqual(res_auth.status_code, 200)
@@ -89,11 +92,14 @@ class SecurityRegressionTests(unittest.TestCase):
             self.assertEqual(res_no_token.status_code, 404)
 
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
-        client = TestClient(app)
-        with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:
-            for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
-                with self.subTest(param=param):
-                    self.assertEqual(client.get(f"/health?warmup={param}").status_code, 401)
+        client = TestClient(app, follow_redirects=False)
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"), patch(
+            "app.routers.root.warmup_runtime", return_value={"ok": True}
+        ) as warmup:
+            for base_path in ("/health", "/health/"):
+                for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
+                    with self.subTest(base_path=base_path, param=param):
+                        self.assertEqual(client.get(f"{base_path}?warmup={param}").status_code, 401)
             warmup.assert_not_called()
             for param in ["t", "y"]:
                 response = client.get(f"/health?warmup={param}", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
