@@ -198,19 +198,19 @@ test("yearless Harvard first-year deadlines retain their source and current cycl
   await expect(firstYearDeadline.locator(".admissions-deadline-cycle")).toContainText("Fall 2027 first-year admission");
   await expect(firstYearDeadline.locator(".admissions-deadline-source")).toHaveAttribute("href", "https://college.harvard.edu/admissions/apply/first-year-applicants");
   await expect(page.locator("#detailDeadlines [data-calendar-export]")).toHaveCount(0);
-  await expect(page.locator("#detailDeadlines .deadline-calendar")).toContainText("exact published date and year");
+  await expect(page.locator("#detailDeadlines .deadline-calendar")).toContainText("No deadline is confirmed for calendar export");
 });
 
 test("catalog study level switcher is interactive and filters degree levels", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
   await page.waitForSelector("[data-page='universities']", { state: "attached" });
-  await page.waitForSelector(".catalog-level-segmented", { state: "visible" });
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  const levelSelect = page.locator("#studyLevelSelect");
+  const levelControl = page.locator("#catalogLevelFilter .custom-select-trigger");
+  await expect(levelControl).toBeVisible();
 
-  const allLevelsBtn = page.locator(".catalog-level-btn[data-level='']");
-  await expect(allLevelsBtn).toHaveClass(/is-active/);
-
-  const mbaBtn = page.locator(".catalog-level-btn[data-level='mba']");
+  await expect(levelSelect).toHaveValue("");
   const mbaResponsePromise = page.waitForResponse((response) => {
     const url = new URL(response.url());
     if (url.pathname.endsWith("/universities") && url.searchParams.get("study_level") === "mba") {
@@ -225,19 +225,20 @@ test("catalog study level switcher is interactive and filters degree levels", as
     }
     return false;
   });
-  await mbaBtn.click();
-  await expect(mbaBtn).toHaveClass(/is-active/);
-  await expect(allLevelsBtn).not.toHaveClass(/is-active/);
+  await levelControl.click();
+  await page.locator("#custom-options-studyLevelSelect [data-value='mba']").click();
+  await expect(levelSelect).toHaveValue("mba");
   const mbaResponse = await mbaResponsePromise;
   expect(mbaResponse.ok()).toBeTruthy();
 
   const mbaCards = page.locator(".uni-card[data-uni-id]:not(.is-skeleton)");
-  await expect(mbaCards).toHaveCount(5);
+  await expect(mbaCards).toHaveCount(6);
   const mbaUniversityIds = await mbaCards.evaluateAll((cards) => cards.map((card) => card.dataset.uniId).sort());
   expect(mbaUniversityIds).toEqual([
     "harvard-usa-cambridge",
     "imperial-college-london-uk",
     "mit-usa-cambridge",
+    "nazarbayev-university-kaz-astana",
     "stanford-university-usa-ca",
     "university-of-oxford-uk-oxford",
   ]);

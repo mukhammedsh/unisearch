@@ -62,6 +62,8 @@
         </section>
       </div>
 
+      <p class="profile-page-intro" data-i18n="profile.intro">All fields are optional. Start with your subject, study level and budget; add scores when you want to check published requirements. Save on this device, then return to the catalog.</p>
+
       <!-- 2-Column Workspace Layout -->
       <div class="profile-workspace-layout">
         <!-- Left Sidebar: Navigation + Reset -->
@@ -122,7 +124,7 @@
                     placeholder="e.g. 20000"
                     data-i18n-placeholder="profile.placeholder.budget"
                   />
-                  <span class="profile-unit" id="profileBudgetUnit" data-i18n="profile.unit.currency_year">{currency} / year</span>
+                  <button class="profile-unit profile-unit--toggle profile-unit--currency" id="profileBudgetUnit" type="button" data-i18n="profile.unit.currency_year">{currency} / year</button>
                 </div>
                 <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0–1,000,000</div>
               </div>
@@ -130,9 +132,8 @@
 
             <!-- Optional household financial context -->
             <article class="profile-card-block">
-              <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.label.family_income">Annual family income</h3>
-              </div>
+              <details class="profile-reference" id="familyIncomeDetails">
+              <summary><h3 class="profile-card-title" data-i18n="profile.family_income_reference">Family income (optional reference)</h3><span data-heroicon="chevron-down" data-icon-size="16"></span></summary>
 
               <div class="profile-field">
                 <label class="sr-only" for="familyIncomeInput" data-i18n="profile.label.family_income">Annual family income</label>
@@ -142,7 +143,7 @@
                     class="profile-input"
                     type="text"
                     inputmode="decimal"
-                    maxlength="15"
+                    maxlength="32"
                     data-i18n-placeholder="profile.placeholder.family_income"
                     aria-label="Annual family income"
                     data-i18n-aria-label="profile.label.family_income"
@@ -150,8 +151,9 @@
                   <label class="sr-only" for="familyIncomeCurrencySelect" data-i18n="profile.label.family_income_currency">Income currency</label>
                   <select id="familyIncomeCurrencySelect" class="profile-input profile-input--select" aria-label="Income currency" data-i18n-aria-label="profile.label.family_income_currency"></select>
                 </div>
-                <div class="profile-hint" data-i18n="profile.hint.family_income_optional">Optional. Saved on this device. Income alone does not determine eligibility for financial aid.</div>
+                <div class="profile-hint" data-i18n="profile.hint.family_income_optional">Optional reference saved only on this device. It is not used in UniFit or NU requirement checks and does not predict aid. Use spaces for groups and a comma or point for decimals.</div>
               </div>
+              </details>
             </article>
 
             <!-- Study Format Card -->
@@ -213,10 +215,14 @@
                 <label class="sr-only" for="studyLevelSelect" data-i18n="profile.label.study_level">Target Study Level</label>
                 <select id="studyLevelSelect" class="profile-input profile-input--select" aria-label="Target Study Level" data-i18n-aria-label="profile.label.study_level">
                   <option value="Any" data-i18n="profile.option.study_level_any">Any / All Levels</option>
+                  <option value="preparation" data-i18n="profile.option.study_level_preparation">Preparation / Foundation</option>
                   <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor / Undergraduate</option>
                   <option value="Master" data-i18n="profile.option.study_level_master">Master / Postgraduate</option>
                   <option value="Doctorate" data-i18n="profile.option.study_level_doctorate">Doctorate / PhD</option>
                   <option value="MBA" data-i18n="profile.option.study_level_mba">Graduate Business / MBA</option>
+                  <option value="professional" data-i18n="profile.option.study_level_professional">Professional programs</option>
+                  <option value="residency" data-i18n="profile.option.study_level_residency">Residency</option>
+                  <option value="non_degree" data-i18n="profile.option.study_level_non_degree">Non-degree programs</option>
                 </select>
               </div>
             </article>
@@ -444,7 +450,10 @@
                   <input id="examTakenOnInput" class="profile-input" type="date" />
                 </div>
 
-                <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+                <div class="profile-exam-form-actions">
+                  <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+                  <button id="clearExamDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
+                </div>
               </div>
 
               <div id="examSpecialInputContainer" class="profile-exam-special" hidden></div>
@@ -520,6 +529,7 @@
 
               <div class="lang-control-btn-wrap">
                 <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+                <button id="clearLanguageDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
               </div>
             </div>
 

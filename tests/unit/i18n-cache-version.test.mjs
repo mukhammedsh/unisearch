@@ -7,6 +7,9 @@ test("locale packs refresh after an app update and reuse the current version's c
     [`unisearch_i18n_pack_v3_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
     [`unisearch_i18n_pack_v4_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
     [`unisearch_i18n_pack_v5_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
+    [`unisearch_i18n_pack_v25_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
+    [`unisearch_i18n_pack_v27_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
+    [`unisearch_i18n_pack_v29_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
   ]));
   window.sessionStorage = {
     getItem: key => cache.get(key) ?? null,
@@ -17,12 +20,15 @@ test("locale packs refresh after an app update and reuse the current version's c
   global.fetch = async url => {
     requests += 1;
     urls.push(url);
-    return { ok: true, text: async () => `meta.code: EN\nprogram.label: Programs for ${window.APP_VERSION}\n` };
+    return { ok: true, text: async () => `meta.code: EN\nprogram.label: Programs for ${window.APP_VERSION}\nlocale.label: ${new URL(url, "https://example.test").pathname.split("/").pop()}\n` };
   };
   window.APP_VERSION = "8.1.7";
   const current = await import("../../frontend/javascript/i18n.js?cache-current");
   await current.initI18n();
   assert.equal(current.t("program.label"), "Programs for 8.1.7");
+  assert.equal(current.t("locale.label", "", "rus"), "ru");
+  assert.equal(current.t("locale.label", "", "kaz"), "kaz");
+  assert.equal(current.getCurrentLanguage(), "eng");
   assert.equal(requests, 3);
 
   const reloaded = await import("../../frontend/javascript/i18n.js?cache-reload");

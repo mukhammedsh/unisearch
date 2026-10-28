@@ -15,6 +15,7 @@ const ADMISSIONS_CHOICE_MIGRATION_INSTITUTIONS = new Set([
   "mit-usa-cambridge",
   "imperial-college-london-uk",
   "stanford-university-usa-ca",
+  "nazarbayev-university-kaz-astana",
 ]);
 
 let profileMemoryFallback = null;
@@ -195,7 +196,7 @@ function normalizeAdmissionChoiceSelection(selection) {
     }
   }
   const studyLevelValue = selection.studyLevel ?? selection.study_level;
-  const studyLevel = studyLevelValue === "" ? "" : ["undergraduate", "masters", "doctoral", "professional"].includes(studyLevelValue) ? studyLevelValue : undefined;
+  const studyLevel = studyLevelValue === "" ? "" : ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"].includes(studyLevelValue) ? studyLevelValue : undefined;
   const applicantRouteValue = selection.applicantRoute ?? selection.applicant_route;
   const applicantRoute = applicantRouteValue === "" ? "" : ["first_year", "transfer", "graduate"].includes(applicantRouteValue) ? applicantRouteValue : undefined;
   const cycleValue = selection.intendedEntryCycle ?? selection.intended_entry_cycle;
@@ -687,19 +688,18 @@ export function loadProfileForApi() {
     locale: getUiLanguageForApi(),
   };
 
-  const budget = Number(profile?.budget);
+  const budget = String(profile?.budget ?? "").trim() ? Number(profile.budget) : Number.NaN;
   const budgetCurrency = String(profile?.budgetCurrency || "USD").trim().toUpperCase();
   if (Number.isFinite(budget) && budget >= 0) {
     const usdBudget = convert(budget, budgetCurrency, "USD");
     payload.budget = Math.min(1000000, Math.max(0, Math.round(usdBudget)));
   }
 
-  const gpa = Number(profile?.gpa);
+  const gpa = String(profile?.gpa ?? "").trim() ? Number(profile.gpa) : Number.NaN;
   const gpaScale = Number(profile?.gpaScale) === 5 ? 5 : 4;
   if (Number.isFinite(gpa) && gpa >= 0) {
-    const gpaNormalized = gpaScale === 5 ? Math.round((gpa / 5.0) * 4.0 * 100) / 100 : gpa;
-    payload.gpa = gpaNormalized;
-    payload.gpa_scale = 4;
+    payload.gpa = gpa;
+    payload.gpa_scale = gpaScale;
   }
 
   if (String(profile?.major || "").trim()) {

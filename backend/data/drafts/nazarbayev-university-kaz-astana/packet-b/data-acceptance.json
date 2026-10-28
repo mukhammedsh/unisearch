@@ -1,0 +1,28 @@
+{
+  "status": "accepted",
+  "reviewed_at": "2026-10-26",
+  "review_owner": "B",
+  "catalog_sha256": "efd036caf229090e0a4d21f2beb9ce0949cb3a45ad896e7565f9907d8fa4dc4e",
+  "coverage": {
+    "assigned_options": 93,
+    "additional_offerings": 3,
+    "source_records": 161,
+    "source_backed_unknowns": 29
+  },
+  "review": "Independent program/route/cycle contrast review and source-value provenance checks completed; publication gaps and conflicts are retained, not passed minima.",
+  "runtime_scope_resolutions": [
+    "Financial-support NUET/qualification checks apply only to the support application, not ordinary undergraduate admission.",
+    "Source level labels resolve to actual option levels while original labels/scopes remain in provenance.",
+    "Residency unconditional and UMC-conditional contexts share one official application family.",
+    "Scheduled December policy review is a future refresh, not an activation prerequisite.",
+    "All A/B publication gaps are bounded to their reviewed program/route/level IDs; original text remains in provenance.",
+    "Mid-year entry is an institution-wide undergraduate context with no invented program eligibility; its older cycle remains available as dated history.",
+    "Transfer, progression, joint BBA and NDS interpretations are reachable from their original source facts."
+  ],
+  "publication_limitations": [
+    "NUZYP and NDS current recruitment remains unconfirmed.",
+    "Yearless or past fees and TBA/conflicting dates remain reference evidence.",
+    "Prior-degree equivalence, waivers, licensing and funding decisions remain manual."
+  ],
+  "scope_corrections_reviewed_at": "2026-10-26"
+}

@@ -41,7 +41,7 @@ guide.academic_exams.title: Академиялық емтихандар
 guide.admission.p1: Оқуға қабылдау талаптары таңдалған өтініш жолы мен талаптар профилі бойынша бағаланады. Қаржыландыру нұсқалары бөлек берілген: грант үшін жеке қабылдау бағасы жасалмайды, ал жылдық оқу ақысы грантты шегермей көрсетіледі. Сізге сәйкес өтініш жолын, оқу деңгейін және профильді тексеріңіз.
 guide.admission.p2: Жарияланған ең төменгі талаптар әр өтініш жолына қатысты, бірақ ерекшеліктер болуы немесе өтінімді толық қарау қажет болуы мүмкін. Қабылданған талапкерлердің жарияланған ұпай аралығы өткен жылдардағы дерекке негізделген; ол шек те, кепілдік те емес.
 guide.admission.p3: Тілге қатысты талап та осы қағидамен тексеріледі. «Кез келгені» режимінде тізімдегі бір дәлел жеткілікті, ал «Барлығы» режимінде бәрі қажет. Егер өтініш жолы рұқсат етсе, ана тілі де есепке алынады. Бір тіл талабында CEFR деңгейі мен емтихан ұпайы қатар көрсетілуі мүмкін.
-guide.admission.p4: Әртүрлі елдердің бағалары алдымен ортақ шкалаға келтіріледі: мысалы, GPA есептеу алдында 4.0 шкаласына ауыстырылады. Көп емтиханда жоғары ұпай жақсырақ. JLPT-те керісінше: деңгей саны неғұрлым төмен болса, жапон тілі деңгейі соғұрлым жоғары.
+guide.admission.p4: Профильдерді салыстыру үшін UniFit емтихан нәтижелерін қалыпқа келтіруі мүмкін. Жарияланған шектер тек көрсетілген шкаладағы деректермен тексеріледі: қайта есептелген GPA ресми балама болып саналмайды. Көпшілік емтиханда жоғары балл жақсы; JLPT-де деңгей нөмірі неғұрлым төмен болса, жапон тілі соғұрлым жоғары деңгейде.
 guide.admission.title: Қабылдау нұсқалары қалай жұмыс істейді
 guide.exam_basics.p1: Әр өтініш жолында екі бөлек тексеріс бар: академиялық нәтиже және тіл деңгейі. Бірі екіншісінің орнын баспайды: математикадан жоғары ұпай IELTS нәтижесінің жоқтығын өтемейді. Өтініш жолы қолжетімді болуы үшін екі баған да жасыл болуы керек.
 guide.exam_basics.p2: Шектер университетке, қабылдау санатына және талаптар профиліне қарай өзгереді. Сондықтан бір университеттің екі жолында талап етілетін ұпайлар әртүрлі болуы мүмкін. Таңдаған жолыңыздағы талаптарды оқыңыз: университет бетіндегі жалпы сандар тек бағдар береді.
@@ -262,15 +262,15 @@ profile.gpa_range: GPA {min} мен {max} аралығында болуы кер
 profile.gpa_saved: GPA сақталды
 profile.gpa_step: GPA {step} қадамымен енгізілуі керек
 profile.hint.budget_range: Аралығы: 0–{max}
-profile.hint.family_income_optional: Міндетті емес. Осы құрылғыда сақталады. Отбасы табысы қаржылай көмекке жарамдылықты өздігінен анықтамайды.
+profile.hint.family_income_optional: Осы құрылғыда ғана сақталатын міндетті емес анықтамалық жазба. UniFit пен талаптарды автоматты салыстыруда қолданылмайды және көмекті болжамайды. Мыңдықтарды бос орынмен, бөлшек бөлікті үтірмен не нүктемен бөліңіз.
 profile.family_income_invalid: 0 мен 1 000 000 000 000 аралығындағы соманы енгізіңіз.
 profile.hint.low_budget_grant: Бюджет {amount}-тан төмен. Тек грант нұсқасын таңдауға болады.
 profile.hint.low_budget_grant_action: Тек грантты таңдау
 profile.hint.dismiss: Еске салуды жабу
 profile.hint.gpa: 4.0 (АҚШ / халықаралық) немесе 5.0 (Қазақстан / ТМД) шкаласын таңдаңыз.
 profile.gpa_info_title: GPA қалай есептеледі
-profile.gpa_info_tooltip: Бағалау шкаласын таңдаңыз: 4.0 (халықаралық стандарт, АҚШ, NIS) немесе 5.0 (Қазақстан және ТМД мектеп аттестаты). UniSearch бағаңызды университет талаптарына сай автоматты түрде келтіреді.
-profile.hint.interests: Ұзын сөйлем мен терістеуден («X керек емес») аулақ болыңыз. AI ұқсас сөздерді университет бағдарламаларымен байланыстырады.
+profile.gpa_info_tooltip: Баға шкаласын таңдаңыз: 4.0 немесе 5.0. Бастапқы балл мен шкала сақталады. Жарияланған GPA шектері тиісті шкалада тексеріледі; бағдарламаның бөлек академиялық талаптарына қосымша дерек қажет болуы мүмкін.
+profile.hint.interests: Қызығатын тақырыптар UniFit арқылы университеттерді реттеуге көмектесуі мүмкін. Олар бағдарламаны таңдамайды және оқуға түсу құқығын растамайды.
 profile.interests_saved: Қызығушылықтар сақталды
 profile.saved_all: Профиль сақталды
 profile.label.budget: Жылдық жалпы бюджет
@@ -328,8 +328,8 @@ profile.type: Түрі
 profile.unit.gpa: / 4,0
 profile.unit.usd_year: АҚШ доллары / жыл
 profile.unit.currency_year: {currency} / жыл
-profile.progress.empty: Сәйкес нұсқаларды көру үшін профиліңізді толтырыңыз.
-profile.progress.count: Профильдің {completed}/{total} бөлімі толтырылды
+profile.progress.empty: Каталогты қарап, өзіңізге пайдалы мәліметтерді ғана қоса аласыз.
+profile.progress.count: Міндетті емес {total} бөлімнің {completed} бөлімінде баптаулар бар
 profile.sections.aria: Профиль бөлімдері
 profile.title: Профиль
 profile.section.basics: Жалпы мәліметтер
@@ -340,7 +340,7 @@ profile.kicker: Талапкер профилі
 profile.page_subtitle: UniFit рейтингі мен талаптарға сәйкестік балын есептеу үшін оқу деректерін, бюджетті және емтихан нәтижелерін енгізіңіз.
 profile.action.back: Артқа
 profile.action.back_desc: Алдыңғы бетке қайту
-profile.progress.title: Профильдің толтырылуы
+profile.progress.title: Профильдің міндетті емес баптаулары
 profile.empty_exams: Емтихан әлі қосылмады. Нәтижені енгізу үшін жоғарыдан емтихан таңдаңыз.
 profile.empty_languages: Тіл қосылмады. Ана тіліңізді немесе емтихан сертификатын енгізіңіз.
 profile.field.budget.desc: {currency} валютасымен есептегендегі оқу ақысы мен тұрмыс шығынына арналған жылдық бюджетіңіз.
@@ -349,8 +349,8 @@ profile.field.funding.desc: Грант не шәкіртақы іздейсіз 
 profile.field.gpa.desc: Бағалау шкаласын таңдап, аттестатыңыздағы GPA мәнін енгізіңіз.
 profile.field.major.desc: Сәйкес бағдарламаларды жоғары көрсету үшін оқу саласын таңдаңыз.
 profile.field.interests.desc: Ақылды тегтер сияқты жұмыс істейді: тақырыптар мен салаларды үтірмен бөліп жазыңыз (технология, мамандық, мансап мақсаты).
-profile.field.exams.desc: Жарияланған талаптарға сәйкестікті тексеру үшін IELTS, TOEFL, SAT, ACT немесе A-Level нәтижесін қосыңыз.
-profile.field.languages.desc: Тіл талаптарын тексеру үшін ана тіліңізді немесе IELTS, TOEFL, CEFR сияқты сертификаттарды қосыңыз.
+profile.field.exams.desc: Нәтижені енгізіп, есепті жобаға қосу үшін «Қосу» не Enter пернесін басыңыз. Осы құрылғыда сақтау үшін профильді сақтаңыз.
+profile.field.languages.desc: Тілді не сертификатты қосып, профильді сақтаңыз. Ана тілі мен CEFR университет талап ететін емтиханды автоматты түрде алмастырмайды.
 profile.aria.applicant_profile: Талапкер профилі
 ranking.acceptance: Қабылдау үлесі
 ranking.acceptance_undergraduate: Бакалавриатқа қабылдау үлесі
@@ -444,7 +444,7 @@ universities.cost.tooltip_open: Баға туралы түсіндірме
 universities.cost.tooltip_title: Баға ауқымы туралы
 universities.cost.tooltip_range: Бұл ағымдағы таңдауға сай белгілі ең төменгі және ең жоғары бағалар, орташа баға емес. Сома бағдарлама мен төлем санатына қарай өзгереді.
 universities.cost.tooltip_living_range: Шеткі мәндер белгілі оқу ақысына жарияланған тұру шығындарының ауқымын қосу арқылы алынған, орташа баға емес. Тұру шығындарының бағасы басқа жылға қатысты болуы мүмкін.
-universities.cost.tooltip_single: Бұл ағымдағы таңдауға сай белгілі бір жылдық баға. Бағдарламаны, төлем санатын және жылды нақтылаңыз.
+universities.cost.tooltip_single: Бұл ағымдағы таңдауға сай белгілі бір баға. Бағдарламаны, төлем санатын және жылды нақтылаңыз.
 universities.cost.tooltip_filter_variants: Баға сүзгісі әрбір белгілі нұсқаны жеке тексереді. Кемінде бір нұсқа сіз таңдаған шектерге сай келсе, көрсетілген ауқым сол шектерден кең болса да, ЖОО көрсетіледі. Шеткі бағалардың арасындағы барлық сомалар ұсыныла бермейді.
 universities.cost.tooltip_filter_reference: Жалпы анықтамалық ауқым сіз таңдаған шектермен қиылысуы мүмкін, бірақ сәйкес бағдарлама анықталмауы мүмкін. Оның бағасын университеттен нақтылаңыз.
 universities.cost.tooltip_living_year: Тұру шығындарының бағасы: {year} жыл.
@@ -913,7 +913,7 @@ placeholder.field.countries_count: Елдер саны
 guide.academic.act: Ағылшын, математика, оқу және ғылыми ойлауды қамтитын оның жинағы.
 guide.academic.aptotal: AP пәндері бойынша жиынтық нәтиже оларды мойындайтын жүйелер үшін.
 guide.academic.default: Талаптардың кем дегенде бір профилін талап ететін академиялық балл.
-guide.academic.gpa: Мемлекеттер салыстырмалы түрде болуы үшін UniSearch ішінде 4.0 шкаласына келтірілген орта мектеп балы.
+guide.academic.gpa: Көрсеткен орташа балыңыз және оның бастапқы шкаласы. UniFit салыстыру үшін оны қалыпқа келтіруі мүмкін; жарияланған қабылдау шектері тиісті шкалада тексеріледі.
 guide.academic.ibdiploma: Бүкіл әлем бойынша жоғары оқу орындары қабылдайтын IB дипломының қорытынды балы.
 guide.academic.alevelcert: Британдық A-Level пәндік бағалары - A*AA деп енгізіңіз және ең жақсы үшеуі салыстырмалы балға ауыстырылады.
 guide.academic.hkdselevel: Гонконг мектеп деңгейлері ішкі санаумен: 5* 6, ал 5** 7 болып саналады.
@@ -1114,7 +1114,7 @@ admission.requirements_fit.description: Орындалған тексеріле�
 admission.requirements_fit.unavailable_method: Талаптарға сәйкестік балы қолжетімсіз: бұл көрсеткіштің мәні расталмаған.
 admission.requirements_fit.insufficient_data: Осы сәйкестікті есептеу үшін лайықты талаптар немесе профиль деректері жеткіліксіз.
 admission.requirements_fit.no_published_requirements: Бұл маршрут үшін жарияланған өлшенетін минимумдар жоқ, сондықтан сәйкестік пайызын есептеуге болмайды. Өтінімге ресми талаптарды тексеріңіз.
-admission.requirements_fit.unassessed_minimums: MIT бұл маршрут үшін GPA екі минимумын жариялайды: бейінді пәндер бойынша кемінде 4,25/5,0 және жалпы кемінде 4,0/5,0. UniSearch оларды бағалай алмайды, өйткені профильде төрт балдық шкалаға қалыпқа келтірілген бір ғана GPA сақталады; сәйкестік пайызы есептелмейді.
+admission.requirements_fit.unassessed_minimums: Кейбір жарияланған шектерге ағымдағы профиль растамайтын деректер немесе баға шкаласы қажет. Қолдау көрсетілмейтін тексерулер үшін сәйкестік пайызы есептелмейді.
 admission.requirements_fit.requirements_not_reviewed: Бұл бағыт үшін жарияланған академиялық және тілдік минимумдар әлі тексерілген жоқ. Өтініш берер алдында бағдарламаның ресми бетін зерттеңіз.
 admission.funding_before_award: Қолдау алғанға дейінгі жылдық құн
 admission.score_range.title: Бірінші курс студенттерінің жарияланған балл диапазоны
@@ -1434,15 +1434,15 @@ profile.option.study_level_master: Магистратура
 profile.option.study_level_doctorate: Докторантура / PhD
 profile.option.study_level_professional: Кәсіби бағдарлама
 profile.option.study_level_mba: MBA
-profile.label.citizenship: Азаматтық және резиденттік
-profile.field.citizenship.desc: Сіз үшін құны мен стипендиясын есептеу үшін бір немесе бірнеше азаматтықты қосыңыз.
+profile.label.citizenship: Азаматтықтар
+profile.field.citizenship.desc: Міндетті емес. Азаматтық жарияланған өтініш пен қаржыландыру ережелеріне әсер етуі мүмкін, бірақ тұрғылықты жерді, төлем тарифін немесе грант алуды растамайды.
 profile.citizenship_info_title: Азаматтық пен резиденттіктің әсері
 profile.citizenship_info_tooltip: Азаматтық төлем және көмек ережелеріне әсер ете алады, бірақ оларға деген құқықты анықтамайды. Университет сонымен қатар тұру тарихын, иммиграциялық мәртебесін және бағдарламасын ескере алады. Әрі қарай тексеру үшін барлық азаматтарды қосыңыз.
 profile.citizenship.select_country: Елді таңдаңыз...
 profile.citizenship.add_btn: Қосу
 profile.citizenship.other_option: Басқа ел
 profile.citizenship.other_placeholder: Елдің атауын келтіріңіз...
-profile.citizenship.empty_hint: Азаматтық әлі қосылмаған. Төлем ережелері мен қаржылық көмекті тексеру үшін оларды қосыңыз.
+profile.citizenship.empty_hint: Азаматтық қосылмады. Бос қалдырып, жарияланған ережелерді өзіңіз оқи аласыз.
 profile.citizenship.search_placeholder: Елді іздеу
 profile.citizenship.primary_badge: Негізгі
 profile.citizenship.set_primary_title: Негізгі азаматтық жасау
@@ -1555,7 +1555,7 @@ university.deadlines.all_levels: Барлық баспалдақтар
 university.deadlines.calendar_empty_month: Бұл айда нақты күні белгілі өтінім мерзімі жоқ.
 university.deadlines.calendar_events: өтінім мерзімі
 university.deadlines.calendar_next: Келесі ай
-university.deadlines.calendar_no_exact: Нақты күні мен жылы жарияланған өтінім мерзімі жоқ. Шамамен көрсетілген немесе жылы белгісіз мерзімдерді төмендегі тізімнен қараңыз.
+university.deadlines.calendar_no_exact: Бұл таңдау үшін күнтізбеге экспорттауға расталған мерзім жоқ. Жарияланған күндер, шамамен көрсетілген кезеңдер және дереккөз шектеулері төмендегі тізімде берілген.
 university.deadlines.calendar_partial_note: Нақты күні мен жылы белгісіз мерзімдер тек төмендегі тізімде көрсетіледі.
 university.deadlines.calendar_previous: Өткен ай
 university.deadlines.calendar_title: Өтінім мерзімдерінің күнтізбесі
@@ -2377,7 +2377,7 @@ universities.why.preference_comparison: {label}: сіздің баптауыңы
 admission.requirements_fit.check.profile_unassessed: Профиль қажетті мәліметтерді немесе босатылу құқығын растауға мүмкіндік бермейді.
 admission.requirements_fit.missing_evidence_note: Бағытты тексеру үшін төменде көрсетілген растауларды қосыңыз. Пайыз бағалауға болатын қолданылатын сандық минимумдар болған кезде ғана қолжетімді.
 profile.evidence.title: Таңдалған түсу бағыттарына арналған растаулар
-profile.evidence.description: Өзіңіз көрсететін қосымша мәліметтер жарияланған шарттарды бағалауға көмектеседі. Олар ресми құжаттарды растамайды.
+profile.evidence.description: Сізге қатысты жарияланған шартқа арналған қосымша мәліметтер. Университет өрістері тек осында көрсетілген оқу орындары мен қабылдау жолдарына қолданылады; бұл бөлімді өткізіп жіберуге болады. Өзіңіз көрсеткен мәліметтер ресми құжаттарды не емтиханнан босатуды растамайды.
 profile.evidence.test_date: Тест тапсырған күн (міндетті емес)
 profile.evidence.language_title: Тілдік орта
 profile.evidence.institution_title: Оқу орнына тән оқу туралы растаулар
@@ -2684,7 +2684,7 @@ university.admissions.catalog.field.housing_estimate: Тұрғын үй, бағ�
 university.admissions.catalog.field.food_estimate: Тамақ, бағалау
 university.admissions.catalog.field.materials_estimate: Оқу материалдары
 university.admissions.catalog.field.personal_estimate: Жеке шығындар
-university.admissions.catalog.field.windows: Өтініш кезеңдері
+university.admissions.catalog.field.windows: Жарияланған кезеңдер
 university.admissions.catalog.field.round: Өтініш кезеңі
 university.admissions.catalog.field.application_due: Өтініш мерзімі
 university.admissions.catalog.field.aid_due: Көмекке өтініш мерзімі
@@ -3156,3 +3156,107 @@ university.admissions.catalog.route_name.mit-idps-internal-selection: Қатыс
 university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Департамент пен есептеу ғылымдарының (CSE) бірлескен PhD өтініші
 university.admissions.catalog.route_name.mit-economics-sm-special-approval: Қазіргі MIT студенттеріне экономика SM дәрежесін ерекше мақұлдау
 university.admissions.reading.special_routes: Stanford студенттері және бірлескен дәрежелер ({count})
+university.admissions.catalog.level.preparation: Дайындық
+university.admissions.catalog.study_level.preparation: Дайындық
+university.admissions.catalog.level.residency: Резидентура
+university.admissions.catalog.study_level.residency: Резидентура
+university.admissions.catalog.level.non_degree: Дәреже берілмейтін бағдарламалар
+university.admissions.catalog.study_level.non_degree: Дәреже берілмейтін бағдарламалар
+profile.option.study_level_preparation: Дайындық / Foundation
+universities.level.preparation: Дайындық
+universities.level.professional: Кәсіби бағдарламалар
+profile.option.study_level_residency: Резидентура
+universities.level.residency: Резидентура
+profile.option.study_level_non_degree: Дәреже берілмейтін бағдарламалар
+universities.level.non_degree: Дәреже берілмейтін бағдарламалар
+profile.exam_breakdown_optional_hint: Нәтижеңізде көрсетілген бөлімдерді қосыңыз. Жоқ бөлімдер бағаланбайды.
+profile.exam_section_required: Нәтижеңіздегі кемінде бір бөлімнің ұпайын қосыңыз.
+profile.exam_not_recorded: Қосылмаған
+university.admissions.catalog.kind.academic_requirement: Академиялық біліктілік
+university.admissions.catalog.field.component_minimums: Бөлімдердің ең төменгі балдары
+university.admissions.catalog.field.components_at_least: Пәндер бойынша қажетті нәтижелер
+university.admissions.catalog.field.profile_field: Профиль деректері
+university.admissions.catalog.field.gpa_scale: GPA бастапқы шкаласы
+university.admissions.catalog.field.count: Қажетті саны
+university.admissions.catalog.field.reported: Көрсетілген нәтиже саны
+university.admissions.catalog.field.meeting_minimum: Ең төменгі шекке жеткен нәтижелер
+university.admissions.catalog.counted_minimum: Кемінде {count} нәтиже, әрқайсысы {minimum} не одан жоғары
+university.admissions.catalog.counted_provided: Көрсетілгені: {reported}; шекке жеткені: {met}
+universities.cost.whole_program: толық бағдарлама үшін
+universities.cost.per_credit: / кредит
+university.admissions.catalog.reason.funding_selection_separate: Қаржыландыруға іріктеу оқуға қабылдаудан бөлек жүргізіледі. Бұл қаржыландыру контексті үшін қабылдау талаптарына сәйкестік пайызы есептелмейді.
+university.admissions.catalog.kind.manual_minimum: Құжаттарды жеке тексеруді қажет ететін минимум
+university.admissions.catalog.field.score: Көрсетілген балл
+university.admissions.catalog.field.details: Нәтиже деректері
+university.admissions.catalog.field.components: Көрсетілген бөлімдер мен пәндер
+university.admissions.catalog.field.raw_value: Көрсетілген баға немесе нәтиже
+university.admissions.catalog.field.display_value: Сақталған нәтиже
+university.admissions.catalog.field.requires_review: Жеке тексеру қажет
+university.admissions.catalog.field.date_boundary: Тест күніне жарияланған шектеулер
+university.admissions.catalog.field.max_age_years: Нәтиженің ең ұзақ жарамдылық мерзімі, жыл
+university.deadlines.test_for_funding: Қаржыландыруға іріктеу үшін {exam} тапсырудың соңғы күні
+university.deadlines.kind.test_submission: Тест нәтижесін ұсыну мерзімі
+university.deadlines.dated_reference: Өткен циклдің бағдары
+universities.cost.study_years: Оқу жылдары: {years}
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Дайындық бағдарламасына немесе бакалавриатқа жалпы қабылдау
+university.admissions.catalog.route_name.nu-a-route-financial-support: Қабылдау ұсынысынан кейін қаржыландыруға іріктеу
+university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Оқу жылының ортасындағы ақылы бакалавриат қабылдауы
+university.admissions.catalog.route_name.nu-a-route-transfer: Басқа жоғары оқу орнынан бакалавриатқа ауысу
+university.admissions.catalog.route_name.nu-a-route-nufyp-progression: NUFYP бағдарламасынан бакалавриатқа өту
+university.admissions.catalog.route_name.nu-a-route-joint-bba: HKUST-пен бірлескен BBA бағдарламасына түсу
+university.admissions.catalog.route_name.nu-a-route-nursing: Кәсіби даярлықтан кейін мейіргер ісі бакалавриатына түсу
+university.admissions.catalog.route_name.nu-a-route-ump: Мектептен кейін алты жылдық медициналық бағдарламаға түсу
+university.admissions.catalog.route_name.nu-a-route-masters-common-packet-b: Инженерлік магистратура бағдарламаларына ортақ өтініш
+university.admissions.catalog.route_name.nu-a-route-non-degree-study: Дәреже берілмейтін оқуға түсу
+university.admissions.catalog.route_name.nu-a-route-mining-microcredential: Тау-кен инженериясы микробағдарламасына түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-biomedicine: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-doctor-of-business-administration: Кәсіби докторантураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas: Бірлескен магистратураға SOAS арқылы түсу
+university.admissions.catalog.route_name.nu-b-route-doctor-of-philosophy-in-education: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-phd-in-eurasian-studies: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-doctor-of-public-management: Кәсіби докторантураға түсу
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-public-policy: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-global-health: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-biomedical-sciences: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-life-sciences: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-phd-in-business-administration: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-chemistry: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-applied-mathematics: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-physics: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-multilingual-education: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-educational-leadership: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-in-public-administration: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-in-public-policy: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-political-science-and-international-relations: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-eurasian-studies: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-applied-artificial-intelligence-and-data-science: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-data-science: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-computer-science: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-nursing: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-doctor-of-medicine: Медицина докторы (MD) бағдарламасына түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-public-health: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-life-sciences: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-executive-master-of-business-administration: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-finance: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-business-administration: Магистратураға түсу
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-economics: Магистратураға түсу
+university.admissions.catalog.route_name.nu-c-phd-route: Ғылыми PhD докторантурасына түсу
+university.admissions.catalog.route_name.nu-c-residency-route: Резидентураға ортақ өтініш
+university.admissions.catalog.route_name.nu-residency-unconditional: Резидентура: шартсыз қабылдау
+university.admissions.catalog.route_name.nu-residency-conditional-umc: Резидентура: UMC ұсынымымен шартты қабылдау
+university.admissions.reading.formats_vary: Бағдарламаға байланысты — оқу форматтарын көру
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Осы жерден бастаңыз: түсу талаптары мен өтініш беру. Ағылшын тілі мен академиялық біліктілік талаптары бөлек тексеріледі. Қаржыландыруға іріктеу оқуға қабылдау ұсынысынан кейін өтеді және оның өз шарттары бар.
+university.admissions.entry.route_help.nu-a-route-financial-support: Оқуға қабылдау ұсынысын алғандарға: грант санаттары, қосымша емтихандар және қаржыландыру мерзімдері. Ең төменгі талапты орындау грант берілетінін растамайды.
+university.admissions.entry.route_help.nu-a-route-transfer: Басқа университеттен ауысатын студенттерге. Бұрынғы оқу, кредиттерді тану және тіл емтиханынан босату жеке қарауды талап етеді.
+university.admissions.entry.route_help.nu-a-route-nufyp-progression: Бакалавриатқа өтетін қазіргі NUFYP студенттеріне. Foundation бағдарламасын аяқтау орынға автоматты түрде кепілдік бермейді: өту шарттары қолданылады.
+university.admissions.entry.route_help.nu-residency-unconditional: Резидентураға түсудің қалыпты талаптары, соның ішінде клиникалық емтихандар мен алдыңғы медициналық білім туралы мәліметтер.
+university.admissions.entry.route_help.nu-residency-conditional-umc: UMC ұсынған үміткерлерге арналған жеке шартты жол. Ұсыным мен оқуға тіркелу шарттарын тексеріңіз: бұл емтихандардан жалпы босату емес.
+university.admissions.reading.structured_study: Оқу туралы жарияланған мәліметтер төменде берілген. Қысқаша мәтіндік шолу жоқ.
+university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
+university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
+profile.intro: Барлық өріс міндетті емес. Алдымен мамандықты, оқу деңгейін және бюджетті көрсетіңіз; жарияланған талаптарды салыстыру үшін балдарды кейін қоса аласыз. Деректерді осы құрылғыда сақтап, каталогқа оралыңыз.
+profile.clear_report_draft: Жобаны тазарту
+profile.report_draft_pending: Есепті қосыңыз не жаңартыңыз немесе оның жобасын тазалап, содан кейін профильді сақтаңыз.
+university.admissions.catalog.field.possible_exemption_evidence_kinds: Емтиханнан босатуды жеке тексеруге арналған тілдік тәжірибе
+profile.family_income_reference: Отбасы табысы (міндетті емес анықтама)
+profile.change_budget_currency: Бюджет валютасын баптауларда өзгерту (қазір {currency})

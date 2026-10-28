@@ -175,6 +175,9 @@ def validate_numeric_score(exam_key: str, cfg: Dict[str, Any], score_raw: Any) -
 def coerce_flag_score(exam_key: str, score_raw: Any) -> int:
     if score_raw is None or score_raw == "":
         return 1
+    numeric = to_float(score_raw)
+    if numeric in (0, 1):
+        return int(numeric)
     text = strip_text(score_raw).lower()
     if text in ("1", "true", "yes", "on"):
         return 1

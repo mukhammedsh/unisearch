@@ -72,23 +72,25 @@ export function getReviewedDeadlineEvents(resolved) {
     if (existing && (existing.time || !time)) return;
     events.set(key, { id: `${row.id}:${kind}:${deadline}:${name}`, kind, name, title: name || option?.title || resolved.selected_route.title,
       deadline, time, timezone, sourceFactId: row.id, sourceUrl: detail.source_url || resolved.sources?.find(source => row.source_ids?.includes(source.id))?.url || "",
-      cycle: detail.cycle || row.scope?.cycle || "", scope: [option?.title, resolved.selected_route.title].filter(Boolean).join(" · "), applicantCategoryLabel });
+      cycle: detail.cycle || row.scope?.cycle || "", scope: [option?.title, resolved.selected_route.title].filter(Boolean).join(" · "), applicantCategoryLabel,
+      publicationStatus: detail.publication_status || row.publication_status, applicationCategory: detail.application_category || "", examId: detail.exam_id || "" });
   };
   const rows = (resolved.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched"
-    && row.publication_status === "published" && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
+    && (row.publication_status === "published" || row.publication_status?.startsWith("published_") && Array.isArray(row.attributes?.deadline_events))
+    && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
     && !/conflict|pending|partial|superseded|requires_confirmation/.test(row.review_status || "")
     && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(option?.id))
     && (!row.scope?.route_ids?.length || row.scope.route_ids.some(id => [resolved.selected_route.id, ...(resolved.selected_route.shared_policy_context_ids || [])].includes(id))));
   for (const row of rows) {
-    const value = row.value;
+    const value = row.attributes?.deadline_events || row.value;
     if (!value || typeof value !== "object") continue;
     if (Array.isArray(value)) {
       for (const entry of value) {
-        if (!entry || typeof entry !== "object" || entry.publication_status && entry.publication_status !== "published") continue;
+        if (!entry || typeof entry !== "object" || entry.publication_status && !["published", "published_dated_reference"].includes(entry.publication_status)) continue;
         if (entry.program_ids?.length && !entry.program_ids.includes(option?.id)) continue;
         const round = (entry.deadline_type || entry.window)?.match(/^round_(\d+)$/);
         const name = round ? `Round ${round[1]}` : entry.label || entry.cycle || "";
-        const kind = entry.deadline_type === "aid_application" ? "funding" : entry.deadline_type === "standardized_test" ? "test" : "application";
+        const kind = entry.deadline_type === "aid_application" ? "funding" : ["standardized_test", "test_date"].includes(entry.deadline_type) ? "test" : entry.deadline_type === "test_submission" ? "test_submission" : "application";
         add(row, kind, entry, name);
       }
       continue;

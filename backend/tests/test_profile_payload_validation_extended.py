@@ -24,6 +24,17 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
             },
         )
 
+    def test_saved_native_levels_do_not_block_another_university_context(self):
+        for level in ("preparation", "residency", "non_degree"):
+            with self.subTest(level=level):
+                profile = {"selectedAdmissionChoices": {
+                    "nazarbayev-university-kaz-astana": {"studyOptionId": "saved-option", "studyLevel": level},
+                }}
+                response = self.client.post("/universities/stanford-university-usa-ca/admissions-context",
+                                            json={"profile": profile, "context": {}})
+                self.assertEqual(response.status_code, 200, response.text)
+
+
     def test_rejects_exam_entry_without_id_or_exam(self):
         response = self._post_ai_sort(
             {

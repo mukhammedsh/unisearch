@@ -167,7 +167,9 @@
           "id": "english",
           "kind": "language_requirement",
           "primary_english_exemption": true,
-          "possible_exemption_evidence_kinds": ["education"],
+          "possible_exemption_evidence_kinds": [
+            "education"
+          ],
           "max_age_years": 2,
           "alternatives": [
             {
@@ -696,6 +698,3074 @@
       "remaining_conditions": [
         "SC0x must be verified and valid at application; no actual submission date is recorded. Published three-year experience condition and department/OGE English-policy differences require separate evidence and verification."
       ]
+    },
+    {
+      "id": "nu-a-fact-ug-english-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-ug-english",
+      "fact_sha256": "f306be8fca73b237881f67f5f242a69216eb219fbb20d359dc410431b79c50fa",
+      "source_publication_status": "published_for_2027_28_regular_admission",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027/28",
+          "Fall 2027",
+          "2027 entry",
+          "2027-2028"
+        ]
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              },
+              "windows": [
+                [
+                  "2025-08-01",
+                  "2027-08-01"
+                ]
+              ]
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "No superscoring; in-person test center only; IELTS Online, TOEFL Home Edition and TOEFL PDT not accepted; IELTS One Skill Retake accepted using original test date; certificates valid for two years and must not expire before 2027-08-01.",
+        "Test-center format, no superscoring, original OSR date and validity through 2027-08-01 require confirmation."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-fyp-english-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-fyp-english",
+      "fact_sha256": "53b19207e1e914372c9e7b92207c8614e97417eb12282921e95547f5400a520c",
+      "source_publication_status": "published_for_2027_28_regular_admission",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-nu-foundation-year-program"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate"
+        ],
+        "levels": [
+          "preparation"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027/28",
+          "Fall 2027",
+          "2027 entry",
+          "2027-2028"
+        ]
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 5.5,
+              "component_minimums": {
+                "IELTS_WRITING": 5.5,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5,
+                "IELTS_SPEAKING": 5
+              },
+              "windows": [
+                [
+                  "2025-08-01",
+                  "2027-08-01"
+                ]
+              ]
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Same testing validity/format/no-superscoring constraints as UG; one qualification route is additionally required."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-ug-academic-alternatives-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-ug-academic-alternatives",
+      "fact_sha256": "0162c07031e4a854517100951124a3a56f241e74f669e8308c35aa8dfa8495c1",
+      "source_publication_status": "published_for_2027_28_regular_admission",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027/28",
+          "Fall 2027",
+          "2027 entry",
+          "2027-2028"
+        ]
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "profile_field": "gpa",
+              "minimum": 4,
+              "scale": 5
+            },
+            {
+              "exam_id": "UNT",
+              "minimum": 85,
+              "component_minimums": {
+                "UNT_MATHEMATICAL_LITERACY": 8,
+                "UNT_READING_LITERACY": 8
+              }
+            },
+            {
+              "exam_id": "SAT",
+              "minimum": 1240,
+              "windows": [
+                [
+                  "2025-08-01",
+                  "2027-08-01"
+                ]
+              ]
+            },
+            {
+              "exam_id": "ACT",
+              "minimum": 26,
+              "windows": [
+                [
+                  "2025-08-01",
+                  "2027-08-01"
+                ]
+              ]
+            },
+            {
+              "exam_id": "IB_Diploma",
+              "minimum": 27,
+              "components_at_least": {
+                "count": 3,
+                "minimum": 4,
+                "exam_ids": [
+                  "IB_MATHEMATICS_HL",
+                  "IB_PHYSICS_HL",
+                  "IB_CHEMISTRY_HL",
+                  "IB_BIOLOGY_HL",
+                  "IB_COMPUTER_SCIENCE_HL"
+                ]
+              }
+            },
+            {
+              "exam_id": "A_LEVEL_CERT",
+              "components_at_least": {
+                "count": 3,
+                "minimum": 4
+              }
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Other grading scales converted to GPA 5.0. Last UNT certificate before deadline only; no superscoring. SAT/ACT no superscoring, test-center only, two-year validity and valid through 2027-08-01. Only final IB/A-level/NIS credentials accepted. IB/A-level/NIS certificates have two-year issue validity under policy. Transfer requires at least one successfully completed semester at a foreign or Kazakhstani university; English-medium institution confirmation exempts IELTS/TOEFL.",
+        "Credential thresholds conflict with the policy appendix and aid page (see nu-a-fact-admission-source-conflict); retain the web page 2027/28 values and policy appendix values as separate sourced versions until scope is resolved.",
+        "The current 2027/28 regular admissions page does not include NUET in its visible academic alternatives. The 2026 policy separately defines a NUET applicant category; see nu-a-fact-nuet-policy-route and keep that cycle-specific status distinct."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-fyp-academic-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-fyp-academic",
+      "fact_sha256": "95c3335601ff528fbc8af05ba098d1137eff2990babf1f49ccd916b69ca9e530",
+      "source_publication_status": "published_policy_appendix",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-nu-foundation-year-program"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate"
+        ],
+        "levels": [
+          "preparation"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "profile_field": "gpa",
+              "minimum": 3.5,
+              "scale": 5
+            },
+            {
+              "exam_id": "UNT",
+              "minimum": 75,
+              "component_minimums": {
+                "UNT_MATHEMATICAL_LITERACY": 7,
+                "UNT_READING_LITERACY": 7
+              }
+            },
+            {
+              "exam_id": "NUET",
+              "minimum": 120,
+              "component_minimums": {
+                "NUET_MATH": 50,
+                "NUET_CRITICAL_THINKING": 50
+              }
+            },
+            {
+              "exam_id": "SAT",
+              "minimum": 1140,
+              "requires_review": true
+            },
+            {
+              "exam_id": "ACT",
+              "minimum": 24,
+              "requires_review": true
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "English minimum is a separate AND requirement. GPA and UNT are alternatives within the academic qualification route. Other grading scales are converted to GPA 5.0. Undergraduates recommended at the published IELTS 6.0 boundary may be subject to internal study conditions.",
+        "The current CPS NUFYP page explicitly includes NUET 120/50/50 as a regular entry alternative. This is not the 2026/27 mid-year UG threshold (130/60/60) nor a claim that 120/50/50 is the sole/general UG admissions minimum.",
+        "The policy restricts the Foundation SAT/ACT category to international applicants; confirm category applicability."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-midyear-nuet-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-midyear-nuet",
+      "fact_sha256": "fa1e9dd596712b1e8b99569f172c7a1460f8a2a21264a9b3b8fba2d91d346c48",
+      "source_publication_status": "published_for_2026_27_midyear",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "nu-a-route-midyear-2026-27"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2026/27_midyear",
+          "Spring 2027"
+        ]
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "NUET",
+              "minimum": 130,
+              "component_minimums": {
+                "NUET_MATH": 60,
+                "NUET_CRITICAL_THINKING": 60
+              },
+              "windows": [
+                [
+                  "2026-01-01",
+                  "2026-12-31"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "id": "midyear-eligibility",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "Do not reuse 2027/28 regular NUET admission or aid criteria without their own page evidence.",
+        "Indexed official page lists SAT 2025-12-06 and ACT 2025-02-13 as latest tests; it also states 2-year SAT/ACT validity. At the 2026-11-28 deadline those listed dates fall within two years, so the date alone does not prove staleness. Direct portal route currently returns 404; central regular page matches the NUET/date rules.",
+        "Only NUET from the current calendar year; spring entry is fee-paying."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-nuet-support-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-nuet-support",
+      "fact_sha256": "ddd33038fa4a35255003e7228e19566088fdbec878c74667db39e807cd5fd811",
+      "source_publication_status": "published_minimum",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-nu-foundation-year-program",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-financial-support"
+        ],
+        "levels": [
+          "preparation",
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027/28",
+          "Fall 2027",
+          "2027 entry",
+          "2027-2028"
+        ]
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "NUET",
+              "minimum": 120,
+              "component_minimums": {
+                "NUET_MATH": 50,
+                "NUET_CRITICAL_THINKING": 50
+              }
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "This 120 threshold is for aid eligibility, not regular UG admission. NUET has two separately reported sections; evaluate total AND each section."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-financial-support-eligibility-2027-28-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-financial-support-eligibility-2027-28",
+      "fact_sha256": "91b5e1ddaed18a55d848cde6c2b28471356b77ba3fba5ea808a9e0408ba0b7d1",
+      "source_publication_status": "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-nu-foundation-year-program",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-financial-support"
+        ],
+        "levels": [
+          "preparation",
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": [
+          "2027/28",
+          "Fall 2027",
+          "2027 entry",
+          "2027-2028"
+        ]
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "NUET",
+              "minimum": 120,
+              "component_minimums": {
+                "NUET_MATH": 50,
+                "NUET_CRITICAL_THINKING": 50
+              }
+            },
+            {
+              "exam_id": "SAT",
+              "minimum": 1240
+            },
+            {
+              "exam_id": "ACT",
+              "minimum": 26
+            },
+            {
+              "exam_id": "IB_Diploma",
+              "minimum": 30,
+              "components_at_least": {
+                "count": 3,
+                "minimum": 4,
+                "exam_ids": [
+                  "IB_MATHEMATICS_HL",
+                  "IB_PHYSICS_HL",
+                  "IB_CHEMISTRY_HL",
+                  "IB_BIOLOGY_HL",
+                  "IB_COMPUTER_SCIENCE_HL"
+                ]
+              },
+              "additional_component_counts": [
+                {
+                  "count": 1,
+                  "minimum": 5,
+                  "exam_ids": [
+                    "IB_MATHEMATICS_HL",
+                    "IB_PHYSICS_HL",
+                    "IB_CHEMISTRY_HL",
+                    "IB_BIOLOGY_HL",
+                    "IB_COMPUTER_SCIENCE_HL"
+                  ]
+                }
+              ]
+            },
+            {
+              "exam_id": "A_LEVEL_CERT",
+              "components_at_least": {
+                "count": 3,
+                "minimum": 4
+              },
+              "additional_component_counts": [
+                {
+                  "count": 1,
+                  "minimum": 5
+                }
+              ]
+            }
+          ],
+          "scope": {
+            "levels": [
+              "undergraduate"
+            ]
+          }
+        },
+        {
+          "id": "foundation-support",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "NUET",
+              "minimum": 120,
+              "component_minimums": {
+                "NUET_MATH": 50,
+                "NUET_CRITICAL_THINKING": 50
+              }
+            },
+            {
+              "exam_id": "SAT",
+              "minimum": 1140
+            },
+            {
+              "exam_id": "ACT",
+              "minimum": 24
+            }
+          ],
+          "scope": {
+            "levels": [
+              "preparation"
+            ]
+          }
+        }
+      ],
+      "remaining_conditions": [
+        "Do not infer universal support coverage, guaranteed funding or that percentages can be stacked. The general grant value/coverage, duration/renewal and required supporting documents for each percentage category are not fully specified. The regular-offer acceptance exclusion and older policy waiting-list exception remain separately scoped. Page has an internal Olympiad medal-year wording difference from the 2026 policy; preserve exact sources.",
+        "Regular offer, funding category, nationality restrictions, documents and award competition are separate decisions."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-nursing-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-nursing-entry",
+      "fact_sha256": "dc8a8995e8d6b8fe2273c86d2c4aeb4f23e890371234995dea8598f97da2a31d",
+      "source_publication_status": "published_on_program_page",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-in-nursing"
+        ],
+        "route_ids": [
+          "nu-a-route-nursing"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "NURSING_NAT",
+              "component_minimums": {
+                "NAT_KNOWLEDGE": 70,
+                "NAT_CLINICAL_SKILLS": 70
+              }
+            }
+          ]
+        },
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.67,
+          "scale": 4
+        }
+      ],
+      "remaining_conditions": [
+        "Both NAT sections have independent minimums; a combined total cannot substitute.",
+        "Nursing diploma, licence, specialist certificate, post-diploma training and two recent years of practice require verification."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-nds-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-nds-entry",
+      "fact_sha256": "16ee444a6bd1f7b3baf0746130b5e6c834a653d4a83f967a2d759bd764daedf3",
+      "source_publication_status": "published_on_current_regular_admission_page",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-non-degree-study"
+        ],
+        "route_ids": [
+          "nu-a-route-non-degree-study"
+        ],
+        "levels": [
+          "non_degree"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {}
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "minimum": 79
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        },
+        {
+          "id": "academic",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "SAT",
+              "minimum": 1150
+            },
+            {
+              "exam_id": "ACT",
+              "minimum": 23
+            },
+            {
+              "exam_id": "IB_Diploma",
+              "minimum": 27,
+              "components_at_least": {
+                "count": 3,
+                "minimum": 4,
+                "exam_ids": [
+                  "IB_MATHEMATICS_HL",
+                  "IB_PHYSICS_HL",
+                  "IB_CHEMISTRY_HL",
+                  "IB_BIOLOGY_HL",
+                  "IB_COMPUTER_SCIENCE_HL"
+                ]
+              }
+            },
+            {
+              "exam_id": "A_LEVEL_CERT",
+              "components_at_least": {
+                "count": 3,
+                "minimum": 4
+              }
+            },
+            {
+              "exam_id": "UNT",
+              "component_minimums": {
+                "UNT_MATHEMATICAL_LITERACY": 9,
+                "UNT_READING_LITERACY": 9
+              }
+            },
+            {
+              "exam_id": "NUET",
+              "minimum": 110,
+              "component_minimums": {
+                "NUET_MATH": 40,
+                "NUET_CRITICAL_THINKING": 40
+              }
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Applicants apply under the undergraduate admission procedure and deadlines, but NDS thresholds are lower than UG admission criteria. English plus one academic category. Do not treat NDS threshold as degree-admission eligibility.",
+        "Non-degree study does not guarantee degree admission or course placement."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-nufyp-progression-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-nufyp-progression",
+      "fact_sha256": "a6521e6edd6d74fbb8938ecc86cd6902b84d6f2c60ab202e3b26d54463b3e0dc",
+      "source_publication_status": "published_policy_appendix",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-nufyp-progression"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "scoped-published-minimum",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "Grant offers are ranked within allocated seats for each major; capacity may lead to second-choice consideration under Provost-approved ranking. Fee-paying and grant thresholds differ. NUFYP students apply only through their own category and CPS supplies results to Admissions; no IELTS/TOEFL for this route."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-transfer-route-details-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-transfer-route-details",
+      "fact_sha256": "b4c929152661aec8abc433f39f6de39dec0c9892ddf0ae1eb078098edd140281",
+      "source_publication_status": "published_policy_and_2026_announcement",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "scoped-published-minimum",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "Transfer cannot be treated as first-year or automatic credit transfer. Policy says accepted transfer students enter UG on a fee-paying basis only, with admission subject to major capacity."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-joint-bba-admissions-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-joint-bba-admissions",
+      "fact_sha256": "0fd0cc36fb6d3a5451de4f8d96aa0ff35b0ddb0abd62390d83620db78932296b",
+      "source_publication_status": "2026_27_entry_score_table_and_2027_28_date_conflict",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust"
+        ],
+        "route_ids": [
+          "nu-a-route-joint-bba"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "scoped-published-minimum",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "Requirements include both universities general admissions requirements (GAR), school-specific and English language requirements (ELAR). Do not apply standard NU undergraduate route because formal policy excludes this program. Table labels score profile for 2026-27 admissions; no new-cycle scores confirmed. The exact application date table and its TBA statement conflict; preserve both.",
+        "The same page lists date windows in a table and says 2027/28 application dates will be announced shortly; see nu-a-fact-joint-bba-date-conflict."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-a-fact-ump-program-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-a-fact-ump-program-entry",
+      "fact_sha256": "92885b7f0d2bfdf0239ad7333fe50a9c9c1c056b159de2c30cf427ea979273e3",
+      "source_publication_status": "program_page_2025_26_requirements_and_separate_NUET_category",
+      "scope": {
+        "option_ids": [
+          "nu-a-study-6-year-undergraduate-medical-program"
+        ],
+        "route_ids": [
+          "nu-a-route-ump"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "scoped-published-minimum",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "The current 2027/28 page does not establish a renewed NUET entry category. The 2025/26 page places NUET in program entry requirements and separately has a Financial Aid tab; preserve historical cycle. Standard program page values match several current central values, but source/cycle governs. IELTS overall 5.5 with all sections above 5.5 may be considered for conditional fee-paying admission; Olympiad has no minimum IELTS/TOEFL but requires interview. Tests must be in-person and without superscoring."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mba-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mba-requirements",
+      "fact_sha256": "c75542f2aea1a567b72bfd77bbf492a354c7d93942d1ece35b1ff38a8350ce3c",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-business-administration"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-business-administration"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 5.5,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        },
+        {
+          "id": "quantitative-report",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ALEKS"
+            },
+            {
+              "exam_id": "GRE"
+            },
+            {
+              "exam_id": "GMAT"
+            }
+          ]
+        },
+        {
+          "id": "writing-source-conflict",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "Program page writing floor is 5.5; central master table publishes 6.0. This conflict remains unassessed until official clarification.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-finance-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-finance-requirements",
+      "fact_sha256": "5552c899a4bb9b93b6e6814392e183f8318b69f7497c817a07694c5e67753f0f",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-finance"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-finance"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        },
+        {
+          "id": "quantitative-report",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ALEKS"
+            },
+            {
+              "exam_id": "GRE"
+            },
+            {
+              "exam_id": "GMAT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mae-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mae-requirements",
+      "fact_sha256": "0df451a35f058ed7e5c17d5f506bd2151a2903a88d18f7dac92f9c87d749fe1e",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-arts-in-economics"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-arts-in-economics"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mpa-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mpa-entry",
+      "fact_sha256": "3e1b161f8642bd622a4dfb8f61e073eb02ef9276ab28c19ed13b13d133e9d648",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-in-public-administration"
+        ],
+        "route_ids": [
+          "nu-b-route-master-in-public-administration"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mpp-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mpp-entry",
+      "fact_sha256": "fda8a1fb65691392460b25d88b195d26641eca38221f405a123500c6452f0a79",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-in-public-policy"
+        ],
+        "route_ids": [
+          "nu-b-route-master-in-public-policy"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-dpm-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-dpm-entry",
+      "fact_sha256": "f2cf24053d23c9f2de061540633fc7b69c470db5ece91b459e143ee47bd3b07d",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-doctor-of-public-management"
+        ],
+        "route_ids": [
+          "nu-b-route-doctor-of-public-management"
+        ],
+        "levels": [
+          "doctoral",
+          "professional"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.75,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-phd-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-phd-entry",
+      "fact_sha256": "7a13c800fd3bcf83e54d45dca791970133219201e4a9861b85539780c47d026d",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-ph-d-in-public-policy"
+        ],
+        "route_ids": [
+          "nu-b-route-ph-d-in-public-policy"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.75,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-dba-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-dba-entry",
+      "fact_sha256": "b934b1972c320ab97cc6bb51429605b970d4a2b0b2e32b6495139fe25dda2567",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-doctor-of-business-administration"
+        ],
+        "route_ids": [
+          "nu-b-route-doctor-of-business-administration"
+        ],
+        "levels": [
+          "doctoral",
+          "professional"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "quantitative-report",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "ALEKS"
+            },
+            {
+              "exam_id": "GRE"
+            },
+            {
+              "exam_id": "GMAT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-business-phd-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-business-phd-entry",
+      "fact_sha256": "9f5e981c688e757ed08220e9e3c619455c631f3a567a232a0880a8b525cd06ba",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-phd-in-business-administration"
+        ],
+        "route_ids": [
+          "nu-b-route-phd-in-business-administration"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.75,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        },
+        {
+          "id": "quantitative-report",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "GRE"
+            },
+            {
+              "exam_id": "GMAT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-maprogram-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-maprogram-entry",
+      "fact_sha256": "53ef8b1a7479509f7b3bec7b03eb8349f15df60dc2ead273080ba049782a151b",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-arts-in-multilingual-education"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-arts-in-multilingual-education"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mscprograms-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mscprograms-entry",
+      "fact_sha256": "d9da017fd85674f4dda7c5b7eb5e212ee6405a3ff3ef0a96dfba4d4ef94b9fef",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-educational-leadership"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-educational-leadership"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-phdprogram-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-phdprogram-entry",
+      "fact_sha256": "672243b5bd6f5eeac4c04a9e9f4ec115c06c7bf41655819770c7830bfe45b31b",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-doctor-of-philosophy-in-education"
+        ],
+        "route_ids": [
+          "nu-b-route-doctor-of-philosophy-in-education"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-msc-ai-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-msc-ai-entry",
+      "fact_sha256": "0fdcadf1f8acd9f3d83e6626a7784b7accfebc37fce68e1f318d54a4d813a4da",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-applied-artificial-intelligence-and-data-science"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-applied-artificial-intelligence-and-data-science"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-msc-ds-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-msc-ds-entry",
+      "fact_sha256": "ea80f31b85539928f15a34129eb90da55eeaf608fec2c70593126f30e35e7b25",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-data-science"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-data-science"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-msc-cs-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-msc-cs-entry",
+      "fact_sha256": "1f1bee78887c7f68b45a4901838814cfa24b4420868ab3c911e4ea929c99edbb",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-computer-science"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-computer-science"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-msc-math-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-msc-math-entry",
+      "fact_sha256": "47068fb7b212af5e67e42ae37f853641e4bfb25ebe403d9e9fa7641b527515f7",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-applied-mathematics"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-applied-mathematics"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mscchem-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mscchem-entry",
+      "fact_sha256": "dd0a331d852823139af36ea59b82e213e4bac90367c1744a322a3840529625f7",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-chemistry"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-chemistry"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mscphysics-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mscphysics-entry",
+      "fact_sha256": "0f6d67753c3276fc4fc8b09a5d631244f16fc6164c82380e21a18687e3201c10",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-physics"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-physics"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mapsirgr-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mapsirgr-entry",
+      "fact_sha256": "2233ef18c834a0447dadecb3b9415d2af8efd09d01af3dc777cc0f1b4d2d5820",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-arts-in-political-science-and-international-relations"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-arts-in-political-science-and-international-relations"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-maeurasian-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-maeurasian-entry",
+      "fact_sha256": "bb1cabaa98e75d8618259e1dbe5492d4d475db7101a5b77cc03c74f6bbb8508c",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-arts-in-eurasian-studies"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-arts-in-eurasian-studies"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-eurasian-phd-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-eurasian-phd-entry",
+      "fact_sha256": "a0e21474af2406d90fe2378174123305a8e42b6a0e467a31eb016c9a7389c1ce",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-phd-in-eurasian-studies"
+        ],
+        "route_ids": [
+          "nu-b-route-phd-in-eurasian-studies"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 7,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Numeric grant CGPA is not silently imposed on regular profile described as competitive.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-msbm-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-msbm-entry",
+      "fact_sha256": "963b9c52b594c0d29140edecf15e23596f2dc8b84107e7655054c75bb4c2b006",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-biomedicine"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-biomedicine"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mph-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mph-entry",
+      "fact_sha256": "bce188328f357023b18bab4d3ebe6a5077b4982614bd26f274ab2a5703a41e0f",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-public-health"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-public-health"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 5.5,
+                "IELTS_LISTENING": 5.5,
+                "IELTS_SPEAKING": 5.5
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-msn-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-msn-entry",
+      "fact_sha256": "9d5683e3e996b0668b06c4d1fe82795156cf0f2b825ed3e53fb0ea5545df7d60",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-nursing"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-nursing"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "applicant-language-category",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "MSN is expressly excluded from general master admissions policy. Do not infer proficiency solely from citizenship or copy Bachelor Nursing NAT rules into MSN.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-md-entry-reviewed-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-md-entry-reviewed",
+      "fact_sha256": "11e193179861e4598de04c15b31dedc4f346a6ab29259cdba8606fdf4fe3b52a",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-doctor-of-medicine"
+        ],
+        "route_ids": [
+          "nu-b-route-doctor-of-medicine"
+        ],
+        "levels": [
+          "professional"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.5,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "minimum": 100
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        },
+        {
+          "id": "mcat",
+          "kind": "academic_requirement",
+          "alternatives": [
+            {
+              "exam_id": "MCAT",
+              "minimum": 489,
+              "max_age_years": 3
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "MD is excluded from the general master policy. TOEFL formats/scales are retained exactly; no conversion to the newer1-6 test is invented.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-mls-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-mls-entry",
+      "fact_sha256": "64d279eac92bedbd19b0bafb49e061335df4004158c58696c3e03e07d3784183",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-science-in-life-sciences"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-science-in-life-sciences"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.75,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-phd-in-global-health-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-phd-in-global-health-entry",
+      "fact_sha256": "287b00b3c80630155309266188efad6ca2068f167fd942c9ab296f45177f299d",
+      "source_publication_status": "published_with_source_scope_conflict",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-ph-d-in-global-health"
+        ],
+        "route_ids": [
+          "nu-b-route-ph-d-in-global-health"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "conflicting-gpa",
+          "kind": "manual_minimum"
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "SOM aid checklist requests laboratory-work experience evidence for Biomedical Sciences; it explicitly makes this optional for Global Health.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-phd-in-biomedical-sciences-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-phd-in-biomedical-sciences-entry",
+      "fact_sha256": "ef0c1639e9bfdea72b674c355c17463b2ca9a89524bedc78966970e195c8d3e8",
+      "source_publication_status": "published_with_source_scope_conflict",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-ph-d-in-biomedical-sciences"
+        ],
+        "route_ids": [
+          "nu-b-route-ph-d-in-biomedical-sciences"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "conflicting-gpa",
+          "kind": "manual_minimum"
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "SOM aid checklist requests laboratory-work experience evidence for Biomedical Sciences; it explicitly makes this optional for Global Health.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-phd-in-life-sciences-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-phd-in-life-sciences-entry",
+      "fact_sha256": "5da21d5bff2187c4886883678c5eb2d2bcf424b4f311618208aee806f17844c6",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-ph-d-in-life-sciences"
+        ],
+        "route_ids": [
+          "nu-b-route-ph-d-in-life-sciences"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.75,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-b-joint-soas-entry-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-b-joint-soas-entry",
+      "fact_sha256": "7f36980bb0cb268e17e82eb37bfdf880201f7f66e22f6d58889751e974380fe0",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-b-study-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas"
+        ],
+        "route_ids": [
+          "nu-b-route-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum",
+          "minimum": 2.7,
+          "scale": 4
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6,
+                "IELTS_READING": 6,
+                "IELTS_LISTENING": 6,
+                "IELTS_SPEAKING": 6
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "minimum": 95,
+              "component_minimums": {
+                "TOEFL_iBT_0_120_WRITING": 23,
+                "TOEFL_iBT_0_120_READING": 20,
+                "TOEFL_iBT_0_120_LISTENING": 20,
+                "TOEFL_iBT_0_120_SPEAKING": 20
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Explicitly excluded from NU ordinary-master admission policy. IELTS Online acceptance is programme-specific and differs from ordinary NU exclusion.",
+        "Prior-degree scope, equivalency, valid test dates/formats, discretionary waivers and selection conditions need source-specific review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-c-phd-scai-regular_and_financial_support-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-c-phd-scai-regular_and_financial_support-requirements",
+      "fact_sha256": "56d5cc1e15d47d97beff05f7608cef889914530bbda0f0626849480e9a62205d",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-mathematics",
+          "nu-c-study-ph-d-in-computer-science",
+          "nu-c-study-ph-d-in-robotics-engineering"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum"
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6.0,
+                "IELTS_READING": 6.0,
+                "IELTS_LISTENING": 6.0,
+                "IELTS_SPEAKING": 6.0
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "No research-proposal or unrelated School cutoff is imported."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-c-phd-ssh-regular_and_financial_support-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-c-phd-ssh-regular_and_financial_support-requirements",
+      "fact_sha256": "1dc589454ce7d8f2074516b849ac55c17a5b98ed1ed1d09171cba8715272affe",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-chemistry",
+          "nu-c-study-ph-d-in-physics"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum"
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6.0,
+                "IELTS_READING": 6.0,
+                "IELTS_LISTENING": 6.0,
+                "IELTS_SPEAKING": 6.0
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "No research-proposal or unrelated School cutoff is imported."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-c-phd-soe-regular-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-c-phd-soe-regular-requirements",
+      "fact_sha256": "5a7328fbed80d690936450bd5eab38ab7b803ff48e20e0b9960666cb44f566ad",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum"
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6.0,
+                "IELTS_READING": 6.0,
+                "IELTS_LISTENING": 6.0,
+                "IELTS_SPEAKING": 6.0
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "SOE regular and financial-support GPA scopes differ; preserve the stated basis."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-c-phd-soe-financial_support-requirements-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-c-phd-soe-financial_support-requirements",
+      "fact_sha256": "0601170612b8c338ddae84d1f2150b466b5fc2e2f3c0df9623946c1756c6f844",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ],
+        "levels": [
+          "doctoral"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "prior-degree",
+          "kind": "manual_minimum"
+        },
+        {
+          "id": "english",
+          "kind": "language_requirement",
+          "alternatives": [
+            {
+              "exam_id": "IELTS",
+              "minimum": 6.5,
+              "component_minimums": {
+                "IELTS_WRITING": 6.0,
+                "IELTS_READING": 6.0,
+                "IELTS_LISTENING": 6.0,
+                "IELTS_SPEAKING": 6.0
+              }
+            },
+            {
+              "exam_id": "TOEFL_iBT_0_120",
+              "requires_review": true
+            },
+            {
+              "exam_id": "TOEFL_iBT_1_6",
+              "requires_review": true
+            }
+          ],
+          "possible_exemption_evidence_kinds": [
+            "education",
+            "primary_language"
+          ]
+        }
+      ],
+      "remaining_conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "SOE regular and financial-support GPA scopes differ; preserve the stated basis."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-c-residency-unconditional-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-c-residency-unconditional",
+      "fact_sha256": "6d8bc5a50a6c75bc60dee4038626567c4af322ab3347cb91a581d69a351bdb01",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "nu-residency-unconditional"
+        ],
+        "levels": [
+          "residency"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "medical-report",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "IFOM_BSE"
+            },
+            {
+              "exam_id": "USMLE_STEP_1"
+            }
+          ]
+        },
+        {
+          "id": "english-source-conflict",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "English waiver discretionary for specified prior medical-degree English settings or NU graduate status.",
+        "A medical report records presence, not a passing cutoff. Prior MD equivalence, recognition, English waiver and clinical suitability need review."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
+    },
+    {
+      "id": "nu-c-residency-conditional-assessment",
+      "institution_id": "nazarbayev-university-kaz-astana",
+      "fact_id": "nu-c-residency-conditional",
+      "fact_sha256": "227f68fa5ea818952d76d671ad97cff716c8dd68b8f12d5885a9572d4fa6bb6a",
+      "source_publication_status": "published",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "nu-residency-conditional-umc"
+        ],
+        "levels": [
+          "residency"
+        ],
+        "applicant_routes": [],
+        "cycles": []
+      },
+      "addressed_conditions": [],
+      "checks": [
+        {
+          "id": "umc-recommendation",
+          "kind": "manual_minimum"
+        }
+      ],
+      "remaining_conditions": [
+        "Conditional admission is not a funding award. Confirm pathway availability per specialty/cycle.",
+        "IFOM/USMLE and English evidence may be submitted during the first enrollment year; UMC recommendation and NUSOM decision are required."
+      ],
+      "mapping_reviewed_at": "2026-10-25"
     }
   ]
 }

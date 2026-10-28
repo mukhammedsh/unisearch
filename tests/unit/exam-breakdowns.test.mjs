@@ -126,6 +126,34 @@ test("breakdown controls preserve band, grade, flag, and numeric input modes", (
   assert.equal(readBreakdownFieldPayload(null, "GRE_VERBAL"), null);
 });
 
+test("missing composite totals and section scores stay empty while an explicit zero is preserved", () => {
+  for (const score of [null, "", undefined]) {
+    assert.equal(buildBreakdownState("NUET", { score }).totalScore, null);
+    const html = renderBreakdownValueControl({ parentExamId: "NUET", examId: "NUET_MATH", slotKey: "section", valueState: { score } });
+    assert.match(html, /value=""/);
+    assert.doesNotMatch(html, /value="0"/);
+  }
+  assert.equal(buildBreakdownState("NUET", { score: 0 }).totalScore, 0);
+  assert.match(renderBreakdownValueControl({ parentExamId: "NUET", examId: "NUET_MATH", slotKey: "section", valueState: { score: 0 } }), /value="0"/);
+});
+
+test("configured optional fixed sections preserve total-only and partial reports", () => {
+  const previous = EXAM_CONFIG.NUET;
+  EXAM_CONFIG.NUET = { ...previous, input_mode: "subject_breakdown", breakdown_scheme: {
+    fixed_components: [{ exam: "NUET_MATH", required: false }, { exam: "NUET_CRITICAL_THINKING", required: false }],
+    total_strategy: "use_parent_score",
+  } };
+  try {
+    const rows = [fieldRow("NUET_MATH", ""), fieldRow("NUET_CRITICAL_THINKING", "")];
+    const options = { findExistingExamEntry: () => ({ score: 120 }) };
+    assert.deepEqual(readSubjectBreakdownDraft("NUET", breakdownContainer("NUET", { fixed: rows }), options).components, []);
+    assert.deepEqual(readSubjectBreakdownDraft("NUET", breakdownContainer("NUET", { fixed: [fieldRow("NUET_MATH", "0"), rows[1]] }), options).components, [{ exam: "NUET_MATH", score: 0 }]);
+    assert.equal(readSubjectBreakdownDraft("NUET", breakdownContainer("NUET", { fixed: [fieldRow("NUET_MATH", "invalid")] }), { silent: true }), null);
+  } finally {
+    EXAM_CONFIG.NUET = previous;
+  }
+});
+
 test("special exam inputs render grade, band, fixed-score, and selectable-subject controls", () => {
   const grades = { dataset: {}, innerHTML: "" };
   assert.equal(renderSpecialExamInput("A_LEVEL_MATHEMATICS", grades, { findExistingExamEntry: () => ({ raw_value: "A*" }) }), true);

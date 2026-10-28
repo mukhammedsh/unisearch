@@ -241,8 +241,7 @@ test("Imperial language changes, invalid cycles and saving preserve a synthetic 
   });
   await page.goto(`/university.html?id=${university}&admission_cycle=`);
   await ready(page);
-  await program(page, "imperial-option-computing-meng");
-  await select(page, "admissionsStudyLevel", "undergraduate");
+  await program(page, "imperial-option-computing-meng", "Computing", "undergraduate");
   await expect(page.locator('[data-study-option="imperial-option-computing-meng"]')).toBeVisible();
   await route(page, "procedure-computing-meng");
   const url = page.url();

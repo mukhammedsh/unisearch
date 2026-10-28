@@ -6,6 +6,15 @@ from app.services.ai_scoring import estimate_uni_chance, _normalize_gpa_score
 
 
 class TestIntlScoringCalibration(unittest.TestCase):
+    def _ielts_report(self):
+        return {"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5,
+                "details": {"components": [{"exam": "IELTS_" + part, "score": 7.5}
+                                            for part in ("WRITING", "READING", "LISTENING", "SPEAKING")]}}
+
+    def _alevel_report(self):
+        return {"id": "A_LEVEL_CERT", "score": 16, "details": {"components": [
+            {"exam": "A_LEVEL_MATHEMATICS", "score": 6}, {"exam": "A_LEVEL_PHYSICS", "score": 5}, {"exam": "A_LEVEL_CHEMISTRY", "score": 5}]}}
+
     @classmethod
     def setUpClass(cls):
         cls.stanford = uni_service.get_university_by_id("stanford-university-usa-ca")
@@ -110,8 +119,8 @@ class TestIntlScoringCalibration(unittest.TestCase):
             "locale": "eng",
             "budget": 60000,
             "gpa": 3.8,
-            "exams": [{"id": "IB_Diploma", "score": 38}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5}],
+            "exams": [{"id": "IB_Diploma", "score": 38, "details": {"components": []}}],
+            "languages": [self._ielts_report()],
             "selectedAdmissionChoices": {},
         }
         res = estimate_uni_chance(self.melbourne, profile)
@@ -126,8 +135,8 @@ class TestIntlScoringCalibration(unittest.TestCase):
             "locale": "eng",
             "budget": 40000,
             "gpa": 3.8,
-            "exams": [{"id": "A_LEVEL_CERT", "score": 16}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5}],
+            "exams": [self._alevel_report()],
+            "languages": [self._ielts_report()],
             "selectedAdmissionChoices": {},
         }
         res = estimate_uni_chance(self.tokyo, profile)
@@ -142,8 +151,8 @@ class TestIntlScoringCalibration(unittest.TestCase):
             "locale": "eng",
             "budget": 60000,
             "gpa": 3.8,
-            "exams": [{"id": "A_LEVEL_CERT", "score": 16}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.5}],
+            "exams": [self._alevel_report()],
+            "languages": [self._ielts_report()],
             "selectedAdmissionChoices": {},
         }
         res = estimate_uni_chance(self.toronto, profile)

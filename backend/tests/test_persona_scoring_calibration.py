@@ -26,6 +26,13 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             self.assertTrue(result.get("chanceAvailable"))
             self.assertTrue(0 <= float(score) <= 100)
 
+    def _assert_unselected_nu_fit(self, result):
+        self.assertEqual("applicability_unknown", result["reason"])
+        self.assertIsNone(result["overallChance"])
+        self.assertFalse(result["chanceAvailable"])
+        self.assertEqual([], result["choices"][0]["details"]["checks"])
+        self.assertTrue(result["catalogRevision"])
+
     def _assert_unselected_reviewed_fit(self, result, profile):
         self.assertEqual(result["scoreMeaning"], "published_requirements_met_percent")
         self.assertEqual(result["reason"], "applicability_unknown")
@@ -84,7 +91,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 3. NU (requires SAT)
         res_nu = estimate_uni_chance(self.nu, profile)
-        self._assert_fit_contract(res_nu)
+        self._assert_unselected_nu_fit(res_nu)
 
     def test_maria_top_ivy_persona(self):
         """
@@ -117,7 +124,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
-        self._assert_fit_contract(res_nu)
+        self._assert_unselected_nu_fit(res_nu)
 
     def test_dias_average_kazakh_persona(self):
         """
@@ -147,12 +154,11 @@ class TestPersonaScoringCalibration(unittest.TestCase):
         res_tum = estimate_uni_chance(self.tum, profile)
         self._assert_fit_contract(res_tum)
 
-        # 3. NU: IELTS evidence is present but below its published minimum,
-        # so that verified unmet check contributes to the fit percentage.
+        # 3. Reviewed NU needs an explicit option and route before assessment.
         res_nu = estimate_uni_chance(self.nu, profile)
         chance_nu = res_nu.get("overallChance")
-        self._assert_fit_contract(res_nu)
-        self.assertIsNotNone(chance_nu)
+        self._assert_unselected_nu_fit(res_nu)
+        self.assertIsNone(chance_nu)
 
     def test_adil_zero_budget_genius(self):
         """
@@ -186,7 +192,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 3. NU does not infer an awarded grant from a zero budget.
         res_nu = estimate_uni_chance(self.nu, profile)
-        self._assert_fit_contract(res_nu)
+        self._assert_unselected_nu_fit(res_nu)
 
     def test_lisa_borderline_ielts(self):
         """
@@ -222,7 +228,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
-        self._assert_fit_contract(res_nu)
+        self._assert_unselected_nu_fit(res_nu)
 
     def test_anonymous_empty_profile(self):
         """
@@ -250,7 +256,7 @@ class TestPersonaScoringCalibration(unittest.TestCase):
 
         # 3. NU
         res_nu = estimate_uni_chance(self.nu, profile)
-        self._assert_fit_contract(res_nu)
+        self._assert_unselected_nu_fit(res_nu)
 
     def test_mit_internal_bcs_verified_failures_are_zero_and_missing_evidence_is_unknown(self):
         profile = {

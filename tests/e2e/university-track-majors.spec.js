@@ -590,44 +590,39 @@ test("admission category major tags are localized in russian", async ({ page }) 
   await expect(programs).toContainText(["Общие требования", "Компьютерные науки"]);
 });
 
-test("nazarbayev university shows one admission category with requirement profiles", async ({ page }) => {
-  await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
+test("nazarbayev university keeps regular admission separate from financial support", async ({ page }) => {
+  const university = "nazarbayev-university-kaz-astana";
+  const regularRoute = "nu-a-route-regular-foundation-undergraduate";
+  const supportRoute = "nu-a-route-financial-support";
+  const params = new URLSearchParams({ id: university, admission_option: "nu-a-study-bachelor-of-science-in-computer-science",
+    admission_application_route: regularRoute, admission_level: "undergraduate", admission_route: "first_year", admission_cycle: "2027/28" });
+  const regularResponse = page.waitForResponse(response => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+  await openCatalog(page, university, { url: `/university.html?${params}` });
+  const regular = await (await regularResponse).json();
+  await expect(page.locator("#admissionsRoute")).toHaveValue(regularRoute);
+  await expect(page.locator(".admission-category-card, .requirement-profile-tab, .admission-funding-option")).toHaveCount(0);
+  expect(regular.assessment.choices).toHaveLength(1);
+  const academic = regular.facts.find(row => row.id === "nu-a-fact-ug-academic-alternatives");
+  expect(academic.value.routes.find(row => row.id === "sat_act").minimum).toEqual({ digital_sat: 1240, act: 26 });
+  expect(regular.facts.some(row => row.id === "nu-a-fact-nuet-support")).toBe(false);
+  await openAssessment(page);
+  await expect(page.locator("#detailRequirements .admissions-catalog__assessment")).toHaveCount(1);
 
-  await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
-  await expect(page.locator("#detailName")).not.toBeEmpty();
-  await expect(page.locator("#detailName")).not.toHaveText("University Name");
-  const admissionTab = page.locator(".d-tab-btn[data-tab='tab-admission']");
-  await expect(admissionTab).toBeVisible();
-  await admissionTab.click();
-  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-
-  await expect(page.locator(".admission-category-card")).toHaveCount(1);
-  await expect(page.locator(".requirement-profile-tab")).toHaveCount(3);
-  await expect(page.locator(".requirement-profile-tab")).toContainText(["SAT", "ACT", "NUET"]);
-  await expect(page.locator(".admission-funding-option")).toHaveCount(2);
-  await expect(page.locator("#tab-admission .admission-requirement-grid")).toHaveCount(1);
+  const supportResponse = page.waitForResponse(response => response.url().endsWith("/admissions-context")
+    && response.request().method() === "POST" && response.request().postDataJSON().context.application_route_id === supportRoute);
+  await applyContext(page, supportRoute, "first_year", "2027/28");
+  const support = await (await supportResponse).json();
+  expect(support.selected_option.id).toBe(regular.selected_option.id);
+  expect(support.selected_route.id).toBe(supportRoute);
+  expect(support.assessment.choices).toHaveLength(1);
+  expect(support.assessment.chancePercent).toBeNull();
+  expect(support.assessment.reason).toBe("funding_selection_separate");
+  expect(support.facts.find(row => row.id === "nu-a-fact-nuet-support").value.NUET_total).toBe(120);
+  expect(support.facts.some(row => row.id === "nu-a-fact-financial-sequence")).toBe(true);
+  await openAssessment(page);
+  await expect(page.locator("#detailRequirements")).toContainText("Funding selection is separate from admission");
+  await expect(page.locator("#detailRequirements .admissions-catalog__assessment")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
-  const satProfile = page.locator(".requirement-profile-tab[data-requirement-profile='nu_sat_applicants']");
-  await satProfile.click();
-  await expect(satProfile).toHaveAttribute("aria-selected", "true");
-  const fundingNotes = page.locator(".admission-funding-diff-note");
-  await expect(fundingNotes).toHaveCount(2);
-  await expect(fundingNotes.nth(0)).toContainText("Fee-paying undergraduate offer in NU's SAT/ACT applicants category for applicants submitting SAT.");
-  await expect(fundingNotes.nth(1)).toContainText("Abay Kunanbayev scholarship consideration for recommended international applicants submitting SAT.");
-  await expect(fundingNotes.nth(1)).not.toContainText(/guaranteed|will receive|awarded/i);
-
-  const nuetProfile = page.locator(".requirement-profile-tab[data-requirement-profile='nu_nuet_undergraduate']");
-  await nuetProfile.click();
-  await expect(nuetProfile).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator(".requirement-profile-title")).toContainText("NUET");
-  await expect(page.locator(".admission-category-card")).toHaveCount(1);
-  await expect(page.locator(".admission-funding-option")).toHaveCount(2);
-  await expect(page.locator("#tab-admission .admission-requirement-grid")).toHaveCount(1);
-  await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
-  await expect(fundingNotes.nth(0)).toContainText("Fee-paying undergraduate outcome within NU's NUET-based regular admissions flow.");
-  await expect(fundingNotes.nth(1)).toContainText("Grant-funded undergraduate outcome within NU's NUET-based regular admissions flow.");
-  await expect(fundingNotes.nth(1)).not.toContainText(/guaranteed|will receive|awarded/i);
 });
 
 test("tsinghua admission tab keeps paid and grant options visible when profile prefers grant", async ({ page }) => {

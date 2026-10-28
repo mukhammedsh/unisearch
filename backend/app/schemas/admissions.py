@@ -16,8 +16,10 @@ _STUDY_LEVEL_ALIASES = {
     "phd": "doctoral",
     "postgraduate_taught": "masters",
     "professional graduate": "professional",
+    "foundation": "preparation",
+    "non-degree": "non_degree",
 }
-_STUDY_LEVELS = {"undergraduate", "masters", "doctoral", "professional", "graduate", "mba"}
+_STUDY_LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree", "graduate", "mba"}
 
 
 class AdmissionContextInput(BaseModel):

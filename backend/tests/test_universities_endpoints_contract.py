@@ -148,25 +148,16 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
                             f"{university_id}:{category_id}:{option_id} missing funding option description",
                         )
 
-    def test_university_detail_localizes_requirement_profile_descriptions_by_lang(self):
-        response = self.client.get("/universities/nazarbayev-university-kaz-astana?lang=rus")
-        self.assertEqual(response.status_code, 200)
-
-        data = response.json()
-        category = next((row for row in (data.get("admission_categories") or []) if isinstance(row, dict)), None)
-        self.assertIsNotNone(category)
-        profile = (category.get("requirement_profiles") or [])[0]
-        self.assertTrue(str(profile.get("description") or ""))
-        paid_option = next(
-            (
-                row
-                for row in (profile.get("funding_options") or [])
-                if isinstance(row, dict) and str(row.get("funding_type") or "") == "paid"
-            ),
-            None,
-        )
-        self.assertIsNotNone(paid_option)
-        self.assertTrue(str(paid_option.get("description") or ""))
+    def test_reviewed_nu_detail_keeps_canonical_sources_across_languages(self):
+        uid = "nazarbayev-university-kaz-astana"
+        for lang in ("eng", "rus", "kaz"):
+            response = self.client.get(f"/universities/{uid}?lang={lang}")
+            self.assertEqual(200, response.status_code)
+            data = response.json()
+            self.assertEqual("reviewed", data["admissions_catalog"]["availability"])
+            self.assertNotIn("admission_categories", data)
+            self.assertTrue(data["name"])
+            self.assertIn("preparation", data["academics"]["study_levels"])
 
     def test_all_universities_have_campus_size_and_truthful_cost_breakdown(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
@@ -702,20 +693,18 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual({}, response.json())
 
-    def test_university_detail_preserves_track_funding_options(self):
-        response = self.client.get("/universities/nazarbayev-university-kaz-astana")
-        self.assertEqual(response.status_code, 200)
+    def test_nu_support_context_keeps_sources_without_an_admission_percentage(self):
+        uid = "nazarbayev-university-kaz-astana"
+        response = self.client.post(f"/universities/{uid}/admissions-context", json={"context": {
+            "study_option_id": "nu-a-study-bachelor-of-science-in-computer-science",
+            "application_route_id": "nu-a-route-financial-support", "study_level": "undergraduate",
+            "applicant_route": "first_year", "intended_entry_cycle": "2027/28"}})
+        self.assertEqual(200, response.status_code)
         data = response.json()
-        categories = data.get("admission_categories") or []
-        self.assertTrue(categories)
-        profiles = categories[0].get("requirement_profiles") or []
-        sat_profile = next((p for p in profiles if p.get("id") == "nu_sat_applicants"), None)
-        self.assertIsNotNone(sat_profile)
-        funding_options = sat_profile.get("funding_options") or []
-        self.assertGreaterEqual(len(funding_options), 2)
-        funding_types = {opt.get("funding_type") for opt in funding_options}
-        self.assertIn("grant", funding_types)
-        self.assertIn("paid", funding_types)
+        self.assertIsNone(data["assessment"]["overallChance"])
+        self.assertEqual("funding_selection_separate", data["assessment"]["reason"])
+        self.assertIn("nu-a-fact-financial-sequence", {row["id"] for row in data["facts"]})
+        self.assertTrue(data["sources"])
 
     def test_list_universities_sort_gpa_desc(self):
         response = self.client.get("/universities?sort=gpa_desc&limit=50&fields=card")

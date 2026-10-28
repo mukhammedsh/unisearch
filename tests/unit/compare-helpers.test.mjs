@@ -353,6 +353,8 @@ test("compareAdmissionChoiceOptionLabel formats clean and distinguishable labels
 
 test("formatExamValue formats GPA on 4.0 and 5.0 scales explicitly without percent", async () => {
   const { formatExamValue } = await import("../../frontend/javascript/utils.js");
+  for (const score of [null, undefined, "", "  "]) assert.equal(formatExamValue("GPA", score), "");
+  assert.equal(formatExamValue("GPA", 0), "0 (/4.0)");
   assert.equal(formatExamValue("GPA", 3.8), "3.8 (/4.0)");
   assert.equal(formatExamValue("GPA", 4), "4 (/4.0)");
   assert.equal(formatExamValue("GPA", 4.75, { scale: 5 }), "4.75 (/5.0)");

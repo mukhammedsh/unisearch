@@ -15,7 +15,8 @@ function factsFor(resolved, domains) {
   if ((!resolved?.selected_option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched")) return [];
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
   const routeIds = [resolved.selected_route?.id, ...(resolved.selected_route?.shared_policy_context_ids || [])];
-  return (resolved.facts || []).filter(row => ids.has(row.id) && row.publication_status === "published"
+  return (resolved.facts || []).filter(row => ids.has(row.id) && (row.publication_status === "published"
+    || row.publication_status?.startsWith("published_") && !row.publication_status.includes("conflict") && Array.isArray(row.attributes?.catalog_costs?.quotes))
     && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
     && !/conflict|pending|partial|superseded|requires_confirmation/.test(row.review_status || "")
     && row.applicability?.status !== "mismatched" && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(resolved.selected_option?.id))
@@ -41,11 +42,13 @@ function cells(university, state) {
   const resolved = state?.resolved;
   const option = resolved?.selected_option;
   const unavailable = state?.status !== "ready" || (!option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched");
-  const program = unavailable ? unknown() : option ? `<strong>${escapeHtml(admissionsProgramLabel(option).title)}</strong><small>${escapeHtml((option.awards || []).join(" · "))}</small>` : escapeHtml(t("universities.compare.institution_route"));
+  const title = option ? admissionsProgramLabel(option).title : "";
+  const awards = (option?.awards || []).filter(award => award !== title).join(" · ");
+  const program = unavailable ? unknown() : option ? `<strong>${escapeHtml(title)}</strong>${awards ? `<small>${escapeHtml(awards)}</small>` : ""}` : escapeHtml(t("universities.compare.institution_route"));
   const study = unavailable || !option ? [] : studyOptionEssentials(resolved).filter(([key]) => ["duration", "mode", "language"].includes(key)).map(([, value]) => value);
   const tuition = unavailable ? [] : factsFor(resolved, ["study", "costs"]).flatMap(row => {
-    const quotes = publishedTuitionQuotes(row);
-    if (quotes.length) return quotes.map(quote => `<div>${quote.amounts.map(escapeHtml).join(" · ")}<small>${escapeHtml([quote.currency, quote.feeStatus, quote.period].filter(Boolean).join(" · "))} ${source(row, resolved)}</small></div>`);
+    const quotes = publishedTuitionQuotes(row, option?.id);
+    if (quotes.length) return quotes.map(quote => `<div>${quote.amounts.map(escapeHtml).join(" · ")}<small>${escapeHtml([quote.currency, quote.feeStatus, quote.period, quote.campus, quote.studyYears, quote.reference].filter(Boolean).join(" · "))} ${source(row, resolved)}</small></div>`);
     const value = row.attributes?.catalog_costs || row.value;
     if (!Number.isFinite(value?.tuition) || typeof value?.currency !== "string") return [];
     return [`<div>${escapeHtml(money(value.tuition, value.currency))}<small>${escapeHtml(value.academic_year || row.period?.label || "")} · ${escapeHtml(label("reference"))} ${source(row, resolved)}</small></div>`];

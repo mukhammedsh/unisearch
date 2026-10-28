@@ -10,6 +10,28 @@ All notable project changes should be recorded here.
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
+## 10.0.0 (2026-10-28) - Nazarbayev University admissions and profile
+
+### Changed
+- Replace legacy Nazarbayev University admissions and finance fields with the reviewed catalog. Unsupported old NU choices reset while profile evidence and other university selections remain available.
+
+### Added
+- Add the reviewed Nazarbayev University catalog with Foundation, degree, professional, residency and non-degree offerings, source-bound application contexts, fees, funding references and explicit publication gaps.
+- Support NUET sections, Nursing NAT percentages, ALEKS and IFOM/USMLE report evidence in the profile and admissions checks. Keep conditional residency, financial support and ordinary admission separate.
+
+### Fixed
+- Restore cross-platform artifact hashes for the locked coverage dependency so hash-verified development installs work on Windows as well as Linux.
+- Preserve unadded score drafts across language changes, make Enter add reports consistently, and keep invalid or failed report edits from replacing saved results. Profile saving waits for unfinished reports to be added or cleared; late validation cannot restore reset data.
+- Keep currency changes separate from unsaved profile fields and preserve university choices saved in another tab. Accept grouped monetary input, clarify optional profile/reference fields, retain translated save status and make reset accessible on phones.
+- Prevent retired catalog search handlers from replacing a university URL, hide inactive specialist evidence fields, and accept saved preparatory, residency and non-degree contexts when browsing or comparing other universities.
+- Scope displayed tuition to the selected program in detail and comparison, retain reviewed descriptions and official program links, and keep new search results clear of an expanded previous selection.
+- Clarify academic, language and NAT requirement headings, explain the separate NU application and funding paths, and identify invalid exam sections with accessible field names and focused feedback.
+- Keep comparison language changes on the current step, expose separate university-wide entry paths from a program selection, accept published cycle notation, and retain dated micro-credential references in Dates without inventing calendar events.
+- Require overall language results and required sections together, reject invalid profile exam evidence, and preserve missing GPA, budget and composite results without replacing them with zero.
+- Keep whole-program and campus-specific tuition in its actual billing period, preserve native awards and source cycles, and reset unsupported old NU application choices while retaining profile evidence.
+- Keep expanded requirement headings readable on desktop/mobile, show native A-level grades, include full-title MBA awards in discovery, and preserve reviewed input fingerprints across Git LF/CRLF checkouts.
+- Run the full browser matrix with the project frontend server so nested university URLs and the /frontend mount resolve correctly.
+
 ## 9.3.0 (2026-10-26) - Program browsing and scoped catalog prices
 
 ### Added

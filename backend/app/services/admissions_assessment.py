@@ -37,7 +37,7 @@ def _annotations():
                 raise ValueError("Invalid assessment scope or conditions")
             if any(not isinstance(values, list) or any(not isinstance(value, str) for value in values) for values in record["scope"].values()):
                 raise ValueError("Invalid assessment selectors")
-            if any(check["kind"] not in {"exam_alternatives", "scoped_gpa", "enrollment", "enrollment_units", "credential", "language_requirement", "covered_minima"}
+            if any(check["kind"] not in {"exam_alternatives", "academic_requirement", "manual_minimum", "scoped_gpa", "enrollment", "enrollment_units", "credential", "language_requirement", "covered_minima"}
                    for check in record["checks"]):
                 raise ValueError("Unsupported assessment check")
             check_ids = set()
@@ -47,12 +47,28 @@ def _annotations():
                 check_ids.add(check["id"])
                 if "minimum" in check and (isinstance(check["minimum"], bool) or not math.isfinite(float(check["minimum"]))):
                     raise ValueError("Invalid reviewed minimum")
-                if check["kind"] in {"exam_alternatives", "language_requirement"}:
+                if check["kind"] in {"exam_alternatives", "academic_requirement", "language_requirement"}:
                     if not isinstance(check["alternatives"], list) or not check["alternatives"]:
                         raise ValueError("Missing reviewed alternatives")
                     for alternative in check["alternatives"]:
-                        if not alternative.get("exam_id") and not alternative.get("credential_id"):
+                        if not alternative.get("exam_id") and not alternative.get("credential_id") and not (check["kind"] == "academic_requirement" and alternative.get("profile_field") == "gpa"):
                             raise ValueError("Missing reviewed evidence identifier")
+                        component_minima = alternative.get("component_minimums", {})
+                        if not isinstance(component_minima, dict) or any(not isinstance(key, str) or not key for key in component_minima):
+                            raise ValueError("Invalid reviewed component minima")
+                        minima = list(component_minima.values())
+                        if "minimum" in alternative:
+                            minima.append(alternative["minimum"])
+                        for count_rule in ([alternative["components_at_least"]] if alternative.get("components_at_least") else []) + alternative.get("additional_component_counts", []):
+                            if not isinstance(count_rule, dict) or type(count_rule.get("count")) is not int or count_rule["count"] < 1:
+                                raise ValueError("Invalid reviewed component count")
+                            minima.append(count_rule["minimum"])
+                        if any(isinstance(value, bool) or not math.isfinite(float(value)) for value in minima):
+                            raise ValueError("Invalid reviewed alternative minimum")
+                        if check["kind"] == "academic_requirement" and not minima:
+                            raise ValueError("Missing reviewed academic minimum")
+                        if alternative.get("profile_field") == "gpa" and ("minimum" not in alternative or isinstance(alternative.get("scale"), bool) or not isinstance(alternative.get("scale"), (int, float)) or not 1 <= alternative["scale"] <= 5):
+                            raise ValueError("Missing reviewed GPA scale")
                         for first, last in alternative.get("windows", []):
                             if date.fromisoformat(first) > date.fromisoformat(last):
                                 raise ValueError("Invalid reviewed test window")
@@ -84,6 +100,8 @@ def _submitted_exams(profile):
                                                          allow_total_only_sat=True)
         except (ValueError, TypeError):
             continue
+        if exams_service._config_entry(result["exam"]).get("type") == "bool" and not result.get("score"):
+            continue
         parsed.append({**result, "taken_on": row.get("taken_on")})
     for row in profile.get("languages", []):
         if not isinstance(row, dict) or row.get("kind") != "exam":
@@ -110,8 +128,61 @@ def _dated_status(taken_on, windows):
         return "unassessed"
 
 
+def _exam_minimum(alternative, row):
+    """Keep all total/section checks inside one validated test attempt."""
+    checks = []
+
+    def add(exam, minimum, provided):
+        checks.append({"exam": exam, "minimum": minimum, "provided": provided,
+                       "status": "missing" if provided is None else "met" if provided >= minimum else "unmet"})
+
+    if "minimum" in alternative:
+        add(alternative["exam_id"], alternative["minimum"], row.get("score"))
+    components = {item["exam"]: item.get("score") for item in (row.get("details") or {}).get("components", [])}
+    for exam, minimum in alternative.get("component_minimums", {}).items():
+        add(exam, minimum, components.get(exam))
+    for count_rule in ([alternative["components_at_least"]] if alternative.get("components_at_least") else []) + alternative.get("additional_component_counts", []):
+        values = [value for exam, value in components.items()
+                  if value is not None and (not count_rule.get("exam_ids") or exam in count_rule["exam_ids"])]
+        met = sum(value >= count_rule["minimum"] for value in values)
+        checks.append({"exam": alternative["exam_id"], "minimum": count_rule,
+                       "provided": {"reported": len(values), "meeting_minimum": met},
+                       "status": "met" if met >= count_rule["count"] else "missing" if len(values) < count_rule["count"] else "unmet"})
+    status = "missing" if any(item["status"] == "missing" for item in checks) else "unmet" if any(item["status"] == "unmet" for item in checks) else "met"
+    dated = _dated_status(row.get("taken_on"), alternative.get("windows"))
+    if dated != "met":
+        status = dated
+    if alternative.get("date_boundary"):
+        boundary = alternative["date_boundary"]
+        if not row.get("taken_on"):
+            status = "missing"
+        elif not boundary[0] <= row["taken_on"] <= boundary[1]:
+            status = "unassessed"
+    if alternative.get("max_age_years"):
+        status = "unassessed"
+    if alternative.get("requires_review"):
+        status = "unassessed"
+    return status, {**row, "minimum_checks": checks}
+
+
 def _check_evidence(check, profile, submissions):
     kind = check["kind"]
+    if kind == "manual_minimum":
+        return "unassessed", {key: profile[key] for key in ("gpa", "gpa_scale") if profile.get(key) is not None} or None, False
+    if kind == "academic_requirement":
+        options = []
+        for alternative in check["alternatives"]:
+            if alternative.get("profile_field") == "gpa":
+                if profile.get("gpa") is None:
+                    continue
+                provided = {"gpa": profile["gpa"], "gpa_scale": profile.get("gpa_scale")}
+                status = "unassessed" if profile.get("gpa_scale") != alternative["scale"] else "met" if profile["gpa"] >= alternative["minimum"] else "unmet"
+                options.append((status, provided))
+            else:
+                exam_id = exams_service.resolve_exam_key(alternative["exam_id"])
+                options.extend(_exam_minimum(alternative, row) for row in submissions if row.get("exam") == exam_id)
+        status = next((state for state in ("met", "missing", "unassessed", "unmet") if any(value[0] == state for value in options)), "missing")
+        return status, next((row for state, row in options if state == status), None), True
     if kind == "exam_alternatives":
         options = []
         for alternative in check["alternatives"]:
@@ -128,6 +199,8 @@ def _check_evidence(check, profile, submissions):
             rows = [row for row in submissions if row.get("exam") == alternative["exam_id"]]
             for row in rows:
                 status = _dated_status(row.get("taken_on"), alternative.get("windows"))
+                if alternative.get("max_age_years"):
+                    status = "unassessed"
                 modules = alternative.get("modules", [])
                 submitted_modules = {item.get("exam") for item in row.get("details", {}).get("components", [])}
                 if modules and not set(modules).issubset(submitted_modules):
@@ -176,16 +249,10 @@ def _check_evidence(check, profile, submissions):
             for row in submissions:
                 if row.get("exam") != alternative["exam_id"]:
                     continue
-                status = "met" if row.get("score") is not None and row["score"] >= alternative["minimum"] else "unmet"
-                if alternative.get("date_boundary") and not row.get("taken_on"):
-                    status = "missing"
-                elif alternative.get("date_boundary"):
-                    boundary = alternative["date_boundary"]
-                    if not boundary[0] <= row["taken_on"] <= boundary[1]:
-                        status = "unassessed"
+                status, provided = _exam_minimum(alternative, row)
                 if check.get("max_age_years"):
                     status = "unassessed"
-                alternatives.append((status, row))
+                alternatives.append((status, provided))
         status = next((state for state in ("met", "missing", "unassessed", "unmet") if any(value[0] == state for value in alternatives)), "missing")
         possible_exemption = [row for row in profile.get("language_evidence", [])
                               if row.get("kind") in check.get("possible_exemption_evidence_kinds", [])
@@ -201,7 +268,7 @@ def _annotated_checks(record, fact, resolved, profile, submissions):
             "evidenceOrigin": "self_reported"}
     if _fact_hash(fact) != record["fact_sha256"]:
         return [{**base, "kind": "stale_annotation", "status": "unassessed", "reason": "source_fact_changed", "blocksNumericScore": True}]
-    if fact.get("publication_status") != "published" or fact.get("review_status") not in {"verified", "carried_forward_review", "reviewed"}:
+    if (fact.get("publication_status") != "published" and record.get("source_publication_status") != fact.get("publication_status")) or fact.get("review_status") not in {"verified", "carried_forward_review", "reviewed"}:
         exam_ids = {alternative.get("exam_id") for check in record["checks"] for alternative in check.get("alternatives", [])}
         credentials = {alternative.get("credential_id") for check in record["checks"] for alternative in check.get("alternatives", [])}
         observed = {"exams": [row for row in submissions if row.get("exam") in exam_ids],
@@ -210,7 +277,7 @@ def _annotated_checks(record, fact, resolved, profile, submissions):
                                                (row.get("kind") != "credential" or row.get("credential_id") in credentials)]}
         return [{**base, "kind": "source_state", "status": "unassessed", "reason": "source_state_not_verified",
                  "provided": observed,
-                 "blocksNumericScore": any(check["kind"] in {"scoped_gpa", "enrollment_units", "language_requirement"}
+                 "blocksNumericScore": any(check["kind"] in {"academic_requirement", "manual_minimum", "scoped_gpa", "enrollment_units", "language_requirement"}
                                             for check in record["checks"])}]
     context = resolved.get("context", {})
     declared = record["scope"]
@@ -225,12 +292,15 @@ def _annotated_checks(record, fact, resolved, profile, submissions):
     enrollment_gate = next((check for check in record["checks"] if check["kind"] == "enrollment"), None)
     gate_met = enrollment_gate is None or _check_evidence(enrollment_gate, profile, submissions)[0] == "met"
     for check in record["checks"]:
+        if any(context.get(selector) not in check.get("scope", {}).get(key, [context.get(selector)])
+               for key, selector in (("option_ids", "study_option_id"), ("route_ids", "application_route_id"), ("levels", "study_level"))):
+            continue
         status, provided, measurable = _check_evidence(check, profile, submissions) if matches else ("unassessed", None, False)
         covered_missing = check["kind"] == "covered_minima" and not any(
             row.get("id") == check["covered_by_fact_id"] for row in resolved.get("facts", []))
         if check["kind"] in {"scoped_gpa", "enrollment_units"} and not gate_met and status != "missing":
             status = "unassessed"
-        numeric = check["kind"] in {"scoped_gpa", "enrollment_units", "language_requirement"}
+        numeric = check["kind"] in {"academic_requirement", "manual_minimum", "scoped_gpa", "enrollment_units", "language_requirement"}
         checks.append({**base, "annotationId": record["id"], "checkId": check["id"], "kind": check["kind"],
                        "status": status, "provided": provided, "minimum": check.get("minimum"),
                        "measurable": measurable, "numericMinimum": numeric,
@@ -409,6 +479,8 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
     if context_applicable and measurable and not missing_evidence and not any(check.get("blocksNumericScore") for check in checks) and all(check["status"] in {"met", "unmet"} for check in measurable):
         percent = round(100 * sum(check["status"] == "met" for check in measurable) / len(measurable), 1)
         reason = "" if percent == 100 else "requirements_not_met"
+    if selected_route.get("classification") == "financial_support_application":
+        percent, reason = None, "funding_selection_separate"
 
     sources = [source_index[source_id] for source_id in dict.fromkeys(
         source_id

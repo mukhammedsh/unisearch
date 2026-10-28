@@ -56,7 +56,7 @@ test("Imperial card shows the applicable tuition and living-cost range", async (
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
     localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([{ key: "currency_display_mode", value: "original" }]));
   });
-  await page.goto("/index.html?q=Imperial");
+  await page.goto("/index.html?q=Imperial&study_level=undergraduate");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const card = page.locator('#universitiesList .uni-card[data-uni-id="imperial-college-london-uk"]');
   await expect(card).toBeVisible();
@@ -65,9 +65,27 @@ test("Imperial card shows the applicable tuition and living-cost range", async (
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/64[\s,]?842/);
   await card.locator(".uni-cost-tooltip .uni-price").click();
   await expect(card.locator(".uni-cost-tooltip__content")).toContainText("not an average");
-  await page.goto("/index.html?q=Imperial&max_tuition=90000&cost_basis=annual_total");
+  await page.goto("/index.html?q=Imperial&study_level=undergraduate&max_tuition=90000&cost_basis=annual_total");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(card).toBeVisible();
+});
+
+test("Imperial tuition stays separate from an unavailable full budget across study levels", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([{ key: "currency_display_mode", value: "original" }]));
+  });
+  const card = page.locator('#universitiesList .uni-card[data-uni-id="imperial-college-london-uk"]');
+  await page.goto("/index.html?q=Imperial&cost_basis=tuition");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(card.locator('[data-cost-basis="tuition"]')).toContainText(/10[\s,]?050/);
+  await card.locator(".uni-cost-tooltip .uni-price").click();
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Home fee");
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Overseas fee");
+  await page.goto("/index.html?q=Imperial&cost_basis=annual_total");
+  await expect(card.locator(".uni-price-val")).toHaveText("No comparable full budget");
+  await expect(card.locator('[data-cost-basis="tuition"]')).toHaveCount(0);
 });
 
 test("catalog price cards respect the declared fee category and label a dated reference", async ({ page }) => {

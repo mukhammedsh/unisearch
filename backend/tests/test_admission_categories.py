@@ -143,19 +143,14 @@ class AdmissionCategoryTests(unittest.TestCase):
         self.assertEqual("HKDSE_WEIGHTED_TOTAL", score_profile.get("exam_id"))
         self.assertEqual(42.88, float(score_profile.get("median_raw") or 0.0))
 
-    def test_nu_dataset_uses_one_category_with_three_requirement_profiles(self):
-        university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
-        self.assertIsNotNone(university)
-
-        categories = university.get("admission_categories") or []
-        self.assertEqual(1, len(categories))
-        category = categories[0]
-        profiles = {str(profile.get("id")): profile for profile in category.get("requirement_profiles") or []}
-
-        self.assertEqual({"nu_sat_applicants", "nu_act_applicants", "nu_nuet_undergraduate"}, set(profiles))
-        self.assertEqual(["SAT", "ACT", "NUET"], [profiles[key].get("label") for key in profiles])
-        self.assertEqual(120, int((profiles["nu_nuet_undergraduate"].get("requirements") or {}).get("NUET", 0)))
-        self.assertEqual(2, len(profiles["nu_nuet_undergraduate"].get("funding_options") or []))
+    def test_nu_dataset_exposes_reviewed_offerings_without_retired_categories(self):
+        uid = "nazarbayev-university-kaz-astana"
+        university = uni_service.get_university_by_id(uid)
+        self.assertEqual("reviewed", university["admissions_catalog"]["availability"])
+        self.assertEqual(96, university["admissions_catalog"]["study_option_count"])
+        self.assertNotIn("admission_categories", university)
+        self.assertIn("preparation", university["academics"]["study_levels"])
+        self.assertIn("residency", university["academics"]["study_levels"])
         self.assertNotIn("admission_tracks", university)
 
     def test_active_mit_first_year_keeps_test_presence_without_a_score_cutoff(self):
@@ -175,15 +170,15 @@ class AdmissionCategoryTests(unittest.TestCase):
         self.assertIsNone(requirement["value"]["cutoff"])
         self.assertFalse(uni_service.get_university_by_id("mit-usa-cambridge").get("admission_categories"))
 
-        nu = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
-        profiles = {
-            str(profile.get("id")): profile
-            for profile in (nu.get("admission_categories") or [])[0].get("requirement_profiles") or []
-        }
-        sat_profile = profiles["nu_sat_applicants"].get("score_profile") or {}
-        self.assertEqual("SAT", sat_profile.get("exam_id"))
-        self.assertEqual(1475, sat_profile.get("median_raw"))
-        self.assertFalse(bool(profiles["nu_act_applicants"].get("score_profile")))
+        nu = admissions_catalog.resolve_context("nazarbayev-university-kaz-astana", context={
+            "study_option_id": "nu-a-study-bachelor-of-science-in-computer-science",
+            "application_route_id": "nu-a-route-regular-foundation-undergraduate", "study_level": "undergraduate",
+            "applicant_route": "first_year", "intended_entry_cycle": "2027/28"})
+        academic = next(row for row in nu["facts"] if row["id"] == "nu-a-fact-ug-academic-alternatives")
+        sat_act = next(row for row in academic["value"]["routes"] if row["id"] == "sat_act")
+        self.assertEqual({"digital_sat": 1240, "act": 26}, sat_act["minimum"])
+        self.assertNotIn("score_profile", academic["value"])
+        self.assertNotIn("nu-a-fact-nuet-support", {row["id"] for row in nu["facts"]})
 
     def test_choice_expansion_prefers_profile_admission_and_finance_metadata(self):
         categories = [

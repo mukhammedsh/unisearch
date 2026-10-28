@@ -1,0 +1,1290 @@
+{
+  "schema_version": "nu-research-catalog-1.0",
+  "university_id": "nazarbayev-university-kaz-astana",
+  "official_name": "Nazarbayev University",
+  "runtime_active": false,
+  "research_status": "in_progress",
+  "example_scope": "Partial excerpt showing that 2027/28 post-offer NUET support (120/50/50) and 2026/27 mid-year admission (130/60/60) remain separate. This is not the complete 93-card catalog.",
+  "snapshot": {
+    "assignment_date": "2026-10-23",
+    "assigned_inventory_count": 93
+  },
+  "inputs": [
+    {
+      "packet_id": "a",
+      "path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-a/research.json",
+      "sha256": "ffc223262933e5fcd90ae26d0ca57eb4d9ed93f5bfd557acb9caff57f9f2e874",
+      "handoff_status": "ready_for_review",
+      "handoff_path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-a/handoff.md",
+      "handoff_sha256": "f49ceabfbf23a7372a73b8865203b85095028ef7f75c6cc211937344b5842891"
+    }
+  ],
+  "inventory_entries": [],
+  "study_options": [],
+  "application_routes": [
+    {
+      "id": "nu-a-route-financial-support",
+      "owner_packet": "a",
+      "title": "Post-offer financial-support consideration",
+      "classification": null,
+      "target": null,
+      "destination": null,
+      "option_ids": [
+        "nu-a-study-bachelor-of-science-in-geology",
+        "nu-a-study-bachelor-of-science-in-mathematics",
+        "nu-a-study-bachelor-of-science-in-physics",
+        "nu-a-study-bachelor-of-science-in-chemistry",
+        "nu-a-study-bachelor-of-arts-in-sociology",
+        "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+        "nu-a-study-bachelor-of-science-in-computer-science",
+        "nu-a-study-6-year-undergraduate-medical-program",
+        "nu-a-study-bachelor-of-science-in-biological-sciences",
+        "nu-a-study-bachelor-of-business-administration",
+        "nu-a-study-bachelor-of-arts-in-economics",
+        "nu-a-study-bachelor-of-science-in-robotics-engineering",
+        "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+        "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+        "nu-a-study-nu-foundation-year-program",
+        "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+        "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+        "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+        "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+      ],
+      "fact_ids": [
+        "nu-a-fact-financial-sequence",
+        "nu-a-fact-nuet-support",
+        "nu-a-fact-financial-support-eligibility-2027-28",
+        "nu-a-fact-fees-table"
+      ],
+      "source_ids": [
+        "nu-a-src-ug-aid",
+        "nu-a-src-ug-regular"
+      ],
+      "scope": {
+        "option_ids": null,
+        "route_ids": [
+          "nu-a-route-financial-support"
+        ],
+        "study_levels": null,
+        "applicant_categories": null,
+        "cycle": null,
+        "fee_status": null,
+        "additional_dimensions": {
+          "unparsed_scope": "NUFYP/undergraduate applicants in listed categories; eligibility is distinct from admission and aid decision."
+        },
+        "original_scope": "NUFYP/undergraduate applicants in listed categories; eligibility is distinct from admission and aid decision."
+      },
+      "attributes": {
+        "scope": "NUFYP/undergraduate applicants in listed categories; eligibility is distinct from admission and aid decision.",
+        "applicant_categories": [
+          "NUET",
+          "SAT/ACT",
+          "international/republican subject olympiad",
+          "IB Diploma",
+          "A-level/NIS Grade 12",
+          "NUFYP students"
+        ],
+        "process_fact_id": "nu-a-fact-financial-sequence",
+        "nuet_requirement_fact_id": "nu-a-fact-nuet-support",
+        "exceptions": [
+          "Regular offer acceptance/guarantee payment excludes financial-support consideration.",
+          "Mid-year spring semester self-funded enrollees do not compete for NU or other grants.",
+          "NUET aid thresholds differ by intake and category.",
+          "For 2027/28, NUET total 120 plus 50 in each section is expressly a financial-support/state-grant eligibility minimum after an offer. Do not merge it with mid-year admission 130/60/60 or with unqualified standard UG academic alternatives.",
+          "Published tuition-coverage options are 75% social vulnerability (KZ citizens), 25% Olympiad (UG), 25% sibling, and 50% eligible government employee. Exact cycle, document proof, term/renewal and stacking are not stated. The 5% one-payment discount is separate.",
+          "2027/28 announcement says accepting the regular offer excludes the separate support application. The 2026 policy has a narrower waiting-list/capacity exception where a fee-paying waitlisted offer can remain in grant competition; preserve this dated scope rather than broadening it.",
+          "Current support page lists category minimums and fees but support award coverage/renewal/stacking is not published for all categories. Separate financial-aid percentages on the general fees page have their own eligibility scopes."
+        ],
+        "coverage_fact_id": "nu-a-fact-financial-support-eligibility-2027-28",
+        "fee_reference_fact_id": "nu-a-fact-fees-table",
+        "eligibility_fact_id": "nu-a-fact-financial-support-eligibility-2027-28",
+        "study_levels": [
+          "preparation",
+          "undergraduate"
+        ]
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-route-financial-support",
+        "original_scope": "NUFYP/undergraduate applicants in listed categories; eligibility is distinct from admission and aid decision.",
+        "original_source_ids": [
+          "nu-a-src-ug-aid",
+          "nu-a-src-ug-regular"
+        ]
+      }
+    },
+    {
+      "id": "nu-a-route-midyear-2026-27",
+      "owner_packet": "a",
+      "title": "Undergraduate mid-year fee-paying intake",
+      "classification": null,
+      "target": null,
+      "destination": null,
+      "option_ids": [],
+      "fact_ids": [
+        "nu-a-fact-midyear-window",
+        "nu-a-fact-midyear-nuet"
+      ],
+      "source_ids": [
+        "nu-a-src-ug-regular",
+        "nu-a-src-midyear",
+        "nu-a-src-midyear-indexed-page"
+      ],
+      "scope": {
+        "option_ids": null,
+        "route_ids": [
+          "nu-a-route-midyear-2026-27"
+        ],
+        "study_levels": null,
+        "applicant_categories": null,
+        "cycle": null,
+        "fee_status": null,
+        "additional_dimensions": {
+          "unparsed_scope": "2026/27 spring semester; applicants already graduated secondary school or currently enrolled at other university; fee-paying only."
+        },
+        "original_scope": "2026/27 spring semester; applicants already graduated secondary school or currently enrolled at other university; fee-paying only."
+      },
+      "attributes": {
+        "scope": "2026/27 spring semester; applicants already graduated secondary school or currently enrolled at other university; fee-paying only.",
+        "cycle_fact_id": "nu-a-fact-midyear-window",
+        "exceptions": [
+          "The official indexed page lists SAT 2025-12-06 and ACT 2025-02-13 as latest accepted dates. Both dates fall within the stated two-year validity at the 2026-11-28 deadline, so staleness is not established. The direct portal path returns 404; the indexed snapshot is retained separately.",
+          "NUET category minimum 130 total and at least 60 in each section; current calendar-year tests only.",
+          "Transfer route has separate eligibility and limited application round.",
+          "The mid-year 2026/27 UG NUET threshold (130/60/60) is separate from NUFYP regular entry 120/50/50, the policy-defined UG NUET category, and the 2027/28 aid/state-grant threshold."
+        ],
+        "nuet_requirement_fact_id": "nu-a-fact-midyear-nuet",
+        "study_levels": [
+          "undergraduate"
+        ]
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-route-midyear-2026-27",
+        "original_scope": "2026/27 spring semester; applicants already graduated secondary school or currently enrolled at other university; fee-paying only.",
+        "original_source_ids": [
+          "nu-a-src-ug-regular",
+          "nu-a-src-midyear",
+          "nu-a-src-midyear-indexed-page"
+        ]
+      }
+    }
+  ],
+  "facts": [
+    {
+      "id": "nu-a-fact-midyear-window",
+      "owner_packet": "a",
+      "topic": "application_window",
+      "topic_field": "kind",
+      "value": {
+        "cycle": "2026/27_midyear",
+        "application_period": "2026-08-18 to 2026-11-28 14:00 Astana time",
+        "test_result_deadline": "2026-11-28 23:59 Astana time",
+        "delivery": "spring-semester entry, fee-paying",
+        "applicant_categories": [
+          "secondary-school graduates",
+          "students currently enrolled at another university"
+        ],
+        "eligible_entry_categories": [
+          "full tuition fee-paying",
+          "NUET",
+          "SAT/ACT",
+          "IB Diploma",
+          "A-level/NIS Grade 12",
+          "Olympiad winners",
+          "transfer"
+        ],
+        "eligibility_cycle": "2026/27 spring semester; fee-paying only"
+      },
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "nu-a-route-midyear-2026-27"
+        ],
+        "study_levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": null,
+        "cycle": null,
+        "fee_status": null,
+        "additional_dimensions": {
+          "source_scope_original": null
+        },
+        "original_scope": {
+          "source_scope_original": null,
+          "study_option_ids": [],
+          "study_levels": [
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-midyear-2026-27"
+          ]
+        }
+      },
+      "conditions": null,
+      "conditions_and_exceptions": null,
+      "exceptions": null,
+      "period": null,
+      "related_fact_ids": null,
+      "source_ids": [
+        "nu-a-src-ug-regular",
+        "nu-a-src-midyear-indexed-page"
+      ],
+      "publication_status": "published_date",
+      "review_status": "verified",
+      "review_status_field": "review_status",
+      "checked_at": "2026-10-23",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-fact-midyear-window",
+        "original_scope": {
+          "source_scope_original": null,
+          "study_option_ids": [],
+          "study_levels": [
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-midyear-2026-27"
+          ]
+        },
+        "original_source_ids": [
+          "nu-a-src-ug-regular",
+          "nu-a-src-midyear-indexed-page"
+        ]
+      }
+    },
+    {
+      "id": "nu-a-fact-midyear-nuet",
+      "owner_packet": "a",
+      "topic": "admission_requirement",
+      "topic_field": "kind",
+      "value": {
+        "NUET_total": 130,
+        "mathematics_minimum": 60,
+        "critical_thinking_problem_solving_minimum": 60,
+        "test_validity": "current calendar year only"
+      },
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "nu-a-route-midyear-2026-27"
+        ],
+        "study_levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": null,
+        "cycle": "2026/27_midyear",
+        "fee_status": null,
+        "additional_dimensions": {
+          "route": "mid-year NUET applicants"
+        },
+        "original_scope": {
+          "route": "mid-year NUET applicants",
+          "cycle": "2026/27_midyear",
+          "study_option_ids": [],
+          "study_levels": [
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-midyear-2026-27"
+          ]
+        }
+      },
+      "conditions": [
+        "Do not reuse 2027/28 regular NUET admission or aid criteria without their own page evidence.",
+        "Indexed official page lists SAT 2025-12-06 and ACT 2025-02-13 as latest tests; it also states 2-year SAT/ACT validity. At the 2026-11-28 deadline those listed dates fall within two years, so the date alone does not prove staleness. Direct portal route currently returns 404; central regular page matches the NUET/date rules."
+      ],
+      "conditions_and_exceptions": null,
+      "exceptions": null,
+      "period": null,
+      "related_fact_ids": null,
+      "source_ids": [
+        "nu-a-src-ug-regular",
+        "nu-a-src-midyear-indexed-page"
+      ],
+      "publication_status": "published_for_2026_27_midyear",
+      "review_status": "verified",
+      "review_status_field": "review_status",
+      "checked_at": "2026-10-23",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-fact-midyear-nuet",
+        "original_scope": {
+          "route": "mid-year NUET applicants",
+          "cycle": "2026/27_midyear",
+          "study_option_ids": [],
+          "study_levels": [
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-midyear-2026-27"
+          ]
+        },
+        "original_source_ids": [
+          "nu-a-src-ug-regular",
+          "nu-a-src-midyear-indexed-page"
+        ]
+      }
+    },
+    {
+      "id": "nu-a-fact-nuet-support",
+      "owner_packet": "a",
+      "topic": "financial_support_eligibility",
+      "topic_field": "kind",
+      "value": {
+        "cycle": "2027/28",
+        "NUET_total": 120,
+        "mathematics_minimum": 50,
+        "critical_thinking_problem_solving_minimum": 50
+      },
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-nu-foundation-year-program",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate",
+          "nu-a-route-financial-support"
+        ],
+        "study_levels": [
+          "preparation",
+          "undergraduate"
+        ],
+        "applicant_categories": null,
+        "cycle": "2027/28",
+        "fee_status": null,
+        "additional_dimensions": {
+          "route": "NUET financial-support category, after regular admission offer"
+        },
+        "original_scope": {
+          "route": "NUET financial-support category, after regular admission offer",
+          "cycle": "2027/28",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-regular-foundation-undergraduate",
+            "nu-a-route-financial-support"
+          ]
+        }
+      },
+      "conditions": [
+        "This 120 threshold is for aid eligibility, not regular UG admission. NUET has two separately reported sections; evaluate total AND each section."
+      ],
+      "conditions_and_exceptions": null,
+      "exceptions": null,
+      "period": null,
+      "related_fact_ids": null,
+      "source_ids": [
+        "nu-a-src-ug-aid"
+      ],
+      "publication_status": "published_minimum",
+      "review_status": "verified",
+      "review_status_field": "review_status",
+      "checked_at": "2026-10-23",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-fact-nuet-support",
+        "original_scope": {
+          "route": "NUET financial-support category, after regular admission offer",
+          "cycle": "2027/28",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-regular-foundation-undergraduate",
+            "nu-a-route-financial-support"
+          ]
+        },
+        "original_source_ids": [
+          "nu-a-src-ug-aid"
+        ]
+      }
+    },
+    {
+      "id": "nu-a-fact-financial-sequence",
+      "owner_packet": "a",
+      "topic": "financial_support_process",
+      "topic_field": "kind",
+      "value": [
+        "Receive a regular admission offer.",
+        "Choose either to accept the offer by completing enrollment confirmation and paying the guarantee fee, or to submit a separate financial-support application after the offer.",
+        "Select one financial-support category in the portal; upload evidence for the selected category. NUET applicants select a test city and pay the NUET fee; the NUET result itself does not require an uploaded certificate.",
+        "Submit the financial-support application. The form and uploaded files cannot be changed after submission; requested corrections are due by the Admissions Office deadline, and incomplete or uncorrected submissions are not considered."
+      ],
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-nu-foundation-year-program",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate",
+          "nu-a-route-financial-support"
+        ],
+        "study_levels": [
+          "preparation",
+          "undergraduate"
+        ],
+        "applicant_categories": null,
+        "cycle": "2027/28",
+        "fee_status": null,
+        "additional_dimensions": {
+          "route": "regular NUFYP/UG financial support"
+        },
+        "original_scope": {
+          "route": "regular NUFYP/UG financial support",
+          "cycle": "2027/28",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-regular-foundation-undergraduate",
+            "nu-a-route-financial-support"
+          ]
+        }
+      },
+      "conditions": [
+        "Accepting the regular offer and paying its guarantee fee excludes the applicant from financial-support consideration. Financial support is a separate application, not the admission application.",
+        "The 2027/28 financial-support application dates and NUET dates are published as To be announced later."
+      ],
+      "conditions_and_exceptions": null,
+      "exceptions": null,
+      "period": null,
+      "related_fact_ids": null,
+      "source_ids": [
+        "nu-a-src-ug-regular",
+        "nu-a-src-ug-aid"
+      ],
+      "publication_status": "published_process",
+      "review_status": "verified",
+      "review_status_field": "review_status",
+      "checked_at": "2026-10-24",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-fact-financial-sequence",
+        "original_scope": {
+          "route": "regular NUFYP/UG financial support",
+          "cycle": "2027/28",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-regular-foundation-undergraduate",
+            "nu-a-route-financial-support"
+          ]
+        },
+        "original_source_ids": [
+          "nu-a-src-ug-regular",
+          "nu-a-src-ug-aid"
+        ]
+      }
+    },
+    {
+      "id": "nu-a-fact-fees-table",
+      "owner_packet": "a",
+      "topic": "tuition_reference",
+      "topic_field": "kind",
+      "value": {
+        "tuition_per_academic_year": {
+          "NUFYP": {
+            "amount": 12000,
+            "currency": "USD"
+          },
+          "undergraduate_programs": {
+            "amount": 15000,
+            "currency": "USD"
+          },
+          "masters_degree_programs": {
+            "amount": 16000,
+            "currency": "USD"
+          }
+        },
+        "page_fee_year": "not stated",
+        "resident_settlement": "KZT at NU internal rate of 486 KZT/USD as stated on page"
+      },
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust",
+          "nu-a-study-master-of-science-in-geosciences",
+          "nu-a-study-master-of-science-in-petroleum-engineering",
+          "nu-a-study-master-of-science-in-mining-engineering",
+          "nu-a-study-master-of-science-in-robotics",
+          "nu-a-study-master-of-science-in-biomedical-engineering",
+          "nu-a-study-master-of-science-in-civil-and-environmental-engineering",
+          "nu-a-study-master-of-science-in-chemical-and-materials-engineering",
+          "nu-a-study-master-of-science-in-electrical-and-computer-engineering",
+          "nu-a-study-msc-in-mechanical-and-aerospace-engineering",
+          "nu-a-study-master-of-engineering-management",
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-in-nursing",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-nu-foundation-year-program",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-financial-support"
+        ],
+        "study_levels": [
+          "preparation",
+          "undergraduate",
+          "masters"
+        ],
+        "applicant_categories": null,
+        "cycle": null,
+        "fee_status": null,
+        "additional_dimensions": {
+          "programs": [
+            "NUFYP",
+            "undergraduate",
+            "masters"
+          ],
+          "billing_period": "one academic year"
+        },
+        "original_scope": {
+          "programs": [
+            "NUFYP",
+            "undergraduate",
+            "masters"
+          ],
+          "billing_period": "one academic year",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust",
+            "nu-a-study-master-of-science-in-geosciences",
+            "nu-a-study-master-of-science-in-petroleum-engineering",
+            "nu-a-study-master-of-science-in-mining-engineering",
+            "nu-a-study-master-of-science-in-robotics",
+            "nu-a-study-master-of-science-in-biomedical-engineering",
+            "nu-a-study-master-of-science-in-civil-and-environmental-engineering",
+            "nu-a-study-master-of-science-in-chemical-and-materials-engineering",
+            "nu-a-study-master-of-science-in-electrical-and-computer-engineering",
+            "nu-a-study-msc-in-mechanical-and-aerospace-engineering",
+            "nu-a-study-master-of-engineering-management",
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-in-nursing",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate",
+            "masters"
+          ],
+          "route_ids": []
+        }
+      },
+      "conditions": [
+        "Do not assign a cycle year from the amount matching another source. The Regular Admissions page separately publishes FYP USD 12,000 and UG USD 15,000 for 2026/27; these remain separate source-scoped facts. SoE’s $16,000 figure and B’s central master policy must retain their exact scopes and source year status."
+      ],
+      "conditions_and_exceptions": null,
+      "exceptions": null,
+      "period": null,
+      "related_fact_ids": null,
+      "source_ids": [
+        "nu-a-src-fees-living"
+      ],
+      "publication_status": "published_page_amounts_year_unspecified",
+      "review_status": "verified",
+      "review_status_field": "review_status",
+      "checked_at": "2026-10-24",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-fact-fees-table",
+        "original_scope": {
+          "programs": [
+            "NUFYP",
+            "undergraduate",
+            "masters"
+          ],
+          "billing_period": "one academic year",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust",
+            "nu-a-study-master-of-science-in-geosciences",
+            "nu-a-study-master-of-science-in-petroleum-engineering",
+            "nu-a-study-master-of-science-in-mining-engineering",
+            "nu-a-study-master-of-science-in-robotics",
+            "nu-a-study-master-of-science-in-biomedical-engineering",
+            "nu-a-study-master-of-science-in-civil-and-environmental-engineering",
+            "nu-a-study-master-of-science-in-chemical-and-materials-engineering",
+            "nu-a-study-master-of-science-in-electrical-and-computer-engineering",
+            "nu-a-study-msc-in-mechanical-and-aerospace-engineering",
+            "nu-a-study-master-of-engineering-management",
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-in-nursing",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate",
+            "masters"
+          ],
+          "route_ids": []
+        },
+        "original_source_ids": [
+          "nu-a-src-fees-living"
+        ]
+      }
+    },
+    {
+      "id": "nu-a-fact-financial-support-eligibility-2027-28",
+      "owner_packet": "a",
+      "topic": "financial_support_eligibility",
+      "topic_field": "kind",
+      "value": {
+        "process": "Separate application after receiving a regular admission offer; accept regular offer/guarantee fee OR file support application. 2027/28 deadlines are TBA.",
+        "categories": {
+          "NUET_applicants": {
+            "NUFYP_or_UG": "120 total; minimum 50 in Mathematics and 50 in Critical Thinking and Problem Solving",
+            "exam_fee": 7000,
+            "currency": "KZT",
+            "English_to_take_test": {
+              "NUFYP": {
+                "IELTS_overall": 5.5,
+                "writing_reading_min": 5.5,
+                "listening_speaking_min": 5.0
+              },
+              "UG": {
+                "IELTS_overall": 6.0,
+                "writing_min": 6.0,
+                "reading_listening_speaking_min": 5.5
+              }
+            },
+            "flow": "regular admission application and offer first; select NUET aid category, choose test city and pay fee",
+            "documents": "No additional proof document for NUET result; results supplied by test administrator"
+          },
+          "SAT_ACT": {
+            "UG": {
+              "digital_SAT": 1240,
+              "ACT": 26
+            },
+            "NUFYP": {
+              "digital_SAT": 1140,
+              "ACT": 24,
+              "scope": "international applicants only"
+            },
+            "last_test_dates_for_support": {
+              "SAT": "2026-12-05",
+              "ACT": "2026-11-28"
+            },
+            "valid_until": "2027-08-01",
+            "mode": "in-person test center; no superscoring"
+          },
+          "Olympiad": {
+            "coverage": "25% undergraduate tuition on fees page",
+            "minimum_English": "IELTS/TOEFL required, no minimum",
+            "interview": "required",
+            "medals": "Republic gold/silver for last year on aid page; international gold/silver/bronze for last three years",
+            "scope": "accepted subject Olympiads only"
+          },
+          "IB_Diploma": {
+            "total": 30,
+            "three_HL": [
+              4,
+              4,
+              5
+            ],
+            "document": "final IB Diploma with transcript"
+          },
+          "A_Level_NIS": {
+            "minimum": "ABB in any three subjects",
+            "document": "final certificate; certificates issued 2025 and 2026 stated accepted for 2027/28"
+          },
+          "NUFYP_students": {
+            "grant_progression_minimums": "FMAT 041 Mathematics 2 >=70, FEAP 020 EAP 2 >=70, FLDP 095 Leadership 2 >=70",
+            "offer": "ranked within allocated major grant seats"
+          }
+        },
+        "published_tuition_coverage_options": [
+          {
+            "coverage_percent": 75,
+            "scope": "citizens of Kazakhstan in listed vulnerable categories: orphan/without care of both parents or only parent under age 29; applicant disability group I/II/III; parent disability group I/II/III"
+          },
+          {
+            "coverage_percent": 25,
+            "scope": "undergraduate students winning listed international or national academic-subject Olympiads"
+          },
+          {
+            "coverage_percent": 25,
+            "scope": "second and subsequent siblings when a sibling already studies at NU on a fee-paying basis"
+          },
+          {
+            "coverage_percent": 50,
+            "scope": "employees of Kazakhstan government institutions and enterprises"
+          },
+          {
+            "coverage_percent": 5,
+            "scope": "one-time payment of 100% of annual tuition/full Tuition Agreement; payment discount, not a need/merit award"
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "nu-a-study-bachelor-of-science-in-geology",
+          "nu-a-study-bachelor-of-science-in-mathematics",
+          "nu-a-study-bachelor-of-science-in-physics",
+          "nu-a-study-bachelor-of-science-in-chemistry",
+          "nu-a-study-bachelor-of-arts-in-sociology",
+          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+          "nu-a-study-bachelor-of-science-in-computer-science",
+          "nu-a-study-6-year-undergraduate-medical-program",
+          "nu-a-study-bachelor-of-science-in-biological-sciences",
+          "nu-a-study-bachelor-of-business-administration",
+          "nu-a-study-bachelor-of-arts-in-economics",
+          "nu-a-study-bachelor-of-science-in-robotics-engineering",
+          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+          "nu-a-study-nu-foundation-year-program",
+          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+        ],
+        "route_ids": [
+          "nu-a-route-regular-foundation-undergraduate",
+          "nu-a-route-financial-support"
+        ],
+        "study_levels": [
+          "preparation",
+          "undergraduate"
+        ],
+        "applicant_categories": null,
+        "cycle": "2027/28 where the page dates credentials; page-specific category exceptions retained",
+        "fee_status": null,
+        "additional_dimensions": {
+          "programs": [
+            "NUFYP",
+            "undergraduate"
+          ]
+        },
+        "original_scope": {
+          "programs": [
+            "NUFYP",
+            "undergraduate"
+          ],
+          "cycle": "2027/28 where the page dates credentials; page-specific category exceptions retained",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-regular-foundation-undergraduate",
+            "nu-a-route-financial-support"
+          ]
+        }
+      },
+      "conditions": [
+        "Do not infer universal support coverage, guaranteed funding or that percentages can be stacked. The general grant value/coverage, duration/renewal and required supporting documents for each percentage category are not fully specified. The regular-offer acceptance exclusion and older policy waiting-list exception remain separately scoped. Page has an internal Olympiad medal-year wording difference from the 2026 policy; preserve exact sources."
+      ],
+      "conditions_and_exceptions": null,
+      "exceptions": null,
+      "period": null,
+      "related_fact_ids": null,
+      "source_ids": [
+        "nu-a-src-ug-aid",
+        "nu-a-src-fees-living",
+        "nu-a-src-ug-policy",
+        "nu-a-src-cycle-announcement"
+      ],
+      "publication_status": "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA",
+      "review_status": "verified",
+      "review_status_field": "review_status",
+      "checked_at": "2026-10-24",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-fact-financial-support-eligibility-2027-28",
+        "original_scope": {
+          "programs": [
+            "NUFYP",
+            "undergraduate"
+          ],
+          "cycle": "2027/28 where the page dates credentials; page-specific category exceptions retained",
+          "study_option_ids": [
+            "nu-a-study-bachelor-of-science-in-geology",
+            "nu-a-study-bachelor-of-science-in-mathematics",
+            "nu-a-study-bachelor-of-science-in-physics",
+            "nu-a-study-bachelor-of-science-in-chemistry",
+            "nu-a-study-bachelor-of-arts-in-sociology",
+            "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
+            "nu-a-study-bachelor-of-science-in-computer-science",
+            "nu-a-study-6-year-undergraduate-medical-program",
+            "nu-a-study-bachelor-of-science-in-biological-sciences",
+            "nu-a-study-bachelor-of-business-administration",
+            "nu-a-study-bachelor-of-arts-in-economics",
+            "nu-a-study-bachelor-of-science-in-robotics-engineering",
+            "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
+            "nu-a-study-bachelor-of-science-in-petroleum-engineering",
+            "nu-a-study-nu-foundation-year-program",
+            "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
+            "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
+            "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
+            "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+          ],
+          "study_levels": [
+            "preparation",
+            "undergraduate"
+          ],
+          "route_ids": [
+            "nu-a-route-regular-foundation-undergraduate",
+            "nu-a-route-financial-support"
+          ]
+        },
+        "original_source_ids": [
+          "nu-a-src-ug-aid",
+          "nu-a-src-fees-living",
+          "nu-a-src-ug-policy",
+          "nu-a-src-cycle-announcement"
+        ]
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "nu-a-src-ug-regular",
+      "owner_packet": "a",
+      "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
+      "title": "Regular Admissions — Foundation & Undergraduate",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": "2026-10-24",
+      "access_status": "accessible",
+      "review_status": "reviewed",
+      "review_status_field": "content_review_status",
+      "publication_status": "current_cycle_page_2027_28_and_midyear_2026_27",
+      "attributes": {
+        "scope": "NUFYP, ordinary undergraduate, mid-year, transfer and NDS sections on the official regular admissions page; explicit policy exclusions include Nursing and Eurasian Business joint degree."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-ug-regular",
+        "original_scope": "NUFYP, ordinary undergraduate, mid-year, transfer and NDS sections on the official regular admissions page; explicit policy exclusions include Nursing and Eurasian Business joint degree.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-ug-aid",
+      "owner_packet": "a",
+      "url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/financial-aid-end-scholarships/",
+      "title": "Financial Aid & Scholarships — Foundation & Undergraduate",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": "2026-10-24",
+      "access_status": "accessible",
+      "review_status": "reviewed",
+      "review_status_field": "content_review_status",
+      "publication_status": "current_cycle_page_2027_28",
+      "attributes": {
+        "scope": "Financial support consideration routes for NUFYP/undergraduate; separate from admission."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-ug-aid",
+        "original_scope": "Financial support consideration routes for NUFYP/undergraduate; separate from admission.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-ug-policy",
+      "owner_packet": "a",
+      "url": "https://nu.edu.kz/wp-content/uploads/2026/04/admission-policy-and-procedures-to-the-nazarbayev-university-foundation-year-program-and-undergraduate-program-of-nu-1.pdf",
+      "title": "Admission Policy and Procedures to the Nazarbayev University Foundation Year Program and Undergraduate program",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": "2026-10-24",
+      "access_status": "accessible",
+      "review_status": "reviewed",
+      "review_status_field": "content_review_status",
+      "publication_status": "approved_2026-03-11_effective_2025-09-27_revision_date_in_document_2026-12-01_future_relative_to_check",
+      "attributes": {
+        "scope": "Formal NUFYP/undergraduate policy; explicit exclusions include Bachelor in Nursing and BBA Eurasian Business."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-ug-policy",
+        "original_scope": "Formal NUFYP/undergraduate policy; explicit exclusions include Bachelor in Nursing and BBA Eurasian Business.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-cycle-announcement",
+      "owner_packet": "a",
+      "url": "https://nu.edu.kz/announcement/the-application-period-for-the-nufyp-and-undergraduate-programs-for-the-2027-2028-academic-year-is-now-open/",
+      "title": "The application period for the NUFYP and Undergraduate Programs for the 2027–2028 academic year is now open",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": "2026-10-24",
+      "access_status": "accessible",
+      "review_status": "reviewed",
+      "review_status_field": "content_review_status",
+      "publication_status": "2027_28_regular_application_open_deadlines_TBA",
+      "attributes": {
+        "scope": "2027/28 cycle opening/date specifics; regular-admissions page itself confirms windows."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-cycle-announcement",
+        "original_scope": "2027/28 cycle opening/date specifics; regular-admissions page itself confirms windows.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-midyear",
+      "owner_packet": "a",
+      "url": "https://apply.nu.edu.kz/en/midyear",
+      "title": "Mid-Year Undergraduate Intake 2026-2027 (direct portal path)",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": null,
+      "access_status": "direct_portal_path_404",
+      "review_status": null,
+      "review_status_field": null,
+      "publication_status": "linked_page_not_retrievable_directly; central_regular_page_contains_rules",
+      "attributes": {
+        "scope": "Alternative portal URL referenced for mid-year; full intake dates/rules are sourced from central Regular Admissions and the formal policy."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-midyear",
+        "original_scope": "Alternative portal URL referenced for mid-year; full intake dates/rules are sourced from central Regular Admissions and the formal policy.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-fees-living",
+      "owner_packet": "a",
+      "url": "https://nu.edu.kz/admissions/fees-and-funding/",
+      "title": "Fees and Financial Support",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": "2026-10-24",
+      "access_status": "accessible",
+      "review_status": "reviewed",
+      "review_status_field": "content_review_status",
+      "publication_status": "current_fee_and_aid_page_table_year_unspecified",
+      "attributes": {
+        "scope": "University tuition table and general financial-support coverage categories; page does not label the fee year or application cycle."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-fees-living",
+        "original_scope": "University tuition table and general financial-support coverage categories; page does not label the fee year or application cycle.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-midyear-indexed-page",
+      "owner_packet": "a",
+      "url": "https://apply.nu.edu.kz/en/midyear",
+      "title": "Mid-Year Undergraduate Intake 2026-2027",
+      "checked_at": "2026-10-24",
+      "content_reviewed_at": "2026-10-24",
+      "access_status": "official_search_index_snapshot_retrieved; direct_open_404",
+      "review_status": "reviewed_indexed_content",
+      "review_status_field": "content_review_status",
+      "publication_status": "indexed_2026_27_content_with_deadline_2026_11_28",
+      "attributes": {
+        "scope": "Official NU admissions portal indexed page; exact current portal body could not be directly loaded."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-midyear-indexed-page",
+        "original_scope": "Official NU admissions portal indexed page; exact current portal body could not be directly loaded.",
+        "original_source_ids": null
+      }
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "nu-a-gap-midyear-conflict",
+      "owner_packet": "a",
+      "scope": {
+        "option_ids": null,
+        "route_ids": null,
+        "study_levels": null,
+        "applicant_categories": null,
+        "cycle": null,
+        "fee_status": null,
+        "additional_dimensions": {
+          "unparsed_scope": "2026/27 mid-year SAT/ACT and diploma admission"
+        },
+        "original_scope": "2026/27 mid-year SAT/ACT and diploma admission"
+      },
+      "reason": "Current central regular-admissions page and official indexed 2026/27 Mid-Year portal content agree on the 2026-11-28 application/test deadline and 130/60/60 NUET route. Portal lists SAT 2025-12-06 and ACT 2025-02-13 as latest; with its two-year validity rule, those dates fall within two years of the deadline and are not proven stale. Mid-Year page says diploma requirements align with regular UG but supplies no issue-year cutoff; policy says final IB/A-level/NIS and two-year issuance validity. Direct portal path returns 404, so no additional conflict is confirmed from its current body.",
+      "official_next_step": "Refresh https://apply.nu.edu.kz/en/midyear if the live portal becomes retrievable; otherwise keep indexed dates and policy validity separate without inventing issue-year cutoffs. The applicant route is fee-paying and does not join grant selection.",
+      "next_step_field": "official_next_step",
+      "cross_packet_ref_ids": [],
+      "source_ids": [
+        "nu-a-src-ug-regular",
+        "nu-a-src-midyear",
+        "nu-a-src-midyear-indexed-page",
+        "nu-a-src-ug-policy"
+      ],
+      "publication_status": "direct_portal_unavailable_indexed_content_reviewed_no_date_conflict_reproduced",
+      "review_status": "verified",
+      "checked_at": "2026-10-24",
+      "attributes": {},
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-gap-midyear-conflict",
+        "original_scope": "2026/27 mid-year SAT/ACT and diploma admission",
+        "original_source_ids": [
+          "nu-a-src-ug-regular",
+          "nu-a-src-midyear",
+          "nu-a-src-midyear-indexed-page",
+          "nu-a-src-ug-policy"
+        ]
+      }
+    }
+  ],
+  "resolved_gap_history": [],
+  "additional_offerings": [],
+  "cross_packet_refs": [],
+  "packet_metadata": [
+    {
+      "packet_id": "a",
+      "schema_version": "nu-research-draft-1.0",
+      "checked_at": "2026-10-25",
+      "research_checkpoints": null,
+      "review_batches": null,
+      "research_status": null,
+      "shared_master_policy": null,
+      "attributes": {}
+    }
+  ],
+  "coverage": {
+    "assigned_inventory_count": 0,
+    "study_option_count": 0,
+    "fact_count": 6,
+    "study_option_fact_link_count": 0,
+    "study_options_with_facts": 0,
+    "source_count": 7,
+    "unknown_count": 1,
+    "resolved_gap_history_count": 0,
+    "additional_offering_count": 0,
+    "source_review_status_counts": {
+      "reviewed": 5,
+      "not_provided": 1,
+      "reviewed_indexed_content": 1
+    },
+    "unresolved_cross_packet_ref_ids": [],
+    "packets": [
+      {
+        "packet_id": "a",
+        "handoff_status": "ready_for_review",
+        "inventory_count": 0,
+        "study_option_count": 0,
+        "route_count": 2,
+        "fact_count": 6,
+        "source_count": 7,
+        "unknown_count": 1,
+        "resolved_gap_history_count": 0,
+        "additional_offering_count": 0
+      }
+    ]
+  }
+}

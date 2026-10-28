@@ -73,7 +73,7 @@ async function openAdmissionSelectionEditor(page) {
 
 async function selectAdmissionRoute(page, value) {
   const selected = page.locator("#admissionsRoute");
-  if (await selected.inputValue() === value) return false;
+  if (await selected.inputValue() === value) return;
   await openAdmissionSelectionEditor(page);
 
   const publishedRoute = page.locator(`[data-read-route="${value}"]`);
@@ -81,20 +81,20 @@ async function selectAdmissionRoute(page, value) {
   if (await publishedRoute.isVisible()) {
     await publishedRoute.click();
     await page.locator('#admissionsContext[data-state="ready"]').waitFor();
-    return false;
+    return;
   }
 
   const sharedRoute = page.locator(`[data-shared-route="${value}"]`);
   if (await sharedRoute.isVisible()) {
     await sharedRoute.click();
     await page.locator('#admissionsContext[data-state="ready"]').waitFor();
-    return false;
+    return;
   }
 
   const wrapper = page.locator(".custom-select-wrapper:has(#admissionsRoute)");
   await wrapper.locator(".custom-select-trigger").click();
   await wrapper.locator(`.custom-option[data-value="${value}"]`).click();
-  return true;
+  await page.locator('#admissionsContext[data-state="ready"]').waitFor();
 }
 
 async function setRangeValue(page, elementId, value) {

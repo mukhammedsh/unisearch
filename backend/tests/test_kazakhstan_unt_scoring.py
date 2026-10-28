@@ -3,6 +3,15 @@ from app.services import ai_scoring, universities as uni_service
 
 
 class KazakhstanUntScoringTests(unittest.TestCase):
+    def _unt_report(self, score):
+        remaining = score - 40
+        return {"id": "UNT", "score": score, "details": {"components": [
+            {"exam": "UNT_HISTORY_OF_KAZAKHSTAN", "score": 20},
+            {"exam": "UNT_READING_LITERACY", "score": 10},
+            {"exam": "UNT_MATHEMATICAL_LITERACY", "score": 10},
+            {"exam": "UNT_PROFILE_MATHEMATICS", "score": remaining // 2},
+            {"exam": "UNT_PROFILE_PHYSICS", "score": remaining - remaining // 2}]}}
+
     KZ_UNIVERSITIES = [
         "kazakhstan-british-technical-university-kaz-almaty",
         "astana-it-university-kaz-astana",
@@ -65,7 +74,7 @@ class KazakhstanUntScoringTests(unittest.TestCase):
             prev_fit = -1
             for s in scores:
                 profile = {
-                    "exams": [{"id": "UNT", "score": s}],
+                    "exams": [self._unt_report(s)],
                     "languages": [{"code": "ru", "kind": "native"}],
                 }
                 result = ai_scoring.estimate_uni_chance(u, profile)
@@ -84,7 +93,7 @@ class KazakhstanUntScoringTests(unittest.TestCase):
         
         # Both published UNT minimums are met; historical score distributions are separate facts.
         profile_115 = {
-            "exams": [{"id": "UNT", "score": 115}],
+            "exams": [self._unt_report(115)],
             "languages": [{"code": "ru", "kind": "native"}],
         }
         res_med = ai_scoring.estimate_uni_chance(kaznmu, profile_115)

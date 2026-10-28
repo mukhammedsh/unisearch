@@ -35,7 +35,7 @@ body[data-page="profile"] {
   flex-direction: column;
   gap: var(--space-4);
   box-shadow: none;
-  overflow: hidden;
+  overflow: clip;
   width: 100%;
   box-sizing: border-box;
 }
@@ -898,6 +898,14 @@ textarea.profile-input,
   display: flex;
   align-items: flex-end;
   flex: 0 0 auto;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.profile-exam-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .lang-add-grid .profile-exam-special {
@@ -1272,7 +1280,7 @@ textarea.profile-input,
     border-bottom: none;
     padding-right: 0;
     padding-bottom: 0;
-    gap: 0;
+    gap: var(--space-3);
   }
 
   .profile-sidebar-top {
@@ -1336,7 +1344,10 @@ textarea.profile-input,
   }
 
   .profile-sidebar-bottom {
-    display: none;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .profile-main-footer {
@@ -1364,7 +1375,7 @@ textarea.profile-input,
   }
 
   .profile-exam-form-controls {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .profile-exam-form-controls .profile-add {
@@ -1627,4 +1638,40 @@ textarea.profile-input,
 .profile-button-subtle:hover {
   background: var(--interaction-hover-surface);
   color: var(--interaction-hover-text);
+}
+#profileModal [hidden] {
+  display: none;
+}
+
+.profile-page-intro {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.profile-reference > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.profile-reference > .profile-field {
+  padding-top: var(--space-4);
+}
+
+.profile-unit--currency {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 36px;
+}
+
+#profileBudgetUnit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

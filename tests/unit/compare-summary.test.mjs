@@ -99,3 +99,16 @@ test("comparison identifies a published scholarship exclusion without promising 
   assert.match(html, /excluded from this scholarship/);
   assert.doesNotMatch(html, /not a confirmed award/);
 });
+
+test("comparison preserves normalized whole-program tuition, campus and source period", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("USD", 24000, "2025-26");
+  selected.resolved.facts = [{ ...fact("program-price", "The source quotes the complete program fee."), publication_status: "published_reference_amounts_year_unspecified", attributes: { catalog_costs: { quotes: [
+    { basis: "tuition", amount: 24000, currency: "USD", period_label: "2025-26", source_year: "2025-26", billing_period: "whole_program", campus: "Astana" },
+  ] } } }];
+  selected.resolved.fact_groups = { costs: ["program-price"] };
+  const html = renderReviewedComparison([universities[0]], new Map([["imperial", selected]]));
+  for (const text of ["24,000", "USD", "for the whole program", "Astana", "2025"]) assert.ok(html.includes(text), text);
+  assert.doesNotMatch(html, /24,000[^<]*per year/);
+  assert.equal((html.match(/24,000/g) || []).length, 1);
+});

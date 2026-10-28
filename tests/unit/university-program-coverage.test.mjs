@@ -710,9 +710,9 @@ test("renderProgramsSection formats program details, level filter, search filter
 });
 
 test("every other catalog university renders selectable cards from its stored programs", () => {
-  const reviewed = new Set(["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]);
+  const reviewed = new Set(Object.keys(acceptedInstitutions));
   const institutions = universitiesCatalog.filter((university) => !reviewed.has(university.id));
-  assert.equal(institutions.length, 47);
+  assert.equal(institutions.length, 46);
   for (const university of institutions) {
     const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
     renderProgramsSection({ admissionsData: {}, container, university });

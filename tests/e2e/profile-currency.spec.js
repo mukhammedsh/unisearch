@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors, setNativeSelect } = require("./helpers/selectors");
+const { selectors, setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test.describe("Profile Budget Multi-Currency", () => {
@@ -43,6 +43,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     await budgetInput.fill("20000");
     await budgetInput.dispatchEvent("input");
     await expect(grantHint).toBeHidden();
+    await openDisclosureParents(page.locator("#familyIncomeInput"));
     await page.fill("#familyIncomeInput", "85000");
     await setNativeSelect(page, "familyIncomeCurrencySelect", "EUR");
 
@@ -72,7 +73,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     expect(numBudget).toBeLessThan(20000000);
 
     // Check hint range contains converted max
-    const budgetHint = page.locator('[data-i18n="profile.hint.budget_range"]');
+    const budgetHint = page.locator('.profile-field:has(#budgetInput) .profile-hint');
     await expect(budgetHint).toBeVisible();
     const hintText = await budgetHint.textContent();
     expect(hintText).toMatch(/0[‑\-](\d{1,3}(,\d{3})+)/);

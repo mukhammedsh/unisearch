@@ -47,7 +47,7 @@ import {
   getFilterLimits,
   formatMoney,
 } from "../currency.js";
-import { navigateToAppRoute, routeCompare, routeCompareConfigure, routeUniversityDetail } from "../routes.js";
+import { isUniversitiesListPath, navigateToAppRoute, routeCompare, routeCompareConfigure, routeUniversityDetail } from "../routes.js";
 import {
   readCompareAdmissionChoices,
   writeCompareAdmissionChoices as persistCompareAdmissionChoices,
@@ -101,26 +101,17 @@ import {
   rankingStatusLabel,
 } from './_shared.js';
 
+import { billingPeriodLabel } from "./university/admissions-presentation.js";
+
 export function universityCardPriceInfo(university, basis = "annual_total") {
-    const candidates = [basis, basis === "tuition" ? "annual_total" : "tuition"];
-    for (const candidate of candidates) {
-        const quote = university?.catalog_costs?.[candidate];
-        const minimum = toFiniteNumber(quote?.min);
-        const maximum = toFiniteNumber(quote?.max);
-        const currency = String(quote?.currency || "").trim().toUpperCase();
-        if (minimum !== null && maximum !== null && minimum >= 0 && maximum >= minimum && currency) {
-            return {
-                ...quote,
-                amount: minimum,
-                currency,
-                amountUSD: convert(minimum, currency, "USD"),
-                min: minimum,
-                max: maximum,
-                basis: candidate,
-            };
-        }
+    const quote = university?.catalog_costs?.[basis];
+    const minimum = toFiniteNumber(quote?.min);
+    const maximum = toFiniteNumber(quote?.max);
+    const currency = String(quote?.currency || "").trim().toUpperCase();
+    if (minimum !== null && maximum !== null && minimum >= 0 && maximum >= minimum && currency) {
+        return { ...quote, amount: minimum, currency, amountUSD: convert(minimum, currency, "USD"), min: minimum, max: maximum, basis };
     }
-    if (university?.admissions_catalog?.availability === "reviewed") {
+    if (basis === "tuition" || university?.admissions_catalog?.availability === "reviewed") {
         return { amount: null, currency: "", amountUSD: null };
     }
     return resolveUniversityCardPrice(university);
@@ -151,7 +142,8 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     const priceBasis = price.basis || basis;
     const title = t(`universities.cost.${priceBasis}`);
     const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
-    const period = entry ? tFormat("universities.cost.entry", { year: entry[1] }) : price.period;
+    const period = entry ? tFormat("universities.cost.entry", { year: entry[1] })
+        : price.period === "Whole program" ? billingPeriodLabel("whole_program") : price.period === "Year not stated" ? t("universities.cost.cycle_unspecified") : price.period;
     const levels = Array.isArray(price.levels) ? price.levels : price.study_level ? [price.study_level] : [];
     const feeStatuses = Array.isArray(price.fee_statuses) ? price.fee_statuses : [];
     const cycleStatus = price.cycle_status === "dated_reference"
@@ -161,6 +153,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
         levels.map(level => t(`university.admissions.catalog.level.${level}`)).join(", "),
         period,
         feeStatuses.join(", "),
+        (price.campuses || []).join(", "),
         cycleStatus,
         price.fee_status_match === "unknown" ? t("universities.cost.fee_status_unknown") : "",
         price.filter_match === "partial" ? t("universities.cost.filter_partial") : "",
@@ -194,9 +187,10 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
         return `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(note || t("universities.cost.unavailable"))}</span>${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}</div>`;
     }
     const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
+    const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
     return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary ? " uni-price--with-conversion" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${primary}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
-            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>${secondary ? "" : ` <span class="uni-price-period">${escapeHtml(t("universities.card.per_year", "/ год"))}</span>`}${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
+        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary ? " uni-price--with-conversion" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${primary} ${billingPeriod}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span> <span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
             ${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}
         </button>
         <span id="${escapeHtmlAttr(tooltipId)}" class="ui-tooltip-bubble uni-cost-tooltip__content" role="tooltip">
@@ -230,8 +224,11 @@ let __universitiesMapResizeTimer = 0;
 let __universitiesOverflowClickHandler = null;
 let __universitiesOverflowKeydownHandler = null;
 let __universitiesMapResultsObserver = null;
+let __universitiesSearchCleanup = null;
 
 export function disposeUniversitiesPage() {
+    __universitiesSearchCleanup?.();
+    __universitiesSearchCleanup = null;
     if (__universitiesProfileUpdatedHandler) {
         window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
         __universitiesProfileUpdatedHandler = null;
@@ -350,8 +347,6 @@ function collectUniversitiesElements() {
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
-        catalogLevelSegmented: $("catalogLevelSegmented"),
-        catalogLevelButtons: Array.from(document.querySelectorAll(".catalog-level-btn")),
     };
     if (!el.compareTray) {
         const tray = document.createElement("div");
@@ -506,6 +501,8 @@ export function initUniversitiesPage() {
 
     if (!el.list) return;
     disposeUniversitiesPage();
+    let catalogDisposed = false;
+    const isCurrentCatalog = () => !catalogDisposed && el.list.isConnected && isUniversitiesListPath(window.location.pathname);
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
@@ -787,16 +784,6 @@ export function initUniversitiesPage() {
         });
     }
 
-    function syncCatalogLevelButtons() {
-        const current = String(state.study_level || "").toLowerCase();
-        el.catalogLevelButtons.forEach((btn) => {
-            const btnLevel = String(btn.getAttribute("data-level") || "").toLowerCase();
-            const active = (btnLevel === current);
-            btn.classList.toggle("is-active", active);
-            btn.setAttribute("aria-pressed", active ? "true" : "false");
-        });
-    }
-
     function updateMobileFilterUi() {
         const count = activeFilterCount();
         if (el.mobileFilterCount) {
@@ -823,6 +810,7 @@ export function initUniversitiesPage() {
     };
 
     const setSectionUrl = (replace = true) => {
+        if (!isCurrentCatalog()) return;
         const url = new URL(window.location.href);
         url.search = sectionUrlParams().toString();
         window.history[replace ? "replaceState" : "pushState"]({}, "", url.toString());
@@ -1910,6 +1898,7 @@ export function initUniversitiesPage() {
     }
 
     const scheduleRefetch = debounce(() => {
+        if (!isCurrentCatalog()) return;
         state.page = 1; 
         clearSavedScrollPosition();
         updateMobileFilterUi();
@@ -1929,7 +1918,8 @@ export function initUniversitiesPage() {
         el.searchClearBtn.hidden = !hasText;
     }
 
-    el.qInput?.addEventListener("input", () => {
+    const onCatalogSearchInput = () => {
+        if (!isCurrentCatalog()) return;
         const prevQ = state.q;
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
@@ -1949,9 +1939,10 @@ export function initUniversitiesPage() {
         }
         if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         refetch();
-    });
-    el.qInput?.addEventListener("blur", () => window.setTimeout(hideSearchSuggestions, 160));
-    el.searchClearBtn?.addEventListener("click", () => {
+    };
+    const onCatalogSearchBlur = () => window.setTimeout(() => { if (isCurrentCatalog()) hideSearchSuggestions(); }, 160);
+    const onCatalogSearchClear = () => {
+        if (!isCurrentCatalog()) return;
         if (!el.qInput) return;
         el.qInput.value = "";
         state.q = "";
@@ -1967,7 +1958,16 @@ export function initUniversitiesPage() {
         }
         if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
         refetch();
-    });
+    };
+    el.qInput?.addEventListener("input", onCatalogSearchInput);
+    el.qInput?.addEventListener("blur", onCatalogSearchBlur);
+    el.searchClearBtn?.addEventListener("click", onCatalogSearchClear);
+    __universitiesSearchCleanup = () => {
+        catalogDisposed = true;
+        el.qInput?.removeEventListener("input", onCatalogSearchInput);
+        el.qInput?.removeEventListener("blur", onCatalogSearchBlur);
+        el.searchClearBtn?.removeEventListener("click", onCatalogSearchClear);
+    };
     
     el.countrySelect?.addEventListener("change", () => {
         state.country = el.countrySelect.value; state.region = ""; state.city = ""; 
@@ -1980,16 +1980,6 @@ export function initUniversitiesPage() {
     
     if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
     $("costBasisSelect")?.addEventListener("change", () => { state.cost_basis = $("costBasisSelect").value; refetch(); });
-
-    el.catalogLevelButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const nextLevel = String(btn.getAttribute("data-level") || "").trim().toLowerCase();
-            if (state.study_level === nextLevel) return;
-            state.study_level = nextLevel;
-            syncCatalogLevelButtons();
-            refetch();
-        });
-    });
 
     el.savedFilterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -3399,7 +3389,6 @@ export function initUniversitiesPage() {
         if (el.minInput) el.minInput.value = state.min_tuition;
         if (el.maxInput) el.maxInput.value = state.max_tuition;
         syncSavedFilterButtons();
-        syncCatalogLevelButtons();
         
         fillTrack(); 
         updateSliderLabels();
@@ -3738,6 +3727,7 @@ export function initUniversitiesPage() {
     }
 
     async function fetchAndRender(options = {}) {
+        if (!isCurrentCatalog()) return;
         const preserveVisibleResults = options.preserveVisibleResults === true;
         const animateResults = options.animateResults !== false;
         const runSeq = ++fetchRunSeq;
@@ -3755,6 +3745,7 @@ export function initUniversitiesPage() {
             if (el.pagination) el.pagination.innerHTML = "";
         }
         if (state.viewMode === "map" && !mapInstance) await initMap();
+        if (!isCurrentCatalog()) return;
 
         const urlParams = sectionUrlParams();
         const apiParams = buildParams(true);
@@ -3805,7 +3796,7 @@ export function initUniversitiesPage() {
                 fastFallbackMs: AI_FAST_FALLBACK_MS,
                 fetchAi: () => fetchUniversitiesAiSort(buildAiSortPayload()),
                 fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams)),
-                isCurrentRun: () => runSeq === fetchRunSeq && state.sort === "uni_ai",
+                isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
                 renderData: (data) => renderFetchedData(data, { animateResults }),
                 onAiError: (err, mode) => {
                     const message = mode === "direct"
@@ -3819,11 +3810,11 @@ export function initUniversitiesPage() {
 
         const data = await fetchUniversities(apiParams);
         if (data?.__aborted) return;
-        if (runSeq !== fetchRunSeq) return;
+        if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
         renderFetchedData(data, { animateResults });
 
         } catch (err) {
-        if (runSeq !== fetchRunSeq) return;
+        if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
         if (err?.name === "AbortError") return;
         console.error(err);
         const classified = classifyError(err);
@@ -3843,7 +3834,7 @@ export function initUniversitiesPage() {
             el.state.textContent = t("universities.state.failed", "Failed to load data.");
         }
         } finally {
-        if (runSeq === fetchRunSeq) {
+        if (runSeq === fetchRunSeq && isCurrentCatalog()) {
             setUniversitiesLoading(false, { preserveResults: preserveVisibleResults });
             if (!hasRestoredInitialScroll) {
                 hasRestoredInitialScroll = true;

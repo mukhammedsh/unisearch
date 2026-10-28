@@ -276,15 +276,15 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.ok(apiPayload.locale, 'apiPayload should include locale');
     });
 
-    test('normalizes 5.0 scale GPA to 4.0 for API payload', () => {
+    test('preserves the reported GPA and scale for source-bound API checks', () => {
       saveProfile({
         gpa: 4.8,
         gpaScale: 5,
       });
 
       const apiPayload = loadProfileForApi();
-      assert.strictEqual(apiPayload.gpa, 3.84);
-      assert.strictEqual(apiPayload.gpa_scale, 4);
+      assert.strictEqual(apiPayload.gpa, 4.8);
+      assert.strictEqual(apiPayload.gpa_scale, 5);
     });
 
     test('strips empty optional fields in loadProfileForApi', () => {

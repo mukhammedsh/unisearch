@@ -487,7 +487,11 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                 score_raw=raw_score,
                 raw_value=raw_value,
                 details=details,
+                taken_on=row.get("taken_on"),
+                allow_total_only_sat=True,
             )
+            if exams_service._config_entry(parsed["exam"]).get("type") == "bool" and not parsed.get("score"):
+                continue
             _set_best_score(user_scores, parsed.get("exam", exam_id), parsed.get("score"))
             if parsed.get("exam"):
                 valid_exam_ids.add(str(parsed["exam"]).strip().upper())
@@ -504,8 +508,8 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                         _set_best_score(user_scores, nested_exam, item.get("score"))
                         if nested_exam:
                             valid_exam_ids.add(str(nested_exam).strip().upper())
-        except Exception:
-            _set_best_score(user_scores, exam_id, raw_score)
+        except (ValueError, TypeError):
+            continue
 
     for row in profile.get("languages", []) or []:
         if not isinstance(row, dict):
@@ -566,12 +570,8 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                             if nested_exam:
                                 valid_exam_ids.add(str(nested_exam).strip().upper())
                 continue
-            except Exception:
-                score = _to_num(raw_score)
-                if score is None:
-                    continue
-                _set_best_score(user_languages[code]["exams"], exam_id, score)
-                _set_best_score(user_scores, exam_id, score)
+            except (ValueError, TypeError):
+                continue
 
     return {
         "userScores": user_scores,
@@ -697,6 +697,12 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
     if not isinstance(avg, dict):
         avg = {}
 
+    parent_exams = {}
+    for exam in languages_service.get_languages_index().get("exams_by_lang", {}).get(code, []):
+        scheme = exam.get("breakdown_scheme", {})
+        for component in scheme.get("fixed_components", []):
+            parent_exams[component["exam"]] = exam["id"]
+    exam_groups: Dict[str, List[Tuple[Any, Dict[str, Any]]]] = {}
     for exam_id, min_val in req.items():
         # Do not infer exam-equivalent score from CEFR/native evidence.
         # Language exam thresholds (IELTS/TestDaF/DSH/etc.) must be met by
@@ -707,11 +713,22 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
         user = _get_user_score(state.get("exams", {}), configured_exam_id, None)
         if user is None and configured_exam_id != exam_id:
             user = _get_user_score(state.get("exams", {}), exam_id, None)
-        if user is None:
-            continue
         avg_val = avg.get(exam_id) if exam_id in avg else None
         higher = _is_higher_better(exam_id)
-        candidates.append(_score_requirement(user, min_val, avg_val, higher_is_better=higher, mode=mode))
+        family = parent_exams.get(configured_exam_id, configured_exam_id)
+        exam_groups.setdefault(family, []).append((user, _score_requirement(user, min_val, avg_val, higher_is_better=higher, mode=mode)))
+
+    # A test's total and required sections are conjunctive; different tests are alternatives.
+    for rows in exam_groups.values():
+        if not any(user is not None for user, _ in rows):
+            continue
+        results = [result for _, result in rows]
+        candidates.append({
+            "score": min(result["score"] for result in results),
+            "pass": all(result["pass"] for result in results),
+            "gap": max(result["gap"] for result in results),
+            "conditional": any(result["conditional"] for result in results),
+        })
 
     if not candidates:
         has_thresholds = (min_cefr is not None) or bool(req)
@@ -726,15 +743,12 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
             "conditional": False,
         }
 
-    best_score = max((x.get("score", 0.0) for x in candidates), default=0.0)
-    passed = any(bool(x.get("pass")) for x in candidates)
-    min_gap = min((x.get("gap", 1.0) for x in candidates), default=1.0)
-    is_conditional = all(bool(x.get("conditional")) for x in candidates)
+    best = max(candidates, key=lambda row: (bool(row["pass"]) and not row["conditional"], bool(row["conditional"]), row["score"]))
     return {
-        "score": _clamp01(float(best_score)),
-        "pass": passed,
-        "gap": 0.0 if passed else float(min_gap),
-        "conditional": is_conditional,
+        "score": _clamp01(float(best["score"])),
+        "pass": bool(best["pass"]),
+        "gap": float(best["gap"]),
+        "conditional": bool(best["conditional"]),
     }
 
 
@@ -1777,7 +1791,8 @@ def sort_universities_ai(
             if quote:
                 bounds = universities_service._catalog_cost_range_usd({"catalog_costs": projected_costs}, basis)
                 cost_quote = {**quote, "basis": basis, "minUSD": bounds[0] if bounds else None, "maxUSD": bounds[1] if bounds else None}
-                evidence = ("fee_status_unknown" if quote["fee_status_match"] == "unknown"
+                evidence = ("period_not_annual" if quote.get("annual_comparable") is False
+                            else "fee_status_unknown" if quote["fee_status_match"] == "unknown"
                             else "scope_unknown" if target_level == "any" and not projected_costs.get("scope", {}).get("study_level")
                             else "applicable" if quote["cycle_status"] == "matched" else "dated_reference")
                 if bounds and budget is not None and budget > 0 and evidence not in {"fee_status_unknown", "scope_unknown"}:

@@ -469,12 +469,24 @@
       "eng": "NUET",
       "rus": "NUET"
     },
-    "input_mode": "number",
+    "input_mode": "subject_breakdown",
     "min": 0,
     "max": 240,
     "type": "int",
     "step": 1,
-    "notes": "Nazarbayev University Entrance Test (total).",
+    "notes": "Nazarbayev University Entrance Test. Retain the total and any known Mathematics/Critical Thinking sections from one test attempt; old total-only records remain partial evidence.",
+    "breakdown_scheme": {
+      "fixed_components": [
+        {"exam": "NUET_MATH", "label": "Mathematics", "required": false},
+        {"exam": "NUET_CRITICAL_THINKING", "label": "Critical Thinking and Problem Solving", "required": false}
+      ],
+      "total_strategy": "use_parent_score",
+      "auto_total_strategy": "sum",
+      "validate_component_sum": true,
+      "parent_score_label": "Total"
+    },
+    "source_url": "https://nu.edu.kz/media/admissions/Admission-Regulations-to-the-Nazarbayev-University-Foundation-Year-Program.pdf",
+    "verified_at": "2026-10-24",
     "normalization": {
       "kind": "anchor_percentile",
       "p50": 120,
@@ -484,6 +496,38 @@
       "source": "Nazarbayev University admissions",
       "source_note": "Adapted from the shared Claude normalization table by scaling its ~0-100 NUET anchors to UniSearch's raw 0-240 NUET total range."
     }
+  },
+  "NUET_MATH": {"label": "NUET Mathematics", "labels": {"eng": "NUET Mathematics", "rus": "NUET: математика", "kaz": "NUET: математика"}, "hidden": true, "input_mode": "number", "min": 0, "max": 120, "type": "int", "step": 1},
+  "NUET_CRITICAL_THINKING": {"label": "NUET Critical Thinking and Problem Solving", "labels": {"eng": "NUET Critical Thinking and Problem Solving", "rus": "NUET: критическое мышление и решение задач", "kaz": "NUET: сыни ойлау және мәселелерді шешу"}, "hidden": true, "input_mode": "number", "min": 0, "max": 120, "type": "int", "step": 1},
+  "ALEKS": {
+    "label": "ALEKS", "labels": {"eng": "ALEKS", "rus": "ALEKS", "kaz": "ALEKS"},
+    "input_mode": "number", "min": 1, "max": 100, "type": "float",
+    "notes": "NU's graduate applicant guide describes a 1–100 reporting scale. This scale is not an admission minimum; each program determines test/waiver requirements.",
+    "source_url": "https://prev.nu.edu.kz/media/admissions/3%20Master%27s/Guidance%20for%20Graduate%20Applicants.pdf", "verified_at": "2026-10-24"
+  },
+  "NURSING_NAT": {
+    "label": "Nursing Admission Test (NAT)", "labels": {"eng": "Nursing Admission Test (NAT)", "rus": "Вступительный экзамен по сестринскому делу (NAT)", "kaz": "Мейіргер ісіне қабылдау емтиханы (NAT)"},
+    "input_mode": "subject_breakdown", "type": "float",
+    "notes": "Record known percentage results independently; there is no combined admission score. The route publishes independent knowledge and clinical-skills minima.",
+    "breakdown_scheme": {"fixed_components": [
+      {"exam": "NAT_KNOWLEDGE", "label": "Knowledge", "required": false},
+      {"exam": "NAT_CLINICAL_SKILLS", "label": "Clinical skills", "required": false}
+    ], "total_strategy": "components_only"},
+    "source_url": "https://nusom.nu.edu.kz/bn", "verified_at": "2026-10-24"
+  },
+  "NAT_KNOWLEDGE": {"label": "Nursing NAT Knowledge (%)", "labels": {"eng": "Nursing NAT Knowledge (%)", "rus": "NAT: знания (%)", "kaz": "NAT: білім (%)"}, "hidden": true, "input_mode": "number", "min": 0, "max": 100, "type": "float"},
+  "NAT_CLINICAL_SKILLS": {"label": "Nursing NAT Clinical skills (%)", "labels": {"eng": "Nursing NAT Clinical skills (%)", "rus": "NAT: клинические навыки (%)", "kaz": "NAT: клиникалық дағдылар (%)"}, "hidden": true, "input_mode": "number", "min": 0, "max": 100, "type": "float"},
+  "IFOM_BSE": {
+    "label": "IFOM Basic Science Examination report", "labels": {"eng": "IFOM Basic Science Examination report", "rus": "Отчёт IFOM Basic Science Examination", "kaz": "IFOM Basic Science Examination есебі"},
+    "input_mode": "flag", "type": "bool", "min": 0, "max": 1, "step": 1,
+    "notes": "A recorded official report, not an asserted pass or numeric cutoff. NU residency pages require IFOM BSE or USMLE Step 1 report; conditional routes have later submission rules.",
+    "source_url": "https://nusom.nu.edu.kz/residency-in-family-medicine", "verified_at": "2026-10-24"
+  },
+  "USMLE_STEP_1": {
+    "label": "USMLE Step 1 report", "labels": {"eng": "USMLE Step 1 report", "rus": "Отчёт USMLE Step 1", "kaz": "USMLE Step 1 есебі"},
+    "input_mode": "flag", "type": "bool", "min": 0, "max": 1, "step": 1,
+    "notes": "A recorded official report, not an asserted pass or numeric cutoff. NU residency pages require IFOM BSE or USMLE Step 1 report; conditional routes have later submission rules.",
+    "source_url": "https://nusom.nu.edu.kz/residency-in-family-medicine", "verified_at": "2026-10-24"
   },
   "AP_Total": {
     "label": "AP",

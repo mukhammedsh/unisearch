@@ -41,7 +41,7 @@ guide.academic_exams.title: Academic Exams
 guide.admission.p1: Admissions requirements are assessed for an applicant route and requirement profile. Funding options are listed separately; an award does not create a separate admission assessment, and displayed annual costs are before any award. Check the applicant route, study cycle, and profile that apply to you.
 guide.admission.p2: Published minimums describe route-specific requirements, but exceptions or holistic review may apply. Published admitted-student score ranges are historical context, not cutoffs or guarantees.
 guide.admission.p3: Language proof follows the same logic with one extra switch. Mode any means a single proof from the list is enough; mode all means every listed proof is required. A native language counts wherever the route accepts it, and a single language rule can freely mix CEFR levels with exam scores.
-guide.admission.p4: Scores from different countries are first brought to common scales — GPA, for instance, is normalized to 4.0 before anything is computed. Higher is better for every exam with a single exception, JLPT, where the level number runs the other way and a lower number means stronger Japanese.
+guide.admission.p4: UniFit can normalize exam scores to compare profiles. A published admission minimum is checked only against evidence in the stated scale; a converted GPA is not an official equivalent. Most exam scales reward higher scores; JLPT levels run in the opposite direction.
 guide.admission.title: How admission choices work
 guide.exam_basics.p1: Every admission choice runs two independent checks: your academic scores and your language proof. The two never compensate for each other — a brilliant math score will not cover a missing IELTS — so both columns have to turn green for the choice to open.
 guide.exam_basics.p2: Thresholds are set per university, per category, and per profile, which is why two tracks at the same university can demand completely different scores. Read the selected choice itself; the overview figures on a university page are orientation, not requirements.
@@ -262,15 +262,15 @@ profile.gpa_range: GPA must be between {min} and {max}
 profile.gpa_saved: GPA saved
 profile.gpa_step: GPA must use step {step}
 profile.hint.budget_range: Range: 0‑{max}
-profile.hint.family_income_optional: Optional. Saved on this device. Income alone does not determine eligibility for financial aid.
+profile.hint.family_income_optional: Optional reference saved only on this device. It is not used in UniFit or automated requirement checks and does not predict aid. Use spaces for groups and a comma or point for decimals.
 profile.family_income_invalid: Enter an amount from 0 to 1,000,000,000,000.
 profile.hint.low_budget_grant: Budget is under {amount}. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
 profile.hint.gpa: Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
 profile.gpa_info_title: How GPA works here
-profile.gpa_info_tooltip: Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
-profile.hint.interests: Avoid long sentences and negations ("no X"). The AI automatically connects synonyms to university programs.
+profile.gpa_info_tooltip: Choose your grading scale: 4.0 or 5.0. Your original value and scale are preserved. Published GPA minimums require matching scales; program-specific academic requirements may need separate evidence.
+profile.hint.interests: Brief positive topics may help order universities in UniFit. They do not select a program or establish eligibility.
 profile.interests_saved: Interests saved
 profile.saved_all: Profile saved
 profile.label.budget: Total Budget / year
@@ -328,8 +328,8 @@ profile.type: Type
 profile.unit.gpa: / 4.0
 profile.unit.usd_year: USD / year
 profile.unit.currency_year: {currency} / year
-profile.progress.empty: Complete your profile for better matches.
-profile.progress.count: {completed}/{total} profile areas complete
+profile.progress.empty: Browse freely; add only the profile details that are useful to you.
+profile.progress.count: {completed}/{total} optional areas have settings
 profile.sections.aria: Profile sections
 profile.title: Profile
 profile.section.basics: General
@@ -340,7 +340,7 @@ profile.kicker: Applicant Workspace
 profile.page_subtitle: Configure your academic profile, budget, and test scores for UniFit ranking and requirements fit scores.
 profile.action.back: Back
 profile.action.back_desc: Return to previous page
-profile.progress.title: Profile Completion
+profile.progress.title: Optional profile settings
 profile.empty_exams: No exams added yet. Select an exam above to add your scores.
 profile.empty_languages: No languages added yet. Add your native language or test certification.
 profile.field.budget.desc: Your planned tuition and living expense budget per academic year in {currency}.
@@ -349,8 +349,8 @@ profile.field.funding.desc: Choose whether you seek full scholarships/grants or 
 profile.field.gpa.desc: Select your grading scale and enter your certificate GPA.
 profile.field.major.desc: Select your target academic field to rank relevant programs.
 profile.field.interests.desc: Works like smart tags: list topics and disciplines separated by commas (technologies, majors, career goals).
-profile.field.exams.desc: Add standardized test results (IELTS, TOEFL, SAT, ACT, A-Levels) to check fit with published requirements.
-profile.field.languages.desc: Add your native language or international certificates (IELTS, TOEFL, CEFR) for requirement evaluation.
+profile.field.exams.desc: Enter a result, then press Add or Enter to add the report to your draft. Save the profile to keep it on this device.
+profile.field.languages.desc: Add a language or certificate, then save the profile. Native language and CEFR do not automatically replace a university's required test.
 profile.aria.applicant_profile: Applicant Profile
 ranking.acceptance: Acceptance Rate
 ranking.acceptance_undergraduate: Undergraduate acceptance rate
@@ -444,7 +444,7 @@ universities.cost.tooltip_open: Explain this price
 universities.cost.tooltip_title: How this price works
 universities.cost.tooltip_range: These are the lowest and highest known prices matching the current selection, not an average. The amount can vary by program and fee category.
 universities.cost.tooltip_living_range: The endpoints add the published living-cost range to known tuition prices; they are not an average. The living estimate may come from a different year.
-universities.cost.tooltip_single: This is one known yearly price for the current selection. Confirm the program, fee category and year.
+universities.cost.tooltip_single: This is one known price for the current selection. Confirm the program, fee category and year.
 universities.cost.tooltip_filter_variants: The price filter checks each known option. A university appears if at least one option overlaps your limits, even when the displayed range extends beyond them. Prices between the endpoints are not necessarily offered.
 universities.cost.tooltip_filter_reference: A broad reference range may overlap your limits without identifying a matching program. Confirm its price with the university.
 universities.cost.tooltip_living_year: Living-cost estimate: {year}.
@@ -913,7 +913,7 @@ placeholder.field.countries_count: Countries count
 guide.academic.act: Its counterpart, covering English, math, reading, and science reasoning.
 guide.academic.aptotal: Combined performance across AP subjects, for systems that recognize them.
 guide.academic.default: An academic score that at least one requirement profile asks for.
-guide.academic.gpa: Your average school grade, normalized to a 4.0 scale inside UniSearch so that countries stay comparable.
+guide.academic.gpa: Your reported grade average and its original scale. UniFit may normalize it for comparison; published admission minimums need a matching scale.
 guide.academic.ibdiploma: The IB Diploma total, accepted by universities worldwide.
 guide.academic.alevelcert: British A-Level subject grades — enter them as A*AA, and the best three are converted into a comparable score.
 guide.academic.hkdselevel: Hong Kong secondary-school levels, converted internally with 5* counting as 6 and 5** as 7.
@@ -1114,7 +1114,7 @@ admission.requirements_fit.description: Share of evaluable published academic an
 admission.requirements_fit.unavailable_method: Requirements fit score is unavailable because its meaning could not be confirmed.
 admission.requirements_fit.insufficient_data: There is not enough applicable requirements or profile evidence to calculate this fit score.
 admission.requirements_fit.no_published_requirements: This route has no measurable published minimums, so a requirements fit percentage cannot be calculated. Review the official application requirements.
-admission.requirements_fit.unassessed_minimums: MIT publishes technical GPA minimums of 4.25/5.0 and overall GPA minimums of 4.0/5.0 for this route. UniSearch cannot assess them because the profile stores one GPA normalized to a four-point scale; no requirements fit percentage is calculated.
+admission.requirements_fit.unassessed_minimums: Some published minimums require evidence or a grading scale that the available profile cannot establish. No requirements fit percentage is calculated for unsupported checks.
 admission.requirements_fit.requirements_not_reviewed: Published academic and language minimums have not yet been reviewed for this route. Check the official program page before applying.
 admission.funding_before_award: Annual cost before any award
 admission.score_range.title: Published first-year score range
@@ -1434,15 +1434,15 @@ profile.option.study_level_master: Master's
 profile.option.study_level_doctorate: Doctorate / PhD
 profile.option.study_level_professional: Professional
 profile.option.study_level_mba: MBA
-profile.label.citizenship: Citizenship & Residency
-profile.field.citizenship.desc: Add one or multiple citizenships to evaluate tuition, fees, and financial aid in your favor.
+profile.label.citizenship: Citizenships
+profile.field.citizenship.desc: Optional. Citizenship can affect published application and funding rules. It does not confirm residence, fee status or an award.
 profile.citizenship_info_title: Citizenship & Residency Impact
 profile.citizenship_info_tooltip: Citizenship can affect fee and aid rules, but it does not determine eligibility by itself. Universities may also consider residency history, immigration status, and program. Add all citizenships you hold so they can be considered during review.
 profile.citizenship.select_country: Select a country...
 profile.citizenship.add_btn: Add
 profile.citizenship.other_option: Other country
 profile.citizenship.other_placeholder: Enter country name...
-profile.citizenship.empty_hint: No citizenships added yet. Add your citizenships for fee and aid policy review.
+profile.citizenship.empty_hint: No citizenship added. You can leave this empty and read the published rules manually.
 profile.citizenship.search_placeholder: Search countries
 profile.citizenship.primary_badge: Primary
 profile.citizenship.set_primary_title: Set as primary citizenship
@@ -1555,7 +1555,7 @@ university.deadlines.all_levels: All Degrees
 university.deadlines.calendar_empty_month: No exact deadlines this month.
 university.deadlines.calendar_events: deadlines
 university.deadlines.calendar_next: Next month
-university.deadlines.calendar_no_exact: No deadlines with an exact published date and year. See the deadline list for approximate or yearless deadlines.
+university.deadlines.calendar_no_exact: No deadline is confirmed for calendar export in this selection. Published dates, approximate windows and source limitations remain in the list below.
 university.deadlines.calendar_partial_note: Deadlines without an exact date and year appear only in the list below.
 university.deadlines.calendar_previous: Previous month
 university.deadlines.calendar_title: Deadline calendar
@@ -2377,7 +2377,7 @@ universities.why.preference_comparison: {label}: your setting {requested}/100; u
 admission.requirements_fit.check.profile_unassessed: This profile cannot establish the required evidence or exemption.
 admission.requirements_fit.missing_evidence_note: Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed.
 profile.evidence.title: Evidence for selected admissions routes
-profile.evidence.description: Optional self-reported details help assess published conditions. They do not confirm official records.
+profile.evidence.description: Optional details for a published condition that applies to you. Institutional fields only apply to the universities and routes listed here; you can skip this section. Self-reported details do not confirm official documents or waivers.
 profile.evidence.test_date: Test date (optional)
 profile.evidence.language_title: Language background
 profile.evidence.institution_title: Institution-specific study evidence
@@ -2684,7 +2684,7 @@ university.admissions.catalog.field.housing_estimate: Housing estimate
 university.admissions.catalog.field.food_estimate: Food estimate
 university.admissions.catalog.field.materials_estimate: Study materials
 university.admissions.catalog.field.personal_estimate: Personal expenses
-university.admissions.catalog.field.windows: Application windows
+university.admissions.catalog.field.windows: Published periods
 university.admissions.catalog.field.round: Application window
 university.admissions.catalog.field.application_due: Application deadline
 university.admissions.catalog.field.aid_due: Aid deadline
@@ -3156,3 +3156,107 @@ university.admissions.catalog.route_name.mit-idps-internal-selection: IDPS selec
 university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Joint Department–Computational Science and Engineering PhD application
 university.admissions.catalog.route_name.mit-economics-sm-special-approval: Economics special SM approval for current MIT students
 university.admissions.reading.special_routes: Current Stanford students and joint degrees ({count})
+university.admissions.catalog.level.preparation: Preparation
+university.admissions.catalog.study_level.preparation: Preparation
+university.admissions.catalog.level.residency: Residency
+university.admissions.catalog.study_level.residency: Residency
+university.admissions.catalog.level.non_degree: Non-degree programs
+university.admissions.catalog.study_level.non_degree: Non-degree programs
+profile.option.study_level_preparation: Preparation / Foundation
+universities.level.preparation: Preparation
+universities.level.professional: Professional programs
+profile.option.study_level_residency: Residency
+universities.level.residency: Residency
+profile.option.study_level_non_degree: Non-degree programs
+universities.level.non_degree: Non-degree programs
+profile.exam_breakdown_optional_hint: Add the sections shown on your report. Missing sections remain unassessed.
+profile.exam_section_required: Add at least one reported section score.
+profile.exam_not_recorded: Not recorded
+university.admissions.catalog.kind.academic_requirement: Academic qualification
+university.admissions.catalog.field.component_minimums: Required section minimums
+university.admissions.catalog.field.components_at_least: Required subject results
+university.admissions.catalog.field.profile_field: Profile evidence
+university.admissions.catalog.field.gpa_scale: Original GPA scale
+university.admissions.catalog.field.count: Required count
+university.admissions.catalog.field.reported: Reported count
+university.admissions.catalog.field.meeting_minimum: Results meeting the minimum
+university.admissions.catalog.counted_minimum: At least {count} results, each {minimum} or higher
+university.admissions.catalog.counted_provided: {reported} reported; {met} meet the minimum
+universities.cost.whole_program: for the whole program
+universities.cost.per_credit: / credit
+university.admissions.catalog.reason.funding_selection_separate: Funding selection is separate from admission. No admission requirements percentage is calculated for this funding context.
+university.admissions.catalog.kind.manual_minimum: Minimum requiring individual evidence review
+university.admissions.catalog.field.score: Reported score
+university.admissions.catalog.field.details: Report details
+university.admissions.catalog.field.components: Reported sections and subjects
+university.admissions.catalog.field.raw_value: Reported grade or result
+university.admissions.catalog.field.display_value: Recorded result
+university.admissions.catalog.field.requires_review: Requires individual review
+university.admissions.catalog.field.date_boundary: Published test-date limits
+university.admissions.catalog.field.max_age_years: Maximum test age in years
+university.deadlines.test_for_funding: Last {exam} test date for funding consideration
+university.deadlines.kind.test_submission: Test-result submission deadline
+university.deadlines.dated_reference: Past-cycle reference
+universities.cost.study_years: Years of study: {years}
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Regular Foundation/Undergraduate admission
+university.admissions.catalog.route_name.nu-a-route-financial-support: Post-offer financial-support consideration
+university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Undergraduate mid-year fee-paying intake
+university.admissions.catalog.route_name.nu-a-route-transfer: Undergraduate transfer admission
+university.admissions.catalog.route_name.nu-a-route-nufyp-progression: NUFYP internal progression to undergraduate
+university.admissions.catalog.route_name.nu-a-route-joint-bba: Joint BBA application with HKUST
+university.admissions.catalog.route_name.nu-a-route-nursing: Bachelor in Nursing professional completion route
+university.admissions.catalog.route_name.nu-a-route-ump: Six-year Undergraduate Medical Program
+university.admissions.catalog.route_name.nu-a-route-masters-common-packet-b: Shared engineering graduate application
+university.admissions.catalog.route_name.nu-a-route-non-degree-study: Non-degree study application
+university.admissions.catalog.route_name.nu-a-route-mining-microcredential: Mining Engineering microcredential application
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-biomedicine: Master of Science in Biomedicine
+university.admissions.catalog.route_name.nu-b-route-doctor-of-business-administration: Doctor of Business Administration
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas: Master of Arts in Global Affairs and Eurasian Studies (Joint Degree with SOAS)
+university.admissions.catalog.route_name.nu-b-route-doctor-of-philosophy-in-education: Doctor of Philosophy in Education
+university.admissions.catalog.route_name.nu-b-route-phd-in-eurasian-studies: PhD in Eurasian Studies
+university.admissions.catalog.route_name.nu-b-route-doctor-of-public-management: Doctor of Public Management
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-public-policy: Ph.D. in Public Policy
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-global-health: Ph.D. in Global Health
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-biomedical-sciences: Ph.D. in Biomedical Sciences
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-life-sciences: Ph.D. in Life Sciences
+university.admissions.catalog.route_name.nu-b-route-phd-in-business-administration: PhD in Business Administration
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-chemistry: Master of Science in Chemistry
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-applied-mathematics: Master of Science in Applied Mathematics
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-physics: Master of Science in Physics
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-multilingual-education: Master of Arts in Multilingual Education
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-educational-leadership: Master of Science in Educational Leadership
+university.admissions.catalog.route_name.nu-b-route-master-in-public-administration: Master in Public Administration
+university.admissions.catalog.route_name.nu-b-route-master-in-public-policy: Master in Public Policy
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-political-science-and-international-relations: Master of Arts in Political Science and International Relations
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-eurasian-studies: Master of Arts in Eurasian Studies
+university.admissions.catalog.route_name.nu-b-route-master-of-applied-artificial-intelligence-and-data-science: Master of Applied Artificial Intelligence and Data Science
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-data-science: Master of Science in Data Science
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-computer-science: Master of Science in Computer Science
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-nursing: Master of Science in Nursing
+university.admissions.catalog.route_name.nu-b-route-doctor-of-medicine: Doctor of Medicine
+university.admissions.catalog.route_name.nu-b-route-master-of-public-health: Master of Public Health
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-life-sciences: Master of Science in Life Sciences
+university.admissions.catalog.route_name.nu-b-route-executive-master-of-business-administration: Executive Master of Business Administration
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-finance: Master of Science in Finance
+university.admissions.catalog.route_name.nu-b-route-master-of-business-administration: Master of Business Administration
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-economics: Master of Arts in Economics
+university.admissions.catalog.route_name.nu-c-phd-route: Research PhD application
+university.admissions.catalog.route_name.nu-c-residency-route: Shared residency application
+university.admissions.catalog.route_name.nu-residency-unconditional: Residency: unconditional admission
+university.admissions.catalog.route_name.nu-residency-conditional-umc: Residency: UMC-recommended conditional admission
+university.admissions.reading.formats_vary: Varies by program — view published formats
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Start here to read entry requirements and apply. English requirements and an accepted academic qualification are separate. Financial-support selection follows an offer and has its own conditions.
+university.admissions.entry.route_help.nu-a-route-financial-support: For applicants with an admission offer: read grant categories, additional tests and funding dates. Meeting a minimum does not confirm an award.
+university.admissions.entry.route_help.nu-a-route-transfer: For students moving from another university. Previous study, credit recognition and any English-test waiver require individual review.
+university.admissions.entry.route_help.nu-a-route-nufyp-progression: For current NUFYP students progressing to an undergraduate program. Foundation completion does not automatically guarantee a place; progression conditions apply.
+university.admissions.entry.route_help.nu-residency-unconditional: Read the standard residency entry conditions, including the required clinical test evidence and prior medical qualification.
+university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
+university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
+university.admissions.catalog.domain.reference: Related source comparisons
+university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
+profile.intro: All fields are optional. Start with your subject, study level and budget; add scores when you want to check published requirements. Save on this device, then return to the catalog.
+profile.clear_report_draft: Clear draft
+profile.report_draft_pending: Add or update the report, or clear its draft, then save the profile.
+university.admissions.catalog.field.possible_exemption_evidence_kinds: Language background for individual exemption review
+profile.family_income_reference: Family income (optional reference)
+profile.change_budget_currency: Change budget currency in Settings (currently {currency})

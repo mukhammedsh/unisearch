@@ -5,6 +5,17 @@ import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalize
 
 const uid = "mit-usa-cambridge";
 
+test("preparation, residency and non-degree context survives saved choice and URL round trips", () => {
+  for (const level of ["preparation", "residency", "non_degree"]) {
+    const saved = { selectedAdmissionChoices: { [uid]: { studyOptionId: "option", applicationRouteId: "route", studyLevel: level } } };
+    const context = readAdmissionContext(new URL("https://example.test/university"), saved, uid);
+    assert.equal(context.study_level, level);
+    assert.deepEqual(readAdmissionContext(admissionContextUrl(new URL("https://example.test/university"), context), {}, uid), context);
+    assert.equal(programProfileSuggestions({ study_level: level }).level, level);
+  }
+  assert.equal(readAdmissionContext(new URL("https://example.test/?admission_level=unknown"), {}, uid).study_level, "");
+});
+
 test("only explicit institution-route projection permits reading without a major", () => {
   const route = { id: "first-year" };
   assert.equal(hasReadableAdmissionContext({ selected_route: route, reading_scope: "institution_route" }), true);

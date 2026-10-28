@@ -84,6 +84,28 @@ test("funding consideration dates do not become scholarship-form deadlines or le
   assert.equal(events[0].time, "");
 });
 
+test("source-bound projections keep support test dates separate from applications and preserve dated references", () => {
+  const rows = [fact("support", { original_source_text: "Application deadline remains TBA." }, { publication_status: "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA", attributes: { deadline_events: [
+    { date: "2026-12-05", deadline_type: "test_date", label: "Last SAT test date for financial support", exam_id: "SAT", application_category: "financial_support", cycle: "2027/28", publication_status: "published" },
+    { date: "2026-11-28", deadline_type: "test_submission", time: "23:59", timezone: "Asia/Almaty", cycle: "2026/27", publication_status: "published_dated_reference" },
+    { date: "2027-01-01", deadline_type: "application", publication_status: "conflicting" },
+    { date: "December 5", deadline_type: "application", publication_status: "published" },
+  ] } })];
+  const events = getReviewedDeadlineEvents(context(rows));
+  assert.equal(events.length, 2);
+  assert.equal(events.filter(row => row.kind === "application").length, 0);
+  const support = events.find(row => row.kind === "test");
+  assert.equal(support.applicationCategory, "financial_support");
+  assert.equal(support.examId, "SAT");
+  assert.equal(support.cycle, "2027/28");
+  assert.equal(support.time, "");
+  assert.equal(support.timezone, "");
+  assert.equal(support.sourceFactId, "support");
+  const reference = events.find(row => row.kind === "test_submission");
+  assert.equal(reference.publicationStatus, "published_dated_reference");
+  assert.match(createDeadlineIcs(reference), /DTSTART:20261128T185900Z/);
+});
+
 test("labelled Imperial application rounds retain exact dates without importing an inapplicable round", () => {
   const text = "Apply by 23.59 (UK time). Round 1 Business School courses only. Round 2 Applications open on Wednesday 30 September 2026 Applications close on Wednesday 6 January 2027 Decision by Wednesday 3 March 2027 Round 3 Applications open on Thursday 7 January 2027 Applications close on Wednesday 10 March 2027 Decision by Wednesday 5 May 2027";
   const events = getReviewedDeadlineEvents(context([fact("rounds", { course_page_application_rounds_and_deadlines: text })]));
