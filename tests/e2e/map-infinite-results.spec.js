@@ -26,6 +26,21 @@ test("map results rail loads the next 100 universities at the end of the list", 
     });
   });
 
+  await page.route("**/universities/profiled", async (route) => {
+    const payload = route.request().postDataJSON();
+    if (payload.fields === "map") {
+      await route.fulfill({ status: 200, contentType: "application/json",
+        body: JSON.stringify({ items: allItems, total: allItems.length }) });
+      return;
+    }
+    const pageNumber = Number(payload.page || 1);
+    const limit = Number(payload.limit || 100);
+    if (limit === 100) requestedPages.push(pageNumber);
+    const start = (pageNumber - 1) * limit;
+    await route.fulfill({ status: 200, contentType: "application/json",
+      body: JSON.stringify({ items: allItems.slice(start, start + limit), total: allItems.length, page: pageNumber, limit }) });
+  });
+
   await page.route("**/universities?*", async (route) => {
     const url = new URL(route.request().url());
     if (url.searchParams.get("view") !== "map") {
@@ -105,6 +120,13 @@ test("map marker opens the complete university card and responds to zoom control
       contentType: "application/json",
       body: JSON.stringify({ items: [markerUniversity], count: 1, total: 1, truncated: false }),
     });
+  });
+
+  await page.route("**/universities/profiled", async (route) => {
+    const payload = route.request().postDataJSON();
+    const items = payload.fields === "map" ? [markerUniversity] : [railUniversity];
+    await route.fulfill({ status: 200, contentType: "application/json",
+      body: JSON.stringify({ items, total: items.length, page: 1, limit: payload.limit || 100 }) });
   });
 
   await page.route(/\/universities\/marker-only-university(?:\?|$)/, async (route) => {
@@ -222,6 +244,13 @@ test("repeated click on the focused marker does not recenter the map", async ({ 
       contentType: "application/json",
       body: JSON.stringify({ items: [markerUniversity], count: 1, total: 1, truncated: false }),
     });
+  });
+
+  await page.route("**/universities/profiled", async (route) => {
+    const payload = route.request().postDataJSON();
+    const items = payload.fields === "map" ? [markerUniversity] : [makeUniversity(1)];
+    await route.fulfill({ status: 200, contentType: "application/json",
+      body: JSON.stringify({ items, total: items.length, page: 1, limit: payload.limit || 100 }) });
   });
 
   await page.route(/\/universities\/stable-focus-university(?:\?|$)/, async (route) => {

@@ -296,25 +296,22 @@ test("map results rail renders status badges in vertical column without overlapp
   await expect(triggers.nth(1)).toBeVisible();
   const count = await triggers.count();
   expect(count).toBeGreaterThanOrEqual(2);
-  await expect.poll(() => cardWithStatuses.evaluate(card => {
-    const [first, second] = [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2);
-    return second.getBoundingClientRect().top - first.getBoundingClientRect().top;
-  })).toBeGreaterThan(0);
-
-  // Read one rendered card atomically while map results may refresh.
-  const { boxes: [box0, box1], titleBox } = await cardWithStatuses.evaluate(card => {
-    const box = element => {
-      const rect = element.getBoundingClientRect();
-      return { x: rect.x, y: rect.y, width: rect.width };
-    };
-    return { boxes: [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2).map(box), titleBox: box(card.querySelector(".uni-title")) };
-  });
-  expect(box0 && box1).toBeTruthy();
-  expect(Math.abs(box0.x - box1.x)).toBeLessThanOrEqual(2);
-  expect(box1.y).toBeGreaterThan(box0.y);
-
-  expect(titleBox).toBeTruthy();
-  expect(titleBox.x + titleBox.width).toBeLessThanOrEqual(box0.x + 1);
+  await expect.poll(async () => {
+    const data = await cardWithStatuses.evaluate(card => {
+      const box = element => {
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        return { x: rect.x, y: rect.y, width: rect.width };
+      };
+      const [box0, box1] = [...card.querySelectorAll(".uni-status-trigger")].slice(0, 2).map(box);
+      const titleBox = box(card.querySelector(".uni-title"));
+      return { box0, box1, titleBox };
+    });
+    if (!data?.box0 || !data?.box1 || !data?.titleBox) return false;
+    const isColumn = Math.abs(data.box0.x - data.box1.x) <= 2 && data.box1.y > data.box0.y;
+    const noOverlap = (data.titleBox.x + data.titleBox.width) <= (data.box0.x + 1);
+    return isColumn && noOverlap;
+  }).toBe(true);
 });
 
 test("university detail category switching leaves one active pane", async ({ page }) => {

@@ -101,7 +101,7 @@ test("all available MIT overview descriptions have complete Russian and Kazakh t
   }
 });
 
-test("Stanford collected study overviews have source-bound summaries, originals and honest missing states", async () => {
+test("Stanford collected study overviews have source-bound summaries and honest missing states", async () => {
   const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
   const descriptions = new Set();
   let covered = 0;
@@ -125,9 +125,9 @@ test("Stanford collected study overviews have source-bound summaries, originals 
     const option = stanford.study_options.find(row => row.id === "stanford-option-cs-ms");
     const row = stanford.facts.find(row => row.id === "engineering-doerr-evidence:recheck-cs-ms-degree-completion-context");
     const html = renderStudyOptionOverview({ selected_option: option, facts: [row], fact_groups: { study: [row.id] } });
-    assert.match(html, /data-program-original/);
+    assert.doesNotMatch(html, /data-program-original/);
     assert.match(html, /data-award-explanation/);
-    assert.ok(html.includes("does not lead to the PhD"));
+    if (language === "eng") assert.ok(html.includes("does not lead to the PhD"));
     assert.match(renderStudyOptionOverview({ selected_option: option, facts: [], fact_groups: {} }), /data-program-overview-missing/);
     assert.equal(translateAdmissionSummary("Changed overview", { section: "study" }), "");
   }
@@ -183,13 +183,15 @@ test("accepted profile overviews extend Stanford reading without displaying cata
     const mba = stanford.study_options.find(row => row.id === "stanford-option-gsb-mba");
     const profile = mba.evidence_profiles[0];
     const html = renderStudyOptionOverview({ selected_option: { ...mba, overviews: [{ text: profile.attributes.description, source_ids: profile.source_ids }] }, facts: [], fact_groups: {}, sources: stanford.sources });
-    assert.match(html, /data-program-original/);
-    assert.ok([...html.matchAll(/\shref="([^"]*)"/g)].some(([, href]) => new URL(href, "https://example.edu").hostname === "www.gsb.stanford.edu"));
-    assert.ok(html.includes("Two-year, full-time MBA"));
+    assert.match(html, /data-program-overview-sources/);
+    assert.doesNotMatch(html, /data-program-original/);
+    const links = Array.from(html.matchAll(/\bhref="([^"]+)"/g), ([, href]) => new URL(href, "https://example.test"));
+    assert.ok(links.some(url => url.hostname === "www.gsb.stanford.edu"));
+    if (language === "eng") assert.ok(html.includes("Two-year, full-time MBA"));
   }
 });
 
-test("all sixteen completed Stanford overviews retain their original, exact official source and translations", async () => {
+test("all sixteen completed Stanford overviews retain their exact official source and translations", async () => {
   const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
   const completed = stanford.study_options.filter(option => option.evidence_profiles.some(profile => profile.attributes.catalog_access_description));
   assert.equal(completed.length, 16);
@@ -208,7 +210,9 @@ test("all sixteen completed Stanford overviews retain their original, exact offi
       if (language !== "eng") assert.match(summary, /[\u0400-\u04ff]/u);
       if (language === "kaz") assert.equal(fallback.admission_summaries[description].study, summary);
       const html = renderStudyOptionOverview({ selected_option: { ...original, overviews: [{ text: description, source_ids: profile.source_ids }] }, facts: [], fact_groups: {}, sources: stanford.sources });
-      assert.match(html, /data-program-original/);
+      assert.match(html, /data-program-overview-sources/);
+      assert.match(html, /source_and_date|Source and date|Источник и дата|Дереккөз және күні/);
+      assert.doesNotMatch(html, /data-program-original/);
       assert.doesNotMatch(html, /data-program-overview-missing|Bulletin flags|externalAdmissions/);
       assert.ok(html.includes(source.url));
     }
@@ -250,7 +254,7 @@ test("every Imperial option has a source-bound study overview in all three langu
         fact_groups: { study: facts.map(row => row.id) } };
       const html = renderStudyOptionOverview(resolved);
       assert.doesNotMatch(html, /data-program-overview-missing/, `${language}: ${option.id}`);
-      const description = html.match(/<p class="program-card__description">([^<]+)<\/p>/)?.[1];
+      const description = html.match(/<p class="program-card__description"><span[^>]*>([^<]+)<\/span>/)?.[1];
       assert.ok(description, `${language}: ${option.id}`);
       if (language !== "eng") {
         assert.match(description, /[\u0400-\u04ff]/u, `${language}: ${option.id}`);
@@ -260,7 +264,7 @@ test("every Imperial option has a source-bound study overview in all three langu
   }
 });
 
-test("structured Imperial curricula retain their original record, source links and option scope", async () => {
+test("structured Imperial curricula retain source links and option scope", async () => {
   const imperial = catalog.institutions.find(row => row.institution.id === "imperial-college-london-uk");
   const option = imperial.study_options.find(row => row.id === "imperial-option-full-time-mba");
   const facts = imperial.facts.filter(row => row.scope.option_ids.includes(option.id));
@@ -270,9 +274,10 @@ test("structured Imperial curricula retain their original record, source links a
     setLanguage(language, { emit: false });
     await initUniversityTranslations();
     const html = renderStudyOptionOverview(resolved);
-    assert.match(html, /data-program-original/);
-    assert.match(html, /Business Analytics/);
-    assert.ok([...html.matchAll(/\shref="([^"]*)"/g)].some(([, href]) => new URL(href, "https://example.edu").hostname === "www.imperial.ac.uk"));
+    assert.match(html, /data-program-overview-sources/);
+    assert.doesNotMatch(html, /data-program-original|Business Analytics/);
+    const links = Array.from(html.matchAll(/\bhref="([^"]+)"/g), ([, href]) => new URL(href, "https://example.test"));
+    assert.ok(links.some(url => url.hostname === "www.imperial.ac.uk"));
     assert.doesNotMatch(html, /&quot;study_periods_pathways_and_components&quot;/);
     assert.doesNotMatch(html, /Selector mode|Study periods pathways and components|Section label/);
     assert.match(html, /12 (?:months|месяцев|ай)/, `${language}: duration from the published key facts`);

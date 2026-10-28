@@ -1768,7 +1768,8 @@ def sort_universities_ai(
                 previous = (row.get("catalog_costs") or {}).get(basis) or {}
                 if projected_costs.get(basis) and previous.get("filter_match"):
                     projected_costs[basis]["filter_match"] = previous["filter_match"]
-            basis = "annual_total" if projected_costs.get("annual_total") else "tuition"
+            annual_total = projected_costs.get("annual_total")
+            basis = "annual_total" if annual_total and annual_total.get("calculation") != "tuition_plus_living_range" else "tuition"
             quote = projected_costs.get(basis)
             evidence = "unavailable"
             status = "not_set" if budget is None or budget <= 0 else "unknown_cost"

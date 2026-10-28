@@ -23,14 +23,11 @@ for (const item of [
     await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
     const card = page.locator('#universitiesList .uni-card[data-uni-id="mit-usa-cambridge"]');
     await expect(card).toBeVisible();
-    await expect(card.locator('[data-cost-basis="annual_total"]')).toContainText(/92[\s,\u00a0]?760/);
-    await expect(card.locator('[data-cost-basis="tuition"]')).toHaveCount(0);
-    const tooltip = card.locator('.uni-cost-tooltip [role="tooltip"]');
-    await expect(tooltip).toBeHidden();
-    await card.locator('.uni-cost-trigger').click();
-    await expect(tooltip).toBeVisible();
-    await expect(tooltip).toContainText(/2026[‑-]2027/);
-    await card.locator('.uni-cost-trigger').click();
+    await expect(card.locator(".uni-footer .uni-price")).toHaveAttribute("data-cost-basis", "annual_total");
+    await expect(card.locator(".uni-footer .uni-price")).toContainText(/92[\s,\u00a0]?760/);
+    await card.locator(".uni-cost-tooltip .uni-price").click();
+    await expect(card.locator(".uni-cost-tooltip__content")).toBeVisible();
+    await page.keyboard.press("Escape");
     await expect(page.locator("#costBasisSelect")).toHaveValue("annual_total");
     fs.mkdirSync(evidence, { recursive: true });
     await card.screenshot({ path: path.join(evidence, `${item.language}-${item.width}-card.png`) });
@@ -43,9 +40,8 @@ for (const item of [
     await setNativeSelect(page, "costBasisSelect", "tuition");
     if (item.width <= 1024) await page.locator("#mobileApplyFilters").click();
     await expect(card).toBeVisible();
-    await expect(card.locator(".uni-price")).toHaveAttribute("data-cost-basis", "tuition");
-    await expect(card.locator(".uni-price-val")).toContainText(/66[\s,\u00a0]?720/);
-    await expect(card.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
+    await expect(card.locator(".uni-footer .uni-price")).toHaveAttribute("data-cost-basis", "tuition");
+    await expect(card.locator(".uni-footer .uni-price")).toContainText(/66[\s,\u00a0]?720/);
     await expect(page).toHaveURL(/cost_basis=tuition/);
     await page.reload();
     await expect(card).toBeVisible();
@@ -54,29 +50,24 @@ for (const item of [
   });
 }
 
-test("Imperial tuition remains separate from an unavailable same-period full budget", async ({ page }) => {
+test("Imperial card shows the applicable tuition and living-cost range", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
     localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([{ key: "currency_display_mode", value: "original" }]));
   });
-  await page.goto("/index.html?q=Imperial&cost_basis=tuition");
+  await page.goto("/index.html?q=Imperial");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const card = page.locator('#universitiesList .uni-card[data-uni-id="imperial-college-london-uk"]');
   await expect(card).toBeVisible();
-  await expect(card.locator('[data-cost-basis="tuition"]')).toContainText(/10[\s,]?050/);
-  await expect(card.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
-  await card.locator('.uni-cost-trigger').click();
-  await expect(card.locator('.uni-cost-tooltip [role="tooltip"]')).toContainText("Home fee");
-  await expect(card.locator('.uni-cost-tooltip [role="tooltip"]')).toContainText("Overseas fee");
-  await page.goto("/index.html?q=Imperial&cost_basis=annual_total");
-  await expect(card.locator('.uni-price-val')).toHaveText("Price unavailable");
-  await card.locator('.uni-cost-trigger').click();
-  await expect(card.locator('.uni-cost-tooltip [role="tooltip"]')).toContainText("No comparable full budget");
+  await expect(card.locator(".uni-footer .uni-price")).toHaveAttribute("data-cost-basis", "annual_total");
+  await expect(card.locator(".uni-footer .uni-price")).toContainText(/26[\s,]?442/);
+  await expect(card.locator(".uni-footer .uni-price")).toContainText(/64[\s,]?842/);
+  await card.locator(".uni-cost-tooltip .uni-price").click();
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("not an average");
   await page.goto("/index.html?q=Imperial&max_tuition=90000&cost_basis=annual_total");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
-  await expect(page.locator(".u-state-card--empty")).toBeVisible();
-  await expect(card).toHaveCount(0);
+  await expect(card).toBeVisible();
 });
 
 test("catalog price cards respect the declared fee category and label a dated reference", async ({ page }) => {
@@ -124,9 +115,10 @@ test.describe("compact dual-currency price", () => {
     await page.goto("/index.html?q=MIT&cost_basis=tuition");
     await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
     const card = page.locator('#universitiesList .uni-card[data-uni-id="mit-usa-cambridge"]');
-    const price = card.locator('.uni-price--catalog');
-    const trigger = price.locator('.uni-cost-trigger');
-    const tooltip = price.locator('[role="tooltip"]');
+    const priceGroup = card.locator('.uni-footer .uni-cost-tooltip');
+    const price = priceGroup.locator('.uni-price');
+    const trigger = price;
+    const tooltip = priceGroup.locator('[role="tooltip"]');
     await expect(price).toHaveAttribute('data-cost-basis', 'tuition');
     await expect(price.locator('.uni-price-val')).toContainText('₸');
     await expect(price.locator('.uni-cost-secondary')).toHaveText('($66,720)');
@@ -168,7 +160,7 @@ test.describe("mobile price filter help", () => {
     const fullHelp = details.locator("p");
     await page.locator("#mobileFilterToggle").click();
     await expect(summary).toBeVisible();
-    await expect(summary).toContainText("Ценовой предел скрывает вузы без цены");
+    await expect(summary).toContainText("Ценовой фильтр скрывает неизвестные цены");
     await expect(fullHelp).toBeHidden();
     await summary.tap();
     await expect(fullHelp).toBeVisible();

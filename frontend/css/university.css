@@ -4303,6 +4303,10 @@ body[data-page="university"],
   margin-top: 0;
 }
 
+#tab-general #detailRecommendations .d-kv + .d-kv {
+  border-top: 1px solid var(--line-faint);
+}
+
 :root[data-theme="dark"] #tab-general .d-box + .d-box {
   border-top: none;
 }
@@ -6404,13 +6408,13 @@ body[data-page="university"],
 }
 
 #tab-programs .program-card-rows {
-  gap: 0;
+  gap: var(--space-3);
 }
 
 #tab-programs .program-card-row {
   justify-content: flex-start;
-  padding: var(--space-2) 0;
-  border-top: 1px solid var(--line-faint);
+  padding: 0;
+  border-top: 0;
 }
 
 #tab-programs .program-card-value {
@@ -6419,15 +6423,6 @@ body[data-page="university"],
 
 #tab-programs .program-card-tags {
   justify-content: flex-start;
-}
-
-#tab-programs .program-card-row:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-#tab-programs .program-card-row:last-child {
-  padding-bottom: 0;
 }
 
 .program-signal {
@@ -6496,6 +6491,10 @@ body[data-page="university"],
 .program-search:focus-within {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+.program-search:focus-within .program-search__input:focus-visible {
+  outline: none;
 }
 
 .program-search__icon {
@@ -6597,38 +6596,6 @@ body[data-page="university"],
   display: none;
 }
 
-@keyframes program-body-enter {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes program-body-exit {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-}
-
-.program-card__body--enter {
-  animation: program-body-enter var(--motion-fast) var(--motion-ease-standard);
-}
-
-.program-card__body--exit {
-  animation: program-body-exit var(--motion-fast) var(--motion-ease-standard) forwards;
-}
-
 @media (max-width: 768px) {
   .program-card__toggle {
     padding: var(--space-3);
@@ -6651,10 +6618,6 @@ body[data-page="university"],
     transition: none;
   }
 
-  .program-card__body--enter,
-  .program-card__body--exit {
-    animation: none;
-  }
 }
 
 

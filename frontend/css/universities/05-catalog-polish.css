@@ -533,11 +533,41 @@
   align-items: flex-start;
 }
 
+.uni-cost-tooltip {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.uni-cost-tooltip .uni-price {
+  width: 100%;
+  text-align: left;
+}
+
+.uni-cost-tooltip__icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  align-self: center;
+  color: var(--text-muted);
+}
+
 .uni-price-line {
   display: inline-flex;
   align-items: baseline;
   gap: var(--space-1);
   min-width: 0;
+}
+
+.uni-price--with-conversion {
+  display: grid;
+  gap: var(--space-0-5);
+}
+
+.uni-cost-secondary {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  overflow-wrap: anywhere;
 }
 
 .uni-price-val {

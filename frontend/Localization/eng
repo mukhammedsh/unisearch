@@ -426,20 +426,28 @@ universities.cost.tuition_scope_note: Living and other costs are additional.
 universities.cost.entry: {year} entry
 universities.cost.unavailable: Check the program
 universities.cost.full_budget_unavailable: No comparable full budget
-universities.cost.reference: Reference price · before aid
-universities.cost.before_aid: Before financial aid
-universities.cost.fee_scope: Varies by program and fee category
-universities.cost.exclusion.insurance: Insurance extra
-universities.cost.exclusion.travel: Travel extra
-universities.cost.exclusion.one_time_fees: One-time fees extra
-universities.cost.filter_help_summary: Price limits hide unknown prices; profile budget affects UniFit.
-universities.cost.filter_help: Prices are before financial aid. A range may only partly match; confirm the program and fee category. University details show the full breakdown and sources.
+universities.cost.reference: Published reference, before aid.
+universities.cost.legacy_server_warning: The API is still running an older version. Showing reference prices until it restarts.
+universities.cost.before_aid: Before scholarships or financial aid.
+universities.cost.fee_scope: Range varies by program and Home/Overseas fee category.
+universities.cost.exclusion.insurance: Insurance is additional.
+universities.cost.exclusion.travel: Travel is additional.
+universities.cost.exclusion.one_time_fees: One-time fees are additional.
+universities.cost.filter_help: Before aid. A range may partly match: check the program and fee category. Unknown prices are excluded when a price limit is active.
+universities.cost.filter_help_summary: Price limits hide unknown prices; your profile budget affects UniFit.
 universities.cost.dated_reference: Dated reference; cycle unconfirmed
 universities.cost.cycle_unconfirmed: Cycle unconfirmed
-universities.cost.cycle_unspecified: Cycle not stated
+universities.cost.cycle_unspecified: Cycle not specified
 universities.cost.fee_status_unknown: Fee category unconfirmed
 universities.cost.filter_partial: Partial price match
-universities.cost.fee_categories: Published fee category: {categories}.
+universities.cost.tooltip_open: Explain this price
+universities.cost.tooltip_title: How this price works
+universities.cost.tooltip_range: These are the lowest and highest known prices matching the current selection, not an average. The amount can vary by program and fee category.
+universities.cost.tooltip_living_range: The endpoints add the published living-cost range to known tuition prices; they are not an average. The living estimate may come from a different year.
+universities.cost.tooltip_single: This is one known yearly price for the current selection. Confirm the program, fee category and year.
+universities.cost.tooltip_filter_variants: The price filter checks each known option. A university appears if at least one option overlaps your limits, even when the displayed range extends beyond them. Prices between the endpoints are not necessarily offered.
+universities.cost.tooltip_filter_reference: A broad reference range may overlap your limits without identifying a matching program. Confirm its price with the university.
+universities.cost.tooltip_living_year: Living-cost estimate: {year}.
 universities.country: Country
 universities.filter: Filter
 universities.filter.all: All
@@ -1385,6 +1393,7 @@ university.programs.no_results: No programs match this search.
 university.programs.major_badge: Your major
 university.programs.field.degree_titles: Awarded degree
 university.programs.field.degree_type: Degree type
+university.programs.field.subjects: Subjects
 university.programs.field.course_number: Course number
 university.programs.field.description: Description
 university.programs.field.faculty: Faculty
@@ -2459,9 +2468,14 @@ university.admissions.catalog.advanced_options: Filter published records (option
 university.admissions.catalog.advanced_note: These optional filters narrow source records by published applicant group, entry cycle or fee category. Leave them unspecified to browse all records for this program and path.
 university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
 university.admissions.catalog.open_application: Open application page
+university.admissions.catalog.select_program: Select program
 university.admissions.catalog.view_requirements: View admission requirements
+university.admissions.catalog.requirements_tab_hint: Admission requirements: see the Admission tab.
 university.admissions.catalog.study_info: About the program
-university.admissions.catalog.study_info_note: Full program information stays in the official source language. Admission requirements are shown separately.
+university.admissions.catalog.program_detail.study: Study details
+university.admissions.catalog.program_detail.fees: Published course fees
+university.admissions.catalog.program_detail.degree_policies: Degree requirements and policies
+university.admissions.catalog.program_detail.curriculum: Curriculum and pathways
 university.admissions.catalog.source_note_simple: Official source text is shown in its original language.
 university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
 university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
@@ -2501,7 +2515,7 @@ university.admissions.catalog.fee.unknown: Not determined
 university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (self-reported)
 university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (self-reported)
 university.admissions.catalog.fee.other: Other / requires clarification
-university.admissions.catalog.apply_context: Apply context
+university.admissions.catalog.apply_context: Apply filters
 university.admissions.catalog.legacy_pending: Your previous program selection has not been mapped to this reviewed catalog. Choose the study option again; your saved profile is preserved.
 university.admissions.catalog.incompatible_context: These selections do not match a linked program, route or study level. Change the context; no university-wide requirements have been substituted.
 university.admissions.catalog.loading: Loading reviewed information
@@ -2526,22 +2540,13 @@ university.admissions.catalog.admission_title: Requirements and published applic
 university.admissions.catalog.finance_intro: Published prices and funding for the selected program and path, with their original periods, currencies and conditions.
 university.admissions.catalog.deadlines_title: Dates and deadlines
 university.admissions.catalog.deadlines_intro: Browse application, funding, reply and deposit dates for the selected program and path. Each record keeps its stated period and official source.
-university.admissions.catalog.route_intro: Choose a published application path to browse its requirements and process. You can read this information without a profile.
+university.admissions.catalog.route_intro: Choose a published path to open its requirements and process. No profile is needed.
 university.admissions.catalog.reference_scope: Browsing
 university.admissions.catalog.route_not_selected: Choose a published application path
 university.admissions.catalog.browse_programs: Browse programs
 university.admissions.catalog.change_program: Change program
 university.admissions.catalog.change_route: Change path
-university.admissions.catalog.reference_filters: Applicant, entry year and fee status (optional)
-university.admissions.reading.edit_selection: Edit selection
-university.admissions.reading.exclusion.insurance: Insurance is additional; check the required coverage and waiver conditions.
-university.admissions.reading.exclusion.travel: Travel is additional and varies by applicant.
-university.admissions.reading.exclusion.one_time_fees: One-time charges are additional; check the source for the applicable new-student fees.
-university.admissions.reading.special_routes: Current Stanford students and joint degrees ({count})
-university.admissions.reading.cost_scope: Prices apply only to the program or application route, fee category and period stated in each source. Tuition is one part of the budget; living costs, required fees and one-time charges may be separate. Open the full records for itemized source wording and conditions.
-university.admissions.reading.degree.BEng: BEng — Bachelor of Engineering
-university.admissions.reading.degree.MEng: MEng — Master of Engineering
-university.admissions.reading.degree.MEng_integrated: MEng — integrated Master of Engineering, undergraduate entry
+university.admissions.catalog.reference_filters: Refine context (optional)
 university.admissions.catalog.reference_filter_note: These filters narrow source records by their published scope. Leave them unspecified to browse all records for this program and path.
 university.admissions.catalog.selected_route: Selected path
 university.admissions.catalog.application_shape: How this program is entered
@@ -2741,6 +2746,12 @@ university.admissions.reading.food_estimate: Food estimate
 university.admissions.reading.materials_estimate: Study materials
 university.admissions.reading.personal_estimate: Personal expenses
 university.admissions.reading.insurance_extra: Insurance and other limits:
+university.admissions.reading.cost_scope: Costs keep their published program, applicant category and period.
+university.admissions.reading.tuition_budget_note: Tuition is one part of the budget; living and other costs are additional.
+university.admissions.reading.exclusion.insurance: Insurance is additional.
+university.admissions.reading.exclusion.one_time_fees: One-time charges are additional.
+university.admissions.reading.degree.MEng: Master of Engineering
+university.admissions.reading.degree.MEng_ucas_note: This is an undergraduate entry route that leads to the Master of Engineering award.
 university.admissions.reading.potential_aid: Potential funding is not awarded aid. Eligibility, documents and deadlines are separate; no award is subtracted from published costs.
 university.admissions.reading.no_budget: No comparable budget is confirmed for this selection. Published amounts below keep their own period, currency and conditions.
 university.admissions.reading.full_records: Full source records and conditions
@@ -2850,7 +2861,12 @@ universities.cost.budget_tuition_only: Tuition only; living and other costs extr
 universities.compare.clear_program: Clear study option
 universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.
 university.admissions.reading.summary_translation_missing: A summary translation is not available yet. Read the original below.
-university.admissions.reading.original_description: Original program description (English)
+university.admissions.reading.source_short: Source
+university.admissions.reading.original_and_date: Original text and date
+university.admissions.reading.source_and_date: Source and date
+university.admissions.reading.source_details: Source details
+university.admissions.reading.official_sources_count: Official sources ({count})
+university.admissions.reading.original_and_sources_count: Original text and sources ({count})
 university.admissions.reading.reference_scope_note: Full records retain the official source language. Each record includes its conditions, period and applicability.
 university.admissions.reading.current_policy: Published policy; entry year not specified
 university.admissions.reading.yearless_period: Recurring dates; entry year not specified
@@ -3139,3 +3155,4 @@ university.admissions.catalog.route_name.mit-mas-phd-progression: Media Arts and
 university.admissions.catalog.route_name.mit-idps-internal-selection: IDPS selection for participating MIT PhD students
 university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Joint Department–Computational Science and Engineering PhD application
 university.admissions.catalog.route_name.mit-economics-sm-special-approval: Economics special SM approval for current MIT students
+university.admissions.reading.special_routes: Current Stanford students and joint degrees ({count})

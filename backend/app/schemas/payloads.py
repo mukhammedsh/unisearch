@@ -325,6 +325,13 @@ class UniversitiesAiSortRequest(BaseModel):
     def _normalize_optional_text(cls, value: Any) -> Optional[str]:
         return _strip_or_none(value)
 
+
+class ProfiledUniversitiesRequest(UniversitiesAiSortRequest):
+    sort: Literal["name_asc", "tuition_asc", "tuition_desc", "acceptance_asc", "acceptance_desc",
+                  "rank_asc", "rank_desc", "gpa_desc", "relevance"] = "name_asc"
+    fields: Literal["card", "full", "map"] = "card"
+    user_budget: Optional[float] = Field(default=None, ge=0, le=1_000_000)
+
 class ProfileOnlyRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 

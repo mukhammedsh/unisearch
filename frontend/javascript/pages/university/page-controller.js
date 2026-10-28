@@ -430,6 +430,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   const renderProgramsTab = () => {
     const profile = getAdmissionContextProfile(university, loadProfile() || {});
     const selectedProgram = resolveProgramForProfile(university, universityId, profile, { allowPartial: true });
+    const selectedChoice = profile.selectedAdmissionChoices?.[universityId] || {};
     const coverageProgram = resolveProgramForProfile(university, universityId, profile);
     renderProgramsSection({
       admissionsData,
@@ -437,11 +438,11 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       university,
       profileMajor: String(profile.major || "").trim(),
       coverageProgram,
+      selectedProgram: selectedChoice.programId || selectedChoice.programName ? selectedProgram : null,
       onProgramAdmissionSelected: (program) => {
         selectAdmissionProgram(university, program);
-        void refreshAdmissionContext();
-        document.querySelector('.d-tab-btn[data-tab="tab-admission"]')?.click();
-        document.querySelector(".d-tabs")?.scrollIntoView({ block: "start" });
+        renderProgramsTab();
+        void refreshAdmissionContext({ skipPrograms: true });
       },
     });
     renderQualificationGuidance({
@@ -492,14 +493,14 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   };
   renderFinanceTab();
 
-  refreshAdmissionContext = async () => {
+  refreshAdmissionContext = async ({ skipPrograms = false } = {}) => {
     const revision = ++contextRevision;
     profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
     await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
     if (revision !== contextRevision) return;
     renderAdmissionTab();
     renderDeadlinesTab();
-    renderProgramsTab();
+    if (!skipPrograms) renderProgramsTab();
     renderFinanceTab();
   };
   detailProfileUpdatedHandler = refreshAdmissionContext;

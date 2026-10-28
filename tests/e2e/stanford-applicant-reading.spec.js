@@ -63,13 +63,15 @@ async function program(page, id, search = "Computer Science") {
   await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   await option.click();
+  await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await ready(page);
   await expect(option).toHaveAttribute("aria-expanded", "true");
 }
 
 async function route(page, value) {
-  await page.locator("#admissionsViewRequirements").click();
-  if (await selectAdmissionRoute(page, value)) await page.locator("#admissionsContextApply").click();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await select(page, "admissionsRoute", value);
   await ready(page);
 }
 
@@ -100,9 +102,12 @@ for (const item of presentations) {
     await program(page, "stanford-option-cs-bs", search);
     await expect(page.locator("[data-award-explanation]")).toContainText("BS");
     await expect(page.locator("#admissionsStudyOverview > .program-card__description")).not.toBeEmpty();
-    await page.locator("[data-program-original] > summary").click();
-    await expect(page.locator("[data-program-original] p")).toContainText("artificial intelligence");
-    await page.locator("[data-program-original] > summary").click();
+    const programSources = page.locator("#admissionsStudySources .admissions-programs__references");
+    await programSources.locator(":scope > summary").click();
+    await expect(programSources.locator("a")).not.toHaveCount(0);
+    await expect(programSources.locator(".admissions-catalog__meta").first()).toBeVisible();
+    await expect(programSources.locator("[data-program-overview-sources] p")).toHaveCount(0);
+    await programSources.locator(":scope > summary").click();
     await route(page, "undergraduate-shared-evidence:stanford-first-year");
     await expect(page.locator('[data-source-summary="requirements"]')).toContainText("SAT");
     await expect(page.locator('[data-source-summary="requirements"]')).toContainText("ACT");
@@ -162,10 +167,11 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
     await program(page, entry.option, entry.search);
     if (["MBA", "MD"].includes(entry.kind)) {
       await expect(page.locator("#admissionsStudyOverview > .program-card__description")).not.toBeEmpty();
-      await page.locator("[data-program-original] > summary").click();
-      await expect(page.locator("[data-program-original] p")).toContainText(entry.kind === "MBA" ? "Two-year" : "Discovery Curriculum");
-      await expect(page.locator("[data-program-original] a")).not.toHaveCount(0);
-      await page.locator("[data-program-original] > summary").click();
+      const programSources = page.locator("#admissionsStudySources .admissions-programs__references");
+      await programSources.locator(":scope > summary").click();
+      await expect(programSources.locator("a")).not.toHaveCount(0);
+      await expect(programSources.locator("[data-program-overview-sources] p")).toHaveCount(0);
+      await programSources.locator(":scope > summary").click();
     }
     await route(page, entry.route);
     const requirements = page.locator('[data-source-summary="requirements"]');
@@ -276,9 +282,10 @@ test("Stanford retries failures and keeps selection through an empty search", as
   await page.locator("#admissionsSearchSubmit").click();
   expect((await searchResponse).ok()).toBe(true);
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
-  await page.locator('[data-study-option="stanford-option-cs-ms"]').click();
+  await page.locator('[data-select-study-option="stanford-option-cs-ms"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
-  await page.locator('#admissionsStudyInfo [data-admissions-retry="context"]').click();
+  await page.locator('[data-study-option="stanford-option-cs-ms"]').click();
+  await page.locator('#admissionsStudyOverview [data-admissions-retry="context"]').click();
   await ready(page);
   await route(page, "directory-evidence:stanford-graduate-cs-ms");
   await tab(page, "programs");
@@ -325,9 +332,9 @@ test("Stanford ignores an older response after Back and retains keyboard focus",
 });
 
 for (const [index, entry] of [
-  { option: "stanford-option-econ-ba", search: "Economics", original: /macroeconomic|microeconomic/ },
-  { option: "stanford-option-arths-ma", search: "Art History", original: /only to doctoral students/ },
-  { option: "stanford-option-ed-ma-cte", search: "Curriculum and Teacher Education", original: /no admission intake for2027[-‑]28/ },
+  { option: "stanford-option-econ-ba", search: "Economics" },
+  { option: "stanford-option-arths-ma", search: "Art History" },
+  { option: "stanford-option-ed-ma-cte", search: "Curriculum and Teacher Education" },
 ].entries()) {
   test(`Stanford sourced overview preserves the distinct ${entry.option} scope`, async ({ page }) => {
     await prepare(page, presentations[index]);
@@ -335,8 +342,11 @@ for (const [index, entry] of [
     await ready(page);
     await program(page, entry.option, entry.search);
     await expect(page.locator("#admissionsStudyOverview > .program-card__description")).not.toBeEmpty();
-    await page.locator("[data-program-original] > summary").click();
-    await expect(page.locator("[data-program-original] p")).toContainText(entry.original);
+    const programSources = page.locator("#admissionsStudySources .admissions-programs__references");
+    await programSources.locator(":scope > summary").click();
+    await expect(programSources.locator("a")).not.toHaveCount(0);
+    await expect(programSources.locator("[data-program-overview-sources] p")).toHaveCount(0);
+    await expect(page.locator("#admissionsRoute")).toHaveValue("");
     await expect(page.locator("#admissionsStudyOverview")).not.toContainText(/Bulletin flags|externalAdmissions/);
     await screenshot(page, `overview-${entry.option}-${presentations[index].language}`, "#admissionsStudyOverview");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(presentations[index].width);
@@ -413,7 +423,7 @@ const completedMedicalOverviews = [
 ];
 
 for (const [languageIndex, language] of ["eng", "rus", "kaz"].entries()) {
-  test(`Stanford all sixteen completed medical overviews are readable with originals in ${language}`, async ({ page }) => {
+  test(`Stanford all sixteen completed medical overviews are readable with sources in ${language}`, async ({ page }) => {
     test.setTimeout(180000);
     await prepare(page, { language, width: 1280, theme: language === "rus" ? "dark" : "light" });
     await page.goto(`/university.html?id=${university}`);
@@ -437,21 +447,19 @@ for (const [languageIndex, language] of ["eng", "rus", "kaz"].entries()) {
         await expect(summary).toContainText(/23:59:59|11:59:59/);
         await screenshot(page, `completed-overview-${language}-${width}-structural-biology`, "#admissionsStudyOverview");
       }
-      const original = overview.locator("[data-program-original]");
-      await expect(original.locator("p")).toBeHidden();
-      await original.locator(":scope > summary").click();
-      await expect(original.locator("p")).toBeVisible();
-      const official = original.locator('a[href^="https://bulletin.stanford.edu/programs/"]');
+      const programSources = page.locator("#admissionsStudySources .admissions-programs__references");
+      await programSources.locator(":scope > summary").click();
+      await expect(programSources.locator("[data-program-overview-sources] p")).toHaveCount(0);
+      const official = page.locator('#admissionsStudySources a[href^="https://bulletin.stanford.edu/programs/"]');
       await expect(official).not.toHaveCount(0);
       await expect(official.first()).toBeVisible();
       if (suffix === "sbio-phd") {
-        await expect(original).toContainText("December 15");
-        await expect(original).toContainText("GRE general score is optional");
-        await expect(original.locator('a[href="https://med.stanford.edu/structuralbio/education/application.html"]')).toBeVisible();
+        await expect(summary).toContainText("GRE");
+        await expect(page.locator('#admissionsStudySources a[href="https://med.stanford.edu/structuralbio/education/application.html"]').first()).toBeVisible();
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       await expectNoStackedGapMargins(page, "#admissionsStudyOverview");
-      await original.locator(":scope > summary").click();
+      await programSources.locator(":scope > summary").click();
     }
     await page.reload();
     await ready(page);

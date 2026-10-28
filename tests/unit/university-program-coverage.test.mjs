@@ -17,6 +17,7 @@ await initI18n();
 
 const admissionsCatalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
 const acceptedInstitutions = Object.fromEntries(admissionsCatalog.institutions.map(row => [row.institution.id, row]));
+const universitiesCatalog = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
 
 function acceptedContext(institutionId, optionId, routeId, factIds) {
   const institution = acceptedInstitutions[institutionId];
@@ -695,9 +696,32 @@ test("renderProgramsSection formats program details, level filter, search filter
   });
 
   assert.ok(container.innerHTML.includes("MSc in Computer Science"));
-  assert.ok(container.innerHTML.includes("Your major"));
+  assert.match(container.innerHTML, /<form class="admissions-programs__toolbar admissions-programs__toolbar--catalog" data-program-search-form>/);
+  assert.match(container.innerHTML, /<label for="program-search-input">Study option or subject<\/label>/);
+  assert.match(container.innerHTML, /data-program-search-submit/);
+  assert.ok(container.innerHTML.includes("Advanced study of computer science principles."));
+  assert.ok(container.innerHTML.includes("Software"));
+  const essentials = container.innerHTML.match(/<dl class="program-card-rows admissions-programs__essentials">([\s\S]*?)<\/dl>/)?.[1];
+  assert.ok(essentials);
+  assert.doesNotMatch(essentials, /program-tag|program-pill/);
+  assert.match(essentials, /<dd class="program-card-value">/);
   assert.ok(container.innerHTML.includes("35 000") || container.innerHTML.includes("35,000") || container.innerHTML.includes("USD"));
   assert.ok(container.innerHTML.includes("15%"));
+});
+
+test("every other catalog university renders selectable cards from its stored programs", () => {
+  const reviewed = new Set(["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]);
+  const institutions = universitiesCatalog.filter((university) => !reviewed.has(university.id));
+  assert.equal(institutions.length, 47);
+  for (const university of institutions) {
+    const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+    renderProgramsSection({ admissionsData: {}, container, university });
+    const count = (container.innerHTML.match(/<article class="program-card/g) || []).length;
+    assert.ok(count > 0 && count <= university.academics.programs.length, university.id);
+    assert.equal((container.innerHTML.match(/data-program-admission=/g) || []).length, count, university.id);
+    assert.ok(container.innerHTML.includes("Subjects"), university.id);
+    assert.doesNotMatch(container.innerHTML, /A detailed summary is not yet catalogued/, university.id);
+  }
 });
 
 test("renderProgramsSection with no programs fallback renders majors list", () => {
@@ -1053,6 +1077,21 @@ test("renderProgramsSection validates official program URLs and does not render 
 
   assert.doesNotMatch(container.innerHTML, /href="javascript:/i);
   assert.doesNotMatch(container.innerHTML, /Catalog Url/);
+});
+
+test("a general source URL keeps its general source label", () => {
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderProgramsSection({
+    admissionsData: {},
+    container,
+    university: {
+      id: "source-label-test",
+      academics: { programs: [{ name: "Computer Science", source_url: "https://example.edu/admissions" }] },
+    },
+  });
+
+  assert.match(container.innerHTML, /href="https:\/\/example\.edu\/admissions"[^>]*>Official source/);
+  assert.doesNotMatch(container.innerHTML, /Official program page/);
 });
 
 test("renderProgramsSection residual signal rows and program-level filters", () => {

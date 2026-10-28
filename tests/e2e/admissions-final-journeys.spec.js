@@ -18,9 +18,7 @@ async function preparePage(page, { mobile = false, profile = null } = {}) {
 }
 
 async function openAdmission(page) {
-  const viewRequirements = page.locator("#admissionsViewRequirements");
-  if (await viewRequirements.isVisible()) await viewRequirements.click();
-  else if (!(await page.locator("#tab-admission").evaluate((node) => node.classList.contains("active")))) await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  if (!(await page.locator("#tab-admission").evaluate((node) => node.classList.contains("active")))) await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
 }
@@ -40,6 +38,7 @@ async function selectRoute(page, route) {
   const wrapper = page.locator("#admissionsRoute").locator("xpath=..");
   await wrapper.locator(".custom-select-trigger").click();
   await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(route);
 }
 
@@ -62,11 +61,11 @@ async function chooseOption(page, optionId, search, level) {
   const title = await option.locator(".admissions-programs__option-title").innerText();
   await option.click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(option.locator("xpath=..").locator(".program-card__body")).toBeVisible();
+  await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
-  await expect(page.locator("#admissionsViewRequirements")).toBeEnabled();
-  if (await page.locator("select#admissionsRoute").count()) await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  else await expect(page.locator("#admissionsRoute")).not.toHaveValue("");
+  await expect(page.locator("#admissionsViewRequirements")).toHaveCount(0);
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
 }
 
 async function applyContext(page, route, applicant, cycle) {
@@ -227,8 +226,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-course-6-9p-meng", "Course 6-9P", "masters");
   await openAdmission(page);
-  await expect(page.locator("#admissionsRoute")).toHaveValue("mit_bcs_meng_admissions");
-  await expect(page.locator("#admissionsContext .admissions-route-name")).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
+  await expect(page.locator('#admissionsRoute option[value="mit_bcs_meng_admissions"]')).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
   const result = await applyContext(page, "mit_bcs_meng_admissions", "graduate", "");
   expect(result.assessment.chancePercent).toBe(100);
   const checks = Object.fromEntries(result.assessment.activeChoice.details.checks.filter((check) => check.checkId).map((check) => [check.checkId, check]));

@@ -2,7 +2,7 @@ import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { getExamDisplayName } from "../../utils/config.js";
-import { translateAdmissionSummary, translateProgramName } from "../../university-translations.js";
+import { translateAdmissionSummary, translateAdmissionText, translateFactSource, translateProgramName } from "../../university-translations.js";
 import { localizeDuration, trProgramLanguage, trStudyMode } from "../_shared.js";
 
 const PREFIX = "university.admissions.catalog.";
@@ -80,6 +80,10 @@ export const ADMISSIONS_RENDER_LABELS = {
   no: "No",
   detail: "Source detail",
   source_scope_details: "Source and conditions",
+  "program_detail.study": "Study details",
+  "program_detail.fees": "Published course fees",
+  "program_detail.degree_policies": "Degree requirements and policies",
+  "program_detail.curriculum": "Curriculum and pathways",
   full_source_record: "Full source record",
   full_source_text: "Full published wording",
   published_qualification_table: "Published qualification tables",
@@ -193,7 +197,8 @@ export function admissionsRouteName(route, { presentation } = {}) {
     const key = `route_class.${route.classification}`;
     return t(`${PREFIX}${key}`) || (ADMISSIONS_RENDER_LABELS[key] ? label(key) : String(route.classification).replaceAll("_", " "));
   }
-  return route?.title || route?.target || route?.classification || route?.destination || label("route_label");
+  const name = route?.title || route?.target || route?.classification || route?.destination || label("route_label");
+  return name;
 }
 
 const DOMAINS = ["institution", "study", "degree_completion", "requirements", "application", "offer_enrollment", "deadlines", "costs", "funding", "career", "student_support", "other"];
@@ -273,7 +278,8 @@ function safeUrl(value) {
 
 function sourceLink(url, title = label("source")) {
   const safe = safeUrl(url);
-  return safe ? `<a href="${escapeHtmlAttr(safe)}" target="_blank" rel="noopener noreferrer">${escapeHtml(title)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16 admissions-catalog__source-icon")}</a>` : "";
+  const localizedTitle = translateFactSource(title, title);
+  return safe ? `<a href="${escapeHtmlAttr(safe)}" target="_blank" rel="noopener noreferrer">${escapeHtml(localizedTitle)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16 admissions-catalog__source-icon")}</a>` : "";
 }
 
 function internalField(key) {
@@ -307,11 +313,11 @@ function scalar(value, referenceLabels = {}) {
   if (ADMISSIONS_RENDER_LABELS[`kind.${text}`]) return escapeHtml(label(`kind.${text}`));
   if (/^(?:TOEFL|GMAT|IELTS|DUOLINGO|CAMBRIDGE)_/.test(text)) return escapeHtml(getExamDisplayName(text));
   if (/^https?:\/\//i.test(text)) return sourceLink(text);
-  return escapeHtml(text);
+  return escapeHtml(translateAdmissionSummary(text) || translateAdmissionText(text, text));
 }
 
 export function admissionDeadlineTitle(event) {
-  if (!event.kind) return event.title;
+  if (!event.kind) return translateAdmissionText(event.title, event.title);
   const kind = t(`university.deadlines.kind.${event.kind}`);
   const round = event.name?.match(/^Round (\d+)$/);
   const name = round ? tFormat("university.deadlines.round", { number: round[1] })
@@ -336,19 +342,6 @@ export function renderAdmissionsValue(value, referenceLabels = {}) {
   return scalar(value, referenceLabels);
 }
 
-function renderStudyCurriculum(value, referenceLabels) {
-  const sections = value.study_periods_pathways_and_components.map(panel => {
-    const selector = panel.selector_mode && panel.selector_mode.toLowerCase() !== "default" ? ` (${panel.selector_mode})` : "";
-    const groups = (panel.published_component_groups || []).flatMap(group => group.heading && group.components?.length
-      ? { [group.heading]: group.components } : group.heading || group.components).filter(Boolean);
-    const content = [...(panel.published_requirement_or_structure_notes || []),
-      ...(groups.length ? groups : panel.published_component_names || [])];
-    return `<section class="admissions-programs__overview"><strong>${escapeHtml(panel.section_label + selector)}</strong>${renderAdmissionsValue(content, referenceLabels)}</section>`;
-  });
-  if (value.teaching_and_assessment_methods?.length) sections.push(renderAdmissionsValue({ teaching_and_assessment_methods: value.teaching_and_assessment_methods }, referenceLabels));
-  return sections.join("");
-}
-
 function reviewedStudyRows(resolved) {
   const option = resolved?.selected_option;
   if (!option) return [];
@@ -359,37 +352,95 @@ function reviewedStudyRows(resolved) {
     && !row.scope.route_ids?.length && row.value && typeof row.value === "object");
 }
 
+function studyDescriptionEntry(row) {
+  if (!row) return null;
+  const keys = ["description", "course_overview", "course_page_programme_summary", "A3i6E", ...(row.topic === "study_content" ? ["source_content"] : [])];
+  return keys.map(key => [key, row.value[key]]).find(([, value]) => typeof value === "string" && value.trim()) || null;
+}
+
+function studyDescriptionRow(resolved) {
+  return reviewedStudyRows(resolved).find(studyDescriptionEntry);
+}
+
+const STUDY_FIELD_FORMATTERS = { duration: localizeDuration, mode: trStudyMode, language: trProgramLanguage, start_date: admissionsCycleLabel };
+const STUDY_FIELD_KEYS = { duration: "duration", mode: "mode", language: "language", location: "location", department: "department", start_date: "start_date",
+  Duration: "duration", "Study mode": "mode", Language: "language", Location: "location", "Delivered by": "department", "Start date": "start_date" };
+
+function displayedStudyValue(key, value) {
+  if (typeof value !== "string" && !(Array.isArray(value) && value.every(item => typeof item === "string"))) return "";
+  const entries = (Array.isArray(value) ? value : [value]).filter(item => !["not_stated", "not_specified", "unknown", "unconfirmed"].includes(item.trim().toLowerCase().replace(/[\s-]+/g, "_")));
+  return entries.map(item => STUDY_FIELD_FORMATTERS[key]
+    ? STUDY_FIELD_FORMATTERS[key](item) : translateAdmissionSummary(item) || item).join(", ");
+}
+
+export function studyOverviewCoverage(resolved) {
+  const row = studyDescriptionRow(resolved);
+  if (!row) return null;
+  const essentials = new Map(studyOptionEssentials(resolved));
+  const valueKeys = [studyDescriptionEntry(row)[0], ...Object.entries(row.value)
+    .filter(([key, value]) => STUDY_FIELD_KEYS[key] && displayedStudyValue(STUDY_FIELD_KEYS[key], value) === essentials.get(STUDY_FIELD_KEYS[key]))
+    .map(([key]) => key)];
+  return { factId: row.id, valueKeys };
+}
+
+function programDetailTitle(row) {
+  if ([row.title, row.label, row.value?.title, row.value?.label, row.value?.heading].some(value => typeof value === "string" && value.trim())) return "";
+  const value = row.value || {};
+  if (value.course_page_tuition_fees) return label("program_detail.fees");
+  if (value.ItCSB || value.minimum_program_units || value.advisingExpectations || value.programGradingPolicies) return label("program_detail.degree_policies");
+  if (value.structure || value.study_periods_pathways_and_components || value.variant_progression_conditions) return label("program_detail.curriculum");
+  return "";
+}
+
 export function studyOptionEssentials(resolved) {
   const rows = reviewedStudyRows(resolved);
-  const formatters = { duration: localizeDuration, mode: trStudyMode, language: trProgramLanguage, start_date: admissionsCycleLabel };
   const publishedKeys = { duration: "Duration", mode: "Study mode", location: "Location", start_date: "Start date", department: "Delivered by", language: "Language" };
   return ["duration", "mode", "language", "location", "department", "start_date"].flatMap(key => {
     const value = rows.map(row => row.value[key] ?? row.value[publishedKeys[key]]).find(value => value != null && value !== "") ?? resolved?.selected_option?.format?.[key];
-    if (typeof value !== "string" && !(Array.isArray(value) && value.every(item => typeof item === "string"))) return [];
-    if (!value.length || value === "not_stated") return [];
-    const formatted = (Array.isArray(value) ? value : [value]).map(item => formatters[key] ? formatters[key](item) : translateAdmissionSummary(item) || item).join(", ");
-    return [[key, formatted]];
+    const formatted = displayedStudyValue(key, value);
+    return formatted ? [[key, formatted]] : [];
   });
 }
 
-export function renderStudyOptionOverview(resolved) {
+export function renderStudyOptionOverview(resolved, { includeSources = true } = {}) {
   const option = resolved?.selected_option;
   if (!option) return "";
-  const rows = reviewedStudyRows(resolved);
   const overview = option.overviews?.find(row => translateAdmissionSummary(row.text, { section: "study" }));
-  const descriptionRow = rows.find(row => [row.value.description, row.value.course_page_programme_summary, row.value.A3i6E, row.topic === "study_content" ? row.value.source_content : undefined]
-    .some(value => typeof value === "string" && value.trim()));
-  const description = descriptionRow && [descriptionRow.value.description, descriptionRow.value.course_page_programme_summary, descriptionRow.value.A3i6E, descriptionRow.topic === "study_content" ? descriptionRow.value.source_content : undefined]
-    .find(value => typeof value === "string" && value.trim()) || overview?.text;
+  const descriptionRow = studyDescriptionRow(resolved);
+  const description = studyDescriptionEntry(descriptionRow)?.[1] || overview?.text;
   const summary = translateAdmissionSummary(description, { section: "study" });
   const translatedDescription = summary || translateAdmissionSummary(description);
-  const overviewSourceIds = descriptionRow?.source_ids || overview?.source_ids || [];
-  const overviewSources = (resolved.sources || []).filter(source => overviewSourceIds.includes(source.id)).map(source => sourceLink(source.url, source.title)).join("");
-  const curriculum = descriptionRow?.value.study_periods_pathways_and_components ? descriptionRow.value : null;
-  const descriptionHtml = !description ? `<p class="admissions-context__note" data-program-overview-missing>${escapeHtml(t("university.admissions.reading.overview_missing"))}</p>` : `<p class="program-card__description">${escapeHtml(translatedDescription || t("university.admissions.reading.summary_translation_missing"))}</p>${getCurrentLanguage() === "eng" && !summary && !curriculum ? "" : `<details class="admissions-catalog__evidence" data-program-original><summary>${escapeHtml(t("university.admissions.reading.original_description"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary>${curriculum ? `<div class="admissions-catalog__body" lang="en">${renderStudyCurriculum(curriculum, resolved.reference_labels)}</div>` : `<p class="program-card__description" lang="en">${escapeHtml(description)}</p>`}${overviewSources ? `<div class="admissions-catalog__sources">${overviewSources}</div>` : ""}</details>`}`;
+  const descriptionHtml = description ? `<p class="program-card__description"><span${translatedDescription ? "" : ' lang="en"'}>${escapeHtml(translatedDescription || description)}</span> <span class="admissions-programs__admission-note">${escapeHtml(t("university.admissions.catalog.requirements_tab_hint"))}</span></p>`
+    : `<p class="admissions-context__note" data-program-overview-missing>${escapeHtml(t("university.admissions.reading.overview_missing"))}</p>`;
   const fields = studyOptionEssentials(resolved).map(([key, value]) => `<div class="program-card-row"><dt class="program-card-label">${escapeHtml(label(`field.${key}`))}</dt><dd class="program-card-value">${escapeHtml(value)}</dd></div>`);
-  const degrees = [...new Set(option.awards || [])].map(award => t(`university.admissions.reading.degree.${award === "MEng" && option.catalog_classification === "ucas_course_choice" ? "MEng_integrated" : award}`)).filter(Boolean);
-  return `${degrees.length ? `<p class="admissions-context__note" data-award-explanation>${degrees.map(escapeHtml).join(" · ")}</p>` : ""}${descriptionHtml}${getCurrentLanguage() === "eng" && !summary && !curriculum && overviewSources ? `<div class="admissions-catalog__sources" data-program-overview-sources>${overviewSources}</div>` : ""}${fields.length ? `<dl class="program-card-rows">${fields.join("")}</dl>` : ""}`;
+  const awards = [...new Set(option.awards || [])];
+  const degrees = awards.map(award => award === "MEng"
+    ? t("university.admissions.reading.degree.MEng", "Master of Engineering")
+    : t(`university.admissions.reading.degree.${award}`)).filter(Boolean);
+  if (option.catalog_classification === "ucas_course_choice" && awards.includes("MEng")) {
+    degrees.push(t("university.admissions.reading.degree.MEng_ucas_note", "This is an undergraduate entry route that leads to the Master of Engineering award."));
+  }
+  return `${degrees.length ? `<p class="admissions-context__note" data-award-explanation>${degrees.map(escapeHtml).join(" · ")}</p>` : ""}${descriptionHtml}${fields.length ? `<dl class="program-card-rows admissions-programs__essentials">${fields.join("")}</dl>` : ""}${includeSources ? renderStudyOptionSources(resolved) : ""}`;
+}
+
+export function renderStudyOptionSources(resolved, { includeStudyInfo = false } = {}) {
+  const option = resolved?.selected_option;
+  if (!option) return "";
+  const overview = option.overviews?.find(row => translateAdmissionSummary(row.text, { section: "study" }));
+  const descriptionRow = studyDescriptionRow(resolved);
+  const overviewSourceIds = descriptionRow?.source_ids || overview?.source_ids || [];
+  const sourceRows = (resolved.sources || []).filter(source => overviewSourceIds.includes(source.id));
+  const sourcesByUrl = new Map(sourceRows.map(source => {
+    const title = source.title?.startsWith(`${option.title} | `) ? source.title.slice(option.title.length + 3) : source.title;
+    return [safeUrl(source.url), { link: sourceLink(source.url, title || label("source")), checkedAt: source.checked_at || descriptionRow?.checked_at }];
+  }).filter(([url, entry]) => url && entry.link));
+  const courseUrl = safeUrl(option.course_url);
+  if (courseUrl && !sourcesByUrl.has(courseUrl)) sourcesByUrl.set(courseUrl, { link: sourceLink(courseUrl, label("official_course_page")), checkedAt: descriptionRow?.checked_at });
+  const entries = [...sourcesByUrl.values()];
+  if (!entries.length && !includeStudyInfo) return "";
+  const factAttrs = descriptionRow?.id ? `data-admissions-fact="${escapeHtmlAttr(descriptionRow.id)}" data-admissions-domain="study"` : "";
+  const items = entries.map(({ link, checkedAt }) => `<li>${link}${checkedAt ? `<span class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(checkedAt)}</span>` : ""}</li>`).join("");
+  return `<div class="admissions-programs__sources"><details class="admissions-programs__references" ${factAttrs}><summary>${escapeHtml(t("university.admissions.reading.source_and_date"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-programs__references-body">${items ? `<ul class="admissions-programs__source-list" data-program-overview-sources>${items}</ul>` : ""}</div></details></div>`;
 }
 
 function sources(row, resolved) {
@@ -436,15 +487,15 @@ function reviewLabel(status) {
 function factTitle(row, resolved, domain) {
   const titles = [row.title, row.label, row.value?.title, row.value?.label, row.value?.heading];
   const title = titles.find(value => typeof value === "string" && value.trim());
-  if (title) return title;
+  if (title) return translateAdmissionSummary(title) || translateAdmissionText(title, title);
   const genericIdentities = new Set(["rule", "requirement", "requirements", "test", "exam", "qualification", "required", "not_required", "unknown", "not_published"]);
   const identity = [row.value?.test, row.value?.exam, row.value?.qualification, row.value?.name].find(value => typeof value === "string" && value.trim() && !genericIdentities.has(value.trim().toLowerCase()));
-  if (identity) return identity;
+  if (identity) return translateAdmissionSummary(identity) || translateAdmissionText(identity, identity);
   const sourceIds = row.source_ids || row.sourceIds || [];
   if (sourceIds.length === 1) {
     const source = (resolved.sources || []).find(item => item.id === sourceIds[0]);
     const sourceFacts = [...(resolved.facts || []), ...(resolved.history?.facts || [])].filter(fact => (fact.source_ids || fact.sourceIds || []).includes(sourceIds[0]));
-    if (source?.title && sourceFacts.length === 1) return source.title;
+    if (source?.title && sourceFacts.length === 1) return translateFactSource(source.title, source.title);
   }
   const tokens = new Set([row.topic || "", ...(row.topics || [])].join(" ").toLowerCase().split(/[_\s-]+/));
   const headings = TOPIC_HEADINGS.filter(([, words]) => words.some(word => tokens.has(word))).map(([key]) => key);
@@ -583,7 +634,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
   </details>`;
 }
 
-export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentation } = {}) {
+export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentation, includeReferenceScopeNote = true, emptyMessage = true, programOnly = false } = {}) {
   const facts = new Map((resolved.facts || []).filter(row => row.applicability?.status !== "mismatched").map(row => [row.id, row]));
   const seen = new Set();
   const sections = domains.map(domain => {
@@ -626,9 +677,10 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
         </details>`;
       }).join("");
     })() : rows.map(row => renderFact(row, resolved, domain, false, false)).join("");
-    return `<section class="admissions-catalog__section" data-admissions-domain="${escapeHtmlAttr(domain)}"><h3>${escapeHtml(label(`domain.${domain}`))}</h3><div class="admissions-catalog__list">${content}</div></section>`;
+    return `<section class="admissions-catalog__section" data-admissions-domain="${escapeHtmlAttr(domain)}"><h3>${escapeHtml(label(programOnly && domain === "study" ? "program_detail.study" : `domain.${domain}`))}</h3><div class="admissions-catalog__list">${content}</div></section>`;
   }).filter(Boolean);
-  return sections.length ? `${presentation === "simple" ? `<p class="admissions-catalog__meta">${escapeHtml(t("university.admissions.reading.reference_scope_note"))}</p>` : ""}${sections.join("")}` : `<p class="admissions-catalog__meta">${escapeHtml(label("no_facts"))}</p>`;
+  return sections.length ? `${presentation === "simple" && includeReferenceScopeNote ? `<p class="admissions-catalog__meta">${escapeHtml(t("university.admissions.reading.reference_scope_note"))}</p>` : ""}${sections.join("")}`
+    : emptyMessage ? `<p class="admissions-catalog__meta">${escapeHtml(label("no_facts"))}</p>` : "";
 }
 
 function renderUnknowns(resolved, unknowns = resolved.unknowns || [], simple = false) {
@@ -683,13 +735,27 @@ export function renderAdmissionsAssessment(resolved, { presentation } = {}) {
   return presentation === "simple" ? `<details class="admissions-catalog__assessment-detail"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${html}</div></details>` : html;
 }
 
-export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAssessment = true, includeUnknowns = true, includeHistory = true, includeSourceNote = true, presentation, programOnly = false } = {}) {
-  const sharedRoute = resolved?.reading_scope === "institution_route" && resolved.selected_route;
-  if ((!resolved?.selected_option && !sharedRoute) || (!resolved?.selected_route && !programOnly)) return `<p class="admissions-catalog__meta">${escapeHtml(label("no_context"))}</p>`;
+export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAssessment = true, includeUnknowns = true, includeHistory = true, includeSourceNote = true, presentation, programOnly = false, overviewCoverage = null } = {}) {
+  const institutionRouteReading = resolved?.reading_scope === "institution_route" && resolved?.selected_route;
+  if ((!resolved?.selected_option && !institutionRouteReading) || (!resolved?.selected_route && !programOnly && !institutionRouteReading)) return `<p class="admissions-catalog__meta">${escapeHtml(label("no_context"))}</p>`;
   if (programOnly) {
     const optionFact = row => row.applicability?.status !== "mismatched" && row.scope?.option_ids?.includes(resolved.selected_option.id) && !row.scope.route_ids?.length;
     domains = domains.filter(domain => ["study", "degree_completion", "career"].includes(domain));
-    resolved = { ...resolved, facts: (resolved.facts || []).filter(optionFact), unknowns: (resolved.unknowns || []).filter(optionFact), history: { ...resolved.history, facts: (resolved.history?.facts || []).filter(optionFact), unknowns: (resolved.history?.unknowns || []).filter(optionFact) } };
+    const coveredKeys = new Set(overviewCoverage?.valueKeys || []);
+    const facts = (resolved.facts || []).filter(optionFact).map(sourceRow => {
+      const value = sourceRow.id === overviewCoverage?.factId
+        ? Object.fromEntries(Object.entries(sourceRow.value).filter(([key]) => !coveredKeys.has(key))) : sourceRow.value;
+      const hasConditions = [sourceRow.conditions, sourceRow.conditions_and_exceptions, sourceRow.exceptions]
+        .some(item => Array.isArray(item) ? item.length : Boolean(item));
+      if (sourceRow.id === overviewCoverage?.factId && !Object.keys(value).length && !hasConditions) return null;
+      const row = value === sourceRow.value ? sourceRow : { ...sourceRow, value };
+      const title = programDetailTitle(row);
+      return title ? { ...row, title } : row;
+    }).filter(Boolean);
+    resolved = { ...resolved, facts, unknowns: (resolved.unknowns || []).filter(optionFact), history: { ...resolved.history, facts: (resolved.history?.facts || []).filter(optionFact), unknowns: (resolved.history?.unknowns || []).filter(optionFact) } };
+    if (!resolved.facts.some(row => domains.some(domain => resolved.fact_groups?.[domain]?.includes(row.id)))
+      && (!includeUnknowns || !resolved.unknowns.length)
+      && (!includeHistory || !(resolved.history?.facts?.length || resolved.history?.unknowns?.length))) return "";
   }
   const history = resolved.history || {};
   const historyFacts = history.facts || [];
@@ -697,7 +763,7 @@ export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAs
   const historyCount = historyFacts.length + historyUnknowns.length;
   return `<div class="admissions-catalog">${includeSourceNote && presentation !== "simple" ? `<p class="admissions-catalog__meta">${escapeHtml(label("source_text_note"))}</p>` : ""}
     ${includeAssessment && !programOnly ? renderAdmissionsAssessment(resolved, { presentation }) : ""}
-    ${domains.length ? renderAdmissionsFacts(resolved, domains, { presentation }) : ""}
+    ${domains.length ? renderAdmissionsFacts(resolved, domains, { presentation, includeReferenceScopeNote: !programOnly, emptyMessage: !programOnly, programOnly }) : ""}
     ${includeUnknowns ? renderUnknowns(resolved, resolved.unknowns || [], presentation === "simple") : ""}
     ${includeHistory && historyCount ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("history"))} (${historyCount})</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("history_note"))}</p>${historyFacts.map(row => renderFact(row, resolved, "other", true, presentation === "simple")).join("")}${renderUnknowns(resolved, historyUnknowns, presentation === "simple")}</div></details>` : ""}
   </div>`;

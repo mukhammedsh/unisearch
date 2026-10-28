@@ -177,46 +177,53 @@ def matching_study_options(institution_id, major=None, study_level=None):
     return [option for option in institution["study_options"]
             if (not level or level == "any" or level in option["levels"])
             and (not major or (subject in _major_tags_from_text(option["title"]) if subject
-                 else _normalize_major_text(major) == _normalize_major_text(option["title"])))]
+                 else _normalize_major_text(major) == _normalize_major_text(option["title"]))) ]
 
 
-def catalog_costs(institution_id, study_level=None, study_mode="any", *, major=None,
-                  fee_status_context=None, intended_entry_cycle=None, study_option_id=None,
-                  application_route_id=None, profile=None):
+def catalog_costs(institution_id, study_level=None, study_mode="any", profile=None):
     """Return published reference prices without claiming personal affordability."""
     institution = get_institution(institution_id)
     summary = {"annual_total": None, "tuition": None, "reference": True}
     if institution is None or study_mode == "online":
         return summary
-    profile = profile or {}
-    selection = profile.get("selectedAdmissionChoices", {}).get(institution_id, {})
-    study_level = study_level or profile.get("study_level") or profile.get("studyLevel")
-    major = major if major is not None else profile.get("major")
-    fee_status_context = fee_status_context or selection.get("feeStatusContext") or profile.get("fee_status_context", "unknown")
-    intended_entry_cycle = intended_entry_cycle or selection.get("intendedEntryCycle") or profile.get("intended_entry_cycle")
-    level = _normalized_level(study_level)
+    profile = profile if isinstance(profile, dict) else None
+    choice = (profile or {}).get("selectedAdmissionChoices", {}).get(institution_id, {}) if profile is not None else {}
+    level_value = study_level or choice.get("studyLevel") or (profile or {}).get("study_level")
+    level = LEVEL_ALIASES.get(str(level_value or "").lower(), str(level_value or "").lower())
     if level == "any":
-        level = None
+        level = ""
     options = {option["id"]: option for option in institution["study_options"]}
-    selected = options.get(study_option_id or selection.get("studyOptionId"))
-    if selected and (not level or level in selected["levels"]):
-        study_option_id = selected["id"]
-        application_route_id = application_route_id or selection.get("applicationRouteId")
-        if not level and len(selected["levels"]) == 1:
-            level = selected["levels"][0]
-    candidate_ids = {option["id"] for option in matching_study_options(institution_id, major, level)}
-    if selection.get("studyOptionId") and selection["studyOptionId"] not in options:
-        candidate_ids.clear()
-    if study_option_id:
-        candidate_ids.intersection_update([study_option_id])
-    if not selection.get("studyOptionId"):
-        application_route_id = application_route_id or selection.get("applicationRouteId")
-    if application_route_id:
-        route = next((route for route in institution["application_routes"] if route["id"] == application_route_id), None)
+    selected_option = choice.get("studyOptionId")
+    selected_route = choice.get("applicationRouteId")
+    major = str((profile or {}).get("major") or "").strip()
+    if profile is not None and not selected_option and major:
+        from app.services.university_tracks import _canonical_major, _major_tags_from_text
+
+        wanted = _canonical_major(major)
+        matching_options = {option_id for option_id, option in options.items()
+                            if wanted and wanted in _major_tags_from_text(option["title"])}
+    else:
+        matching_options = set()
+    candidate_ids = {option_id for option_id, option in options.items()
+                     if not level or level in option["levels"]}
+    if selected_option:
+        candidate_ids.intersection_update([selected_option])
+    elif matching_options:
+        candidate_ids.intersection_update(matching_options)
+    if selected_route:
+        route = next((route for route in institution["application_routes"] if route["id"] == selected_route), None)
         candidate_ids.intersection_update(route["option_ids"] if route else [])
-    summary["scope"] = {"study_level": level, "major": major or "", "option_ids": sorted(candidate_ids),
-                        "fee_status_context": fee_status_context, "intended_entry_cycle": intended_entry_cycle}
+    application_route_id = selected_route
+    fee_context = choice.get("feeStatusContext") or (profile or {}).get("fee_status_context")
+    fee_status_context = fee_context
+    intended_entry_cycle = choice.get("intendedEntryCycle") or (profile or {}).get("intended_entry_cycle")
+    selected_fee = {"self_reported_home_domestic": "Home fee",
+                    "self_reported_international_overseas": "Overseas fee"}.get(fee_context)
     quotes = []
+    summary["scope"] = {"study_level": level, "major": major,
+                        "option_ids": sorted(candidate_ids),
+                        "fee_status_context": fee_context or "unknown",
+                        "intended_entry_cycle": intended_entry_cycle}
 
     def add(row, basis, amount, currency, period, fee_status="", exclusions=()):
         if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount) or amount < 0:
@@ -231,10 +238,15 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", *, major=N
         levels = row["scope"]["levels"] or sorted({value for option_id in scoped_options for value in options[option_id]["levels"]})
         if level and level not in levels:
             return
-        if not set(levels).intersection(value for option_id in candidate_ids for value in options[option_id]["levels"]):
+        scoped_options = row["scope"]["option_ids"]
+        if selected_option and scoped_options and selected_option not in scoped_options:
             return
-        expected_fee = {"self_reported_home_domestic": "Home fee", "self_reported_international_overseas": "Overseas fee"}.get(fee_status_context)
-        if fee_status and fee_status_context not in (None, "unknown") and fee_status != expected_fee:
+        if not selected_option and matching_options and scoped_options and not matching_options.intersection(scoped_options):
+            return
+        scoped_routes = row["scope"]["route_ids"]
+        if selected_route and scoped_routes and selected_route not in scoped_routes:
+            return
+        if selected_fee and fee_status and fee_status != selected_fee:
             return
         quotes.append({"basis": basis, "amount": amount, "currency": currency, "period": period,
                        "levels": levels, "fee_status": fee_status, "exclusions": list(exclusions),
@@ -266,6 +278,13 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", *, major=N
                     if annual or one_year:
                         add(row, "tuition", float((annual or one_year)[1].replace(",", "")), panel.get("currency"), panel.get("panel_cycle_label"), status)
 
+    if not level and any("undergraduate" in quote["levels"] for quote in quotes):
+        quotes = [quote for quote in quotes if "undergraduate" in quote["levels"]]
+    if profile is not None:
+        tuition = [quote for quote in quotes if quote["basis"] == "tuition"]
+        if tuition:
+            latest = max(tuition, key=lambda quote: (re.findall(r"20\d{2}", quote["period"]) or [""])[0])
+            quotes = [quote for quote in quotes if (quote["period"], quote["currency"]) == (latest["period"], latest["currency"])]
     for basis in ("annual_total", "tuition"):
         candidates = [quote for quote in quotes if quote["basis"] == basis]
         if not candidates:
@@ -279,7 +298,9 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", *, major=N
 
         latest = max(candidates, key=lambda quote: (period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]))
         candidates = [quote for quote in candidates if (quote["period"], quote["currency"]) == (latest["period"], latest["currency"])]
-        source_ids = {source_id for quote in candidates for source_id in quote["source_ids"]}
+        bounds = [min(candidates, key=lambda quote: quote["amount"]), max(candidates, key=lambda quote: quote["amount"])]
+        evidence = candidates if profile is not None else bounds
+        source_ids = {source_id for quote in evidence for source_id in quote["source_ids"]}
         summary[basis] = {"min": min(quote["amount"] for quote in candidates), "max": max(quote["amount"] for quote in candidates),
                           "amounts": sorted({quote["amount"] for quote in candidates}),
                           "currency": latest["currency"], "period": latest["period"], "study_level": level or "",
@@ -292,8 +313,28 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", *, major=N
                           "candidate_option_count": len(candidate_ids),
                           "priced_option_count": len({value for quote in candidates for value in quote["option_ids"]}),
                           "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
-                          "fact_ids": sorted({quote["fact_id"] for quote in candidates}),
+                          "fact_ids": sorted({quote["fact_id"] for quote in evidence}),
                           "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
+    defaulted_undergraduate = not level and summary["tuition"] and "undergraduate" in summary["tuition"]["levels"]
+    if (profile is not None and institution_id == "imperial-college-london-uk"
+            and (level == "undergraduate" or defaulted_undergraduate)
+            and summary["tuition"] and not summary["annual_total"]):
+        tuition = summary["tuition"]
+        living_fact = next((row for row in institution["facts"] if row["id"] == "imperial-london-living-2026"), None)
+        living_range = (living_fact or {}).get("value", {}).get("average_9months", {})
+        living_min, living_max = living_range.get("min"), living_range.get("max")
+        if (tuition["currency"] == "GBP" and isinstance(living_min, (int, float)) and not isinstance(living_min, bool)
+                and isinstance(living_max, (int, float)) and not isinstance(living_max, bool)
+                and math.isfinite(living_min) and math.isfinite(living_max) and 0 <= living_min <= living_max):
+            intervals = [{"min": amount + living_min, "max": amount + living_max} for amount in tuition["amounts"]]
+            total = {**tuition, "min": min(interval["min"] for interval in intervals),
+                     "max": max(interval["max"] for interval in intervals), "intervals": intervals,
+                     "calculation": "tuition_plus_living_range", "living_min": living_min,
+                     "living_max": living_max, "living_period": "9 months", "living_reference": "2026 estimate"}
+            total.pop("amounts")
+            total["source_urls"] = tuition["source_urls"] + [
+                source["url"] for source in institution["sources"] if source["id"] in living_fact["source_ids"]]
+            summary["annual_total"] = total
     return summary
 
 

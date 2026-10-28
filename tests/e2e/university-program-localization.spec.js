@@ -38,6 +38,7 @@ for (const program of programs) for (const language of ["eng", "rus", "kaz"]) {
     await expect(option.locator(".program-card__title")).toHaveText(title);
     if (language !== "eng") await expect(option.locator(".admissions-programs__original")).toHaveText(program.official.replace(/(\d)-(?=\d)/g, "$1\u2011"));
     await option.click();
+    await option.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     await expect(page.locator("#admissionsStudyTitle")).toHaveText(title);
     await expect(page.locator("#admissionsReferenceSummary strong")).toHaveText(title);

@@ -384,12 +384,17 @@ def _localize_university_payload(
     if not isinstance(university, dict):
         return {}
     lang = _normalize_search_lang(search_lang)
+    u = copy.deepcopy(university)
+    academics = u.get("academics")
+    programs = academics.get("programs") if isinstance(academics, dict) else None
+    if isinstance(programs, list):
+        for program in programs:
+            if isinstance(program, dict) and str(program.get("name") or "").strip():
+                program["source_name"] = str(program["name"]).strip()
     if lang == SEARCH_LANG_ENG:
-        u = copy.deepcopy(university)
         u["description"] = _translate_university_description(u, lang)
         return u
 
-    u = copy.deepcopy(university)
     uid = str(u.get("id") or "").strip()
     u["name"] = _translate_university_name(uid, u.get("name"), lang)
     u["description"] = _translate_university_description(u, lang)
@@ -950,6 +955,94 @@ def _catalog_costs(u, format_preference="any"):
         if lower is not None and upper is not None and math.isfinite(lower) and math.isfinite(upper) and 0 <= lower <= upper:
             price_range = {**quote(lower), "max": upper, "currency": finance.get("currency")}
     return {"annual_total": quote(total) or price_range, "tuition": quote(tuition), "reference": False}
+
+
+def _profiled_legacy_costs(u, format_preference="any", profile=None):
+    published = _catalog_costs(u, format_preference)
+    if profile is None:
+        return published
+    finance = u.get("finance") or {}
+    currency = str(finance.get("currency") or "").upper()
+    if u.get("id") == "university-of-oxford-uk-oxford" and _normalize_study_mode(format_preference) != "online":
+        choice = (profile.get("selectedAdmissionChoices") or {}).get(u["id"], {})
+        level = str(choice.get("studyLevel") or profile.get("study_level") or "").lower()
+        level_names = {"bachelor": {"Bachelor", "Integrated Master"},
+                       "undergraduate": {"Bachelor", "Integrated Master"},
+                       "integrated master": {"Integrated Master"},
+                       "master": {"Master"}, "masters": {"Master"},
+                       "doctoral": {"Doctorate"}, "doctorate": {"Doctorate"}}.get(
+                           level, {"Bachelor", "Integrated Master"} if not level else set())
+        wanted = _canonical_major(profile.get("major"))
+        selected_id = choice.get("programId") or choice.get("studyOptionId")
+        programs = [program for program in _iter_programs(u)
+                    if level_names.intersection(program.get("study_levels") or [])
+                    and (not selected_id or program.get("id") == selected_id)]
+        if wanted and not selected_id:
+            matches = [program for program in programs
+                       if wanted in (program.get("major_tags") or []) or wanted in _major_tags_from_text(program.get("name"))]
+            if matches:
+                programs = matches
+        fee_context = choice.get("feeStatusContext") or profile.get("fee_status_context")
+        fee_fields = {"self_reported_home_domestic": ("home_annual_fee_gbp",),
+                      "self_reported_international_overseas": ("overseas_annual_fee_gbp",)}.get(
+                          fee_context, ("home_annual_fee_gbp", "overseas_annual_fee_gbp"))
+        amounts = [float(program[field]) for program in programs for field in fee_fields
+                   if isinstance(program.get(field), (int, float)) and program[field] >= 0]
+        living_range = (finance.get("living_costs_monthly_gbp") or {}).get("total_annual_range_9_months") or {}
+        living_low, living_high = _to_float(living_range.get("min")), _to_float(living_range.get("max"))
+        if amounts and currency == "GBP":
+            amounts = sorted(set(amounts))
+            source_urls = sorted({program.get("tuition_source_url") for program in programs if program.get("tuition_source_url")})
+            tuition = {"min": amounts[0], "max": amounts[-1], "amounts": amounts, "currency": currency,
+                       "period": finance.get("academic_year") or "", "source_urls": source_urls,
+                       "fee_statuses": ["Home fee" if field.startswith("home_") else "Overseas fee" for field in fee_fields]}
+            total = None
+            if level_names.intersection({"Bachelor", "Integrated Master"}) and living_low is not None and living_high is not None and 0 <= living_low <= living_high:
+                intervals = [{"min": amount + living_low, "max": amount + living_high} for amount in amounts]
+                total = {**tuition, "min": intervals[0]["min"], "max": intervals[-1]["max"],
+                         "intervals": intervals, "calculation": "tuition_plus_living_range",
+                         "living_min": living_low, "living_max": living_high, "living_period": "9 months",
+                         "source_urls": source_urls + [finance["living_costs_monthly_gbp"]["source_url"]]}
+                total.pop("amounts")
+            return {"annual_total": total, "tuition": tuition, "reference": True}
+    if u.get("id") == "harvard-usa-cambridge":
+        choice = (profile.get("selectedAdmissionChoices") or {}).get(u["id"], {})
+        level = str(choice.get("studyLevel") or profile.get("study_level") or "").lower()
+        if level in {"master", "masters", "professional", "doctoral", "doctorate"}:
+            level_names = {"master": "Master", "masters": "Master", "professional": "Professional",
+                           "doctoral": "Doctorate", "doctorate": "Doctorate"}
+            selected_id = choice.get("programId") or choice.get("studyOptionId")
+            wanted = _canonical_major(profile.get("major"))
+            programs = [program for program in _iter_programs(u)
+                        if level_names[level] in (program.get("study_levels") or [])
+                        and (not selected_id or program.get("id") == selected_id)]
+            if wanted and not selected_id:
+                matches = [program for program in programs if wanted in (program.get("major_tags") or [])
+                           or wanted in _major_tags_from_text(program.get("name"))]
+                if matches:
+                    programs = matches
+            priced = [program for program in programs if isinstance(program.get("tuition_year_usd"), (int, float))
+                      and program["tuition_year_usd"] >= 0]
+            if priced:
+                latest_period = max((program.get("tuition_academic_year") or "" for program in priced),
+                                    key=lambda period: (re.findall(r"20\d{2}", period) or [""])[0])
+                priced = [program for program in priced if (program.get("tuition_academic_year") or "") == latest_period]
+                amounts = sorted({float(program["tuition_year_usd"]) for program in priced})
+                tuition = {"min": amounts[0], "max": amounts[-1], "amounts": amounts, "currency": "USD",
+                           "period": latest_period,
+                           "source_urls": sorted({program.get("tuition_source_url") for program in priced if program.get("tuition_source_url")})}
+                return {"annual_total": None, "tuition": tuition, "reference": True}
+            return {"annual_total": None, "tuition": None, "reference": True}
+    breakdown = finance.get("costs_breakdown_year_usd") or {}
+    if currency == "USD" and isinstance(breakdown, dict) and breakdown:
+        tuition = _extract_tuition_cost(breakdown)
+        costs = [_to_float(value) for value in breakdown.values()]
+        if tuition is not None and all(value is not None and value >= 0 for value in costs):
+            base = sum(costs) - tuition
+            published["annual_total"] = {**(published.get("annual_total") or {}),
+                                         "min": tuition + base, "max": tuition + base,
+                                         "currency": "USD", "calculation": "published_fixed_budget"}
+    return published
 
 
 def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any"):
@@ -1920,7 +2013,9 @@ def _filter_university_pairs(
                     u.get("id") in admissions_catalog.INSTITUTION_IDS
                     and admissions_catalog._normalized_level(sl) == _safe_lower(x)
                 )
-                or (sl in ("doctorate", "phd") and _safe_lower(x) in ("doctorate", "phd"))
+                or (sl in ("undergraduate", "bachelor") and _safe_lower(x) in ("undergraduate", "bachelor"))
+                or (sl in ("masters", "master") and _safe_lower(x) in ("masters", "master"))
+                or (sl in ("doctorate", "phd", "doctoral") and _safe_lower(x) in ("doctorate", "phd", "doctoral"))
                 for x in meta_row.get("study_levels", [])
             )
         ]
@@ -1947,22 +2042,26 @@ def _filter_university_pairs(
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
-            cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
-            if cost is None:
-                continue
-            if min_tuition is not None and cost[1] < min_tuition:
-                continue
-            if max_tuition is not None and cost[0] > max_tuition:
-                continue
             quote = _catalog_costs(u, mode_pref).get(cost_basis) or {}
-            if quote.get("amounts"):
+            if quote.get("intervals") or quote.get("amounts"):
                 from app.services.currency import convert
-                amounts = [convert(amount, quote["currency"], "USD") for amount in quote["amounts"]]
-                matches = [(min_tuition is None or amount >= min_tuition) and (max_tuition is None or amount <= max_tuition) for amount in amounts]
-                if not any(matches):
+                try:
+                    ranges = quote.get("intervals") or [{"min": amount, "max": amount} for amount in quote["amounts"]]
+                    costs = [(convert(row["min"], quote["currency"], "USD"),
+                              convert(row["max"], quote["currency"], "USD")) for row in ranges]
+                except (KeyError, TypeError, ValueError):
                     continue
-                quote["filter_match"] = "full" if all(matches) else "partial"
+                if not any((min_tuition is None or high >= min_tuition) and (max_tuition is None or low <= max_tuition)
+                           for low, high in costs):
+                    continue
+                quote["filter_match"] = "full" if all(
+                    (min_tuition is None or low >= min_tuition) and (max_tuition is None or high <= max_tuition)
+                    for low, high in costs
+                ) else "partial"
             else:
+                cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
+                if cost is None or (min_tuition is not None and cost[1] < min_tuition) or (max_tuition is not None and cost[0] > max_tuition):
+                    continue
                 quote["filter_match"] = "full" if (min_tuition is None or cost[0] >= min_tuition) and (max_tuition is None or cost[1] <= max_tuition) else "partial"
             if quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
                 quote["filter_match"] = "partial"
@@ -2069,9 +2168,8 @@ def list_universities(
     mode_pref = _normalize_study_mode(format or "any")
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
-    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref, major=major,
-                   fee_status_context=fee_status_context, intended_entry_cycle=intended_entry_cycle, profile=profile)
-               if u.get("id") in admissions_catalog.INSTITUTION_IDS else _catalog_costs(u, mode_pref)}, m) for u, m in pairs]
+    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref, profile)
+               if u.get("id") in admissions_catalog.INSTITUTION_IDS else _profiled_legacy_costs(u, mode_pref, profile)}, m) for u, m in pairs]
     search_scores: Dict[str, float] = {}
 
     if q:

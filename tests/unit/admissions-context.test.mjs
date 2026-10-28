@@ -1,7 +1,7 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, automaticAdmissionRoute, programProfileSuggestions, programRestriction } from "../../frontend/javascript/pages/university/admissions-controller.js";
+import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, programProfileSuggestions, programRestriction } from "../../frontend/javascript/pages/university/admissions-controller.js";
 
 const uid = "mit-usa-cambridge";
 
@@ -11,15 +11,6 @@ test("only explicit institution-route projection permits reading without a major
   assert.equal(hasReadableAdmissionContext({ selected_route: route }), false);
   assert.equal(hasReadableAdmissionContext({ selected_option: { id: "cs" }, selected_route: route }), true);
   assert.equal(hasReadableAdmissionContext({ selected_option: { id: "cs" } }), false);
-});
-
-test("a sole route opens only for a new deliberate program selection", () => {
-  const resolved = { selected_option: { id: "computing-meng" }, available_routes: [{ id: "ucas" }], context_applicability: { option: "matched", level: "matched" } };
-  assert.equal(automaticAdmissionRoute(resolved, {}, true), "ucas");
-  assert.equal(automaticAdmissionRoute(resolved, {}, false), "");
-  assert.equal(automaticAdmissionRoute(resolved, { application_route_id: "explicit" }, true), "");
-  assert.equal(automaticAdmissionRoute({ ...resolved, context_applicability: { level: "mismatched" } }, {}, true), "");
-  assert.equal(automaticAdmissionRoute({ ...resolved, available_routes: [{ id: "external" }, { id: "coterm" }] }, {}, true), "");
 });
 
 test("profile suggestions use the declared target without inferring the next level", () => {

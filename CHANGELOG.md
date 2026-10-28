@@ -10,6 +10,20 @@ All notable project changes should be recorded here.
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
+## 9.3.0 (2026-10-26) - Program browsing and scoped catalog prices
+
+### Added
+- Add a profile-aware university listing API and scope catalog price ranges by selected program, study level, and self-reported fee status; price filters match published tariff variants and living-cost intervals.
+- Extend compact, expandable program cards across the catalog using available stored details, without implying that unreviewed institutions have reviewed admissions data.
+
+### Updated
+- Restore program selections across reloads and language changes while keeping expansion separate from the explicit selection action.
+- Keep the application route unselected after choosing a program until the applicant confirms a route or supplies context that resolves it.
+- Refine reviewed program summaries, source disclosures, and the handling of scoped price ranges and unknown costs.
+
+### Security
+- Update the backend lock files to patched `filelock` 4.2.1 and `setuptools` 84.1.0 releases.
+
 ## 9.2.0 (2026-10-22) - Catalog pricing and applicant context
 
 ### Added

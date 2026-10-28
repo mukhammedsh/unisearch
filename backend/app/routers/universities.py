@@ -14,7 +14,7 @@ from app.core.settings import (
     COMPARE_PROFILES_CACHE_TTL_SEC,
     REDIS_CACHE_TTL_SEC,
 )
-from app.schemas import CompareProfilesRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas import CompareProfilesRequest, ProfileOnlyRequest, ProfiledUniversitiesRequest, UniversitiesAiSortRequest
 from app.schemas.payloads import to_profile_dict
 from app.services import universities as uni_service
 from app.services import ai_scoring as ai_scoring_service
@@ -381,6 +381,22 @@ def list_university_map_points(
         response.headers["Cache-Control"] = "public, max-age=60"
         response.headers["X-Redis-Cache"] = "MISS"
     return payload
+
+
+@router.post("/universities/profiled", summary="List universities with profile-based cost estimates")
+def list_universities_profiled(payload: ProfiledUniversitiesRequest, request: Request, response: Response = None):
+    if response is not None:
+        response.headers["Cache-Control"] = "private, no-store"
+    return uni_service.list_universities(
+        q=payload.q, country=payload.country, city=payload.city, region=payload.region,
+        major=payload.major, study_level=payload.study_level, funding_type=payload.funding_type,
+        format=payload.format, user_budget=payload.user_budget,
+        min_tuition=payload.min_tuition, max_tuition=payload.max_tuition, cost_basis=payload.cost_basis,
+        min_acceptance=payload.min_acceptance, max_acceptance=payload.max_acceptance,
+        size=payload.size, sort=payload.sort, page=payload.page, limit=payload.limit,
+        response_mode=payload.fields, search_lang=_resolve_search_lang(payload.lang, request),
+        profile=to_profile_dict(payload.profile),
+    )
 
 
 @router.post("/universities/ai-sort", summary="AI-sorted university list (UniFit)", description="Sorts universities by profile fit using the UniFit algorithm. Considers exams, budget, interests, languages, and preference sliders to produce a personalized ranking.")

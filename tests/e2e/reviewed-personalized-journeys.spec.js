@@ -21,7 +21,7 @@ test("mobile UniFit explains a dated budget reference in the user's language", a
   await card.locator(".uni-cost-trigger").click();
   await expect(card.locator("[data-budget-assessment]")).toBeVisible();
   await expect(card.locator("[data-budget-assessment]")).toContainText("Этот ориентир выше бюджета");
-  await expect(card.locator("[data-cost-context]")).toContainText("Набор не подтверждён");
+  await expect(card.locator("[data-cost-context]")).toContainText("Цикл поступления не подтверждён");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("budget-reference-mobile-ru-dark.png") });
 });
@@ -68,19 +68,19 @@ test("basic budget profile without a major can discover, filter and shortlist un
   let catalogRequest;
   page.on("request", request => {
     const url = new URL(request.url());
-    if (url.pathname.endsWith("/universities") && request.method() === "GET") catalogRequest = request;
+    if (url.pathname.endsWith("/universities/profiled") && request.method() === "POST") catalogRequest = request;
   });
   await page.goto("/index.html?sort=name_asc&study_level=undergraduate&cost_basis=tuition&max_tuition=70000");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await expect.poll(() => catalogRequest && new URL(catalogRequest.url()).searchParams.get("fee_status_context"))
+  await expect.poll(() => catalogRequest && catalogRequest.postDataJSON().fee_status_context)
     .toBe("self_reported_international_overseas");
-  const query = new URL(catalogRequest.url()).searchParams;
-  expect(query.get("intended_entry_cycle")).toBe("2027 entry");
-  expect(query.get("major")).toBeNull();
-  expect(query.get("study_level")).toBe("undergraduate");
-  expect(query.get("cost_basis")).toBe("tuition");
-  expect(query.get("max_tuition")).toBe("70001");
+  const query = catalogRequest.postDataJSON();
+  expect(query.intended_entry_cycle).toBe("2027 entry");
+  expect(query.major).toBeUndefined();
+  expect(query.study_level).toBe("undergraduate");
+  expect(query.cost_basis).toBe("tuition");
+  expect(query.max_tuition).toBe("70001");
 
   const aiSortResponse = page.waitForResponse(response =>
     new URL(response.url()).pathname.endsWith("/universities/ai-sort") && response.request().method() === "POST");

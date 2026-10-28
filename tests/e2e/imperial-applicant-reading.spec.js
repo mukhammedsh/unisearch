@@ -64,13 +64,15 @@ async function program(page, id, search = "Computing", level = "") {
   await revealRestrictedProgram(option);
   await expect(option).toBeVisible();
   await option.click();
+  await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await ready(page);
   await expect(option).toHaveAttribute("aria-expanded", "true");
 }
 
 async function route(page, value) {
-  await page.locator("#admissionsViewRequirements").click();
-  if (await selectAdmissionRoute(page, value)) await page.locator("#admissionsContextApply").click();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await select(page, "admissionsRoute", value);
   await ready(page);
 }
 
@@ -98,15 +100,13 @@ for (const item of presentations) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", item.theme);
     await program(page, "imperial-option-computing-meng");
     await expect(page.locator("#admissionsReferenceSummary")).toContainText("MEng");
-    await expect(page.locator("[data-integrated-meng]")).toBeVisible();
+    await expect(page.locator("#admissionsStudyRelationship")).toHaveCount(0);
     await expect(page.locator("#admissionsStudyOverview > .program-card__description")).not.toContainText(/not available|отсутствует|әлі жоқ/);
     if (item.language !== "eng") {
       await expect(page.locator("#admissionsStudyOverview .program-card-rows")).not.toContainText(/Full-time|October 2027/);
-      await page.locator("[data-program-original] > summary").click();
-      await expect(page.locator("[data-program-original] p")).toContainText("industrial placement");
-      await page.locator("[data-program-original] > summary").click();
+      await expect(page.locator("#admissionsStudySources .admissions-programs__references")).toBeVisible();
     }
-    await expect(page.locator("#admissionsStudyRelationship")).toContainText("G401");
+    await expect(page.locator("#admissionsStudySources [data-program-original]")).toHaveCount(0);
     await route(page, "procedure-computing-meng");
     const requirements = page.locator('[data-source-summary="requirements"]');
     await expect(requirements).toContainText("TMUA");
@@ -160,9 +160,9 @@ for (const item of presentations) {
     await page.goto(`/university.html?id=${university}`);
     await ready(page);
     for (const entry of [
-      { id: "imperial-option-full-time-mba", search: "Full-Time MBA", text: /management foundation|Основа управления|Басқару негіздері/, original: "Business Analytics" },
-      { id: "imperial-option-medicine", search: "Medicine", text: /six-year|Шестилетняя|Алты жылдық/, original: "Principles of Medicine" },
-      { id: "imperial-option-data-science", search: "Biomedical Research Data Science", text: /not compulsory|не являются обязательными|міндетті модульдер/, original: "Example projects" },
+      { id: "imperial-option-full-time-mba", search: "Full-Time MBA", text: /management foundation|Основа управления|Басқару негіздері/ },
+      { id: "imperial-option-medicine", search: "Medicine", text: /six-year|Шестилетняя|Алты жылдық/ },
+      { id: "imperial-option-data-science", search: "Biomedical Research Data Science", text: /not compulsory|не являются обязательными|міндетті модульдер/ },
       { id: "imperial_genomic_medicine_msc_pgcert", search: "Genomic Medicine", text: /four taught modules|четырёх модулей|төрт модуль/ },
       { id: "imperial-brain-sciences-phd", search: "Brain Sciences", text: /neurology|неврологию|Неврология/ },
       { id: "imperial_experimental_biomolecular_sciences_mres_msc", search: "Experimental Biomolecular Sciences", text: /not established|не подтверждён|расталмаған/ },
@@ -172,14 +172,13 @@ for (const item of presentations) {
       await expect(overview.locator(":scope > .program-card__description")).toContainText(entry.text);
       await expect(overview.locator("[data-program-overview-missing]")).toHaveCount(0);
       if (entry.id === "imperial-option-full-time-mba") await expect(overview.locator(".program-card-rows")).toContainText(/12 (months|месяцев|ай)/);
-      if (entry.original) {
-        await overview.locator("[data-program-original] > summary").click();
-        await expect(overview.locator("[data-program-original]")).toContainText(entry.original);
-        await expect(overview.locator('[data-program-original] a[href*="imperial.ac.uk"]').first()).toBeVisible();
-        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
-        if (entry.id === "imperial-option-full-time-mba") await screenshot(page, `completed-overview-${item.language}-${item.width}-${item.theme}`, "#admissionsStudyOverview");
-        await overview.locator("[data-program-original] > summary").click();
-      }
+      const sources = page.locator("#admissionsStudySources .admissions-programs__references");
+      await sources.locator(":scope > summary").click();
+      await expect(sources.locator('a[href*="imperial.ac.uk"]').first()).toBeVisible();
+      await expect(sources.locator(".admissions-catalog__meta").first()).toBeVisible();
+      await expect(sources.locator("[data-program-overview-sources] p")).toHaveCount(0);
+      if (entry.id === "imperial-option-full-time-mba") await screenshot(page, `completed-overview-${item.language}-${item.width}-${item.theme}`, "#admissionsStudyOverview");
+      await sources.locator(":scope > summary").click();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
     }
   });
@@ -288,9 +287,10 @@ test("Imperial retries a context failure and keeps the selected program through 
   await page.locator("#admissionsSearchSubmit").click();
   expect((await searchResponse).ok()).toBe(true);
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
-  await page.locator('[data-study-option="imperial-option-computing-meng"]').click();
+  await page.locator('[data-select-study-option="imperial-option-computing-meng"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
-  await page.locator('#admissionsStudyInfo [data-admissions-retry="context"]').click();
+  await page.locator('[data-study-option="imperial-option-computing-meng"]').click();
+  await page.locator('#admissionsStudyOverview [data-admissions-retry="context"]').click();
   await ready(page);
   await route(page, "procedure-computing-meng");
   await page.goBack();

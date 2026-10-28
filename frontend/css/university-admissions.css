@@ -274,9 +274,20 @@
 
 .admissions-context__primary {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+  min-width: 0;
+}
+
+.admissions-context__advanced-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.admissions-context__advanced-actions [hidden] {
+  display: none;
 }
 
 #admissionsContextApply {
@@ -291,23 +302,13 @@
   color: var(--text-inverse);
 }
 
-#admissionsContextApply.is-applied {
-  background: var(--surface-soft);
-  color: var(--text);
-}
-
-#admissionsContextApply.is-applied:hover:not(:disabled) {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
-}
-
 .admissions-study {
   gap: 0;
   padding: 0 var(--space-4) var(--space-4);
   border: 0;
 }
 
-#admissionsSelectedProgram[hidden] {
+#tab-programs .program-card[hidden] {
   display: none;
 }
 
@@ -485,13 +486,144 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-programs__overview .program-card-label {
-  color: color-mix(in srgb, var(--text-muted) 85%, var(--text));
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: normal;
+  text-transform: none;
 }
 
-.admissions-programs__overview .program-card-row {
+#tab-programs .admissions-programs__overview .admissions-programs__essentials {
   display: grid;
-  grid-template-columns: minmax(0, 0.4fr) minmax(0, 1fr);
-  align-items: start;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 0;
+}
+
+#tab-programs .admissions-programs__overview .admissions-programs__essentials .program-card-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 180px) minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: 0;
+  border-top: 0;
+}
+
+#tab-programs .admissions-programs__overview .program-card-value {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+}
+
+#tab-programs .admissions-programs__overview .admissions-programs__essentials :is(dt, dd) {
+  line-height: var(--leading-tight);
+}
+
+#tab-programs .program-card__body-inner > .program-card-rows .program-card-label {
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+#tab-programs .program-card__body-inner > .program-card-rows .program-card-value {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+}
+
+@media (max-width: 768px) {
+  #tab-programs .program-card__body-inner > .program-card-rows .program-card-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-1);
+  }
+
+  #tab-programs .program-card__body-inner > .program-card-rows .program-card-row dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.admissions-programs__sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  min-width: 0;
+}
+
+.admissions-programs__references {
+  min-width: 0;
+}
+
+.admissions-programs__references > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 28px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  list-style: none;
+}
+
+.admissions-programs__references > summary::-webkit-details-marker {
+  display: none;
+}
+
+.admissions-programs__references > summary:hover {
+  color: var(--text);
+}
+
+.admissions-programs__references > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admissions-programs__references-body {
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: 75ch;
+  padding-block: var(--space-2);
+}
+
+.admissions-programs__references[open] {
+  flex-basis: 100%;
+}
+
+.admissions-programs__source-list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admissions-programs__source-list li {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.university--reviewed .admissions-programs__source-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text);
+  font-size: var(--text-base);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  overflow-wrap: anywhere;
+}
+
+.university--reviewed .admissions-programs__source-list a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.admissions-programs__source-list a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .admissions-context__heading h2,
@@ -628,7 +760,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-context__heading button,
 .admissions-context__actions button,
-.admissions-programs__toolbar button,
+.admissions-programs__toolbar > button,
 .admissions-programs__pagination button,
 .admissions-state button {
   min-height: 40px;
@@ -646,7 +778,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-context__heading button:hover:not(:disabled),
 .admissions-context__actions button:hover:not(:disabled),
-.admissions-programs__toolbar button:hover:not(:disabled),
+.admissions-programs__toolbar > button:hover:not(:disabled),
 .admissions-programs__pagination button:hover:not(:disabled),
 .admissions-state button:hover:not(:disabled) {
   background: var(--interaction-hover-surface);
@@ -655,7 +787,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-context__heading button:active:not(:disabled),
 .admissions-context__actions button:active:not(:disabled),
-.admissions-programs__toolbar button:active:not(:disabled),
+.admissions-programs__toolbar > button:active:not(:disabled),
 .admissions-programs__pagination button:active:not(:disabled),
 .admissions-state button:active:not(:disabled) {
   background: var(--interaction-active-surface);
@@ -664,7 +796,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-context__heading button:disabled,
 .admissions-context__actions button:disabled,
-.admissions-programs__toolbar button:disabled,
+.admissions-programs__toolbar > button:disabled,
 .admissions-programs__pagination button:disabled,
 .admissions-state button:disabled {
   cursor: not-allowed;
@@ -680,39 +812,99 @@ details[open] > summary > .admissions-disclosure-icon {
   background: var(--surface-soft);
 }
 
-.university--reviewed .admissions-programs .program-search {
+.university--reviewed .admissions-programs .program-search,
+#tab-programs .admissions-programs__toolbar--catalog .program-search {
   width: 100%;
   box-sizing: border-box;
 }
 
-.university--reviewed .admissions-programs .program-search__input {
+.university--reviewed .admissions-programs .program-search__input,
+#tab-programs .admissions-programs__toolbar--catalog .program-search__input {
   min-height: 44px;
   padding: 0;
   background: transparent;
   box-shadow: none;
 }
 
-.university--reviewed #admissionsViewRequirements {
-  display: inline-flex;
-  align-items: center;
+#tab-programs .program-card .program-card__chevron {
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-muted);
+}
+
+#tab-programs .program-card__toggle:hover {
+  background: transparent;
+}
+
+#tab-programs .program-card__toggle {
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-6) 0;
+}
+
+#tab-programs .program-card__text {
   gap: var(--space-2);
-  min-height: 44px;
-  max-width: 100%;
+}
+
+#tab-programs .admissions-programs__original {
+  padding-top: 0;
+}
+
+#tab-programs .program-card__chevron {
+  align-self: flex-start;
+  margin-left: auto;
+  transform: translateY(var(--space-2));
+}
+
+#tab-programs .program-card__title {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.university--reviewed #tab-programs .program-card__summary {
+  padding-top: var(--space-1-5);
+}
+
+#tab-programs .program-card :is(.program-card__kicker, .admissions-programs__original, .program-card__summary) {
+  line-height: var(--leading-tight);
+}
+
+#tab-programs .program-card.is-open .program-card__chevron {
+  background: transparent;
+  color: var(--text-muted);
+  transform: translateY(var(--space-2)) rotate(90deg);
+}
+
+#tab-programs .program-card__body {
+  padding: 0 var(--space-6);
+  overflow: hidden;
+}
+
+#tab-programs .program-card__body-inner {
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+  border-top: 0;
+}
+
+#tab-programs .program-card__body .program-card-row dd {
   min-width: 0;
-  box-sizing: border-box;
-  white-space: normal;
-  background: var(--accent);
-  color: var(--text-inverse);
+  margin: 0;
 }
 
-.university--reviewed #admissionsViewRequirements:hover:not(:disabled),
-.university--reviewed #admissionsViewRequirements:active:not(:disabled) {
-  background: var(--accent-strong);
-  color: var(--text-inverse);
+#tab-programs .program-card__body .program-signal {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.university--reviewed .program-card .program-card__chevron {
-  color: var(--text);
+#tab-programs .program-card__description {
+  max-inline-size: 72ch;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+#tab-programs .admissions-programs__admission-note {
+  color: var(--text-muted);
 }
 
 .admissions-programs__toolbar {
@@ -721,6 +913,10 @@ details[open] > summary > .admissions-disclosure-icon {
   align-items: end;
   gap: var(--space-3);
   min-width: 0;
+}
+
+#tab-programs .admissions-programs__toolbar--catalog {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .admissions-programs__toolbar label {
@@ -732,15 +928,15 @@ details[open] > summary > .admissions-disclosure-icon {
   font-weight: var(--font-weight-medium);
 }
 
-.admissions-programs__toolbar button {
+.admissions-programs__toolbar > button {
   min-height: 44px;
   background: var(--accent);
   box-shadow: none;
   color: var(--text-inverse);
 }
 
-.admissions-programs__toolbar button:hover:not(:disabled),
-.admissions-programs__toolbar button:active:not(:disabled) {
+.admissions-programs__toolbar > button:hover:not(:disabled),
+.admissions-programs__toolbar > button:active:not(:disabled) {
   background: var(--accent-strong);
   color: var(--text-inverse);
 }
@@ -760,6 +956,17 @@ details[open] > summary > .admissions-disclosure-icon {
   color: color-mix(in srgb, var(--text-muted) 85%, var(--text));
 }
 
+#tab-programs .program-card :is(.program-card__kicker, .program-card__title, .program-card__summary, .admissions-programs__original, .admissions-context__note, .admissions-catalog__meta, .admissions-catalog__entry dt, .admissions-catalog__scope, .program-card-label) {
+  font-size: var(--text-base);
+}
+
+#tab-programs .program-card__kicker {
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+  text-transform: none;
+  color: color-mix(in srgb, var(--text-muted) 85%, var(--text));
+}
+
 .admissions-programs__option-title {
   min-width: 0;
   font-weight: var(--font-weight-medium);
@@ -769,7 +976,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-programs__original {
   color: var(--text-muted);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   line-height: var(--leading-normal);
   overflow-wrap: anywhere;
 }
@@ -1051,6 +1258,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
   .admissions-context__primary {
     grid-template-columns: minmax(0, 1fr);
+    max-width: none;
   }
 
   .admissions-context__heading {
@@ -1061,17 +1269,16 @@ details[open] > summary > .admissions-disclosure-icon {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .admissions-programs__toolbar label:first-child {
+  #tab-programs .admissions-programs__toolbar--catalog {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admissions-programs__toolbar > button {
     grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 480px) {
-  .admissions-programs__overview .program-card-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-
   .admissions-context {
     gap: var(--space-3);
     padding: var(--space-3);
@@ -1081,7 +1288,7 @@ details[open] > summary > .admissions-disclosure-icon {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .admissions-programs__toolbar button {
+  .admissions-programs__toolbar > button {
     grid-column: auto;
   }
 
@@ -1252,10 +1459,118 @@ details[open] > summary > .admissions-disclosure-icon {
   min-height: 44px;
 }
 
-.admissions-programs__relationship {
-  display: grid;
+#tab-programs .admissions-programs__study-info[hidden] {
+  display: none;
+}
+
+#tab-programs .admissions-programs__study-info {
+  min-width: 0;
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog {
+  gap: var(--space-4);
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__section {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
   gap: var(--space-2);
-  padding-block: var(--space-2);
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__section > h3 {
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__fact {
+  padding-block: 0;
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__fact > summary {
+  flex-wrap: nowrap;
+  font-size: var(--text-base);
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__fact > summary > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__fact > summary::after {
+  content: "›";
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+#tab-programs .admissions-programs__study-info .admissions-catalog__fact[open] > summary::after {
+  transform: rotate(90deg);
+}
+
+#tab-programs .program-card__select-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--space-6) var(--space-3);
+}
+
+#tab-programs .program-card__select-actions :is(.program-card__admission-action, .program-card__selection-state) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+}
+
+#tab-programs .program-card__select-actions .program-card__admission-action {
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
+  color: var(--text);
+}
+
+#tab-programs .program-card__select-actions .program-card__admission-action:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--text);
+}
+
+#tab-programs .program-card__select-actions .program-card__admission-action:active {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
+}
+
+#tab-programs .program-card__select-actions .program-card__selection-state {
+  background: var(--accent-active-surface);
+  color: var(--interaction-active-text);
+}
+
+@media (min-width: 900px) {
+  #tab-programs .program-card__text {
+    max-inline-size: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  #tab-programs .program-card__toggle {
+    padding: var(--space-3) var(--space-4) 0;
+  }
+
+  #tab-programs .program-card__body {
+    padding: 0 var(--space-4);
+  }
+
+  #tab-programs .program-card__select-actions {
+    padding-inline: var(--space-4);
+  }
+}
+
+#tab-programs .admissions-programs__source-host:empty {
+  display: none;
 }
 
 .admissions-reading__excerpt {
@@ -1265,30 +1580,8 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-reading__excerpt > p,
-#admissionsStudyOverview > .program-card__description {
+#tab-programs .admissions-programs__overview > .program-card__description {
   max-inline-size: 75ch;
-}
-
-.admissions-programs__relationship p {
-  margin: 0;
-  line-height: var(--leading-normal);
-}
-
-.university--reviewed .admissions-programs__relationship > a {
-  width: fit-content;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  color: var(--text);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: var(--space-1);
-}
-
-.university--reviewed .admissions-programs__relationship > a:hover,
-.university--reviewed .admissions-programs__relationship > a:visited {
-  color: var(--text);
-  text-decoration-thickness: 2px;
 }
 
 .university--reviewed .d-tab-btn.active {
@@ -1439,5 +1732,25 @@ details[open] > summary > .admissions-disclosure-icon {
 
   .admissions-selection__actions button {
     min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  #tab-programs .admissions-programs__overview .admissions-programs__essentials .program-card-row {
+    grid-template-columns: minmax(0, 130px) minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  #tab-programs .admissions-programs__study-info .admissions-catalog__section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+}
+
+@media (max-width: 360px) {
+  #tab-programs .admissions-programs__overview .admissions-programs__essentials .program-card-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
   }
 }

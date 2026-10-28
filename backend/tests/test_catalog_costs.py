@@ -61,55 +61,28 @@ class CatalogCostTests(unittest.TestCase):
         unknown = universities.list_universities(q="Imperial", max_tuition=1000000)["items"]
         self.assertNotIn(IMPERIAL, [row["id"] for row in unknown])
 
-    def test_explicit_overseas_status_cannot_pass_through_home_tariff(self):
-        client = TestClient(app)
-        params = {"q": "Imperial", "study_level": "undergraduate", "max_tuition": 20000,
-                  "cost_basis": "tuition", "fee_status_context": "self_reported_international_overseas"}
+    def test_profiled_ranges_filter_individual_prices_and_living_intervals(self):
+        costs = admissions_catalog.catalog_costs(IMPERIAL, profile={})
+        self.assertEqual([10050, 44850, 47800], costs["tuition"]["amounts"])
+        self.assertEqual((26442, 64842), (costs["annual_total"]["min"], costs["annual_total"]["max"]))
+        self.assertEqual(3, len(costs["annual_total"]["intervals"]))
+        home = admissions_catalog.catalog_costs(IMPERIAL, profile={"fee_status_context": "self_reported_home_domestic"})
+        self.assertEqual([10050], home["tuition"]["amounts"])
+
         with patch("app.services.currency.convert", side_effect=lambda amount, _source, _target: amount * 1.25):
-            for path in ("/universities", "/universities/map-points"):
-                query = {**params, **({"west": -180, "east": 180, "south": -90, "north": 90} if "map" in path else {})}
-                response = client.get(path, params=query)
-                self.assertEqual(200, response.status_code)
-                self.assertNotIn(IMPERIAL, [row["id"] for row in response.json()["items"]])
-            response = client.post("/universities/ai-sort", json={
-                "q": "Imperial", "max_tuition": 20000, "cost_basis": "tuition",
-                "profile": {"study_level": "undergraduate", "major": "computer science", "fee_status_context": params["fee_status_context"]},
-            })
-            self.assertEqual(200, response.status_code)
-            self.assertNotIn(IMPERIAL, [row["id"] for row in response.json()["items"]])
-        self.assertEqual(422, client.get("/universities?fee_status_context=Overseas").status_code)
+            affordable = universities.list_universities(
+                q="Imperial", profile={}, max_tuition=40000, cost_basis="annual_total")["items"]
+            gap = universities.list_universities(
+                q="Imperial", profile={}, min_tuition=40000, max_tuition=60000, cost_basis="annual_total")["items"]
+        self.assertIn(IMPERIAL, [row["id"] for row in affordable])
+        self.assertNotIn(IMPERIAL, [row["id"] for row in gap])
 
-    def test_subject_level_fee_and_cycle_narrow_one_projection_without_program_selection(self):
-        costs = admissions_catalog.catalog_costs(IMPERIAL, "masters", major="computer science",
-            fee_status_context="self_reported_international_overseas", intended_entry_cycle="Fall 2027")
-        self.assertIsNone(costs["annual_total"])
-        self.assertEqual(48300, costs["tuition"]["min"])
-        self.assertEqual(["Overseas fee"], costs["tuition"]["fee_statuses"])
-        self.assertEqual("matched", costs["tuition"]["cycle_status"])
-        self.assertTrue(costs["scope"]["option_ids"])
-        self.assertIsNone(admissions_catalog.catalog_costs(IMPERIAL, "undergraduate", major="law")["tuition"])
-        self.assertEqual("dated_reference", admissions_catalog.catalog_costs(MIT, "undergraduate", intended_entry_cycle="Fall 2028")["annual_total"]["cycle_status"])
-        self.assertEqual("matched", admissions_catalog.catalog_costs(MIT, "undergraduate", intended_entry_cycle="Fall 2026")["annual_total"]["cycle_status"])
-
-    def test_all_levels_do_not_silently_choose_undergraduate_and_band_match_is_partial(self):
-        costs = admissions_catalog.catalog_costs(IMPERIAL)
-        self.assertEqual("", costs["tuition"]["study_level"])
-        self.assertIn("masters", costs["tuition"]["levels"])
-        self.assertIn("undergraduate", costs["tuition"]["levels"])
-        with patch("app.services.currency.convert", side_effect=lambda amount, _source, _target: amount):
-            result = universities.list_universities(q="Imperial", study_level="undergraduate", max_tuition=20000, cost_basis="tuition")
-        quote = next(row for row in result["items"] if row["id"] == IMPERIAL)["catalog_costs"]["tuition"]
-        self.assertEqual("partial", quote["filter_match"])
-        self.assertEqual("unknown", quote["fee_status_match"])
-
-    def test_invalid_saved_selection_and_unmatched_subject_do_not_borrow_general_prices(self):
-        for selection in ({"studyOptionId": "retired-option"}, {"applicationRouteId": "retired-route"},
-                          {"studyOptionId": "mit-course-6-3-bachelor", "applicationRouteId": "mit_grad_physics_admissions"}):
-            costs = admissions_catalog.catalog_costs(MIT, profile={"study_level": "undergraduate", "selectedAdmissionChoices": {MIT: selection}})
-            self.assertIsNone(costs["annual_total"])
-            self.assertIsNone(costs["tuition"])
-        scoped = admissions_catalog.catalog_costs(MIT, profile={"study_level": "masters", "selectedAdmissionChoices": {MIT: {"studyOptionId": "mit-course-6-3-bachelor"}}})
-        self.assertIsNone(scoped["annual_total"])
+        points = TestClient(app).post("/universities/profiled", json={
+            "q": "Imperial", "fields": "map", "profile": {}, "limit": 10,
+        })
+        self.assertEqual(200, points.status_code)
+        imperial = next(row for row in points.json()["items"] if row["id"] == IMPERIAL)
+        self.assertEqual(26442, imperial["catalog_costs"]["annual_total"]["min"])
 
     def test_legacy_zero_and_native_currency_are_preserved(self):
         free = {"id": "free", "finance": {"currency": "USD", "total_cost_year_usd": 0, "costs_breakdown_year_usd": {"Tuition": 0}}}

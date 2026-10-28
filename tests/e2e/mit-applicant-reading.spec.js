@@ -61,26 +61,25 @@ for (const item of cases) {
     await expect(page.locator("#admissionsProgramList")).not.toContainText("Political Science");
     await expect(page.locator("#admissionsProgramList")).not.toContainText("Materials Science");
     await cs.click();
+    await cs.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-    await expect(page.locator("[data-course-code-help]")).toContainText(/Course 6[‑-]3/);
+    await expect(page.locator("#admissionsStudySources .admissions-programs__references")).toBeVisible();
     await expect(page.locator("#admissionsReferenceSummary strong")).toHaveText(title);
     const essentials = { eng: ["4 years", "On-campus", "English"], rus: ["4 года", "Очно (кампус)", "Английский"], kaz: ["4 жыл", "Кампуста", "Ағылшын"] }[item.language];
     for (const value of essentials) await expect(page.locator("#admissionsStudyOverview .program-card-rows")).toContainText(value);
     const description = page.locator("#admissionsStudyOverview > .program-card__description");
     await expect(description).toContainText({ eng: "The degree chart", rus: "Учебный план", kaz: "Оқу бағдарламасы" }[item.language]);
-    if (item.language !== "eng") {
-      const original = page.locator("[data-program-original]");
-      await expect(original.locator("p")).toBeHidden();
-      await original.locator("summary").click();
-      await expect(original.locator("p")).toContainText("The degree chart");
-      await original.locator("summary").click();
-    }
+    const programSources = page.locator("#admissionsStudySources .admissions-programs__references");
+    await programSources.locator(":scope > summary").click();
+    await expect(programSources.locator("a")).not.toHaveCount(0);
+    await expect(programSources.locator("[data-program-overview-sources] p")).toHaveCount(0);
+    await programSources.locator(":scope > summary").click();
     fs.mkdirSync(evidenceDir, { recursive: true });
     await cs.evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-program.png`) });
-    await page.locator("#admissionsViewRequirements").click();
+    await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-    if (await selectAdmissionRoute(page, "mit-first-year")) await page.locator("#admissionsContextApply").click();
+    await setNativeSelect(page, "admissionsRoute", "mit-first-year");
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     const academic = page.locator("#detailRequirements .admissions-reading__section").first();
     await expect(academic).toContainText(/SAT.*ACT/);
@@ -164,6 +163,7 @@ test("changing language preserves program search, browsing level and admission s
   const cs = page.locator('[data-study-option="mit-course-6-3-bachelor"]');
   await expect(cs).toBeVisible();
   await cs.click();
+  await cs.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   const url = page.url();
   for (const [language, code] of [["kaz", "kk"], ["eng", "en"], ["rus", "ru"]]) {

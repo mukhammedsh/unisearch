@@ -137,6 +137,7 @@ test("MBA study options use canonical levels for reviewed universities and retai
     await expect(result).toBeVisible();
     await expect(result).toContainText("MBA");
     await result.click();
+    await result.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue(item.level);
     await expect(page.locator("#admissionsRoute")).toHaveValue("");

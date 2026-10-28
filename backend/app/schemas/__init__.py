@@ -3,6 +3,7 @@ from app.schemas.payloads import (
     ExamValidateRequest,
     LanguageValidateRequest,
     ProfileOnlyRequest,
+    ProfiledUniversitiesRequest,
     ProfilePayload,
     UniversitiesAiSortRequest,
 )
@@ -12,6 +13,7 @@ __all__ = [
     "ExamValidateRequest",
     "LanguageValidateRequest",
     "ProfileOnlyRequest",
+    "ProfiledUniversitiesRequest",
     "ProfilePayload",
     "UniversitiesAiSortRequest",
 ]
