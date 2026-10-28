@@ -164,9 +164,9 @@ def _is_expensive_request(request: Request) -> bool:
 
 
 def _expensive_rate_limit_path(request: Request) -> str:
-    path = request_scope_path(request)
+    path = request_scope_path(request).rstrip("/") or "/"
     parts = path.strip("/").split("/")
-    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] in {"uni-chance", "roi"}:
+    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] in {"uni-chance", "roi", "admissions-context"}:
         return "/" + "/".join([*parts[:-2], "{id}", parts[-1]])
     return path
 
