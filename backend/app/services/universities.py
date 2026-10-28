@@ -2013,7 +2013,9 @@ def _filter_university_pairs(
                     u.get("id") in admissions_catalog.INSTITUTION_IDS
                     and admissions_catalog._normalized_level(sl) == _safe_lower(x)
                 )
-                or (sl in ("doctorate", "phd") and _safe_lower(x) in ("doctorate", "phd"))
+                or (sl in ("undergraduate", "bachelor") and _safe_lower(x) in ("undergraduate", "bachelor"))
+                or (sl in ("masters", "master") and _safe_lower(x) in ("masters", "master"))
+                or (sl in ("doctorate", "phd", "doctoral") and _safe_lower(x) in ("doctorate", "phd", "doctoral"))
                 for x in meta_row.get("study_levels", [])
             )
         ]

@@ -104,19 +104,23 @@ test("profile discovery context stays soft while explicit level and price contex
   expect(ranking.major).toBeUndefined();
   expect(ranking.study_level).toBe("undergraduate");
 
-  let catalogRequest;
+  let catalogPayload;
   page.on("request", request => {
     const url = new URL(request.url());
-    if (url.pathname.endsWith("/universities") && request.method() === "GET") catalogRequest = request;
+    if (url.pathname.endsWith("/universities/profiled") && request.method() === "POST") {
+      catalogPayload = request.postDataJSON();
+    } else if (url.pathname.endsWith("/universities") && request.method() === "GET") {
+      catalogPayload = Object.fromEntries(url.searchParams);
+    }
   });
   await page.goto("/index.html?sort=name_asc&study_level=undergraduate");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  const query = new URL(catalogRequest.url()).searchParams;
-  expect(query.get("major")).toBeNull();
-  expect(query.get("format")).toBeNull();
-  expect(query.get("study_level")).toBe("undergraduate");
-  expect(query.get("fee_status_context")).toBe("self_reported_international_overseas");
-  expect(query.get("intended_entry_cycle")).toBe("2027 entry");
+  await expect.poll(() => catalogPayload).toBeTruthy();
+  expect(catalogPayload.major || null).toBeNull();
+  expect(catalogPayload.format || null).toBeNull();
+  expect(catalogPayload.study_level).toBe("undergraduate");
+  expect(catalogPayload.fee_status_context).toBe("self_reported_international_overseas");
+  expect(catalogPayload.intended_entry_cycle).toBe("2027 entry");
 });
 
 test("unifit tradeoff tooltips are hidden by default and toggle on interaction", async ({ page }) => {

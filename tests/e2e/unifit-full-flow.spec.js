@@ -129,9 +129,11 @@ test.describe("UniFit end-to-end flow", () => {
     const listResponse = page.waitForResponse(
       (res) => {
         const url = new URL(res.url());
-        return url.pathname === "/universities" &&
-          res.request().method() === "GET" &&
-          res.status() === 200;
+        return (
+          ((url.pathname.endsWith("/universities") && res.request().method() === "GET") ||
+           (url.pathname.endsWith("/universities/profiled") && res.request().method() === "POST")) &&
+          res.status() === 200
+        );
       }
     );
     await page.goto("/index.html");

@@ -213,7 +213,17 @@ test("catalog study level switcher is interactive and filters degree levels", as
   const mbaBtn = page.locator(".catalog-level-btn[data-level='mba']");
   const mbaResponsePromise = page.waitForResponse((response) => {
     const url = new URL(response.url());
-    return url.pathname.endsWith("/universities") && url.searchParams.get("study_level") === "mba";
+    if (url.pathname.endsWith("/universities") && url.searchParams.get("study_level") === "mba") {
+      return true;
+    }
+    if (url.pathname.endsWith("/universities/profiled") && response.request().method() === "POST") {
+      try {
+        return response.request().postDataJSON()?.study_level === "mba";
+      } catch {
+        return false;
+      }
+    }
+    return false;
   });
   await mbaBtn.click();
   await expect(mbaBtn).toHaveClass(/is-active/);
