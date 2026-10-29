@@ -78,11 +78,13 @@ class SecurityRegressionTests(unittest.TestCase):
     def test_currency_status_is_protected_ops_endpoint(self):
         client = TestClient(app)
         with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
-            res_unauth = client.get("/currency/status")
-            self.assertEqual(res_unauth.status_code, 401)
+            for path in ("/currency/status", "/currency/status/"):
+                with self.subTest(path=path):
+                    res_unauth = client.get(path)
+                    self.assertEqual(res_unauth.status_code, 401)
 
-            res_auth = client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
-            self.assertEqual(res_auth.status_code, 200)
+                    res_auth = client.get(path, headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+                    self.assertEqual(res_auth.status_code, 200)
 
         with patch("app.core.security.OPS_ADMIN_TOKEN", ""):
             res_no_token = client.get("/currency/status")
@@ -91,9 +93,10 @@ class SecurityRegressionTests(unittest.TestCase):
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
         client = TestClient(app)
         with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:
-            for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
-                with self.subTest(param=param):
-                    self.assertEqual(client.get(f"/health?warmup={param}").status_code, 401)
+            for base_path in ("/health", "/health/"):
+                for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
+                    with self.subTest(base_path=base_path, param=param):
+                        self.assertEqual(client.get(f"{base_path}?warmup={param}").status_code, 401)
             warmup.assert_not_called()
             for param in ["t", "y"]:
                 response = client.get(f"/health?warmup={param}", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
@@ -102,6 +105,13 @@ class SecurityRegressionTests(unittest.TestCase):
             warmup.reset_mock()
             self.assertEqual(client.get("/health?warmup=false").status_code, 200)
             warmup.assert_not_called()
+
+    def test_ops_guard_trailing_slashes_do_not_bypass_authorization(self):
+        client = TestClient(app)
+        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
+            for path in ("/ops/runtime/", "/ops/warmup/", "/metrics/"):
+                with self.subTest(path=path):
+                    self.assertEqual(client.get(path).status_code, 401)
 
     def test_ops_guard_matches_routes_under_root_path(self):
         client = TestClient(app, root_path="/api")

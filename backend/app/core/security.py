@@ -313,9 +313,12 @@ def is_protected_ops_request(request: Request) -> bool:
     root_path = request.scope.get("root_path", "")
     if root_path and (path == root_path or path.startswith(root_path + "/")):
         path = path[len(root_path):]
-    if path.startswith("/ops/"):
+    # Normalize path trailing slashes to prevent authorization bypasses on ops endpoints
+    path = path.rstrip("/") or "/"
+    metrics_path = str(METRICS_PATH or "/metrics").rstrip("/") or "/metrics"
+    if path == "/ops" or path.startswith("/ops/"):
         return True
-    if path in (str(METRICS_PATH or "/metrics"), "/currency/status"):
+    if path in (metrics_path, "/currency/status"):
         return True
     if path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on", "t", "y"}:
         return True
