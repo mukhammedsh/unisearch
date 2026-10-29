@@ -142,8 +142,6 @@ def build_catalog():
     assignment = read_json(ROOT / "assignment.json")
     packet_data = {packet: read_json(ROOT / f"packet-{packet}/research.json") for packet in PACKETS}
     packet_status = {packet: handoff_status(packet) for packet in PACKETS}
-    inventory_rows = {row["inventory_card_id"]: row for row in assignment["inventory"]}
-
     packet_inventory = {}
     option_to_cards = {}
     card_to_options = {}

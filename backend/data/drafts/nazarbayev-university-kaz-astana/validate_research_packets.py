@@ -50,8 +50,6 @@ def check_references(rows, ids, packet_id):
     facts = ids["facts"]
     routes = ids["application_routes"]
     options = ids["study_options"]
-    extra_options = ids["additional_offerings"]
-
     def source_refs(row, context):
         reference_ids(row.get("source_id"), sources, context)
         reference_ids(row.get("source_ids"), sources, context)
