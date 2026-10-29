@@ -218,7 +218,18 @@ def _calculate_breakdown_total_score(
             raise ValueError(f"{exam_key} requires at least one component score")
         return None
     if total_strategy == "use_parent_score":
-        return _validate_numeric_score(exam_key, cfg, score_raw if score_raw not in (None, "") else raw_value)
+        parent = score_raw if score_raw not in (None, "") else raw_value
+        fixed = _breakdown_item_definitions(scheme.get("fixed_components"), default_required=True)
+        supplied = {row["exam"] for row in parsed_components}
+        if parent in (None, "") and scheme.get("auto_total_strategy") == "sum" and fixed and all(row["exam"] in supplied for row in fixed):
+            parent = sum(numeric_component_scores)
+        total = _validate_numeric_score(exam_key, cfg, parent)
+        if scheme.get("validate_component_sum"):
+            known = sum(numeric_component_scores)
+            missing_max = sum(float(_config_entry(row["exam"])["max"]) for row in fixed if row["exam"] not in supplied)
+            if total < known or total > known + missing_max:
+                raise ValueError(f"{exam_key} total must be consistent with its section scores")
+        return total
     if total_strategy == "best_of_sum":
         if not numeric_component_scores:
             raise ValueError(f"{exam_key} requires at least one subject score")

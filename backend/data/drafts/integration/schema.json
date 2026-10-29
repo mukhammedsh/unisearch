@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Prepared three-institution admissions catalog",
+  "title": "Prepared reviewed admissions catalog",
   "description": "Resolved storage representation for coordinated integration; not active runtime data or an implemented HTTP response.",
   "type": "object",
   "additionalProperties": false,
@@ -10,8 +10,8 @@
     "runtime_active": {"type": "boolean"},
     "institutions": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 4,
+      "maxItems": 4,
       "items": {"$ref": "#/$defs/institution"}
     }
   },
@@ -19,7 +19,7 @@
     "ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
     "levels": {
       "type": "array",
-      "items": {"enum": ["undergraduate", "masters", "doctoral", "professional"]}
+      "items": {"enum": ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]}
     },
     "text": {"type": ["string", "null"]},
     "attributes": {"type": "object", "description": "Retained source-specific fields; these can contain significant conditions and must not be discarded by later consumers."},
@@ -173,7 +173,7 @@
           "type": "object",
           "required": ["id", "official_name", "attributes"],
           "properties": {
-            "id": {"enum": ["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]},
+            "id": {"enum": ["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana"]},
             "official_name": {"type": "string", "minLength": 1},
             "attributes": {"$ref": "#/$defs/attributes"}
           }

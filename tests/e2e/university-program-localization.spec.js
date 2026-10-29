@@ -47,7 +47,12 @@ for (const program of programs) for (const language of ["eng", "rus", "kaz"]) {
     await expect(page.locator("#admissionsProgramList [data-study-option]")).toHaveCount(0);
     await expect(page.locator("#admissionsSelectedProgram")).toBeVisible();
     await expect(page.locator("#admissionsSelectedProgram .program-card__title")).toHaveText(title);
+    await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
+    const pinnedOption = page.locator(`#admissionsSelectedProgram [data-study-option="${program.option}"]`);
+    await expect(pinnedOption).toHaveAttribute("aria-expanded", "false");
+    await pinnedOption.click();
     await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
+    await expect(page.locator("#admissionsStudyTitle")).toHaveText(title);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   });
 }

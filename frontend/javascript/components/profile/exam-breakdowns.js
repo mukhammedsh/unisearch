@@ -77,7 +77,7 @@ export const buildBreakdownState = (examId, source = null) => {
     const fixed = normalizeBreakdownDefinitions(scheme.fixed_components, { defaultRequired: true });
     const selectable = normalizeBreakdownDefinitions(scheme.selectable_components, { defaultRequired: false });
     const extraScores = normalizeBreakdownDefinitions(scheme.extra_scores, { defaultRequired: false });
-    const scoreValue = Number(source?.score);
+    const scoreValue = String(source?.score ?? "").trim() ? Number(source.score) : Number.NaN;
     return {
         totalScore: Number.isFinite(scoreValue) ? scoreValue : null,
         components: normalizeBreakdownRows(source?.details?.components),
@@ -99,9 +99,9 @@ export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, val
     const cfg = getExamConfig(examId);
     const mode = getExamInputMode(examId);
     const rawValue = String(valueState?.raw_value || "").trim();
-    const numericScore = Number(valueState?.score);
+    const numericScore = String(valueState?.score ?? "").trim() ? Number(valueState.score) : Number.NaN;
     const valueText = Number.isFinite(numericScore) ? String(numericScore) : rawValue;
-    const dataAttrs = `data-breakdown-slot="${escapeHtml(slotKey)}" data-breakdown-parent="${escapeHtml(parentExamId)}"`;
+    const dataAttrs = `id="exam-breakdown-${escapeHtml(parentExamId)}-${escapeHtml(slotKey)}" aria-label="${escapeHtml(getExamDisplayName(examId, { locale: getCurrentLanguage() }))}" data-breakdown-exam-value="${escapeHtml(examId)}" data-breakdown-slot="${escapeHtml(slotKey)}" data-breakdown-parent="${escapeHtml(parentExamId)}"`;
 
     if (mode === "band_select") {
         const bands = getExamLevelBands(examId);
@@ -218,6 +218,7 @@ export function readSubjectBreakdownDraft(examId, container, options = {}) {
         const exam = canonicalizeExamId(row.getAttribute("data-breakdown-exam"));
         const payload = readBreakdownFieldPayload(row, exam);
         if (!payload) {
+            if (state.fixed.find((item) => item.exam === exam)?.required === false) continue;
             if (silent) {
                 state.components.push({ exam, score: null });
                 continue;
@@ -446,7 +447,9 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                         "profile.exam_breakdown_hint",
                         { min: selectableMin, max: selectableMax || 0 },
                         `Enter scores by subject. Required subjects stay fixed, and you can choose ${selectableMin}-${selectableMax} extra subjects where needed.`
-                    ) : t("profile.exam_breakdown_fixed_hint", "Enter the score for each required section.")
+                    ) : state.fixed.some((item) => item.required)
+                        ? t("profile.exam_breakdown_fixed_hint", "Enter the score for each required section.")
+                        : t("profile.exam_breakdown_optional_hint", "Add the sections shown on your report. Missing sections remain unassessed.")
                 )}</div>
             </div>
         `;

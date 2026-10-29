@@ -2,7 +2,9 @@ const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors } = require("./helpers/selectors");
 
-test("reset profile button clears profile inputs and removes profile from localStorage", async ({ page }) => {
+for (const phone of [false, true]) {
+test(`reset profile button clears profile inputs and removes profile from localStorage${phone ? " on a phone" : ""}`, async ({ page }) => {
+  if (phone) await page.setViewportSize({ width: 390, height: 844 });
   await markTourAsSeen(page);
   await page.goto("/index.html");
 
@@ -30,6 +32,11 @@ test("reset profile button clears profile inputs and removes profile from localS
   const resetModal = page.locator("#profileResetModal");
   await expect(resetModal).toHaveClass(/is-open/);
 
+  await page.locator("#profileResetCancelBtn").click();
+  await expect(resetModal).not.toHaveClass(/is-open/);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")).budget)).toBe(15000);
+  await resetBtn.click();
+
   // Click confirm in modal
   await page.locator("#profileResetConfirmBtn").click();
 
@@ -46,3 +53,4 @@ test("reset profile button clears profile inputs and removes profile from localS
   await openProfileTab(page, "scores");
   await expect(page.locator(selectors.gpaInput)).toHaveValue("");
 });
+}

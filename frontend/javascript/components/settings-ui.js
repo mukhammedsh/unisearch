@@ -26,6 +26,7 @@ export function initSettingsUI() {
   if (!modal || !openBtn || (!settingInputs.length && !themeInputs.length)) return;
 
   let cleanupFocusTrap = null;
+  let previouslyFocused = null;
 
   const syncSettingsInputs = () => {
     settingInputs.forEach((input) => {
@@ -47,6 +48,7 @@ export function initSettingsUI() {
   };
 
   const openSettings = () => {
+    previouslyFocused = document.activeElement;
     syncSettingsInputs();
     syncThemeInputs();
     modal.classList.remove("is-closing");
@@ -67,7 +69,8 @@ export function initSettingsUI() {
       modal.classList.remove("is-open", "is-closing");
       modal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("modal-open");
-      openBtn.focus({ preventScroll: true });
+      const focusTarget = previouslyFocused?.isConnected && previouslyFocused !== document.body ? previouslyFocused : openBtn;
+      focusTarget.focus({ preventScroll: true });
     };
     closeMotionLayer(modal, finish);
   };

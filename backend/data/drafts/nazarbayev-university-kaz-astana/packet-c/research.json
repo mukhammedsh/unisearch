@@ -1,0 +1,4907 @@
+{
+  "schema_version": "nu-research-draft-1.0",
+  "university_id": "nazarbayev-university-kaz-astana",
+  "packet_id": "c",
+  "runtime_active": false,
+  "snapshot_date": "2026-10-23",
+  "inventory_entries": [
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-geosciences",
+      "title": "Ph.D. in Geosciences",
+      "official_level": "Doctoral Programs",
+      "source_order": 3,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_geosciences",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-geosciences"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-neurology",
+      "title": "Residency in Neurology",
+      "official_level": "Residency",
+      "source_order": 6,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-neurology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-neurology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-hematology",
+      "title": "Residency in Hematology",
+      "official_level": "Residency",
+      "source_order": 7,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-hematology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-hematology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-endocrinology",
+      "title": "Residency in Endocrinology",
+      "official_level": "Residency",
+      "source_order": 8,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-endocrinology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-endocrinology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-medical-oncology",
+      "title": "Residency in Medical Oncology",
+      "official_level": "Residency",
+      "source_order": 9,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-medical-oncology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-medical-oncology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-gastroenterology",
+      "title": "Residency in Gastroenterology",
+      "official_level": "Residency",
+      "source_order": 10,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-gastroenterology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-gastroenterology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-pediatric-surgery",
+      "title": "Residency in Pediatric Surgery",
+      "official_level": "Residency",
+      "source_order": 11,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-pediatric-surgery",
+      "study_option_ids": [
+        "nu-c-study-residency-in-pediatric-surgery"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-psychiatry",
+      "title": "Residency in Psychiatry",
+      "official_level": "Residency",
+      "source_order": 12,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-psychiatry",
+      "study_option_ids": [
+        "nu-c-study-residency-in-psychiatry"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-ophthalmology",
+      "title": "Residency in Ophthalmology",
+      "official_level": "Residency",
+      "source_order": 13,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-ophthalmology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-ophthalmology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-family-medicine",
+      "title": "Residency in Family Medicine",
+      "official_level": "Residency",
+      "source_order": 14,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-family-medicine",
+      "study_option_ids": [
+        "nu-c-study-residency-in-family-medicine"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-pediatrics",
+      "title": "Residency in Pediatrics",
+      "official_level": "Residency",
+      "source_order": 15,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-pediatrics",
+      "study_option_ids": [
+        "nu-c-study-residency-in-pediatrics"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-obstetrics-and-gynecology",
+      "title": "Residency in Obstetrics and Gynecology",
+      "official_level": "Residency",
+      "source_order": 16,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-obstetrics-and-gynecology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-obstetrics-and-gynecology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-internal-medicine",
+      "title": "Residency in Internal Medicine",
+      "official_level": "Residency",
+      "source_order": 17,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-internal-medicine",
+      "study_option_ids": [
+        "nu-c-study-residency-in-internal-medicine"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-general-surgery",
+      "title": "Residency in General Surgery",
+      "official_level": "Residency",
+      "source_order": 18,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-general-surgery",
+      "study_option_ids": [
+        "nu-c-study-residency-in-general-surgery"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-anesthesiology-and-critical-care",
+      "title": "Residency in Anesthesiology and Critical Care",
+      "official_level": "Residency",
+      "source_order": 19,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-anesthesiology-and-critical-care",
+      "study_option_ids": [
+        "nu-c-study-residency-in-anesthesiology-and-critical-care"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-urology",
+      "title": "Residency in Urology",
+      "official_level": "Residency",
+      "source_order": 20,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-urology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-urology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-radiology",
+      "title": "Residency in Radiology",
+      "official_level": "Residency",
+      "source_order": 21,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-radiology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-radiology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-orthopaedics-and-traumatology",
+      "title": "Residency in Orthopaedics and Traumatology",
+      "official_level": "Residency",
+      "source_order": 22,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-orthopaedics-and-traumatology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-orthopaedics-and-traumatology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-residency-in-anatomic-pathology",
+      "title": "Residency in Anatomic Pathology",
+      "official_level": "Residency",
+      "source_order": 23,
+      "catalog_url": "https://nusom.nu.edu.kz/residency-in-anatomic-pathology",
+      "study_option_ids": [
+        "nu-c-study-residency-in-anatomic-pathology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-chemistry",
+      "title": "Ph.D. in Chemistry",
+      "official_level": "Doctoral Programs",
+      "source_order": 24,
+      "catalog_url": "https://ssh.nu.edu.kz/phd_chem",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-chemistry"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-mathematics",
+      "title": "Ph.D. in Mathematics",
+      "official_level": "Doctoral Programs",
+      "source_order": 25,
+      "catalog_url": "https://scai.nu.edu.kz/phd-math",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-mathematics"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-physics",
+      "title": "Ph.D. in Physics",
+      "official_level": "Doctoral Programs",
+      "source_order": 26,
+      "catalog_url": "https://ssh.nu.edu.kz/phys_graduate_programs#!/tab/680540192-2",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-physics"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-computer-science",
+      "title": "Ph.D. in Computer Science",
+      "official_level": "Doctoral Programs",
+      "source_order": 31,
+      "catalog_url": "https://scai.nu.edu.kz/phd-cs",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-computer-science"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-phd-in-mining-engineering",
+      "title": "PhD in Mining Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 36,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_me",
+      "study_option_ids": [
+        "nu-c-study-phd-in-mining-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-phd-in-petroleum-engineering",
+      "title": "PhD in Petroleum Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 37,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_pe",
+      "study_option_ids": [
+        "nu-c-study-phd-in-petroleum-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-phd-in-science-engineering-and-technology",
+      "title": "PhD in Science, Engineering and Technology",
+      "official_level": "Doctoral Programs",
+      "source_order": 38,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_set",
+      "study_option_ids": [
+        "nu-c-study-phd-in-science-engineering-and-technology"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-chemical-engineering",
+      "title": "Ph.D. in Chemical Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 39,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_che",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-chemical-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-robotics-engineering",
+      "title": "Ph.D. in Robotics Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 40,
+      "catalog_url": "https://scai.nu.edu.kz/phd-rob",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-robotics-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-mechanical-engineering",
+      "title": "Ph.D. in Mechanical Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 41,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_mae",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-mechanical-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-electrical-engineering",
+      "title": "Ph.D. in Electrical Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 42,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_ee",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-electrical-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    },
+    {
+      "inventory_card_id": "nu-inventory-ph-d-in-civil-engineering",
+      "title": "Ph.D. in Civil Engineering",
+      "official_level": "Doctoral Programs",
+      "source_order": 43,
+      "catalog_url": "https://soe.nu.edu.kz/phd_in_ce",
+      "study_option_ids": [
+        "nu-c-study-ph-d-in-civil-engineering"
+      ],
+      "mapping_status": "matched",
+      "recruitment_confirmed": false
+    }
+  ],
+  "study_options": [
+    {
+      "id": "nu-c-study-ph-d-in-geosciences",
+      "name": "Ph.D. in Geosciences",
+      "catalog_card_id": "nu-inventory-ph-d-in-geosciences",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Advanced research in petroleum/mineral exploration and development, environmental geosciences, and energy transition.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-geosciences",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-neurology",
+      "name": "Residency in Neurology",
+      "catalog_card_id": "nu-inventory-residency-in-neurology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 4,
+      "study_description": "One year of Internal Medicine, followed from PGY2 by three years of Neurology, inpatient/outpatient clinical care and clinical/translational research.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-neurology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-residency-ielts-subscore-conflict",
+        "nu-c-program-review-residency-in-neurology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-hematology",
+      "name": "Residency in Hematology",
+      "catalog_card_id": "nu-inventory-residency-in-hematology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Three years of NU Internal Medicine followed by two years of Hematology; clinical/laboratory hematology and stem-cell transplantation. Completion of NU three-year Internal Medicine allows continuation into the specialty stage.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-hematology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-hematology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-endocrinology",
+      "name": "Residency in Endocrinology",
+      "catalog_card_id": "nu-inventory-residency-in-endocrinology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Three years of NU Internal Medicine followed by two years of Endocrinology including diabetes, thyroid, pituitary/hypothalamic and endocrine genetic disease. NU Internal Medicine completion permits specialty continuation.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-endocrinology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-endocrinology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-medical-oncology",
+      "name": "Residency in Medical Oncology",
+      "catalog_card_id": "nu-inventory-residency-in-medical-oncology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Three years of NU Internal Medicine followed by two years of oncology, solid tumors, brain tumors, imaging, pathology, oncohematology, marrow transplant and palliative care. NU Internal Medicine completion permits specialty continuation.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-medical-oncology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-medical-oncology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-gastroenterology",
+      "name": "Residency in Gastroenterology",
+      "catalog_card_id": "nu-inventory-residency-in-gastroenterology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 6,
+      "study_description": "Three years of NU Internal Medicine followed by three years of Gastroenterology, hepatology, liver transplant, endoscopy, imaging and research; curriculum continuation must be distinguished from a separate external application.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-gastroenterology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-gastroenterology",
+        "nu-c-gastro-en-ru-conflict"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-pediatric-surgery",
+      "name": "Residency in Pediatric Surgery",
+      "catalog_card_id": "nu-inventory-residency-in-pediatric-surgery",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Two initial years in general surgical specialties, ICU/anesthesia, vascular/thoracic/emergency cardiac/trauma/ambulatory surgery; three further years concentrate on pediatric surgery.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-pediatric-surgery",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-pediatric-surgery"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-psychiatry",
+      "name": "Residency in Psychiatry",
+      "catalog_card_id": "nu-inventory-residency-in-psychiatry",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 3,
+      "study_description": "First year covers family medicine, neurology, inpatient psychiatry and substance-use disorders; second year inpatient psychiatric specialties; third year longitudinal outpatient specialty clinics and psychotherapy.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-psychiatry",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-psychiatry"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-ophthalmology",
+      "name": "Residency in Ophthalmology",
+      "catalog_card_id": "nu-inventory-residency-in-ophthalmology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 4,
+      "study_description": "First-year emergency/consults, optometry, medicine/endocrinology, neurology/imaging and genetics; progressive ophthalmic subspecialty, ocular surgery, outpatient and inpatient training thereafter.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-ophthalmology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-ophthalmology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-family-medicine",
+      "name": "Residency in Family Medicine",
+      "catalog_card_id": "nu-inventory-residency-in-family-medicine",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 3,
+      "study_description": "Primary-care and hospital rotations in medicine, pediatrics, gynecology and surgery; progressively independent and supervisory roles, quality-improvement/research, senior electives and rural/urban community opportunities.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-family-medicine",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-family-medicine",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-pediatrics",
+      "name": "Residency in Pediatrics",
+      "catalog_card_id": "nu-inventory-residency-in-pediatrics",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 3,
+      "study_description": "Two years across inpatient pediatric specialties and outpatient care followed by senior supervisory, primary care, elective and research-focused training.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-pediatrics",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-residency-ielts-subscore-conflict",
+        "nu-c-program-review-residency-in-pediatrics",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-obstetrics-and-gynecology",
+      "name": "Residency in Obstetrics and Gynecology",
+      "catalog_card_id": "nu-inventory-residency-in-obstetrics-and-gynecology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 4,
+      "study_description": "Four postgraduate years of obstetric/gynecological inpatient and outpatient rotations, reproductive endocrinology/infertility, ultrasound/colposcopy, antepartum and oncology care; increasing surgical and supervisory responsibility.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-obstetrics-and-gynecology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-obstetrics-and-gynecology",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-internal-medicine",
+      "name": "Residency in Internal Medicine",
+      "catalog_card_id": "nu-inventory-residency-in-internal-medicine",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 3,
+      "study_description": "Three years of inpatient and ambulatory Internal Medicine and subspecialty rotations with progressive supervision, clinical responsibility and research; foundation for later fellowship or listed extended subspecialty pathways.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-internal-medicine",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-internal-medicine",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-general-surgery",
+      "name": "Residency in General Surgery",
+      "catalog_card_id": "nu-inventory-residency-in-general-surgery",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Five years of graded general surgical responsibility, critical-care/emergency exposure, transplant/vascular/thoracic/GI and oncology/endocrine surgery; senior chief and consultant-level development.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-general-surgery",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-general-surgery",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-anesthesiology-and-critical-care",
+      "name": "Residency in Anesthesiology and Critical Care",
+      "catalog_card_id": "nu-inventory-residency-in-anesthesiology-and-critical-care",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 4,
+      "study_description": "Intern year, two junior clinical-anesthesia years and senior subspecialty/critical-care training; operating room, labour/delivery, intensive care and pain care with scholarly research.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-anesthesiology-and-critical-care",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-anesthesiology-and-critical-care"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-urology",
+      "name": "Residency in Urology",
+      "catalog_card_id": "nu-inventory-residency-in-urology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Two years of general surgical/ICU/emergency/vascular/trauma/outpatient rotations followed by three years of urology, including oncology, transplant, pediatric, reconstructive, functional and endourological practice.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-urology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-urology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-radiology",
+      "name": "Residency in Radiology",
+      "catalog_card_id": "nu-inventory-residency-in-radiology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Three years across diagnostic radiology subspecialties, PET/CT/MRI and ultrasound, followed by two years broad general radiology; final-year two six-week specialty electives.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-radiology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-radiology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-orthopaedics-and-traumatology",
+      "name": "Residency in Orthopaedics and Traumatology",
+      "catalog_card_id": "nu-inventory-residency-in-orthopaedics-and-traumatology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 5,
+      "study_description": "Two-year common surgical, ICU, vascular, trauma, plastic/burn and musculoskeletal imaging trunk, then three years of progressively independent orthopaedics/trauma specialty rotations.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-orthopaedics-and-traumatology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-orthopaedics-and-traumatology"
+      ]
+    },
+    {
+      "id": "nu-c-study-residency-in-anatomic-pathology",
+      "name": "Residency in Anatomic Pathology",
+      "catalog_card_id": "nu-inventory-residency-in-anatomic-pathology",
+      "school": "NU School of Medicine",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English",
+        "Kazakh",
+        "Russian"
+      ],
+      "duration_years": 3,
+      "study_description": "Three years of rotational laboratory training in autopsy, minimally invasive tissue sampling, cytopathology, surgical pathology and intraoperative consultations. The page cites 36-month AP standards; the referenced 48-month combined AP/CP standard does not establish a separate NU combined program.",
+      "application_route_ids": [
+        "nu-c-residency-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-residency-in-anatomic-pathology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "catalog_language": [
+        "English"
+      ],
+      "award_kind": "postgraduate_medical_residency",
+      "official_level": "Residency",
+      "native_awards": [],
+      "fact_ids": [
+        "nu-c-program-review-residency-in-anatomic-pathology",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-chemistry",
+      "name": "Ph.D. in Chemistry",
+      "catalog_card_id": "nu-inventory-ph-d-in-chemistry",
+      "school": "School of Sciences and Humanities",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Four-year, 240 ECTS doctorate; options include nanotechnology, environmental science, drug design, and sponsor-based Industry PhD.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-chemistry",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-chem-industry-phd",
+        "nu-c-chem-progression",
+        "nu-c-phd-document-checklist",
+        "nu-c-phd-ssh-regular_and_financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-mathematics",
+      "name": "Ph.D. in Mathematics",
+      "catalog_card_id": "nu-inventory-ph-d-in-mathematics",
+      "school": "School of Computing and Artificial Intelligence",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Four-year, 242 ECTS research doctorate; 204 ECTS thesis.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-mathematics",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-math-structure",
+        "nu-c-phd-document-checklist",
+        "nu-c-phd-scai-regular_and_financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-physics",
+      "name": "Ph.D. in Physics",
+      "catalog_card_id": "nu-inventory-ph-d-in-physics",
+      "school": "School of Sciences and Humanities",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Independent research plan and doctoral thesis plus classical mechanics, quantum mechanics, statistical mechanics, solid-state physics, mathematical methods, relativity and optoelectronics courses.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-physics",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-ph-d-in-physics",
+        "nu-c-phd-document-checklist",
+        "nu-c-phd-ssh-regular_and_financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-computer-science",
+      "name": "Ph.D. in Computer Science",
+      "catalog_card_id": "nu-inventory-ph-d-in-computer-science",
+      "school": "School of Computing and Artificial Intelligence",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Four-year, 240 ECTS research across AI, intelligent systems, analytics, computing systems, security, and smart cities.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-computer-science",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-cs-structure",
+        "nu-c-phd-document-checklist",
+        "nu-c-phd-scai-regular_and_financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-phd-in-mining-engineering",
+      "name": "PhD in Mining Engineering",
+      "catalog_card_id": "nu-inventory-phd-in-mining-engineering",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Year 1 Research Methods and Ethics, Advanced Mine Geomechanics, Advanced Mining Systems and literature analysis; thesis research throughout four years. Research covers rock mechanics, mining systems, automation, health/safety and sustainability.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-phd-in-mining-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-phd-in-mining-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-phd-in-petroleum-engineering",
+      "name": "PhD in Petroleum Engineering",
+      "catalog_card_id": "nu-inventory-phd-in-petroleum-engineering",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Year 1 Research Methods and Ethics, Advanced Well Engineering, Advanced Reservoir Engineering, literature analysis and thesis research; independent research and doctoral thesis thereafter.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-phd-in-petroleum-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-phd-in-petroleum-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-phd-in-science-engineering-and-technology",
+      "name": "PhD in Science, Engineering and Technology",
+      "catalog_card_id": "nu-inventory-phd-in-science-engineering-and-technology",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Research in energy, ICT, materials, sustainability, biomedical engineering, robotics and mechatronics; Level-8 courses plus thesis research.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-phd-in-science-engineering-and-technology",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-phd-in-science-engineering-and-technology",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-chemical-engineering",
+      "name": "Ph.D. in Chemical Engineering",
+      "catalog_card_id": "nu-inventory-ph-d-in-chemical-engineering",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Independent thesis research with Level-8 coursework and Advanced Chemical Engineering Thermodynamics. Research includes energy generation/storage, environmental remediation, hydrocarbon/plastics/food processing, bioprocesses and biotechnology.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-chemical-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-ph-d-in-chemical-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-robotics-engineering",
+      "name": "Ph.D. in Robotics Engineering",
+      "catalog_card_id": "nu-inventory-ph-d-in-robotics-engineering",
+      "school": "School of Computing and Artificial Intelligence",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Research in intelligent systems, industrial automation, human-robot interaction and medical/rehabilitation robotics; robotics electives and thesis.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-robotics-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-ph-d-in-robotics-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-phd-scai-regular_and_financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-mechanical-engineering",
+      "name": "Ph.D. in Mechanical Engineering",
+      "catalog_card_id": "nu-inventory-ph-d-in-mechanical-engineering",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Thesis research and advanced electives in energy, biomedical engineering, design/manufacturing/control, transportation and sustainability.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-mechanical-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-ph-d-in-mechanical-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-electrical-engineering",
+      "name": "Ph.D. in Electrical Engineering",
+      "catalog_card_id": "nu-inventory-ph-d-in-electrical-engineering",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Thesis research; power engineering, electronics, signal processing/communications, biomedical engineering, mechatronics and computing. Electives include modelling/control, algorithms, signal processing, electronic circuits and VLSI fabrication.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-electrical-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-ph-d-in-electrical-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    },
+    {
+      "id": "nu-c-study-ph-d-in-civil-engineering",
+      "name": "Ph.D. in Civil Engineering",
+      "catalog_card_id": "nu-inventory-ph-d-in-civil-engineering",
+      "school": "School of Engineering",
+      "campus": "Astana, Kazakhstan",
+      "mode": "full_time_on_campus",
+      "language": [
+        "English"
+      ],
+      "duration_years": 4,
+      "study_description": "Research in structural/materials, geotechnical, environmental, construction management, transportation, and water resources/management; Level-8 courses and thesis.",
+      "application_route_ids": [
+        "nu-c-phd-route"
+      ],
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-civil-engineering",
+        "nu-c-src-az"
+      ],
+      "content_review_status": "individual_page_reviewed",
+      "award_kind": "research_doctorate",
+      "official_level": "Doctoral Programs",
+      "native_awards": [
+        "PhD"
+      ],
+      "fact_ids": [
+        "nu-c-program-review-ph-d-in-civil-engineering",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements"
+      ]
+    }
+  ],
+  "application_routes": [
+    {
+      "id": "nu-c-phd-route",
+      "name": "PhD regular admission",
+      "type": "shared_school_specific_route",
+      "target": "NU admissions portal",
+      "applies_to": [
+        "nu-c-study-ph-d-in-geosciences",
+        "nu-c-study-ph-d-in-chemistry",
+        "nu-c-study-ph-d-in-mathematics",
+        "nu-c-study-ph-d-in-physics",
+        "nu-c-study-ph-d-in-computer-science",
+        "nu-c-study-phd-in-mining-engineering",
+        "nu-c-study-phd-in-petroleum-engineering",
+        "nu-c-study-phd-in-science-engineering-and-technology",
+        "nu-c-study-ph-d-in-chemical-engineering",
+        "nu-c-study-ph-d-in-robotics-engineering",
+        "nu-c-study-ph-d-in-mechanical-engineering",
+        "nu-c-study-ph-d-in-electrical-engineering",
+        "nu-c-study-ph-d-in-civil-engineering"
+      ],
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "application_url": "https://admissions.nu.edu.kz/",
+      "destination": "NU admissions portal (admissions.nu.edu.kz)",
+      "fact_ids": [
+        "nu-c-phd-application",
+        "nu-c-phd-requirements",
+        "nu-c-phd-2027-28-cycle",
+        "nu-c-phd-fee-2025-26",
+        "nu-c-phd-scholarship",
+        "nu-c-phd-document-checklist",
+        "nu-c-soe-regular-aid-gpa-scope",
+        "nu-c-phd-scai-regular_and_financial_support-requirements",
+        "nu-c-phd-ssh-regular_and_financial_support-requirements",
+        "nu-c-phd-soe-regular-requirements",
+        "nu-c-phd-soe-financial_support-requirements",
+        "nu-c-stipend-source-conflict",
+        "nu-c-state-grant-work-obligation",
+        "nu-c-graduate-guarantee-fee",
+        "nu-c-general-fee-discounts-reference",
+        "nu-c-monthly-living-reference"
+      ]
+    },
+    {
+      "id": "nu-c-residency-route",
+      "name": "NUSOM residency admissions",
+      "type": "conditional_or_unconditional_route",
+      "target": "NU admissions portal; UMC recommendation for conditional route",
+      "applies_to": [
+        "nu-c-study-residency-in-neurology",
+        "nu-c-study-residency-in-hematology",
+        "nu-c-study-residency-in-endocrinology",
+        "nu-c-study-residency-in-medical-oncology",
+        "nu-c-study-residency-in-gastroenterology",
+        "nu-c-study-residency-in-pediatric-surgery",
+        "nu-c-study-residency-in-psychiatry",
+        "nu-c-study-residency-in-ophthalmology",
+        "nu-c-study-residency-in-family-medicine",
+        "nu-c-study-residency-in-pediatrics",
+        "nu-c-study-residency-in-obstetrics-and-gynecology",
+        "nu-c-study-residency-in-internal-medicine",
+        "nu-c-study-residency-in-general-surgery",
+        "nu-c-study-residency-in-anesthesiology-and-critical-care",
+        "nu-c-study-residency-in-urology",
+        "nu-c-study-residency-in-radiology",
+        "nu-c-study-residency-in-orthopaedics-and-traumatology",
+        "nu-c-study-residency-in-anatomic-pathology"
+      ],
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid"
+      ],
+      "application_url": "https://admissions.nu.edu.kz/",
+      "destination": "NU admissions portal (admissions.nu.edu.kz)",
+      "fact_ids": [
+        "nu-c-residency-medical-prerequisite",
+        "nu-c-residency-unconditional",
+        "nu-c-residency-conditional",
+        "nu-c-residency-documents",
+        "nu-c-residency-dates-2026",
+        "nu-c-residency-fee-2025-26",
+        "nu-c-residency-funding",
+        "nu-c-residency-language-conflict",
+        "nu-c-residency-ielts-subscore-conflict",
+        "nu-c-residency-policy-2024-scope",
+        "nu-c-residency-foreign-documents",
+        "nu-c-residency-policy-offer-funding",
+        "nu-c-gastro-en-ru-conflict",
+        "nu-c-stipend-source-conflict",
+        "nu-c-state-grant-work-obligation",
+        "nu-c-graduate-guarantee-fee",
+        "nu-c-general-fee-discounts-reference",
+        "nu-c-monthly-living-reference"
+      ],
+      "verified_admission_statuses": {
+        "unconditional": {
+          "requirement_fact_ids": [
+            "nu-c-residency-medical-prerequisite",
+            "nu-c-residency-unconditional",
+            "nu-c-residency-documents"
+          ],
+          "test_submission_stage": "application"
+        },
+        "conditional_umc": {
+          "requirement_fact_ids": [
+            "nu-c-residency-medical-prerequisite",
+            "nu-c-residency-conditional",
+            "nu-c-residency-documents"
+          ],
+          "test_submission_stage": "first enrolled year"
+        }
+      },
+      "integration_note": "One application family has two verified admission statuses; expose separate selectable runtime contexts so conditional deadlines do not replace unconditional application requirements. The six-program 2024 force-majeure exception remains separately scoped."
+    }
+  ],
+  "facts": [
+    {
+      "id": "nu-c-phd-application",
+      "category": "application_process",
+      "value": {
+        "portal": "admissions.nu.edu.kz",
+        "max_program_choices": 2,
+        "if_accepted_to_both": "choose one",
+        "fee_kzt": 15000,
+        "late_fee_kzt": 45000,
+        "late_window": "last two weeks before deadline",
+        "non_refundable": true,
+        "online_payment_only": true,
+        "post_submission_changes": "not allowed",
+        "steps": [
+          "account and online form",
+          "upload documents and 3x4 photo",
+          "pay and submit",
+          "send official test results by deadline",
+          "English interview if invited",
+          "orientation week and School contract to enroll"
+        ]
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "PhD",
+        "cycle": "current process",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Applicant must arrange official score delivery; allow at least 7-10 working days."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-phd-requirements",
+      "category": "admission_requirements",
+      "value": {
+        "SCAI": {
+          "degrees": "Bachelor and Master or equivalent",
+          "master_cgpa_minimum": 2.75,
+          "ielts": {
+            "overall": 6.5,
+            "each_minimum": 6.0
+          },
+          "gre_gmat": "recommended"
+        },
+        "SSH": {
+          "degrees": "Bachelor and Master or equivalent",
+          "master_cgpa_minimum": 2.75,
+          "committee_may_consider_cgpa": 2.5,
+          "condition": "graduate of highly ranked university",
+          "ielts": {
+            "overall": 6.5,
+            "each_minimum": 6.0
+          },
+          "gre": "recommended"
+        },
+        "SOE": {
+          "degrees": "Bachelor and Master or equivalent",
+          "cgpa_minimum": 2.75,
+          "scope": "Bachelor and/or Master",
+          "ielts": {
+            "overall": 6.5,
+            "each_minimum": 6.0
+          },
+          "gre_gmat": "optional"
+        },
+        "english_exemptions": "degree earned in country where English is official academic language or degree officially taught in English",
+        "test_exclusions": [
+          "IELTS Online",
+          "IELTS Indicator",
+          "TOEFL Home Edition",
+          "TOEFL PDT"
+        ]
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "PhD",
+        "schools": "SCAI, SSH, SOE only",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "School groups are not a universal PhD rule; verify each program page. GRE/GMAT has no numeric minimum in reviewed requirements.",
+        "Use the separately option-scoped School facts for applicable program requirements; this combined School comparison is reference only."
+      ],
+      "review_status": "verified",
+      "attributes": {
+        "reference_only": true
+      }
+    },
+    {
+      "id": "nu-c-phd-2027-28-cycle",
+      "category": "application_dates",
+      "value": {
+        "cycle": "2027/2028",
+        "application_deadlines": "To be announced",
+        "test_submission_deadline": "To be announced"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "not_published",
+      "scope": {
+        "level": "PhD",
+        "cycle": "2027/2028",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-phd-fee-2025-26",
+      "category": "tuition",
+      "value": {
+        "amount": 23500,
+        "currency": "USD",
+        "billing_period": "academic_year",
+        "source_year": "2025/2026",
+        "kzt_amount": 12008500
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-fees"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "PhD",
+        "except": "Doctor of Public Management",
+        "applicants": "domestic and international",
+        "cycle": "2025/2026",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Not a 2027/2028 quote; current general fee table has no labeled year."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-phd-scholarship",
+      "category": "funding",
+      "value": {
+        "award": "Abay Kunanbayev scholarship",
+        "selection": "International candidate must pass program selection, receive admission committee recommendation, then be considered by authorized University body. Award is not automatic.",
+        "coverage": [
+          "tuition",
+          "basic medical insurance",
+          "monthly stipend"
+        ],
+        "amount_and_duration": "Specific award amount/duration/renewal not established; FAQ stipend figures conflict.",
+        "additional_international_aid": "Published citizenship-based partial tuition scholarships range from 50 to 90%; program/country award eligibility requires confirmation."
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid",
+        "nu-c-src-faq"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published_with_unresolved_terms",
+      "scope": {
+        "level": "PhD",
+        "applicants": "international",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Scholarship consideration is linked to program admission; recommendation does not guarantee an award.",
+        "Do not extend Kazakhstan state-grant work obligations automatically to this international award."
+      ],
+      "review_status": "verified",
+      "review_history": [
+        {
+          "reviewed_on": "2026-10-23",
+          "value": {
+            "award": "Abay Kunanbayev scholarship",
+            "selection": "merit-based; top international applicants recommended for admission",
+            "coverage": "not specified",
+            "obligations": "not specified"
+          },
+          "source_ids": [
+            "nu-c-src-phd-admissions",
+            "nu-c-src-phd-aid"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nu-c-residency-medical-prerequisite",
+      "category": "admission_requirements",
+      "value": {
+        "degree": "MD or equivalent terminal medical degree",
+        "definition": "qualification providing eligibility for registration or certification to practise independently in applicant country",
+        "institution": "recognized university listed in World Directory of Medical Schools",
+        "separate_license_or_internship_document": "not stated in reviewed common policy"
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published_with_unresolved_licensure_scope",
+      "scope": {
+        "level": "residency",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Do not treat as graduate-entry MD. Clarify licensure, internship and qualification recognition for local and international applicants."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-unconditional",
+      "category": "application_route",
+      "value": {
+        "type": "unconditional",
+        "requirements": [
+          "terminal MD/equivalent",
+          "IELTS 6.0 overall with policy subscore rule or ETS-equivalent TOEFL",
+          "IFOM BSE or USMLE Step 1",
+          "personal statement up to 500 words",
+          "two confidential academic/clinical recommendations"
+        ]
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "residency",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "English waiver discretionary for specified prior medical-degree English settings or NU graduate status."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-conditional",
+      "category": "application_route",
+      "value": {
+        "type": "conditional",
+        "selection": "UMC Residency Admission Committee recommendation; NUSOM Admissions Committee makes final admission decision",
+        "requirements": [
+          "terminal MD/equivalent",
+          "UMC recommendation",
+          "two confidential recommendations",
+          "personal statement up to 500 words"
+        ],
+        "first_year_conditions": [
+          "IFOM BSE or USMLE Step 1",
+          "English test unless discretionary waiver applies"
+        ]
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "residency",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Conditional admission is not a funding award. Confirm pathway availability per specialty/cycle."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-documents",
+      "category": "application_documents",
+      "value": {
+        "documents": [
+          "application form",
+          "national ID or passport",
+          "name change document if applicable",
+          "MD diploma and transcript",
+          "English test evidence if applicable",
+          "IFOM BSE or USMLE Step 1 for unconditional route",
+          "two confidential recommendations",
+          "personal statement up to 500 words",
+          "medical health certificate",
+          "criminal record presence/absence document"
+        ],
+        "conditional_addition": "UMC recommendation",
+        "submission_language": "English or notarized English translation"
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "residency",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Conditional route defers IFOM/USMLE and English requirement into first study year."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-dates-2026",
+      "category": "application_dates",
+      "value": {
+        "window_start": "2026-01-05",
+        "window_end": "2026-04-30",
+        "deadline_time": "14:00 Astana time",
+        "inclusive": true,
+        "cycle_label": "not stated"
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "historical_or_cycle_ambiguous",
+      "scope": {
+        "level": "residency",
+        "applicants": "domestic and international",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Past at check date; do not use as next cycle."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-fee-2025-26",
+      "category": "tuition",
+      "value": {
+        "amount": 11200,
+        "currency": "USD",
+        "kzt_amount": 5723200,
+        "billing_period": "academic_year",
+        "source_year": "2025/2026"
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-admissions",
+        "nu-c-src-fees"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "level": "residency",
+        "applicants": "all students",
+        "cycle": "2025/2026",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-funding",
+      "category": "funding",
+      "value": {
+        "published_funding_sources": [
+          "state educational order",
+          "specific scholarship/sponsorship",
+          "self-funding or employer payment"
+        ],
+        "policy_scope": "Policy revised 2024-03-11 names six older residency programs; newer program coverage needs current confirmation.",
+        "award_or_stipend": "FAQ publishes stipend references but internally conflicts; no current amount guaranteed.",
+        "conditional_admission": "admission route; independent of funding"
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid",
+        "nu-c-src-fees",
+        "nu-c-src-residency-policy-2024",
+        "nu-c-src-faq"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published_with_unresolved_terms",
+      "scope": {
+        "level": "residency",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Enrollment decision states individual funding source.",
+        "Previous Kazakhstan state-funded residency training disqualifies repeat state educational order funding under the cited policy.",
+        "Current funded-seat quota and terms for all 18 specialties are not published in reviewed sources."
+      ],
+      "review_status": "verified",
+      "review_history": [
+        {
+          "reviewed_on": "2026-10-23",
+          "value": {
+            "award_or_stipend": "not established in reviewed current source",
+            "conditional_admission": "admission route, not financial aid"
+          },
+          "source_ids": [
+            "nu-c-src-residency-policy",
+            "nu-c-src-phd-aid",
+            "nu-c-src-fees"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nu-c-chem-industry-phd",
+      "category": "study_option_variant",
+      "value": {
+        "option": "Chemistry with Industrial R&D",
+        "requires": "industrial sponsorship",
+        "research_location": "primarily sponsor premises",
+        "coursework": "hybrid/online flexibility may be used for logistics",
+        "ip": "NDA-compliant publication alternatives where needed",
+        "same_award_and_standards": true,
+        "sponsor_fee_or_stipend": "not stated"
+      },
+      "source_ids": [
+        "nu-c-src-chem"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published_with_unresolved_finance",
+      "scope": {
+        "program": "Ph.D. in Chemistry",
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-chemistry"
+        ],
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Do not assume sponsorship means tuition waiver or stipend."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-chem-progression",
+      "category": "study_progression",
+      "value": {
+        "comprehensive_exam": "oral or written by end of April, Year 1 spring",
+        "retake_period": "1.5 months",
+        "proposal_defense": "after passing qualifying exam; toward end of summer term",
+        "second_failure": "dismissal after second failed exam or proposal defense attempt"
+      },
+      "source_ids": [
+        "nu-c-src-chem"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "program": "Ph.D. in Chemistry",
+        "stage": "after enrollment",
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-chemistry"
+        ],
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Not an admissions entrance exam."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-math-structure",
+      "category": "study_structure",
+      "value": {
+        "duration_years": 4,
+        "total_ects": 242,
+        "thesis_ects": 204,
+        "teaching_assistant_appointments": 2,
+        "publication_before_thesis_exam": "at least one Q1/Q2 Scopus and/or Web of Science paper published, accepted or in press",
+        "supervision": "primary and co-supervisor with advisory committee"
+      },
+      "source_ids": [
+        "nu-c-src-math"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "program": "Ph.D. in Mathematics",
+        "stage": "during study",
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-mathematics"
+        ],
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Degree progression, not admission."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-cs-structure",
+      "category": "study_structure",
+      "value": {
+        "duration_years": 4,
+        "total_ects": 240,
+        "research_fields": [
+          "AI",
+          "intelligent systems",
+          "data analytics",
+          "computing systems",
+          "information security",
+          "smart cities"
+        ],
+        "supervision": "lead, internal co-supervisor and external co-supervisor",
+        "internship": "3-12 months at international research host, subject to funding and approval"
+      },
+      "source_ids": [
+        "nu-c-src-cs"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "scope": {
+        "program": "Ph.D. in Computer Science",
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-computer-science"
+        ],
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-language-conflict",
+      "category": "source_conflict",
+      "value": {
+        "a_z_language": "English",
+        "individual_pages": "English, Kazakh, Russian",
+        "admissions_language_evidence": "English test and interview"
+      },
+      "source_ids": [
+        "nu-c-src-az",
+        "nu-c-src-residency-policy"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "conflicting_official_sources",
+      "scope": {
+        "level": "residency",
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Individual pages checked: Neurology, Hematology, Endocrinology, Medical Oncology and Gastroenterology. Clarify instruction vs clinical languages."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-residency-ielts-subscore-conflict",
+      "category": "source_conflict",
+      "value": {
+        "Neurology_page": "IELTS 6.0 overall; no subscore below 5.5",
+        "Pediatrics_page": "IELTS 6.0 overall; no more than one subscore at 5.5",
+        "TOEFL": "ETS equivalency referenced, conversion not specified on these pages"
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-page-residency-in-pediatrics"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "conflicting_official_program_pages",
+      "scope": {
+        "level": "residency",
+        "programs": [
+          "Neurology",
+          "Pediatrics"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "study_option_ids": [
+          "nu-c-study-residency-in-neurology",
+          "nu-c-study-residency-in-pediatrics"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Do not model one universal band rule until the per-program source is checked."
+      ],
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-program-review-phd-in-mining-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Year 1 Research Methods and Ethics, Advanced Mine Geomechanics, Advanced Mining Systems and literature analysis; thesis research throughout four years. Research covers rock mechanics, mining systems, automation, health/safety and sustainability.",
+        "supervision": "Research plan with Program Advisor or Research Supervisor at the start of semester; research report assessed pass/fail.",
+        "admissions": "Program page links central admissions; no separate prior-discipline, pre-application supervisor agreement or proposal requirement is specified there.",
+        "source_anomaly": "Some educational-objective text refers to petroleum/energy instead of mining. Retain the Mining award and research description; do not infer a Petroleum qualification."
+      },
+      "source_ids": [
+        "nu-c-src-page-phd-in-mining-engineering"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published_with_source_anomaly",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-phd-in-mining-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Central school requirements remain separately scoped. Study/course prerequisites are not automatically entrance criteria."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-phd-in-petroleum-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Year 1 Research Methods and Ethics, Advanced Well Engineering, Advanced Reservoir Engineering, literature analysis and thesis research; independent research and doctoral thesis thereafter.",
+        "supervision": "Research plan with Program Advisor or Research Supervisor each semester.",
+        "admissions": "Program page links central admissions; no separate prior-discipline, pre-application supervisor agreement or proposal requirement specified."
+      },
+      "source_ids": [
+        "nu-c-src-page-phd-in-petroleum-engineering"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-phd-in-petroleum-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Central school requirements remain separately scoped. Study/course prerequisites are not automatically entrance criteria."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-phd-in-science-engineering-and-technology",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Research in energy, ICT, materials, sustainability, biomedical engineering, robotics and mechatronics; Level-8 courses plus thesis research.",
+        "supervision": "Lead supervisor, internal NU co-supervisor and external co-supervisor.",
+        "study_exceptions": [
+          "Specified courses may be waived for NU graduates and replaced by approved Level-8 courses.",
+          "Three-to-twelve month international research internship subject to funding and approval.",
+          "Advanced Applied Mathematics course expects linear algebra, multivariable calculus and introductory differential equations; this is course preparation, not a published admission prerequisite."
+        ],
+        "admissions": "Program page links central admissions; no separate pre-application supervisor agreement or proposal requirement specified."
+      },
+      "source_ids": [
+        "nu-c-src-page-phd-in-science-engineering-and-technology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-phd-in-science-engineering-and-technology"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Central school requirements remain separately scoped. Study/course prerequisites are not automatically entrance criteria."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-ph-d-in-robotics-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "thesis_credits": 210,
+        "study": "Research in intelligent systems, industrial automation, human-robot interaction and medical/rehabilitation robotics; robotics electives and thesis.",
+        "supervision": "Lead supervisor, internal co-supervisor and at least one external co-supervisor.",
+        "study_exceptions": [
+          "Three-to-twelve month international research internship subject to funding and approval."
+        ],
+        "admissions": "Program page links central regular and financial-support admission; no extra prior-field cutoff or pre-application supervisor commitment specified.",
+        "source_anomaly": "Curriculum table includes Advanced Chemical Engineering Thermodynamics DCHME 757 while narrative/core modules concern robotics. Preserve anomaly and seek SCAI clarification; do not treat the copied course as a verified compulsory Robotics course."
+      },
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-robotics-engineering"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published_with_source_anomaly",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-robotics-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Central school requirements remain separately scoped. Study/course prerequisites are not automatically entrance criteria."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-ph-d-in-chemical-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Independent thesis research with Level-8 coursework and Advanced Chemical Engineering Thermodynamics. Research includes energy generation/storage, environmental remediation, hydrocarbon/plastics/food processing, bioprocesses and biotechnology.",
+        "supervision": "Lead, internal NU co-supervisor and external co-supervisor.",
+        "study_exceptions": [
+          "Selected courses may be replaced for NU graduates by approved Level-8 courses.",
+          "International research internship opportunity is not guaranteed."
+        ],
+        "admissions": "Program page directs applicants to central regular admissions, tuition and financial aid; no additional program-specific numeric cutoff, prior field, proposal or pre-application supervisor commitment is specified on the reviewed page. School-level requirements and equivalency review still apply."
+      },
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-chemical-engineering",
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-chemical-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Course preparation and enrolled-student supervision are not pre-admission requirements."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-ph-d-in-mechanical-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Thesis research and advanced electives in energy, biomedical engineering, design/manufacturing/control, transportation and sustainability.",
+        "supervision": "Lead, internal NU co-supervisor and external co-supervisor.",
+        "study_exceptions": [
+          "Selected courses may be replaced for NU graduates by approved Level-8 courses.",
+          "Three-to-twelve month internship subject to funding and approval."
+        ],
+        "admissions": "Program page directs applicants to central regular admissions, tuition and financial aid; no additional program-specific numeric cutoff, prior field, proposal or pre-application supervisor commitment is specified on the reviewed page. School-level requirements and equivalency review still apply."
+      },
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-mechanical-engineering",
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-mechanical-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Course preparation and enrolled-student supervision are not pre-admission requirements."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-ph-d-in-electrical-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Thesis research; power engineering, electronics, signal processing/communications, biomedical engineering, mechatronics and computing. Electives include modelling/control, algorithms, signal processing, electronic circuits and VLSI fabrication.",
+        "supervision": "Lead, internal NU co-supervisor and external co-supervisor.",
+        "study_exceptions": [
+          "Selected courses may be replaced for NU graduates by approved Level-8 courses.",
+          "Three-to-twelve month research internship subject to funding and approval."
+        ],
+        "admissions": "Program page directs applicants to central regular admissions, tuition and financial aid; no additional program-specific numeric cutoff, prior field, proposal or pre-application supervisor commitment is specified on the reviewed page. School-level requirements and equivalency review still apply."
+      },
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-electrical-engineering",
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-electrical-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Course preparation and enrolled-student supervision are not pre-admission requirements."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-ph-d-in-civil-engineering",
+      "category": "program_details",
+      "value": {
+        "credits": 240,
+        "study": "Research in structural/materials, geotechnical, environmental, construction management, transportation, and water resources/management; Level-8 courses and thesis.",
+        "supervision": "Lead, internal NU co-supervisor and external co-supervisor.",
+        "study_exceptions": [
+          "Selected courses may be replaced for NU graduates by approved Level-8 courses.",
+          "Three-to-twelve month international research internship opportunity requires an approved host."
+        ],
+        "admissions": "Program page directs applicants to central regular admissions, tuition and financial aid; no additional program-specific numeric cutoff, prior field, proposal or pre-application supervisor commitment is specified on the reviewed page. School-level requirements and equivalency review still apply."
+      },
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-civil-engineering",
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Course preparation and enrolled-student supervision are not pre-admission requirements."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-ph-d-in-physics",
+      "category": "program_details",
+      "value": {
+        "duration_years": 4,
+        "study": "Independent research plan and doctoral thesis plus classical mechanics, quantum mechanics, statistical mechanics, solid-state physics, mathematical methods, relativity and optoelectronics courses.",
+        "supervision": "Research plan developed with advisor and used to assess semester progress.",
+        "study_exceptions": [
+          "BS-level standing is listed for Mathematical Methods course, not as the PhD admission degree requirement."
+        ],
+        "external_outline": "The university page links a Google Drive program outline; exact linked outline was not used as a university-hosted admissions source.",
+        "admissions": "Program page directs applicants to central regular admissions, tuition and financial aid; no additional program-specific numeric cutoff, prior field, proposal or pre-application supervisor commitment is specified on the reviewed page. School-level requirements and equivalency review still apply."
+      },
+      "source_ids": [
+        "nu-c-src-page-ph-d-in-physics",
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-physics"
+        ],
+        "stage": "study_structure_and_admission_reference",
+        "cycle": "yearless program page",
+        "study_levels": [
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "Course preparation and enrolled-student supervision are not pre-admission requirements."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-pediatric-surgery",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Two initial years in general surgical specialties, ICU/anesthesia, vascular/thoracic/emergency cardiac/trauma/ambulatory surgery; three further years concentrate on pediatric surgery.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "clinical_and_page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "admission_variants": [
+          "unconditional",
+          "UMC-recommended conditional"
+        ],
+        "prior_qualification": "terminal MD/equivalent; school listed in World Directory; not a prior completed specialty requirement",
+        "medical_exam": "IFOM BSE or USMLE Step 1 report; conditional route permits first-year submission",
+        "application_dates": {
+          "start": "2026-01-05",
+          "end": "2026-04-30",
+          "time": "14:00 Astana",
+          "academic_year": "not specified; past reference"
+        },
+        "tuition": {
+          "amount": 11200,
+          "currency": "USD",
+          "kzt": 5723200,
+          "period": "academic_year",
+          "year": "2025/2026"
+        },
+        "funding": "No additional specialty-specific award/obligation stated; see shared funding facts",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-pediatric-surgery"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-pediatric-surgery"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "dated 2026 application reference and 2025/2026 fee",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "MD-equivalence, English waiver and clinical suitability remain committee decisions. Page language metadata is not verified proof that teaching is trilingual."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-psychiatry",
+      "category": "program_details",
+      "value": {
+        "duration_years": 3,
+        "study": "First year covers family medicine, neurology, inpatient psychiatry and substance-use disorders; second year inpatient psychiatric specialties; third year longitudinal outpatient specialty clinics and psychotherapy.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "clinical_and_page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "admission_variants": [
+          "unconditional",
+          "UMC-recommended conditional"
+        ],
+        "prior_qualification": "terminal MD/equivalent; school listed in World Directory; not a prior completed specialty requirement",
+        "medical_exam": "IFOM BSE or USMLE Step 1 report; conditional route permits first-year submission",
+        "application_dates": {
+          "start": "2026-01-05",
+          "end": "2026-04-30",
+          "time": "14:00 Astana",
+          "academic_year": "not specified; past reference"
+        },
+        "tuition": {
+          "amount": 11200,
+          "currency": "USD",
+          "kzt": 5723200,
+          "period": "academic_year",
+          "year": "2025/2026"
+        },
+        "funding": "No additional specialty-specific award/obligation stated; see shared funding facts",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-psychiatry"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-psychiatry"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "dated 2026 application reference and 2025/2026 fee",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "MD-equivalence, English waiver and clinical suitability remain committee decisions. Page language metadata is not verified proof that teaching is trilingual."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-ophthalmology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 4,
+        "study": "First-year emergency/consults, optometry, medicine/endocrinology, neurology/imaging and genetics; progressive ophthalmic subspecialty, ocular surgery, outpatient and inpatient training thereafter.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "clinical_and_page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "admission_variants": [
+          "unconditional",
+          "UMC-recommended conditional"
+        ],
+        "prior_qualification": "terminal MD/equivalent; school listed in World Directory; not a prior completed specialty requirement",
+        "medical_exam": "IFOM BSE or USMLE Step 1 report; conditional route permits first-year submission",
+        "application_dates": {
+          "start": "2026-01-05",
+          "end": "2026-04-30",
+          "time": "14:00 Astana",
+          "academic_year": "not specified; past reference"
+        },
+        "tuition": {
+          "amount": 11200,
+          "currency": "USD",
+          "kzt": 5723200,
+          "period": "academic_year",
+          "year": "2025/2026"
+        },
+        "funding": "No additional specialty-specific award/obligation stated; see shared funding facts",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-ophthalmology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-ophthalmology"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "dated 2026 application reference and 2025/2026 fee",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "MD-equivalence, English waiver and clinical suitability remain committee decisions. Page language metadata is not verified proof that teaching is trilingual."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-family-medicine",
+      "category": "program_details",
+      "value": {
+        "duration_years": 3,
+        "study": "Primary-care and hospital rotations in medicine, pediatrics, gynecology and surgery; progressively independent and supervisory roles, quality-improvement/research, senior electives and rural/urban community opportunities.",
+        "ielts_rule": "overall 6.0; no more than one subscore of 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "clinical_and_page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "admission_variants": [
+          "unconditional",
+          "UMC-recommended conditional"
+        ],
+        "prior_qualification": "terminal MD/equivalent; school listed in World Directory; not a prior completed specialty requirement",
+        "medical_exam": "IFOM BSE or USMLE Step 1 report; conditional route permits first-year submission",
+        "application_dates": {
+          "start": "2026-01-05",
+          "end": "2026-04-30",
+          "time": "14:00 Astana",
+          "academic_year": "not specified; past reference"
+        },
+        "tuition": {
+          "amount": 11200,
+          "currency": "USD",
+          "kzt": 5723200,
+          "period": "academic_year",
+          "year": "2025/2026"
+        },
+        "funding": "No additional specialty-specific award/obligation stated; see shared funding facts",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": 1,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-family-medicine"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-family-medicine"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "dated 2026 application reference and 2025/2026 fee",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "MD-equivalence, English waiver and clinical suitability remain committee decisions. Page language metadata is not verified proof that teaching is trilingual."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-obstetrics-and-gynecology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 4,
+        "study": "Four postgraduate years of obstetric/gynecological inpatient and outpatient rotations, reproductive endocrinology/infertility, ultrasound/colposcopy, antepartum and oncology care; increasing surgical and supervisory responsibility.",
+        "ielts_rule": "overall 6.0; no more than one subscore at 5.5",
+        "campus": "Astana NUSOM and clinical hospitals",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, licence-document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": 1,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-obstetrics-and-gynecology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-obstetrics-and-gynecology"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The IELTS rule is program-specific evidence; conflict with older policy remains separately documented."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-internal-medicine",
+      "category": "program_details",
+      "value": {
+        "duration_years": 3,
+        "study": "Three years of inpatient and ambulatory Internal Medicine and subspecialty rotations with progressive supervision, clinical responsibility and research; foundation for later fellowship or listed extended subspecialty pathways.",
+        "ielts_rule": "overall 6.0; no more than one subscore at 5.5",
+        "campus": "Astana NUSOM and clinical hospitals",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, licence-document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": 1,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-internal-medicine"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-internal-medicine"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The IELTS rule is program-specific evidence; conflict with older policy remains separately documented."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-general-surgery",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Five years of graded general surgical responsibility, critical-care/emergency exposure, transplant/vascular/thoracic/GI and oncology/endocrine surgery; senior chief and consultant-level development.",
+        "ielts_rule": "overall 6.0; no more than one subscore at 5.5",
+        "campus": "Astana NUSOM and clinical hospitals",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, licence-document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": 1,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-general-surgery"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-general-surgery"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The IELTS rule is program-specific evidence; conflict with older policy remains separately documented."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-anesthesiology-and-critical-care",
+      "category": "program_details",
+      "value": {
+        "duration_years": 4,
+        "study": "Intern year, two junior clinical-anesthesia years and senior subspecialty/critical-care training; operating room, labour/delivery, intensive care and pain care with scholarly research.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical hospitals",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, licence-document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-anesthesiology-and-critical-care"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-anesthesiology-and-critical-care"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The IELTS rule is program-specific evidence; conflict with older policy remains separately documented."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-urology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Two years of general surgical/ICU/emergency/vascular/trauma/outpatient rotations followed by three years of urology, including oncology, transplant, pediatric, reconstructive, functional and endourological practice.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, active licence document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-urology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-urology"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The historical policy conflict remains separately visible; the standards reference is not certification or accreditation of NU by ACGME."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-radiology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Three years across diagnostic radiology subspecialties, PET/CT/MRI and ultrasound, followed by two years broad general radiology; final-year two six-week specialty electives.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, active licence document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-radiology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-radiology"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The historical policy conflict remains separately visible; the standards reference is not certification or accreditation of NU by ACGME."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-orthopaedics-and-traumatology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Two-year common surgical, ICU, vascular, trauma, plastic/burn and musculoskeletal imaging trunk, then three years of progressively independent orthopaedics/trauma specialty rotations.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, active licence document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-orthopaedics-and-traumatology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-orthopaedics-and-traumatology"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The historical policy conflict remains separately visible; the standards reference is not certification or accreditation of NU by ACGME."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-anatomic-pathology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 3,
+        "study": "Three years of rotational laboratory training in autopsy, minimally invasive tissue sampling, cytopathology, surgical pathology and intraoperative consultations. The page cites 36-month AP standards; the referenced 48-month combined AP/CP standard does not establish a separate NU combined program.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "campus": "Astana NUSOM and clinical sites",
+        "mode": "full time",
+        "page_languages": [
+          "English",
+          "Kazakh",
+          "Russian"
+        ],
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "specialty_extra_admission_criteria": "No separate prior completed residency, numeric IFOM/USMLE cutoff, active licence document or extra admissions examination stated on reviewed page.",
+        "specialty_funding": "No additional specialty-specific award terms stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-anatomic-pathology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "applicants": [
+          "domestic",
+          "international"
+        ],
+        "cycle": "2026 application dates, 2025/2026 fee, yearless study",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The historical policy conflict remains separately visible; the standards reference is not certification or accreditation of NU by ACGME."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-neurology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 4,
+        "study": "One year of Internal Medicine, followed from PGY2 by three years of Neurology, inpatient/outpatient clinical care and clinical/translational research.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "prior_specialty": "The longer Internal-Medicine subspecialty structure includes the initial training; no universal completed prior residency prerequisite is stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-neurology"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-neurology"
+        ],
+        "cycle": "yearless study and current program-page requirements",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The application target stays NUSOM Residency; continuation language does not prove a separately open lateral-entry intake."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-hematology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Three years of NU Internal Medicine followed by two years of Hematology; clinical/laboratory hematology and stem-cell transplantation. Completion of NU three-year Internal Medicine allows continuation into the specialty stage.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "prior_specialty": "The longer Internal-Medicine subspecialty structure includes the initial training; no universal completed prior residency prerequisite is stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-hematology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-hematology"
+        ],
+        "cycle": "yearless study and current program-page requirements",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The application target stays NUSOM Residency; continuation language does not prove a separately open lateral-entry intake."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-endocrinology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Three years of NU Internal Medicine followed by two years of Endocrinology including diabetes, thyroid, pituitary/hypothalamic and endocrine genetic disease. NU Internal Medicine completion permits specialty continuation.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "prior_specialty": "The longer Internal-Medicine subspecialty structure includes the initial training; no universal completed prior residency prerequisite is stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-endocrinology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-endocrinology"
+        ],
+        "cycle": "yearless study and current program-page requirements",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The application target stays NUSOM Residency; continuation language does not prove a separately open lateral-entry intake."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-medical-oncology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 5,
+        "study": "Three years of NU Internal Medicine followed by two years of oncology, solid tumors, brain tumors, imaging, pathology, oncohematology, marrow transplant and palliative care. NU Internal Medicine completion permits specialty continuation.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "prior_specialty": "The longer Internal-Medicine subspecialty structure includes the initial training; no universal completed prior residency prerequisite is stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-medical-oncology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-medical-oncology"
+        ],
+        "cycle": "yearless study and current program-page requirements",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The application target stays NUSOM Residency; continuation language does not prove a separately open lateral-entry intake."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-gastroenterology",
+      "category": "program_details",
+      "value": {
+        "duration_years": 6,
+        "study": "Three years of NU Internal Medicine followed by three years of Gastroenterology, hepatology, liver transplant, endoscopy, imaging and research; curriculum continuation must be distinguished from a separate external application.",
+        "ielts_rule": "overall 6.0; every subscore at least 5.5",
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "prior_specialty": "The longer Internal-Medicine subspecialty structure includes the initial training; no universal completed prior residency prerequisite is stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": null,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-gastroenterology"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-gastroenterology"
+        ],
+        "cycle": "yearless study and current program-page requirements",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The application target stays NUSOM Residency; continuation language does not prove a separately open lateral-entry intake."
+      ]
+    },
+    {
+      "id": "nu-c-program-review-residency-in-pediatrics",
+      "category": "program_details",
+      "value": {
+        "duration_years": 3,
+        "study": "Two years across inpatient pediatric specialties and outpatient care followed by senior supervisory, primary care, elective and research-focused training.",
+        "ielts_rule": "overall 6.0; no more than one subscore at 5.5",
+        "common_policy_fact_ids": [
+          "nu-c-residency-medical-prerequisite",
+          "nu-c-residency-conditional",
+          "nu-c-residency-unconditional",
+          "nu-c-residency-documents",
+          "nu-c-residency-dates-2026",
+          "nu-c-residency-fee-2025-26"
+        ],
+        "prior_specialty": "The longer Internal-Medicine subspecialty structure includes the initial training; no universal completed prior residency prerequisite is stated.",
+        "english_requirement": {
+          "exam": "IELTS",
+          "overall_minimum": 6.0,
+          "section_minimum": 5.5,
+          "maximum_sections_at_5_5": 1,
+          "assessment_state": "source_conflict_requires_confirmation",
+          "alternative": "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-pediatrics"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-residency-in-pediatrics"
+        ],
+        "cycle": "yearless study and current program-page requirements",
+        "study_levels": [
+          "residency"
+        ]
+      },
+      "conditions": [
+        "The application target stays NUSOM Residency; continuation language does not prove a separately open lateral-entry intake."
+      ]
+    },
+    {
+      "id": "nu-c-residency-policy-2024-scope",
+      "category": "historical_policy_scope",
+      "value": {
+        "revision": "2024-03-11",
+        "named_programs": [
+          "Pediatrics",
+          "Obstetrics and Gynecology",
+          "Family Medicine",
+          "General Surgery",
+          "Internal Medicine",
+          "Anatomic Pathology"
+        ],
+        "english_rule": {
+          "overall": 7.0,
+          "each_minimum": 6.0
+        },
+        "test_validity": "IELTS/TOEFL and IFOM/USMLE no more than two years as of online submission",
+        "conditional_exception": "An otherwise unconditional-qualified applicant unable to take IFOM/USMLE due to proven force majeure or other impossibility may be considered conditionally at committee discretion. First-calendar-year report required.",
+        "conditional_failure": "Possible dismissal, Provost extension up to six months, or Provost-approved exam alternatives/timeframe."
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy-2024"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "programs": "six named older residency programs",
+        "policy_revision": "2024-03-11",
+        "study_option_ids": [
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Current program pages show lower/different English rules; retain conflict. Do not automatically extend the old six-program definition to twelve newer specialties."
+      ]
+    },
+    {
+      "id": "nu-c-residency-foreign-documents",
+      "category": "qualification_recognition",
+      "value": {
+        "foreign_transcript": "Foreign institution sends official transcript directly; exceptional alternatives are hard copy, digital credential service or institution corporate email. Nostrification certificate or apostilled foreign document removes the direct-transcript sending requirement.",
+        "equivalency": "Admissions Committee determines prior-degree appropriateness and relevance.",
+        "independent_active_license": "No separate active licence or internship-document requirement identified in reviewed NU policy/checklists."
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy-2024"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "programs": "six policy-defined residency programs",
+        "applicants": "foreign degree holders; not citizenship alone",
+        "study_option_ids": [
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Nostrification/apostille is a documented alternative, not a universal extra requirement. Country practice eligibility and Kazakhstan clinical-practice recognition need program confirmation."
+      ]
+    },
+    {
+      "id": "nu-c-residency-policy-offer-funding",
+      "category": "admission_and_funding_terms",
+      "value": {
+        "process": "Shortlisted candidates interviewed in person or by videoconference; committee evaluates and ranks.",
+        "notice": "Within ten working days of committee decision.",
+        "offer_response": "Five working days or period stated in offer.",
+        "funding_sources": [
+          "state educational order",
+          "specific scholarship or sponsorship",
+          "self-funding or employer payment"
+        ],
+        "state_grant_restriction": "Previously completed residency funded by Kazakhstan state is not eligible again under state educational order.",
+        "guaranteed_place": "No; complete application does not ensure admission.",
+        "appeal": "Policy says admission decision not appealable."
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy-2024"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "programs": "six policy-defined residency programs",
+        "study_option_ids": [
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Current yearly quotas/award terms not specified; enrollment decision names funding per applicant."
+      ]
+    },
+    {
+      "id": "nu-c-stipend-source-conflict",
+      "category": "source_conflict",
+      "value": {
+        "graduate_faq_kzt_per_month": {
+          "PhD": 262500,
+          "Residency": 134664
+        },
+        "international_faq_kzt_per_month": {
+          "PhD": 240000,
+          "Residency": 123122
+        },
+        "publication_year": "not stated",
+        "citizenship_statement": "Same FAQ says monthly stipend is equal regardless of citizenship."
+      },
+      "source_ids": [
+        "nu-c-src-faq"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "conflicting_official_sources",
+      "review_status": "verified",
+      "scope": {
+        "levels": [
+          "doctoral",
+          "residency"
+        ],
+        "award_status": "funded students; individual eligibility unresolved",
+        "study_levels": [
+          "doctoral",
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": {
+            "levels": [
+              "PhD",
+              "Residency"
+            ],
+            "award_status": "funded students; individual eligibility unresolved",
+            "study_levels": [
+              "doctoral",
+              "Residency"
+            ]
+          }
+        }
+      },
+      "conditions": [
+        "Do not promise a current stipend amount or apply to all self-funded students. Ask Bursar for dated award schedule."
+      ],
+      "attributes": {
+        "reference_only": true
+      },
+      "original_scope": {
+        "levels": [
+          "PhD",
+          "Residency"
+        ],
+        "award_status": "funded students; individual eligibility unresolved",
+        "study_levels": [
+          "doctoral",
+          "Residency"
+        ]
+      }
+    },
+    {
+      "id": "nu-c-state-grant-work-obligation",
+      "category": "funding_obligation",
+      "value": {
+        "published_rule": "NU FAQ says Kazakhstan citizens educated on state grants must work for at least three years after graduation.",
+        "individual_exemption_or_service_placement": "not assessed"
+      },
+      "source_ids": [
+        "nu-c-src-faq"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "citizenship": "Kazakhstan",
+        "funding": "state grant",
+        "levels": [
+          "masters",
+          "residency",
+          "PhD"
+        ],
+        "study_levels": [
+          "masters",
+          "residency",
+          "doctoral"
+        ]
+      },
+      "conditions": [
+        "This is a sourced NU explanation, not a blanket obligation for all students or international scholarships. Confirm current contract and legal exceptions."
+      ],
+      "attributes": {
+        "reference_only": true
+      }
+    },
+    {
+      "id": "nu-c-graduate-guarantee-fee",
+      "category": "guarantee_deposit",
+      "value": {
+        "amount": 100000,
+        "currency": "KZT",
+        "payment_trigger": "accepting graduate admission offer",
+        "refundable_after": [
+          "education services agreement signed",
+          "orientation attended",
+          "first semester completed in good academic standing"
+        ],
+        "refund_timing": "second semester to university-issued bank card"
+      },
+      "source_ids": [
+        "nu-c-src-faq"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "program_group": "graduate programs; program-specific applicability confirmation remains required",
+        "study_levels": [
+          "masters",
+          "doctoral",
+          "professional",
+          "residency"
+        ],
+        "levels": [
+          "masters",
+          "doctoral",
+          "professional",
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": {
+            "program_group": "graduate programs; program-specific applicability confirmation remains required"
+          }
+        }
+      },
+      "conditions": [
+        "Separate refundable deposit from tuition and nonrefundable application fee."
+      ],
+      "attributes": {
+        "reference_only": true
+      },
+      "original_scope": {
+        "program_group": "graduate programs; program-specific applicability confirmation remains required"
+      }
+    },
+    {
+      "id": "nu-c-gastro-en-ru-conflict",
+      "category": "source_conflict",
+      "value": {
+        "English_page": "IELTS overall 6.0, every band at least 5.5; statement up to 500 words",
+        "Russian_page": "IELTS overall 6.0, at most one band at 5.5; personal statement wording says at least 500 words"
+      },
+      "source_ids": [
+        "nu-c-src-page-residency-in-gastroenterology",
+        "nu-c-src-gastro-ru"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "conflicting_official_sources",
+      "review_status": "verified",
+      "scope": {
+        "program": "Residency in Gastroenterology",
+        "study_option_ids": [
+          "nu-c-study-residency-in-gastroenterology"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ]
+      },
+      "conditions": [
+        "Keep both source claims; obtain written NUSOM clarification rather than translate one into an invented universal rule."
+      ]
+    },
+    {
+      "id": "nu-c-phd-document-checklist",
+      "category": "application_documents",
+      "value": {
+        "shared": [
+          "application and consent",
+          "national ID/passport",
+          "name-change evidence if applicable",
+          "Bachelor/Master diplomas and transcripts",
+          "valid official language result or evidence for waiver",
+          "statement of purpose/personal statement",
+          "confidential recommendations",
+          "CV up to one page"
+        ],
+        "SCAI": "500-word statement; two letters within 12 months including one academic; GRE/GMAT recommended.",
+        "SSH": "Two letters within 12 months, one from current/prior employer or research supervisor on the aid-page checklist; extra writing sample/research proposal on central page is Eurasian Studies only, not Chemistry/Physics.",
+        "SOE": "500-word statement; two letters within 12 months, one from employer or research supervisor. Aid-page statement text retains old School of Mining and Geosciences label.",
+        "language": "English or notarized English translation"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "programs": "packet C technical PhDs by actual School",
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-ph-d-in-chemistry",
+          "nu-c-study-ph-d-in-mathematics",
+          "nu-c-study-ph-d-in-physics",
+          "nu-c-study-ph-d-in-computer-science",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-robotics-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Preserve school-specific wording; no universal research-proposal-at-application requirement is inferred."
+      ]
+    },
+    {
+      "id": "nu-c-soe-regular-aid-gpa-scope",
+      "category": "source_scope_difference",
+      "value": {
+        "regular_page": "2.75/4.00 in Bachelor and/or Master",
+        "financial_support_page": "2.75/4.00 in Master",
+        "GRE_GMAT": "optional on SOE checklists; no numerical minimum published"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published_source_scope_difference",
+      "review_status": "verified",
+      "scope": {
+        "school": "SOE",
+        "programs": "packet C eight SOE PhDs",
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Keep regular and financial-support contexts distinct. Do not use Bachelor GPA to establish a Master GPA requirement."
+      ],
+      "attributes": {
+        "reference_only": true
+      }
+    },
+    {
+      "id": "nu-c-general-fee-discounts-reference",
+      "category": "funding_reference",
+      "value": {
+        "year": "not labeled",
+        "published_tuition_coverage_percent": {
+          "socially_vulnerable_Kazakhstan_categories": 75,
+          "second_and_later_fee_paying_sibling": 25,
+          "Kazakhstan_government_institution_or_enterprise_employee": 50,
+          "full_annual_tuition_single_payment": 5
+        },
+        "social_categories": [
+          "orphans/no parental care under 29",
+          "disability groups I/II/III",
+          "parental disability groups I/II/III"
+        ],
+        "stacking": "not stated",
+        "PhD_and_residency_individual_applicability": "not confirmed by generic page"
+      },
+      "source_ids": [
+        "nu-c-src-fees"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published_with_unresolved_program_applicability",
+      "review_status": "verified",
+      "scope": {
+        "document": "university financial-support page",
+        "application": "reference only pending Bursar eligibility confirmation"
+      },
+      "conditions": [
+        "Do not compute a personal discounted price or automatic award. The separate 25% Olympiad discount is explicitly undergraduate and is excluded from PhD/residency."
+      ],
+      "attributes": {
+        "reference_only": true
+      }
+    },
+    {
+      "id": "nu-c-monthly-living-reference",
+      "category": "living_cost_reference",
+      "value": {
+        "amount": 400,
+        "currency": "USD",
+        "period": "month",
+        "estimate": true,
+        "source_year": "not labeled",
+        "international_accommodation": "page says guaranteed; price/support remain separate"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions"
+      ],
+      "checked_on": "2026-10-23",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "program_group": "on-campus graduate students",
+        "study_levels": [
+          "masters",
+          "doctoral",
+          "professional",
+          "residency"
+        ],
+        "levels": [
+          "masters",
+          "doctoral",
+          "professional",
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": {
+            "program_group": "on-campus graduate students"
+          },
+          "study_mode": "on-campus graduate students; not an annual all-cost quotation"
+        }
+      },
+      "conditions": [
+        "Lifestyle-dependent living estimate, not annual total cost of attendance or funded stipend."
+      ],
+      "attributes": {
+        "reference_only": true
+      },
+      "original_scope": {
+        "program_group": "on-campus graduate students"
+      }
+    },
+    {
+      "id": "nu-c-phd-scai-regular_and_financial_support-requirements",
+      "category": "admission_requirements",
+      "value": {
+        "degrees": "Bachelor and Master or equivalent",
+        "master_cgpa_minimum": 2.75,
+        "ielts": {
+          "overall": 6.5,
+          "each_minimum": 6.0
+        },
+        "gre_gmat": "recommended",
+        "excluded_english_test_modes": [
+          "IELTS Online",
+          "IELTS Indicator",
+          "TOEFL Home Edition",
+          "TOEFL PDT"
+        ],
+        "english_exemptions": "degree earned in country where English is official academic language or degree officially taught in English"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-mathematics",
+          "nu-c-study-ph-d-in-computer-science",
+          "nu-c-study-ph-d-in-robotics-engineering"
+        ],
+        "application_route_ids": [
+          "nu-c-phd-route"
+        ],
+        "school": "School of Computing and Artificial Intelligence",
+        "application_basis": "regular_and_financial_support",
+        "cycle": "current yearless policy",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "No research-proposal or unrelated School cutoff is imported."
+      ]
+    },
+    {
+      "id": "nu-c-phd-ssh-regular_and_financial_support-requirements",
+      "category": "admission_requirements",
+      "value": {
+        "degrees": "Bachelor and Master or equivalent",
+        "master_cgpa_minimum": 2.75,
+        "committee_may_consider_cgpa": 2.5,
+        "condition": "graduate of highly ranked university",
+        "ielts": {
+          "overall": 6.5,
+          "each_minimum": 6.0
+        },
+        "gre": "recommended",
+        "excluded_english_test_modes": [
+          "IELTS Online",
+          "IELTS Indicator",
+          "TOEFL Home Edition",
+          "TOEFL PDT"
+        ],
+        "english_exemptions": "degree earned in country where English is official academic language or degree officially taught in English"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-chemistry",
+          "nu-c-study-ph-d-in-physics"
+        ],
+        "application_route_ids": [
+          "nu-c-phd-route"
+        ],
+        "school": "School of Sciences and Humanities",
+        "application_basis": "regular_and_financial_support",
+        "cycle": "current yearless policy",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "No research-proposal or unrelated School cutoff is imported."
+      ]
+    },
+    {
+      "id": "nu-c-phd-soe-regular-requirements",
+      "category": "admission_requirements",
+      "value": {
+        "degrees": "Bachelor and Master or equivalent",
+        "cgpa_minimum": 2.75,
+        "scope": "Bachelor and/or Master",
+        "ielts": {
+          "overall": 6.5,
+          "each_minimum": 6.0
+        },
+        "gre_gmat": "optional",
+        "excluded_english_test_modes": [
+          "IELTS Online",
+          "IELTS Indicator",
+          "TOEFL Home Edition",
+          "TOEFL PDT"
+        ],
+        "english_exemptions": "degree earned in country where English is official academic language or degree officially taught in English"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "application_route_ids": [
+          "nu-c-phd-route"
+        ],
+        "school": "School of Engineering",
+        "application_basis": "regular",
+        "cycle": "current yearless policy",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "SOE regular and financial-support GPA scopes differ; preserve the stated basis."
+      ]
+    },
+    {
+      "id": "nu-c-phd-soe-financial_support-requirements",
+      "category": "admission_requirements",
+      "value": {
+        "degrees": "Bachelor and Master or equivalent",
+        "scope": "Master",
+        "ielts": {
+          "overall": 6.5,
+          "each_minimum": 6.0
+        },
+        "gre_gmat": "optional",
+        "excluded_english_test_modes": [
+          "IELTS Online",
+          "IELTS Indicator",
+          "TOEFL Home Edition",
+          "TOEFL PDT"
+        ],
+        "english_exemptions": "degree earned in country where English is official academic language or degree officially taught in English",
+        "master_cgpa_minimum": 2.75
+      },
+      "source_ids": [
+        "nu-c-src-phd-aid"
+      ],
+      "checked_on": "2026-10-24",
+      "publication_status": "published",
+      "review_status": "verified",
+      "scope": {
+        "study_option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering"
+        ],
+        "application_route_ids": [
+          "nu-c-phd-route"
+        ],
+        "school": "School of Engineering",
+        "application_basis": "financial_support",
+        "cycle": "current yearless policy",
+        "study_levels": [
+          "doctoral"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ]
+      },
+      "conditions": [
+        "Prior-degree equivalency and language waivers remain committee decisions.",
+        "SOE regular and financial-support GPA scopes differ; preserve the stated basis."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "nu-c-src-az",
+      "title": "All Programs (A-Z)",
+      "url": "https://nu.edu.kz/admissions/programs/",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-phd-admissions",
+      "title": "PhD Regular Admissions",
+      "url": "https://nu.edu.kz/admissions/how-to-apply/doctoral_programs/regular-admissions-phd/",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-phd-aid",
+      "title": "Doctoral Financial Aid & Scholarships",
+      "url": "https://nu.edu.kz/admissions/how-to-apply/doctoral_programs/financial-aid-scholarships-phd/",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-fees",
+      "title": "Fees and Financial Support",
+      "url": "https://nu.edu.kz/admissions/fees-and-funding/",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-residency",
+      "title": "Residency Programs and Neurology admission page",
+      "url": "https://nusom.nu.edu.kz/residency-programs",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed_representative_only"
+    },
+    {
+      "id": "nu-c-src-residency-policy",
+      "title": "Residency in Neurology",
+      "url": "https://nusom.nu.edu.kz/residency-in-neurology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-chem",
+      "title": "Ph.D. in Chemistry",
+      "url": "https://ssh.nu.edu.kz/phd_chem",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-math",
+      "title": "PhD in Mathematics",
+      "url": "https://scai.nu.edu.kz/phd-math",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-cs",
+      "title": "PhD in Computer Science",
+      "url": "https://scai.nu.edu.kz/phd-cs",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-geosciences",
+      "title": "Ph.D. in Geosciences",
+      "url": "https://soe.nu.edu.kz/phd_in_geosciences",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "detail_reviewed"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-neurology",
+      "title": "Residency in Neurology",
+      "url": "https://nusom.nu.edu.kz/residency-in-neurology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-hematology",
+      "title": "Residency in Hematology",
+      "url": "https://nusom.nu.edu.kz/residency-in-hematology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-endocrinology",
+      "title": "Residency in Endocrinology",
+      "url": "https://nusom.nu.edu.kz/residency-in-endocrinology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-medical-oncology",
+      "title": "Residency in Medical Oncology",
+      "url": "https://nusom.nu.edu.kz/residency-in-medical-oncology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-gastroenterology",
+      "title": "Residency in Gastroenterology",
+      "url": "https://nusom.nu.edu.kz/residency-in-gastroenterology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-pediatric-surgery",
+      "title": "Residency in Pediatric Surgery",
+      "url": "https://nusom.nu.edu.kz/residency-in-pediatric-surgery",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-psychiatry",
+      "title": "Residency in Psychiatry",
+      "url": "https://nusom.nu.edu.kz/residency-in-psychiatry",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-ophthalmology",
+      "title": "Residency in Ophthalmology",
+      "url": "https://nusom.nu.edu.kz/residency-in-ophthalmology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-family-medicine",
+      "title": "Residency in Family Medicine",
+      "url": "https://nusom.nu.edu.kz/residency-in-family-medicine",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-pediatrics",
+      "title": "Residency in Pediatrics",
+      "url": "https://nusom.nu.edu.kz/residency-in-pediatrics",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-obstetrics-and-gynecology",
+      "title": "Residency in Obstetrics and Gynecology",
+      "url": "https://nusom.nu.edu.kz/residency-in-obstetrics-and-gynecology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-internal-medicine",
+      "title": "Residency in Internal Medicine",
+      "url": "https://nusom.nu.edu.kz/residency-in-internal-medicine",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-general-surgery",
+      "title": "Residency in General Surgery",
+      "url": "https://nusom.nu.edu.kz/residency-in-general-surgery",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-anesthesiology-and-critical-care",
+      "title": "Residency in Anesthesiology and Critical Care",
+      "url": "https://nusom.nu.edu.kz/residency-in-anesthesiology-and-critical-care",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-urology",
+      "title": "Residency in Urology",
+      "url": "https://nusom.nu.edu.kz/residency-in-urology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-radiology",
+      "title": "Residency in Radiology",
+      "url": "https://nusom.nu.edu.kz/residency-in-radiology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-orthopaedics-and-traumatology",
+      "title": "Residency in Orthopaedics and Traumatology",
+      "url": "https://nusom.nu.edu.kz/residency-in-orthopaedics-and-traumatology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-residency-in-anatomic-pathology",
+      "title": "Residency in Anatomic Pathology",
+      "url": "https://nusom.nu.edu.kz/residency-in-anatomic-pathology",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-chemistry",
+      "title": "Ph.D. in Chemistry",
+      "url": "https://ssh.nu.edu.kz/phd_chem",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "detail_reviewed"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-mathematics",
+      "title": "Ph.D. in Mathematics",
+      "url": "https://scai.nu.edu.kz/phd-math",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "detail_reviewed"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-physics",
+      "title": "Ph.D. in Physics",
+      "url": "https://ssh.nu.edu.kz/phys_graduate_programs#!/tab/680540192-2",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-computer-science",
+      "title": "Ph.D. in Computer Science",
+      "url": "https://scai.nu.edu.kz/phd-cs",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "review_status": "detail_reviewed"
+    },
+    {
+      "id": "nu-c-src-page-phd-in-mining-engineering",
+      "title": "PhD in Mining Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_me",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-phd-in-petroleum-engineering",
+      "title": "PhD in Petroleum Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_pe",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-phd-in-science-engineering-and-technology",
+      "title": "PhD in Science, Engineering and Technology",
+      "url": "https://soe.nu.edu.kz/phd_in_set",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-chemical-engineering",
+      "title": "Ph.D. in Chemical Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_che",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-robotics-engineering",
+      "title": "Ph.D. in Robotics Engineering",
+      "url": "https://scai.nu.edu.kz/phd-rob",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-mechanical-engineering",
+      "title": "Ph.D. in Mechanical Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_mae",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-electrical-engineering",
+      "title": "Ph.D. in Electrical Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_ee",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-page-ph-d-in-civil-engineering",
+      "title": "Ph.D. in Civil Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_ce",
+      "accessed_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified",
+      "last_accessed_on": "2026-10-24"
+    },
+    {
+      "id": "nu-c-src-residency-policy-2024",
+      "title": "Admission Policy and Procedures to the Residency Programs; revision 11 March 2024",
+      "url": "https://regulations.nu.edu.kz/bitstream/123456789/853/2/Admission%20Policy%20and%20Procedures%20to%20the%20Residency%20Programs%20of%20the%20autonomous%20organization%20of%20education%20Nazarbayev%20University.pdf",
+      "accessed_on": "2026-10-24",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-faq",
+      "title": "FAQ — graduate and international applicant sections",
+      "url": "https://nu.edu.kz/other/frequently-asked-questions/",
+      "accessed_on": "2026-10-24",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified"
+    },
+    {
+      "id": "nu-c-src-gastro-ru",
+      "title": "Residency in Gastroenterology — Russian page",
+      "url": "https://nusom.nu.edu.kz/ru/residency-in-gastroenterology",
+      "accessed_on": "2026-10-24",
+      "content_reviewed_on": "2026-10-24",
+      "review_status": "verified"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "nu-c-gap-licensure",
+      "status": "researched_unknown",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-residency-in-neurology",
+          "nu-c-study-residency-in-hematology",
+          "nu-c-study-residency-in-endocrinology",
+          "nu-c-study-residency-in-medical-oncology",
+          "nu-c-study-residency-in-gastroenterology",
+          "nu-c-study-residency-in-pediatric-surgery",
+          "nu-c-study-residency-in-psychiatry",
+          "nu-c-study-residency-in-ophthalmology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-anesthesiology-and-critical-care",
+          "nu-c-study-residency-in-urology",
+          "nu-c-study-residency-in-radiology",
+          "nu-c-study-residency-in-orthopaedics-and-traumatology",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": "Residency local and international applicant types"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-residency-policy-2024"
+      ],
+      "reason": "MD equivalence and foreign-transcript/nostrification-or-apostille alternatives are documented in the 2024 policy. Separate active licence/internship documents or a universal recognition decision are not specified in reviewed university material.",
+      "official_next_step": "Check current NU and Kazakhstan residency rules for each applicant category.",
+      "original_scope": "Residency local and international applicant types",
+      "checked_on": "2026-10-24",
+      "content_reviewed_on": "2026-10-24",
+      "publication_status": "not_published_in_reviewed_sources",
+      "review_status": "reviewed_publication_gap",
+      "original_source_ids": [
+        "nu-c-src-residency-policy",
+        "nu-c-src-phd-aid",
+        "nu-c-src-residency-policy-2024"
+      ]
+    },
+    {
+      "id": "nu-c-gap-residency-cycle",
+      "status": "researched_unknown",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-residency-in-neurology",
+          "nu-c-study-residency-in-hematology",
+          "nu-c-study-residency-in-endocrinology",
+          "nu-c-study-residency-in-medical-oncology",
+          "nu-c-study-residency-in-gastroenterology",
+          "nu-c-study-residency-in-pediatric-surgery",
+          "nu-c-study-residency-in-psychiatry",
+          "nu-c-study-residency-in-ophthalmology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-anesthesiology-and-critical-care",
+          "nu-c-study-residency-in-urology",
+          "nu-c-study-residency-in-radiology",
+          "nu-c-study-residency-in-orthopaedics-and-traumatology",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "route_ids": [
+          "nu-c-residency-route"
+        ],
+        "study_levels": [
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": "Residency"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-residency-policy"
+      ],
+      "reason": "2026-01-05 to 2026-04-30 dates are past and have no academic-year label.",
+      "official_next_step": "Confirm next cycle through current NUSOM admissions.",
+      "original_scope": "Residency",
+      "checked_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "publication_status": "not_published_in_reviewed_sources",
+      "review_status": "reviewed_publication_gap"
+    },
+    {
+      "id": "nu-c-gap-funding",
+      "status": "researched_unknown",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-ph-d-in-chemistry",
+          "nu-c-study-ph-d-in-mathematics",
+          "nu-c-study-ph-d-in-physics",
+          "nu-c-study-ph-d-in-computer-science",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-robotics-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering",
+          "nu-c-study-residency-in-neurology",
+          "nu-c-study-residency-in-hematology",
+          "nu-c-study-residency-in-endocrinology",
+          "nu-c-study-residency-in-medical-oncology",
+          "nu-c-study-residency-in-gastroenterology",
+          "nu-c-study-residency-in-pediatric-surgery",
+          "nu-c-study-residency-in-psychiatry",
+          "nu-c-study-residency-in-ophthalmology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-anesthesiology-and-critical-care",
+          "nu-c-study-residency-in-urology",
+          "nu-c-study-residency-in-radiology",
+          "nu-c-study-residency-in-orthopaedics-and-traumatology",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "route_ids": [
+          "nu-c-phd-route",
+          "nu-c-residency-route"
+        ],
+        "study_levels": [
+          "doctoral",
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": "PhD scholarship and residency aid"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-phd-aid",
+        "nu-c-src-residency-policy",
+        "nu-c-src-faq",
+        "nu-c-src-residency-policy-2024"
+      ],
+      "reason": "Award types/Abay coverage, possible funding sources and state-funded service obligation are now sourced. Current-year quotas, individual award amount/duration/renewal and conflicting monthly stipend references remain unresolved.",
+      "official_next_step": "Get current coverage, amount, duration, renewal and obligation terms from NU admissions/Bursar.",
+      "previous_reason": "Named PhD scholarship terms and residency award/fee-support terms are not fully specified in reviewed pages.",
+      "original_scope": "PhD scholarship and residency aid",
+      "checked_on": "2026-10-24",
+      "content_reviewed_on": "2026-10-24",
+      "publication_status": "published_with_unresolved_conflict",
+      "review_status": "reviewed_source_conflict"
+    },
+    {
+      "id": "nu-c-gap-fee-cycle",
+      "status": "researched_unknown",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-geosciences",
+          "nu-c-study-ph-d-in-chemistry",
+          "nu-c-study-ph-d-in-mathematics",
+          "nu-c-study-ph-d-in-physics",
+          "nu-c-study-ph-d-in-computer-science",
+          "nu-c-study-phd-in-mining-engineering",
+          "nu-c-study-phd-in-petroleum-engineering",
+          "nu-c-study-phd-in-science-engineering-and-technology",
+          "nu-c-study-ph-d-in-chemical-engineering",
+          "nu-c-study-ph-d-in-robotics-engineering",
+          "nu-c-study-ph-d-in-mechanical-engineering",
+          "nu-c-study-ph-d-in-electrical-engineering",
+          "nu-c-study-ph-d-in-civil-engineering",
+          "nu-c-study-residency-in-neurology",
+          "nu-c-study-residency-in-hematology",
+          "nu-c-study-residency-in-endocrinology",
+          "nu-c-study-residency-in-medical-oncology",
+          "nu-c-study-residency-in-gastroenterology",
+          "nu-c-study-residency-in-pediatric-surgery",
+          "nu-c-study-residency-in-psychiatry",
+          "nu-c-study-residency-in-ophthalmology",
+          "nu-c-study-residency-in-family-medicine",
+          "nu-c-study-residency-in-pediatrics",
+          "nu-c-study-residency-in-obstetrics-and-gynecology",
+          "nu-c-study-residency-in-internal-medicine",
+          "nu-c-study-residency-in-general-surgery",
+          "nu-c-study-residency-in-anesthesiology-and-critical-care",
+          "nu-c-study-residency-in-urology",
+          "nu-c-study-residency-in-radiology",
+          "nu-c-study-residency-in-orthopaedics-and-traumatology",
+          "nu-c-study-residency-in-anatomic-pathology"
+        ],
+        "route_ids": [
+          "nu-c-phd-route",
+          "nu-c-residency-route"
+        ],
+        "study_levels": [
+          "doctoral",
+          "residency"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": "2026/2027 and 2027/2028 tuition"
+        },
+        "cycle": "2026/2027 and 2027/2028"
+      },
+      "source_ids": [
+        "nu-c-src-phd-admissions",
+        "nu-c-src-fees"
+      ],
+      "reason": "Specific PhD/residency fees reviewed are for 2025/2026; general fee table year is unclear.",
+      "official_next_step": "Use next official cycle fee schedule, not older amount.",
+      "original_scope": "2026/2027 and 2027/2028 tuition",
+      "checked_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "publication_status": "not_published_in_reviewed_sources",
+      "review_status": "reviewed_publication_gap"
+    },
+    {
+      "id": "nu-c-gap-industry-phd-terms",
+      "status": "researched_unknown",
+      "scope": {
+        "option_ids": [
+          "nu-c-study-ph-d-in-chemistry"
+        ],
+        "route_ids": [
+          "nu-c-phd-route"
+        ],
+        "study_levels": [
+          "doctoral"
+        ],
+        "additional_dimensions": {
+          "source_scope_text": "Chemistry Industry PhD",
+          "variant": "Industry PhD option within Chemistry; not all Chemistry applicants"
+        }
+      },
+      "source_ids": [
+        "nu-c-src-chem"
+      ],
+      "reason": "Sponsorship is required, but sponsor cost, stipend, research expenses and full IP obligations are not specified.",
+      "official_next_step": "Confirm terms for an actual sponsor placement.",
+      "original_scope": "Chemistry Industry PhD",
+      "checked_on": "2026-10-23",
+      "content_reviewed_on": "2026-10-23",
+      "publication_status": "not_published_in_reviewed_sources",
+      "review_status": "reviewed_publication_gap"
+    }
+  ],
+  "cross_packet_refs": [
+    {
+      "id": "nu-c-xref-phd-process-b",
+      "target_packet": "b",
+      "type": "shared_policy",
+      "applicability": "Shared portal and submission process for Packet B programs that are regular PhDs. Not a process for DBA, DPM or other professional routes.",
+      "owner_packet": "c",
+      "target_ids": [
+        "nu-c-phd-route",
+        "nu-c-phd-application"
+      ]
+    },
+    {
+      "id": "nu-c-xref-phd-fee-b",
+      "target_packet": "b",
+      "type": "shared_policy",
+      "applicability": "Only use for the published scope and 2025/2026 source year; exclude DPM/DBA unless source confirms eligibility.",
+      "owner_packet": "c",
+      "target_ids": [
+        "nu-c-phd-fee-2025-26",
+        "nu-c-phd-scholarship"
+      ]
+    },
+    {
+      "id": "nu-c-xref-phd-school-rules-b",
+      "target_packet": "b",
+      "type": "shared_policy",
+      "applicability": "School-specific rules apply only when B PhD program is named by that School; never extend SOE/SCAI/SSH rules to GSE/GSPP/GSB/NUSOM.",
+      "owner_packet": "c",
+      "target_ids": [
+        "nu-c-phd-requirements"
+      ]
+    }
+  ],
+  "review_batches": [
+    {
+      "id": "nu-c-review-batch-2026-10-24-1",
+      "reviewed_on": "2026-10-24",
+      "card_ids": [
+        "nu-inventory-phd-in-mining-engineering",
+        "nu-inventory-phd-in-petroleum-engineering",
+        "nu-inventory-phd-in-science-engineering-and-technology",
+        "nu-inventory-ph-d-in-robotics-engineering"
+      ],
+      "result": "Detailed program structure and linked admission path reviewed; explicit source anomalies retained."
+    },
+    {
+      "id": "nu-c-review-batch-2026-10-24-2",
+      "reviewed_on": "2026-10-24",
+      "card_ids": [
+        "nu-inventory-ph-d-in-chemical-engineering",
+        "nu-inventory-ph-d-in-mechanical-engineering",
+        "nu-inventory-ph-d-in-electrical-engineering",
+        "nu-inventory-ph-d-in-civil-engineering",
+        "nu-inventory-ph-d-in-physics"
+      ],
+      "result": "All remaining technical doctorate pages reviewed; central admissions retained with real School scope."
+    },
+    {
+      "id": "nu-c-review-batch-2026-10-24-3",
+      "reviewed_on": "2026-10-24",
+      "card_ids": [
+        "nu-inventory-residency-in-pediatric-surgery",
+        "nu-inventory-residency-in-psychiatry",
+        "nu-inventory-residency-in-ophthalmology",
+        "nu-inventory-residency-in-family-medicine"
+      ],
+      "result": "Four residency curricula, common medical qualification route, conditional route, language variants, dated application/tuition and lack of specialty-specific funding reviewed."
+    },
+    {
+      "id": "nu-c-review-batch-2026-10-24-4",
+      "reviewed_on": "2026-10-24",
+      "card_ids": [
+        "nu-inventory-residency-in-obstetrics-and-gynecology",
+        "nu-inventory-residency-in-internal-medicine",
+        "nu-inventory-residency-in-general-surgery",
+        "nu-inventory-residency-in-anesthesiology-and-critical-care"
+      ],
+      "result": "Four residency curriculum and admissions tabs reviewed; exact IELTS band variants retained."
+    },
+    {
+      "id": "nu-c-review-batch-2026-10-24-5",
+      "reviewed_on": "2026-10-24",
+      "card_ids": [
+        "nu-inventory-residency-in-urology",
+        "nu-inventory-residency-in-radiology",
+        "nu-inventory-residency-in-orthopaedics-and-traumatology",
+        "nu-inventory-residency-in-anatomic-pathology"
+      ],
+      "result": "Final four previously unreviewed residency pages checked for structure, admissions, tests, dates, price and additional restrictions."
+    },
+    {
+      "id": "nu-c-review-batch-2026-10-24-6",
+      "reviewed_on": "2026-10-24",
+      "card_ids": [
+        "nu-inventory-residency-in-neurology",
+        "nu-inventory-residency-in-hematology",
+        "nu-inventory-residency-in-endocrinology",
+        "nu-inventory-residency-in-medical-oncology",
+        "nu-inventory-residency-in-gastroenterology",
+        "nu-inventory-residency-in-pediatrics"
+      ],
+      "result": "Retained prior detailed study reviews; closed missing per-program IELTS and continuation scope. Six existing sources reused; no ordinary residency collection remains."
+    }
+  ],
+  "updated_on": "2026-10-24",
+  "research_status": "ready_for_review",
+  "resolved_gap_history": [
+    {
+      "id": "nu-c-gap-phd-details",
+      "status": "resolved",
+      "scope": "13 assigned PhD programs",
+      "source_ids": [
+        "nu-c-src-az",
+        "nu-c-src-phd-admissions"
+      ],
+      "reason": "Only four individual PhD pages have detailed study review; school-level admission tables do not establish program-specific prerequisites, supervision, research proposals or specialist interview/test requirements.",
+      "official_next_step": "Review remaining nine linked program pages and admissions instructions.",
+      "previous_status": "unfinished_collection",
+      "resolved_on": "2026-10-24",
+      "resolution": "All 31 individual program pages and linked common admissions/funding sources reviewed. Source-specific program_details facts and review_batches preserve the content checks."
+    },
+    {
+      "id": "nu-c-gap-residency-detail",
+      "status": "resolved",
+      "scope": "18 residency programs",
+      "source_ids": [
+        "nu-c-src-az",
+        "nu-c-src-residency-policy"
+      ],
+      "reason": "Central card metadata and five representative program pages checked, but all specialty pages/tabs need individual review.",
+      "official_next_step": "Inspect each NUSOM Regular Admission and Financial Aid tab for specialty-specific conditions and curriculum.",
+      "previous_status": "unfinished_collection",
+      "resolved_on": "2026-10-24",
+      "resolution": "All 31 individual program pages and linked common admissions/funding sources reviewed. Source-specific program_details facts and review_batches preserve the content checks."
+    }
+  ],
+  "structured_scope_reconciled_on": "2026-10-25",
+  "gap_scope_reconciled_on": "2026-10-25"
+}

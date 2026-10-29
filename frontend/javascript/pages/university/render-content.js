@@ -120,13 +120,15 @@ export function renderOverviewSection({
   const studentCount = studentCountValue !== null
     ? new Intl.NumberFormat("en-US").format(studentCountValue)
     : t("common.no_data", "No data");
-  const formats = Array.isArray(university.academics?.formats)
-    ? university.academics.formats
+  const formatValues = Array.isArray(university.academics?.formats)
+    ? [...new Set(university.academics.formats
       .filter((value) => String(value || "").trim().toLowerCase() !== "not_stated")
       .map((value) => escapeHtml(trStudyMode(String(value))))
-      .filter(Boolean)
-      .join(", ")
-    : "";
+      .filter(Boolean))]
+    : [];
+  const formats = formatValues.length > 3
+    ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
+    : formatValues.join(", ");
 
   container.innerHTML = `
     <div class="d-kv">
@@ -138,7 +140,7 @@ export function renderOverviewSection({
     </div>
     ${includeAdmissionRate ? acceptanceRow : ""}
     <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
-    <div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><span>${formats || escapeHtml(t("common.no_data", "No data"))}</span></div>
+    <div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats || escapeHtml(t("common.no_data", "No data"))}</div></div>
     <div class="d-kv d-kv--last">
       <span class="d-kv-label">
         ${campusSizeLabel}

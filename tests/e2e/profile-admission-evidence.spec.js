@@ -146,6 +146,9 @@ test(`dated exam attempts and evidence save independently on ${scenario.name} an
   await expect(page.locator(".toast.error")).toHaveCount(1);
   await expect(page.locator("#examList .profile-exam-item")).toHaveCount(2);
   await expect(page.locator(".toast.error")).toHaveCount(0, { timeout: 10000 });
+  await page.locator("#clearExamDraftBtn").click();
+  await expect(page.locator("#examScoreInput")).toHaveValue("");
+  await expect(page.locator("#examList .profile-exam-item")).toHaveCount(2);
   await page.locator('#examList button[data-idx="0"]').click();
   await expect(page.locator("#examList .profile-exam-item")).toHaveCount(1);
   await expect(page.locator(selectors.examList)).not.toContainText(/2025[-\u2011]03[-\u2011]15/);

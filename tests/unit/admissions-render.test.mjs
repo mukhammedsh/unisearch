@@ -1,7 +1,20 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { EXAM_CONFIG } from "../../frontend/javascript/utils/config.js";
 import { admissionsProgramLabel, admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue, renderStudyOptionOverview } from "../../frontend/javascript/pages/university/admissions-render.js";
+
+const examDefinitions = JSON.parse(await readFile(new URL("../../backend/data/exams.json", import.meta.url), "utf8"));
+for (const id of ["NUET", "NUET_MATH", "NUET_CRITICAL_THINKING", "A_LEVEL_CERT", "A_LEVEL_MATHEMATICS"]) EXAM_CONFIG[id] = examDefinitions[id];
+
+test("language exemption references use readable evidence names and keep individual review explicit", () => {
+  const html = renderAdmissionsValue({ possible_exemption_evidence_kinds: ["education", "primary_language"] });
+  assert.match(html, /Language background for individual exemption review/);
+  assert.match(html, /Education/);
+  assert.match(html, /First language/);
+  assert.doesNotMatch(html, /possible_exemption_evidence_kinds|primary_language/);
+});
 
 test("detail course labels distinguish UCAS awards without changing shared helper defaults", () => {
   const option = { title: "Computing", awards: ["MEng"], catalog_classification: "ucas_course_choice" };
@@ -56,7 +69,7 @@ test("institution-route reading renders scoped facts without inventing a selecte
 
 test("program overviews show scoped source descriptions and essentials without expanding compound records", () => {
   const resolved = context();
-  resolved.selected_option.format = { language: ["English"], mode: "On-campus" };
+  resolved.selected_option.format = { duration: "not_stated", language: ["English"], mode: "On-campus", campus: "Astana" };
   const overviewFact = (id, value, extra = {}) => fact(value, { id, review_status: "reviewed", scope: { option_ids: ["example-option"] }, ...extra });
   resolved.facts = [
     overviewFact("other", { description: "Another program" }, { scope: { option_ids: ["another-option"] } }),
@@ -66,7 +79,7 @@ test("program overviews show scoped source descriptions and essentials without e
   ];
   resolved.fact_groups.study = resolved.facts.map(row => row.id);
   const html = renderStudyOptionOverview(resolved);
-  for (const text of ["Build computing systems.", "4 years", "October 2027", "On-campus", "English"]) assert.ok(html.includes(text), text);
+  for (const text of ["Build computing systems.", "4 years", "October 2027", "On-campus", "English", "Astana"]) assert.ok(html.includes(text), text);
   assert.doesNotMatch(html, /Another program|Route-only|Conflicting wording|12345|Detailed curriculum/);
   const fullRecord = renderAdmissionsContext(resolved, { presentation: "simple", programOnly: true });
   assert.match(fullRecord, /12,345/);
@@ -172,6 +185,75 @@ test("assessment preserves reported evidence, exact source conditions, and separ
   assert.match(html, /Enrollment must first be verified/);
   assert.match(html, /Research advisor approval remains separate/);
   assert.doesNotMatch(html, /hidden-check-id|hidden-annotation-id|hidden-university-id|hidden-program-id|scoped_gpa/);
+});
+
+test("academic checks expose failed and missing sections without replacing the source-backed group", () => {
+  const resolved = context();
+  const check = {
+    kind: "academic_requirement", status: "unmet", source_ids: ["source-private"],
+    rule: { alternatives: [{ exam_id: "NUET", minimum: 120, component_minimums: { NUET_MATH: 50, NUET_CRITICAL_THINKING: 50 } }] },
+    provided: { exam: "NUET", score: 120, taken_on: "2026-03-01", minimum_checks: [
+      { exam: "NUET", minimum: 120, provided: 120, status: "met" },
+      { exam: "NUET_MATH", minimum: 50, provided: 40, status: "unmet" },
+      { exam: "NUET_CRITICAL_THINKING", minimum: 50, provided: 80, status: "met" },
+    ] },
+    sourceRule: fact("The total and both sections must meet their minima.", { conditions: ["This published cycle only."] }),
+  };
+  resolved.sources = [{ id: "source-private", url: "https://example.edu/requirements", title: "Official requirements" }];
+  resolved.assessment = { chancePercent: 0, activeChoice: { details: { checks: [check] } } };
+  const html = renderAdmissionsAssessment(resolved);
+  assert.match(html, /Academic qualification/);
+  assert.doesNotMatch(html, /<dt>Kind<\/dt>/);
+  assert.match(html, /data-minimum-exam="NUET_MATH" data-minimum-status="unmet"[^]*?Published minimum: 50[^]*?Reported evidence: 40/);
+  assert.match(html, /data-minimum-exam="NUET_CRITICAL_THINKING" data-minimum-status="met"/);
+  for (const text of ["NUET Mathematics", "This published cycle only.", "https://example.edu/requirements"]) assert.ok(html.includes(text), text);
+  assert.match(html, /2026[‑-]03-01/);
+  assert.equal((html.match(/<strong>0%<\/strong>/g) || []).length, 1);
+  assert.equal((html.match(/data-minimum-checks/g) || []).length, 1);
+  assert.doesNotMatch(html, /Minimum checks|minimum_checks/);
+
+  check.status = "missing";
+  check.provided.minimum_checks[2] = { exam: "NUET_CRITICAL_THINKING", minimum: 50, provided: null, status: "missing" };
+  resolved.assessment.chancePercent = null;
+  const missing = renderAdmissionsAssessment(resolved);
+  assert.match(missing, /data-minimum-exam="NUET_CRITICAL_THINKING" data-minimum-status="missing"[^]*?Reported evidence: Not provided/);
+  assert.doesNotMatch(missing, /<strong>0%<\/strong>/);
+});
+
+test("counted A-level minimums show native grades and the count of qualifying subjects", () => {
+  const resolved = context();
+  resolved.assessment = { chancePercent: 0, activeChoice: { details: { checks: [{
+    kind: "academic_requirement", status: "unmet",
+    rule: { alternatives: [{ exam_id: "A_LEVEL_CERT", components_at_least: { count: 3, minimum: 4 } }] },
+    provided: { exam: "A_LEVEL_CERT", score: 13, details: { components: [{ exam: "A_LEVEL_MATHEMATICS", score: 5 }] }, minimum_checks: [
+      { exam: "A_LEVEL_CERT", minimum: { count: 3, minimum: 4 }, provided: { reported: 3, meeting_minimum: 2 }, status: "unmet" },
+    ] },
+    sourceRule: fact("Three A-level subjects, each at grade B or higher."),
+  }] } } };
+  const html = renderAdmissionsAssessment(resolved);
+  assert.match(html, /At least 3 results, each B or higher/);
+  assert.match(html, /3 reported; 2 meet the minimum/);
+  assert.match(html, /data-minimum-exam="A_LEVEL_CERT" data-minimum-status="unmet"/);
+  assert.match(html, /Three A-level subjects, each at grade B or higher/);
+  assert.doesNotMatch(html, /each 4 or higher/);
+  assert.doesNotMatch(html, /<dt>Minimum<\/dt><dd>4<\/dd>/);
+});
+
+test("reported A-level subject results use native grades instead of internal comparison points", () => {
+  const html = renderAdmissionsValue({ exam: "A_LEVEL_MATHEMATICS", score: 4, raw_value: "B" });
+  assert.match(html, /<dt>Reported score<\/dt><dd>B<\/dd>/);
+  assert.doesNotMatch(html, /<dt>Reported score<\/dt><dd>4<\/dd>/);
+});
+
+test("manual prior-degree checks and funding contexts explain why no percentage is calculated", () => {
+  const resolved = context();
+  resolved.assessment = { chancePercent: null, reason: "funding_selection_separate", activeChoice: { details: { checks: [{
+    kind: "manual_minimum", status: "unassessed", rule: { minimum: 2.67, scale: 4 }, provided: { gpa: 4.85, gpa_scale: 5 },
+    sourceRule: fact("A prior nursing qualification must meet the published academic standard."),
+  }] } } };
+  const html = renderAdmissionsAssessment(resolved);
+  for (const text of ["Funding selection is separate from admission", "Minimum requiring individual evidence review", "2.67", "4.85", "prior nursing qualification"]) assert.ok(html.includes(text), text);
+  assert.doesNotMatch(html, /<strong>0%<\/strong>|manual_minimum|funding_selection_separate/);
 });
 
 test("unknowns and scoped historical source records remain visibly separate from current facts", () => {

@@ -47,12 +47,19 @@
           <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
         </div>
 
-        <div id="catalogLevelSegmented" class="catalog-level-segmented" role="group" aria-label="Study level" data-i18n-aria-label="universities.level_segmented.aria">
-          <button type="button" class="catalog-level-btn is-active" data-level="" data-i18n="universities.level.all" aria-pressed="true">All Levels</button>
-          <button type="button" class="catalog-level-btn" data-level="bachelor" data-i18n="universities.level.bachelor" aria-pressed="false">Bachelor's</button>
-          <button type="button" class="catalog-level-btn" data-level="master" data-i18n="universities.level.master" aria-pressed="false">Master's</button>
-          <button type="button" class="catalog-level-btn" data-level="doctorate" data-i18n="universities.level.doctorate" aria-pressed="false">PhD</button>
-          <button type="button" class="catalog-level-btn" data-level="mba" data-i18n="universities.level.mba" aria-pressed="false">MBA</button>
+        <div id="catalogLevelFilter" class="catalog-level-filter">
+          <label class="sr-only" for="studyLevelSelect" data-i18n="universities.level_segmented.aria">Study level</label>
+          <select id="studyLevelSelect" class="u-select" data-flags="off">
+            <option value="" data-i18n="universities.level.all">All Levels</option>
+            <option value="preparation" data-i18n="universities.level.preparation">Preparation</option>
+            <option value="bachelor" data-i18n="universities.level.bachelor">Bachelor's</option>
+            <option value="master" data-i18n="universities.level.master">Master's</option>
+            <option value="doctorate" data-i18n="universities.level.doctorate">PhD</option>
+            <option value="mba" data-i18n="universities.level.mba">MBA</option>
+            <option value="professional" data-i18n="universities.level.professional">Professional</option>
+            <option value="residency" data-i18n="universities.level.residency">Residency</option>
+            <option value="non_degree" data-i18n="universities.level.non_degree">Non-degree</option>
+          </select>
         </div>
 
         <div class="u-section-actions">

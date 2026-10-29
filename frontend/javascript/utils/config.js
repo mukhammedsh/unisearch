@@ -2,6 +2,7 @@ import { API_BASE, debounce } from "./runtime.js";
 import { formatPlural } from "./format.js";
 import { getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { createSafeStorage } from "./safe-storage.js";
+import { t } from "../i18n.js";
 
 const DEFAULT_EXAM_CONFIG = {
   GRE: { label: "GRE General Test", labels: { eng: "GRE General Test", rus: "GRE General Test" }, input_mode: "subject_breakdown", type: "float", breakdown_scheme: { fixed_components: ["GRE_VERBAL", "GRE_QUANTITATIVE", "GRE_ANALYTICAL_WRITING"], total_strategy: "components_only" } },
@@ -448,7 +449,7 @@ export async function ensureExamConfig() {
   if (!examConfigPromise) {
     examConfigPromise = (async () => {
       try {
-        const raw = await fetchJsonWithConfigCache("exams", `${API_BASE}/exams/config`);
+        const raw = await fetchJsonWithConfigCache("exams_v3", `${API_BASE}/exams/config`);
         const loaded = raw?.exams ? raw.exams : raw;
         Object.keys(EXAM_CONFIG).forEach((k) => delete EXAM_CONFIG[k]);
         if (loaded && typeof loaded === "object") Object.assign(EXAM_CONFIG, loaded);
@@ -544,10 +545,10 @@ export function formatExamValue(examId, valueOrEntry, options = {}) {
     const composite = formatCompositeExamValue(examId, entry, words, options);
     if (composite) return composite;
   }
+  if (mode === "flag") return options?.context === "requirement" ? words.required
+    : Number(score) === 1 ? words.added : t("profile.exam_not_recorded", "Not recorded", locale);
   if (rawValue) return rawValue;
-  if (mode === "flag") return options?.context === "requirement" ? words.required : words.added;
-  if (mode === "grade_combo" && Number(score) <= 1) return options?.context === "requirement" ? words.required : words.added;
-
+  if (score == null || String(score).trim() === "") return "";
   if (mode === "grade_combo" && Number.isFinite(Number(score))) {
     const scheme = getExamConfig(examId)?.grade_scheme || {};
     const isSingleSubject = Number(scheme?.subject_count_min) === 1 && Number(scheme?.subject_count_max) === 1 && Number(scheme?.best_of) === 1;
@@ -555,6 +556,7 @@ export function formatExamValue(examId, valueOrEntry, options = {}) {
       const inverted = Object.entries(scheme.grade_points).find(([, pts]) => Number(pts) === Number(score));
       if (inverted?.[0]) return String(inverted[0]);
     }
+    if (Number(score) <= 1) return options?.context === "requirement" ? words.required : words.added;
   }
 
   if (mode === "band_select") {

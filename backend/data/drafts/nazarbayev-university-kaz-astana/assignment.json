@@ -1,0 +1,874 @@
+{
+  "schema_version": "nu-research-assignment-1.0",
+  "university_id": "nazarbayev-university-kaz-astana",
+  "runtime_active": false,
+  "snapshot_date": "2026-10-23",
+  "inventory_source_url": "https://nu.edu.kz/admissions/programs/",
+  "inventory_scope": "Central A-Z card snapshot; not confirmation of active recruitment or complete research of each card",
+  "inventory_count": 93,
+  "packets": [
+    {
+      "id": "a",
+      "title": "NU: Foundation, bachelor and engineering master's",
+      "directory": "packet-a",
+      "shared_policy_ownership": "Foundation/undergraduate regular, financial-support, transfer, mid-year and progression policies; institution overview and living/UG fees",
+      "inventory_card_ids": [
+        "nu-inventory-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust",
+        "nu-inventory-master-of-science-in-geosciences",
+        "nu-inventory-master-of-science-in-petroleum-engineering",
+        "nu-inventory-master-of-science-in-mining-engineering",
+        "nu-inventory-master-of-science-in-robotics",
+        "nu-inventory-master-of-science-in-biomedical-engineering",
+        "nu-inventory-master-of-science-in-civil-and-environmental-engineering",
+        "nu-inventory-master-of-science-in-chemical-and-materials-engineering",
+        "nu-inventory-master-of-science-in-electrical-and-computer-engineering",
+        "nu-inventory-msc-in-mechanical-and-aerospace-engineering",
+        "nu-inventory-master-of-engineering-management",
+        "nu-inventory-bachelor-of-science-in-geology",
+        "nu-inventory-bachelor-of-science-in-mathematics",
+        "nu-inventory-bachelor-of-science-in-physics",
+        "nu-inventory-bachelor-of-science-in-chemistry",
+        "nu-inventory-bachelor-of-arts-in-sociology",
+        "nu-inventory-bachelor-of-arts-in-political-science-and-international-relations",
+        "nu-inventory-bachelor-of-science-in-computer-science",
+        "nu-inventory-6-year-undergraduate-medical-program",
+        "nu-inventory-bachelor-in-nursing",
+        "nu-inventory-bachelor-of-science-in-biological-sciences",
+        "nu-inventory-bachelor-of-business-administration",
+        "nu-inventory-bachelor-of-arts-in-economics",
+        "nu-inventory-bachelor-of-science-in-robotics-engineering",
+        "nu-inventory-bachelor-of-science-in-mining-and-minerals-engineering",
+        "nu-inventory-bachelor-of-science-in-petroleum-engineering",
+        "nu-inventory-nu-foundation-year-program",
+        "nu-inventory-bachelor-of-engineering-in-chemical-and-materials-engineering",
+        "nu-inventory-bachelor-of-engineering-in-electrical-and-computer-engineering",
+        "nu-inventory-bachelor-of-engineering-in-civil-and-environmental-engineering",
+        "nu-inventory-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
+      ]
+    },
+    {
+      "id": "b",
+      "title": "NU: master's, business and professional pathways",
+      "directory": "packet-b",
+      "shared_policy_ownership": "Central master's policies, master's financial support and program-specific business/professional/health/social-science exceptions",
+      "inventory_card_ids": [
+        "nu-inventory-master-of-science-in-biomedicine",
+        "nu-inventory-doctor-of-business-administration",
+        "nu-inventory-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas",
+        "nu-inventory-doctor-of-philosophy-in-education",
+        "nu-inventory-phd-in-eurasian-studies",
+        "nu-inventory-doctor-of-public-management",
+        "nu-inventory-ph-d-in-public-policy",
+        "nu-inventory-ph-d-in-global-health",
+        "nu-inventory-ph-d-in-biomedical-sciences",
+        "nu-inventory-ph-d-in-life-sciences",
+        "nu-inventory-phd-in-business-administration",
+        "nu-inventory-master-of-science-in-chemistry",
+        "nu-inventory-master-of-science-in-applied-mathematics",
+        "nu-inventory-master-of-science-in-physics",
+        "nu-inventory-master-of-arts-in-multilingual-education",
+        "nu-inventory-master-of-science-in-educational-leadership",
+        "nu-inventory-master-in-public-administration",
+        "nu-inventory-master-in-public-policy",
+        "nu-inventory-master-of-arts-in-political-science-and-international-relations",
+        "nu-inventory-master-of-arts-in-eurasian-studies",
+        "nu-inventory-master-of-applied-artificial-intelligence-and-data-science",
+        "nu-inventory-master-of-science-in-data-science",
+        "nu-inventory-master-of-science-in-computer-science",
+        "nu-inventory-master-of-science-in-nursing",
+        "nu-inventory-doctor-of-medicine",
+        "nu-inventory-master-of-public-health",
+        "nu-inventory-master-of-science-in-life-sciences",
+        "nu-inventory-executive-master-of-business-administration",
+        "nu-inventory-master-of-science-in-finance",
+        "nu-inventory-master-of-business-administration",
+        "nu-inventory-master-of-arts-in-economics"
+      ]
+    },
+    {
+      "id": "c",
+      "title": "NU: research doctorates and residency",
+      "directory": "packet-c",
+      "shared_policy_ownership": "Central PhD and residency admission, funding and fee policies; technical research doctorates and all residency programs",
+      "inventory_card_ids": [
+        "nu-inventory-ph-d-in-geosciences",
+        "nu-inventory-residency-in-neurology",
+        "nu-inventory-residency-in-hematology",
+        "nu-inventory-residency-in-endocrinology",
+        "nu-inventory-residency-in-medical-oncology",
+        "nu-inventory-residency-in-gastroenterology",
+        "nu-inventory-residency-in-pediatric-surgery",
+        "nu-inventory-residency-in-psychiatry",
+        "nu-inventory-residency-in-ophthalmology",
+        "nu-inventory-residency-in-family-medicine",
+        "nu-inventory-residency-in-pediatrics",
+        "nu-inventory-residency-in-obstetrics-and-gynecology",
+        "nu-inventory-residency-in-internal-medicine",
+        "nu-inventory-residency-in-general-surgery",
+        "nu-inventory-residency-in-anesthesiology-and-critical-care",
+        "nu-inventory-residency-in-urology",
+        "nu-inventory-residency-in-radiology",
+        "nu-inventory-residency-in-orthopaedics-and-traumatology",
+        "nu-inventory-residency-in-anatomic-pathology",
+        "nu-inventory-ph-d-in-chemistry",
+        "nu-inventory-ph-d-in-mathematics",
+        "nu-inventory-ph-d-in-physics",
+        "nu-inventory-ph-d-in-computer-science",
+        "nu-inventory-phd-in-mining-engineering",
+        "nu-inventory-phd-in-petroleum-engineering",
+        "nu-inventory-phd-in-science-engineering-and-technology",
+        "nu-inventory-ph-d-in-chemical-engineering",
+        "nu-inventory-ph-d-in-robotics-engineering",
+        "nu-inventory-ph-d-in-mechanical-engineering",
+        "nu-inventory-ph-d-in-electrical-engineering",
+        "nu-inventory-ph-d-in-civil-engineering"
+      ]
+    }
+  ],
+  "inventory": [
+    {
+      "title": "Master of Science in Biomedicine",
+      "url": "https://nusom.nu.edu.kz/msbm",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-biomedicine",
+      "source_order": 1,
+      "packet_id": "b"
+    },
+    {
+      "title": "Doctor of Business Administration",
+      "url": "https://gsb.nu.edu.kz/dba",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-doctor-of-business-administration",
+      "source_order": 2,
+      "packet_id": "b"
+    },
+    {
+      "title": "Ph.D. in Geosciences",
+      "url": "https://soe.nu.edu.kz/phd_in_geosciences",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-geosciences",
+      "source_order": 3,
+      "packet_id": "c"
+    },
+    {
+      "title": "Master of Arts in Global Affairs and Eurasian Studies (Joint Degree with SOAS)",
+      "url": "https://ssh.nu.edu.kz/nusoas",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas",
+      "source_order": 4,
+      "packet_id": "b"
+    },
+    {
+      "title": "Bachelor of Business Administration in Eurasian Business (Joint Degree with HKUST)",
+      "url": "https://gsb.nu.edu.kz/bbaeabu",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust",
+      "source_order": 5,
+      "packet_id": "a"
+    },
+    {
+      "title": "Residency in Neurology",
+      "url": "https://nusom.nu.edu.kz/residency-in-neurology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-neurology",
+      "source_order": 6,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Hematology",
+      "url": "https://nusom.nu.edu.kz/residency-in-hematology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-hematology",
+      "source_order": 7,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Endocrinology",
+      "url": "https://nusom.nu.edu.kz/residency-in-endocrinology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-endocrinology",
+      "source_order": 8,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Medical Oncology",
+      "url": "https://nusom.nu.edu.kz/residency-in-medical-oncology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-medical-oncology",
+      "source_order": 9,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Gastroenterology",
+      "url": "https://nusom.nu.edu.kz/residency-in-gastroenterology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-gastroenterology",
+      "source_order": 10,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Pediatric Surgery",
+      "url": "https://nusom.nu.edu.kz/residency-in-pediatric-surgery",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-pediatric-surgery",
+      "source_order": 11,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Psychiatry",
+      "url": "https://nusom.nu.edu.kz/residency-in-psychiatry",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-psychiatry",
+      "source_order": 12,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Ophthalmology",
+      "url": "https://nusom.nu.edu.kz/residency-in-ophthalmology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-ophthalmology",
+      "source_order": 13,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Family Medicine",
+      "url": "https://nusom.nu.edu.kz/residency-in-family-medicine",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-family-medicine",
+      "source_order": 14,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Pediatrics",
+      "url": "https://nusom.nu.edu.kz/residency-in-pediatrics",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-pediatrics",
+      "source_order": 15,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Obstetrics and Gynecology",
+      "url": "https://nusom.nu.edu.kz/residency-in-obstetrics-and-gynecology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-obstetrics-and-gynecology",
+      "source_order": 16,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Internal Medicine",
+      "url": "https://nusom.nu.edu.kz/residency-in-internal-medicine",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-internal-medicine",
+      "source_order": 17,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in General Surgery",
+      "url": "https://nusom.nu.edu.kz/residency-in-general-surgery",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-general-surgery",
+      "source_order": 18,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Anesthesiology and Critical Care",
+      "url": "https://nusom.nu.edu.kz/residency-in-anesthesiology-and-critical-care",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-anesthesiology-and-critical-care",
+      "source_order": 19,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Urology",
+      "url": "https://nusom.nu.edu.kz/residency-in-urology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-urology",
+      "source_order": 20,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Radiology",
+      "url": "https://nusom.nu.edu.kz/residency-in-radiology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-radiology",
+      "source_order": 21,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Orthopaedics and Traumatology",
+      "url": "https://nusom.nu.edu.kz/residency-in-orthopaedics-and-traumatology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-orthopaedics-and-traumatology",
+      "source_order": 22,
+      "packet_id": "c"
+    },
+    {
+      "title": "Residency in Anatomic Pathology",
+      "url": "https://nusom.nu.edu.kz/residency-in-anatomic-pathology",
+      "official_level": "Residency",
+      "inventory_card_id": "nu-inventory-residency-in-anatomic-pathology",
+      "source_order": 23,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Chemistry",
+      "url": "https://ssh.nu.edu.kz/phd_chem",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-chemistry",
+      "source_order": 24,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Mathematics",
+      "url": "https://scai.nu.edu.kz/phd-math",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-mathematics",
+      "source_order": 25,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Physics",
+      "url": "https://ssh.nu.edu.kz/phys_graduate_programs#!/tab/680540192-2",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-physics",
+      "source_order": 26,
+      "packet_id": "c"
+    },
+    {
+      "title": "Doctor of Philosophy in Education",
+      "url": "https://gse.nu.edu.kz/phdprogram",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-doctor-of-philosophy-in-education",
+      "source_order": 27,
+      "packet_id": "b"
+    },
+    {
+      "title": "PhD in Eurasian Studies",
+      "url": "https://ssh.nu.edu.kz/c_eas#!/tab/794878014-2",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-phd-in-eurasian-studies",
+      "source_order": 28,
+      "packet_id": "b"
+    },
+    {
+      "title": "Doctor of Public Management",
+      "url": "https://gspp.nu.edu.kz/gsppdpm",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-doctor-of-public-management",
+      "source_order": 29,
+      "packet_id": "b"
+    },
+    {
+      "title": "Ph.D. in Public Policy",
+      "url": "https://gspp.nu.edu.kz/gsppphd",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-public-policy",
+      "source_order": 30,
+      "packet_id": "b"
+    },
+    {
+      "title": "Ph.D. in Computer Science",
+      "url": "https://scai.nu.edu.kz/phd-cs",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-computer-science",
+      "source_order": 31,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Global Health",
+      "url": "https://nusom.nu.edu.kz/phd-in-global-health",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-global-health",
+      "source_order": 32,
+      "packet_id": "b"
+    },
+    {
+      "title": "Ph.D. in Biomedical Sciences",
+      "url": "https://nusom.nu.edu.kz/phd-in-biomedical-sciences",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-biomedical-sciences",
+      "source_order": 33,
+      "packet_id": "b"
+    },
+    {
+      "title": "Ph.D. in Life Sciences",
+      "url": "https://nusom.nu.edu.kz/phd-in-life-sciences",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-life-sciences",
+      "source_order": 34,
+      "packet_id": "b"
+    },
+    {
+      "title": "PhD in Business Administration",
+      "url": "https://gsb.nu.edu.kz/phd_in_ba",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-phd-in-business-administration",
+      "source_order": 35,
+      "packet_id": "b"
+    },
+    {
+      "title": "PhD in Mining Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_me",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-phd-in-mining-engineering",
+      "source_order": 36,
+      "packet_id": "c"
+    },
+    {
+      "title": "PhD in Petroleum Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_pe",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-phd-in-petroleum-engineering",
+      "source_order": 37,
+      "packet_id": "c"
+    },
+    {
+      "title": "PhD in Science, Engineering and Technology",
+      "url": "https://soe.nu.edu.kz/phd_in_set",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-phd-in-science-engineering-and-technology",
+      "source_order": 38,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Chemical Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_che",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-chemical-engineering",
+      "source_order": 39,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Robotics Engineering",
+      "url": "https://scai.nu.edu.kz/phd-rob",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-robotics-engineering",
+      "source_order": 40,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Mechanical Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_mae",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-mechanical-engineering",
+      "source_order": 41,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Electrical Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_ee",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-electrical-engineering",
+      "source_order": 42,
+      "packet_id": "c"
+    },
+    {
+      "title": "Ph.D. in Civil Engineering",
+      "url": "https://soe.nu.edu.kz/phd_in_ce",
+      "official_level": "Doctoral Programs",
+      "inventory_card_id": "nu-inventory-ph-d-in-civil-engineering",
+      "source_order": 43,
+      "packet_id": "c"
+    },
+    {
+      "title": "Master of Science in Geosciences",
+      "url": "https://soe.nu.edu.kz/msc_in_geosciences",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-geosciences",
+      "source_order": 44,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Chemistry",
+      "url": "https://ssh.nu.edu.kz/mscchem",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-chemistry",
+      "source_order": 45,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Applied Mathematics",
+      "url": "https://scai.nu.edu.kz/msc-math",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-applied-mathematics",
+      "source_order": 46,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Physics",
+      "url": "https://ssh.nu.edu.kz/mscphysics",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-physics",
+      "source_order": 47,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Arts in Multilingual Education",
+      "url": "https://gse.nu.edu.kz/maprogram",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-arts-in-multilingual-education",
+      "source_order": 48,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Educational Leadership",
+      "url": "https://gse.nu.edu.kz/mscprograms",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-educational-leadership",
+      "source_order": 49,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master in Public Administration",
+      "url": "https://gspp.nu.edu.kz/gsppmpa",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-in-public-administration",
+      "source_order": 50,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master in Public Policy",
+      "url": "https://gspp.nu.edu.kz/gsppmpp",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-in-public-policy",
+      "source_order": 51,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Arts in Political Science and International Relations",
+      "url": "https://ssh.nu.edu.kz/mapsirgr",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-arts-in-political-science-and-international-relations",
+      "source_order": 52,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Arts in Eurasian Studies",
+      "url": "https://ssh.nu.edu.kz/maeurasian",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-arts-in-eurasian-studies",
+      "source_order": 53,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Applied Artificial Intelligence and Data Science",
+      "url": "https://scai.nu.edu.kz/msc-ai",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-applied-artificial-intelligence-and-data-science",
+      "source_order": 54,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Data Science",
+      "url": "https://scai.nu.edu.kz/msc-ds",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-data-science",
+      "source_order": 55,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Computer Science",
+      "url": "https://scai.nu.edu.kz/msc-cs",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-computer-science",
+      "source_order": 56,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Nursing",
+      "url": "https://nusom.nu.edu.kz/msn",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-nursing",
+      "source_order": 57,
+      "packet_id": "b"
+    },
+    {
+      "title": "Doctor of Medicine",
+      "url": "https://nusom.nu.edu.kz/doctor-of-medicine",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-doctor-of-medicine",
+      "source_order": 58,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Public Health",
+      "url": "https://nusom.nu.edu.kz/mph",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-public-health",
+      "source_order": 59,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Life Sciences",
+      "url": "https://nusom.nu.edu.kz/mls",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-life-sciences",
+      "source_order": 60,
+      "packet_id": "b"
+    },
+    {
+      "title": "Executive Master of Business Administration",
+      "url": "https://gsb.nu.edu.kz/executivemba",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-executive-master-of-business-administration",
+      "source_order": 61,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Finance",
+      "url": "https://gsb.nu.edu.kz/msc_in_finance",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-finance",
+      "source_order": 62,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Business Administration",
+      "url": "https://gsb.nu.edu.kz/mba",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-business-administration",
+      "source_order": 63,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Arts in Economics",
+      "url": "https://gsb.nu.edu.kz/maecon",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-arts-in-economics",
+      "source_order": 64,
+      "packet_id": "b"
+    },
+    {
+      "title": "Master of Science in Petroleum Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_pe",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-petroleum-engineering",
+      "source_order": 65,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Mining Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_me",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-mining-engineering",
+      "source_order": 66,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Robotics",
+      "url": "https://scai.nu.edu.kz/msc-rob",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-robotics",
+      "source_order": 67,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Biomedical Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_be",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-biomedical-engineering",
+      "source_order": 68,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Civil and Environmental Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_cee",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-civil-and-environmental-engineering",
+      "source_order": 69,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Chemical and Materials Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_cme",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-chemical-and-materials-engineering",
+      "source_order": 70,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Science in Electrical and Computer Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_ece",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-science-in-electrical-and-computer-engineering",
+      "source_order": 71,
+      "packet_id": "a"
+    },
+    {
+      "title": "MSc in Mechanical and Aerospace Engineering",
+      "url": "https://soe.nu.edu.kz/msc_in_mae",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-msc-in-mechanical-and-aerospace-engineering",
+      "source_order": 72,
+      "packet_id": "a"
+    },
+    {
+      "title": "Master of Engineering Management",
+      "url": "https://soe.nu.edu.kz/master_of_em",
+      "official_level": "Master's",
+      "inventory_card_id": "nu-inventory-master-of-engineering-management",
+      "source_order": 73,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Geology",
+      "url": "https://soe.nu.edu.kz/bachelor_of_geology",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-geology",
+      "source_order": 74,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Mathematics",
+      "url": "https://scai.nu.edu.kz/bsc-math",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-mathematics",
+      "source_order": 75,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Physics",
+      "url": "https://ssh.nu.edu.kz/bscphysics",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-physics",
+      "source_order": 76,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Chemistry",
+      "url": "https://ssh.nu.edu.kz/bscchem",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-chemistry",
+      "source_order": 77,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Arts in Sociology",
+      "url": "https://ssh.nu.edu.kz/basociology",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-arts-in-sociology",
+      "source_order": 78,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Arts in Political Science and International Relations",
+      "url": "https://ssh.nu.edu.kz/bapsir",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-arts-in-political-science-and-international-relations",
+      "source_order": 79,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Computer Science",
+      "url": "https://scai.nu.edu.kz/bsc-cs",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-computer-science",
+      "source_order": 80,
+      "packet_id": "a"
+    },
+    {
+      "title": "6-year Undergraduate Medical Program",
+      "url": "https://nusom.nu.edu.kz/ump",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-6-year-undergraduate-medical-program",
+      "source_order": 81,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor in Nursing",
+      "url": "https://nusom.nu.edu.kz/bn",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-in-nursing",
+      "source_order": 82,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Biological Sciences",
+      "url": "https://nusom.nu.edu.kz/bbs",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-biological-sciences",
+      "source_order": 83,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Business Administration",
+      "url": "https://gsb.nu.edu.kz/bba",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-business-administration",
+      "source_order": 84,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Arts in Economics",
+      "url": "https://gsb.nu.edu.kz/econ",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-arts-in-economics",
+      "source_order": 85,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Robotics Engineering",
+      "url": "https://scai.nu.edu.kz/bsc-rob",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-robotics-engineering",
+      "source_order": 86,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Mining and Minerals Engineering",
+      "url": "https://soe.nu.edu.kz/bachelor_of_me",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-mining-and-minerals-engineering",
+      "source_order": 87,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Science in Petroleum Engineering",
+      "url": "https://soe.nu.edu.kz/bachelor_of_pe",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-science-in-petroleum-engineering",
+      "source_order": 88,
+      "packet_id": "a"
+    },
+    {
+      "title": "NU Foundation Year Program",
+      "url": "https://cps.nu.edu.kz/foundation",
+      "official_level": "Preparatory Program",
+      "inventory_card_id": "nu-inventory-nu-foundation-year-program",
+      "source_order": 89,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Engineering in Chemical and Materials Engineering",
+      "url": "https://soe.nu.edu.kz/bachelor_of_cme",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-engineering-in-chemical-and-materials-engineering",
+      "source_order": 90,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Engineering in Electrical and Computer Engineering",
+      "url": "https://soe.nu.edu.kz/bachelor_of_ece",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-engineering-in-electrical-and-computer-engineering",
+      "source_order": 91,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Engineering in Civil and Environmental Engineering",
+      "url": "https://soe.nu.edu.kz/bachelor_of_cee",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-engineering-in-civil-and-environmental-engineering",
+      "source_order": 92,
+      "packet_id": "a"
+    },
+    {
+      "title": "Bachelor of Engineering in Mechanical and Aerospace Engineering",
+      "url": "https://soe.nu.edu.kz/bachelor_of_mae",
+      "official_level": "Undergraduate",
+      "inventory_card_id": "nu-inventory-bachelor-of-engineering-in-mechanical-and-aerospace-engineering",
+      "source_order": 93,
+      "packet_id": "a"
+    }
+  ]
+}

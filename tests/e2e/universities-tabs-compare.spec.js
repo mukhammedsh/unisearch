@@ -120,6 +120,7 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
       await page.goto("/index.html");
       await waitForUniversitiesReady(page);
 
+      await expect(page.locator("#catalogLevelFilter .custom-select-trigger")).toBeVisible();
       const colors = await page.evaluate(() => {
         const valueForToken = (token) => {
           const probe = document.createElement("div");
@@ -131,19 +132,17 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
         };
         return {
           theme: document.documentElement.dataset.theme,
-          group: getComputedStyle(document.querySelector("#catalogLevelSegmented")).backgroundColor,
-          groupSurface: valueForToken("--surface-soft"),
-          active: getComputedStyle(document.querySelector(".catalog-level-btn.is-active")).backgroundColor,
-          activeSurface: valueForToken("--surface-solid"),
+          control: getComputedStyle(document.querySelector("#catalogLevelFilter .custom-select-trigger")).backgroundColor,
+          controlSurface: valueForToken("--surface-soft"),
         };
       });
 
       expect(colors.theme).toBe(theme);
-      expect(colors.group).toBe(colors.groupSurface);
-      expect(colors.active).toBe(colors.activeSurface);
+      expect(colors.control).toBe(colors.controlSurface);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
       // shortcut: the checked-in baseline is Windows-only; add an OS capture before enabling Linux comparisons.
       if (process.platform === "win32") {
-        await expect(page.locator("#catalogLevelSegmented")).toHaveScreenshot(`catalog-level-${theme}-${viewport.name}.png`, {
+        await expect(page.locator("#catalogLevelFilter")).toHaveScreenshot(`catalog-level-${theme}-${viewport.name}.png`, {
           animations: "disabled",
           caret: "hide",
         });

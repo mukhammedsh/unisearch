@@ -30,7 +30,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(self.batch["schema_version"], "admissions-storage-1.0")
         self.assertIs(self.batch["runtime_active"], False)
         self.assertEqual([(len(row["study_options"]), len(row["application_routes"]), len(row["facts"]), len(row["unknowns"]))
-                          for row in self.batch["institutions"]], [(191, 73, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95)])
+                          for row in self.batch["institutions"]], [(191, 73, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95), (96, 46, 399, 29)])
         self.assertEqual({frozenset(row) for row in self.batch["institutions"]}, {frozenset(self.batch["institutions"][0])})
 
     def test_imperial_reassembly_preserves_history_without_retired_runtime_programs(self):
@@ -69,7 +69,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
 
     def test_every_resolved_fact_preserves_significant_evidence(self):
         cache = {}
-        for name, institution in zip(preparation.BATCH, self.batch["institutions"]):
+        for name, institution in zip(preparation.DOSSIER_BATCH, self.batch["institutions"]):
             folder = preparation.DRAFTS / name
             for fact in institution["facts"]:
                 origin = fact["provenance"]
@@ -94,7 +94,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
                         self.assertEqual(fact["scope"]["additional_dimensions"][key], value)
 
     def test_every_source_retains_exact_record_and_merged_evidence(self):
-        for name, institution in zip(preparation.BATCH, self.batch["institutions"]):
+        for name, institution in zip(preparation.DOSSIER_BATCH, self.batch["institutions"]):
             folder = preparation.DRAFTS / name
             raw_sources = read(folder / "catalog.json")["sources"] if name == "mit" else read(folder / "sources.json")["sources"]
             sources = {row["id"]: row for row in institution["sources"]}
@@ -147,7 +147,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(sum(row["review_status"] == "superseded_by_completed_research" for row in stanford["unknowns"]), 7)
 
     def test_route_core_semantics_are_directly_usable(self):
-        for name, institution in zip(preparation.BATCH, self.batch["institutions"]):
+        for name, institution in zip(preparation.DOSSIER_BATCH, self.batch["institutions"]):
             catalog = read(preparation.DRAFTS / name / "catalog.json")
             raw_routes = catalog.get("application_routes", catalog.get("application_procedures"))
             for raw, route in zip(raw_routes, institution["application_routes"]):
@@ -157,7 +157,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
                 self.assertEqual(route["shared_form_family"], raw.get("shared_form_family"))
 
     def test_fact_links_add_only_explicit_scope_without_policy_inheritance(self):
-        for name, institution in zip(preparation.BATCH, self.batch["institutions"]):
+        for name, institution in zip(preparation.DOSSIER_BATCH, self.batch["institutions"]):
             catalog = read(preparation.DRAFTS / name / "catalog.json")
             for key, scope_key, catalog_key in (("study_options", "option_ids", "study_options"),
                                                  ("application_routes", "route_ids", "application_routes" if name == "mit" else "application_procedures")):

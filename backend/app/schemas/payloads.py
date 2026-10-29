@@ -90,10 +90,16 @@ class ProfileExamInput(BaseModel):
 
     @model_validator(mode="after")
     def _ensure_exam_id(self) -> "ProfileExamInput":
+        from app.services.exams import coerce_exam_submission, resolve_exam_key
+
         if not self.id and not self.exam:
             raise ValueError("Each exam entry must include 'id' or 'exam'")
         if self.score is None and not self.raw_value and not self.details:
             raise ValueError("Each exam entry must include 'score', 'raw_value', or 'details'")
+        if self.id and self.exam and resolve_exam_key(self.id) != resolve_exam_key(self.exam):
+            raise ValueError("Exam id and exam must identify the same exam")
+        coerce_exam_submission(self.id or self.exam, score_raw=self.score, raw_value=self.raw_value,
+                               details=self.details, taken_on=self.taken_on, allow_total_only_sat=True)
         return self
 
 
@@ -127,6 +133,8 @@ class ProfileLanguageInput(BaseModel):
 
     @model_validator(mode="after")
     def _ensure_language_shape(self) -> "ProfileLanguageInput":
+        from app.services.languages import validate_language
+
         if self.kind != "exam" and self.taken_on is not None:
             raise ValueError("taken_on is only valid for language exam entries")
         if not self.code:
@@ -138,6 +146,7 @@ class ProfileLanguageInput(BaseModel):
                 raise ValueError("Language kind='exam' requires 'exam'")
             if self.score is None and not self.raw_value and not self.details:
                 raise ValueError("Language kind='exam' requires 'score', 'raw_value', or 'details'")
+        validate_language(self.model_dump(exclude_none=True))
         return self
 
 
@@ -212,6 +221,12 @@ class ProfilePayload(BaseModel):
         return out
 
     @model_validator(mode="after")
+    def _validate_gpa_scale(self) -> "ProfilePayload":
+        if self.gpa is not None and self.gpa_scale is not None and self.gpa > self.gpa_scale:
+            raise ValueError("GPA cannot exceed its declared scale")
+        return self
+
+    @model_validator(mode="after")
     def _sync_citizenship_fields(self) -> "ProfilePayload":
         if self.citizenships:
             self.citizenship = self.citizenships[0]
@@ -221,7 +236,7 @@ class ProfilePayload(BaseModel):
 
     @model_validator(mode="after")
     def _validate_route_matches_target_level(self) -> "ProfilePayload":
-        graduate_levels = {"master", "doctorate", "mba", "graduate", "phd"}
+        graduate_levels = {"master", "masters", "doctorate", "doctoral", "mba", "graduate", "phd", "professional", "residency"}
         level = str(self.study_level or "").strip().lower()
         if level in graduate_levels and self.applicant_route in {"first_year", "transfer"}:
             raise ValueError("first-year and transfer routes require an undergraduate target level")
@@ -260,7 +275,7 @@ class ProfilePayload(BaseModel):
                     raise ValueError(f"{field} exceeds maximum allowed length ({max_length} chars)")
             normalized = {field: text for field, (_limit, text) in fields.items() if text}
             for field, allowed in (
-                ("studyLevel", {"", "undergraduate", "masters", "doctoral", "professional"}),
+                ("studyLevel", {"", "preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"}),
                 ("applicantRoute", {"", "first_year", "transfer", "graduate"}),
                 ("feeStatusContext", {"unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"}),
             ):

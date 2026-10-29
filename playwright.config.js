@@ -46,8 +46,8 @@ module.exports = defineConfig({
       },
     },
     {
-      command: "python -m http.server 5501",
-      cwd: "frontend",
+      command: "python scripts/frontend_dev_server.py --host 127.0.0.1 --port 5501 --directory frontend",
+      cwd: ".",
       url: "http://127.0.0.1:5501/index.html",
       timeout: 60_000,
       reuseExistingServer: !isCI,

@@ -132,8 +132,13 @@ function requirements(rows, resolved) {
 }
 
 function deadlines(rows, resolved) {
-  return rows.filter(reviewed).sort((left, right) => Number(Boolean(right.value?.windows?.some(window => window.application_due))) - Number(Boolean(left.value?.windows?.some(window => window.application_due)))).map(row => {
-    if (Array.isArray(row.value)) {
+  return rows.filter(row => reviewed(row) || Array.isArray(row.attributes?.deadline_events) || row.value?.application_deadline && evidenceReviewed(row)).sort((left, right) => Number(Boolean(right.value?.windows?.some(window => window.application_due))) - Number(Boolean(left.value?.windows?.some(window => window.application_due)))).map(row => {
+    if (typeof row.value?.application_deadline === "string") {
+      const entries = [[escapeHtml(t("university.deadlines.kind.application")), escapeHtml(formatPublishedDate(row.value.application_deadline))]];
+      if (row.value.expected_start) entries.push([escapeHtml(t("university.admissions.catalog.field.start_date")), escapeHtml(formatPublishedDate(row.value.expected_start))]);
+      return `<section class="admissions-reading__section" data-dated-source-reference>${row.publication_status.includes("_past") ? `<p class="admissions-reading__note">${escapeHtml(t("university.deadlines.dated_reference"))}</p>` : ""}${table(label("application_dates"), [label("window"), label("date")], entries)}${sourceNote(row, resolved)}</section>`;
+    }
+    if (Array.isArray(row.attributes?.deadline_events) || Array.isArray(row.value)) {
       const entries = getReviewedDeadlineEvents(resolved).filter(event => event.sourceFactId === row.id).map(event => [
         escapeHtml(admissionDeadlineTitle(event)), escapeHtml(formatPublishedDate(event.deadline)),
         escapeHtml([event.time, event.timezone].filter(Boolean).join(" · ") || label("unknown")),
@@ -204,8 +209,24 @@ function finance(rows, resolved) {
   return `${budgets.length ? "" : `<p class="admissions-reading__note">${escapeHtml(label("no_budget"))}</p>`}${budgetHtml}${fundingHtml}`;
 }
 
-export function publishedTuitionQuotes(row) {
-  if (!reviewed(row) || !row.value?.course_page_tuition_fees) return [];
+export function billingPeriodLabel(value) {
+  const key = { academic_year: "universities.card.per_year", whole_program: "universities.cost.whole_program", per_credit: "universities.cost.per_credit" }[value];
+  return key ? t(key) : "";
+}
+
+export function publishedTuitionQuotes(row, optionId) {
+  const value = row.attributes?.catalog_costs || row.value;
+  const publishedReference = row.publication_status?.startsWith("published_") && !row.publication_status.includes("conflict") && Array.isArray(value?.quotes);
+  if (!reviewed(row) && !(publishedReference && evidenceReviewed(row))) return [];
+  if (Array.isArray(value?.quotes)) return value.quotes.filter(quote => quote.basis === "tuition" && Number.isFinite(quote.amount) && quote.amount >= 0 && quote.currency
+    && (!quote.option_ids?.length || quote.option_ids.includes(optionId))).map(quote => ({
+    feeStatus: quote.fee_status || "", campus: quote.campus || "", currency: quote.currency,
+    studyYears: quote.study_years?.length ? tFormat("universities.cost.study_years", { years: quote.study_years.join(", ") }) : "",
+    reference: quote.reference_only ? t("universities.cost.reference_short") : "",
+    amounts: [`${new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(quote.amount)} ${billingPeriodLabel(quote.billing_period)}`.trim()],
+    period: String(quote.source_year || (/20\d{2}/.test(quote.period_label || "") ? quote.period_label : "")) || label("unknown"),
+  }));
+  if (!row.value?.course_page_tuition_fees) return [];
   return Object.entries(row.value.course_page_tuition_fees).flatMap(([status, panels]) => Array.isArray(panels) ? panels.map(panel => ({
     feeStatus: status === "Home fee" ? label("home_fee") : status === "Overseas fee" ? label("overseas_fee") : status,
     currency: panel.currency || "",
@@ -218,9 +239,18 @@ export function publishedTuitionQuotes(row) {
 }
 
 function courseCosts(rows, resolved) {
-  return rows.filter(reviewed).filter(row => row.value?.course_page_tuition_fees).map(row => {
-    const entries = publishedTuitionQuotes(row).map(quote => [escapeHtml(quote.feeStatus), quote.amounts.map(escapeHtml).join("<br>"), escapeHtml(quote.period)]);
-    return entries.length ? `<section class="admissions-reading__section" data-course-tuition>${table(label("published_tuition"), [label("fee_status"), label("tuition"), label("source_period")], entries)}<p class="admissions-reading__note">${escapeHtml(label("fee_status_explained"))}</p>${sourceNote(row, resolved)}</section>` : "";
+  return rows.map(row => {
+    const quotes = publishedTuitionQuotes(row, resolved.selected_option?.id);
+    const hasCampus = quotes.some(quote => quote.campus);
+    const hasFeeStatus = quotes.some(quote => quote.feeStatus);
+    const headings = [...(hasCampus ? [t("university.admissions.catalog.field.location")] : []), ...(hasFeeStatus ? [label("fee_status")] : []), label("tuition"), label("source_period")];
+    const entries = quotes.map(quote => [
+      ...(hasCampus ? [[escapeHtml(quote.campus || label("unknown")), quote.studyYears ? `<small>${escapeHtml(quote.studyYears)}</small>` : ""].join("")] : []),
+      ...(hasFeeStatus ? [escapeHtml(quote.feeStatus || label("unknown"))] : []),
+      [quote.amounts.map(escapeHtml).join("<br>"), escapeHtml(quote.currency), quote.reference ? `<small>${escapeHtml(quote.reference)}</small>` : ""].filter(Boolean).join(" "),
+      escapeHtml(quote.period),
+    ]);
+    return entries.length ? `<section class="admissions-reading__section" data-course-tuition>${table(label("published_tuition"), headings, entries)}${row.value?.course_page_tuition_fees ? `<p class="admissions-reading__note">${escapeHtml(label("fee_status_explained"))}</p>` : ""}${sourceNote(row, resolved)}</section>` : "";
   }).join("");
 }
 
@@ -244,8 +274,11 @@ function scholarshipRounds(rows, resolved) {
 
 export function renderApplicantSection(resolved, domains) {
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
+  const referenceIds = new Set(domains.includes("requirements") ? resolved.fact_groups?.reference || [] : []);
+  for (const id of referenceIds) ids.add(id);
+  if (domains.includes("deadlines")) for (const row of resolved.facts || []) if (row.attributes?.deadline_events?.length || row.value?.application_deadline) ids.add(row.id);
   const rows = (resolved.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched");
-  const relevant = row => linked(row, resolved) && !(domains.includes("requirements") && /^(?:study_content|study_structure|degree_)/.test(row.topic));
+  const relevant = row => !referenceIds.has(row.id) && linked(row, resolved) && !(domains.includes("requirements") && /^(?:study_content|study_structure|degree_)/.test(row.topic));
   const focused = rows.filter(relevant);
   const general = rows.filter(row => !relevant(row));
   const mode = domains.includes("costs") ? "finance" : domains.includes("deadlines") ? "dates" : "requirements";
@@ -254,7 +287,7 @@ export function renderApplicantSection(resolved, domains) {
     : mode === "dates" ? `${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines")}`
       : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
   const references = facts => renderAdmissionsContext({ ...resolved, facts }, {
-    domains, includeAssessment: false, includeUnknowns: false, includeHistory: false,
+    domains: [...domains, ...(referenceIds.size ? ["reference"] : [])], includeAssessment: false, includeUnknowns: false, includeHistory: false,
     includeSourceNote: false, presentation: "simple",
   });
   const mainRecords = highlights && mode !== "requirements"

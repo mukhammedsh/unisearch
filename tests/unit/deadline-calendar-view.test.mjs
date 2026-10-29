@@ -27,6 +27,6 @@ test("calendar exposes native date controls, source time and applicant restricti
 test("yearless and approximate dates produce an honest empty calendar without export controls", () => {
   setLanguage("eng", { emit: false });
   const html = renderDeadlineCalendar([{ deadline: "November 1" }, { deadline: "2027-01-13", approximate: true }]);
-  assert.match(html, /No deadlines with an exact published date and year/);
+  assert.match(html, /No deadline is confirmed for calendar export/);
   assert.doesNotMatch(html, /data-calendar-day|data-calendar-export/);
 });

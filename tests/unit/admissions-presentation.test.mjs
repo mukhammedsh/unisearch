@@ -6,7 +6,7 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { formatPublishedDate, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
-const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
+const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview, renderAdmissionsAssessment } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
 test("integrated undergraduate MEng explanations never apply to MIT internal master's options", () => {
@@ -47,6 +47,64 @@ function fact(id, value, extra = {}) {
   return { id, value, topic: "academic_tests", scope: { option_ids: [], route_ids: ["first-year"], applicant_categories: [] },
     source_ids: ["official"], publication_status: "published", review_status: "verified", applicability: { status: "conditional" }, ...extra };
 }
+
+test("normalized tuition keeps campus-specific whole-program and credit prices in localized primary reading", () => {
+  const row = fact("joint-cost", "The published price applies to its named campus and billing period.", { topic: "costs", publication_status: "published_reference_amounts_year_unspecified", attributes: { catalog_costs: { quotes: [
+    { basis: "tuition", amount: 24000, currency: "USD", period_label: "2025-26", billing_period: "whole_program", campus: "Astana", study_years: [1, 2], reference_only: true },
+    { basis: "tuition", amount: 500, currency: "HKD", period_label: "2025-26", billing_period: "per_credit", campus: "Hong Kong" },
+  ] } } });
+  const resolved = context([row], { costs: [row.id] });
+  for (const [language, totalLabel] of [["eng", "for the whole program"], ["rus", "за всю программу"], ["kaz", "толық бағдарлама үшін"]]) {
+    setLanguage(language, { emit: false });
+    const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
+    for (const text of [totalLabel, "USD", "HKD", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
+    assert.ok(primary.includes({ eng: "Years of study: 1, 2", rus: "Годы обучения: 1, 2", kaz: "Оқу жылдары: 1, 2" }[language]), language);
+    assert.match(primary, /<th scope="row" role="rowheader"[^>]*>Astana/);
+    assert.doesNotMatch(primary, /Imperial|Home and Overseas|24,000.*per year/);
+  }
+  setLanguage("eng", { emit: false });
+});
+
+test("an undated whole-program quote never gains an invented entry or source year", () => {
+  setLanguage("eng", { emit: false });
+  const row = fact("finance-price", "The source gives no price year.", { topic: "costs", attributes: { catalog_costs: { quotes: [
+    { basis: "tuition", amount: 14000, currency: "USD", period_label: "Whole program", source_year: null, billing_period: "whole_program" },
+  ] } } });
+  const primary = renderApplicantSection(context([row], { costs: [row.id] }), ["costs"]).split('<details class="admissions-reading__references"')[0];
+  assert.match(primary, /14,000 for the whole program USD/);
+  assert.match(primary, /data-label="Source period and wording">Not stated here/);
+  assert.doesNotMatch(primary, /Whole program|2026|2027|per year/);
+});
+
+test("assessment result metadata and unsupported funding state are localized without translating source prose", () => {
+  const resolved = context([], {});
+  resolved.assessment = { chancePercent: null, reason: "funding_selection_separate", activeChoice: { details: { checks: [{
+    kind: "manual_minimum", status: "unassessed", provided: { exam: "NUET", score: 120, details: { components: [{ exam: "NUET_MATH", score: 70 }] } },
+    sourceRule: fact("prior-degree", "The original source requires a qualifying degree."),
+  }] } } };
+  for (const [language, score, funding] of [["eng", "Reported score", "Funding selection is separate"], ["rus", "Указанный балл", "Отбор на финансирование"], ["kaz", "Көрсетілген балл", "Қаржыландыруға іріктеу"]]) {
+    setLanguage(language, { emit: false });
+    const html = renderAdmissionsAssessment(resolved);
+    for (const text of [score, funding, "The original source requires a qualifying degree."]) assert.ok(html.includes(text), `${language}: ${text}`);
+    assert.doesNotMatch(html, /manual_minimum|funding_selection_separate|<strong>0%/);
+  }
+  setLanguage("eng", { emit: false });
+});
+
+test("published support test projections appear in dates even when the original fact belongs to funding", () => {
+  const row = fact("support-date", "The support application deadline remains TBA.", { publication_status: "published_aid_categories_deadlines_TBA", topic: "funding", attributes: { deadline_events: [
+    { date: "2026-12-05", deadline_type: "test_date", exam_id: "SAT", application_category: "financial_support", publication_status: "published", cycle: "2027/28" },
+  ] } });
+  const resolved = context([row], { funding: [row.id] });
+  for (const [language, text] of [["eng", "Last SAT test date for funding consideration"], ["rus", "Последняя дата сдачи SAT для отбора на финансирование"], ["kaz", "Қаржыландыруға іріктеу үшін SAT тапсырудың соңғы күні"]]) {
+    setLanguage(language, { emit: false });
+    const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references"')[0];
+    assert.ok(primary.includes(text), language);
+    assert.match(primary, /2026/);
+    assert.match(primary, /https:\/\/example.edu\/admissions/);
+  }
+  setLanguage("eng", { emit: false });
+});
 
 test("shared institutional facts remain primary reading content without a selected major", () => {
   setLanguage("eng", { emit: false });

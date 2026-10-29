@@ -22,7 +22,7 @@ from app.services.finance_modes import (
 )
 from app.services import search as search_service
 from app.services import admissions_catalog
-from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program
+from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program, _MBA_RE
 
 
 def _uniq_non_empty(items: List[Any]) -> List[str]:
@@ -1049,6 +1049,8 @@ def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any"):
     quote = _catalog_costs(u, format_preference).get(basis)
     if not isinstance(quote, dict):
         return None
+    if quote.get("annual_comparable") is False:
+        return None
     low, high = _to_float(quote.get("min")), _to_float(quote.get("max"))
     if low is None or high is None or not math.isfinite(low) or not math.isfinite(high) or low < 0 or high < low:
         return None
@@ -1222,7 +1224,7 @@ def _build_university_meta(
     if reviewed:
         program_names = [option["title"] for option in reviewed["study_options"]]
         study_levels = [level for option in reviewed["study_options"] for level in option["levels"]]
-        program_levels = ["MBA" for option in reviewed["study_options"] if "MBA" in option["awards"]]
+        program_levels = ["MBA" for option in reviewed["study_options"] if any(_MBA_RE.search(award) for award in option["awards"])]
     else:
         program_levels = []
     program_major_tags: List[Any] = []
@@ -1238,7 +1240,7 @@ def _build_university_meta(
         else:
             program_levels.append(lv)
         program_name = str(p.get("name") or "")
-        if re.search(r"\bMBA\b|\bMaster(?:'s)?\s+of\s+Business\s+Administration\b", program_name, re.IGNORECASE):
+        if _MBA_RE.search(program_name):
             program_levels.append("MBA")
     program_formats = [p.get("study_mode") for p in programs]
     major_exact = _uniq_non_empty(
@@ -2042,6 +2044,9 @@ def _filter_university_pairs(
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
+            cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
+            if cost is None:
+                continue
             quote = _catalog_costs(u, mode_pref).get(cost_basis) or {}
             if quote.get("intervals") or quote.get("amounts"):
                 from app.services.currency import convert
@@ -2059,8 +2064,7 @@ def _filter_university_pairs(
                     for low, high in costs
                 ) else "partial"
             else:
-                cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
-                if cost is None or (min_tuition is not None and cost[1] < min_tuition) or (max_tuition is not None and cost[0] > max_tuition):
+                if (min_tuition is not None and cost[1] < min_tuition) or (max_tuition is not None and cost[0] > max_tuition):
                     continue
                 quote["filter_match"] = "full" if (min_tuition is None or cost[0] >= min_tuition) and (max_tuition is None or cost[1] <= max_tuition) else "partial"
             if quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
@@ -2168,7 +2172,8 @@ def list_universities(
     mode_pref = _normalize_study_mode(format or "any")
     items, meta = get_universities_with_meta()
     pairs = list(zip(items, meta))
-    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref, profile)
+    pairs = [({**u, "catalog_costs": admissions_catalog.catalog_costs(u["id"], study_level, mode_pref, profile,
+                   major=major, fee_status_context=fee_status_context, intended_entry_cycle=intended_entry_cycle)
                if u.get("id") in admissions_catalog.INSTITUTION_IDS else _profiled_legacy_costs(u, mode_pref, profile)}, m) for u, m in pairs]
     search_scores: Dict[str, float] = {}
 

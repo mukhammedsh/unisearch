@@ -366,10 +366,10 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   await expect(card.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
   await select(page, "sortSelect", "tuition_asc");
   await expect(card).toBeVisible();
-  await page.locator('#catalogLevelSegmented [data-level="master"]').click();
-  await expect(page.locator('#catalogLevelSegmented [data-level="master"]')).toHaveAttribute("aria-pressed", "true");
+  await select(page, "studyLevelSelect", "master");
+  await expect(page.locator("#studyLevelSelect")).toHaveValue("master");
   await expect(card).toHaveCount(0);
-  await page.locator('#catalogLevelSegmented [data-level="bachelor"]').click();
+  await select(page, "studyLevelSelect", "bachelor");
   await expect(card).toBeVisible();
   await page.locator("#settingsBtn").click();
   await expect(page.locator("#settingsModal")).toHaveClass(/is-open/);

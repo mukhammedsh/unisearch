@@ -1,0 +1,331 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Nazarbayev University consolidated research catalog",
+  "description": "Inactive, provenance-preserving research catalog. A ready_for_review status invites B to review evidence; it does not accept or activate runtime data.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "university_id",
+    "official_name",
+    "runtime_active",
+    "research_status",
+    "snapshot",
+    "inputs",
+    "inventory_entries",
+    "study_options",
+    "application_routes",
+    "facts",
+    "sources",
+    "unknowns",
+    "resolved_gap_history",
+    "additional_offerings",
+    "cross_packet_refs",
+    "packet_metadata",
+    "coverage"
+  ],
+  "properties": {
+    "schema_version": {"const": "nu-research-catalog-1.0"},
+    "university_id": {"const": "nazarbayev-university-kaz-astana"},
+    "official_name": {"const": "Nazarbayev University"},
+    "runtime_active": {"const": false},
+    "research_status": {"enum": ["in_progress", "ready_for_review"]},
+    "example_scope": {"type": "string"},
+    "snapshot": {"$ref": "#/$defs/snapshot"},
+    "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+    "inventory_entries": {"type": "array", "items": {"$ref": "#/$defs/inventory_entry"}},
+    "study_options": {"type": "array", "items": {"$ref": "#/$defs/study_option"}},
+    "application_routes": {"type": "array", "items": {"$ref": "#/$defs/application_route"}},
+    "facts": {"type": "array", "items": {"$ref": "#/$defs/fact"}},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "unknowns": {"type": "array", "items": {"$ref": "#/$defs/unknown"}},
+    "resolved_gap_history": {"type": "array", "items": {"$ref": "#/$defs/resolved_gap"}},
+    "additional_offerings": {"type": "array", "items": {"$ref": "#/$defs/additional_offering"}},
+    "cross_packet_refs": {"type": "array", "items": {"$ref": "#/$defs/cross_packet_ref"}},
+    "packet_metadata": {"type": "array", "items": {"$ref": "#/$defs/packet_metadata"}},
+    "coverage": {"$ref": "#/$defs/coverage"}
+  },
+  "$defs": {
+    "text_or_null": {"type": ["string", "null"]},
+    "id_list": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "id_list_or_null": {"type": ["array", "null"], "items": {"type": "string", "minLength": 1}},
+    "attributes": {"type": "object", "description": "Unmodified packet-specific fields not promoted to the normalized contract."},
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assignment_date", "assigned_inventory_count"],
+      "properties": {
+        "assignment_date": {"type": "string", "format": "date"},
+        "assigned_inventory_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packet_id", "path", "sha256", "handoff_status", "handoff_path", "handoff_sha256"],
+      "properties": {
+        "packet_id": {"enum": ["assignment", "a", "b", "c"]},
+        "path": {"type": "string", "pattern": "^backend/data/drafts/"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "handoff_status": {"type": "string"},
+        "handoff_path": {"$ref": "#/$defs/text_or_null"},
+        "handoff_sha256": {"$ref": "#/$defs/text_or_null", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packet_id", "evidence_file", "original_id", "original_scope", "original_source_ids"],
+      "properties": {
+        "packet_id": {"enum": ["a", "b", "c"]},
+        "evidence_file": {"type": "string"},
+        "original_id": {"type": ["string", "null"]},
+        "original_scope": {},
+        "original_source_ids": {"$ref": "#/$defs/id_list_or_null"}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["option_ids", "route_ids", "study_levels", "applicant_categories", "cycle", "fee_status", "additional_dimensions", "original_scope"],
+      "properties": {
+        "option_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "route_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "study_levels": {"type": ["array", "null"], "items": {"type": "string"}},
+        "applicant_categories": {"type": ["array", "null"], "items": {"type": "string"}},
+        "cycle": {"type": ["string", "array", "null"], "items": {"type": "string"}},
+        "fee_status": {"$ref": "#/$defs/id_list_or_null"},
+        "additional_dimensions": {"$ref": "#/$defs/attributes"},
+        "original_scope": {}
+      },
+      "description": "Known dimensions remain separate. Empty or missing dimensions do not imply universal applicability; original_scope is retained verbatim."
+    },
+    "inventory_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "url", "official_level", "owner_packet", "source_order", "study_option_ids", "source_ids", "reconciliation_status", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "title": {"type": "string"},
+        "url": {"type": "string", "format": "uri"},
+        "official_level": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "source_order": {"type": "integer"},
+        "study_option_ids": {"$ref": "#/$defs/id_list"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "reconciliation_status": {"$ref": "#/$defs/text_or_null"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "study_option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "title", "levels", "inventory_card_ids", "classification", "source_ids", "route_ids", "fact_ids", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "title": {"type": "string"},
+        "levels": {"type": "array", "items": {"enum": ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]}},
+        "inventory_card_ids": {"$ref": "#/$defs/id_list"},
+        "classification": {"$ref": "#/$defs/text_or_null"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "route_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "fact_ids": {"$ref": "#/$defs/id_list"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      },
+      "description": "The title preserves the native program/award name. Levels and classification remain distinct; original program fields stay in attributes."
+    },
+    "application_route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "title", "classification", "target", "destination", "option_ids", "fact_ids", "source_ids", "scope", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "title": {"$ref": "#/$defs/text_or_null"},
+        "classification": {"$ref": "#/$defs/text_or_null"},
+        "target": {"$ref": "#/$defs/text_or_null"},
+        "destination": {"$ref": "#/$defs/text_or_null"},
+        "option_ids": {"$ref": "#/$defs/id_list"},
+        "fact_ids": {"$ref": "#/$defs/id_list"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "scope": {"$ref": "#/$defs/scope"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "topic", "topic_field", "value", "scope", "conditions", "conditions_and_exceptions", "exceptions", "period", "related_fact_ids", "source_ids", "publication_status", "review_status", "review_status_field", "checked_at", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "topic": {"type": "string"},
+        "topic_field": {"$ref": "#/$defs/text_or_null"},
+        "value": {},
+        "scope": {"$ref": "#/$defs/scope"},
+        "conditions": {},
+        "conditions_and_exceptions": {},
+        "exceptions": {},
+        "period": {},
+        "related_fact_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "publication_status": {"$ref": "#/$defs/text_or_null"},
+        "review_status": {"$ref": "#/$defs/text_or_null"},
+        "review_status_field": {"$ref": "#/$defs/text_or_null"},
+        "checked_at": {"$ref": "#/$defs/text_or_null"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      },
+      "description": "A missing review status stays null. Values, scope, conditions, exceptions and publication status remain source-bound."
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "url", "title", "checked_at", "content_reviewed_at", "access_status", "review_status", "review_status_field", "publication_status", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "url": {"type": "string", "format": "uri"},
+        "title": {"type": "string"},
+        "checked_at": {"$ref": "#/$defs/text_or_null"},
+        "content_reviewed_at": {"$ref": "#/$defs/text_or_null"},
+        "access_status": {"$ref": "#/$defs/text_or_null"},
+        "review_status": {"$ref": "#/$defs/text_or_null"},
+        "review_status_field": {"$ref": "#/$defs/text_or_null"},
+        "publication_status": {"$ref": "#/$defs/text_or_null"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      },
+      "description": "Access and content review are separate. A missing status remains null even when a review date exists."
+    },
+    "unknown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "scope", "reason", "official_next_step", "next_step_field", "cross_packet_ref_ids", "source_ids", "publication_status", "review_status", "checked_at", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "scope": {"$ref": "#/$defs/scope"},
+        "reason": {"type": "string"},
+        "official_next_step": {"$ref": "#/$defs/text_or_null"},
+        "next_step_field": {"$ref": "#/$defs/text_or_null"},
+        "cross_packet_ref_ids": {"$ref": "#/$defs/id_list"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "publication_status": {"$ref": "#/$defs/text_or_null"},
+        "review_status": {"$ref": "#/$defs/text_or_null"},
+        "checked_at": {"$ref": "#/$defs/text_or_null"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "resolved_gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "resolved_on", "resolution_status", "source_ids", "record", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "resolved_on": {"$ref": "#/$defs/text_or_null"},
+        "resolution_status": {"$ref": "#/$defs/text_or_null"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "record": {"type": "object"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "additional_offering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_packet", "inventory_card_id", "title", "classification", "route_ids", "linked_degree_option_id", "source_ids", "fact_ids", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "owner_packet": {"enum": ["a", "b", "c"]},
+        "inventory_card_id": {"$ref": "#/$defs/text_or_null"},
+        "title": {"$ref": "#/$defs/text_or_null"},
+        "classification": {"$ref": "#/$defs/text_or_null"},
+        "route_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "linked_degree_option_id": {"$ref": "#/$defs/text_or_null"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "fact_ids": {"$ref": "#/$defs/id_list"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "cross_packet_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "record_owner_packet", "reference_owner_packet", "consumer_packet", "target", "linked_fact_ids", "linked_record_ids", "study_option_ids", "source_ids", "reference", "applicability", "scope", "resolution_status", "attributes", "provenance"],
+      "properties": {
+        "id": {"type": "string"},
+        "record_owner_packet": {"enum": ["a", "b", "c"]},
+        "reference_owner_packet": {"type": ["string", "null"]},
+        "consumer_packet": {"type": ["string", "null"]},
+        "target": {"$ref": "#/$defs/text_or_null"},
+        "linked_fact_ids": {"$ref": "#/$defs/id_list"},
+        "linked_record_ids": {"$ref": "#/$defs/id_list"},
+        "study_option_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "source_ids": {"$ref": "#/$defs/id_list_or_null"},
+        "reference": {"$ref": "#/$defs/text_or_null"},
+        "applicability": {"$ref": "#/$defs/text_or_null"},
+        "scope": {"$ref": "#/$defs/scope"},
+        "resolution_status": {"$ref": "#/$defs/text_or_null"},
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "packet_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packet_id", "schema_version", "checked_at", "research_checkpoints", "review_batches", "research_status", "shared_master_policy", "attributes"],
+      "properties": {
+        "packet_id": {"enum": ["a", "b", "c"]},
+        "schema_version": {"$ref": "#/$defs/text_or_null"},
+        "checked_at": {"$ref": "#/$defs/text_or_null"},
+        "research_checkpoints": {"type": ["array", "null"]},
+        "review_batches": {"type": ["array", "object", "null"]},
+        "research_status": {},
+        "shared_master_policy": {"type": ["object", "null"]},
+        "attributes": {"$ref": "#/$defs/attributes"}
+      }
+    },
+    "packet_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packet_id", "handoff_status", "inventory_count", "study_option_count", "route_count", "fact_count", "source_count", "unknown_count", "resolved_gap_history_count", "additional_offering_count"],
+      "properties": {
+        "packet_id": {"enum": ["a", "b", "c"]},
+        "handoff_status": {"type": "string"},
+        "inventory_count": {"type": "integer"},
+        "study_option_count": {"type": "integer"},
+        "route_count": {"type": "integer"},
+        "fact_count": {"type": "integer"},
+        "source_count": {"type": "integer"},
+        "unknown_count": {"type": "integer"},
+        "resolved_gap_history_count": {"type": "integer"},
+        "additional_offering_count": {"type": "integer"}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assigned_inventory_count", "study_option_count", "fact_count", "study_option_fact_link_count", "study_options_with_facts", "source_count", "unknown_count", "resolved_gap_history_count", "additional_offering_count", "source_review_status_counts", "unresolved_cross_packet_ref_ids", "packets"],
+      "properties": {
+        "assigned_inventory_count": {"type": "integer"},
+        "study_option_count": {"type": "integer"},
+        "fact_count": {"type": "integer"},
+        "study_option_fact_link_count": {"type": "integer"},
+        "study_options_with_facts": {"type": "integer"},
+        "source_count": {"type": "integer"},
+        "unknown_count": {"type": "integer"},
+        "resolved_gap_history_count": {"type": "integer"},
+        "additional_offering_count": {"type": "integer"},
+        "source_review_status_counts": {"type": "object", "additionalProperties": {"type": "integer"}},
+        "unresolved_cross_packet_ref_ids": {"$ref": "#/$defs/id_list"},
+        "packets": {"type": "array", "items": {"$ref": "#/$defs/packet_coverage"}}
+      }
+    }
+  }
+}

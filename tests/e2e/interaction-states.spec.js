@@ -193,8 +193,16 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectColor(secondaryAction, hoverColor);
     await expectFocusRing(secondaryAction, focusColor);
 
+    const currencyToggle = page.locator("#profileBudgetUnit");
+    await expectColor(currencyToggle, mutedColor);
+    await currencyToggle.hover();
+    await expectBackground(fieldComposite, hoverSurface);
+    await expectBackground(currencyToggle, await resolvedBackgroundToken(page, "--interaction-active-surface"));
+    await expectColor(currencyToggle, hoverColor);
+    await expectFocusRing(currencyToggle, await resolvedToken(page, "--accent"));
+
     await page.locator('[data-profile-tab="scores"]').click();
-    const unitToggle = page.locator(".profile-unit--toggle");
+    const unitToggle = page.locator("#gpaUnit");
     const gpaComposite = unitToggle.locator("xpath=..");
     await expectColor(unitToggle, mutedColor);
     await unitToggle.hover();

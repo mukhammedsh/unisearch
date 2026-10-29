@@ -71,11 +71,17 @@ class ExamsApiTests(unittest.TestCase):
         self.assertEqual("SAT_MATH", data.get("exam"))
         self.assertEqual(750, int(data.get("score")))
 
-    def test_exam_score_bounds_match_profile_input(self):
+    def test_profile_and_exam_endpoint_enforce_configured_bounds(self):
+        for score in (200, 800):
+            with self.subTest(score=score):
+                self.assertEqual(ProfileExamInput(id="SAT_MATH", score=score).score, score)
+                self.assertEqual(200, self.client.post("/exams/validate", json={"exam": "SAT_MATH", "score": score}).status_code)
         for score in (0, 10000):
             with self.subTest(score=score):
                 self.assertEqual(ExamValidateRequest(exam="SAT_MATH", score=score).score, score)
-                self.assertEqual(ProfileExamInput(id="SAT_MATH", score=score).score, score)
+                with self.assertRaises(ValidationError):
+                    ProfileExamInput(id="SAT_MATH", score=score)
+                self.assertEqual(400, self.client.post("/exams/validate", json={"exam": "SAT_MATH", "score": score}).status_code)
 
         for score in (-1, 10001, float("nan"), 10**1000):
             with self.subTest(score=score):

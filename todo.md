@@ -6,6 +6,44 @@ Active plan agreed on 2026-09-30; first-ten scope recorded on 2026-10-08; immedi
 
 Product focus confirmed on 2026-10-13: a university catalog with optional basic profile, UniFit, comparison, saved choices and clear university/program/admissions pages. Personal roadmaps, automatic next-level selection and exhaustive personalized exception evaluation are not required. Existing reviewed facts are retained. The immediate work is to make the three integrated university pages useful to a novice before expanding the same presentation to more institutions.
 
+### Final NU release-candidate preflight (2026-10-28)
+
+- [x] Review the assembled diff, migration, documentation, source scope and unchanged accepted data; retain the823 backend/658 frontend/45-targeted-case profile checkpoint instead of reusing old821/648 totals.
+- [x] Run the remaining overall Chromium gate once:457 cases,440 initially passed and17 superseded contract/workflow scenarios failed. Adapt eight E2E files with meaningful source/context/interaction assertions; all17 focused reruns passed. No skips, baseline relaxation, timeout increases or repeated broad suite.
+- [x] Inspect ordinary UniFit with semantic configuration enabled and cached assets. The missing huggingface_hub dependency yields explicit unavailable, API200/warning and no ML application or lexical fallback. No model, weights or data were changed. Positive semantic inference remains an environment validation item.
+- [x] Propose10.0.0 (MAJOR) for retired NU API/selection contracts, without changing9.2.0. Preserve existing Unreleased security/deployment notes and published blocks; retain preflight reports/logs outside the repository. Only managed preflight services were used and cleaned up.
+- [x] Restore the ordinary Python 3.12 environment from the locked dependencies and confirm real multilingual-e5-base inference locally: available/semantic/semanticReady, nine RU/EN/KZ interest queries through the real UniFit API, and profile save/reload/update in Chromium without the ML warning. Refresh the missing cross-platform coverage hashes without changing pins; 110 focused and 823 full backend tests pass. Local semantic readiness is verified; CI/container/production ML remain unverified.
+- [x] Record the user's 2026-10-28 authorization for version 10.0.0, a signed commit, pull request, merge, annotated tag and GitHub Release. The main-branch merge also triggers Firebase Hosting.
+
+### NU profile and complete applicant missions (2026-10-27 follow-up)
+
+- [x] Inspect all four profile sections from a fresh browser origin; reproduce and repair the retired catalog search handler that could overwrite a university URL and CSS that exposed hidden specialist fields.
+- [x] Complete UI-entered school, exam, alternative-qualification, returning, graduate and phone-first missions; verify field purposes against their real consumers and keep global preferences separate from saved university contexts.
+- [x] Repair and retest concrete profile input, save/edit, language/currency, persistence and accessibility findings, including cross-university reads after saving a native NU study level; preserve accepted data and the earlier walkthrough checkpoint.
+- [x] Record the field/mission matrix, inspected evidence and local readiness decision outside the repository; 658 frontend, 823 backend and 45 distinct targeted browser cases passed across focused runs. Native browser zoom remains unverified after Windows control stopped; physical-device and independent human review remain outside this agent walkthrough. Accepted data hashes are unchanged and only owned services were stopped. No Git/version/publication operations were performed.
+
+### Independent NU applicant walkthrough and repairs (2026-10-27)
+
+- [x] Start a fresh local browser origin and exercise ordinary catalog/program/admission discovery without profile seeding; preserve the earlier integration checkpoint and all existing changes.
+- [x] Reproduce and repair misleading cross-program tuition, missing reviewed descriptions/official program links, ambiguous requirement headings, stale expanded search results and inaccessible composite-score fields.
+- [x] Finish distinct-program browser journeys, profile/error/persistence flows, desktop/phone and EN/RU/KZ theme checks; distinguish the 13 manually opened NU options and institution-wide mid-year path from the systematic 96-option/46-context coverage map.
+- [x] Complete focused regression checks, final changed-domain checks and diff/service cleanup: 656 frontend unit tests, 822 backend tests and 31 unique targeted browser cases passed across focused runs. Keep the UX findings, coverage matrix and inspected before/after evidence outside the repository. Only owned services were stopped; no publication was performed.
+- Native browser zoom could not be changed by the in-app browser tool; narrow layouts down to 390 px and the 1050 px compact view were checked separately. This is an agent walkthrough, not independent novice feedback or fluent Kazakh terminology acceptance. The 29 accepted publication/committee limitations remain explicit.
+
+### Nazarbayev University rework (2026-10-23; full delegation 2026-10-24)
+
+The user authorized a Nazarbayev University rework, including necessary exam/model extensions. On 2026-10-24, the user assigned all remaining work through research, implementation and verification to the three existing chats, using GPT-6 Luna Max and GPT-6.1 Sol XHigh/Max. Follow [the complete NU work plan](backend/data/drafts/nazarbayev-university-kaz-astana/work-plan.md). This replaces the earlier first-pass/Stage-1-only stop boundary. Oxford, Harvard and Cambridge remain paused; the existing three reviewed institutions stay active.
+
+- [x] Inspect the current NU runtime, API, exam/scoring paths and applicant page; retain concrete failures and official-source leads in the owner brief.
+- [x] Capture the official A-Z inventory and assign its 93 cards to three disjoint packets of 31 in [the NU draft](backend/data/drafts/nazarbayev-university-kaz-astana/README.md). Card counts do not establish open recruitment or research acceptance.
+- [x] Preserve the three first-pass drafts and their explicit unfinished collection; do not treat `needs_research` handoffs as completed research.
+- [x] Packet A research:31 assigned options and scoped Foundation/UG/engineering evidence consolidated into the reviewed NU catalog; original source conflicts, dates and publication gaps retained.
+- [x] Packet B research:31 assigned options/routes,153 complete-review facts plus39 superseded first-pass references,63 official source records and10 evidenced publication/conflict gaps; shared master's policies explicitly include the10 applicable A-owned master options. The2026-10-25 handoff is ready_for_review; runtime activation and implementation remain below.
+- [x] Packet C research:31 technical doctorate/residency options,60 scoped facts,43 sources and5 evidenced unknowns; conditional/unconditional residency and School-specific policies remain distinct.
+- [x] Reconcile the93 assigned options plus3 additional offerings,333 original facts,161 sources and29 evidenced unknowns; preserve source values/provenance and normalize actual scope. Independent acceptance and exact catalog hash are in [the review manifest](backend/data/drafts/nazarbayev-university-kaz-astana/packet-b/data-acceptance.json).
+- [x] Integrate the reviewed NU scope across storage/API, seven canonical levels, validated exam evidence, source-hash assessment, discovery/comparison and saved context; complete Stage 3 desktop/phone and EN/RU/KZ journeys.
+- [x] Final NU local integration verified2026-10-27:821 backend tests,648 frontend unit tests,15 unique NU browser scenarios, three institutional contrasts and MBA membership passed. Source gaps remain explicit; final static/data/diff checks and process cleanup are complete. See [the integration handoff](backend/data/drafts/nazarbayev-university-kaz-astana/integration-handoff.md). No Git publication or deployment was performed.
+
 ### Current three-university integration checkpoint (2026-10-21)
 
 - [x] Close the parent integration follow-ups: bootstrap direct nested detail URLs at root and under the frontend mount, reuse canonical subject matching for profile-based program suggestions, and allow exact shared-route calendar dates and comparison facts without a fabricated selected major. Explain reference/tuition-only budget comparisons on UniFit cards. Final checks passed 787 backend tests, 619 frontend unit tests, focused browser routes/suggestions/comparison/mobile copy, and changed-domain static checks. New source changes remain local; the public app is the previously released 9.1.3.

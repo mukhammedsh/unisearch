@@ -44,7 +44,7 @@ guide.academic_exams.title: Академические экзамены
 guide.admission.p1: Требования оцениваются для выбранного маршрута поступления и профиля требований. Варианты финансирования показаны отдельно: грант не создаёт отдельную оценку поступления, а указанная годовая стоимость приводится до получения поддержки. Проверяйте применимые маршрут, цикл поступления и профиль.
 guide.admission.p2: Опубликованные минимумы относятся к конкретному маршруту поступления, но могут действовать исключения или целостная оценка заявки. Диапазоны баллов принятых студентов показывают только исторический контекст — это не порог и не гарантия.
 guide.admission.p3: Подтверждение языка устроено так же с одним лишним переключателем. Режим any означает, что хватает одного подтверждения из списка; режим all — что нужны все перечисленные. Родной язык засчитывается везде, где маршрут его принимает, а одно языковое правило свободно смешивает уровни CEFR с баллами экзаменов.
-guide.admission.p4: Баллы из разных стран сначала приводятся к общим шкалам — GPA, например, нормализуется к 4.0 до любых вычислений. Больше — лучше для каждого экзамена с единственным исключением, JLPT, где номер уровня идёт наоборот и меньшее число означает более сильный японский.
+guide.admission.p4: Для сравнения профилей UniFit может нормализовать результаты экзаменов. Опубликованные минимумы проверяются только по данным в указанной шкале: пересчитанный GPA не считается официальным эквивалентом. В большинстве экзаменов выше — лучше; у JLPT более низкий номер уровня означает более высокий уровень японского.
 guide.admission.title: Как устроены варианты поступления
 guide.exam_basics.p1: Каждый вариант поступления проводит две независимые проверки: ваши академические баллы и ваше знание языка. Проверки друг друга не перекрывают — блестящая математика не закроет недостающий IELTS, — так что для открытия варианта зелёными должны стать обе колонки.
 guide.exam_basics.p2: Пороги задаются по университету, категории и профилю, поэтому два трека в одном вузе могут требовать совершенно разных баллов. Читайте сам выбранный вариант; обзорные цифры на странице вуза — это ориентир, а не требования.
@@ -265,15 +265,15 @@ profile.gpa_range: GPA должен быть от {min} до {max}
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
 profile.hint.budget_range: Диапазон: 0‑{max}
-profile.hint.family_income_optional: Необязательно. Сохраняется на этом устройстве. Один доход не определяет право на финансовую помощь.
+profile.hint.family_income_optional: Необязательная справочная запись только на этом устройстве. Не участвует в UniFit или автоматической сверке требований и не прогнозирует помощь. Разряды можно разделять пробелами, дробную часть — запятой или точкой.
 profile.family_income_invalid: Укажите сумму от 0 до 1 000 000 000 000.
 profile.hint.low_budget_grant: Бюджет меньше {amount}. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
 profile.hint.gpa: Выберите шкалу 4.0 (США / Международная) или 5.0 (Казахстан / СНГ).
 profile.gpa_info_title: Как GPA работает здесь
-profile.gpa_info_tooltip: Выберите шкалу оценивания: 4.0 (международный стандарт, США, НИШ) или 5.0 (школьный аттестат Казахстана и стран СНГ). Система автоматически сопоставит ваш балл с требованиями любого университета.
-profile.hint.interests: Избегайте длинных предложений и отрицаний («не люблю X»). Нейросеть сама свяжет синонимы с программами вузов.
+profile.gpa_info_tooltip: Выберите шкалу оценок: 4.0 или 5.0. Исходный балл и шкала сохраняются. Минимумы GPA проверяются в соответствующей шкале; отдельные академические требования программы могут нуждаться в дополнительных данных.
+profile.hint.interests: Короткие темы о том, что вам интересно, могут помочь упорядочить университеты в UniFit. Они не выбирают программу и не подтверждают право на поступление.
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет / год
@@ -331,8 +331,8 @@ profile.type: Тип
 profile.unit.gpa: / 4.0
 profile.unit.usd_year: USD / год
 profile.unit.currency_year: {currency} / год
-profile.progress.empty: Заполните профиль, чтобы подбор стал точнее.
-profile.progress.count: Заполнено разделов профиля: {completed}/{total}
+profile.progress.empty: Можно просто изучать каталог и добавлять только полезные вам сведения.
+profile.progress.count: Настройки есть в {completed} из {total} необязательных разделов
 profile.sections.aria: Разделы профиля
 profile.title: Профиль
 profile.section.basics: Общее
@@ -343,7 +343,7 @@ profile.kicker: Кабинет абитуриента
 profile.page_subtitle: Настройте академические данные, бюджет и экзамены для сортировки UniFit и оценки соответствия требованиям.
 profile.action.back: Назад
 profile.action.back_desc: Вернуться на предыдущую страницу
-profile.progress.title: Заполненность профиля
+profile.progress.title: Необязательные настройки профиля
 profile.empty_exams: Экзамены еще не добавлены. Выберите экзамен выше, чтобы добавить баллы.
 profile.empty_languages: Языки еще не добавлены. Укажите родной язык или сертификат тестирования.
 profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в {currency}.
@@ -352,8 +352,8 @@ profile.field.funding.desc: Выберите, интересуют ли вас �
 profile.field.gpa.desc: Выберите систему оценивания и укажите среднюю оценку с аттестата.
 profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
 profile.field.interests.desc: Работает как умные теги: перечислите темы и направления через запятую (технологии, специальности, карьерные цели).
-profile.field.exams.desc: Добавьте результаты академических экзаменов, чтобы проверить соответствие опубликованным требованиям.
-profile.field.languages.desc: Укажите родной язык или международные сертификаты (IELTS, TOEFL, CEFR) для проверки языковых требований.
+profile.field.exams.desc: Введите результат и нажмите «Добавить» или Enter, чтобы включить отчёт в черновик. Сохраните профиль, чтобы оставить его на этом устройстве.
+profile.field.languages.desc: Добавьте язык или сертификат, затем сохраните профиль. Родной язык и CEFR не заменяют требуемый университетом экзамен автоматически.
 profile.aria.applicant_profile: Профиль абитуриента
 ranking.acceptance: Процент зачисления
 ranking.acceptance_undergraduate: Доля зачисленных на бакалавриат
@@ -447,7 +447,7 @@ universities.cost.tooltip_open: Как рассчитана цена
 universities.cost.tooltip_title: О диапазоне цен
 universities.cost.tooltip_range: Это минимальная и максимальная известные цены для текущего выбора, а не среднее. Сумма зависит от программы и категории оплаты.
 universities.cost.tooltip_living_range: Границы получены сложением известных цен обучения и опубликованного диапазона расходов на проживание, а не усреднением. Оценка проживания может относиться к другому году.
-universities.cost.tooltip_single: Это одна известная годовая цена для текущего выбора. Уточните программу, категорию оплаты и год.
+universities.cost.tooltip_single: Это одна известная цена для текущего выбора. Уточните программу, категорию оплаты и год.
 universities.cost.tooltip_filter_variants: Фильтр проверяет каждый известный вариант. Вуз показывается, если хотя бы один вариант пересекает ваши границы, даже когда весь диапазон шире их. Цены между крайними значениями могут отсутствовать.
 universities.cost.tooltip_filter_reference: Общий справочный диапазон может пересекать ваши границы без подтверждённой подходящей программы. Уточните её цену в вузе.
 universities.cost.tooltip_living_year: Оценка проживания: {year} год.
@@ -915,7 +915,7 @@ placeholder.field.countries_count: Количество стран
 guide.academic.act: Его собрат, покрывающий английский, математику, чтение и научное мышление.
 guide.academic.aptotal: Суммарный результат по предметам AP — для систем, которые их признают.
 guide.academic.default: Академический балл, который требует хотя бы один профиль требований.
-guide.academic.gpa: Ваш средний школьный балл, приведённый внутри UniSearch к шкале 4.0, чтобы страны оставались сравнимыми.
+guide.academic.gpa: Ваш средний балл и исходная шкала. UniFit может нормализовать его для сравнения, а опубликованные минимумы проверяются в соответствующей шкале.
 guide.academic.ibdiploma: Итоговый балл диплома IB, принимаемый вузами по всему миру.
 guide.academic.alevelcert: Британские предметные оценки A-Level — вводите как A*AA, и лучшие три переводятся в сопоставимый балл.
 guide.academic.hkdselevel: Гонконгские школьные уровни с внутренним пересчётом: 5* считается за 6, а 5** за 7.
@@ -1113,7 +1113,7 @@ admission.requirements_fit.description: Доля проверяемых опуб
 admission.requirements_fit.unavailable_method: Балл соответствия требованиям недоступен: смысл этого показателя не подтверждён.
 admission.requirements_fit.insufficient_data: Недостаточно подходящих требований или данных профиля, чтобы рассчитать это соответствие.
 admission.requirements_fit.no_published_requirements: Для этого маршрута нет опубликованных измеримых минимумов, поэтому процент соответствия рассчитать нельзя. Проверьте официальные требования к заявке.
-admission.requirements_fit.unassessed_minimums: MIT публикует для этого маршрута два минимума GPA: не менее 4,25/5,0 по профильным предметам и не менее 4,0/5,0 в целом. UniSearch не может оценить их, поскольку в профиле хранится только один GPA, нормализованный к четырёхбалльной шкале; процент соответствия не рассчитывается.
+admission.requirements_fit.unassessed_minimums: Для части опубликованных минимумов нужны данные или шкала оценок, которые текущий профиль не подтверждает. По неподдерживаемым проверкам процент соответствия не рассчитывается.
 admission.requirements_fit.requirements_not_reviewed: Опубликованные академические и языковые минимумы для этого маршрута ещё не проверены. Перед подачей заявления изучите официальную страницу программы.
 admission.funding_before_award: Годовая стоимость до получения поддержки
 admission.score_range.title: Опубликованный диапазон баллов первокурсников
@@ -1432,15 +1432,15 @@ profile.option.study_level_master: Магистратура
 profile.option.study_level_doctorate: Докторантура / PhD
 profile.option.study_level_professional: Профессиональная программа
 profile.option.study_level_mba: MBA
-profile.label.citizenship: Гражданство и резидентство
-profile.field.citizenship.desc: Добавьте одно или несколько гражданств для расчета стоимости и стипендий в вашу пользу.
+profile.label.citizenship: Гражданства
+profile.field.citizenship.desc: Необязательно. Гражданство может влиять на опубликованные правила подачи и финансирования, но не подтверждает место проживания, тариф или получение гранта.
 profile.citizenship_info_title: Влияние гражданства и резидентства
 profile.citizenship_info_tooltip: Гражданство может влиять на правила оплаты и помощи, но само по себе не определяет право на них. Университет также может учитывать историю проживания, иммиграционный статус и программу. Добавьте все имеющиеся гражданства для дальнейшей проверки.
 profile.citizenship.select_country: Выберите страну...
 profile.citizenship.add_btn: Добавить
 profile.citizenship.other_option: Другая страна
 profile.citizenship.other_placeholder: Введите название страны...
-profile.citizenship.empty_hint: Гражданства ещё не добавлены. Добавьте их для проверки правил оплаты и финансовой помощи.
+profile.citizenship.empty_hint: Гражданства не добавлены. Можно оставить поле пустым и прочитать опубликованные правила самостоятельно.
 profile.citizenship.search_placeholder: Поиск страны
 profile.citizenship.primary_badge: Основное
 profile.citizenship.set_primary_title: Сделать основным гражданством
@@ -1553,7 +1553,7 @@ university.deadlines.all_levels: Все ступени
 university.deadlines.calendar_empty_month: В этом месяце нет дедлайнов с точной датой.
 university.deadlines.calendar_events: дедлайнов
 university.deadlines.calendar_next: Следующий месяц
-university.deadlines.calendar_no_exact: Нет опубликованных дедлайнов с точной датой и годом. Приблизительные сроки и даты без года смотрите в списке сроков.
+university.deadlines.calendar_no_exact: Для этого выбора нет срока, подтверждённого для экспорта в календарь. Опубликованные даты, примерные периоды и ограничения источников доступны в списке ниже.
 university.deadlines.calendar_partial_note: Дедлайны без точной даты и года показаны только в списке ниже.
 university.deadlines.calendar_previous: Предыдущий месяц
 university.deadlines.calendar_title: Календарь дедлайнов
@@ -2375,7 +2375,7 @@ universities.why.preference_comparison: {label}: ваша настройка {re
 admission.requirements_fit.check.profile_unassessed: Профиль не позволяет подтвердить нужные сведения или право на освобождение.
 admission.requirements_fit.missing_evidence_note: Добавьте указанные ниже подтверждения для проверки маршрута. Процент доступен только при наличии применимых числовых минимумов, которые можно оценить.
 profile.evidence.title: Данные для выбранных условий поступления
-profile.evidence.description: Необязательные сведения помогают оценить опубликованные условия, но не подтверждают официальные документы.
+profile.evidence.description: Необязательные сведения для опубликованного условия, которое относится к вам. Поля университета применяются только к указанным здесь вузам и вариантам поступления; раздел можно пропустить. Сведения с ваших слов не подтверждают документы или освобождение от экзамена.
 profile.evidence.test_date: Дата экзамена (необязательно)
 profile.evidence.language_title: Языковой опыт
 profile.evidence.institution_title: Сведения для конкретного вуза
@@ -2682,7 +2682,7 @@ university.admissions.catalog.field.housing_estimate: Проживание, оц
 university.admissions.catalog.field.food_estimate: Питание, оценка
 university.admissions.catalog.field.materials_estimate: Учебные материалы
 university.admissions.catalog.field.personal_estimate: Личные расходы
-university.admissions.catalog.field.windows: Периоды подачи
+university.admissions.catalog.field.windows: Опубликованные периоды
 university.admissions.catalog.field.round: Период подачи
 university.admissions.catalog.field.application_due: Срок подачи заявления
 university.admissions.catalog.field.aid_due: Срок подачи на помощь
@@ -3154,3 +3154,107 @@ university.admissions.catalog.route_name.mit-idps-internal-selection: Внутр
 university.admissions.catalog.route_name.mit-cse-departmental-doctoral: Совместная PhD департамента и вычислительных наук (CSE)
 university.admissions.catalog.route_name.mit-economics-sm-special-approval: Особое одобрение SM по экономике для действующих студентов MIT
 university.admissions.reading.special_routes: Нынешним студентам Stanford и совместные степени ({count})
+university.admissions.catalog.level.preparation: Подготовка
+university.admissions.catalog.study_level.preparation: Подготовка
+university.admissions.catalog.level.residency: Резидентура
+university.admissions.catalog.study_level.residency: Резидентура
+university.admissions.catalog.level.non_degree: Без присуждения степени
+university.admissions.catalog.study_level.non_degree: Без присуждения степени
+profile.option.study_level_preparation: Подготовка / Foundation
+universities.level.preparation: Подготовка
+universities.level.professional: Профессиональные программы
+profile.option.study_level_residency: Резидентура
+universities.level.residency: Резидентура
+profile.option.study_level_non_degree: Без присуждения степени
+universities.level.non_degree: Без присуждения степени
+profile.exam_breakdown_optional_hint: Добавьте разделы, указанные в вашем результате. Отсутствующие разделы останутся без оценки.
+profile.exam_section_required: Добавьте хотя бы один балл раздела из вашего результата.
+profile.exam_not_recorded: Не добавлено
+university.admissions.catalog.kind.academic_requirement: Академическая квалификация
+university.admissions.catalog.field.component_minimums: Минимальные баллы разделов
+university.admissions.catalog.field.components_at_least: Необходимые результаты по предметам
+university.admissions.catalog.field.profile_field: Данные профиля
+university.admissions.catalog.field.gpa_scale: Исходная шкала GPA
+university.admissions.catalog.field.count: Необходимое количество
+university.admissions.catalog.field.reported: Количество результатов
+university.admissions.catalog.field.meeting_minimum: Результаты, достигшие минимума
+university.admissions.catalog.counted_minimum: Не менее {count} результатов, каждый не ниже {minimum}
+university.admissions.catalog.counted_provided: Указано: {reported}; достигли минимума: {met}
+universities.cost.whole_program: за всю программу
+universities.cost.per_credit: / кредит
+university.admissions.catalog.reason.funding_selection_separate: Отбор на финансирование проводится отдельно от поступления. Для этого контекста финансирования процент соответствия требованиям поступления не рассчитывается.
+university.admissions.catalog.kind.manual_minimum: Минимум, требующий индивидуальной проверки документов
+university.admissions.catalog.field.score: Указанный балл
+university.admissions.catalog.field.details: Данные результата
+university.admissions.catalog.field.components: Указанные секции и предметы
+university.admissions.catalog.field.raw_value: Указанная оценка или результат
+university.admissions.catalog.field.display_value: Сохранённый результат
+university.admissions.catalog.field.requires_review: Нужна индивидуальная проверка
+university.admissions.catalog.field.date_boundary: Опубликованные ограничения по дате теста
+university.admissions.catalog.field.max_age_years: Максимальный возраст результата в годах
+university.deadlines.test_for_funding: Последняя дата сдачи {exam} для отбора на финансирование
+university.deadlines.kind.test_submission: Срок предоставления результата теста
+university.deadlines.dated_reference: Ориентир прошлого цикла
+universities.cost.study_years: Годы обучения: {years}
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Обычное поступление на подготовительную программу или бакалавриат
+university.admissions.catalog.route_name.nu-a-route-financial-support: Отбор на финансирование после предложения о зачислении
+university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Платный набор на бакалавриат в середине учебного года
+university.admissions.catalog.route_name.nu-a-route-transfer: Перевод на бакалавриат из другого вуза
+university.admissions.catalog.route_name.nu-a-route-nufyp-progression: Переход с NUFYP на бакалавриат
+university.admissions.catalog.route_name.nu-a-route-joint-bba: Поступление на совместную программу BBA с HKUST
+university.admissions.catalog.route_name.nu-a-route-nursing: Поступление на бакалавриат по сестринскому делу после профильной подготовки
+university.admissions.catalog.route_name.nu-a-route-ump: Поступление на шестилетнюю медицинскую программу после школы
+university.admissions.catalog.route_name.nu-a-route-masters-common-packet-b: Общая подача заявки на инженерные магистерские программы
+university.admissions.catalog.route_name.nu-a-route-non-degree-study: Поступление на обучение без получения степени
+university.admissions.catalog.route_name.nu-a-route-mining-microcredential: Поступление на микропрограмму по горной инженерии
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-biomedicine: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-doctor-of-business-administration: Поступление в профессиональную докторантуру
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-global-affairs-and-eurasian-studies-joint-degree-with-soas: Поступление на совместную магистратуру через SOAS
+university.admissions.catalog.route_name.nu-b-route-doctor-of-philosophy-in-education: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-phd-in-eurasian-studies: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-doctor-of-public-management: Поступление в профессиональную докторантуру
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-public-policy: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-global-health: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-biomedical-sciences: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-ph-d-in-life-sciences: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-phd-in-business-administration: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-chemistry: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-applied-mathematics: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-physics: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-multilingual-education: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-educational-leadership: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-in-public-administration: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-in-public-policy: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-political-science-and-international-relations: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-eurasian-studies: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-applied-artificial-intelligence-and-data-science: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-data-science: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-computer-science: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-nursing: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-doctor-of-medicine: Поступление на программу доктора медицины (MD)
+university.admissions.catalog.route_name.nu-b-route-master-of-public-health: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-life-sciences: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-executive-master-of-business-administration: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-science-in-finance: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-business-administration: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-b-route-master-of-arts-in-economics: Поступление в магистратуру
+university.admissions.catalog.route_name.nu-c-phd-route: Поступление в исследовательскую докторантуру PhD
+university.admissions.catalog.route_name.nu-c-residency-route: Общая заявка в резидентуру
+university.admissions.catalog.route_name.nu-residency-unconditional: Резидентура: безусловное зачисление
+university.admissions.catalog.route_name.nu-residency-conditional-umc: Резидентура: условное зачисление по рекомендации UMC
+university.admissions.reading.formats_vary: Зависит от программы — посмотреть форматы
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Начните здесь: требования и подача заявления. Требования к английскому и допустимая академическая квалификация проверяются отдельно. Отбор на финансирование проходит после предложения места и имеет свои условия.
+university.admissions.entry.route_help.nu-a-route-financial-support: Для получивших предложение о зачислении: категории грантов, дополнительные экзамены и сроки финансирования. Выполнение минимума не подтверждает получение гранта.
+university.admissions.entry.route_help.nu-a-route-transfer: Для перевода из другого университета. Предыдущее обучение, зачёт кредитов и возможное освобождение от языкового экзамена требуют индивидуальной проверки.
+university.admissions.entry.route_help.nu-a-route-nufyp-progression: Для действующих студентов NUFYP, переходящих на бакалавриат. Завершение Foundation само по себе не гарантирует место: действуют условия перехода.
+university.admissions.entry.route_help.nu-residency-unconditional: Обычные условия поступления в резидентуру, включая клинические экзамены и предыдущее медицинское образование.
+university.admissions.entry.route_help.nu-residency-conditional-umc: Отдельный условный путь для рекомендованных UMC. Проверьте требования к рекомендации и зачислению: это не общее освобождение от экзаменов.
+university.admissions.reading.structured_study: Опубликованные сведения об учёбе доступны ниже. Краткого текстового обзора нет.
+university.admissions.catalog.domain.reference: Связанные сопоставления источников
+university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
+profile.intro: Все поля необязательны. Начните со специальности, уровня обучения и бюджета; баллы добавьте, когда захотите сверить опубликованные требования. Сохраните данные на этом устройстве и вернитесь в каталог.
+profile.clear_report_draft: Очистить черновик
+profile.report_draft_pending: Добавьте или обновите отчёт либо очистите его черновик, затем сохраните профиль.
+university.admissions.catalog.field.possible_exemption_evidence_kinds: Языковой опыт для индивидуальной проверки освобождения от экзамена
+profile.family_income_reference: Доход семьи (необязательная справка)
+profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})

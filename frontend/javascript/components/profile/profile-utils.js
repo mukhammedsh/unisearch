@@ -40,6 +40,8 @@ export const GPA_MAX_CHARS = 4;
 
 export const normalizeGpaRaw = (value) => String(value ?? "").trim().replace(/,/g, ".");
 
+export const normalizeAmountRaw = (value) => String(value ?? "").replace(/\s+/g, "");
+
 export const enforceGpaMaxLength = (gpaInput) => {
     if (!gpaInput) return;
     const raw = String(gpaInput.value ?? "");

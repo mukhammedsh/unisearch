@@ -817,15 +817,6 @@
         "confidence": "high",
         "method": "Direct student headcount published on the official Nazarbayev University About page."
       },
-      "acceptance_rate_percent": {
-        "value": 21,
-        "source": "Admissions Statistics on Nazarbayev University",
-        "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
-        "verified_at": "2026-03-25",
-        "status": "official",
-        "confidence": "medium",
-        "method": "Direct undergraduate admission rate published in the official NU admissions statistics PDF for 2025; the source notes that since 2024 the NUFYP and undergraduate programs share a single application form."
-      },
       "description": {
         "value": "Official materials describe Nazarbayev University as a public research university in Astana, established in 2010, with undergraduate, graduate and professional schools across engineering, sciences, medicine, business, education and public policy.",
         "source": "Nazarbayev University Institutional Evaluation Programme report",

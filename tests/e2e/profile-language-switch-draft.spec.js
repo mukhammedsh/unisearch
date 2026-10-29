@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
+const { openProfileTab, selectors, setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test("language switch keeps unsaved profile draft", async ({ page }) => {
@@ -13,6 +13,7 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
   await page.fill(selectors.budgetInput, "27890");
+  await openDisclosureParents(page.locator("#familyIncomeInput"));
   await page.fill("#familyIncomeInput", "85000");
   await setNativeSelect(page, "familyIncomeCurrencySelect", "EUR");
   await openProfileTab(page, "preferences");

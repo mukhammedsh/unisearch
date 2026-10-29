@@ -4,6 +4,7 @@ const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors"
 const MIT = "mit-usa-cambridge";
 const IMPERIAL = "imperial-college-london-uk";
 const STANFORD = "stanford-university-usa-ca";
+const NU = "nazarbayev-university-kaz-astana";
 const ASTANA = "astana-it-university-kaz-astana";
 const OXFORD = "university-of-oxford-uk-oxford";
 const COMPARE_CHOICES_KEY = "unisearch_compare_admission_choices_v1";
@@ -310,8 +311,8 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   expect(catalog.body.total).toBe(50);
   expect(catalog.body.items).toHaveLength(50);
   const reviewedIds = catalog.body.items.filter((item) => item.admissions_catalog?.availability === "reviewed").map((item) => item.id).sort();
-  expect(reviewedIds).toEqual([IMPERIAL, MIT, STANFORD].sort());
-  expect(catalog.body.items.filter((item) => item.admissions_catalog?.availability === "legacy_unreviewed")).toHaveLength(47);
+  expect(reviewedIds).toEqual([IMPERIAL, MIT, STANFORD, NU].sort());
+  expect(catalog.body.items.filter((item) => item.admissions_catalog?.availability === "legacy_unreviewed")).toHaveLength(46);
 
   await selectCustomOption(page, "#admissionsRoute", "directory-evidence:stanford-graduate-cs-ms");
   await openAdvanced(page);

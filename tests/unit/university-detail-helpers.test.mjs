@@ -403,6 +403,17 @@ test("reviewed overview shows institution facts without a university-wide admiss
   assert.doesNotMatch(container.innerHTML, /Acceptance Rate|Undergraduate acceptance rate|4\.56%|NaN/);
 });
 
+test("an institution with many delivery formats keeps them in one readable disclosure", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "" };
+  renderOverviewSection({ container, includeAdmissionRate: false, university: { academics: {
+    formats: ["Full-time", "Full-time", "Hybrid", "Low-residency campus intensives", "Part-time online"],
+  } } });
+  assert.match(container.innerHTML, /<summary>Varies by program/);
+  assert.match(container.innerHTML, /<li>Low-residency campus intensives<\/li>/);
+  assert.equal((container.innerHTML.match(/<li>Full-time<\/li>/g) || []).length, 1);
+});
+
 test("legacy finance uses the selected graduate program and keeps unrelated tuition and aid unknown", () => {
   setLanguage("eng", { persist: false, emit: false });
   const profileKey = "unisearch_profile";
@@ -1029,7 +1040,10 @@ test("requirements fit summary requires confirmed semantics and preserves unavai
 test("chance summary explains distinct no-data reasons", () => {
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: "", reason: "requirements_not_met" }), /do not meet a required minimum/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "missing_evidence" }), /Add the required exam scores/);
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "unassessed_minimums" }), /technical GPA minimums of 4\.25\/5\.0 and overall GPA minimums of 4\.0\/5\.0/);
+  const unsupported = renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "unassessed_minimums" });
+  assert.match(unsupported, /evidence or a grading scale that the available profile cannot establish/);
+  assert.doesNotMatch(unsupported, /4\.25\/5\.0|normalized to 4\.0/);
+  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "funding_selection_separate" }), /Funding selection is separate from admission/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "requirements_not_reviewed" }), /minimums have not yet been reviewed/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "applicability_unknown" }), /could not be matched to this program, applicant route, and entry cycle/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, label: "Custom unavailable reason" }), /not enough applicable requirements or profile evidence/i);

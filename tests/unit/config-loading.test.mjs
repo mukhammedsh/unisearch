@@ -63,3 +63,32 @@ test("exam helpers canonicalize aliases and expose band metadata", async () => {
   assert.equal(config.getExamBandShortLabel("HKDSE_LEVEL", "bad"), "");
   assert.deepEqual(config.getExamLevelBands("unknown"), []);
 });
+
+test("the expanded exam contract replaces a fresh legacy config cache and then reuses its own cache", async () => {
+  const localValues = {
+    "unisearch_config_cache_v2:exams": JSON.stringify({ savedAt: Date.now(), data: { NUET: { input_mode: "number" } } }),
+  };
+  global.localStorage = window.localStorage = {
+    getItem: key => localValues[key] ?? null,
+    setItem: (key, value) => { localValues[key] = String(value); },
+    removeItem: key => { delete localValues[key]; },
+  };
+  const originalFetch = global.fetch;
+  let requests = 0;
+  global.fetch = async () => {
+    requests += 1;
+    return { ok: true, json: async () => ({ NUET: { input_mode: "subject_breakdown" }, IFOM_BSE: { input_mode: "flag" } }) };
+  };
+  try {
+    const current = await import("../../frontend/javascript/utils/config.js?exam-cache-update");
+    const exams = await current.ensureExamConfig();
+    assert.equal(exams.NUET.input_mode, "subject_breakdown");
+    assert.equal(exams.IFOM_BSE.input_mode, "flag");
+    assert.equal(requests, 1);
+    const reloaded = await import("../../frontend/javascript/utils/config.js?exam-cache-reload");
+    assert.deepEqual(await reloaded.ensureExamConfig(), exams);
+    assert.equal(requests, 1);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});

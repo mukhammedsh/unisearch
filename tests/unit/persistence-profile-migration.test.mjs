@@ -813,8 +813,23 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
     });
   });
 
-  describe('GPA mathematical integrity across localStorage -> loadProfileForApi -> API', () => {
-    test('exact formula verification for GPA 4.85 on 5.0 scale', () => {
+  describe('GPA value and scale fidelity across localStorage -> loadProfileForApi -> API', () => {
+    test('omits missing GPA and budget from guest payloads while preserving explicit zeroes', () => {
+      for (const gpa of ['', '   ', null, undefined]) {
+        saveProfile({ gpa, budget: gpa });
+        const payload = loadProfileForApi();
+        assert.strictEqual(payload.gpa, undefined);
+        assert.strictEqual(payload.gpa_scale, undefined);
+        assert.strictEqual(payload.budget, undefined);
+      }
+
+      saveProfile({ gpa: 0, gpaScale: 4, budget: 0 });
+      assert.strictEqual(loadProfileForApi().gpa, 0);
+      assert.strictEqual(loadProfileForApi().gpa_scale, 4);
+      assert.strictEqual(loadProfileForApi().budget, 0);
+    });
+
+    test('reported GPA 4.85 on a 5.0 scale reaches source-bound checks unchanged', () => {
       saveProfile({
         gpa: 4.85,
         gpaScale: 5,
@@ -827,22 +842,20 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       // Formatted for API
       const apiPayload = loadProfileForApi();
-      // (4.85 / 5.0) * 4.0 = 0.97 * 4.0 = 3.88
-      assert.strictEqual(apiPayload.gpa, 3.88, 'API payload gpa must be exactly 3.88');
-      assert.strictEqual(apiPayload.gpa_scale, 4, 'API payload gpa_scale must be 4');
+      assert.strictEqual(apiPayload.gpa, 4.85, 'Source-bound checks require the reported value');
+      assert.strictEqual(apiPayload.gpa_scale, 5, 'Source-bound checks require the reported scale');
       assert.strictEqual(apiPayload.gpaScale, undefined, 'API payload must NOT contain gpaScale');
     });
 
-    test('exact formula verification for maximum 5.0 GPA on 5.0 scale', () => {
+    test('maximum GPA retains its reported 5.0 scale', () => {
       saveProfile({
         gpa: 5.0,
         gpaScale: 5,
       });
 
       const apiPayload = loadProfileForApi();
-      // (5.0 / 5.0) * 4.0 = 4.0
-      assert.strictEqual(apiPayload.gpa, 4.0);
-      assert.strictEqual(apiPayload.gpa_scale, 4);
+      assert.strictEqual(apiPayload.gpa, 5.0);
+      assert.strictEqual(apiPayload.gpa_scale, 5);
     });
 
     test('exact formula verification for GPA 3.75 on 4.0 scale', () => {
@@ -870,6 +883,14 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
   });
 
   describe('loadProfileForApi contract verification', () => {
+    test('preserves preparation, residency and non-degree choices through save, reload and API payload', () => {
+      for (const studyLevel of ['preparation', 'residency', 'non_degree']) {
+        saveProfile({ selectedAdmissionChoices: { sample: { studyOptionId: 'option', applicationRouteId: 'route', studyLevel } } });
+        assert.strictEqual(loadProfile().selectedAdmissionChoices.sample.studyLevel, studyLevel);
+        assert.strictEqual(loadProfileForApi().selectedAdmissionChoices.sample.studyLevel, studyLevel);
+      }
+    });
+
     test('outgoing payload contains NO legacy aliases, NO gpaScale, and NO redundant fields', () => {
       saveProfile({
         budget: 30000,
@@ -920,8 +941,8 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       // Canonical schema fields present
       assert.strictEqual(payload.budget, 30000);
-      assert.strictEqual(payload.gpa, 3.84); // Converted from 4.8 (scale 5) to 4.0 scale
-      assert.strictEqual(payload.gpa_scale, 4); // Sent as gpa_scale (snake_case)
+      assert.strictEqual(payload.gpa, 4.8);
+      assert.strictEqual(payload.gpa_scale, 5);
       assert.strictEqual(payload.major, 'Computer Science');
       assert.strictEqual(payload.interests, 'Machine Learning');
       assert.strictEqual(payload.studyMode, 'Any');
@@ -1064,6 +1085,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
           'mit-usa-cambridge': { programId: 'legacy-mit-program', choiceKey: 'legacy-mit-choice' },
           'imperial-college-london-uk': { program_id: 'legacy-imperial-program', choice_key: 'legacy-imperial-choice' },
           'stanford-university-usa-ca': { programId: 'legacy-stanford-program', choiceKey: 'legacy-stanford-choice' },
+          'nazarbayev-university-kaz-astana': { programId: 'legacy-nu-program', choiceKey: 'legacy-nu-choice' },
           'unaccepted-university': { programId: 'keep-this-choice', choiceKey: 'keep-this-choice' },
           'canonical-university': { study_option_id: 'unknown-option', application_route_id: 'unknown-route', programId: 'old-extra' },
         },
@@ -1072,7 +1094,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       const loaded = loadProfile();
       assert.deepStrictEqual(loaded.admissionChoiceResetNotices, [
-        'mit-usa-cambridge', 'imperial-college-london-uk', 'stanford-university-usa-ca',
+        'mit-usa-cambridge', 'imperial-college-london-uk', 'stanford-university-usa-ca', 'nazarbayev-university-kaz-astana',
       ]);
       assert.deepStrictEqual(Object.keys(loaded.selectedAdmissionChoices), ['unaccepted-university', 'canonical-university']);
       assert.strictEqual(loaded.selectedAdmissionChoices['canonical-university'].studyOptionId, 'unknown-option');

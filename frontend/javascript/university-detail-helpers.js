@@ -407,6 +407,7 @@ export function chanceNoDataHelpNote(uniChance) {
     return t("admission.requirements_fit.unavailable_method", "Requirements fit score is unavailable because its meaning could not be confirmed.");
   }
   const reason = String(uniChance?.reason || "").trim().toLowerCase();
+  if (reason === "funding_selection_separate") return t("university.admissions.catalog.reason.funding_selection_separate");
   if (reason === "no_published_requirements") return t("admission.requirements_fit.no_published_requirements", "This route has no measurable published minimums, so a requirements fit percentage cannot be calculated. Review the official application requirements.");
   if (reason === "unassessed_minimums") return t("admission.requirements_fit.unassessed_minimums", "Published minimums cannot be assessed with the available profile fields, so no requirements fit percentage is calculated.");
   if (reason === "requirements_not_reviewed") return t("admission.requirements_fit.requirements_not_reviewed", "Published academic and language minimums have not yet been reviewed for this route. Check the official program page before applying.");

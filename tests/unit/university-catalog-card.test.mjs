@@ -27,6 +27,7 @@ test("legacy catalog cards keep their existing price resolution", () => {
 });
 
 test("card uses the selected published reference price", () => {
+  setLanguage("eng", { emit: false });
   const university = { admissions_catalog: { availability: "reviewed" }, catalog_costs: { reference: true,
     annual_total: { min: 92760, max: 92760, currency: "USD", period: "2026-2027", study_level: "undergraduate", exclusions: ["insurance"] },
     tuition: { min: 66720, max: 66720, currency: "USD", period: "2026-2027", study_level: "undergraduate" } } };
@@ -34,11 +35,24 @@ test("card uses the selected published reference price", () => {
   assert.equal(universityCardPriceInfo(university).basis, "annual_total");
   assert.equal(universityCardPriceInfo(university, "tuition").amount, 66720);
   assert.equal(universityCardPriceInfo(university, "tuition").basis, "tuition");
+  const tuition = renderUniversityCardCosts(university, "tuition");
+  assert.match(tuition, /66,720/);
+  assert.doesNotMatch(tuition, /92,760/);
+  assert.match(tuition, /data-cost-basis="tuition"/);
+  assert.match(tuition, /role="tooltip"/);
+  assert.match(tuition, /2026[‑-]2027/);
+  const annual = renderUniversityCardCosts(university);
+  assert.match(annual, /92,760/);
+  assert.doesNotMatch(annual, /66,720/);
+  assert.match(annual, /Insurance is additional/);
 });
 
-test("card falls back to a published tuition range when a full budget is unavailable", () => {
+test("card keeps an unavailable budget separate from a published tuition range", () => {
   const university = { admissions_catalog: { availability: "reviewed" }, catalog_costs: { tuition: { min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"] } } };
-  const price = universityCardPriceInfo(university);
+  assert.equal(universityCardPriceInfo(university).amount, null);
+  assert.match(renderUniversityCardCosts(university), /No comparable full budget/);
+  assert.doesNotMatch(renderUniversityCardCosts(university), /data-cost-basis="tuition"|10,050|47,800/);
+  const price = universityCardPriceInfo(university, "tuition");
   assert.equal(price.basis, "tuition");
   assert.equal(price.amount, 10050);
   assert.equal(price.min, 10050);
@@ -65,6 +79,20 @@ test("catalog price quotes keep level, source period and unresolved fee or cycle
   assert.equal((html.match(/data-cost-context/g) || []).length, 1);
   assert.match(context, /Undergraduate, Master&#039;s · 2026[‑-]27 · Overseas fee · Dated reference; cycle unconfirmed · Fee category unconfirmed · Partial price match/);
   assert.doesNotMatch(html, /self-reported fee category|Only part of this published range/);
+});
+
+test("whole-program and per-credit tuition never claim to be an annual price", () => {
+  setLanguage("eng", { emit: false });
+  for (const [billingPeriod, expected] of [["whole_program", "for the whole program"], ["per_credit", "/ credit"]]) {
+    const university = { catalog_costs: { tuition: { min: 24000, max: 24000, currency: "USD", period: "2025-26", billing_period: billingPeriod,
+      annual_comparable: false, campuses: ["Astana"], source_year: "2025-26" } } };
+    const html = renderUniversityCardCosts(university, "tuition");
+    assert.ok(html.includes(expected), billingPeriod);
+    assert.ok(html.match(/aria-label="([^"]+)"/)[1].includes(expected), billingPeriod);
+    assert.match(html, /Astana/);
+    assert.doesNotMatch(html, /class="uni-price-period">\/ year/);
+    assert.doesNotMatch(html, /yearly price/);
+  }
 });
 
 test("UniFit explains reference-only and tuition-only budget comparisons without claiming total affordability", () => {

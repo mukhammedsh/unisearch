@@ -273,8 +273,8 @@ class SchemaStandardizationTests(unittest.TestCase):
                 {"exam": "SAT", "score": 1520, "raw_value": "1520"},
             ],
             "languages": [
-                {"code": "en", "kind": "exam", "exam": "TOEFL_IBT", "score": 110, "raw_value": "110"},
-                {"code": "kz", "kind": "native"},
+                {"code": "en", "kind": "exam", "exam": "TOEFL_iBT_0_120", "score": 110, "raw_value": "110"},
+                {"code": "ru", "kind": "native"},
             ],
             "selectedAdmissionChoices": {
                 "mit-usa-cambridge": {

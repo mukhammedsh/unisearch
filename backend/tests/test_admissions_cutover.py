@@ -30,7 +30,8 @@ class AdmissionsCutoverTests(unittest.TestCase):
                 full = universities.get_university_by_id(uid, localized=True)
                 self.assertTrue(full["name"])
                 self.assertTrue(full["location"])
-                self.assertTrue(full["rank"])
+                stored = json.loads((Path(__file__).resolve().parents[1] / "data/universities.json").read_text(encoding="utf-8"))
+                self.assertEqual(next(row["rank"] for row in stored if row["id"] == uid), full["rank"])
                 for key in ("finance", "admission_categories", "qualification_guidance", "admission_portals", "fellowships_and_grants"):
                     self.assertNotIn(key, full)
                 self.assertNotIn("programs", full["academics"])
@@ -46,11 +47,11 @@ class AdmissionsCutoverTests(unittest.TestCase):
                     self.assertEqual(contract["study_option_count"], len(normalized["study_options"]))
                     self.assertNotIn("finance", payload)
 
-    def test_other_47_keep_native_data_and_explicit_unreviewed_status(self):
+    def test_other_46_keep_native_data_and_explicit_unreviewed_status(self):
         rows = universities.load_universities()
         self.assertEqual(len(rows), 50)
         legacy = [row for row in rows if row["id"] not in admissions_catalog.INSTITUTION_IDS]
-        self.assertEqual(len(legacy), 47)
+        self.assertEqual(len(legacy), 46)
         for row in legacy:
             self.assertEqual(row["admissions_catalog"]["availability"], "legacy_unreviewed")
             self.assertIsNone(row["admissions_catalog"]["revision"])

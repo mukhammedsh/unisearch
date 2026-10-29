@@ -75,7 +75,7 @@ function describeAcademicExam(id, cfg, labelText = "") {
   const descriptions = {
     SAT: t("guide.academic.sat", "The American admission test of reading, writing, and math, recognized far beyond the US."),
     ACT: t("guide.academic.act", "Its counterpart, covering English, math, reading, and science reasoning."),
-    GPA: t("guide.academic.gpa", "Your average school grade, normalized to a 4.0 scale inside UniSearch so that countries stay comparable."),
+    GPA: t("guide.academic.gpa", "Your reported grade average and its original scale. UniFit may normalize it for comparison; published admission minimums need a matching scale."),
     UNT: t("guide.academic.unt", "Kazakhstan's national test and the main road to a bachelor's seat at home."),
     NUETTOTAL: t("guide.academic.nuettotal", "The combined score of a single university's own entrance exam, valid only on its routes."),
     APTOTAL: t("guide.academic.aptotal", "Combined performance across AP subjects, for systems that recognize them."),

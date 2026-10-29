@@ -41,7 +41,7 @@ def list_study_options(
     university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
     search: str = Query("", max_length=200),
     major: Optional[str] = Query(None, max_length=120),
-    study_level: Optional[Literal["undergraduate", "masters", "doctoral", "professional"]] = Query(None),
+    study_level: Optional[Literal["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]] = Query(None),
     page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(30, ge=1, le=100),
     lang: Optional[str] = Query(None, max_length=16),

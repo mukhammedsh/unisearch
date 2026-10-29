@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import re
 from pathlib import Path
@@ -10,7 +11,8 @@ import sys
 
 REPO = Path(__file__).resolve().parents[2]
 DRAFTS = REPO / "backend/data/drafts"
-BATCH = ("mit", "imperial-college-london-uk", "stanford-university-usa-ca")
+DOSSIER_BATCH = ("mit", "imperial-college-london-uk", "stanford-university-usa-ca")
+BATCH = (*DOSSIER_BATCH, "nazarbayev-university-kaz-astana")
 VERSION = "admissions-storage-1.0"
 LEVELS = {
     "Bachelor": "undergraduate", "Master": "masters", "Doctorate": "doctoral",
@@ -18,6 +20,7 @@ LEVELS = {
     "master's": "masters", "doctorate": "doctoral", "postgraduate_taught": "masters",
     "undergraduate": "undergraduate", "masters": "masters", "doctoral": "doctoral",
     "professional": "professional", "institution": "institution", "graduate": "graduate",
+    "preparation": "preparation", "foundation": "preparation", "residency": "residency", "non_degree": "non_degree",
     "professional graduate": "professional graduate", "intermediate graduate": "intermediate graduate",
 }
 LEVEL_CONTEXTS = {"institution", "graduate", "professional graduate", "intermediate graduate",
@@ -99,8 +102,22 @@ def provenance(index, raw, filename):
     }
 
 
+def _nu_adapter():
+    spec = importlib.util.spec_from_file_location("prepare_nu_admissions", Path(__file__).with_name("prepare_nu_admissions.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def prepare_institution(folder):
     folder = Path(folder).resolve()
+    if folder.name == "nazarbayev-university-kaz-astana":
+        try:
+            result = _nu_adapter().prepare_nu_institution(folder)
+        except ValueError as error:
+            raise PreparationError(str(error)) from error
+        validate_institution(result)
+        return result
     manifest = {}
 
     def input_bytes(name):
@@ -231,7 +248,7 @@ def prepare_institution(folder):
     options = []
     for index in catalog["study_options"]:
         level_values = index.get("study_levels", [index.get("level")])
-        require(all(level in LEVELS and LEVELS[level] in ("undergraduate", "masters", "doctoral", "professional")
+        require(all(level in LEVELS and LEVELS[level] in ("preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree")
                     for level in level_values), f"Unsupported option level: {index['id']}")
         profiles = []
         option_source_ids = list(index.get("source_ids", []))
@@ -388,6 +405,12 @@ def write_output(prepared, directory, repo=REPO):
     with path.open("x", encoding="utf-8", newline="\n") as stream:
         json.dump(prepared, stream, ensure_ascii=False, indent=2)
         stream.write("\n")
+    nu = next((row for row in prepared["institutions"] if row["institution"]["id"] == "nazarbayev-university-kaz-astana"), None)
+    if nu is not None:
+        annotations = {"schema_version": "admissions-assessments-1.0", "records": _nu_adapter().build_nu_assessments(nu)}
+        with (destination / "nu-assessments.json").open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(annotations, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
     return path
 
 

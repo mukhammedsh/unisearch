@@ -45,6 +45,20 @@ test("every reviewed program has a Russian and Kazakh title while retaining its 
   }
 });
 
+test("NU application routes have localized UI labels without changing their published titles", () => {
+  const nu = catalog.institutions.find(row => row.institution.id === "nazarbayev-university-kaz-astana");
+  for (const language of ["rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    for (const route of nu.application_routes) {
+      const before = structuredClone(route);
+      assert.match(admissionsRouteName(route, { presentation: "simple" }), /[\u0400-\u04ff]/u, `${language}: ${route.id}`);
+      assert.equal(admissionsRouteName(route), route.title || route.target || route.classification || route.destination);
+      assert.deepEqual(route, before);
+    }
+  }
+  setLanguage("eng", { emit: false });
+});
+
 test("accepted program application explanations have Russian summaries while source records stay unchanged", async () => {
   setLanguage("rus", { emit: false });
   await initUniversityTranslations();

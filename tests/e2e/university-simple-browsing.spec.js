@@ -540,8 +540,14 @@ test("a program remains readable outside search results without losing its selec
   await expect(page.locator("#admissionsProgramList [data-study-option]").first()).toContainText("Physics");
   const pinned = page.locator("#admissionsSelectedProgram");
   await expect(pinned).toBeVisible();
-  await expect(pinned.locator("#admissionsStudyDetails")).toBeVisible();
+  await expect(pinned.locator("#admissionsStudyDetails")).toBeHidden();
   const toggle = pinned.locator("[data-study-option]");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  expect(page.url()).toBe(selectedUrl);
+  await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(pinned.locator("#admissionsStudyDetails")).toBeVisible();
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   await expect(pinned.locator("#admissionsStudyDetails")).toBeHidden();
@@ -553,6 +559,8 @@ test("a program remains readable outside search results without losing its selec
   await page.locator("#admissionsSearch").fill("");
   await page.locator("#admissionsSearch").press("Enter");
   const originalCard = page.locator(`#admissionsProgramList [data-study-option="${item.option}"]`).locator("xpath=..");
+  await expect(originalCard.locator("#admissionsStudyDetails")).toBeHidden();
+  await originalCard.locator("[data-study-option]").click();
   await expect(originalCard.locator("#admissionsStudyDetails")).toBeVisible();
   await expect(pinned).toBeHidden();
   await expect(page.locator("#admissionsStudyDetails")).toHaveCount(1);

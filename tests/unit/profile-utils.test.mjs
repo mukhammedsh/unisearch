@@ -13,11 +13,20 @@ const {
   getLowBudgetGrantThreshold,
   getMaxBudgetForCurrency,
   normalizeFundingType,
+  normalizeAmountRaw,
   normalizeGpaRaw,
   reportInvalidDate,
   setFieldInvalid,
   stableProfileSignature,
 } = await import("../../frontend/javascript/components/profile/profile-utils.js");
+
+test("money drafts accept group spaces without changing decimal or missing-value semantics", () => {
+  for (const value of ["20 000", "20\u00a0000", "20\u202f000"]) assert.equal(normalizeAmountRaw(value), "20000");
+  assert.equal(normalizeAmountRaw("85 000,50"), "85000,50");
+  assert.equal(normalizeAmountRaw("0"), "0");
+  assert.equal(normalizeAmountRaw(null), "");
+  assert.equal(normalizeAmountRaw("  "), "");
+});
 
 test("currency and budget utility functions return calculated thresholds and values", () => {
   assert.equal(getBudgetCurrency(), "USD");

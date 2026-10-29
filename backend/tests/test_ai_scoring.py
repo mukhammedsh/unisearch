@@ -1610,52 +1610,25 @@ class AiScoringTests(unittest.TestCase):
         self.assertFalse(bool(result.get("chanceAvailable")))
         self.assertEqual("missing_evidence", str(result.get("reason") or ""))
 
-    def test_estimate_uni_chance_uses_real_dataset_score_profiles_for_nu(self):
-        university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
-        self.assertIsNotNone(university)
-
-        sat_profile = {
-            "locale": "rus",
-            "budget": 15000,
-            "gpa": 3.68,
-            "exams": [{"id": "SAT", "score": 1480}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
-            "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_sat_applicants::nu_sat_applicants")},
-        }
-        act_profile = {
-            "locale": "rus",
-            "budget": 15000,
-            "gpa": 3.68,
-            "exams": [{"id": "ACT", "score": 31}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
-            "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_act_applicants::nu_act_applicants")},
-        }
-        nuet_profile = {
-            "locale": "rus",
-            "budget": 15000,
-            "gpa": 3.68,
-            "exams": [{"id": "NUET", "score": 195}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}],
-            "selectedAdmissionChoices": {"nazarbayev-university-kaz-astana": _choice_selection("nu_regular_undergraduate::nu_nuet_undergraduate::nu_nuet_undergraduate")},
-        }
-
-        sat_result = estimate_uni_chance(university, sat_profile)
-        act_result = estimate_uni_chance(university, act_profile)
-        nuet_result = estimate_uni_chance(university, nuet_profile)
-
-        self.assertIsNotNone(sat_result.get("overallChance"))
-        self.assertTrue(bool(sat_result.get("chanceAvailable")))
-        self.assertEqual("nu_regular_undergraduate::nu_sat_applicants::nu_sat_applicants", str(sat_result.get("bestChoiceKey") or ""))
-        self.assertEqual("published_requirements_met_percent", sat_result.get("scoreMeaning"))
-
-        self.assertIsNotNone(act_result.get("overallChance"))
-        self.assertTrue(bool(act_result.get("chanceAvailable")))
-        self.assertEqual("nu_regular_undergraduate::nu_act_applicants::nu_act_applicants", str(act_result.get("bestChoiceKey") or ""))
-        self.assertEqual("published_requirements_met_percent", act_result.get("scoreMeaning"))
-
-        self.assertIsNotNone(nuet_result.get("overallChance"))
-        self.assertTrue(bool(nuet_result.get("chanceAvailable")))
-        self.assertEqual("nu_regular_undergraduate::nu_nuet_undergraduate::nu_nuet_undergraduate", str(nuet_result.get("bestChoiceKey") or ""))
+    def test_estimate_uni_chance_uses_reviewed_nu_context_without_legacy_choices(self):
+        uid = "nazarbayev-university-kaz-astana"
+        university = uni_service.get_university_by_id(uid)
+        option = "nu-a-study-bachelor-of-science-in-computer-science"
+        route = "nu-a-route-regular-foundation-undergraduate"
+        language = {"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0, "taken_on": "2026-09-01",
+                    "details": {"components": [{"exam": "IELTS_" + part, "score": 6.0}
+                                                for part in ("WRITING", "READING", "LISTENING", "SPEAKING")]}}
+        for exam_id, score in (("SAT", 1480), ("ACT", 31)):
+            profile = {"exams": [{"id": exam_id, "score": score, "taken_on": "2026-09-01"}], "languages": [language],
+                       "selectedAdmissionChoices": {uid: {"studyOptionId": option, "applicationRouteId": route,
+                           "studyLevel": "undergraduate", "applicantRoute": "first_year", "intendedEntryCycle": "2027/28"}}}
+            result = estimate_uni_chance(university, profile)
+            self.assertEqual(100, result["overallChance"])
+            self.assertEqual("published_requirements_met_percent", result["scoreMeaning"])
+            self.assertEqual(route, result["context"]["application_route_id"])
+        retired = estimate_uni_chance(university, {"selectedAdmissionChoices": {uid: _choice_selection("nu_regular_undergraduate::nu_nuet_undergraduate::nu_nuet_undergraduate")}})
+        self.assertIsNone(retired["overallChance"])
+        self.assertEqual("applicability_unknown", retired["reason"])
 
     def test_estimate_uni_chance_uses_cuhk_weighted_total_score_profile(self):
         university = uni_service.get_university_by_id("cuhk-hk-shatin")
@@ -2015,8 +1988,8 @@ class AiScoringTests(unittest.TestCase):
                 {
                     "id": "jp-track",
                     "label": "JP Track",
-                    "requirements": {"JLPT_N": 2},
-                    "stats_avg": {"JLPT_N": 2},
+                    "requirements": {"JLPT_Level": 2},
+                    "stats_avg": {"JLPT_Level": 2},
                     "score_profile": _demo_score_profile("GPA", p25=55, median=70, p75=85, acceptance_rate_percent=60),
                 }
             ]),
@@ -2024,14 +1997,14 @@ class AiScoringTests(unittest.TestCase):
         profile_worse_only = {
             "gpa": 3.6,
             "budget": 20000,
-            "exams": [{"id": "JLPT_N", "score": 3}],
+            "languages": [{"code": "ja", "kind": "exam", "exam": "JLPT_Level", "score": 3}],
         }
         profile_with_better_duplicate = {
             "gpa": 3.6,
             "budget": 20000,
-            "exams": [
-                {"id": "JLPT_N", "score": 3},
-                {"id": "JLPT_N", "score": 1},
+            "languages": [
+                {"code": "ja", "kind": "exam", "exam": "JLPT_Level", "score": 3},
+                {"code": "ja", "kind": "exam", "exam": "JLPT_Level", "score": 1},
             ],
         }
 

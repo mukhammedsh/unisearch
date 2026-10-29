@@ -379,6 +379,7 @@ export function initLanguagesPanel() {
     const scoreContainer = document.getElementById("scoreContainer");
     const langExamSpecialContainer = document.getElementById("langExamSpecialContainer");
     const langAddBtn = document.getElementById("langAddBtn");
+    const clearLanguageDraftBtn = document.getElementById("clearLanguageDraftBtn");
     const langList = document.getElementById("langList");
     const languagesBlock = document.getElementById("languagesBlock");
 
@@ -389,6 +390,22 @@ export function initLanguagesPanel() {
       return;
     }
     booted = true;
+    let isSubmitting = false;
+    let draftRevision = 0;
+    let editorResetRevision = 0;
+
+    function setEditorDirty(dirty) {
+      getProfileDraftBridge()?.setLanguageEditorDirty?.(dirty);
+      if (clearLanguageDraftBtn) clearLanguageDraftBtn.hidden = !langKind.value;
+    }
+
+    function markEditorChanged() {
+      draftRevision += 1;
+      const kind = normalizeKind(langKind.value);
+      const hasExamValue = [langExamScore, langExamTakenOn, ...langExamSpecialContainer.querySelectorAll("input")]
+        .some(control => String(control?.value || "").trim());
+      setEditorDirty(kind === KIND_NATIVE || kind === KIND_CEFR || (kind === KIND_EXAM && hasExamValue));
+    }
 
     function findExistingEntryIndex(entries, draft) {
       const list = Array.isArray(entries) ? entries : [];
@@ -427,6 +444,7 @@ export function initLanguagesPanel() {
       const fallback = isUpdate ? "Edit" : "Add";
       langAddBtn.setAttribute("data-i18n", key);
       langAddBtn.textContent = t(key, fallback);
+      if (clearLanguageDraftBtn) clearLanguageDraftBtn.hidden = !langKind.value;
     }
 
     function populateLangCode() {
@@ -593,6 +611,7 @@ export function initLanguagesPanel() {
                   <input
                     type="text"
                     inputmode="decimal"
+                    aria-label="${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase(), locale: getCurrentLanguage() }))}"
                     class="profile-input"
                     value="${valueText}"
                     placeholder="${escapeHtml(t("profile.placeholder.score", "Score"))}"
@@ -678,7 +697,11 @@ export function initLanguagesPanel() {
       refreshLangActionButton();
     }
 
-    function renderForm() {
+    function renderForm({ preserveDraft = false } = {}) {
+      const score = langExamScore.value;
+      const takenOn = langExamTakenOn?.value;
+      const components = new Map(Array.from(langExamSpecialContainer.querySelectorAll("[data-lang-breakdown-input]"),
+        input => [input.dataset.langBreakdownInput, input.value]));
       populateLangCode();
       populateLangKind();
       populateLangExam();
@@ -688,6 +711,13 @@ export function initLanguagesPanel() {
       initCustomSelect("langCefr");
       initCustomSelect("langExam");
       syncExamUi();
+      if (preserveDraft) {
+        langExamScore.value = score;
+        if (langExamTakenOn) langExamTakenOn.value = takenOn;
+        langExamSpecialContainer.querySelectorAll("[data-lang-breakdown-input]").forEach(input => {
+          if (components.has(input.dataset.langBreakdownInput)) input.value = components.get(input.dataset.langBreakdownInput);
+        });
+      }
       refreshLangActionButton();
     }
 
@@ -733,7 +763,20 @@ export function initLanguagesPanel() {
       }
     });
 
-    let isSubmitting = false;
+    languagesBlock.addEventListener("input", markEditorChanged);
+    languagesBlock.addEventListener("change", markEditorChanged);
+
+    function clearEditor() {
+      editorResetRevision += 1;
+      draftRevision += 1;
+      langKind.value = "";
+      resetExamInputs();
+      initCustomSelect("langKind");
+      setEditorDirty(false);
+    }
+    clearLanguageDraftBtn?.addEventListener("click", () => {
+      if (!isSubmitting) clearEditor();
+    });
 
     langAddBtn.addEventListener("click", (ev) => {
       ev.preventDefault();
@@ -744,9 +787,9 @@ export function initLanguagesPanel() {
 
     const submitLanguageOnEnter = (ev) => {
       if (ev.key !== "Enter") return;
-      if (ev.defaultPrevented) return;
+      if (ev.defaultPrevented || ev.repeat) return;
       if (ev.shiftKey || ev.ctrlKey || ev.altKey || ev.metaKey) return;
-      if (ev.target instanceof Element && ev.target.closest(".custom-select-wrapper.open")) return;
+      if (ev.target instanceof Element && ev.target.closest(".custom-select-wrapper.open, button")) return;
       ev.preventDefault();
       if (isSubmitting) return;
       addLanguage();
@@ -759,11 +802,14 @@ export function initLanguagesPanel() {
 
     async function addLanguage() {
       if (isSubmitting) return;
+      const submittedDraftRevision = draftRevision;
+      const submittedResetRevision = editorResetRevision;
       isSubmitting = true;
       if (langAddBtn) langAddBtn.disabled = true;
+      if (clearLanguageDraftBtn) clearLanguageDraftBtn.disabled = true;
 
       try {
-      const prof = loadEditableProfile();
+      let prof = loadEditableProfile();
       prof.languages = (Array.isArray(prof.languages) ? prof.languages : [])
         .map(normalizeLangEntry)
         .filter(Boolean);
@@ -859,8 +905,12 @@ export function initLanguagesPanel() {
           throw error;
         }
 
+        if (disposed || editorResetRevision !== submittedResetRevision) return;
         const entry = normalizeLangEntry(json?.language);
         if (!entry) throw new Error("Server returned invalid language data");
+
+        // Only update this report; other profile fields may change while validation is pending.
+        prof = loadEditableProfile();
 
         const existsIdx = prof.languages.findIndex((row) =>
           row.code === entry.code
@@ -889,7 +939,6 @@ export function initLanguagesPanel() {
                 : t("languages.added", "Language added")),
             "success"
           );
-          resetExamInputs();
         } else {
           showToast(
             isUpdate
@@ -898,15 +947,22 @@ export function initLanguagesPanel() {
             "success"
           );
         }
+        if (draftRevision === submittedDraftRevision) {
+          resetExamInputs();
+          setEditorDirty(false);
+        }
         } catch (e) {
-          showToast(
-            formatLanguageValidationToast(code, payload.exam || "", e?.detail || e?.message || ""),
-            "error"
-          );
+          if (!disposed && editorResetRevision === submittedResetRevision && draftRevision === submittedDraftRevision) {
+            showToast(
+              formatLanguageValidationToast(code, payload.exam || "", e?.detail || e?.message || ""),
+              "error"
+            );
+          }
         }
       } finally {
         isSubmitting = false;
         if (langAddBtn) langAddBtn.disabled = false;
+        if (clearLanguageDraftBtn) clearLanguageDraftBtn.disabled = false;
       }
     }
 
@@ -920,6 +976,7 @@ export function initLanguagesPanel() {
         if (!entry) return;
         langCode.value = entry.code;
         langKind.value = entry.kind;
+        populateLangExam();
         if (entry.kind === KIND_CEFR) langCefr.value = String(entry.level);
         if (entry.kind === KIND_EXAM) {
           langExam.value = entry.exam;
@@ -932,6 +989,7 @@ export function initLanguagesPanel() {
         initCustomSelect("langCefr");
         initCustomSelect("langExam");
         syncExamUi();
+        setEditorDirty(false);
         refreshLangActionButton();
         (entry.kind === KIND_EXAM ? langExamTakenOn : langCefr)?.focus();
         return;
@@ -957,15 +1015,17 @@ export function initLanguagesPanel() {
     });
 
     const onProfileModalOpened = () => renderForm();
-    const onLanguageChanged = () => renderForm();
-    const onProfileUpdated = () => renderForm();
+    const onLanguageChanged = () => renderForm({ preserveDraft: true });
+    const onProfileUpdated = () => renderForm({ preserveDraft: true });
     window.addEventListener("profileModalOpened", onProfileModalOpened);
     window.addEventListener("languageChanged", onLanguageChanged);
     window.addEventListener("profileUpdated", onProfileUpdated);
+    window.addEventListener("profileReportDraftReset", clearEditor);
     disposeWindowHandlers = () => {
       window.removeEventListener("profileModalOpened", onProfileModalOpened);
       window.removeEventListener("languageChanged", onLanguageChanged);
       window.removeEventListener("profileUpdated", onProfileUpdated);
+      window.removeEventListener("profileReportDraftReset", clearEditor);
     };
   };
 

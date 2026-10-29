@@ -29,10 +29,12 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
 DEFAULT_ADMISSIONS_CATALOG_PATH = ROOT / "backend" / "data" / "admissions" / "catalog.json"
 DEFAULT_ADMISSIONS_HISTORY_PATH = ROOT / "backend" / "data" / "history" / "admissions-cutover-2026-10-13.json"
+NU_ADMISSIONS_HISTORY_PATH = ROOT / "backend" / "data" / "history" / "admissions-cutover-2026-10-25.json"
 ACCEPTED_ADMISSIONS_IDS = {
     "mit-usa-cambridge",
     "imperial-college-london-uk",
     "stanford-university-usa-ca",
+    "nazarbayev-university-kaz-astana",
 }
 RETIRED_ADMISSIONS_KEYS = {
     "academics",
@@ -44,10 +46,10 @@ RETIRED_ADMISSIONS_KEYS = {
     "fellowships_and_grants",
 }
 EXPECTED_ADMISSIONS_TOTALS = {
-    "study_options": 805,
-    "application_routes": 849,
-    "facts": 3673,
-    "sources": 1595,
+    "study_options": 901,
+    "application_routes": 895,
+    "facts": 4072,
+    "sources": 1756,
 }
 ADMISSIONS_HISTORY_STATUS = "retired_runtime_history_not_reviewed"
 REQUIRED_TOP_LEVEL_KEYS = (
@@ -807,29 +809,29 @@ def _audit_admissions_cutover(errors: List[str], universities: List[Any]) -> Non
         if isinstance(row, dict) and row.get("id") in ACCEPTED_ADMISSIONS_IDS
     }
     if set(current) != ACCEPTED_ADMISSIONS_IDS:
-        errors.append("University dataset must contain exactly the three accepted admissions institutions")
+        errors.append("University dataset must contain every accepted admissions institution")
 
     try:
-        archive = json.loads(DEFAULT_ADMISSIONS_HISTORY_PATH.read_text(encoding="utf-8"))
+        archives = [json.loads(path.read_text(encoding="utf-8")) for path in (DEFAULT_ADMISSIONS_HISTORY_PATH, NU_ADMISSIONS_HISTORY_PATH)]
     except Exception as exc:
         errors.append(f"Admissions cutover history failed to read: {exc}")
         return
-    if not isinstance(archive, dict) or archive.get("runtime_active") is not False or archive.get("status") != ADMISSIONS_HISTORY_STATUS:
+    if any(not isinstance(archive, dict) or archive.get("runtime_active") is not False or archive.get("status") != ADMISSIONS_HISTORY_STATUS for archive in archives):
         errors.append("Admissions cutover history must remain inactive and marked not reviewed")
         return
-    records = archive.get("records")
-    if not isinstance(records, list):
+    if any(not isinstance(archive.get("records"), list) for archive in archives):
         errors.append("Admissions cutover history records must be a list")
         return
+    records = [row for archive in archives for row in archive["records"]]
     if len(records) != len(ACCEPTED_ADMISSIONS_IDS):
-        errors.append("Admissions cutover history must contain exactly the three retired records")
+        errors.append("Admissions cutover history must contain exactly the retired accepted records")
         return
     archived = {
         row.get("id"): row for row in records
         if isinstance(row, dict) and row.get("id") in ACCEPTED_ADMISSIONS_IDS
     }
     if set(archived) != ACCEPTED_ADMISSIONS_IDS:
-        errors.append("Admissions cutover history must preserve all three pre-cutover records")
+        errors.append("Admissions cutover history must preserve every pre-cutover record")
         return
 
     for uid in ACCEPTED_ADMISSIONS_IDS:
@@ -1377,7 +1379,7 @@ def audit_dataset(
             if not isinstance(facts, dict):
                 errors.append(f"{uid}: fact_provenance.facts must be object")
             else:
-                for fact_key in ("rank", "tuition_total_cost_year_usd"):
+                for fact_key in (("rank",) if uid in ACCEPTED_ADMISSIONS_IDS else ("rank", "tuition_total_cost_year_usd")):
                     fact_row = facts.get(fact_key)
                     if not isinstance(fact_row, dict):
                         errors.append(f"{uid}: missing fact_provenance.facts.{fact_key}")

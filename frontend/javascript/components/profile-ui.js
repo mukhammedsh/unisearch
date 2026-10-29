@@ -29,7 +29,7 @@ import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFor
 import { CURRENCY_FORMAT_MAP, convert, formatMoney } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
-import { hydrateHeroIcons } from "../icons.js";
+import { heroIcon, hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
 import { COUNTRY_CODES, getCountryName, getCountryOptions } from "../utils/countries.js";
 import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
@@ -50,6 +50,7 @@ import {
   getLowBudgetGrantThreshold,
   getMaxBudgetForCurrency,
   normalizeFundingType,
+  normalizeAmountRaw,
   normalizeGpaRaw,
   reportInvalidDate,
   setFieldInvalid,
@@ -101,6 +102,7 @@ export const queryProfileElements = (modal) => {
         admissionEvidenceFields: document.getElementById("admissionEvidenceFields"),
         examSpecialInputContainer: document.getElementById("examSpecialInputContainer"),
         addExamBtn: document.getElementById("addExamBtn"),
+        clearExamDraftBtn: document.getElementById("clearExamDraftBtn"),
         examList: document.getElementById("examList"),
         profileMajorSelect: document.getElementById("profileMajorSelect"),
         profileInterestsInput: document.getElementById("profileInterestsInput"),
@@ -135,7 +137,7 @@ export const initCommonSelects = (selectIds = []) => {
     });
 };
 
-export const isProfileDirty = (state) => stableProfileSignature(state.profile) !== state.savedSignature;
+export const isProfileDirty = (state) => !!(state.examEditorDirty || state.languageEditorDirty) || stableProfileSignature(state.profile) !== state.savedSignature;
 
 export const setProfileDraft = (state, els, next, options = {}) => {
     state.profile = ensureProfileShape(next);
@@ -158,6 +160,7 @@ export const populateMajors = (select) => {
 
 export const populateExamSelect = (els, state) => {
     if (!els.examNameSelect) return;
+    const selectedExam = els.examNameSelect.value;
     els.examNameSelect.innerHTML = `<option value="" disabled selected>${escapeHtml(t("profile.option.select_exam", "Select Exam"))}</option>`;
 
     const seen = new Set();
@@ -176,6 +179,7 @@ export const populateExamSelect = (els, state) => {
         els.examNameSelect.appendChild(opt);
     });
 
+    els.examNameSelect.value = selectedExam;
     initCommonSelects(["examNameSelect"]);
     syncExamScoreInputState(els, state);
     refreshExamActionButton(els, state);
@@ -267,6 +271,7 @@ export const renderLowBudgetGrantHint = (els, state) => {
 
     const textEl = els.lowBudgetGrantHint.querySelector(".profile-budget-grant-hint__text");
     if (textEl) {
+        textEl.removeAttribute("data-i18n");
         textEl.textContent = tFormat(
             "profile.hint.low_budget_grant",
             { amount: formattedAmount },
@@ -290,15 +295,20 @@ export const updateBudgetUI = (els, state) => {
     const maxBudget = getMaxBudgetForCurrency(currency);
     const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
     if (els.profileBudgetUnit) {
-        els.profileBudgetUnit.textContent = applyTokenSubstitutions(t("profile.unit.currency_year", "{currency} / year"));
+        els.profileBudgetUnit.removeAttribute("data-i18n");
+        const caption = applyTokenSubstitutions(t("profile.unit.currency_year", "{currency} / year"));
+        els.profileBudgetUnit.innerHTML = `${escapeHtml(caption)}${heroIcon("chevron-down", "ui-icon ui-icon--16")}`;
+        els.profileBudgetUnit.setAttribute("aria-label", tFormat("profile.change_budget_currency", { currency }));
     }
     if (els.budgetHint) {
+        els.budgetHint.removeAttribute("data-i18n");
         els.budgetHint.textContent = tFormat("profile.hint.budget_range", { max: formattedMax }, `Range: 0–${formattedMax}`);
     }
     if (els.budgetInput) {
+        els.budgetInput.removeAttribute("data-i18n-placeholder");
         const exampleVal = getBudgetPlaceholderValue(currency);
         els.budgetInput.placeholder = tFormat("profile.placeholder.budget", { example: String(exampleVal) }, `e.g. ${exampleVal}`);
-        els.budgetInput.maxLength = String(maxBudget).length;
+        els.budgetInput.maxLength = String(maxBudget).length * 2;
     }
     renderLowBudgetGrantHint(els, state);
 };
@@ -306,6 +316,7 @@ export const updateBudgetUI = (els, state) => {
 export const updateProfileProgress = (els, state) => {
     const { completed, total, percentage } = calculateProfileCompletion(state.profile);
     if (els.profileProgressText) {
+        els.profileProgressText.removeAttribute("data-i18n");
         els.profileProgressText.textContent = completed
             ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
             : t("profile.progress.empty", "Complete your profile for better matches.");
@@ -326,8 +337,10 @@ export const updateProfileProgress = (els, state) => {
 export const refreshSaveState = (els, state) => {
     const dirty = isProfileDirty(state);
     if (els.profileSaveState) {
+        els.profileSaveState.removeAttribute("data-i18n");
         if (dirty) {
-            els.profileSaveState.textContent = t("profile.state.unsaved", "Unsaved changes");
+            els.profileSaveState.textContent = state.examEditorDirty || state.languageEditorDirty
+                ? t("profile.report_draft_pending") : t("profile.state.unsaved", "Unsaved changes");
         } else {
             els.profileSaveState.textContent = state.profileStoragePersistent
                 ? t("profile.state.saved_local", "Saved on this device")
@@ -380,6 +393,9 @@ export const findExistingExamEntry = (examId, els, state) => {
         && String(row?.taken_on || "") === takenOn) || null;
 };
 
+const examDraftControls = (els) => [els.examScoreInput, els.examTakenOnInput,
+    ...Array.from(els.examSpecialInputContainer?.querySelectorAll("input, select") || [])].filter(Boolean);
+
 export const readSubjectBreakdownDraft = (examId, els, state, options = {}) =>
     readSubjectBreakdownDraftFromModule(examId, els.examSpecialInputContainer, {
         ...options,
@@ -413,8 +429,7 @@ export const syncExamScoreInputState = (els, state) => {
         els.examSpecialInputContainer.hidden = !usesSpecialInput;
         els.examSpecialInputContainer.style.display = usesSpecialInput ? "" : "none";
         els.examSpecialInputContainer.setAttribute("aria-hidden", usesSpecialInput ? "false" : "true");
-        if (usesSpecialInput) renderSpecialExamInput(selectedExam, els, state);
-        else els.examSpecialInputContainer.innerHTML = "";
+        renderSpecialExamInput(selectedExam, els, state);
     }
 
     if (examForm) {
@@ -527,8 +542,16 @@ export const readSelectedExamPayload = (examId, els, state) => {
             },
         };
 
+        if (scheme.total_strategy === "components_only" && !draft.components.length) {
+            showToast(t("profile.exam_section_required", "Add at least one reported section score."), "error");
+            return null;
+        }
+
         if (String(scheme?.total_strategy || "").trim().toLowerCase() === "use_parent_score") {
             const rawScore = String(els.examScoreInput?.value || "").trim();
+            const canDeriveTotal = scheme.auto_total_strategy === "sum" && draft.fixed.length > 0
+                && draft.fixed.every(({ exam }) => draft.components.some((row) => row.exam === exam && Number.isFinite(row.score)));
+            if (!rawScore && canDeriveTotal) return payload;
             const score = Number(rawScore);
             if (!rawScore || Number.isNaN(score)) {
                 showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
@@ -549,6 +572,7 @@ export const readSelectedExamPayload = (examId, els, state) => {
 export const refreshExamActionButton = (els, state) => {
     if (!els.addExamBtn || !els.examNameSelect) return;
     const selected = canonicalizeExamId(els.examNameSelect.value);
+    if (els.clearExamDraftBtn) els.clearExamDraftBtn.hidden = !selected;
     const takenOn = String(els.examTakenOnInput?.value || "").trim();
     const hasExisting = !!selected && Array.isArray(state.profile.exams)
         && state.profile.exams.some((e) => canonicalizeExamId(e.exam ?? e.id ?? "") === selected && String(e.taken_on || "") === takenOn);
@@ -573,9 +597,9 @@ export const syncApplicantContext = (els, profile) => {
 };
 
 export const syncInputsToDraft = (els, state) => {
-    if (els.budgetInput) state.profile.budget = String(els.budgetInput.value || "").trim();
+    if (els.budgetInput) state.profile.budget = normalizeAmountRaw(els.budgetInput.value);
     state.profile.budgetCurrency = getBudgetCurrency();
-    if (els.familyIncomeInput) state.profile.familyIncomeAmount = String(els.familyIncomeInput.value || "").trim().replace(/,/g, ".");
+    if (els.familyIncomeInput) state.profile.familyIncomeAmount = normalizeAmountRaw(els.familyIncomeInput.value).replace(/,/g, ".");
     if (els.familyIncomeCurrencySelect) state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
     if (els.gpaInput) state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
@@ -587,6 +611,8 @@ export const syncInputsToDraft = (els, state) => {
     syncApplicantContext(els, state.profile);
     state.profile.citizenships = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
     state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
+    // University choices are edited separately and may have changed in another tab.
+    state.profile.selectedAdmissionChoices = ensureProfileShape(loadProfile()).selectedAdmissionChoices;
     state.profile = ensureProfileShape(state.profile);
 };
 
@@ -597,7 +623,7 @@ export const reportFieldValidationError = (inputEl, message) => {
 };
 
 export const validateBudgetInput = (els) => {
-    const rawVal = String(els.budgetInput?.value || "").trim();
+    const rawVal = normalizeAmountRaw(els.budgetInput?.value);
     if (!rawVal) {
         setFieldInvalid(els.budgetInput, false);
         return { ok: true, value: "" };
@@ -623,7 +649,7 @@ export const validateBudgetInput = (els) => {
 };
 
 export const validateFamilyIncomeInput = (els) => {
-    const rawVal = String(els.familyIncomeInput?.value || "").trim().replace(/,/g, ".");
+    const rawVal = normalizeAmountRaw(els.familyIncomeInput?.value).replace(/,/g, ".");
     if (!rawVal) {
         setFieldInvalid(els.familyIncomeInput, false);
         return { ok: true, value: "" };
@@ -656,6 +682,7 @@ export const updateGpaScaleUI = (els, state, scale) => {
         els.gpaUnit.title = toggleLabel;
     }
     if (els.gpaHint) {
+        els.gpaHint.removeAttribute("data-i18n");
         els.gpaHint.textContent = s === 5
             ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)")
             : t("profile.scale.gpa_4", "4.0 (US / International)");
@@ -765,7 +792,7 @@ export const renderProfileData = (els, state) => {
     refreshExamActionButton(els, state);
 };
 
-export const applyDraftToInputs = (els, state) => {
+export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
     setFieldInvalid(els.budgetInput, false);
     setFieldInvalid(els.familyIncomeInput, false);
     setFieldInvalid(els.gpaInput, false);
@@ -823,16 +850,21 @@ export const applyDraftToInputs = (els, state) => {
         refreshSaveState(els, state);
     });
     applyTranslations(els.admissionEvidenceFields);
-    if (els.examNameSelect) els.examNameSelect.value = "";
-    if (els.examScoreInput) els.examScoreInput.value = "";
-    if (els.examTakenOnInput) {
-        els.examTakenOnInput.value = "";
-        els.examTakenOnInput.max = new Date().toISOString().slice(0, 10);
-    }
-    if (els.examSpecialInputContainer) {
-        els.examSpecialInputContainer.innerHTML = "";
-        els.examSpecialInputContainer.style.display = "none";
-        delete els.examSpecialInputContainer.dataset.breakdownExam;
+    if (!preserveExam) {
+        state.editorResetRevision += 1;
+        state.examEditorDirty = state.languageEditorDirty = false;
+        window.dispatchEvent(new Event("profileReportDraftReset"));
+        if (els.examNameSelect) els.examNameSelect.value = "";
+        if (els.examScoreInput) els.examScoreInput.value = "";
+        if (els.examTakenOnInput) {
+            els.examTakenOnInput.value = "";
+            els.examTakenOnInput.max = new Date().toISOString().slice(0, 10);
+        }
+        if (els.examSpecialInputContainer) {
+            els.examSpecialInputContainer.innerHTML = "";
+            els.examSpecialInputContainer.style.display = "none";
+            delete els.examSpecialInputContainer.dataset.breakdownExam;
+        }
     }
     initCommonSelects([
         "studyModeSelect",
@@ -860,6 +892,12 @@ export const resetFields = (els, state) => {
 };
 
 export const saveAllProfileChanges = (els, state) => {
+    if (state.examEditorDirty || state.languageEditorDirty) {
+        setProfileSection(els, state, state.examEditorDirty ? "scores" : "languages");
+        (state.examEditorDirty ? els.addExamBtn : document.getElementById("langAddBtn"))?.focus();
+        showToast(t("profile.report_draft_pending"), "error");
+        return false;
+    }
     syncInputsToDraft(els, state);
 
     const budgetCheck = validateBudgetInput(els);
@@ -1041,6 +1079,7 @@ export const resetProfileData = (els, state) => {
 
 export const retranslateProfileUi = (els, state) => {
     const selectedExam = els.examNameSelect ? String(els.examNameSelect.value || "") : "";
+    const examValues = examDraftControls(els).map(control => control.value);
     const selectedLangCode = document.getElementById("langCode");
     const selectedLangKind = document.getElementById("langKind");
     const selectedLangCefr = document.getElementById("langCefr");
@@ -1060,7 +1099,8 @@ export const retranslateProfileUi = (els, state) => {
     if (els.unsavedModal) applyTranslations(els.unsavedModal);
     if (els.resetModal) applyTranslations(els.resetModal);
     updateBudgetUI(els, state);
-    applyDraftToInputs(els, state);
+    applyDraftToInputs(els, state, { preserveExam: true });
+    examDraftControls(els).forEach((control, index) => { if (examValues[index] !== undefined) control.value = examValues[index]; });
     refreshExamActionButton(els, state);
 
     if (selectedLangCode && prevLangCode) selectedLangCode.value = prevLangCode;
@@ -1119,7 +1159,7 @@ export const openProfile = (els, state) => {
 };
 
 export const showExamScoreError = (inputEl, message) => {
-    setFieldInvalid(inputEl, true);
+    setFieldInvalid(inputEl, true, message);
     inputEl?.focus();
     showToast(message, "error");
 };
@@ -1130,17 +1170,30 @@ export const handleAddExam = async (els, state) => {
     const name = canonicalizeExamId(els.examNameSelect.value);
     const takenOn = String(els.examTakenOnInput?.value || "").trim();
     const mode = getExamInputMode(name);
+    if (mode === "subject_breakdown") {
+        const invalid = [...els.examSpecialInputContainer.querySelectorAll("[data-breakdown-value]")]
+            .find(input => input.validity && !input.validity.valid);
+        if (invalid) {
+            const exam = invalid.dataset.breakdownExamValue;
+            const cfg = getExamConfig(exam);
+            const detail = invalid.validity.rangeOverflow || invalid.validity.rangeUnderflow
+                ? `Score must be between ${cfg.min} and ${cfg.max}`
+                : invalid.validity.stepMismatch ? `step=${cfg.step}` : "invalid score format";
+            showExamScoreError(invalid, formatExamValidationToast(exam, detail, getExamConfig));
+            return;
+        }
+    }
     const selectedPayload = readSelectedExamPayload(name, els, state);
     const score = Number(selectedPayload?.score);
+    const compositeUsesParentScore = mode === "subject_breakdown" && selectedPayload?.score !== undefined
+        && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
 
     const cfg = getExamConfig(name);
     if (cfg) {
         const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
         const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
         const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
-        const usesNumberInput = mode === "number"
-            || (mode === "subject_breakdown"
-                && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score");
+        const usesNumberInput = mode === "number" || compositeUsesParentScore;
 
         if (usesNumberInput && Number.isFinite(min) && score < min) {
             showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_min", { exam: name, min }, `Min for ${name} is ${min}`));
@@ -1173,9 +1226,6 @@ export const handleAddExam = async (els, state) => {
     if (!selectedPayload) {
         return;
     }
-    const compositeUsesParentScore = mode === "subject_breakdown"
-        && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
-
     if ((mode === "number" || compositeUsesParentScore) && Number.isNaN(score)) {
         showExamScoreError(els.examScoreInput, t("profile.exam_invalid_score", "Invalid score format"));
         return;
@@ -1192,8 +1242,10 @@ export const handleAddExam = async (els, state) => {
     }
 
     const submittedDraftRevision = state.examDraftRevision;
+    const submittedResetRevision = state.editorResetRevision;
     state.examValidationPending = true;
     els.addExamBtn.disabled = true;
+    if (els.clearExamDraftBtn) els.clearExamDraftBtn.disabled = true;
     try {
         const res = await fetch(`${API_BASE}/exams/validate`, {
             method: "POST",
@@ -1228,6 +1280,7 @@ export const handleAddExam = async (els, state) => {
             throw err;
         }
 
+        if (state.disposed || submittedResetRevision !== state.editorResetRevision) return;
         const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
         const examLabel = getExamDisplayName(examId || name, { locale: getCurrentLanguage() });
         const savedValue = formatExamValue(examId || name, json, { context: "profile", locale: getCurrentLanguage() });
@@ -1272,6 +1325,7 @@ export const handleAddExam = async (els, state) => {
         renderProfileData(els, state);
 
         if (state.examDraftRevision === submittedDraftRevision) {
+            state.examEditorDirty = false;
             setFieldInvalid(els.examScoreInput, false);
             els.examScoreInput.value = "";
             if (els.examTakenOnInput) els.examTakenOnInput.value = "";
@@ -1280,13 +1334,15 @@ export const handleAddExam = async (els, state) => {
             initCommonSelects(["examNameSelect"]);
         }
         refreshExamActionButton(els, state);
+        refreshSaveState(els, state);
     } catch (e) {
-        if (state.examDraftRevision === submittedDraftRevision) {
+        if (!state.disposed && submittedResetRevision === state.editorResetRevision && state.examDraftRevision === submittedDraftRevision) {
             showExamScoreError(els.examScoreInput, formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || "", getExamConfig));
         }
     } finally {
         state.examValidationPending = false;
         els.addExamBtn.disabled = false;
+        if (els.clearExamDraftBtn) els.clearExamDraftBtn.disabled = false;
     }
 };
 
@@ -1297,8 +1353,10 @@ export const handleExamListClick = (e, els, state) => {
         const idx = Number(editBtn.dataset.editIdx);
         const entry = state.profile.exams?.[idx];
         if (!entry) return;
+        state.examEditorDirty = false;
         els.examNameSelect.value = canonicalizeExamId(entry.exam ?? entry.id ?? "");
         if (els.examTakenOnInput) els.examTakenOnInput.value = String(entry.taken_on || "");
+        if (els.examSpecialInputContainer) delete els.examSpecialInputContainer.dataset.breakdownExam;
         initCommonSelects(["examNameSelect"]);
         syncExamScoreInputState(els, state);
         refreshExamActionButton(els, state);
@@ -1338,9 +1396,22 @@ export const bindProfileEvents = (els, state) => {
         resolve(allowed);
     };
     const examForm = els.modal.querySelector(".profile-exam-form");
-    const markExamDraftChanged = () => { state.examDraftRevision += 1; };
+    const markExamDraftChanged = event => {
+        state.examDraftRevision += 1;
+        if (event.target !== els.examNameSelect) {
+            state.examEditorDirty = !!els.examNameSelect?.value && examDraftControls(els).some(control => String(control.value || "").trim());
+        }
+        if (event.target?.matches("[data-breakdown-value]")) setFieldInvalid(event.target, false);
+        refreshSaveState(els, state);
+    };
     examForm?.addEventListener("input", markExamDraftChanged);
     examForm?.addEventListener("change", markExamDraftChanged);
+    examForm?.addEventListener("keydown", event => {
+        if (event.key !== "Enter" || event.defaultPrevented || event.repeat || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
+        if (event.target.closest(".custom-select-wrapper.open, button")) return;
+        event.preventDefault();
+        void handleAddExam(els, state);
+    });
     els.profileSectionTabs.forEach((tab) => {
         tab.addEventListener("click", () => setProfileSection(els, state, tab.dataset.profileTab || "basics"));
     });
@@ -1354,7 +1425,9 @@ export const bindProfileEvents = (els, state) => {
     if (els.examNameSelect) {
         els.examNameSelect.addEventListener("change", () => {
             syncExamScoreInputState(els, state);
+            state.examEditorDirty = !!els.examNameSelect.value && examDraftControls(els).some(control => String(control.value || "").trim());
             refreshExamActionButton(els, state);
+            refreshSaveState(els, state);
         });
     }
     els.examTakenOnInput?.addEventListener("change", () => {
@@ -1484,7 +1557,7 @@ export const bindProfileEvents = (els, state) => {
     if (els.budgetInput) {
         els.budgetInput.addEventListener("input", () => {
             setFieldInvalid(els.budgetInput, false);
-            state.profile.budget = String(els.budgetInput.value || "").trim();
+            state.profile.budget = normalizeAmountRaw(els.budgetInput.value);
             state.lowBudgetGrantHintDismissed = false;
             refreshSaveState(els, state);
         });
@@ -1494,7 +1567,7 @@ export const bindProfileEvents = (els, state) => {
     if (els.familyIncomeInput) {
         els.familyIncomeInput.addEventListener("input", () => {
             setFieldInvalid(els.familyIncomeInput, false);
-            state.profile.familyIncomeAmount = String(els.familyIncomeInput.value || "").trim().replace(/,/g, ".");
+            state.profile.familyIncomeAmount = normalizeAmountRaw(els.familyIncomeInput.value).replace(/,/g, ".");
             refreshSaveState(els, state);
         });
         els.familyIncomeInput.addEventListener("keydown", handleEnterSave);
@@ -1537,6 +1610,20 @@ export const bindProfileEvents = (els, state) => {
         setGpaScale(els, state, Number(state.profile.gpaScale) === 5 ? 4 : 5);
     });
 
+    els.profileBudgetUnit?.addEventListener("click", () => document.getElementById("settingsBtn")?.click());
+    els.clearExamDraftBtn?.addEventListener("click", () => {
+        if (state.examValidationPending) return;
+        els.examNameSelect.value = "";
+        els.examScoreInput.value = "";
+        if (els.examTakenOnInput) els.examTakenOnInput.value = "";
+        state.examEditorDirty = false;
+        state.examDraftRevision += 1;
+        syncExamScoreInputState(els, state);
+        initCommonSelects(["examNameSelect"]);
+        refreshExamActionButton(els, state);
+        refreshSaveState(els, state);
+    });
+
     if (els.saveProfileBtn) {
         els.saveProfileBtn.addEventListener("click", () => {
             motionPress(els.saveProfileBtn);
@@ -1577,7 +1664,7 @@ export const bindProfileEvents = (els, state) => {
         motionPress(els.saveAndCloseBtn);
         syncInputsToDraft(els, state);
         if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) {
-            closeUnsavedDialog(els, state, true);
+            closeUnsavedDialog(els, state, false);
             settleNavigationClose(false);
             return;
         }
@@ -1632,7 +1719,7 @@ export const bindProfileEvents = (els, state) => {
         }
         const prevCurrency = state.profile.budgetCurrency || "USD";
         if (prevCurrency !== activeCurrency) {
-            const rawBudget = els.budgetInput ? els.budgetInput.value.trim() : String(state.profile.budget ?? "").trim();
+            const rawBudget = normalizeAmountRaw(els.budgetInput ? els.budgetInput.value : state.profile.budget);
             if (rawBudget && !rawBudget.includes(".") && !rawBudget.includes(",")) {
                 const val = Number(rawBudget);
                 if (Number.isFinite(val) && val >= 0) {
@@ -1643,8 +1730,14 @@ export const bindProfileEvents = (els, state) => {
             }
             state.profile.budgetCurrency = activeCurrency;
             if (state.savedSignature) {
-                state.profileStoragePersistent = saveProfile(state.profile);
-                state.savedSignature = stableProfileSignature(state.profile);
+                const savedProfile = ensureProfileShape(loadProfile());
+                if (savedProfile.budget !== "" && Number.isFinite(Number(savedProfile.budget))) {
+                    savedProfile.budget = Math.round(convert(Number(savedProfile.budget), savedProfile.budgetCurrency || prevCurrency, activeCurrency));
+                }
+                savedProfile.budgetCurrency = activeCurrency;
+                if (savedProfile.familyIncomeAmount === "") savedProfile.familyIncomeCurrency = activeCurrency;
+                state.profileStoragePersistent = saveProfile(savedProfile);
+                state.savedSignature = stableProfileSignature(savedProfile);
             }
         }
         updateBudgetUI(els, state);
@@ -1690,6 +1783,7 @@ export const bindProfileEvents = (els, state) => {
     };
     listenGlobal(window, "beforeunload", handleBeforeUnload);
     return () => {
+        state.disposed = true;
         settleNavigationClose(false);
         globalListenerDisposers.splice(0).forEach((dispose) => dispose());
         if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
@@ -1743,6 +1837,10 @@ export function initProfileUI() {
         updateProfileTabsIndicator,
         examValidationPending: false,
         examDraftRevision: 0,
+        editorResetRevision: 0,
+        examEditorDirty: false,
+        languageEditorDirty: false,
+        disposed: false,
     };
     state.profileStoragePersistent = !isFutureProfile(state.profile);
 
@@ -1751,6 +1849,10 @@ export function initProfileUI() {
         get: () => cloneProfile(state.profile),
         set: (nextProfile) => {
             setProfileDraft(state, els, nextProfile);
+        },
+        setLanguageEditorDirty: (dirty) => {
+            state.languageEditorDirty = dirty;
+            refreshSaveState(els, state);
         },
     };
 

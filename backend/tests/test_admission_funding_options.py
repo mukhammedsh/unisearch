@@ -1,7 +1,7 @@
 import copy
 import unittest
 
-from app.services import universities as uni_service
+from app.services import universities as uni_service, admissions_catalog
 
 
 def _category(category_id, profiles, **extra):
@@ -122,20 +122,19 @@ class FundingOptionsTests(unittest.TestCase):
         self.assertEqual(1450, int((choice.get("requirements") or {}).get("SAT", 0)))
         self.assertEqual(3.0, float((choice.get("requirements") or {}).get("GPA", 0)))
 
-    def test_real_dataset_exposes_nu_as_one_category_with_funding_options_per_profile(self):
-        university = uni_service.get_university_by_id("nazarbayev-university-kaz-astana")
-        self.assertIsNotNone(university)
-
-        categories = university.get("admission_categories") or []
-        self.assertEqual(1, len(categories))
-        profiles = {str(profile.get("id")): profile for profile in categories[0].get("requirement_profiles") or []}
-
-        self.assertEqual({"nu_sat_applicants", "nu_act_applicants", "nu_nuet_undergraduate"}, set(profiles))
-        self.assertEqual(2, len(profiles["nu_sat_applicants"].get("funding_options") or []))
-        self.assertEqual(1240, int((profiles["nu_sat_applicants"].get("requirements") or {}).get("SAT", 0)))
-        self.assertEqual(26, int((profiles["nu_act_applicants"].get("requirements") or {}).get("ACT", 0)))
-        self.assertEqual(1475, int((profiles["nu_sat_applicants"].get("stats_avg") or {}).get("SAT", 0)))
-        self.assertFalse(bool(profiles["nu_act_applicants"].get("stats_avg")))
+    def test_reviewed_nu_separates_admission_from_financial_support(self):
+        uid = "nazarbayev-university-kaz-astana"
+        university = uni_service.get_university_by_id(uid)
+        self.assertNotIn("admission_categories", university)
+        institution = admissions_catalog.get_institution(uid)
+        regular = next(row for row in institution["application_routes"] if row["id"] == "nu-a-route-regular-foundation-undergraduate")
+        support = next(row for row in institution["application_routes"] if row["id"] == "nu-a-route-financial-support")
+        self.assertNotEqual(regular["id"], support["id"])
+        self.assertEqual("financial_support_application", support["classification"])
+        flow = next(row for row in institution["facts"] if row["id"] == "nu-a-fact-financial-sequence")
+        self.assertTrue(flow["source_ids"])
+        self.assertIn("offer", str(flow["value"]).lower())
+        self.assertEqual(120, next(row for row in institution["facts"] if row["id"] == "nu-a-fact-nuet-support")["value"]["NUET_total"])
 
 
 if __name__ == "__main__":
