@@ -10,6 +10,14 @@ All notable project changes should be recorded here.
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
 
+## 10.0.1 (2026-10-30) - Nazarbayev University translations
+
+### Changed
+- Localize reviewed Nazarbayev University program and admissions information in Russian and Kazakh while preserving official names and source context.
+
+### Fixed
+- Show structured academic alternatives in reviewed admissions records while keeping route metadata hidden.
+
 ## 10.0.0 (2026-10-28) - Nazarbayev University admissions and profile
 
 ### Changed

@@ -267,6 +267,8 @@ export function translateFactSource(value, fallback = "") {
   const exact = pack && typeof pack.admission_exact === "object" ? pack.admission_exact : null;
   if (exact && exact[raw]) return String(exact[raw]);
 
+  const program = translateProgramName(raw);
+  if (program !== raw) return program;
   return translateAdmissionText(raw, raw);
 }
 

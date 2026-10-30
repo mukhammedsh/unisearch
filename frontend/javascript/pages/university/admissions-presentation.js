@@ -220,7 +220,8 @@ export function publishedTuitionQuotes(row, optionId) {
   if (!reviewed(row) && !(publishedReference && evidenceReviewed(row))) return [];
   if (Array.isArray(value?.quotes)) return value.quotes.filter(quote => quote.basis === "tuition" && Number.isFinite(quote.amount) && quote.amount >= 0 && quote.currency
     && (!quote.option_ids?.length || quote.option_ids.includes(optionId))).map(quote => ({
-    feeStatus: quote.fee_status || "", campus: quote.campus || "", currency: quote.currency,
+    feeStatus: translateAdmissionSummary(quote.fee_status) || quote.fee_status || "",
+    campus: translateAdmissionSummary(quote.campus) || quote.campus || "", currency: quote.currency,
     studyYears: quote.study_years?.length ? tFormat("universities.cost.study_years", { years: quote.study_years.join(", ") }) : "",
     reference: quote.reference_only ? t("universities.cost.reference_short") : "",
     amounts: [`${new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(quote.amount)} ${billingPeriodLabel(quote.billing_period)}`.trim()],
