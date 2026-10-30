@@ -135,6 +135,13 @@ test("provenance and provider field IDs stay hidden while significant source nar
   assert.doesNotMatch(html, /A3i6E|WOZxr|ItCSB|deadbeef|private-id|provider-fact-id|provider-rule-id/);
 });
 
+test("structured applicant alternatives remain visible while route metadata stays hidden", () => {
+  const html = renderAdmissionsValue({ applicant_routes: [{ SAT: 1320 }, { A_level_NIS: "AAB in three subjects" }] });
+  assert.match(html, /1,320/);
+  assert.match(html, /AAB in three subjects/);
+  assert.doesNotMatch(renderAdmissionsValue({ applicant_routes: ["first_year", "transfer"] }), /first_year|transfer/);
+});
+
 test("fact applicability is conditional and source links only accept safe HTTP URLs", () => {
   const resolved = context();
   resolved.facts = [fact("Confirm the actual fee status.", { source_ids: ["safe", "unsafe", "credentialed"] })];

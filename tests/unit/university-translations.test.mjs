@@ -57,6 +57,7 @@ test("university translation packs load once per language and drive typed transl
   assert.equal(translations.translateTrackLabel("Paid route"), "Платное route");
   assert.equal(translations.translateProgramName("Computer Science"), "Информатика");
   assert.equal(translations.translateFactSource("Official report"), "Официальный отчёт");
+  assert.equal(translations.translateFactSource("Computer Science"), "Информатика");
   assert.ok(translations.translateFactStatus("official-aggregated"));
 
   const cached = await translations.loadUniversityTranslationsForLanguage("rus");
@@ -74,5 +75,6 @@ test("translation helpers preserve English source copy and failed packs return n
   assert.equal(translations.translateTrackLabel("Paid route"), "Paid route");
   assert.equal(translations.translateProgramName("Computer Science"), "Computer Science");
   assert.equal(translations.translateFactSource("Official report"), "Official report");
+  assert.equal(translations.translateFactSource("Computer Science"), "Computer Science");
   assert.equal(await translations.loadUniversityTranslationsForLanguage("eng", true), null);
 });

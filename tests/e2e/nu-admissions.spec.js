@@ -53,6 +53,74 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   await expect(nursing.locator("[data-study-info]")).toContainText("240");
 });
 
+for (const { theme, mobile } of [{ theme: "light", mobile: false }, { theme: "dark", mobile: true }]) test(`Russian Foundation overview and published NUET conditions are readable (${theme}, ${mobile ? "phone" : "desktop"})`, async ({ page }) => {
+  await seed(page, {}, { language: "rus", theme, mobile });
+  await openContext(page, FOUNDATION, REGULAR, "preparation");
+  await expect(page.locator("#admissionsStudyOverview")).toContainText("Годичная очная подготовительная программа");
+  await showTab(page, "admission");
+  const fact = page.locator("#detailRequirements [data-admissions-fact='nu-a-fact-fyp-academic']").first();
+  await reveal(fact);
+  await expect(fact).toContainText("общий балл не ниже 120 из 240");
+  await expect(fact).toContainText("не порог для приёма на бакалавриат");
+});
+
+for (const { theme, mobile } of [{ theme: "light", mobile: false }, { theme: "dark", mobile: true }]) test(`Russian NUZYP unknowns explain the missing current intake (${theme}, ${mobile ? "phone" : "desktop"})`, async ({ page }) => {
+  await seed(page, {}, { language: "rus", theme, mobile });
+  await page.goto(`/university.html?id=${NU}&admission_option=nu-a-study-nuzyp&admission_level=preparation`);
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
+  const unknowns = page.locator("#admissionsStudyInfo .admissions-catalog__unknowns");
+  await unknowns.locator(":scope > summary").click();
+  await expect(unknowns).toContainText("Текущий набор, требования, длительность, стоимость и финансирование эти источники не подтверждают");
+  await expect(unknowns).toContainText("Найдите объявление о текущем наборе NUZYP");
+  await expect(unknowns).toContainText("Уточнение области применения");
+  await expect(unknowns).toContainText("Подготовительная программа NU Zero Year Program");
+  await expect(unknowns.locator("a[href*='nuzyp_instructions']")).toBeVisible();
+});
+
+for (const { theme, mobile } of [{ theme: "light", mobile: false }, { theme: "dark", mobile: true }]) test(`Russian Nursing requirements retain the prior experience condition (${theme}, ${mobile ? "phone" : "desktop"})`, async ({ page }) => {
+  await seed(page, {}, { language: "rus", theme, mobile });
+  await openContext(page, "nu-a-study-bachelor-in-nursing", "nu-a-route-nursing", "undergraduate", { cycle: "", applicant: "first_year" });
+  await showTab(page, "admission");
+  const fact = page.locator("#detailRequirements [data-admissions-fact='nu-a-fact-nursing-entry']").first();
+  await reveal(fact);
+  await expect(fact).toContainText("не менее двух лет профессионального и/или волонтёрского опыта");
+  await expect(fact).toContainText("за последние пять лет");
+  await expect(fact).toContainText("Минимальный процент раздела клинических навыков");
+  await expect(fact.locator("a[href='https://nusom.nu.edu.kz/bn']")).toBeVisible();
+});
+
+test("Russian joint BBA separates the historic scores from unconfirmed application dates", async ({ page }) => {
+  await seed(page, {}, { language: "rus", theme: "light" });
+  await openContext(page, "nu-a-study-bachelor-of-business-administration-in-eurasian-business-joint-degree-with-hkust", "nu-a-route-joint-bba", "undergraduate", { cycle: "", applicant: "first_year" });
+  await showTab(page, "admission");
+  const fact = page.locator("#detailRequirements [data-admissions-fact='nu-a-fact-joint-bba-admissions']").first();
+  await reveal(fact);
+  await expect(fact).toContainText("даты 2027/28 года будут объявлены");
+  await expect(fact).toContainText("сведения 2025/26 года для поступления в 2026/27 году");
+  await expect(fact).toContainText("AAB по трём предметам");
+});
+
+test("Russian conditional residency keeps first-year test requirements separate", async ({ page }) => {
+  await seed(page, {}, { language: "rus", theme: "dark", mobile: true });
+  await openContext(page, "nu-c-study-residency-in-neurology", "nu-residency-conditional-umc", "residency", { cycle: "", applicant: "graduate" });
+  await showTab(page, "admission");
+  const fact = page.locator("#detailRequirements [data-admissions-fact='nu-c-residency-conditional']").first();
+  await reveal(fact);
+  await expect(fact).toContainText("Тест по английскому, если не предоставлено освобождение");
+  await expect(fact).toContainText("IFOM BSE или USMLE Step 1");
+  await expect(fact).toContainText("Условия первого года");
+});
+
+test("Russian funding calendar keeps SAT and ACT test deadlines distinct", async ({ page }) => {
+  await seed(page, {}, { language: "rus", theme: "dark", mobile: true });
+  await openContext(page, CS, SUPPORT, "undergraduate");
+  await showTab(page, "deadlines");
+  await expect(page.locator("#detailDeadlines")).toContainText("Последняя дата сдачи SAT для отбора на финансирование");
+  await expect(page.locator("#detailDeadlines")).toContainText("Последняя дата сдачи ACT для отбора на финансирование");
+  await expect(page.locator("#detailDeadlines")).not.toContainText("Last SAT test date");
+});
+
 test("NUZYP exposes its source uncertainty without an invented application route or current award", async ({ page }) => {
   await seed(page);
   await page.goto(`/university.html?id=${NU}&admission_option=nu-a-study-nuzyp&admission_level=preparation`);

@@ -6,8 +6,9 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { publishedTuitionQuotes, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
-const { renderAdmissionsContext, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
+const { admissionDeadlineTitle, admissionsCycleLabel, renderAdmissionsContext, renderAdmissionsValue, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 const { renderReviewedComparison } = await import("../../frontend/javascript/pages/universities/compare-summary.js");
+const { translateFactSource } = await import("../../frontend/javascript/university-translations.js");
 await initI18n();
 window.location.href = "http://127.0.0.1/compare.html";
 const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
@@ -49,6 +50,123 @@ test("a reviewed untranslated NU study description remains visible with its offi
     assert.match(html, /English on central A-Z card; Nursing program page says Russian/);
   }
   setLanguage("eng", { emit: false });
+});
+
+test("Russian NU Foundation translations render while English keeps the original facts", async () => {
+  const pack = JSON.parse(await readFile(new URL("../../backend/data/universities_translations.json", import.meta.url), "utf8")).languages.rus;
+  const { loadUniversityTranslationsForLanguage } = await import("../../frontend/javascript/university-translations.js");
+  const previousFetch = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => ({ lang: "rus", data: pack }) });
+  try {
+    await loadUniversityTranslationsForLanguage("rus", true);
+  } finally {
+    global.fetch = previousFetch;
+  }
+  const resolved = context("nu-a-study-nu-foundation-year-program", "nu-a-route-regular-foundation-undergraduate", {
+    study: ["nu-a-fact-nufyp-program"], requirements: ["nu-a-fact-fyp-academic"],
+  });
+  setLanguage("rus", { emit: false });
+  assert.match(renderStudyOptionOverview(resolved), /Годичная очная подготовительная программа/);
+  const requirements = renderAdmissionsContext(resolved, { domains: ["requirements"], presentation: "simple", includeAssessment: false });
+  assert.match(requirements, /общий балл не ниже 120 из 240/);
+  assert.match(requirements, /не порог для приёма на бакалавриат/);
+  setLanguage("eng", { emit: false });
+  assert.match(renderStudyOptionOverview(resolved), /One-academic-year, full-time preparation/);
+});
+
+test("all available NU overview descriptions and unknowns have Russian translations", async () => {
+  const pack = JSON.parse(await readFile(new URL("../../backend/data/universities_translations.json", import.meta.url), "utf8")).languages.rus;
+  const descriptions = nu.study_options.flatMap(option => option.evidence_profiles.map(profile => profile.attributes.description?.text).filter(Boolean));
+  descriptions.push(nu.facts.find(row => row.id === "nu-a-fact-nursing-study").value.content);
+  assert.equal(descriptions.length, 94);
+  for (const source of [...descriptions, ...nu.unknowns.flatMap(row => [row.reason, row.official_next_step])]) {
+    assert.match(pack.admission_exact[source] || "", /[а-яё]/iu, source);
+  }
+});
+
+test("NU unknown records show translated reason and next step while preserving English and escaping fallback", () => {
+  const resolved = context("nu-a-study-nuzyp", null, {});
+  resolved.unknowns = [nu.unknowns.find(row => row.id === "nu-a-gap-nuzyp-activity"), { reason: "<untranslated>", scope: { option_ids: ["nu-a-study-nuzyp"], route_ids: [] }, source_ids: [] }];
+  setLanguage("rus", { emit: false });
+  const html = renderAdmissionsContext(resolved, { domains: [], programOnly: true, includeAssessment: false });
+  assert.match(html, /Текущий набор, требования, длительность, стоимость и финансирование/);
+  assert.match(html, /Найдите объявление о текущем наборе NUZYP/);
+  assert.match(html, /Подготовительная программа NU Zero Year Program/);
+  assert.match(html, /Уточнение области применения/);
+  assert.match(html, /&lt;untranslated&gt;/);
+  setLanguage("eng", { emit: false });
+  assert.match(renderAdmissionsContext(resolved, { domains: [], programOnly: true }), /None establishes a current intake/);
+});
+
+test("source-specific field labels translate without changing values or English", () => {
+  setLanguage("rus", { emit: false });
+  const html = renderAdmissionsValue({ campus: "Astana, Kazakhstan", curriculum_summary: "Untranslated source", section_minimum: 50, program: "Master of Science in Data Science" });
+  assert.match(html, /Кампус/);
+  assert.match(html, /Обзор учебного плана/);
+  assert.match(html, /Минимальный балл раздела/);
+  assert.match(html, /<dd>50<\/dd>/);
+  assert.match(html, /Магистратура.*наук.*данных/i);
+  assert.match(html, /Untranslated source/);
+  setLanguage("eng", { emit: false });
+  assert.match(renderAdmissionsValue({ curriculum_summary: "Source" }), /Curriculum summary/);
+});
+
+test("Russian NU source facts render their available narrative translations", () => {
+  const originals = new Set(["TOEFL iBT Home Edition", "IELTS Indicator", "TOEFL Home Edition", "Academic IELTS"]);
+  const texts = new Set();
+  const collect = value => {
+    if (typeof value === "string" && value.length > 12 && value.includes(" ") && !/^(?:https?:|nu-)/.test(value) && !originals.has(value)) texts.add(value);
+    else if (Array.isArray(value)) value.forEach(collect);
+    else if (value && typeof value === "object") Object.values(value).forEach(collect);
+  };
+  for (const fact of nu.facts) for (const key of ["value", "conditions", "conditions_and_exceptions", "exceptions"]) collect(fact[key]);
+  setLanguage("rus", { emit: false });
+  const missing = [...texts].filter(text => !/[а-яё]/iu.test(renderAdmissionsValue(text)));
+  const missingSources = nu.sources.map(source => source.title).filter(title => !/[а-яё]/iu.test(translateFactSource(title)));
+  setLanguage("eng", { emit: false });
+  assert.deepEqual(missing, []);
+  assert.deepEqual(missingSources, []);
+});
+
+test("Russian NU structured fact labels remain readable", () => {
+  const keys = new Set();
+  const collect = value => {
+    if (Array.isArray(value)) value.forEach(collect);
+    else if (value && typeof value === "object") Object.entries(value).forEach(([key, entry]) => { keys.add(key); collect(entry); });
+  };
+  for (const fact of nu.facts) for (const key of ["value", "conditions", "conditions_and_exceptions", "exceptions"]) collect(fact[key]);
+  for (const row of [...nu.facts, ...nu.unknowns]) collect(row.scope?.additional_dimensions);
+  setLanguage("rus", { emit: false });
+  const officialLabels = new Set(["A_level_NIS", "A_Level_NIS", "TOEFL_iBT", "toefl_ibT", "TOEFL_iBT_0_120", "gre", "GRE", "GMAT", "PhD"]);
+  const missing = [...keys].filter(key => {
+    const label = renderAdmissionsValue({ [key]: 1 }).match(/<dt>(.*?)<\/dt>/)?.[1];
+    return label && !officialLabels.has(key) && !/[а-яё]/iu.test(label) && !/^(?:[A-Z\d/ .+-]+|IELTS Academic)$/u.test(label);
+  });
+  setLanguage("eng", { emit: false });
+  assert.deepEqual(missing, []);
+});
+
+test("Russian NU scope descriptions render without English fallback", () => {
+  const texts = new Set();
+  const collect = value => {
+    if (typeof value === "string" && value.length > 12 && value.includes(" ") && !/^(?:https?:|nu-)/.test(value)) texts.add(value);
+    else if (Array.isArray(value)) value.forEach(collect);
+    else if (value && typeof value === "object") Object.entries(value).filter(([key]) => !/(?:^|_)(?:ids?|refs?)$/.test(key)).forEach(([, entry]) => collect(entry));
+  };
+  for (const row of [...nu.facts, ...nu.unknowns]) collect(row.scope?.additional_dimensions);
+  setLanguage("rus", { emit: false });
+  const missing = [...texts].filter(text => !/[а-яё]/iu.test(renderAdmissionsValue(text)));
+  setLanguage("eng", { emit: false });
+  assert.deepEqual(missing, []);
+});
+
+test("NU deadline event names use Russian labels while English keeps source labels", () => {
+  const names = new Set(nu.facts.flatMap(fact => (fact.attributes?.deadline_events || []).map(event => event.label).filter(Boolean)));
+  setLanguage("rus", { emit: false });
+  for (const name of names) assert.match(admissionsCycleLabel(name), /[а-яё]/iu, name);
+  assert.match(admissionDeadlineTitle({ kind: "application", name: "paid_prior_visa / MCAT" }), /Платное обучение.*MCAT/);
+  setLanguage("eng", { emit: false });
+  assert.equal(admissionsCycleLabel("paid_prior_visa / MCAT"), "paid_prior_visa / MCAT");
 });
 
 test("pure NU study facts remain readable before choosing an application route", () => {

@@ -15,7 +15,7 @@ export function admissionsCycleLabel(value) {
     return `${t(`university.admissions.reading.month_standalone.${index}`, month[1])} ${month[2]}`;
   }
   const entry = raw.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2}))?)(?: entry)?(?: \((January|February|March|April|May|June|July|August|September|October|November|December)\))?$/);
-  if (!entry) return raw;
+  if (!entry) return translateAdmissionSummary(raw) || raw;
   const cycle = tFormat(`university.admissions.reading.${entry[1] ? `entry_${entry[1].toLowerCase()}` : "entry_year"}`, { year: entry[2] });
   const monthIndex = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].indexOf(entry[3]) + 1;
   return monthIndex ? `${cycle} (${t(`university.admissions.reading.month_standalone.${monthIndex}`)})` : cycle;
@@ -313,14 +313,14 @@ function internalField(key) {
 
 function fieldLabel(key, referenceLabels = {}) {
   if (key === "assessment_state") return escapeHtml(label("field.status"));
-  if (Object.hasOwn(referenceLabels, key)) return escapeHtml(referenceLabels[key]);
+  if (Object.hasOwn(referenceLabels, key)) return escapeHtml(translateProgramName(referenceLabels[key]));
   if (getExamConfig(key)) return escapeHtml(getExamDisplayName(key, { locale: getCurrentLanguage() }));
   const localized = t(`${PREFIX}field.${key}`);
   if (localized) return escapeHtml(localized);
   if (ADMISSIONS_RENDER_LABELS[`field.${key}`]) return escapeHtml(label(`field.${key}`));
-  // Source-specific field labels accompany the original-language source summary.
   const text = key.replace(/([a-z])([A-Z])/g, "$1 $2").replaceAll("_", " ");
-  return escapeHtml(text.charAt(0).toUpperCase() + text.slice(1));
+  const field = text.charAt(0).toUpperCase() + text.slice(1);
+  return escapeHtml(translateAdmissionSummary(field) || field);
 }
 
 function scalar(value, referenceLabels = {}) {
@@ -333,7 +333,7 @@ function scalar(value, referenceLabels = {}) {
     return new Intl.NumberFormat(locale, { maximumFractionDigits: fractionDigits }).format(value);
   }
   const text = String(value);
-  if (Object.hasOwn(referenceLabels, text)) return escapeHtml(referenceLabels[text]);
+  if (Object.hasOwn(referenceLabels, text)) return escapeHtml(translateProgramName(referenceLabels[text]));
   const languageKinds = { education: "Education", employment: "Work experience", primary_language: "First language" };
   if (Object.hasOwn(languageKinds, text)) return escapeHtml(t(`profile.evidence.language_kind.${text}`, languageKinds[text]));
   if (/^(?:source-[a-f0-9]+|[a-f0-9]{32,}|[a-f0-9-]{36})$/i.test(text)) return "";
@@ -341,7 +341,8 @@ function scalar(value, referenceLabels = {}) {
   if (ADMISSIONS_RENDER_LABELS[`kind.${text}`]) return escapeHtml(label(`kind.${text}`));
   if (getExamConfig(text) || /^(?:TOEFL|GMAT|IELTS|DUOLINGO|CAMBRIDGE)_/.test(text)) return escapeHtml(getExamDisplayName(text));
   if (/^https?:\/\//i.test(text)) return sourceLink(text);
-  return escapeHtml(translateAdmissionSummary(text) || translateAdmissionText(text, text));
+  const program = translateProgramName(text);
+  return escapeHtml(translateAdmissionSummary(text) || (program !== text ? program : translateAdmissionText(text, text)));
 }
 
 export function admissionDeadlineTitle(event) {
@@ -363,7 +364,8 @@ export function renderAdmissionsValue(value, referenceLabels = {}) {
     return items.length ? `<ul class="admissions-catalog__items">${items.map(item => `<li>${item}</li>`).join("")}</ul>` : "";
   }
   if (value && typeof value === "object") {
-    const entries = Object.entries(value).filter(([key]) => !internalField(key)).map(([key, entry]) => {
+    const entries = Object.entries(value).filter(([key, entry]) => !internalField(key)
+      || (key === "applicant_routes" && Array.isArray(entry) && entry.some(item => item && typeof item === "object"))).map(([key, entry]) => {
       const content = key === "score" && Number.isFinite(entry) && getExamConfig(value.exam)
         ? escapeHtml(formatExamValue(value.exam, value, { locale: getCurrentLanguage() })) : renderAdmissionsValue(entry, referenceLabels);
       return content ? `<div class="admissions-catalog__entry"><dt>${fieldLabel(key, referenceLabels)}</dt><dd>${content}</dd></div>` : "";
@@ -401,8 +403,13 @@ const STUDY_FIELD_KEYS = { duration: "duration", mode: "mode", language: "langua
 function displayedStudyValue(key, value) {
   if (typeof value !== "string" && !(Array.isArray(value) && value.every(item => typeof item === "string"))) return "";
   const entries = (Array.isArray(value) ? value : [value]).filter(item => !["not_stated", "not_specified", "unknown", "unconfirmed"].includes(item.trim().toLowerCase().replace(/[\s-]+/g, "_")));
-  return entries.map(item => STUDY_FIELD_FORMATTERS[key]
-    ? STUDY_FIELD_FORMATTERS[key](item) : translateAdmissionSummary(item) || item).join(", ");
+  return entries.map(item => {
+    const formatted = STUDY_FIELD_FORMATTERS[key] ? STUDY_FIELD_FORMATTERS[key](item) : item;
+    if (getCurrentLanguage() === "eng") return formatted;
+    const simpleDuration = key === "duration" && /^\d+(?:\.\d+)?\s*(?:years?|yrs?|months?|weeks?|days?|semesters?)$/i.test(item);
+    if (formatted !== item && (key !== "duration" || simpleDuration)) return formatted;
+    return translateAdmissionSummary(item) || formatted;
+  }).join(", ");
 }
 
 export function studyOverviewCoverage(resolved) {
@@ -493,8 +500,8 @@ function sources(row, resolved) {
 function scope(row, resolved) {
   const declared = row.scope || {};
   const names = {
-    ...(declared.option_ids?.includes(resolved.selected_option?.id) ? { study: resolved.selected_option.title } : {}),
-    ...(declared.route_ids?.includes(resolved.selected_route?.id) ? { application: admissionsRouteName(resolved.selected_route) } : {}),
+    ...(declared.option_ids?.includes(resolved.selected_option?.id) ? { study: admissionsProgramLabel(resolved.selected_option).title } : {}),
+    ...(declared.route_ids?.includes(resolved.selected_route?.id) ? { application: admissionsRouteName(resolved.selected_route, { presentation: getCurrentLanguage() === "eng" ? undefined : "simple" }) } : {}),
     ...Object.fromEntries(["levels", "applicant_categories", "cycle", "fee_status", "additional_dimensions"].filter(key => declared[key] && (!Array.isArray(declared[key]) || declared[key].length)).map(key => [key, declared[key]])),
   };
   return Object.keys(names).length ? `<div class="admissions-catalog__scope"><strong>${escapeHtml(label("scope"))}</strong>${renderAdmissionsValue(names, resolved.reference_labels)}</div>` : "";
@@ -730,7 +737,7 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
 
 function renderUnknowns(resolved, unknowns = resolved.unknowns || [], simple = false) {
   if (!unknowns.length) return "";
-  const rows = `<div class="admissions-catalog__list">${unknowns.map(row => `<div class="admissions-catalog__unknown"><p>${escapeHtml(row.reason || label("unknown"))}</p>${row.official_next_step ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(row.official_next_step)}</p>` : ""}${scope(row, resolved)}<div class="admissions-catalog__sources">${sources(row, resolved)}</div></div>`).join("")}</div>`;
+  const rows = `<div class="admissions-catalog__list">${unknowns.map(row => `<div class="admissions-catalog__unknown"><p>${escapeHtml(translateAdmissionSummary(row.reason) || row.reason || label("unknown"))}</p>${row.official_next_step ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(translateAdmissionSummary(row.official_next_step) || row.official_next_step)}</p>` : ""}${scope(row, resolved)}<div class="admissions-catalog__sources">${sources(row, resolved)}</div></div>`).join("")}</div>`;
   return simple ? `<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">${escapeHtml(label("unknowns"))} (${unknowns.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${rows}</div></details>` : `<section class="admissions-catalog__section"><h3>${escapeHtml(label("unknowns"))}</h3>${rows}</section>`;
 }
 

@@ -4,6 +4,18 @@ Active plan agreed on 2026-09-30; first-ten scope recorded on 2026-10-08; immedi
 
 ## Delivery and boundaries
 
+### Nazarbayev University Kazakh translation (2026-10-29)
+
+- [x] Translate the NU fact values, conditions, structured field labels and source titles in Kazakh; verify Foundation, NUZYP, Finance, residency and joint BBA applicant journeys, including phone and desktop layouts.
+- [x] Translate the 94 available overview texts, 29 recorded gaps and next steps, and initial Foundation, undergraduate, master's and residency conditions. Source evidence remains unchanged.
+
+### Nazarbayev University Russian translation (2026-10-29)
+
+- [x] Complete Russian translations for the reviewed NU applicant content, including program overviews, scoped requirements, exceptions, dates, costs, funding and unresolved source information. Preserve original evidence and verify representative journeys.
+- [x] Translate the 94 collected program overviews, 29 source gaps and next steps, reviewed fact narratives, scope descriptions, source titles, structured labels and deadline names into Russian. Preserve official exam names, original records and source context; reject inaccurate automatic drafts.
+- [x] Expose structured application alternatives that were hidden in the joint BBA record and cover translated values, labels, sources, scope and deadline names with focused renderer tests. Verify Foundation, Nursing, NUZYP, joint BBA and conditional residency in real browser journeys.
+- [x] Verify the 2026-10-30 checkpoint: 679 frontend unit tests passed; 28 NU browser cases passed before a parallel shared overview adjustment, followed by 10 Russian NU cases after it. Four MIT, Imperial and Stanford contrast cases passed. Version, encoding, tokens, design, localization and data checks passed. Original source records and official exam names remain available; this is not independent applicant review of every program.
+
 Product focus confirmed on 2026-10-13: a university catalog with optional basic profile, UniFit, comparison, saved choices and clear university/program/admissions pages. Personal roadmaps, automatic next-level selection and exhaustive personalized exception evaluation are not required. Existing reviewed facts are retained. The immediate work is to make the three integrated university pages useful to a novice before expanding the same presentation to more institutions.
 
 ### Final NU release-candidate preflight (2026-10-28)
