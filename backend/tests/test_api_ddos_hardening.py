@@ -31,9 +31,18 @@ class ApiDdosHardeningTests(unittest.TestCase):
         second.scope = {"path": "/universities/stanford-university-usa-ca/uni-chance"}
         roi = MagicMock()
         roi.scope = {"path": "/universities/mit-usa-cambridge/roi"}
+        adm1 = MagicMock()
+        adm1.scope = {"path": "/universities/mit-usa-cambridge/admissions-context"}
+        adm2 = MagicMock()
+        adm2.scope = {"path": "/universities/stanford-university-usa-ca/admissions-context"}
+        adm_slash = MagicMock()
+        adm_slash.scope = {"path": "/universities/mit-usa-cambridge/admissions-context/"}
 
         self.assertEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(second))
         self.assertNotEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(roi))
+        self.assertEqual(_expensive_rate_limit_path(adm1), _expensive_rate_limit_path(adm2))
+        self.assertEqual(_expensive_rate_limit_path(adm1), _expensive_rate_limit_path(adm_slash))
+        self.assertEqual(_expensive_rate_limit_path(adm1), "/universities/{id}/admissions-context")
 
     def test_expensive_request_guard_normalizes_trailing_slashes(self):
         for path in (
