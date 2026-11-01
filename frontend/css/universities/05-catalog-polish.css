@@ -8,7 +8,6 @@
   border-radius: var(--radius-xl);
   border: none;
   background: var(--surface-solid);
-  backdrop-filter: blur(14px);
   box-shadow: var(--shadow-card);
 }
 
@@ -132,7 +131,6 @@
 
 .u-tour-btn--primary {
   background: var(--accent);
-  border-color: var(--accent);
 }
 
 .u-grid,
@@ -164,7 +162,7 @@
 @media (hover: hover) and (pointer: fine) {
 
 .uni-card:hover {
-  transform: translateY(-2px);
+  transform: none;
   box-shadow: var(--shadow-card-hover);
 }
 }

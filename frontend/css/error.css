@@ -71,7 +71,7 @@ body[data-page="error-404"] main.error-page {
   font-weight: 400;
   line-height: var(--leading-normal);
   color: var(--text-muted);
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   max-width: 420px;
 }
 
@@ -92,10 +92,10 @@ body[data-page="error-404"] main.error-page {
   min-height: 42px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: none;
   font-size: var(--text-base);
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   text-decoration: none;
   cursor: pointer;
   color: var(--text-inverse);
@@ -111,7 +111,6 @@ body[data-page="error-404"] main.error-page {
 @media (hover: hover) and (pointer: fine) {
   .error-btn:hover {
     background: var(--accent-strong);
-    border-color: var(--accent-strong);
   }
 }
 

@@ -44,10 +44,11 @@ body[data-page="profile"] {
    Profile Page Header
    -------------------------------------------------------------------------- */
 .profile-page-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-6);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
 }
 
 .profile-page-title {
@@ -56,22 +57,20 @@ body[data-page="profile"] {
   font-size: var(--text-2xl);
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-tight);
-  grid-column: 1;
 }
 
-.profile-progress-card {
+.profile-progress-card,
+.profile-header-progress {
   background: transparent;
   border: none;
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   gap: var(--space-1);
   margin-bottom: 0;
-  grid-column: 2;
-  justify-self: center;
-  width: 240px;
+  width: min(240px, 100%);
 }
 
 .profile-progress-info {
@@ -86,9 +85,11 @@ body[data-page="profile"] {
   gap: var(--space-2);
   font-size: var(--text-xs);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   color: var(--interaction-active-text);
+}
+
+.profile-progress-label {
+  color: var(--text-muted);
 }
 
 .profile-progress-text {
@@ -185,7 +186,7 @@ body[data-page="profile"] {
 
 @media (min-width: 769px) {
   .profile-section-tabs .sliding-indicator {
-    display: none !important;
+    display: none;
   }
 }
 
@@ -217,9 +218,7 @@ body[data-page="profile"] {
   background: transparent;
 }
 
-.profile-section-tab.is-active::after {
-  display: none !important;
-}
+/* Desktop tab indicator is handled by sliding indicator / active text color */
 
 .profile-section-tab:focus-visible {
   outline: 2px solid var(--focus-ring);
@@ -354,7 +353,7 @@ body[data-page="profile"] {
 }
 
 .profile-divider {
-  display: none !important;
+  display: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -492,8 +491,6 @@ body[data-page="profile"] {
   font-weight: 500;
   color: var(--text-muted);
   pointer-events: none;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
 }
 
 .profile-hint {
@@ -773,7 +770,7 @@ body[data-page="profile"] {
 .profile-info-wrap:hover,
 .profile-info-wrap:focus-within {
   position: relative;
-  z-index: var(--z-dropdown) !important;
+  z-index: var(--z-dropdown);
   transition-delay: 0s;
 }
 
@@ -796,7 +793,7 @@ textarea.profile-input,
 
 #profileInterestsLangWarning,
 .profile-interests-warning {
-  display: none !important;
+  display: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -890,8 +887,6 @@ textarea.profile-input,
   font-size: var(--text-xs);
   font-weight: 500;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 .lang-control-btn-wrap {
@@ -1110,29 +1105,29 @@ textarea.profile-input,
    Confirmation Modals (Unsaved & Reset)
    -------------------------------------------------------------------------- */
 .profile-confirm-modal {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: var(--z-modal-raised, 8200) !important;
+  z-index: var(--z-modal-raised, 8200);
 }
 
 .profile-confirm-modal.is-open,
 .profile-confirm-modal.is-closing {
-  display: flex !important;
+  display: flex;
 }
 
 .profile-confirm-backdrop {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  background: var(--backdrop) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--backdrop);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .profile-confirm-card {
@@ -1145,7 +1140,7 @@ textarea.profile-input,
   gap: var(--space-4);
   max-width: 440px;
   width: 90%;
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--text) 16%, transparent);
+  box-shadow: var(--shadow-md);
 }
 
 .profile-confirm-card h3 {
@@ -1248,6 +1243,12 @@ textarea.profile-input,
 }
 
 @media (max-width: 768px) {
+  .profile-progress-card,
+  .profile-header-progress {
+    width: 100%;
+    align-items: flex-start;
+  }
+
   .profile-page {
     padding: 0 var(--space-4);
     margin: var(--space-4) auto var(--space-12);
@@ -1317,7 +1318,7 @@ textarea.profile-input,
   }
 
   .profile-section-tabs .sliding-indicator {
-    display: block !important;
+    display: block;
     height: 2px;
     border-radius: var(--radius-full);
     bottom: 0;
@@ -1340,7 +1341,7 @@ textarea.profile-input,
     height: 2px;
     border-radius: var(--radius-full);
     background: var(--accent);
-    display: block !important;
+    display: block;
   }
 
   .profile-sidebar-bottom {
@@ -1385,17 +1386,7 @@ textarea.profile-input,
 
 @media (max-width: 480px) {
   .profile-page-header {
-    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
-  }
-
-  .profile-page-title {
-    grid-column: 1;
-  }
-
-  .profile-progress-card {
-    grid-column: 1;
-    justify-self: center;
   }
 
   .profile-section-tabs {
@@ -1427,26 +1418,14 @@ textarea.profile-input,
 }
 
 /* --------------------------------------------------------------------------
-   Scrollbar Suppression (full-height workspace layout)
+   Scrollbar Suppression (horizontal tab strip only)
    -------------------------------------------------------------------------- */
-.profile-shell,
-.profile-shell *,
-.profile-body,
-.profile-exam-list,
-.lang-list,
-.profile-input--textarea,
-.custom-options {
+.profile-section-tabs {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-.profile-shell::-webkit-scrollbar,
-.profile-shell *::-webkit-scrollbar,
-.profile-body::-webkit-scrollbar,
-.profile-exam-list::-webkit-scrollbar,
-.lang-list::-webkit-scrollbar,
-.profile-input--textarea::-webkit-scrollbar,
-.custom-options::-webkit-scrollbar {
+.profile-section-tabs::-webkit-scrollbar {
   display: none;
   width: 0;
   height: 0;
@@ -1464,16 +1443,16 @@ textarea.profile-input,
 .lang-add-grid,
 .lang-control-item,
 .custom-select-wrapper {
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .custom-select-wrapper.open {
-  z-index: var(--z-nav) !important;
-  position: relative !important;
+  z-index: var(--z-nav);
+  position: relative;
 }
 
 .custom-select-wrapper.open .custom-options {
-  z-index: var(--z-dropdown) !important;
+  z-index: var(--z-dropdown);
   /* Visual style (background/border/shadow/radius) is inherited from the
      single canonical .custom-options panel in style.css. */
 }
@@ -1485,8 +1464,8 @@ textarea.profile-input,
 .profile-exam-select-wrap:has(.custom-select-wrapper.open),
 .lang-add-grid:has(.custom-select-wrapper.open),
 .lang-control-item:has(.custom-select-wrapper.open) {
-  z-index: var(--z-nav) !important;
-  position: relative !important;
+  z-index: var(--z-nav);
+  position: relative;
 }
 
 /* --------------------------------------------------------------------------
@@ -1566,7 +1545,7 @@ textarea.profile-input,
   background: var(--accent);
   color: var(--text-inverse);
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 .profile-citizenship-chip__btn {

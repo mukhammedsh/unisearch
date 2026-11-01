@@ -1452,7 +1452,7 @@ function renderFinancePolicyOverview(policy) {
   if (!policy || !policy.hasPolicyData) return "";
 
   const shieldIcon = heroIcon("document-check", "ui-icon ui-icon--16");
-  const sparkIcon = heroIcon("sparkles", "ui-icon ui-icon--16");
+  const sparkIcon = heroIcon("banknotes", "ui-icon ui-icon--16");
   const capIcon = heroIcon("academic-cap", "ui-icon ui-icon--16");
 
   return `

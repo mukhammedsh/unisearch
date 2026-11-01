@@ -167,7 +167,7 @@
 
 @media (max-width: 768px) {
   .uni-badge {
-    --uni-pill-font-size: 10px;
+    --uni-pill-font-size: var(--text-xs);
     --uni-pill-pad-y: var(--space-1);
     --uni-pill-pad-x: var(--space-1-5);
     --uni-badge-gap: var(--space-1);
@@ -395,7 +395,7 @@
     gap: var(--space-3);
     padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
     background: var(--surface-solid);
-    border-top: 1px solid var(--line);
+    border-top: none;
   }
 
   /* Range thumbs must stay below the sticky sheet title while scrolling. */

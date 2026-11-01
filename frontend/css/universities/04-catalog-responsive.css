@@ -61,7 +61,7 @@
   border-radius: 50%;
   background: var(--color-warning-bg);
   color: var(--color-warning);
-  border: 1px solid var(--line-warning);
+  border: none;
   display: grid;
   place-items: center;
   font-weight: 500;
@@ -113,7 +113,13 @@
 @media (hover: hover) and (pointer: fine) {
 
 .unifit-warning-btn:hover {
-  filter: brightness(0.98);
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.unifit-warning-confirm:hover {
+  background: var(--accent-strong);
+  color: var(--text-inverse);
 }
 }
 
@@ -223,7 +229,7 @@
   justify-content: center;
   color: var(--text-muted);
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: normal;
   padding: 0 var(--space-1);
   line-height: 1;
   height: 40px;
@@ -330,7 +336,7 @@
 @media (hover: hover) and (pointer: fine) {
 
 .map-marker-container:hover {
-  transform: scale(1.2);
+  transform: scale(1.06);
   border-color: var(--text);
   z-index: 2;
   cursor: pointer;

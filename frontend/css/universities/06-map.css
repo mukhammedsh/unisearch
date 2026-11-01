@@ -112,7 +112,6 @@
   );
   background-size: 220% 100%;
   animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
-  border-color: transparent;
 }
 
 .u-map-results-list .is-skeleton .uni-head-copy {
@@ -125,7 +124,7 @@
 .u-map-results-empty {
   margin: var(--space-3);
   padding: var(--space-4);
-  border: 1px dashed var(--line);
+  border: none;
   border-radius: 16px;
   color: var(--text-muted);
   line-height: 1.6;
@@ -240,7 +239,7 @@
 .u-map-results-list .uni-status-overflow-trigger {
   width: 28px;
   height: 28px;
-  font-size: 10px;
+  font-size: var(--text-xs);
 }
 
 .u-map-results-list .uni-status-overflow-popover {
