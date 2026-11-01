@@ -14,8 +14,8 @@ const updateBaseline = args.has("--update-baseline");
 const verbose = args.has("--verbose") || args.has("-v");
 const targetFile = process.argv.find((a) => a.startsWith("--file="))?.split("=")[1];
 
-// Allowed font sizes in px: 0, 10, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64
-const ALLOWED_FONT_SIZES = new Set([0, 10, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64]);
+// Allowed font sizes in px: 0, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64
+const ALLOWED_FONT_SIZES = new Set([0, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64]);
 // Allowed border-radii in px: 0, 1, 2, 4, 8, 10, 12, 16, 20
 const ALLOWED_RADII = new Set([0, 1, 2, 4, 8, 10, 12, 16, 20]);
 // Allowed raw z-indices (local pseudo/stacking context only): -1, 0, 1, 2
@@ -369,11 +369,64 @@ export function scanCssFile(filePath) {
       }
     }
 
-    // 9. Check borderless UI components (cards, panels, inputs, chips, badges, buttons)
+    // 9. Check anti-slop typography (uppercase, positive letter-spacing, italic)
+    const textTransformValue = declarationValue(line, (property) => property === "text-transform");
+    if (textTransformValue && /\buppercase\b/i.test(textTransformValue)) {
+      violations.push({
+        line: i + 1,
+        type: "typography-uppercase",
+        message: `text-transform: uppercase is forbidden (AI/SaaS micro-label anti-pattern)`,
+        code: rawLine.trim(),
+        suggestion: "Use sentence case with font-weight: 500 and color: var(--text-muted)",
+      });
+    }
+
+    const letterSpacingValue = declarationValue(line, (property) => property === "letter-spacing");
+    if (letterSpacingValue) {
+      const trackMatch = letterSpacingValue.match(/^([+-]?\d*(?:\.\d+)?)(em|rem|px)$/i);
+      if (trackMatch && Number.parseFloat(trackMatch[1]) > 0) {
+        violations.push({
+          line: i + 1,
+          type: "typography-positive-tracking",
+          message: `Positive letter-spacing "${letterSpacingValue}" is forbidden (tracked-out micro-label anti-pattern)`,
+          code: rawLine.trim(),
+          suggestion: "Use letter-spacing: normal (or 0) for body/labels, and negative tracking (-0.01em to -0.025em) only for large display headings",
+        });
+      }
+    }
+
+    const fontStyleValue = declarationValue(line, (property) => property === "font-style");
+    if (fontStyleValue && /\b(?:italic|oblique)\b/i.test(fontStyleValue)) {
+      violations.push({
+        line: i + 1,
+        type: "typography-italic",
+        message: `font-style: ${fontStyleValue} is forbidden in product UI`,
+        code: rawLine.trim(),
+        suggestion: "Use normal upright text with color: var(--text-muted) for secondary emphasis",
+      });
+    }
+
+    // 10. Check playful hover lifts and cartoon button squashes
+    const transformValue = declarationValue(line, (property) => property === "transform");
+    if (transformValue && currentSelector && /:(?:hover|active)\b/i.test(currentSelector)) {
+      if (/(?:translateY|translate3d)\s*\(\s*-[0-9.]+|scale\s*\(\s*0\.9/i.test(transformValue)) {
+        violations.push({
+          line: i + 1,
+          type: "animation-hover-bounce",
+          message: `Playful hover lift or button squash "${transformValue}" in "${currentSelector}" violates Calm Academic Workspace`,
+          code: rawLine.trim(),
+          suggestion: "Indicate hover/active state with background-color, color, or restrained box-shadow change without vertical bounce or cartoon scale",
+        });
+      }
+    }
+
+    // 11. Check borderless UI components (cards, panels, inputs, chips, badges, buttons, hints, options)
     const borderValue = declarationValue(line, (property) => property === "border" || property === "border-width" || property.startsWith("border-top") || property.startsWith("border-bottom") || property.startsWith("border-left") || property.startsWith("border-right"));
     if (borderValue && currentSelector) {
-      const isBorderlessComponent = /(?:^|[,\s>+~])(?:\.card|\.u-card|\.u-filter-card|\.chip|\.u-chip|\.badge|\.btn|\.u-btn|input|button|\.panel|\.drawer|\.tray)(?:[.:#\s>+~]|$)/i.test(currentSelector);
-      if (isBorderlessComponent) {
+      const isBorderlessComponent = /(?:^|[,\s>+~])(?:\.[a-z0-9_-]*-(?:card|btn|badge|chip|hint|option|panel|pill|tag)|\.card|\.u-card|\.u-filter-card|\.chip|\.u-chip|\.badge|\.btn|\.u-btn|input|button|\.panel|\.drawer|\.tray|\.d-box|\.tag)(?:[.:#\s>+~]|$)/i.test(currentSelector);
+      const isStatusTriggerException = currentSelector.includes(".uni-status-trigger") || currentSelector.includes(".cluster-badge");
+      const isStructuralDivider = /^(?:border-top|border-bottom)\s*:/.test(rawLine.trim());
+      if (isBorderlessComponent && !isStatusTriggerException && !isStructuralDivider) {
         const isForbiddenBorder = /\b[1-9]\d*px\s+solid\b/i.test(borderValue) && !/\btransparent\b/i.test(borderValue);
         if (isForbiddenBorder) {
           violations.push({

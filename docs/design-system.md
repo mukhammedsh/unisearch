@@ -17,7 +17,7 @@ Use this document as the source of truth for new UI work. The global stylesheet 
 
 Use existing CSS variables instead of new hard-coded palettes. All colors in components and pages must reference these tokens:
 
-- Fonts: `--font-sans` for body/UI and `--font-display` for headings and important labels.
+- Fonts: `--font-sans` and `--font-display` both use `Inter` as a unified sans-serif family. Do not mix secondary geometric display fonts (`Plus Jakarta Sans`, etc.).
 - Font weights: `--font-weight-regular` (`400`) for body copy, `--font-weight-medium` (`500`) for controls and compact labels, and `--font-weight-semibold` (`600`) for page headings and deliberately emphasized values. Product UI must not use weights above `600`.
 - Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
@@ -183,7 +183,9 @@ Breakpoints must describe available content space, not a device name. Keep a non
 - The only permitted visible lines are focus outlines, active-tab underlines, table/list separators, range/thumb edges, and a non-box status ring when semantic background, icon, and text cannot make the state clear. Prefer `outline`, `box-shadow`, or a pseudo-element over a component box border.
 - On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact controls to `var(--surface-solid)` and give them `var(--shadow-xs)` or `var(--shadow-micro)`.
 - Do not place a child with the same background token beside or inside its visible parent. Change its surface, give the raised item restrained elevation, or remove the unnecessary wrapper. This rule is mandatory in light and dark themes.
-- Status components use the matching semantic background token (`--color-*-bg` or `--accent-panel`) plus text/icon color. Add a ring only when that information remains ambiguous.
+- Status components use the matching semantic background token (`--color-*-bg` or `--accent-panel`) plus text/icon color for compact badges and status banners only. Large data cards, funding option cards (`.admission-funding-option`), and exam/stat groups must use neutral surfaces (`var(--surface-solid)` or `var(--surface-soft)`) with micro-elevation (`var(--shadow-micro)` / `var(--shadow-xs)`), never full-card pastel washes.
+- Documentary source links (`.program-card__source`, `.qualification-guidance__source`, `.admissions-source-link`) use `color: var(--text); text-decoration: underline; text-underline-offset: var(--space-1)` rather than SaaS button or loud accent link styling.
+- Semantic icons: Never use the AI `sparkles` icon for sorting, filter labels, hints, or comparison sections; use domain-specific Heroicons (`bars-3-bottom-left`, `information-circle`, `adjustments-horizontal`, `building-library`) in `var(--text-muted)`.
 
 ### Tabs
 
@@ -240,7 +242,7 @@ When cleaning up legacy or vibe-coded CSS, map values according to this standard
 | `border-radius: 6px` | `var(--radius-sm)` (8px) | Snap arbitrary chip/badge radius to token |
 | `z-index: 60` / `80` / `100` | `var(--z-dropdown)` or local stacking context | Eliminate layer escalation race |
 
-Use tight letter spacing only for large headings. Body text should keep normal readability.
+Use tight negative letter spacing (`-0.01em` to `-0.025em`) only for large headings. Body text and compact labels must keep `letter-spacing: normal` (or `0`). `text-transform: uppercase`, positive `letter-spacing` (`> 0`), `font-style: italic`, and font sizes below `11px` (`--text-xs`) are strictly forbidden and guarded by `npm run check:design-lint`.
 
 ### Weight hierarchy
 

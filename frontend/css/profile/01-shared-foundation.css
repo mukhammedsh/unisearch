@@ -95,14 +95,12 @@
 
 @media (hover: hover) and (pointer: fine) {
   .profile-info:hover{
-    border-color: var(--line-accent);
     color: var(--accent);
     background: var(--accent-panel);
   }
 }
 
 .profile-info:focus-visible{
-  border-color: var(--line-accent);
   color: var(--accent);
   background: var(--accent-panel);
 }
@@ -172,13 +170,11 @@
 }
 
 .profile-input:focus{
-  border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .profile-input.is-invalid,
 .profile-input[aria-invalid="true"] {
-  border-color: var(--color-danger);
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 
@@ -192,7 +188,6 @@
 
 .profile-input.is-invalid:focus,
 .profile-input[aria-invalid="true"]:focus {
-  border-color: var(--color-danger);
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 
@@ -235,7 +230,7 @@
   justify-content: space-between;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--line-warning);
+  border: none;
   border-radius: var(--radius-md);
   background: var(--color-warning-bg);
   color: var(--color-warning);
@@ -259,7 +254,7 @@
 }
 
 .profile-budget-grant-hint__cta{
-  border: 1px solid var(--line-accent);
+  border: none;
   background: var(--accent-panel);
   color: var(--accent);
   border-radius: var(--radius-sm);
@@ -278,7 +273,7 @@
 .profile-budget-grant-hint__dismiss{
   width: 22px;
   height: 22px;
-  border: 1px solid var(--line-warning);
+  border: none;
   border-radius: var(--radius-circle);
   background: var(--surface-solid);
   color: var(--color-warning);
@@ -340,10 +335,6 @@
   column-gap: var(--space-3);
   row-gap: var(--space-2);
 }
-
-.profile-exam-special-  .guide-layout{
-    display: block; /* Stack naturally to allow sidebar to stick over content */
-  }
 
 .profile-exam-special-grid--grades .profile-input{
   min-height: 45px;
@@ -520,14 +511,12 @@
 }
 
 .profile-delete--danger{
-  border-color: var(--line-danger);
   background: var(--color-danger-bg);
   color: var(--color-danger);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-delete--danger:hover{
-    border-color: var(--line-danger);
     background: color-mix(in srgb, var(--color-danger) 20%, transparent);
     color: var(--color-danger);
   }
@@ -655,7 +644,6 @@
   cursor: pointer;
   font-weight: 500;
   transition:
-    border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     background-color var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
@@ -663,7 +651,6 @@
 
 @media (hover: hover) and (pointer: fine) {
   .profile-delete:hover{
-    border-color: var(--accent);
     color: var(--accent);
   }
 }
@@ -938,13 +925,3 @@
   background: var(--accent);
 }
 
-.profile-section-tab.is-active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  border-radius: var(--radius-full);
-  background: var(--accent);
-}

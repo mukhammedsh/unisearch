@@ -567,7 +567,7 @@ details[open] > summary > .admissions-disclosure-icon {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  min-height: 28px;
+  min-height: 44px;
   color: var(--text-muted);
   cursor: pointer;
   font-size: var(--text-base);
@@ -584,7 +584,7 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-programs__references > summary:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -628,7 +628,7 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-programs__source-list a:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
