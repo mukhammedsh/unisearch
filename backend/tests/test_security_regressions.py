@@ -78,11 +78,13 @@ class SecurityRegressionTests(unittest.TestCase):
     def test_currency_status_is_protected_ops_endpoint(self):
         client = TestClient(app)
         with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
-            res_unauth = client.get("/currency/status")
-            self.assertEqual(res_unauth.status_code, 401)
+            for path in ["/currency/status", "/currency/status/"]:
+                with self.subTest(path=path):
+                    res_unauth = client.get(path, follow_redirects=False)
+                    self.assertEqual(res_unauth.status_code, 401)
 
-            res_auth = client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
-            self.assertEqual(res_auth.status_code, 200)
+                    res_auth = client.get(path, headers={"X-UniSearch-Ops-Token": "test-ops-token"})
+                    self.assertEqual(res_auth.status_code, 200)
 
         with patch("app.core.security.OPS_ADMIN_TOKEN", ""):
             res_no_token = client.get("/currency/status")
@@ -92,8 +94,9 @@ class SecurityRegressionTests(unittest.TestCase):
         client = TestClient(app)
         with patch("app.routers.root.warmup_runtime", return_value={"ok": True}) as warmup:
             for param in ["1", "true", "yes", "on", "t", "y", "TRUE", "T", "Yes", "Y"]:
-                with self.subTest(param=param):
-                    self.assertEqual(client.get(f"/health?warmup={param}").status_code, 401)
+                for base in ["/health", "/health/"]:
+                    with self.subTest(base=base, param=param):
+                        self.assertEqual(client.get(f"{base}?warmup={param}", follow_redirects=False).status_code, 401)
             warmup.assert_not_called()
             for param in ["t", "y"]:
                 response = client.get(f"/health?warmup={param}", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
