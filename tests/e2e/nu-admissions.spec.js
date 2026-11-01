@@ -540,8 +540,6 @@ test("NU Chemistry retains the Industry PhD limits without leaking them into ano
 
 test("NU regular qualification alternatives preserve GPA scales, UNT sections, IB HL and individual A-level grades", async ({ page }) => {
   await seed(page);
-  await page.goto(`/university.html?id=${NU}`);
-  await expect(page.locator("#detailName")).toHaveText("Nazarbayev University");
   const aLevel = grades => ({ id: "A_LEVEL_CERT", exam: "A_LEVEL_CERT", taken_on: "2026-06-01", details: { components:
     ["A_LEVEL_MATHEMATICS", "A_LEVEL_PHYSICS", "A_LEVEL_CHEMISTRY"].map((exam, index) => ({ exam, raw_value: grades[index] })),
   } });

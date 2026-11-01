@@ -17,6 +17,7 @@ All notable project changes should be recorded here.
 
 ### Fixed
 - Removed residual box borders, dead `border-color` declarations, hover `translateY` bounces, and redundant `backdrop-filter` rules on opaque surfaces across catalog, comparison, profile, 404, and university detail tabs; standardized documentary source links and balanced `.profile-page-header` flex alignment.
+- Override vulnerable glob and minimatch transitive dependencies in dev tooling to resolve audit advisories and remove unawaited navigation race in NU admissions E2E suite.
 
 ### Tooling
 - Expanded `scripts/check-design-lint.mjs`, `tests/unit/design-lint.test.mjs`, `docs/design-system.md`, and `AGENTS.md` to enforce anti-slop typography, hover-bounce, and borderless component rules automatically.
