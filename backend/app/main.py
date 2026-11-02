@@ -95,6 +95,7 @@ _EXPENSIVE_RATE_LIMITER = build_rate_limiter(
 _EXPENSIVE_POST_PATHS = {
     "/universities/ai-sort",
     "/universities/compare-profiles",
+    "/universities/profiled",
     "/exams/validate",
     "/languages/validate",
 }

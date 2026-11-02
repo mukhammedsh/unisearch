@@ -28,6 +28,27 @@ class SecurityRegressionTests(unittest.TestCase):
                 request = Request({"type": "http", "method": "POST", "path": path})
                 self.assertTrue(_is_expensive_request(request))
 
+    def test_profiled_post_is_classified_as_expensive(self):
+        for path in (
+            "/universities/profiled",
+            "/universities/profiled/",
+        ):
+            with self.subTest(path=path):
+                request = Request({"type": "http", "method": "POST", "path": path})
+                self.assertTrue(_is_expensive_request(request))
+
+    def test_profiled_endpoint_uses_expensive_rate_limit(self):
+        client = TestClient(app)
+        with patch("app.main.RATE_LIMIT_ENABLED", True):
+            response = client.post(
+                "/universities/profiled",
+                json={"profile": {"budget": 50000}, "page": 1, "limit": 10},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("X-RateLimit-Limit", response.headers)
+        from app.core.settings import EXPENSIVE_RATE_LIMIT_REQUESTS
+        self.assertEqual(response.headers["X-RateLimit-Limit"], str(EXPENSIVE_RATE_LIMIT_REQUESTS))
+
     def test_admissions_context_endpoint_uses_expensive_rate_limit(self):
         client = TestClient(app)
         with patch("app.main.RATE_LIMIT_ENABLED", True):
