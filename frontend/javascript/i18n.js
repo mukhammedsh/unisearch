@@ -1,6 +1,7 @@
 import { getPreferredCurrency } from "./currency.js";
 import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
+import { escapeHtml, escapeHtmlAttr } from "./utils/format.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 const I18N_PACK_REVISION = "32";
@@ -210,6 +211,122 @@ export function applyTokenSubstitutions(text) {
   return stabilizeNumericRanges(out);
 }
 
+const ALLOWED_I18N_TAGS = new Set(["b", "strong", "em", "i", "br", "a", "span", "code"]);
+const BLOCKED_I18N_TAGS = new Set(["script", "style", "iframe", "object", "embed", "svg", "math", "template", "noscript"]);
+
+function isSafeI18nHref(rawUrl) {
+  if (typeof rawUrl !== "string") return false;
+  const decoded = rawUrl
+    .replace(/&#x([0-9a-fA-F]+);?/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
+    .replace(/&#([0-9]+);?/g, (_, dec) => String.fromCharCode(parseInt(dec, 10)))
+    .replace(/&colon;/gi, ":")
+    .replace(/&tab;/gi, "\t")
+    .replace(/&newline;/gi, "\n");
+  const trimmed = decoded.trim().replace(/[\x00-\x1f\x7f]/g, "");
+  if (!trimmed || trimmed.startsWith("//")) return false;
+
+  const colonIndex = trimmed.indexOf(":");
+  if (colonIndex !== -1) {
+    const firstSlash = trimmed.indexOf("/");
+    const firstQuestion = trimmed.indexOf("?");
+    const firstHash = trimmed.indexOf("#");
+    const delimiters = [firstSlash, firstQuestion, firstHash].filter((idx) => idx !== -1);
+    const firstDelimiter = delimiters.length ? Math.min(...delimiters) : Infinity;
+    if (colonIndex < firstDelimiter || firstDelimiter === Infinity) {
+      const scheme = trimmed.slice(0, colonIndex).trim().toLowerCase();
+      if (scheme !== "http" && scheme !== "https" && scheme !== "mailto") {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+function sanitizeI18nDom(rawHtml) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`<!doctype html><body>${rawHtml}`, "text/html");
+  if (!doc || !doc.body) return sanitizeI18nTokens(rawHtml);
+
+  function walk(node) {
+    if (node.nodeType === 3) {
+      return escapeHtml(node.textContent);
+    }
+    if (node.nodeType === 1) {
+      const tag = node.tagName.toLowerCase();
+      if (BLOCKED_I18N_TAGS.has(tag)) return "";
+      const childrenHtml = Array.from(node.childNodes).map(walk).join("");
+      if (!ALLOWED_I18N_TAGS.has(tag)) return childrenHtml;
+      if (tag === "br") return "<br>";
+      if (tag === "a") {
+        const rawHref = node.getAttribute("href") || "";
+        if (isSafeI18nHref(rawHref)) {
+          const isBlank = node.getAttribute("target") === "_blank";
+          const targetAttr = isBlank ? ' target="_blank" rel="noopener noreferrer"' : "";
+          return `<a href="${escapeHtmlAttr(rawHref.trim())}"${targetAttr}>${childrenHtml}</a>`;
+        }
+        return childrenHtml;
+      }
+      return `<${tag}>${childrenHtml}</${tag}>`;
+    }
+    return "";
+  }
+
+  return Array.from(doc.body.childNodes).map(walk).join("");
+}
+
+function sanitizeI18nTokens(rawHtml) {
+  if (!rawHtml || typeof rawHtml !== "string") return "";
+  let clean = rawHtml.replace(/<!--[\s\S]*?-->/g, "");
+  for (const tag of BLOCKED_I18N_TAGS) {
+    const re = new RegExp("<" + tag + "(?:\\s[^>]*)?>[\\s\\S]*?<\\/" + tag + "\\s*>", "gi");
+    clean = clean.replace(re, "");
+    const selfClosing = new RegExp("<" + tag + "(?:\\s[^>]*)?\\/?>", "gi");
+    clean = clean.replace(selfClosing, "");
+  }
+
+  let openAllowedLinks = 0;
+  clean = clean.replace(/<(\/)?([a-zA-Z0-9_-]+)((?:\s+[^"'>/=\s]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>/g, (match, isClosing, rawTagName, attrs) => {
+    const tag = rawTagName.toLowerCase();
+    if (!ALLOWED_I18N_TAGS.has(tag)) return "";
+    if (tag === "br") return "<br>";
+    if (tag === "a") {
+      if (isClosing) {
+        if (openAllowedLinks > 0) {
+          openAllowedLinks--;
+          return "</a>";
+        }
+        return "";
+      }
+      const hrefMatch = attrs.match(/href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^>\s]+))/i);
+      const rawHref = hrefMatch ? (hrefMatch[1] ?? hrefMatch[2] ?? hrefMatch[3] ?? "") : "";
+      if (!isSafeI18nHref(rawHref)) return "";
+      openAllowedLinks++;
+      const isBlank = /target\s*=\s*(?:"_blank"|'_blank'|_blank)/i.test(attrs);
+      const targetAttr = isBlank ? ' target="_blank" rel="noopener noreferrer"' : "";
+      return `<a href="${escapeHtmlAttr(rawHref.trim())}"${targetAttr}>`;
+    }
+    if (isClosing) return `</${tag}>`;
+    return `<${tag}>`;
+  });
+
+  return clean;
+}
+
+export function sanitizeI18nHtml(rawHtml) {
+  if (!rawHtml || typeof rawHtml !== "string") return "";
+  if (typeof DOMParser === "function") {
+    try {
+      return sanitizeI18nDom(rawHtml);
+    } catch (e) {
+      // Fallback to tokens
+    }
+  }
+  return sanitizeI18nTokens(rawHtml);
+}
+
+export { sanitizeI18nHtml as sanitizeHtml };
+
 export function applyTranslations(root = document) {
   const scope = root && typeof root.querySelectorAll === "function" ? root : document;
 
@@ -221,8 +338,12 @@ export function applyTranslations(root = document) {
 
   scope.querySelectorAll("[data-i18n-html]").forEach((el) => {
     const key = el.getAttribute("data-i18n-html");
-    const translated = applyTokenSubstitutions(t(key, el.innerHTML || ""));
-    el.innerHTML = translated;
+    if (!key) return;
+    const fallback = el.getAttribute("data-i18n-default") || el.getAttribute("data-i18n-fallback") || "";
+    const raw = t(key, fallback);
+    if (!raw) return;
+    const translated = applyTokenSubstitutions(raw);
+    el.innerHTML = sanitizeI18nHtml(translated);
   });
 
   scope.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {

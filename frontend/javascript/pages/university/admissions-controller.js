@@ -98,22 +98,6 @@ function selectHtml(id, caption, values, selected, disabled = false) {
     </select></label>`;
 }
 
-const APPLICATION_CLASSES = new Set([
-  "post_admission_major", "direct_program", "ucas_course_choice", "postgraduate_course_choice",
-  "institution_wide", "external_and_coterm", "department_or_program",
-]);
-
-function applicationClasses(option) {
-  if (!option) return [];
-  const application = option.application || {};
-  const classifications = [
-    application.classification,
-    option.catalog_classification,
-    ...(option.application_classifications || []).map((item) => item?.classification),
-  ].filter((value, index, values) => APPLICATION_CLASSES.has(value) && values.indexOf(value) === index);
-  return classifications.map((value) => label(`application_class.${value}`));
-}
-
 export function mountAdmissionsCatalog(institutionId) {
   const card = document.getElementById("detailCard");
   const tabs = card.querySelector(".d-tabs");
@@ -267,7 +251,6 @@ export function mountAdmissionsCatalog(institutionId) {
     const profileHints = [profile.applicant_route ? label(`applicant.${profile.applicant_route}`) : "", admissionsCycleLabel(profile.intended_entry_cycle), profile.fee_status_context && profile.fee_status_context !== "unknown" ? label(`fee.${profile.fee_status_context}`) : ""].filter(Boolean);
     const routeHelp = item => t(`university.admissions.entry.route_help.${item.id.replaceAll(":", ".")}`);
     const explainedRoutes = routes.filter(item => routeHelp(item));
-    const routeEntries = option && !route && routes.length > 0 && explainedRoutes.length === routes.length;
     const specialRoutes = option?.id === "stanford-option-cs-ms" || option?.id === "stanford-option-cs-phd"
       ? explainedRoutes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
     const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`;
