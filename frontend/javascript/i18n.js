@@ -202,17 +202,18 @@ export function tFormat(key, params = {}, fallback = "") {
 export function applyTokenSubstitutions(text) {
   let out = String(text || "");
   const ai = window.AI_FUNCTIONS || {};
-  const fit = String(ai.fit || "UniFit");
-  const chance = String(ai.chance || "UniChance");
+  const fit = escapeHtml(String(ai.fit || "UniFit"));
+  const chance = escapeHtml(String(ai.chance || "UniChance"));
   out = out.replaceAll("{fit}", fit);
   out = out.replaceAll("{chance}", chance);
-  const currency = typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD";
+  const rawCurrency = typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD";
+  const currency = escapeHtml(String(rawCurrency || "").trim().slice(0, 5));
   out = out.replaceAll("{currency}", currency);
   return stabilizeNumericRanges(out);
 }
 
 const ALLOWED_I18N_TAGS = new Set(["b", "strong", "em", "i", "br", "a", "span", "code"]);
-const BLOCKED_I18N_TAGS = new Set(["script", "style", "iframe", "object", "embed", "svg", "math", "template", "noscript"]);
+const BLOCKED_I18N_TAGS = ["script", "style", "iframe", "object", "embed", "svg", "math", "template", "noscript"];
 
 function isSafeI18nHref(rawUrl) {
   if (typeof rawUrl !== "string") return false;
@@ -243,50 +244,47 @@ function isSafeI18nHref(rawUrl) {
   return true;
 }
 
-function sanitizeI18nDom(rawHtml) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(`<!doctype html><body>${rawHtml}`, "text/html");
-  if (!doc || !doc.body) return sanitizeI18nTokens(rawHtml);
+export function sanitizeI18nHtml(rawHtml) {
+  if (!rawHtml || typeof rawHtml !== "string") return "";
 
-  function walk(node) {
-    if (node.nodeType === 3) {
-      return escapeHtml(node.textContent);
+  let clean = rawHtml;
+
+  while (clean.indexOf("<!--") !== -1) {
+    const start = clean.indexOf("<!--");
+    const end = clean.indexOf("-->", start + 4);
+    if (end === -1) {
+      clean = clean.slice(0, start);
+      break;
     }
-    if (node.nodeType === 1) {
-      const tag = node.tagName.toLowerCase();
-      if (BLOCKED_I18N_TAGS.has(tag)) return "";
-      const childrenHtml = Array.from(node.childNodes).map(walk).join("");
-      if (!ALLOWED_I18N_TAGS.has(tag)) return childrenHtml;
-      if (tag === "br") return "<br>";
-      if (tag === "a") {
-        const rawHref = node.getAttribute("href") || "";
-        if (isSafeI18nHref(rawHref)) {
-          const isBlank = node.getAttribute("target") === "_blank";
-          const targetAttr = isBlank ? ' target="_blank" rel="noopener noreferrer"' : "";
-          return `<a href="${escapeHtmlAttr(rawHref.trim())}"${targetAttr}>${childrenHtml}</a>`;
-        }
-        return childrenHtml;
-      }
-      return `<${tag}>${childrenHtml}</${tag}>`;
-    }
-    return "";
+    clean = clean.slice(0, start) + clean.slice(end + 3);
   }
 
-  return Array.from(doc.body.childNodes).map(walk).join("");
-}
-
-function sanitizeI18nTokens(rawHtml) {
-  if (!rawHtml || typeof rawHtml !== "string") return "";
-  let clean = rawHtml.replace(/<!--[\s\S]*?-->/g, "");
   for (const tag of BLOCKED_I18N_TAGS) {
-    const re = new RegExp("<" + tag + "(?:\\s[^>]*)?>[\\s\\S]*?<\\/" + tag + "\\s*>", "gi");
-    clean = clean.replace(re, "");
-    const selfClosing = new RegExp("<" + tag + "(?:\\s[^>]*)?\\/?>", "gi");
-    clean = clean.replace(selfClosing, "");
+    const openPattern = "<" + tag;
+    const closeTag = "</" + tag + ">";
+    while (clean.toLowerCase().indexOf(openPattern) !== -1) {
+      const lower = clean.toLowerCase();
+      const start = lower.indexOf(openPattern);
+      const openTagEnd = clean.indexOf(">", start);
+      if (openTagEnd === -1) {
+        clean = clean.slice(0, start);
+        break;
+      }
+      if (clean[openTagEnd - 1] === "/") {
+        clean = clean.slice(0, start) + clean.slice(openTagEnd + 1);
+        continue;
+      }
+      const closeStart = lower.indexOf(closeTag, openTagEnd);
+      if (closeStart !== -1) {
+        clean = clean.slice(0, start) + clean.slice(closeStart + closeTag.length);
+      } else {
+        clean = clean.slice(0, start);
+      }
+    }
   }
 
   let openAllowedLinks = 0;
-  clean = clean.replace(/<(\/)?([a-zA-Z0-9_-]+)((?:\s+[^"'>/=\s]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>/g, (match, isClosing, rawTagName, attrs) => {
+  clean = clean.replace(/<(\/)?([a-zA-Z0-9]+)([^>]*)>/g, (_match, isClosing, rawTagName, attrs) => {
     const tag = rawTagName.toLowerCase();
     if (!ALLOWED_I18N_TAGS.has(tag)) return "";
     if (tag === "br") return "<br>";
@@ -298,11 +296,11 @@ function sanitizeI18nTokens(rawHtml) {
         }
         return "";
       }
-      const hrefMatch = attrs.match(/href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^>\s]+))/i);
+      const hrefMatch = attrs.match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
       const rawHref = hrefMatch ? (hrefMatch[1] ?? hrefMatch[2] ?? hrefMatch[3] ?? "") : "";
       if (!isSafeI18nHref(rawHref)) return "";
       openAllowedLinks++;
-      const isBlank = /target\s*=\s*(?:"_blank"|'_blank'|_blank)/i.test(attrs);
+      const isBlank = /\btarget\s*=\s*(?:"_blank"|'_blank'|_blank)/i.test(attrs);
       const targetAttr = isBlank ? ' target="_blank" rel="noopener noreferrer"' : "";
       return `<a href="${escapeHtmlAttr(rawHref.trim())}"${targetAttr}>`;
     }
@@ -311,18 +309,6 @@ function sanitizeI18nTokens(rawHtml) {
   });
 
   return clean;
-}
-
-export function sanitizeI18nHtml(rawHtml) {
-  if (!rawHtml || typeof rawHtml !== "string") return "";
-  if (typeof DOMParser === "function") {
-    try {
-      return sanitizeI18nDom(rawHtml);
-    } catch (e) {
-      // Fallback to tokens
-    }
-  }
-  return sanitizeI18nTokens(rawHtml);
 }
 
 export { sanitizeI18nHtml as sanitizeHtml };
@@ -339,8 +325,7 @@ export function applyTranslations(root = document) {
   scope.querySelectorAll("[data-i18n-html]").forEach((el) => {
     const key = el.getAttribute("data-i18n-html");
     if (!key) return;
-    const fallback = el.getAttribute("data-i18n-default") || el.getAttribute("data-i18n-fallback") || "";
-    const raw = t(key, fallback);
+    const raw = t(key, "");
     if (!raw) return;
     const translated = applyTokenSubstitutions(raw);
     el.innerHTML = sanitizeI18nHtml(translated);

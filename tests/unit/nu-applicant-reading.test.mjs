@@ -46,7 +46,7 @@ test("a reviewed untranslated NU study description remains visible with its offi
     const html = renderStudyOptionOverview(resolved);
     assert.match(html, /Professional completion program for practicing nurses/);
     assert.doesNotMatch(html, /data-program-overview-missing/);
-    assert.ok(html.includes("https://nusom.nu.edu.kz/bn"));
+    assert.ok(html.includes('href="https://nusom.nu.edu.kz/bn"'));
     assert.match(html, /English on central A-Z card; Nursing program page says Russian/);
   }
   setLanguage("eng", { emit: false });
