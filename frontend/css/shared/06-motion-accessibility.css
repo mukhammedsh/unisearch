@@ -347,7 +347,8 @@ body[data-page="guide"] {
   z-index: var(--z-toast);
   min-height: 44px;
   padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--line-strong);
+  border: none;
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   color: var(--text);
@@ -416,8 +417,7 @@ h6,
   z-index: var(--z-nav);
   height: 72px;
   padding: 0 var(--space-6);
-  background: var(--surface);
-  backdrop-filter: blur(16px);
+  background: var(--surface-solid);
   border-bottom: none;
   box-shadow: var(--shadow-sm);
 }

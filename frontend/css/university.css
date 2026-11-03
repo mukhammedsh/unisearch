@@ -469,7 +469,7 @@
 .d-rank-emphasis {
   color: var(--text);
   font-weight: var(--font-weight-regular);
-  letter-spacing: 0.15px;
+  letter-spacing: normal;
 }
 
 .d-kv-label {
@@ -530,14 +530,12 @@
   appearance: none;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .d-info:hover {
     background: var(--accent-panel);
-    border-color: var(--line-accent);
     color: var(--accent);
   }
 }
@@ -545,7 +543,6 @@
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
-  border-color: var(--line-accent);
   color: var(--accent);
 }
 
@@ -661,15 +658,12 @@
   padding: var(--space-4) var(--space-4) var(--space-3);
   background: var(--surface-solid);
   box-shadow: none;
-  transition:
-  transform var(--motion-snappy) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard);
+  transition: transform var(--motion-snappy) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .program-card:hover {
     box-shadow: none;
-    border-color: var(--line-accent);
   }
 }
 
@@ -686,12 +680,12 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line-accent);
+  border: none;
   background: var(--accent-faint);
   color: var(--accent);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.2px;
+  letter-spacing: normal;
   padding: var(--space-1) var(--space-2);
 }
 
@@ -709,7 +703,6 @@
 }
 
 .program-pill--accent {
-  border-color: var(--line-accent);
   background: var(--accent-faint);
   color: var(--accent);
 }
@@ -741,8 +734,8 @@
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.35px;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .program-card-value {
@@ -873,14 +866,13 @@
   margin-bottom: var(--space-0-5);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.35px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .track-cost-preview--grant,
 .finance-option-total--grant {
   background: var(--grant-soft);
-  border-color: var(--grant-soft-strong);
   color: var(--color-success-muted);
 }
 
@@ -895,7 +887,6 @@
 }
 
 .finance-track-group--grant {
-  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
@@ -933,7 +924,7 @@
 }
 
 .cost-legend-single {
-  border: 1px dashed var(--line-accent);
+  border: none;
   border-radius: 12px;
   padding: var(--space-3) var(--space-3);
   background: var(--surface-soft);
@@ -996,8 +987,8 @@
 .admissions-summary-eyebrow {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.35px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   margin: 0;
 }
@@ -1049,7 +1040,7 @@
   font-size: 11px;
   font-weight: 500;
   line-height: 1.2;
-  border: 1px solid transparent;
+  border: none;
 }
 
 .admissions-source-link {
@@ -1062,9 +1053,7 @@
   border-top: none;
   color: var(--text);
   text-decoration: none;
-  transition:
-    color var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-snappy) var(--motion-ease-standard);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .admissions-source-link__icon {
@@ -1103,7 +1092,6 @@
 @media (hover: hover) and (pointer: fine) {
   .admissions-source-link:hover {
     color: var(--accent);
-    transform: translateY(-1px);
   }
 
   .admissions-source-link:hover .admissions-source-link__action {
@@ -1151,7 +1139,6 @@
   cursor: pointer;
   transition:
   background-color var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
   color var(--motion-fast) var(--motion-ease-standard),
   box-shadow var(--motion-fast) var(--motion-ease-standard);
   display: flex;
@@ -1181,7 +1168,6 @@
 @media (hover: hover) and (pointer: fine) {
   .d-tab-btn:hover {
     background-color: transparent;
-    border-color: transparent;
     color: var(--text);
   }
 }
@@ -1189,7 +1175,6 @@
 .d-tab-btn.active {
   background-color: transparent;
   color: var(--accent);
-  border-color: transparent;
   box-shadow: none;
 }
 
@@ -1198,7 +1183,6 @@
 .d-info:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-color: var(--accent);
 }
 
 .d-tab-pane {
@@ -1230,7 +1214,6 @@
   transition:
   background-color var(--motion-fast) var(--motion-ease-standard),
   color var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard),
   transform var(--motion-fast) var(--motion-ease-standard);
   border: none;
   flex-shrink: 0;
@@ -1256,7 +1239,6 @@
 .d-site-link.is-saved {
   background: var(--color-warning-bg);
   color: var(--color-warning);
-  border-color: var(--line-warning);
   box-shadow: none;
 }
 
@@ -1272,7 +1254,6 @@
   .d-site-link.is-saved:hover {
     background: var(--color-warning-bg);
     color: var(--color-warning);
-    border-color: var(--line-warning);
   }
 }
 
@@ -1280,7 +1261,6 @@
   .d-site-link:hover {
     background: var(--accent);
     color: var(--text-inverse);
-    border-color: var(--accent);
   }
 }
 
@@ -1299,7 +1279,7 @@
 }
 
 .chance-warning {
-  border: 1px solid var(--line-warning);
+  border: none;
   background: var(--color-warning-bg);
   color: var(--color-warning);
   border-radius: 10px;
@@ -1320,7 +1300,7 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
-  letter-spacing: 0.2px;
+  letter-spacing: normal;
 }
 
 .chance-sub {
@@ -1351,7 +1331,7 @@
   align-items: center;
   min-height: 22px;
   padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--line-warning);
+  border: none;
   border-radius: var(--radius-sm);
   background: var(--color-warning-bg);
   font-size: 11px;
@@ -1369,7 +1349,7 @@
   border-radius: var(--radius-sm);
   color: var(--color-warning);
   background: var(--color-warning-bg);
-  border: 1px solid var(--line-warning);
+  border: none;
 }
 
 .chance-meter {
@@ -1395,7 +1375,7 @@
 
 .chance-inline-note {
   margin-top: var(--space-2);
-  border: 1px solid var(--line-info);
+  border: none;
   background: var(--color-info-bg);
   color: var(--color-info);
   border-radius: var(--radius-md);
@@ -1413,31 +1393,27 @@
   font-weight: 500;
   padding: var(--space-1) var(--space-2);
   margin-top: var(--space-1);
-  border: 1px solid transparent;
+  border: none;
 }
 
 .chance-high {
   color: var(--color-success);
   background: var(--color-success-bg);
-  border-color: var(--line-grant);
 }
 
 .chance-good {
   color: var(--color-info);
   background: var(--color-info-bg);
-  border-color: var(--line-info);
 }
 
 .chance-medium {
   color: var(--color-warning);
   background: var(--color-warning-bg);
-  border-color: var(--line-warning);
 }
 
 .chance-low {
   color: var(--color-danger);
   background: var(--color-danger-bg);
-  border-color: var(--line-danger);
 }
 
 .chance-percent.chance-high,
@@ -1584,7 +1560,9 @@
 
 .finance-award-details summary {
   width: fit-content;
-  color: var(--accent-strong);
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
   cursor: pointer;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
@@ -1595,9 +1573,9 @@
 }
 
 .finance-award-details a {
-  color: var(--accent-strong);
+  color: var(--text);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: var(--space-1);
 }
 
 @media (max-width: 480px) {
@@ -1614,7 +1592,7 @@
 
 .track-funding-badge--paid {
   color: var(--text);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
 }
 
 .finance-track-group {
@@ -1637,27 +1615,13 @@
   box-shadow: none;
   transition:
   transform var(--motion-snappy) var(--motion-ease-standard),
-  box-shadow var(--motion-fast) var(--motion-ease-standard),
-  border-color var(--motion-fast) var(--motion-ease-standard);
+  box-shadow var(--motion-fast) var(--motion-ease-standard);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .finance-option-card:hover {
-    border-color: var(--line-accent);
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .finance-option-card--grant:hover {
-    border-color: var(--line-grant);
-  }
-}
-
 .finance-option-card--grant {
-  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
@@ -1684,7 +1648,7 @@
   align-items: center;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-xs);
-  border: 1px solid var(--line-accent);
+  border: none;
   background: var(--accent-panel);
   color: var(--accent);
 }
@@ -1705,7 +1669,6 @@
   cursor: pointer;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
 }
@@ -1713,7 +1676,6 @@
 @media (hover: hover) and (pointer: fine) {
   .track-select-btn:hover:not(:disabled) {
     background: var(--accent-panel);
-    border-color: var(--line-accent);
     color: var(--interaction-hover-text);
   }
 }
@@ -1723,7 +1685,6 @@
   cursor: default;
   background: var(--accent-panel);
   color: var(--interaction-active-text);
-  border-color: var(--line-accent);
   box-shadow: none;
 }
 
@@ -1915,8 +1876,8 @@
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .admission-category-title,
@@ -2009,25 +1970,29 @@
 
 .admission-funding-option {
   border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  border-radius: var(--radius-base, 12px);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
   padding: var(--space-4);
   flex-wrap: wrap;
 }
 
 .admission-funding-option.is-active {
-  border-color: transparent;
-  background: var(--surface-soft);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
 }
 
 .admission-funding-option--grant {
-  border-color: var(--grant-soft-strong);
-  background: var(--grant-soft);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
 }
 
 .admission-funding-option--grant.is-active {
-  border-color: var(--accent);
-  background: var(--grant-soft);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
 }
 
 .admission-funding-option-main {
@@ -2057,8 +2022,8 @@
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .admission-funding-diff-title {
@@ -2124,19 +2089,19 @@
 
 .track-stats-box--min {
   background: var(--surface-soft);
-  border-color: transparent;
+  border: none;
 }
 
 .track-stats-box--avg {
-  background: var(--grant-soft);
-  border-color: var(--line-grant);
+  background: var(--surface-soft);
+  border: none;
 }
 
 .track-stats-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.35px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   margin-bottom: var(--space-2);
   color: var(--text);
 }
@@ -2153,7 +2118,7 @@
 
 .track-muted-italic {
   color: var(--text-muted);
-  font-style: italic;
+  font-style: normal;
 }
 
 .finance-breakdown-note {
@@ -2177,8 +2142,8 @@
 .track-exam-group-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.35px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   margin-bottom: var(--space-1-5);
 }
 
@@ -2192,7 +2157,7 @@
 
 .track-exam-group--neutral {
   background: var(--surface-soft);
-  border-color: transparent;
+  border: none;
 }
 
 .track-exam-group--neutral .track-exam-group-title {
@@ -2200,8 +2165,8 @@
 }
 
 .track-exam-group--info {
-  background: var(--color-info-bg);
-  border-color: var(--line-accent);
+  background: var(--surface-soft);
+  border: none;
 }
 
 .track-exam-group--info .track-exam-group-title {
@@ -2209,8 +2174,8 @@
 }
 
 .track-exam-group--success {
-  background: var(--grant-soft);
-  border-color: var(--line-grant);
+  background: var(--surface-soft);
+  border: none;
 }
 
 .track-exam-group--success .track-exam-group-title {
@@ -2228,8 +2193,8 @@
 .track-lang-rules-title {
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.38px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text);
 }
 
@@ -2264,20 +2229,20 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line-accent);
+  border: none;
   background: var(--surface-soft);
   color: var(--accent);
   padding: var(--space-1) var(--space-2);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.28px;
+  letter-spacing: normal;
 }
 
 .track-lang-rule-native {
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line-grant);
+  border: none;
   background: var(--grant-soft);
   color: var(--color-success-muted);
   padding: var(--space-1) var(--space-2);
@@ -2336,8 +2301,8 @@
 .track-extra-req-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -2376,7 +2341,6 @@
   border-radius: 50%;
   background: var(--accent);
   flex-shrink: 0;
-  transform: translateY(-2px);
   opacity: 0.85;
 }
 
@@ -2400,7 +2364,7 @@
 
 .scholarship-card {
   background: var(--grant-soft);
-  border: 1px solid var(--line-grant);
+  border: none;
   border-radius: 12px;
   padding: var(--space-4) var(--space-5);
   height: auto; /* Height adapts to content */
@@ -2429,8 +2393,8 @@
   color: var(--text-muted);
   margin-bottom: 0;
   font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .price-inline-row {
@@ -2768,31 +2732,22 @@
   border-radius: 8px;
   margin-bottom: var(--space-4);
   font-size: 13px;
-  border: 1px solid transparent;
+  border: none;
 }
 
 .roi-context--matched {
   background: var(--grant-soft);
   color: var(--color-success-muted);
-  border-color: var(--line-grant);
 }
 
 .roi-context--missing {
   background: var(--color-warning-bg);
   color: var(--color-warning);
-  border-color: var(--line-warning);
 }
 
 .roi-context--neutral {
   background: var(--surface-soft);
   color: var(--text-muted);
-  border-color: transparent;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .roi-box:hover {
-    border-color: var(--line-accent);
-  }
 }
 
 .roi-metrics-row {
@@ -2811,7 +2766,8 @@
 .roi-metric-label {
   font-size: 12px;
   color: var(--text-muted);
-  text-transform: uppercase;
+  text-transform: none;
+  letter-spacing: normal;
   font-weight: 500;
 }
 
@@ -3017,8 +2973,8 @@
   font-size: 11px;
   line-height: 1.2;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--muted);
 }
 
@@ -3193,15 +3149,7 @@
   background: var(--accent);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .finance-option-card:hover {
-    border-color: var(--line-accent);
-    box-shadow: none;
-  }
-}
-
 .finance-option-card--grant {
-  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
@@ -3228,7 +3176,6 @@
 :root[data-theme="dark"] #tab-finance .finance-box {
   background: var(--card);
   background-image: none;
-  border-color: transparent;
 }
 
 @media (max-width: 1024px) {
@@ -3564,7 +3511,6 @@
 }
 
 .d-cover-logo {
-  border-color: transparent;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
 }
@@ -3613,7 +3559,6 @@
 .d-site-link.is-saved {
   background: var(--color-warning-bg);
   color: var(--color-warning);
-  border-color: var(--line-warning);
   box-shadow: none;
 }
 
@@ -3719,17 +3664,8 @@
   display: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .finance-option-card:hover,
-  .program-card:hover {
-    border-color: var(--line-accent);
-    box-shadow: none;
-  }
-}
-
 .finance-option-card--grant,
 .finance-track-group--grant {
-  border-color: var(--line-grant);
   background: var(--grant-soft);
 }
 
@@ -3893,10 +3829,10 @@
 .admission-option-meta .tag small {
   margin-right: 0;
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: 500;
-  letter-spacing: 0;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .admission-option-meta .tag span {
@@ -4141,7 +4077,6 @@
 
 :root[data-theme="dark"] .scholarship-card {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 .scholarship-card__title {
@@ -4150,8 +4085,8 @@
   font-size: 13px;
   font-weight: 500;
   line-height: 1.3;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .scholarship-card__body {
@@ -4195,15 +4130,14 @@
 
 :root[data-theme="dark"] .total-price-card {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 .price-header {
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .price-inline-row {
@@ -4314,21 +4248,18 @@ body[data-page="university"],
 @media (hover: hover) and (pointer: fine) {
   .d-site-link:hover {
   background: var(--accent-panel);
-  border-color: var(--line-accent);
   color: var(--accent);
   }
 }
 
 .d-info {
   background: var(--surface-soft);
-  border-color: transparent;
   color: var(--text-muted);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .d-info:hover {
     background: var(--accent-panel);
-    border-color: var(--line-accent);
     color: var(--accent);
   }
 }
@@ -4336,7 +4267,6 @@ body[data-page="university"],
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
-  border-color: var(--line-accent);
   color: var(--accent);
 }
 
@@ -4349,7 +4279,6 @@ body[data-page="university"],
 .track-lang-rule-card,
 .cost-legend-row {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 .uni-tags-wrap {
@@ -4384,7 +4313,6 @@ body[data-page="university"],
 :root[data-theme="dark"] .finance-track-group,
 :root[data-theme="dark"] .finance-track-group--grant {
   background: transparent;
-  border-color: transparent;
 }
 
 .finance-track-group-head {
@@ -4410,8 +4338,8 @@ body[data-page="university"],
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .finance-track-options-grid {
@@ -4444,15 +4372,7 @@ body[data-page="university"],
   transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .finance-option-card:hover,
-  .program-card:hover {
-  border-color: var(--line-accent);
-  }
-}
-
 .finance-option-card--grant {
-  border-color: var(--line-grant);
   background: var(--surface-solid);
 }
 
@@ -4479,8 +4399,8 @@ body[data-page="university"],
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .finance-option-total--grant {
@@ -4579,14 +4499,13 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .track-stats-box {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 .track-stats-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   margin-bottom: var(--space-1);
   padding-bottom: var(--space-2);
@@ -4610,8 +4529,8 @@ body[data-page="university"],
 .track-exam-group-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   margin-bottom: var(--space-1-5);
 }
@@ -4649,14 +4568,13 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .track-extra-req {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 .track-extra-req-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -4667,8 +4585,8 @@ body[data-page="university"],
 .admission-funding-title {
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -4679,51 +4597,43 @@ body[data-page="university"],
 
 .admission-funding-option {
   border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  border-radius: var(--radius-base, 12px);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
   padding: var(--space-5) var(--space-5);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-4);
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease), background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition:
+    background-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease),
+    box-shadow var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .admission-funding-option:hover {
-    border-color: var(--line-accent);
+    background: var(--surface-solid);
+    box-shadow: var(--shadow-xs);
   }
 }
 
 .admission-funding-option.is-active {
-  border-color: var(--accent);
-  background: var(--surface-soft);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
 }
 
 .admission-funding-option--grant {
-  border-color: var(--line-grant);
-  background: var(--surface-soft);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
 }
 
 .admission-funding-option--grant.is-active {
-  border-color: var(--accent);
-  background: var(--surface-soft);
-}
-
-:root[data-theme="dark"] .admission-funding-option {
-  background: var(--surface-soft);
-  border-color: transparent;
-}
-
-:root[data-theme="dark"] .admission-funding-option.is-active {
-  background: var(--surface-soft);
-  border-color: var(--accent);
-}
-
-:root[data-theme="dark"] .admission-funding-option--grant {
-  background: var(--surface-soft);
-  border-color: var(--line-grant);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
 }
 
 .admission-funding-diff {
@@ -4736,8 +4646,8 @@ body[data-page="university"],
 .admission-funding-diff-kicker {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -4848,8 +4758,8 @@ body[data-page="university"],
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .track-cost-preview--grant {
@@ -4868,11 +4778,18 @@ body[data-page="university"],
   font-size: 12px;
   font-weight: 500;
   line-height: 1.2;
-  background: var(--surface-solid);
+  background: var(--surface-soft);
+  box-shadow: var(--shadow-micro);
   border: none;
   color: var(--text-muted);
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+#tab-admission .admission-category-card .track-factor-chip:not(.factor-positive),
+#tab-admission .admission-category-card .admission-chance-badge {
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
 }
 
 /* Guaranteed contrasting background for university logo */
@@ -4968,8 +4885,8 @@ body[data-page="university"],
 .program-card-kicker {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -5014,8 +4931,8 @@ body[data-page="university"],
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   flex: 0 0 auto;
   margin: 0;
 }
@@ -5099,7 +5016,6 @@ body[data-page="university"],
 }
 
 .program-pill--accent {
-  border-color: var(--line-accent);
   background: var(--accent-panel, var(--accent-faint));
   color: var(--accent);
 }
@@ -5177,7 +5093,6 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .admissions-program-card {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 /* 3. Admission Tab - Flat Card Hierarchy */
@@ -5209,8 +5124,8 @@ body[data-page="university"],
 .admission-category-kicker {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   margin-bottom: var(--space-1);
 }
@@ -5235,7 +5150,8 @@ body[data-page="university"],
   font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
   border: none;
   border-radius: var(--radius-sm, 8px);
   padding: var(--space-1) var(--space-2);
@@ -5349,8 +5265,8 @@ body[data-page="university"],
 .requirement-profile-kicker {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -5424,8 +5340,8 @@ body[data-page="university"],
 .track-stats-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   margin-bottom: 0;
   padding-bottom: var(--space-1);
@@ -5443,14 +5359,13 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .track-extra-req {
   background: transparent;
-  border-color: transparent;
 }
 
 .track-extra-req-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -5470,8 +5385,8 @@ body[data-page="university"],
 .admission-funding-title {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -5484,7 +5399,8 @@ body[data-page="university"],
 .admission-funding-option {
   border: none;
   border-radius: var(--radius-base, 12px);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
   padding: var(--space-4) var(--space-4);
   display: flex;
   flex-direction: column;
@@ -5497,21 +5413,34 @@ body[data-page="university"],
 
 @media (hover: hover) and (pointer: fine) {
   .admission-funding-option:hover {
-    background: color-mix(in srgb, var(--text) 4%, var(--surface-soft));
+    background: var(--surface-solid);
     box-shadow: var(--shadow-xs);
   }
 }
 
 .admission-funding-option.is-active {
-  background: var(--accent-panel);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
 }
 
 .admission-funding-option--grant {
-  background: var(--grant-soft);
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
 }
 
 .admission-funding-option--grant.is-active {
-  background: color-mix(in srgb, var(--accent) 12%, var(--grant-soft));
+  border: none;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
+}
+
+.admission-funding-option .admission-option-meta .tag {
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  border: none;
+  box-shadow: none;
 }
 
 .admission-funding-option-header {
@@ -5670,8 +5599,8 @@ body[data-page="university"],
 .price-header {
   font-size: var(--text-xs);
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   margin: 0;
   line-height: var(--leading-tight);
@@ -5800,8 +5729,8 @@ body[data-page="university"],
   margin: 0;
   font-size: var(--text-xs);
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
   line-height: var(--leading-tight);
 }
@@ -5879,9 +5808,6 @@ body[data-page="university"],
   color: var(--text);
 }
 
-.finance-option-total--grant {
-  border-color: var(--line-grant);
-}
 
 .finance-option-total__label {
   min-width: 0;
@@ -5889,8 +5815,8 @@ body[data-page="university"],
   font-size: var(--text-xs);
   font-weight: 500;
   line-height: var(--leading-tight);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   overflow-wrap: anywhere;
 }
 
@@ -5906,8 +5832,8 @@ body[data-page="university"],
 
 .finance-aid-note {
   margin: 0;
-  padding-left: var(--space-3);
-  border-left: 2px solid var(--line-grant);
+  padding-left: 0;
+  border-left: none;
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
@@ -6005,8 +5931,8 @@ body[data-page="university"],
   color: var(--text-muted);
   font-size: var(--text-xs);
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .finance-option-meta dd {
@@ -6027,8 +5953,8 @@ body[data-page="university"],
   font-size: var(--text-xs);
   font-weight: 500;
   line-height: var(--leading-tight);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .cost-progress-bar {
@@ -6187,7 +6113,6 @@ body[data-page="university"],
 
 :root[data-theme="dark"] .roi-box {
   background: var(--surface-soft);
-  border-color: transparent;
 }
 
 .roi-title {
@@ -6299,8 +6224,8 @@ body[data-page="university"],
 .program-card__kicker {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -6394,8 +6319,10 @@ body[data-page="university"],
   align-items: center;
   gap: var(--space-2);
   min-height: 44px;
-  color: var(--accent);
+  color: var(--text);
   font-size: var(--text-sm);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .program-card__source:focus-visible {
@@ -6438,8 +6365,8 @@ body[data-page="university"],
 .program-signal__label {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -6711,8 +6638,8 @@ body[data-page="university"],
 .admissions-deadline-level {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: normal;
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-xs);
   background: var(--surface-soft);
@@ -6763,7 +6690,7 @@ body[data-page="university"],
 
 .admissions-fee-waiver {
   display: inline-block;
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: 600;
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-xs);
@@ -6776,7 +6703,7 @@ body[data-page="university"],
   margin: 0;
   font-size: 11px;
   color: var(--text-muted);
-  font-style: italic;
+  font-style: normal;
   line-height: var(--leading-normal);
 }
 
@@ -6883,8 +6810,8 @@ body[data-page="university"],
 .finance-fee-status-kicker {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: normal;
   color: var(--text-muted);
 }
 
@@ -7087,8 +7014,8 @@ body[data-page="university"],
 .timeline-milestone-phase {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: normal;
   color: var(--text-muted);
 }
 
@@ -7319,7 +7246,9 @@ body[data-page="university"],
 }
 
 .deadline-calendar__details a {
-  color: var(--accent);
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .deadline-calendar__export,
@@ -7367,7 +7296,7 @@ body[data-page="university"],
   gap: var(--space-2);
   padding: var(--space-4);
   border-radius: var(--radius-lg);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
 }
 
 .deadline-guidance-item h4,

@@ -76,7 +76,6 @@
 .settings-trigger-btn:hover,
 
 .navbar-search-toggle:hover{
-    border-color: transparent;
     box-shadow: var(--shadow-sm);
     color: var(--accent);
   }
@@ -100,7 +99,6 @@
 
 @media (hover: hover) and (pointer: fine) {
   .lang-switch:hover {
-    border-color: transparent;
     box-shadow: var(--shadow-sm);
   }
 }
@@ -481,14 +479,12 @@
 :where(input, select, textarea).is-invalid,
 
 :where(input, select, textarea)[aria-invalid="true"] {
-  border-color: var(--color-danger);
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 
 :where(input, select, textarea).is-invalid:focus,
 
 :where(input, select, textarea)[aria-invalid="true"]:focus {
-  border-color: var(--color-danger);
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 

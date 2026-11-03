@@ -15,7 +15,6 @@ from app.services import universities as universities_service
 from app.services import admissions_catalog, admissions_assessment
 from app.services.university_tracks import (
     _canonical_major,
-    _major_tags_from_text,
     _has_explicit_empty_program_mapping,
     _normalize_major_text,
     _iter_programs,

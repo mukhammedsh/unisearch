@@ -70,7 +70,6 @@ body[data-page="universities"] {
   cursor: pointer;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
-    border-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
@@ -104,7 +103,6 @@ body[data-page="universities"] {
 
 .u-compare-mode-btn #compareModeLabel {
   display: block;
-  transform: translateY(-1px);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -345,8 +343,8 @@ body[data-page="universities"] {
 
 @media (hover: hover) and (pointer: fine) {
   .u-reset:hover {
-    background: var(--accent-panel);
-    color: var(--accent);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 }
 
@@ -572,7 +570,7 @@ body[data-page="universities"] {
 .u-label-icon [data-heroicon] {
   width: 18px;
   height: 18px;
-  color: var(--accent);
+  color: var(--text-muted);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1088,7 +1086,6 @@ body[data-page="universities"] {
 }
 
 .u-state-card--warning {
-  border-color: var(--line-warning);
   background: var(--color-warning-bg);
 }
 
@@ -1130,7 +1127,7 @@ body[data-page="universities"] {
   font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .u-state-card__btn .ui-icon,
@@ -1142,9 +1139,8 @@ body[data-page="universities"] {
 @media (hover: hover) and (pointer: fine) {
 
 .u-state-card__btn:hover {
-  background: var(--surface);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
 }
 }
 
@@ -1274,7 +1270,7 @@ body[data-page="universities"] {
   border-radius: 10px;
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.2px;
+  letter-spacing: normal;
   color: var(--accent);
   background: var(--accent-panel);
 }
@@ -1309,7 +1305,7 @@ body[data-page="universities"] {
 .u-tour-inline-btn {
   align-self: flex-start;
   margin-top: var(--space-1-5);
-  border: 1px solid var(--line-accent);
+  border: none;
   background: var(--surface-solid);
   color: var(--accent);
   border-radius: 10px;
@@ -1362,6 +1358,12 @@ body[data-page="universities"] {
 .u-tour-btn:hover,
 .u-tour-inline-btn:hover,
 .u-tour-close:hover {
-  filter: brightness(0.98);
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.u-tour-btn--primary:hover {
+  background: var(--accent-strong);
+  color: var(--text-inverse);
 }
 }

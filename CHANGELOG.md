@@ -2,13 +2,35 @@
 
 All notable project changes should be recorded here.
 
-## Unreleased
+## 10.0.3 (2026-11-02) - Security hardening and CodeQL alert remediation
+
+### Security
+- Hardened `[data-i18n-html]` translation injection with a strict allowlist DOM sanitizer in `frontend/javascript/i18n.js` to eliminate DOM XSS risks, backed by dedicated unit tests.
+- Escaped formatted price values in university detail section rendering.
+
+### Fixed
+- Replaced regular expressions matching URLs in admissions presentation and reading unit tests with substring checks.
+- Cleaned up unused imports, dead variables, and obsolete application classification helpers across scoring service, admissions controller, and E2E test suites.
+
+## 10.0.2 (2026-11-01) - Calm Academic Workspace design polish and lint guards
 
 ### Deployment
 - Add automatic Firebase Hosting deployment on pushes to `main`; the workflow requires its service-account secret.
 
 ### Security
 - Set `X-XSS-Protection: 0` to disable legacy browser XSS filtering; the Content-Security-Policy remains active.
+
+### Changed
+- Unified `--font-sans` and `--font-display` on `Inter`, removed all `10px` font sizes, `text-transform: uppercase`, positive `letter-spacing`, and `font-style: italic` across 24 stylesheets.
+- Replaced full-card pastel washes on `.admission-funding-option`, `.track-stats-box--avg`, and `.track-exam-group` with neutral `var(--surface-solid)` / `var(--surface-soft)` surface hierarchy and `var(--shadow-micro)` elevation.
+- Replaced generic `sparkles` icons in catalog filters, profile hints, comparison headers, and university detail sections with semantic Heroicons (`bars-3-bottom-left`, `building-library`, `information-circle`, `adjustments-horizontal`).
+
+### Fixed
+- Removed residual box borders, dead `border-color` declarations, hover `translateY` bounces, and redundant `backdrop-filter` rules on opaque surfaces across catalog, comparison, profile, 404, and university detail tabs; standardized documentary source links and balanced `.profile-page-header` flex alignment.
+- Override vulnerable glob and minimatch transitive dependencies in dev tooling to resolve audit advisories and remove unawaited navigation race in NU admissions E2E suite.
+
+### Tooling
+- Expanded `scripts/check-design-lint.mjs`, `tests/unit/design-lint.test.mjs`, `docs/design-system.md`, and `AGENTS.md` to enforce anti-slop typography, hover-bounce, and borderless component rules automatically.
 
 ## 10.0.1 (2026-10-30) - Nazarbayev University translations
 

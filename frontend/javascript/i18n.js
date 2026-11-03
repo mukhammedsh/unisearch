@@ -1,6 +1,7 @@
 import { getPreferredCurrency } from "./currency.js";
 import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
+import { escapeHtml, escapeHtmlAttr } from "./utils/format.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 const I18N_PACK_REVISION = "32";
@@ -201,14 +202,116 @@ export function tFormat(key, params = {}, fallback = "") {
 export function applyTokenSubstitutions(text) {
   let out = String(text || "");
   const ai = window.AI_FUNCTIONS || {};
-  const fit = String(ai.fit || "UniFit");
-  const chance = String(ai.chance || "UniChance");
+  const fit = escapeHtml(String(ai.fit || "UniFit"));
+  const chance = escapeHtml(String(ai.chance || "UniChance"));
   out = out.replaceAll("{fit}", fit);
   out = out.replaceAll("{chance}", chance);
-  const currency = typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD";
+  const rawCurrency = typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD";
+  const currency = escapeHtml(String(rawCurrency || "").trim().slice(0, 5));
   out = out.replaceAll("{currency}", currency);
   return stabilizeNumericRanges(out);
 }
+
+const ALLOWED_I18N_TAGS = new Set(["b", "strong", "em", "i", "br", "a", "span", "code"]);
+const BLOCKED_I18N_TAGS = ["script", "style", "iframe", "object", "embed", "svg", "math", "template", "noscript"];
+
+function isSafeI18nHref(rawUrl) {
+  if (typeof rawUrl !== "string") return false;
+  const decoded = rawUrl
+    .replace(/&#x([0-9a-fA-F]+);?/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
+    .replace(/&#([0-9]+);?/g, (_, dec) => String.fromCharCode(parseInt(dec, 10)))
+    .replace(/&colon;/gi, ":")
+    .replace(/&tab;/gi, "\t")
+    .replace(/&newline;/gi, "\n");
+  const trimmed = decoded.trim().replace(/[\x00-\x1f\x7f]/g, "");
+  if (!trimmed || trimmed.startsWith("//")) return false;
+
+  const colonIndex = trimmed.indexOf(":");
+  if (colonIndex !== -1) {
+    const firstSlash = trimmed.indexOf("/");
+    const firstQuestion = trimmed.indexOf("?");
+    const firstHash = trimmed.indexOf("#");
+    const delimiters = [firstSlash, firstQuestion, firstHash].filter((idx) => idx !== -1);
+    const firstDelimiter = delimiters.length ? Math.min(...delimiters) : Infinity;
+    if (colonIndex < firstDelimiter || firstDelimiter === Infinity) {
+      const scheme = trimmed.slice(0, colonIndex).trim().toLowerCase();
+      if (scheme !== "http" && scheme !== "https" && scheme !== "mailto") {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+export function sanitizeI18nHtml(rawHtml) {
+  if (!rawHtml || typeof rawHtml !== "string") return "";
+
+  let clean = rawHtml;
+
+  while (clean.indexOf("<!--") !== -1) {
+    const start = clean.indexOf("<!--");
+    const end = clean.indexOf("-->", start + 4);
+    if (end === -1) {
+      clean = clean.slice(0, start);
+      break;
+    }
+    clean = clean.slice(0, start) + clean.slice(end + 3);
+  }
+
+  for (const tag of BLOCKED_I18N_TAGS) {
+    const openPattern = "<" + tag;
+    const closeTag = "</" + tag + ">";
+    while (clean.toLowerCase().indexOf(openPattern) !== -1) {
+      const lower = clean.toLowerCase();
+      const start = lower.indexOf(openPattern);
+      const openTagEnd = clean.indexOf(">", start);
+      if (openTagEnd === -1) {
+        clean = clean.slice(0, start);
+        break;
+      }
+      if (clean[openTagEnd - 1] === "/") {
+        clean = clean.slice(0, start) + clean.slice(openTagEnd + 1);
+        continue;
+      }
+      const closeStart = lower.indexOf(closeTag, openTagEnd);
+      if (closeStart !== -1) {
+        clean = clean.slice(0, start) + clean.slice(closeStart + closeTag.length);
+      } else {
+        clean = clean.slice(0, start);
+      }
+    }
+  }
+
+  let openAllowedLinks = 0;
+  clean = clean.replace(/<(\/)?([a-zA-Z0-9]+)([^>]*)>/g, (_match, isClosing, rawTagName, attrs) => {
+    const tag = rawTagName.toLowerCase();
+    if (!ALLOWED_I18N_TAGS.has(tag)) return "";
+    if (tag === "br") return "<br>";
+    if (tag === "a") {
+      if (isClosing) {
+        if (openAllowedLinks > 0) {
+          openAllowedLinks--;
+          return "</a>";
+        }
+        return "";
+      }
+      const hrefMatch = attrs.match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+      const rawHref = hrefMatch ? (hrefMatch[1] ?? hrefMatch[2] ?? hrefMatch[3] ?? "") : "";
+      if (!isSafeI18nHref(rawHref)) return "";
+      openAllowedLinks++;
+      const isBlank = /\btarget\s*=\s*(?:"_blank"|'_blank'|_blank)/i.test(attrs);
+      const targetAttr = isBlank ? ' target="_blank" rel="noopener noreferrer"' : "";
+      return `<a href="${escapeHtmlAttr(rawHref.trim())}"${targetAttr}>`;
+    }
+    if (isClosing) return `</${tag}>`;
+    return `<${tag}>`;
+  });
+
+  return clean;
+}
+
+export { sanitizeI18nHtml as sanitizeHtml };
 
 export function applyTranslations(root = document) {
   const scope = root && typeof root.querySelectorAll === "function" ? root : document;
@@ -221,8 +324,11 @@ export function applyTranslations(root = document) {
 
   scope.querySelectorAll("[data-i18n-html]").forEach((el) => {
     const key = el.getAttribute("data-i18n-html");
-    const translated = applyTokenSubstitutions(t(key, el.innerHTML || ""));
-    el.innerHTML = translated;
+    if (!key) return;
+    const raw = t(key, "");
+    if (!raw) return;
+    const translated = applyTokenSubstitutions(raw);
+    el.innerHTML = sanitizeI18nHtml(translated);
   });
 
   scope.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {

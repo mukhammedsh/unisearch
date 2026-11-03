@@ -53,8 +53,10 @@
 
 .qualification-guidance__source {
   width: fit-content;
-  color: var(--accent);
+  color: var(--text);
   font-size: var(--text-sm);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .qualification-guidance__source:focus-visible {
@@ -63,8 +65,10 @@
 }
 
 .qualification-guidance__action {
-  color: var(--accent);
+  color: var(--text);
   font-size: var(--text-sm);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .program-coverage {
@@ -122,10 +126,10 @@
 
 .program-coverage__source {
   width: fit-content;
-  color: var(--accent);
+  color: var(--text);
   font-size: var(--text-sm);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: var(--space-1);
 }
 
 .program-coverage__source:focus-visible {

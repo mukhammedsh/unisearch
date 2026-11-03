@@ -66,7 +66,7 @@ body[data-page="terms"] {
   font-family: var(--font-sans);
   font-size: var(--text-md);
   line-height: var(--leading-loose);
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: var(--text);
 }
 
@@ -85,7 +85,7 @@ body[data-page="terms"] {
 }
 
 .legal-list {
-  margin: calc(var(--space-5) * -0.25) 0 var(--space-5);
+  margin: 0 0 var(--space-5);
   padding-left: var(--space-6);
   color: var(--text);
   font-size: var(--text-md);

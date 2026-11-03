@@ -102,12 +102,17 @@
   gap: var(--space-2);
   padding: var(--space-0-5) 0;
   text-decoration: none;
-  color: var(--accent-strong);
+  color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: 1.45;
   font-weight: 500;
   transition:
     color var(--motion-fast, 0.15s) ease;
+}
+
+.guide-nav a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .guide-nav a::before {
@@ -277,7 +282,7 @@
   width: 100%;
   font-size: var(--text-md);
   line-height: 1.54;
-  letter-spacing: -0.016em;
+  letter-spacing: normal;
   color: var(--text);
 }
 
@@ -323,7 +328,7 @@
   color: var(--text);
   font-size: var(--text-md);
   line-height: 1.54;
-  letter-spacing: -0.014em;
+  letter-spacing: normal;
 }
 
 .guide-list li + li {

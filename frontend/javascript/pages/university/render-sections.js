@@ -1452,7 +1452,7 @@ function renderFinancePolicyOverview(policy) {
   if (!policy || !policy.hasPolicyData) return "";
 
   const shieldIcon = heroIcon("document-check", "ui-icon ui-icon--16");
-  const sparkIcon = heroIcon("sparkles", "ui-icon ui-icon--16");
+  const sparkIcon = heroIcon("banknotes", "ui-icon ui-icon--16");
   const capIcon = heroIcon("academic-cap", "ui-icon ui-icon--16");
 
   return `
@@ -2405,7 +2405,7 @@ export function renderFinanceSection({
         if (context) context.textContent = annualCostRangeContext(currentCycleRange);
       } else {
         priceEl.innerHTML = minTotal != null && Number.isFinite(Number(minTotal))
-          ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span> ${formatPrice(minTotal, uniCurrency)}`
+          ? `<span class="price-prefix">${escapeHtml(translateWord("from", "from"))}</span> ${escapeHtml(formatPrice(minTotal, uniCurrency))}`
           : escapeHtml(unknownFieldText("placeholder.field.cost", "Cost"));
         const priceCard = priceEl.closest?.(".total-price-card");
         const title = priceCard?.querySelector(".price-header");

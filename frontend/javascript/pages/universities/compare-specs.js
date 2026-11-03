@@ -1046,7 +1046,7 @@ export const buildCompareDecisionSupportHtml = (universities, context = {}) => {
     return `
         <section class="compare-analysis-block compare-decision-support" aria-labelledby="compareDecisionTitle">
             <div class="compare-block-head">
-                <div class="compare-block-icon">${renderInlineIcon("sparkles", 20, "compare-block-icon-svg")}</div>
+                <div class="compare-block-icon">${renderInlineIcon("adjustments-horizontal", 20, "compare-block-icon-svg")}</div>
                 <div>
                     <h2 id="compareDecisionTitle">${escapeHtml(t("universities.compare.decision.title", "What matters for your choice"))}</h2>
                     <p>${escapeHtml(t("universities.compare.decision.subtitle", "Independent signals explain fit and trade-offs without declaring one university universally better."))}</p>

@@ -38,3 +38,31 @@ test("spacing lint requires tokens even inside calc expressions", () => {
   ]);
   assert.deepEqual(spacingValueViolations("gap", "0 auto"), []);
 });
+
+test("anti-slop lint catches uppercase, positive letter-spacing, italic, hover bounce, and suffixed borderless components", async () => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const tmpFile = path.join(os.tmpdir(), `unisearch-design-lint-${Date.now()}.css`);
+  fs.writeFileSync(
+    tmpFile,
+    [
+      ".kicker { text-transform: uppercase; letter-spacing: 0.06em; font-style: italic; }",
+      ".uni-card:hover { transform: translateY(-2px); }",
+      ".admission-funding-option { border: 1px solid var(--line); }",
+      ".display-title { letter-spacing: -0.02em; }",
+    ].join("\n"),
+    "utf8"
+  );
+  try {
+    const { violations } = scanCssFile(tmpFile);
+    const types = violations.map((v) => v.type);
+    assert.ok(types.includes("typography-uppercase"));
+    assert.ok(types.includes("typography-positive-tracking"));
+    assert.ok(types.includes("typography-italic"));
+    assert.ok(types.includes("animation-hover-bounce"));
+    assert.ok(types.includes("borderless-component-border"));
+    assert.equal(violations.filter((v) => v.line === 4).length, 0);
+  } finally {
+    fs.unlinkSync(tmpFile);
+  }
+});
