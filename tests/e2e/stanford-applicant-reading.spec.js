@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { expectNoStackedGapMargins } = require("./helpers/design");
-const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram, selectAdmissionRoute } = require("./helpers/selectors");
+const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 
