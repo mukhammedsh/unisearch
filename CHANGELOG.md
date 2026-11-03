@@ -2,6 +2,16 @@
 
 All notable project changes should be recorded here.
 
+## 10.0.3 (2026-11-02) - Security hardening and CodeQL alert remediation
+
+### Security
+- Hardened `[data-i18n-html]` translation injection with a strict allowlist DOM sanitizer in `frontend/javascript/i18n.js` to eliminate DOM XSS risks, backed by dedicated unit tests.
+- Escaped formatted price values in university detail section rendering.
+
+### Fixed
+- Replaced regular expressions matching URLs in admissions presentation and reading unit tests with substring checks.
+- Cleaned up unused imports, dead variables, and obsolete application classification helpers across scoring service, admissions controller, and E2E test suites.
+
 ## 10.0.2 (2026-11-01) - Calm Academic Workspace design polish and lint guards
 
 ### Deployment

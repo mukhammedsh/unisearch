@@ -12,7 +12,7 @@ from httpx import ASGITransport, AsyncClient
 from starlette.requests import Request
 
 from app.main import app, _is_expensive_request
-from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
+from app.core.security import RedisSlidingWindowRateLimiter, is_protected_ops_request, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
@@ -27,6 +27,44 @@ class SecurityRegressionTests(unittest.TestCase):
             with self.subTest(path=path):
                 request = Request({"type": "http", "method": "POST", "path": path})
                 self.assertTrue(_is_expensive_request(request))
+
+    def test_profiled_post_is_classified_as_expensive(self):
+        for path in (
+            "/universities/profiled",
+            "/universities/profiled/",
+        ):
+            with self.subTest(path=path):
+                request = Request({"type": "http", "method": "POST", "path": path})
+                self.assertTrue(_is_expensive_request(request))
+
+    def test_profiled_endpoint_uses_expensive_rate_limit(self):
+        client = TestClient(app)
+        with patch("app.main.RATE_LIMIT_ENABLED", True):
+            response = client.post(
+                "/universities/profiled",
+                json={"profile": {"budget": 50000}, "page": 1, "limit": 10},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("X-RateLimit-Limit", response.headers)
+        from app.core.settings import EXPENSIVE_RATE_LIMIT_REQUESTS
+        self.assertEqual(response.headers["X-RateLimit-Limit"], str(EXPENSIVE_RATE_LIMIT_REQUESTS))
+
+    def test_expensive_rate_limit_path_normalizes_trailing_slash_and_parameterizes_id(self):
+        from app.main import _expensive_rate_limit_path
+        cases = (
+            ("/universities/ai-sort", "/universities/ai-sort"),
+            ("/universities/ai-sort/", "/universities/ai-sort"),
+            ("/universities/mit-usa-cambridge/uni-chance", "/universities/{id}/uni-chance"),
+            ("/universities/mit-usa-cambridge/uni-chance/", "/universities/{id}/uni-chance"),
+            ("/universities/mit-usa-cambridge/roi", "/universities/{id}/roi"),
+            ("/universities/mit-usa-cambridge/roi/", "/universities/{id}/roi"),
+            ("/universities/mit-usa-cambridge/admissions-context", "/universities/{id}/admissions-context"),
+            ("/universities/mit-usa-cambridge/admissions-context/", "/universities/{id}/admissions-context"),
+        )
+        for path, expected in cases:
+            with self.subTest(path=path):
+                request = Request({"type": "http", "method": "POST", "path": path})
+                self.assertEqual(_expensive_rate_limit_path(request), expected)
 
     def test_admissions_context_endpoint_uses_expensive_rate_limit(self):
         client = TestClient(app)
@@ -74,6 +112,28 @@ class SecurityRegressionTests(unittest.TestCase):
 
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
+
+    def test_is_protected_ops_request_normalizes_trailing_slashes(self):
+        cases = (
+            ("/currency/status", {}, True),
+            ("/currency/status/", {}, True),
+            ("/metrics", {}, True),
+            ("/metrics/", {}, True),
+            ("/health/", {"warmup": "1"}, True),
+            ("/health/", {"warmup": "true"}, True),
+            ("/ops", {}, True),
+            ("/ops/", {}, True),
+            ("/ops/runtime", {}, True),
+            ("/ops/runtime/", {}, True),
+            ("/health", {}, False),
+            ("/health/", {}, False),
+            ("/universities", {}, False),
+        )
+        for path, params, expected in cases:
+            query = "&".join(f"{k}={v}" for k, v in params.items()).encode("utf-8")
+            req = Request({"type": "http", "path": path, "query_string": query})
+            with self.subTest(path=path, params=params):
+                self.assertEqual(is_protected_ops_request(req), expected)
 
     def test_currency_status_is_protected_ops_endpoint(self):
         client = TestClient(app)
