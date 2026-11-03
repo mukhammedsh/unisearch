@@ -12,7 +12,7 @@ from httpx import ASGITransport, AsyncClient
 from starlette.requests import Request
 
 from app.main import app, _is_expensive_request
-from app.core.security import RedisSlidingWindowRateLimiter, ops_request_is_authorized
+from app.core.security import RedisSlidingWindowRateLimiter, is_protected_ops_request, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
 from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
 from scripts import audit_universities_data
@@ -74,6 +74,28 @@ class SecurityRegressionTests(unittest.TestCase):
 
         self.assertEqual(runtime.status_code, 401)
         self.assertEqual(warmup.status_code, 401)
+
+    def test_is_protected_ops_request_normalizes_trailing_slashes(self):
+        cases = (
+            ("/currency/status", {}, True),
+            ("/currency/status/", {}, True),
+            ("/metrics", {}, True),
+            ("/metrics/", {}, True),
+            ("/health/", {"warmup": "1"}, True),
+            ("/health/", {"warmup": "true"}, True),
+            ("/ops", {}, True),
+            ("/ops/", {}, True),
+            ("/ops/runtime", {}, True),
+            ("/ops/runtime/", {}, True),
+            ("/health", {}, False),
+            ("/health/", {}, False),
+            ("/universities", {}, False),
+        )
+        for path, params, expected in cases:
+            query = "&".join(f"{k}={v}" for k, v in params.items()).encode("utf-8")
+            req = Request({"type": "http", "path": path, "query_string": query})
+            with self.subTest(path=path, params=params):
+                self.assertEqual(is_protected_ops_request(req), expected)
 
     def test_currency_status_is_protected_ops_endpoint(self):
         client = TestClient(app)
