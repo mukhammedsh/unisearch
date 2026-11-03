@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 10.0.4 (2026-11-03) - Security and dependency updates
+
+### Security
+- Protected operational endpoints against trailing-slash authorization bypasses.
+- Applied expensive-request rate limits to profiled university searches and unified rate-limit buckets across trailing slashes and university IDs.
+
+### Changed
+- Updated backend dependencies and pinned GitHub Actions versions.
+
 ## 10.0.3 (2026-11-02) - Security hardening and CodeQL alert remediation
 
 ### Security
