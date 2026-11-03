@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
-const { setNativeSelect, openDisclosureParents, openAdmissionSelectionEditor, revealRestrictedProgram, selectAdmissionRoute } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents, openAdmissionSelectionEditor, revealRestrictedProgram } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const STANFORD = "stanford-university-usa-ca";

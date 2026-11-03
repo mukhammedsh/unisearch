@@ -101,7 +101,7 @@ test("published support test projections appear in dates even when the original 
     const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references"')[0];
     assert.ok(primary.includes(text), language);
     assert.match(primary, /2026/);
-    assert.match(primary, /https:\/\/example.edu\/admissions/);
+    assert.ok(primary.includes('href="https://example.edu/admissions"'));
   }
   setLanguage("eng", { emit: false });
 });
