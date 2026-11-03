@@ -24,6 +24,12 @@ class ApiDdosHardeningTests(unittest.TestCase):
         req.scope = {"path": "/universities/ai-sort"}
         self.assertTrue(_is_expensive_request(req))
 
+    def test_profiled_is_in_expensive_request_guard(self):
+        req = MagicMock()
+        req.method = "POST"
+        req.scope = {"path": "/universities/profiled"}
+        self.assertTrue(_is_expensive_request(req))
+
     def test_university_ids_share_the_same_expensive_route_bucket(self):
         first = MagicMock()
         first.scope = {"path": "/universities/mit-usa-cambridge/uni-chance"}
@@ -39,6 +45,7 @@ class ApiDdosHardeningTests(unittest.TestCase):
         for path in (
             "/universities/ai-sort/",
             "/universities/compare-profiles/",
+            "/universities/profiled/",
             "/exams/validate/",
             "/languages/validate/",
             "/universities/mit-usa-cambridge/uni-chance/",

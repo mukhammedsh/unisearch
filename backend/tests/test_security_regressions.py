@@ -28,6 +28,44 @@ class SecurityRegressionTests(unittest.TestCase):
                 request = Request({"type": "http", "method": "POST", "path": path})
                 self.assertTrue(_is_expensive_request(request))
 
+    def test_profiled_post_is_classified_as_expensive(self):
+        for path in (
+            "/universities/profiled",
+            "/universities/profiled/",
+        ):
+            with self.subTest(path=path):
+                request = Request({"type": "http", "method": "POST", "path": path})
+                self.assertTrue(_is_expensive_request(request))
+
+    def test_profiled_endpoint_uses_expensive_rate_limit(self):
+        client = TestClient(app)
+        with patch("app.main.RATE_LIMIT_ENABLED", True):
+            response = client.post(
+                "/universities/profiled",
+                json={"profile": {"budget": 50000}, "page": 1, "limit": 10},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("X-RateLimit-Limit", response.headers)
+        from app.core.settings import EXPENSIVE_RATE_LIMIT_REQUESTS
+        self.assertEqual(response.headers["X-RateLimit-Limit"], str(EXPENSIVE_RATE_LIMIT_REQUESTS))
+
+    def test_expensive_rate_limit_path_normalizes_trailing_slash_and_parameterizes_id(self):
+        from app.main import _expensive_rate_limit_path
+        cases = (
+            ("/universities/ai-sort", "/universities/ai-sort"),
+            ("/universities/ai-sort/", "/universities/ai-sort"),
+            ("/universities/mit-usa-cambridge/uni-chance", "/universities/{id}/uni-chance"),
+            ("/universities/mit-usa-cambridge/uni-chance/", "/universities/{id}/uni-chance"),
+            ("/universities/mit-usa-cambridge/roi", "/universities/{id}/roi"),
+            ("/universities/mit-usa-cambridge/roi/", "/universities/{id}/roi"),
+            ("/universities/mit-usa-cambridge/admissions-context", "/universities/{id}/admissions-context"),
+            ("/universities/mit-usa-cambridge/admissions-context/", "/universities/{id}/admissions-context"),
+        )
+        for path, expected in cases:
+            with self.subTest(path=path):
+                request = Request({"type": "http", "method": "POST", "path": path})
+                self.assertEqual(_expensive_rate_limit_path(request), expected)
+
     def test_admissions_context_endpoint_uses_expensive_rate_limit(self):
         client = TestClient(app)
         with patch("app.main.RATE_LIMIT_ENABLED", True):
