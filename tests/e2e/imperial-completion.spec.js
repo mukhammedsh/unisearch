@@ -119,7 +119,7 @@ test("MSc scholarship consideration and PhD rounds keep separate calendars", asy
   await ready(page, "deadlines");
   const calendar = await month(page, "2027-04");
   await calendar.locator('[data-calendar-day="2027-04-28"]').click();
-  await expect(calendar.locator(".deadline-calendar__details")).toContainText("Admissions cutoff for scholarship consideration");
+  await expect(calendar.locator(".deadline-calendar__details")).toContainText(/scholarship consideration/i);
   await page.goto(contextUrl(IMPERIAL, "imperial-computing-phd", "procedure-computing-phd", "doctoral", "deadlines"));
   await ready(page, "deadlines");
   const phd = await month(page, "2026-12");

@@ -167,6 +167,7 @@ for name, bundle in bundles.items():
         if 'option_ids' in gap: gap['option_ids'] = [idmap.get(x,x) for x in gap['option_ids']]
 
 application_guidance_sources = {
+    'procedure-computing-meng': 'imperial-course-computing-meng-2027',
     'procedure-aeronautical-engineering': 'imperial-course-aeronautical-engineering-2027',
     'procedure-advanced-computing': 'imperial-course-advanced-computing-2027',
     'procedure-computing-phd': 'source-fcfd905e0321795e',

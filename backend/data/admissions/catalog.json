@@ -137001,7 +137001,8 @@
           "attributes": {
             "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
             "record_kind": "application_context",
-            "independent_application_status": "published_course_choice"
+            "independent_application_status": "published_course_choice",
+            "application_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/computing-meng/"
           },
           "index_attributes": {}
         },
