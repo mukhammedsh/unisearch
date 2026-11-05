@@ -194,7 +194,7 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
         return summary
     profile = profile if isinstance(profile, dict) else None
     choice = (profile or {}).get("selectedAdmissionChoices", {}).get(institution_id, {}) if profile is not None else {}
-    level_value = study_level or choice.get("studyLevel") or (profile or {}).get("study_level")
+    level_value = study_level or choice.get("studyLevel", (profile or {}).get("study_level"))
     level = LEVEL_ALIASES.get(str(level_value or "").lower(), str(level_value or "").lower())
     if level == "any":
         level = ""
@@ -202,7 +202,8 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
     selected_option = study_option_id or choice.get("studyOptionId")
     selected_route = application_route_id or choice.get("applicationRouteId")
     selected = options.get(selected_option)
-    if selected and not level and len(selected["levels"]) == 1:
+    level_cleared = study_level in (None, "", "any") and "studyLevel" in choice and not choice["studyLevel"]
+    if selected and not level and not level_cleared and len(selected["levels"]) == 1:
         level = selected["levels"][0]
     major = str(major if major is not None else (profile or {}).get("major") or "").strip()
     candidate_ids = {option_id for option_id, option in options.items()
@@ -215,9 +216,9 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
         route = next((route for route in institution["application_routes"] if route["id"] == selected_route), None)
         candidate_ids.intersection_update(route["option_ids"] if route else [])
     application_route_id = selected_route
-    fee_context = fee_status_context or choice.get("feeStatusContext") or (profile or {}).get("fee_status_context")
+    fee_context = (fee_status_context if fee_status_context is not None else choice.get("feeStatusContext", (profile or {}).get("fee_status_context"))) or None
     fee_status_context = fee_context
-    intended_entry_cycle = intended_entry_cycle or choice.get("intendedEntryCycle") or (profile or {}).get("intended_entry_cycle")
+    intended_entry_cycle = intended_entry_cycle if intended_entry_cycle is not None else choice.get("intendedEntryCycle", (profile or {}).get("intended_entry_cycle"))
     selected_fee = {"self_reported_home_domestic": "Home fee",
                     "self_reported_international_overseas": "Overseas fee"}.get(fee_context)
     quotes = []
@@ -593,6 +594,11 @@ def resolve_context(institution_id, profile=None, context=None):
     for key, result in (("facts", facts), ("unknowns", unknowns)):
         for row in institution[key]:
             applicability = _fact_applicability(row, effective, statuses, shared_route_ids)
+            editorial_inventory = (key == "unknowns" and "professional_apprenticeship_inventory" in
+                                   row["scope"]["additional_dimensions"].get("level_context", []))
+            if editorial_inventory:
+                excluded[key].append({"id": row["id"], "applicability": applicability})
+                continue
             outside_shared_scope = shared_reading and bool(row["scope"]["option_ids"])
             if outside_shared_scope:
                 excluded[key].append({"id": row["id"], "applicability": applicability})

@@ -38,7 +38,7 @@ for (const item of cases) {
     }
     await tab(page, "admission");
     await expect(page.locator("#admissionsContextForm")).toBeHidden();
-    await expect(page.locator("#detailRequirements")).toBeEmpty();
+    await expect(page.locator("#detailRequirements .admissions-reading__section")).toHaveCount(0);
     await page.locator("#admissionsChooseProgram").click();
     await expect(page.locator("#tab-programs")).toHaveClass(/active/);
     await setNativeSelect(page, "admissionsStudyLevel", "undergraduate");

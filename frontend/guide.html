@@ -57,7 +57,7 @@
             <h3 class="guide-nav-title" data-i18n="guide.group.discovery">Discovery &amp; comparison</h3>
             <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
             <a href="#guide-ml" data-i18n="guide.nav.interests">Interests</a>
-            <a href="#guide-unichance" data-ai-template="{chance}">UniChance</a>
+            <a href="#guide-unichance" data-ai-template="{chance}">minimum requirements match</a>
             <a href="#guide-roi" data-i18n="guide.nav.roi">ROI</a>
             <a href="#guide-comparison" data-i18n="guide.nav.comparison">Comparison</a>
             <a href="#guide-tags" data-i18n="guide.nav.tags">Tags</a>
@@ -84,7 +84,7 @@
         <section id="guide-unifit" class="guide-section">
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from UniChance, which is only the requirements fit component:</p>
+            <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from minimum requirements match, which is only the requirements fit component:</p>
             <pre class="guide-formula" data-i18n="guide.unifit.formula">mismatch = (|practice - uni| + |social - uni| + |city - uni| + |budget - uni|) / 4</pre>
             <p data-i18n="guide.unifit.p2">Change anything in the profile — an exam score, the budget, a slider — and the list is recomputed from scratch, so what you see always reflects your current data. Each ingredient is scaled from 0 to 1.</p>
             <p data-i18n="guide.unifit.p3">Focus, Atmosphere, Finance, and Location are preference sliders. The Finance slider expresses a preference between budget and prestige; it is not your budget amount and does not estimate grant or paid admission odds.</p>
@@ -106,13 +106,13 @@
         </section>
 
         <section id="guide-unichance" class="guide-section">
-          <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">UniChance</span> (fit to published requirements, 0–100)</h2>
+          <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">minimum requirements match</span> (fit to published requirements, 0–100)</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">UniChance</span> is a 0–100 fit score for your profile against evaluable published academic and language minimums for the selected requirement profile. It is not an admission probability and does not predict a funding award.</p>
+            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">minimum requirements match</span> is a 0–100 fit score for your profile against evaluable published academic and language minimums for the selected requirement profile. It is not an admission probability and does not predict a funding award.</p>
             <pre class="guide-formula" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
             <p data-i18n="guide.unichance.p2">The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.</p>
             <p data-i18n="guide.unichance.p3">The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.</p>
-            <p data-i18n="guide.unichance.p4">If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, UniChance shows no score and explains what is missing. Missing evidence is not treated as zero.</p>
+            <p data-i18n="guide.unichance.p4">If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, minimum requirements match shows no score and explains what is missing. Missing evidence is not treated as zero.</p>
           </div>
         </section>
 
@@ -124,7 +124,7 @@
             <p data-i18n="guide.roi.p2">The cost is the cheapest admission choice total for your study mode, converted into one currency. The salary comes only from verified graduate data: your selected major when published, otherwise the average across published majors.</p>
             <p data-i18n="guide.roi.p3">When a university publishes no usable salary data, the ROI block simply disappears instead of guessing. Missing data is never plotted as zero.</p>
             <p data-i18n="guide.roi.p4">Treat the number as a planning ratio rather than a promise: your program, country, skills, and right to work shape the real outcome far more than any average.</p>
-            <p data-i18n="guide.roi.p5">ROI does not describe admission eligibility. Read it alongside UniChance, published acceptance statistics, and the full yearly cost.</p>
+            <p data-i18n="guide.roi.p5">ROI does not describe admission eligibility. Read it alongside minimum requirements match, published acceptance statistics, and the full yearly cost.</p>
           </div>
         </section>
 
@@ -133,7 +133,7 @@
           <div class="guide-doc">
             <p data-i18n="guide.comparison.p1">Comparing lives on the Universities page in its own Comparing tab, while the rest of the catalog keeps working as usual — only this tab collects a shortlist. Pick universities from cards or map pins and press Compare, and click a picked card again to remove it.</p>
             <p data-i18n="guide.comparison.p2">The results table only ever compares like with like: the same academic year, the same fee status, the same scope. Each row then ends with an honest verdict — an advantage for one side, a trade-off, parity, incomparable data, or simply missing data — and the page never crowns an overall winner.</p>
-            <p data-i18n="guide.comparison.p3">Published acceptance rates are institution or course statistics, depending on their source. They are separate from your UniChance requirements fit score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.</p>
+            <p data-i18n="guide.comparison.p3">Published acceptance rates are institution or course statistics, depending on their source. They are separate from your minimum requirements match requirements fit score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.</p>
           </div>
         </section>
 

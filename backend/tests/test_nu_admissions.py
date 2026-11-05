@@ -41,10 +41,23 @@ class NuAdmissionsTests(unittest.TestCase):
         self.assertTrue(any("preparation" in row["text"] for row in foundation["selected_option"]["overviews"]))
 
     def test_all_research_values_and_provenance_survive_conversion(self):
+        editorial_conditions = {
+            "nu-a-fact-study-master-of-science-in-petroleum-engineering",
+            "nu-a-fact-study-master-of-science-in-mining-engineering",
+            "nu-a-fact-study-msc-in-mechanical-and-aerospace-engineering",
+            "nu-a-fact-study-master-of-engineering-management",
+            "nu-a-fact-soe-masters-application",
+            "nu-a-fact-soe-masters-tuition",
+        }
         for original in self.raw["facts"]:
             fact = self.index["facts"][original["id"]]
-            for key in ("value", "conditions", "exceptions", "publication_status", "review_status", "checked_at", "source_ids"):
+            for key in ("value", "exceptions", "publication_status", "review_status", "checked_at", "source_ids"):
                 self.assertEqual(original[key], fact[key], (original["id"], key))
+            if original["id"] in editorial_conditions:
+                self.assertEqual(original["conditions"], fact["attributes"]["researcher_notes"]["conditions"], original["id"])
+                self.assertNotEqual(original["conditions"], fact["conditions"], original["id"])
+            else:
+                self.assertEqual(original["conditions"], fact["conditions"], original["id"])
             self.assertEqual(original["provenance"]["original_scope"], fact["provenance"]["original_scope"])
         self.assertEqual(96, len(self.nu["study_options"]))
         self.assertEqual({"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"},

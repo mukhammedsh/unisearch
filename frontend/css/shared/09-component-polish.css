@@ -6,7 +6,6 @@ body {
 }
 
 .navbar {
-  background: var(--surface);
   border-bottom: none;
   box-shadow: var(--shadow-sm);
 }

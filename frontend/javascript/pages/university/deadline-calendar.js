@@ -73,7 +73,7 @@ export function getReviewedDeadlineEvents(resolved) {
     events.set(key, { id: `${row.id}:${kind}:${deadline}:${name}`, kind, name, title: name || option?.title || resolved.selected_route.title,
       deadline, time, timezone, sourceFactId: row.id, sourceUrl: detail.source_url || resolved.sources?.find(source => row.source_ids?.includes(source.id))?.url || "",
       cycle: detail.cycle || row.scope?.cycle || "", scope: [option?.title, resolved.selected_route.title].filter(Boolean).join(" · "), applicantCategoryLabel,
-      publicationStatus: detail.publication_status || row.publication_status, applicationCategory: detail.application_category || "", examId: detail.exam_id || "" });
+      publicationStatus: detail.publication_status || row.publication_status, applicationCategory: detail.application_category || "", examId: detail.exam_id || "", timeSourceUrl: detail.timeSourceUrl || "" });
   };
   const rows = (resolved.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched"
     && (row.publication_status === "published" || row.publication_status?.startsWith("published_") && Array.isArray(row.attributes?.deadline_events))
@@ -83,7 +83,36 @@ export function getReviewedDeadlineEvents(resolved) {
     && (!row.scope?.route_ids?.length || row.scope.route_ids.some(id => [resolved.selected_route.id, ...(resolved.selected_route.shared_policy_context_ids || [])].includes(id))));
   for (const row of rows) {
     const value = row.attributes?.deadline_events || row.value;
+    if (row.id === "professional-evidence:gsb_mba_deadlines" && typeof value === "string") {
+      const rounds = [...value.matchAll(/\bRound ([123]) (20\d{2}-\d{2}-\d{2})/g)];
+      const decisions = value.match(/Decision notifications are (20\d{2}-\d{2}-\d{2}), (20\d{2}-\d{2}-\d{2}), and (20\d{2}-\d{2}-\d{2}) respectively\./);
+      const timed = /due by 4:00 p\.m\. Pacific Time/.test(value) ? { time: "16:00", timezone: "America/Los_Angeles" } : null;
+      for (const [index, round] of rounds.entries()) {
+        if (timed) add(row, "application", { date: round[2], ...timed }, `Round ${round[1]}`);
+        if (rounds.length === 3 && decisions) add(row, "decision", decisions[index + 1], `Round ${round[1]}`);
+      }
+      continue;
+    }
     if (!value || typeof value !== "object") continue;
+    if (row.id === "engineering-doerr-evidence:engineering-coterm-2027-directory-details") {
+      const program = option?.id?.replace(/^stanford-option-/, "stanford-");
+      const policy = (resolved.facts || []).find(fact => fact.id === "coterm-central-evidence:stanford-coterm-central-deadline" && fact.publication_status === "published"
+        && /verified|reviewed|rechecked/.test(fact.review_status || "") && !/conflict|pending|partial|superseded|requires_confirmation/.test(fact.review_status || "")
+        && fact.applicability?.status !== "mismatched" && fact.value?.type === "application_completion" && fact.value?.time === "23:59" && fact.value?.timezone === "America/Los_Angeles"
+        && !fact.scope?.option_ids?.length && !fact.scope?.route_ids?.length && fact.scope?.levels?.length === 1 && fact.scope.levels[0] === "masters"
+        && fact.scope?.applicant_categories?.length === 1 && fact.scope.applicant_categories[0] === "current_stanford_undergraduate"
+        && fact.scope?.additional_dimensions?.policy_family === "coterminal_masters_only" && !fact.conditions?.length && !fact.conditions_and_exceptions && !fact.exceptions?.length);
+      const timeSourceUrl = resolved.sources?.find(source => policy?.source_ids?.includes(source.id))?.url || "";
+      for (const [term, date] of Object.entries(value[program] || {})) {
+        const match = /^(winter|spring|summer|autumn)_(20\d{2})_(\d{2})$/.exec(term);
+        if (!match) continue;
+        const termName = `${match[1][0].toUpperCase()}${match[1].slice(1)}`;
+        const termPublished = policy?.value.available_terms_as_published?.includes(`${termName} ${match[2]}-20${match[3]}`);
+        const time = termPublished && timeSourceUrl ? { time: policy.value.time, timezone: policy.value.timezone, timeSourceUrl } : {};
+        add(row, "application", { date, cycle: `${match[2]}-${match[3]}`, ...time }, `${termName} ${match[2]}-${match[3]}`);
+      }
+      continue;
+    }
     if (Array.isArray(value)) {
       for (const entry of value) {
         if (!entry || typeof entry !== "object" || entry.publication_status && !["published", "published_dated_reference"].includes(entry.publication_status)) continue;
@@ -173,6 +202,7 @@ export function createDeadlineIcs(item, { now = new Date(), uid = "" } = {}) {
     item.applicabilityLabel || "",
     item.title ? `Deadline: ${item.title}` : "",
     source ? `Source: ${source}` : "",
+    item.timeSourceUrl ? `Time source: ${item.timeSourceUrl}` : "",
     "Confirm exact time and rules with the university.",
   ].filter(Boolean).join("\n");
   const lines = [

@@ -49,6 +49,6 @@
 // AI function display names (change these names in one place).
 window.AI_FUNCTIONS = {
   fit: "UniFit",
-  chance: "UniChance",
+  chance: "Minimum requirements match",
 };
 

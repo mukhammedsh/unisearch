@@ -126,24 +126,6 @@ test("floating motion layers close cleanly and stay above docked controls", asyn
   ).toBe(0);
   await expect(page.locator("#settingsModal")).toHaveAttribute("aria-hidden", "true");
 
-  await page.goto("/index.html");
-  await page.evaluate(() => localStorage.removeItem("unisearch_profile"));
-  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
-
-  await page.evaluate(() => {
-    const select = document.getElementById("sortSelect");
-    select.value = "uni_ai";
-    select.dispatchEvent(new Event("change", { bubbles: true }));
-  });
-  const warningModal = page.locator("#unifitWarningModal");
-  await expect(warningModal).toHaveClass(/is-open/);
-  await page.keyboard.press("Escape");
-  await expect(warningModal).toHaveClass(/is-closing/);
-  await expect.poll(async () =>
-    page.locator("#unifitWarningModal.is-open, #unifitWarningModal.is-closing").count()
-  ).toBe(0);
-  await expect(warningModal).toHaveAttribute("aria-hidden", "true");
-
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click("#mobileFilterToggle");
   await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
@@ -274,12 +256,6 @@ test("map results rail renders status badges in vertical column without overlapp
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
   const aiResponsePromise = page.waitForResponse((r) => r.url().includes("/universities/ai-sort") && r.status() === 200);
   await setNativeSelect(page, "sortSelect", "uni_ai");
-
-  const confirmBtn = page.locator("#unifitWarningModal [data-action='confirm']");
-  if (await confirmBtn.isVisible({ timeout: 1500 }).catch(() => false)) {
-    await confirmBtn.click();
-    await expect(page.locator("#unifitWarningModal")).toBeHidden();
-  }
 
   await aiResponsePromise;
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();

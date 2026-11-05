@@ -167,8 +167,115 @@ test("a real zero remains available, while null never becomes zero", () => {
   assert.match(zero, /not an admission probability/);
   resolved.assessment.chancePercent = null;
   const unknown = renderAdmissionsAssessment(resolved);
-  assert.match(unknown, /No requirements-match percentage/);
+  assert.match(unknown, /At least one evaluated published minimum was not met/);
   assert.doesNotMatch(unknown, /<strong>0%<\/strong>/);
+  delete resolved.assessment.reason;
+  assert.match(renderAdmissionsAssessment(resolved), /No requirements-match percentage/);
+});
+
+test("the visible requirements summary emphasizes unmet checks and keeps details closed", () => {
+  const resolved = context();
+  resolved.assessment = { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [
+    { kind: "academic_requirement", measurable: true, status: "met" },
+    { kind: "language_requirement", measurable: true, status: "unmet" },
+    { kind: "academic_requirement", measurable: true, status: "missing" },
+    { kind: "credential", measurable: false, status: "met" },
+    { kind: "remaining_conditions", status: "unassessed" },
+  ] } } };
+  const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+  assert.match(html, /At least one evaluated published minimum was not met/);
+  assert.match(html, /Required applicant evidence is missing/);
+  assert.match(html, /not an admission probability/);
+  assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
+  assert.ok(html.indexOf("At least one evaluated published minimum was not met") < html.indexOf("<details class=\"admissions-catalog__assessment-detail\">"));
+  assert.doesNotMatch(html, /<strong>0%<\/strong>/);
+  const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail">');
+  assert.match(summary, /Add the missing evidence in your profile/);
+  assert.doesNotMatch(summary, /Required applicant evidence is missing|of 2 evaluated numeric/);
+  assert.doesNotMatch(summary, /No requirements-match percentage|self-reported|not an admission probability/);
+  assert.match(details, /self-reported/);
+  assert.match(details, /not an admission probability/);
+});
+
+test("unavailable assessment explains distinct next steps and source-only coverage", () => {
+  const resolved = context();
+  resolved.assessment = { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [] } } };
+  assert.match(renderAdmissionsAssessment(resolved), /href="\/profile.html"/);
+  resolved.assessment.reason = "applicability_unknown";
+  assert.match(renderAdmissionsAssessment(resolved), /Check your program, application path and entry year/);
+  resolved.assessment.reason = "no_published_requirements";
+  resolved.assessment.activeChoice.details.checks = [{ kind: "published_rule", status: "unassessed", measurable: false }];
+  const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+  assert.match(html, /Our data has no numeric minimum for this path that can be compared automatically/);
+  const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail">');
+  assert.doesNotMatch(summary, /Add the missing evidence|Some published rules cannot be checked automatically|<strong>\d+%/);
+  assert.match(details, /Some published rules cannot be checked automatically/);
+});
+
+test("scored minimum results count only evaluated numeric checks, including zero", () => {
+  const resolved = context();
+  const checks = [{ measurable: true, status: "unmet" }, { measurable: true, status: "unmet" }];
+  resolved.assessment = { chancePercent: 0, activeChoice: { details: { checks } } };
+  assert.match(renderAdmissionsAssessment(resolved), /0%<\/strong>/);
+  assert.match(renderAdmissionsAssessment(resolved), /0 of 2 evaluated numeric minimum checks met/);
+  resolved.assessment.chancePercent = 100;
+  checks[0].status = "met";
+  checks[1].status = "met";
+  assert.match(renderAdmissionsAssessment(resolved), /2 of 2 evaluated numeric minimum checks met/);
+  resolved.assessment.chancePercent = null;
+  checks.push({ measurable: true, status: "missing" });
+  assert.doesNotMatch(renderAdmissionsAssessment(resolved), /2 of 2 evaluated numeric/);
+});
+
+test("duplicate official source URLs retain titles and all check dates in one link", () => {
+  const resolved = context();
+  resolved.facts = [fact("Published rule", { source_ids: ["one", "two"] })];
+  resolved.fact_groups = { requirements: ["private-fact-id"] };
+  resolved.sources = [
+    { id: "one", title: "Version one", url: "https://example.edu/source", checked_at: "2026-01-01" },
+    { id: "two", title: "Version two", url: "https://example.edu/source", checked_at: "2026-05-01" },
+  ];
+  const html = renderAdmissionsFacts(resolved, ["requirements"]);
+  assert.equal((html.match(/href="https:\/\/example.edu\/source"/g) || []).length, 1);
+  for (const value of ["Version one", "Version two", "2026-01-01", "2026-05-01"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
+});
+
+test("assessment checks identify their original source topics and keep their statuses", () => {
+  const resolved = context();
+  resolved.facts = [
+    fact({ description: "Academic rule" }, { id: "academic", topic: "academic_requirements" }),
+    fact({ description: "Language rule" }, { id: "language", topic: "language_requirements" }),
+  ];
+  resolved.assessment = { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [
+    { factId: "academic", kind: "published_rule", status: "unassessed", sourceRule: resolved.facts[0] },
+    { factId: "language", kind: "academic_requirement", status: "missing", rule: { alternatives: [{ exam_id: "NUET" }, { exam_id: "A_LEVEL_CERT" }] }, sourceRule: resolved.facts[1] },
+  ] } } };
+  const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+  assert.match(html, /<span>Academic qualifications<\/span><span class="admissions-catalog__status">Not assessed/);
+  assert.match(html, /<span>NUET · A-Level<\/span><span class="admissions-catalog__status">Evidence missing/);
+  assert.match(html, /Language rule/);
+  assert.doesNotMatch(html, /<strong>0%<\/strong>/);
+});
+
+test("only unnamed unassessed source rules group together, preserving each record", () => {
+  const resolved = context();
+  resolved.facts = [
+    fact("First source condition", { id: "one", topic: "language_tests" }),
+    fact("Second source condition", { id: "two", topic: "language_tests" }),
+    fact("Named source condition", { id: "named", topic: "language_tests", title: "Named language rule" }),
+    fact("Numeric source condition", { id: "numeric", topic: "language_tests" }),
+  ];
+  resolved.sources = [{ id: "source-private", title: "Official language page", url: "https://example.edu/language" }];
+  resolved.assessment = { chancePercent: null, reason: "unassessed_minimums", activeChoice: { details: { checks: resolved.facts.map((row, index) => ({
+    factId: row.id, kind: "published_rule", status: "unassessed", sourceRule: row, sourceIds: row.source_ids,
+    ...(index === 3 ? { numericMinimum: true, minimum: 6.5 } : {}),
+  })) } } };
+  const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+  assert.equal((html.match(/<summary class="admissions-catalog__heading"><span>Language requirements · Tests \(/g) || []).length, 1);
+  assert.match(html, /<summary class="admissions-catalog__heading"><span>Named language rule<\/span>/);
+  assert.match(html, /<summary class="admissions-catalog__heading"><span>Language requirements · Tests<\/span>/);
+  for (const content of ["First source condition", "Second source condition", "Named source condition", "Numeric source condition", "6.5", "https://example.edu/language"]) assert.ok(html.includes(content), content);
+  assert.doesNotMatch(html, /<strong>0%<\/strong>/);
 });
 
 test("assessment preserves reported evidence, exact source conditions, and separately labelled rules", () => {
@@ -287,11 +394,13 @@ test("unselected and incompatible contexts do not display unrelated facts", () =
 
 test("publication, evidence review, and applicability remain independent", () => {
   const resolved = context();
-  resolved.facts = [fact("Read both official versions.", { review_status: "conflicting", conditions: [], conditions_and_exceptions: null, exceptions: null })];
+  resolved.facts = [fact("Read both official versions.", { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
   resolved.fact_groups = { costs: ["private-fact-id"] };
   const html = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(html, /<span class="admissions-catalog__status">Published<\/span>/);
   assert.match(html, /Evidence review: Conflicting official sources/);
+  assert.match(html, /The published values differ/);
+  assert.match(html, /Ask the admissions office/);
   assert.match(html, /Conditional — applicability still needs verification<\/span><\/summary>/);
   assert.doesNotMatch(html, /UnknownUnknown|<strong>Conditions and exceptions<\/strong>/);
   resolved.facts[0].publication_status = "unknown";
@@ -381,7 +490,7 @@ test("simple source details retain independent statuses, limits, periods and sou
   assert.doesNotMatch(summary, />Published</);
   assert.equal((html.match(/Scope varies/g) || []).length, 1);
   assert.match(html, /<details class="admissions-catalog__evidence">/);
-  for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Source scope", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.includes(value), value);
+  for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Source scope", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
   assert.match(html, /2026[‑-]10-12/);
   assert.match(html, /<dd>0<\/dd>/);
 });
@@ -503,7 +612,7 @@ test("simple anonymous fact groups keep each record, its conditions, scope, peri
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
   assert.equal((html.match(/class="admissions-catalog__group-record"/g) || []).length, 2);
   for (const value of ["Minimum 7.0", "Minimum 6.5", "No component below 6.5", "No component below 6.0", "Applies to taught master&#039;s applicants", "Some courses require higher scores", "For undergraduate applicants", "2026–2027 intake", "2027–2028 intake", "Fall 2026", "Fall 2027", "Official English policy", "Official course page", "Conflicting official sources", "Unknown", "Scope varies"]) {
-    assert.ok(html.includes(value), value);
+    assert.ok(html.replaceAll("‑", "-").includes(value), value);
   }
 });
 
@@ -532,7 +641,7 @@ test("simple qualification tables retain source wording, extra fields, condition
 
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
   for (const value of ["International Baccalaureate", "Subject", "Published minimum", "Higher level", "The mathematics subject must be taken at higher level", "full diploma", "The university evaluates each qualification", "Only for first-year applicants", "Required subjects vary by course", "A separate test may also apply", "Evidence review", "Source and conditions", "Published period", "2027 entry", "Fall 2027", "Official qualification policy", "https://example.edu/qualifications", "Scope varies"]) {
-    assert.ok(html.includes(value), value);
+    assert.ok(html.replaceAll("‑", "-").includes(value), value);
   }
   assert.match(html, /2026[‑-]10-13/);
 });

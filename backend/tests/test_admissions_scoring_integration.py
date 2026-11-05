@@ -71,6 +71,8 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
         self.assertEqual(match["budgetStatus"], "unknown_cost")
         self.assertFalse(match["missingProgram"])
         self.assertEqual(match["admissionsContext"]["study_option_id"], "stanford-option-cs-bs")
+        self.assertEqual(match["admissionsSelection"]["option"], {"id": "stanford-option-cs-bs", "title": "Computer Science (BS)"})
+        self.assertEqual(match["admissionsSelection"]["route"]["id"], "undergraduate-shared-evidence:stanford-first-year")
         self.assertTrue(match["requirementChecks"])
         self.assertTrue(all("sourceRule" in check for check in match["requirementChecks"]))
         self.assertTrue(match["selectedByUser"])
@@ -119,6 +121,53 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
         self.assertEqual("missing", missing["subjectMatch"]["status"])
         catalog = universities.list_universities(major="law", study_level="undergraduate")
         self.assertNotIn(imperial["id"], [row["id"] for row in catalog["items"]])
+
+    def test_unifit_uses_each_saved_level_for_subject_and_cost(self):
+        university = universities.get_university_by_id(STANFORD)
+        cases = (
+            ("Master", "undergraduate", "stanford-option-cs-bs", "undergraduate-shared-evidence:stanford-first-year", "bachelor"),
+            ("Bachelor", "masters", "stanford-option-cs-ms", "engineering-doerr-evidence:external-graduate", "master"),
+            ("Master", "", "stanford-option-cs-bs", "undergraduate-shared-evidence:stanford-first-year", "any"),
+        )
+        for general, selected, option, route, expected in cases:
+            with self.subTest(selected=selected):
+                value = {"study_level": general, "major": "computer science", "budget": 100000,
+                         "selectedAdmissionChoices": {STANFORD: {"studyOptionId": option,
+                             "applicationRouteId": route, "studyLevel": selected}}}
+                match = ai_scoring.sort_universities_ai([university], value)[0]["matchData"]
+                self.assertEqual(selected or None, match["admissionsContext"]["study_level"])
+                self.assertEqual(expected, match["subjectMatch"]["study_level"])
+                if selected:
+                    self.assertIn(option, match["subjectMatch"]["option_ids"])
+                if selected == "undergraduate":
+                    self.assertIsNotNone(match["costQuote"])
+                    self.assertEqual("undergraduate", match["costQuote"]["study_level"])
+                if not selected:
+                    self.assertIsNone(match["affordabilityGap"])
+                    self.assertEqual("scope_unknown", match["budgetAssessment"]["evidence"])
+
+    def test_unifit_subject_respects_selected_option_and_invalid_ids(self):
+        university = universities.get_university_by_id(STANFORD)
+        value = profile(option="stanford-option-chem-bs")
+        value["major"] = "computer science"
+        match = ai_scoring.sort_universities_ai([university], value)[0]["matchData"]
+        self.assertEqual("missing", match["subjectMatch"]["status"])
+        self.assertTrue(match["missingProgram"])
+        self.assertEqual([], match["subjectMatch"]["option_ids"])
+
+        value["selectedAdmissionChoices"][STANFORD]["studyOptionId"] = "retired-option"
+        match = ai_scoring.sort_universities_ai([university], value)[0]["matchData"]
+        self.assertEqual("unknown", match["subjectMatch"]["status"])
+        self.assertFalse(match["missingProgram"])
+        self.assertIsNone(match["requirementsFitPercent"])
+        self.assertIsNone(match["costQuote"])
+
+        value["selectedAdmissionChoices"][STANFORD]["studyOptionId"] = "stanford-option-chem-bs"
+        value["selectedAdmissionChoices"][STANFORD]["studyLevel"] = "masters"
+        match = ai_scoring.sort_universities_ai([university], value)[0]["matchData"]
+        self.assertEqual("unknown", match["subjectMatch"]["status"])
+        self.assertFalse(match["missingProgram"])
+        self.assertEqual([], match["subjectMatch"]["option_ids"])
 
     def test_tuition_and_unknown_fee_status_do_not_claim_a_full_budget(self):
         imperial = universities.get_university_by_id("imperial-college-london-uk")

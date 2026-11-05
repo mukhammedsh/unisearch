@@ -236,7 +236,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   expect(checks["overall-gpa"].sourceRule.id).toBe("bcs-meng-entry-conditions");
   const bcsContextUrl = page.url();
   const assessment = await openAssessment(page);
-  await expect(assessment).toContainText("100%");
+  await expect(assessment.locator(":scope > p > strong")).toHaveText("100%");
   const scopedAverages = assessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" });
   await expect(scopedAverages).toHaveCount(2);
   await expect(scopedAverages.nth(0).locator(":scope > summary")).toContainText(/Met/i);
@@ -275,7 +275,8 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const updatedAssessment = await openAssessment(page);
-  await expect(updatedAssessment).toContainText(/No requirements-match percentage is available/);
+  await expect(updatedAssessment).toContainText("Required applicant evidence is missing");
+  await expect(updatedAssessment.locator(":scope > p > strong")).toHaveCount(0);
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
   await missingOverall.locator(":scope > summary").click();

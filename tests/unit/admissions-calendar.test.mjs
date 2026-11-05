@@ -1,6 +1,7 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { readFileSync } from "node:fs";
 import { createDeadlineIcs, getReviewedDeadlineEvents } from "../../frontend/javascript/pages/university/deadline-calendar.js";
 
 const fact = (id, value, extra = {}) => ({ id, value, publication_status: "published", review_status: "reviewed",
@@ -9,6 +10,48 @@ const context = facts => ({ institution_id: "university", context: { intended_en
   selected_option: { id: "computing", title: "Computing", awards: ["MEng"], levels: ["undergraduate"] },
   selected_route: { id: "ucas", title: "UCAS", shared_policy_context_ids: [] },
   facts, fact_groups: { deadlines: facts.map(row => row.id) }, sources: [{ id: "official", url: "https://example.edu/apply" }] });
+
+function catalogRecord(id) {
+  const root = JSON.parse(readFileSync(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+  const stack = [root];
+  while (stack.length) {
+    const item = stack.pop();
+    if (!item || typeof item !== "object") continue;
+    if (item.id === id) return item;
+    stack.push(...Object.values(item));
+  }
+  throw new Error(`Missing catalog record ${id}`);
+}
+
+test("Stanford MBA and CS coterm projections preserve real published rounds, times and term scope", () => {
+  const mba = catalogRecord("professional-evidence:gsb_mba_deadlines");
+  const mbaContext = { ...context([mba]), selected_option: { id: "stanford-option-gsb-mba", title: "MBA" },
+    selected_route: { id: "professional-evidence:gsb_mba_admission", title: "MBA" }, sources: [{ id: mba.source_ids[0], url: "https://www.gsb.stanford.edu/programs/mba/admission/application/deadlines" }] };
+  const mbaEvents = getReviewedDeadlineEvents(mbaContext);
+  assert.deepEqual(mbaEvents.filter(e => e.kind === "application").map(e => [e.deadline, e.time, e.timezone]), [
+    ["2026-09-09", "16:00", "America/Los_Angeles"], ["2027-01-06", "16:00", "America/Los_Angeles"], ["2027-04-07", "16:00", "America/Los_Angeles"],
+  ]);
+  assert.deepEqual(mbaEvents.filter(e => e.kind === "decision").map(e => e.deadline), ["2026-12-09", "2027-04-01", "2027-05-27"]);
+  assert.match(createDeadlineIcs(mbaEvents[0]), /DTSTART:20260909T230000Z/);
+  assert.equal(mbaEvents[0].cycle, "Fall 2027 entry");
+  assert.equal(mbaEvents[0].applicantCategoryLabel, "external_applicant");
+  const coterm = catalogRecord("engineering-doerr-evidence:engineering-coterm-2027-directory-details");
+  const cotermContext = { ...context([coterm]), selected_option: { id: "stanford-option-cs-ms", title: "Computer Science MS" },
+    selected_route: { id: "engineering-doerr-evidence:cs-coterm", title: "CS coterm", shared_policy_context_ids: ["engineering-doerr-evidence:engineering-coterm"] } };
+  const events = getReviewedDeadlineEvents(cotermContext);
+  assert.deepEqual(events.map(e => [e.deadline, e.cycle]), [["2026-10-06", "2026-27"], ["2027-01-08", "2026-27"], ["2027-04-30", "2027-28"]]);
+  assert.equal(events[0].applicantCategoryLabel, "current_stanford_undergraduate");
+  assert.ok(events.every(event => !event.time && !event.timezone));
+  const policy = catalogRecord("coterm-central-evidence:stanford-coterm-central-deadline");
+  const timedContext = { ...cotermContext, facts: [coterm, policy], sources: [{ id: policy.source_ids[0], url: "https://stanford.edu/coterm" }] };
+  const timed = getReviewedDeadlineEvents(timedContext);
+  assert.deepEqual(timed.map(event => [event.time, event.timezone]), Array(3).fill(["23:59", "America/Los_Angeles"]));
+  assert.equal(timed[0].timeSourceUrl, "https://stanford.edu/coterm");
+  assert.match(createDeadlineIcs(timed[0]), /DTSTART:20261007T065900Z/);
+  const conditional = { ...policy, conditions: [{ when: "additional restriction" }] };
+  assert.ok(getReviewedDeadlineEvents({ ...timedContext, facts: [coterm, conditional] }).every(event => !event.time));
+  assert.deepEqual(getReviewedDeadlineEvents({ ...cotermContext, selected_route: { id: "external" } }), []);
+});
 
 test("reviewed calendar keeps Medicine and other UCAS dates separate and preserves the source timezone", () => {
   const resolved = context([fact("ucas", { submission_opens: "2026-09-01",

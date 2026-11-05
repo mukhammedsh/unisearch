@@ -47,7 +47,7 @@
 ## 4. Core product logic
 
 - **UniFit:** Implemented in `backend/app/services/ai_scoring.py` as composite personalized ranking.
-- **UniChance:** The provisional 0–100 value is the share of evaluable published academic and language minimum checks met for the applicable admission path. It is not an admission probability or an aid prediction. Missing evidence or no measurable published minimums yields no score; a verified failure can yield zero. Published admitted-score ranges and acceptance rates are separate facts. Follow the scoring contract in the admissions product model.
+- **Minimum requirements match:** The 0–100 value is the share of evaluable published academic and language minimum checks met for the applicable admission path. Use this descriptive applicant-facing name instead of UniChance; existing API/storage identifiers remain supported. It is not an admission probability, full eligibility decision or aid prediction. Missing evidence or no measurable published minimums yields no score; a verified failure can yield zero. Published admitted-score ranges and acceptance rates are separate facts. Follow the scoring contract in the admissions product model.
 - **ML scoring:** Implemented in `backend/app/services/ml_scoring.py`, with multilingual-e5 embeddings. If the neural model is unavailable, the system reports `unavailable` mode without silent lexical fallback.
 - **Runtime URLs:** Never hardcode API addresses. Use the existing frontend runtime configuration.
 

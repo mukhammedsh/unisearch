@@ -1619,10 +1619,12 @@ def sort_universities_ai(
             continue
         row_id = str(row.get("id") or "").strip()
         canonical_context = row_id in admissions_catalog.INSTITUTION_IDS
+        chance_general = estimate_uni_chance(row, profile_any, user_context=ctx, lang_cfg=lang_cfg)
         choices = [] if canonical_context else universities_service.expand_admission_choices(row.get("admission_categories"))
         choices = [t for t in choices if isinstance(t, dict)]
         target_level = _normalize_study_level_str(
-            profile.get("studyLevel") or profile.get("study_level") or ""
+            chance_general["context"].get("study_level") if canonical_context
+            else profile.get("studyLevel") or profile.get("study_level") or ""
         )
         target_route = profile.get("applicant_route")
         target_cycle = profile.get("intended_entry_cycle")
@@ -1653,7 +1655,6 @@ def sort_universities_ai(
             / 4.0
         )
 
-        chance_general = estimate_uni_chance(row, profile_any, user_context=ctx, lang_cfg=lang_cfg)
         if canonical_context:
             selected_choice_key = str(chance_general.get("activeChoiceKey") or "")
         active_chance_bundle = chance_general
@@ -1675,7 +1676,15 @@ def sort_universities_ai(
 
         if canonical_context:
             matching_options = admissions_catalog.matching_study_options(row_id, profile_major, target_level)
-            missing_program = bool(profile_major) and not matching_options
+            selected_option_id = chance_general["context"].get("study_option_id")
+            selected_option = (chance_general.get("selectedContext") or {}).get("option") or {}
+            applicability = chance_general.get("applicability") or {}
+            unknown_option = bool(selected_option_id) and (
+                not selected_option.get("id") or "mismatched" in applicability.values()
+            )
+            if selected_option_id:
+                matching_options = [option for option in matching_options if option["id"] == selected_option_id and not unknown_option]
+            missing_program = bool(profile_major) and not matching_options and not unknown_option
         else:
             missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
         program_missing_penalty = 0.25 if missing_program else 0.0
@@ -1927,11 +1936,16 @@ def sort_universities_ai(
         }
         if canonical_context:
             match_data["admissionsContext"] = chance_general.get("context")
+            selection = chance_general.get("selectedContext") or {}
+            match_data["admissionsSelection"] = {
+                key: {"id": item["id"], "title": item["title"]} if item and item.get("id") else None
+                for key in ("option", "route") for item in (selection.get(key),)
+            }
             match_data["catalogRevision"] = chance_general.get("catalogRevision")
             match_data["assessmentRevision"] = chance_general.get("assessmentRevision")
             match_data["costQuote"] = cost_quote
             match_data["budgetAssessment"] = budget_assessment
-            match_data["subjectMatch"] = {"status": "missing" if missing_program else "matched" if profile_major else "not_set",
+            match_data["subjectMatch"] = {"status": "unknown" if unknown_option else "missing" if missing_program else "matched" if profile_major else "not_set",
                                           "option_ids": [option["id"] for option in matching_options] if profile_major else [],
                                           "study_level": target_level}
             match_data["costReason"] = budget_assessment["evidence"]

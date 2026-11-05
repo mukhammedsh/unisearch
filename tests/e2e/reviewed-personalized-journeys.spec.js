@@ -106,3 +106,51 @@ test("basic budget profile without a major can discover, filter and shortlist un
   await expect(page.locator(".compare-config-column")).toHaveCount(2);
   await expect(page).toHaveURL(new RegExp(`${MIT}.*${STANFORD}|${STANFORD}.*${MIT}`));
 });
+
+
+for (const [language, heading, action, width, theme] of [
+  ["eng", "Minimum requirements match", "Check requirements", 1280, "light"],
+  ["rus", "Соответствие минимальным требованиям", "Проверить требования", 390, "dark"],
+  ["kaz", "Ең төменгі талаптарға сәйкестік", "Талаптарды тексеру", 390, "light"],
+]) {
+  test(`${language} cards show the requirements percentage and open the university`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.addInitScript(({ language, theme }) => {
+      localStorage.setItem("unisearch_ui_language_v1", language);
+      localStorage.setItem("unisearch_theme", theme);
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    }, { language, theme });
+    await page.route("**/universities/ai-sort", route => route.fulfill({
+      status: 200, contentType: "application/json", body: JSON.stringify({
+        items: [{ id: MIT, name: "Massachusetts Institute of Technology",
+          location: { country: "USA", city: "Cambridge" }, admissions_catalog: { availability: "reviewed" },
+          matchData: { finalScore: 0.1, preferenceMismatch: 0.1,
+            userPreferences: { practice_vs_science: 0.99 }, factors: { practice_vs_science: 0.99 },
+            requirementsFitPercent: 50, requirementChecks: [
+              { measurable: true, status: "met" }, { measurable: true, status: "unmet" },
+            ],
+          },
+        }], total: 1, page: 1, limit: 20, warnings: [],
+      }),
+    }));
+    await page.goto("/index.html?sort=uni_ai");
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+    const card = page.locator(`[data-uni-id="${MIT}"]`);
+    await expect(card.locator(".uni-status-value")).toHaveText("50%");
+    const preference = card.locator(".uni-status-trigger--match");
+    await preference.click();
+    await expect(card.locator(".uni-status-tooltip__content:visible")).not.toContainText("99/100");
+    await expect(card.locator(".uni-status-tooltip__content:visible")).not.toContainText("UniFit penalty");
+    await expect(card.getByRole("link", { name: action })).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await card.locator(".uni-card-link-overlay").press("Enter");
+    await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+    await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    await page.locator('[data-tab="tab-admission"]').click();
+    await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+    const result = page.locator("#detailRequirements [data-requirements-match]");
+    await expect(result.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+    await expect(result.getByRole("button")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+}

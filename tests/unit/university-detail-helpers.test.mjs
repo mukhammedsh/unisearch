@@ -1006,8 +1006,9 @@ test("requirements fit summary requires confirmed semantics and preserves unavai
   });
   assert.match(selected, /Selected:/);
   assert.match(selected, /Recommended/);
-  assert.match(selected, /Fit to published requirements/);
-  assert.match(selected, /Share of evaluable published academic and language minimum checks met/);
+  assert.match(selected, /Minimum requirements match/);
+  assert.match(selected, /Share of evaluable published numeric academic and language minimums met/);
+  assert.doesNotMatch(selected, /UniChance/);
   assert.match(selected, /not an admission probability/i);
   assert.doesNotMatch(selected, /admitted-student|acceptance rate|confidence range/i);
   assert.doesNotMatch(selected, /affordability|budget/i);
@@ -1029,15 +1030,18 @@ test("requirements fit summary requires confirmed semantics and preserves unavai
     bestChoiceLabel: "SAT route",
   });
   const russianNoMeaning = renderUniChanceSummary({ overallChance: 35 });
-  assert.match(russianProfile, /Доля проверяемых опубликованных академических и языковых минимумов, которые выполнены/);
+  assert.match(russianProfile, /Доля выполненных проверяемых опубликованных числовых академических и языковых минимумов/);
   assert.match(russianNoMeaning, /смысл этого показателя не подтверждён/);
-  assert.match(russianProfile, /это не вероятность поступления/i);
+  assert.match(russianProfile, /не вероятность зачисления/i);
+  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /UniChance/);
   assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /профилей зачисленных|диапазон уверенности/i);
-  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /бюджет|финанс/i);
+  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /бюджет/i);
+  assert.match(russianProfile, /не прогноз финансирования/i);
   setLanguage("eng", { persist: false, emit: false });
 });
 
 test("chance summary explains distinct no-data reasons", () => {
+  setLanguage("eng", { persist: false, emit: false });
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: "", reason: "requirements_not_met" }), /do not meet a required minimum/);
   assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "missing_evidence" }), /Add the required exam scores/);
   const unsupported = renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "unassessed_minimums" });

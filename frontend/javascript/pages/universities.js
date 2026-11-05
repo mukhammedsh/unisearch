@@ -55,7 +55,6 @@ import {
 } from "./universities/compare-helpers.js";
 import {
   showUniversitiesTour,
-  showUniFitWarning,
 } from "./universities/tour-modals.js";
 import {
   translateUniversityName,
@@ -103,6 +102,42 @@ import {
 
 import { billingPeriodLabel } from "./university/admissions-presentation.js";
 
+export function reviewedCardIndicators(match, budget) {
+    if (!match || match.finalScore == null || !Number.isFinite(Number(match.finalScore))) return [];
+    const indicators = [];
+    const add = (icon, tone, label, detail, priority = 2, value = "") => indicators.push({ icon, tone, label, detail, priority, value });
+    if (match.subjectMatch?.status === "missing") {
+        const selected = Boolean(match.admissionsContext?.study_option_id);
+        add("academic-cap", "warning", t(selected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
+            t(selected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0);
+    } else if (match.subjectMatch?.status === "matched") {
+        add("academic-cap", "match", t("universities.match.subject_matched"), t("universities.match.subject_matched_detail"));
+    }
+    const mismatch = match.preferenceMismatch == null ? NaN : Number(match.preferenceMismatch);
+    if (Number.isFinite(mismatch) && mismatch <= 0.22) {
+        add("check-badge", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
+            t("universities.match.preference_detail"), 3);
+    }
+    const checks = Array.isArray(match.requirementChecks) ? match.requirementChecks.filter(check => check.measurable) : [];
+    if (typeof match.requirementsFitPercent === "number" && Number.isFinite(match.requirementsFitPercent) && checks.length) {
+        const met = checks.filter(check => check.status === "met").length;
+        const percent = new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US", { maximumFractionDigits: 1 }).format(match.requirementsFitPercent);
+        add("clipboard-document-list", met < checks.length ? "warning" : "finance",
+            tFormat("universities.match.score", { percent }),
+            tFormat("universities.match.checks_detail", { met, total: checks.length }), met < checks.length ? 0 : 2, `${percent}%`);
+    }
+    const assessment = match.budgetAssessment || {};
+    if (Number(budget) > 0 && match.costQuote && ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status)) {
+        const state = { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
+        const detail = state === "uncertain" ? "budget_uncertain_detail"
+            : assessment.basis === "tuition" ? "budget_tuition_detail"
+                : assessment.evidence === "applicable" ? "budget_annual_detail" : "budget_reference_detail";
+        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`),
+            t(`universities.match.${detail}`), state === "over" ? 1 : 2);
+    }
+    return indicators.sort((a, b) => a.priority - b.priority);
+}
+
 export function universityCardPriceInfo(university, basis = "annual_total") {
     const quote = university?.catalog_costs?.[basis];
     const minimum = toFiniteNumber(quote?.min);
@@ -118,7 +153,11 @@ export function universityCardPriceInfo(university, basis = "annual_total") {
 }
 
 export function renderUniversityCardCosts(university, basis = "annual_total", scope = "catalog") {
-    const price = universityCardPriceInfo(university, basis);
+    let price = universityCardPriceInfo(university, basis);
+    if (basis === "annual_total" && price.amount === null && university?.admissions_catalog?.availability === "reviewed") {
+        const tuition = universityCardPriceInfo(university, "tuition");
+        if (tuition.amount !== null) price = tuition;
+    }
     const known = price.amount !== null && Number.isFinite(price.amount);
     const range = known && price.max > price.min;
     const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference");
@@ -141,6 +180,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
         : "";
     const priceBasis = price.basis || basis;
     const title = t(`universities.cost.${priceBasis}`);
+    const showsTuitionReference = basis === "annual_total" && priceBasis === "tuition";
     const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
     const period = entry ? tFormat("universities.cost.entry", { year: entry[1] })
         : price.period === "Whole program" ? billingPeriodLabel("whole_program") : price.period === "Year not stated" ? t("universities.cost.cycle_unspecified") : price.period;
@@ -168,8 +208,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     const exclusions = priceBasis === "annual_total" ? university?.catalog_costs?.annual_total?.exclusions || [] : [];
     const note = [
         reference ? t("universities.cost.reference") : known ? t("universities.cost.before_aid") : "",
-        !known && priceBasis === "annual_total" && universityCardPriceInfo(university, "tuition").amount !== null
-            ? t("universities.cost.full_budget_unavailable") : "",
+        showsTuitionReference ? t("universities.cost.full_budget_unavailable") : "",
         priceBasis === "tuition" ? t("universities.cost.tuition_scope_note") : "",
         feeStatuses.length > 1 ? t("universities.cost.fee_scope") : "",
         ...exclusions.map(key => t(`universities.cost.exclusion.${key}`)),
@@ -188,8 +227,10 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     }
     const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
     const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
+    const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
     return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary ? " uni-price--with-conversion" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${primary} ${billingPeriod}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary || showsTuitionReference ? " uni-price--stacked" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+            ${showsTuitionReference ? `<span class="uni-price-period">${escapeHtml(title)}</span>` : ""}
             <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span> <span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
             ${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}
         </button>
@@ -697,7 +738,6 @@ export function initUniversitiesPage() {
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     let hasInitialListPaint = false;
     let hasRestoredInitialScroll = false;
-    let uniFitWarningShownInSession = false;
     let lastRenderedItems = [];
     let mapResultsItems = [];
     let mapResultsPage = 0;
@@ -1864,28 +1904,8 @@ export function initUniversitiesPage() {
     __universitiesRecentRelocationHandler = relocateRecentlyViewedBar;
     window.addEventListener("resize", __universitiesRecentRelocationHandler);
 
-    async function handleSortChange(nextSort) {
-        const prevSort = state.sort;
+    function handleSortChange(nextSort) {
         if (el.sortSelect) el.sortSelect.value = nextSort;
-
-        if (nextSort === "uni_ai" && prevSort !== "uni_ai") {
-            const profile = loadProfile();
-            if (!hasProfileEvidence(profile)) {
-                if (el.sortSelect) {
-                    el.sortSelect.value = prevSort;
-                    initCustomSelect("sortSelect");
-                }
-                const confirmed = await showUniFitWarning();
-                if (!confirmed) {
-                    updateMobileFilterUi();
-                    return;
-                }
-                if (el.sortSelect) {
-                    el.sortSelect.value = "uni_ai";
-                    initCustomSelect("sortSelect");
-                }
-            }
-        }
 
         state.sort = el.sortSelect ? el.sortSelect.value : normalizeSortMode(nextSort);
         if (state.sort !== "uni_ai" && el.unifitWarningBanner) {
@@ -1994,12 +2014,6 @@ export function initUniversitiesPage() {
     el.sortSelect?.addEventListener("change", () => {
         handleSortChange(el.sortSelect.value);
     });
-
-    const shouldShowUniFitWarning = () => {
-        if (state.sort !== "uni_ai") return false;
-        if (uniFitWarningShownInSession) return false;
-        return !hasProfileEvidence(loadProfile());
-    };
 
     const bindTradeoffSlider = (sliderEl, stateKey, leftTextKey, leftTextFallback, rightTextKey, rightTextFallback, labelEl) => {
         if (!sliderEl) return;
@@ -3846,9 +3860,6 @@ export function initUniversitiesPage() {
                     await showUniversitiesTour({ startStep: readUniversitiesTourResumeStep() });
                     clearUniversitiesTourResumeStep();
                     markUniversitiesTourSeen();
-                    if (shouldShowUniFitWarning()) {
-                        await showUniFitWarning();
-                    }
                 }, 120);
             }
         }
@@ -3882,7 +3893,7 @@ export function initUniversitiesPage() {
         const uniCurrency = priceInfo.currency;
 
         const statusIndicators = [];
-        const addStatusIndicator = (iconName, tone, label, detail = "") => {
+        const addStatusIndicator = (iconName, tone, label, detail = "", value = "") => {
             const cleanLabel = String(label || "").trim();
             const cleanDetail = String(detail || "").trim();
             const ariaText = cleanDetail ? `${cleanLabel}: ${cleanDetail}` : cleanLabel;
@@ -3891,8 +3902,8 @@ export function initUniversitiesPage() {
                 : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
             statusIndicators.push(`
                 <span class="uni-status-tooltip">
-                    <button class="uni-status-trigger uni-status-trigger--${tone}" type="button" aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
-                        <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>
+                    <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button" aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
+                        <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
                     </button>
                     <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
                 </span>
@@ -3954,6 +3965,9 @@ export function initUniversitiesPage() {
             }, "{label}: your setting {requested}/100; university indicator {observed}/100.");
         }).filter(Boolean).join(" ");
 
+        if (reviewedAdmissions) {
+            reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value }) => addStatusIndicator(icon, tone, label, detail, value));
+        } else {
         // Priority 0: warning on missing profile major program
         if (hasMissingProgram) {
             addStatusIndicator(
@@ -3993,7 +4007,9 @@ export function initUniversitiesPage() {
             addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"));
         }
 
-        const MAX_VISIBLE_BADGES = 4;
+        }
+
+        const MAX_VISIBLE_BADGES = reviewedAdmissions ? 3 : 4;
         let statusHtml = "";
         if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
             statusHtml = statusIndicators.join("");

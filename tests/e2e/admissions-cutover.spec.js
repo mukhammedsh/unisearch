@@ -150,6 +150,7 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await searchAndChooseMitCourse(page);
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await selectCustomOption(page, "#admissionsRoute", "mit-first-year");
   await openAdvanced(page);
   await setNativeSelect(page, "admissionsApplicant", "first_year");
@@ -328,7 +329,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(greDeadlineFact).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  await expect(page.locator("#detailRequirements")).not.toContainText("0%");
+  await expect(page.locator("#detailRequirements")).toContainText("0%");
   await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
   await expect(page.locator("#tab-finance")).toHaveClass(/active/);
   await expect(page.locator("#detailFinance")).toContainText("No comparable budget is confirmed for this selection");

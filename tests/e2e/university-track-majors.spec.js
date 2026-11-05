@@ -117,7 +117,7 @@ async function noFitPercentage(page) {
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
   await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
-  await expect(assessment).toContainText(/not.*probability|не вероятность поступления/i);
+  await expect(assessment).toContainText(/not.*probability|не вероятность (?:поступления|зачисления)/i);
 }
 
 async function fitsViewport(page, width) {
@@ -131,7 +131,7 @@ for (const [id, width, query, description] of [
   test(`MIT ${id} retains sourced study content and Russian interface with shared admission`, async ({ page }) => {
     await openCatalog(page, MIT, { width, language: "rus" });
     await openAdmission(page);
-    await expect(page.locator("#admissionsContext h2")).toHaveText("Опубликованные пути поступления");
+    await expect(page.locator("#admissionsContext h2")).toHaveText("Как поступить");
     await chooseOption(page, id, query, "undergraduate");
     await openAdmission(page);
     await expect(page.locator('#admissionsRoute option[value="mit-first-year"]')).toHaveCount(1);
@@ -370,8 +370,13 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
   await openCatalog(page);
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
-  await openAdvanced(page);
-  await setNativeSelect(page, "admissionsRoute", "mit-first-year");
+  const routeBtn = page.locator('[data-read-route="mit-first-year"]');
+  if (await routeBtn.isVisible()) {
+    await routeBtn.click();
+  } else {
+    await openAdmissionSelectionEditor(page);
+    await setNativeSelect(page, "admissionsRoute", "mit-first-year");
+  }
   await fetched;
   try {
     await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");

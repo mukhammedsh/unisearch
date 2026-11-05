@@ -47,7 +47,7 @@ RETIRED_ADMISSIONS_KEYS = {
 }
 EXPECTED_ADMISSIONS_TOTALS = {
     "study_options": 901,
-    "application_routes": 895,
+    "application_routes": 896,
     "facts": 4072,
     "sources": 1756,
 }

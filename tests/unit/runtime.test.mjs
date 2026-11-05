@@ -56,11 +56,11 @@ describe("runtime.js", () => {
   });
 
   describe("aiName", () => {
-    it("resolves default AI names correctly", () => {
+    it("preserves UniFit and uses a descriptive requirements label", () => {
       assert.equal(aiName("fit"), "UniFit");
-      assert.equal(aiName("chance"), "UniChance");
+      assert.equal(aiName("chance"), "Minimum requirements match");
       assert.equal(aiName("  FIT  "), "UniFit");
-      assert.equal(aiName("CHANCE"), "UniChance");
+      assert.equal(aiName("CHANCE"), "Minimum requirements match");
     });
 
     it("falls back to generic label for unknown keys", () => {

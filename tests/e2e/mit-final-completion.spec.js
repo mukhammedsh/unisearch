@@ -100,6 +100,8 @@ for (const presentation of presentations) {
     let content = '';
     for await (const chunk of stream) content += chunk.toString();
     expect(content.replace(/\r\n /g, '')).toContain('DTSTART:20270112T200000Z');
+    await open(page, presentation, 'mit-sloan-mba-full-time', 'mit_sloan_mba_early_deferred', 'masters');
+    await tab(page, 'deadlines');
     await month('2027-04');
     await expect(details).toContainText({ eng: 'deferred entry', rus: 'отложенное начало учёбы', kaz: 'оқуды кейін бастау' }[presentation.language]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(presentation.width);

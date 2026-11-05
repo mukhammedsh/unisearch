@@ -1,5 +1,6 @@
 meta.display_name: English
 meta.code: eng
+ai.chance: Minimum requirements match
 university.deadlines.mba_early: MBA Early · deferred entry
 university.admissions.reading.no_route_short: Application path needs clarification
 university.admissions.reading.no_application_route: No independent application path is established for this option. It may be an internal/intermediate award or require clarification from the department. Read the program's access conditions and official instructions; this does not mean that admission is closed.
@@ -63,7 +64,7 @@ guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim + offset -
 guide.ml.p2: That similarity becomes the semantic third of the {fit} score, which is why universities described the way you think float upward. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching — gamedev counts as game development, ML as machine learning — so you can write the way you speak.
 guide.ml.p3: The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off — "game development" outranks a vague "IT" — while every extra filler word dilutes the signal.
 guide.ml.p4: Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion. Write what you want, never what you want to avoid.
-guide.ml.p5: Interests only reorder the list; they never override requirements or chances. And if the model itself is unavailable, interests change nothing at all: there is no quiet keyword fallback, the score is zero, and the page says so openly.
+guide.ml.p5: Interests only reorder the list; they never override requirements or the minimum requirements match. If the model is unavailable, interests change nothing: there is no keyword fallback, and the page says so openly.
 guide.ml.title: How your interests are used
 guide.nav.interests: Interests
 guide.nav.roi: ROI
@@ -101,21 +102,21 @@ guide.roi.formula: roi = salary / yearCost\nyearCost = cheapest track total, USD
 guide.roi.p2: The cost is the cheapest admission choice total for your study mode, converted into one currency so that universities from different countries stay comparable. The salary comes only from verified graduate data: your selected major when the university publishes figures for it, otherwise the average across its published majors.
 guide.roi.p3: When a university publishes no usable salary data, the ROI block simply disappears instead of guessing. Missing data is never plotted as zero, because a zero would pretend the return is known to be terrible.
 guide.roi.p4: Treat the number as a planning ratio rather than a promise: your program, country, skills, and right to work shape the real outcome far more than any average, and the labels follow fixed cutoffs — above 2.0 Excellent Return, above 1.0 Positive Return, anything below High Investment.
-guide.roi.p5: ROI does not describe admission eligibility. Read it alongside {chance}, published acceptance statistics, and the full yearly cost.
+guide.roi.p5: ROI does not describe admission eligibility. Read it alongside the {chance} score, published acceptance statistics, and the full yearly cost.
 guide.comparison.title: University comparison
 guide.comparison.p1: Comparing lives on the Universities page in its own Comparing tab, while the rest of the catalog keeps working as usual — only this tab collects a shortlist. Pick universities from cards or map pins and press Compare, and click a picked card again to remove it, so putting two or three candidates side by side takes seconds.
 guide.comparison.p2: The results table only ever compares like with like: the same academic year, the same fee status, the same scope. Each row then ends with an honest verdict — an advantage for one side, a trade-off, parity, incomparable data, or simply missing data — and the page never crowns an overall winner, because the best university depends on what you personally value.
-guide.comparison.p3: Published acceptance rates are institution or course statistics, depending on their source. They are separate from your {chance} requirements fit score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.
-guide.unichance.p1: {chance} is a 0–100 fit score for your profile against evaluable published academic and language minimums for the selected requirement profile. It is not an admission probability and does not predict a funding award.
+guide.comparison.p3: Published acceptance rates are institution or course statistics, depending on their source. They are separate from the {chance} score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.
+guide.unichance.p1: {chance} is a 0–100 score for the share of evaluable published academic and language minimums met in the selected requirement profile. 100% means all assessed numeric minimums are met; it does not confirm subject prerequisites, documents, eligibility, or other admission conditions. It is not an admission probability or a funding prediction.
 guide.unichance.formula: requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100
 guide.unichance.p2: The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.
 guide.unichance.p3: The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.
-guide.unichance.p4: If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, UniChance shows no score and explains what is missing. Missing evidence is not treated as zero.
+guide.unichance.p4: If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, the score is unavailable and the page explains what is missing. Missing evidence is not treated as zero.
 guide.unichance.title: {chance} (fit to published requirements, 0–100)
-guide.unifit.p1: {fit} sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from UniChance, which is only the requirements fit component:
+guide.unifit.p1: {fit} sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from the {chance} score, which reflects only the requirements component:
 guide.unifit.formula: without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40\nwith semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35\naffordability_gap × 0.20 is added when annual cost and profile budget are known; available components are normalized by their total weight
 guide.unifit.p2: Requirements gap is derived from the requirements fit score and is omitted when that score is unavailable. Known annual cost and profile budget add an affordability gap; potential awards do not reduce the cost. The ranking renormalizes the weights of available components.
-guide.unifit.p3: Focus, Atmosphere, Finance, and Location are preference sliders. The Finance slider expresses a preference between budget and prestige; it is not your budget amount and does not estimate grant or paid admission odds.
+guide.unifit.p3: Focus, Atmosphere, Finance, and Location are preference sliders. The Finance slider expresses a preference between budget and prestige; it is not your budget amount and does not estimate admission outcomes or funding awards.
 guide.unifit.p4: Preference badges describe slider alignment. Requirement badges describe whether the current profile meets applicable published minimums. Neither predicts an admission decision or funding award.
 guide.unifit.p5: Missing exam or language evidence can make a requirements fit score unavailable. The university remains in the catalog, and the missing evidence is shown separately.
 guide.unifit.title: {fit} (smart sorting)
@@ -389,13 +390,13 @@ universities.badge.overflow_label: Additional status indicators
 universities.badge.top_match: Good Match
 universities.badge.your_vibe: Your Vibe
 universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
-universities.unifit_banner.text: Some required exam evidence is missing, so this result is marked as conditional.
-universities.unifit_banner.dismiss: Dismiss warning
+universities.unifit_banner.text: UniFit uses the available profile data. Minimum requirements are checked for the selected application path; missing information is not a failed requirement.
+universities.unifit_banner.dismiss: Dismiss notice
 universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
 universities.badge.aid_available: Aid Available
 no_grants_available: No grants available
-universities.badge.aid_likely: Grant/Aid Likely (no budget penalty)
+universities.badge.aid_likely: Funding context shown separately (no budget adjustment)
 universities.badge.below_requirements: Below Requirements
 universities.badge.over_budget: Over Budget
 universities.badge.over_budget_aid: Over Budget • Aid Available
@@ -925,7 +926,7 @@ guide.academic.nuettotal: The combined score of a single university's own entran
 guide.academic.sat: The American admission test of reading, writing, and math, recognized far beyond the US.
 guide.academic.unt: Kazakhstan's national test and the main road to a bachelor's seat at home.
 guide.glossary.admission_track: Category, profile, and funding selected together as one choice — the unit everything is computed for.
-guide.glossary.chance: {chance} is a 0–100 fit score against evaluable published academic and language minimums, not an admission probability.
+guide.glossary.chance: {chance} is a 0–100 match score for evaluable published academic and language minimums. A 100% score does not confirm every admission condition or eligibility; it is not an admission probability or funding prediction.
 guide.glossary.fit: {fit} is the sorting mode that ranks the catalog by your profile, where a lower score ranks higher.
 guide.glossary.intro: The working vocabulary of the site — the same meanings the calculations rely on, one line per term.
 guide.glossary.language_requirements: The language proofs a route accepts: native language, CEFR level, or exam score.
@@ -1082,7 +1083,7 @@ tour.step5.kicker: Before you shortlist
 tour.step5.title: Open a university and read the evidence
 tour.step5.desc: A card shows the essentials. Open the university to view admission requirements, tuition fees, and available funding options.
 tour.step5.point1: Review admission requirements and choose the relevant admission option.
-tour.step5.point2: Use {chance} as an estimate, not a guarantee of admission.
+tour.step5.point2: Use {chance} to check evaluable published numeric minimums. It does not assess every admission condition or predict admission or funding.
 tour.step5.point3: Compare tuition, scholarships, and other costs with the information shown for that university.
 tour.step6.label: Choose confidently
 tour.step6.kicker: Your final short list
@@ -1091,10 +1092,6 @@ tour.step6.desc: Keep several universities in view rather than chasing one perfe
 tour.step6.point1: Use Compare to place promising universities side by side.
 tour.step6.point2: Keep a balanced list: ambitious, realistic, and safer choices.
 tour.step6.point3: Return to your profile or filters whenever your priorities change.
-unifit.warning.cancel: Cancel
-unifit.warning.confirm: Okay I understand
-unifit.warning.desc: UniFit is more accurate when your profile includes exam or language scores.
-unifit.warning.title: Limited Profile Data
 admission.track.select: Select
 admission.track.selected: Selected
 admission.track.recommended: Recommended
@@ -1108,9 +1105,9 @@ admission.chance.requirements_not_met: Your current results do not meet a requir
 admission.chance.missing_evidence: Add the required exam scores or language evidence to check this route.
 average_admitted_unavailable: No verified average admitted data published.
 roi.context.no_salary_data: No verified graduate salary data published for this university.
-admission.requirements_fit.title: Fit to published requirements
+admission.requirements_fit.title: Minimum requirements match
 admission.requirements_fit.short: Requirements fit
-admission.requirements_fit.description: Share of evaluable published academic and language minimum checks met. This score is not an admission probability.
+admission.requirements_fit.description: Share of evaluable published numeric academic and language minimums met. Meeting them does not confirm all admission conditions or eligibility, and this is not an admission probability or funding prediction.
 admission.requirements_fit.unavailable_method: Requirements fit score is unavailable because its meaning could not be confirmed.
 admission.requirements_fit.insufficient_data: There is not enough applicable requirements or profile evidence to calculate this fit score.
 admission.requirements_fit.no_published_requirements: This route has no measurable published minimums, so a requirements fit percentage cannot be calculated. Review the official application requirements.
@@ -1154,6 +1151,7 @@ profile.exam_breakdown_hint: Enter scores by subject. Required subjects stay fix
 profile.exam_breakdown_fixed_hint: Enter the score for each required section.
 admission.requirements_fit.check.or: or
 universities.why.budget_comparison: Annual cost: {cost}; your annual budget: {budget}. Potential funding has not been deducted.
+universities.why.preference_comparison: {label}: your setting {requested}/100; university indicator {observed}/100.
 profile.exam_total_placeholder: Overall total
 profile.exam_subject_required_count: Choose at least {count} subjects for {exam}
 profile.exam_error_range: {exam} must be between {min} and {max}
@@ -1239,7 +1237,7 @@ admission.chance.badge.foundation_required_note: Direct bachelor entry may requi
 admission.chance.badge.need_aware: Need-aware aid
 admission.chance.badge.need_aware_note: Requesting significant financial aid can affect admission at this institution.
 admission.chance.badge.need_blind: Need-blind review
-admission.chance.badge.need_blind_note: Financial need is not expected to lower the admission review in this estimate.
+admission.chance.badge.need_blind_note: The institution states that financial need does not affect this admission review.
 admission.chance.factor.missing_evidence.label: Required evidence missing
 admission.chance.factor.missing_evidence.message: Add the missing evidence required to check this route.
 admission.chance.factor.applicability_unknown.label: Applicability not confirmed
@@ -1309,7 +1307,7 @@ privacy.google_auth.li2: No Google display name or profile picture is collected.
 privacy.google_auth.li3: No Google account identifier is collected.
 privacy.google_auth.callout: UniSearch does not request or store Google account passwords. If sign-in is introduced in a future release, this policy will be updated before that feature is made available.
 privacy.processing.title: 4. Algorithmic Recommendations & Server Processing
-privacy.processing.p1: When you use UniFit, UniChance, ROI, profile comparison, or exam and language validation, your browser sends the data needed for that request to the UniSearch API over HTTPS. Depending on the feature, this can include GPA, test and language scores, budget, intended major, interests, study and funding preferences, and selected admission options.
+privacy.processing.p1: When you use UniFit, the minimum requirements match score, ROI, profile comparison, or exam and language validation, your browser sends the data needed for that request to the UniSearch API over HTTPS. Depending on the feature, this can include GPA, test and language scores, budget, intended major, interests, study and funding preferences, and selected admission options.
 privacy.processing.p2: UniSearch does not maintain user accounts or a permanent database of guest profiles. The API may keep short-lived in-memory or Redis technical caches to serve repeated calculations, and may retain data in logs or error-monitoring systems as described below.
 privacy.logs.title: 5. Technical Server Logs & Infrastructure Security
 privacy.logs.p1: The API records request metadata, including request method, path, status, timestamp, duration, and a generated request identifier. Our hosting or proxy providers may also process IP address and User-Agent information. IP addresses may be used in short-lived rate-limit records.
@@ -1345,9 +1343,9 @@ terms.purpose.p2: The catalog aggregates officially published institutional data
 terms.disclaimer.title: 3. Informational Nature & Educational Disclaimer
 terms.disclaimer.callout: Notice: UniSearch is not an admissions office and is not officially affiliated with the universities listed. Algorithmic scores are preliminary estimates and do not guarantee admission.
 terms.disclaimer.educational_status: UniSearch is an independent, non-commercial research initiative developed by high school students as an applied educational endeavor. The service is not an official admissions office, accredited governmental body, or formal admissions agency.
-terms.disclaimer.as_is: All services, algorithmic models (UniFit, UniChance), and catalog listings are provided strictly on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind. While we strive for data freshness, requirements can shift. Users bear sole responsibility for verifying final criteria directly on official university portals.
+terms.disclaimer.as_is: All services, algorithmic assessments, and catalog listings are provided strictly on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind. While we strive for data freshness, requirements can shift. Users bear sole responsibility for verifying final criteria directly on official university portals.
 terms.disclaimer.p1: All information presented on this platform (exam thresholds, minimum scores, application deadlines, tuition costs, and scholarships) is provided for general guidance only.
-terms.disclaimer.p2: UniFit (smart sorting) and UniChance (fit with published academic and language requirements) are planning tools, not predictions of admission, visa, or funding decisions.
+terms.disclaimer.p2: UniFit (smart sorting) and the minimum requirements match score (fit with evaluable published academic and language minimums) are planning tools, not predictions of admission, visa, or funding decisions.
 terms.disclaimer.p3: Universities may revise admission criteria, tuition rates, and application timelines without prior notice. Applicants bear sole responsibility for verifying final requirements directly on official university portals.
 terms.disclaimer.p4: UniSearch assumes no liability for admissions committee outcomes, missed application deadlines, or financial expenditures incurred by users.
 terms.accounts.title: 4. User Accounts & Security
@@ -2373,7 +2371,6 @@ cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
 admission.mit.after_initial_admission: This combined degree is pursued after initial admission to a constituent MIT graduate program. Check the official page for the second-degree process.
 admission.mit.program_condition: Program-specific eligibility:
-universities.why.preference_comparison: {label}: your setting {requested}/100; university indicator {observed}/100.
 admission.requirements_fit.check.profile_unassessed: This profile cannot establish the required evidence or exemption.
 admission.requirements_fit.missing_evidence_note: Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed.
 profile.evidence.title: Evidence for selected admissions routes
@@ -2461,7 +2458,7 @@ profile.evidence.error.credential: Choose a listed credential.
 profile.evidence.error.credential_score: Enter the published credential score percentage.
 profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
 university.admissions.catalog.context_title: Your application context
-university.admissions.catalog.simple_title: Published application paths
+university.admissions.catalog.simple_title: How to apply
 university.admissions.catalog.browse_note: Search by subject or program. Open a result for study and admission details.
 university.admissions.catalog.show_requirements: Read published details
 university.admissions.catalog.advanced_options: Filter published records (optional)
@@ -2500,7 +2497,7 @@ university.admissions.catalog.context_note: One selection applies to requirement
 university.admissions.catalog.choose_program: Choose a study option
 university.admissions.catalog.no_program_selected: No study option selected
 university.admissions.catalog.route_label: Published application path
-university.admissions.catalog.choose_route: Choose a published path
+university.admissions.catalog.choose_route: Choose how to apply
 university.admissions.catalog.choose_route_action: Choose application path
 university.admissions.catalog.route_required: Choose one of the published paths above to read its requirements and application details.
 university.admissions.catalog.applicant_label: Applicant category
@@ -2595,8 +2592,8 @@ university.admissions.catalog.unknowns: Unresolved source information
 university.admissions.catalog.next_step: Official next step
 university.admissions.catalog.history: Historical records
 university.admissions.catalog.history_note: These records are retained as historical context and are not current requirements or prices for the selected cycle.
-university.admissions.catalog.assessment: UniChance · published minimum checks
-university.admissions.catalog.assessment_meaning: The percentage is the share of evaluable published academic and language minimum checks met. It is not an admission probability, a check of all admission criteria, or a funding prediction.
+university.admissions.catalog.assessment: Minimum requirements match
+university.admissions.catalog.assessment_meaning: The percentage is the share of evaluable published numeric academic and language minimum checks met. A value of 100% does not confirm all admission conditions or eligibility. This is not an admission probability or a funding prediction.
 university.admissions.catalog.assessment_unavailable: No requirements-match percentage is available for this context.
 university.admissions.catalog.self_reported: Applicant evidence is self-reported; it is not institution-confirmed.
 university.admissions.catalog.provided: Reported evidence
@@ -2731,7 +2728,7 @@ university.admissions.reading.insurance_not_included: Required health-insurance 
 university.admissions.reading.application_dates: Application windows
 university.admissions.reading.test_dates: Last accepted test dates
 university.admissions.reading.window: Application window
-university.admissions.reading.apply_by: Application
+university.admissions.reading.apply_by: Apply by
 university.admissions.reading.aid_by: Financial aid
 university.admissions.reading.decision: Decision
 university.admissions.reading.last_test: Last accepted date
@@ -3027,7 +3024,10 @@ university.admissions.catalog.route_class.shared_school_application: Shared appl
 university.admissions.catalog.route_class.terminal_exit_award_no_admission_route: Exit award; no separate admission route
 university.admissions.catalog.route_class.unresolved: Application route remains unresolved
 university.admissions.reading.overview_missing: A study overview has not been collected for this option. Use the official program page below; application records are available separately.
-university.admissions.reading.source_conflict: The collected official sources differ. Confirm this condition with the program; it is not an accepted exemption or an eligibility decision.
+university.admissions.reading.source_conflict: The sources give different information. Compare the values and their scope below, then confirm with the university.
+university.admissions.reading.dates_tba: Application and test dates for this cycle are yet to be announced.
+university.admissions.reading.dates_tba_next: Check the official admissions page for updates.
+university.admissions.reading.source_unverified: This information is not yet verified for the selected program and path.
 university.admissions.reading.program: Program
 university.admissions.reading.degree.BS: BS — Bachelor of Science (undergraduate degree)
 university.admissions.reading.degree.BA: BA — Bachelor of Arts (undergraduate degree)
@@ -3078,7 +3078,7 @@ universities.compare.summary.additional_facts: Additional university facts
 universities.compare.summary.choose_programs: Choose programs
 universities.compare.summary.configure_title: Choose programs and application routes
 university.admissions.reading.total_fee: total fee
-university.deadlines.kind.funding_consideration: Admissions cutoff for scholarship consideration
+university.deadlines.kind.funding_consideration: Application deadline for scholarship consideration
 university.admissions.reading.first_year: first year
 university.admissions.reading.second_year: Second year
 university.admissions.reading.funding_excluded: This programme or format is excluded from this scholarship.
@@ -3260,3 +3260,52 @@ profile.report_draft_pending: Add or update the report, or clear its draft, then
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Language background for individual exemption review
 profile.family_income_reference: Family income (optional reference)
 profile.change_budget_currency: Change budget currency in Settings (currently {currency})
+university.admissions.entry.browsing_not_saved: This choice is not saved for UniFit.
+university.admissions.entry.saved_context: This choice is saved for UniFit.
+university.admissions.entry.saved_other: Saved for UniFit: {details}.
+university.admissions.entry.route_profile_hint: Your profile lists {applicant} as the applicant type. Choose the applicable path yourself.
+university.admissions.entry.route_class_help.ucas_course_choice: Apply to the selected undergraduate course through UCAS.
+university.admissions.entry.route_class_help.postgraduate_course_choice: Apply to the selected postgraduate program.
+university.admissions.entry.route_class_help.department_or_program: Apply through the relevant department or program; check the specific route conditions below.
+university.admissions.entry.route_class_help.internal: This route is for current university students; check the conditions below.
+university.admissions.entry.route_class_help.institution_wide: Admission is considered at the institution level; later program selection depends on its rules.
+university.admissions.entry.route_class_help.program_specific_application: Apply to the specific program.
+university.admissions.entry.route_class_help.external_program_specific_application: Apply to the specific program using its stated application route.
+university.admissions.entry.route_class_help.coterm_application: For current Stanford undergraduates; check the coterm application conditions.
+university.admissions.entry.route_class_help.internal_stanford_admission: Internal admission route for current Stanford students; review its conditions.
+university.admissions.entry.route_help.mit-first-year: Apply to MIT as a first-year applicant.
+university.admissions.entry.route_help.mit-transfer: Apply to MIT as a transfer applicant.
+university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-first-year: Apply to Stanford as a first-year undergraduate applicant.
+university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-transfer: Apply to Stanford as an undergraduate transfer applicant.
+university.admissions.entry.route_help_generic: Open this route to review the published conditions and how to apply.
+university.admissions.entry.how_to_apply: How to apply
+university.admissions.catalog.assessment_count: {met} of {total} evaluated numeric minimum checks met
+university.admissions.catalog.assessment_limits: Other admission requirements and eligibility are not assessed here. This score is not an admission probability or a funding prediction.
+university.admissions.catalog.assessment_no_route: Choose an application path to check its requirements.
+university.admissions.catalog.assessment_next_missing: Add the missing evidence in your profile, then review the checks below.
+university.admissions.catalog.assessment_next_unassessed: Some published rules cannot be checked automatically. Review the official requirements below.
+university.admissions.catalog.assessment_next_no_numeric: Our data has no numeric minimum for this path that can be compared automatically. Review the official requirements below.
+university.admissions.catalog.assessment_next_applicability: Check your program, application path and entry year. Review the official conditions below.
+university.admissions.catalog.assessment_profile: Edit profile
+university.admissions.catalog.saved: Saved
+university.admissions.catalog.check_next_missing: Expand the check to see what information is missing.
+university.admissions.catalog.check_next_unassessed: This check was not assessed automatically. Review the published conditions and source.
+university.admissions.catalog.check_group_count: {count} source rules
+universities.match.subject_missing: Your subject was not found
+universities.match.subject_missing_detail: No matching program was found in our catalog at this study level.
+universities.match.subject_matched: Your subject is offered
+universities.match.subject_matched_detail: The catalog includes a program in your chosen subject and study level.
+universities.match.selected_subject_mismatch: Different subject selected
+universities.match.selected_subject_mismatch_detail: Your saved program differs from the subject in your profile.
+universities.match.preference_detail: The university matches your study preferences.
+universities.match.score: Minimum requirements match: {percent}%
+universities.match.checks_detail: {met} of {total} checked minimums met. Other admission conditions still need review.
+universities.match.budget_over: Above your budget
+universities.match.budget_within: Within your budget
+universities.match.budget_uncertain: Check the cost
+universities.match.budget_tuition_detail: This tuition-only comparison uses the published price. Living and other costs are extra.
+universities.match.budget_annual_detail: This compares the published annual budget with your budget.
+universities.match.budget_reference_detail: This comparison uses a published reference price. Check the current cost in Finance.
+universities.match.budget_uncertain_detail: Some price options exceed your budget. Check the cost of your chosen program.
+university.admissions.entry.route_help.mit_sloan_mba_early_deferred: For eligible students in their final year: apply now and begin the MBA after two to five years of full-time work. This is a deferred-entry application, not an earlier round of ordinary MBA admission.
+university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — deferred entry

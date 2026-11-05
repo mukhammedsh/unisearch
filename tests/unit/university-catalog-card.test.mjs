@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { universityCardPriceInfo, renderUniversityCardCosts } = await import("../../frontend/javascript/pages/universities.js");
+const { universityCardPriceInfo, renderUniversityCardCosts, reviewedCardIndicators } = await import("../../frontend/javascript/pages/universities.js");
 await initI18n();
 
 test("reviewed admissions cards do not reuse legacy finance or match prices", () => {
@@ -50,8 +50,12 @@ test("card uses the selected published reference price", () => {
 test("card keeps an unavailable budget separate from a published tuition range", () => {
   const university = { admissions_catalog: { availability: "reviewed" }, catalog_costs: { tuition: { min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"] } } };
   assert.equal(universityCardPriceInfo(university).amount, null);
-  assert.match(renderUniversityCardCosts(university), /No comparable full budget/);
-  assert.doesNotMatch(renderUniversityCardCosts(university), /data-cost-basis="tuition"|10,050|47,800/);
+  const html = renderUniversityCardCosts(university);
+  assert.match(html, /data-cost-basis="tuition"/);
+  assert.match(html, /class="uni-price-period">Tuition<\/span>/);
+  assert.match(html, /class="uni-price-val">[^<]+ – [^<]+<\/span>/);
+  assert.match(html, /No comparable full budget/);
+  assert.doesNotMatch(html, /data-cost-basis="annual_total"/);
   const price = universityCardPriceInfo(university, "tuition");
   assert.equal(price.basis, "tuition");
   assert.equal(price.amount, 10050);
@@ -148,4 +152,70 @@ test("large converted card amounts use compact local notation without changing t
   } finally {
     global.localStorage = originalStorage;
   }
+});
+
+
+test("reviewed UniFit indicators describe only the saved route and measurable checks", () => {
+  setLanguage("eng", { emit: false });
+  const match = { finalScore: 0.2, preferenceMismatch: 0.1, selectedByUser: true,
+    admissionsSelection: { option: { title: "Computer Science" }, route: { title: "First-year admission" } },
+    admissionsContext: { application_route_id: "first-year", study_level: "undergraduate", intended_entry_cycle: "Fall 2027" },
+    requirementsFitPercent: 50, requirementChecks: [
+      { measurable: true, status: "met" }, { measurable: true, status: "unmet" },
+      { measurable: false, status: "unassessed" },
+    ],
+    budgetAssessment: { status: "over_budget", evidence: "dated_reference", basis: "tuition" },
+    costQuote: { minUSD: 40000, maxUSD: 50000 }, affordabilityGap: 0.2,
+  };
+  const indicators = reviewedCardIndicators(match, 30000, "Focus: 40/100.");
+  assert.equal(indicators.length, 3);
+  assert.doesNotMatch(indicators.map(item => item.detail).join(" "), /40\/100|UniFit penalty|affects UniFit|Assessment context|Saved selection/);
+  assert.match(indicators[0].label, /50%/);
+  assert.equal(indicators[0].value, "50%");
+  assert.match(indicators[0].detail, /1 of 2/);
+  assert.equal(indicators[0].tone, "warning");
+  assert.match(indicators[0].detail, /Other admission conditions/i);
+  assert.match(indicators[1].detail, /published price/i);
+  assert.match(indicators[1].detail, /tuition-only/i);
+  assert.match(indicators[1].detail, /Living and other costs are extra/);
+  assert.doesNotMatch(indicators[1].detail, /affects UniFit/i);
+  assert.doesNotMatch(indicators.map(item => item.label + item.detail).join(" "), /requirements met|probability|award/i);
+});
+
+test("reviewed discovery avoids claiming a missing catalog subject is not offered", () => {
+  setLanguage("eng", { emit: false });
+  const match = { finalScore: 0.3, preferenceMismatch: 0.3, subjectMatch: { status: "missing" },
+    requirementsFitPercent: null, requirementChecks: [{ measurable: true, status: "missing" }],
+    budgetAssessment: { status: "unknown_cost" } };
+  const indicators = reviewedCardIndicators(match, 20000);
+  assert.match(indicators[0].label, /subject was not found/i);
+  assert.match(indicators[0].detail, /our catalog/i);
+  assert.equal(indicators.length, 1);
+  assert.doesNotMatch(indicators.map(item => item.label + item.detail).join(" "), /required exam|does not offer/i);
+  assert.deepEqual(reviewedCardIndicators({}, 20000), []);
+});
+
+test("a saved program subject mismatch does not claim that the catalog lacks the subject", () => {
+  setLanguage("eng", { emit: false });
+  const indicators = reviewedCardIndicators({ finalScore: 0.5, selectedByUser: true,
+    admissionsContext: { study_option_id: "chemistry-bs", study_level: "undergraduate" },
+    admissionsSelection: { option: { id: "chemistry-bs", title: "Chemistry (BS)" } },
+    subjectMatch: { status: "missing" },
+  }, 20000);
+  assert.equal(indicators.length, 1);
+  assert.match(indicators[0].label, /Different subject selected/);
+  assert.match(indicators[0].detail, /saved program differs/);
+  assert.doesNotMatch(indicators[0].label, /not found in this catalog/i);
+});
+
+
+test("a real zero requirements match remains visible without internal ranking scales", () => {
+  setLanguage("eng", { emit: false });
+  const indicators = reviewedCardIndicators({ finalScore: 0.6, preferenceMismatch: 0.9,
+    requirementsFitPercent: 0, requirementChecks: [{ measurable: true, status: "unmet" }],
+  }, null, "University indicator: 99/100");
+  assert.equal(indicators.length, 1);
+  assert.equal(indicators[0].value, "0%");
+  assert.match(indicators[0].detail, /0 of 1/);
+  assert.doesNotMatch(JSON.stringify(indicators), /99|ranking|preference comparison/i);
 });

@@ -22,13 +22,19 @@ global.fetch = async (url) => {
           words: { custom_word: "Слово", "common.placeholder_unknown": "Нет данных: {field}" },
           university_names: { "test-university": "Тестовый университет" },
           admission_exact: { "Official route": "Официальный путь" },
-          admission_replace: [["Interview", "Собеседование"]],
+          admission_replace: [["Academic", "Академический"], ["Interview", "Собеседование"]],
           track_labels: { merit_grant: "Грант за заслуги" },
           track_label_fallback_replace: [["Paid", "Платное"]],
           program_names: { computer_science: "Информатика" },
           fact_sources: { "Official report": "Официальный отчёт" },
         },
       }),
+    };
+  }
+  if (target.endsWith("Localization/universities-kaz.json")) {
+    return {
+      ok: true,
+      json: async () => JSON.parse(await readFile(new URL("../../frontend/Localization/universities-kaz.json", import.meta.url), "utf8")),
     };
   }
   return { ok: false, status: 503, json: async () => ({}) };
@@ -58,6 +64,11 @@ test("university translation packs load once per language and drive typed transl
   assert.equal(translations.translateProgramName("Computer Science"), "Информатика");
   assert.equal(translations.translateFactSource("Official report"), "Официальный отчёт");
   assert.equal(translations.translateFactSource("Computer Science"), "Информатика");
+  assert.equal(translations.translateFactSource("Academic foundations | MIT Admissions"), "Academic foundations | MIT Admissions");
+  setLanguage("kaz", { persist: false, emit: false });
+  await translations.loadUniversityTranslationsForLanguage("kaz", true);
+  assert.equal(translations.translateFactSource("Academic foundations | MIT Admissions"), "Academic foundations | MIT Admissions");
+  setLanguage("rus", { persist: false, emit: false });
   assert.ok(translations.translateFactStatus("official-aggregated"));
 
   const cached = await translations.loadUniversityTranslationsForLanguage("rus");

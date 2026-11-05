@@ -28,6 +28,28 @@ class UniversityCoverageTests(unittest.TestCase):
     def source_urls(self, result, fact):
         return {row["id"]: row["url"] for row in result["sources"] if row["id"] in fact["source_ids"]}
 
+    def test_audited_application_paths_keep_evidence_scoped(self):
+        phd = self.resolve("stanford-university-usa-ca", "stanford-option-cs-phd", "directory-evidence:stanford-graduate-cs-phd", "doctoral")
+        deadline = next(row for row in phd["facts"] if row["id"] == "engineering-doerr-evidence:program-deadline-gre-2027")
+        self.assertEqual(deadline["value"]["deadlines"]["stanford-cs-phd"], "2026-12-08")
+        coterm = self.resolve("stanford-university-usa-ca", "stanford-option-cs-ms", "directory-evidence:stanford-coterm-cs-ms", "masters")
+        coterm_ids = {row["id"] for row in coterm["facts"]}
+        self.assertIn("engineering-doerr-evidence:engineering-coterm-2027-directory-details", coterm_ids)
+        self.assertNotIn("engineering-doerr-evidence:program-deadline-gre-2027", coterm_ids)
+        imperial = self.resolve("imperial-college-london-uk", "imperial-aeronautical-engineering-meng", "procedure-aeronautical-engineering", "undergraduate")
+        self.assertEqual(imperial["context_applicability"]["route"], "matched")
+        self.assertNotIn("unknown_business_degree_apprenticeship_award", {row["id"] for row in imperial["unknowns"]})
+        robotics = self.resolve("nazarbayev-university-kaz-astana", "nu-a-study-master-of-science-in-robotics", "nu-a-route-masters-common-packet-b", "masters")
+        gap = next(row for row in robotics["unknowns"] if row["id"] == "nu-a-gap-engineering-masters")
+        self.assertNotIn("Packet", gap["reason"] + gap["official_next_step"])
+        self.assertIn("Packet B", gap["attributes"]["researcher_notes"]["reason"])
+        self.assertNotIn("unparsed_scope", gap["scope"]["additional_dimensions"])
+        self.assertEqual(gap["attributes"]["researcher_notes"]["unparsed_scope"], "10 packet-A master’s cards")
+        mba = self.resolve("mit-usa-cambridge", "mit-sloan-mba-full-time", "mit_sloan_mba_admissions", "masters")
+        self.assertEqual(mba["selected_route"]["application_url"], "https://mitsloan.mit.edu/mba/admissions/how-to-apply")
+        imperial_phd = self.resolve("imperial-college-london-uk", "imperial-computing-phd", "procedure-computing-phd", "doctoral")
+        self.assertIn("application deadlines are 1 October 2026", self.fact(imperial_phd, "imperial-computing-phd-admission")["value"])
+
     def test_mit_graduate_routes_keep_awards_and_eligibility_scoped(self):
         result = self.resolve("mit-usa-cambridge", "mit-linguistics-sm-mit-grad-linguistics", "mit_mitili_sm_admissions", "masters")
         funding = self.fact(result, "mit_mitili_sm_admissions-funding-0-0")

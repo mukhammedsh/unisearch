@@ -24,6 +24,7 @@ class InfrastructureHygieneTests(unittest.TestCase):
             ".claude",
             ".vscode",
             ".venv",
+            ".tmp_test",  # Git-ignored local scratch space
             "__pycache__",
             "test_infrastructure_hygiene.py",  # Exclude this test file itself
         ]

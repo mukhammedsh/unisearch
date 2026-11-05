@@ -34,7 +34,7 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   await showTab(page, "admission");
   await page.locator(`[data-read-route='${REGULAR}']`).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#detailRequirements summary").filter({ hasText: "Language requirements" }).first()).toBeVisible();
+  await expect(page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first()).toBeVisible();
   await showTab(page, "finance");
   const tuition = page.locator("#detailFinance [data-course-tuition]");
   await expect(tuition).toContainText("12,000");
@@ -424,6 +424,8 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
   await expect(page.locator("#detailName")).toHaveText("Nazarbayev University");
   await showTab(page, "admission");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
+  await expect(page.locator("#detailRequirements").getByRole("alert")).toHaveCount(1);
+  await expect(page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true })).toHaveCount(1);
   await page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true }).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("[data-admission-reset-notice]")).toBeVisible();
@@ -451,6 +453,7 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
   await showTab(page, "admission");
   await selectAdmissionRoute(page, "nu-a-route-non-degree-study");
   await expect(page.locator("#admissionsRoute")).toHaveValue("nu-a-route-non-degree-study");
+  await expect(page.locator("#admissionsContext")).not.toContainText("Open this route to review");
   await expect(page.locator("#detailRequirements")).toContainText(/degree.*(conversion|transition)|internal university conditions/i);
   await showTab(page, "deadlines");
   await expect(page.locator("#detailDeadlines [data-calendar-export]")).toHaveCount(0);

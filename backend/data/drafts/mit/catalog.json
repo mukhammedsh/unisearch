@@ -4621,7 +4621,8 @@
       "application": {
         "classification": "direct_program",
         "route_ids": [
-          "mit_sloan_mba_admissions"
+          "mit_sloan_mba_admissions",
+          "mit_sloan_mba_early_deferred"
         ],
         "reason": "Earlier official program review links this application target.",
         "source_ids": [
@@ -27618,10 +27619,6 @@
       "period": "2027 entry",
       "fact_ids": [
         "dusp-dual-sequence",
-        "mba-early-2027-eligibility",
-        "mba-early-2027-window-and-fee",
-        "mba-early-documents-and-language",
-        "mba-early-test-waiver-and-reporting",
         "mba-tuition-fee-conflict",
         "mit-dual-mcp-mba-description",
         "mit-sloan-mba-full-time-description",
@@ -27642,7 +27639,8 @@
         "preserved-special-mit-dual-mcp-mba-tests-docs",
         "sloan-mba-award-choice",
         "sloan-published-outside-funding-conditions"
-      ]
+      ],
+      "application_url": "https://mitsloan.mit.edu/mba/admissions/how-to-apply"
     },
     {
       "id": "mit_sloan_mfin_admissions",
@@ -29840,6 +29838,30 @@
         "mit-economics-internal-sm-description",
         "mit-economics-sm-special-approval-procedure-and-conditions-unestablished"
       ]
+    },
+    {
+      "id": "mit_sloan_mba_early_deferred",
+      "official_target": "MIT Sloan MBA Early deferred admission",
+      "classification": "deferred_admission",
+      "destination": "MIT Sloan MBA Early deferred admission",
+      "study_option_ids": [
+        "mit-sloan-mba-full-time"
+      ],
+      "source_ids": [
+        "source-b91d4c38468add1b",
+        "source-c949569f455b144a"
+      ],
+      "publication_status": "published",
+      "review_status": "verified",
+      "checked_at": "2026-09-30",
+      "period": "2026-2027 application cycle; MBA matriculation follows deferred work experience",
+      "fact_ids": [
+        "mba-early-2027-eligibility",
+        "mba-early-2027-window-and-fee",
+        "mba-early-test-waiver-and-reporting",
+        "mba-early-documents-and-language"
+      ],
+      "application_url": "https://mitsloan.mit.edu/mba/deferred-admission/how-to-apply"
     }
   ],
   "facts": [
@@ -31043,11 +31065,12 @@
     },
     {
       "id": "mit_sloan_mba_admissions-profile-0",
+      "previous_rule_before_early_route_correction": "The full-time MBA is a two-year route for external applicants. GMAT Focus/10th or GRE is required, with no published minimum; EA is not accepted. TOEFL and IELTS are not required because English is assessed during the interview. For 2027 entry, the regular application deadlines are September 29, 2026 and January 12, 2027, at 3 p.m. ET. The deferred Early route is for eligible candidates with 2–5 years of work experience before enrollment; its separate deadline and checklist have not been confirmed, so verify them with Sloan.",
       "group": "eligibility",
       "summary": "Reviewed requirement context; retain all conditions and unassessed prerequisites.",
       "value": {
         "label": "Sloan MBA — GMAT / GRE",
-        "rule": "The full-time MBA is a two-year route for external applicants. GMAT Focus/10th or GRE is required, with no published minimum; EA is not accepted. TOEFL and IELTS are not required because English is assessed during the interview. For 2027 entry, the regular application deadlines are September 29, 2026 and January 12, 2027, at 3 p.m. ET. The deferred Early route is for eligible candidates with 2–5 years of work experience before enrollment; its separate deadline and checklist have not been confirmed, so verify them with Sloan.",
+        "rule": "The full-time MBA is a two-year route for external applicants. GMAT Focus/10th or GRE is required, with no published minimum; EA is not accepted. TOEFL and IELTS are not required because English is assessed during the interview. For 2027 entry, the regular application deadlines are September 29, 2026 and January 12, 2027, at 3 p.m. ET.",
         "unassessed_published_minimums": [],
         "requirements": {}
       },
@@ -32289,7 +32312,7 @@
       "id": "mit_bcs_meng_admissions-description",
       "group": "application_process",
       "summary": "Earlier reviewed description.",
-      "value": "Internal MEng route for current MIT Course 6-9 majors only. The two published GPA minimums are shown, but UniSearch cannot assess them with its single four-point GPA field.",
+      "value": "Internal MEng route for current MIT Course 6-9 majors only. The two published GPA minimums are shown.",
       "scope": {
         "institution_id": "mit-usa-cambridge",
         "study_option_ids": [],
@@ -41421,7 +41444,7 @@
       "summary": "Reviewed requirement context; retain all conditions and unassessed prerequisites.",
       "value": {
         "label": "Current MIT Course 18 or 18-C undergraduate",
-        "rule": "The published 4.8/5.0 GPA minimum and course prerequisites need an MIT academic record and individual course review. UniSearch cannot assess them from its profile and shows no UniChance percentage.",
+        "rule": "The published 4.8/5.0 GPA minimum and course prerequisites need an MIT academic record and individual course review. UniSearch cannot assess them from its profile and shows no minimum requirements match percentage.",
         "unassessed_published_minimums": [
           {
             "id": "mit_mathematics_of_data_sm_gpa",
@@ -63195,7 +63218,7 @@
         "institution_id": "mit-usa-cambridge",
         "study_option_ids": [],
         "route_ids": [
-          "mit_sloan_mba_admissions"
+          "mit_sloan_mba_early_deferred"
         ],
         "study_levels": [],
         "applicant_category": "MBA Early deferred applicants"
@@ -63218,7 +63241,16 @@
         "academic_tests",
         "eligibility",
         "offer_enrollment"
-      ]
+      ],
+      "previous_scope_before_route_correction": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_sloan_mba_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "MBA Early deferred applicants"
+      }
     },
     {
       "id": "mba-early-2027-window-and-fee",
@@ -63242,7 +63274,7 @@
         "institution_id": "mit-usa-cambridge",
         "study_option_ids": [],
         "route_ids": [
-          "mit_sloan_mba_admissions"
+          "mit_sloan_mba_early_deferred"
         ],
         "study_levels": [],
         "applicant_category": "MBA Early deferred applicants"
@@ -63265,7 +63297,16 @@
         "application_windows",
         "offer_enrollment",
         "portfolio_interview"
-      ]
+      ],
+      "previous_scope_before_route_correction": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_sloan_mba_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "MBA Early deferred applicants"
+      }
     },
     {
       "id": "mba-early-test-waiver-and-reporting",
@@ -63286,7 +63327,7 @@
         "institution_id": "mit-usa-cambridge",
         "study_option_ids": [],
         "route_ids": [
-          "mit_sloan_mba_admissions"
+          "mit_sloan_mba_early_deferred"
         ],
         "study_levels": [],
         "applicant_category": "MBA Early deferred applicants"
@@ -63316,7 +63357,16 @@
       "topics": [
         "academic_tests",
         "application_windows"
-      ]
+      ],
+      "previous_scope_before_route_correction": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_sloan_mba_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "MBA Early deferred applicants"
+      }
     },
     {
       "id": "mba-early-documents-and-language",
@@ -63343,7 +63393,7 @@
         "institution_id": "mit-usa-cambridge",
         "study_option_ids": [],
         "route_ids": [
-          "mit_sloan_mba_admissions"
+          "mit_sloan_mba_early_deferred"
         ],
         "study_levels": [],
         "applicant_category": "MBA Early deferred applicants"
@@ -63367,7 +63417,16 @@
         "language_tests",
         "offer_enrollment",
         "portfolio_interview"
-      ]
+      ],
+      "previous_scope_before_route_correction": {
+        "institution_id": "mit-usa-cambridge",
+        "study_option_ids": [],
+        "route_ids": [
+          "mit_sloan_mba_admissions"
+        ],
+        "study_levels": [],
+        "applicant_category": "MBA Early deferred applicants"
+      }
     },
     {
       "id": "lgo-current-partners-conflict",

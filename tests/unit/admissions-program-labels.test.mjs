@@ -551,6 +551,27 @@ test("MIT transfer dates and graduate summaries preserve applicant and funding b
   }
 });
 
+test("CS MS summarizes its complete English policy once while retaining the central source record", async () => {
+  const stanford = catalog.institutions.find(row => row.institution.id === "stanford-university-usa-ca");
+  const policyId = "engineering-doerr-evidence:cs-ms-tests-and-english-policy";
+  const sharedId = "engineering-doerr-evidence:english-proficiency";
+  const facts = stanford.facts.filter(row => [policyId, sharedId].includes(row.id));
+  const resolved = { selected_option: stanford.study_options.find(row => row.id === "stanford-option-cs-ms"),
+    selected_route: { id: "engineering-doerr-evidence:external-graduate" }, facts, sources: stanford.sources,
+    fact_groups: { requirements: facts.map(row => row.id) } };
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    await initUniversityTranslations();
+    const html = renderApplicantSection(resolved, ["requirements"]);
+    assert.ok(html.includes(`data-summary-fact="${policyId}"`));
+    assert.ok(!html.includes(`data-summary-fact="${sharedId}"`));
+    assert.ok(html.includes(`data-admissions-fact="${sharedId}"`));
+  }
+  const unresolved = structuredClone(resolved);
+  unresolved.facts.find(row => row.id === policyId).review_status = "needs_resolution";
+  assert.ok(renderApplicantSection(unresolved, ["requirements"]).includes(`data-summary-fact="${sharedId}"`));
+});
+
 test("all MIT application procedures have source-bound application guidance in three languages", async () => {
   const mit = catalog.institutions.find(row => row.institution.id === "mit-usa-cambridge");
   for (const language of ["eng", "rus", "kaz"]) {
@@ -577,11 +598,16 @@ test("Sloan's regular rounds stay distinct from deferred MBA Early and export th
     selected_route: mit.application_routes.find(row => row.id === "mit_sloan_mba_admissions"), facts, sources: mit.sources,
     fact_groups: { deadlines: facts.map(row => row.id) } };
   const events = getReviewedDeadlineEvents(resolved);
-  assert.deepEqual(events.map(event => [event.deadline, event.name]), [["2026-09-29", "Round 1"], ["2027-01-12", "Round 2"], ["2027-04-13", "MBA Early"]]);
+  assert.deepEqual(events.map(event => [event.deadline, event.name]), [["2026-09-29", "Round 1"], ["2027-01-12", "Round 2"]]);
   assert.equal(events[1].time, "15:00");
   assert.equal(events[1].cycle, "2027 entry");
   assert.match(createDeadlineIcs(events[1]).replace(/\r\n /g, ""), /DTSTART:20270112T200000Z/);
-  assert.match(events[2].applicantCategoryLabel, /deferred/);
+  const deferred = { ...resolved, selected_route: mit.application_routes.find(row => row.id === "mit_sloan_mba_early_deferred") };
+  const deferredEvents = getReviewedDeadlineEvents(deferred);
+  assert.deepEqual(deferredEvents.map(event => [event.deadline, event.name]), [["2027-04-13", "MBA Early"]]);
+  assert.equal(deferredEvents[0].time, "15:00");
+  assert.match(createDeadlineIcs(deferredEvents[0]).replace(/\r\n /g, ""), /DTSTART:20270413T190000Z/);
+  assert.match(deferredEvents[0].applicantCategoryLabel, /deferred/);
   const exclusions = structuredClone(resolved);
   exclusions.facts[0].value.push(
     { date: "2027-02-01", publication_status: "unknown", program_ids: ["mit-sloan-mba-full-time"] },
@@ -595,6 +621,9 @@ test("Sloan's regular rounds stay distinct from deferred MBA Early and export th
     assert.match(html, /data-published-deadline-array/);
     assert.match(html, /2027/);
     assert.match(html, /15:00/);
-    assert.match(admissionDeadlineTitle(events[2]), { eng: /deferred entry/, rus: /отложенное начало/, kaz: /кейін бастау/ }[language]);
+    assert.match(admissionDeadlineTitle(deferredEvents[0]), { eng: /deferred entry/, rus: /отложенное начало/, kaz: /кейін бастау/ }[language]);
+    const deferredHtml = renderApplicantSection(deferred, ["deadlines"]);
+    assert.doesNotMatch(deferredHtml, /Round 1|Round 2/);
+    assert.doesNotMatch(html, /data-summary-fact="mba-early/);
   }
 });

@@ -5,8 +5,6 @@ import { t, tFormat } from "../../i18n.js";
 import { saveUniversitiesTourResumeStep } from "../shared/cache.js";
 
 let universitiesTourModal = null;
-let uniFitWarningModal = null;
-let uniFitWarningShownInSession = false;
 
 export function ensureUniversitiesTourModal() {
     if (universitiesTourModal && universitiesTourModal.parentElement) return universitiesTourModal;
@@ -247,82 +245,5 @@ export function showUniversitiesTour(options = {}) {
         renderStep("forward");
         cleanupFocusTrap = trapFocus(modal);
         nextBtn?.focus();
-    });
-}
-
-export function ensureUniFitWarningModal() {
-    if (uniFitWarningModal && uniFitWarningModal.parentElement) return uniFitWarningModal;
-    const existing = document.getElementById("unifitWarningModal");
-    if (existing) {
-        uniFitWarningModal = existing;
-        return uniFitWarningModal;
-    }
-
-    const modal = document.createElement("div");
-    modal.id = "unifitWarningModal";
-    modal.className = "unifit-warning-modal";
-    modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
-    modal.innerHTML = `
-        <div class="unifit-warning-backdrop" data-action="cancel"></div>
-        <div class="unifit-warning-card" role="dialog" aria-modal="true" aria-labelledby="unifitWarningTitle">
-            <div class="unifit-warning-content">
-                <h3 id="unifitWarningTitle">${escapeHtml(t("unifit.warning.title", "Limited Profile Data"))}</h3>
-                <p>${escapeHtml(t("unifit.warning.desc", "UniFit is more accurate when your profile includes exam or language scores."))}</p>
-            </div>
-            <div class="unifit-warning-actions">
-                <button class="unifit-warning-btn unifit-warning-confirm" data-action="confirm" type="button">${escapeHtml(t("unifit.warning.confirm", "Okay I understand"))}</button>
-                <button class="unifit-warning-btn unifit-warning-cancel" data-action="cancel" type="button">${escapeHtml(t("unifit.warning.cancel", "Cancel"))}</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    uniFitWarningModal = modal;
-    return modal;
-}
-
-export function showUniFitWarning() {
-    return new Promise((resolve) => {
-        uniFitWarningShownInSession = true;
-        const modal = ensureUniFitWarningModal();
-        const okBtn = modal.querySelector("[data-action='confirm']");
-        const cancelEls = modal.querySelectorAll("[data-action='cancel']");
-        const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-        const cleanupFocusTrap = trapFocus(modal);
-
-        const cleanup = (result) => {
-            cleanupFocusTrap();
-            okBtn?.removeEventListener("click", onOk);
-            cancelEls.forEach((el) => el.removeEventListener("click", onCancel));
-            document.removeEventListener("keydown", onKey);
-            closeMotionLayer(modal, () => {
-                modal.classList.remove("is-open", "is-closing");
-                modal.setAttribute("aria-hidden", "true");
-                modal.style.display = "none";
-                if (previouslyFocused && previouslyFocused !== document.body && previouslyFocused.isConnected) {
-                    previouslyFocused.focus();
-                }
-                resolve(result);
-            });
-        };
-
-        const onOk = () => cleanup(true);
-        const onCancel = () => cleanup(false);
-        const onKey = (e) => {
-            if (e.key === "Escape") {
-                e.preventDefault();
-                cleanup(false);
-            }
-        };
-
-        okBtn?.addEventListener("click", onOk);
-        cancelEls.forEach((el) => el.addEventListener("click", onCancel));
-        document.addEventListener("keydown", onKey);
-
-        modal.style.display = "flex";
-        modal.classList.remove("is-closing");
-        modal.classList.add("is-open");
-        modal.removeAttribute("aria-hidden");
-        okBtn?.focus();
     });
 }

@@ -63,19 +63,20 @@ npm run dev:frontend
 - Do not expose raw technical errors to users through frontend flows.
 
 ## University Data Changes
-- Follow the stages in [todo.md](todo.md): research durable drafts, integrate the accepted delivery batch, then verify its applicant UI/UX. MIT, Imperial College London and Stanford University are the current activated batch. Oxford, Harvard and Cambridge drafts remain paused and inactive; later institutions follow the same evidence standard. Model each institution's own structure and retain sourced exceptions even when the current runtime cannot express them.
+- Follow the stages in [todo.md](todo.md): research and review the draft data, integrate the accepted batch, then verify its applicant journey. Massachusetts Institute of Technology, Imperial College London, Stanford University and Nazarbayev University are active in the reviewed catalog. Transfer later institutions in accepted batches. Oxford, Harvard and Cambridge drafts remain paused and inactive. Model each institution's own structure and retain sourced exceptions even when the current runtime cannot assess them automatically.
 - Use official university pages, official admissions pages, or official university-hosted PDFs/reports only.
 - Do not use aggregators, marketing summaries, or inferred facts for verified fields.
 - Prefer empty fields over invented data.
 - Keep display names as full university names; put abbreviations only in hidden search aliases.
 - During draft collection, validate draft structure, relationships, coverage, and affected official sources directly. The runtime audit does not prove completeness or validate drafts it does not read. Do not apply drafts through the runtime synchronization scripts before Stage 2 integration.
-- For common institution facts and the retained admissions contract of the other 47, the synchronization commands are:
+- For common institution facts and the retained admissions contract of the other 46, the synchronization commands are:
   ```bash
   python backend/scripts/apply_official_facts.py --verified-at YYYY-MM-DD
   python backend/scripts/apply_official_admissions.py
   npm run audit:data
   python backend/scripts/audit_universities_data.py --check-http --http-timeout 10
   ```
+- For a fact update, recheck the affected official URLs. Reserve the full `--check-http` scan above for a data release.
 - Rows with `admissions_catalog_id` are owned by the activated admissions snapshot. Legacy synchronization must not recreate their program, category, academic acceptance-rate or finance policy fields. Maintain reviewed study/admissions facts through [snapshot preparation and activation](backend/data/admissions/README.md), preserve source periods and conditions, and rerun the affected assessment mappings when source content changes. The [retired history](backend/data/history/README.md) is not a runtime input.
 
 ## Checks

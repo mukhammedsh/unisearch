@@ -7,15 +7,15 @@ Items are ordered by strategic execution phases and dependencies rather than fix
 
 The [admissions product model](admissions-product-model.md) is the current contract for university catalog and applicant-journey work. Its sequence is:
 
-1. **Data and schema:** task 1.1 completes MIT research and draft structure; task 1.2 researches the other 49 institutions, adapting structure to each institution's own programs and admissions. MIT demonstrates quality and depth, not a mandatory schema. Organize all significant sourced conditions and exceptions in durable drafts outside the active runtime, without implementing every new field or requiring UX approval during collection.
-2. **Backend/frontend integration:** after all 50 datasets have been reviewed, support their fields and relationships across the API, profile/exams, scoring, and applicant interface. Activate the new format for all 50 together and remove obsolete readers. Reuse earlier verified work; permanent backward compatibility is not required.
-3. **UI/UX and final verification:** refine the connected applicant journey and verify concrete explanations, applicability, missing profile evidence, official sources, and uncertainty. Exercise MIT, Imperial Computing, Stanford CS, and representative later institutions on desktop/mobile, in English/Russian and light/dark themes; incorporate concrete user feedback here.
+1. **Research each institution:** collect its actual study options, application paths, conditions and official sources in drafts outside runtime. Review the evidence before integration. Reuse accepted research and preserve unresolved facts; a missing publication is not a reason to invent a value.
+2. **Integrate accepted batches:** the reviewed catalog already contains Massachusetts Institute of Technology, Imperial College London, Stanford University and Nazarbayev University. Move later institutions through the same evidence review and connected backend/frontend integration. Do not wait for all 50 or force them into one institution's structure. The other 46 retain their existing presentation until their own review and integration are ready.
+3. **Verify the applicant journey:** check discovery, program and path selection, requirements, dates, costs, funding and saved choices together. Cover English, Russian and Kazakh on desktop/mobile in light/dark themes. Keep unknown facts and missing evidence understandable, then use concrete feedback to refine the interface.
 
-Stage 1 reviews data relationships and applicant questions, not a working interface. Researched unknowns and unavailable future-cycle publications remain explicit facts/statuses; unsearched gaps remain tasks. The one-week target and stage completion criteria are tracked in [todo.md](../todo.md). Separate tasks stop at their agreed stage boundary.
+Stage 1 reviews data relationships and applicant questions; it does not require implementing every field or approving a finished interface. The next catalog milestone is the first ten institutions in local catalog order, followed by the remaining forty. Oxford, Harvard and Cambridge research remains paused until explicitly resumed. Track accepted evidence, delivery scope and verification in [todo.md](../todo.md).
 
 Use profile fields that already exist, including education country and credential, applicant route, intended entry cycle, current residence, and self-reported fee-status context. Do not add a duplicate questionnaire. Do not infer immigration status, university-assessed Home/Overseas fee status, or aid eligibility from residence or nationality alone; show unknown when applicability is not established.
 
-This work covers undergraduate, master's, doctoral, and professional study now. It does not depend on the authentication, PostgreSQL, or mobile milestones below. Reassess the ordering of those separate tracks after the admissions migration.
+This work covers the levels each institution actually offers, including preparation, undergraduate, master's, doctoral, professional, residency and non-degree study where applicable. It does not depend on authentication, PostgreSQL or a native mobile app. The later proposals below require separate prioritization; they are not prerequisites for improving the catalog.
 
 ---
 
@@ -52,7 +52,7 @@ Phase 4: Academic Expansion & Community
 * **Key Tasks:**
   - **Design & Typography:** Audit all screens against the Calm Academic Workspace specification (`frontend/css/style.css`, `docs/design-system.md`). Eliminate visual noise, unnecessary box borders, and align spacing to the 4/8-px grid.
   - **Static & Token Guards:** Ensure 100% pass rate across baseline health scripts (`npm run check:tokens`, `npm run check:i18n`, `npm run audit:data`).
-  - **Catalog Verification:** Follow the three-stage admissions sequence above. Review official inventories, institution-specific structure, scoped facts, and exceptions for all 50 drafts first; integrate and exercise the runtime journeys afterward. Runtime record counts and passing audits alone do not establish factual completeness.
+  - **Catalog Verification:** Follow the per-institution research workflow and integrate accepted batches. Check official inventories, institution-specific paths, fact scope and significant exceptions. Runtime record counts and passing audits alone do not establish factual completeness.
   - **Test Suite Depth:** Cover critical user journeys with Playwright E2E scenarios and maintain >= 80% statement and branch coverage across both frontend and backend.
 
 ### 2. Percentage GPA Scale Support (0–100%)
@@ -61,10 +61,10 @@ Phase 4: Academic Expansion & Community
 * **Status:** Planned
 * **Goal:** Add academic performance input and evaluation using percentage scales (0–100%) to accommodate international applicants (CIS, Central Asia, Europe) whose secondary education does not use standard 4.0 GPA.
 * **Key Tasks:**
-  - **Frontend:** Add a scale selector (4.0 / 5.0 / 100%) in the catalog filters and UniChance profile drawer.
-  - **Backend:** Implement robust score normalization in `backend/app/services/ai_scoring.py` for scoped academic-evidence comparison. Any probability presentation must meet the evidence and calibration requirements in the admissions product model.
+  - **Frontend:** Review percentage-scale input alongside the existing profile GPA and institutional-evidence controls. Preserve the original scale and explain which published minimum can be compared.
+  - **Backend:** Support percentage-scale comparisons only where the source and submitted evidence establish a valid conversion. Do not turn a requirements check into an admission probability.
   - **Validation:** Enforce bounds validation (0–100) and reject malformed inputs.
-  - **Localization:** Provide English and Russian localization strings in `frontend/Localization/`.
+  - **Localization:** Keep English, Russian and Kazakh interface strings aligned in `frontend/Localization/`.
 * **Dependencies:** Follows completion of the UI stabilization cycle.
 
 ### 3. Preferred Instruction Language & Program Warning Badges
@@ -120,7 +120,7 @@ Phase 4: Academic Expansion & Community
 * **Key Tasks:**
   - **Modern Mobile UI:** Implement a Material 3 / Calm Academic UI in Jetpack Compose adhering to the web design system tokens.
   - **API Integration:** Connect to the FastAPI REST endpoints (catalog search, detailed university sheets, comparison tray).
-  - **Algorithms:** Support personalized UniFit recommendations and UniChance admissions calculation.
+  - **Algorithms:** Support UniFit discovery and minimum requirements match for the selected application path, using the same API meaning as the web app.
   - **Authentication & Sync:** Google Sign-In with profile synchronization shared with the web app.
   - **Offline Resilience:** Local Room caching of previously viewed institutions and saved favorites.
 * **Dependencies:** Depends on REST API stability, Google Auth, and PostgreSQL backend.
@@ -162,5 +162,5 @@ Phase 4: Academic Expansion & Community
   - **Official Data Ingestion:** Collect verified admissions data strictly following Section 5 of `AGENTS.md` (official university admissions pages and official PDFs; aggregators prohibited).
   - **Institution Media:** Collect verified square logos (1:1 PNG), 16:9 covers, and gallery assets.
   - **Scoring Re-calibration:** Validate multilingual-e5 embeddings and UniFit distribution across the expanded catalog.
-  - **Data Auditing:** Run `npm run audit:data` to verify 100% schema and link validity.
+  - **Data Auditing:** Run `npm run audit:data` for local data checks. Check affected official URLs separately; an HTTP success does not prove that the content or its scope is correct.
 * **Dependencies:** Final expansion milestone executed once platform architecture, mobile apps, and community features are fully mature.
