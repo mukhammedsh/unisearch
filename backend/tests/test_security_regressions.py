@@ -49,6 +49,40 @@ class SecurityRegressionTests(unittest.TestCase):
         from app.core.settings import EXPENSIVE_RATE_LIMIT_REQUESTS
         self.assertEqual(response.headers["X-RateLimit-Limit"], str(EXPENSIVE_RATE_LIMIT_REQUESTS))
 
+    def test_expensive_request_under_root_path_uses_expensive_rate_limit(self):
+        from app.main import _expensive_rate_limit_path
+        for path in (
+            "/api/universities/ai-sort",
+            "/api/universities/profiled",
+            "/api/universities/compare-profiles",
+            "/api/exams/validate",
+            "/api/languages/validate",
+            "/api/universities/mit-usa-cambridge/uni-chance",
+            "/api/universities/mit-usa-cambridge/roi",
+            "/api/universities/mit-usa-cambridge/admissions-context",
+            "/api/ops/warmup",
+        ):
+            with self.subTest(path=path):
+                req = Request({"type": "http", "method": "POST", "path": path, "root_path": "/api"})
+                self.assertTrue(_is_expensive_request(req))
+
+        req_ai = Request({"type": "http", "method": "POST", "path": "/api/universities/ai-sort", "root_path": "/api"})
+        self.assertEqual(_expensive_rate_limit_path(req_ai), "/universities/ai-sort")
+
+        req_ctx = Request({"type": "http", "method": "POST", "path": "/api/universities/mit-usa-cambridge/admissions-context", "root_path": "/api"})
+        self.assertEqual(_expensive_rate_limit_path(req_ctx), "/universities/{id}/admissions-context")
+
+        client = TestClient(app, root_path="/api")
+        with patch("app.main.RATE_LIMIT_ENABLED", True):
+            response = client.post(
+                "/api/universities/ai-sort",
+                json={"page": 1, "limit": 10},
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("X-RateLimit-Limit", response.headers)
+        from app.core.settings import EXPENSIVE_RATE_LIMIT_REQUESTS
+        self.assertEqual(response.headers["X-RateLimit-Limit"], str(EXPENSIVE_RATE_LIMIT_REQUESTS))
+
     def test_expensive_rate_limit_path_normalizes_trailing_slash_and_parameterizes_id(self):
         from app.main import _expensive_rate_limit_path
         cases = (
