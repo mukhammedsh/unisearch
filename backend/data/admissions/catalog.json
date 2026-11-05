@@ -17,7 +17,7 @@
       "inputs": [
         {
           "path": "backend/data/drafts/mit/catalog.json",
-          "sha256": "ca01dbee53dd571ebbd67c1d5c612ede3e773a0a35364a108352b24a519f6491"
+          "sha256": "7f04ee86ad6421d232094612e118942ce57a729d4e2916d03b76eaceae9aa464"
         },
         {
           "path": "backend/data/drafts/mit/doctoral-candidates-2026-09-29.json",
@@ -4624,7 +4624,8 @@
             "SM in Management"
           ],
           "route_ids": [
-            "mit_sloan_mba_admissions"
+            "mit_sloan_mba_admissions",
+            "mit_sloan_mba_early_deferred"
           ],
           "parent_option_id": null,
           "source_ids": [
@@ -4662,7 +4663,8 @@
             "application": {
               "classification": "direct_program",
               "route_ids": [
-                "mit_sloan_mba_admissions"
+                "mit_sloan_mba_admissions",
+                "mit_sloan_mba_early_deferred"
               ],
               "reason": "Earlier official program review links this application target.",
               "source_ids": [
@@ -16804,10 +16806,6 @@
           ],
           "fact_ids": [
             "dusp-dual-sequence",
-            "mba-early-2027-eligibility",
-            "mba-early-2027-window-and-fee",
-            "mba-early-documents-and-language",
-            "mba-early-test-waiver-and-reporting",
             "mba-tuition-fee-conflict",
             "mit-dual-mcp-mba-description",
             "mit-sloan-mba-full-time-description",
@@ -16850,7 +16848,8 @@
             "publication_status": "published",
             "review_status": "carried_forward_review",
             "checked_at": "2026-09-30",
-            "period": "2027 entry"
+            "period": "2027 entry",
+            "application_url": "https://mitsloan.mit.edu/mba/admissions/how-to-apply"
           },
           "index_attributes": {}
         },
@@ -20395,6 +20394,49 @@
             "period": "Current published internal special-approval policy; no external cycle assumed"
           },
           "index_attributes": {}
+        },
+        {
+          "id": "mit_sloan_mba_early_deferred",
+          "title": "MIT Sloan MBA Early deferred admission",
+          "classification": "deferred_admission",
+          "target": "MIT Sloan MBA Early deferred admission",
+          "destination": "MIT Sloan MBA Early deferred admission",
+          "shared_form_family": null,
+          "option_ids": [
+            "mit-sloan-mba-full-time"
+          ],
+          "source_ids": [
+            "source-b91d4c38468add1b",
+            "source-c949569f455b144a"
+          ],
+          "fact_ids": [
+            "mba-early-2027-eligibility",
+            "mba-early-2027-window-and-fee",
+            "mba-early-test-waiver-and-reporting",
+            "mba-early-documents-and-language"
+          ],
+          "shared_policy_context_ids": [],
+          "provenance": {
+            "evidence_file": "catalog.json",
+            "original_id": "mit_sloan_mba_early_deferred",
+            "original_scope": null,
+            "original_source_ids": [
+              "source-b91d4c38468add1b",
+              "source-c949569f455b144a"
+            ]
+          },
+          "attributes": {
+            "official_target": "MIT Sloan MBA Early deferred admission",
+            "study_option_ids": [
+              "mit-sloan-mba-full-time"
+            ],
+            "publication_status": "published",
+            "review_status": "verified",
+            "checked_at": "2026-09-30",
+            "period": "2026-2027 application cycle; MBA matriculation follows deferred work experience",
+            "application_url": "https://mitsloan.mit.edu/mba/deferred-admission/how-to-apply"
+          },
+          "index_attributes": {}
         }
       ],
       "facts": [
@@ -22435,7 +22477,7 @@
           },
           "value": {
             "label": "Sloan MBA — GMAT / GRE",
-            "rule": "The full-time MBA is a two-year route for external applicants. GMAT Focus/10th or GRE is required, with no published minimum; EA is not accepted. TOEFL and IELTS are not required because English is assessed during the interview. For 2027 entry, the regular application deadlines are September 29, 2026 and January 12, 2027, at 3 p.m. ET. The deferred Early route is for eligible candidates with 2–5 years of work experience before enrollment; its separate deadline and checklist have not been confirmed, so verify them with Sloan.",
+            "rule": "The full-time MBA is a two-year route for external applicants. GMAT Focus/10th or GRE is required, with no published minimum; EA is not accepted. TOEFL and IELTS are not required because English is assessed during the interview. For 2027 entry, the regular application deadlines are September 29, 2026 and January 12, 2027, at 3 p.m. ET.",
             "unassessed_published_minimums": [],
             "requirements": {}
           },
@@ -22471,6 +22513,7 @@
             ]
           },
           "attributes": {
+            "previous_rule_before_early_route_correction": "The full-time MBA is a two-year route for external applicants. GMAT Focus/10th or GRE is required, with no published minimum; EA is not accepted. TOEFL and IELTS are not required because English is assessed during the interview. For 2027 entry, the regular application deadlines are September 29, 2026 and January 12, 2027, at 3 p.m. ET. The deferred Early route is for eligible candidates with 2–5 years of work experience before enrollment; its separate deadline and checklist have not been confirmed, so verify them with Sloan.",
             "group": "eligibility",
             "summary": "Reviewed requirement context; retain all conditions and unassessed prerequisites.",
             "origin": "runtime_checkpoint_267854f"
@@ -24632,7 +24675,7 @@
               "institution_id": "mit-usa-cambridge"
             }
           },
-          "value": "Internal MEng route for current MIT Course 6-9 majors only. The two published GPA minimums are shown, but UniSearch cannot assess them with its single four-point GPA field.",
+          "value": "Internal MEng route for current MIT Course 6-9 majors only. The two published GPA minimums are shown.",
           "conditions": [],
           "conditions_and_exceptions": null,
           "exceptions": null,
@@ -39574,7 +39617,7 @@
           },
           "value": {
             "label": "Current MIT Course 18 or 18-C undergraduate",
-            "rule": "The published 4.8/5.0 GPA minimum and course prerequisites need an MIT academic record and individual course review. UniSearch cannot assess them from its profile and shows no UniChance percentage.",
+            "rule": "The published 4.8/5.0 GPA minimum and course prerequisites need an MIT academic record and individual course review. UniSearch cannot assess them from its profile and shows no minimum requirements match percentage.",
             "unassessed_published_minimums": [
               {
                 "id": "mit_mathematics_of_data_sm_gpa",
@@ -78057,7 +78100,7 @@
           "scope": {
             "option_ids": [],
             "route_ids": [
-              "mit_sloan_mba_admissions"
+              "mit_sloan_mba_early_deferred"
             ],
             "levels": [],
             "applicant_categories": [
@@ -78099,7 +78142,7 @@
               "institution_id": "mit-usa-cambridge",
               "study_option_ids": [],
               "route_ids": [
-                "mit_sloan_mba_admissions"
+                "mit_sloan_mba_early_deferred"
               ],
               "study_levels": [],
               "applicant_category": "MBA Early deferred applicants"
@@ -78112,7 +78155,16 @@
           "attributes": {
             "group": "eligibility",
             "summary": "MBA Early is a deferred pathway with specific graduation, prior-work and graduate-study conditions.",
-            "origin": "live_official_review_2026-09-30"
+            "origin": "live_official_review_2026-09-30",
+            "previous_scope_before_route_correction": {
+              "institution_id": "mit-usa-cambridge",
+              "study_option_ids": [],
+              "route_ids": [
+                "mit_sloan_mba_admissions"
+              ],
+              "study_levels": [],
+              "applicant_category": "MBA Early deferred applicants"
+            }
           },
           "index_attributes": {}
         },
@@ -78127,7 +78179,7 @@
           "scope": {
             "option_ids": [],
             "route_ids": [
-              "mit_sloan_mba_admissions"
+              "mit_sloan_mba_early_deferred"
             ],
             "levels": [],
             "applicant_categories": [
@@ -78176,7 +78228,7 @@
               "institution_id": "mit-usa-cambridge",
               "study_option_ids": [],
               "route_ids": [
-                "mit_sloan_mba_admissions"
+                "mit_sloan_mba_early_deferred"
               ],
               "study_levels": [],
               "applicant_category": "MBA Early deferred applicants"
@@ -78189,7 +78241,16 @@
           "attributes": {
             "group": "application_windows",
             "summary": "MBA Early has a separate deadline and waived application fee.",
-            "origin": "live_official_review_2026-09-30"
+            "origin": "live_official_review_2026-09-30",
+            "previous_scope_before_route_correction": {
+              "institution_id": "mit-usa-cambridge",
+              "study_option_ids": [],
+              "route_ids": [
+                "mit_sloan_mba_admissions"
+              ],
+              "study_levels": [],
+              "applicant_category": "MBA Early deferred applicants"
+            }
           },
           "index_attributes": {}
         },
@@ -78203,7 +78264,7 @@
           "scope": {
             "option_ids": [],
             "route_ids": [
-              "mit_sloan_mba_admissions"
+              "mit_sloan_mba_early_deferred"
             ],
             "levels": [],
             "applicant_categories": [
@@ -78257,7 +78318,7 @@
               "institution_id": "mit-usa-cambridge",
               "study_option_ids": [],
               "route_ids": [
-                "mit_sloan_mba_admissions"
+                "mit_sloan_mba_early_deferred"
               ],
               "study_levels": [],
               "applicant_category": "MBA Early deferred applicants"
@@ -78269,7 +78330,16 @@
           "attributes": {
             "group": "academic_tests",
             "summary": "MBA Early requires valid GMAT/GRE except a documented MIT-senior GPA waiver.",
-            "origin": "live_official_review_2026-09-30"
+            "origin": "live_official_review_2026-09-30",
+            "previous_scope_before_route_correction": {
+              "institution_id": "mit-usa-cambridge",
+              "study_option_ids": [],
+              "route_ids": [
+                "mit_sloan_mba_admissions"
+              ],
+              "study_levels": [],
+              "applicant_category": "MBA Early deferred applicants"
+            }
           },
           "index_attributes": {}
         },
@@ -78286,7 +78356,7 @@
           "scope": {
             "option_ids": [],
             "route_ids": [
-              "mit_sloan_mba_admissions"
+              "mit_sloan_mba_early_deferred"
             ],
             "levels": [],
             "applicant_categories": [
@@ -78337,7 +78407,7 @@
               "institution_id": "mit-usa-cambridge",
               "study_option_ids": [],
               "route_ids": [
-                "mit_sloan_mba_admissions"
+                "mit_sloan_mba_early_deferred"
               ],
               "study_levels": [],
               "applicant_category": "MBA Early deferred applicants"
@@ -78349,7 +78419,16 @@
           "attributes": {
             "group": "documents",
             "summary": "MBA Early has its own two-letter checklist and English interview assessment.",
-            "origin": "live_official_review_2026-09-30"
+            "origin": "live_official_review_2026-09-30",
+            "previous_scope_before_route_correction": {
+              "institution_id": "mit-usa-cambridge",
+              "study_option_ids": [],
+              "route_ids": [
+                "mit_sloan_mba_admissions"
+              ],
+              "study_levels": [],
+              "applicant_category": "MBA Early deferred applicants"
+            }
           },
           "index_attributes": {}
         },
@@ -102907,7 +102986,7 @@
         },
         {
           "path": "backend/data/drafts/imperial-college-london-uk/catalog.json",
-          "sha256": "aa04ac0b0abfd9d4c172da030b63138abe32097d5fd8c0bc8454c8413019c4b0"
+          "sha256": "9bdc0eb762d4aa89b6b7d2339a4365a38e4954b807e373cdbbafef3a8c5d55e5"
         },
         {
           "path": "backend/data/drafts/imperial-college-london-uk/course-qualification-panels.json",
@@ -102915,7 +102994,7 @@
         },
         {
           "path": "backend/data/drafts/imperial-college-london-uk/doctoral-evidence.json",
-          "sha256": "2139167560af4348b2a196ce7b3d2ec273e7f79560077ac789a8af2501da67b7"
+          "sha256": "58206d429d3e248370191613450a9cedbc7cc84cf62f8daa13acd964648d0375"
         },
         {
           "path": "backend/data/drafts/imperial-college-london-uk/engineering-sciences-evidence.json",
@@ -134488,7 +134567,8 @@
           "attributes": {
             "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
             "record_kind": "application_context",
-            "independent_application_status": "published_course_choice"
+            "independent_application_status": "published_course_choice",
+            "application_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-computing/"
           },
           "index_attributes": {}
         },
@@ -134701,7 +134781,8 @@
           "attributes": {
             "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
             "record_kind": "application_context",
-            "independent_application_status": "published_course_choice"
+            "independent_application_status": "published_course_choice",
+            "application_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautical-engineering/"
           },
           "index_attributes": {}
         },
@@ -139045,7 +139126,8 @@
           "attributes": {
             "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
             "record_kind": "application_context",
-            "independent_application_status": "internal_only"
+            "independent_application_status": "internal_only",
+            "application_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine-phd/"
           },
           "index_attributes": {}
         },
@@ -142362,7 +142444,8 @@
             "target": "Computing Research; Research Area General",
             "policy_inheritance": "Facts apply only when option, degree, applicant, cycle, fee and route scopes intersect. Shared portal does not imply shared requirements.",
             "record_kind": "application_context",
-            "independent_application_status": "departmental_degree_application"
+            "independent_application_status": "departmental_degree_application",
+            "application_url": "https://www.imperial.ac.uk/engineering/departments/computing/prospective-students/phd/phd-application-guidelines/"
           },
           "index_attributes": {}
         },
@@ -258431,7 +258514,7 @@
               "original_scope_note": ""
             }
           },
-          "value": "The general Computing PhD target is normally a first-class or distinction Master’s in a relevant scientific/technical subject; an undergraduate degree is normally equivalent to UK 2:1. Bachelor-only applicants are normally not considered, but outstanding applicants or those with extensive relevant industry/research experience may formally apply with evidence of compensating factors; the department will not pre-assess exceptions by email. Standard English is required. Submit a CV with linked publications, all Bachelor’s/Master’s transcripts, two references, a 1–2-page personal statement, and an original 3–4-page research statement with literature references. The statements must be written by the applicant without generative AI. Suggest 3–4 supervisors. Normal review starts only after a formal application. An interview may ask the applicant to present a past project or discuss assigned papers. This general target differs from the AI4Health target. For April/October 2027 entry, rounds open 1 October 2026, 1 December 2026, 1 February 2027, and 1 April 2027; decisions are due 15 February, 15 April, 15 June, and 15 July 2027 respectively. The source does not publish an exact deadline time.",
+          "value": "The general Computing PhD target is normally a first-class or distinction Master’s in a relevant scientific/technical subject; an undergraduate degree is normally equivalent to UK 2:1. Bachelor-only applicants are normally not considered, but outstanding applicants or those with extensive relevant industry/research experience may formally apply with evidence of compensating factors; the department will not pre-assess exceptions by email. Standard English is required. Submit a CV with linked publications, all Bachelor’s/Master’s transcripts, two references, a 1–2-page personal statement, and an original 3–4-page research statement with literature references. The statements must be written by the applicant without generative AI. Suggest 3–4 supervisors. Normal review starts only after a formal application. An interview may ask the applicant to present a past project or discuss assigned papers. This general target differs from the AI4Health target. For April/October 2027 entry, application deadlines are 1 October 2026, 1 December 2026, 1 February 2027, and 1 April 2027; decisions are due 15 February, 15 April, 15 June, and 15 July 2027 respectively. The source does not publish an exact deadline time.",
           "conditions": [
             "Computing funding notification dates are not rejection dates: an accepted candidate without a funding notification remains under consideration for later rounds unless told otherwise. Overseas applicants needing funding are encouraged to apply in October/December."
           ],
@@ -304546,7 +304629,7 @@
       "inputs": [
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/catalog.json",
-          "sha256": "8404664cfb70c1c2e1a641f6876e62feb0215b9b2e508c69f0f2935a6189acb0"
+          "sha256": "139876567ca710eb6ff00db0fcda4a2283c71dae6a8e32e256f4c4fc4a7da0ba"
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/coterm-central-evidence.json",
@@ -337951,7 +338034,8 @@
             "stanford-option-cs-ms"
           ],
           "source_ids": [
-            "directory-evidence:stanford-graduate-directory"
+            "directory-evidence:stanford-graduate-directory",
+            "engineering-doerr-evidence:application-overview"
           ],
           "fact_ids": [
             "directory-evidence:stanford-graduate-cs-ms-directory-table"
@@ -337979,7 +338063,8 @@
             ]
           },
           "index_attributes": {
-            "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy."
+            "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy.",
+            "application_url": "https://gradadmissions.stanford.edu/apply/application-overview"
           }
         },
         {
@@ -337993,10 +338078,12 @@
             "stanford-option-cs-phd"
           ],
           "source_ids": [
-            "directory-evidence:stanford-graduate-directory"
+            "directory-evidence:stanford-graduate-directory",
+            "engineering-doerr-evidence:application-overview"
           ],
           "fact_ids": [
-            "directory-evidence:stanford-graduate-cs-phd-directory-table"
+            "directory-evidence:stanford-graduate-cs-phd-directory-table",
+            "engineering-doerr-evidence:program-deadline-gre-2027"
           ],
           "shared_policy_context_ids": [
             "undergraduate-shared-evidence:stanford-nonprofessional-graduate"
@@ -338020,7 +338107,8 @@
             ]
           },
           "index_attributes": {
-            "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy."
+            "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy.",
+            "application_url": "https://gradadmissions.stanford.edu/apply/application-overview"
           }
         },
         {
@@ -341758,10 +341846,12 @@
             "stanford-option-cs-ms"
           ],
           "source_ids": [
-            "directory-evidence:stanford-coterm-directory"
+            "directory-evidence:stanford-coterm-directory",
+            "engineering-doerr-evidence:cs-coterm"
           ],
           "fact_ids": [
-            "directory-evidence:stanford-coterm-cs-ms-directory-table"
+            "directory-evidence:stanford-coterm-cs-ms-directory-table",
+            "engineering-doerr-evidence:engineering-coterm-2027-directory-details"
           ],
           "shared_policy_context_ids": [],
           "provenance": {
@@ -341786,7 +341876,8 @@
             "policy_for_route_ids": [
               "engineering-doerr-evidence:cs-coterm"
             ],
-            "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
+            "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers.",
+            "application_url": "https://www.cs.stanford.edu/admissions/coterminal-admissions-overview"
           }
         },
         {
@@ -406532,7 +406623,8 @@
               "stanford-option-oceans-phd"
             ],
             "route_ids": [
-              "engineering-doerr-evidence:external-graduate"
+              "engineering-doerr-evidence:external-graduate",
+              "directory-evidence:stanford-graduate-cs-phd"
             ],
             "levels": [
               "masters",
@@ -408824,7 +408916,8 @@
               "stanford-option-me-ms"
             ],
             "route_ids": [
-              "engineering-doerr-evidence:engineering-coterm"
+              "engineering-doerr-evidence:engineering-coterm",
+              "directory-evidence:stanford-coterm-cs-ms"
             ],
             "levels": [
               "masters"
@@ -458955,11 +459048,11 @@
         },
         {
           "path": "backend/data/drafts/nazarbayev-university-kaz-astana/research-catalog.json",
-          "sha256": "efd036caf229090e0a4d21f2beb9ce0949cb3a45ad896e7565f9907d8fa4dc4e"
+          "sha256": "15f76791114c4aa3f47c9655739d52e42407e46b550cbcc8c6801bfc712ce8eb"
         },
         {
           "path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-b/data-acceptance.json",
-          "sha256": "c0cf241aa07ea4904b72d1da2f9ff7994fef08ea8f5889406a67ba1f35cc3dbe"
+          "sha256": "dc1a8f84c8833b1fd509a8fb60dbfb5b22b0bf8abc240cd32a495af686af4cba"
         }
       ],
       "sources": [
@@ -463820,7 +463913,7 @@
                 "direct_page_status": "Assignment/catalog link currently renders a BSc Robotics page; official indexed MSc content and current SMG homepage listing provide corroboration."
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -463831,7 +463924,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-geosciences"
             ],
-            "native_award": "Master of Science in Geosciences"
+            "native_award": "Master of Science in Geosciences",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -463899,7 +463995,7 @@
                 "curriculum_summary": "Research-oriented preparation in hydrocarbon exploration/production, reservoirs and engineering project management. Core work includes porous-media flow, reservoir engineering/simulation, formation evaluation, advanced drilling/production, petroleum analytics and well testing, plus a two-part thesis and electives."
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -463910,7 +464006,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-petroleum-engineering"
             ],
-            "native_award": "Master of Science in Petroleum Engineering"
+            "native_award": "Master of Science in Petroleum Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -463978,7 +464077,7 @@
                 "curriculum_summary": "Practice-oriented mining engineering with mine design/ventilation, geostatistics, geomechanics, mineral-processing plant design, rock mechanics, surface/underground mine design and software. Curriculum lists a summer industrial internship, research methods, two-part thesis and electives."
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -463989,7 +464088,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-mining-engineering"
             ],
-            "native_award": "Master of Science in Mining Engineering"
+            "native_award": "Master of Science in Mining Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464062,7 +464164,7 @@
                 ]
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464073,7 +464175,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-robotics"
             ],
-            "native_award": "Master of Science in Robotics"
+            "native_award": "Master of Science in Robotics",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464146,7 +464251,7 @@
                 ]
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464157,7 +464262,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-biomedical-engineering"
             ],
-            "native_award": "Master of Science in Biomedical Engineering"
+            "native_award": "Master of Science in Biomedical Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464231,7 +464339,7 @@
                 ]
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464242,7 +464350,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-civil-and-environmental-engineering"
             ],
-            "native_award": "Master of Science in Civil and Environmental Engineering"
+            "native_award": "Master of Science in Civil and Environmental Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464316,7 +464427,7 @@
                 ]
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464327,7 +464438,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-chemical-and-materials-engineering"
             ],
-            "native_award": "Master of Science in Chemical and Materials Engineering"
+            "native_award": "Master of Science in Chemical and Materials Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464399,7 +464513,7 @@
                 ]
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464410,7 +464524,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-science-in-electrical-and-computer-engineering"
             ],
-            "native_award": "Master of Science in Electrical and Computer Engineering"
+            "native_award": "Master of Science in Electrical and Computer Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464478,7 +464595,7 @@
                 "curriculum_summary": "Current page describes a two-year/120 ECTS research-integrated upgrade of a former 1.5-year program. Areas: applied mechanics, energy/thermofluids, engineering design/materials/manufacturing. Four electives and a two-part thesis; analytical/computational, laboratory, simulation and aerospace electives."
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464489,7 +464606,10 @@
             "inventory_card_ids": [
               "nu-inventory-msc-in-mechanical-and-aerospace-engineering"
             ],
-            "native_award": "MSc in Mechanical and Aerospace Engineering"
+            "native_award": "MSc in Mechanical and Aerospace Engineering",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -464562,7 +464682,7 @@
                 "curriculum_summary": "Cross-school technical/business preparation for engineering management. GSB courses are intensive three-week blocks in semester 2; SoE courses are fourteen-week semesters in the other three terms. Engineering economics/statistics, operations/supply chain, accounting, strategy, finance, marketing, entrepreneurship, three electives and an industry-linked two-part capstone."
               }
             },
-            "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy",
+            "program_admission_page_status": "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions.",
             "format": {
               "mode": "full-time on-campus",
               "duration": "2 years",
@@ -464573,7 +464693,10 @@
             "inventory_card_ids": [
               "nu-inventory-master-of-engineering-management"
             ],
-            "native_award": "Master of Engineering Management"
+            "native_award": "Master of Engineering Management",
+            "researcher_notes": {
+              "program_admission_page_status": "program page links to central Apply Now; no separate numeric cutoff/waiver visible, except MEng background is intended audience; see packet B shared Master policy"
+            }
           }
         },
         {
@@ -471468,7 +471591,7 @@
           "attributes": {
             "scope": "Entry from secondary education to six-year undergraduate medical education (not graduate-entry Doctor of Medicine).",
             "exceptions": [
-              "Six-year direct-entry undergraduate medical program. Keep distinct from graduate-entry Doctor of Medicine (owned by packet B).",
+              "The six-year undergraduate medical program is distinct from the graduate-entry Doctor of Medicine.",
               "Program page currently exposes 2025/26 application window, not confirmation of 2027/28 intake. Standard UG-like criteria have program-page-specific exceptions; use cited requirements, not assumed common policy.",
               "The UMP page shows an applications-open banner but its displayed deadlines are for 2025/26 and already past; do not infer 2027/28 recruitment from the banner. The integrated route is two pre-medicine years plus four MD-program years; no separate bachelor award is listed."
             ],
@@ -471478,6 +471601,13 @@
               "undergraduate"
             ],
             "applicant_route": "first_year",
+            "researcher_notes": {
+              "exceptions": [
+                "Six-year direct-entry undergraduate medical program. Keep distinct from graduate-entry Doctor of Medicine (owned by packet B).",
+                "Program page currently exposes 2025/26 application window, not confirmation of 2027/28 intake. Standard UG-like criteria have program-page-specific exceptions; use cited requirements, not assumed common policy.",
+                "The UMP page shows an applications-open banner but its displayed deadlines are for 2025/26 and already past; do not infer 2027/28 recruitment from the banner. The integrated route is two pre-medicine years plus four MD-program years; no separate bachelor award is listed."
+              ]
+            },
             "application_url": "https://admissions.nu.edu.kz/"
           },
           "index_attributes": {
@@ -471523,13 +471653,12 @@
             ]
           },
           "attributes": {
-            "scope": "Shared central Master’s admissions policy is owned by packet B; apply only as shared baseline where program page has not published an exception.",
+            "scope": "Shared master's admissions requirements apply alongside any program-specific conditions.",
             "cross_packet_ref": "nu-b-master-policy-scope",
             "exceptions": [
-              "All ten packet-A master program pages were reviewed. Individual program pages link to central Master admissions and do not state a unique numeric minimum, required test/waiver, document list, or program-specific deadline.",
+              "The program pages link to central admissions and do not state a separate numeric minimum, test or waiver, document list, or program-specific deadline.",
               "The SoE Admissions page gives a general MSc application process/application fee and a yearless USD 16,000/year school tuition reference. It does not state whether the rate covers cross-school MEng Management; MSc Robotics is outside the School of Engineering.",
               "MEng Management describes an engineering/science audience but does not publish a formal degree restriction. Do not turn intended audience into an admission gate.",
-              "The current packet-B shared Master export includes all ten A engineering/Robotics study-option IDs in its four policy facts and excludes only its documented professional/special routes. Use the cross-packet link for consolidated review; runtime activation still requires B's evidence acceptance.",
               "The live Geosciences card destination returns unrelated BSc Robotics content; an official indexed MSc page and the current SMG listing support the program/curriculum identity. Its indexed thesis table leaves one ECTS term blank."
             ],
             "school_process_fact_id": "nu-a-fact-soe-masters-application",
@@ -471538,7 +471667,18 @@
             "study_levels": [
               "masters"
             ],
-            "applicant_route": "graduate"
+            "applicant_route": "graduate",
+            "researcher_notes": {
+              "scope": "Shared central Master’s admissions policy is owned by packet B; apply only as shared baseline where program page has not published an exception.",
+              "exceptions": [
+                "All ten packet-A master program pages were reviewed. Individual program pages link to central Master admissions and do not state a unique numeric minimum, required test/waiver, document list, or program-specific deadline.",
+                "The SoE Admissions page gives a general MSc application process/application fee and a yearless USD 16,000/year school tuition reference. It does not state whether the rate covers cross-school MEng Management; MSc Robotics is outside the School of Engineering.",
+                "MEng Management describes an engineering/science audience but does not publish a formal degree restriction. Do not turn intended audience into an admission gate.",
+                "The current packet-B shared Master export includes all ten A engineering/Robotics study-option IDs in its four policy facts and excludes only its documented professional/special routes. Use the cross-packet link for consolidated review; runtime activation still requires B's evidence acceptance.",
+                "The live Geosciences card destination returns unrelated BSc Robotics content; an official indexed MSc page and the current SMG listing support the program/curriculum identity. Its indexed thesis table leaves one ECTS term blank."
+              ]
+            },
+            "application_url": "https://nu.edu.kz/admissions/how-to-apply/masters/regular-admissions-masters/"
           },
           "index_attributes": {
             "owner_packet": "a"
@@ -479230,7 +479370,7 @@
             "curriculum_summary": "Research-oriented preparation in hydrocarbon exploration/production, reservoirs and engineering project management. Core work includes porous-media flow, reservoir engineering/simulation, formation evaluation, advanced drilling/production, petroleum analytics and well testing, plus a two-part thesis and electives."
           },
           "conditions": [
-            "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B."
+            "The program page links to central admissions; no separate program-specific numeric threshold or waiver was visible. Consult the shared master's requirements."
           ],
           "conditions_and_exceptions": null,
           "exceptions": null,
@@ -479254,7 +479394,13 @@
               "nu-a-src-program-master-of-science-in-petroleum-engineering"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "researcher_notes": {
+              "conditions": [
+                "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B."
+              ]
+            }
+          },
           "index_attributes": {
             "owner_packet": "a"
           }
@@ -479288,7 +479434,7 @@
             "curriculum_summary": "Practice-oriented mining engineering with mine design/ventilation, geostatistics, geomechanics, mineral-processing plant design, rock mechanics, surface/underground mine design and software. Curriculum lists a summer industrial internship, research methods, two-part thesis and electives."
           },
           "conditions": [
-            "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B."
+            "The program page links to central admissions; no separate program-specific numeric threshold or waiver was visible. Consult the shared master's requirements."
           ],
           "conditions_and_exceptions": null,
           "exceptions": null,
@@ -479312,7 +479458,13 @@
               "nu-a-src-program-master-of-science-in-mining-engineering"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "researcher_notes": {
+              "conditions": [
+                "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B."
+              ]
+            }
+          },
           "index_attributes": {
             "owner_packet": "a"
           }
@@ -479346,7 +479498,7 @@
             "curriculum_summary": "Current page describes a two-year/120 ECTS research-integrated upgrade of a former 1.5-year program. Areas: applied mechanics, energy/thermofluids, engineering design/materials/manufacturing. Four electives and a two-part thesis; analytical/computational, laboratory, simulation and aerospace electives."
           },
           "conditions": [
-            "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B.",
+            "The program page links to central admissions; no separate program-specific numeric threshold or waiver was visible. Consult the shared master's requirements.",
             "The page contrasts the current two-year design with a former 1.5-year program; it does not name an entry year for the revision."
           ],
           "conditions_and_exceptions": null,
@@ -479371,7 +479523,14 @@
               "nu-a-src-program-msc-in-mechanical-and-aerospace-engineering"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "researcher_notes": {
+              "conditions": [
+                "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B.",
+                "The page contrasts the current two-year design with a former 1.5-year program; it does not name an entry year for the revision."
+              ]
+            }
+          },
           "index_attributes": {
             "owner_packet": "a"
           }
@@ -479410,7 +479569,7 @@
             "curriculum_summary": "Cross-school technical/business preparation for engineering management. GSB courses are intensive three-week blocks in semester 2; SoE courses are fourteen-week semesters in the other three terms. Engineering economics/statistics, operations/supply chain, accounting, strategy, finance, marketing, entrepreneurship, three electives and an industry-linked two-part capstone."
           },
           "conditions": [
-            "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B.",
+            "The program page links to central admissions; no separate program-specific numeric threshold or waiver was visible. Consult the shared master's requirements.",
             "Program page describes science and engineering graduates as the intended audience; this is not stated as a formal academic prerequisite or numeric eligibility rule."
           ],
           "conditions_and_exceptions": null,
@@ -479435,7 +479594,14 @@
               "nu-a-src-program-master-of-engineering-management"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "researcher_notes": {
+              "conditions": [
+                "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B.",
+                "Program page describes science and engineering graduates as the intended audience; this is not stated as a formal academic prerequisite or numeric eligibility rule."
+              ]
+            }
+          },
           "index_attributes": {
             "owner_packet": "a"
           }
@@ -479489,7 +479655,7 @@
             ]
           },
           "conditions": [
-            "Central Master admissions policy is owned by packet B; use its reviewed route and dates. This School page documents process, submission, fee and test handling but not individual degree minimum scores or whether a program requires GRE/GMAT."
+            "The School page documents the application process, fee and test submission, but not individual degree minimum scores or whether a program requires GRE/GMAT. Consult the shared master's requirements and dates."
           ],
           "conditions_and_exceptions": null,
           "exceptions": null,
@@ -479514,7 +479680,13 @@
               "nu-a-src-soe-admissions"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "researcher_notes": {
+              "conditions": [
+                "Central Master admissions policy is owned by packet B; use its reviewed route and dates. This School page documents process, submission, fee and test handling but not individual degree minimum scores or whether a program requires GRE/GMAT."
+              ]
+            }
+          },
           "index_attributes": {
             "owner_packet": "a"
           }
@@ -479560,7 +479732,7 @@
             "discount_condition": "one-time advance payment of 100% of annual tuition or full Tuition Agreement amount"
           },
           "conditions": [
-            "The page is yearless and does not state whether the cross-school MEng Management partnership follows the listed rate. SCAI MSc Robotics is outside this School source. Treat as a school-level reference pending current program tuition agreement; packet B owns central Master tuition policy."
+            "The page is yearless and does not state whether the cross-school MEng Management partnership follows the listed rate. SCAI MSc Robotics is outside this School source. Confirm current program tuition with the university."
           ],
           "conditions_and_exceptions": null,
           "exceptions": null,
@@ -479597,6 +479769,11 @@
             ]
           },
           "attributes": {
+            "researcher_notes": {
+              "conditions": [
+                "The page is yearless and does not state whether the cross-school MEng Management partnership follows the listed rate. SCAI MSc Robotics is outside this School source. Treat as a school-level reference pending current program tuition agreement; packet B owns central Master tuition policy."
+              ]
+            },
             "catalog_costs": {
               "quotes": [
                 {
@@ -481039,7 +481216,7 @@
             "cycle": null,
             "fee_status": [],
             "additional_dimensions": {
-              "source_scope_text": "coordinate shared mechanics with packet C"
+              "source_scope_text": "Doctoral financial aid"
             }
           },
           "value": "Doctoral financial aid has a separate official route; eligibility, coverage and deadlines need program-level mapping.",
@@ -481069,7 +481246,10 @@
           "attributes": {
             "previous_review_status": "scope checked; value is historical, unknown, or still needs mapping",
             "superseded_reason": "First-pass reference retained for provenance; complete programme/policy review facts from2026-10-24 govern this packet.",
-            "original_scope": "coordinate shared mechanics with packet C"
+            "researcher_notes": {
+              "source_scope_text": "coordinate shared mechanics with packet C",
+              "original_scope": "coordinate shared mechanics with packet C"
+            }
           },
           "index_attributes": {
             "owner_packet": "b"
@@ -498772,7 +498952,7 @@
             "cycle": null,
             "fee_status": [],
             "additional_dimensions": {
-              "programs": "packet C technical PhDs by actual School"
+              "programs": "Technical PhD programs by school"
             }
           },
           "value": {
@@ -498839,7 +499019,11 @@
               "nu-c-src-phd-aid"
             ]
           },
-          "attributes": {},
+          "attributes": {
+            "researcher_notes": {
+              "programs": "packet C technical PhDs by actual School"
+            }
+          },
           "index_attributes": {
             "owner_packet": "c"
           }
@@ -498870,7 +499054,7 @@
             "fee_status": [],
             "additional_dimensions": {
               "school": "SOE",
-              "programs": "packet C eight SOE PhDs"
+              "programs": "Eight School of Engineering PhD programs"
             }
           },
           "value": {
@@ -498925,6 +499109,9 @@
           "attributes": {
             "attributes": {
               "reference_only": true
+            },
+            "researcher_notes": {
+              "programs": "packet C eight SOE PhDs"
             }
           },
           "index_attributes": {
@@ -504525,8 +504712,8 @@
         },
         {
           "id": "nu-a-gap-engineering-masters",
-          "reason": "All ten engineering/Robotics master program pages and their study structures have been reviewed. Individual pages link to central Apply Now; no numeric program-specific minimum/test/waiver was visible. MEng Management describes an engineering/science audience, not a formal restriction. Packet B now provides a shared Master baseline whose four facts include all ten A study-option IDs. The SoE Admissions page gives a general MSc application fee and yearless USD 16,000/year reference; MEng fee applicability and current program-cycle amounts are not explicit.",
-          "official_next_step": "Use the four B policy facts as the shared Master baseline in B's consolidated evidence review. Keep page-specific unknowns and exceptions separate; do not infer MEng tuition applicability or current-cycle amounts.",
+          "reason": "No program-specific numeric minimum, test or waiver was visible on the reviewed engineering and Robotics master program pages. MEng fee applicability and current program-cycle amounts are not explicit.",
+          "official_next_step": "Confirm program-specific requirements and current fees with the university.",
           "scope": {
             "option_ids": [
               "nu-a-study-master-of-science-in-geosciences",
@@ -504547,9 +504734,7 @@
             "applicant_categories": [],
             "cycle": null,
             "fee_status": [],
-            "additional_dimensions": {
-              "unparsed_scope": "10 packet-A master’s cards"
-            }
+            "additional_dimensions": {}
           },
           "source_ids": [
             "nu-a-src-program-geosciences-indexed-page",
@@ -504598,7 +504783,12 @@
           "attributes": {
             "cross_packet_ref_ids": [
               "nu-a-crossref-masters-policy"
-            ]
+            ],
+            "researcher_notes": {
+              "reason": "All ten engineering/Robotics master program pages and their study structures have been reviewed. Individual pages link to central Apply Now; no numeric program-specific minimum/test/waiver was visible. MEng Management describes an engineering/science audience, not a formal restriction. Packet B now provides a shared Master baseline whose four facts include all ten A study-option IDs. The SoE Admissions page gives a general MSc application fee and yearless USD 16,000/year reference; MEng fee applicability and current program-cycle amounts are not explicit.",
+              "official_next_step": "Use the four B policy facts as the shared Master baseline in B's consolidated evidence review. Keep page-specific unknowns and exceptions separate; do not infer MEng tuition applicability or current-cycle amounts.",
+              "unparsed_scope": "10 packet-A master’s cards"
+            }
           },
           "index_attributes": {
             "owner_packet": "a"

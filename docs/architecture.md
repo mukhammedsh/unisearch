@@ -24,7 +24,7 @@ flowchart TD
         MW["Security Middleware\n(Rate Limiter, Body Limit, CSP, Trusted Proxy Resolution)"]
         Routers["API Routers\n(/universities, /ai-sort, /compare, /exams)"]
         UniFit["UniFit Composite Engine\n(Personalized Ranking, Sliders)"]
-        UniChance["UniChance\n(Published Requirements Fit)"]
+        RequirementsMatch["Minimum requirements match\n(Published Requirements Fit)"]
         ML["ML Semantic Service\n(multilingual-e5 Embeddings, Vector Cosine)"]
     end
 
@@ -46,7 +46,7 @@ flowchart TD
     Proxy <--> |Reverse Proxy (127.0.0.1:8000)| MW
     MW --> Routers
     Routers --> UniFit
-    Routers --> UniChance
+    Routers --> RequirementsMatch
     UniFit <--> ML
     Routers <--> Redis
     Routers --> Disk
@@ -67,7 +67,7 @@ flowchart TD
 | Applicant or visitor | Browses public catalog data without an account. Optional profile evidence is kept in browser storage and sent to the API only when needed for a requested calculation or ranking. |
 | Contributor and maintainer | Contributors propose source, code, documentation, or data changes through pull requests. Maintainers review and merge changes, administer access, and publish releases. |
 | Browser to frontend | The browser downloads static HTML, JavaScript, CSS, and catalog media from the configured frontend host over HTTPS. |
-| Browser to FastAPI | The frontend sends JSON requests to the runtime-configured API base. Main routes cover catalog search and details, admissions context, UniFit ranking, UniChance requirements fit, ROI, validation, and currency rates. Request and response behavior is described in [the API and admissions runtime contract](admissions-runtime-contract.md); CORS and deployment guidance are in [deployment security](deployment_security.md). `/docs` and `/openapi.json` are available only when `DOCS_ENABLED=1`. |
+| Browser to FastAPI | The frontend sends JSON requests to the runtime-configured API base. Main routes cover catalog search and details, admissions context, UniFit ranking, Minimum requirements match requirements fit, ROI, validation, and currency rates. Request and response behavior is described in [the API and admissions runtime contract](admissions-runtime-contract.md); CORS and deployment guidance are in [deployment security](deployment_security.md). `/docs` and `/openapi.json` are available only when `DOCS_ENABLED=1`. |
 | Browser to unpkg and OpenStreetMap | The map loads version-pinned Leaflet assets from unpkg and map tiles from OpenStreetMap. Tile requests use catalog coordinates; applicant profile data is not sent to these providers. |
 | FastAPI to ExchangeRate-API | When currency-rate retrieval is enabled, the backend requests exchange rates from the configured `CURRENCY_RATES_API_URL`. The request contains currency-rate parameters, not applicant profile evidence. |
 | FastAPI to Redis | When configured, Redis stores bounded cache entries. Redis is not the authoritative catalog and can be disabled or unavailable without making it the source of application data. |
@@ -120,7 +120,7 @@ backend/app/
 ├── schemas/
 │   └── payloads.py       # Pydantic V2 request & response contracts
 └── services/
-    ├── ai_scoring.py     # UniFit composite personalized ranking & UniChance algorithms
+    ├── ai_scoring.py     # UniFit composite personalized ranking & Minimum requirements match algorithms
     ├── ml_scoring.py     # Multilingual neural embeddings & semantic vector search
     ├── search.py         # Multi-criteria filtering, fuzzy normalization & sorting
     └── background_tasks.py # Async startup sync, currency warmup, ML model initialization
@@ -151,22 +151,22 @@ sequenceDiagram
     actor User as Applicant
     participant Client as Frontend (SPA)
     participant API as FastAPI Backend
-    participant Cache as Redis Store
+    participant Cache as Ranking Cache
     participant ML as ML Embeddings (e5)
     participant Engine as UniFit
 
-    User->>Client: Adjusts Trade-off Sliders (Budget, GPA, Science)
+    User->>Client: Sets preferences for study focus, atmosphere, location and finance
     Client->>API: POST /universities/ai-sort (Profile, Weights)
     API->>Cache: Check Query Cache Key (Hash of Profile + Weights)
     alt Cache Hit
         Cache-->>API: Return Cached Ranked Universities
     else Cache Miss
-        API->>ML: Vectorize Query & Subject Preferences
+        API->>ML: Vectorize interest text
         ML-->>API: Dense Query Embedding Vector
         API->>Engine: Calculate UniFit ranking components
         Note over Engine: Available profile, preference, requirement, cost, and semantic inputs
         Engine-->>API: Ranked results with available explanations
-        API->>Cache: Store in Cache (TTL 10m)
+        API->>Cache: Store with the configured cache lifetime
     end
     API-->>Client: JSON Payload (Ranked Universities)
     Client-->>User: Render Borderless Cards with Fit Badges
@@ -175,11 +175,11 @@ sequenceDiagram
 ### A. UniFit (Composite Personalized Ranking)
 Implemented in `backend/app/services/ai_scoring.py`, UniFit ranks catalog options using the applicant's selected profile context, preference weights, and available cost, academic, language, interest, and semantic inputs. Unavailable components are omitted rather than filled with invented values. UniFit is a sorting aid, not an admission probability or an aid prediction.
 
-### B. UniChance (Published Requirements Fit)
+### B. Minimum requirements match
 
-UniChance reports the percentage of evaluable, published academic and language minimum checks met for the applicable admission choice. Its denominator excludes evidence-presence checks, funding conditions, and nonnumeric or holistic requirements. It is a requirements-fit measure, not a probability of admission, overall eligibility decision, or funding prediction.
+Minimum requirements match reports the percentage of evaluable, published academic and language minimum checks met for the applicable admission choice. Its denominator excludes evidence-presence checks, funding conditions, and nonnumeric or holistic requirements. It is a requirements-fit measure, not a probability of admission, overall eligibility decision, or funding prediction.
 
-The API calculates this value separately through `POST /universities/{university_id}/uni-chance`. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
+The user-facing name has changed; existing API and saved-state identifiers remain supported. The API calculates this value separately through `POST /universities/{university_id}/uni-chance`. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
 
 ### C. ML Semantic Matching (`multilingual-e5`)
 Implemented in `backend/app/services/ml_scoring.py`:
@@ -198,7 +198,7 @@ Implemented in `backend/app/services/ml_scoring.py`:
   - Institutional logos: 1:1 square PNG format with responsive fallbacks.
   - Campus thumbnails: 16:9 WebP and JPEG images generated in multiple responsive resolutions.
 * **Data Auditing (`npm run audit:data`):**
-  Automated script validating schema conformance, URL liveliness, required fields, and asset presence before any release.
+  Checks local data structure, required fields and asset references. It does not visit official pages. Run affected HTTP source checks separately and review the source content when its facts or scope change.
 
 ### Redis Caching Layer (`app/core/redis_store.py`)
 * **Key Prefixes:** Cache entries and rate-limiter keys use `REDIS_PREFIX`, which defaults to `unisearch`; it does not add an environment name automatically. Set a unique prefix for each deployment when environments share a Redis instance.

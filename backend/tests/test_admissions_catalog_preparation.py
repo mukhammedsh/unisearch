@@ -30,7 +30,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(self.batch["schema_version"], "admissions-storage-1.0")
         self.assertIs(self.batch["runtime_active"], False)
         self.assertEqual([(len(row["study_options"]), len(row["application_routes"]), len(row["facts"]), len(row["unknowns"]))
-                          for row in self.batch["institutions"]], [(191, 73, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95), (96, 46, 399, 29)])
+                          for row in self.batch["institutions"]], [(191, 74, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95), (96, 46, 399, 29)])
         self.assertEqual({frozenset(row) for row in self.batch["institutions"]}, {frozenset(self.batch["institutions"][0])})
 
     def test_imperial_reassembly_preserves_history_without_retired_runtime_programs(self):
@@ -44,6 +44,83 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual((folder / "runtime-provenance.json").read_bytes(), history)
             self.assertEqual(read(folder / "catalog.json"), read(original / "catalog.json"))
+
+    def test_audited_routes_publish_their_reviewed_application_guidance(self):
+        mappings = {
+            "imperial-college-london-uk": {
+                "procedure-aeronautical-engineering": "imperial-course-aeronautical-engineering-2027",
+                "procedure-advanced-computing": "imperial-course-advanced-computing-2027",
+                "procedure-computing-phd": "source-fcfd905e0321795e",
+                "procedure-medicine-phd": "imperial_page_medicine_phd",
+            },
+            "stanford-university-usa-ca": {
+                "directory-evidence:stanford-graduate-cs-ms": "engineering-doerr-evidence:application-overview",
+                "directory-evidence:stanford-graduate-cs-phd": "engineering-doerr-evidence:application-overview",
+                "directory-evidence:stanford-coterm-cs-ms": "engineering-doerr-evidence:cs-coterm",
+            },
+            "nazarbayev-university-kaz-astana": {
+                "nu-a-route-masters-common-packet-b": "nu-a-src-soe-masters-policy",
+            },
+        }
+        for institution_id, expected in mappings.items():
+            institution = self.by_id[institution_id]
+            routes = {row["id"]: row for row in institution["application_routes"]}
+            sources = {row["id"]: row["url"] for row in institution["sources"]}
+            for route_id, source_id in expected.items():
+                route = routes[route_id]
+                self.assertIn(source_id, route["source_ids"])
+                metadata = {**route["attributes"], **route["index_attributes"]}
+                self.assertEqual(metadata["application_url"], sources[source_id], route_id)
+
+    def test_nu_applicant_text_preserves_facts_without_research_workflow(self):
+        nu = self.by_id["nazarbayev-university-kaz-astana"]
+        fact = next(row for row in nu["facts"] if row["id"] == "nu-a-fact-soe-masters-application")
+        self.assertIn("application process, fee and test submission", fact["conditions"][0])
+        self.assertIn("packet B", fact["attributes"]["researcher_notes"]["conditions"][0])
+        route = next(row for row in nu["application_routes"] if row["id"] == "nu-a-route-masters-common-packet-b")
+        self.assertIn("program-specific conditions", route["attributes"]["scope"])
+        self.assertIn("packet-B", route["attributes"]["researcher_notes"]["exceptions"][3])
+        for group in ("facts", "unknowns", "study_options", "application_routes"):
+            for row in nu[group]:
+                public = {key: row.get(key) for key in ("title", "value", "conditions", "conditions_and_exceptions", "exceptions", "reason", "official_next_step")}
+                public["scope_text"] = (row.get("scope") or {}).get("additional_dimensions")
+                public["route_text"] = {key: (row.get("attributes") or {}).get(key) for key in ("scope", "exceptions", "program_admission_page_status")}
+                self.assertNotRegex(json.dumps(public, ensure_ascii=False), r"(?i)\bpacket[ -][abc]\b", row["id"])
+        translations = read(REPO / "backend/data/universities_translations.json")["languages"]
+        mirror = read(REPO / "frontend/Localization/universities-kaz.json")
+        for language in ("rus", "kaz"):
+            self.assertIn(fact["conditions"][0], translations[language]["admission_exact"])
+        self.assertEqual(mirror["admission_exact"][fact["conditions"][0]], translations["kaz"]["admission_exact"][fact["conditions"][0]])
+
+    def test_mit_mba_early_is_a_separate_deferred_application(self):
+        from app.services import admissions_catalog
+
+        snapshot = {**self.batch, "runtime_active": True}
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "catalog.json"
+            path.write_text(json.dumps(snapshot, ensure_ascii=False), encoding="utf-8")
+            with patch.object(admissions_catalog, "CATALOG_PATH", path):
+                admissions_catalog.clear_cache()
+                try:
+                    def resolve(route):
+                        return admissions_catalog.resolve_context("mit-usa-cambridge", context={
+                            "study_option_id": "mit-sloan-mba-full-time", "application_route_id": route,
+                            "study_level": "masters", "intended_entry_cycle": "2027",
+                        })
+                    regular = resolve("mit_sloan_mba_admissions")
+                    early = resolve("mit_sloan_mba_early_deferred")
+                    early_ids = {"mba-early-2027-eligibility", "mba-early-2027-window-and-fee",
+                                 "mba-early-documents-and-language", "mba-early-test-waiver-and-reporting"}
+                    self.assertTrue(early_ids.isdisjoint({row["id"] for row in regular["facts"]}))
+                    self.assertIn("mit_sloan_mba_admissions-required-exam-alternatives", {row["id"] for row in regular["facts"]})
+                    facts = {row["id"]: row for row in early["facts"]}
+                    self.assertTrue(early_ids.issubset(facts))
+                    self.assertEqual(facts["mba-early-2027-window-and-fee"]["value"]["deadline"]["date"], "2027-04-13")
+                    self.assertTrue(facts["mba-early-2027-window-and-fee"]["value"]["not_immediate_2027_matriculation"])
+                    self.assertIn("Two to five years", facts["mba-early-2027-eligibility"]["value"]["enrollment"])
+                    self.assertEqual(early["selected_route"]["application_url"], "https://mitsloan.mit.edu/mba/deferred-admission/how-to-apply")
+                finally:
+                    admissions_catalog.clear_cache()
 
     def test_imperial_project_examples_are_not_compulsory_modules(self):
         imperial = self.by_id["imperial-college-london-uk"]

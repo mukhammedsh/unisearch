@@ -166,6 +166,18 @@ for name, bundle in bundles.items():
     for gap in bundle.get('researched_unknowns', []):
         if 'option_ids' in gap: gap['option_ids'] = [idmap.get(x,x) for x in gap['option_ids']]
 
+application_guidance_sources = {
+    'procedure-aeronautical-engineering': 'imperial-course-aeronautical-engineering-2027',
+    'procedure-advanced-computing': 'imperial-course-advanced-computing-2027',
+    'procedure-computing-phd': 'source-fcfd905e0321795e',
+    'procedure-medicine-phd': 'imperial_page_medicine_phd',
+}
+for procedure in procedures:
+    source_id = application_guidance_sources.get(procedure['id'])
+    if source_id:
+        assert source_id in procedure['source_ids'], procedure['id']
+        procedure['application_url'] = sources[source_id]['url']
+
 for o in options:
     o['fact_ids'] = [f['id'] for f in fact_index if o['id'] in f['scope']['option_ids']]
 # Preserve the accepted historical snapshot after the active catalog cutover.

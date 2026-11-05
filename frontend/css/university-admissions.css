@@ -263,6 +263,16 @@
   border-radius: 0;
 }
 
+.university--reviewed #detailRequirements {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.university--reviewed #detailRequirements > :first-child .admissions-catalog__assessment {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .university--reviewed #tab-admission .d-box,
 .admissions-context__form,
 .admissions-study,
@@ -1009,6 +1019,7 @@ details[open] > summary > .admissions-disclosure-icon {
   min-width: 0;
 }
 
+.admissions-catalog__section > h2,
 .admissions-catalog__section > h3 {
   margin: 0;
   color: var(--text);
@@ -1041,28 +1052,40 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-catalog__fact > summary {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
+  padding-right: var(--space-6);
   cursor: pointer;
   list-style: none;
 }
 
 .admissions-catalog__heading > span:first-child {
-  flex: 1 1 min(240px, 100%);
+  flex: 1 1 min(160px, 100%);
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.admissions-catalog__heading > .admissions-catalog__status {
+  max-width: 40%;
 }
 
 .admissions-catalog__fact > summary::-webkit-details-marker {
   display: none;
 }
 
+.admissions-catalog__unknowns > summary .admissions-disclosure-icon {
+  display: none;
+}
+
 .admissions-catalog__fact > summary::after {
   content: "+";
-  flex: 0 0 auto;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .admissions-catalog__fact[open] > summary::after {

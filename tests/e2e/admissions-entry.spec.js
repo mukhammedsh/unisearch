@@ -14,6 +14,32 @@ async function openUniversity(page, id, { language = "eng", theme = "light", wid
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
 }
 
+test("requirements match appears before route selection and shows the selected route's score", async ({ page }) => {
+  await page.route("**/admissions-context", async route => {
+    const response = await route.fetch();
+    const data = await response.json();
+    if (data.selected_route) data.assessment = { chancePercent: 100, activeChoice: { details: { checks: [{ measurable: true, status: "met" }] } } };
+    await route.fulfill({ response, json: data });
+  });
+  await openUniversity(page, "mit-usa-cambridge");
+  await page.locator('[data-tab="tab-admission"]').click();
+  const assessment = page.locator("#detailRequirements [data-requirements-match]");
+  await expect(assessment).toBeVisible();
+  await expect(assessment).toContainText("Minimum requirements match");
+  await expect(assessment).toContainText("Choose an application path");
+  await expect(assessment).not.toContainText("Choose a program");
+  await expect(assessment).not.toContainText("%");
+  expect(await assessment.evaluate(node => Boolean(node.compareDocumentPosition(document.querySelector("#admissionsContext")) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+  await assessment.getByRole("button").click();
+  await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeFocused();
+  await page.locator('[data-shared-route="mit-first-year"]').click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(assessment).toContainText("100%");
+  await expect(assessment).toContainText("1 of 1");
+  await expect(assessment).toContainText("not an admission probability");
+  await expect(page.locator("#detailRequirements [data-requirements-match]")).toHaveCount(1);
+});
+
 for (const item of [
   { id: "mit-usa-cambridge", route: "mit-first-year", language: "eng", theme: "light", width: 1280 },
   { id: "stanford-university-usa-ca", route: "undergraduate-shared-evidence:stanford-first-year", language: "rus", theme: "dark", width: 390 },
@@ -68,6 +94,37 @@ test("Imperial keeps the course route unselected until chosen and preserves an e
   await page.goto(empty.href);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
+});
+
+test("mobile route selection reveals the updated context below the navigation", async ({ page }) => {
+  await openUniversity(page, "nazarbayev-university-kaz-astana", {
+    language: "kaz", width: 390,
+    query: "&admission_option=nu-a-study-bachelor-in-nursing&admission_level=undergraduate&admission_application_route=#tab-admission",
+  });
+  await page.setViewportSize({ width: 390, height: 700 });
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  const trigger = page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger");
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+  await page.locator('.custom-select-wrapper:has(#admissionsRoute) .custom-option[data-value="nu-a-route-nursing"]').click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("nu-a-route-nursing");
+  await expect.poll(() => page.evaluate(() => {
+    const nav = document.querySelector(".navbar").getBoundingClientRect();
+    const selection = document.querySelector("#admissionsReferenceSummary").getBoundingClientRect();
+    const heading = document.querySelector("#admissionsContext .admissions-context__heading h2").getBoundingClientRect();
+    return selection.top >= nav.bottom && heading.top >= nav.bottom && heading.bottom <= innerHeight;
+  })).toBe(true);
+  await expect(page.locator(".admissions-application-link")).toBeInViewport();
+  await page.goBack();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await page.goForward();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("nu-a-route-nursing");
+  await page.reload();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("nu-a-route-nursing");
 });
 
 test("Stanford CS exposes real applicant situations while keeping shared policies within their route", async ({ page }, testInfo) => {

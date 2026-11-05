@@ -101,10 +101,16 @@ def convert_research_catalog(catalog):
         levels = {level for option_id in row["option_ids"] for level in option_index[option_id]["levels"]}
         row["attributes"].setdefault("applicant_route", "graduate" if levels and levels.issubset({"masters", "doctoral", "professional", "residency"}) else "transfer" if "transfer" in row["id"] else "first_year")
     _resolve_scopes(options, routes, facts, unknowns)
+    _applicant_text(options, routes, facts)
     _residency_contexts(options, routes, facts, unknowns)
     route_index = {row["id"]: row for row in routes}
     route_index["nu-a-route-financial-support"]["classification"] = "financial_support_application"
     route_index["nu-a-route-nufyp-progression"]["attributes"]["applicant_route"] = "first_year"
+    masters_route = route_index["nu-a-route-masters-common-packet-b"]
+    masters_source = "nu-a-src-soe-masters-policy"
+    if masters_source not in masters_route["source_ids"]:
+        raise ValueError("NU master's route is missing its reviewed application guidance")
+    masters_route["attributes"]["application_url"] = next(row["url"] for row in sources if row["id"] == masters_source)
     for row in routes:
         if row["destination"] is None and row["id"] != "nu-a-route-masters-common-packet-b":
             row["destination"] = "https://admissions.nu.edu.kz/"
@@ -120,6 +126,42 @@ def convert_research_catalog(catalog):
                                "additional_offering_ids": [row["id"] for row in catalog.get("additional_offerings", [])]},
               "supporting_records": [], "dossier_metadata": copy.deepcopy(catalog["packet_metadata"]), "historical_provenance": []}
     return result
+
+
+def _applicant_text(options, routes, facts):
+    """Keep research workflow notes out of applicant-facing fields."""
+    for row in options:
+        attributes = row["attributes"]
+        if "program_admission_page_status" in attributes and "packet B" in attributes["program_admission_page_status"]:
+            attributes.setdefault("researcher_notes", {})["program_admission_page_status"] = attributes["program_admission_page_status"]
+            attributes["program_admission_page_status"] = "The program page links to central admissions; consult the shared master's requirements and any program-specific conditions."
+    route = next(row for row in routes if row["id"] == "nu-a-route-masters-common-packet-b")
+    attributes = route["attributes"]
+    attributes["researcher_notes"] = {"scope": attributes["scope"], "exceptions": copy.deepcopy(attributes["exceptions"])}
+    attributes["scope"] = "Shared master's admissions requirements apply alongside any program-specific conditions."
+    attributes["exceptions"][0] = "The program pages link to central admissions and do not state a separate numeric minimum, test or waiver, document list, or program-specific deadline."
+    attributes["exceptions"].pop(3)
+    route = next(row for row in routes if row["id"] == "nu-a-route-ump")
+    route["attributes"].setdefault("researcher_notes", {})["exceptions"] = copy.deepcopy(route["attributes"]["exceptions"])
+    route["attributes"]["exceptions"][0] = "The six-year undergraduate medical program is distinct from the graduate-entry Doctor of Medicine."
+    replacements = {
+        "The direct program page provides an Apply Now link to central admissions; no separate program-specific numeric threshold or waiver was visible on the reviewed program page. Use the cross-referenced central Master policy owned by packet B.": "The program page links to central admissions; no separate program-specific numeric threshold or waiver was visible. Consult the shared master's requirements.",
+        "Central Master admissions policy is owned by packet B; use its reviewed route and dates. This School page documents process, submission, fee and test handling but not individual degree minimum scores or whether a program requires GRE/GMAT.": "The School page documents the application process, fee and test submission, but not individual degree minimum scores or whether a program requires GRE/GMAT. Consult the shared master's requirements and dates.",
+        "The page is yearless and does not state whether the cross-school MEng Management partnership follows the listed rate. SCAI MSc Robotics is outside this School source. Treat as a school-level reference pending current program tuition agreement; packet B owns central Master tuition policy.": "The page is yearless and does not state whether the cross-school MEng Management partnership follows the listed rate. SCAI MSc Robotics is outside this School source. Confirm current program tuition with the university.",
+    }
+    for row in facts:
+        conditions = row.get("conditions")
+        if isinstance(conditions, list) and any(value in replacements for value in conditions if isinstance(value, str)):
+            row["attributes"].setdefault("researcher_notes", {})["conditions"] = copy.deepcopy(conditions)
+            row["conditions"] = [replacements.get(value, value) if isinstance(value, str) else value for value in conditions]
+        dimensions = row["scope"]["additional_dimensions"]
+        for key, replacement in (("source_scope_text", "Doctoral financial aid"), ("programs", "Technical PhD programs by school")):
+            value = dimensions.get(key)
+            if isinstance(value, str) and "packet C" in value:
+                row["attributes"].setdefault("researcher_notes", {})[key] = value
+                dimensions[key] = "Eight School of Engineering PhD programs" if "eight SOE" in value else replacement
+        if row["id"] == "nu-b-fact-phd-funding":
+            row["attributes"].setdefault("researcher_notes", {})["original_scope"] = row["attributes"].pop("original_scope")
 
 
 def _resolve_scopes(options, routes, facts, unknowns):
@@ -154,6 +196,11 @@ def _resolve_scopes(options, routes, facts, unknowns):
         if row["attributes"].get("entry_cycle_aliases"):
             row["attributes"]["entry_cycle_context_aliases"] = {"2027/28": "Fall 2027", "2027/2028": "Fall 2027",
                                                                "2027-2028": "Fall 2027", "2026/27_midyear": "Spring 2027"}
+        if row["id"] == "nu-a-gap-engineering-masters":
+            row["attributes"]["researcher_notes"] = {"reason": row["reason"], "official_next_step": row["official_next_step"]}
+            row["attributes"]["researcher_notes"]["unparsed_scope"] = scope["additional_dimensions"].pop("unparsed_scope", None)
+            row["reason"] = "No program-specific numeric minimum, test or waiver was visible on the reviewed engineering and Robotics master program pages. MEng fee applicability and current program-cycle amounts are not explicit."
+            row["official_next_step"] = "Confirm program-specific requirements and current fees with the university."
         if row["id"] == "nu-a-gap-policy-future-revision":
             row["attributes"]["original_official_next_step"] = row["official_next_step"]
             row["official_next_step"] = "Recheck the scheduled policy revision after 2026-12-01; the current effective policy remains the dated reference until replaced."

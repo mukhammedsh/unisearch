@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
-const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+const { initI18n, setLanguage, t } = await import("../../frontend/javascript/i18n.js");
 const { formatPublishedDate, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
 const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview, renderAdmissionsAssessment } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
@@ -43,6 +43,39 @@ function context(rows, groups) {
     facts: rows, fact_groups: groups, sources: [{ id: "official", title: "Official policy", url: "https://example.edu/admissions" }],
     unknowns: [], assessment: {}, history: {} };
 }
+
+test("requirements show one visible minimum-match summary before source records", () => {
+  setLanguage("eng", { emit: false });
+  const resolved = context([], {});
+  resolved.assessment = { chancePercent: 100, activeChoice: { details: { checks: [{ kind: "scoped_gpa", measurable: true, status: "met" }] } } };
+  const html = renderApplicantSection(resolved, ["requirements", "application"]);
+  assert.equal((html.match(/data-requirements-match/g) || []).length, 1);
+  assert.match(html, /100%/);
+  assert.match(html, /not an admission probability/);
+  assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
+  const recordsOnly = renderApplicantSection(resolved, ["requirements", "application"], { includeAssessment: false });
+  assert.doesNotMatch(recordsOnly, /data-requirements-match|100%/);
+});
+
+test("missing evidence and unassessed rules give distinct localized next steps", () => {
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    const resolved = context([], {});
+    resolved.assessment = { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [
+      { kind: "academic_requirement", status: "missing", numericMinimum: true }, { kind: "published_rule", status: "unassessed" },
+    ] } } };
+    const html = renderApplicantSection(resolved, ["requirements"]);
+    const [summary, detail] = html.split('<details class="admissions-catalog__assessment-detail">');
+    const missing = t("university.admissions.catalog.check_next_missing");
+    const manual = t("university.admissions.catalog.check_next_unassessed");
+    assert.ok(missing && manual && missing !== manual);
+    assert.ok(summary.includes(t("university.admissions.catalog.assessment_next_missing")));
+    assert.ok(detail.includes(missing));
+    assert.ok(detail.includes(manual));
+    resolved.assessment.reason = "unassessed_minimums";
+    assert.ok(renderApplicantSection(resolved, ["requirements"]).includes(t("university.admissions.catalog.assessment_next_unassessed")));
+  }
+});
 function fact(id, value, extra = {}) {
   return { id, value, topic: "academic_tests", scope: { option_ids: [], route_ids: ["first-year"], applicant_categories: [] },
     source_ids: ["official"], publication_status: "published", review_status: "verified", applicability: { status: "conditional" }, ...extra };
@@ -145,6 +178,78 @@ test("a selected route without deadline records explains the empty section", () 
   setLanguage("eng", { emit: false });
   const html = renderApplicantSection(context([], { deadlines: [] }), ["deadlines"]);
   assert.match(html, /No source records are catalogued for this selection/);
+});
+
+test("a known NU dates announcement replaces the generic empty state and retains its source and cycle", async () => {
+  setLanguage("eng", { emit: false });
+  const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+  const stack = [catalog];
+  let unknown;
+  while (stack.length && !unknown) {
+    const item = stack.pop();
+    if (!item || typeof item !== "object") continue;
+    if (item.id === "nu-b-gap-future-central-dates") unknown = item;
+    else stack.push(...Object.values(item));
+  }
+  assert.ok(unknown);
+  const resolved = { ...context([], { deadlines: [] }), selected_option: { id: "nu-a-study-master-of-science-in-robotics", levels: ["masters"] },
+    unknowns: [unknown], sources: [{ id: "nu-b-src-master-regular", url: "https://nu.edu.kz/admissions/masters" }, { id: "nu-b-src-doctoral-regular", url: "https://nu.edu.kz/admissions/phd" }] };
+  const html = renderApplicantSection(resolved, ["deadlines"]);
+  assert.match(html, /data-dates-tba/);
+  assert.match(html, /2027[-‑]2028/);
+  assert.match(html, /https:\/\/nu.edu.kz\/admissions\/masters/);
+  assert.doesNotMatch(html, /No source records are catalogued|admissions\/phd/);
+  assert.doesNotMatch(renderApplicantSection({ ...resolved, selected_route: null }, ["deadlines"]), /data-dates-tba/);
+});
+
+test("scholarship consideration dates are not labelled general application dates", () => {
+  setLanguage("eng", { emit: false });
+  const row = fact("scholarship", { deadline_kind: "admissions_for_scholarship_consideration", deadlines: { source: "2027-04-28" } }, { topic: "funding" });
+  const resolved = { ...context([row], { deadlines: [row.id] }), reference_labels: { source: "Computer Science" } };
+  const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references"')[0];
+  assert.match(primary, /Application deadline for scholarship consideration/);
+  assert.doesNotMatch(primary, /Application dates/);
+});
+
+test("identical yearless caveats appear once in primary dates", () => {
+  const rows = ["one", "two"].map(id => fact(id, { windows: [{ name: id, application_due: "November 1" }], enrollment_reply: "May 1" },
+    { topic: "application_windows", period: { label: "Recurring first-year dates; page does not specify entry year" } }));
+  for (const language of ["eng", "rus", "kaz"]) {
+    setLanguage(language, { emit: false });
+    const html = renderApplicantSection(context(rows, { deadlines: rows.map(row => row.id) }), ["deadlines"]);
+    const primary = html.split('<details class="admissions-reading__references"')[0];
+    assert.equal(primary.split(t("university.admissions.reading.recurring_dates")).length - 1, 1);
+    assert.doesNotMatch(primary, new RegExp(t("university.admissions.reading.yearless_period")));
+    assert.ok(primary.includes(formatPublishedDate("November 1")));
+    assert.ok(primary.includes(formatPublishedDate("May 1")));
+    assert.match(html, /Recurring first-year dates; page does not specify entry year/);
+    assert.doesNotMatch(primary, /2027|2000/);
+  }
+});
+
+test("identical source versions share a summary without losing scope, conditions or records", async () => {
+  setLanguage("eng", { emit: false });
+  const { loadUniversityTranslationsForLanguage } = await import("../../frontend/javascript/university-translations.js");
+  const originalFetch = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => ({ lang: "eng", data: { admission_summaries: { "Published rule": { requirements: "Published rule" } } } }) });
+  try { await loadUniversityTranslationsForLanguage("eng", true); } finally { global.fetch = originalFetch; }
+  const rows = [fact("one", "Published rule", { source_ids: ["a"], checked_at: "2026-01-01" }),
+    fact("two", "Published rule", { source_ids: ["b"], checked_at: "2026-02-01" }),
+    fact("condition", "Published rule", { source_ids: ["b"], conditions: [{ when: "Special applicant" }] }),
+    fact("period", "Published rule", { source_ids: ["b"], period: { label: "2027 entry" } })];
+  const resolved = { ...context(rows, { requirements: rows.map(row => row.id) }), sources: [
+    { id: "a", url: "https://example.edu/policy" }, { id: "b", url: "https://example.edu/policy" },
+  ] };
+  const html = renderApplicantSection(resolved, ["requirements"]);
+  const summary = html.split('<details class="admissions-reading__references"')[0];
+  assert.equal((summary.match(/data-summary-fact=/g) || []).length, 3);
+  assert.match(summary, /data-summary-fact="condition"/);
+  assert.match(summary, /data-summary-fact="period"/);
+  assert.match(html, /data-admissions-fact="one"/);
+  assert.match(html, /data-admissions-fact="two"/);
+  assert.match(html, /2026[-‑]01-01/);
+  assert.match(html, /2026[-‑]02-01/);
+  assert.match(html, /Special applicant/);
 });
 
 test("Kazakh deadlines remain readable without browser locale data", () => {

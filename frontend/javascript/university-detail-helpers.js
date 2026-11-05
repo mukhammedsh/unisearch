@@ -438,17 +438,17 @@ export function chanceNoDataHelpNote(uniChance) {
 }
 
 export function renderUniChanceSummary(uniChance) {
-  const chanceTitle = t("admission.requirements_fit.title", "Fit to published requirements");
+  const chanceTitle = t("admission.requirements_fit.title", aiName("chance"));
   const chanceDescription = t(
     "admission.requirements_fit.description",
-    "Share of evaluable published academic and language minimum checks met. This score is not an admission probability."
+    "Share of evaluable published numeric academic and language minimums met. Meeting them does not confirm all admission conditions or eligibility, and this is not an admission probability or funding prediction."
   );
   if (!uniChance) {
     return `
       <div class="chance-panel">
         <div class="chance-head">
           <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
+                <div class="chance-title">${escapeHtml(chanceTitle)}</div>
             <div class="chance-sub">${escapeHtml(chanceDescription)}</div>
           </div>
           <div class="chance-percent-wrap">
@@ -497,7 +497,7 @@ export function renderUniChanceSummary(uniChance) {
       <div class="chance-panel">
         <div class="chance-head">
           <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
+            <div class="chance-title">${escapeHtml(chanceTitle)}</div>
             <div class="chance-sub">${escapeHtml(noDataTitle)}</div>
           </div>
           <div class="chance-percent-wrap">
@@ -516,7 +516,7 @@ export function renderUniChanceSummary(uniChance) {
       <div class="chance-panel">
         <div class="chance-head">
           <div>
-            <div class="chance-title">${escapeHtml(aiName("chance"))} ${escapeHtml(t("common.ai_short", "AI"))} - ${escapeHtml(chanceTitle)}</div>
+                <div class="chance-title">${escapeHtml(chanceTitle)}</div>
             <div class="chance-sub">${escapeHtml(chanceDescription)}</div>
           </div>
           <div class="chance-percent-wrap">

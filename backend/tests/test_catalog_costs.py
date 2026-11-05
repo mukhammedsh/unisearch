@@ -158,6 +158,23 @@ class CatalogCostTests(unittest.TestCase):
         scoped = admissions_catalog.catalog_costs(MIT, profile={"study_level": "masters", "selectedAdmissionChoices": {MIT: {"studyOptionId": "mit-course-6-3-bachelor"}}})
         self.assertIsNone(scoped["annual_total"])
 
+    def test_saved_empty_context_does_not_inherit_general_level_cycle_or_fee_status(self):
+        selection = {"studyOptionId": "mit-course-6-3-bachelor", "studyLevel": "",
+                     "intendedEntryCycle": "", "feeStatusContext": ""}
+        profile = {"study_level": "undergraduate", "intended_entry_cycle": "Fall 2026",
+                   "fee_status_context": "self_reported_home_domestic", "selectedAdmissionChoices": {MIT: selection}}
+        costs = admissions_catalog.catalog_costs(MIT, profile=profile)
+        self.assertEqual("", costs["scope"]["study_level"])
+        self.assertEqual("", costs["scope"]["intended_entry_cycle"])
+        self.assertEqual("unknown", costs["scope"]["fee_status_context"])
+        self.assertEqual("unspecified", costs["annual_total"]["cycle_status"])
+
+        del selection["studyLevel"], selection["intendedEntryCycle"], selection["feeStatusContext"]
+        costs = admissions_catalog.catalog_costs(MIT, profile=profile)
+        self.assertEqual("undergraduate", costs["scope"]["study_level"])
+        self.assertEqual("Fall 2026", costs["scope"]["intended_entry_cycle"])
+        self.assertEqual("self_reported_home_domestic", costs["scope"]["fee_status_context"])
+
     def test_legacy_zero_and_native_currency_are_preserved(self):
         free = {"id": "free", "finance": {"currency": "USD", "total_cost_year_usd": 0, "costs_breakdown_year_usd": {"Tuition": 0}}}
         self.assertEqual((0, 0), universities._catalog_cost_range_usd(free, "tuition"))

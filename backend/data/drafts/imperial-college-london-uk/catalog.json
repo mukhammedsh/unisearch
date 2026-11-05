@@ -23,7 +23,7 @@
     "shared-evidence.json": "113b1b782faa408efab136915d6b692a254141abea20e6c9a09c192e3156be68",
     "engineering-sciences-evidence.json": "018acb91cbc1a137ce5a21a9d1d1c5ac30c6d3b6aafce7c1646eca076cbbeba7",
     "medicine-business-evidence.json": "1f50f5572a9749a76e43cd68b8e373c7752ab423b025d8fe32b4daa5079386b5",
-    "doctoral-evidence.json": "d6633d7a9244a647d2ad6b76a2ed25c022e35b77f4cddbee5b506b4a243dc633",
+    "doctoral-evidence.json": "3291e53ea678546b500282d6cc6b15eb834dbfd68f450b90d940b586925ea0bc",
     "course-qualification-panels.json": "5a768a9e14341f765ed2a7578411e4358efa1d168e7439b24205f4d87d712a9c",
     "programme-overviews-evidence.json": "55b8dce133adc8df6c76aedb0fb3daf540092e505d793e6a504c880810109903",
     "2027-recheck-evidence.json": "0796511987587b5ec1eb5c4214079067b517b4dc6cb17ba4a12c9c099d2e99aa"
@@ -15203,7 +15203,8 @@
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
-      "independent_application_status": "published_course_choice"
+      "independent_application_status": "published_course_choice",
+      "application_url": "https://www.imperial.ac.uk/study/courses/postgraduate-taught/2027/advanced-computing/"
     },
     {
       "id": "procedure-advanced-materials-sustainable-infrastructure",
@@ -15311,7 +15312,8 @@
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
-      "independent_application_status": "published_course_choice"
+      "independent_application_status": "published_course_choice",
+      "application_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/aeronautical-engineering/"
     },
     {
       "id": "procedure-aeronautics-spacecraft-engineering",
@@ -17500,7 +17502,8 @@
       ],
       "policy_boundary": "Shared form is not policy inheritance; intersect all fact scopes.",
       "record_kind": "application_context",
-      "independent_application_status": "internal_only"
+      "independent_application_status": "internal_only",
+      "application_url": "https://www.imperial.ac.uk/study/courses/undergraduate/2027/medicine-phd/"
     },
     {
       "id": "procedure-investment-wealth-management",
@@ -19138,7 +19141,8 @@
       ],
       "policy_inheritance": "Facts apply only when option, degree, applicant, cycle, fee and route scopes intersect. Shared portal does not imply shared requirements.",
       "record_kind": "application_context",
-      "independent_application_status": "departmental_degree_application"
+      "independent_application_status": "departmental_degree_application",
+      "application_url": "https://www.imperial.ac.uk/engineering/departments/computing/prospective-students/phd/phd-application-guidelines/"
     },
     {
       "id": "procedure-design-engineering-phd",

@@ -64,9 +64,16 @@ export const ADMISSIONS_RENDER_LABELS = {
   next_step: "Official next step",
   history: "Historical records",
   history_note: "These records are retained as historical context and are not current requirements or prices for the selected cycle.",
-  assessment: "UniChance · published minimum checks",
+  assessment: "Minimum requirements match",
   assessment_meaning: "The percentage is the share of evaluable published academic and language minimum checks met. It is not an admission probability, a check of all admission criteria, or a funding prediction.",
   assessment_unavailable: "No requirements-match percentage is available for this context.",
+  assessment_count: "{met} of {total} evaluated numeric minimum checks met",
+  assessment_limits: "Other conditions and admission eligibility are not assessed; this is not an admission probability.",
+  assessment_next_missing: "Add the missing evidence in your profile, then review the checks below.",
+  assessment_next_unassessed: "Some published rules cannot be checked automatically. Review the official requirements below.",
+  assessment_next_no_numeric: "Our data has no numeric minimum for this path that can be compared automatically. Review the official requirements below.",
+  assessment_next_applicability: "Check your program, application path and entry year. Review the official conditions below.",
+  assessment_profile: "Edit profile",
   self_reported: "Applicant evidence is self-reported; it is not institution-confirmed.",
   provided: "Reported evidence",
   minimum: "Published minimum",
@@ -490,11 +497,16 @@ export function renderStudyOptionSources(resolved, { includeStudyInfo = false } 
 
 function sources(row, resolved) {
   const ids = row.source_ids || row.sourceIds || [];
-  return (resolved.sources || []).filter(source => ids.includes(source.id)).map(source => {
-    const link = sourceLink(source.url, source.title || label("source"));
-    if (!link) return "";
-    return `<div>${link}${source.checked_at ? `<span class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(source.checked_at)}</span>` : ""}</div>`;
-  }).join("");
+  const byUrl = new Map();
+  for (const source of (resolved.sources || []).filter(item => ids.includes(item.id))) {
+    const url = safeUrl(source.url);
+    if (!url) continue;
+    if (!byUrl.has(url)) byUrl.set(url, { titles: new Set(), dates: new Set() });
+    const entry = byUrl.get(url);
+    if (source.title) entry.titles.add(source.title);
+    if (source.checked_at) entry.dates.add(source.checked_at);
+  }
+  return [...byUrl].map(([url, entry]) => `<div>${sourceLink(url, [...entry.titles].join(" · ") || label("source"))}${entry.dates.size ? `<span class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${[...entry.dates].map(escapeHtml).join(", ")}</span>` : ""}</div>`).join("");
 }
 
 function scope(row, resolved) {
@@ -621,6 +633,13 @@ function renderQualificationTable(row, resolved) {
   </details>`;
 }
 
+function conflictExplanation(row) {
+  if (!/conflict|needs_resolution/.test(`${row.review_status || ""} ${row.publication_status || ""}`)) return "";
+  const reason = typeof row.reason === "string" ? row.reason : "";
+  const next = typeof row.official_next_step === "string" ? row.official_next_step : "";
+  return `${reason ? `<p>${escapeHtml(translateAdmissionSummary(reason) || reason)}</p>` : ""}${next ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(translateAdmissionSummary(next) || next)}</p>` : ""}`;
+}
+
 function renderGroupedFact(row, resolved, domain) {
   const conditions = [row.conditions, row.conditions_and_exceptions, row.exceptions]
     .filter(value => value !== null && value !== undefined)
@@ -637,6 +656,7 @@ function renderGroupedFact(row, resolved, domain) {
   return `<div class="admissions-catalog__group-record" data-admissions-fact="${escapeHtmlAttr(row.id || "")}">
     ${renderStatusBadges(factStatusBadges(row))}
     ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+    ${conflictExplanation(row)}
     ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
     ${inlineScope}${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
     <details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${metadata}</div></details>
@@ -665,6 +685,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
     <summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span>${historical || row.publication_status !== "published" ? `<span class="admissions-catalog__status">${escapeHtml(publication)}</span>` : ""}${!historical && reviewWarning && review !== publication ? `<span class="admissions-catalog__status">${escapeHtml(review)}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
       ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+      ${conflictExplanation(row)}
       ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
       ${inlineScope}${inlinePeriod}
       <details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${!historical ? `<p class="admissions-catalog__meta">${escapeHtml(applicability)}</p>` : ""}${metadata}</div></details>
@@ -677,6 +698,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
       ${!historical ? `<p class="admissions-catalog__meta">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "conditional"))}</p>` : ""}
       <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row.review_status))}</p>
       ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+      ${conflictExplanation(row)}
       ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
       ${scope(row, resolved)}
       ${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
@@ -781,6 +803,7 @@ export function renderAdmissionsAssessment(resolved, { presentation } = {}) {
   const percent = assessment.chancePercent;
   const available = typeof percent === "number" && Number.isFinite(percent);
   const checks = assessment.activeChoice?.details?.checks || [];
+  const evaluated = checks.filter(check => check.measurable && ["met", "unmet"].includes(check.status));
   const reported = assessment.reportedEvidence || {};
   const reportedRows = [
     ...(reported.language_evidence || []),
@@ -789,13 +812,40 @@ export function renderAdmissionsAssessment(resolved, { presentation } = {}) {
       ...(row.program_id ? { study: resolved.reference_labels?.[row.program_id] || (row.program_id === resolved.selected_option?.id ? resolved.selected_option.title : label("unknown")) } : {}),
     })),
   ];
-  const html = `<section class="admissions-catalog__section admissions-catalog__assessment"><h3>${escapeHtml(label("assessment"))}</h3>
-    <p>${available ? `<strong>${escapeHtml(percent)}%</strong>` : escapeHtml(label("assessment_unavailable"))}</p>
-    <p class="admissions-catalog__meta">${escapeHtml(label("assessment_meaning"))}</p>
-    ${assessment.reason && ADMISSIONS_RENDER_LABELS[`reason.${assessment.reason}`] ? `<p>${escapeHtml(label(`reason.${assessment.reason}`))}</p>` : ""}
-    <p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>
-    <div class="admissions-catalog__list">${checks.map(check => {
-      const title = label(`kind.${check.kind}`);
+  const reason = assessment.reason && ADMISSIONS_RENDER_LABELS[`reason.${assessment.reason}`]
+    ? label(`reason.${assessment.reason}`) : label("assessment_unavailable");
+  const hasNumericChecks = checks.some(check => check.measurable || check.numericMinimum);
+  const sourceOnly = checks.length > 0 && !hasNumericChecks;
+  const nextStep = assessment.reason === "applicability_unknown" ? "applicability"
+    : sourceOnly || assessment.reason === "no_published_requirements" ? "no_numeric"
+    : assessment.reason === "missing_evidence" ? "missing"
+    : ["unassessed_minimums", "source_fact_changed", "source_state_not_verified"].includes(assessment.reason) ? "unassessed" : "";
+  const displayChecks = [];
+  const anonymousGroups = new Map();
+  for (const check of checks) {
+    const fact = (resolved.facts || []).find(row => row.id === check.factId) || check.sourceRule;
+    const heading = fact ? factTitle(fact, resolved, "requirements") : "";
+    const kind = label(`kind.${check.kind}`);
+    const identities = [...(check.examIds || []), ...(check.rule?.alternatives || []).map(row => row.exam_id)]
+      .filter(id => id && getExamConfig(id)).map(id => getExamDisplayName(id, { locale: getCurrentLanguage() }));
+    const credential = check.rule?.credential_id;
+    if (credential && resolved.reference_labels?.[credential]) identities.push(resolved.reference_labels[credential]);
+    const generic = ["published_rule", "conditional_rule", "unresolved_rule", "stale_annotation", "source_state"].includes(check.kind);
+    const title = [...new Set((identities.length ? identities : [heading, ...(!generic || !heading ? [kind] : [])]).filter(Boolean))].join(" · ");
+    const item = { check, title, context: identities.length ? [...new Set([heading, kind].filter(Boolean))].join(" · ") : "" };
+    const groupable = check.kind === "published_rule" && check.status === "unassessed" && fact && !hasPublishedIdentity(fact, resolved)
+      && !check.numericMinimum && !check.measurable && check.minimum == null && !check.rule && !identities.length;
+    if (!groupable) displayChecks.push([item]);
+    else if (anonymousGroups.has(title)) anonymousGroups.get(title).push(item);
+    else {
+      const group = [item];
+      anonymousGroups.set(title, group);
+      displayChecks.push(group);
+    }
+  }
+  const summary = `<h2>${escapeHtml(label("assessment"))}</h2>
+    ${available ? `<p><strong>${escapeHtml(percent)}%</strong></p>${evaluated.length ? `<p>${escapeHtml(tFormat(`${PREFIX}assessment_count`, { met: evaluated.filter(check => check.status === "met").length, total: evaluated.length }, ADMISSIONS_RENDER_LABELS.assessment_count))}</p>` : ""}${evaluated.some(check => check.status === "unmet") ? `<p>${escapeHtml(label("reason.requirements_not_met"))}</p>` : ""}<p class="admissions-catalog__meta">${escapeHtml(label("assessment_limits"))}</p>` : `<p>${escapeHtml(nextStep ? label(`assessment_next_${nextStep}`) : reason)}${evaluated.some(check => check.status === "unmet") ? ` ${escapeHtml(label("reason.requirements_not_met"))}` : ""}${nextStep === "missing" ? ` <a href="/profile.html" data-route="profile">${escapeHtml(label("assessment_profile"))}</a>` : ""}</p>`}`;
+  const renderCheck = ({ check, title, context }, grouped = false) => {
       const status = ["met", "unmet", "missing", "unassessed"].includes(check.status) ? check.status : "unassessed";
       const provided = check.provided ?? check.providedExamId;
       const minimumChecks = renderMinimumChecks(provided);
@@ -807,7 +857,8 @@ export function renderAdmissionsAssessment(resolved, { presentation } = {}) {
       const sourceRule = renderAdmissionsValue(check.sourceRule?.value, resolved.reference_labels);
       const sourcePeriod = typeof check.sourceRule?.period === "object" ? check.sourceRule?.period?.label : check.sourceRule?.period;
       const conditions = [check.conditions, check.sourceRule?.conditions, check.sourceRule?.conditions_and_exceptions, check.sourceRule?.exceptions].filter(value => value !== null && value !== undefined).map(value => renderAdmissionsValue(value, resolved.reference_labels)).filter(Boolean).join("");
-      return `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span><span class="admissions-catalog__status">${escapeHtml(label(status))}</span></summary><div class="admissions-catalog__body">
+      const body = `<div class="admissions-catalog__body${grouped ? " admissions-catalog__check" : ""}">
+        ${context ? `<p class="admissions-catalog__meta">${escapeHtml(context)}</p>` : ""}
         ${rule ? `<div><strong>${escapeHtml(label("rule"))}</strong>${rule}</div>` : ""}
         ${sourceRule ? `<div><strong>${escapeHtml(label("source_rule"))}</strong>${sourceRule}</div>` : ""}
         ${check.sourceRule ? `<p class="admissions-catalog__meta">${escapeHtml(publicationLabel(check.sourceRule, false))} · ${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(check.sourceRule.review_status))}</p>` : ""}
@@ -820,11 +871,12 @@ export function renderAdmissionsAssessment(resolved, { presentation } = {}) {
         ${check.sourceRule ? scope(check.sourceRule, resolved) : ""}
         ${check.reason && ADMISSIONS_RENDER_LABELS[`reason.${check.reason}`] ? `<p>${escapeHtml(label(`reason.${check.reason}`))}</p>` : ""}
         <div class="admissions-catalog__sources">${sources(check, resolved)}</div>
-      </div></details>`;
-    }).join("")}</div>
-    ${reportedRows.length ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("provided"))}</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${renderAdmissionsValue(reportedRows, resolved.reference_labels)}</div></details>` : ""}
-  </section>`;
-  return presentation === "simple" ? `<details class="admissions-catalog__assessment-detail"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${html}</div></details>` : html;
+      </div>`;
+      return grouped ? body : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span><span class="admissions-catalog__status">${escapeHtml(label(status))}</span></summary>${body}</details>`;
+  };
+  const detail = `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_meaning"))}</p><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${assessment.reason && ADMISSIONS_RENDER_LABELS[`reason.${assessment.reason}`] ? `<p>${escapeHtml(reason)}</p>` : ""}${sourceOnly && checks.some(check => check.status === "unassessed") ? `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_next_unassessed"))}</p>` : ""}${["missing", "unassessed"].filter(status => checks.some(check => check.status === status)).map(status => `<p class="admissions-catalog__meta">${escapeHtml(t(`${PREFIX}check_next_${status}`))}</p>`).join("")}<div class="admissions-catalog__list">${displayChecks.map(group => group.length === 1 ? renderCheck(group[0]) : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(group[0].title)} (${escapeHtml(tFormat(`${PREFIX}check_group_count`, { count: group.length }))})</span><span class="admissions-catalog__status">${escapeHtml(label("unassessed"))}</span></summary><div class="admissions-catalog__body">${group.map(item => renderCheck(item, true)).join("")}</div></details>`).join("")}</div>
+    ${reportedRows.length ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("provided"))}</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${renderAdmissionsValue(reportedRows, resolved.reference_labels)}</div></details>` : ""}`;
+  return `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match>${summary}${presentation === "simple" ? `<details class="admissions-catalog__assessment-detail"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${detail}</div></details>` : detail}</section>`;
 }
 
 export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAssessment = true, includeUnknowns = true, includeHistory = true, includeSourceNote = true, presentation, programOnly = false, overviewCoverage = null } = {}) {

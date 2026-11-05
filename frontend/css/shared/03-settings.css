@@ -349,6 +349,7 @@
   }
 
   .settings-row[data-setting-key="theme_preference"],
+.settings-row[data-setting-key="site_language"],
 .settings-row[data-setting-key="preferred_currency"],
 .settings-row[data-setting-key="currency_display_mode"] {
     flex-direction: column;

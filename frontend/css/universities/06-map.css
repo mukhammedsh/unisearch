@@ -230,10 +230,19 @@
   height: 28px;
 }
 
+.u-map-results-list .uni-status-trigger--score {
+  width: auto;
+}
+
 .u-map-results-list .uni-status-trigger > span,
 .u-map-results-list .uni-status-icon {
   width: 14px;
   height: 14px;
+}
+
+.u-map-results-list .uni-status-trigger > .uni-status-value {
+  width: auto;
+  height: auto;
 }
 
 .u-map-results-list .uni-status-overflow-trigger {

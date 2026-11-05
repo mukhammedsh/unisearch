@@ -1,7 +1,9 @@
+import { t } from "../i18n.js";
+
 const inferredApiBase = `${window.location?.protocol || "http:"}//${window.location?.hostname || "127.0.0.1"}:8000`;
 
 export const API_BASE = window.API_BASE_URL || inferredApiBase;
-export const AI_DEFAULTS = { fit: "UniFit", chance: "UniChance" };
+export const AI_DEFAULTS = { fit: "UniFit", chance: "Minimum requirements match" };
 export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
 export const $ = (id) => document.getElementById(id);
 
@@ -19,6 +21,7 @@ let globalVisibleAt = 0;
 
 export function aiName(key) {
   const normalized = String(key || "").trim().toLowerCase();
+  if (normalized === "chance") return t("ai.chance", "Minimum requirements match");
   return AI_FUNCTIONS[normalized] || AI_DEFAULTS[normalized] || "AI Function";
 }
 

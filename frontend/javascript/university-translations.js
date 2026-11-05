@@ -269,7 +269,7 @@ export function translateFactSource(value, fallback = "") {
 
   const program = translateProgramName(raw);
   if (program !== raw) return program;
-  return translateAdmissionText(raw, raw);
+  return raw;
 }
 
 export function translateFactStatus(value, fallback = "") {

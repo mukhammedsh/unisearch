@@ -4,6 +4,45 @@ Active plan agreed on 2026-09-30; first-ten scope recorded on 2026-10-08; immedi
 
 ## Delivery and boundaries
 
+- [x] Keep scoped tuition visible on reviewed cards with no comparable study and living budget. Verified Imperial before and after choosing Computer Science on desktop and mobile. The price filters and sorting use the selected basis.
+
+### Four-institution audit repairs (2026-11-04)
+
+- [x] Repair explicit application destinations and the Stanford external/coterm deadline links without merging distinct application paths.
+- [x] Preserve editorial provenance outside applicant answers and remove unrelated inventory notes from selected program contexts.
+- [x] Correct the Imperial Computing PhD narrative against its verified application-deadline table.
+- [x] Project Stanford MBA/coterm dates with their source periods, event kinds and export limitations; show known NU TBA states in Dates.
+- [x] Separate scholarship-consideration cutoffs, unavailable numeric checks and missing profile evidence in concise applicant copy.
+- [x] Make saved/viewed choices and context-editor navigation consistent; reduce repeated summaries and duplicate source links without losing source evidence.
+- [x] Recheck the audited routes in desktop/mobile browsers across English, Russian and Kazakh, and complete the affected regression checks.
+
+Completed on 2026-11-05. Four independent GPT-6 Luna Max browser checks covered representative routes in all three languages, desktop/mobile layouts and light/dark themes. The final fixes also removed repeated context-retry actions, stale selected-route instructions and fixed-navigation text bleed.
+
+Verification: 704 frontend unit tests and 38 distinct affected Chromium scenarios passed. Data and static guards passed. The full backend run executed 836 tests: its NU preservation mismatch was corrected and the 15-test NU module then passed; the remaining infrastructure-hygiene failure concerns an unrelated ignored document-generation script containing absolute paths, reproduced with the original test. No check was weakened. The release suite and publication were not performed.
+
+### Applicant wording and requirements visibility follow-up (2026-11-04)
+
+- [x] Replace technical card explanations and internal preference scales with concise applicant-facing statements.
+- [x] Show a valid requirements percentage visibly in its indicator.
+- [x] Keep the named assessment at the start of Admission, with the missing selection action before a percentage is available and detailed evidence below.
+- [x] Verify the corrected flow in all three languages on desktop/mobile and complete the focused regression checks.
+
+Verification: 695 frontend unit tests passed. The requirements-entry scenarios and all three localized card-to-assessment journeys passed in Chromium. Internal preference scales are no longer included in card explanations; a valid requirements-match percentage, including zero, remains distinct from the ranking inputs.
+
+### Reviewed admissions discovery and requirements-match rework (2026-11-03)
+
+- [x] Use one resolved per-university context for UniFit subject matching, requirements and costs, including explicit cleared overrides.
+- [x] Restore scoped, explainable UniFit card indicators for the four reviewed universities without admission-probability or funding-award claims.
+- [x] Explain the selected program's actual application paths, profile suggestions, internal restrictions and the effect of explicitly saving a choice.
+- [x] Make the minimum-requirements result and its limited coverage visible; retain expandable individual checks and official evidence.
+- [x] Replace the applicant-facing UniChance name with minimum requirements match in English, Russian and Kazakh while preserving API/storage identifiers.
+- [x] Independently exercise novice browser journeys in all three languages, then audit desktop/mobile design and interactions and fix confirmed findings.
+- [x] Complete focused regression checks, final backend/frontend checks and documentation; keep the other 46 institutions and paused research outside this delivery.
+
+Completed on 2026-11-04 for the four activated institutions. Representative independent agent/browser journeys covered English, Russian and Kazakh program selection, actual application paths, minimum checks, costs, saved choices and reload/back navigation. A separate visual/interaction audit covered responsive layouts, light/dark themes, keyboard/click tooltips and language settings. Confirmed findings were corrected; this does not replace independent novice-user research or fluent Kazakh review.
+
+Verification: 832 backend tests and 694 frontend unit tests passed, with focused backend translation checks after localized source-label changes. Fifty-five distinct affected Chromium scenarios passed cumulatively, including regression checks for guest UniFit, scoped evidence, search return and mobile route selection. The full release suite was not run; no version bump, commit, push or publication was performed.
+
 ### Nazarbayev University Kazakh translation (2026-10-29)
 
 - [x] Translate the NU fact values, conditions, structured field labels and source titles in Kazakh; verify Foundation, NUZYP, Finance, residency and joint BBA applicant journeys, including phone and desktop layouts.

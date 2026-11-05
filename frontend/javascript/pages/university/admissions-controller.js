@@ -1,7 +1,7 @@
 import { API_BASE, escapeHtml, escapeHtmlAttr, initCustomSelect, loadProfile, loadProfileForApi, saveSelectedAdmissionChoice, stabilizeNumericRanges } from "../../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { translateProgramName } from "../../university-translations.js";
-import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOverviewCoverage, renderAdmissionsContext, renderStudyOptionOverview, renderStudyOptionSources } from "./admissions-render.js";
+import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOverviewCoverage, renderAdmissionsAssessment, renderAdmissionsContext, renderStudyOptionOverview, renderStudyOptionSources } from "./admissions-render.js";
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
@@ -24,6 +24,15 @@ const browsingByInstitution = new Map();
 
 export function hasReadableAdmissionContext(resolved) {
   return Boolean(resolved?.selected_route && (resolved.selected_option || resolved.reading_scope === "institution_route"));
+}
+
+export function admissionContextIsSaved(context, choice) {
+  if (!choice) return false;
+  return Object.entries({
+    study_option_id: choice.studyOptionId, application_route_id: choice.applicationRouteId,
+    study_level: choice.studyLevel, applicant_route: choice.applicantRoute,
+    intended_entry_cycle: choice.intendedEntryCycle, fee_status_context: choice.feeStatusContext || "unknown",
+  }).every(([key, value]) => (context[key] || "") === (value || ""));
 }
 
 export function programProfileSuggestions(profile) {
@@ -57,8 +66,7 @@ export function getApplicationLink(resolved) {
   if (declaredUrl) return safeUrl(declaredUrl[0]);
   const declaredHost = destination.match(/\((([a-z0-9-]+\.)+[a-z]{2,})\)/i);
   if (declaredHost) return safeUrl(`https://${declaredHost[1]}`);
-  const source = resolved.sources?.find(source => route.source_ids?.includes(source.id) && /^https?:\/\//i.test(source.url || ""));
-  return safeUrl(source?.url || "");
+  return "";
 }
 
 export function readAdmissionContext(url, profile, institutionId) {
@@ -144,8 +152,11 @@ export function mountAdmissionsCatalog(institutionId) {
     root = document.createElement("section");
     root.id = "admissionsContext";
     root.className = "admissions-context";
-    card.querySelector("#tab-admission .d-box").prepend(root);
   }
+  const requirements = document.getElementById("detailRequirements");
+  const assessmentHost = document.createElement("div");
+  const requirementsContent = document.createElement("div");
+  requirements.replaceChildren(assessmentHost, root, requirementsContent);
   const universityInfo = document.createElement("div");
   universityInfo.id = "admissionsUniversityInfo";
   document.getElementById("detailExtra").append(universityInfo);
@@ -199,6 +210,14 @@ export function mountAdmissionsCatalog(institutionId) {
   const limit = 8;
   const currentPage = () => !disposed && root.isConnected && document.body.dataset.page === "university";
   const setUrl = () => window.history.pushState({}, "", admissionContextUrl(window.location.href, context));
+  const openTab = (id) => {
+    const nextUrl = new URL(window.location.href);
+    if (nextUrl.hash !== `#${id}`) {
+      nextUrl.hash = `#${id}`;
+      window.history.pushState({}, "", nextUrl);
+    }
+    document.querySelector(`[data-tab="${id}"]`)?.click();
+  };
   const empty = (message) => `<p class="admissions-state">${escapeHtml(message)}</p>`;
   const loading = () => `<div class="admissions-state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(label("loading"))}</span></div>`;
   const failure = (retry) => `<div class="admissions-state" role="alert"><p>${escapeHtml(label("load_error"))}</p><button type="button" data-admissions-retry="${retry}">${escapeHtml(label("retry"))}</button></div>`;
@@ -216,10 +235,10 @@ export function mountAdmissionsCatalog(institutionId) {
       context.fee_status_context && context.fee_status_context !== "unknown" ? label(`fee.${context.fee_status_context}`) : "",
     ].filter(Boolean);
     selectionSummary.innerHTML = `<div class="admissions-selection__text"><div class="admissions-selection__primary"><span>${escapeHtml(label("reference_scope"))}</span><strong>${escapeHtml(programTitle)}</strong></div>${scope.length ? `<span>${[...new Set(scope)].map(value => escapeHtml(value)).join(" · ")}</span>` : ""}</div>
-      <div class="admissions-selection__actions"><button type="button" data-admissions-open-tab="tab-admission" aria-controls="admissionsSelectionEditor" aria-expanded="${!route}">${escapeHtml(t("university.admissions.reading.update_selection"))}</button></div>`;
+      <div class="admissions-selection__actions"><button type="button" data-admissions-open-tab="tab-admission" aria-controls="admissionsSelectionEditor" aria-expanded="${!route}">${escapeHtml(t(route ? "university.admissions.reading.update_selection" : "university.admissions.entry.how_to_apply"))}</button></div>`;
     selectionSummary.querySelectorAll("[data-admissions-open-tab]").forEach((button) => {
       button.onclick = () => {
-        document.querySelector(`[data-tab="${button.dataset.admissionsOpenTab}"]`)?.click();
+        openTab(button.dataset.admissionsOpenTab);
         const editor = root.querySelector("#admissionsSelectionEditor");
         editor.hidden = false;
         button.setAttribute("aria-expanded", "true");
@@ -248,24 +267,37 @@ export function mountAdmissionsCatalog(institutionId) {
     const canSave = status === "ready" && readable && (option ? ["option", "route", "level"] : ["route", "level"]).every((key) => resolved.context_applicability[key] === "matched");
     const cycles = [...new Set((resolved?.facts || []).map(row => row.scope?.cycle).filter(value => typeof value === "string" && value.length <= 40))];
     const profile = loadProfileForApi();
+    const savedChoice = profile.selectedAdmissionChoices?.[institutionId];
+    const isSaved = admissionContextIsSaved(context, savedChoice);
+    const savedOption = savedChoice?.studyOptionId === option?.id ? option : items.find(item => item.id === savedChoice?.studyOptionId);
+    const savedRoute = routes.find(item => item.id === savedChoice?.applicationRouteId);
+    const savedDetails = savedChoice && !isSaved ? [
+      savedOption ? admissionsProgramLabel(savedOption, { includeAward: true }).title : "",
+      savedRoute ? routeName(savedRoute) : "",
+      savedChoice.applicantRoute ? label(`applicant.${savedChoice.applicantRoute}`) : "",
+      admissionsCycleLabel(savedChoice.intendedEntryCycle),
+      savedChoice.feeStatusContext && savedChoice.feeStatusContext !== "unknown" ? label(`fee.${savedChoice.feeStatusContext}`) : "",
+    ].filter(Boolean).join(" · ") : "";
     const profileHints = [profile.applicant_route ? label(`applicant.${profile.applicant_route}`) : "", admissionsCycleLabel(profile.intended_entry_cycle), profile.fee_status_context && profile.fee_status_context !== "unknown" ? label(`fee.${profile.fee_status_context}`) : ""].filter(Boolean);
-    const routeHelp = item => t(`university.admissions.entry.route_help.${item.id.replaceAll(":", ".")}`);
-    const explainedRoutes = routes.filter(item => routeHelp(item));
+    const routeHelp = (item, selected = false) => t(`university.admissions.entry.route_help.${item.id.replaceAll(":", ".")}`)
+      || t(`university.admissions.entry.route_class_help.${item.classification}`)
+      || (selected ? "" : t("university.admissions.entry.route_help_generic"));
     const specialRoutes = option?.id === "stanford-option-cs-ms" || option?.id === "stanford-option-cs-phd"
-      ? explainedRoutes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
+      ? routes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
     const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`;
     root.dataset.state = status;
     const destination = status === "ready" && !contextDirty ? getApplicationLink(resolved) : "";
     root.innerHTML = `<div class="admissions-context__heading"><div><h2>${escapeHtml(label("simple_title"))}</h2>${route || noRoute ? "" : `<p>${escapeHtml(label("route_intro"))}</p>`}</div></div>
       ${legacyPending ? `<p class="admissions-context__note">${escapeHtml(label("legacy_pending"))}</p>` : ""}
       ${resetPending ? `<p class="admissions-context__note" data-admission-reset-notice>${escapeHtml(label("reset_notice"))}</p>` : ""}
-      ${route && routeHelp(route) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route))}</p>` : ""}
+      ${route && routeHelp(route, true) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route, true))}</p>` : ""}
       <div id="admissionsSelectionEditor" class="admissions-selection-editor" ${route ? "hidden" : ""}><div class="admissions-selection-editor__body">
       <div class="admissions-context__actions"><button type="button" id="admissionsChooseProgram">${escapeHtml(label(option ? "change_program" : "browse_programs"))}</button></div>
-      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p><div class="admissions-context__actions">${sharedEntries.map(item => `<button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button>`).join("")}</div></div>` : ""}
-      ${option && !route && explainedRoutes.length ? `<div class="admissions-entry" data-route-options><p>${escapeHtml(t("university.admissions.entry.route_situations"))}</p>${explainedRoutes.filter(item => !specialRoutes.includes(item)).map(routeOption).join("")}${specialRoutes.length ? `<details class="admissions-special-routes"><summary>${escapeHtml(tFormat("university.admissions.reading.special_routes", { count: specialRoutes.length }))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-entry">${specialRoutes.map(routeOption).join("")}</div></details>` : ""}</div>` : ""}
-      <form id="admissionsContextForm" class="admissions-context__form" ${(option && !noRoute) || readable ? "" : "hidden"}>
-        <div class="admissions-context__primary">
+      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${!option && profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`).join("")}</div>` : ""}
+      ${option && !route && routes.length > 1 ? `<div class="admissions-entry" data-route-options><p>${escapeHtml(t("university.admissions.entry.route_situations"))}</p>${profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${routes.filter(item => !specialRoutes.includes(item)).map(routeOption).join("")}${specialRoutes.length ? `<details class="admissions-special-routes"><summary>${escapeHtml(tFormat("university.admissions.reading.special_routes", { count: specialRoutes.length }))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-entry">${specialRoutes.map(routeOption).join("")}</div></details>` : ""}</div>` : ""}
+      ${option && !route && routes.length === 1 ? `<p class="admissions-context__note">${escapeHtml(routeHelp(routes[0]))}</p>` : ""}
+      <form id="admissionsContextForm" class="admissions-context__form" ${((option && !noRoute) || readable) && (route || routes.length <= 1) ? "" : "hidden"}>
+        <div class="admissions-context__primary" ${!route && routes.length > 1 ? "hidden" : ""}>
         ${selectHtml("admissionsRoute", label("route_label"), [["", label("choose_route")], ...routes.map((row) => [row.id, routeName(row)])], context.application_route_id, (!option && !readable) || status === "loading")}
         </div>
         <details id="admissionsAdvanced" class="admissions-context__advanced" data-admissions-advanced ${advancedOpen ? "open" : ""}><summary>${escapeHtml(label("reference_filters"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary>
@@ -276,10 +308,11 @@ export function mountAdmissionsCatalog(institutionId) {
         <datalist id="admissionsCycleOptions">${cycles.map(value => `<option value="${escapeHtmlAttr(value)}"></option>`).join("")}</datalist>
         ${selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context)}
         </div><p class="admissions-context__note">${escapeHtml(label("advanced_note"))}</p><p class="admissions-context__note" id="admissionsCycleHelp">${escapeHtml(t("university.admissions.reading.cycle_help"))}</p><p class="admissions-context__note" id="admissionsCycleNotice" role="status" hidden>${escapeHtml(t("university.admissions.reading.cycle_invalid"))}</p></details>
-        <div class="admissions-context__actions"><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" ${status === "loading" || (!option && !readable) ? "disabled" : ""}>${escapeHtml(label("apply_context"))}</button></div>
+        <div class="admissions-context__actions"><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" disabled>${escapeHtml(label("apply_context"))}</button></div>
       </form></div></div>
-      <div class="admissions-context__actions" ${(option && !noRoute) || readable ? "" : "hidden"}>${destination ? `<a class="admissions-application-link" href="${escapeHtmlAttr(destination)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_application"))}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>` : ""}<button type="button" id="admissionsSaveChoice" ${canSave && !contextDirty ? "" : "disabled"}>${escapeHtml(label("save_choice"))}</button><span id="admissionsSaveStatus" class="admissions-context__note" role="status">${saveStatus ? escapeHtml(label(saveStatus)) : ""}</span></div>
-      <div class="admissions-context__status" aria-live="polite">${status === "loading" ? loading() : status === "error" ? failure("context") : incompatible ? empty(label("incompatible_context")) : readable ? "" : !option ? empty(label("choose_program_hint")) : noRoute ? `<p data-no-application-route>${escapeHtml(t("university.admissions.reading.no_application_route"))}</p>${programSource ? `<a href="${escapeHtmlAttr(safeUrl(programSource.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label("official_course_page"))}</a>` : ""}` : ""}</div>`;
+      <div class="admissions-context__actions" ${(option && !noRoute) || readable ? "" : "hidden"}>${destination ? `<a class="admissions-application-link" href="${escapeHtmlAttr(destination)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_application"))}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>` : ""}<button type="button" id="admissionsSaveChoice" ${canSave && !contextDirty && !isSaved ? "" : "disabled"}>${escapeHtml(label(isSaved ? "saved" : "save_choice"))}</button><span id="admissionsSaveStatus" class="admissions-context__note" role="status">${saveStatus ? escapeHtml(label(saveStatus)) : ""}</span></div>
+      ${readable ? `<p class="admissions-context__note" data-saved-context>${escapeHtml(t(`university.admissions.entry.${isSaved ? "saved_context" : "browsing_not_saved"}`))}${savedDetails ? ` ${escapeHtml(tFormat("university.admissions.entry.saved_other", { details: savedDetails }))}` : ""}</p>` : ""}
+      <div class="admissions-context__status" aria-live="polite">${status !== "ready" ? "" : incompatible ? empty(label("incompatible_context")) : readable ? "" : !option ? empty(label("choose_program_hint")) : noRoute ? `<p data-no-application-route>${escapeHtml(t("university.admissions.reading.no_application_route"))}</p>${programSource ? `<a href="${escapeHtmlAttr(safeUrl(programSource.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label("official_course_page"))}</a>` : ""}` : ""}</div>`;
     renderSelectionSummary(option, route);
     if (status === "loading") root.querySelectorAll("select, input").forEach((element) => { element.disabled = true; });
     contextSelectDisposers = ["admissionsRoute", "admissionsApplicant", "admissionsFee"].filter(id => root.querySelector(`#${id}`)?.tagName === "SELECT").map(initCustomSelect);
@@ -289,15 +322,17 @@ export function mountAdmissionsCatalog(institutionId) {
         context.application_route_id = button.dataset.sharedRoute;
         context.study_level = "undergraduate";
         context.applicant_route = "";
+        contextDirty = false;
         saveStatus = "";
         setUrl();
-        void refreshContext();
+        void refreshContext({ revealSelection: true });
       };
     });
     root.querySelector("[data-use-profile-context]")?.addEventListener("click", () => {
       context.applicant_route = profile.applicant_route || "";
       context.intended_entry_cycle = profile.intended_entry_cycle || "";
       context.fee_status_context = profile.fee_status_context || "unknown";
+      contextDirty = false;
       saveStatus = "";
       setUrl();
       void refreshContext();
@@ -306,13 +341,14 @@ export function mountAdmissionsCatalog(institutionId) {
       button.onclick = () => {
         context.application_route_id = button.dataset.readRoute;
         context.applicant_route = "";
+        contextDirty = false;
         saveStatus = "";
         setUrl();
-        void refreshContext();
+        void refreshContext({ revealSelection: true });
       };
     });
     root.querySelector("#admissionsChooseProgram")?.addEventListener("click", () => {
-      document.querySelector('[data-tab="tab-programs"]').click();
+      openTab("tab-programs");
       document.getElementById("admissionsSearch").focus();
     });
     const readFormContext = () => ({
@@ -326,9 +362,10 @@ export function mountAdmissionsCatalog(institutionId) {
       const draft = readFormContext();
       contextDirty = !contextMatchesForm(draft);
       const canApply = contextDirty && Boolean(draft.application_route_id);
+      root.querySelector("#admissionsContextApply").disabled = !canApply;
       saveStatus = canApply ? "apply_before_save" : "";
       const saveButton = root.querySelector("#admissionsSaveChoice");
-      if (saveButton) saveButton.disabled = !canSave || contextDirty;
+      if (saveButton) saveButton.disabled = !canSave || contextDirty || admissionContextIsSaved(context, loadProfileForApi().selectedAdmissionChoices?.[institutionId]);
       const saveStatusNode = root.querySelector("#admissionsSaveStatus");
       if (saveStatusNode) saveStatusNode.textContent = saveStatus ? label(saveStatus) : "";
     };
@@ -337,7 +374,7 @@ export function mountAdmissionsCatalog(institutionId) {
       contextDirty = false;
       saveStatus = "";
       setUrl();
-      void refreshContext();
+      void refreshContext({ revealSelection: true });
     };
     root.querySelector("#admissionsContextForm").onsubmit = (event) => {
       event.preventDefault();
@@ -364,6 +401,11 @@ export function mountAdmissionsCatalog(institutionId) {
       });
       saveStatus = persisted ? "choice_saved" : "choice_session_only";
       root.querySelector("#admissionsSaveStatus").textContent = label(saveStatus);
+      if (persisted) {
+        root.querySelector("[data-saved-context]").textContent = t("university.admissions.entry.saved_context");
+        saveChoiceButton.disabled = true;
+        saveChoiceButton.textContent = label("saved");
+      }
     };
     root.querySelector('[data-admissions-retry="context"]')?.addEventListener("click", refreshContext);
   }
@@ -371,16 +413,38 @@ export function mountAdmissionsCatalog(institutionId) {
   function renderContextContent(status) {
     const option = resolved?.selected_option;
     const readable = hasReadableAdmissionContext(resolved);
+    if (status === "loading") assessmentHost.innerHTML = loading();
+    else if (status === "error") {
+      assessmentHost.innerHTML = failure("context");
+      assessmentHost.querySelector("button").onclick = refreshContext;
+    } else if (readable) assessmentHost.innerHTML = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+    else {
+      const canChooseRoute = option ? Boolean(resolved?.available_routes?.length) : Boolean(sharedRoutes.length);
+      const message = option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(canChooseRoute ? "assessment_no_route" : "choose_program_hint");
+      assessmentHost.innerHTML = `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match><h2>${escapeHtml(label("assessment"))}</h2><div class="admissions-state"><p>${escapeHtml(message)}</p><button type="button">${escapeHtml(label(canChooseRoute ? "choose_route" : "browse_programs"))}</button></div></section>`;
+      assessmentHost.querySelector("button").onclick = () => {
+        if (!canChooseRoute) {
+          root.querySelector("#admissionsChooseProgram").click();
+          return;
+        }
+        const editor = root.querySelector("#admissionsSelectionEditor");
+        editor.hidden = false;
+        const picker = editor.querySelector("[data-read-route], [data-shared-route], .custom-select-trigger, select");
+        picker?.scrollIntoView({ block: "center" });
+        picker?.focus();
+      };
+    }
     renderStudyDetails(studyDetails, resolved, status);
     renderProgramSelection(status);
     for (const [id, domains] of Object.entries(targets)) {
       if (id === "admissionsStudyInfo") continue;
-      const target = document.getElementById(id);
+      const target = id === "detailRequirements" ? requirementsContent : document.getElementById(id);
       const programOnly = ["admissionsStudyInfo", "admissionsUniversityInfo"].includes(id) && !resolved?.selected_route;
       if (id === "admissionsUniversityInfo") {
         target.hidden = status !== "ready" || (!readable && !option);
       }
-      if (status === "loading") target.innerHTML = loading();
+      if (id === "detailRequirements" && status !== "ready") target.innerHTML = "";
+      else if (status === "loading") target.innerHTML = loading();
       else if (status === "error") {
         target.innerHTML = failure("context");
         target.querySelector("button").onclick = refreshContext;
@@ -389,12 +453,12 @@ export function mountAdmissionsCatalog(institutionId) {
         const canChooseRoute = option && resolved.available_routes?.length;
         target.innerHTML = `<div class="admissions-state"><p>${escapeHtml(option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(option ? "route_required" : "choose_program_hint"))}</p><button type="button">${escapeHtml(label(canChooseRoute ? "choose_route" : "browse_programs"))}</button></div>`;
         target.querySelector("button").onclick = () => {
-          document.querySelector(`[data-tab="tab-${canChooseRoute ? "admission" : "programs"}"]`).click();
+          openTab(`tab-${canChooseRoute ? "admission" : "programs"}`);
           (canChooseRoute ? root : programs).scrollIntoView({ block: "start" });
         };
       }
       else if (["detailRequirements", "detailDeadlines", "detailFinance"].includes(id)) {
-        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains)}`;
+        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains, { includeAssessment: false })}`;
         if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState);
       }
       else target.innerHTML = renderAdmissionsContext(resolved, {
@@ -425,7 +489,7 @@ export function mountAdmissionsCatalog(institutionId) {
     sourceHost.querySelector(".admissions-programs__references-body")?.append(studyInfo);
   }
 
-  async function refreshContext() {
+  async function refreshContext({ revealSelection = false } = {}) {
     calendarState = {};
     contextAbort?.abort();
     const request = contextAbort = new AbortController();
@@ -442,6 +506,7 @@ export function mountAdmissionsCatalog(institutionId) {
       resolved = data;
       renderControls();
       renderContextContent("ready");
+      if (revealSelection && hasReadableAdmissionContext(data)) selectionSummary?.scrollIntoView({ block: "start" });
     } catch (error) {
       if (request.signal.aborted || request !== contextAbort || !currentPage()) return;
       resolved = null;
@@ -733,7 +798,10 @@ export function mountAdmissionsCatalog(institutionId) {
       total = data.total;
       const previousSharedIds = sharedRoutes.map(route => route.id).join(",");
       sharedRoutes = data.shared_routes || [];
-      if (!resolved?.selected_option && previousSharedIds !== sharedRoutes.map(route => route.id).join(",")) renderControls(root.dataset.state);
+      if (!resolved?.selected_option && previousSharedIds !== sharedRoutes.map(route => route.id).join(",")) {
+        renderControls(root.dataset.state);
+        if (root.dataset.state === "ready") renderContextContent("ready");
+      }
       const selectedIndex = items.findIndex(option => option.id === context.study_option_id);
       if (selectedIndex > 0) items.unshift(items.splice(selectedIndex, 1)[0]);
       for (const [id, entry] of previews) {
@@ -803,8 +871,13 @@ export function mountAdmissionsCatalog(institutionId) {
     } else if (hadSuggestedMajor) { page = 1; void refreshPrograms(); }
     onProfile();
   };
+  const onPopState = () => {
+    const tab = window.location.hash.match(/^#(tab-(?:general|programs|admission|deadlines|finance))$/)?.[1];
+    if (tab) document.querySelector(`[data-tab="${tab}"]`)?.click();
+    onProfile();
+  };
   window.addEventListener("profileUpdated", onProfileUpdated);
-  window.addEventListener("popstate", onProfile);
+  window.addEventListener("popstate", onPopState);
   const ready = Promise.all([refreshPrograms(), refreshContext()]);
   void ready.then(updateTabArrows);
   const dispose = () => {
@@ -820,7 +893,7 @@ export function mountAdmissionsCatalog(institutionId) {
     tabs.removeEventListener("click", onTabClick);
     window.removeEventListener("resize", updateTabArrows);
     window.removeEventListener("profileUpdated", onProfileUpdated);
-    window.removeEventListener("popstate", onProfile);
+    window.removeEventListener("popstate", onPopState);
   };
   return { ready, dispose };
 }

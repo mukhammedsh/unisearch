@@ -2,6 +2,29 @@
 
 All notable project changes should be recorded here.
 
+## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
+
+### Changed
+- Updated contributor, architecture, roadmap and card-indicator documentation to match the four-institution rollout and minimum requirements match.
+- Renamed the applicant-facing UniChance indicator to minimum requirements match while preserving API and saved-state identifiers.
+- Explained reviewed application paths and the effect of saving a choice, and exposed scoped minimum-check summaries with their remaining conditions.
+- Restored explainable UniFit indicators for reviewed universities, including subject availability, requirements evidence and scoped budget comparisons.
+- Simplified card explanations and exposed valid requirements percentages directly.
+- Allowed UniFit discovery without an exam-data confirmation dialog and retained a dismissible explanation of its available evidence.
+- Separated MIT Sloan's deferred MBA Early application from regular MBA admission, retaining its own eligibility, checklist and deadline.
+
+### Fixed
+- Show the scoped tuition range on reviewed cards when a comparable study and living budget is unavailable.
+- Kept UniFit subject matching and cost projections aligned with the saved university-specific study context, including explicitly cleared values.
+- Preserved complete official source titles when no exact translation exists and kept mobile disclosure controls aligned with their headings.
+- Kept the selected application context visible after route changes and prevented mobile language-selector labels from overlapping their controls.
+- Corrected application links, Stanford CS deadline scope, MBA/coterm calendar projections and known unpublished NU dates.
+- Removed applicant-visible research notes and unrelated inventory gaps, clarified Imperial deadline types, and reduced repeated source guidance while retaining full evidence.
+- Aligned saved-choice status and tab history, and distinguished missing profile evidence from requirements that cannot be compared automatically.
+- Prevented page text from showing through fixed navigation and removed repeated retry controls and stale route-selection instructions.
+- Replaced the remaining applicant-visible UniChance wording in the MIT academic-record fact and its Russian and Kazakh translations.
+- Excluded the Git-ignored local scratch directory from the absolute-path hygiene test.
+
 ## 10.0.4 (2026-11-03) - Security and dependency updates
 
 ### Security

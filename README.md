@@ -40,7 +40,7 @@ Facts can vary by program, applicant category, and entry cycle. UniSearch keeps 
 
 ## Explore the catalog
 
-- **Discover:** Search and filter universities by location, cost, and other preferences. Browse in a list or on a map, and sort with optional profile-based UniFit recommendations.
+- **Discover:** Search and filter universities by location, cost, and other preferences. Browse in a list or on a map, and sort with optional profile-based UniFit recommendations. You can use UniFit with a subject, level, budget or preferences before adding test results; no exam-data confirmation is required. Reviewed card indicators explain subject availability, saved-route minimum checks and the budget basis actually used.
 - **Compare:** Save universities and compare study options, requirements, costs, and funding information. Cost displays support multiple currencies.
 - **Compare selected programs:** For reviewed universities, save one program and application route or an institution-wide route where admission is not major-specific, then compare study format, published tuition, reference budgets, dates and funding conditions. Original currencies and source periods remain separate; full source records are expandable. Switching interface language keeps the current comparison step and program selections.
 - **Browse study options:** Search, expand, and select compact program cards across university pages. Cards use available catalog details; their presence does not mean that an institution's admissions data has been reviewed. Selections restore after reloads and language changes.
@@ -52,17 +52,21 @@ Facts can vary by program, applicant category, and entry cycle. UniSearch keeps 
 
 - **Read MIT in your language:** All 191 catalogued study options have source-linked overviews in English, Russian and Kazakh, including internal/intermediate awards. Transfer dates retain their applicant restrictions; undergraduate funding shows CSS Profile/IDOC documents, priority dates and international instructions before full source records. FAFSA retains its domestic federal-aid eligibility condition. A degree without an established standalone application shows its official next step rather than an unusable selector.
 - **Make it yours:** Choose English, Russian, or Kazakh, and use the system, light, or dark theme. University source material stays in its original language.
-- **Learn the terms:** The [Guide](frontend/guide.html) explains admissions requirements, exams, UniFit, UniChance, and comparisons.
+- **Learn the terms:** The [Guide](frontend/guide.html) explains admissions requirements, exams, UniFit, minimum requirements match, and comparisons.
 
 You do not need to complete a profile to browse the catalog or read university pages.
+
+UniFit may show a dismissible note about the profile evidence available for ranking. The note does not block sorting or require exam results. Whether a particular published minimum is met is checked separately for the chosen application path.
 
 ## How to read estimates
 
 - **UniFit** sorts the catalog using profile preferences and available university data. Some factors are estimates; unknown costs and possible aid are not treated as zero cost or a guaranteed discount.
-- **UniChance** shows the share of measurable, published academic and language minimums met for the selected admission path. Missing evidence or a path with no measurable minimums produces no score. It is not an admission probability or a funding prediction.
+- **Minimum requirements match** shows the share of measurable, published academic and language minimums met for the selected admission path. Missing evidence or a path with no measurable minimums produces no score. Even 100% does not establish that all admission conditions are satisfied. The API retains its existing `uni-chance` identifiers; the result is not an admission probability or a funding prediction.
 - **ROI** is a simplified ratio of annual graduate salary to annual study cost. It is not a degree payback period or a forecast of personal earnings. If major-specific salary data is unavailable, the estimate may use general university salary data.
 
 Admission checks show the published requirement alongside available profile evidence. A missing value means UniSearch has no applicable catalog fact; it does not mean the university has no such program, requirement, deadline, cost, or funding option. Historical admitted-score ranges and acceptance rates are separate facts, not predictions.
+
+On reviewed pages, browse a program and choose its actual application path to read the relevant conditions. Browsing does not change your UniFit context until you save the application choice. The minimum-check summary stays visible; expand its details to distinguish missing profile evidence from source conditions that require separate review. Unsupported or unnamed source rules remain available without an invented test identity.
 
 ## Privacy and profile data
 

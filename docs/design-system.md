@@ -12,6 +12,7 @@ Use this document as the source of truth for new UI work. The global stylesheet 
 - Keep visual hierarchy clear and never let two adjacent visible components share an indistinguishable surface: page background -> solid working surfaces -> soft nested controls -> selectively raised controls or overlays.
 - Use real university media where it helps identify a university. Do not use atmospheric imagery when the user needs to inspect a concrete university.
 - Label study levels clearly wherever programs, admission requirements, deadlines, and funding policies differ. Do not imply that a fact for one level applies to another.
+- Applicant card indicators use a short label and one concise, useful explanation. Do not expose internal normalized preference scales, ranking penalties, component weights or technical context dumps. A requirements-match percentage is a separate applicant result and must have a visible entry point; keep detailed evidence and source scope on the admissions page and price reference.
 
 ## Tokens
 

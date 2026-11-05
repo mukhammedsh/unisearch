@@ -2,9 +2,10 @@ import { getPreferredCurrency } from "./currency.js";
 import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 import { escapeHtml, escapeHtmlAttr } from "./utils/format.js";
+import { aiName } from "./utils/runtime.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
-const I18N_PACK_REVISION = "32";
+const I18N_PACK_REVISION = "43";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";
@@ -201,9 +202,8 @@ export function tFormat(key, params = {}, fallback = "") {
 
 export function applyTokenSubstitutions(text) {
   let out = String(text || "");
-  const ai = window.AI_FUNCTIONS || {};
-  const fit = escapeHtml(String(ai.fit || "UniFit"));
-  const chance = escapeHtml(String(ai.chance || "UniChance"));
+  const fit = escapeHtml(String(aiName("fit")));
+  const chance = escapeHtml(String(aiName("chance")));
   out = out.replaceAll("{fit}", fit);
   out = out.replaceAll("{chance}", chance);
   const rawCurrency = typeof getPreferredCurrency === "function" ? getPreferredCurrency() : "USD";

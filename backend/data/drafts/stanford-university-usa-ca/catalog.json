@@ -11224,7 +11224,8 @@
       "classification": "external_nonprofessional_programme",
       "destination": "Stanford Graduate Admissions application",
       "source_ids": [
-        "directory-evidence:stanford-graduate-directory"
+        "directory-evidence:stanford-graduate-directory",
+        "engineering-doerr-evidence:application-overview"
       ],
       "checked_at": "2026-10-02",
       "programme_website_urls": [
@@ -11240,7 +11241,8 @@
         "undergraduate-shared-evidence:stanford-nonprofessional-graduate",
         "engineering-doerr-evidence:external-graduate"
       ],
-      "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy."
+      "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy.",
+      "application_url": "https://gradadmissions.stanford.edu/apply/application-overview"
     },
     {
       "id": "directory-evidence:stanford-graduate-cs-phd",
@@ -11251,7 +11253,8 @@
       "classification": "external_nonprofessional_programme",
       "destination": "Stanford Graduate Admissions application",
       "source_ids": [
-        "directory-evidence:stanford-graduate-directory"
+        "directory-evidence:stanford-graduate-directory",
+        "engineering-doerr-evidence:application-overview"
       ],
       "checked_at": "2026-10-02",
       "programme_website_urls": [
@@ -11266,7 +11269,8 @@
       "shared_policy_context_ids": [
         "undergraduate-shared-evidence:stanford-nonprofessional-graduate"
       ],
-      "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy."
+      "shared_policy_boundary": "The official directory explicitly directs these named programmes to central How to Apply. Apply each central fact only within its own scope and programme exceptions; directory membership is not a universal fee, test or funding policy.",
+      "application_url": "https://gradadmissions.stanford.edu/apply/application-overview"
     },
     {
       "id": "directory-evidence:stanford-graduate-dbio-phd",
@@ -13621,7 +13625,8 @@
       "classification": "current_stanford_undergraduate_coterm",
       "destination": "Stanford coterminal application",
       "source_ids": [
-        "directory-evidence:stanford-coterm-directory"
+        "directory-evidence:stanford-coterm-directory",
+        "engineering-doerr-evidence:cs-coterm"
       ],
       "checked_at": "2026-10-02",
       "programme_website_urls": [
@@ -13636,7 +13641,8 @@
       "policy_for_route_ids": [
         "engineering-doerr-evidence:cs-coterm"
       ],
-      "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers."
+      "policy_relationship_note": "Shared policy evidence for the named application route; retain other programs and existing route identifiers.",
+      "application_url": "https://www.cs.stanford.edu/admissions/coterminal-admissions-overview"
     },
     {
       "id": "directory-evidence:stanford-coterm-eps-ms",
@@ -54257,7 +54263,8 @@
           "stanford-option-oceans-phd"
         ],
         "procedure_ids": [
-          "engineering-doerr-evidence:external-graduate"
+          "engineering-doerr-evidence:external-graduate",
+          "directory-evidence:stanford-graduate-cs-phd"
         ],
         "levels": [
           "masters",
@@ -55809,7 +55816,8 @@
           "stanford-option-me-ms"
         ],
         "procedure_ids": [
-          "engineering-doerr-evidence:engineering-coterm"
+          "engineering-doerr-evidence:engineering-coterm",
+          "directory-evidence:stanford-coterm-cs-ms"
         ],
         "levels": [
           "masters"

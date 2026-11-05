@@ -10,6 +10,8 @@ test("locale packs refresh after an app update and reuse the current version's c
     [`unisearch_i18n_pack_v25_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
     [`unisearch_i18n_pack_v27_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
     [`unisearch_i18n_pack_v29_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
+    [`unisearch_i18n_pack_v32_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
+    [`unisearch_i18n_pack_v42_8.1.7_${lang}`, "meta.code: old\nlegacy.label: Old label\n"],
   ]));
   window.sessionStorage = {
     getItem: key => cache.get(key) ?? null,
