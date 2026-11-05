@@ -197,7 +197,7 @@ test("a known NU dates announcement replaces the generic empty state and retains
   const html = renderApplicantSection(resolved, ["deadlines"]);
   assert.match(html, /data-dates-tba/);
   assert.match(html, /2027[-‑]2028/);
-  assert.ok(html.includes("https://nu.edu.kz/admissions/masters"));
+  assert.ok(html.includes('href="https://nu.edu.kz/admissions/masters"'));
   assert.doesNotMatch(html, /No source records are catalogued|admissions\/phd/);
   assert.doesNotMatch(renderApplicantSection({ ...resolved, selected_route: null }, ["deadlines"]), /data-dates-tba/);
 });
