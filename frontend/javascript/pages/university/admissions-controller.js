@@ -416,8 +416,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const readable = hasReadableAdmissionContext(resolved);
     if (status === "loading") assessmentHost.innerHTML = loading();
     else if (status === "error") {
-      assessmentHost.innerHTML = failure("context");
-      assessmentHost.querySelector("button").onclick = refreshContext;
+      assessmentHost.innerHTML = "";
     } else if (readable) assessmentHost.innerHTML = renderAdmissionsAssessment(resolved, { presentation: "simple" });
     else {
       const canChooseRoute = option ? Boolean(resolved?.available_routes?.length) : Boolean(sharedRoutes.length);
