@@ -117,7 +117,7 @@ async function noFitPercentage(page) {
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
   await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
-  await expect(assessment).toContainText(/not.*probability|не вероятность поступления/i);
+  await expect(assessment).toContainText(/not.*probability|не вероятность (?:поступления|зачисления)/i);
 }
 
 async function fitsViewport(page, width) {
