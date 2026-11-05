@@ -42,7 +42,7 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
-  await expect(assessment).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);

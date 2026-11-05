@@ -1151,6 +1151,7 @@ profile.exam_breakdown_hint: Enter scores by subject. Required subjects stay fix
 profile.exam_breakdown_fixed_hint: Enter the score for each required section.
 admission.requirements_fit.check.or: or
 universities.why.budget_comparison: Annual cost: {cost}; your annual budget: {budget}. Potential funding has not been deducted.
+universities.why.preference_comparison: {label}: your setting {requested}/100; university indicator {observed}/100.
 profile.exam_total_placeholder: Overall total
 profile.exam_subject_required_count: Choose at least {count} subjects for {exam}
 profile.exam_error_range: {exam} must be between {min} and {max}

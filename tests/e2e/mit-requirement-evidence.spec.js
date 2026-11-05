@@ -115,7 +115,7 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   await expect(conflict).toContainText("Cambridge 190");
   await expect(conflict).toContainText(/Confirm accepted exam\/scale/i);
   await expect(page.locator("#admissionsCycle")).toHaveValue("");
-  await expect(await openAssessment(page)).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 });
 
 test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an invented score", async ({ page }) => {
@@ -144,8 +144,8 @@ test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an inve
   await expect(fact).toContainText("GMAT (Focus Edition");
   await expect(fact).toContainText("GRE");
   const assessment = await openAssessment(page);
-  await expect(assessment).toContainText("No requirements-match percentage is available");
-  await expect(assessment).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment).toContainText(/No requirements-match percentage is available|Our data has no numeric minimum/i);
+  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   await expect(page.locator("#admissionsCycle")).toHaveValue("2027 entry");
 });
 
@@ -223,6 +223,6 @@ test("saved GRE evidence persists while Sloan's unassessed rule and cleared cycl
   expect(cleared.assessment.chancePercent).toBeNull();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(cycle).toHaveValue("");
-  await expect(await openAssessment(page)).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

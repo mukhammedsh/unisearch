@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { openDisclosureParents } = require("./helpers/selectors");
+const { openDisclosureParents, selectAdmissionRoute, openAdmissionSelectionEditor } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 const screenshotDir = path.resolve(__dirname, "../../.tmp_test/detail-redesign-browsing");
@@ -373,31 +373,12 @@ async function expectProgramFacts(page, item) {
 }
 
 async function chooseRoute(page, item) {
-  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
-  const advanced = page.locator("#admissionsAdvanced[data-admissions-advanced]");
-  await expect(advanced).toBeVisible();
-  await expect(advanced).not.toHaveAttribute("open", "");
-
+  await selectAdmissionRoute(page, item.route);
   const route = page.locator("#admissionsRoute");
-  if (await route.inputValue() !== item.route) {
-    const entry = page.locator(`[data-read-route="${item.route}"]`);
-    if (await entry.count()) await openDisclosureParents(entry);
-    if (await entry.isVisible()) {
-      await entry.click();
-      await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-    } else {
-      const routeWrapper = route.locator("xpath=..");
-      await expect(routeWrapper.locator(".custom-select-trigger")).toBeVisible();
-      await routeWrapper.locator(".custom-select-trigger").click();
-      const routeOption = routeWrapper.locator(`.custom-option[data-value="${item.route}"]`);
-      await expect(routeOption).toBeVisible();
-      await routeOption.click();
-    }
-  }
   await expect(route).toHaveValue(item.route);
   await expect(page.locator("#admissionsContext[data-state='ready']")).toBeVisible();
+  const advanced = page.locator("#admissionsAdvanced[data-admissions-advanced]");
   await expect(advanced).not.toHaveAttribute("open", "");
-  await expect(route).toHaveValue(item.route);
   expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(item.route);
   expect(new URL(page.url()).searchParams.get("admission_route")).toBe("");
 }
@@ -620,11 +601,9 @@ test("undergraduate requirements in all three universities can be read without a
     await openGuestUniversity(page, item);
     await page.screenshot({ path: testInfo.outputPath(`${item.university}-overview.png`), fullPage: false });
     await chooseOption(page, item);
-    const wrapper = page.locator("#admissionsRoute").locator("xpath=..");
-    await wrapper.locator(".custom-select-trigger").click();
-    const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
-    await wrapper.locator(`.custom-option[data-value="${item.route}"]`).click();
-    const context = await (await response).json();
+    const responsePromise = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+    await selectAdmissionRoute(page, item.route);
+    const context = await (await responsePromise).json();
     expect(context.selected_route.id).toBe(item.route);
     expect(context.context.applicant_route).toBeNull();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
@@ -728,14 +707,16 @@ test("a failed earlier detail request cannot replace the newly opened university
 
 test("Kazakh browsing keeps all three reviewed catalogs usable and searches a translated subject", async ({ page }) => {
   const choices = [journeys[0], journeys[2], {
-    ...journeys[5], option: "stanford-option-cs-bs", search: "Информатика",
+    ...journeys[5], option: "stanford-option-cs-bs", route: "undergraduate-shared-evidence:stanford-first-year", search: "Информатика",
   }];
   for (const choice of choices) {
     const item = { ...choice, language: "kaz" };
     await openGuestUniversity(page, item);
     await expect(page.locator("html")).toHaveAttribute("lang", "kk");
     await chooseOption(page, item);
-    await expect(page.locator("#admissionsContext h2")).toHaveText("Жарияланған өтініш беру жолдары");
+    await expect(page.locator("#admissionsContext h2")).toHaveText("Қалай өтініш беруге болады");
+    await chooseRoute(page, item);
+    await openAdmissionSelectionEditor(page);
     await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Контексті нақтылау (міндетті емес)");
     await expect(page.locator("#admissionsContextApply")).toHaveText("Сүзгілерді қолдану");
     await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open", "");

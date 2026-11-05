@@ -1151,6 +1151,7 @@ profile.exam_breakdown_hint: Пәндер бойынша ұпайларды ен
 profile.exam_breakdown_fixed_hint: Әрбір міндетті бөлім бойынша баллдарды көрсетіңіз.
 admission.requirements_fit.check.or: немесе
 universities.why.budget_comparison: Жылдық құны: {cost}; сіздің жылдық бюджетіңіз: {budget}. Мүмкін қаржыландыру шегерілмеген.
+universities.why.preference_comparison: {label}: сіздің баптауыңыз {requested}/100; университет көрсеткіші {observed}/100.
 profile.exam_total_placeholder: Жалпы балл
 profile.exam_subject_required_count: {exam} үшін кем дегенде {count} пәнді таңдаңыз
 profile.exam_error_range: {exam} {min} -ден {max} -ге дейінгі диапазонда болуы тиіс

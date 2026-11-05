@@ -3953,6 +3953,17 @@ export function initUniversitiesPage() {
             }, "Annual cost: {cost}; your annual budget: {budget}. Potential funding has not been deducted.")
             : "";
 
+        const preferenceDetail = [
+            ["practice_vs_science", "focus"], ["social_vs_hardcore", "atmosphere"],
+            ["city_vs_campus", "location"], ["budget_vs_prestige", "finance"],
+        ].map(([key, label]) => {
+            const requested = match.userPreferences?.[key];
+            const observed = match.factors?.[key];
+            if (typeof requested !== "number" || typeof observed !== "number") return "";
+            return tFormat("universities.why.preference_comparison", {
+                label: t(`universities.tradeoff.${label}`), requested: Math.round(requested * 100), observed: Math.round(observed * 100),
+            }, "{label}: your setting {requested}/100; university indicator {observed}/100.");
+        }).filter(Boolean).join(" ");
 
         if (reviewedAdmissions) {
             reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value }) => addStatusIndicator(icon, tone, label, detail, value));
@@ -3974,9 +3985,9 @@ export function initUniversitiesPage() {
 
         // Priority 2: preference-match group. Only one vibe tag may be shown.
         if (hasVeryHighVibeMatch) {
-            addStatusIndicator("check-badge", "match", t("universities.badge.your_vibe", "Your Vibe"), t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders."));
+            addStatusIndicator("check-badge", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceDetail || t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders."));
         } else if (hasHighVibeMatch) {
-            addStatusIndicator("check-badge", "match", t("universities.badge.top_match", "Good Match"), t("universities.why.top_match", "This university is a good preference match for your current slider setup."));
+            addStatusIndicator("check-badge", "match", t("universities.badge.top_match", "Good Match"), preferenceDetail || t("universities.why.top_match", "This university is a good preference match for your current slider setup."));
         }
 
         // Status tags: requirements + budget + aid.

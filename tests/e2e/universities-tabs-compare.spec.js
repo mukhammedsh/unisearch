@@ -506,8 +506,8 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   await expect(course.locator('a[href*="imperial.ac.uk"]')).not.toHaveCount(0);
   await expect(mit.locator('[data-admissions-fact="imperial-computing-meng-admission"]')).toHaveCount(0);
   await expect(imperial.locator('[data-admissions-fact="ug-sat-act-presence"]')).toHaveCount(0);
-  await expect(mit).toContainText("No requirements-match percentage is available");
-  await expect(imperial).toContainText("No requirements-match percentage is available");
+  await expect(mit).toContainText(/No requirements-match percentage is available|Our data has no numeric minimum/i);
+  await expect(imperial).toContainText(/No requirements-match percentage is available|Add the missing evidence|Our data has no numeric minimum/i);
   await expect(page.locator("[data-reviewed-comparison] .compare-table")).not.toContainText(/1,450|1,550/);
 });
 

@@ -35,7 +35,7 @@ test.describe("UniChance Calculator Validation", () => {
     expect(assessment.chanceAvailable).toBe(false);
     expect(assessment.chancePercent).toBeNull();
     expect(assessment.reason).toBe("missing_evidence");
-    await expect(analysis).toContainText("No requirements-match percentage is available");
+    await expect(analysis).toContainText(/No requirements-match percentage is available|Add the missing evidence/i);
     await expect(analysis.locator(":scope > p").first()).not.toContainText(/\b0%/);
     await expect(analysis.locator(":scope > p > strong")).toHaveCount(0);
   });

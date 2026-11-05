@@ -1150,6 +1150,7 @@ profile.exam_breakdown_hint: Введите баллы по предметам. 
 profile.exam_breakdown_fixed_hint: Укажите баллы по каждому обязательному разделу.
 admission.requirements_fit.check.or: или
 universities.why.budget_comparison: Годовая стоимость: {cost}; ваш годовой бюджет: {budget}. Возможное финансирование не вычтено.
+universities.why.preference_comparison: {label}: ваша настройка {requested}/100; показатель университета {observed}/100.
 profile.exam_total_placeholder: Общий балл
 profile.exam_subject_required_count: Выберите как минимум {count} предмета для {exam}
 profile.exam_error_range: {exam} должен быть в диапазоне от {min} до {max}
