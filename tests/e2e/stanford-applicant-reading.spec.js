@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { expectNoStackedGapMargins } = require("./helpers/design");
-const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram } = require("./helpers/selectors");
+const { openAdmissionSelectionEditor, openDisclosureParents, revealRestrictedProgram, selectAdmissionRoute } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -70,8 +70,7 @@ async function program(page, id, search = "Computer Science") {
 
 async function route(page, value) {
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await select(page, "admissionsRoute", value);
+  await selectAdmissionRoute(page, value);
   await ready(page);
 }
 
