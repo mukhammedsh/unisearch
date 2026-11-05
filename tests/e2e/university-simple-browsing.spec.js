@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { openDisclosureParents, selectAdmissionRoute, openAdmissionSelectionEditor } = require("./helpers/selectors");
+const { selectAdmissionRoute, openAdmissionSelectionEditor } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 const screenshotDir = path.resolve(__dirname, "../../.tmp_test/detail-redesign-browsing");
