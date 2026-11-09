@@ -3353,3 +3353,25 @@ universities.match.budget_reference_detail: This comparison uses a published ref
 universities.match.budget_uncertain_detail: Some price options exceed your budget. Check the cost of your chosen program.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: For eligible students in their final year: apply now and begin the MBA after two to five years of full-time work. This is a deferred-entry application, not an earlier round of ordinary MBA admission.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — deferred entry
+university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action is an early, non-binding round that limits applying early to other universities; read the university's rules before choosing it.
+university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.text: Early Action is an application round with an earlier deadline and an earlier decision; it is generally non-binding, so you are not obliged to enrol if admitted.
+university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.text: Regular Action is the main, later application round, with a later deadline and decision than the early round.
+university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.text: Regular Decision is the main application round, with a later deadline and decision than the early rounds.
+university.admissions.glossary.ucas.title: UCAS
+university.admissions.glossary.ucas.text: UCAS is the UK's central online service for undergraduate applications, so you apply through it instead of applying to each university separately.
+university.admissions.glossary.tmua.title: TMUA
+university.admissions.glossary.tmua.text: TMUA is the Test of Mathematics for University Admission, a maths test that some UK universities require; it is taken separately from your school exams.
+university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.text: A foundation year is a preparatory year before a bachelor's degree, and NUFYP is Nazarbayev University's Foundation Year Program; check the university's rules on whether completing it leads to a degree place.
+university.admissions.glossary.css_profile.title: CSS Profile
+university.admissions.glossary.css_profile.text: The CSS Profile is an online College Board form that some US universities use to assess a family's financial need; it is submitted in addition to the admission application.
+university.admissions.glossary.fee_status.title: Home / Overseas fees
+university.admissions.glossary.fee_status.text: Fee status decides which tuition price applies: Home fees generally apply to UK residents and some other categories, international applicants usually pay Overseas fees, and the university decides the classification.
+university.admissions.glossary.what_is: What is {term}?
+university.admissions.key_facts.cost_fee_status_source: Official fee-status page
+university.admissions.key_facts.funding_policy: Published policy: {policy}
+university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you. Funding records for this path: {count}.

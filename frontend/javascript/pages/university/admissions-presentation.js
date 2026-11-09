@@ -5,6 +5,7 @@ import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
 import { heroIcon } from "../../icons.js";
+import { renderTermList, renderTermsFor } from "./admissions-glossary.js";
 import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution } from "./admissions-status.js";
 
 const label = key => t(`university.admissions.reading.${key}`);
@@ -105,7 +106,7 @@ function aidSummary(rows, resolved) {
     .map(([stage, name]) => [escapeHtml(name), escapeHtml(formatPublishedDate(process.value.priority_due[stage]))]);
   const text = value => escapeHtml(translateAdmissionSummary(value) || label("summary_translation_missing"));
   const documents = process.value.required.filter(item => item !== "FAFSA for federal-aid eligible domestic applicants").map(item =>
-    item === "CSS Profile" ? `${escapeHtml(label("aid_css"))}${international ? ` ${escapeHtml(tFormat("university.admissions.reading.aid_css_code", { code: international.value.css_code }))}` : ""}` : text(item));
+    item === "CSS Profile" ? `${escapeHtml(label("aid_css"))}${international ? ` ${escapeHtml(tFormat("university.admissions.reading.aid_css_code", { code: international.value.css_code }))}` : ""}${renderTermList(["css_profile"])}` : text(item));
   const timeline = dates.length ? `${table(label("aid_priority_dates"), [label("window"), label("aid_by")], dates)}<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : "";
   return `<section class="admissions-reading__section" data-aid-summary><h3>${escapeHtml(label("aid_title"))}</h3><p>${escapeHtml(label("aid_explained"))}</p>
     <h4>${escapeHtml(label("aid_documents"))}</h4><ol class="admissions-catalog__items">${documents.map(document => `<li>${document}</li>`).join("")}</ol>
@@ -157,11 +158,12 @@ function deadlines(rows, resolved) {
       return `<section class="admissions-reading__section" data-dated-source-reference>${row.publication_status.includes("_past") ? `<p class="admissions-reading__note">${escapeHtml(t("university.deadlines.dated_reference"))}</p>` : ""}${table(label("application_dates"), [label("window"), label("date")], entries)}${sourceNote(row, resolved)}</section>`;
     }
     if (Array.isArray(row.attributes?.deadline_events) || Array.isArray(row.value)) {
-      const entries = getReviewedDeadlineEvents(resolved).filter(event => event.sourceFactId === row.id).map(event => [
+      const events = getReviewedDeadlineEvents(resolved).filter(event => event.sourceFactId === row.id);
+      const entries = events.map(event => [
         escapeHtml(admissionDeadlineTitle(event)), escapeHtml(formatPublishedDate(event.deadline)),
         escapeHtml([event.time, event.timezone].filter(Boolean).join(" · ") || label("unknown")),
       ]);
-      return entries.length ? `<section class="admissions-reading__section" data-published-deadline-array>${table(t("university.admissions.catalog.domain.deadlines"), [label("window"), label("date"), label("local_time")], entries)}${sourceNote(row, resolved)}</section>` : "";
+      return entries.length ? `<section class="admissions-reading__section" data-published-deadline-array>${table(t("university.admissions.catalog.domain.deadlines"), [label("window"), label("date"), label("local_time")], entries)}${renderTermsFor(events.map(event => event.name))}${sourceNote(row, resolved)}</section>` : "";
     }
     if (row.value?.windows?.some(window => window.entry && window.date)) {
       const entries = row.value.windows.filter(window => window.entry && window.date).map(window => [
@@ -185,7 +187,7 @@ function deadlines(rows, resolved) {
       if (!deadline?.date) return "";
       const entries = [[escapeHtml(label(medicine ? "ucas_medicine" : "ucas_equal_consideration")), escapeHtml(formatPublishedDate(deadline.date)), escapeHtml([deadline.time, deadline.timezone].filter(Boolean).join(" · "))]];
       if (row.value.submission_opens) entries.unshift([escapeHtml(label("submission_opens")), escapeHtml(formatPublishedDate(row.value.submission_opens)), ""]);
-      return `<section class="admissions-reading__section" data-ucas-dates>${table(label("application_dates"), [label("window"), label("date"), label("local_time")], entries)}${sourceNote(row, resolved)}</section>`;
+      return `<section class="admissions-reading__section" data-ucas-dates>${table(label("application_dates"), [label("window"), label("date"), label("local_time")], entries)}${renderTermList(["ucas"])}${sourceNote(row, resolved)}</section>`;
     }
     const windows = row.value?.windows;
     if (!Array.isArray(windows)) return "";
@@ -197,7 +199,7 @@ function deadlines(rows, resolved) {
       : tests.map(window => [escapeHtml(windowName(window.round)), escapeHtml(window.tests.map(test => test === "English proficiency" ? label("language") : test).join(", ")), escapeHtml(formatPublishedDate(window.latest))]);
     const recurring = !row.scope?.cycle && !/20\d{2}/.test(JSON.stringify(windows)) && !recurringShown;
     if (recurring) recurringShown = true;
-    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved, { omitYearless: recurringShown })}</section>`;
+    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermsFor(rounds.map(window => window.name), tests.map(window => window.round))}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved, { omitYearless: recurringShown })}</section>`;
   }).join("");
 }
 

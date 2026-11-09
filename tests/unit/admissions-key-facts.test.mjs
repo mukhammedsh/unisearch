@@ -122,3 +122,59 @@ test("a cycle-scoped requirement offers the profile entry cycle or the entry-yea
   assert.match(withoutProfile, /data-key-facts-cycle="edit"[^>]*>Set entry year</);
   assert.doesNotMatch(renderAdmissionsKeyFacts(context(), { now: NOW }), /data-key-facts-cycle/);
 });
+
+const reviewedFact = (id, topic, value, extra = {}) => ({ id, topic, value, source_ids: ["fees"], normalized_status: { publication: "published", review: "verified" },
+  applicability: { route: "matched", status: "conditional" }, scope: {}, ...extra });
+
+test("a price that depends on fee status explains Home and Overseas and links the catalog's official fee-status source", () => {
+  const prices = { selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"],
+    fee_status_match: "unknown", usd: { min: 13429, max: 63872 } }) } };
+  const page = "https://www.imperial.ac.uk/study/fees-and-funding/tuition-fees/fee-status/";
+  const withSource = facts => context({ ...prices, sources: [{ id: "fees", url: page }], facts });
+  const linked = costFact(withSource([reviewedFact("imperial-fee-status", "fee_status", "Imperial assesses Home/Overseas status after application.")]), 0);
+  assert.match(linked.notes.join(" "), /Home fees generally apply to UK residents and some other categories/);
+  assert.match(linked.notes.join(" "), /the university decides the classification/);
+  assert.deepEqual(linked.links, [{ url: page, label: "Official fee-status page" }]);
+  const html = renderAdmissionsKeyFacts(withSource([reviewedFact("imperial-fee-status", "fee_status", "text")]), { now: NOW });
+  assert.match(html, /<a class="admissions-key-facts__source" href="https:\/\/www\.imperial\.ac\.uk\/study\/fees-and-funding\/tuition-fees\/fee-status\/" target="_blank" rel="noopener noreferrer">/);
+  // No fee-status source in the data means no link, and an unreviewed fact is not a source.
+  assert.deepEqual(costFact(context(prices), 0).links, []);
+  const unreviewed = reviewedFact("imperial-fee-status", "fee_status", "text", { normalized_status: { publication: "published", review: "needs_resolution" } });
+  assert.deepEqual(costFact(withSource([unreviewed]), 0).links, []);
+  // A price that does not depend on fee status shows neither the explanation nor a link.
+  const flat = costFact(context({ sources: [{ id: "fees", url: page }], facts: [reviewedFact("f", "fee_status", "text")], selected_costs: { tuition: quote() } }), 0);
+  assert.deepEqual(flat.links, []);
+  assert.doesNotMatch(flat.notes.join(" "), /Home fees/);
+});
+
+test("funding shows one published need policy for the selected route as policy, never as an award", () => {
+  const aid = (extra = {}) => reviewedFact("aid", "funding", { international_need: "MIT meets full demonstrated need using same consideration process", css_code: "3514" }, extra);
+  const withAid = row => context({ facts: [row], fact_groups: { funding: ["aid", "other"] } });
+  const policy = fundingFact(withAid(aid()));
+  assert.equal(policy.text, "Published policy: MIT meets full demonstrated need using same consideration process");
+  assert.match(policy.notes[0], /not an award offered to you\. Funding records for this path: 2/);
+  setLanguage("rus", { emit: false });
+  assert.match(fundingFact(withAid(aid())).text, /^Опубликованная политика вуза: /);
+  setLanguage("eng", { emit: false });
+  // Facts for another route, an unreviewed fact, and facts without the policy field never produce a policy.
+  assert.match(fundingFact(withAid(aid({ applicability: { route: "mismatched", status: "mismatched" } }))).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(withAid(aid({ applicability: { route: "unknown", status: "conditional" } }))).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(withAid(aid({ normalized_status: { publication: "published", review: "needs_resolution" } }))).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(withAid(reviewedFact("aid", "funding", { summary: "Aid exists" }))).text, /Funding records for this path: 2/);
+});
+
+test("funding and deadline rows name the terms the applicant sees without relying on translated text", () => {
+  const css = reviewedFact("process", "funding", { required: ["CSS Profile", "Parental tax/income documentation through IDOC"] });
+  const funding = fundingFact(context({ facts: [css], fact_groups: { funding: ["process"] } }));
+  assert.deepEqual(funding.terms, ["css_profile"]);
+  const rounds = { ...events([]), id: "rounds", attributes: {}, value: { windows: [{ name: "Early Action", application_due: "November 1" }, { name: "Regular Action", application_due: "January 4" }] } };
+  assert.deepEqual(deadlineFact(withRows([rounds]), NOW).terms, ["early_action", "regular_action"]);
+  const early = { ...events([]), id: "dated-rounds", attributes: {}, value: { windows: [{ name: "Early Action", application_due: "2026-12-01" }] } };
+  const dated = deadlineFact(withRows([early]), NOW);
+  assert.equal(dated.status, "upcoming");
+  assert.ok(dated.terms.includes("early_action"));
+  assert.match(renderAdmissionsKeyFacts(withRows([rounds]), { now: NOW }), /data-term="early_action"/);
+  setLanguage("rus", { emit: false });
+  assert.match(renderAdmissionsKeyFacts(withRows([rounds]), { now: NOW }), /data-term="early_action"/);
+  setLanguage("eng", { emit: false });
+});
