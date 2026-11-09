@@ -1,3 +1,5 @@
+import { isEvidenceReviewed, isPublished, isPublishedReference, isReviewedPublished } from "./admissions-status.js";
+
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
 export function parseExactDeadlineDate(value) {
@@ -76,9 +78,8 @@ export function getReviewedDeadlineEvents(resolved) {
       publicationStatus: detail.publication_status || row.publication_status, applicationCategory: detail.application_category || "", examId: detail.exam_id || "", timeSourceUrl: detail.timeSourceUrl || "" });
   };
   const rows = (resolved.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched"
-    && (row.publication_status === "published" || row.publication_status?.startsWith("published_") && Array.isArray(row.attributes?.deadline_events))
-    && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
-    && !/conflict|pending|partial|superseded|requires_confirmation/.test(row.review_status || "")
+    && (isPublished(row) || isPublishedReference(row) && Array.isArray(row.attributes?.deadline_events))
+    && isEvidenceReviewed(row)
     && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(option?.id))
     && (!row.scope?.route_ids?.length || row.scope.route_ids.some(id => [resolved.selected_route.id, ...(resolved.selected_route.shared_policy_context_ids || [])].includes(id))));
   for (const row of rows) {
@@ -96,8 +97,7 @@ export function getReviewedDeadlineEvents(resolved) {
     if (!value || typeof value !== "object") continue;
     if (row.id === "engineering-doerr-evidence:engineering-coterm-2027-directory-details") {
       const program = option?.id?.replace(/^stanford-option-/, "stanford-");
-      const policy = (resolved.facts || []).find(fact => fact.id === "coterm-central-evidence:stanford-coterm-central-deadline" && fact.publication_status === "published"
-        && /verified|reviewed|rechecked/.test(fact.review_status || "") && !/conflict|pending|partial|superseded|requires_confirmation/.test(fact.review_status || "")
+      const policy = (resolved.facts || []).find(fact => fact.id === "coterm-central-evidence:stanford-coterm-central-deadline" && isReviewedPublished(fact)
         && fact.applicability?.status !== "mismatched" && fact.value?.type === "application_completion" && fact.value?.time === "23:59" && fact.value?.timezone === "America/Los_Angeles"
         && !fact.scope?.option_ids?.length && !fact.scope?.route_ids?.length && fact.scope?.levels?.length === 1 && fact.scope.levels[0] === "masters"
         && fact.scope?.applicant_categories?.length === 1 && fact.scope.applicant_categories[0] === "current_stanford_undergraduate"

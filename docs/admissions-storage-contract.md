@@ -60,7 +60,21 @@ Cycles and periods remain source-labelled. Do not extract an entry year from a r
 
 ## Publication, review, history, and missing evidence
 
-Publication state, content review, HTTP access, and applicant assessment are separate concepts. Preparation preserves the source status vocabulary verbatim, including specific reviewed-selector states, partial publication, conflicting evidence, and not-yet-published values. It does not collapse them into a verified/unverified boolean.
+Publication state, content review, HTTP access, and applicant assessment are separate concepts. Preparation preserves the source status vocabulary verbatim in `publication_status` and `review_status`, including specific reviewed-selector states, partial publication, conflicting evidence, and not-yet-published values. It does not collapse them into a verified/unverified boolean.
+
+### Closed vocabulary
+
+Research labels are descriptive and differ by institution. Preparation maps each one through [`vocabulary.json`](../backend/data/drafts/integration/vocabulary.json) into closed values that consumers use instead of parsing labels:
+
+| Field | Values |
+| --- | --- |
+| `normalized_status.publication` on facts and unknowns | `published`, `published_with_limits` (value published; cycle or scope unconfirmed), `partially_published`, `not_yet_published`, `not_found`, `conflicting`, `historical`, `unknown` |
+| `normalized_status.review` on facts and unknowns | `verified`, `verified_with_limits` (verified content with a stated scope limit), `partially_verified`, `carried_forward`, `conflicting` (official sources disagree), `needs_resolution`, `superseded`, `not_recorded` |
+| `entry` on routes and study options | `external`, `external_restricted`, `internal` (current students only), `no_admission` (awarded during another degree), `closed`, `unresolved` |
+
+A study option's `entry` comes from its own application classifications, taking the most open value (`external` first). An option without its own classification uses its routes. Explicit recruitment-closed availability makes it `closed`. A route without a source classification needs an explicit `route_entry_by_id` entry. An unknown with no recorded status is `unknown`/`not_recorded`.
+
+When a new institution introduces a label, preparation fails until the label is added to exactly one canonical group. Choose the group from the label's evidence, never from its spelling alone. The derived status is excluded from assessment fact hashes, so remapping a label does not invalidate reviewed assessment mappings.
 
 Absent status or review-date fields remain `null` in their shared slots. A separate content-review or recheck date does not replace the original checked date. An unknown, unavailable amount, or unpublished future deadline does not become zero, an empty successful response, or personal ineligibility.
 

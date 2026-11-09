@@ -445,7 +445,9 @@ def build_nu_assessments(institution):
         row = facts[ident]
         if not checks:
             return
-        digest = hashlib.sha256(json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+        # Matches the runtime fact hash: the derived normalized status is not reviewed source content.
+        content = {key: value for key, value in row.items() if key != "normalized_status"}
+        digest = hashlib.sha256(json.dumps(content, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
         cycle_labels = list(cycles)
         if "2027/28" in cycles:
             cycle_labels += ["Fall 2027", "2027 entry", "2027-2028"]

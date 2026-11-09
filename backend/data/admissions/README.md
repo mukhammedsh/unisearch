@@ -7,6 +7,7 @@
 To refresh the snapshot after a reviewed draft update:
 
 1. Run `backend/scripts/prepare_admissions_catalog.py` using the backend environment, with `--output-dir .tmp_test/admissions-refresh` pointing to a new directory. NU requires `packet-b/data-acceptance.json` matching the reviewed catalog hash and current packet/handoff fingerprints; source changes require renewed evidence acceptance.
+   A new research status or application classification label fails preparation; add it to one canonical group in `backend/data/drafts/integration/vocabulary.json` as described in the storage contract. New maintainer instructions inside facts fail `test_admissions_editorial`; review them in `editorial_notes.json` as described in the runtime contract.
 2. Review the generated inactive snapshot and its input manifest. Change only its envelope's `runtime_active` value to `true`, then replace this directory's `catalog.json` with the validated result. The output also contains `nu-assessments.json`: replace only NU records in `assessments.json` with these reviewed source-hash mappings, preserving the other institutions. Do not copy program or policy records into `universities.json`. Preparation always emits inactive data; the runtime loader accepts only the activated contract.
 3. Run `npm run test:backend -- test_admissions_catalog_preparation test_admissions_catalog test_admissions_assessment test_admissions_scoring_integration`, then the required backend/data checks.
 

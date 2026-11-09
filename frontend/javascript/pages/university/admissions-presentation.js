@@ -5,12 +5,11 @@ import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
 import { heroIcon } from "../../icons.js";
+import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution } from "./admissions-status.js";
 
 const label = key => t(`university.admissions.reading.${key}`);
 const locale = () => ({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" })[getCurrentLanguage()];
 const period = row => typeof row.period === "object" ? row.period?.label || "" : row.period || "";
-const evidenceReviewed = row => !/(?:conflict|pending|partial|superseded|requires_confirmation)/.test(row.review_status || "") && /(?:verified|reviewed|rechecked|carried_forward_review)/.test(row.review_status || "");
-const reviewed = row => row.publication_status === "published" && evidenceReviewed(row);
 
 export function formatPublishedDate(value) {
   const text = String(value || "");
@@ -74,7 +73,7 @@ function sourceSummaries(rows, resolved, section, options = {}) {
   const csEnglish = section === "requirements" && rows.some(row => row.id === "engineering-doerr-evidence:cs-ms-tests-and-english-policy"
     && reviewed(row) && row.scope?.option_ids?.includes(resolved.selected_option?.id));
   const blocks = rows.filter(row => !(csEnglish && row.id === "engineering-doerr-evidence:english-proficiency" && reviewed(row)))
-    .filter(row => evidenceReviewed(row) || /conflict|needs_resolution|requires_confirmation/.test(row.review_status || "")).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length
+    .filter(row => evidenceReviewed(row) || needsResolution(row)).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length
     || row.scope.levels.some(level => resolved.selected_option.levels.includes(level))).sort((left, right) => Number(linked(right, resolved)) - Number(linked(left, resolved))).map(row => {
     const value = row.value || {};
     const values = typeof value === "string" ? [value] : [JSON.stringify(value), value.full_course_specific_academic_requirement_and_exceptions, value.A_level_rules_by_option_panel, value.IB_rules_by_option_panel, ...Object.values(value)].flat();
@@ -88,7 +87,7 @@ function sourceSummaries(rows, resolved, section, options = {}) {
       seen.add(key);
       return true;
     });
-    const conflict = /conflict|needs_resolution/.test(row.review_status || "");
+    const conflict = reviewNeedsResolution(row);
     return texts.length ? `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${!evidenceReviewed(row) ? `<p class="admissions-context__note" ${conflict ? "data-summary-conflict" : "data-summary-unverified"}>${escapeHtml(label(conflict ? "source_conflict" : "source_unverified"))}</p>` : ""}${texts.map(([, text]) => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, options)}</div>` : "";
   }).filter(Boolean);
   return blocks.length ? `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${blocks.join("")}</section>` : "";
@@ -240,7 +239,7 @@ export function billingPeriodLabel(value) {
 
 export function publishedTuitionQuotes(row, optionId) {
   const value = row.attributes?.catalog_costs || row.value;
-  const publishedReference = row.publication_status?.startsWith("published_") && !row.publication_status.includes("conflict") && Array.isArray(value?.quotes);
+  const publishedReference = isPublishedReference(row) && Array.isArray(value?.quotes);
   if (!reviewed(row) && !(publishedReference && evidenceReviewed(row))) return [];
   if (Array.isArray(value?.quotes)) return value.quotes.filter(quote => quote.basis === "tuition" && Number.isFinite(quote.amount) && quote.amount >= 0 && quote.currency
     && (!quote.option_ids?.length || quote.option_ids.includes(optionId))).map(quote => ({

@@ -2575,6 +2575,13 @@ university.admissions.catalog.review.carried_forward_review: Сохранена 
 university.admissions.catalog.review.conflicting: Официальные источники противоречат друг другу
 university.admissions.catalog.review.superseded: Сведения заменены более поздним источником
 university.admissions.catalog.review.limited: Источник изучен; применимость или отдельные условия ещё требуют проверки
+university.admissions.catalog.review.needs_resolution: Проверка источника требует уточнения
+university.admissions.catalog.route_entry.external: Подача открыта для новых абитуриентов
+university.admissions.catalog.route_entry.external_restricted: Подача только для ограниченной группы абитуриентов
+university.admissions.catalog.route_entry.internal: Только для текущих студентов
+university.admissions.catalog.route_entry.no_admission: Присуждается в ходе другой программы; отдельной подачи нет
+university.admissions.catalog.route_entry.closed: Набор новых абитуриентов закрыт
+university.admissions.catalog.route_entry.unresolved: Путь подачи требует уточнения
 university.admissions.catalog.not_published: Не опубликовано
 university.admissions.catalog.needs_review: Требует проверки
 university.admissions.catalog.historical: Исторические сведения
@@ -2620,6 +2627,7 @@ university.admissions.catalog.domain.other: Другие сведения ист
 university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
 university.admissions.catalog.reason.missing_evidence: Не хватает необходимых сведений заявителя.
 university.admissions.catalog.reason.unassessed_minimums: Некоторые опубликованные минимальные требования или условия их применения пока нельзя оценить.
+university.admissions.catalog.reason.entry_cycle_required: Укажите год поступления, например «осень 2027», чтобы проверить ваши баллы по этим минимумам.
 university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
 university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
 university.admissions.catalog.reason.source_fact_changed: Сведения источника изменились; правила оценки требуют проверки.
@@ -3250,6 +3258,39 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: Для де
 university.admissions.entry.route_help.nu-residency-unconditional: Обычные условия поступления в резидентуру, включая клинические экзамены и предыдущее медицинское образование.
 university.admissions.entry.route_help.nu-residency-conditional-umc: Отдельный условный путь для рекомендованных UMC. Проверьте требования к рекомендации и зачислению: это не общее освобождение от экзаменов.
 university.admissions.reading.structured_study: Опубликованные сведения об учёбе доступны ниже. Краткого текстового обзора нет.
+university.admissions.key_facts.title: Главное по этому пути
+university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
+university.admissions.key_facts.requirements: Минимальные требования
+university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
+university.admissions.key_facts.requirements_manual: Ещё условий, которые нужно сверить с официальными правилами: {count}
+university.admissions.key_facts.use_profile_cycle: Использовать «{cycle}» из профиля
+university.admissions.key_facts.set_cycle: Указать год поступления
+university.admissions.key_facts.deadline: Ближайший срок
+university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
+university.admissions.key_facts.deadline_today: {title}: {date}, сегодня
+university.admissions.key_facts.deadline_passed: Опубликованные сроки уже прошли. Последний: {title}, {date}
+university.admissions.key_facts.deadline_none: Для этого пути сроки не опубликованы
+university.admissions.key_facts.deadline_yearless: Сроки опубликованы без указания года: {dates}
+university.admissions.key_facts.deadline_period: Период подачи заявок: {period}
+university.admissions.key_facts.deadline_described: Точная дата с годом не указана; опубликованные сроки — на вкладке «Сроки»
+university.admissions.key_facts.open_deadlines: Все сроки
+university.admissions.key_facts.cost: Стоимость в год
+university.admissions.key_facts.cost_total: Опубликованный бюджет: {amount}
+university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
+university.admissions.key_facts.cost_period: Период источника: {period}
+university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas); его можно указать в дополнительных параметрах выше
+university.admissions.key_facts.cost_not_annual: Цена опубликована не за год; подробности на вкладке «Стоимость»
+university.admissions.key_facts.cost_unknown: Для этого выбора цена не опубликована
+university.admissions.key_facts.budget_over: Выше вашего бюджета {budget}
+university.admissions.key_facts.budget_within: В пределах вашего бюджета {budget}
+university.admissions.key_facts.budget_tuition_within: Обучение укладывается в бюджет {budget}, но проживание оплачивается отдельно
+university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
+university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
+university.admissions.key_facts.open_finance: Стоимость и финансирование
+university.admissions.key_facts.funding: Финансирование
+university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
+university.admissions.key_facts.funding_records: Записей о финансировании для этого пути: {count}. Грант не гарантирован
+university.admissions.key_facts.funding_none: Для этого пути финансирование не каталогизировано; проверьте официальную страницу о финансировании
 university.admissions.catalog.domain.reference: Связанные сопоставления источников
 university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
 profile.intro: Все поля необязательны. Начните со специальности, уровня обучения и бюджета; баллы добавьте, когда захотите сверить опубликованные требования. Сохраните данные на этом устройстве и вернитесь в каталог.

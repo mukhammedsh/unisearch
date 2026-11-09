@@ -36,7 +36,8 @@ test("Kazakh NUZYP source gaps retain their uncertainty", async ({ page }) => {
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   await page.locator("#admissionsStudyInfo .admissions-catalog__unknowns > summary").click();
   await expect(page.locator("#admissionsStudyInfo")).toContainText("қазіргі қабылдауды немесе қазіргі талаптарды");
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("2017 жылғы оқу жоспары мен қаржыландыруды тек тарихи дерек ретінде сақтаңыз");
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("Ағымдағы NUZYP қабылдау хабарламасын");
+  await expect(page.locator("#admissionsStudyInfo")).not.toContainText("тек тарихи дерек ретінде сақтаңыз");
 });
 
 test("Kazakh Finance admission distinguishes test exemption from committee discretion", async ({ page }) => {

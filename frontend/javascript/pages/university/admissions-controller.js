@@ -5,6 +5,7 @@ import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, stud
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
+import { renderAdmissionsKeyFacts } from "./admissions-key-facts.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 
@@ -41,10 +42,9 @@ export function programProfileSuggestions(profile) {
 }
 
 export function programRestriction(option) {
-  if (["internal", "restricted"].includes(option.applicant_access)) return option.applicant_access;
-  if (option.new_applicant_availability?.startsWith("not_open") || option.inventory_status === "officially_listed_but_recruitment_closed") return "restricted";
-  if (["internal", "internal_by_special_approval", "internal_predoctoral_progression", "intermediate_doctoral_award", "terminal_award_on_doctoral_withdrawal"].includes(option.application?.classification)) return "internal";
-  if (["restricted_joint_program_master", "restricted_special_admission"].includes(option.application?.classification)) return "restricted";
+  // `entry` is the closed value prepared from each institution's own application classification.
+  if (["internal", "no_admission"].includes(option.entry)) return "internal";
+  if (["external_restricted", "closed"].includes(option.entry)) return "restricted";
   return "";
 }
 
@@ -54,7 +54,20 @@ export function normalizeAdmissionCycle(value) {
   if (russian) return `${russian[1].toLowerCase() === "осенний" ? "Fall" : "Spring"} ${russian[2]}`;
   const kazakh = text.match(/^(20\d{2}) жылғы (күзгі|көктемгі) қабылдау$/i);
   if (kazakh) return `${kazakh[2].toLowerCase() === "күзгі" ? "Fall" : "Spring"} ${kazakh[1]}`;
+  // Plain applicant wording such as "осень 2027" or "2027 күз" names the same intake.
+  const season = "(осень|осенью|осенний набор|весна|весной|весенний набор|күз|күзгі|күзі|көктем|көктемгі|көктемі)";
+  const plain = text.match(new RegExp(String.raw`^${season} (20\d{2})(?: года| г\.?| жыл| жылы)?$`, "i"))
+    || text.match(new RegExp(String.raw`^(20\d{2})(?: года| г\.?| жылғы| жыл| жылы)? ${season}(?: қабылдау| набор)?$`, "i"));
+  if (plain) {
+    const [term, year] = /^\d/.test(plain[1]) ? [plain[2], plain[1]] : [plain[1], plain[2]];
+    return `${/^(?:осен|күз)/i.test(term) ? "Fall" : "Spring"} ${year}`;
+  }
   return text;
+}
+
+// The same published cycle forms the context field accepts without a warning.
+export function isRecognizedAdmissionCycle(value) {
+  return /^(?:20\d{2}(?:[/-](?:\d{2}|20\d{2}))?(?: entry)?|(?:Fall|Autumn|Spring) 20\d{2}(?: entry)?|20\d{2} (?:Fall|Autumn|Spring))$/i.test(normalizeAdmissionCycle(value));
 }
 
 export function getApplicationLink(resolved) {
@@ -281,6 +294,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const profileHints = [profile.applicant_route ? label(`applicant.${profile.applicant_route}`) : "", admissionsCycleLabel(profile.intended_entry_cycle), profile.fee_status_context && profile.fee_status_context !== "unknown" ? label(`fee.${profile.fee_status_context}`) : ""].filter(Boolean);
     const routeHelp = (item, selected = false) => t(`university.admissions.entry.route_help.${item.id.replaceAll(":", ".")}`)
       || t(`university.admissions.entry.route_class_help.${item.classification}`)
+      || (item.entry && item.entry !== "external" ? t(`university.admissions.catalog.route_entry.${item.entry}`) : "")
       || (selected ? "" : t("university.admissions.entry.route_help_generic"));
     const specialRoutes = option?.id === "stanford-option-cs-ms" || option?.id === "stanford-option-cs-phd"
       ? routes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
@@ -389,7 +403,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const cycleInput = root.querySelector("#admissionsCycle");
     const updateCycleNotice = () => {
       const value = normalizeAdmissionCycle(cycleInput.value);
-      root.querySelector("#admissionsCycleNotice").hidden = !value || /^(?:20\d{2}(?:[/-](?:\d{2}|20\d{2}))?(?: entry)?|(?:Fall|Autumn|Spring) 20\d{2}(?: entry)?|20\d{2} (?:Fall|Autumn|Spring))$/i.test(value);
+      root.querySelector("#admissionsCycleNotice").hidden = !value || isRecognizedAdmissionCycle(value);
     };
     cycleInput.addEventListener("input", updateCycleNotice);
     updateCycleNotice();
@@ -458,7 +472,26 @@ export function mountAdmissionsCatalog(institutionId) {
         };
       }
       else if (["detailRequirements", "detailDeadlines", "detailFinance"].includes(id)) {
-        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains, { includeAssessment: false })}`;
+        const apiProfile = loadProfileForApi();
+        const profileCycle = isRecognizedAdmissionCycle(apiProfile.intended_entry_cycle) ? normalizeAdmissionCycle(apiProfile.intended_entry_cycle) : "";
+        const keyFacts = id === "detailRequirements" ? renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileCycle }) : "";
+        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${keyFacts}${renderApplicantSection(resolved, domains, { includeAssessment: false })}`;
+        target.querySelectorAll("[data-open-tab]").forEach(button => { button.onclick = () => openTab(button.dataset.openTab); });
+        target.querySelector("[data-key-facts-cycle]")?.addEventListener("click", event => {
+          if (profileCycle && event.currentTarget.dataset.keyFactsCycle === "apply") {
+            context.intended_entry_cycle = profileCycle;
+            contextDirty = false;
+            saveStatus = "";
+            setUrl();
+            void refreshContext();
+            return;
+          }
+          // Without a usable profile cycle, open the selection editor at the entry-cycle field.
+          root.querySelector("#admissionsSelectionEditor").hidden = false;
+          root.querySelector("#admissionsAdvanced").open = true;
+          root.scrollIntoView({ block: "start" });
+          root.querySelector("#admissionsCycle").focus();
+        });
         if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState);
       }
       else target.innerHTML = renderAdmissionsContext(resolved, {

@@ -2,6 +2,21 @@
 
 All notable project changes should be recorded here.
 
+## Unreleased
+
+### Added
+- Added a key-facts summary to the Admission tab with the requirements-match result, the nearest action deadline, the published annual price against the profile budget, and the funding route status.
+- Added `selected_costs` to the admissions-context API response, with USD ranges for annual quotes so clients can compare them with a budget.
+- Added the `entry_cycle_required` check and assessment reason for cycle-scoped minimums when no entry cycle is selected; the Admission tab offers the recognised profile cycle or opens the entry-cycle field.
+- Recognised plain seasonal entry cycles in Russian and Kazakh, such as "осень 2027" and "2027 күз".
+
+### Changed
+- Admissions status now uses a closed vocabulary, and internal-only or restricted-group routes are labelled explicitly.
+- Admissions preparation rejects research labels that are missing from the vocabulary table.
+
+### Fixed
+- Removed maintainer research notes from applicant-facing admissions text and its Russian and Kazakh translations; the source records are unchanged.
+
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
 
 ### Changed

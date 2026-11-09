@@ -1,0 +1,237 @@
+{
+  "schema_version": "admissions-vocabulary-1.0",
+  "description": "Closed normalized vocabulary for the prepared admissions catalog. Each canonical value lists the exact research labels it covers. Research labels stay verbatim in the prepared records; preparation fails when a label is missing from this table.",
+  "publication": {
+    "published": [
+      "published", "published_catalog_entry", "published_catalog_eligibility_rule", "official_program_page", "program_page",
+      "catalog_page", "published_policy", "published_policy_appendix", "published_policy_and_2026_announcement",
+      "current_program_description_and_study_structure_reviewed", "program_page_award_and_study_structure_reviewed",
+      "official_program_page_study_reviewed", "official_GSB_program_overview", "official_program_overview_and_course_list",
+      "official_program_page_2026_intake", "current_CPS_program_page_and_cycle_regular_page", "published_on_program_page",
+      "published_on_current_regular_admission_page", "published_with_program_variants", "published_for_2027_28_regular_admission",
+      "published_for_2026_27_midyear", "published_for_2026_entry", "published_for_program", "published_school_level_statement",
+      "published_general_types", "published_general_options", "published_conditional_rule", "published_date", "published_minimum",
+      "published_process", "published_2026_27_amount", "published_estimate", "published_2026-27_rate_estimate",
+      "published_estimate_based_on_2025_26_rates", "published_2026_actual_and_2027_estimate", "published_current_2026_dates_only",
+      "published_for_2026-27; 2027-28_not_yet_published", "published_as_preference", "published_as_limited_competitive_opportunities",
+      "published_with_legacy_naming", "published_program_specific_and_general_values", "explicit_policy_exclusion",
+      "reconciled_against_2026_10_23_AZ_snapshot", "current_approved_effective_policy_with_future_scheduled_review"
+    ],
+    "published_with_limits": [
+      "published_source_cycle_unconfirmed", "published_cycle_not_specified", "published_current_statement_cycle_not_specified",
+      "published_but_source_year_unspecified", "published_source_year_unknown", "published_page_amounts_year_unspecified",
+      "published_SoE_reference_year_unspecified", "published_reference_amounts_year_unspecified_with_2026_intake_exception",
+      "published_current_page_terms_effective_cycle_not_identified", "published_yearless", "published_period_unstated",
+      "published_source_scope_difference", "published_policy_and_current_pages_have_distinct_scope_needs_cycle_reconciliation",
+      "accessible_page_with_current_cycle_status_unverified_legacy_content_markers",
+      "official_program_page_with_legacy_forecast_language", "official_instructions_accessible_current_intake_not_confirmed",
+      "may_be_considered_published_for_current_regular_page", "scope_unconfirmed", "scope_changed",
+      "direct_url_unavailable_index_content_compared_policy_cutoff_not_reproduced",
+      "direct_portal_unavailable_indexed_content_reviewed_no_date_conflict_reproduced", "historical_or_cycle_ambiguous",
+      "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA",
+      "program_page_with_2025_26_dates", "program_page_2025_26_requirements_and_separate_NUET_category"
+    ],
+    "partially_published": [
+      "partially_published", "published_with_evidenced_limit", "published_with_bounded_unknown",
+      "published_general_policy_with_country_specific_unknown",
+      "published_general_requirement_country_specific_equivalence_undetermined",
+      "published_with_current_cycle_deadline_unknown", "published_with_unresolved_terms", "published_with_score_scale_question",
+      "published_window_with_TBA_deadlines",
+      "published_details_unmapped", "published_with_unresolved_finance", "published_with_unresolved_program_applicability",
+      "published_with_unresolved_licensure_scope", "published_with_source_anomaly",
+      "official_SoE_process_current_dates_and_program_specific_submission_requirements_not_given",
+      "published_2026_intake_deadline_past_fee_currency_code_unspecified",
+      "published_minima_and_seat_ranking_program_specific_limits_not_published",
+      "program_pages_reviewed_no_unique_minima_shared_policy_scoped_current_fee_year_unknown",
+      "published_reference_amounts_without_all_program_year_and_component_scope",
+      "published_entry_rule_fees_and_transition_terms_not_published",
+      "published_support_categories_coverage_and_renewal_terms_incomplete", "published_opportunities_details_unpublished"
+    ],
+    "not_yet_published": [
+      "not_yet_published", "2027_threshold_not_yet_published;_prior_cycle_published",
+      "past_2026_intake_future_intake_and_currency_code_not_published"
+    ],
+    "not_found": [
+      "not_published", "not_published_on_reviewed_page", "not_published_in_reviewed_sources",
+      "not_found_in_reviewed_official_sources", "not_found_in_reviewed_program_source", "not_specified_in_reviewed_program_text",
+      "not_stated_on_reviewed_inventory_pages", "ambiguous_or_not_separately_stated_on_reviewed_page",
+      "unknown_page_requires_contact", "account_or_offer_specific"
+    ],
+    "conflicting": [
+      "conflicting", "conflicting_official_sources", "conflicting_official_program_pages", "conflicting_cycle_labels",
+      "conflicting_cycle_scope", "conflicting_source_fields", "both_values_published", "same_page_track_labels_not_aligned",
+      "official_indexed_program_content_live_source_mismatch", "unresolved_scope_and_cycle_conflict",
+      "award_titles_reconciled_for_SCAI; Nursing_language_conflict_unresolved",
+      "BBA_page_contains_cycle_table_and_conflicting_dates_sentence", "2026_27_entry_score_table_and_2027_28_date_conflict",
+      "2027_28_date_table_conflicts_with_TBA_statement", "cycle_and_date_conflict_on_program_page",
+      "published_with_cycle_conflict", "published_conflicting_official_statements", "published_with_course_equivalence_conflict",
+      "published_with_legacy_text_conflict", "published_with_source_conflict", "published_with_conflicting_scope",
+      "published_conflict", "published_with_conflict", "published_with_source_scope_conflict", "published_sources_disagree",
+      "published_with_internal_date_conflict", "published_with_internal_award_conflict", "published_but_conflicting_timing",
+      "published_source_conflict_2027_28_dates_and_undated_costs",
+      "program_rule_published_current_dates_cost_and_language_conflict_unresolved",
+      "published_catalog_and_program_page_conflict", "published_source_conflict_cycle_and_admission_support_scope",
+      "published_with_unresolved_conflict"
+    ],
+    "historical": [
+      "historical", "published_historical_cycle", "published_historical_reference", "historical_2025_26_page",
+      "historical_2025_26_page_with_undated_scholarship_mention", "historical_legacy_page_current_terms_unconfirmed"
+    ],
+    "unknown": [
+      "unknown", "researched_unknown", "unknown_after_review",
+      "current_intake_and_terms_not_established_historical_activity_only",
+      "historical_2025_26_cycle_current_recruitment_not_established"
+    ]
+  },
+  "review": {
+    "verified": [
+      "verified", "reviewed", "verified_official", "verified_on_official_source", "verified_source_selector",
+      "verified_department_level", "verified_course_page_sections", "verified_live_award_panel",
+      "verified_official_award_panels", "verified_official_page", "verified_official_page_sections",
+      "verified_explicit_shared_award_curriculum", "verified_award_catalogue", "verified_course_specific_award",
+      "verified_university_minimum", "verified_for_listed_directory_programs", "verified_historical_reference",
+      "verified_future_deadline_not_yet_published", "verified_types_historical_amount", "verified_source_scope_difference",
+      "verified_scope_difference", "original_catalog_content_rechecked_2026_10_03",
+      "degree_specific_source_content_rechecked_2026_10_03", "reviewed_source_content",
+      "restricted_population_source_content_reviewed", "reviewed_publication_gap",
+      "reviewed_with_central_policy_and_deadline_differences", "researched_unknown", "reviewed_source_gap",
+      "researched_unknown_after_named_route_review", "researched_unknown_after_specific_source_content_review",
+      "researched_unknown_after_specific_source_review", "researched_unknown_after_internal_route_review",
+      "researched_individual_degree_plan_unknown"
+    ],
+    "verified_with_limits": [
+      "verified_general_only", "verified_department_level_types_only", "reviewed_source_scope_gap"
+    ],
+    "partially_verified": [
+      "partially_reviewed", "reviewed_with_applicant_coverage_pending", "verified_live_partial_award_panel",
+      "verified_award_terms_with_course_participation_pending", "verified_award_page_with_course_selection_pending",
+      "general_eligibility_verified; program-specific terms pending",
+      "university_policy_verified; per_option_mapping_pending", "reviewed_eligibility_scope_requires_confirmation"
+    ],
+    "carried_forward": [
+      "carried_forward_review"
+    ],
+    "conflicting": [
+      "conflicting", "verified_source_conflict", "verified_with_source_conflict",
+      "verified_date_with_cycle_label_conflict", "reviewed_source_conflict", "reviewed_sources_conflict",
+      "reviewed_with_source_date_conflict", "reviewed_with_department_vs_university_English_test_policy_conflict",
+      "published_with_dual_ms_scope_conflict", "researched_source_conflict_or_private_materials",
+      "researched_legacy_source_conflict", "researched_source_cycle_conflict"
+    ],
+    "needs_resolution": [
+      "needs_resolution", "needs_department_resolution", "needs_cycle_label_confirmation", "needs_official_confirmation",
+      "needs_official_publication_or_confirmation"
+    ],
+    "superseded": [
+      "superseded", "superseded_by_published_tuition", "superseded_by_completed_research",
+      "superseded_by_official_source_update", "superseded_by_published_language_requirement",
+      "superseded_by_published_closure"
+    ]
+  },
+  "entry": {
+    "external": [
+      "department_or_program", "institution_wide", "deferred_admission", "external_joint_program_with_home_department_selection",
+      "direct_program", "post_admission_major", "post_admission_award_selection", "combined_independent_admissions",
+      "home_department_then_joint_selection", "direct_program_with_joint_review", "direct_track_with_joint_review",
+      "doctoral_concentration", "postgraduate_course_choice", "ucas_course_choice", "departmental_degree_application",
+      "independent_award_entry", "independent_award_pathway", "scheme_recruitment_with_department_registration",
+      "partner_recruitment_then_department_registration", "integrated_research_application", "integrated_scheme_application",
+      "integrated_project_application", "departmental_scheme_application", "same_page_study_variant", "masters_duration_pathway",
+      "integrated_doctoral_mres_phase", "external_nonprofessional_programme", "external_terminal_admission", "external_doctoral",
+      "external_terminal_masters", "external_masters", "external_professional_masters", "external_program_specific_application",
+      "program_specific_application", "program_specific_external_admission", "external_program_specific_admission",
+      "direct_external", "combined_external", "external graduate MS or PhD", "external non-professional graduate application",
+      "external PhD application", "external PhD application with subplan selection", "external interdisciplinary PhD",
+      "external HybridSESMS selection through GraduateAdmissions", "external_part_time_distance_hcp_ms",
+      "external_joint_entry_via_gsb_mba_application", "external_joint_entry_via_law_jd_application",
+      "external_joint_entry_via_gse_pols_application", "one_shared_application_with_primary_and_one_alternative_home_program",
+      "shared_school_application", "shared_advanced_degree_application_with_selection_path", "shared_medical_school_application",
+      "shared_joint_application", "separately admitted joint/dual Stanford degrees",
+      "separate degree applications and approved combined study",
+      "separate CS and professional-school applications with joint consent", "prospective Stanford MBA/JD Joint MS",
+      "external", "external_degree", "external_doctoral_degree", "external_and_coterm", "external_and_internal",
+      "external_terminal_masters_and_coterm", "external_coterm_and_internal_add_degree", "external_coterm_and_internal_graduate",
+      "external_after_masters_and_internal", "external_hybrid_MS_configuration", "external_shared_biosciences_home_program_choice",
+      "post_admission_engineering_subplan",
+      "external_program_specific_application; coterminal_current_stanford_undergraduates_only; external_part_time_distance_hcp_ms; current_stanford_graduate_students_additional_ms",
+      "external_program_specific_application; coterminal_current_stanford_undergraduates_only; current_stanford_graduate_route",
+      "external_program_specific_application; coterminal_current_stanford_undergraduates_only",
+      "external_program_specific_application; coterminal_current_stanford_undergraduates_only; internal_current_graduate_route",
+      "masters", "doctorate", "bachelor", "research_doctorate", "professional_doctorate", "professional", "preparatory",
+      "graduate_preparatory", "undergraduate_non_degree", "professional_non_degree_microcredential",
+      "postgraduate_medical_residency", "program_specific_professional", "professional_graduate_entry",
+      "external_admission_application", "financial_support_application", "shared_school_specific_route",
+      "shared_residency_application_family", "residency_unconditional", "residency_conditional_umc"
+    ],
+    "external_restricted": [
+      "restricted_special_admission", "restricted_joint_program_master", "external_restricted_alumni", "direct_external_limited",
+      "external_intercalated_entry", "employer_sponsored_or_conditional_progression", "higher_doctorate_submission",
+      "separate_advanced_degree_admission_after_qualifying_llm_or_spils", "conditional_external_after_spils_or_us_llm",
+      "external_restricted_to_stanford_alumni_within_five_years_and_coterm",
+      "external_restricted_alumni_and_joint_degree_progression"
+    ],
+    "internal": [
+      "internal", "internal_by_special_approval", "internal_predoctoral_progression", "internal_progression",
+      "internal_only", "restricted_internal", "internal_coterm_admission", "current_stanford_undergraduate_coterm",
+      "coterm_current_stanford_undergraduate", "current Stanford undergraduate coterm", "coterm_application",
+      "Computer Science coterm application", "Electrical Engineering coterm", "coterm_only", "coterm_only_currently_evidenced",
+      "coterm_or_internal_stanford_student", "coterm_and_current_stanford_graduate_or_phd_en_route",
+      "current Stanford undergraduate coterminal MA or MS", "internal_intermediate_admission", "internal_stanford_admission",
+      "internal_stanford_graduate_authorization", "internal_combined_degree_declaration", "internal_current_doctoral_only",
+      "internal_current_stanford_graduate_students", "internal_progression_from_coterm_ma",
+      "internal current-student application or added-degree petition",
+      "internal added MS for student enrolled in another Stanford department",
+      "internal intermediate MS requirement for AA PhD students", "existing same-program PhD intermediate MS",
+      "existing_Classics_PhD_intermediate_MA", "same-program CS PhD intermediate MS petition",
+      "current Stanford other-department PhD candidate added MS", "related Stanford PhD student added EE MS",
+      "required intermediate MS for existing MSE PhD", "current ChemE PhD optional MS", "current ME PhD optional MS",
+      "current AA MS to PhD", "current ESE MS student seeking PhD", "current EPS coterm or MS student applying to PhD",
+      "current Stanford graduate or NDO applicant using regular degree application",
+      "current Stanford student regular external-style degree application", "current Stanford graduate Joint/Dual MS",
+      "current_stanford_doctoral_or_professional_student", "current_stanford_graduate_and_professional_students",
+      "current_stanford_graduate_students_additional_ms", "current_Stanford_MD_or_PhD_internal_MSTP_funding_application",
+      "possible internal added MS", "joint_degree_applicant_to_another_stanford_program",
+      "combined_ms_with_other_stanford_doctoral_or_professional_degree",
+      "combined_ms_for_stanford_doctoral_or_professional_students_only", "restricted_ms_no_published_external_application",
+      "internal_joint_or_dual_only", "joint_or_dual_stanford_degree_only", "phd_en_route_authorization",
+      "intermediate MS only for Oceans PhD student"
+    ],
+    "no_admission": [
+      "intermediate_doctoral_award", "terminal_award_on_doctoral_withdrawal", "exit_award_or_progression",
+      "en_route_award_no_external_admission", "phd_en_route_intermediate_award", "intermediate/exit award; no direct admission",
+      "terminal_exit_award_no_admission_route", "intermediate exit MA only", "intermediate_award_current_phd_students_only",
+      "current_Classics_PhD_only_intermediate_award", "phd_en_route_only", "intermediate_only", "current_phd_only_intermediate",
+      "current_phd_only; completed review in doerr-completion-evidence.json",
+      "internal_terminal_award_for_existing_STMRM_PhD_students"
+    ],
+    "closed": [
+      "closed_scheme_recruitment", "external_MA_specialization_with_no_2027_28_intake",
+      "legacy_post_admission_subplan_restricted_to_pre_fall_2023_matriculants"
+    ],
+    "unresolved": [
+      "researched_unresolved", "unresolved", "evidenced_unresolved", "published_award_conflict",
+      "researched_unresolved_scheme_context", "restricted_ms_route_requires_program_confirmation",
+      "historical duplicate of coterm, no independent internal form verified", "historical unresolved award context"
+    ]
+  },
+  "route_entry_by_id": {
+    "undergraduate-shared-evidence:stanford-first-year": "external",
+    "undergraduate-shared-evidence:stanford-transfer": "external",
+    "undergraduate-shared-evidence:stanford-nonprofessional-graduate": "external",
+    "undergraduate-shared-evidence:stanford-knight-hennessy": "external",
+    "nu-a-route-midyear-2026-27": "external",
+    "nu-a-route-transfer": "external",
+    "nu-a-route-nufyp-progression": "internal",
+    "nu-a-route-joint-bba": "external",
+    "nu-a-route-nursing": "external_restricted",
+    "nu-a-route-ump": "external",
+    "nu-a-route-masters-common-packet-b": "external",
+    "nu-a-route-non-degree-study": "external",
+    "nu-a-route-mining-microcredential": "external"
+  },
+  "option_closed_availability": {
+    "new_applicant_availability": ["not_open_under_published_matriculation_restriction", "not_open_for_2027_28_entry"],
+    "inventory_status": ["officially_listed_but_recruitment_closed"]
+  },
+  "entry_precedence": ["external", "external_restricted", "internal", "no_admission", "closed", "unresolved"]
+}

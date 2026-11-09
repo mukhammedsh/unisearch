@@ -4,6 +4,7 @@ import { heroIcon } from "../../icons.js";
 import { formatExamValue, getExamConfig, getExamDisplayName } from "../../utils/config.js";
 import { translateAdmissionSummary, translateAdmissionText, translateFactSource, translateProgramName } from "../../university-translations.js";
 import { localizeDuration, trProgramLanguage, trStudyMode } from "../_shared.js";
+import { hasReviewWarning, isPublished, needsResolution, publicationState, PUBLICATION_LABEL_KEYS, reviewState, REVIEW_LABEL_KEYS } from "./admissions-status.js";
 
 const PREFIX = "university.admissions.catalog.";
 
@@ -49,6 +50,13 @@ export const ADMISSIONS_RENDER_LABELS = {
   "review.conflicting": "Conflicting official sources",
   "review.superseded": "Superseded source review",
   "review.limited": "Source reviewed; some scope or conditions still need verification",
+  "review.needs_resolution": "Source review needs resolution",
+  "route_entry.external": "Application open to new applicants",
+  "route_entry.external_restricted": "Application for a restricted applicant group",
+  "route_entry.internal": "Current students only",
+  "route_entry.no_admission": "Awarded during another degree; no separate application",
+  "route_entry.closed": "Not open to new applicants",
+  "route_entry.unresolved": "Application path needs clarification",
   not_published: "Not published",
   needs_review: "Needs review",
   historical: "Historical source record",
@@ -130,6 +138,7 @@ export const ADMISSIONS_RENDER_LABELS = {
   "reason.applicability_unknown": "The selected context or applicant applicability has not been established.",
   "reason.missing_evidence": "Required applicant evidence is missing.",
   "reason.unassessed_minimums": "Some published minima or their conditions cannot yet be assessed.",
+  "reason.entry_cycle_required": "Choose your entry year, for example \"Fall 2027\", to check your scores against these minimums.",
   "reason.no_published_requirements": "No evaluable published numeric minimum is catalogued for this context.",
   "reason.requirements_not_met": "At least one evaluated published minimum was not met.",
   "reason.source_fact_changed": "The source record changed and its assessment needs review.",
@@ -224,7 +233,7 @@ export function admissionsRouteName(route, { presentation } = {}) {
   if (localized) return localized;
   if (presentation === "simple" && !route?.title && !route?.target && route?.classification) {
     const key = `route_class.${route.classification}`;
-    return t(`${PREFIX}${key}`) || (ADMISSIONS_RENDER_LABELS[key] ? label(key) : String(route.classification).replaceAll("_", " "));
+    return t(`${PREFIX}${key}`) || label(ADMISSIONS_RENDER_LABELS[key] ? key : route.entry ? `route_entry.${route.entry}` : "route_label");
   }
   const name = route?.title || route?.target || route?.classification || route?.destination || label("route_label");
   return name;
@@ -387,8 +396,8 @@ function reviewedStudyRows(resolved) {
   if (!option) return [];
   const studyIds = new Set(resolved.fact_groups?.study || []);
   return (resolved.facts || []).filter(row => studyIds.has(row.id)
-    && !/(?:not_|unknown|conflict|superseded|legacy|mismatch|unverified|scope_changed)/.test(row.publication_status || "unknown")
-    && [label("review.verified"), label("review.reviewed"), label("review.carried_forward_review")].includes(reviewLabel(row.review_status))
+    && ["published", "published_with_limits", "partially_published"].includes(publicationState(row))
+    && !hasReviewWarning(row)
     && row.applicability?.status !== "mismatched" && row.scope?.option_ids?.includes(option.id)
     && (!row.scope.route_ids?.length || ["study_content", "study_structure"].includes(row.topic)) && row.value && typeof row.value === "object");
 }
@@ -521,26 +530,11 @@ function scope(row, resolved) {
 
 function publicationLabel(row, historical) {
   if (historical) return label("historical");
-  if (row.publication_status === "published") return label("published");
-  const status = String(row.publication_status || "");
-  if (!status || ["unknown", "researched_unknown"].includes(status)) return label("unknown");
-  if (status.includes("conflict")) return label("conflicting");
-  if (status.startsWith("historical_")) return label("historical");
-  if (status.startsWith("not_")) return label("not_published");
-  if (["program_page", "official_program_page"].includes(status)) return label("published");
-  if (status.startsWith("partially_")) return label("partly_published");
-  if (/^(?:published_|official_|program_page_|current_)/.test(status)) return label("limited_publication");
-  return label("needs_review");
+  return label(PUBLICATION_LABEL_KEYS[publicationState(row)] || "needs_review");
 }
 
-function reviewLabel(status) {
-  if (ADMISSIONS_RENDER_LABELS[`review.${status}`]) return label(`review.${status}`);
-  if (String(status || "").startsWith("superseded")) return label("review.superseded");
-  if (String(status || "").includes("conflict")) return label("review.conflicting");
-  if (/(?:pending|partial|requires_confirmation|general_only|types_only)/.test(String(status || ""))) return label("review.limited");
-  if (String(status || "").startsWith("verified_")) return label("review.verified");
-  if (/(?:reviewed|rechecked)/.test(String(status || ""))) return label("review.reviewed");
-  return label("needs_review");
+function reviewLabel(row) {
+  return label(REVIEW_LABEL_KEYS[reviewState(row)] || "needs_review");
 }
 
 function factTitle(row, resolved, domain) {
@@ -592,12 +586,10 @@ function renderPublishedTable(table, title) {
 
 function factStatusBadges(row) {
   const publication = publicationLabel(row, false);
-  const review = reviewLabel(row.review_status);
-  const reviewWarning = ![
-    label("review.verified"), label("review.reviewed"), label("review.carried_forward_review"),
-  ].includes(review);
+  const review = reviewLabel(row);
+  const reviewWarning = hasReviewWarning(row);
   return [
-    row.publication_status !== "published" ? publication : "",
+    !isPublished(row) ? publication : "",
     reviewWarning && review !== publication ? review : "",
   ].filter(Boolean);
 }
@@ -618,7 +610,7 @@ function renderQualificationTable(row, resolved) {
   const badges = renderStatusBadges(factStatusBadges(row));
   const sourceMeta = `<p class="admissions-catalog__meta">${escapeHtml(label("publication"))}: ${escapeHtml(publicationLabel(row, false))}</p>
     <p class="admissions-catalog__meta">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "scope_varies"))}</p>
-    <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row.review_status))}</p>${scope(row, resolved)}
+    <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row))}</p>${scope(row, resolved)}
     ${row.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(row.checked_at)}</p>` : ""}`;
   const note = typeof row.value.interpretation === "string" ? `<p class="admissions-catalog__note">${escapeHtml(row.value.interpretation)}</p>` : "";
   return `<details class="admissions-catalog__fact admissions-catalog__qualification-table" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" open>
@@ -634,7 +626,7 @@ function renderQualificationTable(row, resolved) {
 }
 
 function conflictExplanation(row) {
-  if (!/conflict|needs_resolution/.test(`${row.review_status || ""} ${row.publication_status || ""}`)) return "";
+  if (!needsResolution(row)) return "";
   const reason = typeof row.reason === "string" ? row.reason : "";
   const next = typeof row.official_next_step === "string" ? row.official_next_step : "";
   return `${reason ? `<p>${escapeHtml(translateAdmissionSummary(reason) || reason)}</p>` : ""}${next ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(translateAdmissionSummary(next) || next)}</p>` : ""}`;
@@ -648,7 +640,7 @@ function renderGroupedFact(row, resolved, domain) {
   const status = label(row.applicability?.status === "matched" ? "matched" : "scope_varies");
   const inlineScope = ["deadlines", "costs", "funding"].includes(domain) ? scope(row, resolved) : "";
   const metadata = `<p class="admissions-catalog__meta">${escapeHtml(label("publication"))}: ${escapeHtml(publicationLabel(row, false))}</p>
-    <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row.review_status))}</p>
+    <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row))}</p>
     <p class="admissions-catalog__meta">${escapeHtml(status)}</p>${scope(row, resolved)}
     ${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
     ${row.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(row.checked_at)}</p>` : ""}`;
@@ -673,8 +665,8 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
   const inlinePeriod = simple && period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : "";
   const inlineScope = simple && ["deadlines", "costs", "funding"].includes(domain) ? scope(row, resolved) : "";
   const publication = publicationLabel(row, historical);
-  const review = reviewLabel(row.review_status);
-  const reviewWarning = ![label("review.verified"), label("review.reviewed"), label("review.carried_forward_review")].includes(review);
+  const review = reviewLabel(row);
+  const reviewWarning = hasReviewWarning(row);
   const applicability = !historical ? label(row.applicability?.status === "matched" ? "matched" : (simple ? "scope_varies" : "conditional")) : "";
   const metadata = `<p class="admissions-catalog__meta">${escapeHtml(label("publication"))}: ${escapeHtml(publication)}</p>
     <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(review)}</p>
@@ -682,7 +674,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
     ${period ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(period)}</p>` : ""}
     ${row.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(row.checked_at)}</p>` : ""}`;
   if (simple) return `<details class="admissions-catalog__fact" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
-    <summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span>${historical || row.publication_status !== "published" ? `<span class="admissions-catalog__status">${escapeHtml(publication)}</span>` : ""}${!historical && reviewWarning && review !== publication ? `<span class="admissions-catalog__status">${escapeHtml(review)}</span>` : ""}</summary>
+    <summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span>${historical || !isPublished(row) ? `<span class="admissions-catalog__status">${escapeHtml(publication)}</span>` : ""}${!historical && reviewWarning && review !== publication ? `<span class="admissions-catalog__status">${escapeHtml(review)}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
       ${renderAdmissionsValue(row.value, resolved.reference_labels)}
       ${conflictExplanation(row)}
@@ -696,7 +688,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
     <summary class="admissions-catalog__heading"><span>${title ? escapeHtml(title) : topic}</span><span class="admissions-catalog__status">${escapeHtml(publicationLabel(row, historical))}</span>${!historical ? `<span class="admissions-catalog__status">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "conditional"))}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
       ${!historical ? `<p class="admissions-catalog__meta">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "conditional"))}</p>` : ""}
-      <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row.review_status))}</p>
+      <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row))}</p>
       ${renderAdmissionsValue(row.value, resolved.reference_labels)}
       ${conflictExplanation(row)}
       ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
@@ -861,7 +853,7 @@ export function renderAdmissionsAssessment(resolved, { presentation } = {}) {
         ${context ? `<p class="admissions-catalog__meta">${escapeHtml(context)}</p>` : ""}
         ${rule ? `<div><strong>${escapeHtml(label("rule"))}</strong>${rule}</div>` : ""}
         ${sourceRule ? `<div><strong>${escapeHtml(label("source_rule"))}</strong>${sourceRule}</div>` : ""}
-        ${check.sourceRule ? `<p class="admissions-catalog__meta">${escapeHtml(publicationLabel(check.sourceRule, false))} · ${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(check.sourceRule.review_status))}</p>` : ""}
+        ${check.sourceRule ? `<p class="admissions-catalog__meta">${escapeHtml(publicationLabel(check.sourceRule, false))} · ${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(check.sourceRule))}</p>` : ""}
         ${sourcePeriod ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(sourcePeriod)}</p>` : ""}
         ${check.sourceRule?.checked_at ? `<p class="admissions-catalog__meta">${escapeHtml(label("checked"))}: ${escapeHtml(check.sourceRule.checked_at)}</p>` : ""}
         ${check.minimum !== null && check.minimum !== undefined ? `<p><strong>${escapeHtml(label("minimum"))}:</strong> ${escapeHtml(check.minimum)}</p>` : ""}

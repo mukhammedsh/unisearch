@@ -78,11 +78,12 @@ test("missing evidence and unassessed rules give distinct localized next steps",
 });
 function fact(id, value, extra = {}) {
   return { id, value, topic: "academic_tests", scope: { option_ids: [], route_ids: ["first-year"], applicant_categories: [] },
-    source_ids: ["official"], publication_status: "published", review_status: "verified", applicability: { status: "conditional" }, ...extra };
+    source_ids: ["official"], publication_status: "published", review_status: "verified",
+    normalized_status: { publication: "published", review: "verified" }, applicability: { status: "conditional" }, ...extra };
 }
 
 test("normalized tuition keeps campus-specific whole-program and credit prices in localized primary reading", () => {
-  const row = fact("joint-cost", "The published price applies to its named campus and billing period.", { topic: "costs", publication_status: "published_reference_amounts_year_unspecified", attributes: { catalog_costs: { quotes: [
+  const row = fact("joint-cost", "The published price applies to its named campus and billing period.", { topic: "costs", publication_status: "published_reference_amounts_year_unspecified", normalized_status: { publication: "published_with_limits", review: "verified" }, attributes: { catalog_costs: { quotes: [
     { basis: "tuition", amount: 24000, currency: "USD", period_label: "2025-26", billing_period: "whole_program", campus: "Astana", study_years: [1, 2], reference_only: true },
     { basis: "tuition", amount: 500, currency: "HKD", period_label: "2025-26", billing_period: "per_credit", campus: "Hong Kong" },
   ] } } });
@@ -125,7 +126,7 @@ test("assessment result metadata and unsupported funding state are localized wit
 });
 
 test("published support test projections appear in dates even when the original fact belongs to funding", () => {
-  const row = fact("support-date", "The support application deadline remains TBA.", { publication_status: "published_aid_categories_deadlines_TBA", topic: "funding", attributes: { deadline_events: [
+  const row = fact("support-date", "The support application deadline remains TBA.", { publication_status: "published_aid_categories_deadlines_TBA", normalized_status: { publication: "published_with_limits", review: "verified" }, topic: "funding", attributes: { deadline_events: [
     { date: "2026-12-05", deadline_type: "test_date", exam_id: "SAT", application_category: "financial_support", publication_status: "published", cycle: "2027/28" },
   ] } });
   const resolved = context([row], { funding: [row.id] });

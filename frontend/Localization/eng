@@ -2577,6 +2577,13 @@ university.admissions.catalog.review.carried_forward_review: Previous source rev
 university.admissions.catalog.review.conflicting: Conflicting official sources
 university.admissions.catalog.review.superseded: Superseded source review
 university.admissions.catalog.review.limited: Source reviewed; some scope or conditions still need verification
+university.admissions.catalog.review.needs_resolution: Source review needs resolution
+university.admissions.catalog.route_entry.external: Application open to new applicants
+university.admissions.catalog.route_entry.external_restricted: Application for a restricted applicant group
+university.admissions.catalog.route_entry.internal: Current students only
+university.admissions.catalog.route_entry.no_admission: Awarded during another degree; no separate application
+university.admissions.catalog.route_entry.closed: Not open to new applicants
+university.admissions.catalog.route_entry.unresolved: Application path needs clarification
 university.admissions.catalog.not_published: Not published
 university.admissions.catalog.needs_review: Needs review
 university.admissions.catalog.historical: Historical source record
@@ -2622,6 +2629,7 @@ university.admissions.catalog.domain.other: Other source information
 university.admissions.catalog.reason.applicability_unknown: The selected context or applicant applicability has not been established.
 university.admissions.catalog.reason.missing_evidence: Required applicant evidence is missing.
 university.admissions.catalog.reason.unassessed_minimums: Some published minima or their conditions cannot yet be assessed.
+university.admissions.catalog.reason.entry_cycle_required: Choose your entry year, for example "Fall 2027", to check your scores against these minimums.
 university.admissions.catalog.reason.no_published_requirements: No evaluable published numeric minimum is catalogued for this context.
 university.admissions.catalog.reason.requirements_not_met: At least one evaluated published minimum was not met.
 university.admissions.catalog.reason.source_fact_changed: The source record changed and its assessment needs review.
@@ -3252,6 +3260,39 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: For current
 university.admissions.entry.route_help.nu-residency-unconditional: Read the standard residency entry conditions, including the required clinical test evidence and prior medical qualification.
 university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
 university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
+university.admissions.key_facts.title: Key facts for this path
+university.admissions.key_facts.note: A summary of published facts, not an admission decision.
+university.admissions.key_facts.requirements: Minimum requirements
+university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
+university.admissions.key_facts.requirements_manual: Conditions to check against the official rules: {count}
+university.admissions.key_facts.use_profile_cycle: Use {cycle} from your profile
+university.admissions.key_facts.set_cycle: Set entry year
+university.admissions.key_facts.deadline: Next date
+university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
+university.admissions.key_facts.deadline_today: {title}: {date}, today
+university.admissions.key_facts.deadline_passed: Published dates have passed. The last one: {title}, {date}
+university.admissions.key_facts.deadline_none: No deadlines are published for this path
+university.admissions.key_facts.deadline_yearless: Dates are published without a year: {dates}
+university.admissions.key_facts.deadline_period: Application period: {period}
+university.admissions.key_facts.deadline_described: No exact date with a year is listed; see the published dates on the Dates tab
+university.admissions.key_facts.open_deadlines: All dates
+university.admissions.key_facts.cost: Cost per year
+university.admissions.key_facts.cost_total: Published budget: {amount}
+university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
+university.admissions.key_facts.cost_period: Source period: {period}
+university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas); you can set it in the details above
+university.admissions.key_facts.cost_not_annual: The published price is not per year; see the cost tab
+university.admissions.key_facts.cost_unknown: No price is published for this selection
+university.admissions.key_facts.budget_over: Above your budget of {budget}
+university.admissions.key_facts.budget_within: Within your budget of {budget}
+university.admissions.key_facts.budget_tuition_within: Tuition fits your budget of {budget}, but living costs are extra
+university.admissions.key_facts.budget_partial: Part of the range is above your budget of {budget}
+university.admissions.key_facts.budget_missing: Add a yearly budget to your profile to compare
+university.admissions.key_facts.open_finance: Costs and funding
+university.admissions.key_facts.funding: Funding
+university.admissions.key_facts.funding_route: Applied for separately: {route}
+university.admissions.key_facts.funding_records: Funding records for this path: {count}. An award is not guaranteed
+university.admissions.key_facts.funding_none: No funding is catalogued for this path; check the official funding page
 university.admissions.catalog.domain.reference: Related source comparisons
 university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
 profile.intro: All fields are optional. Start with your subject, study level and budget; add scores when you want to check published requirements. Save on this device, then return to the catalog.

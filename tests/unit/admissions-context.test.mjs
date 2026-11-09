@@ -39,17 +39,26 @@ test("profile suggestions use the declared target without inferring the next lev
 });
 
 test("restriction labels use explicit catalog metadata and never program title guesses", () => {
-  assert.equal(programRestriction({ title: "Internal medicine", application: { classification: "direct_program" } }), "");
-  assert.equal(programRestriction({ application: { classification: "intermediate_doctoral_award" } }), "internal");
-  assert.equal(programRestriction({ new_applicant_availability: "not_open_for_2027_28_entry" }), "restricted");
-  assert.equal(programRestriction({ applicant_access: "unknown" }), "");
+  assert.equal(programRestriction({ title: "Internal medicine", entry: "external" }), "");
+  assert.equal(programRestriction({ entry: "no_admission" }), "internal");
+  assert.equal(programRestriction({ entry: "internal" }), "internal");
+  assert.equal(programRestriction({ entry: "closed" }), "restricted");
+  assert.equal(programRestriction({ entry: "external_restricted" }), "restricted");
+  assert.equal(programRestriction({ entry: "unresolved" }), "");
+  // Research labels alone never decide a restriction; preparation supplies the closed entry value.
+  assert.equal(programRestriction({ application: { classification: "internal" } }), "");
 });
 
 test("localized entry examples normalize without guessing a year from free text", () => {
   assert.equal(normalizeAdmissionCycle("осенний набор 2027 года"), "Fall 2027");
   assert.equal(normalizeAdmissionCycle("2027 жылғы күзгі қабылдау"), "Fall 2027");
   assert.equal(normalizeAdmissionCycle("2027 жылғы көктемгі қабылдау"), "Spring 2027");
+  assert.equal(normalizeAdmissionCycle("осень 2027"), "Fall 2027");
+  assert.equal(normalizeAdmissionCycle("Осень 2027 года"), "Fall 2027");
+  assert.equal(normalizeAdmissionCycle("весна 2028"), "Spring 2028");
+  assert.equal(normalizeAdmissionCycle("2027 күз"), "Fall 2027");
   assert.equal(normalizeAdmissionCycle("Not yet decided for 2027"), "Not yet decided for 2027");
+  assert.equal(normalizeAdmissionCycle("осень"), "осень");
 });
 
 test("application actions use only a declared destination", () => {

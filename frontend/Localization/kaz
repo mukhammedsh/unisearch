@@ -2577,6 +2577,13 @@ university.admissions.catalog.review.carried_forward_review: Алдыңғы де
 university.admissions.catalog.review.conflicting: Ресми дереккөздерде қайшылық бар
 university.admissions.catalog.review.superseded: Кейінгі дереккөзбен алмастырылған
 university.admissions.catalog.review.limited: Дереккөз қаралды; кейбір аясы не шарттары әлі тексерілуі керек
+university.admissions.catalog.review.needs_resolution: Дереккөзді тексеру нақтылауды қажет етеді
+university.admissions.catalog.route_entry.external: Өтінім жаңа үміткерлер үшін ашық
+university.admissions.catalog.route_entry.external_restricted: Өтінім тек шектеулі үміткерлер тобына арналған
+university.admissions.catalog.route_entry.internal: Тек қазіргі студенттерге арналған
+university.admissions.catalog.route_entry.no_admission: Басқа бағдарлама барысында беріледі; бөлек өтінім жоқ
+university.admissions.catalog.route_entry.closed: Жаңа үміткерлерді қабылдау жабық
+university.admissions.catalog.route_entry.unresolved: Өтінім беру жолы нақтылауды қажет етеді
 university.admissions.catalog.not_published: Жарияланбаған
 university.admissions.catalog.needs_review: Қарау қажет
 university.admissions.catalog.historical: Тарихи дереккөз жазбасы
@@ -2622,6 +2629,7 @@ university.admissions.catalog.domain.other: Дереккөздегі өзге а
 university.admissions.catalog.reason.applicability_unknown: Таңдалған контекст немесе талаптардың өтініш берушіге қолданылуы анықталмаған.
 university.admissions.catalog.reason.missing_evidence: Қажетті растау енгізілмеген.
 university.admissions.catalog.reason.unassessed_minimums: Кейбір жарияланған минимумдар немесе олардың шарттары әзірге бағаланбайды.
+university.admissions.catalog.reason.entry_cycle_required: Баллдарыңызды осы минимумдармен салыстыру үшін түсу жылын көрсетіңіз, мысалы «2027 жылғы күз».
 university.admissions.catalog.reason.no_published_requirements: Бұл контекст үшін бағалауға болатын сандық минимум каталогқа енгізілмеген.
 university.admissions.catalog.reason.requirements_not_met: Бағаланған жарияланған минимумдардың кемінде бірі орындалмаған.
 university.admissions.catalog.reason.source_fact_changed: Дереккөз жазбасы өзгерген; бағалауды қайта қарау қажет.
@@ -3252,6 +3260,39 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: Бакал�
 university.admissions.entry.route_help.nu-residency-unconditional: Резидентураға түсудің қалыпты талаптары, соның ішінде клиникалық емтихандар мен алдыңғы медициналық білім туралы мәліметтер.
 university.admissions.entry.route_help.nu-residency-conditional-umc: UMC ұсынған үміткерлерге арналған жеке шартты жол. Ұсыным мен оқуға тіркелу шарттарын тексеріңіз: бұл емтихандардан жалпы босату емес.
 university.admissions.reading.structured_study: Оқу туралы жарияланған мәліметтер төменде берілген. Қысқаша мәтіндік шолу жоқ.
+university.admissions.key_facts.title: Осы жол бойынша негізгісі
+university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
+university.admissions.key_facts.requirements: Ең төменгі талаптар
+university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
+university.admissions.key_facts.requirements_manual: Ресми ережелермен салыстыруды қажет ететін тағы шарттар: {count}
+university.admissions.key_facts.use_profile_cycle: Профильдегі «{cycle}» мәнін қолдану
+university.admissions.key_facts.set_cycle: Түсу жылын көрсету
+university.admissions.key_facts.deadline: Ең жақын мерзім
+university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
+university.admissions.key_facts.deadline_today: {title}: {date}, бүгін
+university.admissions.key_facts.deadline_passed: Жарияланған мерзімдер өтіп кетті. Соңғысы: {title}, {date}
+university.admissions.key_facts.deadline_none: Бұл жол үшін мерзімдер жарияланбаған
+university.admissions.key_facts.deadline_yearless: Мерзімдер жылсыз жарияланған: {dates}
+university.admissions.key_facts.deadline_period: Өтінім беру кезеңі: {period}
+university.admissions.key_facts.deadline_described: Жылы көрсетілген нақты күн жоқ; жарияланған мерзімдер «Мерзімдер» қойындысында
+university.admissions.key_facts.open_deadlines: Барлық мерзімдер
+university.admissions.key_facts.cost: Жылдық құны
+university.admissions.key_facts.cost_total: Жарияланған бюджет: {amount}
+university.admissions.key_facts.cost_tuition: Оқу ақысы: {amount}. Тұру шығыны кірмейді
+university.admissions.key_facts.cost_period: Дереккөз кезеңі: {period}
+university.admissions.key_facts.cost_fee_status: Төлем мәртебесіне (Home немесе Overseas) байланысты; оны жоғарыдағы қосымша параметрлерде көрсетуге болады
+university.admissions.key_facts.cost_not_annual: Баға бір жылға жарияланбаған; толығырақ «Құны» қойындысында
+university.admissions.key_facts.cost_unknown: Бұл таңдау үшін баға жарияланбаған
+university.admissions.key_facts.budget_over: Сіздің {budget} бюджетіңізден жоғары
+university.admissions.key_facts.budget_within: Сіздің {budget} бюджетіңізге сыяды
+university.admissions.key_facts.budget_tuition_within: Оқу ақысы {budget} бюджетіңізге сыяды, бірақ тұру шығыны бөлек
+university.admissions.key_facts.budget_partial: Ауқымның бір бөлігі {budget} бюджетіңізден жоғары
+university.admissions.key_facts.budget_missing: Салыстыру үшін профильде жылдық бюджетті көрсетіңіз
+university.admissions.key_facts.open_finance: Құны мен қаржыландыру
+university.admissions.key_facts.funding: Қаржыландыру
+university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
+university.admissions.key_facts.funding_records: Бұл жол бойынша қаржыландыру жазбалары: {count}. Грант кепілдендірілмейді
+university.admissions.key_facts.funding_none: Бұл жол үшін қаржыландыру тізімге енгізілмеген; ресми қаржыландыру бетін тексеріңіз
 university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
 university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
 profile.intro: Барлық өріс міндетті емес. Алдымен мамандықты, оқу деңгейін және бюджетті көрсетіңіз; жарияланған талаптарды салыстыру үшін балдарды кейін қоса аласыз. Деректерді осы құрылғыда сақтап, каталогқа оралыңыз.

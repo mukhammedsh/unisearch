@@ -217,7 +217,7 @@ test("award suffixes, distinct subjects and named routes stay visible", () => {
 test("program essentials use existing localized value formatters and keep official prose", async () => {
   const resolved = { selected_option: { id: "cs", format: { mode: "On-campus", language: ["English"] } },
     fact_groups: { study: ["overview"] }, facts: [{ id: "overview", publication_status: "published", review_status: "verified",
-      scope: { option_ids: ["cs"] }, value: { duration: "4 years", description: "Official description stays available." } }] };
+      normalized_status: { publication: "published", review: "verified" }, scope: { option_ids: ["cs"] }, value: { duration: "4 years", description: "Official description stays available." } }] };
   const before = structuredClone(resolved);
   for (const [language, expected] of [["eng", ["4 years", "On-campus", "English"]], ["rus", ["4 года", "Очно (кампус)", "Английский"]], ["kaz", ["4 жыл", "Кампуста", "Ағылшын"]]]) {
     setLanguage(language, { emit: false });
@@ -568,7 +568,9 @@ test("CS MS summarizes its complete English policy once while retaining the cent
     assert.ok(html.includes(`data-admissions-fact="${sharedId}"`));
   }
   const unresolved = structuredClone(resolved);
-  unresolved.facts.find(row => row.id === policyId).review_status = "needs_resolution";
+  const policy = unresolved.facts.find(row => row.id === policyId);
+  policy.review_status = "needs_resolution";
+  policy.normalized_status = { ...policy.normalized_status, review: "needs_resolution" };
   assert.ok(renderApplicantSection(unresolved, ["requirements"]).includes(`data-summary-fact="${sharedId}"`));
 });
 

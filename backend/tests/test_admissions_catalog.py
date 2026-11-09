@@ -22,6 +22,8 @@ def fact(record_id="minimum", **changes):
            "content_reviewed_at": None, "period": None, "related_fact_ids": [], "attributes": {}, "index_attributes": {},
            "provenance": {"evidence_file": "synthetic.json", "original_id": record_id, "original_scope": None, "original_source_ids": ["official"]}}
     row.update(changes)
+    # Synthetic fixtures use canonical labels, so the normalized status mirrors them unless a test sets it.
+    row.setdefault("normalized_status", {"publication": row["publication_status"] or "unknown", "review": row["review_status"] or "not_recorded"})
     return row
 
 
@@ -34,12 +36,13 @@ def snapshot():
     mit["sources"] = [{"id": "official", "url": "https://mit.edu/", "title": "Official evidence", "checked_at": "2026-10-01", "attributes": {}}]
     mit["study_options"] = [
         {"id": "computing", "title": "Computing", "levels": ["undergraduate"], "awards": ["SB"], "parent_option_id": None,
-         "route_ids": ["first-year", "transfer"], "fact_ids": ["minimum"], "source_ids": ["official"], "attributes": {}, "evidence_profiles": []},
+         "route_ids": ["first-year", "transfer"], "fact_ids": ["minimum"], "source_ids": ["official"], "attributes": {}, "evidence_profiles": [],
+         "entry": "external"},
         {"id": "physics", "title": "Physics", "levels": ["masters"], "awards": ["SM"], "parent_option_id": None,
-         "route_ids": [], "fact_ids": [], "source_ids": ["official"], "attributes": {}, "evidence_profiles": []},
+         "route_ids": [], "fact_ids": [], "source_ids": ["official"], "attributes": {}, "evidence_profiles": [], "entry": "unresolved"},
     ]
     for route_id in ("first-year", "transfer", "shared"):
-        mit["application_routes"].append({"id": route_id, "title": route_id, "classification": "institution_wide",
+        mit["application_routes"].append({"id": route_id, "title": route_id, "classification": "institution_wide", "entry": "external",
             "target": "University undergraduate admission", "destination": "Official application", "shared_form_family": None,
             "option_ids": ["computing"] if route_id != "shared" else [], "fact_ids": [], "source_ids": ["official"],
             "shared_policy_context_ids": ["shared"] if route_id == "first-year" else [], "attributes": {}, "index_attributes": {}})
@@ -162,6 +165,7 @@ class AdmissionsCatalogTests(unittest.TestCase):
         historical = copy.deepcopy(self.mit()["facts"][0])
         historical["id"] = "program-history"
         historical["publication_status"] = "historical"
+        historical["normalized_status"] = {"publication": "historical", "review": "verified"}
         self.mit()["facts"].append(historical)
         self.write()
         result = self.resolve(study_option_id=None)
@@ -238,7 +242,8 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.mit()["facts"].append(fact("old", review_status="superseded"))
         self.mit()["facts"].append(fact("compound", topic="cost_and_funding", value={"amount": None}))
         unknown = fact("gap")
-        unknown.update(reason="Future cost not published", official_next_step="Ask the official admissions office", publication_status=None, review_status=None)
+        unknown.update(reason="Future cost not published", official_next_step="Ask the official admissions office", publication_status=None, review_status=None,
+                       normalized_status={"publication": "unknown", "review": "not_recorded"})
         self.mit()["unknowns"].append(unknown)
         self.write()
         result = self.resolve()
@@ -336,6 +341,26 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.write()
         with self.assertRaisesRegex(service.AdmissionsCatalogError, "contract"):
             service.get_revision()
+
+    def test_invalid_normalized_vocabulary_is_rejected(self):
+        self.mit()["facts"][0]["normalized_status"] = {"publication": "published_somewhere", "review": "verified"}
+        self.write()
+        with self.assertRaisesRegex(service.AdmissionsCatalogError, "status"):
+            service.get_revision()
+        self.mit()["facts"][0]["normalized_status"] = {"publication": "published", "review": "verified"}
+        self.mit()["application_routes"][0]["entry"] = "open"
+        self.write()
+        service.clear_cache()
+        with self.assertRaisesRegex(service.AdmissionsCatalogError, "entry"):
+            service.get_revision()
+
+    def test_real_historical_research_labels_leave_current_facts(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            resolved = service.resolve_context("nazarbayev-university-kaz-astana", context={
+                "study_option_id": "nu-a-study-6-year-undergraduate-medical-program", "study_level": "undergraduate"})
+            self.assertIn("nu-a-fact-ump-dates-fees-historical", resolved["history"]["fact_ids"])
+            self.assertNotIn("nu-a-fact-ump-dates-fees-historical", [row["id"] for row in resolved["facts"]])
 
     def test_mit_completed_overviews_resolve_before_route_selection(self):
         with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):

@@ -10,7 +10,8 @@ await initI18n();
 window.location.href = "http://127.0.0.1/compare.html";
 
 const universities = [{ id: "imperial", name: "Imperial College London" }, { id: "mit", name: "Massachusetts Institute of Technology" }];
-const fact = (id, value) => ({ id, value, publication_status: "published", review_status: "reviewed", source_ids: ["official"],
+const fact = (id, value) => ({ id, value, publication_status: "published", review_status: "reviewed",
+  normalized_status: { publication: "published", review: "verified" }, source_ids: ["official"],
   scope: { option_ids: ["computing"], route_ids: [] } });
 function state(currency, amount, period) {
   const facts = [fact("program", { duration: "4 years", mode: "Full-time", course_page_tuition_fees: {
@@ -103,7 +104,7 @@ test("comparison identifies a published scholarship exclusion without promising 
 test("comparison preserves normalized whole-program tuition, campus and source period", () => {
   setLanguage("eng", { emit: false });
   const selected = state("USD", 24000, "2025-26");
-  selected.resolved.facts = [{ ...fact("program-price", "The source quotes the complete program fee."), publication_status: "published_reference_amounts_year_unspecified", attributes: { catalog_costs: { quotes: [
+  selected.resolved.facts = [{ ...fact("program-price", "The source quotes the complete program fee."), publication_status: "published_reference_amounts_year_unspecified", normalized_status: { publication: "published_with_limits", review: "verified" }, attributes: { catalog_costs: { quotes: [
     { basis: "tuition", amount: 24000, currency: "USD", period_label: "2025-26", source_year: "2025-26", billing_period: "whole_program", campus: "Astana" },
   ] } } }];
   selected.resolved.fact_groups = { costs: ["program-price"] };

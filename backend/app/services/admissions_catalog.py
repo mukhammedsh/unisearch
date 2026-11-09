@@ -16,6 +16,11 @@ from app.services.university_tracks import _canonical_major, _major_tags_from_te
 CATALOG_PATH = DATA_DIR / "admissions" / "catalog.json"
 INSTITUTION_IDS = {"mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana"}
 LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"}
+# Closed values prepared from backend/data/drafts/integration/vocabulary.json.
+PUBLICATION_STATES = {"published", "published_with_limits", "partially_published", "not_yet_published", "not_found",
+                      "conflicting", "historical", "unknown"}
+REVIEW_STATES = {"verified", "verified_with_limits", "partially_verified", "carried_forward", "conflicting", "needs_resolution", "superseded", "not_recorded"}
+ENTRY_VALUES = {"external", "external_restricted", "internal", "no_admission", "closed", "unresolved"}
 LEVEL_ALIASES = {"bachelor": "undergraduate", "master": "masters", "doctorate": "doctoral", "phd": "doctoral", "foundation": "preparation", "non-degree": "non_degree"}
 _LOCK = threading.Lock()
 _CACHE = {"signature": None, "revision": None, "institutions": {}, "indexes": {}}
@@ -125,12 +130,16 @@ def _load():
                 for option in entities["study_options"].values():
                     if not isinstance(option["levels"], list) or not set(option["levels"]).issubset(LEVELS):
                         raise AdmissionsCatalogError("Invalid normalized study levels")
+                    if option["entry"] not in ENTRY_VALUES:
+                        raise AdmissionsCatalogError("Invalid normalized study option entry")
                     _references(option["route_ids"], entities["application_routes"])
                     _references(option["fact_ids"], entities["facts"])
                     _references(option["source_ids"], entities["sources"])
                     if option["parent_option_id"]:
                         _references([option["parent_option_id"]], entities["study_options"])
                 for route in entities["application_routes"].values():
+                    if route["entry"] not in ENTRY_VALUES:
+                        raise AdmissionsCatalogError("Invalid normalized application route entry")
                     _references(route["option_ids"], entities["study_options"])
                     _references(route["fact_ids"], entities["facts"])
                     _references(route["source_ids"], entities["sources"])
@@ -138,6 +147,9 @@ def _load():
                     _references(_route_metadata(route).get("policy_for_route_ids", []), entities["application_routes"])
                 for key in ("facts", "unknowns"):
                     for fact in entities[key].values():
+                        status = fact["normalized_status"]
+                        if status["publication"] not in PUBLICATION_STATES or status["review"] not in REVIEW_STATES:
+                            raise AdmissionsCatalogError("Invalid normalized publication or review status")
                         _references(fact["scope"]["option_ids"], entities["study_options"])
                         _references(fact["scope"]["route_ids"], entities["application_routes"])
                         _references(fact["source_ids"], entities["sources"])
@@ -258,7 +270,8 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                        "fact_id": row["id"], "source_ids": row["source_ids"]})
 
     for row in institution["facts"]:
-        if (row["publication_status"] != "published" and not row.get("attributes", {}).get("catalog_costs")) or not re.search(r"verified|reviewed|rechecked|carried_forward_review", row.get("review_status") or "") or re.search(r"superseded|conflict|partial|pending", row.get("review_status") or ""):
+        status = row["normalized_status"]
+        if (status["publication"] != "published" and not row.get("attributes", {}).get("catalog_costs")) or status["review"] not in {"verified", "verified_with_limits", "carried_forward"}:
             continue
         value = row.get("attributes", {}).get("catalog_costs") or row.get("value")
         if not isinstance(value, dict):
@@ -347,6 +360,30 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
     return summary
 
 
+def _usd_range(quote):
+    """Convert an annual quote for budget comparison; other billing periods stay unconverted."""
+    if not quote.get("annual_comparable"):
+        return None
+    if quote["currency"] == "USD":
+        return {"min": quote["min"], "max": quote["max"]}
+    from app.services.currency import convert
+    try:
+        return {"min": round(convert(quote["min"], quote["currency"], "USD")), "max": round(convert(quote["max"], quote["currency"], "USD"))}
+    except ValueError:
+        return None
+
+
+def selected_costs(institution_id, context):
+    """Published reference costs for one resolved selection, with a USD range when the quote is annual."""
+    costs = catalog_costs(institution_id, context.get("study_level"), fee_status_context=context.get("fee_status_context"),
+                          intended_entry_cycle=context.get("intended_entry_cycle"),
+                          study_option_id=context.get("study_option_id"), application_route_id=context.get("application_route_id"))
+    for basis in ("annual_total", "tuition"):
+        if isinstance(costs.get(basis), dict):
+            costs[basis]["usd"] = _usd_range(costs[basis])
+    return costs
+
+
 def get_public_contract(institution_id):
     cached = _load()
     institution = cached["institutions"].get(institution_id)
@@ -366,7 +403,7 @@ def _institution(institution_id):
 
 
 def _option_summary(option):
-    summary = {key: option[key] for key in ("id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids")}
+    summary = {key: option[key] for key in ("id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids", "entry")}
     metadata = option.get("attributes", {})
     for key in ("application", "application_classification", "application_classifications", "catalog_classification",
                 "new_applicant_availability", "inventory_status", "application_relationship", "reconciled_application_relationship",
@@ -383,7 +420,7 @@ def _route_metadata(route):
 
 
 def _route_summary(route):
-    summary = {key: route[key] for key in ("id", "title", "classification", "target", "destination", "shared_form_family",
+    summary = {key: route[key] for key in ("id", "title", "classification", "entry", "target", "destination", "shared_form_family",
                                          "option_ids", "source_ids", "fact_ids", "shared_policy_context_ids")}
     metadata = _route_metadata(route)
     for key in ("application_url", "admission_scope", "applicant_route", "policy_for_route_ids"):
@@ -435,8 +472,8 @@ def _axis(values, selected):
 
 
 def _history(row):
-    return str(row.get("review_status") or "").startswith("superseded") or row.get("publication_status") in {
-        "historical", "published_historical_cycle"}
+    status = row["normalized_status"]
+    return status["review"] == "superseded" or status["publication"] == "historical"
 
 
 def _cycle(value):
@@ -447,6 +484,13 @@ def _cycle(value):
     localized = re.fullmatch(r"(20\d{2}) жылғы (күзгі|көктемгі) қабылдау", label)
     if localized:
         return int(localized[1]), "fall" if localized[2] == "күзгі" else "spring"
+    # Plain applicant wording such as "осень 2027" or "2027 күз" names the same intake.
+    season = r"(осень|осенью|осенний набор|весна|весной|весенний набор|күз|күзгі|күзі|көктем|көктемгі|көктемі)"
+    localized = (re.fullmatch(season + r" (20\d{2})(?: года| г\.?| жыл| жылы)?", label)
+                 or re.fullmatch(r"(20\d{2})(?: года| г\.?| жылғы| жыл| жылы)? " + season + r"(?: қабылдау| набор)?", label))
+    if localized:
+        term, year = (localized[1], localized[2]) if localized[1][0].isalpha() else (localized[2], localized[1])
+        return int(year), "fall" if term.startswith(("осен", "күз")) else "spring"
     cycle_parts = label.rsplit(None, 1)
     if len(cycle_parts) == 2 and cycle_parts[1] == "entry":
         label = cycle_parts[0]

@@ -155,6 +155,7 @@ class AdmissionsAssessmentTests(unittest.TestCase):
                                 application_route_id="mit_bcs_meng_admissions", study_level="masters")
         unknown_floor = {
             "id": "unsupported-floor", "topic": "language_tests", "review_status": "verified", "publication_status": "published",
+            "normalized_status": {"publication": "published", "review": "verified"},
             "source_ids": [resolved["sources"][0]["id"]], "applicability": {"status": "conditional"},
             "value": {"unassessed_published_minimums": [{"minimum": 5, "label": "Unsupported test scale"}]},
         }
@@ -269,6 +270,7 @@ class AdmissionsAssessmentTests(unittest.TestCase):
         resolved = self.resolve("mit-usa-cambridge", study_option_id="mit-course-6-9p-meng", application_route_id="mit_bcs_meng_admissions", study_level="masters")
         source = next(row for row in resolved["facts"] if row["id"] == "bcs-meng-entry-conditions")
         source["publication_status"] = "conflicting"
+        source["normalized_status"] = {**source["normalized_status"], "publication": "conflicting"}
         annotations, revision = assessment_service._annotations()
         record = copy.deepcopy(annotations[("mit-usa-cambridge", source["id"])])
         record["fact_sha256"] = assessment_service._fact_hash(source)

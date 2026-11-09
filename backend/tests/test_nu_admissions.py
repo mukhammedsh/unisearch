@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.prepare_nu_admissions import NU_ID, convert_research_catalog, prepare_nu_institution, build_nu_assessments
+from scripts.prepare_admissions_catalog import load_vocabulary, normalize_institution
 from app.services import admissions_catalog, admissions_assessment, universities
 
 
@@ -19,6 +20,7 @@ class NuAdmissionsTests(unittest.TestCase):
     def setUpClass(cls):
         cls.raw = json.loads((FOLDER / "research-catalog.json").read_text(encoding="utf-8"))
         cls.nu = convert_research_catalog(cls.raw)
+        normalize_institution(cls.nu, load_vocabulary())
         cls.index = {key: {row["id"]: row for row in cls.nu[key]} for key in ("study_options", "application_routes", "facts", "sources", "unknowns")}
         cls.records = build_nu_assessments(cls.nu)
 
@@ -33,6 +35,20 @@ class NuAdmissionsTests(unittest.TestCase):
         annotations = {(NU_ID, row["fact_id"]): row for row in self.records}
         with patch.object(admissions_assessment, "_annotations", return_value=(annotations, "nu-test")):
             return admissions_assessment.assess_resolved_context(resolved, profile)
+
+    def test_plain_seasonal_entry_cycle_unlocks_cycle_scoped_minimums(self):
+        components = lambda pairs: {"components": [{"exam": exam, "score": score} for exam, score in pairs]}
+        profile = {"exams": [{"exam": "SAT", "score": 1380, "taken_on": "2026-10-04",
+                              "details": components([("SAT_MATH", 700), ("SAT_EBRW", 680)])}],
+                   "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5, "taken_on": "2026-09-20",
+                                  "details": components([(f"IELTS_{part}", 6.5) for part in ("WRITING", "READING", "LISTENING", "SPEAKING")])}]}
+        args = ("nu-a-study-bachelor-of-science-in-computer-science", "nu-a-route-regular-foundation-undergraduate", "undergraduate")
+        missing = self.assess(self.resolve(*args, profile=profile), profile)
+        self.assertIsNone(missing["chancePercent"])
+        self.assertEqual("entry_cycle_required", missing["reason"])
+        for cycle in ("осень 2027", "2027 күз", "Fall 2027"):
+            result = self.assess(self.resolve(*args, profile=profile, cycle=cycle), profile)
+            self.assertEqual(100.0, result["chancePercent"], cycle)
 
     def test_program_summary_exposes_its_reviewed_official_page(self):
         resolved = self.resolve("nu-a-study-bachelor-in-nursing", "nu-a-route-nursing", "undergraduate")
@@ -101,6 +117,7 @@ class NuAdmissionsTests(unittest.TestCase):
             acceptance = {"status": "accepted", "catalog_sha256": hashlib.sha256(original).hexdigest()}
             (folder / "packet-b/data-acceptance.json").write_text(json.dumps(acceptance), encoding="utf-8")
             converted = prepare_nu_institution(folder)
+            normalize_institution(converted, load_vocabulary())
             self.assertEqual(self.nu["facts"], converted["facts"])
             handoff = folder / "packet-c/handoff.md"
             handoff.write_bytes(handoff.read_bytes() + b"Changed reviewed content\n")

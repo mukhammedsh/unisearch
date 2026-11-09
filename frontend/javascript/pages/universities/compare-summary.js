@@ -7,6 +7,7 @@ import { admissionDeadlineTitle, admissionsCycleLabel, admissionsProgramLabel, a
 import { formatPublishedDate, publishedTuitionQuotes } from "../university/admissions-presentation.js";
 import { getReviewedDeadlineEvents } from "../university/deadline-calendar.js";
 import { compareUniversityName } from "./compare-helpers.js";
+import { isEvidenceReviewed, isPublished, isPublishedReference } from "../university/admissions-status.js";
 
 const label = key => t(`universities.compare.summary.${key}`);
 const unknown = () => `<span class="admissions-context__note">${escapeHtml(label("unknown"))}</span>`;
@@ -15,10 +16,8 @@ function factsFor(resolved, domains) {
   if ((!resolved?.selected_option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched")) return [];
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
   const routeIds = [resolved.selected_route?.id, ...(resolved.selected_route?.shared_policy_context_ids || [])];
-  return (resolved.facts || []).filter(row => ids.has(row.id) && (row.publication_status === "published"
-    || row.publication_status?.startsWith("published_") && !row.publication_status.includes("conflict") && Array.isArray(row.attributes?.catalog_costs?.quotes))
-    && /verified|reviewed|rechecked|carried_forward_review/.test(row.review_status || "")
-    && !/conflict|pending|partial|superseded|requires_confirmation/.test(row.review_status || "")
+  return (resolved.facts || []).filter(row => ids.has(row.id) && (isPublished(row) || isPublishedReference(row) && Array.isArray(row.attributes?.catalog_costs?.quotes))
+    && isEvidenceReviewed(row)
     && row.applicability?.status !== "mismatched" && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(resolved.selected_option?.id))
     && (!row.scope?.route_ids?.length || row.scope.route_ids.some(id => routeIds.includes(id))));
 }

@@ -46,14 +46,21 @@ function context() {
   };
 }
 
+// Mirrors backend preparation for the research labels these fixtures use.
+const PUBLICATION_STATES = { published: "published", conflicting: "conflicting", unknown: "unknown" };
+const REVIEW_STATES = { reviewed: "verified", verified: "verified", verified_current_page: "verified",
+  original_catalog_content_rechecked_2026_10_03: "verified", conflicting: "conflicting" };
+const withStatus = row => ({ ...row, normalized_status: row.normalized_status || {
+  publication: PUBLICATION_STATES[row.publication_status] || "unknown", review: REVIEW_STATES[row.review_status] || "not_recorded" } });
+
 function fact(value, extra = {}) {
-  return {
+  return withStatus({
     id: "private-fact-id", topic: "costs", value, source_ids: ["source-private"],
     publication_status: "published", checked_at: "2026-10-12", period: { kind: "named", label: "2026–2027" },
     applicability: { status: "conditional" },
     scope: { option_ids: ["example-option"], route_ids: ["example-route"], levels: ["undergraduate"], cycle: "Fall 2027" },
     ...extra,
-  };
+ });
 }
 
 test("institution-route reading renders scoped facts without inventing a selected program", () => {
@@ -403,8 +410,7 @@ test("publication, evidence review, and applicability remain independent", () =>
   assert.match(html, /Ask the admissions office/);
   assert.match(html, /Conditional — applicability still needs verification<\/span><\/summary>/);
   assert.doesNotMatch(html, /UnknownUnknown|<strong>Conditions and exceptions<\/strong>/);
-  resolved.facts[0].publication_status = "unknown";
-  resolved.facts[0].review_status = "verified";
+  resolved.facts[0] = withStatus({ ...resolved.facts[0], publication_status: "unknown", review_status: "verified", normalized_status: undefined });
   const reviewedUnknown = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(reviewedUnknown, /<span class="admissions-catalog__status">Unknown<\/span>/);
   assert.match(reviewedUnknown, /Evidence review: Verified/);
@@ -661,6 +667,22 @@ test("simple route classification labels remain separate from published titles a
   assert.equal(admissionsRouteName({ classification: "ucas_course_choice" }), "ucas_course_choice");
   assert.equal(admissionsRouteName({ title: "Published course application", classification: "ucas_course_choice" }, { presentation: "simple" }), "Published course application");
   assert.equal(admissionsRouteName({ target: "Official programme target", classification: "ucas_course_choice" }, { presentation: "simple" }), "Official programme target");
-  assert.equal(admissionsRouteName({ classification: "external non-professional graduate application" }, { presentation: "simple" }), "external non-professional graduate application");
-  assert.equal(admissionsRouteName({ classification: "internal_progression" }, { presentation: "simple" }), "internal progression");
+  // Unlabelled research classifications fall back to the closed entry label instead of raw source wording.
+  assert.equal(admissionsRouteName({ classification: "internal_progression", entry: "internal" }, { presentation: "simple" }), "Current students only");
+  assert.doesNotMatch(admissionsRouteName({ classification: "external non-professional graduate application", entry: "external" }, { presentation: "simple" }), /non-professional/);
+});
+
+test("status badges read the closed vocabulary rather than research label spelling", () => {
+  const resolved = context();
+  resolved.fact_groups = { costs: ["private-fact-id"] };
+  resolved.facts = [fact("Cycle label awaits confirmation.", { publication_status: "published_but_source_year_unspecified", review_status: "needs_cycle_label_confirmation",
+    normalized_status: { publication: "published_with_limits", review: "needs_resolution" } })];
+  const html = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(html, /Published with a limited or unresolved scope/);
+  assert.match(html, /Evidence review: Source review needs resolution/);
+  resolved.facts = [fact("A label that looks published.", { publication_status: "published_everywhere", review_status: "verified_everything",
+    normalized_status: { publication: "historical", review: "superseded" } })];
+  const historical = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(historical, /Historical source record/);
+  assert.match(historical, /Evidence review: Superseded source review/);
 });
