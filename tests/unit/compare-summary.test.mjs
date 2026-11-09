@@ -170,3 +170,91 @@ test("only the single route linked to a deliberately chosen program can be appli
   assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route], context_applicability: { level: "mismatched" } }, {}), null);
   assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [{ id: "grad", levels: ["masters"] }] }, { study_level: "undergraduate" }), null);
 });
+
+const { buildCompareDecisionSignals } = await import("../../frontend/javascript/pages/universities/compare-specs.js");
+
+test("a published application period is shown when the university lists no exact date", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("KZT", 0, "2027 entry");
+  selected.resolved.facts = [{ ...fact("period", { application_period: "October 2026 – August 2027" }), publication_status: "published_with_limits",
+    normalized_status: { publication: "published_with_limits", review: "verified" } }];
+  selected.resolved.fact_groups = { deadlines: ["period"] };
+  const html = renderReviewedComparison([universities[0]], new Map([["imperial", selected]]));
+  assert.match(html, /Application period: October 2026 – August 2027/);
+  assert.doesNotMatch(html, /does not state a year/);
+});
+
+test("the entry cycle row explains a missing cycle and only offers the profile cycle", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("USD", 66720, "2026-27");
+  selected.context.intended_entry_cycle = "";
+  const withoutProfile = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+  assert.match(withoutProfile, /No entry cycle selected/);
+  assert.doesNotMatch(withoutProfile, /Your profile lists/);
+  const withProfile = renderReviewedComparison([universities[1]], new Map([["mit", selected]]), { profileCycle: "Fall 2027" });
+  assert.match(withProfile, /Your profile lists Fall 2027/);
+  assert.match(withProfile, /data-action="choose-context"/);
+  assert.equal(selected.context.intended_entry_cycle, "", "the profile cycle is not applied silently");
+});
+
+test("the requirements row shows the minimum-check summary instead of a bare heading", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("USD", 66720, "2026-27");
+  selected.resolved.assessment = { chancePercent: 50, activeChoice: { details: { checks: [
+    { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" },
+  ] } } };
+  const html = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+  assert.match(html, /1 of 2 measurable minimums met \(50%\)/);
+  assert.match(html, /Conditions to check against the official rules: 1/);
+  assert.match(html, />Open requirements</);
+});
+
+test("a need-based aid program is shown with its localized label", () => {
+  const selected = state("USD", 66720, "2026-27");
+  selected.resolved.facts.push({ ...fact("aid", { funding_program: "Need-based Aid", availability: "conditional" }), topic: "funding" });
+  selected.resolved.fact_groups.funding = ["aid"];
+  for (const [language, expected] of [["eng", "Need-based financial aid"], ["rus", "Помощь по финансовой потребности"], ["kaz", "Қаржылық қажеттілікке негізделген көмек"]]) {
+    setLanguage(language, { emit: false });
+    const html = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+    assert.ok(html.includes(expected), language);
+    assert.ok(!html.includes("Need-based Aid"), language);
+  }
+});
+
+function budgetSignal(costs, budgetUsd, status = "ready") {
+  const selected = state("USD", 1, "2026-27");
+  selected.status = status;
+  selected.resolved.selected_costs = costs;
+  return buildCompareDecisionSignals([{ id: "mit-usa-cambridge", name: "MIT" }, { id: "imperial-college-london-uk", name: "Imperial" }], {
+    reviewed: new Map([["mit-usa-cambridge", selected], ["imperial-college-london-uk", selected]]), budgetUsd,
+  }).find(row => row.key === "budget");
+}
+const factValues = theme => theme.universities[0].facts.map(item => item.value).join(" ");
+
+test("the signals section compares the published annual price with the profile budget", () => {
+  setLanguage("eng", { emit: false });
+  const annual = { currency: "USD", period: "2026-27", annual_comparable: true };
+  const over = budgetSignal({ annual_total: { ...annual, min: 92760, max: 92760, usd: { min: 92760, max: 92760 } } }, 10000);
+  assert.equal(over.status, "tradeoff");
+  assert.match(factValues(over), /Above your budget of \$10,000/);
+  const tuition = budgetSignal({ tuition: { ...annual, min: 5000, max: 5000, usd: { min: 5000, max: 5000 } } }, 10000);
+  assert.match(factValues(tuition), /Living costs are not included/);
+  assert.match(factValues(tuition), /living costs are extra/);
+  const zero = budgetSignal({ annual_total: { ...annual, min: 0, max: 0, usd: { min: 0, max: 0 } } }, 10000);
+  assert.match(factValues(zero), /\$0.*Within your budget/s);
+});
+
+test("the budget signal keeps unknown prices and a missing budget unknown", () => {
+  setLanguage("eng", { emit: false });
+  const unknown = budgetSignal({}, 10000);
+  assert.equal(unknown.status, "missing");
+  assert.match(factValues(unknown), /No price is published for this selection/);
+  const annual = { annual_total: { currency: "USD", min: 100, max: 100, annual_comparable: true, usd: { min: 100, max: 100 } } };
+  const noBudget = budgetSignal(annual, undefined);
+  assert.equal(noBudget.status, "missing");
+  assert.match(factValues(noBudget), /Add a yearly budget to your profile/);
+  const loading = budgetSignal(annual, 10000, "loading");
+  assert.equal(loading.status, "missing");
+  assert.match(factValues(loading), /Not established/);
+  assert.equal(buildCompareDecisionSignals([{ id: "other-legacy" }, { id: "mit-usa-cambridge" }], {}).some(row => row.key === "budget"), false, "legacy pairs keep their own finance signal");
+});

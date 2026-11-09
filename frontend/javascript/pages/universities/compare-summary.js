@@ -8,6 +8,8 @@ import { formatPublishedDate, publishedTuitionQuotes } from "../university/admis
 import { getReviewedDeadlineEvents } from "../university/deadline-calendar.js";
 import { compareUniversityName } from "./compare-helpers.js";
 import { isEvidenceReviewed, isPublished, isPublishedReference } from "../university/admissions-status.js";
+import { deadlineFact, requirementsFact } from "../university/admissions-key-facts.js";
+import { translateAdmissionText } from "../../university-translations.js";
 
 const label = key => t(`universities.compare.summary.${key}`);
 const unknown = () => `<span class="admissions-context__note">${escapeHtml(label("unknown"))}</span>`;
@@ -31,10 +33,10 @@ function money(amount, currency) {
   return `${new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()], { maximumFractionDigits: 2 }).format(amount)} ${currency}`;
 }
 
-function detailLink(university, state, tab) {
+function detailLink(university, state, tab, labelKey = tab) {
   const url = admissionContextUrl(new URL(routeUniversityDetail(university.id), window.location.href), state?.context || {});
   url.hash = `tab-${tab}`;
-  return `<a href="${escapeHtmlAttr(url.pathname + url.search + url.hash)}">${escapeHtml(label(tab))}</a>`;
+  return `<a href="${escapeHtmlAttr(url.pathname + url.search + url.hash)}">${escapeHtml(label(labelKey))}</a>`;
 }
 
 // What the applicant still has to choose before this university's column can show facts.
@@ -55,7 +57,15 @@ function selectionPrompt(university, state, gap) {
     <button type="button" class="compare-results-action" data-action="choose-context">${escapeHtml(t("universities.compare.choose_context"))}</button>`;
 }
 
-function cells(university, state) {
+// The cycle row says why nothing is cycle-specific when no entry cycle is selected; a profile cycle is only offered, never applied.
+function cycleCell(state, profileCycle) {
+  const cycle = state?.context?.intended_entry_cycle;
+  if (cycle) return escapeHtml(admissionsCycleLabel(cycle));
+  const hint = profileCycle ? `<small>${escapeHtml(tFormat("universities.compare.summary.cycle_profile", { cycle: admissionsCycleLabel(profileCycle) }))}</small>` : "";
+  return `${escapeHtml(label("cycle_missing"))}${hint}<button type="button" class="compare-results-action" data-action="choose-context">${escapeHtml(t("universities.compare.change_context"))}</button>`;
+}
+
+function cells(university, state, { profileCycle = "" } = {}) {
   const resolved = state?.resolved;
   const option = resolved?.selected_option;
   const unavailable = state?.status !== "ready" || (!option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched");
@@ -82,29 +92,38 @@ function cells(university, state) {
     const windows = factsFor(resolved, ["deadlines"]).flatMap(row => (row.value?.windows || []).filter(window => typeof window.application_due === "string"));
     if (windows.length) date = `${windows.map(window => `${escapeHtml(window.name)}: ${escapeHtml(formatPublishedDate(window.application_due))}`).join("<br>")}<small>${escapeHtml(label("year_not_stated"))}</small>`;
   }
+  // A published application period or yearless rounds are shown as published, the same way as on the university page.
+  if (!date && !unavailable) {
+    const published = deadlineFact(resolved);
+    if (published.status === "period") date = escapeHtml(published.text);
+    else if (published.status === "yearless") date = `${escapeHtml(published.text)}<small>${escapeHtml(label("year_not_stated"))}</small>`;
+  }
   const funders = unavailable ? [] : [...new Map(factsFor(resolved, ["funding"]).filter(row => typeof row.value?.funding_program === "string")
     .map(row => [JSON.stringify([row.value.funding_program, row.value.availability]), row])).values()]
-    .map(row => `<div>${escapeHtml(row.value.funding_program)}<small>${escapeHtml(t(`university.admissions.reading.${row.value.availability === "excluded_by_published_course_rules" ? "funding_excluded" : row.value.availability === "not_established" ? "funding_unconfirmed" : "potential_aid"}`))}</small></div>`);
+    .map(row => `<div>${escapeHtml(row.value.funding_program === "Need-based Aid" ? t("university.admissions.reading.aid_title") : translateAdmissionText(row.value.funding_program, row.value.funding_program))}<small>${escapeHtml(t(`university.admissions.reading.${row.value.availability === "excluded_by_published_course_rules" ? "funding_excluded" : row.value.availability === "not_established" ? "funding_unconfirmed" : "potential_aid"}`))}</small></div>`);
+  // The requirements row repeats the university page's minimum-check summary; it is not an admission decision.
+  const checked = unavailable || !resolved.selected_route ? null : requirementsFact(resolved);
+  const requirements = checked ? `<div>${escapeHtml(checked.text)}${checked.note ? `<small>${escapeHtml(checked.note)}</small>` : ""}</div>` : "";
   return {
     program, study: study.length ? escapeHtml(study.join(" · ")) : unknown(),
     route: unavailable || !resolved.selected_route ? unknown() : escapeHtml(admissionsRouteName({ ...resolved.selected_route, title: "", target: "" }, { presentation: "simple" })),
-    cycle: state?.context?.intended_entry_cycle ? escapeHtml(admissionsCycleLabel(state.context.intended_entry_cycle)) : unknown(),
+    cycle: cycleCell(state, profileCycle),
     tuition: tuition.length ? tuition.join("") : unknown(), budget: budget.length ? budget.join("") : unknown(),
     deadline: `${date || unknown()}${detailLink(university, state, "deadlines")}`,
     funding: `${funders.length ? funders.join("") : `<small>${escapeHtml(label("potential_aid"))}</small>`}${detailLink(university, state, "finance")}`,
-    admission: detailLink(university, state, "admission"),
+    admission: `${requirements || unknown()}${detailLink(university, state, "admission", "open_admission")}`,
   };
 }
 
-export function renderReviewedComparison(universities, contexts) {
+export function renderReviewedComparison(universities, contexts, options = {}) {
   const rows = ["program", "study", "route", "cycle", "tuition", "budget", "deadline", "funding", "admission"];
   const gaps = universities.map(university => comparisonSelectionGap(contexts.get(university.id)));
   // With a program chosen, its own rows stay; the prompt replaces only the route-dependent rows.
   const values = universities.map((university, index) => {
     const state = contexts.get(university.id);
-    if (!gaps[index]) return cells(university, state);
+    if (!gaps[index]) return cells(university, state, options);
     const keepRows = gaps[index] === "choose_route" ? rows.indexOf("route") : 0;
-    return { ...(keepRows ? cells(university, state) : {}), prompt: selectionPrompt(university, state, gaps[index]), keepRows };
+    return { ...(keepRows ? cells(university, state, options) : {}), prompt: selectionPrompt(university, state, gaps[index]), keepRows };
   });
   return `<section class="compare-analysis-block compare-summary" data-reviewed-comparison><div class="compare-block-head"><h2>${escapeHtml(label("title"))}</h2></div>
     <p>${escapeHtml(label("scope_note"))}</p><p class="compare-table-scroll-hint">${escapeHtml(t("universities.compare.table_scroll_hint"))}</p>

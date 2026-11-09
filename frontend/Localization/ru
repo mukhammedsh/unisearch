@@ -3086,6 +3086,17 @@ universities.compare.summary.prompt_choose_program: {university}: выберит
 universities.compare.summary.prompt_choose_route: {university}, программа «{program}»: выберите способ подачи заявления, чтобы здесь появились сроки, стоимость и финансирование.
 universities.compare.summary.prompt_incompatible: {university}: выбранные программа, маршрут и уровень не совпадают. Измените выбор, чтобы сравнить.
 universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
+universities.compare.summary.cycle_missing: Набор не выбран. Сведения для конкретного набора показаны как опубликованы, а минимальные требования, зависящие от набора, не проверяются.
+universities.compare.summary.cycle_profile: В вашем профиле указан набор: {cycle}. Примените его через «Изменить выбор».
+universities.compare.summary.open_admission: Открыть требования
+universities.compare.pending_changes: Изменения применятся, когда вы нажмёте «Применить фильтры» или «Продолжить».
+universities.compare.budget.title: Стоимость и ваш бюджет
+universities.compare.budget.summary: Каждая опубликованная годовая цена сравнивается с вашим годовым бюджетом отдельно. Помощь не вычитается, а цена только за обучение не включает расходы на проживание.
+universities.compare.budget.summary_incomplete: Для хотя бы одной выбранной программы нет сопоставимой годовой цены или не указан ваш годовой бюджет, поэтому сравнение с бюджетом не делается.
+universities.compare.budget.cost: Опубликованная цена
+universities.compare.budget.fit: В сравнении с вашим бюджетом
+universities.compare.budget.notes: Пояснения к цене
+universities.compare.budget.not_comparable: Опубликованную цену нельзя привести к сопоставимой годовой сумме.
 university.admissions.reading.total_fee: за весь курс
 university.deadlines.kind.funding_consideration: Срок подачи заявления для рассмотрения на стипендию
 university.admissions.reading.first_year: первый год
