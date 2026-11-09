@@ -3350,3 +3350,25 @@ universities.match.budget_reference_detail: Салыстыру үшін жари
 universities.match.budget_uncertain_detail: Кейбір нұсқалардың бағасы бюджетіңізден жоғары. Таңдаған бағдарламаның құнын нақтылаңыз.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Талаптарға сай бітіруші курс студенттеріне: қазір өтініш беріп, екі–бес жыл жұмыс істегеннен кейін MBA оқуын бастауға болады. Бұл MBA-ға әдеттегі қабылдаудың ерте кезеңі емес, оқуды кейін бастау жолы.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — оқуды кейін бастау жолы
+university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — оқуға түсуге міндеттемейтін, бірақ басқа университеттерге ерте өтініш беруге шектеу қоятын ерте раунд; таңдамас бұрын университет ережесін оқыңыз.
+university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.text: Early Action — мерзімі мен жауабы ертерек келетін ерте өтініш раунды; әдетте оқуға түсуге міндеттемейді, сондықтан қабылданса да орынды алуға міндетті емессіз.
+university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.text: Regular Action — негізгі, кешірек өтетін раунд: мерзімі мен жауабы ерте раундтан кеш болады.
+university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.text: Regular Decision — негізгі өтініш раунды: мерзімі мен жауабы ерте раундтардан кеш болады.
+university.admissions.glossary.ucas.title: UCAS
+university.admissions.glossary.ucas.text: UCAS — Ұлыбритания университеттерінің бакалавриатына өтініш беретін бірыңғай онлайн қызмет: өтінішті әр университетке жеке емес, осы арқылы жібересіз.
+university.admissions.glossary.tmua.title: TMUA
+university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — кейбір британ университеттері талап ететін математикадан түсу тесті; ол мектеп емтихандарынан бөлек тапсырылады.
+university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.text: Foundation — бакалавриат алдындағы дайындық жылы, ал NUFYP — Назарбаев Университетінің Foundation Year Program бағдарламасы; жылды аяқтау бағдарламада орын беретінін университет ережесінен тексеріңіз.
+university.admissions.glossary.css_profile.title: CSS Profile
+university.admissions.glossary.css_profile.text: CSS Profile — кейбір АҚШ университеттері отбасының қаржылық қажеттілігін бағалайтын College Board онлайн сауалнамасы; ол оқуға түсу өтінішіне қосымша тапсырылады.
+university.admissions.glossary.fee_status.title: Home / Overseas: төлем мәртебесі
+university.admissions.glossary.fee_status.text: Төлем мәртебесі қандай оқу ақысы қолданылатынын анықтайды: Home тарифі әдетте Ұлыбритания тұрғындарына және кейбір басқа санаттарға қолданылады, шетелдік үміткерлер көбіне Overseas бойынша төлейді, ал санатты университеттің өзі анықтайды.
+university.admissions.glossary.what_is: {term} дегеніміз не?
+university.admissions.key_facts.cost_fee_status_source: Төлем мәртебесі туралы ресми бет
+university.admissions.key_facts.funding_policy: Университеттің жарияланған саясаты: {policy}
+university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес. Осы жол бойынша қаржыландыру жазбалары: {count}.

@@ -6,6 +6,7 @@ import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
 import { renderAdmissionsKeyFacts } from "./admissions-key-facts.js";
+import { renderTermHelp, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 
@@ -112,8 +113,8 @@ export function admissionContextUrl(url, context) {
   return next;
 }
 
-function selectHtml(id, caption, values, selected, disabled = false) {
-  return `<label class="admissions-context__field" for="${id}"><span>${escapeHtml(caption)}</span>
+function selectHtml(id, caption, values, selected, disabled = false, help = "") {
+  return `<label class="admissions-context__field" for="${id}"><span>${escapeHtml(caption)}${help}</span>
     <select id="${id}" data-flags="off" aria-label="${escapeHtmlAttr(caption)}" ${disabled ? "disabled" : ""}>
       ${values.map(([value, text]) => `<option value="${escapeHtmlAttr(value)}" ${value === selected ? "selected" : ""}>${escapeHtml(text)}</option>`).join("")}
     </select></label>`;
@@ -298,16 +299,16 @@ export function mountAdmissionsCatalog(institutionId) {
       || (selected ? "" : t("university.admissions.entry.route_help_generic"));
     const specialRoutes = option?.id === "stanford-option-cs-ms" || option?.id === "stanford-option-cs-phd"
       ? routes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
-    const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`;
+    const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`;
     root.dataset.state = status;
     const destination = status === "ready" && !contextDirty ? getApplicationLink(resolved) : "";
     root.innerHTML = `<div class="admissions-context__heading"><div><h2>${escapeHtml(label("simple_title"))}</h2>${route || noRoute ? "" : `<p>${escapeHtml(label("route_intro"))}</p>`}</div></div>
       ${legacyPending ? `<p class="admissions-context__note">${escapeHtml(label("legacy_pending"))}</p>` : ""}
       ${resetPending ? `<p class="admissions-context__note" data-admission-reset-notice>${escapeHtml(label("reset_notice"))}</p>` : ""}
-      ${route && routeHelp(route, true) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route, true))}</p>` : ""}
+      ${route && routeHelp(route, true) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route, true))}</p>` : ""}${route ? renderTermsFor(routeWording(route)) : ""}
       <div id="admissionsSelectionEditor" class="admissions-selection-editor" ${route ? "hidden" : ""}><div class="admissions-selection-editor__body">
       <div class="admissions-context__actions"><button type="button" id="admissionsChooseProgram">${escapeHtml(label(option ? "change_program" : "browse_programs"))}</button></div>
-      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${!option && profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`).join("")}</div>` : ""}
+      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${!option && profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`).join("")}</div>` : ""}
       ${option && !route && routes.length > 1 ? `<div class="admissions-entry" data-route-options><p>${escapeHtml(t("university.admissions.entry.route_situations"))}</p>${profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${routes.filter(item => !specialRoutes.includes(item)).map(routeOption).join("")}${specialRoutes.length ? `<details class="admissions-special-routes"><summary>${escapeHtml(tFormat("university.admissions.reading.special_routes", { count: specialRoutes.length }))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-entry">${specialRoutes.map(routeOption).join("")}</div></details>` : ""}</div>` : ""}
       ${option && !route && routes.length === 1 ? `<p class="admissions-context__note">${escapeHtml(routeHelp(routes[0]))}</p>` : ""}
       <form id="admissionsContextForm" class="admissions-context__form" ${((option && !noRoute) || readable) && (route || routes.length <= 1) ? "" : "hidden"}>
@@ -320,7 +321,7 @@ export function mountAdmissionsCatalog(institutionId) {
         ${selectHtml("admissionsApplicant", label("applicant_label"), [["", label("unspecified")], ...["first_year", "transfer", "graduate"].map((value) => [value, label(`applicant.${value}`)])], context.applicant_route)}
         <label class="admissions-context__field" for="admissionsCycle"><span>${escapeHtml(label("cycle_label"))}</span><input id="admissionsCycle" type="text" maxlength="40" list="admissionsCycleOptions" aria-describedby="admissionsCycleHelp admissionsCycleNotice" value="${escapeHtmlAttr(context.intended_entry_cycle)}" placeholder="${escapeHtmlAttr(label("cycle_example"))}"></label>
         <datalist id="admissionsCycleOptions">${cycles.map(value => `<option value="${escapeHtmlAttr(value)}"></option>`).join("")}</datalist>
-        ${selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context)}
+        ${selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context, false, renderTermHelp("fee_status"))}
         </div><p class="admissions-context__note">${escapeHtml(label("advanced_note"))}</p><p class="admissions-context__note" id="admissionsCycleHelp">${escapeHtml(t("university.admissions.reading.cycle_help"))}</p><p class="admissions-context__note" id="admissionsCycleNotice" role="status" hidden>${escapeHtml(t("university.admissions.reading.cycle_invalid"))}</p></details>
         <div class="admissions-context__actions"><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" ${status === "loading" || (!option && !readable) ? "disabled" : ""}>${escapeHtml(label("apply_context"))}</button></div>
       </form></div></div>

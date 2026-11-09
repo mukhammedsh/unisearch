@@ -3348,3 +3348,25 @@ universities.match.budget_reference_detail: Для сравнения испол
 universities.match.budget_uncertain_detail: Некоторые варианты дороже вашего бюджета. Уточните стоимость выбранной программы.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Для подходящих студентов выпускного курса: подайте заявку сейчас и начните MBA после двух–пяти лет работы. Это поступление с отложенным началом, а не ранний раунд обычной подачи на MBA.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — поступление с отложенным началом
+university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — ранний раунд без обязательства поступить, но с ограничениями на ранние заявки в другие вузы; прочитайте правила вуза до выбора.
+university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.text: Early Action — ранний раунд подачи: срок и ответ раньше, а обязательства поступить обычно нет, поэтому после зачисления вы не обязаны принимать место.
+university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.text: Regular Action — основной, более поздний раунд подачи: срок и ответ позже, чем в раннем раунде.
+university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.text: Regular Decision — основной раунд подачи: срок и ответ позже, чем в ранних раундах.
+university.admissions.glossary.ucas.title: UCAS
+university.admissions.glossary.ucas.text: UCAS — единая онлайн-служба подачи заявок в бакалавриат вузов Великобритании: заявку подают через неё, а не в каждый вуз отдельно.
+university.admissions.glossary.tmua.title: TMUA
+university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — вступительный тест по математике, который требуют некоторые британские вузы; он сдаётся отдельно от школьных экзаменов.
+university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.text: Foundation — подготовительный год перед бакалавриатом, а NUFYP — Foundation Year Program Назарбаев Университета; узнайте в правилах вуза, ведёт ли его завершение к месту на программе.
+university.admissions.glossary.css_profile.title: CSS Profile
+university.admissions.glossary.css_profile.text: CSS Profile — онлайн-анкета College Board, по которой некоторые американские вузы оценивают финансовую нуждаемость семьи; её подают дополнительно к заявке на поступление.
+university.admissions.glossary.fee_status.title: Home / Overseas: статус оплаты
+university.admissions.glossary.fee_status.text: Статус оплаты определяет, какая цена обучения применяется: тариф Home обычно действует для жителей Великобритании и некоторых других категорий, иностранные абитуриенты чаще платят по тарифу Overseas, а категорию определяет сам вуз.
+university.admissions.glossary.what_is: Что такое {term}?
+university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
+university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
+university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили. Записей о финансировании для этого пути: {count}.
