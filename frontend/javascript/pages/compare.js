@@ -50,6 +50,7 @@ import {
   hasReviewedAdmissions,
   fetchCompareStudyOptions,
   fetchCompareAdmissionContext,
+  soleCompatibleRoute,
 } from "./universities/compare-helpers.js";
 import {
   buildCompareDecisionSupportHtml,
@@ -170,19 +171,26 @@ function renderReviewedChooser(target, university) {
     ${loadProfile()?.admissionChoiceResetNotices?.includes(id) ? `<p class="admissions-context__note compare-context-reset" role="status" data-admission-reset-notice="${escapeHtmlAttr(id)}">${escapeHtml(admissionsLabel("reset_notice"))}</p>` : ""}
   </div>`;
   state.selectDisposers = Array.from(target.querySelectorAll("select")).map(element => initCustomSelect(element.id));
-  const applyContext = async () => {
-    const refresh = refreshReviewedContext(id, state);
+  const stale = () => reviewedContexts.get(id) !== state || document.body.dataset.page !== "compare";
+  const applyContext = async ({ applySoleRoute = false } = {}) => {
+    let refresh = refreshReviewedContext(id, state);
     renderReviewedChooser(target, university);
     await refresh;
-    if (reviewedContexts.get(id) !== state || document.body.dataset.page !== "compare") return;
+    if (stale()) return false;
+    const soleRoute = applySoleRoute ? soleCompatibleRoute(state.resolved, context) : null;
+    if (soleRoute) {
+      context.application_route_id = soleRoute.id;
+      refresh = refreshReviewedContext(id, state);
+      renderReviewedChooser(target, university);
+      await refresh;
+      if (stale()) return false;
+    }
     const pane = document.getElementById("compareResultsPane");
     if (currentStage === "results") await renderCompareResults(pane);
     else renderReviewedChooser(pane?.querySelector(`#compare-options-${id}`), university);
+    return Boolean(soleRoute);
   };
-  target.querySelector("[data-compare-context-form]").onsubmit = async event => {
-    event.preventDefault();
-    event.target.querySelectorAll("[data-context-field]").forEach(element => { context[element.dataset.contextField] = element.value.trim(); });
-    await applyContext();
+  const saveReviewedChoice = () => {
     if (state.status !== "ready" || reviewedContexts.get(id) !== state) return;
     const option = state.resolved?.selected_option;
     const route = state.resolved?.selected_route;
@@ -200,7 +208,13 @@ function renderReviewedChooser(target, university) {
     const status = target.querySelector("[data-compare-context-save-status]");
     if (status) status.textContent = t(saved ? "profile.state.saved_local" : "profile.state.unsaved");
   };
-  target.querySelector("[data-compare-context-retry]")?.addEventListener("click", applyContext);
+  target.querySelector("[data-compare-context-form]").onsubmit = async event => {
+    event.preventDefault();
+    event.target.querySelectorAll("[data-context-field]").forEach(element => { context[element.dataset.contextField] = element.value.trim(); });
+    await applyContext();
+    saveReviewedChoice();
+  };
+  target.querySelector("[data-compare-context-retry]")?.addEventListener("click", () => void applyContext());
   target.querySelector("[data-compare-clear-option]")?.addEventListener("click", () => {
     context.study_option_id = "";
     context.application_route_id = "";
@@ -253,7 +267,7 @@ function renderReviewedChooser(target, university) {
         savingReviewedSelection = true;
         saveSelectedAdmissionChoice(id, null);
         savingReviewedSelection = false;
-        void applyContext();
+        void applyContext({ applySoleRoute: true }).then(applied => { if (applied) saveReviewedChoice(); });
       }; });
       target.querySelector("[data-compare-count]").textContent = tFormat("university.admissions.catalog.results", { from: data.total ? (state.page - 1) * 24 + 1 : 0, to: Math.min(state.page * 24, data.total), total: data.total });
       previous.disabled = state.page === 1;

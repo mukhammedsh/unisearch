@@ -247,6 +247,17 @@ export async function fetchCompareAdmissionContext(id, context, profile, options
   return response.json();
 }
 
+// After a deliberate program choice, the only route linked to that option can be applied.
+// A saved choice, URL or association alone never supplies a missing route, and several routes stay a choice.
+export function soleCompatibleRoute(resolved, context = {}) {
+  const routes = resolved?.available_routes;
+  if (!resolved?.selected_option || resolved.selected_route || !Array.isArray(routes) || routes.length !== 1) return null;
+  if (Object.values(resolved.context_applicability || {}).includes("mismatched")) return null;
+  const [route] = routes;
+  if (Array.isArray(route.levels) && route.levels.length && context.study_level && !route.levels.includes(context.study_level)) return null;
+  return route;
+}
+
 export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
   return n !== null ? formatPrice(n, String(currency || "USD").trim().toUpperCase()) : unknownFieldText(fallbackKey, fallback);
