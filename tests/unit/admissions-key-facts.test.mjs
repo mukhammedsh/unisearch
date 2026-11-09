@@ -58,6 +58,80 @@ test("yearless rounds and application periods are shown as published without a c
   assert.match(deadlineFact(withRows([period]), NOW).text, /Application period: October 2026–August 2027/);
 });
 
+const recurringRounds = (label = "Recurring first-year dates; page does not specify entry year", kind = "yearless_policy") => ({
+  ...events([]), id: "rounds", attributes: {}, period: { kind, label },
+  value: { windows: [{ name: "Early Action", application_due: "November 1" }, { name: "Regular Action", application_due: "January 4" }] } });
+
+test("yearless dates the record describes as recurring get their next calendar occurrence with a countdown and an annual-date warning", () => {
+  const today = new Date(2026, 10, 10, 12, 0);
+  const fact = deadlineFact(withRows([recurringRounds()]), today);
+  assert.equal(fact.status, "recurring");
+  assert.equal(fact.days, 55);
+  assert.match(fact.text, /^Early Action[^:]*: November 1 has passed\. Next: Regular Action[^—]*— January 4, 2027, in 55 days \(annual date; confirm the year on the official page\)$/);
+  assert.deepEqual(fact.terms, ["early_action", "regular_action"]);
+  // Before the first round nothing has passed; after the last one the next occurrence is the following year's first round.
+  const beforeEarly = deadlineFact(withRows([recurringRounds()]), new Date(2026, 9, 1, 12, 0));
+  assert.match(beforeEarly.text, /^Next: Early Action[^—]*— November 1, 2026, in 31 days/);
+  const afterRegular = deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 10, 12, 0));
+  assert.match(afterRegular.text, /^Next: Early Action[^—]*— November 1, 2027, in 295 days/);
+  assert.match(deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 4, 12, 0)).text, /^Next: Regular Action[^—]*— January 4, 2027, today /);
+  setLanguage("rus", { emit: false });
+  assert.match(deadlineFact(withRows([recurringRounds()]), today).text, /ежегодная дата; год уточните на официальной странице/);
+  setLanguage("eng", { emit: false });
+});
+
+test("yearless dates are not turned into annual dates unless the record says they recur", () => {
+  // The same dates in a record without a recurring description keep the published wording and have no countdown.
+  for (const row of [recurringRounds("Current published policy; cycle not specified"), recurringRounds("Recurring first-year dates", "named"),
+    { ...recurringRounds(), period: null }]) {
+    const fact = deadlineFact(withRows([row]), NOW);
+    assert.equal(fact.status, "yearless");
+    assert.equal(fact.days, undefined);
+  }
+  // A recurring record keeps a date with a published year, an unparseable date and a prose-only record out of the annual rule.
+  const withYear = { ...recurringRounds(), value: { windows: [{ name: "Regular Action", application_due: "January 4, 2027" }, { name: "Early Action", application_due: "early November" }] } };
+  assert.notEqual(deadlineFact(withRows([withYear]), NOW).status, "recurring");
+  const prose = { ...events([]), id: "prose", attributes: {}, period: null,
+    value: "REA Common Application deadline is November 1; RD deadline is January 5. The page lists recurring month/day deadlines without an explicit entry year." };
+  const described = deadlineFact(withRows([prose]), NOW);
+  assert.equal(described.status, "described");
+  assert.equal(described.days, undefined);
+});
+
+test("the application deadline is the headline and a nearer test or booking date is shown beneath it", () => {
+  const list = [
+    { date: "2026-12-21", deadline_type: "test_date", label: "TMUA", publication_status: "published" },
+    { date: "2027-01-13", deadline_type: "application", publication_status: "published" },
+    { date: "2027-02-05", deadline_type: "aid_application", publication_status: "published" }];
+  const fact = deadlineFact(withDates(list), new Date(2026, 10, 10, 12, 0));
+  assert.equal(fact.days, 64);
+  assert.match(fact.text, /^Application deadline: January 13, 2027, in 64 days$/);
+  assert.equal(fact.notes.length, 1);
+  assert.match(fact.notes[0], /^Earlier: .*TMUA.*December 21, 2026, in 41 days$/);
+  // Once the application deadline is behind, the nearest remaining date leads and nothing precedes it.
+  const late = deadlineFact(withDates(list), new Date(2027, 0, 20, 12, 0));
+  assert.match(late.text, /February 5, 2027/);
+  assert.deepEqual(late.notes, []);
+  // Without a nearer test date there is no second line.
+  assert.deepEqual(deadlineFact(withDates(list.slice(1)), new Date(2026, 10, 10, 12, 0)).notes, []);
+});
+
+test("a test date is not the headline when the profile holds another test of the same requirement", () => {
+  const support = { application_category: "financial_support", cycle: "2027/28", deadline_type: "test_date", publication_status: "published" };
+  const list = [{ ...support, date: "2026-11-28", exam_id: "ACT", label: "Last ACT test date" }, { ...support, date: "2026-12-05", exam_id: "SAT", label: "Last SAT test date" }];
+  const today = new Date(2026, 10, 10, 12, 0);
+  const sat = deadlineFact(withDates(list), today, { profileExamIds: ["SAT", "IELTS"] });
+  assert.equal(sat.days, 25);
+  assert.match(sat.text, /December 5, 2026/);
+  assert.doesNotMatch(sat.text, /November 28/);
+  // With the other alternative entered the matching date still leads, and without a relevant test both dates remain candidates.
+  assert.match(deadlineFact(withDates(list), today, { profileExamIds: ["ACT"] }).text, /November 28, 2026/);
+  assert.match(deadlineFact(withDates(list), today, { profileExamIds: ["IELTS"] }).text, /November 28, 2026/);
+  assert.match(deadlineFact(withDates(list), today).text, /November 28, 2026/);
+  // The profile carries through the rendered block.
+  assert.match(renderAdmissionsKeyFacts(withDates(list), { now: today, profileExamIds: ["SAT"] }), /December 5, 2026/);
+});
+
 test("tuition-only prices never look like a full budget", () => {
   const within = costFact(context({ selected_costs: { annual_total: null, tuition: quote({ exclusions: ["living"] }) } }), 20000);
   assert.equal(within.status, "tuition_within");
@@ -89,9 +163,43 @@ test("requirements summarise measurable checks and fall back to the published re
     { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" }] } } } }));
   assert.match(measured.text, /1 of 2 measurable minimums met \(50%\)/);
   assert.equal(measured.tone, "warning");
-  assert.equal(measured.note, "Conditions to check against the official rules: 1");
+  assert.deepEqual(measured.notes, ["Conditions to check against the official rules: 1"]);
   const unavailable = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [] } } } }));
   assert.equal(unavailable.text, "Required applicant evidence is missing.");
+});
+
+test("missing requirement evidence names what to add and which overall scores already meet a minimum, never as a pass or fail", () => {
+  const academic = { kind: "academic_requirement", status: "missing", measurable: true,
+    rule: { alternatives: [{ exam_id: "UNT", minimum: 85 }, { exam_id: "SAT", minimum: 1240 }] },
+    provided: { exam: "UNT", minimum_checks: [{ exam: "UNT", status: "met" }, { exam: "UNT_READING_LITERACY", status: "missing" }] },
+    missingInputs: [{ exam: "UNT", needs: ["components"] }, { exam: "SAT", needs: ["taken_on"] }] };
+  const english = { kind: "language_requirement", status: "missing", measurable: true, rule: { alternatives: [{ exam_id: "IELTS" }] },
+    provided: { exam: "IELTS", minimum_checks: [{ exam: "IELTS", status: "met" }, { exam: "IELTS_WRITING", status: "met" }] },
+    missingInputs: [{ exam: "IELTS", needs: ["taken_on", "components"] }] };
+  const tmua = { kind: "exam_alternatives", status: "missing", missingInputs: [{ exam: "TMUA", needs: ["result"] }] };
+  const presence = { kind: "required_exam_presence", status: "missing", examIds: ["SAT", "ACT"] };
+  const fact = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
+    activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } }));
+  assert.equal(fact.text, "Required applicant evidence is missing.");
+  assert.equal(fact.tone, "");
+  assert.deepEqual(fact.notes, [
+    "Academic requirement: add any one of: UNT (Kazakhstan) section scores; SAT test date",
+    "English requirement: add IELTS Academic test date and section scores",
+    "Required test: add TMUA result",
+    "Required test: add any one of: SAT result; ACT result",
+    // Only the overall score is named; the met IELTS Writing section is not a met requirement.
+    "Overall score already meets the published minimum: UNT (Kazakhstan), IELTS Academic",
+    "Conditions to check against the official rules: 1",
+  ]);
+  // A check without nameable inputs adds no instruction, and a resolved assessment adds none either.
+  const unnamed = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
+    activeChoice: { details: { checks: [{ kind: "scoped_gpa", status: "missing" }] } } } }));
+  assert.deepEqual(unnamed.notes, []);
+  assert.deepEqual(requirementsFact(context({ assessment: { chancePercent: 100, reason: "", activeChoice: { details: { checks: [{ ...academic, status: "met" }] } } } })).notes, []);
+  setLanguage("rus", { emit: false });
+  assert.match(requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [academic] } } } })).notes[0],
+    /^Академическое требование: добавьте что-то одно из: баллы .* по разделам; дату сдачи SAT$/);
+  setLanguage("eng", { emit: false });
 });
 
 test("funding names a separate support application before counting records", () => {

@@ -475,7 +475,7 @@ export function mountAdmissionsCatalog(institutionId) {
       else if (["detailRequirements", "detailDeadlines", "detailFinance"].includes(id)) {
         const apiProfile = loadProfileForApi();
         const profileCycle = isRecognizedAdmissionCycle(apiProfile.intended_entry_cycle) ? normalizeAdmissionCycle(apiProfile.intended_entry_cycle) : "";
-        const keyFacts = id === "detailRequirements" ? renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileCycle }) : "";
+        const keyFacts = id === "detailRequirements" ? renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileCycle, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) }) : "";
         target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${keyFacts}${renderApplicantSection(resolved, domains, { includeAssessment: false })}`;
         target.querySelectorAll("[data-open-tab]").forEach(button => { button.onclick = () => openTab(button.dataset.openTab); });
         target.querySelector("[data-key-facts-cycle]")?.addEventListener("click", event => {

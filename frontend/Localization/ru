@@ -3375,3 +3375,18 @@ university.admissions.glossary.what_is: Что такое {term}?
 university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
 university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
 university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили. Записей о финансировании для этого пути: {count}.
+university.admissions.key_facts.deadline_earlier: Раньше: {text}
+university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date}, через {days} дн. (ежегодная дата; год уточните на официальной странице)
+university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date}, сегодня (ежегодная дата; год уточните на официальной странице)
+university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
+university.admissions.key_facts.requirements_kind_academic: Академическое требование
+university.admissions.key_facts.requirements_kind_language: Требование по английскому
+university.admissions.key_facts.requirements_kind_exam: Обязательный экзамен
+university.admissions.key_facts.requirements_need_one: {requirement}: добавьте {items}
+university.admissions.key_facts.requirements_need_any: {requirement}: добавьте что-то одно из: {items}
+university.admissions.key_facts.requirements_add_result: результат {exam}
+university.admissions.key_facts.requirements_add_date: дату сдачи {exam}
+university.admissions.key_facts.requirements_add_sections: баллы {exam} по разделам
+university.admissions.key_facts.requirements_add_date_sections: дату сдачи {exam} и баллы по разделам
+university.admissions.key_facts.requirements_add_gpa: средний балл (GPA)
+university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
