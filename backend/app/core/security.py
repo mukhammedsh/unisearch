@@ -300,20 +300,22 @@ def request_client_ip(request: Optional[Request]) -> str:
     return normalized_direct
 
 
-def request_scope_path(request: Optional[Request]) -> str:
+def request_scope_path(request: Optional[Request], strip_root: bool = False) -> str:
     if request is None:
         return ""
     scope = getattr(request, "scope", {}) or {}
     path = str(scope.get("path") or "").strip()
-    return path or "/"
+    if not path:
+        return "/"
+    if strip_root:
+        root_path = str(scope.get("root_path") or "").strip().rstrip("/")
+        if root_path and (path == root_path or path.startswith(root_path + "/")):
+            path = path[len(root_path):] or "/"
+    return path
 
 
 def is_protected_ops_request(request: Request) -> bool:
-    path = request_scope_path(request)
-    root_path = request.scope.get("root_path", "")
-    if root_path and (path == root_path or path.startswith(root_path + "/")):
-        path = path[len(root_path):]
-    norm_path = path.rstrip("/") or "/"
+    norm_path = request_scope_path(request, strip_root=True).rstrip("/") or "/"
     if norm_path == "/ops" or norm_path.startswith("/ops/"):
         return True
     metrics_path = str(METRICS_PATH or "/metrics").rstrip("/") or "/metrics"
