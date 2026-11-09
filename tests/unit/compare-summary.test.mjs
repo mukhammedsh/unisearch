@@ -113,3 +113,60 @@ test("comparison preserves normalized whole-program tuition, campus and source p
   assert.doesNotMatch(html, /24,000[^<]*per year/);
   assert.equal((html.match(/24,000/g) || []).length, 1);
 });
+
+const { comparisonSelectionGap } = await import("../../frontend/javascript/pages/universities/compare-summary.js");
+const { soleCompatibleRoute } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
+
+function emptyState(extra = {}) {
+  return { status: "ready", context: { study_option_id: "", application_route_id: "", study_level: "", intended_entry_cycle: "" },
+    resolved: { selected_option: null, selected_route: null, available_routes: [], context_applicability: {}, facts: [], fact_groups: {}, ...extra } };
+}
+
+test("an unselected university shows one localized prompt instead of rows of unknown values", () => {
+  for (const [language, expected] of [["eng", /Choose a study option or a university-wide application route for Imperial College London/], ["rus", /Выберите программу или общий маршрут подачи для Imperial College London/], ["kaz", /Imperial College London үшін .* таңдаңыз/]]) {
+    setLanguage(language, { emit: false });
+    const html = renderReviewedComparison([universities[0], universities[1]], new Map([["imperial", emptyState()], ["mit", state("USD", 66720, "2026-27")]]));
+    assert.match(html, expected, language);
+    assert.equal((html.match(/data-selection-prompt="choose_program"/g) || []).length, 1, language);
+    assert.equal((html.match(/rowspan="9"/g) || []).length, 1, language);
+    assert.equal((html.match(/Not established|Для выбранного варианта не подтверждено|расталмаған/g) || []).length, 1, `${language}: only the fixture budget row of the selected university stays unknown`);
+    assert.match(html, /data-action="back-to-tracks"/);
+  }
+});
+
+test("a chosen program without a route keeps its own rows and asks only for the application route", () => {
+  setLanguage("eng", { emit: false });
+  const withProgram = emptyState({ selected_option: { id: "computing", title: "Computing", awards: ["MEng"], levels: ["undergraduate"] },
+    available_routes: [{ id: "ucas", title: "UCAS" }, { id: "direct", title: "Direct" }] });
+  const html = renderReviewedComparison([universities[0]], new Map([["imperial", withProgram]]));
+  assert.match(html, /data-selection-prompt="choose_route"/);
+  assert.match(html, /Choose how you will apply to Imperial College London for Computing/);
+  assert.match(html, /<strong>Computing<\/strong>/);
+  assert.match(html, /rowspan="7"/);
+  assert.equal((html.match(/Not established/g) || []).length, 1, "only the duration row stays unknown");
+  withProgram.resolved.available_routes = [];
+  assert.doesNotMatch(renderReviewedComparison([universities[0]], new Map([["imperial", withProgram]])), /data-selection-prompt/);
+});
+
+test("selection gaps cover incompatible, loading, failed and institution-route states", () => {
+  assert.equal(comparisonSelectionGap(undefined), "");
+  assert.equal(comparisonSelectionGap({ status: "loading", resolved: null }), "");
+  assert.equal(comparisonSelectionGap({ status: "error" }), "");
+  assert.equal(comparisonSelectionGap(emptyState({ context_applicability: { route: "mismatched" } })), "incompatible");
+  assert.equal(comparisonSelectionGap(emptyState({ reading_scope: "institution_route", selected_route: { id: "shared" } })), "");
+  assert.equal(comparisonSelectionGap(state("GBP", 1, "2027 entry")), "");
+  setLanguage("eng", { emit: false });
+  assert.match(renderReviewedComparison([universities[0]], new Map([["imperial", emptyState({ context_applicability: { route: "mismatched" } })]])), /do not match/);
+});
+
+test("only the single route linked to a deliberately chosen program can be applied automatically", () => {
+  const option = { id: "computing", levels: ["undergraduate"] };
+  const route = { id: "ucas", levels: ["undergraduate"] };
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route], context_applicability: {} }, { study_level: "undergraduate" }), route);
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route, { id: "direct" }] }, {}), null, "several routes remain a choice");
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [] }, {}), null);
+  assert.equal(soleCompatibleRoute({ selected_option: null, available_routes: [route] }, {}), null, "no program, no route");
+  assert.equal(soleCompatibleRoute({ selected_option: option, selected_route: route, available_routes: [route] }, {}), null, "an existing route is kept");
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route], context_applicability: { level: "mismatched" } }, {}), null);
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [{ id: "grad", levels: ["masters"] }] }, { study_level: "undergraduate" }), null);
+});

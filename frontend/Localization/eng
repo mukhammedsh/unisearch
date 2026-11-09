@@ -3084,6 +3084,9 @@ universities.compare.summary.potential_aid: Potential funding is subject to elig
 universities.compare.summary.full_records: Complete source records
 universities.compare.summary.additional_facts: Additional university facts
 universities.compare.summary.choose_programs: Choose programs
+universities.compare.summary.prompt_choose_program: Choose a study option or a university-wide application route for {university} to see its dates, costs and requirements here.
+universities.compare.summary.prompt_choose_route: Choose how you will apply to {university} for {program} to see its dates, costs and funding here.
+universities.compare.summary.prompt_incompatible: The selected program, route and level for {university} do not match. Change the selection to compare it.
 universities.compare.summary.configure_title: Choose programs and application routes
 university.admissions.reading.total_fee: total fee
 university.deadlines.kind.funding_consideration: Application deadline for scholarship consideration

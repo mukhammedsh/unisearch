@@ -765,6 +765,15 @@
   overflow-wrap: anywhere;
 }
 
+.compare-cell--prompt {
+  vertical-align: middle;
+}
+
+.compare-summary-value .compare-results-action {
+  justify-self: start;
+  white-space: normal;
+}
+
 .compare-summary-value small {
   display: block;
   margin: 0;

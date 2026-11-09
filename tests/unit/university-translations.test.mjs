@@ -22,7 +22,7 @@ global.fetch = async (url) => {
           words: { custom_word: "Слово", "common.placeholder_unknown": "Нет данных: {field}" },
           university_names: { "test-university": "Тестовый университет" },
           admission_exact: { "Official route": "Официальный путь" },
-          admission_replace: [["Academic", "Академический"], ["Interview", "Собеседование"]],
+          admission_replace: [["Academic", "Академический"], ["Interview", "Собеседование"], ["transcript", "транскрипт"], ["Application fee", "Регистрационный сбор"], ["document", "документ"], ["final", "финальный"]],
           track_labels: { merit_grant: "Грант за заслуги" },
           track_label_fallback_replace: [["Paid", "Платное"]],
           program_names: { computer_science: "Информатика" },
@@ -56,11 +56,12 @@ test("university translation packs load once per language and drive typed transl
   assert.equal(translations.translateUniversityName("test-university", "Fallback"), "Тестовый университет");
   assert.equal(translations.translateUniversityName("", "Fallback"), "Fallback");
   assert.equal(translations.translateAdmissionText("Official route"), "Официальный путь");
-  assert.equal(translations.translateAdmissionText("Interview required"), "Собеседование required");
+  assert.equal(translations.translateAdmissionText("Interview required"), "Interview required");
   assert.equal(translations.translateAdmissionSummary("Official route"), "Официальный путь");
   assert.equal(translations.translateAdmissionSummary("Interview required"), "");
   assert.equal(translations.translateTrackLabel("Merit Grant"), "Грант за заслуги");
-  assert.equal(translations.translateTrackLabel("Paid route"), "Платное route");
+  assert.equal(translations.translateTrackLabel("Paid"), "Платное");
+  assert.equal(translations.translateTrackLabel("Paid route"), "Paid route");
   assert.equal(translations.translateProgramName("Computer Science"), "Информатика");
   assert.equal(translations.translateFactSource("Official report"), "Официальный отчёт");
   assert.equal(translations.translateFactSource("Computer Science"), "Информатика");
@@ -88,4 +89,24 @@ test("translation helpers preserve English source copy and failed packs return n
   assert.equal(translations.translateFactSource("Official report"), "Official report");
   assert.equal(translations.translateFactSource("Computer Science"), "Computer Science");
   assert.equal(await translations.loadUniversityTranslationsForLanguage("eng", true), null);
+});
+
+test("replacement rules translate only complete standalone labels and never produce mixed-language text", async () => {
+  setLanguage("rus", { persist: false, emit: false });
+  await translations.loadUniversityTranslationsForLanguage("rus", true);
+  const mixedSources = [
+    "Secondary school report with transcript",
+    "Application fee is USD 100",
+    "Notifications about a missing-document",
+    "Final transcript",
+    "Academic interview results",
+  ];
+  for (const source of mixedSources) assert.equal(translations.translateAdmissionText(source, source), source, source);
+  for (const [source, expected] of [["transcript", "транскрипт"], ["Transcript", "Транскрипт"], ["  application FEE ", "Регистрационный сбор"], ["Interview.", "Собеседование."], ["Official route", "Официальный путь"]]) {
+    assert.equal(translations.translateAdmissionText(source, source), expected, source);
+  }
+  assert.equal(translations.translateAdmissionSummary("Final transcript"), "");
+  assert.equal(translations.translateTrackLabel("Final transcript"), "Final transcript");
+  setLanguage("eng", { persist: false, emit: false });
+  assert.equal(translations.translateAdmissionText("transcript"), "transcript");
 });

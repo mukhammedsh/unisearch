@@ -1,5 +1,5 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
-import { getCurrentLanguage, t } from "../../i18n.js";
+import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { safeUrl } from "../_shared.js";
 import { routeUniversityDetail } from "../../routes.js";
 import { admissionContextUrl } from "../university/admissions-controller.js";
@@ -35,6 +35,24 @@ function detailLink(university, state, tab) {
   const url = admissionContextUrl(new URL(routeUniversityDetail(university.id), window.location.href), state?.context || {});
   url.hash = `tab-${tab}`;
   return `<a href="${escapeHtmlAttr(url.pathname + url.search + url.hash)}">${escapeHtml(label(tab))}</a>`;
+}
+
+// What the applicant still has to choose before this university's column can show facts.
+// Loading, failed and missing states keep the per-row "not established" cells.
+export function comparisonSelectionGap(state) {
+  const resolved = state?.resolved;
+  if (state?.status !== "ready" || !resolved) return "";
+  if (Object.values(resolved.context_applicability || {}).includes("mismatched")) return "incompatible";
+  if (!resolved.selected_option && resolved.reading_scope !== "institution_route") return "choose_program";
+  if (resolved.selected_option && !resolved.selected_route && resolved.available_routes?.length) return "choose_route";
+  return "";
+}
+
+function selectionPrompt(university, state, gap) {
+  const name = compareUniversityName(university);
+  const program = state.resolved?.selected_option ? admissionsProgramLabel(state.resolved.selected_option).title : "";
+  return `<p data-selection-prompt="${escapeHtmlAttr(gap)}">${escapeHtml(tFormat(`universities.compare.summary.prompt_${gap}`, { university: name, program }))}</p>
+    <button type="button" class="compare-results-action" data-action="back-to-tracks">${escapeHtml(t("universities.compare.choose_context"))}</button>`;
 }
 
 function cells(university, state) {
@@ -79,9 +97,21 @@ function cells(university, state) {
 }
 
 export function renderReviewedComparison(universities, contexts) {
-  const values = universities.map(university => cells(university, contexts.get(university.id)));
+  const rows = ["program", "study", "route", "cycle", "tuition", "budget", "deadline", "funding", "admission"];
+  const gaps = universities.map(university => comparisonSelectionGap(contexts.get(university.id)));
+  // With a program chosen, its own rows stay; the prompt replaces only the route-dependent rows.
+  const values = universities.map((university, index) => {
+    const state = contexts.get(university.id);
+    if (!gaps[index]) return cells(university, state);
+    const keepRows = gaps[index] === "choose_route" ? rows.indexOf("route") : 0;
+    return { ...(keepRows ? cells(university, state) : {}), prompt: selectionPrompt(university, state, gaps[index]), keepRows };
+  });
   return `<section class="compare-analysis-block compare-summary" data-reviewed-comparison><div class="compare-block-head"><h2>${escapeHtml(label("title"))}</h2></div>
     <p>${escapeHtml(label("scope_note"))}</p><p class="compare-table-scroll-hint">${escapeHtml(t("universities.compare.table_scroll_hint"))}</p>
     <div class="compare-table-wrap compare-table-wrap--pair"><table class="compare-table"><thead><tr><th>${escapeHtml(t("universities.compare.row.metric"))}</th>${universities.map(university => `<th scope="col">${escapeHtml(compareUniversityName(university))}</th>`).join("")}</tr></thead>
-    <tbody>${["program", "study", "route", "cycle", "tuition", "budget", "deadline", "funding", "admission"].map(key => `<tr><th scope="row">${escapeHtml(label(key))}</th>${values.map(value => `<td class="compare-cell"><div class="compare-summary-value">${value[key]}</div></td>`).join("")}</tr>`).join("")}</tbody></table></div></section>`;
+    <tbody>${rows.map((key, row) => `<tr><th scope="row">${escapeHtml(label(key))}</th>${values.map(value => {
+      if (value.prompt && row > value.keepRows) return "";
+      if (value.prompt && row === value.keepRows) return `<td class="compare-cell compare-cell--prompt" rowspan="${rows.length - row}"><div class="compare-summary-value">${value.prompt}</div></td>`;
+      return `<td class="compare-cell"><div class="compare-summary-value">${value[key]}</div></td>`;
+    }).join("")}</tr>`).join("")}</tbody></table></div></section>`;
 }
