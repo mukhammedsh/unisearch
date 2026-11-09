@@ -9,6 +9,11 @@ All notable project changes should be recorded here.
 - Added `selected_costs` to the admissions-context API response, with USD ranges for annual quotes so clients can compare them with a budget.
 - Added the `entry_cycle_required` check and assessment reason for cycle-scoped minimums when no entry cycle is selected; the Admission tab offers the recognised profile cycle or opens the entry-cycle field.
 - Recognised plain seasonal entry cycles in Russian and Kazakh, such as "осень 2027" and "2027 күз".
+- Added plain-language explanations for UCAS, TMUA, Foundation/NUFYP, early and regular application rounds, CSS Profile and Home/Overseas fees on reviewed university pages, usable by hover, keyboard and touch.
+- Explained Home and Overseas fee status next to fee-dependent prices, with a link to the university's official fee-status page; the applicant's status is never inferred.
+- Showed a university's published financial-need policy for the selected route in the key facts, labelled as policy rather than an award.
+- Allowed SAT, UNT and IELTS to be saved with only the overall score; unreported section minimums stay unassessed.
+- Replaced empty comparison rows with a prompt to choose a program or route, and applied the only compatible route after a deliberate program choice in the comparison.
 
 ### Changed
 - Admissions status now uses a closed vocabulary, and internal-only or restricted-group routes are labelled explicitly.
@@ -16,6 +21,9 @@ All notable project changes should be recorded here.
 
 ### Fixed
 - Removed maintainer research notes from applicant-facing admissions text and its Russian and Kazakh translations; the source records are unchanged.
+- Stopped showing half-translated admissions sentences in Russian and Kazakh; text without a full translation is shown whole in its source language.
+- Saving the profile is no longer blocked by a prefilled score after selecting an exam that is already saved.
+- Distinguished the US high school diploma from the national school certificate in the qualification list.
 
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
 
