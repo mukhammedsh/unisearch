@@ -35,6 +35,7 @@ import { COUNTRY_CODES, getCountryName, getCountryOptions } from "../utils/count
 import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
 import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
 import {
+  breakdownAllowsTotalOnly,
   breakdownSchemeFor,
   readSubjectBreakdownDraft as readSubjectBreakdownDraftFromModule,
   renderSpecialExamInput as renderSpecialExamInputFromModule,
@@ -418,7 +419,8 @@ export const syncExamScoreInputState = (els, state) => {
     const existing = findExistingExamEntry(selectedExam, els, state);
     const usesCompositeParentScore = mode === "subject_breakdown"
         && String(breakdownScheme?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
-    const usesNumberInput = mode === "number" || usesCompositeParentScore;
+    const usesTotalOnlyInput = mode === "subject_breakdown" && breakdownAllowsTotalOnly(selectedExam);
+    const usesNumberInput = mode === "number" || usesCompositeParentScore || usesTotalOnlyInput;
     const usesSpecialInput = mode === "band_select" || mode === "grade_combo" || mode === "subject_breakdown";
 
     els.examScoreInput.hidden = !usesNumberInput;
@@ -445,7 +447,7 @@ export const syncExamScoreInputState = (els, state) => {
         return;
     }
 
-    els.examScoreInput.placeholder = usesCompositeParentScore
+    els.examScoreInput.placeholder = usesCompositeParentScore || usesTotalOnlyInput
         ? t("profile.exam_total_placeholder", "Overall total")
         : t("profile.placeholder.score", "Score");
     if (existing && Number.isFinite(Number(existing?.score))) {
@@ -519,6 +521,16 @@ export const readSelectedExamPayload = (examId, els, state) => {
         const scheme = breakdownSchemeFor(examId);
         const draft = readSubjectBreakdownDraft(examId, els, state);
         if (!draft) return null;
+
+        if (breakdownAllowsTotalOnly(examId) && !draft.components.length) {
+            const rawScore = String(els.examScoreInput?.value || "").trim();
+            const score = Number(rawScore);
+            if (!rawScore || Number.isNaN(score)) {
+                showToast(t("profile.exam_total_or_sections_required", "Enter the overall score or the score for each section."), "error");
+                return null;
+            }
+            return { score, raw_input_score: rawScore };
+        }
 
         const selectableMin = Math.max(0, Number(scheme?.selectable_count_min) || 0);
         const selectableSet = new Set(draft.selectable.map((item) => item.exam));
@@ -1186,7 +1198,8 @@ export const handleAddExam = async (els, state) => {
     const selectedPayload = readSelectedExamPayload(name, els, state);
     const score = Number(selectedPayload?.score);
     const compositeUsesParentScore = mode === "subject_breakdown" && selectedPayload?.score !== undefined
-        && String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
+        && (breakdownAllowsTotalOnly(name)
+            || String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score");
 
     const cfg = getExamConfig(name);
     if (cfg) {
@@ -1425,7 +1438,10 @@ export const bindProfileEvents = (els, state) => {
     if (els.examNameSelect) {
         els.examNameSelect.addEventListener("change", () => {
             syncExamScoreInputState(els, state);
-            state.examEditorDirty = !!els.examNameSelect.value && examDraftControls(els).some(control => String(control.value || "").trim());
+            // Values restored from an already added report are not an unfinished draft.
+            state.examEditorDirty = !!els.examNameSelect.value
+                && !findExistingExamEntry(els.examNameSelect.value, els, state)
+                && examDraftControls(els).some(control => String(control.value || "").trim());
             refreshExamActionButton(els, state);
             refreshSaveState(els, state);
         });

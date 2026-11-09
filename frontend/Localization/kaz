@@ -1167,7 +1167,7 @@ profile.exam_updated_value: {exam} жаңартылды: {value}
 languages.exam_total_overall: Жалпы балл
 languages.exam_total_total: Жалпы балл
 languages.exam_total_placeholder: {label} үшін балл
-languages.exam_breakdown_hint: Әр секция бойынша балл енгізіңіз. Жалпы балл автоматты түрде есептеледі.
+languages.exam_breakdown_optional_hint: Секциялар бойынша балл міндетті емес: жалпы балл енгізіңіз немесе барлық секцияны толтырыңыз, ол автоматты түрде есептеледі. Секциялар талаптарды нақтырақ тексеруге мүмкіндік береді.
 languages.exam_breakdown_required: Әр секция бойынша балл өлшеңіз.
 languages.error.range: {exam} {min} -ден {max} -ге дейінгі диапазонда болуы тиіс
 languages.error.step: {exam} үшін {step} қадамын пайдалану керек
@@ -1634,8 +1634,8 @@ profile.applicant_context.country_other_placeholder: Елді көрсетіңі
 profile.applicant_context.credential: Біліктілік немесе оқу бағдарламасы
 profile.applicant_context.credential_ib: Халықаралық бакалавриат (IB)
 profile.applicant_context.credential_a_level: A-levels
-profile.applicant_context.credential_us_diploma: АҚШ-тағы орта білім туралы аттестат
-profile.applicant_context.credential_national: Орта білім туралы ұлттық біліктілік
+profile.applicant_context.credential_us_diploma: АҚШ мектебінің орта білім туралы дипломы (қазақстандық аттестат емес)
+profile.applicant_context.credential_national: Орта білім туралы ұлттық біліктілік (мысалы, ҚР аттестаты)
 profile.applicant_context.credential_vocational: Кәсіби біліктілік
 profile.applicant_context.credential_other_placeholder: Біліктіліктің немесе оқу бағдарламасының атауын нақтылаңыз
 profile.applicant_context.current_residence: Тұратын елі
@@ -3181,6 +3181,8 @@ universities.level.residency: Резидентура
 profile.option.study_level_non_degree: Дәреже берілмейтін бағдарламалар
 universities.level.non_degree: Дәреже берілмейтін бағдарламалар
 profile.exam_breakdown_optional_hint: Нәтижеңізде көрсетілген бөлімдерді қосыңыз. Жоқ бөлімдер бағаланбайды.
+profile.exam_total_only_hint: Бөлімдер бойынша баллды білмесеңіз, тек жалпы баллды енгізіңіз. Бөлімдер бойынша балл талаптарды нақтырақ тексеруге мүмкіндік береді; барлық бөлімді толтырсаңыз, жалпы балл автоматты түрде есептеледі.
+profile.exam_total_or_sections_required: Жалпы баллды немесе әр бөлім бойынша баллды енгізіңіз.
 profile.exam_section_required: Нәтижеңіздегі кемінде бір бөлімнің ұпайын қосыңыз.
 profile.exam_not_recorded: Қосылмаған
 university.admissions.catalog.kind.academic_requirement: Академиялық біліктілік

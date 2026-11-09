@@ -99,7 +99,7 @@ class ProfileExamInput(BaseModel):
         if self.id and self.exam and resolve_exam_key(self.id) != resolve_exam_key(self.exam):
             raise ValueError("Exam id and exam must identify the same exam")
         coerce_exam_submission(self.id or self.exam, score_raw=self.score, raw_value=self.raw_value,
-                               details=self.details, taken_on=self.taken_on, allow_total_only_sat=True)
+                               details=self.details, taken_on=self.taken_on)
         return self
 
 

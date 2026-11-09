@@ -487,7 +487,6 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
                 raw_value=raw_value,
                 details=details,
                 taken_on=row.get("taken_on"),
-                allow_total_only_sat=True,
             )
             if exams_service._config_entry(parsed["exam"]).get("type") == "bool" and not parsed.get("score"):
                 continue

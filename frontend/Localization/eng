@@ -1167,7 +1167,7 @@ profile.exam_updated_value: Updated {exam}: {value}
 languages.exam_total_overall: Overall
 languages.exam_total_total: Total
 languages.exam_total_placeholder: {label} score
-languages.exam_breakdown_hint: Enter a score for each section. The overall score is calculated automatically.
+languages.exam_breakdown_optional_hint: Section scores are optional: enter the overall score, or fill every section and it is calculated automatically. Sections allow a more precise check.
 languages.exam_breakdown_required: Enter a score for every section.
 languages.error.range: {exam} must be between {min} and {max}
 languages.error.step: {exam} must use step {step}
@@ -1634,8 +1634,8 @@ profile.applicant_context.country_other_placeholder: Enter country
 profile.applicant_context.credential: Credential or curriculum
 profile.applicant_context.credential_ib: International Baccalaureate (IB)
 profile.applicant_context.credential_a_level: A levels
-profile.applicant_context.credential_us_diploma: US high school diploma
-profile.applicant_context.credential_national: National secondary qualification
+profile.applicant_context.credential_us_diploma: High school diploma from a school in the USA (not the Kazakhstani certificate)
+profile.applicant_context.credential_national: National secondary qualification (for example, a Kazakhstani certificate)
 profile.applicant_context.credential_vocational: Vocational or professional qualification
 profile.applicant_context.credential_other_placeholder: Describe your credential or curriculum
 profile.applicant_context.current_residence: Current country of residence
@@ -3181,6 +3181,8 @@ universities.level.residency: Residency
 profile.option.study_level_non_degree: Non-degree programs
 universities.level.non_degree: Non-degree programs
 profile.exam_breakdown_optional_hint: Add the sections shown on your report. Missing sections remain unassessed.
+profile.exam_total_only_hint: If you do not know the section scores, enter only the overall score. Section scores allow a more precise check; if you fill every section, the total is calculated automatically.
+profile.exam_total_or_sections_required: Enter the overall score or the score for each section.
 profile.exam_section_required: Add at least one reported section score.
 profile.exam_not_recorded: Not recorded
 university.admissions.catalog.kind.academic_requirement: Academic qualification

@@ -97,8 +97,7 @@ def _submitted_exams(profile):
         exam_id = row.get("id") or row.get("exam")
         try:
             result = exams_service.coerce_exam_submission(exam_id, score_raw=row.get("score"),
-                                                         raw_value=row.get("raw_value"), details=row.get("details"), taken_on=row.get("taken_on"),
-                                                         allow_total_only_sat=True)
+                                                         raw_value=row.get("raw_value"), details=row.get("details"), taken_on=row.get("taken_on"))
         except (ValueError, TypeError):
             continue
         if exams_service._config_entry(result["exam"]).get("type") == "bool" and not result.get("score"):
@@ -133,15 +132,16 @@ def _exam_minimum(alternative, row):
     """Keep all total/section checks inside one validated test attempt."""
     checks = []
 
-    def add(exam, minimum, provided):
+    def add(exam, minimum, provided, component=False):
         checks.append({"exam": exam, "minimum": minimum, "provided": provided,
-                       "status": "missing" if provided is None else "met" if provided >= minimum else "unmet"})
+                       "status": "missing" if provided is None else "met" if provided >= minimum else "unmet",
+                       **({"reason": "component_not_reported"} if component and provided is None else {})})
 
     if "minimum" in alternative:
         add(alternative["exam_id"], alternative["minimum"], row.get("score"))
     components = {item["exam"]: item.get("score") for item in (row.get("details") or {}).get("components", [])}
     for exam, minimum in alternative.get("component_minimums", {}).items():
-        add(exam, minimum, components.get(exam))
+        add(exam, minimum, components.get(exam), component=True)
     for count_rule in ([alternative["components_at_least"]] if alternative.get("components_at_least") else []) + alternative.get("additional_component_counts", []):
         values = [value for exam, value in components.items()
                   if value is not None and (not count_rule.get("exam_ids") or exam in count_rule["exam_ids"])]

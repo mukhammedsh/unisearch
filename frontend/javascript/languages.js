@@ -81,6 +81,13 @@ function getBreakdownScheme(examObj) {
   return scheme && typeof scheme === "object" ? scheme : {};
 }
 
+function usesOverallScoreInput(examObj) {
+  if (getExamInputMode(examObj) !== "subject_breakdown") return false;
+  const scheme = getBreakdownScheme(examObj);
+  const strategy = String(scheme.total_strategy || "use_parent_score").trim().toLowerCase();
+  return strategy === "use_parent_score" && !normalizeBreakdownDefs(scheme.fixed_components).some((def) => def.required);
+}
+
 function normalizeBreakdownDefs(items) {
   if (!Array.isArray(items)) return [];
   return items
@@ -626,8 +633,8 @@ export function initLanguagesPanel() {
           }).join("")}
           <div class="profile-exam-special-hint">${escapeHtml(
             t(
-              "languages.exam_breakdown_hint",
-              "Add section scores if you have them. Overall score remains the main requirement unless a university publishes section minimums."
+              "languages.exam_breakdown_optional_hint",
+              "Section scores are optional: enter the overall score, or fill every section and it is calculated automatically. Sections allow a more precise check."
             )
           )}</div>
         </div>
@@ -638,7 +645,7 @@ export function initLanguagesPanel() {
       const kind = normalizeKind(langKind.value);
       const examObj = selectedExamObject();
       const examMode = getExamInputMode(examObj);
-      const usesParentScore = examMode === "number";
+      const usesParentScore = examMode === "number" || usesOverallScoreInput(examObj);
 
       if (cefrContainer) cefrContainer.style.display = kind === KIND_CEFR ? "block" : "none";
       if (examContainer) examContainer.style.display = kind === KIND_EXAM ? "block" : "none";
@@ -849,15 +856,18 @@ export function initLanguagesPanel() {
 
         payload = { ...payload, exam: examId, ...(takenOn ? { taken_on: takenOn } : {}) };
         const examMode = getExamInputMode(examObj);
-        const usesParentScore = examMode === "number";
-
-        if (usesParentScore) {
+        const parseOverallScore = () => {
           const parsedTotal = validateExamScore(examObj, code, langExamScore.value, { required: true });
           if (parsedTotal.error) {
             showToast(parsedTotal.error, "error");
-            return;
+            return false;
           }
           payload.score = parsedTotal.score;
+          return true;
+        };
+
+        if (examMode === "number") {
+          if (!parseOverallScore()) return;
         }
 
         if (examMode === "subject_breakdown") {
@@ -866,22 +876,28 @@ export function initLanguagesPanel() {
           const scheme = getBreakdownScheme(examObj);
           const definitions = normalizeBreakdownDefs(scheme.fixed_components);
           const components = details?.components || [];
-          if (components.length !== definitions.length) {
-            showToast(
-              t("languages.exam_breakdown_required", "Enter a score for every section"),
-              "error"
-            );
-            return;
+          if (components.length === definitions.length) {
+            const values = components.map((item) => Number(item.score));
+            const autoStrategy = String(
+              scheme.auto_total_strategy
+              || (String(examObj?.id || examId).toUpperCase().startsWith("IELTS") ? "average" : "sum")
+            ).trim().toLowerCase();
+            let total = values.reduce((sum, value) => sum + value, 0);
+            if (autoStrategy === "average") total = Math.round((total / values.length) * 2) / 2;
+            payload.score = total;
+            payload.details = details;
+          } else {
+            // Sections are optional: without a full set the applicant's overall score is the evidence.
+            if (!usesOverallScoreInput(examObj)) {
+              showToast(
+                t("languages.exam_breakdown_required", "Enter a score for every section"),
+                "error"
+              );
+              return;
+            }
+            if (!parseOverallScore()) return;
+            if (components.length) payload.details = details;
           }
-          const values = components.map((item) => Number(item.score));
-          const autoStrategy = String(
-            scheme.auto_total_strategy
-            || (String(examObj?.id || examId).toUpperCase().startsWith("IELTS") ? "average" : "sum")
-          ).trim().toLowerCase();
-          let total = values.reduce((sum, value) => sum + value, 0);
-          if (autoStrategy === "average") total = Math.round((total / values.length) * 2) / 2;
-          payload.score = total;
-          payload.details = details;
         }
       }
 
