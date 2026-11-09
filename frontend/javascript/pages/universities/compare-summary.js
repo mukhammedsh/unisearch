@@ -52,7 +52,7 @@ function selectionPrompt(university, state, gap) {
   const name = compareUniversityName(university);
   const program = state.resolved?.selected_option ? admissionsProgramLabel(state.resolved.selected_option).title : "";
   return `<p data-selection-prompt="${escapeHtmlAttr(gap)}">${escapeHtml(tFormat(`universities.compare.summary.prompt_${gap}`, { university: name, program }))}</p>
-    <button type="button" class="compare-results-action" data-action="back-to-tracks">${escapeHtml(t("universities.compare.choose_context"))}</button>`;
+    <button type="button" class="compare-results-action" data-action="choose-context">${escapeHtml(t("universities.compare.choose_context"))}</button>`;
 }
 
 function cells(university, state) {

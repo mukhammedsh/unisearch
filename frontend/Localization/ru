@@ -3082,9 +3082,9 @@ universities.compare.summary.potential_aid: Возможное финансир�
 universities.compare.summary.full_records: Полные записи источников
 universities.compare.summary.additional_facts: Дополнительные факты об университетах
 universities.compare.summary.choose_programs: Выбрать программы
-universities.compare.summary.prompt_choose_program: Выберите программу или общий маршрут подачи для {university}, чтобы здесь появились сроки, стоимость и требования.
-universities.compare.summary.prompt_choose_route: Выберите способ подачи заявления в {university} на программу «{program}», чтобы здесь появились сроки, стоимость и финансирование.
-universities.compare.summary.prompt_incompatible: Выбранные для {university} программа, маршрут и уровень не совпадают. Измените выбор, чтобы сравнить.
+universities.compare.summary.prompt_choose_program: {university}: выберите программу или общий маршрут подачи, чтобы здесь появились сроки, стоимость и требования.
+universities.compare.summary.prompt_choose_route: {university}, программа «{program}»: выберите способ подачи заявления, чтобы здесь появились сроки, стоимость и финансирование.
+universities.compare.summary.prompt_incompatible: {university}: выбранные программа, маршрут и уровень не совпадают. Измените выбор, чтобы сравнить.
 universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
 university.admissions.reading.total_fee: за весь курс
 university.deadlines.kind.funding_consideration: Срок подачи заявления для рассмотрения на стипендию

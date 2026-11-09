@@ -82,12 +82,23 @@ def clean_translation_pack(pack, language):
     def clean(text):
         return strip_text(text, target) if isinstance(text, str) else text
 
+    def shorten(key):
+        # Summaries of structured values are keyed by the page's JSON.stringify(value); rebuild that key too.
+        if key.startswith(("{", "[")):
+            try:
+                value = json.loads(key)
+            except json.JSONDecodeError:
+                return strip_text(key, source)
+            stripped = strip_payload(value, source)
+            return key if stripped == value else json.dumps(stripped, ensure_ascii=False, separators=(",", ":"))
+        return strip_text(key, source)
+
     def rekey(entries, clean_value):
         result = {}
         for key, value in entries.items():
             cleaned = clean_value(value)
             result[key] = cleaned
-            short = strip_text(key, source)
+            short = shorten(key)
             # The API now sends the shortened source string, so its translation must be reachable by that key.
             if short and short != key and short not in entries:
                 result[short] = cleaned

@@ -51,10 +51,18 @@ async function chooseReviewedContext(page, id, search, option, route, cycle, stu
   await chooser.locator(`[data-study-option="${option}"]`).click();
   const select = chooser.locator('select[data-context-field="application_route_id"]');
   await expect(select).toBeEnabled();
-  await expect(select).toHaveValue("");
-  const wrapper = select.locator("xpath=..");
-  await wrapper.locator(".custom-select-trigger").click();
-  await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  // A program with one compatible route applies it after the deliberate program choice; otherwise the route stays empty.
+  const applied = await select.inputValue();
+  expect(["", route]).toContain(applied);
+  if (applied !== route) {
+    const wrapper = select.locator("xpath=..");
+    await wrapper.locator(".custom-select-trigger").click();
+    await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  } else {
+    // Applying the sole route refreshes the chooser, which renders its details collapsed again.
+    if (!(await disclosure.evaluate(element => element.open))) await disclosure.locator(":scope > summary").click();
+    await openDisclosureParents(chooser.locator("[data-compare-context-form]"));
+  }
   await setNativeSelect(page, `compare-applicant_route-${id}`, applicantRoute);
   await chooser.locator(`#compare-cycle-${id}`).fill(cycle);
   await chooser.locator("[data-compare-context-form] button[type=submit]").click();

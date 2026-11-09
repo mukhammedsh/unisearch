@@ -133,6 +133,18 @@ class AdmissionsEditorialEndpointTests(unittest.TestCase):
         self.assertNotIn("Не переносите эти суммы на 2027/28 год без нового источника", exact[short])
         self.assertEqual(exact[short], exact[original])
 
+    def test_structured_value_summaries_follow_the_cleaned_value(self):
+        clauses = frozenset(NOTES["clauses"]["eng"])
+        summaries = json.loads((DATA_DIR / "universities_translations.json").read_text(encoding="utf-8"))["languages"]["rus"]["admission_summaries"]
+        affected = [key for key in summaries if key.startswith(("{", "["))
+                    and admissions_editorial.strip_payload(json.loads(key), clauses) != json.loads(key)]
+        self.assertTrue(affected)
+        bundle = self.client.get("/universities/translations", params={"lang": "rus"}).json()["data"]["admission_summaries"]
+        for key in affected:
+            # The page looks summaries up by JSON.stringify of the value it received from the API.
+            cleaned = json.dumps(admissions_editorial.strip_payload(json.loads(key), clauses), ensure_ascii=False, separators=(",", ":"))
+            self.assertIn(cleaned, bundle, key[:80])
+
     def test_missing_notes_fail_explicitly(self):
         with tempfile.TemporaryDirectory() as temporary:
             with patch.object(admissions_editorial, "EDITORIAL_NOTES_PATH", Path(temporary) / "missing.json"):

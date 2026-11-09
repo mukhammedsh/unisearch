@@ -123,14 +123,14 @@ function emptyState(extra = {}) {
 }
 
 test("an unselected university shows one localized prompt instead of rows of unknown values", () => {
-  for (const [language, expected] of [["eng", /Choose a study option or a university-wide application route for Imperial College London/], ["rus", /Выберите программу или общий маршрут подачи для Imperial College London/], ["kaz", /Imperial College London үшін .* таңдаңыз/]]) {
+  for (const [language, expected] of [["eng", /Choose a study option or a university-wide application route for Imperial College London/], ["rus", /Imperial College London: выберите программу или общий маршрут подачи/], ["kaz", /Imperial College London үшін .* таңдаңыз/]]) {
     setLanguage(language, { emit: false });
     const html = renderReviewedComparison([universities[0], universities[1]], new Map([["imperial", emptyState()], ["mit", state("USD", 66720, "2026-27")]]));
     assert.match(html, expected, language);
     assert.equal((html.match(/data-selection-prompt="choose_program"/g) || []).length, 1, language);
     assert.equal((html.match(/rowspan="9"/g) || []).length, 1, language);
     assert.equal((html.match(/Not established|Для выбранного варианта не подтверждено|расталмаған/g) || []).length, 1, `${language}: only the fixture budget row of the selected university stays unknown`);
-    assert.match(html, /data-action="back-to-tracks"/);
+    assert.match(html, /data-action="choose-context"/);
   }
 });
 

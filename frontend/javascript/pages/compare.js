@@ -642,7 +642,8 @@ function bindCompareEvents(container) {
       return;
     }
 
-    if (action === "back-to-tracks") {
+    // A column prompt opens the same configuration step as the toolbar button.
+    if (action === "back-to-tracks" || action === "choose-context") {
       event.preventDefault();
       await renderCompareConfigure(container, { pushState: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
