@@ -3377,3 +3377,18 @@ university.admissions.glossary.what_is: {term} дегеніміз не?
 university.admissions.key_facts.cost_fee_status_source: Төлем мәртебесі туралы ресми бет
 university.admissions.key_facts.funding_policy: Университеттің жарияланған саясаты: {policy}
 university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес. Осы жол бойынша қаржыландыру жазбалары: {count}.
+university.admissions.key_facts.deadline_earlier: Бұрынырақ: {text}
+university.admissions.key_facts.deadline_recurring_next: Келесі: {name} — {date}, {days} күннен кейін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
+university.admissions.key_facts.deadline_recurring_today: Келесі: {name} — {date}, бүгін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
+university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — мерзімі өтті.
+university.admissions.key_facts.requirements_kind_academic: Академиялық талап
+university.admissions.key_facts.requirements_kind_language: Ағылшын тілі талабы
+university.admissions.key_facts.requirements_kind_exam: Міндетті емтихан
+university.admissions.key_facts.requirements_need_one: {requirement}: {items} қосыңыз
+university.admissions.key_facts.requirements_need_any: {requirement}: мыналардың біреуін қосыңыз: {items}
+university.admissions.key_facts.requirements_add_result: {exam} нәтижесін
+university.admissions.key_facts.requirements_add_date: {exam} тапсырылған күнін
+university.admissions.key_facts.requirements_add_sections: {exam} бөлімдер бойынша балдарын
+university.admissions.key_facts.requirements_add_date_sections: {exam} тапсырылған күнін және бөлімдер бойынша балдарын
+university.admissions.key_facts.requirements_add_gpa: орташа балды (GPA)
+university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}

@@ -3377,3 +3377,18 @@ university.admissions.glossary.what_is: What is {term}?
 university.admissions.key_facts.cost_fee_status_source: Official fee-status page
 university.admissions.key_facts.funding_policy: Published policy: {policy}
 university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you. Funding records for this path: {count}.
+university.admissions.key_facts.deadline_earlier: Earlier: {text}
+university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date}, in {days} days (annual date; confirm the year on the official page)
+university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date}, today (annual date; confirm the year on the official page)
+university.admissions.key_facts.deadline_recurring_passed: {name}: {date} has passed.
+university.admissions.key_facts.requirements_kind_academic: Academic requirement
+university.admissions.key_facts.requirements_kind_language: English requirement
+university.admissions.key_facts.requirements_kind_exam: Required test
+university.admissions.key_facts.requirements_need_one: {requirement}: add {items}
+university.admissions.key_facts.requirements_need_any: {requirement}: add any one of: {items}
+university.admissions.key_facts.requirements_add_result: {exam} result
+university.admissions.key_facts.requirements_add_date: {exam} test date
+university.admissions.key_facts.requirements_add_sections: {exam} section scores
+university.admissions.key_facts.requirements_add_date_sections: {exam} test date and section scores
+university.admissions.key_facts.requirements_add_gpa: GPA
+university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}

@@ -1,6 +1,6 @@
 import { isEvidenceReviewed, isPublished, isPublishedReference, isReviewedPublished } from "./admissions-status.js";
 
-const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+export const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
 export function parseExactDeadlineDate(value) {
   const text = String(value || "").trim();

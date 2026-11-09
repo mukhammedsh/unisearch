@@ -292,6 +292,29 @@ class AdmissionsAssessmentTests(unittest.TestCase):
         self.assertIsNone(result["overallChance"])
         self.assertEqual({"academic", "english"}, {row["checkId"] for row in result["missingEvidenceItems"]})
 
+    def test_real_nu_missing_checks_name_what_the_applicant_can_add(self):
+        profile = {"exams": [{"id": "SAT", "score": 1380}, {"id": "UNT", "score": 115}],
+                   "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}]}
+        result = self.assessment(self.nu_regular_undergraduate(), profile)
+        inputs = {row["checkId"]: row["missingInputs"] for row in self.checks(result) if row.get("missingInputs")}
+        self.assertEqual({"academic", "english"}, set(inputs))
+        self.assertIn({"exam": "SAT", "needs": ["taken_on"]}, inputs["academic"])
+        self.assertIn({"exam": "UNT", "needs": ["components"]}, inputs["academic"])
+        self.assertEqual([{"exam": "IELTS", "needs": ["components", "taken_on"]}], inputs["english"])
+        # Giving the dates and section scores makes the checks assessable, so nothing is reported as missing any more.
+        sections = [{"exam": name, "score": 7} for name in ("IELTS_LISTENING", "IELTS_READING", "IELTS_WRITING", "IELTS_SPEAKING")]
+        complete = {"exams": [{"id": "SAT", "score": 1380, "taken_on": "2026-05-01"}],
+                    "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7, "details": {"components": sections}, "taken_on": "2026-05-01"}]}
+        self.assertFalse(any(row.get("missingInputs") for row in self.checks(self.assessment(self.nu_regular_undergraduate(), complete))))
+
+    def test_missing_required_exam_is_listed_as_a_result_to_add_and_other_missing_checks_stay_unlisted(self):
+        resolved = self.resolve("imperial-college-london-uk", study_option_id="imperial-option-computing-meng",
+                                application_route_id="procedure-computing-meng", study_level="undergraduate",
+                                applicant_route="first_year", intended_entry_cycle="2027 entry")
+        tmua = next(row for row in self.checks(self.assessment(resolved)) if row.get("checkId") == "required-tmua")
+        self.assertEqual("missing", tmua["status"])
+        self.assertEqual([{"exam": "TMUA", "needs": ["result"]}], tmua["missingInputs"])
+
     def test_real_nu_ielts_sections_replace_missing_evidence_with_a_real_verdict(self):
         sections = [{"exam": "IELTS_LISTENING", "score": 6}, {"exam": "IELTS_READING", "score": 6},
                     {"exam": "IELTS_WRITING", "score": 6}, {"exam": "IELTS_SPEAKING", "score": 6.5}]

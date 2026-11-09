@@ -264,6 +264,44 @@ def _check_evidence(check, profile, submissions):
     raise AdmissionsCatalogError("Unsupported reviewed assessment check")
 
 
+def _missing_inputs(check, profile, submissions):
+    """Name what the applicant can add so a missing check becomes assessable.
+
+    Each entry is one alternative of the published requirement: an alternative that already has a submitted
+    result lists the parts still absent (`taken_on`, `components`); without any submitted alternative every
+    alternative lists `result`. Nothing is inferred; the check status itself is unchanged.
+    """
+    if check["kind"] not in {"academic_requirement", "language_requirement", "exam_alternatives"}:
+        return []
+    started, unstarted = [], []
+    for alternative in check["alternatives"]:
+        if alternative.get("profile_field") == "gpa":
+            if profile.get("gpa") is None:
+                unstarted.append({"field": "gpa", "needs": ["result"]})
+            continue
+        if alternative.get("credential_id"):
+            continue
+        exam_id = exams_service.resolve_exam_key(alternative["exam_id"]) if check["kind"] == "academic_requirement" else alternative["exam_id"]
+        rows = [row for row in submissions if row.get("exam") == exam_id]
+        if not rows:
+            unstarted.append({"exam": exam_id, "needs": ["result"]})
+            continue
+        needs = set()
+        for row in rows:
+            if _dated_status(row.get("taken_on"), alternative.get("windows")) == "missing" or (
+                    alternative.get("date_boundary") and not row.get("taken_on")):
+                needs.add("taken_on")
+            if check["kind"] == "exam_alternatives":
+                submitted = {item.get("exam") for item in (row.get("details") or {}).get("components", [])}
+                if alternative.get("modules") and not set(alternative["modules"]).issubset(submitted):
+                    needs.add("components")
+            elif any(item["status"] == "missing" for item in _exam_minimum(alternative, row)[1]["minimum_checks"]):
+                needs.add("components")
+        if needs:
+            started.append({"exam": exam_id, "needs": sorted(needs)})
+    return started or unstarted
+
+
 def _annotated_checks(record, fact, resolved, profile, submissions):
     base = {"factId": fact["id"], "sourceIds": fact["source_ids"], "sourceRule": _source_rule(fact),
             "evidenceOrigin": "self_reported"}
@@ -305,8 +343,10 @@ def _annotated_checks(record, fact, resolved, profile, submissions):
         if check["kind"] in {"scoped_gpa", "enrollment_units"} and not gate_met and status != "missing":
             status = "unassessed"
         numeric = check["kind"] in {"academic_requirement", "manual_minimum", "scoped_gpa", "enrollment_units", "language_requirement"}
+        missing_inputs = _missing_inputs(check, profile, submissions) if matches and status == "missing" else []
         checks.append({**base, "annotationId": record["id"], "checkId": check["id"], "kind": check["kind"],
                        **({"reason": "entry_cycle_required"} if cycle_required else {}),
+                       **({"missingInputs": missing_inputs} if missing_inputs else {}),
                        "status": status, "provided": provided, "minimum": check.get("minimum"),
                        "measurable": measurable, "numericMinimum": numeric,
                        "blocksNumericScore": covered_missing or (numeric and (not matches or status in {"missing", "unassessed"})), "rule": check})

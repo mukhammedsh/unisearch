@@ -2,10 +2,11 @@ import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
 import { formatPublishedDate } from "./admissions-presentation.js";
-import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
+import { getReviewedDeadlineEvents, MONTHS } from "./deadline-calendar.js";
 import { isEvidenceReviewed, isPublishedReference, isReviewedPublished } from "./admissions-status.js";
 import { translateAdmissionText } from "../../university-translations.js";
 import { heroIcon } from "../../icons.js";
+import { getExamDisplayName } from "../../utils/config.js";
 import { safeUrl } from "../_shared.js";
 import { glossaryTerms, renderTermList, routeWording } from "./admissions-glossary.js";
 
@@ -14,6 +15,7 @@ const locale = () => ({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" })[getCurrentLa
 // Dates an applicant must act on; openings, decisions and replies are not deadlines to meet.
 const ACTION_KINDS = new Set(["application", "funding", "funding_consideration", "test", "test_submission", "booking"]);
 const DAY_MS = 86400000;
+const TEST_KINDS = new Set(["test", "test_submission", "booking"]);
 // Funding facts may state the university's need policy in one short field; only these named fields are shown as a policy.
 const FUNDING_POLICY_FIELDS = ["international_need"];
 
@@ -37,37 +39,120 @@ export function requirementsFact(resolved) {
     })
     : t(`university.admissions.catalog.reason.${assessment.reason}`) || t("university.admissions.catalog.assessment_unavailable");
   const tone = assessment.reason === "requirements_not_met" ? "warning" : Number.isFinite(percent) && percent >= 100 ? "success" : "";
+  const missing = assessment.reason === "missing_evidence" ? missingEvidenceNotes(checks) : [];
   return { text, tone, cycleRequired: assessment.reason === "entry_cycle_required",
-    note: manual ? tFormat("university.admissions.key_facts.requirements_manual", { count: manual }) : "" };
+    notes: [...missing, manual ? tFormat("university.admissions.key_facts.requirements_manual", { count: manual }) : ""].filter(Boolean) };
 }
 
-export function deadlineFact(resolved, now = new Date()) {
+const REQUIREMENT_KINDS = { academic_requirement: "academic", language_requirement: "language", exam_alternatives: "exam", required_exam_presence: "exam" };
+const examName = id => getExamDisplayName(id, { locale: getCurrentLanguage() });
+
+// One item the applicant can add, named from the check's own missing parts; nothing is assumed about the values.
+function missingInputItem(entry) {
+  const needs = new Set(entry.needs || []);
+  if (entry.field === "gpa") return label("requirements_add_gpa");
+  const part = needs.has("taken_on") && needs.has("components") ? "date_sections" : needs.has("taken_on") ? "date" : needs.has("components") ? "sections" : "result";
+  return tFormat(`university.admissions.key_facts.requirements_add_${part}`, { exam: examName(entry.exam) });
+}
+
+// Tells the applicant what to add for checks whose evidence is missing, and which overall scores already meet a published minimum.
+function missingEvidenceNotes(checks) {
+  const lines = [];
+  for (const check of checks.filter(item => item.status === "missing" && REQUIREMENT_KINDS[item.kind])) {
+    const items = [...new Set(check.kind === "required_exam_presence"
+      ? (check.examIds || []).map(id => missingInputItem({ exam: id, needs: ["result"] })) : (check.missingInputs || []).map(missingInputItem))];
+    if (!items.length) continue;
+    lines.push(tFormat(`university.admissions.key_facts.requirements_need_${items.length > 1 ? "any" : "one"}`,
+      { requirement: label(`requirements_kind_${REQUIREMENT_KINDS[check.kind]}`), items: items.join("; ") }));
+  }
+  if (!lines.length) return [];
+  // Only the overall score of a test alternative is named; a met section minimum does not make the alternative met.
+  const met = [...new Set(checks.flatMap(check => {
+    const totals = new Set((check.rule?.alternatives || []).map(alternative => alternative.exam_id));
+    return (check.provided?.minimum_checks || []).filter(item => item.status === "met" && totals.has(item.exam)).map(item => examName(item.exam));
+  }))];
+  return [...new Set(lines), ...(met.length ? [tFormat("university.admissions.key_facts.requirements_already_met", { items: met.join(", ") })] : [])];
+}
+
+// Keeps a test-specific date only when the applicant has not entered a different test of the same requirement.
+function withoutUnusedAlternatives(entries, profileExamIds) {
+  const owned = new Set(profileExamIds.map(id => String(id).toUpperCase()));
+  const group = event => [event.kind, event.applicationCategory, event.cycle].join("|");
+  const alternatives = new Map();
+  for (const { event } of entries) {
+    if (event.examId) alternatives.set(group(event), new Set([...(alternatives.get(group(event)) || []), event.examId.toUpperCase()]));
+  }
+  return entries.filter(({ event }) => {
+    const exam = event.examId?.toUpperCase();
+    return !exam || owned.has(exam) || ![...alternatives.get(group(event))].some(other => other !== exam && owned.has(other));
+  });
+}
+
+// A yearless date counts as annual only when the reviewed record describes its dates as recurring.
+const isRecurringYearless = row => row.period?.kind === "yearless_policy" && /\brecurring\b/i.test(row.period.label || "");
+
+// The next calendar occurrence of a published "Month D" date on or after today (a lapsed one moves to next year), or null for any other wording.
+function nextAnnualOccurrence(value, today) {
+  const match = /^([A-Za-z]+) (\d{1,2})$/.exec(String(value).trim());
+  const month = match ? MONTHS.indexOf(match[1].toLowerCase()) : -1;
+  if (month < 0) return null;
+  const year = new Date(today).getUTCFullYear();
+  const at = (shift) => { const time = Date.UTC(year + shift, month, Number(match[2])); return new Date(time).getUTCMonth() === month ? time : null; };
+  const thisYear = at(0);
+  if (thisYear === null) return null;
+  return thisYear >= today ? { day: thisYear, lapsed: false } : at(1) === null ? null : { day: at(1), lapsed: true, last: thisYear };
+}
+
+export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] } = {}) {
   const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   // Dated references from an earlier cycle do not describe the next date to meet.
-  const dated = getReviewedDeadlineEvents(resolved)
+  const dated = withoutUnusedAlternatives(getReviewedDeadlineEvents(resolved)
     .filter(event => ACTION_KINDS.has(event.kind) && event.publicationStatus !== "published_dated_reference")
     .map(event => ({ event, day: Date.parse(`${event.deadline}T00:00:00Z`) }))
     .filter(entry => Number.isFinite(entry.day))
-    .sort((left, right) => left.day - right.day);
+    .sort((left, right) => left.day - right.day), profileExamIds);
   const describe = entry => ({ title: admissionDeadlineTitle(entry.event), date: formatPublishedDate(entry.event.deadline) });
   // Terms come from the published round name and the application route, not from the translated title.
   const termsFor = (...names) => glossaryTerms(names, routeWording(resolved?.selected_route));
-  const upcoming = dated.find(entry => entry.day >= today);
+  const countdown = entry => {
+    const days = Math.round((entry.day - today) / DAY_MS);
+    return { days, text: days ? tFormat("university.admissions.key_facts.deadline_upcoming", { ...describe(entry), days })
+      : tFormat("university.admissions.key_facts.deadline_today", describe(entry)) };
+  };
+  const ahead = dated.filter(entry => entry.day >= today);
+  // The application deadline is the headline; a test or booking date that comes first is shown beneath it.
+  const upcoming = ahead.find(entry => entry.event.kind === "application") || ahead[0];
   if (upcoming) {
-    const days = Math.round((upcoming.day - today) / DAY_MS);
-    return { status: "upcoming", days, tone: days <= 30 ? "warning" : "", terms: termsFor(upcoming.event.name),
-      text: days ? tFormat("university.admissions.key_facts.deadline_upcoming", { ...describe(upcoming), days })
-        : tFormat("university.admissions.key_facts.deadline_today", describe(upcoming)) };
+    const { days, text } = countdown(upcoming);
+    const earlier = ahead.find(entry => entry.day < upcoming.day && TEST_KINDS.has(entry.event.kind));
+    return { status: "upcoming", days, tone: days <= 30 ? "warning" : "", terms: termsFor(upcoming.event.name, earlier?.event.name), text,
+      notes: earlier ? [tFormat("university.admissions.key_facts.deadline_earlier", { text: countdown(earlier).text })] : [] };
   }
   if (dated.length) return { status: "passed", tone: "danger", terms: termsFor(dated.at(-1).event.name), text: tFormat("university.admissions.key_facts.deadline_passed", describe(dated.at(-1))) };
-  // Yearless or period-only publications stay as published: no year is inferred and no countdown is shown.
+  // Yearless dates stay as published unless the record describes them as recurring (annual); periods always stay as published.
   const ids = new Set(resolved?.fact_groups?.deadlines || []);
   // A partly published window record still publishes its application period.
   const rows = (resolved?.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched" && isEvidenceReviewed(row)
     && (isPublishedReference(row) || typeof row.value?.application_period === "string"));
   const windowName = name => ({ "Early Action": t("university.admissions.reading.early_action"), "Regular Action": t("university.admissions.reading.regular_action") })[name] || name;
-  const windows = rows.flatMap(row => Array.isArray(row.value?.windows) ? row.value.windows : [])
+  const yearlessWindows = list => list.flatMap(row => Array.isArray(row.value?.windows) ? row.value.windows : [])
     .filter(window => typeof window.name === "string" && typeof window.application_due === "string" && !/20\d{2}/.test(window.application_due));
+  const annual = yearlessWindows(rows.filter(isRecurringYearless))
+    .map(window => ({ window, ...nextAnnualOccurrence(window.application_due, today) }))
+    .filter(entry => entry.day);
+  if (annual.length) {
+    const next = annual.reduce((first, entry) => entry.day < first.day ? entry : first);
+    const days = Math.round((next.day - today) / DAY_MS);
+    const named = entry => ({ name: windowName(entry.window.name), date: formatPublishedDate(entry.window.application_due) });
+    // Windows that passed more recently than the next one's last occurrence are named, so the applicant sees why it is the nearest.
+    const passed = annual.filter(entry => entry !== next && next.lapsed && entry.lapsed && entry.last > next.last)
+      .map(entry => tFormat("university.admissions.key_facts.deadline_recurring_passed", named(entry)));
+    const upcoming = tFormat(`university.admissions.key_facts.deadline_recurring_${days ? "next" : "today"}`,
+      { name: windowName(next.window.name), date: formatPublishedDate(new Date(next.day).toISOString().slice(0, 10)), days });
+    return { status: "recurring", days, tone: days <= 30 ? "warning" : "", terms: termsFor(annual.map(entry => entry.window.name)),
+      text: [...passed, upcoming].join(" ") };
+  }
+  const windows = yearlessWindows(rows);
   const yearless = windows.map(window => `${windowName(window.name)}: ${formatPublishedDate(window.application_due)}`);
   if (yearless.length) return { status: "yearless", tone: "", terms: termsFor(windows.map(window => window.name)),
     text: tFormat("university.admissions.key_facts.deadline_yearless", { dates: [...new Set(yearless)].join("; ") }) };
@@ -152,7 +237,7 @@ function row(key, fact, action = "") {
     <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${notes}${links}${renderTermList(fact.terms || [])}${action}</dd></div>`;
 }
 
-export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileCycle = "", now = new Date() } = {}) {
+export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileCycle = "", profileExamIds = [], now = new Date() } = {}) {
   if (!resolved?.selected_route) return "";
   const requirements = requirementsFact(resolved);
   const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="${profileCycle ? "apply" : "edit"}">${escapeHtml(profileCycle
@@ -162,7 +247,7 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileCycle = "
     <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>
     <dl class="admissions-key-facts__list">
       ${row("requirements", requirements, requirements.cycleRequired ? cycleAction : "")}
-      ${row("deadline", deadlineFact(resolved, now), open("tab-deadlines", "open_deadlines"))}
+      ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"))}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"))}
       ${row("funding", fundingFact(resolved))}
     </dl>
