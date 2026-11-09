@@ -3088,6 +3088,17 @@ universities.compare.summary.prompt_choose_program: {university} үшін мер
 universities.compare.summary.prompt_choose_route: {university} ішіндегі «{program}» бағдарламасына өтініш беру тәсілін таңдаңыз, сонда мерзімдер, құн және қаржыландыру осында көрінеді.
 universities.compare.summary.prompt_incompatible: {university} үшін таңдалған бағдарлама, өтініш беру жолы және деңгей сәйкес келмейді. Салыстыру үшін таңдауды өзгертіңіз.
 universities.compare.summary.configure_title: Бағдарламалар мен қабылдау бағыттарын таңдау
+universities.compare.summary.cycle_missing: Қабылдау кезеңі таңдалмаған. Нақты кезеңге қатысты мәліметтер жарияланғандай көрсетіледі, ал кезеңге байланысты ең төменгі талаптар тексерілмейді.
+universities.compare.summary.cycle_profile: Профиліңізде {cycle} көрсетілген. Оны «Таңдауды өзгерту» арқылы қолдана аласыз.
+universities.compare.summary.open_admission: Талаптарды ашу
+universities.compare.pending_changes: Өзгерістер «Сүзгілерді қолдану» немесе «Жалғастыру» батырмасын басқанда қолданылады.
+universities.compare.budget.title: Құн және сіздің бюджетіңіз
+universities.compare.budget.summary: Жарияланған жылдық баға сіздің жылдық бюджетіңізбен жеке салыстырылады. Көмек шегерілмейді, ал тек оқу ақысын көрсететін баға тұру шығындарын қамтымайды.
+universities.compare.budget.summary_incomplete: Кемінде бір таңдалған бағдарлама үшін салыстыруға болатын жылдық баға немесе жылдық бюджетіңіз жоқ, сондықтан бюджетпен салыстыру жасалмайды.
+universities.compare.budget.cost: Жарияланған баға
+universities.compare.budget.fit: Бюджетіңізбен салыстыру
+universities.compare.budget.notes: Бағаға түсініктеме
+universities.compare.budget.not_comparable: Жарияланған бағаны салыстыруға болатын жылдық сомаға келтіру мүмкін емес.
 university.admissions.reading.total_fee: толық оқу ақысы
 university.deadlines.kind.funding_consideration: Стипендия қарастыруға арналған өтініш беру мерзімі
 university.admissions.reading.first_year: бірінші жыл

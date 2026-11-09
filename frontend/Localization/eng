@@ -3088,6 +3088,17 @@ universities.compare.summary.prompt_choose_program: Choose a study option or a u
 universities.compare.summary.prompt_choose_route: Choose how you will apply to {university} for {program} to see its dates, costs and funding here.
 universities.compare.summary.prompt_incompatible: The selected program, route and level for {university} do not match. Change the selection to compare it.
 universities.compare.summary.configure_title: Choose programs and application routes
+universities.compare.summary.cycle_missing: No entry cycle selected. Cycle-specific facts are shown as published and minimums that depend on the cycle are not checked.
+universities.compare.summary.cycle_profile: Your profile lists {cycle}. You can apply it under Change selection.
+universities.compare.summary.open_admission: Open requirements
+universities.compare.pending_changes: Your changes are applied when you press Apply filters or Continue.
+universities.compare.budget.title: Cost and your budget
+universities.compare.budget.summary: Each published annual price is compared with your yearly budget on its own. Aid is not deducted, and a tuition-only price does not include living costs.
+universities.compare.budget.summary_incomplete: A comparable annual price or your yearly budget is missing for at least one selected program, so no budget comparison is made.
+universities.compare.budget.cost: Published price
+universities.compare.budget.fit: Compared with your budget
+universities.compare.budget.notes: Price notes
+universities.compare.budget.not_comparable: The published price cannot be turned into a comparable yearly amount.
 university.admissions.reading.total_fee: total fee
 university.deadlines.kind.funding_consideration: Application deadline for scholarship consideration
 university.admissions.reading.first_year: first year
