@@ -58,7 +58,7 @@ def list_study_options(
         )
         revision = result["revision"]
         etag = '"' + hashlib.sha256(json.dumps(
-            [revision, university_id, search.strip(), study_level, major, page, limit, language],
+            [revision, admissions_editorial.revision(), university_id, search.strip(), study_level, major, page, limit, language],
             ensure_ascii=True, separators=(",", ":"),
         ).encode("utf-8")).hexdigest() + '"'
         cache_control = "public, max-age=300, stale-while-revalidate=60"
