@@ -577,6 +577,29 @@ class SharedRouteProductionTests(unittest.TestCase):
                 self.assertTrue(all(not fact["scope"]["option_ids"] for fact in result["history"]["facts"]))
         self.assertEqual([], service.list_study_options("imperial-college-london-uk")["shared_routes"])
 
+    def test_superseded_research_notes_never_reach_applicant_history(self):
+        institution_id = "stanford-university-usa-ca"
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            research_ids = {row["id"] for row in service.get_institution(institution_id)["unknowns"]
+                            if row["review_status"] == "superseded_by_completed_research"}
+            self.assertEqual(7, len(research_ids))
+            contexts = [{"application_route_id": route["id"]} for route in service.get_institution(institution_id)["application_routes"]]
+            page = 1
+            while True:
+                listing = service.list_study_options(institution_id, page=page, limit=100)
+                contexts.extend({"study_option_id": option["id"]} for option in listing["items"])
+                if len(listing["items"]) < 100:
+                    break
+                page += 1
+            history_unknowns = set()
+            for context in contexts:
+                result = service.resolve_context(institution_id, context=context)
+                history_unknowns.update(row["id"] for row in result["history"]["unknowns"])
+        self.assertFalse(research_ids & history_unknowns)
+        # Superseded records with a published source update stay visible as dated history.
+        self.assertIn("undergraduate-shared-evidence:stanford-transfer-application-fee-conflict", history_unknowns)
+
     def test_cs_policy_layers_attach_to_real_routes_and_special_paths_survive(self):
         institution_id = "stanford-university-usa-ca"
         context = {"study_option_id": "stanford-option-cs-ms", "study_level": "masters"}

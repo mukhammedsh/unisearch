@@ -274,6 +274,7 @@ const INTERNAL_FIELDS = new Set([
   "addressed_conditions", "covered_check_ids", "subjects_field", "field", "mapping_reviewed_at", "score_strategy", "component_count",
   "origin", "university_id", "program_id", "option_ids", "route_ids", "applicant_routes", "cycles",
   "bulletin_external_admissions_field_present", "bulletin_internal_admissions_field_present", "bulletin_coterm_admissions_field_present",
+  "legacy_field",
 ]);
 const ENUM_LABELS = {
   source_conflict_requires_confirmation: "conflicting",
@@ -298,6 +299,12 @@ const ENUM_LABELS = {
   program_specific: "enum.program_specific", route_wide: "enum.route_wide",
   academic_year: "enum.academic_year", one_time: "enum.one_time",
 };
+// Structured snake_case codes are shown through localized `enum.<code>` labels; codes without one are humanized, never shown raw.
+const CODE_VALUE = /^[a-z][a-z0-9]*(?:_[a-z0-9]+)+$/;
+const CODE_IN_TEXT = /(?<![\w@./-])[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?![\w@/-])/g;
+const humanizeCode = code => { const words = code.replaceAll("_", " "); return words.charAt(0).toUpperCase() + words.slice(1); };
+const codeLabel = code => t(`${PREFIX}enum.${code}`, humanizeCode(code));
+const localizeCodeTokens = text => String(text).replace(CODE_IN_TEXT, code => codeLabel(code));
 Object.assign(ADMISSIONS_RENDER_LABELS, {
   "field.possible_exemption_evidence_kinds": "Language background for individual exemption review",
   "study_level.preparation": "Preparation", "study_level.undergraduate": "Undergraduate", "study_level.masters": "Master's", "study_level.doctoral": "Doctoral", "study_level.professional": "Professional", "study_level.residency": "Residency", "study_level.non_degree": "Non-degree",
@@ -373,8 +380,12 @@ function scalar(value, referenceLabels = {}) {
   if (ADMISSIONS_RENDER_LABELS[`kind.${text}`]) return escapeHtml(label(`kind.${text}`));
   if (getExamConfig(text) || /^(?:TOEFL|GMAT|IELTS|DUOLINGO|CAMBRIDGE)_/.test(text)) return escapeHtml(getExamDisplayName(text));
   if (/^https?:\/\//i.test(text)) return sourceLink(text);
+  if (CODE_VALUE.test(text)) return escapeHtml(codeLabel(text));
+  const localized = localizeCodeTokens(text);
+  const summary = translateAdmissionSummary(text);
+  if (summary) return escapeHtml(summary === text ? localized : summary);
   const program = translateProgramName(text);
-  return escapeHtml(translateAdmissionSummary(text) || (program !== text ? program : translateAdmissionText(text, text)));
+  return escapeHtml(program !== text ? program : translateAdmissionText(localized, localized));
 }
 
 // Published round names that have a localized label; any other published name is shown as published.
@@ -399,7 +410,26 @@ export function admissionDeadlineTitle(event) {
   return event.publicationStatus === "published_dated_reference" ? `${title} · ${t("university.deadlines.dated_reference")}` : title;
 }
 
+// Prepared bulletin notes can embed a Python dict literal, e.g. "...: {'externalAdmissions': True}.".
+const PYTHON_DICT_NOTE = /^(.*?)\s*\{((?:\s*'[A-Za-z]\w*'\s*:\s*(?:True|False|None|-?\d+(?:\.\d+)?)\s*,?)+)\s*\}\.?$/;
+const PYTHON_DICT_ENTRY = /'([A-Za-z]\w*)'\s*:\s*(True|False|None|-?\d+(?:\.\d+)?)/g;
+
+function pythonDictFlags(text) {
+  const match = PYTHON_DICT_NOTE.exec(text.trim());
+  if (!match) return null;
+  const entries = [...match[2].matchAll(PYTHON_DICT_ENTRY)].map(([, key, raw]) => [key,
+    raw === "True" ? true : raw === "False" ? false : raw === "None" ? null : Number(raw)]);
+  return entries.length ? { note: match[1].replace(/:$/, "").trim(), flags: Object.fromEntries(entries) } : null;
+}
+
 export function renderAdmissionsValue(value, referenceLabels = {}) {
+  if (typeof value === "string") {
+    const dict = pythonDictFlags(value);
+    if (dict) {
+      const note = dict.note ? `<p>${escapeHtml(translateAdmissionText(dict.note, dict.note))}</p>` : "";
+      return `${note}${renderAdmissionsValue(dict.flags, referenceLabels)}`;
+    }
+  }
   if (Array.isArray(value)) {
     // Identical rendered items add no information, so each is shown once.
     const items = [...new Set(value.map(item => renderAdmissionsValue(item, referenceLabels)).filter(Boolean))];
@@ -808,7 +838,7 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
 
 function renderUnknowns(resolved, unknowns = resolved.unknowns || [], simple = false) {
   if (!unknowns.length) return "";
-  const rows = `<div class="admissions-catalog__list">${unknowns.map(row => `<div class="admissions-catalog__unknown"><p>${escapeHtml(translateAdmissionSummary(row.reason) || row.reason || label("unknown"))}</p>${row.official_next_step ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(translateAdmissionSummary(row.official_next_step) || row.official_next_step)}</p>` : ""}${scope(row, resolved)}${sourcesBlock(sources(row, resolved, { compact: true }))}</div>`).join("")}</div>`;
+  const rows = `<div class="admissions-catalog__list">${unknowns.map(row => `<div class="admissions-catalog__unknown"><p>${escapeHtml(localizeCodeTokens(translateAdmissionSummary(row.reason) || row.reason || label("unknown")))}</p>${row.official_next_step ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(localizeCodeTokens(translateAdmissionSummary(row.official_next_step) || row.official_next_step))}</p>` : ""}${scope(row, resolved)}${sourcesBlock(sources(row, resolved, { compact: true }))}</div>`).join("")}</div>`;
   return simple ? `<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">${escapeHtml(label("unknowns"))} (${unknowns.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${rows}</div></details>` : `<section class="admissions-catalog__section"><h3>${escapeHtml(label("unknowns"))}</h3>${rows}</section>`;
 }
 
