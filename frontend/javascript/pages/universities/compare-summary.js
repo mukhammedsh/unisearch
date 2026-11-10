@@ -103,7 +103,7 @@ function cells(university, state, { profileCycle = "" } = {}) {
     .map(row => `<div>${escapeHtml(row.value.funding_program === "Need-based Aid" ? t("university.admissions.reading.aid_title") : translateAdmissionText(row.value.funding_program, row.value.funding_program))}<small>${escapeHtml(t(`university.admissions.reading.${row.value.availability === "excluded_by_published_course_rules" ? "funding_excluded" : row.value.availability === "not_established" ? "funding_unconfirmed" : "potential_aid"}`))}</small></div>`);
   // The requirements row repeats the university page's minimum-check summary; it is not an admission decision.
   const checked = unavailable || !resolved.selected_route ? null : requirementsFact(resolved);
-  const requirements = checked ? `<div>${escapeHtml(checked.text)}${checked.note ? `<small>${escapeHtml(checked.note)}</small>` : ""}</div>` : "";
+  const requirements = checked ? `<div>${escapeHtml(checked.text)}${(checked.notes || []).map(note => `<small>${escapeHtml(note)}</small>`).join("")}</div>` : "";
   return {
     program, study: study.length ? escapeHtml(study.join(" · ")) : unknown(),
     route: unavailable || !resolved.selected_route ? unknown() : escapeHtml(admissionsRouteName({ ...resolved.selected_route, title: "", target: "" }, { presentation: "simple" })),
