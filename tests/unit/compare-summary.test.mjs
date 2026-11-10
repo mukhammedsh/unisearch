@@ -82,6 +82,27 @@ test("shared undergraduate comparison reads route facts and prices without a sel
   assert.doesNotMatch(renderReviewedComparison([universities[1]], new Map([["mit", shared]])), /66,720 USD|92,760 USD/);
 });
 
+test("comparison shows Stanford's recurring first-year windows as published, without an invented year", () => {
+  setLanguage("eng", { emit: false });
+  const stanford = state("USD", 66720, "2026-27");
+  stanford.context = { study_option_id: "", application_route_id: "stanford-first-year", study_level: "undergraduate" };
+  stanford.resolved.selected_option = null;
+  stanford.resolved.selected_route = { id: "stanford-first-year", title: "Stanford first-year admission" };
+  stanford.resolved.reading_scope = "institution_route";
+  stanford.resolved.context_applicability = { option: "not_required", route: "matched", level: "matched" };
+  stanford.resolved.facts = [
+    { ...fact("prose", "REA Common Application deadline is November 1; RD deadline is January 5. The reviewed page lists recurring month/day deadlines without an explicit entry year."),
+      scope: { option_ids: [], route_ids: ["stanford-first-year"] }, topic: "application_deadlines" },
+    { ...fact("windows", { windows: [{ name: "Restrictive Early Action", application_due: "November 1" }, { name: "Regular Decision", application_due: "January 5" }] }),
+      scope: { option_ids: [], route_ids: ["stanford-first-year"] }, topic: "application_windows",
+      period: { kind: "yearless_policy", label: "Recurring first-year dates; page does not specify entry year" } },
+  ];
+  stanford.resolved.fact_groups = { deadlines: ["prose", "windows"] };
+  const html = renderReviewedComparison([{ id: "stanford", name: "Stanford University" }], new Map([["stanford", stanford]]));
+  assert.match(html, /Restrictive Early Action: November 1<br>Regular Decision: January 5<small>/);
+  assert.doesNotMatch(html, /November 1, 20\d{2}|January 5, 20\d{2}/);
+});
+
 test("comparison route labels use the localized simple classification when a route has no translation", () => {
   setLanguage("rus", { emit: false });
   const selected = state("GBP", 47800, "2027 entry");

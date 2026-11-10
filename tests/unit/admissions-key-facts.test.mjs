@@ -98,6 +98,38 @@ test("yearless dates are not turned into annual dates unless the record says the
   assert.equal(described.days, undefined);
 });
 
+// Stanford keeps its published prose record and adds a structured companion with the same standing month/day dates.
+const stanfordProse = { ...events([]), id: "rounds-prose", attributes: {}, period: null,
+  value: "REA Common Application deadline is November 1; RD deadline is January 5. The reviewed page lists recurring month/day deadlines without an explicit entry year." };
+const stanfordWindows = (windows, label) => ({ ...events([]), id: "rounds-windows", attributes: {},
+  period: { kind: "yearless_policy", label }, value: { windows } });
+const stanfordFirstYear = stanfordWindows([
+  { name: "Restrictive Early Action", application_due: "November 1", aid_due: "November 15", decision: "mid-December" },
+  { name: "Regular Decision", application_due: "January 5", aid_due: "February 15", decision: "early April" }], "Recurring first-year dates; page does not specify entry year");
+const stanfordTransfer = stanfordWindows([{ name: "Transfer application", application_due: "March 15", aid_due: "March 15", decision: "mid-May" }],
+  "Recurring transfer deadline; page does not label a calendar year");
+
+test("Stanford's recurring first-year and transfer windows get the next calendar occurrence while the prose alone does not", () => {
+  const today = new Date(2026, 10, 10, 12, 0);
+  assert.equal(deadlineFact(withRows([stanfordProse]), today).status, "described");
+  const firstYear = deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today);
+  assert.equal(firstYear.status, "recurring");
+  assert.equal(firstYear.days, 56);
+  assert.match(firstYear.text, /^Restrictive Early Action[^:]*: November 1 has passed\. Next: Regular Decision[^—]*— January 5, 2027, in 56 days \(annual date; confirm the year on the official page\)$/);
+  assert.deepEqual(firstYear.terms, ["restrictive_early_action", "regular_decision"]);
+  // After Regular Decision the following year's Restrictive Early Action date leads.
+  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), new Date(2027, 0, 10, 12, 0)).text, /^Next: Restrictive Early Action[^—]*— November 1, 2027, in 295 days/);
+  const transfer = deadlineFact(withRows([stanfordProse, stanfordTransfer]), today);
+  assert.equal(transfer.status, "recurring");
+  assert.equal(transfer.days, 125);
+  assert.match(transfer.text, /^Next: Transfer application — March 15, 2027, in 125 days \(annual date; confirm the year on the official page\)$/);
+  // The window names follow the interface language.
+  setLanguage("rus", { emit: false });
+  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today).text, /^Restrictive Early Action · .*: 1 ноября — срок прошёл\. Следующий: Regular Decision · .* — 5 января 2027/);
+  assert.match(deadlineFact(withRows([stanfordTransfer]), today).text, /^Следующий: Подача на перевод — 15 марта 2027/);
+  setLanguage("eng", { emit: false });
+});
+
 test("the application deadline is the headline and a nearer test or booking date is shown beneath it", () => {
   const list = [
     { date: "2026-12-21", deadline_type: "test_date", label: "TMUA", publication_status: "published" },

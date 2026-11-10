@@ -2782,6 +2782,11 @@ university.admissions.reading.month.11: қараша
 university.admissions.reading.month.12: желтоқсан
 university.admissions.reading.early_action: Early Action · ерте өтініш
 university.admissions.reading.regular_action: Regular Action · негізгі өтініш
+university.admissions.reading.restrictive_early_action: Restrictive Early Action · ерте міндеттемесіз өтініш
+university.admissions.reading.regular_decision: Regular Decision · негізгі өтініш
+university.admissions.reading.transfer_application: Ауысуға өтініш
+university.admissions.reading.priority_deadline: Басым мерзім
+university.admissions.reading.application_deadline: Өтініш беру мерзімі
 university.admissions.reading.official_application: Ресми өтініш беру және нұсқаулық
 university.admissions.reading.official_source: Ресми дереккөз
 university.admissions.reading.unknown: Мұнда көрсетілмеген

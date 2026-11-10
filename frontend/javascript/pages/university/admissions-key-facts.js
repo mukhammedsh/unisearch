@@ -1,6 +1,6 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
-import { admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
+import { admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName, admissionWindowName } from "./admissions-render.js";
 import { formatPublishedDate } from "./admissions-presentation.js";
 import { getReviewedDeadlineEvents, MONTHS } from "./deadline-calendar.js";
 import { isEvidenceReviewed, isPublishedReference, isReviewedPublished } from "./admissions-status.js";
@@ -134,7 +134,7 @@ export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] }
   // A partly published window record still publishes its application period.
   const rows = (resolved?.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched" && isEvidenceReviewed(row)
     && (isPublishedReference(row) || typeof row.value?.application_period === "string"));
-  const windowName = name => ({ "Early Action": t("university.admissions.reading.early_action"), "Regular Action": t("university.admissions.reading.regular_action") })[name] || name;
+  const windowName = admissionWindowName;
   const yearlessWindows = list => list.flatMap(row => Array.isArray(row.value?.windows) ? row.value.windows : [])
     .filter(window => typeof window.name === "string" && typeof window.application_due === "string" && !/20\d{2}/.test(window.application_due));
   const annual = yearlessWindows(rows.filter(isRecurringYearless))

@@ -2782,6 +2782,11 @@ university.admissions.reading.month.11: November
 university.admissions.reading.month.12: December
 university.admissions.reading.early_action: Early Action · early application
 university.admissions.reading.regular_action: Regular Action · regular application
+university.admissions.reading.restrictive_early_action: Restrictive Early Action · early, non-binding application
+university.admissions.reading.regular_decision: Regular Decision · regular application
+university.admissions.reading.transfer_application: Transfer application
+university.admissions.reading.priority_deadline: Priority deadline
+university.admissions.reading.application_deadline: Application deadline
 university.admissions.reading.official_application: Official application instructions
 university.admissions.reading.official_source: Official source
 university.admissions.reading.unknown: Not stated here

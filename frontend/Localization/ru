@@ -2780,6 +2780,11 @@ university.admissions.reading.month.11: ноября
 university.admissions.reading.month.12: декабря
 university.admissions.reading.early_action: Early Action · ранняя подача
 university.admissions.reading.regular_action: Regular Action · обычная подача
+university.admissions.reading.restrictive_early_action: Restrictive Early Action · ранняя необязывающая подача
+university.admissions.reading.regular_decision: Regular Decision · обычная подача
+university.admissions.reading.transfer_application: Подача на перевод
+university.admissions.reading.priority_deadline: Приоритетный срок
+university.admissions.reading.application_deadline: Срок подачи заявления
 university.admissions.reading.official_application: Официальная подача и инструкции
 university.admissions.reading.official_source: Официальный источник
 university.admissions.reading.unknown: Здесь не указано

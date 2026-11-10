@@ -869,6 +869,63 @@
       "content_reviewed_at": "2026-10-19"
     },
     {
+      "id": "stanford-firstyear-decision-rounds-windows",
+      "topic": "application_windows",
+      "value": {
+        "windows": [
+          {
+            "name": "Restrictive Early Action",
+            "application_due": "November 1",
+            "aid_due": "November 15",
+            "decision": "mid-December"
+          },
+          {
+            "name": "Regular Decision",
+            "application_due": "January 5",
+            "aid_due": "February 15",
+            "decision": "early April"
+          }
+        ],
+        "enrollment_reply": "May 1"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-firstyear-requirements",
+        "stanford-ug-firstyear-rounds",
+        "stanford-ug-aid-dates"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Recurring first-year dates; page does not specify entry year"
+      },
+      "conditions": [
+        "These are the standard first-year deadlines. Applicants who submit the Optional Arts Portfolio follow the earlier application deadlines (October 15 for Restrictive Early Action and December 5 for Regular Decision) published in the related first-year deadline record.",
+        "The aid dates are priority filing dates from the central aid page, separate from the admission deadlines; the aid page does not state an entering academic year for them."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-19",
+      "related_fact_ids": [
+        "undergraduate-shared-evidence:stanford-firstyear-decision-rounds-deadlines",
+        "undergraduate-shared-evidence:stanford-ug-aid-deadlines"
+      ]
+    },
+    {
       "id": "stanford-firstyear-interview",
       "topic": "interview",
       "value": "First-year applicants who attend high school in an interview area and apply REA or RD may be invited to an optional alumni interview. Availability depends on interview-area coverage and volunteer availability; applicants cannot request or schedule one. Not receiving an interview is not a disadvantage.",
@@ -1221,6 +1278,56 @@
       ],
       "exceptions": [],
       "content_reviewed_at": "2026-10-19"
+    },
+    {
+      "id": "stanford-transfer-deadline-windows",
+      "topic": "application_windows",
+      "value": {
+        "windows": [
+          {
+            "name": "Transfer application",
+            "application_due": "March 15",
+            "aid_due": "March 15",
+            "decision": "mid-May"
+          }
+        ],
+        "enrollment_reply": "June 1"
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-transfer-requirements",
+        "stanford-ug-aid-dates"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Recurring transfer deadline; page does not label a calendar year"
+      },
+      "conditions": [
+        "All new transfer entrants begin in autumn/fall; no winter or spring start is offered.",
+        "The aid date is the priority filing date from the central aid page, separate from the admission deadline; the aid page does not state an entering academic year for it."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-19",
+      "related_fact_ids": [
+        "undergraduate-shared-evidence:stanford-transfer-deadline",
+        "undergraduate-shared-evidence:stanford-ug-aid-deadlines"
+      ]
     },
     {
       "id": "stanford-transfer-arts-portfolio",

@@ -314894,7 +314894,7 @@
       "inputs": [
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/catalog.json",
-          "sha256": "139876567ca710eb6ff00db0fcda4a2283c71dae6a8e32e256f4c4fc4a7da0ba"
+          "sha256": "b8afe43545e3acca4f2145af4766d3235ac63888d57be27d8cb49f0842935a0e"
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/coterm-central-evidence.json",
@@ -314902,7 +314902,7 @@
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/coverage-index.json",
-          "sha256": "5eaf542481d5adeedab07517280e45316753d124245c4a75ea6745459e212a92"
+          "sha256": "c90aa1147f5abcd2efc57092de4b983540de4739da745029589bfffe6720a961"
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/directory-evidence.json",
@@ -314930,7 +314930,7 @@
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/medicine-graduate-evidence.json",
-          "sha256": "f825e73d57abebf91177d244f401a7e1755c7423e89ef4f05d8db5c95e818354"
+          "sha256": "ab6c492e9ed1dba48da1e9efcd08fd0d8ffcf5499f212b22331da3b27c418f08"
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/professional-evidence.json",
@@ -314954,7 +314954,7 @@
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/undergraduate-shared-evidence.json",
-          "sha256": "6606eabd36fbabf3de768aaa28f2dcd9aa912fb44afb4b7ec65b7f92c98e2807"
+          "sha256": "9965e144b2765345ceb4014bcc8711fcb757351a6200f7f62f6d2cbd61bab8da"
         },
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/undergraduate-study-evidence.json",
@@ -329169,7 +329169,8 @@
             "medicine-graduate-evidence:chpr-internal-route",
             "medicine-graduate-evidence:chpr-coterm-2027-deadline",
             "medicine-graduate-evidence:recheck-degree-chpr-ms-completion-context",
-            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process"
+            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process",
+            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process-windows"
           ],
           "evidence_profiles": [
             {
@@ -340897,7 +340898,8 @@
           "fact_ids": [
             "medicine-graduate-evidence:enroute-neurs-ms",
             "medicine-graduate-evidence:recheck-degree-neurs-ms-completion-context",
-            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process"
+            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process",
+            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process-windows"
           ],
           "evidence_profiles": [
             {
@@ -346986,6 +346988,7 @@
             "undergraduate-shared-evidence:stanford-firstyear-required-records",
             "undergraduate-shared-evidence:stanford-firstyear-essays",
             "undergraduate-shared-evidence:stanford-firstyear-decision-rounds-deadlines",
+            "undergraduate-shared-evidence:stanford-firstyear-decision-rounds-windows",
             "undergraduate-shared-evidence:stanford-firstyear-interview",
             "undergraduate-shared-evidence:stanford-firstyear-arts-portfolio",
             "undergraduate-shared-evidence:stanford-ug-international-review",
@@ -347133,6 +347136,7 @@
             "undergraduate-shared-evidence:stanford-transfer-application-documents",
             "undergraduate-shared-evidence:stanford-transfer-essays",
             "undergraduate-shared-evidence:stanford-transfer-deadline",
+            "undergraduate-shared-evidence:stanford-transfer-deadline-windows",
             "undergraduate-shared-evidence:stanford-transfer-arts-portfolio",
             "undergraduate-shared-evidence:stanford-ug-tuition-and-budget-2026-27",
             "undergraduate-shared-evidence:stanford-ug-aid-need-and-scholarship",
@@ -361709,7 +361713,8 @@
           ],
           "fact_ids": [
             "medicine-graduate-evidence:enroute-neurs-ms",
-            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process"
+            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process",
+            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process-windows"
           ],
           "shared_policy_context_ids": [],
           "provenance": {
@@ -362216,7 +362221,8 @@
           ],
           "fact_ids": [
             "medicine-graduate-evidence:chpr-internal-route",
-            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process"
+            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process",
+            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process-windows"
           ],
           "shared_policy_context_ids": [],
           "provenance": {
@@ -402768,6 +402774,95 @@
           }
         },
         {
+          "id": "undergraduate-shared-evidence:stanford-firstyear-decision-rounds-windows",
+          "topic": "application_windows",
+          "topics": [],
+          "scope": {
+            "option_ids": [],
+            "route_ids": [
+              "undergraduate-shared-evidence:stanford-first-year"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "first-year"
+            ],
+            "cycle": null,
+            "fee_status": [],
+            "additional_dimensions": {}
+          },
+          "value": {
+            "windows": [
+              {
+                "name": "Restrictive Early Action",
+                "application_due": "November 1",
+                "aid_due": "November 15",
+                "decision": "mid-December"
+              },
+              {
+                "name": "Regular Decision",
+                "application_due": "January 5",
+                "aid_due": "February 15",
+                "decision": "early April"
+              }
+            ],
+            "enrollment_reply": "May 1"
+          },
+          "conditions": [
+            "These are the standard first-year deadlines. Applicants who submit the Optional Arts Portfolio follow the earlier application deadlines (October 15 for Restrictive Early Action and December 5 for Regular Decision) published in the related first-year deadline record.",
+            "The aid dates are priority filing dates from the central aid page, separate from the admission deadlines; the aid page does not state an entering academic year for them."
+          ],
+          "conditions_and_exceptions": null,
+          "exceptions": [],
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-firstyear-requirements",
+            "undergraduate-shared-evidence:stanford-ug-firstyear-rounds",
+            "undergraduate-shared-evidence:stanford-ug-aid-dates"
+          ],
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "checked_at": "2026-10-02",
+          "content_reviewed_at": "2026-10-19",
+          "period": {
+            "kind": "yearless_policy",
+            "label": "Recurring first-year dates; page does not specify entry year"
+          },
+          "related_fact_ids": [
+            "undergraduate-shared-evidence:stanford-firstyear-decision-rounds-deadlines",
+            "undergraduate-shared-evidence:stanford-ug-aid-deadlines"
+          ],
+          "provenance": {
+            "evidence_file": "undergraduate-shared-evidence.json",
+            "original_id": "stanford-firstyear-decision-rounds-windows",
+            "original_scope": {
+              "option_ids": [],
+              "procedure_ids": [
+                "stanford-first-year"
+              ],
+              "levels": [
+                "undergraduate"
+              ],
+              "applicant_categories": [
+                "first-year"
+              ],
+              "cycle": null,
+              "fee_status": []
+            },
+            "original_source_ids": [
+              "stanford-ug-firstyear-requirements",
+              "stanford-ug-firstyear-rounds",
+              "stanford-ug-aid-dates"
+            ]
+          },
+          "attributes": {},
+          "index_attributes": {},
+          "normalized_status": {
+            "publication": "published",
+            "review": "verified"
+          }
+        },
+        {
           "id": "undergraduate-shared-evidence:stanford-firstyear-interview",
           "topic": "interview",
           "topics": [],
@@ -403484,6 +403579,87 @@
             },
             "original_source_ids": [
               "stanford-ug-transfer-requirements"
+            ]
+          },
+          "attributes": {},
+          "index_attributes": {},
+          "normalized_status": {
+            "publication": "published",
+            "review": "verified"
+          }
+        },
+        {
+          "id": "undergraduate-shared-evidence:stanford-transfer-deadline-windows",
+          "topic": "application_windows",
+          "topics": [],
+          "scope": {
+            "option_ids": [],
+            "route_ids": [
+              "undergraduate-shared-evidence:stanford-transfer"
+            ],
+            "levels": [
+              "undergraduate"
+            ],
+            "applicant_categories": [
+              "transfer"
+            ],
+            "cycle": null,
+            "fee_status": [],
+            "additional_dimensions": {}
+          },
+          "value": {
+            "windows": [
+              {
+                "name": "Transfer application",
+                "application_due": "March 15",
+                "aid_due": "March 15",
+                "decision": "mid-May"
+              }
+            ],
+            "enrollment_reply": "June 1"
+          },
+          "conditions": [
+            "All new transfer entrants begin in autumn/fall; no winter or spring start is offered.",
+            "The aid date is the priority filing date from the central aid page, separate from the admission deadline; the aid page does not state an entering academic year for it."
+          ],
+          "conditions_and_exceptions": null,
+          "exceptions": [],
+          "source_ids": [
+            "undergraduate-shared-evidence:stanford-ug-transfer-requirements",
+            "undergraduate-shared-evidence:stanford-ug-aid-dates"
+          ],
+          "publication_status": "published",
+          "review_status": "reviewed",
+          "checked_at": "2026-10-02",
+          "content_reviewed_at": "2026-10-19",
+          "period": {
+            "kind": "yearless_policy",
+            "label": "Recurring transfer deadline; page does not label a calendar year"
+          },
+          "related_fact_ids": [
+            "undergraduate-shared-evidence:stanford-transfer-deadline",
+            "undergraduate-shared-evidence:stanford-ug-aid-deadlines"
+          ],
+          "provenance": {
+            "evidence_file": "undergraduate-shared-evidence.json",
+            "original_id": "stanford-transfer-deadline-windows",
+            "original_scope": {
+              "option_ids": [],
+              "procedure_ids": [
+                "stanford-transfer"
+              ],
+              "levels": [
+                "undergraduate"
+              ],
+              "applicant_categories": [
+                "transfer"
+              ],
+              "cycle": null,
+              "fee_status": []
+            },
+            "original_source_ids": [
+              "stanford-ug-transfer-requirements",
+              "stanford-ug-aid-dates"
             ]
           },
           "attributes": {},
@@ -452859,6 +453035,84 @@
           }
         },
         {
+          "id": "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process-windows",
+          "topic": "application_windows",
+          "topics": [],
+          "scope": {
+            "option_ids": [
+              "stanford-option-neurs-ms"
+            ],
+            "route_ids": [
+              "medicine-graduate-evidence:stanford-route-enroute-neurs-ms"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_graduate_student"
+            ],
+            "cycle": "published recurring internal process; no application year stated",
+            "fee_status": [],
+            "additional_dimensions": {}
+          },
+          "value": {
+            "windows": [
+              {
+                "name": "Application deadline",
+                "application_due": "February 1"
+              }
+            ]
+          },
+          "conditions": [
+            "The deadline falls before the autumn quarter in which the student wishes to begin the MS."
+          ],
+          "conditions_and_exceptions": null,
+          "exceptions": [],
+          "source_ids": [
+            "medicine-graduate-evidence:recheck-degree-neurs-ms"
+          ],
+          "publication_status": "published",
+          "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+          "checked_at": "2026-10-02",
+          "content_reviewed_at": "2026-10-03",
+          "period": {
+            "kind": "yearless_policy",
+            "label": "Recurring internal process; no application year stated"
+          },
+          "related_fact_ids": [
+            "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process"
+          ],
+          "provenance": {
+            "evidence_file": "medicine-graduate-evidence.json",
+            "original_id": "recheck-degree-neurs-ms-internal-process-windows",
+            "original_scope": {
+              "option_ids": [
+                "stanford-option-neurs-ms"
+              ],
+              "procedure_ids": [
+                "stanford-route-enroute-neurs-ms"
+              ],
+              "levels": [
+                "masters"
+              ],
+              "applicant_categories": [
+                "current_stanford_graduate_student"
+              ],
+              "cycle": "published recurring internal process; no application year stated",
+              "fee_status": []
+            },
+            "original_source_ids": [
+              "recheck-degree-neurs-ms"
+            ]
+          },
+          "attributes": {},
+          "index_attributes": {},
+          "normalized_status": {
+            "publication": "published",
+            "review": "verified"
+          }
+        },
+        {
           "id": "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process",
           "topic": "internal_application_process_and_required_documents",
           "topics": [],
@@ -452921,6 +453175,84 @@
           "attributes": {
             "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
           },
+          "index_attributes": {},
+          "normalized_status": {
+            "publication": "published",
+            "review": "verified"
+          }
+        },
+        {
+          "id": "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process-windows",
+          "topic": "application_windows",
+          "topics": [],
+          "scope": {
+            "option_ids": [
+              "stanford-option-chpr-ms"
+            ],
+            "route_ids": [
+              "medicine-graduate-evidence:stanford-route-internal-chpr-ms"
+            ],
+            "levels": [
+              "masters"
+            ],
+            "applicant_categories": [
+              "current_stanford_graduate_student"
+            ],
+            "cycle": "published recurring internal process; no application year stated",
+            "fee_status": [],
+            "additional_dimensions": {}
+          },
+          "value": {
+            "windows": [
+              {
+                "name": "Priority deadline",
+                "application_due": "May 1"
+              }
+            ]
+          },
+          "conditions": [
+            "The priority deadline is for the upcoming autumn quarter start; applications received after it are considered case by case."
+          ],
+          "conditions_and_exceptions": null,
+          "exceptions": [],
+          "source_ids": [
+            "medicine-graduate-evidence:recheck-degree-chpr-ms"
+          ],
+          "publication_status": "published",
+          "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+          "checked_at": "2026-10-02",
+          "content_reviewed_at": "2026-10-03",
+          "period": {
+            "kind": "yearless_policy",
+            "label": "Recurring internal process; no application year stated"
+          },
+          "related_fact_ids": [
+            "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process"
+          ],
+          "provenance": {
+            "evidence_file": "medicine-graduate-evidence.json",
+            "original_id": "recheck-degree-chpr-ms-internal-process-windows",
+            "original_scope": {
+              "option_ids": [
+                "stanford-option-chpr-ms"
+              ],
+              "procedure_ids": [
+                "stanford-route-internal-chpr-ms"
+              ],
+              "levels": [
+                "masters"
+              ],
+              "applicant_categories": [
+                "current_stanford_graduate_student"
+              ],
+              "cycle": "published recurring internal process; no application year stated",
+              "fee_status": []
+            },
+            "original_source_ids": [
+              "recheck-degree-chpr-ms"
+            ]
+          },
+          "attributes": {},
           "index_attributes": {},
           "normalized_status": {
             "publication": "published",
@@ -472756,7 +473088,7 @@
       "supporting_records": [
         {
           "path": "backend/data/drafts/stanford-university-usa-ca/coverage-index.json",
-          "sha256": "5eaf542481d5adeedab07517280e45316753d124245c4a75ea6745459e212a92",
+          "sha256": "c90aa1147f5abcd2efc57092de4b983540de4739da745029589bfffe6720a961",
           "role": "supporting_evidence_not_policy_inheritance"
         },
         {
