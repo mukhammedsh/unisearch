@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from app.core.settings import DOCS_ENABLED
 from app.main import app
+from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
 
 
 class ApiHardeningTests(unittest.TestCase):
@@ -33,6 +34,29 @@ class ApiHardeningTests(unittest.TestCase):
         self.assertEqual("same-origin", response.headers.get("Cross-Origin-Opener-Policy"))
         self.assertEqual("none", response.headers.get("X-Permitted-Cross-Domain-Policies"))
         self.assertEqual("0", response.headers.get("X-XSS-Protection"))
+
+    def test_admissions_catalog_error_handler_applies_security_headers(self):
+        client = TestClient(app)
+
+        with patch("app.routers.admissions.admissions_catalog.list_study_options", side_effect=InstitutionNotFoundError("Institution missing")):
+            res_404 = client.get("/universities/non-existent-university-xyz/study-options")
+            self.assertEqual(404, res_404.status_code)
+            self.assertEqual("nosniff", res_404.headers.get("X-Content-Type-Options"))
+            self.assertEqual("DENY", res_404.headers.get("X-Frame-Options"))
+            self.assertEqual("same-origin", res_404.headers.get("Cross-Origin-Opener-Policy"))
+            self.assertEqual("none", res_404.headers.get("X-Permitted-Cross-Domain-Policies"))
+            self.assertEqual("0", res_404.headers.get("X-XSS-Protection"))
+            self.assertIn("Content-Security-Policy", res_404.headers)
+
+        with patch("app.routers.admissions.admissions_catalog.list_study_options", side_effect=AdmissionsCatalogError("Snapshot corruption")):
+            res_503 = client.get("/universities/stanford-university-usa-ca/study-options")
+            self.assertEqual(503, res_503.status_code)
+            self.assertEqual("nosniff", res_503.headers.get("X-Content-Type-Options"))
+            self.assertEqual("DENY", res_503.headers.get("X-Frame-Options"))
+            self.assertEqual("same-origin", res_503.headers.get("Cross-Origin-Opener-Policy"))
+            self.assertEqual("none", res_503.headers.get("X-Permitted-Cross-Domain-Policies"))
+            self.assertEqual("0", res_503.headers.get("X-XSS-Protection"))
+            self.assertIn("Content-Security-Policy", res_503.headers)
 
     def test_security_headers_included_on_normal_responses(self):
         client = TestClient(app)
