@@ -14,6 +14,10 @@ All notable project changes should be recorded here.
 - Showed a university's published financial-need policy for the selected route in the key facts, labelled as policy rather than an award.
 - Allowed SAT, UNT and IELTS to be saved with only the overall score; unreported section minimums stay unassessed.
 - Replaced empty comparison rows with a prompt to choose a program or route, and applied the only compatible route after a deliberate program choice in the comparison.
+- The key-facts requirements row names the missing evidence, such as a SAT test date or IELTS section scores, and which overall scores already meet the published minimum.
+- Annual deadlines published without a year, such as MIT's first-year rounds, show whether this year's date has passed and the next occurrence with a countdown, labelled as an annual date to confirm.
+- The key facts lead with the main application deadline, keep earlier test registration dates as a second line, and skip test dates for exams the applicant has not listed when another accepted exam is in the profile.
+- The comparison uses profile subject, level, entry cycle and budget as suggestions, compares each selected annual price with the budget, and shows published application periods and requirement summaries.
 
 ### Changed
 - Admissions status now uses a closed vocabulary, and internal-only or restricted-group routes are labelled explicitly.
@@ -24,6 +28,9 @@ All notable project changes should be recorded here.
 - Stopped showing half-translated admissions sentences in Russian and Kazakh; text without a full translation is shown whole in its source language.
 - Saving the profile is no longer blocked by a prefilled score after selecting an exam that is already saved.
 - Distinguished the US high school diploma from the national school certificate in the qualification list.
+- A program or route chosen in the comparison is no longer lost when the applicant continues without pressing the separate apply button.
+- Shortened the Admission tab by linking requirement checks to their source record instead of repeating it, showing each record's source once, merging duplicate conditions, and hiding internal selector and evidence fields.
+- Localized Imperial's UCAS date labels and fixed missing spaces in entry-cycle labels.
 
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
 
