@@ -20,6 +20,7 @@ LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "professional",
 PUBLICATION_STATES = {"published", "published_with_limits", "partially_published", "not_yet_published", "not_found",
                       "conflicting", "historical", "unknown"}
 REVIEW_STATES = {"verified", "verified_with_limits", "partially_verified", "carried_forward", "conflicting", "needs_resolution", "superseded", "not_recorded"}
+RESEARCH_SUPERSEDED_STATUS = "superseded_by_completed_research"
 ENTRY_VALUES = {"external", "external_restricted", "internal", "no_admission", "closed", "unresolved"}
 LEVEL_ALIASES = {"bachelor": "undergraduate", "master": "masters", "doctorate": "doctoral", "phd": "doctoral", "foundation": "preparation", "non-degree": "non_degree"}
 _LOCK = threading.Lock()
@@ -649,6 +650,10 @@ def resolve_context(institution_id, profile=None, context=None):
                 continue
             dated_reference = (row.get("attributes", {}).get("retain_as_dated_history") and applicability["cycle"] == "mismatched"
                                and all(value != "mismatched" for axis, value in applicability.items() if axis not in {"cycle", "status"}))
+            # Research-process notes superseded by completed research are internal; their applicant facts live in current records.
+            if key == "unknowns" and _history(row) and row.get("review_status") == RESEARCH_SUPERSEDED_STATUS:
+                excluded[key].append({"id": row["id"], "applicability": applicability})
+                continue
             if _history(row) or dated_reference:
                 history["fact_ids" if key == "facts" else "unknown_ids"].append(row["id"])
                 historical_context = {**effective, "intended_entry_cycle": None}

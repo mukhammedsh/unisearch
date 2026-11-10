@@ -2675,6 +2675,11 @@ university.admissions.catalog.field.language: Оқыту тілі
 university.admissions.catalog.field.location: Оқу орны
 university.admissions.catalog.field.department: Факультет немесе кафедра
 university.admissions.catalog.field.start_date: Оқудың басталуы
+university.admissions.catalog.field.externalAdmissions: Сырттан қабылдау
+university.admissions.catalog.field.internalAdmissions: Ішкі қабылдау
+university.admissions.catalog.field.programCurrentPhdOnly: Тек ағымдағы PhD студенттеріне
+university.admissions.catalog.field.coterm: Біріктірілген дәреже
+university.admissions.catalog.field.unitsProgramMin: Бағдарламаның минималды бірліктері
 university.admissions.catalog.field.presence: Емтихан талабы
 university.admissions.catalog.field.cutoff: Сандық шек
 university.admissions.catalog.field.recommended: Ұсынылатын балл
@@ -2850,6 +2855,100 @@ university.admissions.catalog.enum.program_specific: Нақты бағдарла
 university.admissions.catalog.enum.route_wide: Өтініш беру бағытына ортақ
 university.admissions.catalog.enum.academic_year: Оқу жылы
 university.admissions.catalog.enum.one_time: Бір реттік төлем
+university.admissions.catalog.enum.aid_application: Қаржылық көмекке өтінім
+university.admissions.catalog.enum.application_completion: Өтінімді аяқтау
+university.admissions.catalog.enum.application_fee: Өтінім алымы
+university.admissions.catalog.enum.competitive_scholarship: Конкурстық стипендия
+university.admissions.catalog.enum.conditional_fee: Шартты алым
+university.admissions.catalog.enum.current_mit_course_18_or_18_c_undergraduate: MIT ағымдағы 18 немесе 18-C курсының бакалавриат студенті
+university.admissions.catalog.enum.current_mit_course_6_9_major: MIT ағымдағы 6-9 курсының мамандығы
+university.admissions.catalog.enum.current_mit_eecs_undergraduate: MIT ағымдағы EECS бакалавриат студенті
+university.admissions.catalog.enum.doctoral_applicant: Докторантураға үміткер
+university.admissions.catalog.enum.graduate_applicant: Магистратураға үміткер
+university.admissions.catalog.enum.not_established: Анықталмаған
+university.admissions.catalog.enum.partner_or_affiliate_school_student_or_graduate: Серіктес немесе қосымша мектептің студенті немесе түлегі
+university.admissions.catalog.enum.round_1: 1-раунд
+university.admissions.catalog.enum.round_2: 2-раунд
+university.admissions.catalog.enum.round_3: 3-раунд
+university.admissions.catalog.enum.round_4: 4-раунд
+university.admissions.catalog.enum.standardized_test: Стандартталған тест
+university.admissions.catalog.enum.transfer_applicant: Ауысатын үміткер
+university.admissions.catalog.enum.transfer_need_based_aid: Ауысатын студенттерге қажеттілік бойынша көмек
+university.admissions.catalog.enum.us_citizen_or_permanent_resident_transfer: АҚШ азаматы немесе тұрақты тұрғын ауысуы
+university.admissions.catalog.enum.admitted_nonprofessional_graduate: Қабылданған кәсіби емес бітіруші
+university.admissions.catalog.enum.admitted_phd_student: Қабылданған PhD докторанты
+university.admissions.catalog.enum.admitted_student: Қабылданған студент
+university.admissions.catalog.enum.admitted_student_where_value_identifies_post_offer_rule: Қабылданған студент (оффердтен кейінгі ереже)
+university.admissions.catalog.enum.advanced_degree_applicant: Ғылыми дәрежесі бар үміткер
+university.admissions.catalog.enum.advanced_graduate_student: Жоғары деңгейдегі магистрант
+university.admissions.catalog.enum.applicant_to_other_stanford_graduate_degree: Стэнфордтың басқа магистратурасына үміткер
+university.admissions.catalog.enum.applicants_not_meeting_central_english_exemptions: Ағылшын тілі бойынша орталық босатуға сәйкес келмейтін үміткерлер
+university.admissions.catalog.enum.coterminal_masters_only: Тек біріктірілген магистратура
+university.admissions.catalog.enum.current_stanford_doctoral_student: Стэнфорд ағымдағы докторанты
+university.admissions.catalog.enum.current_stanford_engineering_graduate_student: Стэнфорд ағымдағы инженерлік магистранты
+university.admissions.catalog.enum.current_stanford_graduate: Стэнфорд ағымдағы магистранты
+university.admissions.catalog.enum.current_stanford_graduate_student: Стэнфорд ағымдағы магистранты
+university.admissions.catalog.enum.current_stanford_md_student: Стэнфорд ағымдағы MD студенті
+university.admissions.catalog.enum.current_stanford_md_student_approved_split_curriculum: Стэнфорд ағымдағы MD студенті (бекітілген бөлінген оқу жоспары)
+university.admissions.catalog.enum.current_stanford_phd_student: Стэнфорд ағымдағы PhD студенті
+university.admissions.catalog.enum.current_stanford_student: Стэнфорд ағымдағы студенті
+university.admissions.catalog.enum.current_stanford_undergraduate: Стэнфорд ағымдағы бакалавриат студенті
+university.admissions.catalog.enum.current_stanford_undergraduate_coterm: Стэнфорд ағымдағы бакалавриат студенті (біріктірілген бағдарлама)
+university.admissions.catalog.enum.eligible_veteran: Құқығы бар ардагер
+university.admissions.catalog.enum.enrolled_economics_phd_student: Экономика бойынша PhD студенті
+university.admissions.catalog.enum.enrolled_graduate_student: Тіркелген магистрант
+university.admissions.catalog.enum.enrolled_physics_phd_student: Физика бойынша PhD студенті
+university.admissions.catalog.enum.enrolled_program_student: Бағдарламаға тіркелген студент
+university.admissions.catalog.enum.enrolled_stanford_undergraduate: Стэнфорд бакалавриатына тіркелген студент
+university.admissions.catalog.enum.enrolled_student: Тіркелген студент
+university.admissions.catalog.enum.enrolled_students: Тіркелген студенттер
+university.admissions.catalog.enum.external_applicant: Сырттан келген үміткер
+university.admissions.catalog.enum.external_degree_applicant: Сыртқы дәреже үміткері
+university.admissions.catalog.enum.external_graduate_applicant: Сыртқы магистратура үміткері
+university.admissions.catalog.enum.external_masters_holder: Сыртқы магистр дәрежесінің иегері
+university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: Сыртқы немесе Стэнфорд ағымдағы магистратура үміткері
+university.admissions.catalog.enum.financial_support: Қаржылық қолдау
+university.admissions.catalog.enum.international_applicant: Халықаралық үміткер
+university.admissions.catalog.enum.international_law_degree_holder: Халықаралық құқық дәрежесінің иегері
+university.admissions.catalog.enum.joint_degree_applicant: Бірлескен дәреже үміткері
+university.admissions.catalog.enum.joint_or_dual_degree_applicant: Бірлескен немесе қос дәреже үміткері
+university.admissions.catalog.enum.knight_hennessy_applicant: Knight-Hennessy үміткері
+university.admissions.catalog.enum.matriculated_graduate_housing_applicant_or_resident: Тіркелген магистрант: жатақхана үміткері немесе тұрғыны
+university.admissions.catalog.enum.named_programme_route_applicant: Аталған бағдарлама бағыты бойынша үміткер
+university.admissions.catalog.enum.need_based_aid_applicant: Қажеттілік бойынша көмекке үміткер
+university.admissions.catalog.enum.new_admitted_student: Жаңа қабылданған студент
+university.admissions.catalog.enum.permanent_resident: Тұрақты тұрғын
+university.admissions.catalog.enum.professional_apprenticeship_inventory: Кәсіби тағылымдама тізімі
+university.admissions.catalog.enum.prospective_program_student: Бағдарламаға үміткер студент
+university.admissions.catalog.enum.prospective_stanford_professional_student: Стэнфорд кәсіби бағдарламасына үміткер студент
+university.admissions.catalog.enum.prospective_students: Үміткер студенттер
+university.admissions.catalog.enum.prospective_undergraduate: Бакалавриатқа үміткер
+university.admissions.catalog.enum.regular_and_financial_support: Қалыпты қабылдау және қаржылық қолдау
+university.admissions.catalog.enum.scholar_without_legal_training: Заңгерлік білімі жоқ ғалым
+university.admissions.catalog.enum.stanford_alumni_within_five_years: Бес жыл ішіндегі Стэнфорд түлектері
+university.admissions.catalog.enum.stanford_anthropology_phd_student: Стэнфорд антропология бойынша PhD студенті
+university.admissions.catalog.enum.stanford_undergraduate_applicant: Стэнфорд бакалавриатына үміткер
+university.admissions.catalog.enum.study_structure_and_admission_reference: Оқу құрылымы және қабылдау анықтамасы
+university.admissions.catalog.enum.us_citizen: АҚШ азаматы
+university.admissions.catalog.enum.working_professional: Жұмыс істейтін маман
+university.admissions.catalog.enum.tuition_and_mandatory_fee: Оқу ақысы және міндетті төлемдер
+university.admissions.catalog.enum.one_time_application_charge: Өтінімге бір реттік алым
+university.admissions.catalog.enum.approved_nonresident_doctoral_tuition: Бекітілген резидент емес докторантура ақысы
+university.admissions.catalog.enum.coterm_application_fee: Біріктірілген бағдарламаға өтінім алымы
+university.admissions.catalog.enum.prior_cycle_date_on_2027_page: 2027 беттегі алдыңғы цикл күні
+university.admissions.catalog.enum.published_award_conflict: Жарияланған дәреже қайшылығы
+university.admissions.catalog.enum.independent_award_pathway: Дербес дәреже алу жолы
+university.admissions.catalog.enum.exit_award_or_progression: Аяқтау дәрежесі немесе өту
+university.admissions.catalog.enum.masters_duration_pathway: Магистратураның ұзақтығы бойынша жол
+university.admissions.catalog.enum.pre_course_or_induction: Курсқа дейінгі дайындық немесе кіріспе
+university.admissions.catalog.enum.illustrative_research_projects: Зерттеу жобаларының мысалдары
+university.admissions.catalog.enum.conditional_course_class: Курс сыныбы бойынша шартты
+university.admissions.catalog.enum.conditional_selected_course: Таңдалған курс бойынша шартты
+university.admissions.catalog.enum.excluded_by_published_course_rules: Жарияланған курс ережелері бойынша шығарылған
+university.admissions.catalog.enum.admissions_for_scholarship_consideration: Стипендияны қарастыру үшін қабылдау
+university.admissions.catalog.enum.to_be_announced: Жарияланады
+university.admissions.catalog.enum.per_option_key_facts: бағдарлама нұсқасына арналған негізгі деректер
+university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесттер, балдар, іріктеу, сұхбат және портфолио
 university.admissions.catalog.reset_notice: Бұрынғы қабылдау таңдауыңыз ескі каталогты пайдаланғандықтан тазартылды. Оқу нұсқасы мен өтініш беру бағытын қайта таңдаңыз. Профильдегі басқа мәліметтер сақталған.
 university.admissions.catalog.save_choice: Өтініш таңдауын сақтау
 university.admissions.catalog.choice_saved: Осы университетке арналған өтініш контексті сақталды.

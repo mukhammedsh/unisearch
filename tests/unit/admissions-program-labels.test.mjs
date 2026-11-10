@@ -625,7 +625,8 @@ test("Sloan's regular rounds stay distinct from deferred MBA Early and export th
     assert.match(html, /15:00/);
     assert.match(admissionDeadlineTitle(deferredEvents[0]), { eng: /deferred entry/, rus: /отложенное начало/, kaz: /кейін бастау/ }[language]);
     const deferredHtml = renderApplicantSection(deferred, ["deadlines"]);
-    assert.doesNotMatch(deferredHtml, /Round 1|Round 2/);
+    // Regular-round records remain available as general references; the focused deferred deadlines must not show them.
+    assert.doesNotMatch(deferredHtml.split("data-general-references")[0], /Round 1|Round 2/);
     assert.doesNotMatch(html, /data-summary-fact="mba-early/);
   }
 });
