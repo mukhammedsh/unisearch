@@ -13,6 +13,7 @@ The translation bundle applies the same two steps to every translated string and
 translation by the rewritten English source, so the page lookup still finds it.
 """
 
+import functools
 import hashlib
 import json
 import re
@@ -137,8 +138,15 @@ def rewrite_text(text, rewrites):
     return text
 
 
-def clean_text(text, clauses, rewrites=()):
+@functools.lru_cache(maxsize=262144)
+def _clean_text_cached(text, clauses, rewrites):
     return rewrite_text(strip_text(text, clauses), rewrites)
+
+
+def clean_text(text, clauses, rewrites=()):
+    # Catalog strings repeat across options and routes, and every rewrite is a regex pass, so the
+    # result is memoised per rule set; reloaded notes are new objects and therefore new cache keys.
+    return _clean_text_cached(text, frozenset(clauses), tuple(rewrites))
 
 
 def strip_payload(value, clauses, rewrites=()):

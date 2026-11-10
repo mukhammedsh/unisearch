@@ -18,6 +18,7 @@ All notable project changes should be recorded here.
 - Annual deadlines published without a year, such as MIT's first-year rounds, show whether this year's date has passed and the next occurrence with a countdown, labelled as an annual date to confirm.
 - The key facts lead with the main application deadline, keep earlier test registration dates as a second line, and skip test dates for exams the applicant has not listed when another accepted exam is in the profile.
 - The comparison uses profile subject, level, entry cycle and budget as suggestions, compares each selected annual price with the budget, and shows published application periods and requirement summaries.
+- Russian and Kazakh translations of the admissions text for Imperial College London (Computing MEng journey, source titles, field labels and sentences repeated across courses) and Stanford University (Computer Science BS and MS journeys and about a fifth of the remaining long text); official quotations stay in English.
 - Stanford's first-year (Restrictive Early Action, Regular Decision) and transfer deadlines, and the standing deadlines of the CHPR and Neurosciences MS routes for current students, now show the next annual date with a countdown, from structured companion records that keep the original prose.
 
 ### Changed
@@ -34,6 +35,10 @@ All notable project changes should be recorded here.
 - Shortened the Admission tab by linking requirement checks to their source record instead of repeating it, showing each record's source once, merging duplicate conditions, and hiding internal selector and evidence fields.
 - Localized Imperial's UCAS date labels and fixed missing spaces in entry-cycle labels.
 - Cached study-option lists now refresh when the applicant-facing wording rules change.
+- Restated about 150 more research-voice sentences as plain guidance, including scope notes in the source details, with matching Russian and Kazakh edits for translated MIT and NU text.
+- Internal status codes such as `round_1` or `tuition_and_mandatory_fee` show as readable labels in all three languages, and Stanford Bulletin metadata shows as labelled values instead of raw Python text.
+- Stanford's historical records no longer list research notes that later reviewed records replaced.
+- Applicant-facing text editing is memoised, so the larger rule set no longer slows admissions responses.
 - The NU next step for NUET no longer loses the NUFYP regular-entry minimum of 120/50/50 together with the removed maintainer instruction.
 
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match

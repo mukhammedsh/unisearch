@@ -13,7 +13,8 @@ const enumKeys = LOCALIZATION.map(text => new Set([...text.matchAll(ENUM_KEY)].m
 // Snake_case codes are internal enum values; a plain-language label must replace them in applicant text.
 const RAW_CODE = /(?<![\w@./-])[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?![\w@/-])/;
 const PYTHON_DICT = /\{'|': True|': False|': None/;
-// Research sentences that still need an editorial rewrite (owned by editorial_notes.json); listed so new ones fail.
+// The raw catalog keeps these research sentences; the API removes or restates them through editorial_notes.json
+// (covered by test_admissions_editorial). Listed so that new ones fail here.
 const PENDING_EDITORIAL_DOSSIER = new Set([
   "medicine-graduate-evidence:bmds-ms-types:value",
   "fact_imperial_digital_health_leadership_pg_dip_course_admission_dates_fees_awards:value",
