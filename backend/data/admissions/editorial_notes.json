@@ -115,6 +115,7 @@
       "Explicitly stated in this award selector key-facts panel",
       "External admission must not be inferred",
       "First-pass reference retained for provenance",
+      "HTTP recheck recorded separately",
       "Historical OGE-only funding collection note resolved by reviewed departmental support evidence",
       "Historical compound runtime summary repeats the editorial gap notes",
       "Its indexed thesis table leaves one ECTS term blank",
@@ -480,6 +481,7 @@
       "see the researched unknown",
       "seek a current official Nursing handbook/registrar curriculum to determine if the A-Z language field or program page has changed",
       "separately reviewed Registrar/catalog standard/non-standard cost facts now establish the relevant reference, subject to conditions",
+      "source HTTP recheck recorded separately",
       "standalone Engineer support not inferred",
       "the indexed snapshot is retained separately",
       "the reviewed course page does not identify a separate application destination for this option",
@@ -1047,6 +1049,950 @@
       {
         "pattern": "(\\b(?:is|are)) (?:now )?(?:recorded|mapped)\\b",
         "replace": "\\1 listed"
+      },
+      {
+        "phrase": "Academic-test treatment remains unresolved where GRE guidance names doctoral admission only",
+        "replace": "How academic tests apply is not settled where GRE guidance names doctoral admission only"
+      },
+      {
+        "phrase": "Current BE entry information establishes PhD and MIT-only MEng",
+        "replace": "Current BE entry information describes the PhD and the MIT-only MEng"
+      },
+      {
+        "phrase": "Department full-support wording needs reconciliation",
+        "replace": "Department full-support wording needs to be confirmed against MIT's other pages"
+      },
+      {
+        "phrase": "GRE cycle applicability is unresolved:",
+        "replace": "Which cycle the GRE requirement applies to is not settled:"
+      },
+      {
+        "phrase": "Masters and WHOI are separately scoped",
+        "replace": "Masters and WHOI are treated separately"
+      },
+      {
+        "phrase": "No separate external EE application established",
+        "replace": "No separate external EE application is published"
+      },
+      {
+        "phrase": "No standalone external ECS route established",
+        "replace": "No standalone external ECS route is published"
+      },
+      {
+        "phrase": "OGE automatic exemption criteria are cross-linked but not reconciled on the page",
+        "replace": "OGE automatic exemption criteria are cross-linked, but the page does not bring them together"
+      },
+      {
+        "phrase": "OGE guarantee wording retained separately",
+        "replace": "OGE guarantee wording is shown separately"
+      },
+      {
+        "phrase": "PBT/CBT are retained as published alternatives, not an invented new 1-6 conversion or assurance test currently offered",
+        "replace": "PBT/CBT are listed as published alternatives; the page gives no new 1-6 conversion and does not say an assurance test is currently offered"
+      },
+      {
+        "phrase": "SM award sequence remains unresolved",
+        "replace": "the SM award sequence is not settled"
+      },
+      {
+        "phrase": "The source does not confirm whether EA is accepted or establish the English-proficiency policy",
+        "replace": "The page does not confirm whether EA is accepted or state the English-proficiency policy"
+      },
+      {
+        "phrase": "directory numbers remain sourced directory evidence with this ambiguity, not proven departmental minima",
+        "replace": "the directory numbers carry this ambiguity and are not confirmed departmental minima"
+      },
+      {
+        "phrase": "rather than infer 2027",
+        "replace": "rather than assume 2027"
+      },
+      {
+        "phrase": "it does not independently establish MITILI GRE treatment",
+        "replace": "it does not by itself say how MITILI treats the GRE"
+      },
+      {
+        "phrase": "no independent Toxicology SM curriculum/admission procedure is established",
+        "replace": "no independent Toxicology SM curriculum/admission procedure is published"
+      },
+      {
+        "phrase": "no separate MITILI academic-test requirement/acceptance policy is established by these pages",
+        "replace": "these pages publish no separate MITILI academic-test requirement/acceptance policy"
+      },
+      {
+        "phrase": "no unconditional universal guarantee established",
+        "replace": "no unconditional universal guarantee is published"
+      },
+      {
+        "phrase": "outside awards must be reconciled with department",
+        "replace": "outside awards must be agreed with the department"
+      },
+      {
+        "phrase": "rather than infer federal eligibility from a cosigner",
+        "replace": "rather than assume federal eligibility from a cosigner"
+      },
+      {
+        "phrase": "reviewed credentials are those posted when read",
+        "replace": "only credentials already posted when the file is read are reviewed"
+      },
+      {
+        "phrase": "the Nuclear Engineer application/award sequence is unresolved",
+        "replace": "the Nuclear Engineer application/award sequence is not settled"
+      },
+      {
+        "phrase": "use MIT cost-of-attendance only as institution-wide reference if separately scoped",
+        "replace": "use MIT cost-of-attendance only as an institution-wide reference, kept separate from program costs"
+      },
+      {
+        "phrase": "Earlier special-award research: ",
+        "replace": "Earlier note on this award: "
+      },
+      {
+        "phrase": "Named program/applicant scope in preserved rule",
+        "replace": "Program and applicant group named in the rule"
+      },
+      {
+        "phrase": "cycle not separately established",
+        "replace": "no separate cycle is stated"
+      },
+      {
+        "phrase": "The preserved cited official review established the stated boundary but not the remaining details",
+        "replace": "The cited official pages cover the stated boundary but not the remaining details"
+      },
+      {
+        "phrase": "Current normalized price/cost evidence supplies exact charge period and fee boundary, retaining any source conflict",
+        "replace": "Current price and cost information gives the exact charge period and fee boundary, and keeps any conflict between sources"
+      },
+      {
+        "phrase": "Use linked current policies and evidenced unknowns, following their official next steps where unresolved",
+        "replace": "Use the linked current policies and the items listed as not published, following their official next steps where unresolved"
+      },
+      {
+        "phrase": "Later sourced structured evidence preserves the complete applicable rule",
+        "replace": "A later, more detailed entry gives the complete applicable rule"
+      },
+      {
+        "phrase": "earlier unresolved description retained historically",
+        "replace": "an earlier, unresolved description is kept for the record"
+      },
+      {
+        "phrase": "Catalog establishes current EECS doctoral/predoctoral internal Engineer progression",
+        "replace": "The catalog describes current EECS doctoral/predoctoral internal Engineer progression"
+      },
+      {
+        "phrase": "Later official evidence establishes this rule more precisely",
+        "replace": "A later official source states this rule more precisely"
+      },
+      {
+        "phrase": "Focused correction using preserved actual official content",
+        "replace": "Corrected using the actual official content"
+      },
+      {
+        "phrase": "Current draft editorial review of preserved official evidence",
+        "replace": "Current draft editorial summary of official content"
+      },
+      {
+        "phrase": "original source access dates retained",
+        "replace": "original source access dates are kept"
+      },
+      {
+        "phrase": "undated dates retain recurring scope",
+        "replace": "undated dates apply on a recurring basis"
+      },
+      {
+        "phrase": "Central PhD inventory lists this area",
+        "replace": "Imperial's central PhD list includes this area"
+      },
+      {
+        "phrase": "Central professional doctorate inventory lists this award",
+        "replace": "Imperial's central list of professional doctorates includes this award"
+      },
+      {
+        "phrase": "Imperial's official doctoral inventory lists ",
+        "replace": "Imperial's official doctoral list includes "
+      },
+      {
+        "phrase": "Historical inventory evidence only",
+        "replace": "Appears only in an older Imperial list"
+      },
+      {
+        "phrase": "is historical inventory evidence, not the separately available taught MRes",
+        "replace": "appears only in an older Imperial list; it is not the separately available taught MRes"
+      },
+      {
+        "phrase": "The shared overview is inventory context",
+        "replace": "The shared overview is general context from Imperial's course list"
+      },
+      {
+        "phrase": "The tuition inventory establishes the award",
+        "replace": "Imperial's tuition list confirms the award"
+      },
+      {
+        "phrase": "the fee inventory alone does not confirm",
+        "replace": "Imperial's fee list alone does not confirm"
+      },
+      {
+        "phrase": "must be reconciled with current department/centre pages, not treated as exhaustive current recruitment",
+        "replace": "must be checked against current department/centre pages and is not a complete list of current recruitment"
+      },
+      {
+        "phrase": "is published on the inventory pages",
+        "replace": "is published on Imperial's course list pages"
+      },
+      {
+        "phrase": "taught/doctoral distinctions are retained in each labelled panel",
+        "replace": "taught/doctoral distinctions are shown in each labelled panel"
+      },
+      {
+        "phrase": "Course-search MRes identity is preserved as an award phase within the Business School doctoral programme",
+        "replace": "The MRes listed in course search is shown as an award phase within the Business School doctoral programme"
+      },
+      {
+        "phrase": "Current central staff terms must also apply, not automatically department old3year criterion",
+        "replace": "Current central staff terms must also apply; the department's old 3-year criterion does not automatically apply"
+      },
+      {
+        "phrase": "Current dated 2027 application rounds are retained separately",
+        "replace": "Current dated 2027 application rounds are listed separately"
+      },
+      {
+        "phrase": "Deferral credit retained but next-year deposit difference may apply",
+        "replace": "Deferral credit is kept, but a difference in next year's deposit may apply"
+      },
+      {
+        "phrase": "unresolved date conflict",
+        "replace": "these dates conflict and the page does not say which applies"
+      },
+      {
+        "phrase": "Earlier conflicting publications are retained as dated history",
+        "replace": "Earlier conflicting publications are shown as dated history"
+      },
+      {
+        "phrase": "retain the older material only as a source conflict",
+        "replace": "note that the older material conflicts with it"
+      },
+      {
+        "phrase": "and retains a stray HiPEDS description",
+        "replace": "and still carries a stray HiPEDS description"
+      },
+      {
+        "phrase": "My Imperial then department form reviewed byDirector of Postgraduate Studies/ECRI",
+        "replace": "My Imperial then department form reviewed by the Director of Postgraduate Studies/ECRI"
+      },
+      {
+        "phrase": "are retained as external sponsor context, not verified university-source facts for 2027",
+        "replace": "are external sponsor context, not facts published by the university for 2027"
+      },
+      {
+        "phrase": "No 2027 deadline is established",
+        "replace": "No 2027 deadline is published"
+      },
+      {
+        "phrase": "No current Imperialtarget/completefundingchecklist is established by the expiredKingsproject call",
+        "replace": "The expired Kings project call gives no current Imperial target or complete funding checklist"
+      },
+      {
+        "phrase": "No universal published direct MPhil application destination is established",
+        "replace": "No universal direct MPhil application destination is published"
+      },
+      {
+        "phrase": "Owned and recorded in the parent institutional evidence",
+        "replace": "Set at university level in the university-wide entries"
+      },
+      {
+        "phrase": "PGCert study is separately scoped",
+        "replace": "PGCert study is treated separately"
+      },
+      {
+        "phrase": "the PGCert covers a separately scoped shorter stage",
+        "replace": "the PGCert covers a shorter stage that is treated separately"
+      },
+      {
+        "phrase": "may count after reviewed advanced-standing application",
+        "replace": "may count after an advanced-standing application is reviewed"
+      },
+      {
+        "phrase": "Regulations alone establish no current recruitment target, date, or fee amount",
+        "replace": "The regulations alone give no current recruitment target, date, or fee amount"
+      },
+      {
+        "phrase": "Reviewed Chemistry networks and centres:",
+        "replace": "Other Chemistry networks and centres:"
+      },
+      {
+        "phrase": "Reviewed Mathematics networks:",
+        "replace": "Other Mathematics networks:"
+      },
+      {
+        "phrase": "See separate labelled rates;2026 integrated-abroad amount does not establish2027",
+        "replace": "See separate labelled rates; the 2026 integrated-abroad amount does not set the 2027 amount"
+      },
+      {
+        "phrase": "The MSc variant is retained as disputed evidence rather than assumed to be a confirmed separate programme",
+        "replace": "The MSc variant is disputed and is not assumed to be a confirmed separate programme"
+      },
+      {
+        "phrase": "must be established from the scheme-specific Imperial source",
+        "replace": "must be confirmed from the scheme-specific Imperial source"
+      },
+      {
+        "phrase": "The evidence establishes central medical and GMC eligibility",
+        "replace": "The pages give central medical and GMC eligibility"
+      },
+      {
+        "phrase": "although Imperial's inventory still lists it",
+        "replace": "although Imperial's course list still includes it"
+      },
+      {
+        "phrase": "The official scheme application page now establishes an initial CV email",
+        "replace": "The official scheme application page now describes an initial CV email"
+      },
+      {
+        "phrase": "The retained Materials hub points to",
+        "replace": "The Materials hub still points to"
+      },
+      {
+        "phrase": "The separately sourced taught overview is available in the study record",
+        "replace": "The taught overview is available separately in the study record"
+      },
+      {
+        "phrase": "Use scoped integrated Business doctoral funding",
+        "replace": "Use the integrated Business doctoral funding entries"
+      },
+      {
+        "phrase": "does not automatically establish MD(Res) recruitment or funding",
+        "replace": "does not automatically mean MD(Res) recruitment or funding"
+      },
+      {
+        "phrase": "apply separately scoped central scholarship conditions",
+        "replace": "apply the separate central scholarship conditions"
+      },
+      {
+        "phrase": "apply-page bachelor-plus-substantial-experience alternative retained separately as conflict",
+        "replace": "the apply page's bachelor-plus-substantial-experience alternative is shown separately because it conflicts"
+      },
+      {
+        "phrase": "conditional MPhil exit and transfer arrangements are retained",
+        "replace": "conditional MPhil exit and transfer arrangements are listed"
+      },
+      {
+        "phrase": "because the undated publication retains 2022 slides and historical funding",
+        "replace": "because the undated publication still carries 2022 slides and historical funding"
+      },
+      {
+        "phrase": "do not apply the PhD's full-time option to this degree",
+        "replace": "the PhD's full-time option does not apply to this degree"
+      },
+      {
+        "phrase": "it should not be presented as an independent taught course",
+        "replace": "it is not an independent taught course"
+      },
+      {
+        "phrase": "no standalone no-test MRes application is established",
+        "replace": "no standalone no-test MRes application is published"
+      },
+      {
+        "phrase": "no two-year total is established",
+        "replace": "no two-year total is published"
+      },
+      {
+        "phrase": "with no course-specific renewal schedule inferred",
+        "replace": "and no course-specific renewal schedule is given"
+      },
+      {
+        "phrase": "see the separately scoped current course-class records",
+        "replace": "see the separate current course-class records"
+      },
+      {
+        "phrase": "structured amounts above apply only to MSc, with the original panel retained",
+        "replace": "the amounts above apply only to the MSc; the original panel is shown as published"
+      },
+      {
+        "phrase": "the timezone is Europe/London, not an inferred local timezone",
+        "replace": "the timezone is Europe/London, not your local timezone"
+      },
+      {
+        "phrase": "use the separately sourced Higher-band accepted-test policy",
+        "replace": "use the separate Higher-band accepted-test policy"
+      },
+      {
+        "phrase": "each qualification block retains the applicant qualification scope stated on page",
+        "replace": "each qualification block covers the applicant qualifications stated on the page"
+      },
+      {
+        "phrase": "ATAS terms retain the page’s overseas-candidate and nationality scope",
+        "replace": "ATAS terms apply to the overseas candidates and nationalities the page names"
+      },
+      {
+        "phrase": "each alternative retains its own published grade, subject and exception conditions",
+        "replace": "each alternative has its own published grade, subject and exception conditions"
+      },
+      {
+        "phrase": "each rule retains the department-defined category and stage",
+        "replace": "each rule applies to the department-defined category and stage"
+      },
+      {
+        "phrase": "each scheme retains its own date and eligibility",
+        "replace": "each scheme has its own date and eligibility"
+      },
+      {
+        "phrase": "Explicitly limited descriptions retain unresolved award, curriculum or recruitment status",
+        "replace": "Descriptions that are explicitly limited leave the award, curriculum or recruitment status unresolved"
+      },
+      {
+        "phrase": "Editorial overview of this option-scoped curriculum evidence",
+        "replace": "Editorial overview of this option's curriculum"
+      },
+      {
+        "phrase": "see scoped application evidence",
+        "replace": "see the application details for this course"
+      },
+      {
+        "phrase": "see scoped evidence",
+        "replace": "see the evidence for this course"
+      },
+      {
+        "phrase": "Original official course HTML capture",
+        "replace": "Original official course page"
+      },
+      {
+        "phrase": "verify the retained source-specific intake",
+        "replace": "verify the intake stated in the source"
+      },
+      {
+        "phrase": "even though Bulletin inventory metadata says externally admissible",
+        "replace": "even though the Bulletin degree list says they are externally admissible"
+      },
+      {
+        "phrase": "were not present in the captured current directory",
+        "replace": "were not in the current directory"
+      },
+      {
+        "phrase": "is not explicitly established for Artistic/Cultural Analysis BA",
+        "replace": "is not explicitly stated for Artistic/Cultural Analysis BA"
+      },
+      {
+        "phrase": "Both sourced rules are shown here",
+        "replace": "Both rules are shown here"
+      },
+      {
+        "phrase": "Check component financial-aid pages for the admitted joint route and retain school/degree-specific conditions",
+        "replace": "Check component financial-aid pages for the admitted joint route and note school/degree-specific conditions"
+      },
+      {
+        "phrase": "and is not inferred from where secondary school was attended",
+        "replace": "and is not determined by where secondary school was attended"
+      },
+      {
+        "phrase": "before presenting the year-specific deadline",
+        "replace": "before relying on the year-specific deadline"
+      },
+      {
+        "phrase": "before presenting a single amount",
+        "replace": "before relying on a single amount"
+      },
+      {
+        "phrase": "which metadata flag applies",
+        "replace": "which Bulletin flag applies"
+      },
+      {
+        "phrase": "are department and Registrar scoped",
+        "replace": "are set by the department and the Registrar"
+      },
+      {
+        "phrase": "Current 2027-28 deadline and GRE remain sourced from the live directory",
+        "replace": "Current 2027-28 deadline and GRE are as given in the live directory"
+      },
+      {
+        "phrase": "Current Bulletin establishes no new independent entry and current ClassicsPhD-onlyMA",
+        "replace": "Current Bulletin shows no new independent entry and a current Classics PhD-only MA"
+      },
+      {
+        "phrase": "page retains a January 2026 past deadline",
+        "replace": "page still shows a January 2026 past deadline"
+      },
+      {
+        "phrase": "Degree requirements preserve at least 90 units, 21 math, 17 science, 40 engineering, WIM andcapstone",
+        "replace": "Degree requirements include at least 90 units, 21 math, 17 science, 40 engineering, WIM and capstone"
+      },
+      {
+        "phrase": "should be reconciled with current university exemption and accepted-test policy",
+        "replace": "should be checked against current university exemption and accepted-test policy"
+      },
+      {
+        "phrase": "after45units, qualifying exam andmaster thesis reviewed byAcademicCouncil primaryadviser andsecond facultyreader",
+        "replace": "after 45 units, qualifying exam and master thesis reviewed by Academic Council primary adviser and second faculty reader"
+      },
+      {
+        "phrase": "Exact subplan exceptions follow the retained Bulletin",
+        "replace": "Exact subplan exceptions follow the Bulletin"
+      },
+      {
+        "phrase": "current internal eligibility remains unresolved",
+        "replace": "current internal eligibility is not settled"
+      },
+      {
+        "phrase": "ICME departmentMSpage limits eligible cotermcourse transfer to threequarters beforefirstgraduatequarter andneverbefore sophomorefall.2026-27 Bulletin CME-MSmetadata instead says sophomorefalllookback",
+        "replace": "ICME department MS page limits eligible coterm course transfer to three quarters before the first graduate quarter and never before sophomore fall. The 2026-27 Bulletin CME-MS entry instead says sophomore fall lookback"
+      },
+      {
+        "phrase": "alternative packet or internal timetable",
+        "replace": "alternative application package or internal timetable"
+      },
+      {
+        "phrase": "It retains Language/Literature, ClassicalArchaeology andAncientHistory subplans with45units, adviser by first-quarterweek2 andapprovedproposal at leastfive days beforefirst-quarter FinalStudyList",
+        "replace": "It keeps Language/Literature, Classical Archaeology and Ancient History subplans with 45 units, an adviser by first-quarter week 2 and an approved proposal at least five days before the first-quarter Final Study List"
+      },
+      {
+        "phrase": "Retain source text",
+        "replace": "The wording is as published"
+      },
+      {
+        "phrase": "so the listed tuition rate establishes the applicable quarterly rate",
+        "replace": "so the listed tuition rate sets the applicable quarterly rate"
+      },
+      {
+        "phrase": "Metadata restricts the award to current PhD students",
+        "replace": "The Bulletin restricts the award to current PhD students"
+      },
+      {
+        "phrase": "with approved coursework and capstone conditions retained in Bulletin",
+        "replace": "with approved coursework and capstone conditions set out in the Bulletin"
+      },
+      {
+        "phrase": "No shared GRE requirement can be inferred for all graduate programs",
+        "replace": "A shared GRE requirement for all graduate programs cannot be assumed"
+      },
+      {
+        "phrase": "Official 2026-27 table establishes Law School tuition",
+        "replace": "Official 2026-27 table gives Law School tuition"
+      },
+      {
+        "phrase": "Only CASPA application status establishes deadline compliance",
+        "replace": "Only CASPA application status confirms deadline compliance"
+      },
+      {
+        "phrase": "Program metadata units may describe",
+        "replace": "Bulletin program units may describe"
+      },
+      {
+        "phrase": "remains to be reconciled from the live directory/department pages",
+        "replace": "has to be checked against the live directory/department pages"
+      },
+      {
+        "phrase": "while retaining the published funding components and good-standing condition",
+        "replace": "keeping the published funding components and good-standing condition in view"
+      },
+      {
+        "phrase": "select Spring entry to preserve one-quarter overlap",
+        "replace": "select Spring entry to keep the one-quarter overlap"
+      },
+      {
+        "phrase": "but reviewed public program admissions pages do not define",
+        "replace": "but public program admissions pages do not define"
+      },
+      {
+        "phrase": "The applicable coterm entry term is not reconciled",
+        "replace": "Sources differ on the applicable coterm entry term"
+      },
+      {
+        "phrase": "so no deadline is inferred here",
+        "replace": "so no deadline is given here"
+      },
+      {
+        "phrase": "page is scoped to first-year REA/RD applicants and cannot confirm",
+        "replace": "page applies to first-year REA/RD applicants only and cannot confirm"
+      },
+      {
+        "phrase": "The generic portal instruction is preserved",
+        "replace": "The generic portal instruction is shown as published"
+      },
+      {
+        "phrase": "The published 45-unit metadata, advising and credit rules are shown here",
+        "replace": "The published 45-unit, advising and credit rules are shown here"
+      },
+      {
+        "phrase": "This metadata flag does not explain the discrepancy",
+        "replace": "This Bulletin flag does not explain the discrepancy"
+      },
+      {
+        "phrase": "Those published requirements are retained without claiming a distinct internal packet or deadline",
+        "replace": "Those published requirements are shown without claiming a distinct internal application package or deadline"
+      },
+      {
+        "phrase": "must be reconciled against coterm directory before applicant-facing use",
+        "replace": "should be checked against the coterm directory before you rely on them"
+      },
+      {
+        "phrase": "directory establish Spring 2027 activation",
+        "replace": "directory show Spring 2027 activation"
+      },
+      {
+        "phrase": "form start-term remains unresolved",
+        "replace": "the form's start term is not settled"
+      },
+      {
+        "phrase": "so no 2027 decision date is inferred from it",
+        "replace": "so no 2027 decision date is given"
+      },
+      {
+        "phrase": "cannot be inferred from the one-year MA/MS tracks",
+        "replace": "cannot be assumed from the one-year MA/MS tracks"
+      },
+      {
+        "phrase": "neither identifies a reconciled priority date for a selected future entry year",
+        "replace": "neither gives a single consistent priority date for a selected future entry year"
+      },
+      {
+        "phrase": "use current separately sourced 2027 KHS timing",
+        "replace": "use the current, separate 2027 KHS timing"
+      },
+      {
+        "phrase": "verify before presenting as current for a later intake",
+        "replace": "verify before treating it as current for a later intake"
+      },
+      {
+        "phrase": "whether thatlegacywording permitsanycurrentexception remainsunresolved",
+        "replace": "whether that legacy wording permits any current exception is not settled"
+      },
+      {
+        "phrase": "All sourced external, coterm, internal, intermediate and combined contexts remain separate",
+        "replace": "All external, coterm, internal, intermediate and combined contexts are kept separate"
+      },
+      {
+        "phrase": "Bulletin metadata flags Immunology MS as unavailable",
+        "replace": "Bulletin marks Immunology MS as unavailable"
+      },
+      {
+        "phrase": "catalog metadata flags current PhD students only",
+        "replace": "catalog lists it for current PhD students only"
+      },
+      {
+        "phrase": "Bulletin metadata lists",
+        "replace": "Bulletin data lists"
+      },
+      {
+        "phrase": "Bulletin inventory confirms",
+        "replace": "the Bulletin degree list confirms"
+      },
+      {
+        "phrase": "Bulletin inventory",
+        "replace": "Bulletin degree list"
+      },
+      {
+        "phrase": "first review of the retained degree-specific fields on 2026-10-03",
+        "replace": "first review of the degree-specific fields on 2026-10-03"
+      },
+      {
+        "phrase": "Admission date table versus TBA statement and current-cycle costs/criteria remain unresolved",
+        "replace": "The admission date table and the TBA statement conflict, and current-cycle costs/criteria are not settled"
+      },
+      {
+        "phrase": "Aid-page statement text retains old School",
+        "replace": "Aid-page statement text still uses the old School"
+      },
+      {
+        "phrase": "are now sourced.",
+        "replace": "are now documented."
+      },
+      {
+        "phrase": "Central table retains Molecular Medicine",
+        "replace": "Central table still uses Molecular Medicine"
+      },
+      {
+        "phrase": "and conflicting monthly stipend references remain unresolved",
+        "replace": "and conflicting monthly stipend references are not settled"
+      },
+      {
+        "phrase": "Degree-level content retained without invented totals",
+        "replace": "Degree-level content is shown as published, without added totals"
+      },
+      {
+        "phrase": "EMBA2027-28 heading retains2026/27 windows",
+        "replace": "the EMBA 2027-28 heading still shows 2026/27 windows"
+      },
+      {
+        "phrase": "must not be presented as current structure",
+        "replace": "are not the current structure"
+      },
+      {
+        "phrase": "MAR and authorized committee/authority retain applicability decisions",
+        "replace": "MAR and the authorized committee/authority decide what applies"
+      },
+      {
+        "phrase": "reference values retain their source labels",
+        "replace": "reference values keep the labels NU gives them"
+      },
+      {
+        "phrase": "None establishes a current intake",
+        "replace": "None gives a current intake"
+      },
+      {
+        "phrase": "Numeric grant CGPA is not silently imposed on regular profile described as competitive",
+        "replace": "A numeric grant CGPA does not apply to the regular profile, which NU describes as competitive"
+      },
+      {
+        "phrase": "Nursing remains an unresolved language conflict:",
+        "replace": "The teaching language of Nursing is not settled:"
+      },
+      {
+        "phrase": "Official indexed program content is preserved, but",
+        "replace": "Official indexed program content is shown, but"
+      },
+      {
+        "phrase": "Own financial-aid tab establishes grant competition",
+        "replace": "The program's own financial-aid tab describes a grant competition"
+      },
+      {
+        "phrase": "Own grant tab establishes separate competition",
+        "replace": "The program's own grant tab describes a separate competition"
+      },
+      {
+        "phrase": "Past dates and fees retain source cycle",
+        "replace": "Past dates and fees are shown with the cycle they were published for"
+      },
+      {
+        "phrase": "Preserve them as historical, not as a current open-cycle signal",
+        "replace": "Treat them as historical, not as a sign of a currently open cycle"
+      },
+      {
+        "phrase": "Program page and curriculum reviewed:",
+        "replace": "Program page and curriculum cover:"
+      },
+      {
+        "phrase": "Programme-specific MSN6000, MBAindividual13000/company16000, Financewhole-program35000/14000 and MDresident25000/nonresident30000 remain correctly scoped",
+        "replace": "Each amount applies only to its own programme: MSN 6000, MBA individual 13000/company 16000, Finance whole-program 35000/14000 and MD resident 25000/nonresident 30000"
+      },
+      {
+        "phrase": "Regular numeric applicability unresolved due source conflict",
+        "replace": "Whether a regular numeric rule applies is not settled because the sources conflict"
+      },
+      {
+        "phrase": ", so retain its historic scope",
+        "replace": ", so treat it as historic"
+      },
+      {
+        "phrase": "Specific PhD/residency fees reviewed are for 2025/2026",
+        "replace": "The specific PhD/residency fees listed are for 2025/2026"
+      },
+      {
+        "phrase": "TOEFL formats/scales are retained exactly",
+        "replace": "TOEFL formats/scales are shown exactly as published"
+      },
+      {
+        "phrase": "is not recorded as a hard prerequisite",
+        "replace": "is not a hard prerequisite"
+      },
+      {
+        "phrase": "This is not one of the 93 degree inventory cards",
+        "replace": "This is not one of the 93 listed degree programs"
+      },
+      {
+        "phrase": "Use the separately option-scoped School facts for applicable program requirements",
+        "replace": "Use the School's own program-specific entries for the applicable program requirements"
+      },
+      {
+        "phrase": "copy and is retained as a source discrepancy",
+        "replace": "copy and differs from the other sources"
+      },
+      {
+        "phrase": "do not apply to mid-year, financial support, or UG",
+        "replace": "it does not apply to mid-year, financial support, or UG"
+      },
+      {
+        "phrase": "previous funding is not retained and must be reranked",
+        "replace": "previous funding is not carried over and must be ranked again"
+      },
+      {
+        "phrase": "no 2027/28 entry categories, costs or current intake established",
+        "replace": "no 2027/28 entry categories, costs or current intake are published"
+      },
+      {
+        "phrase": "numeric floors must not be inferred from policy",
+        "replace": "numeric floors cannot be assumed from policy"
+      },
+      {
+        "phrase": "those programs retain school assessment regardless of funding",
+        "replace": "those programs keep the school's own assessment regardless of funding"
+      },
+      {
+        "phrase": "remain source-scoped conditions",
+        "replace": "are conditions to check against the published source"
+      },
+      {
+        "phrase": "require source-scoped verification",
+        "replace": "need to be checked against the published source"
+      },
+      {
+        "phrase": "No published admissions-test cutoff inferred",
+        "replace": "No published admissions-test cutoff is given"
+      },
+      {
+        "phrase": "destination link inspected 2026-10-01",
+        "replace": "destination link checked 2026-10-01"
+      },
+      {
+        "phrase": "Shared Linguistics application English-test rules retain conflicting department and PhD-directory minima",
+        "replace": "Shared Linguistics application English-test rules carry conflicting department and PhD-directory minima"
+      },
+      {
+        "phrase": "PhD-specific funding language remains scoped separately",
+        "replace": "PhD-specific funding language is treated separately"
+      },
+      {
+        "phrase": "without independently establishing this SM external application",
+        "replace": "without separately confirming this SM external application"
+      },
+      {
+        "phrase": "no ordinary external terminal SM route is established",
+        "replace": "no ordinary external terminal SM route is published"
+      },
+      {
+        "phrase": "Mathematics public overview establishes an internal award",
+        "replace": "Mathematics public overview describes an internal award"
+      },
+      {
+        "phrase": "Economics catalog establishes special internal SM admission",
+        "replace": "Economics catalog describes special internal SM admission"
+      },
+      {
+        "phrase": "Copy-reference ambiguity preserved as current conflict with next step",
+        "replace": "Copy-reference ambiguity is shown as a current conflict, with the next step"
+      },
+      {
+        "phrase": "CEP-specific application/funding and award/route conditions preserve its distinct pathway",
+        "replace": "CEP-specific application/funding and award/route conditions apply to its distinct pathway"
+      },
+      {
+        "phrase": "procedure choices, CS redirection and conditional home-department funding preserved",
+        "replace": "procedure choices, CS redirection and conditional home-department funding are shown"
+      },
+      {
+        "phrase": "EAPS/WHOI distinction and explicitly dated verification boundary preserved",
+        "replace": "EAPS/WHOI distinction and explicitly dated verification boundary are shown"
+      },
+      {
+        "phrase": "PhD and ScD both mapped",
+        "replace": "PhD and ScD are both covered"
+      },
+      {
+        "phrase": "MEMP award scope preserved",
+        "replace": "MEMP award scope is shown"
+      },
+      {
+        "phrase": "OGE preserves yearless dates, explicit 2027 verification",
+        "replace": "OGE gives yearless dates, explicit 2027 verification"
+      },
+      {
+        "phrase": "Later sourced GPA preparation facts distinguish",
+        "replace": "Later published GPA preparation facts distinguish"
+      },
+      {
+        "phrase": "next September 2027 entry classification unresolved",
+        "replace": "next September 2027 entry classification not settled"
+      },
+      {
+        "phrase": "The cited level/pathway statement establishes this classification only",
+        "replace": "The cited level/pathway statement gives this classification only"
+      },
+      {
+        "phrase": "rather than infer them",
+        "replace": "rather than assume them"
+      },
+      {
+        "phrase": "Undated Materials scheme inventory reviewed2026-10-01, rechecked2026-10-03",
+        "replace": "Undated Materials scheme list, checked 2026-10-01 and again 2026-10-03"
+      },
+      {
+        "phrase": "then reconcile the programme overview and 2027 course page",
+        "replace": "then check the programme overview against the 2027 course page"
+      },
+      {
+        "phrase": "page labels retained exactly as published",
+        "replace": "page labels are shown exactly as published"
+      },
+      {
+        "phrase": "through the separately sourced current-student coterm",
+        "replace": "through the separate current-student coterm"
+      },
+      {
+        "phrase": "Current facts retain the route, applicant category",
+        "replace": "Current facts specify the route, applicant category"
+      },
+      {
+        "phrase": "exact eligible programmes unresolved",
+        "replace": "exact eligible programmes not settled"
+      },
+      {
+        "phrase": "the earlier unresolved inventory note is superseded",
+        "replace": "the earlier unresolved listing note is superseded"
+      },
+      {
+        "phrase": "No independent external or coterm MS admission is established",
+        "replace": "No independent external or coterm MS admission is published"
+      },
+      {
+        "phrase": "Education MA is retained as a study specialization",
+        "replace": "Education MA is kept as a study specialization"
+      },
+      {
+        "phrase": "all fourteen use the sourced common Biosciences process",
+        "replace": "all fourteen use the common Biosciences process"
+      },
+      {
+        "phrase": "Bulletin metadata",
+        "replace": "Bulletin data"
+      },
+      {
+        "phrase": "historical school dates retained only in original references",
+        "replace": "historical school dates are kept only as original references"
+      },
+      {
+        "phrase": "2026-27 school dates retained as past references;2027-28 central dates TBA",
+        "replace": "2026-27 school dates are kept as past references; 2027-28 central dates TBA"
+      },
+      {
+        "phrase": "Own2026-27 regular/aid dates preserved;2027-28 centralTBA",
+        "replace": "Own 2026-27 regular/aid dates are kept; 2027-28 central TBA"
+      },
+      {
+        "phrase": "Past2026-27 dates retained;2027-28 central dates TBA",
+        "replace": "Past 2026-27 dates are kept; 2027-28 central dates TBA"
+      },
+      {
+        "phrase": "page-specific category exceptions retained",
+        "replace": "page-specific category exceptions are kept"
+      },
+      {
+        "phrase": "exception remains separately scoped",
+        "replace": "exception is treated separately"
+      },
+      {
+        "phrase": "NUlaunch2026 and generalSOAS2027 window retained separately",
+        "replace": "NUlaunch 2026 and general SOAS 2027 window are listed separately"
+      },
+      {
+        "phrase": "see separately scoped 2026-27 criteria and 2027-28 date conflict",
+        "replace": "see the separate 2026-27 criteria and the 2027-28 date conflict"
+      },
+      {
+        "phrase": "internal application packet or timetable",
+        "replace": "internal application package or timetable"
+      },
+      {
+        "phrase": "use current scoped cost and funding facts",
+        "replace": "use the current cost and funding entries for this program"
+      },
+      {
+        "phrase": "Earlier application UI cost-track metadata",
+        "replace": "Earlier application cost-track data"
+      },
+      {
+        "phrase": "are contradicted/resolved by current actual official pages",
+        "replace": "are contradicted or resolved by current official pages"
+      },
+      {
+        "phrase": "have distinct scopes that require route/cycle reconciliation",
+        "replace": "each apply to a different scope, so check your route and cycle"
       }
     ],
     "rus": [
@@ -1093,6 +2039,114 @@
       {
         "pattern": "\\b(?:проверенн|изученн)(?:ой|ых|ом|ые|ую|ое|ая|ый) (?=(?:страниц|содержим|источник|правил|требовани|каталог|материал|общих|текущ|открыт|сведен|публичн|перечень|набор|обзор|табли))",
         "replace": ""
+      },
+      {
+        "phrase": "Применимость GRE к циклу неясна:",
+        "replace": "Не ясно, к какому циклу относится требование GRE:"
+      },
+      {
+        "phrase": "порядок получения промежуточной степени SM остаётся неуточнённым",
+        "replace": "порядок получения промежуточной степени SM пока не определён"
+      },
+      {
+        "phrase": "Источник не подтверждает, принимается ли EA, и не описывает правила проверки английского языка",
+        "replace": "Страница не подтверждает, принимается ли EA, и не описывает правила проверки английского языка"
+      },
+      {
+        "phrase": "Подтверждены поступление в PhD и внутренняя программа MEng",
+        "replace": "Описаны поступление в PhD и внутренняя программа MEng"
+      },
+      {
+        "phrase": "процедура поступления на Toxicology SM не установлены",
+        "replace": "процедура поступления на Toxicology SM не опубликованы"
+      },
+      {
+        "phrase": "порядок поступления и получения степени Nuclear Engineer остаётся неуточнённым",
+        "replace": "порядок поступления и получения степени Nuclear Engineer пока не определён"
+      },
+      {
+        "phrase": "Даты приёма и стоимость и критерии текущего набора остаются неясными",
+        "replace": "Таблица дат приёма противоречит заявлению о том, что даты будут объявлены позже; стоимость и критерии текущего набора пока не определены"
+      },
+      {
+        "phrase": "Текст заявления на странице поддержки сохраняет прежнее название школы Mining and Geosciences",
+        "replace": "Текст заявления на странице поддержки по-прежнему использует старое название школы Mining and Geosciences"
+      },
+      {
+        "phrase": "Подтверждены виды наград, покрытие Abay",
+        "replace": "Описаны виды наград, покрытие Abay"
+      },
+      {
+        "phrase": "а также противоречащие сведения о ежемесячной стипендии остаются неясными",
+        "replace": "а также противоречащие сведения о ежемесячной стипендии пока не определены"
+      },
+      {
+        "phrase": "Центральная таблица сохраняет названия Molecular Medicine",
+        "replace": "Центральная таблица по-прежнему использует названия Molecular Medicine"
+      },
+      {
+        "phrase": "Содержание программы сохранено без выдумывания итогов",
+        "replace": "Содержание программы показано так, как оно опубликовано, без добавленных итогов"
+      },
+      {
+        "phrase": "Заголовок EMBA 2027–28 сохраняет окна 2026/27",
+        "replace": "В заголовке EMBA 2027–28 по-прежнему указаны окна 2026/27"
+      },
+      {
+        "phrase": "Сведения о курсах 2017 года нельзя представлять как текущую структуру",
+        "replace": "Сведения о курсах 2017 года не отражают текущую структуру"
+      },
+      {
+        "phrase": "Справочные суммы сохраняют валюту и учебный год, указанные в источнике",
+        "replace": "Справочные суммы приведены с валютой и учебным годом, указанными в источнике"
+      },
+      {
+        "phrase": "и сохранено как противоречие источников",
+        "replace": "и расходится с другими источниками"
+      },
+      {
+        "phrase": "Официальное индексированное содержание программы сохранено, но",
+        "replace": "Официальное индексированное содержание программы показано, но"
+      },
+      {
+        "phrase": "Отдельная вкладка финансовой поддержки подтверждает конкурс грантов",
+        "replace": "Отдельная вкладка финансовой поддержки описывает конкурс грантов"
+      },
+      {
+        "phrase": "Отдельная вкладка гранта подтверждает самостоятельный конкурс",
+        "replace": "Отдельная вкладка гранта описывает самостоятельный конкурс"
+      },
+      {
+        "phrase": "Прошлые даты и стоимость сохраняют период источника",
+        "replace": "Прошлые даты и стоимость показаны с периодом, к которому они относятся"
+      },
+      {
+        "phrase": "Проверены страница и учебный план шестилетней программы прямого поступления:",
+        "replace": "Страница и учебный план описывают шестилетнюю программу прямого поступления:"
+      },
+      {
+        "phrase": "Отдельно сохранены суммы:",
+        "replace": "Суммы указаны отдельно для каждой программы:"
+      },
+      {
+        "phrase": "Применимость числового требования обычного приёма не выяснена из-за противоречия источников",
+        "replace": "Не ясно, применяется ли числовое требование обычного приёма, из-за противоречия источников"
+      },
+      {
+        "phrase": "Форматы и шкалы TOEFL сохранены точно",
+        "replace": "Форматы и шкалы TOEFL приведены точно так, как опубликованы"
+      },
+      {
+        "phrase": "не записано как обязательное предварительное условие",
+        "replace": "не является обязательным предварительным условием"
+      },
+      {
+        "phrase": "Это не одна из 93 карточек программ с присуждением степени",
+        "replace": "Это не одна из 93 программ, присуждающих степень"
+      },
+      {
+        "phrase": "используйте отдельные факты школы с областью применения этой программы",
+        "replace": "используйте отдельные записи школы для этой программы"
       }
     ],
     "kaz": [
@@ -1143,6 +2197,114 @@
       {
         "pattern": "\\b(?:тексерілген|қаралған|қарастырылған) (?=(?:бет|мазмұн|дереккөз|ереже|талап|каталог|қабылдау|бағдарлама|ағымдағы|ашық|курс|жария|нұсқаулық|деректер|NU\\b|SCAI|SSH|MAE|MBA|OGE|Sloan|университет|бос|ортақ|төлем|стипендия|тарихи|MD\\b|MSN|PhD|DBA|орталық|зерттеу|инженерлік))",
         "replace": ""
+      },
+      {
+        "phrase": "GRE-дің осы циклге қолданылуы түсініксіз:",
+        "replace": "GRE талабы қай циклге қатысты екені белгісіз:"
+      },
+      {
+        "phrase": "Дереккөз EA қабылданғанын растамайды",
+        "replace": "Бет EA қабылданғанын растамайды"
+      },
+      {
+        "phrase": "Расталған қабылдау жолдары",
+        "replace": "Сипатталған қабылдау жолдары"
+      },
+      {
+        "phrase": "қабылдау тәртібі анықталмаған",
+        "replace": "қабылдау тәртібі жарияланбаған"
+      },
+      {
+        "phrase": "NSE қабылдауының тексерілген шолуында",
+        "replace": "NSE қабылдауының шолуында"
+      },
+      {
+        "phrase": "Мерзім кестесі мен кейін жариялау мәлімдемесінің қайшылығы, сондай-ақ ағымдағы кезең шығындары мен талаптары шешілмеген",
+        "replace": "Мерзім кестесі мен кейін жариялау туралы мәлімдеме бір-біріне қайшы келеді, ал ағымдағы кезеңнің шығындары мен талаптары әлі нақтыланбаған"
+      },
+      {
+        "phrase": "Қолдау бетіндегі эссе мәтінінде бұрынғы Тау-кен ісі және геоғылымдар мектебінің атауы сақталған",
+        "replace": "Қолдау бетіндегі эссе мәтінінде әлі де бұрынғы Тау-кен ісі және геоғылымдар мектебінің атауы қолданылады"
+      },
+      {
+        "phrase": "қызмет өтеу міндеті дереккөздермен расталған",
+        "replace": "қызмет өтеу міндеті сипатталған"
+      },
+      {
+        "phrase": "жөніндегі қайшы мәліметтер шешілмеген",
+        "replace": "жөніндегі қайшы мәліметтер әлі нақтыланбаған"
+      },
+      {
+        "phrase": "Sports Medicine and Rehabilitation атаулары сақталған",
+        "replace": "Sports Medicine and Rehabilitation атаулары әлі де қолданылады"
+      },
+      {
+        "phrase": "Дәреже туралы мазмұн ойдан жалпы сан қоспай сақталған",
+        "replace": "Дәреже туралы мазмұн жарияланғандай көрсетілген, қосымша жалпы сандарсыз"
+      },
+      {
+        "phrase": "EMBA-ның 2027–28 тақырыбы астында 2026/27 мерзімдері сақталған",
+        "replace": "EMBA-ның 2027–28 тақырыбында әлі де 2026/27 мерзімдері көрсетілген"
+      },
+      {
+        "phrase": "2017 жылғы тарихи оқу мазмұнын ағымдағы құрылым ретінде көрсетуге болмайды",
+        "replace": "2017 жылғы тарихи оқу мазмұны ағымдағы құрылымды көрсетпейді"
+      },
+      {
+        "phrase": "дереккөздегі белгілерін сақтайды",
+        "replace": "дереккөздегі белгілерімен көрсетіледі"
+      },
+      {
+        "phrase": "мәтіні бар және бұл дереккөз қайшылығы ретінде сақталған",
+        "replace": "мәтіні бар және басқа дереккөздерден өзгеше"
+      },
+      {
+        "phrase": "Ресми индекстелген бағдарлама мазмұны сақталған, бірақ",
+        "replace": "Ресми индекстелген бағдарлама мазмұны көрсетілген, бірақ"
+      },
+      {
+        "phrase": "грант конкурсын растайды",
+        "replace": "грант конкурсын сипаттайды"
+      },
+      {
+        "phrase": "бөлек конкурс бар екенін растайды",
+        "replace": "бөлек конкурсты сипаттайды"
+      },
+      {
+        "phrase": "Өткен күндер мен жарналар өз дереккөз кезеңімен сақталады",
+        "replace": "Өткен күндер мен жарналар өздері жарияланған кезеңмен бірге көрсетіледі"
+      },
+      {
+        "phrase": "тарихи мәлімет ретінде сақтаңыз",
+        "replace": "тарихи мәлімет ретінде қараңыз"
+      },
+      {
+        "phrase": "Бағдарлама беті мен оқу жоспары тексерілді:",
+        "replace": "Бағдарлама беті мен оқу жоспарында көрсетілген:"
+      },
+      {
+        "phrase": "мәндері өз бағдарламалары аясында сақталады",
+        "replace": "мәндері тек өз бағдарламаларына қатысты"
+      },
+      {
+        "phrase": "Тексерілген нақты PhD және резидентура ақылары",
+        "replace": "Көрсетілген нақты PhD және резидентура ақылары"
+      },
+      {
+        "phrase": "TOEFL форматтары мен шкалалары дәл сақталған",
+        "replace": "TOEFL форматтары мен шкалалары жарияланғандай дәл көрсетілген"
+      },
+      {
+        "phrase": "міндетті алғышарт ретінде тіркелмеген",
+        "replace": "міндетті алғышарт болып табылмайды"
+      },
+      {
+        "phrase": "Бұл 93 дәреже бағдарламасы карточкасының бірі емес",
+        "replace": "Бұл 93 дәреже бағдарламасының бірі емес"
+      },
+      {
+        "phrase": "бакалавриатқа қолданбаңыз",
+        "replace": "бакалавриатқа қолданылмайды"
       }
     ]
   }
