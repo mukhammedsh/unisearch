@@ -3304,6 +3304,17 @@ profile.intro: Барлық өріс міндетті емес. Алдымен �
 profile.clear_report_draft: Жобаны тазарту
 profile.report_draft_pending: Есепті қосыңыз не жаңартыңыз немесе оның жобасын тазалап, содан кейін профильді сақтаңыз.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Емтиханнан босатуды жеке тексеруге арналған тілдік тәжірибе
+university.admissions.catalog.field.search_opens: Бағдарламаларды іздеу ашылады
+university.admissions.catalog.field.preparation_opens: Өтінімді дайындау ашылады
+university.admissions.catalog.field.submission_opens: Өтінім жіберу ашылады
+university.admissions.catalog.field.medicine_deadline: Медицина бойынша өтінім беру мерзімі
+university.admissions.catalog.field.other_course_equal_consideration: Басқа бағдарламалар үшін тең қарастыру мерзімі
+university.admissions.catalog.field.a_level_results: A-level нәтижелері
+university.admissions.catalog.field.date: Күні
+university.admissions.catalog.field.time: Уақыты
+university.admissions.catalog.field.timezone: Уақыт белдеуі
+university.admissions.catalog.field.scope: Қатысты
+university.admissions.catalog.record_link: Дереккөздің толық жазбасын көрсету
 profile.family_income_reference: Отбасы табысы (міндетті емес анықтама)
 profile.change_budget_currency: Бюджет валютасын баптауларда өзгерту (қазір {currency})
 university.admissions.entry.browsing_not_saved: Бұл таңдау UniFit үшін сақталмаған.

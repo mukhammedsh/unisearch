@@ -3302,6 +3302,17 @@ profile.intro: Все поля необязательны. Начните со �
 profile.clear_report_draft: Очистить черновик
 profile.report_draft_pending: Добавьте или обновите отчёт либо очистите его черновик, затем сохраните профиль.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Языковой опыт для индивидуальной проверки освобождения от экзамена
+university.admissions.catalog.field.search_opens: Открывается поиск программ
+university.admissions.catalog.field.preparation_opens: Открывается подготовка заявки
+university.admissions.catalog.field.submission_opens: Открывается подача заявки
+university.admissions.catalog.field.medicine_deadline: Срок подачи заявки на медицину
+university.admissions.catalog.field.other_course_equal_consideration: Срок равного рассмотрения для остальных программ
+university.admissions.catalog.field.a_level_results: Результаты A-level
+university.admissions.catalog.field.date: Дата
+university.admissions.catalog.field.time: Время
+university.admissions.catalog.field.timezone: Часовой пояс
+university.admissions.catalog.field.scope: Относится к
+university.admissions.catalog.record_link: Показать полную запись источника
 profile.family_income_reference: Доход семьи (необязательная справка)
 profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})
 university.admissions.entry.browsing_not_saved: Этот выбор не сохранён для UniFit.

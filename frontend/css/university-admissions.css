@@ -1259,9 +1259,32 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-catalog__sources > div {
-  display: grid;
-  gap: var(--space-1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
   min-width: 0;
+}
+
+.admissions-catalog__record-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  text-align: start;
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  cursor: pointer;
+}
+
+.admissions-catalog__record-link:hover {
+  color: var(--interaction-hover-text);
+}
+
+.admissions-catalog__reported {
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .university--reviewed .admissions-catalog__sources a {
