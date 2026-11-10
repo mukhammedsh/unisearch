@@ -165,7 +165,7 @@ for (const item of presentations) {
       { id: "imperial-option-data-science", search: "Biomedical Research Data Science", text: /not compulsory|не являются обязательными|міндетті модульдер/ },
       { id: "imperial_genomic_medicine_msc_pgcert", search: "Genomic Medicine", text: /four taught modules|четырёх модулей|төрт модуль/ },
       { id: "imperial-brain-sciences-phd", search: "Brain Sciences", text: /neurology|неврологию|Неврология/ },
-      { id: "imperial_experimental_biomolecular_sciences_mres_msc", search: "Experimental Biomolecular Sciences", text: /not established|не подтверждён|расталмаған/ },
+      { id: "imperial_experimental_biomolecular_sciences_mres_msc", search: "Experimental Biomolecular Sciences", text: /not confirmed|не подтверждён|расталмаған/ },
     ]) {
       await program(page, entry.id, entry.search);
       const overview = page.locator("#admissionsStudyOverview");

@@ -1,17 +1,19 @@
 {
-  "schema_version": "admissions-editorial-notes-1.0",
-  "description": "Research notes written for data maintainers inside reviewed admissions records: instructions such as \"do not carry these amounts forward\" and process notes such as \"reviewed 2026-10-01\" or \"no entry year inferred\". The API removes these exact clauses from applicant-facing text and the matching translations. Official university wording and applicant-relevant facts are never listed; kept_clauses records reviewed clauses that sound like notes but are kept.",
+  "schema_version": "admissions-editorial-notes-1.1",
+  "description": "Research notes written for data maintainers inside reviewed admissions records: instructions such as \"do not carry these amounts forward\" and process notes such as \"reviewed 2026-10-01\" or \"no entry year inferred\". The API removes the exact clauses listed in clauses from applicant-facing text and the matching translations, then applies rewrites, which restate researcher-voice wording (\"the reviewed pages do not establish...\") as plain guidance to the applicant. A rewrite is a literal phrase or a regex pattern with a replace text and is kept per language; rewrites run in order. Official university wording and applicant-relevant facts are never listed; kept_clauses records reviewed clauses that sound like notes but are kept.",
   "clauses": {
     "eng": [
       "10 packet-A master’s cards",
       "2026-10-01 snapshot",
       "Actual official page reviewed on 2026-10-01",
+      "Admission classification and exact eligible population remain owned by the separately scoped route facts",
       "All ten engineering/Robotics master program pages and their study structures have been reviewed",
       "All ten packet-A master program pages were reviewed",
       "Applicants to the specified researched degree or scheme",
       "Biology and Biophysics study-option records are owned in the H&S dossier",
       "Central Master admissions policy is owned by packet B",
       "Combine the Doerr coterm dossier and resolve the CEE entry-term conflict with CEE student services",
+      "Combine the Doerr evidence and use option-specific unresolved entries for genuinely unpublished Engineering details",
       "Combine the separately reviewed Doerr dossier",
       "Core, optional, pre-study, project, year and selector labels must remain distinct",
       "Course-level evidence and parent selectors are retained without silently assigning their values to this award",
@@ -99,6 +101,7 @@
       "Do not use older generic GradPLUS availability",
       "Doerr coterm rules remain in a separately assigned dossier, and the CEE entry-term conflict is tracked individually",
       "Doerr rows remain in the separately assigned Doerr dossier",
+      "Earlier Not set/prior-cycle-only finding is superseded for these exact amounts and labels",
       "Earlier reviewed application deadline",
       "Earlier reviewed deadlines",
       "Earlier reviewed decision notification",
@@ -108,6 +111,7 @@
       "Earlier reviewed route scope note",
       "Engineering coverage assessments and doerr-completion-evidence.json now contain the reviewed current route/domain evidence",
       "Engineering degree-route admissions groups have been reviewed and linked in 27 option assessments",
+      "Explicit course-level entry/progression evidence remains preserved",
       "Explicitly stated in this award selector key-facts panel",
       "External admission must not be inferred",
       "First-pass reference retained for provenance",
@@ -144,11 +148,14 @@
       "No assistantship or fellowship amount should be inferred",
       "No explicit portal-versus-policy certificate-year contradiction was reproduced in the available indexed content",
       "No2027 source value is inferred",
+      "Null means absent metadata, not zero",
       "Official current page or dated official GET text reviewed on 2026-10-01",
       "Official next step: admissions qualification assessment, not citizenship inference",
       "Official program guidance reviewed 2026-10-20",
       "Only the base Default study selector applies here",
       "Only the named award selector applies",
+      "Original metadata and source date remain preserved",
+      "Original source review date retained",
       "Packet B now provides a shared Master baseline whose four facts include all ten A study-option IDs",
       "Preserve actual programme training and sourceconflict, notgenericunsearchedunknown",
       "Preserve anomaly and seek SCAI clarification",
@@ -199,6 +206,7 @@
       "Shared central Master’s admissions policy is owned by packet B",
       "Shared portal and submission process for Packet B programs that are regular PhDs",
       "Source limitation: Route ID exists in runtime candidates",
+      "Specific actual routes remain separately scoped",
       "Standalone Materials Engineer support not inferred",
       "Students considering the named award/source selector",
       "Students considering the named degree/source selector",
@@ -225,6 +233,7 @@
       "Use the detailed current SCAI degree-page name for CS and Robotics",
       "a distinct additional-degree route is not inferred",
       "a separate no-test taught MRes admission is not inferred",
+      "an absent field does not establish no route",
       "an official indexed MSc page and the current SMG listing support the program/curriculum identity",
       "application cycle not inferred",
       "avoid adding DET/Cambridge absent route evidence",
@@ -232,6 +241,7 @@
       "complete programme/policy review facts from2026-10-24 govern this packet",
       "coordinate shared mechanics with packet C",
       "course page reviewed for 2027 entry",
+      "department-specific actual admission routes are separately scoped",
       "distinguish MEMP from other HST tracks not researched here",
       "do not add all as MIT degrees",
       "do not add an unsupported general postal requirement",
@@ -465,6 +475,7 @@
       "retained source dates identify reused evidence",
       "reviewed 2026-10-01, not current recruitment",
       "reviewed 2026-10-02",
+      "revisit only any row whose current directory record changes",
       "runtime activation still requires B's evidence acceptance",
       "see packet B shared Master policy",
       "see the researched unknown",
@@ -756,6 +767,370 @@
     "rus": [],
     "kaz": [
       "TA/RA мүмкін, бірақ кепілдік берілмейді"
+    ]
+  },
+  "rewrites": {
+    "eng": [
+      {
+        "phrase": "course-page fee labels do not establish an applicant fee status",
+        "replace": "a fee label on the course page does not decide your own fee status"
+      },
+      {
+        "phrase": "Exact course-level grade, subject, qualification alternative, named admissions test, interview and variant-specific language conditions are preserved where published",
+        "replace": "Course-level grade, subject, qualification alternative, admissions test, interview and variant-specific language conditions are shown where Imperial publishes them"
+      },
+      {
+        "phrase": "Institution-wide English-language thresholds and application procedures are parent-owned",
+        "replace": "University-wide English-language thresholds and application procedures are set out in Imperial's general admissions rules"
+      },
+      {
+        "phrase": "other awards have separate scoped facts or explicit unknowns",
+        "replace": "other awards have their own entries or are listed as not published"
+      },
+      {
+        "pattern": "No course-specific admissions test, score threshold, interview or portfolio rule (?:was|is) stated (?:in|on) the reviewed ([^.;]+)",
+        "replace": "The \\1 state no course-specific admissions test, score threshold, interview or portfolio rule"
+      },
+      {
+        "phrase": "Departmental earlier milestones retained separately from university maximum assessment deadlines",
+        "replace": "Earlier departmental milestones are separate from the university's maximum assessment deadlines"
+      },
+      {
+        "phrase": "This does not establish a personal rejection or universal equivalence",
+        "replace": "This neither rejects your qualification nor confirms it as equivalent"
+      },
+      {
+        "phrase": "Source retains a stale 2026 admissions-test heading but its individual ESAT/TMUA content explicitly says2027",
+        "replace": "The page still shows a 2026 admissions-test heading, but its ESAT/TMUA details explicitly say 2027"
+      },
+      {
+        "phrase": "The reviewed shared offer-conditions page only establishes ",
+        "replace": "The shared offer-conditions page only gives "
+      },
+      {
+        "phrase": "Each qualification label, row, validity condition and footnote is retained from its official accordion panel",
+        "replace": "Each qualification label, row, validity condition and footnote is shown as Imperial publishes it"
+      },
+      {
+        "phrase": "Source evidence is not a generic executable rule",
+        "replace": "This evidence is guidance, not an automatic eligibility rule"
+      },
+      {
+        "phrase": "tables are not a generic executable rule",
+        "replace": "the tables are guidance, not an automatic eligibility rule"
+      },
+      {
+        "phrase": "Not an executable eligibility rule",
+        "replace": "Guidance only, not an automatic eligibility rule"
+      },
+      {
+        "phrase": "university guidance is not an executable immigration decision",
+        "replace": "university guidance is not an immigration decision"
+      },
+      {
+        "phrase": "Official university inventory and linked institutional content establish the scheme and destination relationship",
+        "replace": "The official university course list and linked pages confirm the scheme and its destination"
+      },
+      {
+        "pattern": "The direct page review did not establish a 2027 (Home|Overseas) fee amount: panel status is prior_cycle_only",
+        "replace": "The course page lists no 2027 \\1 fee amount; the fee it shows is for an earlier cycle"
+      },
+      {
+        "pattern": "The direct page review did not establish a 2027 (Home|Overseas) fee amount: panel status is not_set",
+        "replace": "The course page lists no 2027 \\1 fee amount; the fee has not been set yet"
+      },
+      {
+        "phrase": "Use the linked current course fee panels, preserving fee status, mode and period",
+        "replace": "Use the linked current course fee panels and check the fee status, study mode and period"
+      },
+      {
+        "phrase": "Official international table establishes baseline equivalence",
+        "replace": "Imperial's official international table sets out baseline equivalence"
+      },
+      {
+        "phrase": "See source narrative and scoped facts; ",
+        "replace": "Read them with the narrative text and the other entries for your course; "
+      },
+      {
+        "phrase": ", so preserve this source conflict",
+        "replace": ", so the page is inconsistent on this point"
+      },
+      {
+        "phrase": "Different overview wording is explicitly retained as a conflict",
+        "replace": "The overview words this differently, so the sources conflict"
+      },
+      {
+        "phrase": "Current official publication establishes ",
+        "replace": "The current official publication lists "
+      },
+      {
+        "pattern": ", recorded separately in [a-z0-9-]+",
+        "replace": ""
+      },
+      {
+        "phrase": "Not established by this overview",
+        "replace": "Not stated in this overview"
+      },
+      {
+        "phrase": "No universal current salary inferred; legacy 2019 UG mean remains historical only",
+        "replace": "The university gives no single current salary; the 2019 undergraduate mean is historical only"
+      },
+      {
+        "phrase": "No Stanford-owned public country-specific admissions equivalency table or Kazakhstan credential ruling was located in the reviewed central first-year, transfer, or international applicant guidance",
+        "replace": "Stanford does not publish a country-specific admissions equivalency table or a ruling on Kazakhstan credentials in its central first-year, transfer or international applicant guidance"
+      },
+      {
+        "phrase": "No transfer interview policy has been established by this source",
+        "replace": "This source does not state a transfer interview policy"
+      },
+      {
+        "phrase": "Inspect the applicant's Stanford offer letter",
+        "replace": "Check your Stanford offer letter"
+      },
+      {
+        "phrase": "review the applicant's exact school credential",
+        "replace": "review your exact school credential"
+      },
+      {
+        "phrase": "The shared sources establish ",
+        "replace": "The shared sources give "
+      },
+      {
+        "phrase": "Published Student Services2026-27 tuition/fees are retained with unit load and actual billing classification",
+        "replace": "Student Services publishes 2026-27 tuition and fees, which depend on unit load and your actual billing classification"
+      },
+      {
+        "phrase": "Department pages establish per-unit/CGOE billing but not a current numeric HCP schedule",
+        "replace": "Department pages describe per-unit/CGOE billing but do not give a current numeric HCP schedule"
+      },
+      {
+        "phrase": "Published 45-unit metadata, advising and credit rules are preserved",
+        "replace": "The published 45-unit metadata, advising and credit rules are shown here"
+      },
+      {
+        "pattern": "\\bBoth ((?:published|dated|sourced)[\\w ]*?) (?:are|remain) (?:retained|preserved)\\b",
+        "replace": "Both \\1 are shown here"
+      },
+      {
+        "phrase": "Source limitation: Keep LGO supplemental application questions scoped to LGO applicant route, not the PhD route",
+        "replace": "LGO supplemental application questions apply to the LGO applicant route, not the PhD route"
+      },
+      {
+        "phrase": "Page language metadata is not verified proof that teaching is trilingual",
+        "replace": "The language shown on the page is not proof that teaching is trilingual"
+      },
+      {
+        "phrase": "so preserve that catalog copy discrepancy",
+        "replace": "so the catalog copy differs from the program page"
+      },
+      {
+        "phrase": "No school-specific admission threshold surfaced; use only cycle-scoped central admissions sources",
+        "replace": "No school-specific admission threshold is listed; rely on the central admissions sources for the relevant cycle"
+      },
+      {
+        "phrase": "Exact cycle and route ownership of each threshold is unresolved",
+        "replace": "It is not yet clear which cycle and route each threshold belongs to"
+      },
+      {
+        "phrase": "(cycle/table scope still to reconcile)",
+        "replace": "(which cycle and table it applies to is not yet clear)"
+      },
+      {
+        "phrase": ", so do not flatten across routes",
+        "replace": ", so these rules should not be merged across routes"
+      },
+      {
+        "phrase": "This is a sourced NU explanation",
+        "replace": "This is NU's own explanation"
+      },
+      {
+        "phrase": "these remain separate source-scoped facts",
+        "replace": "these are separate facts from separate sources"
+      },
+      {
+        "phrase": "SoE’s $16,000 figure and B’s central master policy must retain their exact scopes and source year status",
+        "replace": "The School of Engineering’s $16,000 figure and the central master’s policy each apply only within their own scope and source year"
+      },
+      {
+        "pattern": " \\(see [a-z][a-z0-9]*(?:-[a-z0-9]+){2,}\\)",
+        "replace": ""
+      },
+      {
+        "pattern": "; see [a-z][a-z0-9]*(?:-[a-z0-9]+){2,} and keep that cycle-specific status distinct",
+        "replace": ", which is specific to that cycle"
+      },
+      {
+        "pattern": "; see [a-z][a-z0-9]*(?:-[a-z0-9]+){2,}(?=[.;]|$)",
+        "replace": ""
+      },
+      {
+        "pattern": "\\bremain separately scoped\\b",
+        "replace": "apply separately"
+      },
+      {
+        "pattern": "\\b(Page|pages?) reviewed on (\\d{4}-\\d{2}-\\d{2})\\b",
+        "replace": "\\1, as checked on \\2,"
+      },
+      {
+        "pattern": "\\b([Tt]he) reviewed (?=[A-Za-z0-9])",
+        "replace": "\\1 "
+      },
+      {
+        "pattern": "\\b([Cc]urrent|[Nn]o|[Aa]ny|[Tt]his|[Ss]hared) reviewed (?=[A-Za-z0-9])",
+        "replace": "\\1 "
+      },
+      {
+        "pattern": "\\b(on|in|from|at|under|by) reviewed (?!to\\b|by\\b|in\\b|on\\b|as\\b|for\\b|and\\b|only\\b|after\\b|annually\\b)(?=[A-Za-z0-9])",
+        "replace": "\\1 the "
+      },
+      {
+        "pattern": "([’']s) reviewed (?=[A-Za-z])",
+        "replace": "\\1 "
+      },
+      {
+        "pattern": "\\b(their|its|these|those|both) reviewed ",
+        "replace": "\\1 "
+      },
+      {
+        "pattern": "(; )reviewed (?=[A-Z])",
+        "replace": "\\1the "
+      },
+      {
+        "pattern": "\\b(pages?|sources?|materials?|content) reviewed(?= (?:do|does|did|states?|shows?|lists?|gives?|says?|has|have|is|are)\\b|:)",
+        "replace": "\\1"
+      },
+      {
+        "pattern": "\\b(on|in) the (pages?|sources?) reviewed\\b",
+        "replace": "\\1 the \\2"
+      },
+      {
+        "pattern": "(^|[.;:] )Reviewed (?=(?:pages?|catalog|financing|CRE|fifth-year|GSE|Earth|Sloan)\\b)",
+        "replace": "\\1The "
+      },
+      {
+        "phrase": "Reviewed current-MIT entry/selection instructions",
+        "replace": "The current MIT entry/selection instructions"
+      },
+      {
+        "pattern": "\\bthe inspected ",
+        "replace": "the "
+      },
+      {
+        "pattern": "\\b(do|does) not specify (whether|which|if|how|when|what|who)\\b",
+        "replace": "\\1 not say \\2"
+      },
+      {
+        "pattern": "\\b(pages?|content|sources?|text|guidance|material|overview|FAQ) (do|does) not specify\\b",
+        "replace": "\\1 \\2 not state"
+      },
+      {
+        "pattern": "\\bnot established\\b",
+        "replace": "not confirmed"
+      },
+      {
+        "pattern": "\\bnot establish\\b",
+        "replace": "not confirm"
+      },
+      {
+        "pattern": "\\bcannot establish\\b",
+        "replace": "cannot confirm"
+      },
+      {
+        "pattern": "(not confirmed) in this review\\b",
+        "replace": "\\1"
+      },
+      {
+        "pattern": "(\\b(?:is|are)) (?:now )?(?:recorded|mapped)\\b",
+        "replace": "\\1 listed"
+      }
+    ],
+    "rus": [
+      {
+        "phrase": "Метаданные языка страницы не подтверждают обучение на трёх языках",
+        "replace": "Язык, указанный на странице, не доказывает, что обучение ведётся на трёх языках"
+      },
+      {
+        "phrase": "сохраняют отдельную область применения",
+        "replace": "применяются отдельно"
+      },
+      {
+        "phrase": "; это расхождение сохранено",
+        "replace": ", поэтому описание в каталоге расходится со страницей программы"
+      },
+      {
+        "phrase": "Отдельный порог поступления школы не найден; используйте центральные источники приёма с учётом их периода",
+        "replace": "Отдельный порог поступления школы не указан; опирайтесь на центральные источники приёма за нужный период"
+      },
+      {
+        "phrase": "Это разъяснение NU с источником",
+        "replace": "Это собственное разъяснение NU"
+      },
+      {
+        "phrase": "это отдельные факты в области применения источника",
+        "replace": "это отдельные факты из разных источников"
+      },
+      {
+        "phrase": "Для суммы инженерной школы 16 000 долларов и общих правил магистратуры из пакета B необходимо сохранять их точную область применения и статус года источника",
+        "replace": "Сумма инженерной школы (16 000 долларов) и общие правила магистратуры действуют только в своей области применения и за свой год источника"
+      },
+      {
+        "pattern": "; см\\. отдельную запись [^.;]*",
+        "replace": ""
+      },
+      {
+        "pattern": "(^|[.!?] )(?:Проверенн|Изученн)(?:ые|ое|ая|ый) (\\S)",
+        "replace": "\\1\\u2"
+      },
+      {
+        "pattern": "\\b(?:проверенн|изученн)(?:ой|ых|ом|ые|ую|ое|ая|ый) (?=(?:страниц|содержим|источник|правил|требовани|каталог|материал|общих|текущ|открыт|сведен|публичн|перечень|набор|обзор|табли))",
+        "replace": ""
+      }
+    ],
+    "kaz": [
+      {
+        "phrase": "Беттегі тіл туралы мәлімет оқытудың үш тілде жүргізілетінін растамайды",
+        "replace": "Бетте көрсетілген тіл оқытудың үш тілде жүргізілетінін дәлелдемейді"
+      },
+      {
+        "phrase": "жеке қолданылу аясында сақталады",
+        "replace": "бөлек қолданылады"
+      },
+      {
+        "phrase": "бөлек аяда сақталады",
+        "replace": "бөлек қолданылады"
+      },
+      {
+        "phrase": "сондықтан бұл каталогтағы қайшылық сақталады",
+        "replace": "сондықтан каталогтағы сипаттама бағдарлама бетінен өзгеше"
+      },
+      {
+        "phrase": "Мектепке тән түсу шегі табылмады; тек қабылдау кезеңіне қатысты орталық дереккөздерді қолданыңыз",
+        "replace": "Мектепке тән түсу шегі көрсетілмеген; қажетті кезеңге арналған орталық қабылдау дереккөздеріне сүйеніңіз"
+      },
+      {
+        "phrase": "Бұл — дереккөзге негізделген NU түсіндірмесі",
+        "replace": "Бұл — NU-дың өз түсіндірмесі"
+      },
+      {
+        "phrase": "олар жеке дереккөз аясы ретінде сақталады",
+        "replace": "олар әртүрлі дереккөздердің бөлек деректері болып табылады"
+      },
+      {
+        "phrase": "Инженерия мектебінің 16 000 доллар мәні мен B топтамасындағы ортақ магистратура ережесі өз аясы мен дереккөз жылының мәртебесін сақтауы тиіс",
+        "replace": "Инженерия мектебінің 16 000 доллар мәні мен ортақ магистратура ережесі тек өз аясында және өз дереккөз жылы үшін қолданылады"
+      },
+      {
+        "pattern": "; nu-a-fact-[a-z0-9-]+ жазбасын қараңыз",
+        "replace": ""
+      },
+      {
+        "pattern": "(^|[.!?] )(?:Тексерілген|Қаралған|Қарастырылған) (?=(?:бет|мазмұн|дереккөз|ереже|талап|каталог|қабылдау|бағдарлама|ағымдағы|ашық|курс|жария|нұсқаулық|деректер|NU\\b|SCAI|SSH|MAE|MBA|OGE|Sloan|университет|бос|ортақ|төлем|стипендия|тарихи|MD\\b|MSN|PhD|DBA|орталық|зерттеу|инженерлік))(\\S)",
+        "replace": "\\1\\u2"
+      },
+      {
+        "pattern": "\\b(?:тексерілген|қаралған|қарастырылған) (?=(?:бет|мазмұн|дереккөз|ереже|талап|каталог|қабылдау|бағдарлама|ағымдағы|ашық|курс|жария|нұсқаулық|деректер|NU\\b|SCAI|SSH|MAE|MBA|OGE|Sloan|университет|бос|ортақ|төлем|стипендия|тарихи|MD\\b|MSN|PhD|DBA|орталық|зерттеу|инженерлік))",
+        "replace": ""
+      }
     ]
   }
 }
