@@ -6,7 +6,7 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage, t } = await import("../../frontend/javascript/i18n.js");
 const { formatPublishedDate, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
-const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview, renderAdmissionsAssessment } = await import("../../frontend/javascript/pages/university/admissions-render.js");
+const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview, renderAdmissionsAssessment, renderAdmissionsValue } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
 test("integrated undergraduate MEng explanations never apply to MIT internal master's options", () => {
@@ -371,4 +371,19 @@ test("scholarship exclusions and unconfirmed awards are distinct from potential 
     assert.ok(html.includes(expected), availability);
     assert.match(html, /Imperial Inspires/);
   }
+});
+
+test("UCAS date record fields are localized and a glued entry cycle keeps its spacing", () => {
+  const value = { search_opens: "2026-04-28", medicine_deadline: { date: "2026-10-15", time: "18:00", timezone: "Europe/London", scope: ["MBBS Medicine"] }, other_course_equal_consideration: { date: "2027-01-13" } };
+  for (const [language, labels] of [["eng", ["Course search opens", "Medicine application deadline", "Equal consideration deadline for other courses", "Time zone", "Applies to"]],
+    ["rus", ["Открывается поиск программ", "Срок подачи заявки на медицину", "Срок равного рассмотрения для остальных программ", "Часовой пояс", "Относится к"]]]) {
+    setLanguage(language, { emit: false });
+    const html = renderAdmissionsValue(value);
+    for (const text of labels) assert.ok(html.includes(`<dt>${text}</dt>`), `${language}: ${text}`);
+    assert.ok(html.includes("MBBS Medicine"));
+    assert.doesNotMatch(html, /Search opens|Medicine deadline|Other course equal/);
+  }
+  setLanguage("eng", { emit: false });
+  assert.equal(admissionsCycleLabel("2027/28entry"), "2027/28 entry");
+  assert.equal(admissionsCycleLabel("2027 entry"), "2027 entry");
 });

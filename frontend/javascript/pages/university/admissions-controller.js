@@ -1,7 +1,7 @@
 import { API_BASE, escapeHtml, escapeHtmlAttr, initCustomSelect, loadProfile, loadProfileForApi, saveSelectedAdmissionChoice, stabilizeNumericRanges } from "../../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { translateProgramName } from "../../university-translations.js";
-import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOverviewCoverage, renderAdmissionsAssessment, renderAdmissionsContext, renderStudyOptionOverview, renderStudyOptionSources } from "./admissions-render.js";
+import { ASSESSMENT_RECORD_DOMAINS, admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOverviewCoverage, renderAdmissionsAssessment, renderAdmissionsContext, renderStudyOptionOverview, renderStudyOptionSources } from "./admissions-render.js";
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
@@ -171,6 +171,16 @@ export function mountAdmissionsCatalog(institutionId) {
   const assessmentHost = document.createElement("div");
   const requirementsContent = document.createElement("div");
   requirements.replaceChildren(assessmentHost, root, requirementsContent);
+  // Assessment checks point at their full source record instead of repeating it; open the record's disclosures and show it.
+  requirements.onclick = event => {
+    const link = event.target.closest("[data-admissions-record-link]");
+    if (!link) return;
+    const record = [...requirementsContent.querySelectorAll("[data-admissions-fact]")].find(node => node.dataset.admissionsFact === link.dataset.admissionsRecordLink);
+    if (!record) return;
+    for (let node = record; node && node !== requirementsContent; node = node.parentElement) if (node.tagName === "DETAILS") node.open = true;
+    record.scrollIntoView({ block: "center" });
+    (record.querySelector(":scope > summary") || record).focus?.({ preventScroll: true });
+  };
   const universityInfo = document.createElement("div");
   universityInfo.id = "admissionsUniversityInfo";
   document.getElementById("detailExtra").append(universityInfo);
@@ -432,7 +442,7 @@ export function mountAdmissionsCatalog(institutionId) {
     if (status === "loading") assessmentHost.innerHTML = loading();
     else if (status === "error") {
       assessmentHost.innerHTML = "";
-    } else if (readable) assessmentHost.innerHTML = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+    } else if (readable) assessmentHost.innerHTML = renderAdmissionsAssessment(resolved, { presentation: "simple", recordDomains: ASSESSMENT_RECORD_DOMAINS });
     else {
       const canChooseRoute = option ? Boolean(resolved?.available_routes?.length) : Boolean(sharedRoutes.length);
       const message = option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(canChooseRoute ? "assessment_no_route" : "choose_program_hint");

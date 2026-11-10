@@ -3315,6 +3315,17 @@ profile.intro: All fields are optional. Start with your subject, study level and
 profile.clear_report_draft: Clear draft
 profile.report_draft_pending: Add or update the report, or clear its draft, then save the profile.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Language background for individual exemption review
+university.admissions.catalog.field.search_opens: Course search opens
+university.admissions.catalog.field.preparation_opens: Application preparation opens
+university.admissions.catalog.field.submission_opens: Application submission opens
+university.admissions.catalog.field.medicine_deadline: Medicine application deadline
+university.admissions.catalog.field.other_course_equal_consideration: Equal consideration deadline for other courses
+university.admissions.catalog.field.a_level_results: A-level results
+university.admissions.catalog.field.date: Date
+university.admissions.catalog.field.time: Time
+university.admissions.catalog.field.timezone: Time zone
+university.admissions.catalog.field.scope: Applies to
+university.admissions.catalog.record_link: Show full source record
 profile.family_income_reference: Family income (optional reference)
 profile.change_budget_currency: Change budget currency in Settings (currently {currency})
 university.admissions.entry.browsing_not_saved: This choice is not saved for UniFit.

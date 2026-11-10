@@ -246,9 +246,9 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   const unknowns = overallCheck.locator("details.admissions-catalog__unknowns");
   if (await unknowns.count() && !(await unknowns.evaluate((node) => node.open))) await unknowns.locator(":scope > summary").click();
   await expect(overallCheck).toContainText(/overall/i);
-  await expect(overallCheck).toContainText(/Value\s*4(?:\.0)?Original scale\s*5/);
+  await expect(overallCheck).toContainText(/Overall GPA:\s*4\/5/);
   await expect(overallCheck).toContainText("4");
-  await expect(overallCheck).toContainText(/published/i);
+  await expect(overallCheck).toContainText(/full source record/i);
   await expect(overallCheck.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
   await expect(page.locator("#detailRequirements")).toContainText(/supervisor|UROP/i);
 
@@ -280,7 +280,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
   await missingOverall.locator(":scope > summary").click();
-  await expect(missingOverall).toContainText("Original published rule");
+  await expect(missingOverall).toContainText(/full source record/i);
   await expect(missingOverall).toContainText(/overall/i);
   await expect(missingOverall).toContainText("4");
   await expect(missingOverall.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
