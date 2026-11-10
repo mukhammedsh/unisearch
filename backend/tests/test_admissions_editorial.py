@@ -284,6 +284,38 @@ class AdmissionsEditorialEndpointTests(unittest.TestCase):
         # The facts the guidance qualifies stay in the response.
         self.assertIn("minimum entry standard", text)
 
+    def test_remaining_research_voice_is_restated_in_main_journeys(self):
+        def context(university, option, level, route=None):
+            body = {"study_option_id": option, "study_level": level, **({"application_route_id": route} if route else {})}
+            response = self.client.post(f"/universities/{university}/admissions-context", json={"profile": {}, "context": body})
+            self.assertEqual(response.status_code, 200)
+            return response.text
+
+        stanford = "stanford-university-usa-ca"
+        first_year = context(stanford, "stanford-option-cs-bs", "undergraduate", "undergraduate-shared-evidence:stanford-first-year")
+        self.assertIn("is not determined by where secondary school was attended", first_year)
+        self.assertNotIn("is not inferred from where secondary school was attended", first_year)
+        masters = context(stanford, "stanford-option-cs-ms", "masters", "directory-evidence:stanford-graduate-cs-ms")
+        self.assertIn("A shared GRE requirement for all graduate programs cannot be assumed", masters)
+        self.assertNotIn("can be inferred for all graduate programs", masters)
+        nuzyp = context(NU, "nu-a-study-nuzyp", "preparation")
+        self.assertIn("None gives a current intake or current requirements, duration, fee or funding terms", nuzyp)
+        # Valid guidance to the applicant is not rewritten.
+        self.assertIn("Do not treat a conditional offer as unconditional eligibility or a promised seat",
+                      context(NU, "nu-a-study-bachelor-of-science-in-computer-science", "undergraduate", "nu-a-route-regular-foundation-undergraduate"))
+
+    def test_translated_nu_findings_read_like_the_edited_english(self):
+        translations = json.loads((DATA_DIR / "universities_translations.json").read_text(encoding="utf-8"))["languages"]
+        clauses, rewrites = frozenset(NOTES["clauses"]["eng"]), admissions_editorial.load_rewrites()["eng"]
+        original = next(key for key in translations["rus"]["admission_exact"] if "Award types/Abay coverage" in key)
+        edited = admissions_editorial.clean_text(original, clauses, rewrites)
+        self.assertIn("are now documented. Current-year quotas", edited)
+        for language, described, stale in (("rus", "Описаны виды наград", "Подтверждены виды наград"),
+                                           ("kaz", "қызмет өтеу міндеті сипатталған", "дереккөздермен расталған")):
+            exact = self.client.get("/universities/translations", params={"lang": language}).json()["data"]["admission_exact"]
+            self.assertIn(described, exact[edited], language)
+            self.assertNotIn(stale, exact[edited], language)
+
     def test_translation_bundle_rewrites_the_english_key_and_the_translation_together(self):
         rewrites = admissions_editorial.load_rewrites()
         original_en = "ETS-equivalent TOEFL, exact current conversion not specified in reviewed NU page"

@@ -129,7 +129,7 @@ test("NUZYP exposes its source uncertainty without an invented application route
   await expect(page.locator("#admissionsStudyOverview")).not.toContainText("has not been collected");
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   await page.locator("#admissionsStudyInfo .admissions-catalog__unknowns > summary").click();
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("None establishes a current intake");
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("None gives a current intake");
   await expect(page.locator("#admissionsStudyInfo .admissions-catalog__unknowns a[href*='nuzyp_instructions']")).toBeVisible();
   await showTab(page, "general");
   // The legacy funding page is a historical source record, so it stays in the collapsed history list.
