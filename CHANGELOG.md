@@ -18,10 +18,12 @@ All notable project changes should be recorded here.
 - Annual deadlines published without a year, such as MIT's first-year rounds, show whether this year's date has passed and the next occurrence with a countdown, labelled as an annual date to confirm.
 - The key facts lead with the main application deadline, keep earlier test registration dates as a second line, and skip test dates for exams the applicant has not listed when another accepted exam is in the profile.
 - The comparison uses profile subject, level, entry cycle and budget as suggestions, compares each selected annual price with the budget, and shows published application periods and requirement summaries.
+- Stanford's first-year (Restrictive Early Action, Regular Decision) and transfer deadlines, and the standing deadlines of the CHPR and Neurosciences MS routes for current students, now show the next annual date with a countdown, from structured companion records that keep the original prose.
 
 ### Changed
 - Admissions status now uses a closed vocabulary, and internal-only or restricted-group routes are labelled explicitly.
 - Admissions preparation rejects research labels that are missing from the vocabulary table.
+- Gap explanations and next steps for MIT, Imperial, Stanford and Nazarbayev University read as plain guidance to the applicant instead of research notes, in English and in the existing Russian and Kazakh translations, through an ordered rewrite table; numbers, dates and conditions are unchanged.
 
 ### Fixed
 - Removed maintainer research notes from applicant-facing admissions text and its Russian and Kazakh translations; the source records are unchanged.
@@ -31,6 +33,8 @@ All notable project changes should be recorded here.
 - A program or route chosen in the comparison is no longer lost when the applicant continues without pressing the separate apply button.
 - Shortened the Admission tab by linking requirement checks to their source record instead of repeating it, showing each record's source once, merging duplicate conditions, and hiding internal selector and evidence fields.
 - Localized Imperial's UCAS date labels and fixed missing spaces in entry-cycle labels.
+- Cached study-option lists now refresh when the applicant-facing wording rules change.
+- The NU next step for NUET no longer loses the NUFYP regular-entry minimum of 120/50/50 together with the removed maintainer instruction.
 
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
 

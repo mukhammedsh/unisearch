@@ -244,6 +244,8 @@ class AdmissionsEditorialEndpointTests(unittest.TestCase):
                   for piece in admissions_editorial.CLAUSE_SPLIT.split(text)} & notes
         self.assertEqual(leaked, set())
         self.assertNotIn("Keep NUET scoped separately", response.text)
+        # The instruction is restated for the applicant instead of dropping the NUFYP minimum it carries.
+        self.assertIn("NUET minimums differ by route: NUFYP regular entry 120/50/50", response.text)
         self.assertEqual("USD", response.json()["selected_costs"]["tuition"]["currency"])
         # The threshold itself remains in the facts that publish it.
         self.assertIn("120/50/50", response.text)

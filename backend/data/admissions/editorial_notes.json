@@ -120,7 +120,6 @@
       "Its indexed thesis table leaves one ECTS term blank",
       "Joint overview, curriculum, individual admissions page and cost page were reviewed",
       "Keep LGO supplemental application questions scoped to LGO applicant route, not the PhD route",
-      "Keep NUET scoped separately: NUFYP regular entry 120/50/50",
       "Keep TBA dates and unlisted award terms null",
       "Keep both scopes visible pending cycle reconciliation",
       "Keep both source claims",
@@ -547,7 +546,6 @@
       "Сохраняйте оба утверждения источников",
       "Сохраняйте область применения обоих источников",
       "Сохраняйте отдельную область каждого источника и пути",
-      "Сохраняйте отдельные условия NUET: NUFYP — 120/50/50",
       "Сохраняйте противоречия между датами и ограничения исторических цен и стипендий",
       "Сохраняйте расхождение описания Computer Science в каталоге A–Z для прослеживаемости",
       "Сохраняйте русский язык с ссылкой на текущую страницу Nursing",
@@ -623,7 +621,6 @@
       "MEng оқу ақысы немесе ағымдағы кезең бағасы туралы қорытынды жасамаңыз",
       "NU-дың жалпы магистратурасындағы ұсыным санын көшірмеңіз",
       "NU-дың стандартты гранттарын немесе басқа SOAS курстарының ақысын автоматты түрде қолданбаңыз",
-      "NUET шарттарын бөлек сақтаңыз: NUFYP жалпы қабылдауы 120/50/50",
       "Nursing бетінің орыс тілі туралы мәліметін өз дереккөзімен бірге сақтаңыз",
       "Азаматтыққа қарап резиденттік төлем мәртебесін анықтамаңыз",
       "Азаматтыққа, тұрғылықты жерге немесе тек тіл құсбелгісіне қарап автоматты түрде босатпаңыз",
@@ -762,15 +759,23 @@
       "payment terms and full conditions are in the linked 2027 terms, with no course-specific renewal schedule inferred",
       "six months belongs only to the PGCert selector",
       "the timezone is Europe/London, not an inferred local timezone",
-      "treat headline as approximate, not arithmetic sum"
+      "treat headline as approximate, not arithmetic sum",
+      "Keep NUET scoped separately: NUFYP regular entry 120/50/50"
     ],
-    "rus": [],
+    "rus": [
+      "Сохраняйте отдельные условия NUET: NUFYP — 120/50/50"
+    ],
     "kaz": [
-      "TA/RA мүмкін, бірақ кепілдік берілмейді"
+      "TA/RA мүмкін, бірақ кепілдік берілмейді",
+      "NUET шарттарын бөлек сақтаңыз: NUFYP жалпы қабылдауы 120/50/50"
     ]
   },
   "rewrites": {
     "eng": [
+      {
+        "phrase": "Keep NUET scoped separately: NUFYP regular entry 120/50/50",
+        "replace": "NUET minimums differ by route: NUFYP regular entry 120/50/50"
+      },
       {
         "phrase": "course-page fee labels do not establish an applicant fee status",
         "replace": "a fee label on the course page does not decide your own fee status"
@@ -1046,6 +1051,10 @@
     ],
     "rus": [
       {
+        "phrase": "Сохраняйте отдельные условия NUET: NUFYP — 120/50/50",
+        "replace": "Минимумы NUET зависят от пути поступления: NUFYP — 120/50/50"
+      },
+      {
         "phrase": "Метаданные языка страницы не подтверждают обучение на трёх языках",
         "replace": "Язык, указанный на странице, не доказывает, что обучение ведётся на трёх языках"
       },
@@ -1087,6 +1096,10 @@
       }
     ],
     "kaz": [
+      {
+        "phrase": "NUET шарттарын бөлек сақтаңыз: NUFYP жалпы қабылдауы 120/50/50",
+        "replace": "NUET минимумдары түсу жолына байланысты: NUFYP жалпы қабылдауы 120/50/50"
+      },
       {
         "phrase": "Беттегі тіл туралы мәлімет оқытудың үш тілде жүргізілетінін растамайды",
         "replace": "Бетте көрсетілген тіл оқытудың үш тілде жүргізілетінін дәлелдемейді"
