@@ -31,7 +31,8 @@ def source_numbers(text):
     """Numbers of the English source; a month name beside a number counts as that month's number."""
     counts = numbers(text)
     for index, (name, _, _) in enumerate(MONTHS, 1):
-        counts[str(index)] += len(re.findall(rf"\b{name}\b\s*\d|\d\s*\b{name}\b", text, re.I))
+        month = name.capitalize()  # case-sensitive so the verb "may" after a number is not read as May
+        counts[str(index)] += len(re.findall(rf"\b{month}\b\s*\d|\d\s*\b{month}\b", text))
     return counts
 
 
