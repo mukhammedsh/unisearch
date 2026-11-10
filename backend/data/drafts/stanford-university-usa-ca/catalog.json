@@ -13,13 +13,13 @@
   "source_file": "sources.json",
   "evidence_fingerprints": {
     "undergraduate-study-evidence.json": "e907bf2eb312a58727491919ced270530a8a7775cdbc95aff2e97b60071826dd",
-    "undergraduate-shared-evidence.json": "a793e5df573cb9a345ec924a58e889d8ca904484c4bfe743df206b56f9a50a9c",
+    "undergraduate-shared-evidence.json": "02129672b24221e27ac1b7c449e2c4e6796a6aba5b22664dc01e46bfd1e1d8bf",
     "directory-evidence.json": "91ac6e6e801d2c18e56d10dcb2c9c620529f2ef3d70ee832da76f8fab53901a4",
     "coterm-central-evidence.json": "b993f90b97710730fd851cde57435b10c49fa1e62439f679a44f4cad374c178e",
     "engineering-doerr-evidence.json": "fa3803d37ff37cf3b631d8272762035025180101f6eb3227e8f2202fb96b439d",
     "humanities-education-medicine-evidence.json": "a8fb3dcacadee65774afb6641c3542ec16bacfdb8431c04cf1187908cc927619",
     "hs-social-science-evidence.json": "42f3852ce99dc138afc6621a2cf9d8d442bccc7eabcc2ba740d841af0e4a7bab",
-    "medicine-graduate-evidence.json": "1a358e8704a39dffcbcbcd8fc1014734df67dc5132e0cf3678b3f3f614443a49",
+    "medicine-graduate-evidence.json": "a44a9e8a361aa21ee03f6f56fdcc13c212722e01b2240e1683e47af03738ecc8",
     "professional-evidence.json": "75fb42b3b088d30b0a4afdcc882f4d4b5862d86a3754911c1a7f413bde2cfdf4",
     "supplementary-degree-evidence.json": "fb371de5eb8052ef8a96d5ca4518878b07563e7b2642998219dbdddd21b2e296",
     "doerr-completion-evidence.json": "500ab4df870fe2d2fa1753bc5de89f9ca367e958202612baac2ff895c2e41d9f"
@@ -42599,6 +42599,48 @@
       "review_status": "reviewed"
     },
     {
+      "id": "undergraduate-shared-evidence:stanford-firstyear-decision-rounds-windows",
+      "original_id": "stanford-firstyear-decision-rounds-windows",
+      "evidence_file": "undergraduate-shared-evidence.json",
+      "topic": "application_windows",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "undergraduate-shared-evidence:stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "first-year"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "undergraduate-shared-evidence:stanford-ug-firstyear-requirements",
+        "undergraduate-shared-evidence:stanford-ug-firstyear-rounds",
+        "undergraduate-shared-evidence:stanford-ug-aid-dates"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
       "id": "undergraduate-shared-evidence:stanford-firstyear-interview",
       "original_id": "stanford-firstyear-interview",
       "evidence_file": "undergraduate-shared-evidence.json",
@@ -43050,6 +43092,47 @@
       },
       "source_ids": [
         "undergraduate-shared-evidence:stanford-ug-transfer-requirements"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "undergraduate-shared-evidence:stanford-transfer-deadline-windows",
+      "original_id": "stanford-transfer-deadline-windows",
+      "evidence_file": "undergraduate-shared-evidence.json",
+      "topic": "application_windows",
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "undergraduate-shared-evidence:stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "transfer"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "undergraduate-shared-evidence:stanford-ug-transfer-requirements",
+        "undergraduate-shared-evidence:stanford-ug-aid-dates"
       ],
       "checked_at": "2026-10-02",
       "publication_status": "published",
@@ -74835,10 +74918,98 @@
       "review_status": "degree_specific_source_content_rechecked_2026_10_03"
     },
     {
+      "id": "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process-windows",
+      "original_id": "recheck-degree-neurs-ms-internal-process-windows",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "application_windows",
+      "scope": {
+        "option_ids": [
+          "stanford-option-neurs-ms"
+        ],
+        "procedure_ids": [
+          "medicine-graduate-evidence:stanford-route-enroute-neurs-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-neurs-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-neurs-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:recheck-degree-neurs-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03"
+    },
+    {
       "id": "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process",
       "original_id": "recheck-degree-chpr-ms-internal-process",
       "evidence_file": "medicine-graduate-evidence.json",
       "topic": "internal_application_process_and_required_documents",
+      "scope": {
+        "option_ids": [
+          "stanford-option-chpr-ms"
+        ],
+        "procedure_ids": [
+          "medicine-graduate-evidence:stanford-route-internal-chpr-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "original_scope": {
+        "option_ids": [
+          "stanford-option-chpr-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-internal-chpr-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "medicine-graduate-evidence:recheck-degree-chpr-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03"
+    },
+    {
+      "id": "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process-windows",
+      "original_id": "recheck-degree-chpr-ms-internal-process-windows",
+      "evidence_file": "medicine-graduate-evidence.json",
+      "topic": "application_windows",
       "scope": {
         "option_ids": [
           "stanford-option-chpr-ms"

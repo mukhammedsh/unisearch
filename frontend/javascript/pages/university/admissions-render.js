@@ -377,6 +377,15 @@ function scalar(value, referenceLabels = {}) {
   return escapeHtml(translateAdmissionSummary(text) || (program !== text ? program : translateAdmissionText(text, text)));
 }
 
+// Published round names that have a localized label; any other published name is shown as published.
+const WINDOW_NAME_KEYS = {
+  "Early Action": "early_action", "Regular Action": "regular_action", "Restrictive Early Action": "restrictive_early_action",
+  "Regular Decision": "regular_decision", "Transfer application": "transfer_application",
+  "Priority deadline": "priority_deadline", "Application deadline": "application_deadline",
+};
+
+export const admissionWindowName = name => WINDOW_NAME_KEYS[name] ? t(`university.admissions.reading.${WINDOW_NAME_KEYS[name]}`) : name;
+
 export function admissionDeadlineTitle(event) {
   if (!event.kind) return translateAdmissionText(event.title, event.title);
   const kind = t(`university.deadlines.kind.${event.kind}`);

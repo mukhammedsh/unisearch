@@ -1,6 +1,6 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
-import { admissionsCycleLabel, admissionDeadlineTitle, renderAdmissionsAssessment, renderAdmissionsContext, renderAdmissionsValue } from "./admissions-render.js";
+import { admissionsCycleLabel, admissionDeadlineTitle, admissionWindowName, renderAdmissionsAssessment, renderAdmissionsContext, renderAdmissionsValue } from "./admissions-render.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
@@ -194,7 +194,7 @@ function deadlines(rows, resolved) {
     const rounds = windows.filter(window => typeof window.name === "string" && typeof window.application_due === "string");
     const tests = windows.filter(window => typeof window.round === "string" && typeof window.latest === "string" && Array.isArray(window.tests));
     if (!rounds.length && !tests.length) return "";
-    const windowName = value => value === "Early Action" ? label("early_action") : value === "Regular Action" ? label("regular_action") : value;
+    const windowName = admissionWindowName;
     const cells = rounds.length ? rounds.map(window => [escapeHtml(windowName(window.name)), escapeHtml(formatPublishedDate(window.application_due)), escapeHtml(formatPublishedDate(window.aid_due || label("unknown"))), escapeHtml(formatPublishedDate(window.decision || label("unknown")))])
       : tests.map(window => [escapeHtml(windowName(window.round)), escapeHtml(window.tests.map(test => test === "English proficiency" ? label("language") : test).join(", ")), escapeHtml(formatPublishedDate(window.latest))]);
     const recurring = !row.scope?.cycle && !/20\d{2}/.test(JSON.stringify(windows)) && !recurringShown;
